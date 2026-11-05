@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-11-03T10:14:40.000Z",
+  "generated_at": "2026-11-05T01:02:25.093Z",
   "contract_count": 67,
   "observations": [
     {
@@ -329,7 +329,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-10-22T19:54:16.507Z",
+        "retrieved_at": "2026-11-05T01:02:25.093Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
@@ -980,10 +980,10 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-10-19T14:58:11.038Z",
+        "retrieved_at": "2026-11-03T19:29:08.996Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "doing-business-entities:2026-10-19T14:58:11.038Z"
+        "run_id": "doing-business-entities:2026-11-03T19:29:08.996Z"
       },
       "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
       "expected_lag_tolerance_days": 400,
@@ -1734,7 +1734,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-10-05T17:33:36.000Z",
+        "retrieved_at": "2026-11-04T04:21:39.000Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json"

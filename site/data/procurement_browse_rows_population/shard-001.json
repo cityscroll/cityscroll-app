@@ -4,420 +4,6 @@
   "shard_id": "001",
   "rows": [
     {
-      "procurement_id": "procurement:contract:CT181620258800246",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800246",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240620107",
-        "passport_public_contracts:contract:81624R0001001:5188854"
-      ],
-      "request_id": "20240620107",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Brooklyn Assertive Community Treatment (ACT) program",
-      "pin": "81624R0001001",
-      "contract_id": "CT181620258800246",
-      "contract_amount": 2533509,
-      "vendor_name": "Jewish Board of Family and Children's Services, Inc.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Jewish Board of Family and Children's Services, Inc. · $2,533,509",
-      "notice_evidence": [
-        {
-          "request_id": "20240620107",
-          "type_of_notice_description": "Award",
-          "short_title": "Brooklyn Assertive Community Treatment (ACT) program",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-26",
-          "href": "/notices/20240620107"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800248",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800248",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240616102",
-        "passport_public_contracts:contract:81619R8236KXLR002:5096554"
-      ],
-      "request_id": "20240616102",
-      "start_date": "2024-07-01",
-      "end_date": "2024-09-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "FY25 Renewal- Psychosocial Rehabilitative Services",
-      "pin": "81619R8236KXLR002",
-      "contract_id": "CT181620258800248",
-      "contract_amount": 752194,
-      "vendor_name": "NYSARC Inc New York City Chapter",
-      "official_url": null,
-      "selection_method_description": "Renewal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · NYSARC Inc New York City Chapter · $44,565",
-      "notice_evidence": [
-        {
-          "request_id": "20240616102",
-          "type_of_notice_description": "Award",
-          "short_title": "FY25 Renewal- Psychosocial Rehabilitative Services",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-24",
-          "href": "/notices/20240616102"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800251",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800251",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240615107",
-        "passport_public_contracts:contract:81624M0015014:5184544"
-      ],
-      "request_id": "20240615107",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "FY25 RQM-Crisis Respite Center (Bronx)",
-      "pin": "81624M0015014",
-      "contract_id": "CT181620258800251",
-      "contract_amount": 9486630,
-      "vendor_name": "RIVERDALE MENTAL HEALTH ASSOCIATION INC",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · RIVERDALE MENTAL HEALTH ASSOCIATION INC · $9,486,630",
-      "notice_evidence": [
-        {
-          "request_id": "20240615107",
-          "type_of_notice_description": "Award",
-          "short_title": "FY25 RQM-Crisis Respite Center (Bronx)",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-24",
-          "href": "/notices/20240615107"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800252",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800252",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240628106",
-        "passport_public_contracts:contract:81619P8230KXLR002:5107891"
-      ],
-      "request_id": "20240628106",
-      "start_date": "2024-07-01",
-      "end_date": "2027-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "FY25-RENEWAL #2 - Services Underserved - Access affordable housing",
-      "pin": "81619P8230KXLR002",
-      "contract_id": "CT181620258800252",
-      "contract_amount": 1246875,
-      "vendor_name": "Services for the Underserved Inc.",
-      "official_url": null,
-      "selection_method_description": "Renewal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Services for the Underserved Inc. · $1,246,875",
-      "notice_evidence": [
-        {
-          "request_id": "20240628106",
-          "type_of_notice_description": "Award",
-          "short_title": "FY25-RENEWAL #2 - Services Underserved - Access affordable housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-07-05",
-          "href": "/notices/20240628106"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800255",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800255",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240701110",
-        "passport_public_contracts:contract:81624M0015013:5184543"
-      ],
-      "request_id": "20240701110",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Mental Health, Adult Recovery, & Service Dollars",
-      "pin": "81624M0015013",
-      "contract_id": "CT181620258800255",
-      "contract_amount": 2109146,
-      "vendor_name": "The Mental Health Association of New York City Inc",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · The Mental Health Association of New York City Inc · $2,109,146",
-      "notice_evidence": [
-        {
-          "request_id": "20240701110",
-          "type_of_notice_description": "Award",
-          "short_title": "Mental Health, Adult Recovery, & Service Dollars",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-07-08",
-          "href": "/notices/20240701110"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800256",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800256",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240614102",
-        "passport_public_contracts:contract:81624M0013001:5102785"
-      ],
-      "request_id": "20240614102",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Supportive Housing",
-      "pin": "81624M0013001",
-      "contract_id": "CT181620258800256",
-      "contract_amount": 7190100,
-      "vendor_name": "Urban Pathways Inc.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Urban Pathways Inc. · $7,190,100",
-      "notice_evidence": [
-        {
-          "request_id": "20240614102",
-          "type_of_notice_description": "Award",
-          "short_title": "Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-21",
-          "href": "/notices/20240614102"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800257",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800257",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240615106",
-        "passport_public_contracts:contract:81624M0015017:5184547"
-      ],
-      "request_id": "20240615106",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "FY25 RQM-West End Housing Congregate Setting Single Adults",
-      "pin": "81624M0015017",
-      "contract_id": "CT181620258800257",
-      "contract_amount": 5272740,
-      "vendor_name": "WEST END RESIDENCES HDFC, INC.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · WEST END RESIDENCES HDFC, INC. · $5,272,740",
-      "notice_evidence": [
-        {
-          "request_id": "20240615106",
-          "type_of_notice_description": "Award",
-          "short_title": "FY25 RQM-West End Housing Congregate Setting Single Adults",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-24",
-          "href": "/notices/20240615106"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800258",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800258",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240621106",
-        "passport_public_contracts:contract:81624M0015007:5184537"
-      ],
-      "request_id": "20240621106",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Permanent Supportive Housing",
-      "pin": "81624M0015007",
-      "contract_id": "CT181620258800258",
-      "contract_amount": 6181594,
-      "vendor_name": "WESTON UNITED COMMUNITY RENEWAL INC.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · WESTON UNITED COMMUNITY RENEWAL INC. · $6,181,594",
-      "notice_evidence": [
-        {
-          "request_id": "20240621106",
-          "type_of_notice_description": "Award",
-          "short_title": "Permanent Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-27",
-          "href": "/notices/20240621106"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800260",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800260",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240624117",
-        "passport_public_contracts:contract:81624M0015001:5184531"
-      ],
-      "request_id": "20240624117",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Assertive Community Treatment",
-      "pin": "81624M0015001",
-      "contract_id": "CT181620258800260",
-      "contract_amount": 8552981,
-      "vendor_name": "The Bridge Inc.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · The Bridge Inc. · $8,552,981",
-      "notice_evidence": [
-        {
-          "request_id": "20240624117",
-          "type_of_notice_description": "Award",
-          "short_title": "Assertive Community Treatment",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-28",
-          "href": "/notices/20240624117"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
       "procurement_id": "procurement:contract:CT181620258800263",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800263",
       "procurement_stages": [
@@ -164662,6 +164248,102 @@
       "method_family": "ordinary_micropurchase"
     },
     {
+      "procurement_id": "procurement:contract:CT184620278803651",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803651",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803651:INDUSTRIAL U.S.A., INC:prime-vendor:2026-10-30"
+      ],
+      "start_date": "2026-11-05",
+      "end_date": "2026-12-30",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "CPOP-Raincoats for POP Workers",
+      "pin": "84627C0264001",
+      "contract_id": "CT184620278803651",
+      "contract_amount": 3297,
+      "vendor_name": "INDUSTRIAL U.S.A., INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · INDUSTRIAL U.S.A., INC · $3,297",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803653",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803653",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803653:FORESTRY SUPPLIERS INC:prime-vendor:2026-10-30"
+      ],
+      "start_date": "2026-11-05",
+      "end_date": "2026-12-21",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "CFOR- Forestry Supplies Kits",
+      "pin": "84627C0267001",
+      "contract_id": "CT184620278803653",
+      "contract_amount": 4141.25,
+      "vendor_name": "FORESTRY SUPPLIERS INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · FORESTRY SUPPLIERS INC · $4,141.25",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803665",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803665",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803665:DISCOUNT PLAYGROUND SUPPLY:prime-vendor:2026-11-02"
+      ],
+      "start_date": "2026-11-05",
+      "end_date": "2026-12-16",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "QNOPS-SWING PARTS FOR QUEENS",
+      "pin": "84627C0265001",
+      "contract_id": "CT184620278803665",
+      "contract_amount": 4386.45,
+      "vendor_name": "Discount Playground Supply",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · Discount Playground Supply · $4,386.45",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
       "procurement_id": "procurement:contract:CT184620278803668",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803668",
       "procurement_stages": [
@@ -183193,6 +182875,37 @@
         "registered"
       ],
       "additional_description_1": "Department of Design and Construction · SAVVY BUSINESS INC · $40,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT185020271403166",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185020271403166",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT185020271403166:THE NEW YORK PUBLIC LIBRARY ASTOR LENOX AND TILDEN FOUNDATIO:prime-vendor:2026-10-28"
+      ],
+      "start_date": "2026-11-05",
+      "end_date": "2029-11-03",
+      "agency_id": null,
+      "agency_name": "Department of Design and Construction",
+      "short_title": "Design of the Tompkins Square Library Renovation",
+      "pin": "8502027LN0003G",
+      "contract_id": "CT185020271403166",
+      "contract_amount": 3728964,
+      "vendor_name": "THE NEW YORK PUBLIC LIBRARY ASTOR LENOX AND TILDEN FOUNDATIO",
+      "official_url": null,
+      "selection_method_description": "GRANTS",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Design and Construction · THE NEW YORK PUBLIC LIBRARY ASTOR LENOX AND TILDEN FOUNDATIO · $3,728,964",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [

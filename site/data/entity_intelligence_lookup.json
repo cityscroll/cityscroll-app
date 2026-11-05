@@ -3,14 +3,14 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-11-04T19:14:01.674Z",
+  "generated_at": "2026-11-05T01:02:50.535Z",
   "observation_count": 3467,
   "entity_count": 200,
   "multi_domain_count": 34,
   "selection": {
     "strategy": "multi_domain_then_mandate_agency_reserve_then_richness_fill",
     "cap": 200,
-    "candidate_count": 1665,
+    "candidate_count": 1666,
     "reason_counts": {
       "multi_domain": 34,
       "mandate_agency_reserve": 17,
@@ -17574,6 +17574,105 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "contract:CT184620278803665",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "Discount Playground Supply",
+              "when": "2026-11-05",
+              "amount": null,
+              "public_status": null,
+              "pin": "84627C0265001",
+              "contract_id": "CT184620278803665",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:parks-and-recreation",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:84627C0265001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-05",
+                "input_value": "Department of Parks and Recreation"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "contract:CT184620278803651",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "INDUSTRIAL U.S.A., INC",
+              "when": "2026-11-05",
+              "amount": null,
+              "public_status": null,
+              "pin": "84627C0264001",
+              "contract_id": "CT184620278803651",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:parks-and-recreation",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:84627C0264001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-05",
+                "input_value": "Department of Parks and Recreation"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "contract:CT184620278803653",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "FORESTRY SUPPLIERS INC",
+              "when": "2026-11-05",
+              "amount": null,
+              "public_status": null,
+              "pin": "84627C0267001",
+              "contract_id": "CT184620278803653",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:parks-and-recreation",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:84627C0267001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-05",
+                "input_value": "Department of Parks and Recreation"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "contract:CT184620278803609",
               "domain": "money",
               "object_kind": "contract",
@@ -17666,105 +17765,6 @@
                 ],
                 "basis": "money_agency_name",
                 "observed_at": "2026-11-02",
-                "input_value": "Department of Parks and Recreation"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT184620278803648",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "DERIVE TECHNOLOGIES LLC",
-              "when": "2026-10-30",
-              "amount": null,
-              "public_status": null,
-              "pin": "84627C0275001",
-              "contract_id": "CT184620278803648",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:parks-and-recreation",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:84627C0275001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-10-30",
-                "input_value": "Department of Parks and Recreation"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT184620278803600",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "Crosstown Glass LLC",
-              "when": "2026-10-30",
-              "amount": null,
-              "public_status": null,
-              "pin": "84627C0250001",
-              "contract_id": "CT184620278803600",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:parks-and-recreation",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:84627C0250001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-10-30",
-                "input_value": "Department of Parks and Recreation"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT184620278803630",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "DERIVE TECHNOLOGIES LLC",
-              "when": "2026-10-30",
-              "amount": null,
-              "public_status": null,
-              "pin": "84627C0270001",
-              "contract_id": "CT184620278803630",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:parks-and-recreation",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:84627C0270001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-10-30",
                 "input_value": "Department of Parks and Recreation"
               },
               "link_type": "published_by_agency",
@@ -22761,6 +22761,222 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT184620278803651",
+          "to": "agency:id:parks-and-recreation",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0264001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-05",
+            "input_value": "Department of Parks and Recreation",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0264001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-05",
+            "input_value": "Department of Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT184620278803651",
+          "to": "pin:84627C0264001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0264001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-05",
+            "input_value": "84627C0264001",
+            "join_key": "pin",
+            "join_value": "84627C0264001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0264001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-05",
+            "input_value": "84627C0264001",
+            "join_key": "pin",
+            "join_value": "84627C0264001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT184620278803653",
+          "to": "agency:id:parks-and-recreation",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0267001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-05",
+            "input_value": "Department of Parks and Recreation",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0267001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-05",
+            "input_value": "Department of Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT184620278803653",
+          "to": "pin:84627C0267001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0267001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-05",
+            "input_value": "84627C0267001",
+            "join_key": "pin",
+            "join_value": "84627C0267001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0267001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-05",
+            "input_value": "84627C0267001",
+            "join_key": "pin",
+            "join_value": "84627C0267001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT184620278803665",
+          "to": "agency:id:parks-and-recreation",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0265001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-05",
+            "input_value": "Department of Parks and Recreation",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0265001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-05",
+            "input_value": "Department of Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT184620278803665",
+          "to": "pin:84627C0265001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0265001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-05",
+            "input_value": "84627C0265001",
+            "join_key": "pin",
+            "join_value": "84627C0265001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0265001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-05",
+            "input_value": "84627C0265001",
+            "join_key": "pin",
+            "join_value": "84627C0265001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT184620278803668",
           "to": "agency:id:parks-and-recreation",
           "method": "agency_canonical_v1",
@@ -25260,7 +25476,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 99,
+        "deterministic": 102,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -25272,8 +25488,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 3,
         "total_linked_objects": 16,
-        "link_count": 200,
-        "join_key_link_count": 99,
+        "link_count": 206,
+        "join_key_link_count": 102,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.5714285714285714
       }
@@ -146628,38 +146844,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020273032473",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032473",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032473",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020273032577",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -146686,38 +146870,6 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-19",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020273032676",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032676",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032676",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -146820,38 +146972,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020273032794",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032794",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032794",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020273032811",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -146910,38 +147030,6 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-20",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020273032931",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032931",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032931",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -155969,7 +156057,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 6,
-        "link_count": 398,
+        "link_count": 394,
         "join_key_link_count": 45,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
@@ -192932,6 +193020,39 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "contract:CT185020271403166",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "THE NEW YORK PUBLIC LIBRARY ASTOR LENOX AND TILDEN FOUNDATIO",
+              "when": "2026-11-05",
+              "amount": null,
+              "public_status": null,
+              "pin": "8502027LN0003G",
+              "contract_id": "CT185020271403166",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:design-and-construction",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:8502027LN0003G",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-05",
+                "input_value": "Department of Design and Construction"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "contract:CTA185020278803105",
               "domain": "money",
               "object_kind": "contract",
@@ -193090,39 +193211,6 @@
                 ],
                 "basis": "money_agency_name",
                 "observed_at": "2021-10-20",
-                "input_value": "Design and Construction"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20211001113",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "EC-LC22A: REHABILITATION OF SANITARY, COMBINED, AND STORM SEWERS BY USING DEP APPROVED LINING METHOD IN VARIOUS LOCATIONS \u001a CITYWIDE",
-              "when": "2021-10-12",
-              "amount": 9459396.5,
-              "public_status": null,
-              "pin": "85021B0148",
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20211001113",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:design-and-construction",
-              "root_kind": "agency",
-              "href": "#notice/20211001113",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:20211001113",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2021-10-12",
                 "input_value": "Design and Construction"
               },
               "link_type": "published_by_agency",
@@ -194465,6 +194553,78 @@
             "input_value": "85021B0143001C001",
             "join_key": "epin",
             "join_value": "85021B0143001C001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT185020271403166",
+          "to": "agency:id:design-and-construction",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:8502027LN0003G",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-05",
+            "input_value": "Department of Design and Construction",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:8502027LN0003G",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-05",
+            "input_value": "Department of Design and Construction"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT185020271403166",
+          "to": "pin:8502027LN0003G",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:8502027LN0003G",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-05",
+            "input_value": "8502027LN0003G",
+            "join_key": "pin",
+            "join_value": "8502027LN0003G",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:8502027LN0003G",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-05",
+            "input_value": "8502027LN0003G",
+            "join_key": "pin",
+            "join_value": "8502027LN0003G",
             "match": "exact",
             "tier": "deterministic_exact_key"
           },
@@ -196851,7 +197011,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 51,
+        "deterministic": 52,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -196863,8 +197023,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 6,
-        "link_count": 102,
-        "join_key_link_count": 51,
+        "link_count": 104,
+        "join_key_link_count": 52,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
       }
@@ -322679,352 +322839,6 @@
         "coverage_rate": 0.14285714285714285
       }
     },
-    "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-        "id": "stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-        "stem": "URBAN XCELLENCE ACADEMIC SOLUTIONS",
-        "display_name": "Urban Xcellence Academic Solutions LLC"
-      },
-      "domains": {
-        "money": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "contract:CT104020273038750",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "Urban Xcellence Academic Solutions LLC",
-              "when": "2026-11-02",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020273038750",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273038750",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-11-02",
-                "input_value": "Urban Xcellence Academic Solutions LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT104020273041240",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "Urban Xcellence Academic Solutions LLC",
-              "when": "2026-10-30",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020273041240",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273041240",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-10-30",
-                "input_value": "Urban Xcellence Academic Solutions LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT104020273033380",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "Urban Xcellence Academic Solutions LLC",
-              "when": "2026-10-26",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020273033380",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273033380",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-10-26",
-                "input_value": "Urban Xcellence Academic Solutions LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT104020273032931",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "Urban Xcellence Academic Solutions LLC",
-              "when": "2026-10-16",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020273032931",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273032931",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-10-16",
-                "input_value": "Urban Xcellence Academic Solutions LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 4
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020273032931",
-          "to": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032931",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Urban Xcellence Academic Solutions LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032931",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Urban Xcellence Academic Solutions LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020273033380",
-          "to": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273033380",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-10-26",
-            "input_value": "Urban Xcellence Academic Solutions LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273033380",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-10-26",
-            "input_value": "Urban Xcellence Academic Solutions LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020273038750",
-          "to": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273038750",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-11-02",
-            "input_value": "Urban Xcellence Academic Solutions LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273038750",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-11-02",
-            "input_value": "Urban Xcellence Academic Solutions LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020273041240",
-          "to": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273041240",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-10-30",
-            "input_value": "Urban Xcellence Academic Solutions LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273041240",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-10-30",
-            "input_value": "Urban Xcellence Academic Solutions LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 0,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 4,
-        "link_count": 4,
-        "join_key_link_count": 0,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.14285714285714285
-      }
-    },
     "vendor:stem:VISITING%20NURSE%20SERVICE%20OF%20NEW%20YORK%20HOMECARE%20II": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -325322,6 +325136,407 @@
         "coverage_rate": 0.14285714285714285
       }
     },
+    "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+        "id": "stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+        "stem": "67TH PRECINCT CLERGY COUNCIL",
+        "display_name": "67th Precinct Clergy Council Inc"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "contract:CT1-128-20278800625",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "67th Precinct Clergy Council Inc",
+              "when": "07/01/2026",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT1-128-20278800625",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:CT1-128-20278800625",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "07/01/2026",
+                "input_value": "67th Precinct Clergy Council Inc"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT1-002-20248805852",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "67th Precinct Clergy Council Inc",
+              "when": "07/01/2023",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT1-002-20248805852",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:CT1-002-20248805852",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "07/01/2023",
+                "input_value": "67th Precinct Clergy Council Inc"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT1-002-20238803681",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "67th Precinct Clergy Council Inc",
+              "when": "07/01/2022",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT1-002-20238803681",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:CT1-002-20238803681",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "07/01/2022",
+                "input_value": "67th Precinct Clergy Council Inc"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 3
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "named_vendor",
+          "from": "contract:CT1-002-20238803681",
+          "to": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20238803681",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2022",
+            "input_value": "67th Precinct Clergy Council Inc",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20238803681",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2022",
+            "input_value": "67th Precinct Clergy Council Inc"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT1-002-20238803681",
+          "to": "pin:00222N0049001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20238803681",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2022",
+            "input_value": "00222N0049001",
+            "join_key": "epin",
+            "join_value": "00222N0049001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20238803681",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2022",
+            "input_value": "00222N0049001",
+            "join_key": "epin",
+            "join_value": "00222N0049001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT1-002-20248805852",
+          "to": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20248805852",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2023",
+            "input_value": "67th Precinct Clergy Council Inc",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20248805852",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2023",
+            "input_value": "67th Precinct Clergy Council Inc"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT1-002-20248805852",
+          "to": "pin:00224N0003001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20248805852",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2023",
+            "input_value": "00224N0003001",
+            "join_key": "epin",
+            "join_value": "00224N0003001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20248805852",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2023",
+            "input_value": "00224N0003001",
+            "join_key": "epin",
+            "join_value": "00224N0003001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT1-128-20278800625",
+          "to": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-128-20278800625",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2026",
+            "input_value": "67th Precinct Clergy Council Inc",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-128-20278800625",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2026",
+            "input_value": "67th Precinct Clergy Council Inc"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT1-128-20278800625",
+          "to": "pin:12826N0003001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-128-20278800625",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2026",
+            "input_value": "12826N0003001",
+            "join_key": "epin",
+            "join_value": "12826N0003001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-128-20278800625",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2026",
+            "input_value": "12826N0003001",
+            "join_key": "epin",
+            "join_value": "12826N0003001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        }
+      ],
+      "shadow_edges": [],
+      "edge_routing": {
+        "deterministic": 3,
+        "public_inferred": 0,
+        "evidence_only": 0,
+        "no_edge": 0
+      },
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 3,
+        "link_count": 6,
+        "join_key_link_count": 3,
+        "cross_spine_shadow_count": 0,
+        "coverage_rate": 0.14285714285714285
+      }
+    },
     "agency:id:mta-construction-and-development": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -326497,6 +326712,11 @@
         "entity_ref": "agency:id:office-of-criminal-justice-002",
         "relation": "published_by_agency",
         "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+        "relation": "named_vendor",
+        "confidence": "strong"
       }
     ],
     "contract:CT1-002-20238804371": [
@@ -326882,6 +327102,11 @@
       {
         "entity_ref": "agency:id:office-of-criminal-justice-128",
         "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -331446,6 +331671,11 @@
       {
         "entity_ref": "agency:id:office-of-criminal-justice-128",
         "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -338637,21 +338867,7 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020273032473": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020273032577": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020273032676": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -338679,13 +338895,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020273032794": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020273032811": [
       {
         "entity_ref": "agency:id:education",
@@ -338697,18 +338906,6 @@
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020273032931": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -338744,11 +338941,6 @@
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -339265,11 +339457,6 @@
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
         "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-        "relation": "named_vendor",
-        "confidence": "strong"
       }
     ],
     "contract:CT104020273038762": [
@@ -339503,11 +339690,6 @@
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -341350,9 +341532,37 @@
         "confidence": "strong"
       }
     ],
+    "contract:CT184620278803651": [
+      {
+        "entity_ref": "agency:id:parks-and-recreation",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT184620278803653": [
+      {
+        "entity_ref": "agency:id:parks-and-recreation",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT184620278803665": [
+      {
+        "entity_ref": "agency:id:parks-and-recreation",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT184620278803668": [
       {
         "entity_ref": "agency:id:parks-and-recreation",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT185020271403166": [
+      {
+        "entity_ref": "agency:id:design-and-construction",
         "relation": "published_by_agency",
         "confidence": "strong"
       }
@@ -350809,12 +351019,12 @@
       "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
       "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",
       "procurement_spine": "site/data/procurement_spine_sources.json",
-      "procurement_spine_observed_on": "2026-11-04"
+      "procurement_spine_observed_on": "2026-11-05"
     }
   },
   "procurement_spine": {
     "schema_version": 1,
-    "observed_on": "2026-11-04",
+    "observed_on": "2026-11-05",
     "coverage": {
       "passport_contracts": {
         "source_system": "passport-public-contracts",
@@ -350860,7 +351070,7 @@
         "coverage_status": "measured",
         "population_backed": true,
         "source_url": "https://www.checkbooknyc.com/api",
-        "pulled_at": "2026-11-04T18:16:25.217Z",
+        "pulled_at": "2026-11-05T01:02:25.093Z",
         "population": {
           "api_transaction_rows": 40014,
           "normalized_unique_contracts": 29402,
@@ -350957,7 +351167,7 @@
     },
     "row_counts": {
       "passport_contracts": 12795,
-      "checkbook_contracts": 10518,
+      "checkbook_contracts": 10510,
       "checkbook_spending": 31,
       "passport_contracts_materialization": 2,
       "checkbook_nycha_contracts": 1
@@ -351020,7 +351230,7 @@
       },
       "checkbook_contracts": {
         "population_rows": 29402,
-        "committed_slice_rows": 10518,
+        "committed_slice_rows": 10510,
         "selected_rows": 500,
         "cap": 500,
         "strategy": "population-measured Checkbook slice capped for entity intelligence; one row per exact prime_contract_id; Contracts_NYCHA rows reserve slots in the shared Checkbook budget"
@@ -352565,14 +352775,6 @@
       "coverage_rate": 0.14285714285714285
     },
     {
-      "ref": "vendor:stem:URBAN%20XCELLENCE%20ACADEMIC%20SOLUTIONS",
-      "kind": "vendor",
-      "display_name": "Urban Xcellence Academic Solutions LLC",
-      "domains_matched": 1,
-      "total_linked_objects": 4,
-      "coverage_rate": 0.14285714285714285
-    },
-    {
       "ref": "vendor:stem:VISITING%20NURSE%20SERVICE%20OF%20NEW%20YORK%20HOMECARE%20II",
       "kind": "vendor",
       "display_name": "VISITING NURSE SERVICE OF NEW YORK HOMECARE II",
@@ -352608,6 +352810,14 @@
       "ref": "agency:id:edc-economic-development-corporation-for-nyc",
       "kind": "agency",
       "display_name": "EDC - Economic Development Corporation for NYC",
+      "domains_matched": 1,
+      "total_linked_objects": 3,
+      "coverage_rate": 0.14285714285714285
+    },
+    {
+      "ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+      "kind": "vendor",
+      "display_name": "67th Precinct Clergy Council Inc",
       "domains_matched": 1,
       "total_linked_objects": 3,
       "coverage_rate": 0.14285714285714285
