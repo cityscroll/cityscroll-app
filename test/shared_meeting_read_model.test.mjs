@@ -200,9 +200,11 @@ test("the canonical snapshot carries the hearing adapter projection for a City R
   for (const row of rows) {
     const requestId = row.meeting_id.replace("meeting:city_record:", "");
     assert.match(requestId, /^\d{8,}$/);
-    // The adapter projects the publisher body as the row description rather
-    // than inventing one, and states an unknown venue and access as unknown.
-    assert.equal(row.description, row.additional_description_1);
+    // The adapter derives description through normalizeHearing's own
+    // plainText()+1200-char contract rather than carrying the publisher body
+    // verbatim, so the snapshot is checked against that same function's
+    // output instead of the raw (possibly HTML-bearing) source field.
+    assert.equal(row.description, normalizeHearing(row).description);
     assert.ok(["not-stated", "in-person", "virtual", "hybrid"].includes(row.venue.mode));
     assert.ok(["unknown", "in-person", "virtual", "hybrid", "remote"].includes(row.meeting_access.mode));
     assert.equal(row.source_url, `https://a856-cityrecord.nyc.gov/RequestDetail/${requestId}`);
