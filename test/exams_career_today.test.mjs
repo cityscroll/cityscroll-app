@@ -35,7 +35,12 @@ function loadCareerToday(scope) {
 }
 
 function fixturePinDay() {
-  for (const key of ["open_window_as_of", "generated_at", "data_current_as_of"]) {
+  // open_window_as_of/generated_at are always the refresh's own build day, so on a
+  // day the refresh opens a dense batch of exams they are the day most likely to
+  // fail the property below. data_current_as_of/list_current_as_of are the slower
+  // DCAS Open Data vintages and do not move with every refresh, so they make a
+  // more stable anchor; fall back to the build day only when neither is present.
+  for (const key of ["data_current_as_of", "list_current_as_of", "open_window_as_of", "generated_at"]) {
     const value = String(staffingExams[key] || "").slice(0, 10);
     if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
   }
@@ -55,6 +60,18 @@ function firstPageStatuses(today) {
   });
 }
 
+// Count against the same open-competitive + actionable filter firstPageStatuses
+// uses, not every exam's raw status; a row the guide's own filter excludes can
+// never occupy a page slot, so counting it would report a day as hostile when
+// the rendered first page would not actually be saturated.
+function filteredOpenCount(day) {
+  return Staffing.filterExams(
+    staffingExams.exams,
+    { window: "actionable", eligibility: "open_competitive", interest: "all", query: "" },
+    day,
+  ).filter((exam) => !Staffing.isContinuousExam(exam) && Staffing.statusFor(exam, day) === "open").length;
+}
+
 /** A day on which open exams alone fill the first actionable page. */
 function hostileWallClockDay(pinDay) {
   const openByEnd = new Map();
@@ -70,19 +87,13 @@ function hostileWallClockDay(pinDay) {
   const ends = [...openByEnd.keys()].sort();
   for (const end of ends) {
     const day = end < pinDay ? pinDay : end;
-    const openCount = staffingExams.exams.filter(
-      (exam) => Staffing.statusFor(exam, day) === "open" && !Staffing.isContinuousExam(exam),
-    ).length;
-    if (openCount >= INITIAL_PAGE_SIZE) return day;
+    if (filteredOpenCount(day) >= INITIAL_PAGE_SIZE) return day;
   }
   // Fall back to the latest application_start among exams that open after the pin:
   // walking forward one day at a time from the pin until the open count fills the page.
   let day = pinDay;
   for (let step = 0; step < 120; step += 1) {
-    const openCount = staffingExams.exams.filter(
-      (exam) => Staffing.statusFor(exam, day) === "open" && !Staffing.isContinuousExam(exam),
-    ).length;
-    if (openCount >= INITIAL_PAGE_SIZE) return day;
+    if (filteredOpenCount(day) >= INITIAL_PAGE_SIZE) return day;
     const [y, m, d] = day.split("-").map(Number);
     const next = new Date(Date.UTC(y, m - 1, d + 1));
     day = next.toISOString().slice(0, 10);
