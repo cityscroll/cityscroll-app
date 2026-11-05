@@ -89,9 +89,27 @@ test("the harness derives its day from the fixture's own vintage", () => {
 
 test("the browser checks that need result rows pin the clock", () => {
   for (const name of ["23_mobile_viewport", "15_rtl", "30_browse_interaction_grammar",
-    "11_accessibility", "16_forecast_discoverability", "29_snapshot_only_resident_reads"]) {
+    "11_accessibility", "16_forecast_discoverability", "29_snapshot_only_resident_reads",
+    "29_exams_route"]) {
     const source = read(`test/functional/${name}.py`);
     assert.match(source, /from fixture_clock import pin_fixture_clock/, `${name} does not import the pin`);
     assert.match(source, /pin_fixture_clock\(/, `${name} never pins the clock`);
   }
+});
+
+test("exams careerToday honors the harness pin the same way core.mjs does", () => {
+  // The Exams route owns its own civic-day helper. If it reads wall-clock only, the
+  // shared fixture pin is a no-op and the first actionable page can fill with open
+  // cards once enough application windows open on the real calendar.
+  const examsSource = read("site/app/exams.mjs");
+  assert.match(
+    examsSource,
+    /function careerToday\(\)\s*\{[\s\S]*?CROL_PINNED_TODAY[\s\S]*?new Date\(\)/,
+    "careerToday must read CROL_PINNED_TODAY before falling back to the real day",
+  );
+  assert.doesNotMatch(
+    examsSource,
+    /CROL_PINNED_TODAY\s*=/,
+    "exams.mjs must not assign the harness pin",
+  );
 });

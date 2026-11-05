@@ -111,8 +111,15 @@ function syncExamsModeUI(){
   guide.hidden=false;
   if(careerSelected || careerData) prepareCareerHow();
 }
-// determinism-lint: allow clock the career-path guide answers 'where would I be today', so the day is the question rather than an input to it.
-function careerToday(){ return new Date().toISOString().slice(0,10); }
+// The civic day for exam windows. A harness may pin `CROL_PINNED_TODAY` before any
+// application script runs (see test/functional/assets/fixture_clock.py); nothing in the
+// shipped product sets the pin, so residents keep the real calendar day.
+function careerToday(){
+  const pinned = globalThis.CROL_PINNED_TODAY;
+  if(typeof pinned === "string" && /^\d{4}-\d{2}-\d{2}$/.test(pinned)) return pinned;
+  // determinism-lint: allow clock the career-path guide answers 'where would I be today', so the day is the question rather than an input to it.
+  return new Date().toISOString().slice(0,10);
+}
 function careerDate(value){ return value ? fdt(value+"T12:00:00Z") : t("career_date_unknown"); }
 function careerMoney(value, gapClass){
   if(value === 0) return "$0";

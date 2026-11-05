@@ -11,6 +11,7 @@ from playwright.sync_api import expect
 ROOT = pathlib.Path(__file__).parents[2]
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
 from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
+from fixture_clock import pin_fixture_clock  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "")
@@ -257,6 +258,10 @@ def main():
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(permissions=["clipboard-read", "clipboard-write"])
+        # Exam windows are judged against the civic day. Pin that day to the committed
+        # fixture vintage so the first actionable page still includes an upcoming card
+        # when the real calendar has filled the page with newly opened exams.
+        pin_fixture_clock(context)
         page = context.new_page()
         run(page)
         context.close()
