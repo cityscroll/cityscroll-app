@@ -11,7 +11,7 @@
 # committed, already lives on origin, so it is safe to discard and reset. A
 # dirty tree on any other branch -- including the default branch itself -- is
 # an operator's in-progress work; the job stops rather than guess what to do
-# with it.
+# with it and dispatches the repository's existing owner-alert workflow.
 #
 # Sourced by run-warehouse-refresh.sh and exercised directly by
 # test-preflight.sh; assumes the caller has already `cd`ed into the checkout.
@@ -38,7 +38,31 @@ is_data_branch() {
 # the checkout in between -- starts from a clean, recognizable state instead
 # of a parked data branch.
 return_to_default_branch() {
-  git checkout --quiet "$DEFAULT_BRANCH" 2>/dev/null || true
+  local branch
+  branch="$(current_branch)"
+  if is_data_branch "$branch"; then
+    # The published-path registry deliberately stages only files owned by the
+    # refresh. Builders can also rewrite tracked audit snapshots and latest
+    # receipts as incidental evidence. They are job-owned because preflight
+    # admitted only a clean checkout, but leaving them in the working tree lets
+    # Git carry them across the checkout below and makes tomorrow's preflight
+    # refuse main. Restore every uncommitted tracked file on the disposable
+    # data branch after its commit has been pushed.
+    if ! git reset --hard --quiet HEAD; then
+      echo "refresh cleanup: could not restore tracked changes on $branch" >&2
+      return 1
+    fi
+  fi
+  git checkout --quiet "$DEFAULT_BRANCH"
+}
+
+dispatch_preflight_refusal_alert() {
+  local branch="$1"
+  echo "preflight: dispatching an owner alert for the refused refresh on $branch" >&2
+  gh workflow run reliability-watchdogs.yml \
+    --repo cityscroll/cityscroll-app \
+    --ref "$DEFAULT_BRANCH" \
+    -f operator_preflight_refusal=true
 }
 
 preflight() {
@@ -54,6 +78,7 @@ preflight() {
       git clean --quiet -fd -- site worker
     else
       echo "$DIRTY_TREE_MESSAGE_PREFIX $branch" >&2
+      dispatch_preflight_refusal_alert "$branch"
       return 1
     fi
   fi

@@ -6,11 +6,52 @@ on:
     - cron: "10 10 * * *"
     - cron: "50 * * * *"
   workflow_dispatch:
+    inputs:
+      operator_preflight_refusal:
+        description: "Alert that the warehouse refresh refused a dirty checkout"
+        type: boolean
+        default: false
 
 permissions: {}
 
 jobs:
+  operator-preflight-refusal:
+    if: github.event_name == 'workflow_dispatch' && inputs.operator_preflight_refusal
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Record the preflight refusal finding
+        run: |
+          mkdir -p .artifacts
+          printf '%s\n' \
+            'The scheduled warehouse refresh refused to run because its checkout contains uncommitted changes. Inspect and clean the serving-machine checkout, then restart the refresh.' \
+            > .artifacts/operator-preflight-refusal-findings.txt
+      - name: Deliver the owner alert
+        env:
+          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          node tools/deliver_ops_alert.mjs \
+            --findings-file .artifacts/operator-preflight-refusal-findings.txt \
+            --receipt .artifacts/operator-preflight-refusal-delivery-receipt.json \
+            --marker .artifacts/operator-preflight-refusal-sent-marker.json \
+            --guard first-class-refresh-operator-preflight \
+            --stage operator_preflight_refusal \
+            --finding true
+      - name: Retain the finding and delivery receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: operator-preflight-refusal-${{ github.run_id }}
+          path: |
+            .artifacts/operator-preflight-refusal-findings.txt
+            .artifacts/operator-preflight-refusal-delivery-receipt.json
+          if-no-files-found: warn
+
   first-class-refresh-health:
+    if: github.event_name != 'workflow_dispatch' || inputs.operator_preflight_refusal != true
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -33,6 +74,7 @@ jobs:
   # artifact reached its hard maximum. This raises the same owner alert
   # served-artifact-freshness.yml already delivers, comfortably ahead of that.
   first-class-freshness-warning-age:
+    if: github.event_name != 'workflow_dispatch' || inputs.operator_preflight_refusal != true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -70,6 +112,7 @@ jobs:
           if-no-files-found: warn
 
   watchdog:
+    if: github.event_name != 'workflow_dispatch' || inputs.operator_preflight_refusal != true
     runs-on: ubuntu-latest
     steps:
       - name: Check digest and scheduler operational receipts

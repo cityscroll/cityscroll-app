@@ -35,6 +35,11 @@ run_preflight() {
     cd "$WORK/clone" || exit 1
     # shellcheck source=preflight.sh
     source "$OLDPWD/preflight.sh"
+    # Production dispatches the existing reliability workflow. The fixture
+    # records that handoff without contacting GitHub.
+    dispatch_preflight_refusal_alert() {
+      printf '%s\n' "$1" > "$WORK/dispatched-refusal-branch.txt"
+    }
     preflight
   )
 }
@@ -84,14 +89,17 @@ fi
   echo dirty >> file.txt
 )
 out="$(run_preflight 2>&1)"; rc=$?
-if [ "$rc" -ne 0 ] && printf '%s\n' "$out" | grep -qF "preflight: refusing to run -- uncommitted changes on main"; then
+if [ "$rc" -ne 0 ] \
+  && printf '%s\n' "$out" | grep -qF "preflight: refusing to run -- uncommitted changes on main" \
+  && [ "$(cat "$WORK/dispatched-refusal-branch.txt" 2>/dev/null)" = "main" ]; then
   pass "(c) dirty default branch refuses with the exact message"
 else
-  fail "(c) expected a refusal naming main, got (rc=$rc): $out"
+  fail "(c) expected a refusal naming main and an alert dispatch, got (rc=$rc): $out"
 fi
 (cd "$WORK/clone" && git checkout --quiet -- file.txt)
 
-# (d) after a simulated run the checkout is back on the default branch.
+# (d) after a simulated run the checkout is clean on the default branch even
+# when a builder rewrote a tracked file outside the published commit.
 (
   cd "$WORK/clone"
   git checkout --quiet main
@@ -102,12 +110,15 @@ fi
   echo simulated-change >> file.txt
   git commit --quiet -am "simulated run"
   git push --quiet --force-with-lease origin HEAD
+  echo incidental-uncommitted-change >> file.txt
   # Success or failure, the job returns the checkout to the default branch.
   trap return_to_default_branch EXIT
 )
 branch="$(cd "$WORK/clone" && git branch --show-current)"
-[ "$branch" = "main" ] && pass "(d) checkout is back on the default branch after a run" \
-  || fail "(d) expected main after the run, got $branch"
+status="$(cd "$WORK/clone" && git status --porcelain)"
+[ "$branch" = "main" ] && [ -z "$status" ] \
+  && pass "(d) checkout is clean on the default branch after a run" \
+  || fail "(d) expected clean main after the run, got branch=$branch status=$status"
 
 if [ "$FAILED" -gt 0 ]; then
   echo "❌ $FAILED case(s) failed"
