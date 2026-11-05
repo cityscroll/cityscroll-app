@@ -1,0 +1,668 @@
+{
+  "schema": "cityscroll.navigator_rfx_document_facts_expected.v1",
+  "source": "Public NYC Parks solicitation documents; expected citations are SHA-256 hashes of the included public excerpts.",
+  "documents": [
+    {
+      "document_id": "253289498",
+      "sections": [],
+      "events": [
+        {
+          "id": "response-deadline",
+          "type": "response_deadline",
+          "local": "2026-11-09T14:00:00",
+          "timezone": "America/New_York",
+          "pdf_page": 1,
+          "excerpt": "Bids are due by Novem ber 9th, 2026 @ 2:00PM .",
+          "excerpt_sha256": "9871029d96cf87c65ec160594f286f732e9011cfac7fd37bd9b56a5c43c77f2f"
+        },
+        {
+          "id": "bid-opening",
+          "type": "bid_opening",
+          "local": "2026-11-09T15:00:00",
+          "timezone": "America/New_York",
+          "mode": "remote (Microsoft Teams); in-person prohibited",
+          "pdf_page": 1,
+          "excerpt": "The Bid Opening will be conducted via Microsoft Teams at 3:00PM on November 9t h, 2026 . In-person",
+          "excerpt_sha256": "920dd84f120d28982c8c1c89f56cf72424a8891fecc33376f15e6f5b619e0fbd"
+        }
+      ],
+      "facts": [
+        {
+          "id": "opening-logon-test",
+          "role": "event_notice",
+          "subject": "Teams logon test window",
+          "applicability": "informational",
+          "value": "2:45 PM on the opening day",
+          "basis": "stated courtesy window",
+          "condition": "not a deadline",
+          "pdf_page": 1,
+          "rule": "opening_text",
+          "excerpt": "open the Microsoft TEAMS portal at 2:45PM",
+          "excerpt_sha256": "8224892df912b23739c1fcc10f63d0cdeb269b30d5af2d59011fe2c98780f7dc"
+        },
+        {
+          "id": "questions-channel",
+          "role": "event_notice",
+          "subject": "Where to ask questions",
+          "applicability": "informational",
+          "value": "PASSPort “Discussion with Buyer” forum",
+          "basis": "stated instruction",
+          "condition": "no question deadline is stated",
+          "pdf_page": 1,
+          "rule": "opening_text",
+          "excerpt": "All questions must be submitted in the “ Discussion with Buyer ” forum in PASSPort .",
+          "excerpt_sha256": "bd8d2c71546efac65676fc6c91f20ca7912651979bbbd15235764be593c1a607"
+        }
+      ],
+      "abstentions": []
+    },
+    {
+      "document_id": "253286611",
+      "sections": [
+        {
+          "id": "cover",
+          "label": "Cover and submission channel",
+          "roles": [
+            "solicitation_instructions"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            1,
+            1
+          ],
+          "anchor": "BIDS ARE TO BE SUBMITTED VIA PASSPort"
+        },
+        {
+          "id": "schedule-a-reference",
+          "label": "Schedule A: reference item requirements",
+          "roles": [
+            "bond_insurance",
+            "eligibility_evidence",
+            "labor_compliance"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            2,
+            4
+          ],
+          "anchor": "REFERENCE ITEM REQUIREMENTS"
+        },
+        {
+          "id": "schedule-a-insurance",
+          "label": "Schedule A: insurance types and limits",
+          "roles": [
+            "bond_insurance"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            5,
+            10
+          ],
+          "anchor": "Types of Insurance"
+        },
+        {
+          "id": "insurance-certificates",
+          "label": "Certificates of insurance and broker certification",
+          "roles": [
+            "bond_insurance",
+            "bid_form"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            11,
+            12
+          ],
+          "anchor": "CERTIFICATES OF"
+        },
+        {
+          "id": "notice-vendex-fee",
+          "label": "Notice: VENDEX name-check fee",
+          "roles": [
+            "solicitation_instructions"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            13,
+            13
+          ],
+          "anchor": "Procurement Policy Board Rule 2-08(f)(2)"
+        },
+        {
+          "id": "notice-subcontractor-reporting",
+          "label": "Notice to bidders: subcontractor reporting",
+          "roles": [
+            "labor_compliance"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            14,
+            14
+          ],
+          "anchor": "NOTICE TO BIDDERS"
+        },
+        {
+          "id": "mwbe-notice",
+          "label": "M/WBE participation notice",
+          "roles": [
+            "participation_plan"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            15,
+            24
+          ],
+          "anchor": "PARTICIPATION BY MINORITY"
+        },
+        {
+          "id": "notices-whistleblower-doi",
+          "label": "Notices: whistleblower protection and DOI reporting",
+          "roles": [
+            "labor_compliance"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            25,
+            28
+          ],
+          "anchor": "NOTICE TO BIDDERS, PROPOSERS"
+        },
+        {
+          "id": "essta-rider",
+          "label": "Earned Safe and Sick Time Act contract rider",
+          "roles": [
+            "labor_compliance"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            29,
+            34
+          ],
+          "anchor": "CONTRACT RIDER"
+        },
+        {
+          "id": "bid-book",
+          "label": "Part I: bid book (terms, conditions, affirmations)",
+          "roles": [
+            "solicitation_instructions",
+            "bid_form"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            35,
+            51
+          ],
+          "anchor": "PART I – BID BOOK"
+        },
+        {
+          "id": "general-specifications",
+          "label": "Part I-D: general specifications",
+          "roles": [
+            "scope_specification"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            52,
+            66
+          ],
+          "anchor": "GENERAL SPECIFICATIONS"
+        },
+        {
+          "id": "agreement",
+          "label": "Part II: supply and service contract (proposed terms)",
+          "roles": [
+            "proposed_agreement"
+          ],
+          "standing": "proposed",
+          "pdf_pages": [
+            67,
+            141
+          ],
+          "anchor": "SUPPLY AND SERVICE CONTRACT"
+        },
+        {
+          "id": "prevailing-wage-schedule",
+          "label": "Comptroller's prevailing wage schedule (reference)",
+          "roles": [
+            "labor_compliance"
+          ],
+          "standing": "solicitation",
+          "pdf_pages": [
+            142,
+            237
+          ],
+          "anchor": "PREVAILING WAGE SCHEDULE"
+        }
+      ],
+      "events": [],
+      "facts": [
+        {
+          "id": "bid-bond",
+          "role": "bond_insurance",
+          "subject": "Bid bond",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "N/A box marked",
+          "condition": null,
+          "pdf_page": 2,
+          "rule": "schedule_a_checkbox",
+          "excerpt": "Bid Bond ☒N/A or ☐__% of Total Bid Price",
+          "excerpt_sha256": "84acce12f7f26593f50393955dc59d70e044771a166695c08993fbffe960bde3"
+        },
+        {
+          "id": "bid-security",
+          "role": "bond_insurance",
+          "subject": "Bid security",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "N/A box marked",
+          "condition": null,
+          "pdf_page": 2,
+          "rule": "schedule_a_checkbox",
+          "excerpt": "Bid Bond ☒N/A or ☐__% of Total Bid Price ☒ N/A or ☐___% of Total Bid Price",
+          "excerpt_sha256": "2f5e8c87767cd436181495bef8f4290978ffd9ec412851a56b6fc128889bb3dc"
+        },
+        {
+          "id": "performance-bond",
+          "role": "bond_insurance",
+          "subject": "Performance bond",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "N/A box marked",
+          "condition": null,
+          "pdf_page": 2,
+          "rule": "schedule_a_checkbox",
+          "excerpt": "Performance Bond ☒N/A or ☐",
+          "excerpt_sha256": "1657c467561772be161f0e84c71b1dff52ec409e715d9697355e1bd57559c1f6"
+        },
+        {
+          "id": "payment-bond",
+          "role": "bond_insurance",
+          "subject": "Payment bond",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "N/A box marked",
+          "condition": null,
+          "pdf_page": 2,
+          "rule": "schedule_a_checkbox",
+          "excerpt": "Payment Bond ☒N/A or ☐",
+          "excerpt_sha256": "fb10894f70d9cb8204a3fef4f2738dfd8d384ebea3745f7d05e183f493c3a739"
+        },
+        {
+          "id": "retained-percentage",
+          "role": "bond_insurance",
+          "subject": "Retained percentage",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "N/A box marked",
+          "condition": null,
+          "pdf_page": 3,
+          "rule": "schedule_a_checkbox",
+          "excerpt": "Retained Percentage ☒N/A ☐___%",
+          "excerpt_sha256": "d6761a5779196afca52e1a9f1dfcf402d013c09035b490f6a53026dec3b7d55a"
+        },
+        {
+          "id": "maintenance-guaranty-security",
+          "role": "bond_insurance",
+          "subject": "Maintenance and guaranty security",
+          "applicability": "conflicting",
+          "value": null,
+          "basis": "both N/A and an alternative are marked",
+          "condition": null,
+          "pdf_page": 3,
+          "rule": "schedule_a_checkbox",
+          "excerpt": "Security ☒N/A ☒ ___% of Total Contract Amount",
+          "excerpt_sha256": "bfeb2028634e49ba4f4a94991983ffae83d0614ac2f2980115ef08ed92360fbc"
+        },
+        {
+          "id": "guaranty-period",
+          "role": "bond_insurance",
+          "subject": "Guaranty period",
+          "applicability": "required",
+          "value": "1 Year(s)",
+          "basis": "N/A unmarked; value entered",
+          "condition": null,
+          "pdf_page": 3,
+          "rule": "schedule_a_checkbox",
+          "excerpt": "Guaranty Period ☐N/A or 1 Year(s)",
+          "excerpt_sha256": "6a25a3daedf6fb8a68ff1007294da8cd8b1ec4cdefb55a76cea56f9cd7e40833"
+        },
+        {
+          "id": "partial-payment",
+          "role": "pricing_schedule",
+          "subject": "Partial payment",
+          "applicability": "informational",
+          "value": "Will Be Allowed",
+          "basis": "contract term marked",
+          "condition": null,
+          "pdf_page": 3,
+          "rule": "schedule_a_checkbox",
+          "excerpt": "Partial Payment ☒ Will Be Allowed ☐ Will Not Be Allowed",
+          "excerpt_sha256": "1ef079ad80ec15643dbde054f939271738c0257204f506bfeb5a5c8049e6346c"
+        },
+        {
+          "id": "labor-law",
+          "role": "labor_compliance",
+          "subject": "Labor law and living wage requirements",
+          "applicability": "required",
+          "value": "New York Labor Law § 220 (prevailing wage)",
+          "basis": "one option marked",
+          "condition": null,
+          "pdf_page": 4,
+          "rule": "schedule_a_checkbox",
+          "anticipated_trades": [
+            "Field Engineer",
+            "Electrician",
+            "Plumber"
+          ],
+          "excerpt": "☐N/A ☒NY LABOR LAW 220 ☐NY Labor Law 230 ☐Living Wage",
+          "excerpt_sha256": "54257a36e5d1de8e18933d026fbe6a61402f8cfb088f634ce69f543adbb23126"
+        },
+        {
+          "id": "insurance-commercial-general-liability",
+          "role": "bond_insurance",
+          "subject": "Commercial General Liability",
+          "article": "Art. 15(II)(A)",
+          "applicability": "required",
+          "value": [
+            "$ 1,000,000.00 per occurrence",
+            "$ 2,000,000.00 aggregate"
+          ],
+          "basis": "marked box means required (page 5 legend)",
+          "condition": null,
+          "pdf_page": 5,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☒Comm ercial General Liability",
+          "excerpt_sha256": "0cb126079fe339a699ef4837bf02f97b95acef901fe538fe89c1e647f7cbfc98"
+        },
+        {
+          "id": "insurance-workers-compensation",
+          "role": "bond_insurance",
+          "subject": "Workers’ Compensation",
+          "article": "Art. 15(I)",
+          "applicability": "required",
+          "value": [
+            "Statutory"
+          ],
+          "basis": "marked box means required (page 5 legend)",
+          "condition": null,
+          "pdf_page": 6,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☒Work ers’ Compensat ion",
+          "excerpt_sha256": "50bb24f5b694aa71329ea013a67d5bb40a09db7e141ac069acea04421e82e675"
+        },
+        {
+          "id": "insurance-disability-benefits",
+          "role": "bond_insurance",
+          "subject": "Disability Benefits Insurance",
+          "article": "Art. 15(I)",
+          "applicability": "required",
+          "value": [
+            "Statutory"
+          ],
+          "basis": "marked box means required (page 5 legend)",
+          "condition": null,
+          "pdf_page": 6,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☒Disabi lity Benefits Insurance",
+          "excerpt_sha256": "907aa2ddb6849edfd7c026a5b4d7dfde55ea8dc940acfb7518b298e85057b822"
+        },
+        {
+          "id": "insurance-employers-liability",
+          "role": "bond_insurance",
+          "subject": "Employers’ Liability",
+          "article": "Art. 15(I)",
+          "applicability": "required",
+          "value": [
+            "Statutory"
+          ],
+          "basis": "marked box means required (page 5 legend)",
+          "condition": null,
+          "pdf_page": 6,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☒Employers’ Liability",
+          "excerpt_sha256": "15ec5228ed94ecb9d6789cf2d3905d12c495850222f56aef0d0502efc84d6c23"
+        },
+        {
+          "id": "insurance-jones-act",
+          "role": "bond_insurance",
+          "subject": "Jones Act",
+          "article": "Art. 15(II)(F)",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "box unmarked",
+          "condition": null,
+          "pdf_page": 6,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☐Jones Act",
+          "excerpt_sha256": "831f4474b645bd773f8011d457c34b73b3b9f56af7fbd5defdf5fafb2ad18099"
+        },
+        {
+          "id": "insurance-longshore-harbor-workers",
+          "role": "bond_insurance",
+          "subject": "U.S. Longshoremen’s and Harbor",
+          "article": "Art. 15(II)(F)",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "box unmarked",
+          "condition": null,
+          "pdf_page": 6,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☐U.S. Longshoremen’s and Harbor",
+          "excerpt_sha256": "7f8a6716acb80f4d1f411e1ac9d893b2144ce6b8c7450a34fc3134d7daadb8ff"
+        },
+        {
+          "id": "insurance-commercial-auto-liability",
+          "role": "bond_insurance",
+          "subject": "Commercial Auto Liability",
+          "article": "Art. 15(II)(B)",
+          "applicability": "required",
+          "value": [
+            "$1,000,000.00 per accident combined single limit"
+          ],
+          "basis": "marked box means required (page 5 legend)",
+          "condition": null,
+          "pdf_page": 6,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☒ Comme rcial Auto Liability",
+          "excerpt_sha256": "d523c86134c872ca3094219b404818513afbb0145d3e7aff15b5f09b1627fe3a"
+        },
+        {
+          "id": "insurance-contractors-pollution-liability",
+          "role": "bond_insurance",
+          "subject": "Contractors Pollution Liability",
+          "article": "Art. 15(II)(F)",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "box unmarked",
+          "condition": null,
+          "pdf_page": 7,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☐Contractors Pollution Liability",
+          "excerpt_sha256": "218abb8cd799ea2e3400b94e20429b0d357c67f1d619ad40d2ca0bb4509349b6"
+        },
+        {
+          "id": "insurance-marine-protection-indemnity",
+          "role": "bond_insurance",
+          "subject": "Marine Protection and Indemnity",
+          "article": "Art. 15(II)(F)",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "box unmarked",
+          "condition": null,
+          "pdf_page": 8,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☐ Marine Protect ion and Indemnity",
+          "excerpt_sha256": "3f86bd1ca1ffc5218783297e177195188318d493079cc78b26b190e45db1f8a1"
+        },
+        {
+          "id": "insurance-hull-machinery",
+          "role": "bond_insurance",
+          "subject": "Hull and Machinery Insurance",
+          "article": "Art. 15(II)(F)",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "box unmarked",
+          "condition": null,
+          "pdf_page": 8,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☐ Hull and Machine ry Insurance",
+          "excerpt_sha256": "8ffb066e71e908258e7ce36d60c0ac5f2de09d49061f3c8e9e2e3a22b81c31db"
+        },
+        {
+          "id": "insurance-marine-pollution-liability",
+          "role": "bond_insurance",
+          "subject": "Marine Pollution Liability",
+          "article": "Art. 15(II)(F)",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "box unmarked",
+          "condition": null,
+          "pdf_page": 8,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☐ Marine Pollution Liability",
+          "excerpt_sha256": "460008f10f08bbb40002ff1864d1a593a0b9caf20e4b3c7abb4d46fa1a97db0c"
+        },
+        {
+          "id": "insurance-professional-liability",
+          "role": "bond_insurance",
+          "subject": "Professional Liability Insurance",
+          "article": "Art. 15(II)(C)",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "box unmarked",
+          "condition": null,
+          "pdf_page": 8,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☐ Professional Liability Insurance",
+          "excerpt_sha256": "00402ea110cc14e10b15b45bd446fb9149c070361c0e3a21f476e19d5e75ec45"
+        },
+        {
+          "id": "insurance-personal-property",
+          "role": "bond_insurance",
+          "subject": "Personal Property Insurance",
+          "article": "Art. 15(II)(F)",
+          "applicability": "not_applicable",
+          "value": null,
+          "basis": "box unmarked",
+          "condition": null,
+          "pdf_page": 9,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": "☐ Personal Prop erty Insurance",
+          "excerpt_sha256": "aed33e491e98bbb5fd754a176068851053a1a3f7360479822a9d1b251db0a793"
+        },
+        {
+          "id": "insurance-unlabelled-p10",
+          "role": "bond_insurance",
+          "subject": "Checkbox without a recoverable label",
+          "applicability": "unknown",
+          "value": null,
+          "basis": "2 box(es) whose label is not in the text layer",
+          "condition": "inspect the PDF page",
+          "pdf_page": 10,
+          "rule": "schedule_a_insurance_checkbox",
+          "excerpt": null,
+          "excerpt_sha256": null
+        },
+        {
+          "id": "experience-three-years",
+          "role": "eligibility_evidence",
+          "subject": "Contractor experience",
+          "applicability": "required",
+          "value": "At least 3 years testing, maintaining and repairing the named systems",
+          "basis": "stated requirement",
+          "condition": "joint venture: at least one member meets it",
+          "pdf_page": 2,
+          "rule": "schedule_a_text",
+          "excerpt": "at least 3 years of experience",
+          "excerpt_sha256": "36450be020c029c496989e889a8c23bc84fbb7156da2010f734ae98d15751447"
+        },
+        {
+          "id": "client-references",
+          "role": "eligibility_evidence",
+          "subject": "Client references",
+          "applicability": "required",
+          "value": "Names and contacts of at least two client organizations",
+          "basis": "stated requirement",
+          "condition": "before award, not with the bid",
+          "pdf_page": 2,
+          "rule": "schedule_a_text",
+          "excerpt": "Prior to award, the Contractor must submit the names and contact information of at least two (2) client organizations",
+          "excerpt_sha256": "11085406337a0836ea0c241fd848869f2f2b9f7e55c57810c27bd0c459d6787a"
+        },
+        {
+          "id": "mwbe-waiver-deadline",
+          "role": "participation_plan",
+          "subject": "M/WBE goal waiver request",
+          "applicability": "conditional",
+          "value": "7 calendar days before bids are due",
+          "basis": "stated rule",
+          "condition": "only if participation goals are set on Schedule B, which this book does not contain",
+          "pdf_page": 19,
+          "rule": "participation_notice_text",
+          "excerpt": "no later than seven (7) calendar days prior to the date and time the bids",
+          "excerpt_sha256": "a933b7aeffd092f789a9ce0791b93cab4a518ec4ebe6af72617a2c00f856c4e5"
+        },
+        {
+          "id": "mwbe-goals",
+          "role": "participation_plan",
+          "subject": "M/WBE participation goals",
+          "applicability": "unknown",
+          "value": null,
+          "basis": "goals are set on Schedule B; Schedule B is not in this document",
+          "condition": null,
+          "pdf_page": 16,
+          "rule": "participation_notice_text",
+          "excerpt": "are set forth on Schedule B, Part 1",
+          "excerpt_sha256": "dd7201d50d2dbe67f07c4e252dec66e2e17d834ad5256baeb2a2015f072f60a1"
+        },
+        {
+          "id": "submission-channel",
+          "role": "solicitation_instructions",
+          "subject": "How to submit",
+          "applicability": "required",
+          "value": "PASSPort only; no paper bids",
+          "basis": "stated instruction",
+          "condition": null,
+          "pdf_page": 1,
+          "rule": "cover_text",
+          "excerpt": "BIDS ARE TO BE SUBMITTED VIA PASSPort – the City’s digital Procurement and Sourcing Solutions Portal NO PAPER BIDS WILL BE ACCEPTED!",
+          "excerpt_sha256": "95afbe1a6482fea5d149c6af9a8dff9be93e89565f545545c0f27965e3a9e9c6"
+        }
+      ],
+      "abstentions": [
+        {
+          "id": "pre-bid-conference",
+          "pdf_page": 36,
+          "reason": "table-of-contents heading; keyword is not a requirement",
+          "creates_task": false,
+          "excerpt": "Pre-Bid Conference (Optional)",
+          "excerpt_sha256": "77ee9cff0bbbd173bb97b46dde8e9d684c3a8d4c88f3e97647bbd88fb0b0ec5b"
+        },
+        {
+          "id": "site-visit",
+          "pdf_page": 36,
+          "reason": "table-of-contents heading; keyword is not a requirement",
+          "creates_task": false,
+          "excerpt": "Site Visit",
+          "excerpt_sha256": "e1ca1f96f380e5f8d817ddc8c04f3ce18d0a0fbc396686f34db1da4aacd592e1"
+        },
+        {
+          "id": "bid-security-toc",
+          "pdf_page": 36,
+          "reason": "table-of-contents heading; keyword is not a requirement",
+          "creates_task": false,
+          "excerpt": "Bid Sec urity",
+          "excerpt_sha256": "a22b70b77e3d27c6fc9b824bea5a968a3e69175e875b475bb0a73a50c184989c"
+        },
+        {
+          "id": "performance-bond-toc",
+          "pdf_page": 36,
+          "reason": "table-of-contents heading; keyword is not a requirement",
+          "creates_task": false,
+          "excerpt": "Performance Bond",
+          "excerpt_sha256": "40ec4d8780af616612260b405a55f07c4ea91b1883662b71a91252d01de37064"
+        }
+      ]
+    }
+  ]
+}

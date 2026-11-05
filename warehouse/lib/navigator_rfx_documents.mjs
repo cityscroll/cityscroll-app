@@ -3,8 +3,10 @@
  *
  * This binding keeps round identity on `rfp_id`, records the separately displayed
  * process id and round label, and reuses the shared document-processing primitives
- * for content-addressed storage and extraction receipts. It does not crawl, follow
- * redirects, authenticate, write PDF bytes to D1, or infer requirements from text.
+ * for content-addressed storage and extraction receipts. Recognized public
+ * templates pass through the bounded deterministic fact reader; every other
+ * template records an abstention. This module does not crawl, follow redirects,
+ * authenticate, write PDF bytes to D1, invoke a model, or run OCR.
  */
 import { createHash } from "node:crypto";
 
@@ -13,6 +15,10 @@ import {
   buildExtractionReceipt,
   fetchAndStoreDocument,
 } from "./document_processing.mjs";
+import {
+  projectNavigatorDocumentFacts,
+  summarizeNavigatorDocumentFacts,
+} from "./navigator_rfx_document_facts.mjs";
 import { extractPdfPagesViaPython } from "./seqra_document_extraction.mjs";
 
 export const NAVIGATOR_DOCUMENT_SCHEMA = "cityscroll.procurement_document_read_model_shard.v1";
@@ -249,14 +255,21 @@ function publicExtractionSummary(extraction) {
   });
 }
 
-export function createNavigatorObservationState(existingExtractions = []) {
+export function createNavigatorObservationState(existingExtractions = [], existingFactProjections = []) {
   const state = {
     extractions: new Map(),
     extraction_runs: 0,
+    fact_projections: new Map(),
+    fact_projection_runs: 0,
+    fact_cache_hits: 0,
   };
   for (const extraction of existingExtractions) {
     if (!extraction?.extraction_key) continue;
     state.extractions.set(extractionKeyString(extraction.extraction_key), extraction);
+  }
+  for (const entry of existingFactProjections) {
+    if (typeof entry?.cache_key !== "string" || !entry.projection) continue;
+    state.fact_projections.set(entry.cache_key, entry);
   }
   return state;
 }
@@ -380,6 +393,7 @@ export async function observeNavigatorRfxDocuments({
   ontologyVersion,
   rulesVersion,
   now = () => new Date().toISOString(),
+  nowMilliseconds = () => performance.now(),
   maxDocumentBytes = MAX_DOCUMENT_BYTES,
 } = {}) {
   for (const [field, value] of Object.entries({ projectRoot, extractorVersion, pdfLibraryVersion, ontologyVersion, rulesVersion })) {
@@ -484,6 +498,12 @@ export async function observeNavigatorRfxDocuments({
         rowFailures.push(failure(extraction.failure.type, { document_id: document.document_id, reason: extraction.failure.reason }));
         continue;
       }
+      const reading = projectNavigatorDocumentFacts({
+        document,
+        extraction,
+        state,
+        nowMilliseconds,
+      });
 
       const sha256 = stored.contentHash.replace(/^sha256:/, "");
       rows.push(Object.freeze({
@@ -501,6 +521,18 @@ export async function observeNavigatorRfxDocuments({
         ocr_required_pages: extraction.ocr_required_pages,
         extraction_key: extraction.extraction_key,
         extractions: Object.freeze(extractionsForSha(state, sha256).map(publicExtractionSummary)),
+        recognized_template: reading.projection.recognized_template,
+        roles: reading.projection.roles,
+        standing: reading.projection.standing,
+        evidence_role: reading.projection.evidence_role,
+        standing_label: reading.projection.standing_label,
+        container: reading.projection.container,
+        unsectioned_pages: reading.projection.unsectioned_pages,
+        sections: reading.projection.sections,
+        events: reading.projection.events,
+        facts: reading.projection.facts,
+        abstentions: reading.projection.abstentions,
+        reading_receipt: reading.receipt,
         capture_receipt: captureReceipt({
           requestUrl: document.official_url,
           result: response,
@@ -540,16 +572,41 @@ export async function observeNavigatorRfxDocuments({
     failures.push(...rowFailures.map((entry) => failure(entry.type, { rfp_id: target.rfpId, ...entry })));
   }
 
+  const metrics = summarizeNavigatorDocumentFacts([...shards.values()].flatMap((shard) => shard.rows));
   const manifest = Object.freeze({
     schema: NAVIGATOR_MANIFEST_SCHEMA,
+    version: 1,
     generated_at: now(),
     representation: "sharded",
+    shard_schema: NAVIGATOR_DOCUMENT_SCHEMA,
+    ontology_version: ontologyVersion,
+    rules_version: rulesVersion,
     row_count: [...shards.values()].reduce((sum, shard) => sum + shard.rows.length, 0),
     shards: Object.freeze([...shards.entries()].map(([rfpId, shard]) => Object.freeze({
       rfp_id: rfpId,
       path: `procurement_documents/rfx-${rfpId}.json`,
       row_count: shard.rows.length,
     }))),
+    coverage: Object.freeze({
+      documents: metrics.documents,
+      pages: metrics.pages,
+      contract_book_pages_sectioned: metrics.sectioned_pages,
+      facts: metrics.facts,
+      events: metrics.events,
+      abstentions: metrics.abstentions,
+    }),
+    cost: Object.freeze({
+      model_calls: metrics.model_calls,
+      model_tokens: 0,
+      ocr_pages: metrics.ocr_pages_selected,
+    }),
+    measurement: Object.freeze({
+      latency_ms: metrics.latency_ms,
+      fact_bytes_stored: metrics.stored_bytes,
+      cache_hits: metrics.cache_hits,
+      cache_misses: metrics.cache_misses,
+      per_role: metrics.per_role,
+    }),
   });
-  return { manifest, shards, failures: Object.freeze(failures), state };
+  return { manifest, shards, failures: Object.freeze(failures), metrics, state };
 }

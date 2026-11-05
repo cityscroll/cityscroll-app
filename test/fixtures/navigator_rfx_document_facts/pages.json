@@ -1,0 +1,118 @@
+{
+  "schema": "cityscroll.navigator_rfx_document_fact_pages_fixture.v1",
+  "source": "Public NYC Parks solicitation documents; excerpts retain the public PDF text layer's spacing.",
+  "documents": [
+    {
+      "document_id": "253289498",
+      "label": "Bid Opening Information(6)",
+      "page_count": 1,
+      "pages": [
+        {
+          "page_number": 1,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "ATTENTION ALL PROSPECTIVE BIDDERS\nMaintenance and Repair of Automated Logic WebCTRL and Carrier - PIN # 84627B0012\nBid Due Date\nBids are due by Novem ber 9th, 2026 @ 2:00PM .\nBid Opening\nThe Bid Opening will be conducted via Microsoft Teams at 3:00PM on November 9t h, 2026 . In-person attendance for the Bid Opening is prohibited.\nACCO Personnel will open the Microsoft TEAMS portal at 2:45PM\nAll questions must be submitted in the \u201c Discussion with Buyer \u201d forum in PASSPort ."
+        }
+      ]
+    },
+    {
+      "document_id": "253286611",
+      "label": "Contract Book -(9)",
+      "page_count": 237,
+      "pages": [
+        {
+          "page_number": 1,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "V. 7-3-25 PIN # 84627B0012\nBIDS ARE TO BE SUBMITTED VIA PASSPort \u2013 the City\u2019s digital Procurement and Sourcing Solutions Portal\nNO PAPER BIDS WILL BE ACCEPTED!"
+        },
+        {
+          "page_number": 2,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "SUPPLY AND SERVICE CONTRACT\nSCHEDULE A\nREFERENCE ITEM REQUIREMENTS\nBid Bond \u2612N/A or \u2610__% of Total Bid Price\n\u2612 N/A or \u2610___% of Total Bid Price\nPerformance Bond \u2612N/A or \u2610\nPayment Bond \u2612N/A or \u2610\nThe Contractor must have at least 3 years of experience in the testing, maintenance and repair of the systems and equipment described herein.\nPrior to award, the Contractor must submit the names and contact information of at least two (2) client organizations that can verify the work."
+        },
+        {
+          "page_number": 3,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "Retained Percentage \u2612N/A \u2610___%\nMaintenance and Guaranty Security \u2612N/A \u2612 ___% of Total Contract Amount\nGuaranty Period \u2610N/A or 1 Year(s)\nPartial Payment \u2612 Will Be Allowed \u2610 Will Not Be Allowed"
+        },
+        {
+          "page_number": 4,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "\u2610N/A \u2612NY LABOR LAW 220 \u2610NY Labor Law 230 \u2610Living Wage\nField Engineer\nElectrician\nPlumber"
+        },
+        {
+          "page_number": 5,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "TYPES OF INSURANCE, MINIMUM LIMITS AND SPECIAL CONDITIONS\nInsurance indicated by a blackened box or by X in a box to left will be required under this Contract.\n\u2612Comm ercial General Liability\n$ 1,000,000.00 per occurrence\n$ 2,000,000.00 aggregate"
+        },
+        {
+          "page_number": 6,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "\u2612Work ers\u2019 Compensat ion\n\u2612Disabi lity Benefits Insurance\n\u2612Employers\u2019 Liability\n\u2610Jones Act\n\u2610U.S. Longshoremen\u2019s and Harbor\n\u2612 Comme rcial Auto Liability\n$1,000,000.00 per accident combined single limit"
+        },
+        {
+          "page_number": 7,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "\u2610Contractors Pollution Liability"
+        },
+        {
+          "page_number": 8,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "\u2610 Marine Protect ion and Indemnity\n\u2610 Hull and Machine ry Insurance\n\u2610 Marine Pollution Liability\n\u2610 Professional Liability Insurance"
+        },
+        {
+          "page_number": 9,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "\u2610 Personal Prop erty Insurance"
+        },
+        {
+          "page_number": 10,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "[OTH ER] Art. 15(II)(F) \u2610\n[OTH ER] Art. 15(II)(F) \u2610"
+        },
+        {
+          "page_number": 16,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "The Participation Goals, as applicable, are set forth on Schedule B, Part 1 to this Contract."
+        },
+        {
+          "page_number": 19,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "A bidder may seek a pre-award waiver and must submit such request no later than seven (7) calendar days prior to the date and time the bids are due."
+        },
+        {
+          "page_number": 36,
+          "status": "ok",
+          "ocr_required": false,
+          "ocr_attempted": false,
+          "text": "PART I. BID BOOK\nSection 4. Pre-Bid Conference (Optional)\nSection 8. Site Visit\nSection 22. Bid Sec urity\nSection 23. Performance Bond"
+        }
+      ]
+    }
+  ]
+}
