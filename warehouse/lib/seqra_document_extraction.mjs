@@ -19,6 +19,7 @@
  * so existing importers of this file are unaffected by that move.
  */
 import { execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -31,12 +32,33 @@ export {
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const PAGE_EXTRACT_SCRIPT = path.join(ROOT, "warehouse/lib/seqra_document_page_extract.py");
+const WAREHOUSE_VENV_PYTHON = path.join(ROOT, "warehouse/.venv/bin/python3");
+
+/** Use the repository-managed warehouse runtime when it has been provisioned. */
+export function pdfPageExtractorPython() {
+  const configured = String(process.env.CITYSCROLL_WAREHOUSE_PYTHON || "").trim();
+  if (configured) return configured;
+  return existsSync(WAREHOUSE_VENV_PYTHON) ? WAREHOUSE_VENV_PYTHON : "python3";
+}
+
+/** Record the exact PDF library build used in extraction cache keys and receipts. */
+export function detectPdfLibraryVersionViaPython() {
+  try {
+    return execFileSync(
+      pdfPageExtractorPython(),
+      ["-c", "import importlib.metadata; print('pypdf ' + importlib.metadata.version('pypdf'))"],
+      { encoding: "utf8" },
+    ).trim() || "pypdf unknown";
+  } catch {
+    return "unavailable";
+  }
+}
 
 /** Invoke the Python page extractor as a subprocess. IO wrapper; not pure. */
 export function extractPdfPagesViaPython(bytes) {
   let stdout;
   try {
-    stdout = execFileSync("python3", [PAGE_EXTRACT_SCRIPT], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
+    stdout = execFileSync(pdfPageExtractorPython(), [PAGE_EXTRACT_SCRIPT], { input: bytes, maxBuffer: 64 * 1024 * 1024 });
   } catch (error) {
     return { status: "extract_failed", reason: `subprocess_error:${error.message}`, pages: [] };
   }

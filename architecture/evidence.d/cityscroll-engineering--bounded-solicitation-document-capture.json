@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/bounded-solicitation-document-capture",
+  "status": "implemented",
+  "fingerprint": "bounded-solicitation-document-capture.v1",
+  "updated_at": "2026-11-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "solicitation-document-source",
+      "path": "warehouse/lib/navigator_rfx_documents.mjs"
+    },
+    {
+      "id": "solicitation-document-command",
+      "path": "tools/observe_navigator_rfx_documents.mjs"
+    },
+    {
+      "id": "solicitation-document-tests",
+      "path": "test/navigator_rfx_documents.test.mjs"
+    }
+  ]
+}

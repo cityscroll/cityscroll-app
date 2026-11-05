@@ -1,0 +1,36 @@
+{
+  "source": {
+    "navigator_url": "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet/37728",
+    "access_mode": "anonymous-direct-http",
+    "observed_at": "2026-11-05T04:24:15+00:00"
+  },
+  "subject": {
+    "rfp_id": "37728",
+    "bpm_id": "37402",
+    "epin": "84627B0012",
+    "round_label": "1",
+    "displayed_id": "037402"
+  },
+  "rows": [
+    {
+      "document_id": "253289498",
+      "label": "Bid Opening Information(6)",
+      "official_url": "https://webserver-mocs-prd.lfr.cloud/c/public_document/download?documentId=253289498",
+      "sha256": "402a4d65afc67952754129063ecdecc70259645fb1ad50e0d1ce888ef053e8ab",
+      "bytes": 304598,
+      "page_count": 1,
+      "pages_with_text": 1,
+      "ocr_required_pages": []
+    },
+    {
+      "document_id": "253286611",
+      "label": "Contract Book -(9)",
+      "official_url": "https://webserver-mocs-prd.lfr.cloud/c/public_document/download?documentId=253286611",
+      "sha256": "f39a054a1aa94d64c30d08fd5772b80d16909b973428a5b534c6e2e3556cb28a",
+      "bytes": 2128439,
+      "page_count": 237,
+      "pages_with_text": 237,
+      "ocr_required_pages": []
+    }
+  ]
+}

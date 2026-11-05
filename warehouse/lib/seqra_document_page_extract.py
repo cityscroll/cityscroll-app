@@ -18,6 +18,7 @@ without changing this module's page contract.
 from __future__ import annotations
 
 import io
+import importlib.metadata
 import json
 import re
 from typing import Any
@@ -39,12 +40,17 @@ def extract_pdf_pages(data: bytes) -> dict[str, Any]:
     try:
         from pypdf import PdfReader  # type: ignore
     except ImportError:
-        return {"status": "skipped", "reason": "pdf_lib_unavailable", "pages": []}
+        return {"status": "skipped", "reason": "pdf_lib_unavailable", "pages": [], "pdf_library": "unavailable"}
+
+    try:
+        pdf_library = f"pypdf {importlib.metadata.version('pypdf')}"
+    except importlib.metadata.PackageNotFoundError:
+        pdf_library = "pypdf unknown"
 
     try:
         reader = PdfReader(io.BytesIO(data))
     except Exception as exc:  # noqa: BLE001 — bounded extractor; stamp failure
-        return {"status": "extract_failed", "reason": f"pdf_open_error:{type(exc).__name__}", "pages": []}
+        return {"status": "extract_failed", "reason": f"pdf_open_error:{type(exc).__name__}", "pages": [], "pdf_library": pdf_library}
 
     pages: list[dict[str, Any]] = []
     for index, page in enumerate(reader.pages):
@@ -73,8 +79,8 @@ def extract_pdf_pages(data: bytes) -> dict[str, Any]:
         })
 
     if not pages:
-        return {"status": "extract_failed", "reason": "pdf_no_pages", "pages": []}
-    return {"status": "ok", "reason": None, "pages": pages, "method": "pdf_text_layer_per_page"}
+        return {"status": "extract_failed", "reason": "pdf_no_pages", "pages": [], "pdf_library": pdf_library}
+    return {"status": "ok", "reason": None, "pages": pages, "method": "pdf_text_layer_per_page", "pdf_library": pdf_library}
 
 
 if __name__ == "__main__":
