@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import {
+  BURSTY_WATCH_HISTORY_CLASSIFICATION,
   DESIGNED_EMPTY_CHECK_IN_CLASSIFICATION,
   DIGEST_SHADOW_ATTENTION,
   DIGEST_SHADOW_READY,
@@ -76,6 +77,58 @@ test("a zero-item watch with trailing item history redlines", () => {
   assert.equal(warning.digest_id, "acct:ab***");
   assert.equal(warning.watch_id, "watch:opaque");
   assert.equal(warning.evidence.trailing_max_item_count, 3);
+});
+
+test("a bursty watch with a prior genuine zero-match day in its history does not redline", () => {
+  // The watch's own trailing history already includes a zero-match day (a real lull), alongside
+  // a higher day. Today's zero is consistent with that bursty pattern, not a new regression.
+  const history = [
+    {
+      day: "2026-08-03",
+      totalNotices: 0,
+      sentCount: 0,
+      entries: [{ id: "acct:bu***", noticeCount: 0, forecasts: 0 }],
+    },
+    {
+      day: "2026-08-01",
+      totalNotices: 5,
+      sentCount: 1,
+      entries: [{ id: "acct:bu***", noticeCount: 5, forecasts: 0 }],
+    },
+  ];
+  const out = summary([result({ id: "acct:bu***", count: 0, html: itemHtml(0) })], history);
+  assert.equal(out.redlines.find((item) => item.code === "historical_watch_zero"), undefined);
+  const note = out.observations.find((item) => item.code === "historical_watch_zero");
+  assert.equal(note.severity, "info");
+  assert.equal(note.classification, BURSTY_WATCH_HISTORY_CLASSIFICATION);
+  assert.equal(note.digest_id, "acct:bu***");
+  assert.equal(note.evidence.trailing_max_item_count, 5);
+  assert.equal(out.status, DIGEST_SHADOW_READY);
+});
+
+test("a steady watch with no zero-match day in its history still redlines on a zero-item run", () => {
+  // Every recorded day for this watch is non-zero, so today's zero is a genuine regression
+  // against its own history, not a bursty lull — the redline still fires.
+  const history = [
+    {
+      day: "2026-08-03",
+      totalNotices: 4,
+      sentCount: 1,
+      entries: [{ id: "acct:st***", noticeCount: 4, forecasts: 0 }],
+    },
+    {
+      day: "2026-08-02",
+      totalNotices: 2,
+      sentCount: 1,
+      entries: [{ id: "acct:st***", noticeCount: 2, forecasts: 0 }],
+    },
+  ];
+  const out = summary([result({ id: "acct:st***", count: 0, html: itemHtml(0) })], history);
+  assert.equal(out.observations.find((item) => item.code === "historical_watch_zero"), undefined);
+  const warning = out.redlines.find((item) => item.code === "historical_watch_zero");
+  assert.equal(warning.digest_id, "acct:st***");
+  assert.equal(warning.evidence.trailing_max_item_count, 4);
+  assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
 });
 
 test("a heartbeat covering the whole quiet span is a designed-empty observation, not a redline", () => {
