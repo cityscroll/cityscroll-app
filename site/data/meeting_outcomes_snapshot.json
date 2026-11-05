@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-10-23T09:36:10.172Z",
+  "generated_at": "2026-11-04T08:00:43.756Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 310,
+  "record_count": 305,
   "present_count": 17,
-  "absent_count": 293,
+  "absent_count": 288,
   "by_notice": {
     "20261006004": {
       "request_id": "20261006004",
@@ -8592,6 +8592,14 @@
         }
       ]
     },
+    "20261027004": {
+      "request_id": "20261027004",
+      "snapshot_state": "absent"
+    },
+    "20261014024": {
+      "request_id": "20261014024",
+      "snapshot_state": "absent"
+    },
     "20261014002": {
       "request_id": "20261014002",
       "snapshot_state": "absent"
@@ -8608,12 +8616,24 @@
       "request_id": "20261009014",
       "snapshot_state": "absent"
     },
+    "20261015024": {
+      "request_id": "20261015024",
+      "snapshot_state": "absent"
+    },
     "20261013022": {
       "request_id": "20261013022",
       "snapshot_state": "absent"
     },
     "20261013024": {
       "request_id": "20261013024",
+      "snapshot_state": "absent"
+    },
+    "20261014038": {
+      "request_id": "20261014038",
+      "snapshot_state": "absent"
+    },
+    "20261027024": {
+      "request_id": "20261027024",
       "snapshot_state": "absent"
     },
     "20261007005": {
@@ -8628,12 +8648,28 @@
       "request_id": "20260922022",
       "snapshot_state": "absent"
     },
+    "20261023010": {
+      "request_id": "20261023010",
+      "snapshot_state": "absent"
+    },
     "20261008001": {
       "request_id": "20261008001",
       "snapshot_state": "absent"
     },
+    "20261019006": {
+      "request_id": "20261019006",
+      "snapshot_state": "absent"
+    },
+    "20261013021": {
+      "request_id": "20261013021",
+      "snapshot_state": "absent"
+    },
     "20261001007": {
       "request_id": "20261001007",
+      "snapshot_state": "absent"
+    },
+    "20261026021": {
+      "request_id": "20261026021",
       "snapshot_state": "absent"
     },
     "20261002028": {
@@ -8642,6 +8678,26 @@
     },
     "20261008024": {
       "request_id": "20261008024",
+      "snapshot_state": "absent"
+    },
+    "20261021015": {
+      "request_id": "20261021015",
+      "snapshot_state": "absent"
+    },
+    "20261021010": {
+      "request_id": "20261021010",
+      "snapshot_state": "absent"
+    },
+    "20261019018": {
+      "request_id": "20261019018",
+      "snapshot_state": "absent"
+    },
+    "20261020005": {
+      "request_id": "20261020005",
+      "snapshot_state": "absent"
+    },
+    "20261014023": {
+      "request_id": "20261014023",
       "snapshot_state": "absent"
     },
     "20261006029": {
@@ -8668,6 +8724,10 @@
       "request_id": "20260923020",
       "snapshot_state": "absent"
     },
+    "20261021009": {
+      "request_id": "20261021009",
+      "snapshot_state": "absent"
+    },
     "20260924007": {
       "request_id": "20260924007",
       "snapshot_state": "absent"
@@ -8684,6 +8744,10 @@
       "request_id": "20260921011",
       "snapshot_state": "absent"
     },
+    "20261020023": {
+      "request_id": "20261020023",
+      "snapshot_state": "absent"
+    },
     "20260916036": {
       "request_id": "20260916036",
       "snapshot_state": "absent"
@@ -8694,6 +8758,10 @@
     },
     "20261016004": {
       "request_id": "20261016004",
+      "snapshot_state": "absent"
+    },
+    "20261021004": {
+      "request_id": "20261021004",
       "snapshot_state": "absent"
     },
     "20261006022": {
@@ -8712,12 +8780,20 @@
       "request_id": "20261015027",
       "snapshot_state": "absent"
     },
+    "20261020021": {
+      "request_id": "20261020021",
+      "snapshot_state": "absent"
+    },
     "20260922017": {
       "request_id": "20260922017",
       "snapshot_state": "absent"
     },
     "20260915002": {
       "request_id": "20260915002",
+      "snapshot_state": "absent"
+    },
+    "20261014026": {
+      "request_id": "20261014026",
       "snapshot_state": "absent"
     },
     "20260917001": {
@@ -9666,102 +9742,6 @@
     },
     "20260402006": {
       "request_id": "20260402006",
-      "snapshot_state": "absent"
-    },
-    "20260421011": {
-      "request_id": "20260421011",
-      "snapshot_state": "absent"
-    },
-    "20260420001": {
-      "request_id": "20260420001",
-      "snapshot_state": "absent"
-    },
-    "20260327003": {
-      "request_id": "20260327003",
-      "snapshot_state": "absent"
-    },
-    "20260422033": {
-      "request_id": "20260422033",
-      "snapshot_state": "absent"
-    },
-    "20260422051": {
-      "request_id": "20260422051",
-      "snapshot_state": "absent"
-    },
-    "20260402026": {
-      "request_id": "20260402026",
-      "snapshot_state": "absent"
-    },
-    "20260414005": {
-      "request_id": "20260414005",
-      "snapshot_state": "absent"
-    },
-    "20260429022": {
-      "request_id": "20260429022",
-      "snapshot_state": "absent"
-    },
-    "20260327020": {
-      "request_id": "20260327020",
-      "snapshot_state": "absent"
-    },
-    "20260407015": {
-      "request_id": "20260407015",
-      "snapshot_state": "absent"
-    },
-    "20260330030": {
-      "request_id": "20260330030",
-      "snapshot_state": "absent"
-    },
-    "20260415037": {
-      "request_id": "20260415037",
-      "snapshot_state": "absent"
-    },
-    "20260416019": {
-      "request_id": "20260416019",
-      "snapshot_state": "absent"
-    },
-    "20260331005": {
-      "request_id": "20260331005",
-      "snapshot_state": "absent"
-    },
-    "20260323027": {
-      "request_id": "20260323027",
-      "snapshot_state": "absent"
-    },
-    "20260408026": {
-      "request_id": "20260408026",
-      "snapshot_state": "absent"
-    },
-    "20260331010": {
-      "request_id": "20260331010",
-      "snapshot_state": "absent"
-    },
-    "20260408001": {
-      "request_id": "20260408001",
-      "snapshot_state": "absent"
-    },
-    "20260303009": {
-      "request_id": "20260303009",
-      "snapshot_state": "absent"
-    },
-    "20260401001": {
-      "request_id": "20260401001",
-      "snapshot_state": "absent"
-    },
-    "20260312013": {
-      "request_id": "20260312013",
-      "snapshot_state": "absent"
-    },
-    "20260401002": {
-      "request_id": "20260401002",
-      "snapshot_state": "absent"
-    },
-    "20260320022": {
-      "request_id": "20260320022",
-      "snapshot_state": "absent"
-    },
-    "20260327024": {
-      "request_id": "20260327024",
       "snapshot_state": "absent"
     }
   }

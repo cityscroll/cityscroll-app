@@ -165,8 +165,8 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(bucket.profiles.CAMBA.footprint.root.ref, "vendor:stem:CAMBA");
   // The award count moves with the publisher vintage; what must hold is that
   // every award in scope is a confirmed one, so these two stay equal.
-  assert.equal(bucket.profiles.CAMBA.footprint.vendor_footprint.section_counts.awards.scope_count, 275);
-  assert.equal(bucket.profiles.CAMBA.footprint.vendor_footprint.section_counts.awards.confirmed_count, 275);
+  assert.equal(bucket.profiles.CAMBA.footprint.vendor_footprint.section_counts.awards.scope_count, 276);
+  assert.equal(bucket.profiles.CAMBA.footprint.vendor_footprint.section_counts.awards.confirmed_count, 276);
   const manifest = JSON.parse(store.values.get("vp:manifest:v1"));
   assert.equal(manifest.schema, 3);
 });

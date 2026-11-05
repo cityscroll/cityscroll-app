@@ -950,7 +950,19 @@ test("offered-facet-actually-filters: agency section chips target Browse facets 
     const rows = rowsForBrowse(target.facet, payload);
     const present = agenciesPresentInRows(target.facet, rows);
     if (!present.size) continue;
-    const [agencyId, count] = [...present.entries()].sort((a, b) => b[1] - a[1])[0];
+    const ranked = [...present.entries()].sort((a, b) => b[1] - a[1]);
+    // The most-represented agency is not always a usable witness: a seasonal
+    // City Record surge (e.g. poll-worker hiring) can fill the whole recent
+    // window with one agency, leaving no row outside its scope. Pick the
+    // highest-ranked agency that is still a strict subset of the window
+    // instead of assuming the top entry always is one.
+    const witness = ranked.find(([, count]) => count < rows.length);
+    if (!witness) {
+      assert.equal(ranked.length, 1, `${target.facet} degenerate window names exactly one agency`);
+      assert.equal(ranked[0][1], rows.length, `${target.facet} that agency covers the entire window`);
+      continue;
+    }
+    const [agencyId, count] = witness;
     target.agencyId = agencyId;
     const view = buildBrowseView(target.facet, payload, facetParams(agencyId), { limit: 10_000 });
     assert.ok(count > 0);

@@ -1,36 +1,36 @@
 {
   "schema": "cityscroll.bsa_calendar_materialization.v1",
-  "generated_at": "2026-10-22T19:54:18.642Z",
+  "generated_at": "2026-11-04T18:16:29.729Z",
   "source": {
     "system": "bsa_calendar",
     "url": "https://www.nyc.gov/site/bsa/public-hearings/upcoming-hearing-info.page",
-    "agenda_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
+    "agenda_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf"
   },
   "rows": [
     {
       "object_type": "meeting",
       "schema": "cityscroll.bsa_calendar.v1",
-      "meeting_id": "meeting:bsa_calendar:bsa-2026-10-19",
+      "meeting_id": "meeting:bsa_calendar:bsa-2026-11-09",
       "source_keys": [
         {
           "source_system": "bsa_calendar",
           "key_type": "bsa_session_id",
-          "value": "bsa-2026-10-19"
+          "value": "bsa-2026-11-09"
         }
       ],
-      "publisher_identifier": "bsa-2026-10-19",
-      "title": "Board of Standards and Appeals hearing — 2026-10-19",
-      "event_date": "2026-10-19T10:00:00",
+      "publisher_identifier": "bsa-2026-11-09",
+      "title": "Board of Standards and Appeals hearing — 2026-11-09",
+      "event_date": "2026-11-09T10:00:00",
       "event_end": null,
       "schedule": {
         "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-10-19T10:00:00",
+        "starts_at": "2026-11-09T10:00:00",
         "timezone": "America/New_York",
         "precision": "exact_time",
         "basis": "publisher_document",
-        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf",
+        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf",
         "observed_at": null,
-        "raw_date": "2026-10-19",
+        "raw_date": "2026-11-09",
         "raw_time": "10:00:00",
         "status": "resolved"
       },
@@ -60,9 +60,9 @@
       "location_assertions": [
         {
           "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:bsa_calendar:bsa-2026-10-19::venue::venue.address::1",
-          "meeting_id": "meeting:bsa_calendar:bsa-2026-10-19",
-          "record_id": "bsa-2026-10-19",
+          "assertion_id": "location_assertion:meeting:bsa_calendar:bsa-2026-11-09::venue::venue.address::1",
+          "meeting_id": "meeting:bsa_calendar:bsa-2026-11-09",
+          "record_id": "bsa-2026-11-09",
           "role": "venue",
           "validity": "admitted_physical_venue",
           "attendance_meaning": "in_person",
@@ -78,8 +78,8 @@
             "schema": "cityscroll.document_processing_receipt.v1",
             "status": "ok",
             "parser": "bsa_agenda_sections_v1",
-            "publication_date": "2026-10-22",
-            "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
+            "publication_date": "2026-11-04",
+            "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf"
           }
         }
       ],
@@ -99,12 +99,12 @@
       "agency": null,
       "board_name": null,
       "description": null,
-      "search_text": "Board of Standards and Appeals hearing — 2026-10-19 22 Reade Street, New York, NY 10007 Spector Hall",
+      "search_text": "Board of Standards and Appeals hearing — 2026-11-09 22 Reade Street, New York, NY 10007 Spector Hall",
       "affected_area": null,
       "agenda_items": [
         {
-          "item_id": "bsa:item:2022-59-BZII",
-          "case_id": "2022-59-BZII",
+          "item_id": "bsa:item:2025-52-BZ",
+          "case_id": "2025-52-BZ",
           "section": "agenda",
           "lifecycle": {
             "state": "scheduled",
@@ -119,12 +119,12 @@
           "source_span": {
             "page": 1,
             "start": 21,
-            "end": 714
+            "end": 959
           }
         },
         {
-          "item_id": "bsa:item:2025-11-BZ",
-          "case_id": "2025-11-BZ",
+          "item_id": "bsa:item:2025-37-BZ",
+          "case_id": "2025-37-BZ",
           "section": "agenda",
           "lifecycle": {
             "state": "scheduled",
@@ -139,12 +139,12 @@
           "source_span": {
             "page": 1,
             "start": 21,
-            "end": 714
+            "end": 959
           }
         },
         {
-          "item_id": "bsa:item:2025-54-A",
-          "case_id": "2025-54-A",
+          "item_id": "bsa:item:2025-39-BZ",
+          "case_id": "2025-39-BZ",
           "section": "agenda",
           "lifecycle": {
             "state": "scheduled",
@@ -159,87 +159,7 @@
           "source_span": {
             "page": 1,
             "start": 21,
-            "end": 714
-          }
-        },
-        {
-          "item_id": "bsa:item:2026-09-A",
-          "case_id": "2026-09-A",
-          "section": "agenda",
-          "lifecycle": {
-            "state": "scheduled",
-            "basis": "published_agenda_item"
-          },
-          "disposition": null,
-          "affected_area": {
-            "addresses": [],
-            "community_boards": [],
-            "community_districts": []
-          },
-          "source_span": {
-            "page": 1,
-            "start": 21,
-            "end": 714
-          }
-        },
-        {
-          "item_id": "bsa:item:2026-21-A",
-          "case_id": "2026-21-A",
-          "section": "agenda",
-          "lifecycle": {
-            "state": "scheduled",
-            "basis": "published_agenda_item"
-          },
-          "disposition": null,
-          "affected_area": {
-            "addresses": [],
-            "community_boards": [],
-            "community_districts": []
-          },
-          "source_span": {
-            "page": 1,
-            "start": 21,
-            "end": 714
-          }
-        },
-        {
-          "item_id": "bsa:item:2026-04-BZ",
-          "case_id": "2026-04-BZ",
-          "section": "agenda",
-          "lifecycle": {
-            "state": "scheduled",
-            "basis": "published_agenda_item"
-          },
-          "disposition": null,
-          "affected_area": {
-            "addresses": [],
-            "community_boards": [],
-            "community_districts": []
-          },
-          "source_span": {
-            "page": 1,
-            "start": 21,
-            "end": 714
-          }
-        },
-        {
-          "item_id": "bsa:item:2026-10-A",
-          "case_id": "2026-10-A",
-          "section": "agenda",
-          "lifecycle": {
-            "state": "scheduled",
-            "basis": "published_agenda_item"
-          },
-          "disposition": null,
-          "affected_area": {
-            "addresses": [],
-            "community_boards": [],
-            "community_districts": []
-          },
-          "source_span": {
-            "page": 1,
-            "start": 21,
-            "end": 714
+            "end": 959
           }
         },
         {
@@ -259,35 +179,255 @@
           "source_span": {
             "page": 1,
             "start": 21,
-            "end": 714
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2024-41-BZ",
+          "case_id": "2024-41-BZ",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2025-42-BZ",
+          "case_id": "2025-42-BZ",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2026-10-A",
+          "case_id": "2026-10-A",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2026-16-BZ",
+          "case_id": "2026-16-BZ",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2026-17-BZ",
+          "case_id": "2026-17-BZ",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2026-20-A",
+          "case_id": "2026-20-A",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2026-22-A",
+          "case_id": "2026-22-A",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2026-25-A",
+          "case_id": "2026-25-A",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2026-26-A",
+          "case_id": "2026-26-A",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2020-67-AII",
+          "case_id": "2020-67-AII",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
+          }
+        },
+        {
+          "item_id": "bsa:item:2022-23-BZII",
+          "case_id": "2022-23-BZII",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 1,
+            "start": 21,
+            "end": 959
           }
         }
       ],
       "phases": [
         {
-          "id": "bsa-2026-10-19:executive-review",
+          "id": "bsa-2026-11-09:executive-review",
           "kind": "executive_review",
           "state": "observation",
           "access": "watch"
         },
         {
-          "id": "bsa-2026-10-19:public-hearing",
+          "id": "bsa-2026-11-09:public-hearing",
           "kind": "public_hearing",
           "state": "applicant_response_and_public_testimony",
           "access": "register_to_testify"
         }
       ],
-      "agenda_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf",
+      "agenda_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf",
       "meeting_documents": [],
-      "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf",
+      "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf",
       "source_system": "bsa_calendar",
       "meeting_origin": "unknown",
       "source_receipt": {
         "schema": "cityscroll.document_processing_receipt.v1",
         "status": "ok",
         "parser": "bsa_agenda_sections_v1",
-        "publication_date": "2026-10-22",
-        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
+        "publication_date": "2026-11-04",
+        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf"
       },
       "join_status": "unknown",
       "institution_refs": {
@@ -297,7 +437,7 @@
       "compatibility": {
         "legacy_notice_href": null,
         "legacy_fragment_href": null,
-        "publisher_href": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
+        "publisher_href": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf"
       },
       "request_id": null,
       "source_record_id": null,
@@ -306,45 +446,45 @@
       "source_span": {
         "page": 1,
         "start": 21,
-        "end": 714
+        "end": 959
       },
-      "publication_date": "2026-10-22",
+      "publication_date": "2026-11-04",
       "notice_id": null,
-      "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_HK0ydi5rRKWX-ArxkKBrjQ",
+      "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_RxGsAmMBTYiLxDc_FLvZDw",
       "source_entry_evidence": {
         "locator": {
           "type": "agenda_session_header",
-          "date": "2026-10-19",
+          "date": "2026-11-09",
           "time": "10:00 AM"
         },
-        "excerpt": "October 19, 2026, 10:00 AM",
-        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
+        "excerpt": "November 9th, 2026, 10:00 AM",
+        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf"
       }
     },
     {
       "object_type": "meeting",
       "schema": "cityscroll.bsa_calendar.v1",
-      "meeting_id": "meeting:bsa_calendar:bsa-2026-10-20",
+      "meeting_id": "meeting:bsa_calendar:bsa-2026-11-10",
       "source_keys": [
         {
           "source_system": "bsa_calendar",
           "key_type": "bsa_session_id",
-          "value": "bsa-2026-10-20"
+          "value": "bsa-2026-11-10"
         }
       ],
-      "publisher_identifier": "bsa-2026-10-20",
-      "title": "Board of Standards and Appeals hearing — 2026-10-20",
-      "event_date": "2026-10-20T10:00:00",
+      "publisher_identifier": "bsa-2026-11-10",
+      "title": "Board of Standards and Appeals hearing — 2026-11-10",
+      "event_date": "2026-11-10T10:00:00",
       "event_end": null,
       "schedule": {
         "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-10-20T10:00:00",
+        "starts_at": "2026-11-10T10:00:00",
         "timezone": "America/New_York",
         "precision": "exact_time",
         "basis": "publisher_document",
-        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf",
+        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf",
         "observed_at": null,
-        "raw_date": "2026-10-20",
+        "raw_date": "2026-11-10",
         "raw_time": "10:00:00",
         "status": "resolved"
       },
@@ -374,9 +514,9 @@
       "location_assertions": [
         {
           "schema": "cityscroll.meeting_location_assertion.v1",
-          "assertion_id": "location_assertion:meeting:bsa_calendar:bsa-2026-10-20::venue::venue.address::1",
-          "meeting_id": "meeting:bsa_calendar:bsa-2026-10-20",
-          "record_id": "bsa-2026-10-20",
+          "assertion_id": "location_assertion:meeting:bsa_calendar:bsa-2026-11-10::venue::venue.address::1",
+          "meeting_id": "meeting:bsa_calendar:bsa-2026-11-10",
+          "record_id": "bsa-2026-11-10",
           "role": "venue",
           "validity": "admitted_physical_venue",
           "attendance_meaning": "in_person",
@@ -392,8 +532,8 @@
             "schema": "cityscroll.document_processing_receipt.v1",
             "status": "ok",
             "parser": "bsa_agenda_sections_v1",
-            "publication_date": "2026-10-22",
-            "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
+            "publication_date": "2026-11-04",
+            "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf"
           }
         }
       ],
@@ -413,12 +553,12 @@
       "agency": null,
       "board_name": null,
       "description": null,
-      "search_text": "Board of Standards and Appeals hearing — 2026-10-20 22 Reade Street, New York, NY 10007 Spector Hall",
+      "search_text": "Board of Standards and Appeals hearing — 2026-11-10 22 Reade Street, New York, NY 10007 Spector Hall",
       "affected_area": null,
       "agenda_items": [
         {
-          "item_id": "bsa:item:2026-07-BZ",
-          "case_id": "2026-07-BZ",
+          "item_id": "bsa:item:2026-24-A",
+          "case_id": "2026-24-A",
           "section": "agenda",
           "lifecycle": {
             "state": "scheduled",
@@ -431,14 +571,14 @@
             "community_districts": []
           },
           "source_span": {
-            "page": 5,
+            "page": 7,
             "start": 21,
             "end": 0
           }
         },
         {
-          "item_id": "bsa:item:2026-06-BZ",
-          "case_id": "2026-06-BZ",
+          "item_id": "bsa:item:2026-18-BZ",
+          "case_id": "2026-18-BZ",
           "section": "agenda",
           "lifecycle": {
             "state": "scheduled",
@@ -451,14 +591,14 @@
             "community_districts": []
           },
           "source_span": {
-            "page": 5,
+            "page": 7,
             "start": 21,
             "end": 0
           }
         },
         {
-          "item_id": "bsa:item:2026-17-BZ",
-          "case_id": "2026-17-BZ",
+          "item_id": "bsa:item:2026-19-A",
+          "case_id": "2026-19-A",
           "section": "agenda",
           "lifecycle": {
             "state": "scheduled",
@@ -471,14 +611,14 @@
             "community_districts": []
           },
           "source_span": {
-            "page": 5,
+            "page": 7,
             "start": 21,
             "end": 0
           }
         },
         {
-          "item_id": "bsa:item:2026-28-BZ",
-          "case_id": "2026-28-BZ",
+          "item_id": "bsa:item:2026-30-BZ",
+          "case_id": "2026-30-BZ",
           "section": "agenda",
           "lifecycle": {
             "state": "scheduled",
@@ -491,7 +631,27 @@
             "community_districts": []
           },
           "source_span": {
-            "page": 5,
+            "page": 7,
+            "start": 21,
+            "end": 0
+          }
+        },
+        {
+          "item_id": "bsa:item:2026-29-BZ",
+          "case_id": "2026-29-BZ",
+          "section": "agenda",
+          "lifecycle": {
+            "state": "scheduled",
+            "basis": "published_agenda_item"
+          },
+          "disposition": null,
+          "affected_area": {
+            "addresses": [],
+            "community_boards": [],
+            "community_districts": []
+          },
+          "source_span": {
+            "page": 7,
             "start": 21,
             "end": 0
           }
@@ -499,29 +659,29 @@
       ],
       "phases": [
         {
-          "id": "bsa-2026-10-20:executive-review",
+          "id": "bsa-2026-11-10:executive-review",
           "kind": "executive_review",
           "state": "observation",
           "access": "watch"
         },
         {
-          "id": "bsa-2026-10-20:public-hearing",
+          "id": "bsa-2026-11-10:public-hearing",
           "kind": "public_hearing",
           "state": "applicant_response_and_public_testimony",
           "access": "register_to_testify"
         }
       ],
-      "agenda_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf",
+      "agenda_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf",
       "meeting_documents": [],
-      "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf",
+      "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf",
       "source_system": "bsa_calendar",
       "meeting_origin": "unknown",
       "source_receipt": {
         "schema": "cityscroll.document_processing_receipt.v1",
         "status": "ok",
         "parser": "bsa_agenda_sections_v1",
-        "publication_date": "2026-10-22",
-        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
+        "publication_date": "2026-11-04",
+        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf"
       },
       "join_status": "unknown",
       "institution_refs": {
@@ -531,28 +691,28 @@
       "compatibility": {
         "legacy_notice_href": null,
         "legacy_fragment_href": null,
-        "publisher_href": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
+        "publisher_href": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf"
       },
       "request_id": null,
       "source_record_id": null,
       "board_id": null,
       "sequence": 1,
       "source_span": {
-        "page": 5,
+        "page": 7,
         "start": 21,
         "end": 0
       },
-      "publication_date": "2026-10-22",
+      "publication_date": "2026-11-04",
       "notice_id": null,
-      "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_k52Eh9jETvi__lxPowk7GA",
+      "remote_registration_url": "https://www.zoomgov.com/webinar/register/WN_vf-2reIJR-aJqJPlGr4vNA",
       "source_entry_evidence": {
         "locator": {
           "type": "agenda_session_header",
-          "date": "2026-10-20",
+          "date": "2026-11-10",
           "time": "10:00 AM"
         },
-        "excerpt": "October 20, 2026, 10:00 AM",
-        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/october_19_20_2026_public_hearing.pdf"
+        "excerpt": "November 10th, 2026, 10:00 AM",
+        "source_url": "https://www.nyc.gov/assets/bsa/downloads/pdf/lineup/november_9_10_2023_public_hearing.pdf"
       }
     }
   ]

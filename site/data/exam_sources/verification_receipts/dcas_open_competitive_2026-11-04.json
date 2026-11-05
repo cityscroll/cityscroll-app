@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "source_contract_id": "dcas-exam-notices",
+  "authoritative_feed": {
+    "name": "DCAS Open Competitive Exams for Anyone",
+    "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+    "role": "Authoritative public schedule table for currently open application windows and linked Notices of Examination (NOE) PDFs."
+  },
+  "cross_check": {
+    "id": "oasys-active-exams",
+    "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
+    "rows": 4,
+    "role": "Independent structured listing of open filing windows and application fees; disagreements are recorded, and the published schedule page wins."
+  },
+  "verified_at": "2026-11-04",
+  "http_status": 200,
+  "page_bytes": 23753,
+  "page_sha256": "3f75467a2f6b5d1ee068f0f6ef360bd06a3890568d7e437fd667e58501ad3f3b",
+  "observed_exams": [
+    {
+      "exam_number": "7131",
+      "title": "Emergency Medical Specialist - EMT",
+      "present_on_page": true,
+      "live_application_start": "2026-10-07",
+      "live_application_end": "2026-11-18",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277131000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-10-07",
+      "oasys_filing_end": "2026-11-18",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-10-07",
+      "previous_application_end": "2026-11-18",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7032",
+      "title": "Emergency Medical Specialist Trainee",
+      "present_on_page": true,
+      "live_application_start": "2026-10-07",
+      "live_application_end": "2026-11-18",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277032000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-10-07",
+      "oasys_filing_end": "2026-11-18",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-10-07",
+      "previous_application_end": "2026-11-18",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7315",
+      "title": "Police Officer",
+      "present_on_page": true,
+      "live_application_start": "2026-11-02",
+      "live_application_end": "2026-11-16",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277315000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-02",
+      "oasys_filing_end": "2026-11-16",
+      "oasys_agrees": true,
+      "previous_application_start": null,
+      "previous_application_end": null,
+      "changed_since_previous": null
+    },
+    {
+      "exam_number": "7324",
+      "title": "School Safety Agent",
+      "present_on_page": true,
+      "live_application_start": "2026-10-07",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277324000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-10-07",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-10-07",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    }
+  ],
+  "carried_detail_fields": [
+    {
+      "exam_number": "7131",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7032",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7324",
+      "fields": [
+        "salary_max",
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    }
+  ],
+  "added_exam_numbers": [
+    "7315"
+  ],
+  "dropped_exam_numbers": [
+    "7010",
+    "7011",
+    "7012",
+    "7024",
+    "7027",
+    "7047",
+    "7052",
+    "7054",
+    "7302",
+    "7307",
+    "7314",
+    "7329"
+  ],
+  "unstated_annual_salary": [],
+  "notices_read": 4,
+  "oasys_disagreements": []
+}
