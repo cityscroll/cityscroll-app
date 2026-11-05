@@ -8,13 +8,13 @@
     "served_path": "/data/connected_history_cycle.json"
   },
   "run": {
-    "run_id": "github-actions:41857060447:1",
-    "github_run_id": 41857060447,
-    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/41857060447",
+    "run_id": "github-actions:42054915489:1",
+    "github_run_id": 42054915489,
+    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/42054915489",
     "trigger": "schedule",
-    "code_revision": "281f1a1c99bfa6eedaf30c8e0a3bf082fe3f80e2",
-    "started_at": "2026-11-04T15:23:25.087Z",
-    "finished_at": "2026-11-04T15:23:36.174Z",
+    "code_revision": "585e89180ce4156a9163f00935b819f2db3b093c",
+    "started_at": "2026-11-05T15:26:33.990Z",
+    "finished_at": "2026-11-05T15:26:43.687Z",
     "status": "succeeded",
     "outcome": "held",
     "failed_stage": null,
@@ -22,52 +22,52 @@
     "served": {
       "status": "observed",
       "origin": "https://cityscroll.org",
-      "observed_at": "2026-11-04T15:23:25.087Z",
-      "revision": "281f1a1c99bfa6eedaf30c8e0a3bf082fe3f80e2",
-      "deployment_at": "2026-11-04T14:50:05.999Z",
-      "manifest_sha256": "sha256:c95d4ec7e3dbc95ae77e38de85c3f244f735ca2fb32b6f582289be127244e454",
+      "observed_at": "2026-11-05T15:26:33.990Z",
+      "revision": "585e89180ce4156a9163f00935b819f2db3b093c",
+      "deployment_at": "2026-11-05T15:08:47.394Z",
+      "manifest_sha256": "sha256:cbe06e82a2e052d03bdcec71e61df48f10ef0dc0a6a4d9e3efb8cf831a4429f5",
       "previous_receipt": {
         "status": "observed",
-        "run_id": "github-actions:40701461523:1",
+        "run_id": "github-actions:41857060447:1",
         "outcome": "held",
-        "finished_at": "2026-10-28T13:59:36.178Z",
-        "sha256": "sha256:9e657987173e060edcbc3d081971a2484376c8d1e2433c277c47ec1f3a2ca67a",
+        "finished_at": "2026-11-04T15:23:36.174Z",
+        "sha256": "sha256:41aec4b2326b11da04ee7a2a78aeed6edc9e32afcf535b12bf36d8764731149c",
         "matches_committed_receipt": true
       },
       "after": {
         "status": "observed",
         "origin": "https://cityscroll.org",
-        "observed_at": "2026-11-04T15:23:36.174Z",
-        "revision": "281f1a1c99bfa6eedaf30c8e0a3bf082fe3f80e2",
-        "deployment_at": "2026-11-04T14:50:05.999Z",
-        "manifest_sha256": "sha256:c95d4ec7e3dbc95ae77e38de85c3f244f735ca2fb32b6f582289be127244e454"
+        "observed_at": "2026-11-05T15:26:43.687Z",
+        "revision": "585e89180ce4156a9163f00935b819f2db3b093c",
+        "deployment_at": "2026-11-05T15:08:47.394Z",
+        "manifest_sha256": "sha256:cbe06e82a2e052d03bdcec71e61df48f10ef0dc0a6a4d9e3efb8cf831a4429f5"
       }
     }
   },
   "stages": [
     {
       "stage": "acquisition",
-      "started_at": "2026-11-04T15:23:25.522Z",
+      "started_at": "2026-11-05T15:26:34.474Z",
       "status": "succeeded",
-      "finished_at": "2026-11-04T15:23:35.663Z"
+      "finished_at": "2026-11-05T15:26:43.310Z"
     },
     {
       "stage": "materialization",
-      "started_at": "2026-11-04T15:23:35.663Z",
+      "started_at": "2026-11-05T15:26:43.311Z",
       "status": "succeeded",
-      "finished_at": "2026-11-04T15:23:35.751Z"
+      "finished_at": "2026-11-05T15:26:43.368Z"
     },
     {
       "stage": "publication",
-      "started_at": "2026-11-04T15:23:35.751Z",
+      "started_at": "2026-11-05T15:26:43.368Z",
       "status": "succeeded",
-      "finished_at": "2026-11-04T15:23:35.802Z"
+      "finished_at": "2026-11-05T15:26:43.399Z"
     },
     {
       "stage": "verification",
-      "started_at": "2026-11-04T15:23:35.802Z",
+      "started_at": "2026-11-05T15:26:43.399Z",
       "status": "succeeded",
-      "finished_at": "2026-11-04T15:23:36.174Z"
+      "finished_at": "2026-11-05T15:26:43.687Z"
     }
   ],
   "acquisition": {
@@ -75,7 +75,7 @@
       "attempted": true,
       "source_policy": "fixed-six-case-dossier-ceqr-dot-edc-only",
       "parser_version": "connected_history_documents.v1",
-      "observed_at": "2026-11-04T15:23:25.087Z",
+      "observed_at": "2026-11-05T15:26:33.990Z",
       "request_count": 8,
       "requests": [
         {
@@ -84,7 +84,7 @@
           "http_status": 200,
           "content_type": "text/html; charset=utf-8",
           "byte_count": 376698,
-          "content_hash": "sha256:ea0eb0fe7a3f127e42927a43fa0b6be6fe5eef695b55a866233b9b09c539c030",
+          "content_hash": "sha256:6bc99f5eb7198db6e6c81ac4dd25b9c108d0db09629e5298963af12412702385",
           "content_fingerprint": "sha256:6b7c8650e3b293d8ad527a8571936ae0df4304536219e94d7c1cd885a745841e",
           "per_response_markup_removed": true,
           "outcome": "response"
@@ -94,9 +94,9 @@
           "url": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
           "http_status": 200,
           "content_type": "text/html;charset=UTF-8",
-          "byte_count": 27303,
-          "content_hash": "sha256:329fff7f7a5cfda2e6c5fbf3e4c3d06ba7513742a6ed60cf96471fd6cf4581b6",
-          "content_fingerprint": "sha256:d667b3483cba6c5b98deb7d6b91150dbb25e44e76f3cf226021894a1a9fd597b",
+          "byte_count": 27305,
+          "content_hash": "sha256:a450f6515d7bbc4da4ddee83814c20719ae6f3ff46f3c857c38d67d5e79bf3cd",
+          "content_fingerprint": "sha256:4f252332f6bf251f4aed5cf9ccd852bca7bbbba20fc0e1f83f6349a97bc80612",
           "per_response_markup_removed": true,
           "outcome": "response"
         },
@@ -117,7 +117,7 @@
           "http_status": 200,
           "content_type": "text/html; charset=utf-8",
           "byte_count": 72902,
-          "content_hash": "sha256:e4db8d093468a9d3978070ed7cbcb926aa1aaaad7a8e028935cd0fe61d45dc6f",
+          "content_hash": "sha256:4e77e5e4f3498de10061148fdea91876690e9971abadaa36d8ca360b27da67c9",
           "content_fingerprint": "sha256:cf58768784b9b537661082d6be133b4976672616de626fe2fd53ed3b875befc4",
           "per_response_markup_removed": true,
           "outcome": "response"
@@ -150,8 +150,8 @@
           "http_status": 200,
           "content_type": "text/html; charset=UTF-8",
           "byte_count": 118341,
-          "content_hash": "sha256:7aec7d2a0ad5b6c1098f82ffe9a62039325f105e3ad79778f3da1f29110e5d6e",
-          "content_fingerprint": "sha256:c767cc420b062d9f7382a700b773ee8df2a255d44cc09ae24a18ee8481d12841",
+          "content_hash": "sha256:b4ad1f55825830f7d14e2e92388e053929f4630f9b30b659b053d2355bce6ad6",
+          "content_fingerprint": "sha256:04b853cc47868cd7bdd34e571230832a48b29d60f961f9279693b10010c2f2f0",
           "per_response_markup_removed": true,
           "outcome": "response"
         },
@@ -161,13 +161,13 @@
           "http_status": 200,
           "content_type": "text/html; charset=UTF-8",
           "byte_count": 118341,
-          "content_hash": "sha256:7127ba58fe6804f8e2ea524eef3ea35b445a0ac1c31b2d251288fb8d75f56650",
-          "content_fingerprint": "sha256:4c462516d17de4ce318b3c499801f806b1da71ddd70052c783879bf7d1ea880d",
+          "content_hash": "sha256:2391f87a8268fac0f6f61686e8d5aa76e2a1cb380081fa1dbc118afc771de963",
+          "content_fingerprint": "sha256:b00ab9f082af2310d420470aa6bdcb2ada2d4af8cdad98565ae8786348c5a45d",
           "per_response_markup_removed": true,
           "outcome": "response"
         }
       ],
-      "acquired_selection_hash": "a327154ec788cf4dff9446232e9d162c78791b7486302bf293b6ba6cbbe5b69d",
+      "acquired_selection_hash": "50914c307a7ee17d51497663d24054e4f48d31aaa7a2584e4bd60b994f74e8d2",
       "committed_selection_hash": "8af9223d8e45f005087b0ea3c7d920d6ae4c9ecd2bcd35cb90d1f788346d1f23",
       "content_fingerprint_rule": "connected_history_content_fingerprint.v1",
       "sources": [
@@ -179,18 +179,18 @@
           "http_status": 200,
           "status": "retained",
           "reason": null,
-          "fetched_content_hash": "sha256:329fff7f7a5cfda2e6c5fbf3e4c3d06ba7513742a6ed60cf96471fd6cf4581b6",
-          "byte_count": 27303,
-          "content_fingerprint": "sha256:d667b3483cba6c5b98deb7d6b91150dbb25e44e76f3cf226021894a1a9fd597b",
+          "fetched_content_hash": "sha256:a450f6515d7bbc4da4ddee83814c20719ae6f3ff46f3c857c38d67d5e79bf3cd",
+          "byte_count": 27305,
+          "content_fingerprint": "sha256:4f252332f6bf251f4aed5cf9ccd852bca7bbbba20fc0e1f83f6349a97bc80612",
           "committed": {
             "status": "retained",
             "reason": null,
             "content_hash": "sha256:8571a1563656d571737bba9669b206391987f2b55674610c00ddafd8ac3256a9"
           },
-          "comparison": "reconfirmed",
-          "basis": "facts re-confirmed; per-response markup changed the digest and no fingerprint baseline existed, so this run records one",
+          "comparison": "changed",
+          "basis": "content fingerprint differs from the baseline recorded for the committed observation",
           "committed_content_hash": "sha256:8571a1563656d571737bba9669b206391987f2b55674610c00ddafd8ac3256a9",
-          "committed_content_fingerprint": "sha256:d667b3483cba6c5b98deb7d6b91150dbb25e44e76f3cf226021894a1a9fd597b"
+          "committed_content_fingerprint": null
         },
         {
           "source_id": "kingsbridge-ceqr-25dme006x-details",
@@ -200,7 +200,7 @@
           "http_status": 200,
           "status": "retained",
           "reason": null,
-          "fetched_content_hash": "sha256:e4db8d093468a9d3978070ed7cbcb926aa1aaaad7a8e028935cd0fe61d45dc6f",
+          "fetched_content_hash": "sha256:4e77e5e4f3498de10061148fdea91876690e9971abadaa36d8ca360b27da67c9",
           "byte_count": 72902,
           "content_fingerprint": "sha256:cf58768784b9b537661082d6be133b4976672616de626fe2fd53ed3b875befc4",
           "committed": {
@@ -430,21 +430,21 @@
         "path": "site/data/community_board_constellation_lookup.json",
         "role": "frozen cohort input (boards_registry)",
         "frozen_sha256": "6d8e7f187d80b522141cf94ba76b028362bd73a319dca0e74801ed8f87d95d77",
-        "current_sha256": "276a2808d6f9815c381ab354b52569d72bf5fbec63ccb48c600e461ccac347e5",
+        "current_sha256": "d42db17308b395788dc3d7ed0dbc1d51b3a4052b6095a2b4abee791472011840",
         "drifted": true
       },
       {
         "path": "site/data/zap_projects_warehouse_lookup.json",
         "role": "frozen cohort input (zap_projects)",
         "frozen_sha256": "7a79bab1cf1d0cbc698d74942452d193a3914c10682326a939fbfc6cdaa3f51b",
-        "current_sha256": "61796bc9de2b8903d6a0983aac681b78370b6b426581393cb1d8a7f83427eb07",
+        "current_sha256": "1ee6089877a2e6eda593d2a748c237f870f7986a47b9d541ba82d4572155842f",
         "drifted": true
       },
       {
         "path": "site/data/community_board_land_positions.json",
         "role": "frozen cohort input (board_land_positions)",
         "frozen_sha256": "7682ab286c4998bed627bde95be165fc649dd3a99eae1822eae7a39377b0dffe",
-        "current_sha256": "f56a54b1b7a714514b50e06dba5a3ec810988dde898f4a4592d9248da091f065",
+        "current_sha256": "8d98b8e8d1f498ac2533e345c6c5dbb730029a49c760651845db6a04add684c7",
         "drifted": true
       },
       {
@@ -458,7 +458,7 @@
         "path": "site/data/bsa_calendar.json",
         "role": "frozen cohort input (bsa_calendar)",
         "frozen_sha256": "2c9940b39fc38ae0d3800088296e29813be77fa79e7c86fb770d927efdb21654",
-        "current_sha256": "1cf0fcc6bfc81bf44a0f31175145ec68d9779b2cc1d51826e5136eb9a859fddb",
+        "current_sha256": "64e27821ecdca2b12837dde671229a3e7344aa00bad8de8c6317a7b099f92be6",
         "drifted": true
       }
     ]
@@ -482,7 +482,7 @@
         "committed_sha256": "sha256:81e163facdaadca706d152e88850d86f2c245786759ea1b4f9da1f968b670a0b",
         "materialized_sha256": "sha256:81e163facdaadca706d152e88850d86f2c245786759ea1b4f9da1f968b670a0b"
       },
-      "confirmed_current_at": "2026-11-04T15:23:36.174Z"
+      "confirmed_current_at": "2026-11-05T15:26:43.687Z"
     },
     {
       "id": "documents",
@@ -490,17 +490,17 @@
       "mode": "acquired",
       "action": "rematerialized",
       "committed_sha256": "sha256:51c54a94466b8d2b77630c621dbaa83802355eea2a0bceb314a9f312615ba161",
-      "materialized_sha256": "sha256:78ad423b51a41d116a1819b37f8c327681f89da06782a55552cf82496f975e2b",
+      "materialized_sha256": "sha256:f0fe09095ce0f9aed1186a8a436b63e7634b4873823cd367879e037bc43b345a",
       "byte_identical": false,
       "generated_at": {
         "committed": "2026-09-21T20:19:01.507Z",
-        "materialized": "2026-11-04T15:23:25.087Z"
+        "materialized": "2026-11-05T15:26:33.990Z"
       },
       "stamp_source": "acquisition instant of the published observation set",
       "verification_receipt": {
         "path": "site/data/connected_history_sources/verification_receipts/connected_history_documents_latest.json",
         "committed_sha256": "sha256:44eb1e4848f53691afa5ef4462648b2ad3f434ff38d20e7fa5e0498f10376530",
-        "materialized_sha256": "sha256:dc4b84501914ffe8fcf72aca1cb14a4e1c13503e2ac5b113d2a53190954e01ca"
+        "materialized_sha256": "sha256:2bbf1411c4acbf19295780e6418ddde4b3477779da00b3e453099bce5cca9f44"
       },
       "confirmed_current_at": null
     },
@@ -522,7 +522,7 @@
         "committed_sha256": "sha256:854fded9838bea03b5bb129a472cc97274cde1e123c9948e4ebe8bf9f1e6c959",
         "materialized_sha256": "sha256:854fded9838bea03b5bb129a472cc97274cde1e123c9948e4ebe8bf9f1e6c959"
       },
-      "confirmed_current_at": "2026-11-04T15:23:36.174Z"
+      "confirmed_current_at": "2026-11-05T15:26:43.687Z"
     },
     {
       "id": "roles",
@@ -542,7 +542,7 @@
         "committed_sha256": "sha256:a1b8babf54f9a234abc7bf86606fe73625057adbfb88a469aade535a073ed941",
         "materialized_sha256": "sha256:a1b8babf54f9a234abc7bf86606fe73625057adbfb88a469aade535a073ed941"
       },
-      "confirmed_current_at": "2026-11-04T15:23:36.174Z"
+      "confirmed_current_at": "2026-11-05T15:26:43.687Z"
     },
     {
       "id": "time",
@@ -562,7 +562,7 @@
         "committed_sha256": "sha256:cb891e09e0d18312ed291630a35eb3d83c5a8b2b2f9017e5e90f7e678c3a38b5",
         "materialized_sha256": "sha256:cb891e09e0d18312ed291630a35eb3d83c5a8b2b2f9017e5e90f7e678c3a38b5"
       },
-      "confirmed_current_at": "2026-11-04T15:23:36.174Z"
+      "confirmed_current_at": "2026-11-05T15:26:43.687Z"
     },
     {
       "id": "coverage",
@@ -570,17 +570,17 @@
       "mode": "derived",
       "action": "rematerialized",
       "committed_sha256": "sha256:3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed",
-      "materialized_sha256": "sha256:970c9297fc90edaf3ec3b05a61188d14400d99a14002f805be9f331af853bf3c",
+      "materialized_sha256": "sha256:3462fe5fe3bb06c231c297c9980469177fefc39e97fd5ab7a8336d61cc635e8d",
       "byte_identical": false,
       "generated_at": {
         "committed": "2026-09-21T20:19:01.507Z",
-        "materialized": "2026-11-04T15:23:25.087Z"
+        "materialized": "2026-11-05T15:26:33.990Z"
       },
       "stamp_source": "input stamps of the other materializations",
       "verification_receipt": {
         "path": "site/data/connected_history_sources/verification_receipts/connected_history_coverage_latest.json",
         "committed_sha256": "sha256:0b38fd9e17f99655976d62c851d9382e3693fdefba6c5bef1f2cfcc0d098a79f",
-        "materialized_sha256": "sha256:4bdb438995c017b28029be4fd511b74845068187031a48c7f65d37f85e62510b"
+        "materialized_sha256": "sha256:f19115a996e066d839018bc4da6c51acc66425da70b1432c2e4ccc99f2a359b3"
       },
       "confirmed_current_at": null
     }
@@ -629,6 +629,15 @@
     }
   },
   "prior_runs": [
+    {
+      "run_id": "github-actions:41857060447:1",
+      "trigger": "schedule",
+      "started_at": "2026-11-04T15:23:25.087Z",
+      "finished_at": "2026-11-04T15:23:36.174Z",
+      "outcome": "held",
+      "served_revision": "281f1a1c99bfa6eedaf30c8e0a3bf082fe3f80e2",
+      "receipt_sha256": "sha256:41aec4b2326b11da04ee7a2a78aeed6edc9e32afcf535b12bf36d8764731149c"
+    },
     {
       "run_id": "github-actions:41659891771:1",
       "trigger": "schedule",
@@ -862,15 +871,6 @@
       "outcome": "held",
       "served_revision": "2bb2734917d9db9dba12b37d9090384b8679f2b6",
       "receipt_sha256": "sha256:651f138e019f5e6c711e135c21f015aeb2099e082aed47099870c3d8daf9ee69"
-    },
-    {
-      "run_id": "github-actions:37793404766:1",
-      "trigger": "schedule",
-      "started_at": "2026-10-08T14:33:41.719Z",
-      "finished_at": "2026-10-08T14:33:48.451Z",
-      "outcome": "unchanged",
-      "served_revision": "2bb2734917d9db9dba12b37d9090384b8679f2b6",
-      "receipt_sha256": "sha256:29e7f2fba66133ce4e1ca4983844d8ebbd3bc95bf7fbe1a7f1aa456a10ac3da6"
     },
     {
       "run_id": "github-actions:36755699826:1",
