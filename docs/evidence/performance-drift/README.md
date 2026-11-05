@@ -43,6 +43,11 @@ The machine-readable file is
 
 ## Regenerate
 
+The scheduled workflow
+[`notice-readback-aggregate.yml`](../../../.github/workflows/notice-readback-aggregate.yml)
+runs the builder daily and opens a pull request when the retained file changes,
+so this aggregate has a producer independent of hand-run refreshes.
+
 ```bash
 ANALYTICS_ACCOUNT_ID=<from worker/wrangler.toml> \
 ANALYTICS_READ_TOKEN=<Cloudflare API token with Analytics Engine read> \
