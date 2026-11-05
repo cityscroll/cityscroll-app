@@ -2022,11 +2022,11 @@
   "schema": "cityscroll.council_land_matter_links.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 288,
+      "absent_count": 285,
       "present_count": 17,
-      "record_count": 305
+      "record_count": 302
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-11-04T08:00:43.756Z",
+    "meeting_outcomes_snapshot_generated_at": "2026-11-05T08:00:53.045Z",
     "zap_projects_warehouse_lookup_materialized_at": "2026-11-04T18:48:50.187Z"
   }
 }

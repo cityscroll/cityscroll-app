@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.agency_entity_publication.v1",
   "method": "agency_entity_publication_v1",
-  "generated_at": "2026-11-05T01:02:25.093Z",
+  "generated_at": "2026-11-05T12:12:30.491Z",
   "sources": [
     {
       "system": "nyc_open_data",

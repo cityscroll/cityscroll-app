@@ -21,6 +21,13 @@ test("precomputed staffing artifact is reproducible from committed source snapsh
   });
 });
 
+test("list_depth_closed_exams.json is current against civil_service_list_aggregates.json", () => {
+  execFileSync(process.execPath, ["tools/rebuild_list_depth_closed_exams.mjs", "--check"], {
+    cwd: new URL("..", import.meta.url),
+    stdio: "pipe",
+  });
+});
+
 test("staffing artifact stamps honest list and open-window freshness clocks", () => {
   assert.ok(artifact.open_window_as_of || artifact.generated_at);
   // After refresh tooling lands, both stamps are required; tolerate one rebuild cycle
