@@ -1,0 +1,108 @@
+{
+  "schema": "cityscroll.navigator_rfx_document_fact_controls.v1",
+  "source": "Synthetic controls for the public document observation and reading contracts.",
+  "cases": [
+    {
+      "id": "login-html",
+      "input": {
+        "http_status": 200,
+        "content_type": "text/html",
+        "body": "<html><form action=\"/login\"><input type=\"password\"></form></html>"
+      },
+      "expect": "access_required; no admitted document"
+    },
+    {
+      "id": "redirect-login",
+      "input": {
+        "http_status": 302,
+        "location": "https://passport.cityofnewyork.us/login"
+      },
+      "expect": "redirect_rejected; no credential follow"
+    },
+    {
+      "id": "oversize",
+      "input": {
+        "content_length": 20971521,
+        "limit": 20971520
+      },
+      "expect": "oversize before buffering; streaming cap also enforced"
+    },
+    {
+      "id": "off-host",
+      "input": {
+        "url": "https://example.invalid/contract.pdf"
+      },
+      "expect": "host_rejected before request"
+    },
+    {
+      "id": "round-mismatch",
+      "input": {
+        "epin": "84627B0012",
+        "round": "2",
+        "expected_round": "1"
+      },
+      "expect": "separate observation; never replace round 1 by EPIN"
+    },
+    {
+      "id": "unknown-binding",
+      "input": {
+        "epin": "84627B0012",
+        "process_url_id": "37728",
+        "display_id": "037402",
+        "rfp_id": null
+      },
+      "expect": "unresolved identity; do not equate display/process/feed ids"
+    },
+    {
+      "id": "scanned-page",
+      "input": {
+        "page_number": 1,
+        "text": "",
+        "image_present": true
+      },
+      "expect": "ocr_required; not no requirements"
+    },
+    {
+      "id": "amendment-conflict",
+      "input": {
+        "old_due": "2026-11-09T14:00:00",
+        "new_due": "2026-11-16T14:00:00",
+        "supersedes": null
+      },
+      "expect": "retain both observations; unresolved precedence"
+    },
+    {
+      "id": "unsigned-form",
+      "input": {
+        "heading": "AGREEMENT",
+        "signature_value": ""
+      },
+      "expect": "proposed/template standing; execution not established"
+    },
+    {
+      "id": "repeated-bytes",
+      "input": {
+        "same_hash": true,
+        "second_url": true
+      },
+      "expect": "one stored blob; two provenance observations; no second parse"
+    },
+    {
+      "id": "parser-change",
+      "input": {
+        "same_hash": true,
+        "old_parser": "v1",
+        "new_parser": "v2"
+      },
+      "expect": "new extraction version; old result retained"
+    },
+    {
+      "id": "missing-price",
+      "input": {
+        "amount": null,
+        "text": "Price to be entered by bidder"
+      },
+      "expect": "unknown amount; not numeric zero"
+    }
+  ]
+}

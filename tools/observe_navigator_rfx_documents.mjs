@@ -26,13 +26,14 @@ import {
   MAX_DOCUMENT_BYTES,
   observeNavigatorRfxDocuments,
 } from "../warehouse/lib/navigator_rfx_documents.mjs";
+import { NAVIGATOR_DOCUMENT_FACTS_VERSION } from "../warehouse/lib/navigator_rfx_document_facts.mjs";
 import { detectPdfLibraryVersionViaPython } from "../warehouse/lib/seqra_document_extraction.mjs";
 import { RFX_DATA_URL, parseRfxDump } from "../worker/src/lib/passport_parse.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_EXTRACTOR_VERSION = "seqra_document_page_extract.py.v1";
 const DEFAULT_ONTOLOGY_VERSION = "procurement-documents.v1";
-const DEFAULT_RULES_VERSION = "observation-only.v1";
+const DEFAULT_RULES_VERSION = NAVIGATOR_DOCUMENT_FACTS_VERSION;
 
 function usage(message = null) {
   if (message) console.error(message);
@@ -113,8 +114,10 @@ async function main() {
   const outputDir = path.resolve(options.outputDir);
   assertStagingBoundary(outputDir);
   const extractionDir = path.join(outputDir, "extractions");
+  const readingDir = path.join(outputDir, "readings");
   const existingExtractions = readExistingExtractions(extractionDir);
-  const state = createNavigatorObservationState(existingExtractions);
+  const existingFactProjections = readExistingExtractions(readingDir);
+  const state = createNavigatorObservationState(existingExtractions, existingFactProjections);
   const rfxRows = await rfxRowsFrom(options);
   const pdfLibraryVersion = options.pdfLibraryVersion || detectPdfLibraryVersionViaPython();
   const httpGet = (url, request) => boundedHttpGet(url, {
@@ -136,6 +139,7 @@ async function main() {
 
   mkdirSync(outputDir, { recursive: true });
   mkdirSync(extractionDir, { recursive: true });
+  mkdirSync(readingDir, { recursive: true });
   writeFileSync(path.join(outputDir, "procurement_documents.json"), stableJson(result.manifest));
   const shardDir = path.join(outputDir, "procurement_documents");
   mkdirSync(shardDir, { recursive: true });
@@ -147,12 +151,18 @@ async function main() {
     const keyDigest = createHash("sha256").update(JSON.stringify(extraction.extraction_key)).digest("hex");
     writeFileSync(path.join(extractionDir, `${digest}--${keyDigest}.json`), stableJson(extraction));
   }
+  for (const reading of result.state.fact_projections.values()) {
+    const keyDigest = createHash("sha256").update(reading.cache_key).digest("hex");
+    writeFileSync(path.join(readingDir, `${keyDigest}.json`), stableJson(reading));
+  }
   writeFileSync(path.join(outputDir, "failures.json"), stableJson(result.failures));
 
   console.log(
     `navigator RFx documents: targets=${options.rfpIds.length} shards=${result.shards.size} `
     + `rows=${result.manifest.row_count} failures=${result.failures.length} `
-    + `extractions=${result.state.extractions.size} cache_misses=${result.state.extraction_runs}`,
+    + `extractions=${result.state.extractions.size} extraction_cache_misses=${result.state.extraction_runs} `
+    + `facts=${result.metrics.facts} abstentions=${result.metrics.abstentions} `
+    + `fact_cache_hits=${result.metrics.cache_hits} fact_cache_misses=${result.metrics.cache_misses}`,
   );
   if (result.failures.length) process.exitCode = 1;
 }
