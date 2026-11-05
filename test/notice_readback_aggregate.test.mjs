@@ -5,7 +5,7 @@
 // name, a below-floor sample refuses by name, and samples that predate the
 // delivery refuse by name. A non-vacuity control runs in both directions.
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
@@ -40,6 +40,15 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RETAINED = join(ROOT, NOTICE_READBACK_RETAINED_PATH);
+const WORKFLOWS_DIR = join(ROOT, ".github", "workflows");
+
+function workflowsReferencingBuilder() {
+  return readdirSync(WORKFLOWS_DIR)
+    .filter((name) => name.endsWith(".yml") || name.endsWith(".yaml"))
+    .filter((name) => readFileSync(join(WORKFLOWS_DIR, name), "utf8").includes(
+      "tools/build_notice_readback_aggregate.mjs",
+    ));
+}
 
 function readBackDocument({
   group = "resident",
@@ -254,6 +263,22 @@ test("non-vacuity: the landed shape passes and a group-removed copy fails", () =
   assert.ok(validation.refusals.some((row) => (
     row.reason === "missing_measurement_group" && row.measurement_group === "first_byte"
   )));
+});
+
+test("a workflow runs the builder on a schedule, so the retained window cannot go stale unread", () => {
+  const referencing = workflowsReferencingBuilder();
+  assert.ok(
+    referencing.length > 0,
+    "no .github/workflows file runs tools/build_notice_readback_aggregate.mjs; " +
+      "the retained aggregate has no scheduled producer and cannot refresh itself",
+  );
+  const scheduled = referencing.filter((name) => (
+    /^\s*schedule:\s*$/m.test(readFileSync(join(WORKFLOWS_DIR, name), "utf8"))
+  ));
+  assert.ok(
+    scheduled.length > 0,
+    `workflow(s) ${referencing.join(", ")} run the builder but declare no cron schedule`,
+  );
 });
 
 test("the committed retained aggregate validates when present", () => {

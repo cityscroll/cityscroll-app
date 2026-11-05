@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/notice-post-delivery-readback-aggregate",
   "status": "implemented",
-  "fingerprint": "notice-post-delivery-readback-aggregate.v3-cache-dimension",
-  "updated_at": "2026-09-30T18:00:00.000Z",
+  "fingerprint": "notice-post-delivery-readback-aggregate.v4-scheduled-producer",
+  "updated_at": "2026-11-05T00:00:00.000Z",
   "projections": [
     {
       "id": "notice-readback-aggregate-schema",
@@ -24,6 +24,10 @@
     {
       "id": "notice-readback-aggregate-tests",
       "path": "test/notice_readback_aggregate.test.mjs"
+    },
+    {
+      "id": "notice-readback-aggregate-schedule",
+      "path": ".github/workflows/notice-readback-aggregate.yml"
     }
   ]
 }
