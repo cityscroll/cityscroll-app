@@ -290,7 +290,7 @@ def main() -> int:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch()
             capture_positive(browser, base, run, expectations["committee-landmarks"])
-            capture_walks(browser, base, run, expectations["committee-finance"])
+            capture_walks(browser, base, run, expectations["committee-landmarks"], expectations["committee-finance"])
             capture_reciprocal(browser, base, run, expectations["committee-parks"])
             capture_no_javascript(browser, base, run, expectations["committee-landmarks"])
             capture_negatives(browser, base, run)
@@ -431,9 +431,17 @@ def capture_positive(browser, base, run, expect):
     page.close()
 
 
-def capture_walks(browser, base, run, expect):
+def capture_walks(browser, base, run, landmarks_expect, expect):
     page = browser.new_page(viewport={"width": DESKTOP["width"], "height": DESKTOP["height"]})
     page.goto(f"{base}committees/{LANDMARKS}/", wait_until="domcontentloaded")
+    # Same rolling publisher window as the NAMED_CONNECTIONS loop above: FINANCE
+    # is read back only while the subcommittee's own record still lists it, or
+    # the open link this walk clicks next is not on the page and page.click
+    # hangs for the full default timeout instead of failing fast.
+    if not any(row["committee_id"] == FINANCE for row in landmarks_expect["rows"]):
+        run.signal(f"committee {FINANCE} is no longer connected on {landmarks_expect['as_of']}")
+        page.close()
+        return
     open_row(page, FINANCE)
     page.click(f'a.committee-shared-committee-link[href="/committees/{FINANCE}/"]')
     page.wait_for_url(f"{base}committees/{FINANCE}/")
