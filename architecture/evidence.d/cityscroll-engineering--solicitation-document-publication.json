@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/solicitation-document-publication",
+  "status": "implemented",
+  "fingerprint": "solicitation-document-publication.v1",
+  "updated_at": "2026-11-05T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "solicitation-document-publisher",
+      "path": "tools/publish_procurement_documents.mjs"
+    },
+    {
+      "id": "solicitation-document-manifest",
+      "path": "site/data/procurement_documents.json"
+    },
+    {
+      "id": "solicitation-document-shard",
+      "path": "site/data/procurement_documents/rfx-37728.json"
+    },
+    {
+      "id": "solicitation-document-publication-tests",
+      "path": "test/procurement_documents_publication.test.mjs"
+    }
+  ]
+}
