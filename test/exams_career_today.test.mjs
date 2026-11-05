@@ -103,6 +103,25 @@ test("careerToday ignores a malformed pin and keeps a YYYY-MM-DD shape", () => {
   assert.notEqual(careerToday(), "yesterday");
 });
 
+test("exams careerToday reads the harness pin before falling back to the real day", () => {
+  assert.match(
+    examsSource,
+    /function careerToday\(\)\s*\{[\s\S]*?CROL_PINNED_TODAY[\s\S]*?new Date\(\)/,
+    "careerToday must read CROL_PINNED_TODAY before falling back to the real day",
+  );
+  assert.doesNotMatch(
+    examsSource,
+    /CROL_PINNED_TODAY\s*=/,
+    "exams.mjs must not assign the harness pin",
+  );
+});
+
+test("the Exams route browser check pins the fixture civic day", () => {
+  const source = read("test/functional/29_exams_route.py");
+  assert.match(source, /from fixture_clock import pin_fixture_clock/);
+  assert.match(source, /pin_fixture_clock\(/);
+});
+
 test("the exams guide declares an initial page size the calendar check depends on", () => {
   assert.equal(INITIAL_PAGE_SIZE, 16);
 });
