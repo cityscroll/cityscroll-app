@@ -15,6 +15,7 @@ import {
   checkConnectedHistoryCycleDeclaration,
   connectedHistoryCyclePublishedPaths,
   cronMaximumGapHours,
+  describeHeldPublicationRelease,
   documentContentFingerprint,
   evidenceInvalidatedBy,
   ledgerHistoryOf,
@@ -22,6 +23,7 @@ import {
   materializeConnectedHistories,
   mergePriorRunHistories,
   parseWorkflowTriggers,
+  planSupersedeRetainedPins,
   priorRunsDropped,
   retainedEvidencePins,
   runConnectedHistoryCycle,
@@ -185,13 +187,17 @@ test("the receipt is served from a stable path and the workflow publishes exactl
   assert.equal(isExcludedFromPublicSite(CONNECTED_HISTORY_CYCLE.receipt_path.replace(/^site\//, ""), excluded), false);
 
   const addPaths = WORKFLOW.match(/add-paths: \|\n((?: {12}\S.*\n)+)/)[1].trim().split(/\n\s*/);
-  const guarded = [...WORKFLOW.matchAll(/^ {14}(site\/\S+)\) ;;$/gm)].map((match) => match[1]);
+  const guarded = [...WORKFLOW.matchAll(/^ {14}((?:site|docs)\/\S+)\) ;;$/gm)].map((match) => match[1]);
   assert.ok(addPaths.length && guarded.length);
   for (const path of connectedHistoryCyclePublishedPaths()) {
     assert.ok(addPaths.some((pattern) => shellGlob(pattern).test(path)), `${path} is carried by the pull request`);
     assert.ok(guarded.some((pattern) => shellGlob(pattern).test(path)), `${path} passes the generated-change guard`);
   }
-  for (const pattern of [...addPaths, ...guarded]) assert.match(pattern, /^site\/data\/connected_history_/);
+  for (const pattern of [...addPaths, ...guarded]) {
+    assert.match(pattern, /^(?:site\/data\/connected_history_|docs\/evidence\/connected-histor)/);
+  }
+  assert.match(WORKFLOW, /publish_and_supersede_pins/);
+  assert.match(WORKFLOW, /--publish-and-supersede-pins/);
 });
 
 test("an idempotent run emits a receipt, changes no served history byte, and is distinguishable from no run", async (t) => {
@@ -445,8 +451,79 @@ test("a change pinned by a retained measurement is held, named, and kept out of 
     ["docs/evidence/pinned-history/capture-manifest.json", [DOCUMENTS_PATH]],
   ]);
   assert.match(receipt.publication.reason, /retained production measurements/);
+  assert.equal(receipt.publication.would_release.action, "publish_and_supersede_pins");
+  assert.match(receipt.publication.would_release.summary, /--publish-and-supersede-pins/);
+  assert.deepEqual(receipt.publication.would_release.pins, [
+    "docs/evidence/pinned-history/capture-manifest.json",
+  ]);
+  assert.deepEqual(receipt.publication.superseded_evidence, []);
   assert.ok(existsSync(join(heldDir, DOCUMENTS_PATH)), "the held materialization is kept with the run");
   assert.deepEqual(verifyConnectedHistoryCycleReceipt(receipt).errors, []);
+  assert.deepEqual(
+    describeHeldPublicationRelease(receipt.publication.invalidated_evidence).pins,
+    receipt.publication.would_release.pins,
+  );
+});
+
+test("publish-and-supersede-pins lifts pins without rewriting measurement fields, and still holds when a pin is skipped", async (t) => {
+  const root = await fixtureRoot(t, { evidenceInputs: [DOCUMENTS_PATH] });
+  const pinPath = "docs/evidence/pinned-history/capture-manifest.json";
+  const pinBefore = JSON.parse(readFileSync(join(root, pinPath), "utf8"));
+  const provenanceBefore = structuredClone(pinBefore.measurement_provenance);
+
+  const publishedAt = "2026-10-04T07:13:00.000Z";
+  const published = await runCycle(root, {
+    at: publishedAt,
+    overrides: htmlOverride(DETAILS.url, revise(DETAILS_BODY)),
+    publishAndSupersedePins: true,
+  });
+  assert.equal(published.exitCode, 0);
+  assert.equal(published.receipt.run.outcome, "published");
+  assert.equal(published.receipt.publication.decision, "published");
+  assert.ok(published.receipt.publication.changed_paths.includes(DOCUMENTS_PATH));
+  assert.deepEqual(published.receipt.publication.superseded_evidence, [pinPath]);
+  assert.equal(published.receipt.publication.would_release, undefined);
+  assert.ok(published.receipt.publication.written_paths.includes(DOCUMENTS_PATH));
+  assert.ok(published.receipt.publication.written_paths.includes(pinPath));
+  const pinAfter = JSON.parse(readFileSync(join(root, pinPath), "utf8"));
+  assert.deepEqual(pinAfter.measurement_provenance, provenanceBefore, "original measurement fields stay untouched");
+  assert.equal(pinAfter.stale_since, publishedAt);
+  assert.equal(pinAfter.superseded_by.run_id, `test:${publishedAt}`);
+  assert.deepEqual(pinAfter.superseded_by.changed_paths.filter((path) => path === DOCUMENTS_PATH), [DOCUMENTS_PATH]);
+  assert.equal(retainedEvidencePins(root).some((pin) => pin.path === pinPath), false, "a superseded pin is no longer active");
+  assert.deepEqual(verifyConnectedHistoryCycleReceipt(published.receipt).errors, []);
+
+  // Positive control: skipping a pin keeps the hold, so supersession is not a
+  // licence to publish over an unacknowledged pin.
+  const rootHeld = await fixtureRoot(t, { evidenceInputs: [DOCUMENTS_PATH] });
+  const heldBefore = historySnapshot(rootHeld);
+  const partial = await runCycle(rootHeld, {
+    at: "2026-10-05T07:13:00.000Z",
+    overrides: htmlOverride(DETAILS.url, revise(DETAILS_BODY)),
+    publishAndSupersedePins: true,
+    planSupersede: () => ({ paths: [], files: [] }),
+  });
+  assert.equal(partial.exitCode, 0);
+  assert.equal(partial.receipt.run.outcome, "held");
+  assert.equal(partial.receipt.publication.decision, "held");
+  assert.deepEqual(partial.receipt.publication.superseded_evidence, []);
+  assert.match(partial.receipt.publication.would_release.summary, /publish_and_supersede_pins/);
+  assert.deepEqual(historySnapshot(rootHeld), heldBefore, "partial supersession must not publish");
+  assert.deepEqual(verifyConnectedHistoryCycleReceipt(partial.receipt).errors, []);
+
+  const planned = planSupersedeRetainedPins({
+    root: rootHeld,
+    invalidatedEvidence: partial.receipt.publication.invalidated_evidence,
+    changedPaths: partial.receipt.publication.changed_paths,
+    observedAt: "2026-10-06T00:00:00.000Z",
+    runId: "test:plan",
+  });
+  assert.deepEqual(planned.paths, [pinPath]);
+  const plannedDoc = JSON.parse(planned.files[0].text);
+  const pinHeldBefore = JSON.parse(readFileSync(join(rootHeld, pinPath), "utf8"));
+  assert.deepEqual(plannedDoc.measurement_provenance, pinHeldBefore.measurement_provenance);
+  assert.equal(plannedDoc.stale_since, "2026-10-06T00:00:00.000Z");
+  assert.equal(plannedDoc.superseded_by.run_id, "test:plan");
 });
 
 test("a committed observation that cannot be re-fetched keeps its last-known-good record", async (t) => {

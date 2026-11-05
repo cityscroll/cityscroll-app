@@ -63,10 +63,18 @@ manual dispatch). The declaration is checked by
    `published` or `held`. A change is held, and the served bytes stay as they
    are, when a committed observation could not be re-fetched or when a
    retained production measurement under `docs/evidence/` pins a changed path.
-   Held files are uploaded with the run. A held change is republished only by
-   a reviewed pull request that regenerates it through its builder, records
-   the move in `REVIEWED_REPUBLICATIONS`
-   ([`tools/lib/connected_history_release.mjs`](../../../tools/lib/connected_history_release.mjs)),
+   Held files are uploaded with the run. A pin-held receipt names
+   `publication.would_release`: dispatch the cycle with
+   `publish_and_supersede_pins=true` (or `--publish-and-supersede-pins`), which
+   publishes the held change and marks every pinning evidence file
+   superseded/stale in the same operation. Original measurement hashes and
+   observation times stay untouched; a real re-measure by each owning producer
+   remains owed. The scheduled run leaves that flag off, and a run that would
+   invalidate a pin without superseding it still holds, so the detector keeps
+   its teeth. A held change that is not an acquisition (builder regeneration
+   only) is still republished through a reviewed pull request that records the
+   move in `REVIEWED_REPUBLICATIONS`
+   ([`tools/lib/connected_history_release.mjs`](../../../tools/lib/connected_history_release.mjs))
    and re-measures the pinned read-backs. The measurements that pin each
    served artifact are named in `test/connected_history_cycle.test.mjs`, and
    a builder run prints the ones its regeneration invalidates

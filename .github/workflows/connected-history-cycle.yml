@@ -14,6 +14,16 @@ on:
     # scheduled Pages deploy.
     - cron: "13 7 * * *"
   workflow_dispatch:
+    inputs:
+      publish_and_supersede_pins:
+        description: >-
+          Publish a pin-held change and mark every pinning evidence file
+          superseded/stale in the same run, without rewriting original
+          measurement hashes or observation times. A real re-measure by each
+          owning producer remains owed. The scheduled run leaves this off so
+          the pin detector keeps its teeth.
+        type: boolean
+        default: false
 
 permissions:
   actions: write
@@ -60,7 +70,11 @@ jobs:
           if [ -f .artifacts/connected-history-cycle/pending-receipt.json ]; then
             pending_args+=(--pending-receipt .artifacts/connected-history-cycle/pending-receipt.json)
           fi
-          node tools/connected_history_cycle.mjs --run "${pending_args[@]}"
+          supersede_args=()
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.publish_and_supersede_pins }}" = "true" ]; then
+            supersede_args+=(--publish-and-supersede-pins)
+          fi
+          node tools/connected_history_cycle.mjs --run "${pending_args[@]}" "${supersede_args[@]}"
 
       - name: Summarise the cycle receipt
         if: ${{ !cancelled() && hashFiles('site/data/connected_history_cycle.json') != '' }}
@@ -98,6 +112,9 @@ jobs:
               site/data/connected_history_cycle.json) ;;
               site/data/connected_history_*.json) ;;
               site/data/connected_history_sources/verification_receipts/*.json) ;;
+              docs/evidence/connected-histories/*) ;;
+              docs/evidence/connected-history-coverage/*) ;;
+              docs/evidence/connected-history-release/*) ;;
               *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
             esac
           done <<< "$changed"
@@ -115,7 +132,7 @@ jobs:
           commit-message: Record the scheduled connected-history cycle
           title: Record the scheduled connected-history cycle
           body: |
-            Automated connected-history cycle. The receipt at `site/data/connected_history_cycle.json` names the run, the served revision it ran against, every document it acquired with its digest, what it materialized, and the publication decision. A history materialization changes here only when the cycle derived a `published` decision; otherwise only the receipt changes.
+            Automated connected-history cycle. The receipt at `site/data/connected_history_cycle.json` names the run, the served revision it ran against, every document it acquired with its digest, what it materialized, and the publication decision. A history materialization changes here only when the cycle derived a `published` decision; otherwise only the receipt changes. A pin-held change is released by re-running with `publish_and_supersede_pins=true`, which publishes the held bytes and marks the pinning evidence superseded/stale without rewriting original measurement hashes or observation times.
 
             Validation:
             - `node tools/connected_history_cycle.mjs --check-declaration`
@@ -128,6 +145,9 @@ jobs:
             site/data/connected_history_cycle.json
             site/data/connected_history_*.json
             site/data/connected_history_sources/verification_receipts/*.json
+            docs/evidence/connected-histories/*
+            docs/evidence/connected-history-coverage/*
+            docs/evidence/connected-history-release/*
 
       - name: Run required checks for the cycle pull request
         if: ${{ !cancelled() && steps.cycle-pr.outputs.pull-request-number != '' }}

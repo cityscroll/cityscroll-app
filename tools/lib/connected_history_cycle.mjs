@@ -454,10 +454,89 @@ export function fingerprintBaseline(previousReceipt) {
 }
 
 /**
+ * How a held pin-invalidating run is released: publish the held change and
+ * mark each invalidated pin superseded/stale in the same operation, without
+ * rewriting the original measurement hashes or observation times. A real
+ * re-measure by the owning producer remains owed.
+ */
+export function describeHeldPublicationRelease(invalidatedEvidence = []) {
+  const pins = invalidatedEvidence.map((entry) => entry.path);
+  return {
+    action: "publish_and_supersede_pins",
+    command: "node tools/connected_history_cycle.mjs --run --publish-and-supersede-pins",
+    workflow_dispatch_input: "publish_and_supersede_pins",
+    pins,
+    summary: pins.length
+      ? `Dispatch the connected-history cycle with publish_and_supersede_pins=true (or pass --publish-and-supersede-pins). That run publishes the held change and marks these pinning evidence files superseded/stale in the same operation, leaving their original hashes and observation times untouched; a real re-measure remains owed: ${pins.join(", ")}.`
+      : "Dispatch the connected-history cycle with publish_and_supersede_pins=true (or pass --publish-and-supersede-pins) so a held change is published together with an explicit supersession of its pinning evidence.",
+  };
+}
+
+/**
+ * Plan an honest supersession of retained pins. Original measurement hashes
+ * and observation times stay byte-identical; only `stale_since` and
+ * `superseded_by` are added. Nothing is written until publication.
+ */
+export function planSupersedeRetainedPins({
+  root,
+  invalidatedEvidence = [],
+  changedPaths = [],
+  observedAt,
+  runId = null,
+} = {}) {
+  if (!root) throw new Error("planSupersedeRetainedPins requires a repository root");
+  if (!observedAt) throw new Error("planSupersedeRetainedPins requires observedAt");
+  const files = [];
+  const paths = [];
+  for (const entry of invalidatedEvidence) {
+    const previousText = readText(root, entry.path);
+    if (previousText == null) {
+      throw new Error(`pinned evidence is missing for supersession: ${entry.path}`);
+    }
+    let document;
+    try {
+      document = JSON.parse(previousText);
+    } catch (error) {
+      throw new Error(`pinned evidence is not JSON for supersession: ${entry.path} (${clean(error?.message || error)})`);
+    }
+    const provenanceKey = document.hermetic_measurement_provenance
+      ? "hermetic_measurement_provenance"
+      : document.measurement_provenance
+        ? "measurement_provenance"
+        : null;
+    if (!provenanceKey || !Array.isArray(document[provenanceKey]?.inputs)) {
+      throw new Error(`pinned evidence has no measurement_provenance.inputs for supersession: ${entry.path}`);
+    }
+    const next = structuredClone(document);
+    next.stale_since = observedAt;
+    next.superseded_by = {
+      run_id: runId,
+      cycle: CONNECTED_HISTORY_CYCLE.id,
+      changed_paths: [...changedPaths],
+      inputs_changed: [...(entry.inputs_changed || [])],
+      reason: "Published held connected-history materializations; this measurement still describes the prior bytes and a real re-measure by its owning producer is owed.",
+    };
+    const text = serialize(next);
+    files.push({ path: entry.path, text, previousText });
+    paths.push(entry.path);
+  }
+  return { paths, files };
+}
+
+/**
  * The publication decision, derived from what the cycle measured. It is the
  * only place a decision is made, and the receipt verifier re-derives it.
+ *
+ * `supersededEvidence` names pin paths marked superseded/stale in the same
+ * operation as a publication. A superseded pin no longer holds the change; a
+ * pin that would be invalidated and is not superseded still holds.
  */
-export function derivePublicationDecision({ changedPaths = [], invalidatedEvidence = [], reobservationFailures = [] }) {
+export function derivePublicationDecision({
+  changedPaths = [],
+  invalidatedEvidence = [],
+  reobservationFailures = [],
+  supersededEvidence = [],
+} = {}) {
   if (changedPaths.length === 0) {
     return {
       decision: "unchanged",
@@ -470,10 +549,19 @@ export function derivePublicationDecision({ changedPaths = [], invalidatedEviden
       reason: `A committed observation could not be re-fetched (${reobservationFailures.join(", ")}); publishing this run would drop last-known-good evidence, so the served bytes did not change.`,
     };
   }
-  if (invalidatedEvidence.length) {
+  const superseded = new Set(supersededEvidence);
+  const unresolvedPins = invalidatedEvidence.filter((entry) => !superseded.has(entry.path));
+  if (unresolvedPins.length) {
     return {
       decision: "held",
-      reason: `Publishing would change bytes that retained production measurements pin (${invalidatedEvidence.map((entry) => entry.path).join(", ")}); the change is held for a reviewed publication that re-measures them, so the served bytes did not change.`,
+      reason: `Publishing would change bytes that retained production measurements pin (${unresolvedPins.map((entry) => entry.path).join(", ")}); the change is held for a reviewed publication that releases those pins, so the served bytes did not change.`,
+      would_release: describeHeldPublicationRelease(unresolvedPins),
+    };
+  }
+  if (invalidatedEvidence.length) {
+    return {
+      decision: "published",
+      reason: `The materialized change was published together with an explicit supersession of the pinning evidence (${[...superseded].join(", ")}); original measurement hashes and observation times were left untouched, and a real re-measure remains owed.`,
     };
   }
   return {
@@ -627,6 +715,18 @@ export async function runConnectedHistoryCycle({
   dryRun = false,
   receiptOut = null,
   heldDir = null,
+  /**
+   * When true, a pin-invalidating change is published together with an
+   * explicit supersession of every pinning evidence file. Original
+   * measurement hashes and observation times stay untouched. The default
+   * scheduled run leaves this false so the pin detector keeps its teeth.
+   */
+  publishAndSupersedePins = false,
+  /**
+   * Optional planner for the supersession step. Defaults to adding
+   * `stale_since` / `superseded_by` without rewriting measurement fields.
+   */
+  planSupersede = planSupersedeRetainedPins,
   /** Unmerged receipts (automation-branch tip) that must stay in prior_runs. */
   pendingReceipts = [],
 } = {}) {
@@ -701,7 +801,6 @@ export async function runConnectedHistoryCycle({
       const reobservationFailures = state.acquisition.sources
         .filter((row) => row.comparison === "reobservation_failed")
         .map((row) => row.source_id);
-      const decided = derivePublicationDecision({ changedPaths, invalidatedEvidence, reobservationFailures });
       const writes = records
         .filter((record) => record.mode !== "frozen_baseline")
         .flatMap((record) => [
@@ -709,11 +808,38 @@ export async function runConnectedHistoryCycle({
           [record.verification_receipt.path, record.receiptText, committed[record.id].receiptText],
         ])
         .filter(([path]) => changedPaths.includes(path));
+      let supersedePlan = { paths: [], files: [] };
+      if (
+        publishAndSupersedePins
+        && changedPaths.length
+        && invalidatedEvidence.length
+        && reobservationFailures.length === 0
+      ) {
+        supersedePlan = planSupersede({
+          root,
+          invalidatedEvidence,
+          changedPaths,
+          observedAt: startedAt,
+          runId: run.run_id || `local:${startedAt}`,
+        }) || { paths: [], files: [] };
+      }
+      const decided = derivePublicationDecision({
+        changedPaths,
+        invalidatedEvidence,
+        reobservationFailures,
+        supersededEvidence: supersedePlan.paths,
+      });
       if (decided.decision === "published" && !dryRun) {
         for (const [path, text, previousText] of writes) {
           // determinism-lint: allow write only the cycle's run mode publishes a decided change
           writeFileSync(join(root, path), text);
           state.written.push({ path, previousText });
+        }
+        for (const file of supersedePlan.files) {
+          mkdirSync(dirname(join(root, file.path)), { recursive: true });
+          // determinism-lint: allow write pin supersession lands with the published change
+          writeFileSync(join(root, file.path), file.text);
+          state.written.push({ path: file.path, previousText: file.previousText });
         }
       } else if (decided.decision === "held" && heldDir) {
         for (const [path, text] of writes) {
@@ -727,6 +853,7 @@ export async function runConnectedHistoryCycle({
         ...decided,
         changed_paths: changedPaths,
         invalidated_evidence: invalidatedEvidence,
+        superseded_evidence: supersedePlan.paths,
         reobservation_failures: reobservationFailures,
         written_paths: state.written.map((entry) => entry.path),
         dry_run: dryRun,
@@ -961,7 +1088,9 @@ export function buildConnectedHistoryCycleReceipt({
           derived_decision: publication.decision,
           changed_paths: publication.changed_paths,
           invalidated_evidence: publication.invalidated_evidence,
+          superseded_evidence: publication.superseded_evidence || [],
           reobservation_failures: publication.reobservation_failures,
+          ...(publication.would_release ? { would_release: publication.would_release } : {}),
           written_paths: failure ? [] : publication.written_paths,
           dry_run: publication.dry_run,
           channel,
@@ -971,6 +1100,7 @@ export function buildConnectedHistoryCycleReceipt({
           reason: `The ${failedStage} stage failed before a publication decision; the committed materializations were left in place.`,
           changed_paths: [],
           invalidated_evidence: [],
+          superseded_evidence: [],
           reobservation_failures: [],
           written_paths: [],
           dry_run: false,
@@ -1026,9 +1156,15 @@ export function verifyConnectedHistoryCycleReceipt(receipt) {
     reobservationFailures: (receipt.acquisition.documents.sources || [])
       .filter((row) => row.comparison === "reobservation_failed")
       .map((row) => row.source_id),
+    supersededEvidence: receipt.publication?.superseded_evidence || [],
   });
   if (receipt.publication?.decision !== derived.decision || run.outcome !== derived.decision) errors.push("decision");
   if (JSON.stringify(receipt.publication?.changed_paths || []) !== JSON.stringify(changedPaths)) errors.push("changed_paths");
   if (derived.decision !== "published" && (receipt.publication?.written_paths || []).length) errors.push("unpublished_writes");
+  if (derived.would_release) {
+    if (!receipt.publication?.would_release?.summary) errors.push("would_release");
+  } else if (receipt.publication?.would_release) {
+    errors.push("unexpected_would_release");
+  }
   return { valid: errors.length === 0, errors };
 }
