@@ -642,8 +642,8 @@
       "name": "DCAS Notice of Examination fee/salary densify",
       "role": "Body-parsed APPLICATION FEE and minimum salary from public NOE PDFs, merged when the open-competitive snapshot lacks structured amounts. Annual schedule has no fee columns.",
       "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-      "fetched_at": "2026-08-02",
-      "verified_at": "2026-08-02",
+      "fetched_at": "2026-11-05",
+      "verified_at": "2026-11-05",
       "stale_after_days": 45,
       "freshness_required": false
     },
@@ -718,17 +718,17 @@
       "list_joined": 78
     },
     "noe_fee_salary_densify": {
-      "densify_records": 13,
+      "densify_records": 19,
       "densify_applied": 10,
       "fee_salary_non_null_before": {
         "total": 227,
-        "both": 28,
-        "rate": 0.12334801762114538
+        "both": 33,
+        "rate": 0.14537444933920704
       },
       "fee_salary_non_null_after": {
         "total": 227,
-        "both": 38,
-        "rate": 0.16740088105726872
+        "both": 43,
+        "rate": 0.1894273127753304
       }
     },
     "oasys_exam_map": {
@@ -36040,9 +36040,15 @@
       "interest_area": "administration-finance",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277001000.pdf",
       "salary_publication": "The notice does not state a minimum annual salary for this title.",
-      "card_leads": [],
+      "fee": 82,
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 82
+        }
+      ],
       "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36056,7 +36062,6 @@
       "fee_salary_gap": {
         "class": "not_published",
         "missing": [
-          "fee",
           "salary_min"
         ],
         "would_appear_in": "the Notice of Examination if DCAS stated the amount"
@@ -36159,10 +36164,17 @@
       ],
       "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277009000.pdf",
-      "salary_publication": "The notice does not state a minimum annual salary for this title.",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee": 61,
+      "salary_min": 41517,
+      "salary_note": "Current minimum annual salary",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 61
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36173,14 +36185,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_published",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
-      },
+      "fee_salary_gap": null,
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
       "list_establishment_forecast": {
@@ -36212,10 +36217,17 @@
       ],
       "interest_area": "trades-operations",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277015000.pdf",
-      "salary_publication": "The notice does not state a minimum annual salary for this title.",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee": 61,
+      "salary_min": 43135,
+      "salary_note": "Current minimum annual salary",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 61
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36226,14 +36238,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_published",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
-      },
+      "fee_salary_gap": null,
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
       "list_establishment_forecast": {
@@ -36265,10 +36270,17 @@
       ],
       "interest_area": "administration-finance",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277017000.pdf",
-      "salary_publication": "The notice does not state a minimum annual salary for this title.",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee": 61,
+      "salary_min": 42288,
+      "salary_note": "Current minimum annual salary",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 61
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36279,14 +36291,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_published",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
-      },
+      "fee_salary_gap": null,
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
       "list_establishment_forecast": {
@@ -36392,10 +36397,17 @@
       ],
       "interest_area": "engineering-construction",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277040000.pdf",
-      "salary_publication": "The notice does not state a minimum annual salary for this title.",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee": 68,
+      "salary_min": 56447,
+      "salary_note": "Current minimum annual salary",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 68
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36406,14 +36418,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_published",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
-      },
+      "fee_salary_gap": null,
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
       "list_establishment_forecast": {
@@ -36451,8 +36456,7 @@
         "dcas-noe"
       ],
       "interest_area": "trades-operations",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277050000.pdf",
-      "salary_publication": "The notice does not state a minimum annual salary for this title.",
+      "notice_pending_note": "DCAS's schedule page linked a Notice of Examination PDF at the standard URL pattern (20277050000.pdf) before the file existed; confirmed 404 on 2026-11-05 on two separate checks while every other exam's linked PDF in this snapshot resolved. Treated as not yet published rather than carrying a dead link or an unverified salary claim; re-check when the schedule page republishes a working notice.",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -36467,12 +36471,16 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_published",
+        "class": "not_yet_ingested",
         "missing": [
           "fee",
           "salary_min"
         ],
-        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       },
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
@@ -36565,10 +36573,17 @@
       ],
       "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277058000.pdf",
-      "salary_publication": "The notice does not state a minimum annual salary for this title.",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee": 68,
+      "salary_min": 47603,
+      "salary_note": "Current minimum annual salary",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 68
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36579,14 +36594,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_published",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
-      },
+      "fee_salary_gap": null,
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
       "list_establishment_forecast": {

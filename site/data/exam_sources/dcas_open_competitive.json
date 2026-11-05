@@ -37,8 +37,7 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277009000.pdf",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25",
-      "salary_publication": "The notice does not state a minimum annual salary for this title."
+      "application_end": "2026-11-25"
     },
     {
       "exam_number": "7015",
@@ -46,8 +45,7 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277015000.pdf",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25",
-      "salary_publication": "The notice does not state a minimum annual salary for this title."
+      "application_end": "2026-11-25"
     },
     {
       "exam_number": "7017",
@@ -55,8 +53,7 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277017000.pdf",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25",
-      "salary_publication": "The notice does not state a minimum annual salary for this title."
+      "application_end": "2026-11-25"
     },
     {
       "exam_number": "7030",
@@ -99,17 +96,15 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277040000.pdf",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25",
-      "salary_publication": "The notice does not state a minimum annual salary for this title."
+      "application_end": "2026-11-25"
     },
     {
       "exam_number": "7050",
       "title": "Metal Work Mechanic",
       "eligibility": "open_competitive",
-      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277050000.pdf",
       "application_start": "2026-11-05",
       "application_end": "2026-11-25",
-      "salary_publication": "The notice does not state a minimum annual salary for this title."
+      "notice_pending_note": "DCAS's schedule page linked a Notice of Examination PDF at the standard URL pattern (20277050000.pdf) before the file existed; confirmed 404 on 2026-11-05 on two separate checks while every other exam's linked PDF in this snapshot resolved. Treated as not yet published rather than carrying a dead link or an unverified salary claim; re-check when the schedule page republishes a working notice."
     },
     {
       "exam_number": "7315",
@@ -129,8 +124,7 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277058000.pdf",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25",
-      "salary_publication": "The notice does not state a minimum annual salary for this title."
+      "application_end": "2026-11-25"
     },
     {
       "exam_number": "7324",
