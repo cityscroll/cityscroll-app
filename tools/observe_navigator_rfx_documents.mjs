@@ -140,12 +140,23 @@ async function main() {
   mkdirSync(outputDir, { recursive: true });
   mkdirSync(extractionDir, { recursive: true });
   mkdirSync(readingDir, { recursive: true });
-  writeFileSync(path.join(outputDir, "procurement_documents.json"), stableJson(result.manifest));
   const shardDir = path.join(outputDir, "procurement_documents");
   mkdirSync(shardDir, { recursive: true });
+  const shardBytes = new Map();
   for (const [rfpId, shard] of result.shards) {
-    writeFileSync(path.join(shardDir, `rfx-${rfpId}.json`), stableJson(shard));
+    const bytes = Buffer.from(stableJson(shard));
+    shardBytes.set(rfpId, bytes);
+    writeFileSync(path.join(shardDir, `rfx-${rfpId}.json`), bytes);
   }
+  const manifest = {
+    ...result.manifest,
+    shards: result.manifest.shards.map((entry) => ({
+      ...entry,
+      bytes: shardBytes.get(entry.rfp_id)?.length ?? 0,
+      sha256: createHash("sha256").update(shardBytes.get(entry.rfp_id) || Buffer.alloc(0)).digest("hex"),
+    })),
+  };
+  writeFileSync(path.join(outputDir, "procurement_documents.json"), stableJson(manifest));
   for (const extraction of result.state.extractions.values()) {
     const digest = extraction.extraction_key.sha256;
     const keyDigest = createHash("sha256").update(JSON.stringify(extraction.extraction_key)).digest("hex");
