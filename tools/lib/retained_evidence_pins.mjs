@@ -23,6 +23,8 @@ function walkJson(root, directory, found = []) {
 /**
  * Retained measurements under docs/evidence that pin a path's bytes. Changing
  * a pinned path makes that measurement stop describing the served tree.
+ * A pin marked `superseded_by` or `stale_since` is no longer an active pin:
+ * readers still see the original measurement, and a real re-measure is owed.
  */
 export function retainedEvidencePins(root, evidenceRoot = "docs/evidence") {
   const pins = [];
@@ -31,12 +33,14 @@ export function retainedEvidencePins(root, evidenceRoot = "docs/evidence") {
     const text = existsSync(absolute) ? readFileSync(absolute, "utf8") : null;
     if (!text || !text.includes("\"measurement_provenance\"")) continue;
     let provenance;
+    let document;
     try {
-      const document = JSON.parse(text);
+      document = JSON.parse(text);
       provenance = document.hermetic_measurement_provenance || document.measurement_provenance;
     } catch {
       continue;
     }
+    if (document?.superseded_by || document?.stale_since) continue;
     const inputs = (provenance?.inputs || []).map((input) => input?.path).filter(Boolean);
     if (inputs.length) pins.push({ path, measured_revision: provenance.revision || null, inputs });
   }

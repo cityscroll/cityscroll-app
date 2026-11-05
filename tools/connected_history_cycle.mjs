@@ -6,6 +6,7 @@
  *
  *   node tools/connected_history_cycle.mjs --run
  *   node tools/connected_history_cycle.mjs --run --pending-receipt <path>
+ *   node tools/connected_history_cycle.mjs --run --publish-and-supersede-pins
  *   node tools/connected_history_cycle.mjs --run --dry-run --receipt-out <path>
  *   node tools/connected_history_cycle.mjs --check-declaration
  *   node tools/connected_history_cycle.mjs --summarize site/data/connected_history_cycle.json
@@ -14,8 +15,12 @@
  * revision, and writes the receipt to site/data/connected_history_cycle.json.
  * It changes a served history materialization only when the derived decision
  * is `published`. `--pending-receipt` carries an unmerged automation-branch
- * receipt into `prior_runs` so a later run cannot drop it. `--dry-run` writes
- * nothing under site/ and needs `--receipt-out` outside it.
+ * receipt into `prior_runs` so a later run cannot drop it.
+ * `--publish-and-supersede-pins` publishes a pin-held change and marks each
+ * pinning evidence file superseded/stale in the same operation, without
+ * rewriting original measurement hashes or observation times; a real
+ * re-measure by the owning producer remains owed.
+ * `--dry-run` writes nothing under site/ and needs `--receipt-out` outside it.
  */
 
 import { spawnSync } from "node:child_process";
@@ -161,6 +166,12 @@ export function summarizeConnectedHistoryCycleReceipt(receipt) {
     `- served revision: ${run.served?.revision || run.served?.reason || "not observed"}`,
     `- publication: ${receipt.publication?.decision} — ${receipt.publication?.reason}`,
   ];
+  if (receipt.publication?.would_release?.summary) {
+    lines.push(`- would release: ${receipt.publication.would_release.summary}`);
+  }
+  if ((receipt.publication?.superseded_evidence || []).length) {
+    lines.push(`- superseded pins: ${receipt.publication.superseded_evidence.join(", ")}`);
+  }
   if (run.failed_stage) lines.push(`- failed stage: ${run.failed_stage} (${run.error})`);
   const sources = receipt.acquisition?.documents?.sources || [];
   const counts = sources.reduce((acc, row) => ({ ...acc, [row.comparison]: (acc[row.comparison] || 0) + 1 }), {});
@@ -188,10 +199,11 @@ async function main(argv = process.argv.slice(2)) {
     return 0;
   }
   if (!argv.includes("--run")) {
-    console.error("usage: node tools/connected_history_cycle.mjs --run [--pending-receipt <path>] [--dry-run --receipt-out <path>] | --check-declaration | --summarize <receipt>");
+    console.error("usage: node tools/connected_history_cycle.mjs --run [--pending-receipt <path>] [--publish-and-supersede-pins] [--dry-run --receipt-out <path>] | --check-declaration | --summarize <receipt>");
     return 2;
   }
   const dryRun = argv.includes("--dry-run");
+  const publishAndSupersedePins = argv.includes("--publish-and-supersede-pins");
   const receiptOut = option(argv, "--receipt-out") ? resolve(option(argv, "--receipt-out")) : null;
   if (dryRun && (!receiptOut || !relative(join(root, "site"), receiptOut).startsWith(".."))) {
     throw new Error("--dry-run needs --receipt-out outside site/ so a rehearsal never looks like a served cycle");
@@ -213,6 +225,7 @@ async function main(argv = process.argv.slice(2)) {
     dryRun,
     receiptOut,
     heldDir: join(root, CONNECTED_HISTORY_CYCLE.held_dir),
+    publishAndSupersedePins,
     pendingReceipts,
   });
   console.log(JSON.stringify({
@@ -221,6 +234,8 @@ async function main(argv = process.argv.slice(2)) {
     failed_stage: receipt.run.failed_stage,
     served_revision: receipt.run.served?.revision ?? null,
     changed_paths: receipt.publication.changed_paths,
+    superseded_evidence: receipt.publication.superseded_evidence || [],
+    would_release: receipt.publication.would_release || null,
     receipt: relative(root, receiptOut || receiptPath),
   }, null, 2));
   return exitCode;
