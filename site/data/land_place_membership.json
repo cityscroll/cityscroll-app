@@ -12,10 +12,10 @@
   "bbl_source": {
     "status": "present",
     "path": "site/data/zap_bbl_warehouse_lookup.json",
-    "materialized_at": "2026-10-05T17:35:26.970Z",
+    "materialized_at": "2026-11-04T21:51:58.033Z",
     "project_count": 24575,
     "bbl_row_count": 50630,
-    "sha256": "86d7a10e1c00935ae172780f4f25c1c447c0b48ce49b1614be7b2acc15c0257e"
+    "sha256": "715333f7271ac80079f2d3a4d0ac58b64c30256c7d4f84562855920441197410"
   },
   "by_project": {
     "2018X0438": {
@@ -17329,7 +17329,7 @@
     "bbl_index": {
       "path": "site/data/zap_bbl_warehouse_lookup.json",
       "status": "present",
-      "sha256": "86d7a10e1c00935ae172780f4f25c1c447c0b48ce49b1614be7b2acc15c0257e"
+      "sha256": "715333f7271ac80079f2d3a4d0ac58b64c30256c7d4f84562855920441197410"
     },
     "parcel_geography": {
       "path": "site/data/parcel-geography/manifest.json",
@@ -17348,7 +17348,7 @@
     "catalog_content_id": "fnv1a32:9e9ee683:244",
     "catalog_materialized_at": "2026-10-22T20:20:44.090Z",
     "catalog_generated_at": "2026-10-22T19:59:40.125Z",
-    "bbl_materialized_at": "2026-10-05T17:35:26.970Z",
+    "bbl_materialized_at": "2026-11-04T21:51:58.033Z",
     "parcel_coordinate_vintage": "pluto_25v4",
     "boundary_vintages": {
       "borough": "2026-05-26",
@@ -17360,8 +17360,8 @@
   },
   "generation": {
     "derivation": "node tools/build_land_place_membership.mjs",
-    "content_id": "fnv1a32:80110c20:244",
-    "id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
+    "content_id": "fnv1a32:c4cf2d66:244",
+    "id": "3780b7d2caac24f42c8da886a01953142170cd1ab79a36705c20f49f57d35c7b",
     "built_at": "2026-10-22T20:20:44.090Z"
   }
 }

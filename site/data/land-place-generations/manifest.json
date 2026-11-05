@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.land_place_generation_manifest.v1",
-  "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
+  "generation_id": "3780b7d2caac24f42c8da886a01953142170cd1ab79a36705c20f49f57d35c7b",
   "built_at": "2026-10-22T20:20:44.090Z",
   "input_hashes": {
     "aggregate": "44060fb6ff10cc8b4b20a6a6007e60dcc8336687cc94bc1349f95ae3e489c10b",
@@ -18,7 +18,7 @@
     "catalog_content_id": "fnv1a32:9e9ee683:244",
     "catalog_materialized_at": "2026-10-22T20:20:44.090Z",
     "catalog_generated_at": "2026-10-22T19:59:40.125Z",
-    "bbl_materialized_at": "2026-10-05T17:35:26.970Z",
+    "bbl_materialized_at": "2026-11-04T21:51:58.033Z",
     "parcel_coordinate_vintage": "pluto_25v4",
     "boundary_vintages": {
       "borough": "2026-05-26",
@@ -31,17 +31,17 @@
   "project_count": 244,
   "consumers": {
     "index": {
-      "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
-      "content_sha256": "96a16291bb21135c5e0ccfe1ff2e751c26d33325982c02f94c7f32cbcdec56a2"
+      "generation_id": "3780b7d2caac24f42c8da886a01953142170cd1ab79a36705c20f49f57d35c7b",
+      "content_sha256": "f3aed7b21a6d97068a4bf6135ae6973e7e0d1f17641af98a482cbdd5911c0f1b"
     },
     "evidence": {
-      "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
-      "content_sha256": "6747bca675f2ea81289be3974a7001b54c51c0913d8a6324006f6f7e24eedecc"
+      "generation_id": "3780b7d2caac24f42c8da886a01953142170cd1ab79a36705c20f49f57d35c7b",
+      "content_sha256": "958213aabd65d8f5fd1908a566abdd2130892c9e357bb7ec6da1fbedae31702c"
     },
     "reverse": {
-      "generation_id": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8",
+      "generation_id": "3780b7d2caac24f42c8da886a01953142170cd1ab79a36705c20f49f57d35c7b",
       "content_sha256": "aba14e86190abf28ae6a452ec81add8387b42258e091ba8e16937ba1ab867e4e"
     }
   },
-  "active_generation": "d8da6c8623aa4d7659bc2b8b1ef43b6aabb2f44090ee55ec0bbf6ce7a00076e8"
+  "active_generation": "3780b7d2caac24f42c8da886a01953142170cd1ab79a36705c20f49f57d35c7b"
 }
