@@ -6,14 +6,14 @@
     "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
     "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
     "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-    "fetched_at": "2026-11-04",
+    "fetched_at": "2026-11-05",
     "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
     "stale_after_days": 3,
     "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
   },
   "summary": {
-    "input_rows": 47,
-    "mapped": 47,
+    "input_rows": 51,
+    "mapped": 51,
     "skipped": 0
   },
   "records": [
@@ -40,6 +40,18 @@
       "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620",
       "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20266126000.pdf",
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+    },
+    {
+      "exam_number": "7000",
+      "oasys_exam_id": "9739",
+      "title": "Addiction Counselor (NYC H+H)",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-12-22",
+      "filing_fee": 68,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9739",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277000000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9739"
     },
     {
       "exam_number": "7003",
@@ -198,6 +210,18 @@
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9640"
     },
     {
+      "exam_number": "7030",
+      "oasys_exam_id": "9686",
+      "title": "Elevator Mechanic's Helper",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 91,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9686",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277030000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9686"
+    },
+    {
       "exam_number": "7032",
       "oasys_exam_id": "9669",
       "title": "Emergency Medical Specialist Trainee",
@@ -342,6 +366,18 @@
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9645"
     },
     {
+      "exam_number": "7074",
+      "oasys_exam_id": "9693",
+      "title": "Youth Development Specialist",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 68,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9693",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277074000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9693"
+    },
+    {
       "exam_number": "7131",
       "oasys_exam_id": "9670",
       "title": "Emergency Medical Specialist - EMT",
@@ -472,6 +508,18 @@
       "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
       "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277331000.pdf",
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+    },
+    {
+      "exam_number": "7332",
+      "oasys_exam_id": "9692",
+      "title": "Traffic Enforcement Agent",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-12-22",
+      "filing_fee": 0,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9692",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277332000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9692"
     },
     {
       "exam_number": "7502",

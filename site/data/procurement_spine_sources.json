@@ -2,7 +2,7 @@
   "schema_version": 2,
   "title": "Population-backed procurement spine observations for entity intelligence",
   "observed_on": "2026-11-05",
-  "generated_at": "2026-11-05T01:02:25.093Z",
+  "generated_at": "2026-11-05T12:12:30.491Z",
   "receipts": {
     "passport_join": "site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json",
     "source_coverage": "entity_resolution/source_coverage.json",
@@ -54,7 +54,7 @@
       "coverage_status": "measured",
       "population_backed": true,
       "source_url": "https://www.checkbooknyc.com/api",
-      "pulled_at": "2026-11-05T01:02:25.093Z",
+      "pulled_at": "2026-11-05T12:12:30.491Z",
       "population": {
         "api_transaction_rows": 40014,
         "normalized_unique_contracts": 29402,

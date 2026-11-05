@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-04T18:28:51.048Z",
-  "open_as_of": "2026-11-04",
+  "generated_at": "2026-11-05T12:12:35.714Z",
+  "open_as_of": "2026-11-05",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,68 +10,13 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-04'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-05'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
   },
   "count": 40,
   "notices": [
-    {
-      "request_id": "20260825035",
-      "start_date": "2026-09-02T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "Bid Extension: Loading Dock + Morgue at South Brooklyn Health, Brooklyn, NY",
-      "pin": "26202503",
-      "due_date": "2026-11-04T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260826044",
-      "start_date": "2026-09-01T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Correction: Steam Tank Modernization at Elmhurst Hospital Center",
-      "pin": "33202504",
-      "due_date": "2026-11-04T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260625055",
-      "start_date": "2026-07-02T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: Elmhurst Hospital, Entryway Renovation",
-      "pin": "33202207",
-      "due_date": "2026-11-04T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260921005",
-      "start_date": "2026-09-28T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "SMD_PS_RFP_523249 - Lead Abatement Program Services",
-      "pin": "523249",
-      "due_date": "2026-11-04T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260923026",
-      "start_date": "2026-09-30T00:00:00.000",
-      "agency_name": "Economic Development Corporation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Consultant Services, Coney Island Boardwalk Reconstruction",
-      "pin": "11233",
-      "due_date": "2026-11-04T16:00:00.000",
-      "selection_method_description": "Request for Qualifications"
-    },
     {
       "request_id": "20260924018",
       "start_date": "2026-10-02T00:00:00.000",
@@ -453,6 +398,60 @@
       "short_title": "82627B0004-BEDC OB-144A: Total Residual Chlorine (TRC) Optimization at the Oakwood Beach Wastewater Resource Recovery Facility (WRRF)",
       "pin": "82627B0004",
       "due_date": "2026-11-18T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260421016",
+      "start_date": "2026-04-28T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: 85624B0012-CSB 25th FL Construction at 1 Centre Street",
+      "pin": "85624B0012",
+      "due_date": "2026-11-18T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261006017",
+      "start_date": "2026-10-13T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Correction: 85727B0029-2700014 - Stump Grinder - PARKS",
+      "pin": "85727B0029",
+      "due_date": "2026-11-18T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261009019",
+      "start_date": "2026-10-21T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "85727B0030-Auto Body and Chassis Repair Services for Queens East (RE-AD)",
+      "pin": "85727B0030",
+      "due_date": "2026-11-18T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260514019",
+      "start_date": "2026-05-20T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: 85624B0007-CSB 360 Adams ADA Improvements Construction",
+      "pin": "85624B0007",
+      "due_date": "2026-11-18T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261014034",
+      "start_date": "2026-10-26T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located Brooklyn Neighborhood (BK08) and (BK09), Brooklyn.",
+      "due_date": "2026-11-18T14:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     }
   ]

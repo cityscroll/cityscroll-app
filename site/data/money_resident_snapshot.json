@@ -1,14 +1,24 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-11-04T18:28:51.048Z",
+  "generated_at": "2026-11-05T12:12:35.714Z",
   "source_vintages": {
-    "default_open": "2026-11-04T18:28:51.048Z",
+    "default_open": "2026-11-05T12:12:35.714Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-11-04T04:22:02.123Z"
   },
-  "count": 380,
+  "count": 378,
   "rows": [
+    {
+      "request_id": "20261014034",
+      "start_date": "2026-10-26T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located Brooklyn Neighborhood (BK08) and (BK09), Brooklyn.",
+      "due_date": "2026-11-18T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
     {
       "request_id": "20261016012",
       "start_date": "2026-10-23T00:00:00.000",
@@ -30,6 +40,17 @@
       "pin": "11960",
       "due_date": "2026-11-16T16:00:00.000",
       "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20261009019",
+      "start_date": "2026-10-21T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "85727B0030-Auto Body and Chassis Repair Services for Queens East (RE-AD)",
+      "pin": "85727B0030",
+      "due_date": "2026-11-18T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20261015010",
@@ -141,6 +162,17 @@
       "selection_method_description": "Request for Proposals"
     },
     {
+      "request_id": "20261006017",
+      "start_date": "2026-10-13T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Correction: 85727B0029-2700014 - Stump Grinder - PARKS",
+      "pin": "85727B0029",
+      "due_date": "2026-11-18T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20261006031",
       "start_date": "2026-10-13T00:00:00.000",
       "agency_name": "NYC Health + Hospitals",
@@ -217,17 +249,6 @@
       "selection_method_description": "Competitive Sealed Bids/Pre-Qualified List"
     },
     {
-      "request_id": "20260923026",
-      "start_date": "2026-09-30T00:00:00.000",
-      "agency_name": "Economic Development Corporation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Consultant Services, Coney Island Boardwalk Reconstruction",
-      "pin": "11233",
-      "due_date": "2026-11-04T16:00:00.000",
-      "selection_method_description": "Request for Qualifications"
-    },
-    {
       "request_id": "20260924021",
       "start_date": "2026-09-30T00:00:00.000",
       "agency_name": "NYC Health + Hospitals",
@@ -248,17 +269,6 @@
       "pin": "523237, 5",
       "due_date": "2026-11-17T14:00:00.000",
       "selection_method_description": "Request for Proposals"
-    },
-    {
-      "request_id": "20260921005",
-      "start_date": "2026-09-28T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "SMD_PS_RFP_523249 - Lead Abatement Program Services",
-      "pin": "523249",
-      "due_date": "2026-11-04T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260921021",
@@ -338,17 +348,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20260825035",
-      "start_date": "2026-09-02T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "Bid Extension: Loading Dock + Morgue at South Brooklyn Health, Brooklyn, NY",
-      "pin": "26202503",
-      "due_date": "2026-11-04T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
       "request_id": "20260826038",
       "start_date": "2026-09-02T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -358,17 +357,6 @@
       "pin": "85625P0004",
       "due_date": "2026-11-12T14:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260826044",
-      "start_date": "2026-09-01T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Correction: Steam Tank Modernization at Elmhurst Hospital Center",
-      "pin": "33202504",
-      "due_date": "2026-11-04T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260821028",
@@ -6490,17 +6478,6 @@
       }
     },
     {
-      "request_id": "20260625055",
-      "start_date": "2026-07-02T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: Elmhurst Hospital, Entryway Renovation",
-      "pin": "33202207",
-      "due_date": "2026-11-04T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
       "request_id": "20260624038",
       "start_date": "2026-07-01T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -6773,7 +6750,11 @@
       "start_date": "2026-05-20T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
       "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: 85624B0007-CSB 360 Adams ADA Improvements Construction",
       "pin": "85624B0007",
+      "due_date": "2026-11-18T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids",
       "source_system": "money_default_open",
       "place": {
         "scope": "unlocated",
@@ -6786,7 +6767,11 @@
       "start_date": "2026-04-28T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
       "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: 85624B0012-CSB 25th FL Construction at 1 Centre Street",
       "pin": "85624B0012",
+      "due_date": "2026-11-18T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids",
       "source_system": "money_default_open",
       "place": {
         "scope": "local",

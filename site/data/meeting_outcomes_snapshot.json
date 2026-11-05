@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-11-04T08:00:43.756Z",
+  "generated_at": "2026-11-05T08:00:53.045Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 305,
+  "record_count": 302,
   "present_count": 17,
-  "absent_count": 288,
+  "absent_count": 285,
   "by_notice": {
     "20261006004": {
       "request_id": "20261006004",
@@ -9730,18 +9730,6 @@
     },
     "20260413023": {
       "request_id": "20260413023",
-      "snapshot_state": "absent"
-    },
-    "20260401038": {
-      "request_id": "20260401038",
-      "snapshot_state": "absent"
-    },
-    "20260327026": {
-      "request_id": "20260327026",
-      "snapshot_state": "absent"
-    },
-    "20260402006": {
-      "request_id": "20260402006",
       "snapshot_state": "absent"
     }
   }

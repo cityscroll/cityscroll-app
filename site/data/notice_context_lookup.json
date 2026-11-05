@@ -2,12 +2,21 @@
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
   "source": "site/data/money_resident_snapshot.json",
-  "source_generated_at": "2026-11-04T18:28:51.048Z",
-  "count": 380,
+  "source_generated_at": "2026-11-05T12:12:35.714Z",
+  "count": 378,
   "by_notice": {
+    "20261014034": {
+      "agency_ad_median_days": null,
+      "agency_ad_sample_count": 7,
+      "agency_award_count_12m": 0,
+      "agency_award_total_12m": 0,
+      "agency_awards_at_or_below": 0,
+      "vendor_award_count_90d": 0,
+      "vendor_award_total_12m": 0
+    },
     "20261016012": {
-      "agency_ad_median_days": 57,
-      "agency_ad_sample_count": 8,
+      "agency_ad_median_days": null,
+      "agency_ad_sample_count": 5,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -16,9 +25,18 @@
     },
     "20261019001": {
       "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_sample_count": 4,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
+      "agency_awards_at_or_below": 0,
+      "vendor_award_count_90d": 0,
+      "vendor_award_total_12m": 0
+    },
+    "20261009019": {
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
+      "agency_award_count_12m": 15,
+      "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 0,
       "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 0
@@ -43,7 +61,7 @@
     },
     "20261014004": {
       "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_sample_count": 4,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -113,9 +131,18 @@
       "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 0
     },
+    "20261006017": {
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
+      "agency_award_count_12m": 15,
+      "agency_award_total_12m": 72056280,
+      "agency_awards_at_or_below": 0,
+      "vendor_award_count_90d": 0,
+      "vendor_award_total_12m": 0
+    },
     "20261006031": {
-      "agency_ad_median_days": 57,
-      "agency_ad_sample_count": 8,
+      "agency_ad_median_days": null,
+      "agency_ad_sample_count": 5,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -176,7 +203,7 @@
       "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 0
     },
-    "20260923026": {
+    "20260924021": {
       "agency_ad_median_days": null,
       "agency_ad_sample_count": 5,
       "agency_award_count_12m": 0,
@@ -185,25 +212,7 @@
       "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 0
     },
-    "20260924021": {
-      "agency_ad_median_days": 57,
-      "agency_ad_sample_count": 8,
-      "agency_award_count_12m": 0,
-      "agency_award_total_12m": 0,
-      "agency_awards_at_or_below": 0,
-      "vendor_award_count_90d": 0,
-      "vendor_award_total_12m": 0
-    },
     "20260923006": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 7,
-      "agency_award_count_12m": 0,
-      "agency_award_total_12m": 0,
-      "agency_awards_at_or_below": 0,
-      "vendor_award_count_90d": 0,
-      "vendor_award_total_12m": 0
-    },
-    "20260921005": {
       "agency_ad_median_days": null,
       "agency_ad_sample_count": 7,
       "agency_award_count_12m": 0,
@@ -222,8 +231,8 @@
       "vendor_award_total_12m": 0
     },
     "20260917021": {
-      "agency_ad_median_days": 57,
-      "agency_ad_sample_count": 8,
+      "agency_ad_median_days": null,
+      "agency_ad_sample_count": 5,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -250,7 +259,7 @@
     },
     "20260902014": {
       "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_sample_count": 4,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -258,8 +267,8 @@
       "vendor_award_total_12m": 0
     },
     "20260902028": {
-      "agency_ad_median_days": 57,
-      "agency_ad_sample_count": 8,
+      "agency_ad_median_days": null,
+      "agency_ad_sample_count": 5,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -267,44 +276,26 @@
       "vendor_award_total_12m": 0
     },
     "20260825018": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
-      "agency_awards_at_or_below": 0,
-      "vendor_award_count_90d": 0,
-      "vendor_award_total_12m": 0
-    },
-    "20260825035": {
-      "agency_ad_median_days": 57,
-      "agency_ad_sample_count": 8,
-      "agency_award_count_12m": 0,
-      "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
       "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 0
     },
     "20260826038": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 0,
       "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 0
     },
-    "20260826044": {
-      "agency_ad_median_days": 57,
-      "agency_ad_sample_count": 8,
-      "agency_award_count_12m": 0,
-      "agency_award_total_12m": 0,
-      "agency_awards_at_or_below": 0,
-      "vendor_award_count_90d": 0,
-      "vendor_award_total_12m": 0
-    },
     "20260821028": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 0,
@@ -312,8 +303,8 @@
       "vendor_award_total_12m": 0
     },
     "20260810055": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 0,
@@ -330,8 +321,8 @@
       "vendor_award_total_12m": 0
     },
     "20260803033": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 0,
@@ -340,7 +331,7 @@
     },
     "20260730026": {
       "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_sample_count": 4,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -366,8 +357,8 @@
       "vendor_award_total_12m": 451455.03
     },
     "20260728002": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 13,
@@ -375,8 +366,8 @@
       "vendor_award_total_12m": 15702150
     },
     "20260728003": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 9,
@@ -672,8 +663,8 @@
       "vendor_award_total_12m": 250000
     },
     "20260724010": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 12,
@@ -1185,8 +1176,8 @@
       "vendor_award_total_12m": 637056
     },
     "20260723025": {
-      "agency_ad_median_days": 57,
-      "agency_ad_sample_count": 8,
+      "agency_ad_median_days": null,
+      "agency_ad_sample_count": 5,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -1212,8 +1203,8 @@
       "vendor_award_total_12m": 250000
     },
     "20260720003": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 5,
@@ -1464,8 +1455,8 @@
       "vendor_award_total_12m": 10000000
     },
     "20260716011": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 11,
@@ -1473,8 +1464,8 @@
       "vendor_award_total_12m": 3000000
     },
     "20260716012": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 5,
@@ -1590,8 +1581,8 @@
       "vendor_award_total_12m": 14904000
     },
     "20260715008": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 5,
@@ -1698,8 +1689,8 @@
       "vendor_award_total_12m": 32898325
     },
     "20260715021": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 7,
@@ -1761,8 +1752,8 @@
       "vendor_award_total_12m": 450000
     },
     "20260714005": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 8,
@@ -2094,8 +2085,8 @@
       "vendor_award_total_12m": 122842
     },
     "20260710004": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 5,
@@ -2391,8 +2382,8 @@
       "vendor_award_total_12m": 0
     },
     "20260706047": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 0,
@@ -2526,8 +2517,8 @@
       "vendor_award_total_12m": 0
     },
     "20260706035": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 10,
@@ -2580,8 +2571,8 @@
       "vendor_award_total_12m": 2000000
     },
     "20260707005": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 15,
@@ -2778,8 +2769,8 @@
       "vendor_award_total_12m": 43025625
     },
     "20260702012": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 1,
@@ -2787,8 +2778,8 @@
       "vendor_award_total_12m": 36866
     },
     "20260702013": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 6,
@@ -3111,8 +3102,8 @@
       "vendor_award_total_12m": 493638
     },
     "20260701003": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 14,
@@ -3229,7 +3220,7 @@
     },
     "20260625058": {
       "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_sample_count": 4,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -3245,18 +3236,9 @@
       "vendor_award_count_90d": 0,
       "vendor_award_total_12m": 0
     },
-    "20260625055": {
-      "agency_ad_median_days": 57,
-      "agency_ad_sample_count": 8,
-      "agency_award_count_12m": 0,
-      "agency_award_total_12m": 0,
-      "agency_awards_at_or_below": 0,
-      "vendor_award_count_90d": 0,
-      "vendor_award_total_12m": 0
-    },
     "20260624038": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 0,
@@ -3282,8 +3264,8 @@
       "vendor_award_total_12m": 0
     },
     "20260624023": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 0,
@@ -3310,7 +3292,7 @@
     },
     "20260616061": {
       "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_sample_count": 4,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -3318,8 +3300,8 @@
       "vendor_award_total_12m": 0
     },
     "20260603051": {
-      "agency_ad_median_days": 57,
-      "agency_ad_sample_count": 8,
+      "agency_ad_median_days": null,
+      "agency_ad_sample_count": 5,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -3337,7 +3319,7 @@
     },
     "20260610061": {
       "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_sample_count": 4,
       "agency_award_count_12m": 0,
       "agency_award_total_12m": 0,
       "agency_awards_at_or_below": 0,
@@ -3390,8 +3372,8 @@
       "vendor_award_total_12m": 0
     },
     "20260514019": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 0,
@@ -3399,8 +3381,8 @@
       "vendor_award_total_12m": 0
     },
     "20260421016": {
-      "agency_ad_median_days": null,
-      "agency_ad_sample_count": 5,
+      "agency_ad_median_days": 84,
+      "agency_ad_sample_count": 9,
       "agency_award_count_12m": 15,
       "agency_award_total_12m": 72056280,
       "agency_awards_at_or_below": 0,
