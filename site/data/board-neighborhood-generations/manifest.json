@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.board_neighborhood_generation_manifest.v1",
-  "generation_id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+  "generation_id": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4",
   "built_at": "2026-08-12T00:00:00.000Z",
   "input_hashes": {
-    "crosswalk": "f5763440a6951e537af38b4f2833530b9e1f0c0fbeb4e7fbf38b98e27d4576cc",
+    "crosswalk": "939e05fc658dbda8b4caa143694e34077efb7da788be203bb11d56d83f99b6d4",
     "ontology": "da95b1bad99cbb4d9030585c2ae8e0be2aeec1a46c7adb9de8556f7a0b0e9ec8",
     "labels": "d83096150f7f841de21cef87a4e19839ca57b70fcab10faa05487ba0af685075",
     "boundary_generation": {
@@ -11,7 +11,7 @@
       "community_district": "2026-05-26",
       "nta2020": "26B"
     },
-    "aggregate": "8065dbe2ff1a37709ef585d325358c2faf9b921621181d945662d38703557383"
+    "aggregate": "e25b3bd90284de7bb545734d9ae7a2a5344276078e7a121fd1c0979b84696814"
   },
   "vintages": {
     "nta2020": "26B",
@@ -27,17 +27,17 @@
   },
   "consumers": {
     "index": {
-      "generation_id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-      "content_sha256": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e"
+      "generation_id": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4",
+      "content_sha256": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4"
     },
     "directory": {
-      "generation_id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-      "content_sha256": "99be5a70083c4d1a23adbd1db1d910235501961d84ee427107d64834051bddd8"
+      "generation_id": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4",
+      "content_sha256": "a4dfbc5967648f3ac9f24a1d287b15d0959ae62b1d1b5d2a7def730e0e124cdc"
     },
     "profile": {
-      "generation_id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
-      "content_sha256": "ac71c027bd8dea4ebdd8dd41ad910ccd86d672280f9c110c165a524a388d7f21"
+      "generation_id": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4",
+      "content_sha256": "d1fa1ac8285c8d6a6ab3b348d72f9f4355b4698378be292518c6975c92df0771"
     }
   },
-  "active_generation": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e"
+  "active_generation": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4"
 }

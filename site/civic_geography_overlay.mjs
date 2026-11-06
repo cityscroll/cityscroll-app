@@ -13,6 +13,17 @@ const EPSG2263_TRIANGLE_CACHE = new WeakMap();
 
 const radians = (degrees) => Number(degrees) * Math.PI / 180;
 
+// `**`/Math.pow with a non-integer exponent is only "implementation-approximated" per
+// ECMA-262 (Number::exponentiate) — it is not required to be bit-identical across engine
+// versions or CPU architectures, and in practice differs by a handful of ULPs for some
+// (base, exponent) pairs. Math.exp/Math.log route through the shared fdlibm-derived
+// implementation instead, which stays byte-identical across Node versions and
+// architectures. Every fractional power in this projection goes through this helper so the
+// published crosswalk artifacts build byte-identical regardless of where they are built.
+function fractionalPow(base, exponent) {
+  return base > 0 ? Math.exp(exponent * Math.log(base)) : 0;
+}
+
 // NAD83 / New York Long Island (ftUS), EPSG:2263. Parameters are the EPSG
 // Lambert Conformal Conic 2SP definition; output units are US survey feet.
 export function projectEpsg2263(point) {
@@ -31,15 +42,15 @@ export function projectEpsg2263(point) {
 
   const m = (phi) => Math.cos(phi) / Math.sqrt(1 - eccentricity ** 2 * Math.sin(phi) ** 2);
   const t = (phi) => Math.tan(Math.PI / 4 - phi / 2)
-    / (((1 - eccentricity * Math.sin(phi)) / (1 + eccentricity * Math.sin(phi))) ** (eccentricity / 2));
+    / fractionalPow((1 - eccentricity * Math.sin(phi)) / (1 + eccentricity * Math.sin(phi)), eccentricity / 2);
   const m1 = m(standardParallel1);
   const m2 = m(standardParallel2);
   const t1 = t(standardParallel1);
   const t2 = t(standardParallel2);
   const exponent = (Math.log(m1) - Math.log(m2)) / (Math.log(t1) - Math.log(t2));
-  const factor = m1 / (exponent * t1 ** exponent);
-  const rho = semiMajor * factor * t(latitude) ** exponent;
-  const rhoOrigin = semiMajor * factor * t(latitudeOrigin) ** exponent;
+  const factor = m1 / (exponent * fractionalPow(t1, exponent));
+  const rho = semiMajor * factor * fractionalPow(t(latitude), exponent);
+  const rhoOrigin = semiMajor * factor * fractionalPow(t(latitudeOrigin), exponent);
   const theta = exponent * (longitude - centralMeridian);
   return [
     (falseEastingMeters + rho * Math.sin(theta)) / US_SURVEY_FOOT_METERS,

@@ -58,7 +58,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 35320850.512,
+      "intersection_area_sqft": 35320850.513,
       "pct_from": 99.997824,
       "pct_to": 32.05202,
       "source_vintages": {
@@ -150,7 +150,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 13177628.781,
+      "intersection_area_sqft": 13177628.782,
       "pct_from": 45.672086,
       "pct_to": 11.958082,
       "source_vintages": {
@@ -242,7 +242,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 51764313.317,
+      "intersection_area_sqft": 51764313.316,
       "pct_from": 99.037687,
       "pct_to": 49.214871,
       "source_vintages": {
@@ -380,7 +380,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 20675487.351,
+      "intersection_area_sqft": 20675487.35,
       "pct_from": 87.122934,
       "pct_to": 18.762038,
       "source_vintages": {
@@ -656,7 +656,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 29736929.474,
+      "intersection_area_sqft": 29736929.475,
       "pct_from": 80.573626,
       "pct_to": 39.012352,
       "source_vintages": {
@@ -1047,7 +1047,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 24378840.729,
+      "intersection_area_sqft": 24378840.728,
       "pct_from": 100,
       "pct_to": 24.129899,
       "source_vintages": {
@@ -1185,7 +1185,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 27084807.462,
+      "intersection_area_sqft": 27084807.46,
       "pct_from": 99.994633,
       "pct_to": 13.452758,
       "source_vintages": {
@@ -1346,7 +1346,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 33395043.963,
+      "intersection_area_sqft": 33395043.964,
       "pct_from": 54.915823,
       "pct_to": 28.23056,
       "source_vintages": {
@@ -1369,7 +1369,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 27414166.706,
+      "intersection_area_sqft": 27414166.705,
       "pct_from": 45.080687,
       "pct_to": 18.062743,
       "source_vintages": {
@@ -1438,7 +1438,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 24033590.601,
+      "intersection_area_sqft": 24033590.602,
       "pct_from": 93.039634,
       "pct_to": 20.316839,
       "source_vintages": {
@@ -1599,7 +1599,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 2764785.16,
+      "intersection_area_sqft": 2764785.159,
       "pct_from": 5.488002,
       "pct_to": 2.337216,
       "source_vintages": {
@@ -1829,7 +1829,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 5388569.214,
+      "intersection_area_sqft": 5388569.215,
       "pct_from": 15.214977,
       "pct_to": 6.797571,
       "source_vintages": {
@@ -1921,7 +1921,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 496870.925,
+      "intersection_area_sqft": 496870.924,
       "pct_from": 2.477694,
       "pct_to": 0.674488,
       "source_vintages": {
@@ -2036,7 +2036,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 57494885.379,
+      "intersection_area_sqft": 57494885.38,
       "pct_from": 93.281588,
       "pct_to": 38.971497,
       "source_vintages": {
@@ -2105,7 +2105,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 18452914.562,
+      "intersection_area_sqft": 18452914.561,
       "pct_from": 63.370643,
       "pct_to": 12.158322,
       "source_vintages": {
@@ -2197,7 +2197,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 7987499.277,
+      "intersection_area_sqft": 7987499.278,
       "pct_from": 94.362123,
       "pct_to": 1.200767,
       "source_vintages": {
@@ -2266,7 +2266,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 33212107.817,
+      "intersection_area_sqft": 33212107.818,
       "pct_from": 68.288792,
       "pct_to": 44.002654,
       "source_vintages": {
@@ -2496,7 +2496,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 6291578.878,
+      "intersection_area_sqft": 6291578.879,
       "pct_from": 18.594878,
       "pct_to": 4.264592,
       "source_vintages": {
@@ -2634,7 +2634,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 30796505.273,
+      "intersection_area_sqft": 30796505.272,
       "pct_from": 76.076151,
       "pct_to": 31.046473,
       "source_vintages": {
@@ -2772,7 +2772,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 3834250.803,
+      "intersection_area_sqft": 3834250.804,
       "pct_from": 21.94616,
       "pct_to": 5.204887,
       "source_vintages": {
@@ -2818,7 +2818,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 29440123.489,
+      "intersection_area_sqft": 29440123.488,
       "pct_from": 93.88893,
       "pct_to": 29.679082,
       "source_vintages": {
@@ -2910,7 +2910,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 22217650.356,
+      "intersection_area_sqft": 22217650.357,
       "pct_from": 85.995994,
       "pct_to": 15.059689,
       "source_vintages": {
@@ -3002,7 +3002,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 41308505.732,
+      "intersection_area_sqft": 41308505.733,
       "pct_from": 86.802751,
       "pct_to": 27.999957,
       "source_vintages": {
@@ -3094,7 +3094,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 4221978.622,
+      "intersection_area_sqft": 4221978.621,
       "pct_from": 99.993362,
       "pct_to": 2.861765,
       "source_vintages": {
@@ -3117,7 +3117,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 12166794.315,
+      "intersection_area_sqft": 12166794.314,
       "pct_from": 50.644144,
       "pct_to": 16.516079,
       "source_vintages": {
@@ -3232,7 +3232,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 7798084.759,
+      "intersection_area_sqft": 7798084.76,
       "pct_from": 34.045957,
       "pct_to": 6.613884,
       "source_vintages": {
@@ -3485,7 +3485,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 20115904.768,
+      "intersection_area_sqft": 20115904.769,
       "pct_from": 73.471834,
       "pct_to": 18.317964,
       "source_vintages": {
@@ -3508,7 +3508,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 7263165.022,
+      "intersection_area_sqft": 7263165.023,
       "pct_from": 26.528166,
       "pct_to": 2.615275,
       "source_vintages": {
@@ -3554,7 +3554,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 43717157.243,
+      "intersection_area_sqft": 43717157.242,
       "pct_from": 68.986772,
       "pct_to": 39.809759,
       "source_vintages": {
@@ -3577,7 +3577,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 19649941.304,
+      "intersection_area_sqft": 19649941.303,
       "pct_from": 31.008101,
       "pct_to": 7.075428,
       "source_vintages": {
@@ -3600,7 +3600,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 13927860.119,
+      "intersection_area_sqft": 13927860.12,
       "pct_from": 69.328654,
       "pct_to": 17.569712,
       "source_vintages": {
@@ -3646,7 +3646,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 22414714.816,
+      "intersection_area_sqft": 22414714.817,
       "pct_from": 72.808443,
       "pct_to": 28.275707,
       "source_vintages": {
@@ -3853,7 +3853,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 860957.092,
+      "intersection_area_sqft": 860957.093,
       "pct_from": 3.16469,
       "pct_to": 0.427629,
       "source_vintages": {
@@ -4014,7 +4014,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 19901414.38,
+      "intersection_area_sqft": 19901414.379,
       "pct_from": 36.625902,
       "pct_to": 7.165977,
       "source_vintages": {
@@ -4037,7 +4037,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 56100092.004,
+      "intersection_area_sqft": 56100092.007,
       "pct_from": 95.292892,
       "pct_to": 20.20017,
       "source_vintages": {
@@ -4060,7 +4060,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 2768894.533,
+      "intersection_area_sqft": 2768894.532,
       "pct_from": 4.703307,
       "pct_to": 2.348416,
       "source_vintages": {
@@ -4106,7 +4106,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 54474074.7,
+      "intersection_area_sqft": 54474074.702,
       "pct_from": 77.231758,
       "pct_to": 19.614684,
       "source_vintages": {
@@ -4129,7 +4129,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 14648439.917,
+      "intersection_area_sqft": 14648439.918,
       "pct_from": 20.768132,
       "pct_to": 7.275736,
       "source_vintages": {
@@ -4175,7 +4175,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 43505360.097,
+      "intersection_area_sqft": 43505360.094,
       "pct_from": 99.990609,
       "pct_to": 15.665138,
       "source_vintages": {
@@ -4221,7 +4221,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 10588484.283,
+      "intersection_area_sqft": 10588484.28,
       "pct_from": 99.989923,
       "pct_to": 3.812635,
       "source_vintages": {
@@ -4244,7 +4244,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 11550905.851,
+      "intersection_area_sqft": 11550905.852,
       "pct_from": 99.990036,
       "pct_to": 4.159178,
       "source_vintages": {
@@ -4336,7 +4336,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 54675663.629,
+      "intersection_area_sqft": 54675663.627,
       "pct_from": 99.998744,
       "pct_to": 19.687271,
       "source_vintages": {
@@ -4359,7 +4359,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 39744018.724,
+      "intersection_area_sqft": 39744018.723,
       "pct_from": 99.977473,
       "pct_to": 19.740464,
       "source_vintages": {
@@ -4520,7 +4520,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 45033955.279,
+      "intersection_area_sqft": 45033955.278,
       "pct_from": 99.992305,
       "pct_to": 39.123971,
       "source_vintages": {
@@ -4589,7 +4589,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 15390780.26,
+      "intersection_area_sqft": 15390780.261,
       "pct_from": 99.999657,
       "pct_to": 13.370987,
       "source_vintages": {
@@ -4681,7 +4681,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 10765586.446,
+      "intersection_area_sqft": 10765586.447,
       "pct_from": 77.947694,
       "pct_to": 9.352776,
       "source_vintages": {
@@ -4934,7 +4934,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 19572322.097,
+      "intersection_area_sqft": 19572322.096,
       "pct_from": 73.849449,
       "pct_to": 31.526282,
       "source_vintages": {
@@ -5003,7 +5003,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 13048880.898,
+      "intersection_area_sqft": 13048880.897,
       "pct_from": 99.999121,
       "pct_to": 21.018594,
       "source_vintages": {
@@ -5072,7 +5072,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 12115526.663,
+      "intersection_area_sqft": 12115526.664,
       "pct_from": 89.035917,
       "pct_to": 19.515186,
       "source_vintages": {
@@ -5141,7 +5141,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 2811014.99,
+      "intersection_area_sqft": 2811014.989,
       "pct_from": 99.998574,
       "pct_to": 4.527866,
       "source_vintages": {
@@ -5279,7 +5279,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 6351682.388,
+      "intersection_area_sqft": 6351682.389,
       "pct_from": 50.085111,
       "pct_to": 12.07891,
       "source_vintages": {
@@ -5486,7 +5486,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 16393972.322,
+      "intersection_area_sqft": 16393972.321,
       "pct_from": 100,
       "pct_to": 15.99469,
       "source_vintages": {
@@ -5762,7 +5762,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 4434884.069,
+      "intersection_area_sqft": 4434884.068,
       "pct_from": 40.427236,
       "pct_to": 2.04385,
       "source_vintages": {
@@ -5808,7 +5808,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 3281830.505,
+      "intersection_area_sqft": 3281830.504,
       "pct_from": 26.654485,
       "pct_to": 4.262229,
       "source_vintages": {
@@ -5900,7 +5900,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 20543469.346,
+      "intersection_area_sqft": 20543469.345,
       "pct_from": 63.784021,
       "pct_to": 18.574287,
       "source_vintages": {
@@ -6061,7 +6061,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 9184333.642,
+      "intersection_area_sqft": 9184333.643,
       "pct_from": 100,
       "pct_to": 8.303975,
       "source_vintages": {
@@ -6199,7 +6199,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 66472099.329,
+      "intersection_area_sqft": 66472099.328,
       "pct_from": 99.992237,
       "pct_to": 20.243306,
       "source_vintages": {
@@ -6245,7 +6245,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 35302095.318,
+      "intersection_area_sqft": 35302095.321,
       "pct_from": 99.978489,
       "pct_to": 10.750843,
       "source_vintages": {
@@ -6314,7 +6314,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 4904069.73,
+      "intersection_area_sqft": 4904069.729,
       "pct_from": 99.97791,
       "pct_to": 1.493477,
       "source_vintages": {
@@ -6981,7 +6981,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 99064776.437,
+      "intersection_area_sqft": 99064776.438,
       "pct_from": 99.778484,
       "pct_to": 30.169027,
       "source_vintages": {
@@ -7510,7 +7510,7 @@
       "to_type": "council_district",
       "relation": "below_threshold",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 21.047,
+      "intersection_area_sqft": 21.046,
       "pct_from": 0.000111,
       "pct_to": 0.000019,
       "source_vintages": {
@@ -7671,7 +7671,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 3561124.754,
+      "intersection_area_sqft": 3561124.753,
       "pct_from": 23.933941,
       "pct_to": 7.369595,
       "source_vintages": {
@@ -7717,7 +7717,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 16307448.743,
+      "intersection_area_sqft": 16307448.744,
       "pct_from": 66.418528,
       "pct_to": 24.411251,
       "source_vintages": {
@@ -7740,7 +7740,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 5811167.845,
+      "intersection_area_sqft": 5811167.844,
       "pct_from": 23.668277,
       "pct_to": 7.61463,
       "source_vintages": {
@@ -8154,7 +8154,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 13199860.057,
+      "intersection_area_sqft": 13199860.058,
       "pct_from": 99.995437,
       "pct_to": 23.918759,
       "source_vintages": {
@@ -8315,7 +8315,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 17096012.853,
+      "intersection_area_sqft": 17096012.852,
       "pct_from": 85.201532,
       "pct_to": 25.591684,
       "source_vintages": {
@@ -8453,7 +8453,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 370948.684,
+      "intersection_area_sqft": 370948.683,
       "pct_from": 2.329667,
       "pct_to": 0.659304,
       "source_vintages": {
@@ -8476,7 +8476,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 6788134.729,
+      "intersection_area_sqft": 6788134.73,
       "pct_from": 63.234762,
       "pct_to": 12.300415,
       "source_vintages": {
@@ -8591,7 +8591,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 14425763.303,
+      "intersection_area_sqft": 14425763.302,
       "pct_from": 99.995644,
       "pct_to": 25.639552,
       "source_vintages": {
@@ -8798,7 +8798,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 16920885.414,
+      "intersection_area_sqft": 16920885.415,
       "pct_from": 64.782976,
       "pct_to": 15.814169,
       "source_vintages": {
@@ -8821,7 +8821,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 9197553.495,
+      "intersection_area_sqft": 9197553.494,
       "pct_from": 35.213576,
       "pct_to": 16.347222,
       "source_vintages": {
@@ -8844,7 +8844,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 23464697.727,
+      "intersection_area_sqft": 23464697.726,
       "pct_from": 99.991979,
       "pct_to": 21.929981,
       "source_vintages": {
@@ -8959,7 +8959,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 14435876.128,
+      "intersection_area_sqft": 14435876.13,
       "pct_from": 99.992281,
       "pct_to": 18.748381,
       "source_vintages": {
@@ -8982,7 +8982,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 7752073.405,
+      "intersection_area_sqft": 7752073.401,
       "pct_from": 99.982123,
       "pct_to": 10.067891,
       "source_vintages": {
@@ -9074,7 +9074,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 38310183.115,
+      "intersection_area_sqft": 38310183.116,
       "pct_from": 99.994105,
       "pct_to": 46.339616,
       "source_vintages": {
@@ -9189,7 +9189,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 58190367.542,
+      "intersection_area_sqft": 58190367.54,
       "pct_from": 99.807954,
       "pct_to": 38.691509,
       "source_vintages": {
@@ -9235,7 +9235,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 11090890.452,
+      "intersection_area_sqft": 11090890.453,
       "pct_from": 99.99832,
       "pct_to": 7.374473,
       "source_vintages": {
@@ -9442,7 +9442,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 18162253.532,
+      "intersection_area_sqft": 18162253.531,
       "pct_from": 99.991978,
       "pct_to": 12.076311,
       "source_vintages": {
@@ -9465,7 +9465,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 4500285.459,
+      "intersection_area_sqft": 4500285.458,
       "pct_from": 100,
       "pct_to": 2.675859,
       "source_vintages": {
@@ -9557,7 +9557,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 2674948.584,
+      "intersection_area_sqft": 2674948.585,
       "pct_from": 100,
       "pct_to": 1.778607,
       "source_vintages": {
@@ -9580,7 +9580,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 27592978.657,
+      "intersection_area_sqft": 27592978.658,
       "pct_from": 99.991668,
       "pct_to": 16.406721,
       "source_vintages": {
@@ -9695,7 +9695,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 8783499.103,
+      "intersection_area_sqft": 8783499.104,
       "pct_from": 100,
       "pct_to": 5.222648,
       "source_vintages": {
@@ -9764,7 +9764,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 31423348.996,
+      "intersection_area_sqft": 31423348.995,
       "pct_from": 79.924676,
       "pct_to": 49.205553,
       "source_vintages": {
@@ -9787,7 +9787,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 4090776.501,
+      "intersection_area_sqft": 4090776.502,
       "pct_from": 10.40481,
       "pct_to": 3.124827,
       "source_vintages": {
@@ -10155,7 +10155,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 49348716.407,
+      "intersection_area_sqft": 49348716.411,
       "pct_from": 84.625266,
       "pct_to": 29.246438,
       "source_vintages": {
@@ -10201,7 +10201,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 885.022,
+      "intersection_area_sqft": 885.023,
       "pct_from": 0.001518,
       "pct_to": 0.000841,
       "source_vintages": {
@@ -10477,7 +10477,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 322.872,
+      "intersection_area_sqft": 322.871,
       "pct_from": 0.005858,
       "pct_to": 0.00009,
       "source_vintages": {
@@ -10707,7 +10707,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 78575.963,
+      "intersection_area_sqft": 78575.964,
       "pct_from": 0.389119,
       "pct_to": 0.060022,
       "source_vintages": {
@@ -10776,7 +10776,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 49897395.89,
+      "intersection_area_sqft": 49897395.891,
       "pct_from": 86.097671,
       "pct_to": 39.028323,
       "source_vintages": {
@@ -10891,7 +10891,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 66705470.229,
+      "intersection_area_sqft": 66705470.22,
       "pct_from": 99.994311,
       "pct_to": 19.927663,
       "source_vintages": {
@@ -10960,7 +10960,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 52637261.599,
+      "intersection_area_sqft": 52637261.602,
       "pct_from": 99.999363,
       "pct_to": 15.724912,
       "source_vintages": {
@@ -11144,7 +11144,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 33320794.878,
+      "intersection_area_sqft": 33320794.879,
       "pct_from": 86.470575,
       "pct_to": 23.0063,
       "source_vintages": {
@@ -11167,7 +11167,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 4978589.443,
+      "intersection_area_sqft": 4978589.444,
       "pct_from": 12.919905,
       "pct_to": 3.803002,
       "source_vintages": {
@@ -11259,7 +11259,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 34304245.026,
+      "intersection_area_sqft": 34304245.025,
       "pct_from": 99.999983,
       "pct_to": 18.361713,
       "source_vintages": {
@@ -11673,7 +11673,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 20284303.533,
+      "intersection_area_sqft": 20284303.532,
       "pct_from": 99.997289,
       "pct_to": 15.865805,
       "source_vintages": {
@@ -11719,7 +11719,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 30269194.577,
+      "intersection_area_sqft": 30269194.576,
       "pct_from": 99.998414,
       "pct_to": 23.675702,
       "source_vintages": {
@@ -11834,7 +11834,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 4780195.373,
+      "intersection_area_sqft": 4780195.374,
       "pct_from": 26.428531,
       "pct_to": 3.738933,
       "source_vintages": {
@@ -11972,7 +11972,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 76613303.967,
+      "intersection_area_sqft": 76613303.966,
       "pct_from": 93.617648,
       "pct_to": 43.745147,
       "source_vintages": {
@@ -12248,7 +12248,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 29744563.79,
+      "intersection_area_sqft": 29744563.789,
       "pct_from": 53.628642,
       "pct_to": 8.885923,
       "source_vintages": {
@@ -12271,7 +12271,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 25620345.77,
+      "intersection_area_sqft": 25620345.769,
       "pct_from": 46.192789,
       "pct_to": 17.689535,
       "source_vintages": {
@@ -12340,7 +12340,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 24882643.918,
+      "intersection_area_sqft": 24882643.917,
       "pct_from": 35.339647,
       "pct_to": 7.987475,
       "source_vintages": {
@@ -12386,7 +12386,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 41902312.147,
+      "intersection_area_sqft": 41902312.148,
       "pct_from": 61.485953,
       "pct_to": 12.517941,
       "source_vintages": {
@@ -12432,7 +12432,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 39634760.949,
+      "intersection_area_sqft": 39634760.948,
       "pct_from": 100,
       "pct_to": 12.722992,
       "source_vintages": {
@@ -12455,7 +12455,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 16879213.379,
+      "intersection_area_sqft": 16879213.378,
       "pct_from": 64.591121,
       "pct_to": 5.418327,
       "source_vintages": {
@@ -12478,7 +12478,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 9252190.59,
+      "intersection_area_sqft": 9252190.591,
       "pct_from": 35.405048,
       "pct_to": 2.764009,
       "source_vintages": {
@@ -12685,7 +12685,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 47948333.423,
+      "intersection_area_sqft": 47948333.424,
       "pct_from": 99.999385,
       "pct_to": 27.377841,
       "source_vintages": {
@@ -12984,7 +12984,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 36589315.808,
+      "intersection_area_sqft": 36589315.809,
       "pct_from": 52.528816,
       "pct_to": 17.356367,
       "source_vintages": {
@@ -13007,7 +13007,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 33066229.454,
+      "intersection_area_sqft": 33066229.455,
       "pct_from": 47.470958,
       "pct_to": 10.614455,
       "source_vintages": {
@@ -13122,7 +13122,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 55375207.014,
+      "intersection_area_sqft": 55375207.013,
       "pct_from": 96.410684,
       "pct_to": 10.908051,
       "source_vintages": {
@@ -13168,7 +13168,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 47231985.83,
+      "intersection_area_sqft": 47231985.832,
       "pct_from": 99.99343,
       "pct_to": 9.303964,
       "source_vintages": {
@@ -13237,7 +13237,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 60470774.653,
+      "intersection_area_sqft": 60470774.649,
       "pct_from": 99.993294,
       "pct_to": 11.911799,
       "source_vintages": {
@@ -13260,7 +13260,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 38016805.486,
+      "intersection_area_sqft": 38016805.487,
       "pct_from": 75.276416,
       "pct_to": 7.488717,
       "source_vintages": {
@@ -13283,7 +13283,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 12481054.092,
+      "intersection_area_sqft": 12481054.091,
       "pct_from": 24.713518,
       "pct_to": 3.479824,
       "source_vintages": {
@@ -13306,7 +13306,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 68224017.174,
+      "intersection_area_sqft": 68224017.171,
       "pct_from": 98.542153,
       "pct_to": 19.021435,
       "source_vintages": {
@@ -13375,7 +13375,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 30585321.666,
+      "intersection_area_sqft": 30585321.665,
       "pct_from": 99.980869,
       "pct_to": 23.363254,
       "source_vintages": {
@@ -13398,7 +13398,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 4482.114,
+      "intersection_area_sqft": 4482.113,
       "pct_from": 0.014652,
       "pct_to": 0.00298,
       "source_vintages": {
@@ -13444,7 +13444,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 28383359.37,
+      "intersection_area_sqft": 28383359.369,
       "pct_from": 51.412029,
       "pct_to": 21.681238,
       "source_vintages": {
@@ -13628,7 +13628,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 789.368,
+      "intersection_area_sqft": 789.369,
       "pct_from": 0.0004,
       "pct_to": 0.00022,
       "source_vintages": {
@@ -13674,7 +13674,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 47350492.923,
+      "intersection_area_sqft": 47350492.921,
       "pct_from": 67.720749,
       "pct_to": 9.327308,
       "source_vintages": {
@@ -13697,7 +13697,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 22558918.079,
+      "intersection_area_sqft": 22558918.097,
       "pct_from": 32.2638,
       "pct_to": 6.289618,
       "source_vintages": {
@@ -13743,7 +13743,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 52632369.411,
+      "intersection_area_sqft": 52632369.403,
       "pct_from": 99.995452,
       "pct_to": 14.674351,
       "source_vintages": {
@@ -13812,7 +13812,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 34590477.405,
+      "intersection_area_sqft": 34590477.404,
       "pct_from": 98.125862,
       "pct_to": 10.472489,
       "source_vintages": {
@@ -13927,7 +13927,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 19974873.896,
+      "intersection_area_sqft": 19974873.895,
       "pct_from": 26.100965,
       "pct_to": 6.047521,
       "source_vintages": {
@@ -13950,7 +13950,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 36236625.468,
+      "intersection_area_sqft": 36236625.467,
       "pct_from": 99.999102,
       "pct_to": 10.970871,
       "source_vintages": {
@@ -13996,7 +13996,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 89090852.367,
+      "intersection_area_sqft": 89090852.372,
       "pct_from": 99.666082,
       "pct_to": 26.972827,
       "source_vintages": {
@@ -14111,7 +14111,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 151483056.951,
+      "intersection_area_sqft": 151483056.952,
       "pct_from": 81.306349,
       "pct_to": 22.772569,
       "source_vintages": {
@@ -14180,7 +14180,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 168727269.329,
+      "intersection_area_sqft": 168727269.331,
       "pct_from": 80.58128,
       "pct_to": 25.364905,
       "source_vintages": {
@@ -14203,7 +14203,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 40659142.496,
+      "intersection_area_sqft": 40659142.497,
       "pct_from": 19.418116,
       "pct_to": 6.179287,
       "source_vintages": {
@@ -14249,7 +14249,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 35514909.356,
+      "intersection_area_sqft": 35514909.357,
       "pct_from": 52.091251,
       "pct_to": 5.338985,
       "source_vintages": {
@@ -14341,7 +14341,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 104003962.855,
+      "intersection_area_sqft": 104003962.85,
       "pct_from": 89.085123,
       "pct_to": 15.806293,
       "source_vintages": {
@@ -14410,7 +14410,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 180427230.401,
+      "intersection_area_sqft": 180427230.404,
       "pct_from": 99.999539,
       "pct_to": 27.420932,
       "source_vintages": {
@@ -14433,7 +14433,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 126769103.888,
+      "intersection_area_sqft": 126769103.887,
       "pct_from": 99.995735,
       "pct_to": 19.266089,
       "source_vintages": {
@@ -14456,7 +14456,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 47393784.423,
+      "intersection_area_sqft": 47393784.425,
       "pct_from": 99.235754,
       "pct_to": 7.202803,
       "source_vintages": {
@@ -14525,7 +14525,7 @@
       "to_type": "council_district",
       "relation": "intersects",
       "method": "polygon_intersection_epsg2263",
-      "intersection_area_sqft": 4190477.674,
+      "intersection_area_sqft": 4190477.675,
       "pct_from": 42.468837,
       "pct_to": 1.268694,
       "source_vintages": {

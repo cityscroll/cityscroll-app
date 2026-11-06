@@ -1,13 +1,13 @@
 {
   "schema": "cityscroll.board_neighborhood_index.v1",
   "generation": {
-    "id": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e",
+    "id": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4",
     "built_at": "2026-08-12T00:00:00.000Z",
-    "content_sha256": "a18c480407989618fa5f59c1ab56c2e25ce6e6bc7a0b9b18bfb2d2839288ed8e"
+    "content_sha256": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4"
   },
   "source_hashes": {
     "community_board_geography_lookup.json": "da95b1bad99cbb4d9030585c2ae8e0be2aeec1a46c7adb9de8556f7a0b0e9ec8",
-    "geography/crosswalks/nta2020__community_district/26B__2026-05-26.json": "f5763440a6951e537af38b4f2833530b9e1f0c0fbeb4e7fbf38b98e27d4576cc",
+    "geography/crosswalks/nta2020__community_district/26B__2026-05-26.json": "939e05fc658dbda8b4caa143694e34077efb7da788be203bb11d56d83f99b6d4",
     "geography/layers/nta2020/26B.json": "d83096150f7f841de21cef87a4e19839ca57b70fcab10faa05487ba0af685075"
   },
   "vintages": {
@@ -3724,7 +3724,7 @@
         "nta_id": "SI0301",
         "district_id": "R03",
         "board_id": "staten-island-cb-03",
-        "pct_from": 94.024411,
+        "pct_from": 94.024412,
         "pct_to": 8.760787,
         "subtype": "residential"
       },
@@ -7196,7 +7196,7 @@
         "nta_id": "SI0301",
         "district_id": "R03",
         "board_id": "staten-island-cb-03",
-        "pct_from": 94.024411,
+        "pct_from": 94.024412,
         "pct_to": 8.760787,
         "subtype": "residential"
       },

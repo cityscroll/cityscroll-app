@@ -1,0 +1,42 @@
+{
+  "schema": "cityscroll.board_neighborhood_generation_manifest.v1",
+  "generation_id": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4",
+  "built_at": "2026-08-12T00:00:00.000Z",
+  "input_hashes": {
+    "crosswalk": "939e05fc658dbda8b4caa143694e34077efb7da788be203bb11d56d83f99b6d4",
+    "ontology": "da95b1bad99cbb4d9030585c2ae8e0be2aeec1a46c7adb9de8556f7a0b0e9ec8",
+    "labels": "d83096150f7f841de21cef87a4e19839ca57b70fcab10faa05487ba0af685075",
+    "boundary_generation": {
+      "board_geography_boundary": "2026-05-26",
+      "community_district": "2026-05-26",
+      "nta2020": "26B"
+    },
+    "aggregate": "e25b3bd90284de7bb545734d9ae7a2a5344276078e7a121fd1c0979b84696814"
+  },
+  "vintages": {
+    "nta2020": "26B",
+    "community_district": "2026-05-26",
+    "board_geography_boundary": "2026-05-26"
+  },
+  "inventory": {
+    "material_row_count": 450,
+    "board_associated_row_count": 411,
+    "non_board_row_count": 39,
+    "board_identity_count": 59,
+    "association_failure_count": 0
+  },
+  "consumers": {
+    "index": {
+      "generation_id": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4",
+      "content_sha256": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4"
+    },
+    "directory": {
+      "generation_id": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4",
+      "content_sha256": "a4dfbc5967648f3ac9f24a1d287b15d0959ae62b1d1b5d2a7def730e0e124cdc"
+    },
+    "profile": {
+      "generation_id": "00be669a13f2411d8557186d007f531e7278a5287b9832b512e2e25342a537c4",
+      "content_sha256": "d1fa1ac8285c8d6a6ab3b348d72f9f4355b4698378be292518c6975c92df0771"
+    }
+  }
+}

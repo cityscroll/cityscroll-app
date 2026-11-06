@@ -5,6 +5,7 @@ import {
   civicGeometryArea,
   civicGeometryIntersectionArea,
   overlayCivicGeographies,
+  projectEpsg2263,
 } from "../site/civic_geography_overlay.mjs";
 
 const identity = (point) => point;
@@ -58,6 +59,20 @@ test("boundary-only contact is touches, never an area intersection", () => {
   assert.equal(result.intersection_area_sqft, 0);
   assert.equal(result.pct_from, 0);
   assert.equal(result.pct_to, 0);
+});
+
+test("EPSG:2263 projection avoids non-integer `**`/Math.pow ULP drift across engines", () => {
+  // This longitude/latitude pair previously exposed a one-ULP difference between Node
+  // versions in the Lambert Conformal Conic fractional-power terms (t(latitude) ** exponent
+  // and friends), which is only an "implementation-approximated" operation per ECMA-262 and
+  // is not guaranteed bit-identical across V8 versions or CPU architectures. The projection
+  // now routes every fractional power through Math.exp(exponent * Math.log(base)) instead,
+  // which pins the result to an exact literal here so a future regression (a reintroduced
+  // `**`/Math.pow fractional exponent) fails this test instead of silently drifting the
+  // published geography crosswalk artifacts between build machines.
+  const [x, y] = projectEpsg2263([-73.93694879862264, 40.7246524683916]);
+  assert.equal(x, 1001726.4229529856);
+  assert.equal(y, 203293.27043728763);
 });
 
 test("overlay fails closed on simplified delivery geometry", () => {
