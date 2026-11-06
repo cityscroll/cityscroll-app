@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "12796|2026-08-06T00:00:00Z|2026-08-11T21:12:40.677Z|2026-10-06T13:48:38.716Z|2026-11-04T04:22:02.123Z|2026-11-04T18:48:50.187Z|2026-11-05T19:51:09.424Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-10-06T13:48:38.716Z|2026-11-04T04:22:02.123Z|2026-11-05|2026-11-05|2026-11-05T12:12:30.491Z|2026-11-05T12:12:30.491Z|2026-11-05T12:12:35.714Z|2026-11-05T12:13:44.875Z|2026-11-05T19:51:09.424Z",
+  "generated_at": "12796|2026-08-06T00:00:00Z|2026-08-11T21:12:40.677Z|2026-10-06T13:48:38.716Z|2026-11-04T04:22:02.123Z|2026-11-04T18:48:50.187Z|2026-11-06T04:55:04.826Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-10-06T13:48:38.716Z|2026-11-04T04:22:02.123Z|2026-11-05|2026-11-05T12:12:35.714Z|2026-11-05T12:13:44.875Z|2026-11-06|2026-11-06T04:54:33.506Z|2026-11-06T04:54:33.506Z|2026-11-06T04:55:04.826Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
@@ -89,15 +89,15 @@
           "target_name": "Contracts",
           "count": 909,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aadministration-for-childrens-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:administration-for-childrens-services"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "administration-for-childrens-services",
@@ -109,7 +109,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -153,11 +153,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-28",
               "latest_source": "published_record",
-              "age_days": "100",
+              "age_days": "101",
               "max_age_days": null,
               "status": "known"
             }
@@ -1409,15 +1409,15 @@
           "target_name": "Contracts",
           "count": 592,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aaging%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:aging"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "aging",
@@ -1429,7 +1429,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -1473,11 +1473,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-06-22",
               "latest_source": "published_record",
-              "age_days": "136",
+              "age_days": "137",
               "max_age_days": null,
               "status": "known"
             }
@@ -6535,15 +6535,15 @@
           "target_name": "Contracts",
           "count": 69,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:buildings"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "buildings",
@@ -6555,7 +6555,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -6599,11 +6599,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-21",
               "latest_source": "published_record",
-              "age_days": "107",
+              "age_days": "108",
               "max_age_days": null,
               "status": "known"
             }
@@ -7207,15 +7207,15 @@
           "target_name": "Contracts",
           "count": 2,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abusiness-integrity-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:business-integrity-commission"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "business-integrity-commission",
@@ -7227,7 +7227,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -7271,11 +7271,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-05-21",
               "latest_source": "published_record",
-              "age_days": "168",
+              "age_days": "169",
               "max_age_days": null,
               "status": "known"
             }
@@ -10668,15 +10668,15 @@
           "target_name": "Contracts",
           "count": 23,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acity-planning%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:city-planning"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "city-planning",
@@ -10688,7 +10688,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -10732,11 +10732,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-06-22",
               "latest_source": "published_record",
-              "age_days": "136",
+              "age_days": "137",
               "max_age_days": null,
               "status": "known"
             }
@@ -12441,15 +12441,15 @@
           "target_name": "Contracts",
           "count": 415,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acitywide-administrative-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:citywide-administrative-services"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "citywide-administrative-services",
@@ -12461,7 +12461,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -12505,11 +12505,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-28",
               "latest_source": "published_record",
-              "age_days": "100",
+              "age_days": "101",
               "max_age_days": null,
               "status": "known"
             }
@@ -13107,15 +13107,15 @@
           "target_name": "Contracts",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acivilian-complaint-review-board%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:civilian-complaint-review-board"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "civilian-complaint-review-board",
@@ -13127,7 +13127,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -13171,11 +13171,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-09",
               "latest_source": "published_record",
-              "age_days": "119",
+              "age_days": "120",
               "max_age_days": null,
               "status": "known"
             }
@@ -13690,15 +13690,15 @@
           "target_name": "Contracts",
           "count": 5,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acommission-on-human-rights%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:commission-on-human-rights"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "commission-on-human-rights",
@@ -13710,7 +13710,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -13754,11 +13754,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-06-26",
               "latest_source": "published_record",
-              "age_days": "132",
+              "age_days": "133",
               "max_age_days": null,
               "status": "known"
             }
@@ -16051,15 +16051,15 @@
           "target_name": "Contracts",
           "count": 62,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aconsumer-and-worker-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:consumer-and-worker-protection"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "consumer-and-worker-protection",
@@ -16071,7 +16071,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -16115,11 +16115,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-24",
               "latest_source": "published_record",
-              "age_days": "104",
+              "age_days": "105",
               "max_age_days": null,
               "status": "known"
             }
@@ -16723,15 +16723,15 @@
           "target_name": "Contracts",
           "count": 258,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acorrection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:correction"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "correction",
@@ -16743,7 +16743,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -16787,11 +16787,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-24",
               "latest_source": "published_record",
-              "age_days": "104",
+              "age_days": "105",
               "max_age_days": null,
               "status": "known"
             }
@@ -17936,15 +17936,15 @@
           "target_name": "Contracts",
           "count": 22,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Acultural-affairs%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:cultural-affairs"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "cultural-affairs",
@@ -17956,7 +17956,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -18000,11 +18000,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-06",
               "latest_source": "published_record",
-              "age_days": "122",
+              "age_days": "123",
               "max_age_days": null,
               "status": "known"
             }
@@ -18568,15 +18568,15 @@
           "target_name": "Contracts",
           "count": 1179,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adepartment-of-social-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adepartment-of-social-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adepartment-of-social-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adepartment-of-social-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:department-of-social-services"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "department-of-social-services",
@@ -18588,7 +18588,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -18632,11 +18632,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-28",
               "latest_source": "published_record",
-              "age_days": "100",
+              "age_days": "101",
               "max_age_days": null,
               "status": "known"
             }
@@ -19127,15 +19127,15 @@
           "target_name": "Contracts",
           "count": 618,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Adesign-and-construction%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:design-and-construction"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "design-and-construction",
@@ -19147,7 +19147,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -19191,11 +19191,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-17",
               "latest_source": "published_record",
-              "age_days": "111",
+              "age_days": "112",
               "max_age_days": null,
               "status": "known"
             }
@@ -23212,15 +23212,15 @@
           "target_name": "Contracts",
           "count": 438,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aeducation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:education"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "education",
@@ -23232,7 +23232,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -23276,11 +23276,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-06-30",
               "latest_source": "published_record",
-              "age_days": "128",
+              "age_days": "129",
               "max_age_days": null,
               "status": "known"
             }
@@ -23872,15 +23872,15 @@
           "target_name": "Contracts",
           "count": 150,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aemergency-management%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:emergency-management"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "emergency-management",
@@ -23892,7 +23892,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -23936,11 +23936,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-23",
               "latest_source": "published_record",
-              "age_days": "105",
+              "age_days": "106",
               "max_age_days": null,
               "status": "known"
             }
@@ -25174,15 +25174,15 @@
           "target_name": "Contracts",
           "count": 770,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aenvironmental-protection%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:environmental-protection"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "environmental-protection",
@@ -25194,7 +25194,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -25238,11 +25238,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-28",
               "latest_source": "published_record",
-              "age_days": "100",
+              "age_days": "101",
               "max_age_days": null,
               "status": "known"
             }
@@ -26405,15 +26405,15 @@
           "target_name": "Contracts",
           "count": 141,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afinance%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:finance"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "finance",
@@ -26425,7 +26425,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -26469,11 +26469,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-14",
               "latest_source": "published_record",
-              "age_days": "114",
+              "age_days": "115",
               "max_age_days": null,
               "status": "known"
             }
@@ -27703,15 +27703,15 @@
           "target_name": "Contracts",
           "count": 296,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Afire-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:fire-department"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "fire-department",
@@ -27723,7 +27723,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -27767,11 +27767,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-09-07",
               "latest_source": "published_record",
-              "age_days": "59",
+              "age_days": "60",
               "max_age_days": null,
               "status": "known"
             }
@@ -28369,15 +28369,15 @@
           "target_name": "Contracts",
           "count": 855,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahealth-and-mental-hygiene%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:health-and-mental-hygiene"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "health-and-mental-hygiene",
@@ -28389,7 +28389,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -28433,11 +28433,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-27",
               "latest_source": "published_record",
-              "age_days": "101",
+              "age_days": "102",
               "max_age_days": null,
               "status": "known"
             }
@@ -29041,15 +29041,15 @@
           "target_name": "Contracts",
           "count": 596,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahomeless-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:homeless-services"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "homeless-services",
@@ -29061,7 +29061,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -29105,11 +29105,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-28",
               "latest_source": "published_record",
-              "age_days": "100",
+              "age_days": "101",
               "max_age_days": null,
               "status": "known"
             }
@@ -29709,7 +29709,7 @@
             "mode": "open",
             "entity_ref": "agency:id:housing-authority"
           },
-          "as_of": "2026-11-05T12:12:30.491Z",
+          "as_of": "2026-11-06T04:54:33.506Z",
           "source": {
             "kind": "agency",
             "id": "housing-authority",
@@ -29721,7 +29721,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05T12:12:30.491Z",
+            "observed_at": "2026-11-06T04:54:33.506Z",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -29765,11 +29765,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-10-26",
               "latest_source": "published_record",
-              "age_days": "10",
+              "age_days": "11",
               "max_age_days": null,
               "status": "known"
             }
@@ -30290,15 +30290,15 @@
           "target_name": "Contracts",
           "count": 499,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:housing-preservation-and-development"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "housing-preservation-and-development",
@@ -30310,7 +30310,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -30354,11 +30354,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-27",
               "latest_source": "published_record",
-              "age_days": "101",
+              "age_days": "102",
               "max_age_days": null,
               "status": "known"
             }
@@ -30962,15 +30962,15 @@
           "target_name": "Contracts",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahuman-resources-administration%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:human-resources-administration"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "human-resources-administration",
@@ -30982,7 +30982,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -31026,11 +31026,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2022-01-11",
               "latest_source": "published_record",
-              "age_days": "1759",
+              "age_days": "1760",
               "max_age_days": null,
               "status": "known"
             }
@@ -32187,15 +32187,15 @@
           "target_name": "Contracts",
           "count": 518,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainformation-technology-and-telecommunications%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:information-technology-and-telecommunications"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "information-technology-and-telecommunications",
@@ -32207,7 +32207,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -32251,11 +32251,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-21",
               "latest_source": "published_record",
-              "age_days": "107",
+              "age_days": "108",
               "max_age_days": null,
               "status": "known"
             }
@@ -32853,15 +32853,15 @@
           "target_name": "Contracts",
           "count": 24,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ainvestigation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:investigation"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "investigation",
@@ -32873,7 +32873,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -32917,11 +32917,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-02",
               "latest_source": "published_record",
-              "age_days": "126",
+              "age_days": "127",
               "max_age_days": null,
               "status": "known"
             }
@@ -33458,15 +33458,15 @@
           "target_name": "Contracts",
           "count": 2,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alandmarks-preservation-commission%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:landmarks-preservation-commission"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "landmarks-preservation-commission",
@@ -33478,7 +33478,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -33522,11 +33522,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2025-12-05",
               "latest_source": "published_record",
-              "age_days": "335",
+              "age_days": "336",
               "max_age_days": null,
               "status": "known"
             }
@@ -34053,15 +34053,15 @@
           "target_name": "Contracts",
           "count": 96,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Alaw-department%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:law-department"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "law-department",
@@ -34073,7 +34073,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -34117,11 +34117,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-06-15",
               "latest_source": "published_record",
-              "age_days": "143",
+              "age_days": "144",
               "max_age_days": null,
               "status": "known"
             }
@@ -34691,15 +34691,15 @@
           "target_name": "Contracts",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Along-island-rail-road%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Along-island-rail-road%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Along-island-rail-road%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Along-island-rail-road%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:long-island-rail-road"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "long-island-rail-road",
@@ -34711,7 +34711,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -34755,11 +34755,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2018-06-19",
               "latest_source": "published_record",
-              "age_days": "3061",
+              "age_days": "3062",
               "max_age_days": null,
               "status": "known"
             }
@@ -35244,15 +35244,15 @@
           "target_name": "Contracts",
           "count": 29,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amanagement-and-budget%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:management-and-budget"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "management-and-budget",
@@ -35264,7 +35264,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -35308,11 +35308,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-05-14",
               "latest_source": "published_record",
-              "age_days": "175",
+              "age_days": "176",
               "max_age_days": null,
               "status": "known"
             }
@@ -37633,15 +37633,15 @@
           "target_name": "Contracts",
           "count": 5,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ametropolitan-transportation-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ametropolitan-transportation-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ametropolitan-transportation-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ametropolitan-transportation-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:metropolitan-transportation-authority"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "metropolitan-transportation-authority",
@@ -37653,7 +37653,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -37697,11 +37697,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2018-06-19",
               "latest_source": "published_record",
-              "age_days": "3061",
+              "age_days": "3062",
               "max_age_days": null,
               "status": "known"
             }
@@ -38186,15 +38186,15 @@
           "target_name": "Contracts",
           "count": 3,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amta-construction-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amta-construction-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amta-construction-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amta-construction-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:mta-construction-and-development"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "mta-construction-and-development",
@@ -38206,7 +38206,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -38250,8 +38250,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -38739,15 +38739,15 @@
           "target_name": "Contracts",
           "count": 1,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3An-y-c-transit-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3An-y-c-transit-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3An-y-c-transit-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3An-y-c-transit-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:n-y-c-transit-authority"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "n-y-c-transit-authority",
@@ -38759,7 +38759,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -38803,8 +38803,8 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": null,
               "latest_source": null,
               "age_days": null,
@@ -39857,15 +39857,15 @@
           "target_name": "Contracts",
           "count": 8,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Anyc-department-of-veterans-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:nyc-department-of-veterans-services"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "nyc-department-of-veterans-services",
@@ -39877,7 +39877,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -39921,11 +39921,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-06-24",
               "latest_source": "published_record",
-              "age_days": "134",
+              "age_days": "135",
               "max_age_days": null,
               "status": "known"
             }
@@ -41557,15 +41557,15 @@
           "target_name": "Contracts",
           "count": 11,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aoffice-of-labor-relations%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:office-of-labor-relations"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "office-of-labor-relations",
@@ -41577,7 +41577,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -41621,11 +41621,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2025-09-03",
               "latest_source": "published_record",
-              "age_days": "428",
+              "age_days": "429",
               "max_age_days": null,
               "status": "known"
             }
@@ -43912,15 +43912,15 @@
           "target_name": "Contracts",
           "count": 539,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aparks-and-recreation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:parks-and-recreation"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "parks-and-recreation",
@@ -43932,7 +43932,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -43976,11 +43976,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-27",
               "latest_source": "published_record",
-              "age_days": "101",
+              "age_days": "102",
               "max_age_days": null,
               "status": "known"
             }
@@ -45791,15 +45791,15 @@
           "target_name": "Contracts",
           "count": 148,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Aprobation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:probation"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "probation",
@@ -45811,7 +45811,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -45855,11 +45855,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-24",
               "latest_source": "published_record",
-              "age_days": "104",
+              "age_days": "105",
               "max_age_days": null,
               "status": "known"
             }
@@ -47563,15 +47563,15 @@
           "target_name": "Contracts",
           "count": 7,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Arecords-and-information-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:records-and-information-services"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "records-and-information-services",
@@ -47583,7 +47583,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -47627,11 +47627,11 @@
               "complete": "true"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-06-15",
               "latest_source": "published_record",
-              "age_days": "143",
+              "age_days": "144",
               "max_age_days": null,
               "status": "known"
             }
@@ -48693,15 +48693,15 @@
           "target_name": "Contracts",
           "count": 250,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asanitation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:sanitation"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "sanitation",
@@ -48713,7 +48713,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -48757,11 +48757,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-23",
               "latest_source": "published_record",
-              "age_days": "105",
+              "age_days": "106",
               "max_age_days": null,
               "status": "known"
             }
@@ -49365,15 +49365,15 @@
           "target_name": "Contracts",
           "count": 134,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Asmall-business-services%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:small-business-services"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "small-business-services",
@@ -49385,7 +49385,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -49429,11 +49429,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-09",
               "latest_source": "published_record",
-              "age_days": "119",
+              "age_days": "120",
               "max_age_days": null,
               "status": "known"
             }
@@ -51809,15 +51809,15 @@
           "target_name": "Contracts",
           "count": 544,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Atransportation%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:transportation"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "transportation",
@@ -51829,7 +51829,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -51873,11 +51873,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-24",
               "latest_source": "published_record",
-              "age_days": "104",
+              "age_days": "105",
               "max_age_days": null,
               "status": "known"
             }
@@ -53034,15 +53034,15 @@
           "target_name": "Contracts",
           "count": 1161,
           "state": "matched",
-          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
-          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-05",
+          "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
+          "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ayouth-and-community-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-11-06",
           "scope": {
             "facet": null,
             "universe": "linked",
             "mode": null,
             "entity_ref": "agency:id:youth-and-community-development"
           },
-          "as_of": "2026-11-05",
+          "as_of": "2026-11-06",
           "source": {
             "kind": "agency",
             "id": "youth-and-community-development",
@@ -53054,7 +53054,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-11-05",
+            "observed_at": "2026-11-06",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -53098,11 +53098,11 @@
               "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-11-05",
-              "snapshot_day": "2026-11-05",
+              "reference_day": "2026-11-06",
+              "snapshot_day": "2026-11-06",
               "latest_day": "2026-07-24",
               "latest_source": "published_record",
-              "age_days": "104",
+              "age_days": "105",
               "max_age_days": null,
               "status": "known"
             }
@@ -53638,13 +53638,13 @@
     }
   },
   "provenance": {
-    "intelligence_generated_at": "2026-11-05T19:51:09.424Z",
+    "intelligence_generated_at": "2026-11-06T04:55:04.826Z",
     "certification_generated_at": "2026-08-06T00:00:00Z",
     "obligations_generated_at": "2026-10-06T13:48:38.716Z",
-    "process_conformance_generated_at": "2026-08-11T21:12:40.677Z|2026-10-06T13:48:38.716Z|2026-11-04T04:22:02.123Z|2026-11-04T18:48:50.187Z|2026-11-05T19:51:09.424Z",
+    "process_conformance_generated_at": "2026-08-11T21:12:40.677Z|2026-10-06T13:48:38.716Z|2026-11-04T04:22:02.123Z|2026-11-04T18:48:50.187Z|2026-11-06T04:55:04.826Z",
     "vendor_rollup_as_of": "2026-11-04",
     "vendor_rollup_window_start": "2025-11-04",
-    "passport_graph_observed_on": "2026-11-05",
+    "passport_graph_observed_on": "2026-11-06",
     "passport_graph_selected_rows": 12796,
     "fiscal_context_generated_at": "2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z",
     "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, process-conformance expected-vs-observed, and the sharded PASSPort EI graph."

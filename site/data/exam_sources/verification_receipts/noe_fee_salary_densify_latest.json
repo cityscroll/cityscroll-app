@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "source_contract_id": "dcas-noe-fee-salary-densify",
-  "verified_at": "2026-11-05",
-  "verified_at_utc": "2026-11-05T19:51:07.661Z",
+  "verified_at": "2026-11-06",
+  "verified_at_utc": "2026-11-06T04:55:02.089Z",
   "fee_salary_non_null_before": {
     "total": 227,
     "both": 33,

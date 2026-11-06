@@ -53,7 +53,19 @@ CLOCK = "2026-09-28T16:00:00.000Z"
 # citywide / virtual / unlocated bags stay stable across daily first-class refresh.
 # Shallow functional CI lacks historical git blobs, so the bytes live under
 # test/fixtures and the capture server reads them from disk.
-FROZEN_ACTIVITY_BLOB = "5deaa202fe578e09b58380d43755419dbb85ec60"
+#
+# The one real citywide meeting this snapshot names must keep resolving against
+# the live, continuously-refreshed site/data/shared_meeting_read_model.json: a
+# first-class refresh that moves the Council meeting corpus can age that one
+# record out even though the snapshot's day, and every other record in it, stay
+# frozen. When that happens (this test times out on main[data-meeting-id]), swap
+# just that one record for a real, currently-live meeting and keep its
+# "Citywide" classification fields (a few recent legistar meetings have been
+# observed with the same 250 Broadway committee-room venue but classified "No
+# place signal" instead, which looks like a separate placement-classifier gap,
+# not a reason to drop the citywide example here). See
+# test/fixtures/near-you-location-activity/README.md for the exact recipe.
+FROZEN_ACTIVITY_BLOB = "e912a2bd1b0bf892bf0f859f9e2cf049efb64cad"
 FROZEN_ACTIVITY_FILE = ROOT / "test" / "fixtures" / "near-you-location-activity" / "district_activity.json"
 VIEWPORTS = (("narrow_touch", 390, 844), ("desktop", 1440, 900))
 TARGET_SIZE_FLOOR_CSS_PX = 44
@@ -193,8 +205,11 @@ def start_server() -> tuple[subprocess.Popen, str]:
             f"--import={ROOT / 'test' / 'helpers' / 'test_clock_preload.mjs'}",
         ])),
         "CITYSCROLL_TEST_TIME_PIN": CLOCK,
-        # File path is authoritative for shallow CI; blob id keeps capture
-        # generation `capture-5deaa202fe57` aligned with discovery-recovery.
+        # File path is authoritative for shallow CI; the blob id only needs to
+        # match this file's own git blob (git hash-object) so the capture
+        # generation label is self-consistent. It is not required to match
+        # discovery-recovery's independent historical pin in
+        # test/default_local_home_journey.test.mjs.
         "NEAR_YOU_CAPTURE_ACTIVITY_FILE": str(FROZEN_ACTIVITY_FILE),
         "NEAR_YOU_CAPTURE_ACTIVITY_BLOB": FROZEN_ACTIVITY_BLOB,
     }

@@ -3,14 +3,14 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-11-05T19:51:09.424Z",
+  "generated_at": "2026-11-06T04:55:04.826Z",
   "observation_count": 3467,
   "entity_count": 200,
   "multi_domain_count": 34,
   "selection": {
     "strategy": "multi_domain_then_mandate_agency_reserve_then_richness_fill",
     "cap": 200,
-    "candidate_count": 1666,
+    "candidate_count": 1665,
     "reason_counts": {
       "multi_domain": 34,
       "mandate_agency_reserve": 17,
@@ -17574,6 +17574,39 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "contract:CT184620278803675",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "TrueBounce, Inc.",
+              "when": "2026-11-06",
+              "amount": null,
+              "public_status": null,
+              "pin": "84627C0286001",
+              "contract_id": "CT184620278803675",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:parks-and-recreation",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:84627C0286001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-06",
+                "input_value": "Department of Parks and Recreation"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "contract:CT184620278803665",
               "domain": "money",
               "object_kind": "contract",
@@ -17727,39 +17760,6 @@
               "provenance": {
                 "source_system": "checkbook-contracts",
                 "source_record_id": "checkbook-contracts:pin:84627C0280001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-11-02",
-                "input_value": "Department of Parks and Recreation"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT184620278802417",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "NATIONAL SAFETY COUNCIL",
-              "when": "2026-11-02",
-              "amount": null,
-              "public_status": null,
-              "pin": "84627C0013001",
-              "contract_id": "CT184620278802417",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:parks-and-recreation",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:84627C0013001",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -23049,6 +23049,78 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT184620278803675",
+          "to": "agency:id:parks-and-recreation",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0286001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-06",
+            "input_value": "Department of Parks and Recreation",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0286001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-06",
+            "input_value": "Department of Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT184620278803675",
+          "to": "pin:84627C0286001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0286001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-06",
+            "input_value": "84627C0286001",
+            "join_key": "pin",
+            "join_value": "84627C0286001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0286001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-06",
+            "input_value": "84627C0286001",
+            "join_key": "pin",
+            "join_value": "84627C0286001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CTA184620278802884",
           "to": "agency:id:parks-and-recreation",
           "method": "agency_canonical_v1",
@@ -25476,7 +25548,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 102,
+        "deterministic": 103,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -25488,8 +25560,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 3,
         "total_linked_objects": 16,
-        "link_count": 206,
-        "join_key_link_count": 102,
+        "link_count": 208,
+        "join_key_link_count": 103,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.5714285714285714
       }
@@ -111427,39 +111499,6 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "contract:CT102520278802160",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "AARON VALUATION INC",
-              "when": "2026-04-16",
-              "amount": null,
-              "public_status": null,
-              "pin": "02526N0077001",
-              "contract_id": "CT102520278802160",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:law-department",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:02526N0077001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-04-16",
-                "input_value": "Law Department"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
               "subject_ref": "contract:CT102520278802087",
               "domain": "money",
               "object_kind": "contract",
@@ -111585,6 +111624,39 @@
                 ],
                 "basis": "money_agency_name",
                 "observed_at": "12/20/2021",
+                "input_value": "LAW DEPARTMENT"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "contract:CT1-025-20238803522",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "JURISPRO CONSULTING, INC.",
+              "when": "12/14/2022",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT1-025-20238803522",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:law-department",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:CT1-025-20238803522",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "12/14/2022",
                 "input_value": "LAW DEPARTMENT"
               },
               "link_type": "published_by_agency",
@@ -114916,78 +114988,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT102520278802160",
-          "to": "agency:id:law-department",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:02526N0077001",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-04-16",
-            "input_value": "Law Department",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:02526N0077001",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-04-16",
-            "input_value": "Law Department"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT102520278802160",
-          "to": "pin:02526N0077001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:02526N0077001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2026-04-16",
-            "input_value": "02526N0077001",
-            "join_key": "pin",
-            "join_value": "02526N0077001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:02526N0077001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2026-04-16",
-            "input_value": "02526N0077001",
-            "join_key": "pin",
-            "join_value": "02526N0077001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:MMA102520278802191",
           "to": "agency:id:law-department",
           "method": "agency_canonical_v1",
@@ -115329,7 +115329,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 51,
+        "deterministic": 50,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -115341,8 +115341,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 5,
         "total_linked_objects": 7,
-        "link_count": 101,
-        "join_key_link_count": 51,
+        "link_count": 99,
+        "join_key_link_count": 50,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.2857142857142857
       }
@@ -142830,15 +142830,15 @@
           "note": null,
           "objects": [
             {
-              "subject_ref": "contract:CT104020273015378",
+              "subject_ref": "contract:CT104020273017526",
               "domain": "money",
               "object_kind": "contract",
-              "label": "LEARNING INNOVATION CATALYST INC",
-              "when": "2026-11-02",
+              "label": "ASANA INC",
+              "when": "2026-11-03",
               "amount": null,
               "public_status": null,
               "pin": null,
-              "contract_id": "CT104020273015378",
+              "contract_id": "CT104020273017526",
               "document_id": null,
               "project_id": null,
               "request_id": null,
@@ -142850,12 +142850,12 @@
               "href": null,
               "provenance": {
                 "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273015378",
+                "source_record_id": "checkbook-contracts:ct:CT104020273017526",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "money_agency_name",
-                "observed_at": "2026-11-02",
+                "observed_at": "2026-11-03",
                 "input_value": "Department of Education"
               },
               "link_type": "published_by_agency",
@@ -142863,15 +142863,15 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "contract:CT104020273019046",
+              "subject_ref": "contract:CT104020273018598",
               "domain": "money",
               "object_kind": "contract",
-              "label": "IDEAL INSTRUCTION LLC",
-              "when": "2026-11-02",
+              "label": "YUCCA PALM MUTUALISM LLC",
+              "when": "2026-11-03",
               "amount": null,
               "public_status": null,
               "pin": null,
-              "contract_id": "CT104020273019046",
+              "contract_id": "CT104020273018598",
               "document_id": null,
               "project_id": null,
               "request_id": null,
@@ -142883,12 +142883,12 @@
               "href": null,
               "provenance": {
                 "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273019046",
+                "source_record_id": "checkbook-contracts:ct:CT104020273018598",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "money_agency_name",
-                "observed_at": "2026-11-02",
+                "observed_at": "2026-11-03",
                 "input_value": "Department of Education"
               },
               "link_type": "published_by_agency",
@@ -142896,15 +142896,15 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "contract:CT104020273033608",
+              "subject_ref": "contract:CT104020273028035",
               "domain": "money",
               "object_kind": "contract",
-              "label": "JAZZ AT LINCOLN CENTER INC",
-              "when": "2026-11-02",
+              "label": "Toolkit Tutors Inc",
+              "when": "2026-11-03",
               "amount": null,
               "public_status": null,
               "pin": null,
-              "contract_id": "CT104020273033608",
+              "contract_id": "CT104020273028035",
               "document_id": null,
               "project_id": null,
               "request_id": null,
@@ -142916,12 +142916,12 @@
               "href": null,
               "provenance": {
                 "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273033608",
+                "source_record_id": "checkbook-contracts:ct:CT104020273028035",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "money_agency_name",
-                "observed_at": "2026-11-02",
+                "observed_at": "2026-11-03",
                 "input_value": "Department of Education"
               },
               "link_type": "published_by_agency",
@@ -142929,15 +142929,15 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "contract:CT104020273034758",
+              "subject_ref": "contract:CT104020273036139",
               "domain": "money",
               "object_kind": "contract",
-              "label": "SIMPLY ED",
-              "when": "2026-11-02",
+              "label": "META LOGIC STRATEGIC CONSULTING LLC",
+              "when": "2026-11-03",
               "amount": null,
               "public_status": null,
               "pin": null,
-              "contract_id": "CT104020273034758",
+              "contract_id": "CT104020273036139",
               "document_id": null,
               "project_id": null,
               "request_id": null,
@@ -142949,12 +142949,12 @@
               "href": null,
               "provenance": {
                 "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273034758",
+                "source_record_id": "checkbook-contracts:ct:CT104020273036139",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "money_agency_name",
-                "observed_at": "2026-11-02",
+                "observed_at": "2026-11-03",
                 "input_value": "Department of Education"
               },
               "link_type": "published_by_agency",
@@ -142962,15 +142962,15 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "contract:CT104020273035379",
+              "subject_ref": "contract:CT104020273036799",
               "domain": "money",
               "object_kind": "contract",
-              "label": "BECAUSE WE CAN LLC",
-              "when": "2026-11-02",
+              "label": "COLOSSUS ENTERPRISE LLC",
+              "when": "2026-11-03",
               "amount": null,
               "public_status": null,
               "pin": null,
-              "contract_id": "CT104020273035379",
+              "contract_id": "CT104020273036799",
               "document_id": null,
               "project_id": null,
               "request_id": null,
@@ -142982,12 +142982,12 @@
               "href": null,
               "provenance": {
                 "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273035379",
+                "source_record_id": "checkbook-contracts:ct:CT104020273036799",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "money_agency_name",
-                "observed_at": "2026-11-02",
+                "observed_at": "2026-11-03",
                 "input_value": "Department of Education"
               },
               "link_type": "published_by_agency",
@@ -142995,15 +142995,15 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "contract:CT104020273038155",
+              "subject_ref": "contract:CT104020273038313",
               "domain": "money",
               "object_kind": "contract",
-              "label": "SIMPLY ED",
-              "when": "2026-11-02",
+              "label": "Toolkit Tutors Inc",
+              "when": "2026-11-03",
               "amount": null,
               "public_status": null,
               "pin": null,
-              "contract_id": "CT104020273038155",
+              "contract_id": "CT104020273038313",
               "document_id": null,
               "project_id": null,
               "request_id": null,
@@ -143015,12 +143015,12 @@
               "href": null,
               "provenance": {
                 "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273038155",
+                "source_record_id": "checkbook-contracts:ct:CT104020273038313",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "money_agency_name",
-                "observed_at": "2026-11-02",
+                "observed_at": "2026-11-03",
                 "input_value": "Department of Education"
               },
               "link_type": "published_by_agency",
@@ -145020,38 +145020,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020273015171",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273015171",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273015171",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020273015378",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -145116,6 +145084,38 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT104020273017526",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273017526",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273017526",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT104020273018111",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -145142,6 +145142,38 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-19",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT104020273018598",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273018598",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273018598",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -145244,38 +145276,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020273021472",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273021472",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273021472",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020273022079",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -145340,38 +145340,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020273023514",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273023514",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273023514",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020273023813",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -145398,38 +145366,6 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-30",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020273023919",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273023919",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273023919",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -145596,38 +145532,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020273026693",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273026693",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273026693",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020273026740",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -145756,6 +145660,38 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT104020273028035",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273028035",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273028035",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT104020273028224",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -145782,38 +145718,6 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-21",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020273028297",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273028297",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273028297",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -145878,38 +145782,6 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-19",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020273028589",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273028589",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273028589",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -146172,38 +146044,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020273030488",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273030488",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273030488",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020273030626",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -146396,70 +146236,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020273031101",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273031101",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273031101",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020273031108",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273031108",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273031108",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020273031467",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -146518,70 +146294,6 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-23",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020273031684",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273031684",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273031684",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020273031775",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273031775",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273031775",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -146774,70 +146486,6 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-19",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020273032341",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032341",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032341",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020273032409",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032409",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273032409",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-16",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -148508,6 +148156,38 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT104020273036139",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273036139",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273036139",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT104020273036172",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -148758,6 +148438,38 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-23",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT104020273036799",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273036799",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273036799",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -149244,6 +148956,38 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT104020273038313",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273038313",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273038313",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT104020273038339",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -149372,6 +149116,70 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT104020273038647",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273038647",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273038647",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT104020273038686",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273038686",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273038686",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT104020273038719",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -149462,6 +149270,38 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-11-02",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT104020273038774",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273038774",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273038774",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -149788,6 +149628,38 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT104020273039816",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273039816",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273039816",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT104020273039831",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -150006,6 +149878,38 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-29",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT104020273040387",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273040387",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273040387",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -150300,6 +150204,38 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT104020273040913",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273040913",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273040913",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT104020273040993",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -150326,6 +150262,38 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-11-02",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT104020273041007",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273041007",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273041007",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -150582,6 +150550,38 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-10-30",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT104020273041362",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273041362",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273041362",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -150902,6 +150902,102 @@
             ],
             "basis": "money_agency_name",
             "observed_at": "2026-11-02",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT104020273042325",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273042325",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273042325",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT104020273042585",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273042585",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273042585",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT104020273042600",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273042600",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273042600",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-03",
             "input_value": "Department of Education"
           },
           "layer": "cross_domain_object_link_v2"
@@ -155532,38 +155628,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:MA104020279770755",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:MA104020279770755",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:MA104020279770755",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:MA104020279775800",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -155745,38 +155809,6 @@
           "provenance": {
             "source_system": "checkbook-contracts",
             "source_record_id": "checkbook-contracts:ct:MA104020279776235",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-08-01",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:MA104020279776250",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:MA104020279776250",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-08-01",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:MA104020279776250",
             "source_fields": [
               "agency_name"
             ],
@@ -156057,7 +156089,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 6,
-        "link_count": 394,
+        "link_count": 395,
         "join_key_link_count": 45,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
@@ -186228,288 +186260,6 @@
         "coverage_rate": 0.14285714285714285
       }
     },
-    "agency:id:board-of-elections": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:board-of-elections",
-        "id": "id:board-of-elections",
-        "canonical_id": "board-of-elections",
-        "canonical_name": "Board of Elections",
-        "display_name": "Board of Elections"
-      },
-      "domains": {
-        "money": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "contract:CT100320271406242",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "DERIVE TECHNOLOGIES LLC",
-              "when": "2026-11-01",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT100320271406242",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:board-of-elections",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT100320271406242",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-11-01",
-                "input_value": "Board of Elections"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT100320271405761",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "PINNACLE SECURITY PATROL INC",
-              "when": "2026-10-01",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT100320271405761",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:board-of-elections",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT100320271405761",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-10-01",
-                "input_value": "Board of Elections"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT100320271405582",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "VENUS MEDIA LLC",
-              "when": "2026-09-28",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT100320271405582",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:board-of-elections",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT100320271405582",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-09-28",
-                "input_value": "Board of Elections"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 3
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT100320271405582",
-          "to": "agency:id:board-of-elections",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT100320271405582",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-09-28",
-            "input_value": "Board of Elections",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT100320271405582",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-09-28",
-            "input_value": "Board of Elections"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT100320271405761",
-          "to": "agency:id:board-of-elections",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT100320271405761",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-01",
-            "input_value": "Board of Elections",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT100320271405761",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-10-01",
-            "input_value": "Board of Elections"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT100320271406242",
-          "to": "agency:id:board-of-elections",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT100320271406242",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-11-01",
-            "input_value": "Board of Elections",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT100320271406242",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-11-01",
-            "input_value": "Board of Elections"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 0,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 3,
-        "link_count": 3,
-        "join_key_link_count": 0,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.14285714285714285
-      }
-    },
     "agency:id:campaign-finance-board": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -186908,6 +186658,223 @@
         "total_linked_objects": 3,
         "link_count": 6,
         "join_key_link_count": 3,
+        "cross_spine_shadow_count": 0,
+        "coverage_rate": 0.14285714285714285
+      }
+    },
+    "agency:id:board-of-elections": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:board-of-elections",
+        "id": "id:board-of-elections",
+        "canonical_id": "board-of-elections",
+        "canonical_name": "Board of Elections",
+        "display_name": "Board of Elections"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "contract:CT100320271406242",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "DERIVE TECHNOLOGIES LLC",
+              "when": "2026-11-01",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT100320271406242",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:board-of-elections",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:ct:CT100320271406242",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-01",
+                "input_value": "Board of Elections"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "contract:CT100320271405761",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "PINNACLE SECURITY PATROL INC",
+              "when": "2026-10-01",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT100320271405761",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:board-of-elections",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:ct:CT100320271405761",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-10-01",
+                "input_value": "Board of Elections"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 2
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT100320271405761",
+          "to": "agency:id:board-of-elections",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT100320271405761",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-10-01",
+            "input_value": "Board of Elections",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT100320271405761",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-10-01",
+            "input_value": "Board of Elections"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT100320271406242",
+          "to": "agency:id:board-of-elections",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT100320271406242",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-01",
+            "input_value": "Board of Elections",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT100320271406242",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-01",
+            "input_value": "Board of Elections"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "shadow_edges": [],
+      "edge_routing": {
+        "deterministic": 0,
+        "public_inferred": 0,
+        "evidence_only": 0,
+        "no_edge": 0
+      },
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 2,
+        "link_count": 2,
+        "join_key_link_count": 0,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
       }
@@ -338335,13 +338302,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT100320271405582": [
-      {
-        "entity_ref": "agency:id:board-of-elections",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT100320271405761": [
       {
         "entity_ref": "agency:id:board-of-elections",
@@ -338429,13 +338389,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT102520278802160": [
-      {
-        "entity_ref": "agency:id:law-department",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT103020271405281": [
       {
         "entity_ref": "agency:id:city-planning",
@@ -338445,13 +338398,6 @@
       {
         "entity_ref": "vendor:stem:VISIONARYZ",
         "relation": "named_vendor",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020273015171": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
         "confidence": "strong"
       }
     ],
@@ -338469,7 +338415,21 @@
         "confidence": "strong"
       }
     ],
+    "contract:CT104020273017526": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT104020273018111": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT104020273018598": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -338497,13 +338457,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020273021472": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020273022079": [
       {
         "entity_ref": "agency:id:education",
@@ -338523,21 +338476,7 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020273023514": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020273023813": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020273023919": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -338584,13 +338523,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020273026693": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020273026740": [
       {
         "entity_ref": "agency:id:education",
@@ -338619,14 +338551,14 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020273028224": [
+    "contract:CT104020273028035": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
         "confidence": "strong"
       }
     ],
-    "contract:CT104020273028297": [
+    "contract:CT104020273028224": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -338641,13 +338573,6 @@
       }
     ],
     "contract:CT104020273028392": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020273028589": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -338710,13 +338635,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020273030488": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020273030626": [
       {
         "entity_ref": "agency:id:education",
@@ -338764,20 +338682,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020273031101": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020273031108": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020273031467": [
       {
         "entity_ref": "agency:id:education",
@@ -338786,20 +338690,6 @@
       }
     ],
     "contract:CT104020273031589": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020273031684": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020273031775": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -338850,20 +338740,6 @@
       {
         "entity_ref": "vendor:stem:BAY%20RIDGE%20WINDOW%20SHADE%20CORP%20AMERICAN%20WINDOW%20FASHIONS",
         "relation": "named_vendor",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020273032341": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020273032409": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
         "confidence": "strong"
       }
     ],
@@ -339246,6 +339122,13 @@
         "confidence": "strong"
       }
     ],
+    "contract:CT104020273036139": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT104020273036172": [
       {
         "entity_ref": "agency:id:education",
@@ -339296,6 +339179,13 @@
       }
     ],
     "contract:CT104020273036733": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT104020273036799": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -339417,6 +339307,13 @@
         "confidence": "strong"
       }
     ],
+    "contract:CT104020273038313": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT104020273038339": [
       {
         "entity_ref": "agency:id:education",
@@ -339445,6 +339342,20 @@
         "confidence": "strong"
       }
     ],
+    "contract:CT104020273038647": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT104020273038686": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT104020273038719": [
       {
         "entity_ref": "agency:id:education",
@@ -339460,6 +339371,13 @@
       }
     ],
     "contract:CT104020273038762": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT104020273038774": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -339541,6 +339459,13 @@
         "confidence": "strong"
       }
     ],
+    "contract:CT104020273039816": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT104020273039831": [
       {
         "entity_ref": "agency:id:education",
@@ -339584,6 +339509,13 @@
       }
     ],
     "contract:CT104020273040224": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT104020273040387": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -339653,7 +339585,21 @@
         "confidence": "strong"
       }
     ],
+    "contract:CT104020273040913": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT104020273040993": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT104020273041007": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -339715,6 +339661,13 @@
       }
     ],
     "contract:CT104020273041361": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT104020273041362": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -339800,6 +339753,27 @@
       }
     ],
     "contract:CT104020273042250": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT104020273042325": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT104020273042585": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT104020273042600": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -341560,6 +341534,13 @@
         "confidence": "strong"
       }
     ],
+    "contract:CT184620278803675": [
+      {
+        "entity_ref": "agency:id:parks-and-recreation",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT185020271403166": [
       {
         "entity_ref": "agency:id:design-and-construction",
@@ -342441,13 +342422,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:MA104020279770755": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:MA104020279775800": [
       {
         "entity_ref": "agency:id:education",
@@ -342484,13 +342458,6 @@
       }
     ],
     "contract:MA104020279776235": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:MA104020279776250": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -351019,12 +350986,12 @@
       "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
       "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",
       "procurement_spine": "site/data/procurement_spine_sources.json",
-      "procurement_spine_observed_on": "2026-11-05"
+      "procurement_spine_observed_on": "2026-11-06"
     }
   },
   "procurement_spine": {
     "schema_version": 1,
-    "observed_on": "2026-11-05",
+    "observed_on": "2026-11-06",
     "coverage": {
       "passport_contracts": {
         "source_system": "passport-public-contracts",
@@ -351070,48 +351037,48 @@
         "coverage_status": "measured",
         "population_backed": true,
         "source_url": "https://www.checkbooknyc.com/api",
-        "pulled_at": "2026-11-05T12:12:30.491Z",
+        "pulled_at": "2026-11-06T04:54:33.506Z",
         "population": {
-          "api_transaction_rows": 40014,
-          "normalized_unique_contracts": 29402,
+          "api_transaction_rows": 40056,
+          "normalized_unique_contracts": 29419,
           "fiscal_years": [
             2025,
             2026,
             2027
           ],
-          "sha256": "a31d1d01dc692c339aea7aa6ebad9249208a95ef0066f6b9a4a95fa95acb3ef4"
+          "sha256": "1a89869f0a0b1f94332639bb8f8954c523fdf1f03f889a8e82603098f8e35c18"
         },
         "overlap": {
-          "checkbook_contracts": 29402,
+          "checkbook_contracts": 29419,
           "exact_overlap_buckets": {
             "passport_and_city_record": 3852,
             "passport_only": 1841,
             "city_record_only": 1363,
-            "new_unique": 22346
+            "new_unique": 22363
           },
           "passport": {
             "matched_contracts": 5693,
             "by_contract_id": 5562,
             "by_pin_epin": 4981,
-            "rate": 0.19362628392626352,
+            "rate": 0.19351439545871715,
             "denominator": "normalized Checkbook contracts in the collected fiscal-year window"
           },
           "city_record": {
             "matched_checkbook_contracts": 5215,
-            "checkbook_rate": 0.17736888647030813,
+            "checkbook_rate": 0.17726639246745302,
             "matched_modern_awards": 5162,
             "modern_awards_with_pin": 5966,
             "modern_award_rate": 0.8652363392557828,
             "denominator": "City Record Recent Contract Awards since 2025-01-01 with an exact PIN"
           },
-          "new_unique_contract_ids": 22346,
+          "new_unique_contract_ids": 22363,
           "acceptance_rule": "normalized exact contract_id or exact PIN/EPIN only; names are not join keys"
         },
         "section_denominator": {
           "status": "measured",
           "denominator": "normalized unique Checkbook contracts in the collected fiscal-year population",
-          "rows": 29402,
-          "source_population": 40014
+          "rows": 29419,
+          "source_population": 40056
         },
         "modern_awards": {
           "joined": 5162,
@@ -351167,7 +351134,7 @@
     },
     "row_counts": {
       "passport_contracts": 12795,
-      "checkbook_contracts": 10510,
+      "checkbook_contracts": 10508,
       "checkbook_spending": 31,
       "passport_contracts_materialization": 2,
       "checkbook_nycha_contracts": 1
@@ -351229,8 +351196,8 @@
         "strategy": "population-backed census (rows.passport_contracts) capped for entity-intelligence; compatibility examples included first, then agency-stratified round-robin within the remaining cap"
       },
       "checkbook_contracts": {
-        "population_rows": 29402,
-        "committed_slice_rows": 10510,
+        "population_rows": 29419,
+        "committed_slice_rows": 10508,
         "selected_rows": 500,
         "cap": 500,
         "strategy": "population-measured Checkbook slice capped for entity intelligence; one row per exact prime_contract_id; Contracts_NYCHA rows reserve slots in the shared Checkbook budget"
@@ -351623,19 +351590,19 @@
       "coverage_rate": 0.14285714285714285
     },
     {
-      "ref": "agency:id:board-of-elections",
-      "kind": "agency",
-      "display_name": "Board of Elections",
-      "domains_matched": 1,
-      "total_linked_objects": 3,
-      "coverage_rate": 0.14285714285714285
-    },
-    {
       "ref": "agency:id:campaign-finance-board",
       "kind": "agency",
       "display_name": "Campaign Finance Board",
       "domains_matched": 1,
       "total_linked_objects": 3,
+      "coverage_rate": 0.14285714285714285
+    },
+    {
+      "ref": "agency:id:board-of-elections",
+      "kind": "agency",
+      "display_name": "Board of Elections",
+      "domains_matched": 1,
+      "total_linked_objects": 2,
       "coverage_rate": 0.14285714285714285
     },
     {

@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "title": "Population-backed procurement spine observations for entity intelligence",
-  "observed_on": "2026-11-05",
-  "generated_at": "2026-11-05T12:12:30.491Z",
+  "observed_on": "2026-11-06",
+  "generated_at": "2026-11-06T04:54:33.506Z",
   "receipts": {
     "passport_join": "site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json",
     "source_coverage": "entity_resolution/source_coverage.json",
@@ -54,48 +54,48 @@
       "coverage_status": "measured",
       "population_backed": true,
       "source_url": "https://www.checkbooknyc.com/api",
-      "pulled_at": "2026-11-05T12:12:30.491Z",
+      "pulled_at": "2026-11-06T04:54:33.506Z",
       "population": {
-        "api_transaction_rows": 40014,
-        "normalized_unique_contracts": 29402,
+        "api_transaction_rows": 40056,
+        "normalized_unique_contracts": 29419,
         "fiscal_years": [
           2025,
           2026,
           2027
         ],
-        "sha256": "a31d1d01dc692c339aea7aa6ebad9249208a95ef0066f6b9a4a95fa95acb3ef4"
+        "sha256": "1a89869f0a0b1f94332639bb8f8954c523fdf1f03f889a8e82603098f8e35c18"
       },
       "overlap": {
-        "checkbook_contracts": 29402,
+        "checkbook_contracts": 29419,
         "exact_overlap_buckets": {
           "passport_and_city_record": 3852,
           "passport_only": 1841,
           "city_record_only": 1363,
-          "new_unique": 22346
+          "new_unique": 22363
         },
         "passport": {
           "matched_contracts": 5693,
           "by_contract_id": 5562,
           "by_pin_epin": 4981,
-          "rate": 0.19362628392626352,
+          "rate": 0.19351439545871715,
           "denominator": "normalized Checkbook contracts in the collected fiscal-year window"
         },
         "city_record": {
           "matched_checkbook_contracts": 5215,
-          "checkbook_rate": 0.17736888647030813,
+          "checkbook_rate": 0.17726639246745302,
           "matched_modern_awards": 5162,
           "modern_awards_with_pin": 5966,
           "modern_award_rate": 0.8652363392557828,
           "denominator": "City Record Recent Contract Awards since 2025-01-01 with an exact PIN"
         },
-        "new_unique_contract_ids": 22346,
+        "new_unique_contract_ids": 22363,
         "acceptance_rule": "normalized exact contract_id or exact PIN/EPIN only; names are not join keys"
       },
       "section_denominator": {
         "status": "measured",
         "denominator": "normalized unique Checkbook contracts in the collected fiscal-year population",
-        "rows": 29402,
-        "source_population": 40014
+        "rows": 29419,
+        "source_population": 40056
       },
       "modern_awards": {
         "joined": 5162,
@@ -255346,6 +255346,941 @@
     ],
     "checkbook_contracts": [
       {
+        "prime_contract_id": "CT104020273017526",
+        "contract_id": "CT104020273017526",
+        "prime_vendor": "ASANA INC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "NEGOTIATED SERVICES-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273018598",
+        "contract_id": "CT104020273018598",
+        "prime_vendor": "YUCCA PALM MUTUALISM LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Black American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "REQUIREMENTS-SERVICES",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273028035",
+        "contract_id": "CT104020273028035",
+        "prime_vendor": "Toolkit Tutors Inc",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "3 BIDS-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273036139",
+        "contract_id": "CT104020273036139",
+        "prime_vendor": "META LOGIC STRATEGIC CONSULTING LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Black American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273036799",
+        "contract_id": "CT104020273036799",
+        "prime_vendor": "COLOSSUS ENTERPRISE LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "3 BIDS-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273038313",
+        "contract_id": "CT104020273038313",
+        "prime_vendor": "Toolkit Tutors Inc",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "3 BIDS-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273038647",
+        "contract_id": "CT104020273038647",
+        "prime_vendor": "PROJECT PAWN, LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Black American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273038686",
+        "contract_id": "CT104020273038686",
+        "prime_vendor": "TJ MURCHISON & COMPANY LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Black American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273038774",
+        "contract_id": "CT104020273038774",
+        "prime_vendor": "TREV CN LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Black American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273039816",
+        "contract_id": "CT104020273039816",
+        "prime_vendor": "ENRICHEDNYC LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Women (Non-Minority)",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273040387",
+        "contract_id": "CT104020273040387",
+        "prime_vendor": "CREATE WEALTH ENTERPRISE LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "3 BIDS-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273040913",
+        "contract_id": "CT104020273040913",
+        "prime_vendor": "BUCK INSTITUTE FOR EDUCATION",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "NEGOTIATED SERVICES-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "REQUIREMENTS-SERVICES",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273041007",
+        "contract_id": "CT104020273041007",
+        "prime_vendor": "MERCE CUNNINGHAM TRUST",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "NEGOTIATED SERVICES-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "REQUIREMENTS-SERVICES",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273041362",
+        "contract_id": "CT104020273041362",
+        "prime_vendor": "THE EQUALITY EDUCATION",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Women (Non-Minority)",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273042325",
+        "contract_id": "CT104020273042325",
+        "prime_vendor": "BROOKLYN ADVISORY 6",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "3 BIDS-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273042585",
+        "contract_id": "CT104020273042585",
+        "prime_vendor": "Foodstream Inc",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "NEGOTIATED SERVICES-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "REQUIREMENTS-SERVICES",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273042600",
+        "contract_id": "CT104020273042600",
+        "prime_vendor": "STREET LAB INC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-03",
+        "start_date": "2026-11-03",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-03"
+          ],
+          "registration_date_observations": [
+            "2026-11-03"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "NEGOTIATED SERVICES-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "REQUIREMENTS-SERVICES",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-03",
+        "end": "2027-06-30",
+        "registered": "2026-11-03",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
         "prime_contract_id": "CT104020273015378",
         "contract_id": "CT104020273015378",
         "prime_vendor": "LEARNING INNOVATION CATALYST INC",
@@ -256692,7 +257627,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 4051800,
@@ -256747,7 +257682,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2085840,
@@ -256802,7 +257737,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2496180,
@@ -257137,7 +258072,7 @@
         "status": "registered",
         "current": 467856,
         "original": 467856,
-        "spent": 0,
+        "spent": 83512.3,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-11-02",
@@ -257360,6 +258295,61 @@
         "spent": 0,
         "start": "2026-11-02",
         "end": "2026-11-30",
+        "registered": "2026-11-02",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT184620278803675",
+        "contract_id": "CT184620278803675",
+        "prime_vendor": "TrueBounce, Inc.",
+        "agency": "Department of Parks and Recreation",
+        "pin": "84627C0286001",
+        "award_method": "SMALL PURCHASE - UNDER $5,000",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-02",
+        "start_date": "2026-11-06",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-06"
+          ],
+          "registration_date_observations": [
+            "2026-11-02"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "MNOPS-Backboards and Rims",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 9814.5,
+        "original": 9814.5,
+        "spent": 0,
+        "start": "2026-11-06",
+        "end": "2027-01-12",
         "registered": "2026-11-02",
         "received": null,
         "source_fiscal_years": [
@@ -265828,7 +266818,7 @@
         "status": "registered",
         "current": 3740310,
         "original": 3740310,
-        "spent": 0,
+        "spent": 476889.53,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-27",
@@ -269618,7 +270608,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1387635,
@@ -272153,7 +273143,7 @@
         "status": "registered",
         "current": 4407350,
         "original": 4407350,
-        "spent": 0,
+        "spent": 786711.98,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-22",
@@ -294374,7 +295364,7 @@
         "status": "registered",
         "current": 2808880,
         "original": 2808880,
-        "spent": 501385.08,
+        "spent": 644637.98,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-09",
@@ -294484,7 +295474,7 @@
         "status": "registered",
         "current": 2135060,
         "original": 2135060,
-        "spent": 399546.11,
+        "spent": 508434.01,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-09",
@@ -306533,7 +307523,7 @@
         "status": "registered",
         "current": 663648,
         "original": 663648,
-        "spent": 83609.47,
+        "spent": 100625.58,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-06",
@@ -308240,7 +309230,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 4500,
+        "spent": 9000,
         "start": "2026-10-05",
         "end": "2027-06-30",
         "registered": "2026-10-05",
@@ -308295,7 +309285,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 4000,
+        "spent": 7000,
         "start": "2026-10-05",
         "end": "2027-06-30",
         "registered": "2026-10-05",
@@ -309335,7 +310325,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2163690,
@@ -310937,7 +311927,7 @@
         "status": "registered",
         "current": 2967552,
         "original": 2967552,
-        "spent": 381331.03,
+        "spent": 509073.65,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-03",
@@ -313687,7 +314677,7 @@
         "status": "registered",
         "current": 1607936,
         "original": 1607936,
-        "spent": 321290.4,
+        "spent": 393023.69,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-02",
@@ -313742,7 +314732,7 @@
         "status": "registered",
         "current": 1089456,
         "original": 1089456,
-        "spent": 244043.4,
+        "spent": 295377.49,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-02",
@@ -314182,7 +315172,7 @@
         "status": "registered",
         "current": 1887009.96,
         "original": 1887009.96,
-        "spent": 425573.52,
+        "spent": 514316,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-02",
@@ -316547,7 +317537,7 @@
         "status": "registered",
         "current": 545088,
         "original": 545088,
-        "spent": 117469.25,
+        "spent": 138513.91,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-01",
@@ -317042,7 +318032,7 @@
         "status": "registered",
         "current": 2717406,
         "original": 2717406,
-        "spent": 396602.15,
+        "spent": 535190.15,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-01",
@@ -317812,7 +318802,7 @@
         "status": "registered",
         "current": 1164300,
         "original": 1164300,
-        "spent": 163355.25,
+        "spent": 222734.5,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-01",
@@ -317977,7 +318967,7 @@
         "status": "registered",
         "current": 2011269.6,
         "original": 2011269.6,
-        "spent": 0,
+        "spent": 135600,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-10-01",
@@ -320837,7 +321827,7 @@
         "status": "registered",
         "current": 7194570,
         "original": 7194570,
-        "spent": 603034.25,
+        "spent": 937502.73,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-30",
@@ -321387,7 +322377,7 @@
         "status": "registered",
         "current": 2086110,
         "original": 2086110,
-        "spent": 276820.77,
+        "spent": 371914.09,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-30",
@@ -321662,7 +322652,7 @@
         "status": "registered",
         "current": 1562352,
         "original": 1562352,
-        "spent": 232972.83,
+        "spent": 305130.04,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-30",
@@ -321772,7 +322762,7 @@
         "status": "registered",
         "current": 1606139.2,
         "original": 1606139.2,
-        "spent": 324737.4,
+        "spent": 530167.4,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-09-30",
@@ -321827,7 +322817,7 @@
         "status": "registered",
         "current": 718167,
         "original": 718167,
-        "spent": 92871.75,
+        "spent": 138771.75,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-09-30",
@@ -329717,6 +330707,61 @@
         "selection_bucket": "city_record_only"
       },
       {
+        "prime_contract_id": "CT183620278803076",
+        "contract_id": "CT183620278803076",
+        "prime_vendor": "ABRAHAMS CONSULTING LLC",
+        "agency": "Department of Finance",
+        "pin": "83627W0005001",
+        "award_method": "M/WBE SMALL PURCHASE",
+        "mwbe_category": "Black American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-09-28",
+        "start_date": "2026-11-06",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-06"
+          ],
+          "registration_date_observations": [
+            "2026-09-28"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "Chocolatey Software Renewal",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 39506.94,
+        "original": 39506.94,
+        "spent": 0,
+        "start": "2026-11-06",
+        "end": "2027-11-05",
+        "registered": "2026-09-28",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "city_record_only"
+      },
+      {
         "prime_contract_id": "CT184620278803114",
         "contract_id": "CT184620278803114",
         "prime_vendor": "WINGGLEE LLC",
@@ -333048,7 +334093,7 @@
         "status": "registered",
         "current": 935844,
         "original": 935844,
-        "spent": 120867.15,
+        "spent": 168329.94,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-25",
@@ -346801,7 +347846,7 @@
         "status": "registered",
         "current": 1522080,
         "original": 1522080,
-        "spent": 220330.18,
+        "spent": 262795.18,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-21",
@@ -350706,7 +351751,7 @@
         "status": "registered",
         "current": 1446168,
         "original": 1446168,
-        "spent": 0,
+        "spent": 258140.99,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-18",
@@ -351696,7 +352741,7 @@
         "status": "registered",
         "current": 737400,
         "original": 737400,
-        "spent": 139161.92,
+        "spent": 178456.2,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-18",
@@ -355601,7 +356646,7 @@
         "status": "registered",
         "current": 2195526,
         "original": 2195526,
-        "spent": 283402.38,
+        "spent": 359637.71,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-17",
@@ -362916,7 +363961,7 @@
         "status": "registered",
         "current": 1694220,
         "original": 1694220,
-        "spent": 388821.79,
+        "spent": 475228.27,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-15",
@@ -366707,7 +367752,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1045700,
@@ -366987,7 +368032,7 @@
         "status": "registered",
         "current": 2744146,
         "original": 2744146,
-        "spent": 611163.6,
+        "spent": 732497.14,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-14",
@@ -371773,7 +372818,7 @@
         "status": "registered",
         "current": 2502948,
         "original": 2502948,
-        "spent": 565666.31,
+        "spent": 693316.72,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-11",
@@ -373858,7 +374903,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 6668244,
@@ -373918,7 +374963,7 @@
         "status": "registered",
         "current": 5830080,
         "original": 5830080,
-        "spent": 1558465.1,
+        "spent": 1855799.35,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-10",
@@ -374028,7 +375073,7 @@
         "status": "registered",
         "current": 506928,
         "original": 506928,
-        "spent": 108102.36,
+        "spent": 127492.32,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-10",
@@ -374248,7 +375293,7 @@
         "status": "registered",
         "current": 2842416,
         "original": 2842416,
-        "spent": 648263.22,
+        "spent": 791131.28,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-10",
@@ -379696,7 +380741,7 @@
         "status": "registered",
         "current": 1514628,
         "original": 1514628,
-        "spent": 315980.9,
+        "spent": 424933.03,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-08",
@@ -380026,7 +381071,7 @@
         "status": "registered",
         "current": 1002609.48,
         "original": 1002609.48,
-        "spent": 226589.88,
+        "spent": 277723.1,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-08",
@@ -382776,7 +383821,7 @@
         "status": "registered",
         "current": 3799624,
         "original": 3799624,
-        "spent": 833848.2,
+        "spent": 997875.71,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-05",
@@ -383106,7 +384151,7 @@
         "status": "registered",
         "current": 2464872,
         "original": 2464872,
-        "spent": 527721.12,
+        "spent": 680408.25,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-05",
@@ -387122,7 +388167,7 @@
         "status": "registered",
         "current": 1079058,
         "original": 1079058,
-        "spent": 290169.32,
+        "spent": 343013.1,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-03",
@@ -390204,7 +391249,7 @@
         "status": "registered",
         "current": 2343228,
         "original": 2343228,
-        "spent": 273984.9,
+        "spent": 433679.1,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-02",
@@ -390259,7 +391304,7 @@
         "status": "registered",
         "current": 2462700,
         "original": 2462700,
-        "spent": 289222.5,
+        "spent": 457797.5,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-02",
@@ -393559,7 +394604,7 @@
         "status": "registered",
         "current": 2084108.32,
         "original": 2084108.32,
-        "spent": 492261.29,
+        "spent": 596437.2,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-01",
@@ -394879,7 +395924,7 @@
         "status": "registered",
         "current": 2797248,
         "original": 2797248,
-        "spent": 349656,
+        "spent": 425632.34,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-01",
@@ -395264,7 +396309,7 @@
         "status": "registered",
         "current": 615510,
         "original": 615510,
-        "spent": 139101.25,
+        "spent": 170188.25,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-01",
@@ -397025,7 +398070,7 @@
         "status": "registered",
         "current": 2745690,
         "original": 2745690,
-        "spent": 343211.25,
+        "spent": 401999.61,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-08-31",
@@ -399446,7 +400491,7 @@
         "status": "registered",
         "current": 705648,
         "original": 705648,
-        "spent": 132803.81,
+        "spent": 155394.44,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-08-28",
@@ -402377,10 +403422,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 16,
+          "subvendor": 18,
           "other": 0
         },
-        "subvendor_count": 13,
+        "subvendor_count": 14,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -405225,7 +406270,7 @@
         "status": "registered",
         "current": 2437296,
         "original": 2437296,
-        "spent": 386482.77,
+        "spent": 478181.65,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-08-25",
@@ -415462,7 +416507,7 @@
         "status": "registered",
         "current": 4882632,
         "original": 4882632,
-        "spent": 719042.62,
+        "spent": 845173.22,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-08-19",
@@ -419093,7 +420138,7 @@
         "status": "registered",
         "current": 2090718,
         "original": 2090718,
-        "spent": 477978.09,
+        "spent": 568275.88,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-08-17",
@@ -427022,7 +428067,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 0,
+        "spent": 9996,
         "start": "2026-08-11",
         "end": "2027-06-30",
         "registered": "2026-08-11",
@@ -427462,7 +428507,7 @@
         "status": "registered",
         "current": 2505180,
         "original": 2505180,
-        "spent": 626295.09,
+        "spent": 729115.11,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-08-11",
@@ -427517,7 +428562,7 @@
         "status": "registered",
         "current": 2215914,
         "original": 2215914,
-        "spent": 553978.5,
+        "spent": 685323.91,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-08-11",
@@ -427572,7 +428617,7 @@
         "status": "registered",
         "current": 4278164,
         "original": 4278164,
-        "spent": 1069541,
+        "spent": 1253900.47,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-08-11",
@@ -432088,7 +433133,7 @@
         "status": "registered",
         "current": 12987000,
         "original": 12987000,
-        "spent": 721500,
+        "spent": 794399.03,
         "start": "2026-08-01",
         "end": "2032-08-31",
         "registered": "2026-08-07",
@@ -439312,10 +440357,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 2,
+          "subvendor": 3,
           "other": 0
         },
-        "subvendor_count": 1,
+        "subvendor_count": 2,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -453410,7 +454455,7 @@
         "status": "registered",
         "current": 5646384,
         "original": 5646384,
-        "spent": 768335.3,
+        "spent": 778423.9,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-07-27",
@@ -474817,7 +475862,7 @@
         "award_method": "MULTIPLE AWARDS",
         "mwbe_category": "Non-M/WBE",
         "duration": null,
-        "includes_subvendors": "No Data Entered",
+        "includes_subvendors": "Yes",
         "registration_date": "2026-07-10",
         "start_date": "2026-07-01",
         "date_ownership": {
@@ -474849,14 +475894,15 @@
           "2027"
         ],
         "vendor_record_types": [
-          "Prime Vendor"
+          "Prime Vendor",
+          "Sub Vendor"
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 0,
+          "subvendor": 1,
           "other": 0
         },
-        "subvendor_count": 0,
+        "subvendor_count": 1,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -489023,62 +490069,6 @@
         "selection_bucket": "new_unique"
       },
       {
-        "prime_contract_id": "CT180620278801022",
-        "contract_id": "CT180620278801022",
-        "prime_vendor": "STATEWIDE DEMOLITION CORP",
-        "agency": "Housing Preservation and Development",
-        "pin": "80626E0019001",
-        "award_method": "EMERGENCY",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Yes",
-        "registration_date": "2026-06-29",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2026-06-29"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Construction Services",
-        "purpose": "Immediate Emergency Demo 771 Williams Av BK Statewide Demo",
-        "document_code": "CT1",
-        "contract_type": "CONSTRUCTION",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 104909.96,
-        "original": 104909.96,
-        "spent": 104909.96,
-        "start": "2025-11-05",
-        "end": "2026-11-04",
-        "registered": "2026-06-29",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor",
-          "Sub Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 9,
-          "other": 0
-        },
-        "subvendor_count": 8,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "passport_and_city_record"
-      },
-      {
         "prime_contract_id": "CT182620268807278",
         "contract_id": "CT182620268807278",
         "prime_vendor": "NEW ENGLAND INTERSTATE WATER POLLUTION CONTROL COMMISSION",
@@ -494528,10 +495518,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 10,
+          "subvendor": 11,
           "other": 0
         },
-        "subvendor_count": 9,
+        "subvendor_count": 10,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -506243,7 +507233,7 @@
         "status": "registered",
         "current": 146410359.8,
         "original": 146410359.8,
-        "spent": 12658594.11,
+        "spent": 12780049.42,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-18",
@@ -506298,7 +507288,7 @@
         "status": "registered",
         "current": 215608062.4,
         "original": 215608062.4,
-        "spent": 20972628.64,
+        "spent": 20974168.64,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-18",
@@ -511204,7 +512194,7 @@
         "status": "registered",
         "current": 12127132,
         "original": 12127132,
-        "spent": 3452472.2,
+        "spent": 3488824.18,
         "start": "2026-03-01",
         "end": "2027-02-28",
         "registered": "2026-06-17",
@@ -519084,7 +520074,7 @@
         "status": "registered",
         "current": 1605000,
         "original": 1605000,
-        "spent": 119980,
+        "spent": 129400,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-13",
@@ -530227,10 +531217,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 69,
+          "subvendor": 71,
           "other": 0
         },
-        "subvendor_count": 52,
+        "subvendor_count": 53,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -539363,7 +540353,7 @@
         "status": "registered",
         "current": 19185165,
         "original": 19185165,
-        "spent": 975093.63,
+        "spent": 1055364.1,
         "start": "2026-07-01",
         "end": "2035-06-30",
         "registered": "2026-06-05",
@@ -543830,7 +544820,7 @@
         "status": "registered",
         "current": 29480430,
         "original": 29480430,
-        "spent": 2948043,
+        "spent": 3103093.73,
         "start": "2026-07-01",
         "end": "2030-06-30",
         "registered": "2026-06-03",
@@ -555302,10 +556292,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 11,
+          "subvendor": 13,
           "other": 0
         },
-        "subvendor_count": 10,
+        "subvendor_count": 12,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -558541,7 +559531,7 @@
         "status": "registered",
         "current": 7113493,
         "original": 7113493,
-        "spent": 546937.23,
+        "spent": 1074528.66,
         "start": "2026-03-01",
         "end": "2027-02-28",
         "registered": "2026-05-22",
@@ -657564,7 +658554,7 @@
         "award_method": "M/WBE SMALL PURCHASE",
         "mwbe_category": "Black American",
         "duration": null,
-        "includes_subvendors": "No Data Entered",
+        "includes_subvendors": "Yes",
         "registration_date": "2026-03-20",
         "start_date": "2026-03-17",
         "date_ownership": {
@@ -657596,14 +658586,15 @@
           "2026"
         ],
         "vendor_record_types": [
-          "Prime Vendor"
+          "Prime Vendor",
+          "Sub Vendor"
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 0,
+          "subvendor": 1,
           "other": 0
         },
-        "subvendor_count": 0,
+        "subvendor_count": 1,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -715440,10 +716431,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 9,
+          "subvendor": 11,
           "other": 0
         },
-        "subvendor_count": 8,
+        "subvendor_count": 10,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -770161,61 +771152,6 @@
         "selection_bucket": "passport_and_city_record"
       },
       {
-        "prime_contract_id": "CT107220261406406",
-        "contract_id": "CT107220261406406",
-        "prime_vendor": "SOUL2SOULZ INC",
-        "agency": "Department of Correction",
-        "pin": null,
-        "award_method": "SM PURCH GOODS SERVICES 100K",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-12-30",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-12-30"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "Emotional Intelligence & Human Connection Services",
-        "document_code": "CT1",
-        "contract_type": "WORK/LABOR",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 52000,
-        "original": 52000,
-        "spent": 52000,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-12-30",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
         "prime_contract_id": "CT112520268803662",
         "contract_id": "CT112520268803662",
         "prime_vendor": "PEOPLE CARE INC.",
@@ -789292,7 +790228,7 @@
         "status": "registered",
         "current": 6987856,
         "original": 6987856,
-        "spent": 424320.76,
+        "spent": 461605.59,
         "start": "2025-12-01",
         "end": "2026-11-30",
         "registered": "2025-12-11",
@@ -822500,61 +823436,6 @@
         "selection_bucket": "new_unique"
       },
       {
-        "prime_contract_id": "CT184620268803655",
-        "contract_id": "CT184620268803655",
-        "prime_vendor": "Preferred Proppants LLC",
-        "agency": "Department of Parks and Recreation",
-        "pin": "84626C0270001",
-        "award_method": "SMALL PURCHASE - UNDER $5,000",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-10",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-10"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Goods",
-        "purpose": "INFILL FOR SYNTHETIC TURF FIELD MAINTENANCE CITYWIDE",
-        "document_code": "CT1",
-        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 15900,
-        "original": 15900,
-        "spent": 15900,
-        "start": "2025-11-05",
-        "end": "2025-12-31",
-        "registered": "2025-11-10",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
         "prime_contract_id": "CT184620268803703",
         "contract_id": "CT184620268803703",
         "prime_vendor": "JOANNE FRANKLIN INC",
@@ -825525,226 +826406,6 @@
         "selection_bucket": "passport_and_city_record"
       },
       {
-        "prime_contract_id": "CT104020263028668",
-        "contract_id": "CT104020263028668",
-        "prime_vendor": "VIBEZ N JUICE LLC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Black American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "MWBE-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 22000,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263033392",
-        "contract_id": "CT104020263033392",
-        "prime_vendor": "VIVID IMAGINATION INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Black American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "MWBE-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24990,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263041789",
-        "contract_id": "CT104020263041789",
-        "prime_vendor": "INSPIRING MINDS",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "COMPETITIVE GRANT-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "REQUIREMENTS-SERVICES",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24500,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263042095",
-        "contract_id": "CT104020263042095",
-        "prime_vendor": "LOCOROBO INNOVATIONS INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Asian American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "COMPETITIVE GRANT-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "REQUIREMENTS-SERVICES",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24975,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
         "prime_contract_id": "CT104020263042129",
         "contract_id": "CT104020263042129",
         "prime_vendor": "OMNILEARN CORP.",
@@ -825855,446 +826516,6 @@
         "selection_bucket": "new_unique"
       },
       {
-        "prime_contract_id": "CT104020263043518",
-        "contract_id": "CT104020263043518",
-        "prime_vendor": "THE BALANCE BETWEEN INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Women (Non-Minority)",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "NEGOTIATED SERVICES-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "REQUIREMENTS-SERVICES",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 25000,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263044540",
-        "contract_id": "CT104020263044540",
-        "prime_vendor": "FYREZONE ENTERTAINMENT INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Black American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "MWBE-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24999,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263044874",
-        "contract_id": "CT104020263044874",
-        "prime_vendor": "FORESIGHT ADVISORY AND CONSULTING INCORPORATED",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Asian American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "MWBE-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24999,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263045157",
-        "contract_id": "CT104020263045157",
-        "prime_vendor": "MEDIEVAL TIMES USA",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "SOLE VENDOR-COMMODITIES",
-        "document_code": "CT1",
-        "contract_type": "OTHERS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24373.08,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263045331",
-        "contract_id": "CT104020263045331",
-        "prime_vendor": "THE BROOKLYN COMBINE FOR PROGRESSIVE ACTION",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "COMPETITIVE GRANT-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 25000,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263045441",
-        "contract_id": "CT104020263045441",
-        "prime_vendor": "BOLT ARCHITECTURE PLLC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Black American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "COMPETITIVE GRANT-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 25000,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263045675",
-        "contract_id": "CT104020263045675",
-        "prime_vendor": "CANVAS INSTITUTE",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "3 BIDS-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 23199,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263045861",
-        "contract_id": "CT104020263045861",
-        "prime_vendor": "CASTLE SOFTWARE, INC.",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Goods",
-        "purpose": "SOLE VENDOR-COMMODITIES",
-        "document_code": "CT1",
-        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24998.98,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
         "prime_contract_id": "CT104020263045863",
         "contract_id": "CT104020263045863",
         "prime_vendor": "VISION 2 VISION ORGANIZING LLC",
@@ -826328,61 +826549,6 @@
         "original": 25000,
         "spent": 0,
         "start": "2026-03-17",
-        "end": "2026-06-30",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263045916",
-        "contract_id": "CT104020263045916",
-        "prime_vendor": "ELITE TOURS INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Asian American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "MWBE-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "OTHERS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 21700,
-        "start": "2025-11-05",
         "end": "2026-06-30",
         "registered": "2025-11-05",
         "received": null,
@@ -826516,171 +826682,6 @@
         "selection_bucket": "passport_and_city_record"
       },
       {
-        "prime_contract_id": "CT184620268803580",
-        "contract_id": "CT184620268803580",
-        "prime_vendor": "MULTI MEDIA PROMOS LLC",
-        "agency": "Department of Parks and Recreation",
-        "pin": "84626C0331001",
-        "award_method": "SMALL PURCHASE - UNDER $5,000",
-        "mwbe_category": "Women (Non-Minority)",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Goods",
-        "purpose": "CTRAIN-TO PURCHASE PROMOTIONAL ITEMS",
-        "document_code": "CT1",
-        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 4145.65,
-        "original": 4145.65,
-        "spent": 4145.65,
-        "start": "2025-11-05",
-        "end": "2025-12-29",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT184620268803638",
-        "contract_id": "CT184620268803638",
-        "prime_vendor": "MIDTOWN OFFICE SUPPLIES INC",
-        "agency": "Department of Parks and Recreation",
-        "pin": "84626C0332001",
-        "award_method": "SMALL PURCHASE - UNDER $5,000",
-        "mwbe_category": "Asian American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Goods",
-        "purpose": "CTRAIN-TO PURCHASE OFFICE SUPPLIES FOR PARKS ACADEMY",
-        "document_code": "CT1",
-        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 1704.01,
-        "original": 1704.01,
-        "spent": 1704.01,
-        "start": "2025-11-05",
-        "end": "2025-12-05",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT184620268803642",
-        "contract_id": "CT184620268803642",
-        "prime_vendor": "INTIVITY INC",
-        "agency": "Department of Parks and Recreation",
-        "pin": "84626C0334001",
-        "award_method": "SMALL PURCHASE - UNDER $5,000",
-        "mwbe_category": "Hispanic American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-05",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-05"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Goods",
-        "purpose": "BXOPS-STRIPING MACHINE FOR BRONX OPERATIONS",
-        "document_code": "CT1",
-        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 7062.09,
-        "original": 7062.09,
-        "spent": 7062.09,
-        "start": "2025-11-05",
-        "end": "2025-12-19",
-        "registered": "2025-11-05",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
         "prime_contract_id": "CT180620261402447",
         "contract_id": "CT180620261402447",
         "prime_vendor": "Atlas Environmental Lab, Corp",
@@ -826715,61 +826716,6 @@
         "spent": 81539,
         "start": "2025-11-07",
         "end": "2026-06-10",
-        "registered": "2025-11-03",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT184620268803618",
-        "contract_id": "CT184620268803618",
-        "prime_vendor": "AKRF INC",
-        "agency": "Department of Parks and Recreation",
-        "pin": "84626C0266001",
-        "award_method": "SMALL PURCHASE - UNDER $5,000",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-03",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-11-03"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "Shorebird Management Practices on Rockaway Beach in New York",
-        "document_code": "CT1",
-        "contract_type": "OTHERS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 19500,
-        "original": 19500,
-        "spent": 19250,
-        "start": "2025-11-05",
-        "end": "2026-06-30",
         "registered": "2025-11-03",
         "received": null,
         "source_fiscal_years": [
@@ -828777,62 +828723,6 @@
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CTA185020268803071",
-        "contract_id": "CTA185020268803071",
-        "prime_vendor": "SHAKESPEARE GORDON STUDIO ARCHITECTS PLLC",
-        "agency": "Department of Design and Construction",
-        "pin": "85025Z0193001",
-        "award_method": "MULTIPLE AWARDS",
-        "mwbe_category": "Women (Non-Minority)",
-        "duration": null,
-        "includes_subvendors": "Yes",
-        "registration_date": "2025-10-14",
-        "start_date": "2025-11-05",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-05"
-          ],
-          "registration_date_observations": [
-            "2025-10-14"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Professional Services",
-        "purpose": "Arch Dsgn Svcs for Forest Hills Libr. Outdoor Reading Garden",
-        "document_code": "CTA1",
-        "contract_type": "REQUIREMENTS-SERVICES",
-        "contract_version": "2",
-        "parent_contract_id": "MMA185020258804217",
-        "status": "registered",
-        "current": 1004842,
-        "original": 1004842,
-        "spent": 313664.57,
-        "start": "2025-11-05",
-        "end": "2028-03-18",
-        "registered": "2025-10-14",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor",
-          "Sub Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 13,
-          "other": 0
-        },
-        "subvendor_count": 9,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
         },
         "selection_bucket": "new_unique"
       },
@@ -834378,12 +834268,12 @@
     "checkbook_contracts": {
       "graph_cap": null,
       "graph_source": "rows.checkbook_contracts",
-      "graph_rows": 10510,
+      "graph_rows": 10508,
       "selected_buckets": {
-        "passport_and_city_record": 1685,
+        "passport_and_city_record": 1684,
         "passport_only": 80,
-        "city_record_only": 1053,
-        "new_unique": 7692
+        "city_record_only": 1054,
+        "new_unique": 7690
       },
       "strategy": "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap",
       "receipt": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
