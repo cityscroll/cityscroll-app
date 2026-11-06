@@ -4,6 +4,582 @@
   "shard_id": "001",
   "rows": [
     {
+      "prime_contract_id": "CT105620261402147",
+      "agency": "Police Department",
+      "prime_vendor": "ACCURATE COMMUNICATION INC",
+      "pin": null,
+      "registration_date": "2025-09-08",
+      "start_date": "2025-08-13",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SM PURCH GOODS SERVICES 100K",
+      "industry": "Goods",
+      "contract_purpose": "SIGN LANGUAGE SERVICES",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 26,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 80000,
+      "original_registered_amount": 40000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-13"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT105620261402149",
+      "agency": "Police Department",
+      "prime_vendor": "ITSA SOLUTIONS LLC",
+      "pin": null,
+      "registration_date": "2025-09-08",
+      "start_date": "2025-09-11",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SM PURCH GOODS SERVICES 100K",
+      "industry": "Goods",
+      "contract_purpose": "LEASE OF 33 IMMOBILIZATION DEVICES, QMS 0161",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -3,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 82500,
+      "original_registered_amount": 82500,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-09-11"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT106920268802001",
+      "agency": "Department of Social Services",
+      "prime_vendor": "JUSTICE INNOVATION INC",
+      "pin": "06925N0027001",
+      "registration_date": "2025-09-08",
+      "start_date": "2025-04-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "industry": "Human Services",
+      "contract_purpose": "FY25+FY26 NAE for Parent Support Resource Coordinator",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 160,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 870690,
+      "original_registered_amount": 870690,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-04-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT107120268800080",
+      "agency": "Department of Homeless Services",
+      "prime_vendor": "BOWERY RESIDENTS' COMMITTEE, INC.",
+      "pin": "07121P0125012",
+      "registration_date": "2025-09-08",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "RFP FROM A PQVL",
+      "industry": "Human Services",
+      "contract_purpose": "Bowery Residents Services at SA West 25 N 2025 96 units",
+      "document_code": "CT1",
+      "contract_version": "12",
+      "parent_contract_id": null,
+      "registration_lag_days": 69,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 28389520,
+      "original_registered_amount": 28389520,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT126020268801445",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "FIRST CHERNOMORETS USA INC",
+      "pin": "26022L0156001",
+      "registration_date": "2025-09-08",
+      "start_date": "2021-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SM PURCHASE COUNCIL & BP NEEDS",
+      "industry": "Human Services",
+      "contract_purpose": "Funds to support the after school youth soccer program.",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 1530,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 2500,
+      "original_registered_amount": 2500,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2021-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268801988",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "CASTLE HILL DISTRICT MANAGEMENT ASSOCIATION",
+      "pin": "26024L1415001",
+      "registration_date": "2025-09-08",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Human Services",
+      "contract_purpose": "Support community events hosted by the BID,",
+      "document_code": "CT1",
+      "contract_version": "8",
+      "parent_contract_id": null,
+      "registration_lag_days": 800,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 337500,
+      "original_registered_amount": 337500,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020268802518",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "Telugu Literary and Cultural Association",
+      "pin": "26022L0079001",
+      "registration_date": "2025-09-08",
+      "start_date": "2021-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SM PURCHASE COUNCIL & BP NEEDS",
+      "industry": "Human Services",
+      "contract_purpose": "To support programming in Queens including cultural linguist",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 1530,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 8000,
+      "original_registered_amount": 8000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2021-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT180620268801284",
+      "agency": "Housing Preservation and Development",
+      "prime_vendor": "ASIF SINGH CORP",
+      "pin": "80624B0068002",
+      "registration_date": "2025-09-08",
+      "start_date": "2025-08-15",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "COMPETITIVE SEALED BIDDING",
+      "industry": "Construction Services",
+      "contract_purpose": "Self-Closing Door Hinges - Award BX",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 24,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1800000,
+      "original_registered_amount": 1800000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-15"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT181620261402995",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "PITNEY BOWES INC",
+      "pin": null,
+      "registration_date": "2025-09-08",
+      "start_date": "2025-08-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Standardized Services",
+      "contract_purpose": "To Pay Pitney Bowes",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 38,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 165,
+      "original_registered_amount": 165,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT181620261403481",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "CHEDEVILLE, INC.",
+      "pin": null,
+      "registration_date": "2025-09-08",
+      "start_date": "2025-08-07",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Goods",
+      "contract_purpose": "Health Summithosted at NYAM - Catering",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 32,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 6000,
+      "original_registered_amount": 6000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-07"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT181620261403482",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "READY DATA INC",
+      "pin": null,
+      "registration_date": "2025-09-08",
+      "start_date": "2025-09-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Goods",
+      "contract_purpose": "EZ lobby software and professional services",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 7,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 14416,
+      "original_registered_amount": 14416,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-09-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT181620261403483",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "EQUITY DESIGN",
+      "pin": null,
+      "registration_date": "2025-09-08",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Standardized Services",
+      "contract_purpose": "Creating healthy schools",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 69,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 9400,
+      "original_registered_amount": 8000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT181620261403484",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "HUMANSCALE CORPORATION",
+      "pin": null,
+      "registration_date": "2025-09-08",
+      "start_date": "2025-08-07",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Goods",
+      "contract_purpose": "E-Float Tables Relocation",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 32,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 900,
+      "original_registered_amount": 900,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-07"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT181620261403485",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "Voces Latinas Corp.",
+      "pin": null,
+      "registration_date": "2025-09-08",
+      "start_date": "2025-08-20",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Standardized Services",
+      "contract_purpose": "Disease Control Health Equity Summit - workshop",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 19,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 5000,
+      "original_registered_amount": 5000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-20"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT181620261403486",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "LAURUS SYSTEMS INC",
+      "pin": null,
+      "registration_date": "2025-09-08",
+      "start_date": "2025-08-27",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Standardized Services",
+      "contract_purpose": "FY26 Calibration of Radiation Detection Equipment for Enviro",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 12,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 7345,
+      "original_registered_amount": 7345,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-27"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT181620261403487",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "MAXIMUM SECURITY GROUP INC",
+      "pin": null,
+      "registration_date": "2025-09-08",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Goods",
+      "contract_purpose": "Locksmith Services",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 69,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 20000,
+      "original_registered_amount": 20000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-08"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
       "prime_contract_id": "CT181620268800759",
       "agency": "Department of Health and Mental Hygiene",
       "prime_vendor": "VNS Health Behavioral Health Inc",

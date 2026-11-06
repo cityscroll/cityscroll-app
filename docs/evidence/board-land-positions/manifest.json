@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.board_land_position_capture.v1",
-  "captured_at": "2026-11-05T19:53:09.890572+00:00",
-  "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+  "captured_at": "2026-11-06T05:02:29.805815+00:00",
+  "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
   "data_vintage": {
     "community_board_land_positions": "2026-09-09T06:46:42.537Z",
     "community_board_geography_lookup": "2026-05-26",
@@ -32,7 +32,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -106,7 +106,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -180,7 +180,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -236,7 +236,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -311,7 +311,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -386,7 +386,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -443,7 +443,7 @@
         "width": 390,
         "height": 844
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -495,7 +495,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -547,7 +547,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -590,7 +590,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -627,7 +627,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -664,7 +664,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -701,7 +701,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -738,7 +738,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -775,7 +775,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -812,7 +812,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -849,7 +849,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -886,7 +886,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -923,7 +923,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -960,7 +960,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -997,7 +997,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",
@@ -1033,7 +1033,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "85ee758cc4ffe87b9bd74db60a3b87a63b6bcaff",
+      "revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
       "data_vintage": {
         "community_board_land_positions": "2026-09-09T06:46:42.537Z",
         "community_board_geography_lookup": "2026-05-26",

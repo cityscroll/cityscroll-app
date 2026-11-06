@@ -27,7 +27,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 20532,
+      "value": 20530,
       "reason": null
     },
     {
@@ -38,7 +38,7 @@
       "vintage_field": "snapshot_date",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 29402,
+      "value": 29419,
       "reason": null
     },
     {
@@ -137,7 +137,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 1174,
+      "value": 1180,
       "reason": null
     },
     {
@@ -245,8 +245,8 @@
       "source_system": "checkbook_contracts",
       "source_contract_id": "checkbook-contracts",
       "registered": true,
-      "served_observations": 9457,
-      "declared_input_rows": 9457,
+      "served_observations": 9454,
+      "declared_input_rows": 9454,
       "specimen": {
         "source_observation_ref": "checkbook_contracts:contract:registered:CT100220261406691:SELECTIVE INSURANCE COMPANY OF AMERICA:prime-vendor:2025-12-05",
         "procurement_id": "procurement:contract:CT100220261406691",
@@ -531,8 +531,8 @@
           {
             "unit_id": "registered-contracts",
             "route": "/browse/contracts/",
-            "served_records": 29402,
-            "evidence_vintage": "2026-11-05T00:00:00.000Z"
+            "served_records": 29419,
+            "evidence_vintage": "2026-11-06T00:00:00.000Z"
           }
         ]
       }
@@ -1040,8 +1040,8 @@
           {
             "unit_id": "committee-memberships",
             "route": "/browse/people/",
-            "served_records": 1174,
-            "evidence_vintage": "2026-10-17T01:12:39.000Z"
+            "served_records": 1180,
+            "evidence_vintage": "2026-11-05T14:58:31.000Z"
           }
         ]
       }

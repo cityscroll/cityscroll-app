@@ -15,8 +15,8 @@
   "relations": {
     "mandate_meeting": {
       "totals": {
-        "public_inferred": 0,
-        "evidence_only": 62
+        "public_inferred": 1,
+        "evidence_only": 64
       },
       "denominators": {
         "eligible_left_rows": 19,
@@ -24,11 +24,13 @@
         "pre_route_pairs": 2280
       },
       "by_tier": {
-        "evidence_only": 62
+        "evidence_only": 64,
+        "public_inferred": 1
       },
       "by_reason": {
-        "matter_body_subject": 62,
-        "temporal": 42
+        "held_out_precision_gate_passed": 1,
+        "matter_body_subject": 64,
+        "temporal": 45
       },
       "by_agency": {
         "administration-for-childrens-services": {
@@ -118,10 +120,10 @@
             "pre_route_pairs": 480
           },
           "public_inferred": 0,
-          "evidence_only": 16,
+          "evidence_only": 20,
           "reason_counts": {
-            "matter_body_subject": 16,
-            "temporal": 16
+            "matter_body_subject": 20,
+            "temporal": 20
           }
         },
         "city-planning": {
@@ -326,10 +328,10 @@
             "pre_route_pairs": 120
           },
           "public_inferred": 0,
-          "evidence_only": 11,
+          "evidence_only": 10,
           "reason_counts": {
-            "matter_body_subject": 11,
-            "temporal": 11
+            "matter_body_subject": 10,
+            "temporal": 10
           }
         },
         "human-resources-administration": {
@@ -561,10 +563,11 @@
             "source_rows": 120,
             "pre_route_pairs": 120
           },
-          "public_inferred": 0,
-          "evidence_only": 16,
+          "public_inferred": 1,
+          "evidence_only": 15,
           "reason_counts": {
-            "matter_body_subject": 16
+            "held_out_precision_gate_passed": 1,
+            "matter_body_subject": 15
           }
         },
         "youth-and-community-development": {
@@ -579,7 +582,7 @@
         }
       },
       "by_source_system": {
-        "city_record": 62
+        "city_record": 65
       }
     },
     "mandate_land_use": {
@@ -1147,7 +1150,7 @@
       },
       "denominators": {
         "eligible_left_rows": 21,
-        "source_rows": 224,
+        "source_rows": 223,
         "pre_route_pairs": 94
       },
       "by_tier": {
@@ -1190,7 +1193,7 @@
         "board-of-elections": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 3,
+            "source_rows": 2,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,

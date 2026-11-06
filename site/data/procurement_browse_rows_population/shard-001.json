@@ -4,6 +4,98 @@
   "shard_id": "001",
   "rows": [
     {
+      "procurement_id": "procurement:contract:CT181620258800258",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800258",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240621106",
+        "passport_public_contracts:contract:81624M0015007:5184537"
+      ],
+      "request_id": "20240621106",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Permanent Supportive Housing",
+      "pin": "81624M0015007",
+      "contract_id": "CT181620258800258",
+      "contract_amount": 6181594,
+      "vendor_name": "WESTON UNITED COMMUNITY RENEWAL INC.",
+      "official_url": null,
+      "selection_method_description": "Required Method",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · WESTON UNITED COMMUNITY RENEWAL INC. · $6,181,594",
+      "notice_evidence": [
+        {
+          "request_id": "20240621106",
+          "type_of_notice_description": "Award",
+          "short_title": "Permanent Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-27",
+          "href": "/notices/20240621106"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800260",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800260",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240624117",
+        "passport_public_contracts:contract:81624M0015001:5184531"
+      ],
+      "request_id": "20240624117",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Assertive Community Treatment",
+      "pin": "81624M0015001",
+      "contract_id": "CT181620258800260",
+      "contract_amount": 8552981,
+      "vendor_name": "The Bridge Inc.",
+      "official_url": null,
+      "selection_method_description": "Required Method",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · The Bridge Inc. · $8,552,981",
+      "notice_evidence": [
+        {
+          "request_id": "20240624117",
+          "type_of_notice_description": "Award",
+          "short_title": "Assertive Community Treatment",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-28",
+          "href": "/notices/20240624117"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT181620258800263",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800263",
       "procurement_stages": [
@@ -134970,38 +135062,6 @@
       "method_family": "mwbe_small_purchase"
     },
     {
-      "procurement_id": "procurement:contract:CT184620268803580",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803580",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803580:MULTI MEDIA PROMOS LLC:prime-vendor:2025-11-05"
-      ],
-      "start_date": "2025-11-05",
-      "end_date": "2025-12-29",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "CTRAIN-TO PURCHASE PROMOTIONAL ITEMS",
-      "pin": "84626C0331001",
-      "contract_id": "CT184620268803580",
-      "contract_amount": 4145.65,
-      "vendor_name": "MULTI MEDIA PROMOS LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · MULTI MEDIA PROMOS LLC · $4,145.65",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
       "procurement_id": "procurement:contract:CT184620268803599",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803599",
       "procurement_stages": [
@@ -135047,134 +135107,6 @@
         "passport_public_contracts"
       ],
       "method_family": "mwbe_small_purchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803618",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803618",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803618:AKRF INC:prime-vendor:2025-11-03"
-      ],
-      "start_date": "2025-11-05",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "Shorebird Management Practices on Rockaway Beach in New York",
-      "pin": "84626C0266001",
-      "contract_id": "CT184620268803618",
-      "contract_amount": 19500,
-      "vendor_name": "AKRF INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · AKRF INC · $19,500",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803638",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803638",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803638:MIDTOWN OFFICE SUPPLIES INC:prime-vendor:2025-11-05"
-      ],
-      "start_date": "2025-11-05",
-      "end_date": "2025-12-05",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "CTRAIN-TO PURCHASE OFFICE SUPPLIES FOR PARKS ACADEMY",
-      "pin": "84626C0332001",
-      "contract_id": "CT184620268803638",
-      "contract_amount": 1704.01,
-      "vendor_name": "MIDTOWN OFFICE SUPPLIES INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · MIDTOWN OFFICE SUPPLIES INC · $1,704.01",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803642",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803642",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803642:INTIVITY INC:prime-vendor:2025-11-05"
-      ],
-      "start_date": "2025-11-05",
-      "end_date": "2025-12-19",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "BXOPS-STRIPING MACHINE FOR BRONX OPERATIONS",
-      "pin": "84626C0334001",
-      "contract_id": "CT184620268803642",
-      "contract_amount": 7062.09,
-      "vendor_name": "INTIVITY INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · INTIVITY INC · $7,062.09",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803655",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803655",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803655:PREFERRED PROPPANTS LLC:prime-vendor:2025-11-10"
-      ],
-      "start_date": "2025-11-05",
-      "end_date": "2025-12-31",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "INFILL FOR SYNTHETIC TURF FIELD MAINTENANCE CITYWIDE",
-      "pin": "84626C0270001",
-      "contract_id": "CT184620268803655",
-      "contract_amount": 15900,
-      "vendor_name": "Preferred Proppants LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · Preferred Proppants LLC · $15,900",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
     },
     {
       "procurement_id": "procurement:contract:CT184620268803664",
@@ -164368,6 +164300,38 @@
         "registered"
       ],
       "additional_description_1": "Department of Parks and Recreation · SHERADEN LIGHTING & ELECTRICAL PRODUCTS CORP · $4,904",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803675",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803675",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803675:TRUEBOUNCE, INC.:prime-vendor:2026-11-02"
+      ],
+      "start_date": "2026-11-06",
+      "end_date": "2027-01-12",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "MNOPS-Backboards and Rims",
+      "pin": "84627C0286001",
+      "contract_id": "CT184620278803675",
+      "contract_amount": 9814.5,
+      "vendor_name": "TrueBounce, Inc.",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · TrueBounce, Inc. · $9,814.5",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -250715,37 +250679,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Design and Construction · AKRF INC · $864,644.48",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CTA185020268803071",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACTA185020268803071",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CTA185020268803071:SHAKESPEARE GORDON STUDIO ARCHITECTS PLLC:prime-vendor:2025-10-14"
-      ],
-      "start_date": "2025-11-05",
-      "end_date": "2028-03-18",
-      "agency_id": null,
-      "agency_name": "Department of Design and Construction",
-      "short_title": "Arch Dsgn Svcs for Forest Hills Libr. Outdoor Reading Garden",
-      "pin": "85025Z0193001",
-      "contract_id": "CTA185020268803071",
-      "contract_amount": 1004842,
-      "vendor_name": "SHAKESPEARE GORDON STUDIO ARCHITECTS PLLC",
-      "official_url": null,
-      "selection_method_description": "MULTIPLE AWARDS",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Design and Construction · SHAKESPEARE GORDON STUDIO ARCHITECTS PLLC · $1,004,842",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [

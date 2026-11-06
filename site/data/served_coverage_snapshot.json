@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-11-05T12:13:44.875Z"
+    "newest": "2026-11-06T04:54:33.506Z"
   },
   "domains": [
     {
@@ -69,15 +69,15 @@
           "source_id": null,
           "source_name": null,
           "state": "measured",
-          "value": 20532,
-          "evidence_vintage": "2026-11-05T12:12:30.491Z",
+          "value": 20530,
+          "evidence_vintage": "2026-11-06T04:54:33.506Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
           "sources": [
             {
               "source_id": "checkbook-contracts",
               "source_name": "Checkbook NYC registered contracts",
-              "served_records": 9457,
+              "served_records": 9454,
               "state": "measured"
             },
             {
@@ -139,8 +139,8 @@
           "source_id": "checkbook-contracts",
           "source_name": "Checkbook NYC registered contracts",
           "state": "measured",
-          "value": 29402,
-          "evidence_vintage": "2026-11-05T00:00:00.000Z",
+          "value": 29419,
+          "evidence_vintage": "2026-11-06T00:00:00.000Z",
           "vintage_field": "snapshot_date",
           "vintage_basis": "single"
         },
@@ -279,8 +279,8 @@
           "source_id": "nyc-council-legistar",
           "source_name": "NYC Council Legistar API",
           "state": "measured",
-          "value": 1174,
-          "evidence_vintage": "2026-10-17T01:12:39.000Z",
+          "value": 1180,
+          "evidence_vintage": "2026-11-05T14:58:31.000Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },

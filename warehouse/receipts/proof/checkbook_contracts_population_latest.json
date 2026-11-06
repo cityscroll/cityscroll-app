@@ -1,13 +1,111 @@
 {
   "schema": "cityscroll.checkbook_contracts_population_receipt.v1",
-  "status": "failed",
-  "failure_state": {
-    "observed_at": "2026-11-05T15:00:31.618Z",
-    "message": "fetch failed",
-    "policy": "No graph slice was published from this run."
-  },
+  "status": "complete",
+  "failure_state": null,
   "source": {
+    "publisher": "Office of the New York City Comptroller",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
-    "endpoint": "https://www.checkbooknyc.com/api"
+    "endpoint": "https://www.checkbooknyc.com/api",
+    "pulled_at": "2026-11-06T04:54:33.506Z",
+    "type_of_data": "Contracts",
+    "status": "registered",
+    "category": "expense",
+    "fiscal_years": [
+      2025,
+      2026,
+      2027
+    ]
+  },
+  "paging": {
+    "strategy": "explicit fiscal-year partitions; records_from offsets; pages checkpointed with SHA-256; every page must retain the first observed record_count",
+    "page_size": 500,
+    "pages": 82,
+    "checkpoint_hits": 0,
+    "fetched_pages": 82,
+    "resumable": true,
+    "count_drift_policy": "fail without publishing",
+    "max_fiscal_years": 5,
+    "max_raw_rows": 100000,
+    "max_resume_age_hours": 6,
+    "source_snapshot_token": "not_provided_by_publisher"
+  },
+  "population": {
+    "api_transaction_rows": 40056,
+    "by_fiscal_year": {
+      "2025": 19635,
+      "2026": 15133,
+      "2027": 5288
+    },
+    "normalized_unique_contracts": 29419,
+    "duplicate_slices_collapsed": 10637,
+    "prime_slices": 29419,
+    "subvendor_slices": 10637,
+    "other_slices": 0,
+    "blocked": {
+      "missing_contract_id_slices": 0,
+      "ambiguous_pin_contracts": 0,
+      "missing_pin_contracts": 12567,
+      "ambiguous_prime_vendor_contracts": 18,
+      "missing_prime_vendor_contracts": 0,
+      "ambiguous_agency_contracts": 0,
+      "missing_agency_contracts": 0,
+      "ambiguous_registration_date_contracts": 0,
+      "ambiguous_start_date_contracts": 96,
+      "ambiguous_prime_registration_date_contracts": 0,
+      "ambiguous_prime_start_date_contracts": 0,
+      "ambiguous_award_method_contracts": 0,
+      "ambiguous_mwbe_category_contracts": 5,
+      "ambiguous_duration_contracts": 0,
+      "ambiguous_includes_subvendors_contracts": 0
+    }
+  },
+  "checksums": {
+    "page_manifest_sha256": "896ce9c9e95d469a3779f7c5d98a851b8e41d28515cea8eaac42eda45f987488",
+    "normalized_contracts_sha256": "1a89869f0a0b1f94332639bb8f8954c523fdf1f03f889a8e82603098f8e35c18",
+    "committed_graph_slice_sha256": "823235cd41bbabaf73f3d5788ef747bb7e8c7976e3636aa17c50da4710a83fb4"
+  },
+  "overlap_before_graph_selection": {
+    "checkbook_contracts": 29419,
+    "exact_overlap_buckets": {
+      "passport_and_city_record": 3852,
+      "passport_only": 1841,
+      "city_record_only": 1363,
+      "new_unique": 22363
+    },
+    "passport": {
+      "matched_contracts": 5693,
+      "by_contract_id": 5562,
+      "by_pin_epin": 4981,
+      "rate": 0.19351439545871715,
+      "denominator": "normalized Checkbook contracts in the collected fiscal-year window"
+    },
+    "city_record": {
+      "matched_checkbook_contracts": 5215,
+      "checkbook_rate": 0.17726639246745302,
+      "matched_modern_awards": 5162,
+      "modern_awards_with_pin": 5966,
+      "modern_award_rate": 0.8652363392557828,
+      "denominator": "City Record Recent Contract Awards since 2025-01-01 with an exact PIN"
+    },
+    "new_unique_contract_ids": 22363,
+    "acceptance_rule": "normalized exact contract_id or exact PIN/EPIN only; names are not join keys"
+  },
+  "graph_slice": {
+    "cap": null,
+    "row_count": 10508,
+    "selected_buckets": {
+      "passport_and_city_record": 1684,
+      "passport_only": 80,
+      "city_record_only": 1054,
+      "new_unique": 7690
+    },
+    "strategy": "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap",
+    "source": "normalized unique contracts from the measured fiscal-year population"
+  },
+  "identity_policy": {
+    "contract_identity": "exact prime_contract_id",
+    "authority_keys": "exact contract_id and exact PIN/EPIN only",
+    "prime_subvendor_rule": "one graph row per prime_contract_id; subvendor slices contribute counts only",
+    "legal_name_rule": "vendor names are corroborating observations, never contract identity keys"
   }
 }
