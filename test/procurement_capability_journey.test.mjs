@@ -236,6 +236,25 @@ test("classic capability-profile-scrub.js precedes analytics.js and clarity.js i
   assert.doesNotMatch(scrubTagMatch[0], /\bdefer\b|\basync\b|type="module"/);
 });
 
+test("rendered capability-profile-form inputs are explicitly Clarity-masked", () => {
+  const journey = buildCapabilityJourney({
+    profile: DEFAULT_DRAIN_PROFILE,
+    records: corpus.records,
+  });
+  const html = renderCapabilityJourneyHtml(journey);
+  const formMatch = html.match(/<form class="capability-profile-form"[\s\S]*?<\/form>/);
+  assert.ok(formMatch, "capability-profile-form missing");
+  const fieldTags = formMatch[0].match(/<(?:input|select|textarea)\b[^>]*>/g) || [];
+  assert.ok(fieldTags.length > 0, "expected form fields in capability-profile-form");
+  for (const tag of fieldTags) {
+    assert.match(
+      tag,
+      /data-clarity-mask="true"/,
+      `form field must declare data-clarity-mask="true" so masking does not depend on the Clarity dashboard setting: ${tag}`,
+    );
+  }
+});
+
 test("classic scrub cleans legacy profile params before analytics or clarity would run", () => {
   const scrubSource = readFileSync(
     fileURLToPath(new URL("../site/capability-profile-scrub.js", import.meta.url)),

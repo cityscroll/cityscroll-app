@@ -279,15 +279,15 @@ function renderProfileForm(profile) {
     const no = value === false ? "checked" : "";
     return `<fieldset class="program-yn">
   <legend>${esc(({job_training: "Do you provide job training?", employer_placement: "Do you help people find jobs?", roof_installation_crew: "Do you have a roof-installation crew?"}[name] || "Capability"))}</legend>
-  <label><input type="radio" name="${esc(name)}" value="true" ${yes}> Yes</label>
-  <label><input type="radio" name="${esc(name)}" value="false" ${no}> No</label>
+  <label><input type="radio" name="${esc(name)}" value="true" ${yes} data-clarity-mask="true"> Yes</label>
+  <label><input type="radio" name="${esc(name)}" value="false" ${no} data-clarity-mask="true"> No</label>
 </fieldset>`;
   };
   return `<form class="program-profile-form" data-program-profile-form>
   <h2 id="program-history-heading">Program history comparison</h2>
   <p class="program-form-help">Answers stay in this browser session. They do not change published award facts, predict a future opening, or alter any pursuit note you already saved.</p>
   <label>Capability keywords
-    <input name="capability_keywords" value="${esc(keywords)}" />
+    <input name="capability_keywords" value="${esc(keywords)}" data-clarity-mask="true" />
   </label>
   ${yn(profile.job_training, "job_training")}
   ${yn(profile.employer_placement, "employer_placement")}
