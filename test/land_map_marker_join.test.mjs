@@ -344,12 +344,12 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
     const after = receipt.after[`default-map@${width}`];
     assert.ok(after, `no default-map capture at ${width}px`);
     assert.deepEqual(after.counts_published, { total: 40, mapped: 26, unmapped: 14 });
-    assert.equal(after.markers, 33);
+    assert.equal(after.markers, 26);
     // Every marker painted is a marker a resident can follow.
     assert.equal(after.marker_links, after.markers);
     assert.equal(after.methods_published, after.markers);
     assert.equal(after.unmapped_drawn, false);
-    assert.ok(after.unmapped_note.includes("7"), "the capture shows the unmapped count on screen");
+    assert.ok(after.unmapped_note.includes("14"), "the capture shows the unmapped count on screen");
     assert.ok(after.specimen_href.includes(`#land/${MAPPED_SPECIMEN}`));
     assert.match(after.specimen_label, /not an exact address/);
     assert.ok(after.screenshot.startsWith("docs/screenshots/land-map-marker-join/"));

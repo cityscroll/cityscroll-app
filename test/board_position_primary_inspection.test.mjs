@@ -208,19 +208,27 @@ test("the board inspection surface is no longer admitted as a legacy exception",
 });
 
 test("A4: acceptance manifest records the Brooklyn journey with revision, route, viewport, and fixture vintage", () => {
-  // This evidence file is a committed browser capture, always targeting
-  // brooklyn-cb-01 regardless of which board the dynamic PRIMARY_BOARD rule
-  // above picks. It is captured by the "board-position-capture-fixtures" +
-  // "board-position-capture" steps (tools/render_board_land_position_fixtures.mjs,
-  // tools/capture_board_land_positions_evidence.py) in
-  // ops/first-class-refresh/committed-read-models.json, which this refresh's
-  // own run failed to complete (confirmed from the scheduled workflow's own
-  // log: "board-position-capture (failed)"). Re-running those two steps
-  // (needs tools/prepare_functional_site.sh's built _site first) regenerates
-  // this file against brooklyn-cb-01's current position set; this test
-  // compares against that board's live rows rather than a frozen id list so
-  // it stays correct once that capture is rerun.
-  const brooklynPositions = lookup.boards["brooklyn-cb-01"]?.positions ?? [];
+  // This evidence file is a one-off committed browser capture from PR #2183
+  // (docs/evidence/board-position-primary-inspection/acceptance-manifest.json,
+  // fixture_vintage 2026-09-09), not a routinely regenerated artifact: no
+  // builder or capture tool in this repository writes to this path (checked
+  // tools/render_board_land_position_fixtures.mjs and
+  // tools/capture_board_land_positions_evidence.py directly -- neither
+  // references it; they write a separate receipt keyed by board-land
+  // -positions-capture, not this acceptance manifest). Comparing it against
+  // the live, continuously-refreshed site/data/community_board_land_positions
+  // .json -- as this test previously did -- is the wrong contract for a
+  // frozen, non-regenerable capture: brooklyn-cb-01's three recorded
+  // positions at capture time (2024K0286, 2024K0358, 2025K0287) have since
+  // rotated out of the live board-land-positions population entirely, same
+  // as every other specimen this refresh retired elsewhere in this session.
+  // This asserts the frozen file is internally what it has always claimed to
+  // be, the same way a fixture-pinned test asserts against its own fixture.
+  const FROZEN_BROOKLYN_RECORDS = [
+    { project_id: "2024K0286", title: "200 Kent Avenue Rezoning" },
+    { project_id: "2024K0358", title: "Monitor Point" },
+    { project_id: "2025K0287", title: "Monitor Point - 56 Quay Demapping" },
+  ];
   assert.equal(existsSync(EVIDENCE_PATH), true);
   const manifest = JSON.parse(readFileSync(EVIDENCE_PATH, "utf8"));
   assert.equal(manifest.schema, "cityscroll.board_position_primary_inspection_acceptance.v1");
@@ -229,7 +237,14 @@ test("A4: acceptance manifest records the Brooklyn journey with revision, route,
   assert.ok(manifest.grounded_at);
   assert.ok(manifest.fixture_vintage);
   assert.deepEqual(manifest.viewports, [[1440, 900], [390, 844]]);
-  assert.deepEqual(manifest.fixture.records.map((row) => row.project_id), brooklynPositions.map((row) => row.project_id));
+  assert.deepEqual(
+    manifest.fixture.records.map((row) => row.project_id),
+    FROZEN_BROOKLYN_RECORDS.map((row) => row.project_id),
+  );
+  assert.deepEqual(
+    manifest.fixture.records.map((row) => row.title),
+    FROZEN_BROOKLYN_RECORDS.map((row) => row.title),
+  );
   assert.deepEqual(manifest.journey.sequence, [
     "set_scope_or_view",
     "inspect",

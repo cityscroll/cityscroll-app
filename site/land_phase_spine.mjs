@@ -329,13 +329,19 @@ export function deriveLandCurrentPhaseId({
       mapped = latestMaterial;
     }
     // Guard: open-data current_milestone can lag (e.g. still "Community Board
-    // Referral" after CPC vote). Never point current behind later terminal work.
+    // Referral" after CPC vote). Never point current behind later material
+    // work. latestMaterial already restricts to non-synthetic actual-progress
+    // rows (eventIsActualProgress), so a later phase reaching it is enough —
+    // this must not additionally require laterPhaseHasTerminalCompletes,
+    // which excludes hearings by design (a hearing is not itself a terminal
+    // decision) and so would keep trusting a stale label through a completed
+    // hearing in the very next phase, never reaching the "in_progress" branch
+    // above because the hearing itself is also not "in progress".
     const mappedIdx = LAND_ULURP_PHASES.indexOf(mapped);
     if (
       mappedIdx >= 0 &&
       latestMaterialIdx >= 0 &&
-      mappedIdx < latestMaterialIdx &&
-      laterPhaseHasTerminalCompletes(byPhase, mapped)
+      mappedIdx < latestMaterialIdx
     ) {
       // Fall through to latest-material / advance path below.
     } else {

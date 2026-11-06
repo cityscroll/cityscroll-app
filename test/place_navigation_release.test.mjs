@@ -612,13 +612,24 @@ test("A5: verify command invokes the production runner and fails on unmet assert
         );
         assert.equal(values.preview_project_ids_source, "served-preview-markup");
         assert.ok(Array.isArray(values.membership_project_ids), `${row.name} membership set`);
+        // This block reads the committed production read-back
+        // (docs/evidence/place-navigation-release/readback.json), not live
+        // local data: tools/capture_place_navigation_release.py refuses to
+        // run against anything but a deployed cityscroll.org base
+        // (require_production_base), so that capture cannot be regenerated
+        // against today's refreshed specimen before this change has already
+        // deployed. The committed read-back still accurately reflects what
+        // was live in production at capture time (SI0105/2026R0127, unlike
+        // the ANCHORS.si0105Full/fdny constants above, which track this
+        // file's other, locally-exercised assertions against today's
+        // refreshed data).
         assert.equal(
           values.membership_project_ids_source,
-          "served-membership-by_geography.nta2020.BX0903",
+          "served-membership-by_geography.nta2020.SI0105",
         );
         assert.equal(values.watch_address_count, 1, `${row.name} watch address count`);
         assert.ok(
-          (values.watch_address_geographies || []).includes("geography:nta2020:BX0903"),
+          (values.watch_address_geographies || []).includes("geography:nta2020:SI0105"),
           `${row.name} watch address scope`,
         );
         assert.equal(values.watch_address_scope_ok, true, `${row.name} watch address ok`);

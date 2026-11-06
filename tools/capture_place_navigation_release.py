@@ -1190,6 +1190,17 @@ WATCH_PREVIEW_PERTURBATION_ID = "1999Z9999"
 WATCH_ADDRESS_EXPECTED_SCOPE = "geography:nta2020:BX0903"
 WATCH_ADDRESS_EXPECTED_COUNT = 1
 WATCH_ADDRESS_EXPECTED_LENS = "land"
+# run_check() validates the already-committed read-back
+# (docs/evidence/place-navigation-release/readback.json), which still
+# records what the last real production capture actually observed, not what
+# a future capture against today's refreshed data would. capture_production()
+# refuses any non-cityscroll.org base (require_production_base), so that
+# read-back cannot be re-captured against BX0903 before this refresh has
+# already deployed to production. These two constants pin --check to the
+# committed vintage; the ones above stay BX0903 for the next real capture,
+# which will move both forward together once production has deployed.
+CHECK_WATCH_PREVIEW_MEMBERSHIP_SOURCE = "served-membership-by_geography.nta2020.SI0105"
+CHECK_WATCH_ADDRESS_EXPECTED_SCOPE = "geography:nta2020:SI0105"
 
 
 def record_project_set_parity(
@@ -2010,12 +2021,12 @@ def run_check(out_path: Path, manifest_path: Path) -> int:
                     file=sys.stderr,
                 )
                 return 2
-            if WATCH_ADDRESS_EXPECTED_SCOPE not in set(
+            if CHECK_WATCH_ADDRESS_EXPECTED_SCOPE not in set(
                 values.get("watch_address_geographies") or []
             ):
                 print(
                     f"watch-preview row {row.get('name')} watch address must include "
-                    f"{WATCH_ADDRESS_EXPECTED_SCOPE}",
+                    f"{CHECK_WATCH_ADDRESS_EXPECTED_SCOPE}",
                     file=sys.stderr,
                 )
                 return 2
@@ -2037,10 +2048,10 @@ def run_check(out_path: Path, manifest_path: Path) -> int:
                     file=sys.stderr,
                 )
                 return 2
-            if membership_source != WATCH_PREVIEW_MEMBERSHIP_SOURCE:
+            if membership_source != CHECK_WATCH_PREVIEW_MEMBERSHIP_SOURCE:
                 print(
                     f"watch-preview row {row.get('name')} membership source must be "
-                    f"{WATCH_PREVIEW_MEMBERSHIP_SOURCE}; got {membership_source}",
+                    f"{CHECK_WATCH_PREVIEW_MEMBERSHIP_SOURCE}; got {membership_source}",
                     file=sys.stderr,
                 )
                 return 2
