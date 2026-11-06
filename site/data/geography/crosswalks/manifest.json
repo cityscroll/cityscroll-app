@@ -86,7 +86,7 @@
       },
       "row_count": 717,
       "material_row_count": 450,
-      "sha256": "f5763440a6951e537af38b4f2833530b9e1f0c0fbeb4e7fbf38b98e27d4576cc"
+      "sha256": "939e05fc658dbda8b4caa143694e34077efb7da788be203bb11d56d83f99b6d4"
     },
     {
       "path": "site/data/geography/crosswalks/nta2020__council_district/26B__2026-05-26.json",
@@ -111,7 +111,7 @@
       },
       "row_count": 634,
       "material_row_count": 473,
-      "sha256": "3fa539b2a2773184ff69b96fac951b05be8e9eac88382f04366c36d2849c5dc0"
+      "sha256": "e376bf7062af77a31b3653cc0e8a50f0bcde28ee792395e18d66b00cc5aaa223"
     },
     {
       "path": "site/data/geography/crosswalks/nta2020__police_precinct/26B__26B.json",
@@ -136,7 +136,7 @@
       },
       "row_count": 743,
       "material_row_count": 479,
-      "sha256": "60a24ed4b72a85af15f06da48ca7db109a815dcd7a80d2b5edc1279a3c9cb2ac"
+      "sha256": "c6677a24aa2d776648d56f80aec9b57fa004fe60df851c5d897b00642c7bfacc"
     }
   ]
 }
