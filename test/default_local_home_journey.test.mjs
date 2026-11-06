@@ -988,10 +988,7 @@ const DISCOVERY_RECOVERY_CASES = [
   "missing-coverage",
   "detail-failure",
 ];
-// Keep in sync with test/functional/32_near_you_location.py and
-// test/fixtures/near-you-location-activity/README.md: all three must name
-// the same blob.
-const FROZEN_ACTIVITY_BLOB = "e912a2bd1b0bf892bf0f859f9e2cf049efb64cad";
+const FROZEN_ACTIVITY_BLOB = "5deaa202fe578e09b58380d43755419dbb85ec60";
 
 function runCapture(args, env = process.env) {
   return spawnSync("python3", [CAPTURE_TOOL, ...args], { cwd: ROOT, encoding: "utf8", env });

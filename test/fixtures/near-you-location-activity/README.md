@@ -1,8 +1,12 @@
 # Near You location frozen district-activity
 
-Pinned `district_activity.json` for `test/functional/32_near_you_location.py`,
-`test/default_local_home_journey.test.mjs`, and the "discovery-recovery" cases
-in that same file — all three must name the same blob (`FROZEN_ACTIVITY_BLOB`).
+Pinned `district_activity.json` for `test/functional/32_near_you_location.py`.
+
+`test/default_local_home_journey.test.mjs`'s own "discovery-recovery"
+`FROZEN_ACTIVITY_BLOB` pins a separate, independent historical blob via
+`git cat-file` (its local-capture proof is bound to a merge-base-clean
+`site/data`, so it cannot be recaptured on a refresh branch); it does not need
+to match this file and editing one does not require editing the other.
 
 The functional browser shard uses a shallow checkout that does not carry historical
 git blobs. Serving this committed file keeps citywide / virtual / unlocated bags
@@ -51,5 +55,5 @@ of re-freezing the whole file:
 4. Verify with a script that a `JSON.parse` deep-equality diff between the old
    and new fixture shows only that one swapped record (plus the one list
    entry) changed — never hand-edit the minified bytes directly.
-5. Update `FROZEN_ACTIVITY_BLOB` in both consuming test files and the blob id
-   above to `git hash-object` of the new file.
+5. Update `FROZEN_ACTIVITY_BLOB` in `test/functional/32_near_you_location.py`
+   and the blob id above to `git hash-object` of the new file.

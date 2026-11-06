@@ -205,8 +205,11 @@ def start_server() -> tuple[subprocess.Popen, str]:
             f"--import={ROOT / 'test' / 'helpers' / 'test_clock_preload.mjs'}",
         ])),
         "CITYSCROLL_TEST_TIME_PIN": CLOCK,
-        # File path is authoritative for shallow CI; blob id keeps capture
-        # generation `capture-5deaa202fe57` aligned with discovery-recovery.
+        # File path is authoritative for shallow CI; the blob id only needs to
+        # match this file's own git blob (git hash-object) so the capture
+        # generation label is self-consistent. It is not required to match
+        # discovery-recovery's independent historical pin in
+        # test/default_local_home_journey.test.mjs.
         "NEAR_YOU_CAPTURE_ACTIVITY_FILE": str(FROZEN_ACTIVITY_FILE),
         "NEAR_YOU_CAPTURE_ACTIVITY_BLOB": FROZEN_ACTIVITY_BLOB,
     }
