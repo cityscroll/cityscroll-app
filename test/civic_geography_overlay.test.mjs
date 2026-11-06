@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import {
@@ -7,6 +8,11 @@ import {
   overlayCivicGeographies,
   projectEpsg2263,
 } from "../site/civic_geography_overlay.mjs";
+
+const OVERLAY_SOURCE = readFileSync(
+  new URL("../site/civic_geography_overlay.mjs", import.meta.url),
+  "utf8",
+);
 
 const identity = (point) => point;
 const ring = (x1, y1, x2, y2) => [
@@ -61,18 +67,29 @@ test("boundary-only contact is touches, never an area intersection", () => {
   assert.equal(result.pct_to, 0);
 });
 
-test("EPSG:2263 projection avoids non-integer `**`/Math.pow ULP drift across engines", () => {
-  // This longitude/latitude pair previously exposed a one-ULP difference between Node
-  // versions in the Lambert Conformal Conic fractional-power terms (t(latitude) ** exponent
-  // and friends), which is only an "implementation-approximated" operation per ECMA-262 and
-  // is not guaranteed bit-identical across V8 versions or CPU architectures. The projection
-  // now routes every fractional power through Math.exp(exponent * Math.log(base)) instead,
-  // which pins the result to an exact literal here so a future regression (a reintroduced
-  // `**`/Math.pow fractional exponent) fails this test instead of silently drifting the
-  // published geography crosswalk artifacts between build machines.
+test("EPSG:2263 projection routes fractional powers away from `**`/Math.pow", () => {
+  // `**`/Math.pow with a non-integer exponent is only "implementation-approximated" per
+  // ECMA-262: it previously gave a different result for the same (base, exponent) pair
+  // between Node versions on one machine, which propagated into the published geography
+  // crosswalk artifacts and failed their byte-identical manifest check. Pinning an exact
+  // projected coordinate here would be the wrong level to test at — the raw double can still
+  // differ by a few ULPs across CPU architectures even through Math.exp/Math.log, and that
+  // residual only vanishes once the production pipeline rounds it (which
+  // tools/build_geography_crosswalks.mjs --check verifies against the committed artifacts).
+  // So this test pins the structural fix instead: every fractional power in the projection
+  // must go through fractionalPow, and none may remain as a bare `**`/Math.pow with a
+  // non-integer exponent.
+  // One definition plus four call sites: inside `t(phi)`, `t1 ** exponent` in `factor`, and
+  // the two `t(...) ** exponent` terms in `rho`/`rhoOrigin`.
+  const fractionalPowOccurrences = OVERLAY_SOURCE.match(/fractionalPow\(/g)?.length ?? 0;
+  assert.equal(fractionalPowOccurrences, 5, "expected every fractional power in the Lambert Conformal Conic terms to route through fractionalPow");
+  const barePowWithVariableExponent = /\*\*\s*\(?\s*(?:exponent\b|eccentricity\s*\/\s*2)/;
+  assert.equal(barePowWithVariableExponent.test(OVERLAY_SOURCE), false, "found a fractional-exponent `**`/Math.pow outside fractionalPow");
+
   const [x, y] = projectEpsg2263([-73.93694879862264, 40.7246524683916]);
-  assert.equal(x, 1001726.4229529856);
-  assert.equal(y, 203293.27043728763);
+  assert.ok(Number.isFinite(x) && Number.isFinite(y));
+  assert.ok(Math.abs(x - 1001726.423) < 0.01, `x should be near the known-good projection, got ${x}`);
+  assert.ok(Math.abs(y - 203293.27) < 0.01, `y should be near the known-good projection, got ${y}`);
 });
 
 test("overlay fails closed on simplified delivery geometry", () => {

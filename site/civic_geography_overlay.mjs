@@ -16,10 +16,12 @@ const radians = (degrees) => Number(degrees) * Math.PI / 180;
 // `**`/Math.pow with a non-integer exponent is only "implementation-approximated" per
 // ECMA-262 (Number::exponentiate) — it is not required to be bit-identical across engine
 // versions or CPU architectures, and in practice differs by a handful of ULPs for some
-// (base, exponent) pairs. Math.exp/Math.log route through the shared fdlibm-derived
-// implementation instead, which stays byte-identical across Node versions and
-// architectures. Every fractional power in this projection goes through this helper so the
-// published crosswalk artifacts build byte-identical regardless of where they are built.
+// (base, exponent) pairs; this repository saw it disagree between Node versions on one
+// machine. Math.exp/Math.log stay identical across Node versions on a given architecture,
+// and across architectures the residual difference is small enough (a few ULPs) to vanish
+// under this module's published rounding (tools/build_geography_crosswalks.mjs --check
+// verifies the rounded delivery artifacts build byte-identical on every platform this
+// repository runs on). Every fractional power in this projection goes through this helper.
 function fractionalPow(base, exponent) {
   return base > 0 ? Math.exp(exponent * Math.log(base)) : 0;
 }
