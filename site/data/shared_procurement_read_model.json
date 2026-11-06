@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.shared_procurement_read_model.v1",
   "version": 1,
-  "generated_at": "2026-11-05T01:02:25.093Z",
+  "generated_at": "2026-11-05T12:12:30.491Z",
   "freshness": {
-    "generated_at": "2026-11-05T01:02:25.093Z",
-    "checked_at": "2026-11-05T01:02:25.093Z",
+    "generated_at": "2026-11-05T12:12:30.491Z",
+    "checked_at": "2026-11-05T12:12:30.491Z",
     "sources": {
       "passport_public_contracts": "available",
       "passport_public_rfx": "available",
@@ -24,7 +24,7 @@
       "source_system": "passport_public_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 12795,
       "reason": null
     },
@@ -32,7 +32,7 @@
       "source_system": "passport_public_rfx",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 0,
       "reason": null
     },
@@ -40,7 +40,7 @@
       "source_system": "checkbook_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 9457,
       "reason": null
     },
@@ -48,7 +48,7 @@
       "source_system": "checkbook_nycha_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 1,
       "reason": null
     },
@@ -56,7 +56,7 @@
       "source_system": "checkbook_spending",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 0,
       "reason": null
     },
@@ -64,7 +64,7 @@
       "source_system": "nys_contract_reporter",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 1,
       "reason": null
     },
@@ -72,7 +72,7 @@
       "source_system": "mta_current_opportunities",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 1,
       "reason": null
     },
@@ -80,7 +80,7 @@
       "source_system": "mta_bid_results",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 1,
       "reason": null
     },
@@ -88,7 +88,7 @@
       "source_system": "mta_annual_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 1,
       "reason": null
     },
@@ -96,7 +96,7 @@
       "source_system": "mta_cd_awards",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 1,
       "reason": null
     },
@@ -104,7 +104,7 @@
       "source_system": "city_record",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T01:02:25.093Z",
+      "generated_at": "2026-11-05T12:12:30.491Z",
       "row_count": 12989,
       "reason": null
     }
@@ -193533,11 +193533,11 @@
   },
   "coherence_receipt": {
     "schema": "cityscroll.procurement_index_coherence.v1",
-    "source_model_fingerprint": "aeae1321b2c019ac1aee09148d1e15be75963a18ac1501a688ed247af0b3598e",
-    "generated_at": "2026-11-05T01:02:25.093Z",
+    "source_model_fingerprint": "66e1734ce95dd2283969822e259d108ff32905337c9ae06384a42b29b8d64451",
+    "generated_at": "2026-11-05T12:12:30.491Z",
     "selected_row_count": 35247,
     "artifact_hashes": {
-      "shared_procurement_read_model": "d52deb3d291e43b86d61366ab378d7a71a5169271e194512cf85a1802888e238",
+      "shared_procurement_read_model": "d65b22b8c6e45b03ef9e7f71d19e10a3d56780bcedfc3c125cd6d057fa1eea8a",
       "keyword_search_procurements": "ff297fdd2799aea0220a37130d478f3c1c85aeeca75423f05647342f4c5d9a9d"
     }
   },
@@ -214174,7 +214174,7 @@
     "path": "data/notice_procurement_subjects_lookup.json",
     "notice_count": 12945,
     "subject_link_count": 12945,
-    "source_model_fingerprint": "aeae1321b2c019ac1aee09148d1e15be75963a18ac1501a688ed247af0b3598e"
+    "source_model_fingerprint": "66e1734ce95dd2283969822e259d108ff32905337c9ae06384a42b29b8d64451"
   },
   "observation_order": [
     "checkbook_contracts:contract:registered:CT100220261406691:SELECTIVE INSURANCE COMPANY OF AMERICA:prime-vendor:2025-12-05",

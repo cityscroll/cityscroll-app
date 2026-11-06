@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-11-05T01:02:25.093Z"
+    "newest": "2026-11-05T12:13:44.875Z"
   },
   "domains": [
     {
@@ -70,7 +70,7 @@
           "source_name": null,
           "state": "measured",
           "value": 20532,
-          "evidence_vintage": "2026-11-05T01:02:25.093Z",
+          "evidence_vintage": "2026-11-05T12:12:30.491Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
           "sources": [
@@ -231,10 +231,10 @@
           "source_name": "NYC Council Legistar API",
           "state": "measured",
           "value": 17,
-          "evidence_vintage": "2026-11-04T08:00:43.756Z",
+          "evidence_vintage": "2026-11-05T08:00:53.045Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
-          "records_considered": 305
+          "records_considered": 302
         }
       ]
     },
@@ -368,7 +368,7 @@
           "source_name": "City Record Online",
           "state": "measured",
           "value": 100,
-          "evidence_vintage": "2026-11-04T19:13:48.965Z",
+          "evidence_vintage": "2026-11-05T12:13:44.875Z",
           "vintage_field": "retrieved_at",
           "vintage_basis": "single"
         }
@@ -408,7 +408,7 @@
           "source_name": "Annual Examination Schedule",
           "state": "measured",
           "value": 227,
-          "evidence_vintage": "2026-11-04T00:00:00.000Z",
+          "evidence_vintage": "2026-11-05T00:00:00.000Z",
           "vintage_field": "sources_retrieved_as_of",
           "vintage_basis": "single"
         }

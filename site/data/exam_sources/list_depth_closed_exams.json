@@ -10,7 +10,7 @@
       "https://data.cityofnewyork.us/d/4ptz-hmtc",
       "https://data.cityofnewyork.us/d/vx8i-nprf"
     ],
-    "fetched_at": "2026-08-01",
+    "fetched_at": "2026-11-05",
     "refresh_cadence": "Rebuild when annual schedule or active-list aggregates refresh; closed exams keep list-size depth after they leave the current FY snapshot.",
     "stale_after_days": 95,
     "role": "Supplements the current FY annual snapshot so list_aggregate joins land on real closed exams (open 7xxx series has 0% list presence)."
@@ -62,7 +62,7 @@
       "application_period_end_date": "2026-03-24",
       "open_competitive_promotion": "Open Competitive",
       "eligibility": "open_competitive",
-      "expected_list_count": 118,
+      "expected_list_count": 121,
       "expected_established_date": null
     },
     {
@@ -205,7 +205,7 @@
       "application_period_end_date": "2026-01-27",
       "open_competitive_promotion": "Open Competitive",
       "eligibility": "open_competitive",
-      "expected_list_count": 93,
+      "expected_list_count": 94,
       "expected_established_date": "2026-07-01"
     },
     {
@@ -249,7 +249,7 @@
       "application_period_end_date": "2026-01-15",
       "open_competitive_promotion": "Open Competitive",
       "eligibility": "open_competitive",
-      "expected_list_count": 893,
+      "expected_list_count": 894,
       "expected_established_date": "2026-06-03"
     },
     {
@@ -348,7 +348,7 @@
       "application_period_end_date": "2025-11-25",
       "open_competitive_promotion": "Open Competitive",
       "eligibility": "open_competitive",
-      "expected_list_count": 245,
+      "expected_list_count": 246,
       "expected_established_date": "2026-06-17"
     },
     {
@@ -370,7 +370,7 @@
       "application_period_end_date": "2025-11-25",
       "open_competitive_promotion": "Open Competitive",
       "eligibility": "open_competitive",
-      "expected_list_count": 787,
+      "expected_list_count": 788,
       "expected_established_date": null
     },
     {
@@ -414,7 +414,7 @@
       "application_period_end_date": "2025-11-25",
       "open_competitive_promotion": "Open Competitive",
       "eligibility": "open_competitive",
-      "expected_list_count": 878,
+      "expected_list_count": 879,
       "expected_established_date": "2026-04-15"
     },
     {
@@ -436,7 +436,7 @@
       "application_period_end_date": "2025-11-17",
       "open_competitive_promotion": "Open Competitive",
       "eligibility": "open_competitive",
-      "expected_list_count": 918,
+      "expected_list_count": 919,
       "expected_established_date": "2026-03-25"
     },
     {
@@ -656,7 +656,7 @@
       "application_period_end_date": "2025-08-26",
       "open_competitive_promotion": "Promotion",
       "eligibility": "promotion",
-      "expected_list_count": 63,
+      "expected_list_count": 64,
       "expected_established_date": "2026-05-20"
     },
     {
@@ -832,7 +832,7 @@
       "application_period_end_date": "2025-07-22",
       "open_competitive_promotion": "Open Competitive",
       "eligibility": "open_competitive",
-      "expected_list_count": 257,
+      "expected_list_count": 258,
       "expected_established_date": "2025-11-12"
     },
     {

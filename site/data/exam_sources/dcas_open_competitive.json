@@ -3,13 +3,69 @@
     "id": "dcas-open-competitive",
     "name": "DCAS Open Competitive Exams for Anyone",
     "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-    "verified_at": "2026-11-04",
+    "verified_at": "2026-11-05",
     "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
     "stale_after_days": 35,
     "method": "The published schedule table is read directly and cross-checked against the OASys active-exam listing. Reviewed Notice of Examination prose from the previous snapshot is carried forward only while the exam and its filing window are unchanged.",
-    "fetched_at": "2026-11-04"
+    "fetched_at": "2026-11-05"
   },
   "records": [
+    {
+      "exam_number": "7000",
+      "title": "Addiction Counselor (NYC H+H)",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277000000.pdf",
+      "application_start": "2026-11-05",
+      "application_end": "2026-12-22",
+      "fee": 68,
+      "salary_min": 59885,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam"
+    },
+    {
+      "exam_number": "7001",
+      "title": "Administrative Accountant",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277001000.pdf",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "salary_publication": "The notice does not state a minimum annual salary for this title."
+    },
+    {
+      "exam_number": "7009",
+      "title": "Associate Fingerprint Technician",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277009000.pdf",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25"
+    },
+    {
+      "exam_number": "7015",
+      "title": "Bridge Operator",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277015000.pdf",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25"
+    },
+    {
+      "exam_number": "7017",
+      "title": "Cashier",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277017000.pdf",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25"
+    },
+    {
+      "exam_number": "7030",
+      "title": "Elevator Mechanic's Helper",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277030000.pdf",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "fee": 91,
+      "test_method": "Multiple-choice test",
+      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary."
+    },
     {
       "exam_number": "7131",
       "title": "Emergency Medical Specialist - EMT",
@@ -35,6 +91,22 @@
       "test_method": "Education and experience exam"
     },
     {
+      "exam_number": "7040",
+      "title": "Inspector (Construction)",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277040000.pdf",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25"
+    },
+    {
+      "exam_number": "7050",
+      "title": "Metal Work Mechanic",
+      "eligibility": "open_competitive",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "notice_pending_note": "DCAS's schedule page linked a Notice of Examination PDF at the standard URL pattern (20277050000.pdf) before the file existed; confirmed 404 on 2026-11-05 on two separate checks while every other exam's linked PDF in this snapshot resolved. Treated as not yet published rather than carrying a dead link or an unverified salary claim; re-check when the schedule page republishes a working notice."
+    },
+    {
       "exam_number": "7315",
       "title": "Police Officer",
       "eligibility": "open_competitive",
@@ -47,6 +119,14 @@
       "salary_note": "Current minimum annual salary"
     },
     {
+      "exam_number": "7058",
+      "title": "Probation Officer Trainee",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277058000.pdf",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25"
+    },
+    {
       "exam_number": "7324",
       "title": "School Safety Agent",
       "eligibility": "open_competitive",
@@ -56,6 +136,31 @@
       "fee": 61,
       "salary_min": 40480,
       "salary_max": 58345,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test"
+    },
+    {
+      "exam_number": "7332",
+      "title": "Traffic Enforcement Agent",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277332000.pdf",
+      "application_start": "2026-11-05",
+      "application_end": "2026-12-22",
+      "fee": 0,
+      "salary_min": 48719,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test"
+    },
+    {
+      "exam_number": "7074",
+      "title": "Youth Development Specialist",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277074000.pdf",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "fee": 68,
+      "salary_min": 55075,
+      "salary_max": 76972,
       "salary_note": "Current minimum annual salary",
       "test_method": "Multiple-choice test"
     }

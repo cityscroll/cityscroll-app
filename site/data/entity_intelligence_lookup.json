@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-11-05T01:02:50.535Z",
+  "generated_at": "2026-11-05T19:51:09.424Z",
   "observation_count": 3467,
   "entity_count": 200,
   "multi_domain_count": 34,
@@ -54198,6 +54198,26 @@
         },
         {
           "type": "issued_rule",
+          "from": "notice:20260507003",
+          "to": "agency:id:consumer-and-worker-protection",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260507003",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-05-14T00:00:00.000",
+            "input_value": "Consumer and Worker Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
           "from": "notice:20260513026",
           "to": "agency:id:consumer-and-worker-protection",
           "domain": "rules",
@@ -54611,7 +54631,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 4,
         "total_linked_objects": 13,
-        "link_count": 110,
+        "link_count": 111,
         "join_key_link_count": 45,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.42857142857142855
@@ -58782,26 +58802,6 @@
         },
         {
           "type": "issued_rule",
-          "from": "notice:20260506027",
-          "to": "agency:id:finance",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260506027",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-05-14T00:00:00.000",
-            "input_value": "Finance"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
           "from": "notice:20260519043",
           "to": "agency:id:finance",
           "domain": "rules",
@@ -58975,7 +58975,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 4,
         "total_linked_objects": 13,
-        "link_count": 110,
+        "link_count": 109,
         "join_key_link_count": 52,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.42857142857142855
@@ -349208,9 +349208,9 @@
         "confidence": "strong"
       }
     ],
-    "notice:20260506027": [
+    "notice:20260507003": [
       {
-        "entity_ref": "agency:id:finance",
+        "entity_ref": "agency:id:consumer-and-worker-protection",
         "relation": "issued_rule",
         "confidence": "strong"
       }
@@ -351070,7 +351070,7 @@
         "coverage_status": "measured",
         "population_backed": true,
         "source_url": "https://www.checkbooknyc.com/api",
-        "pulled_at": "2026-11-05T01:02:25.093Z",
+        "pulled_at": "2026-11-05T12:12:30.491Z",
         "population": {
           "api_transaction_rows": 40014,
           "normalized_unique_contracts": 29402,

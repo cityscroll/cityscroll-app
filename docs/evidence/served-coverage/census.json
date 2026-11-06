@@ -451,7 +451,7 @@
             "unit_id": "exams",
             "route": "/browse/exams/",
             "served_records": 227,
-            "evidence_vintage": "2026-11-04T00:00:00.000Z"
+            "evidence_vintage": "2026-11-05T00:00:00.000Z"
           }
         ]
       }
@@ -640,7 +640,7 @@
             "unit_id": "rules",
             "route": "/browse/rules/",
             "served_records": 100,
-            "evidence_vintage": "2026-11-04T19:13:48.965Z"
+            "evidence_vintage": "2026-11-05T12:13:44.875Z"
           },
           {
             "unit_id": "staffing-notices",
@@ -1035,7 +1035,7 @@
             "unit_id": "meeting-outcomes",
             "route": "/browse/meetings/",
             "served_records": 17,
-            "evidence_vintage": "2026-11-04T08:00:43.756Z"
+            "evidence_vintage": "2026-11-05T08:00:53.045Z"
           },
           {
             "unit_id": "committee-memberships",

@@ -52427,7 +52427,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 5,
+          "count": 4,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -53715,7 +53715,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 8,
+          "count": 5,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {

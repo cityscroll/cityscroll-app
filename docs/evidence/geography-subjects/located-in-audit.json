@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.geography_located_in_audit.v1",
-  "polygon_memberships": 5796,
-  "unique_geography_pairs": 5796,
-  "public_edges": 6213,
-  "evidence_only_edges": 75,
+  "polygon_memberships": 5798,
+  "unique_geography_pairs": 5798,
+  "public_edges": 6344,
+  "evidence_only_edges": 70,
   "reconciled": true,
   "by_lens": {
     "land": {
@@ -84,10 +84,10 @@
       }
     },
     "meetings": {
-      "polygon_memberships": 4509,
-      "unique_geography_pairs": 4509,
-      "public_edges": 4937,
-      "evidence_only_edges": 64,
+      "polygon_memberships": 4511,
+      "unique_geography_pairs": 4511,
+      "public_edges": 5068,
+      "evidence_only_edges": 59,
       "reconciled": true,
       "by_method": {
         "community_board_ontology": {
@@ -101,9 +101,9 @@
           "total": 2763
         },
         "parcel_membership": {
-          "public": 519,
+          "public": 651,
           "evidence_only": 0,
-          "total": 519
+          "total": 651
         },
         "matter_body_borough": {
           "public": 85,
@@ -116,9 +116,9 @@
           "total": 3
         },
         "civic_address_pip": {
-          "public": 63,
-          "evidence_only": 24,
-          "total": 87
+          "public": 60,
+          "evidence_only": 21,
+          "total": 81
         },
         "venue_column": {
           "public": 3,
@@ -131,14 +131,14 @@
           "total": 1
         },
         "matter_title_place": {
-          "public": 9,
+          "public": 11,
           "evidence_only": 0,
-          "total": 9
+          "total": 11
         },
         "stamped": {
           "public": 0,
-          "evidence_only": 22,
-          "total": 22
+          "evidence_only": 20,
+          "total": 20
         },
         "classic_affected_area": {
           "public": 1,
@@ -147,9 +147,9 @@
         }
       },
       "by_tier": {
-        "strong": 4871,
+        "strong": 5002,
         "derived": 66,
-        "weak": 64
+        "weak": 59
       }
     },
     "money": {
@@ -217,7 +217,7 @@
   },
   "note": "Each polygon membership has at least one routed located_in candidate; distinct record×geography pairs reconcile to membership bags while separate venue and jurisdiction roles may share a pair. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
   "boundary_vintage": "2026-05-26",
-  "built_at": "2026-11-05T01:10:06.411Z",
+  "built_at": "2026-11-05T19:51:49.397Z",
   "subject_counts": {
     "borough": 5,
     "community-district": 59,

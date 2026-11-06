@@ -129,6 +129,13 @@ floor. The 7-day serve gate is the KV clock.
   is mostly open 7xxx exams with **0%** list presence; without this supplement the
   build stamps empty aggregate slots as if no public list data existed. Each row
   is re-joined at build time from `civil_service_list_aggregates.json` (counts only).
+  The row set and every reviewed field (title, title_code, application window,
+  eligibility) stay as committed; only `expected_list_count` and
+  `expected_established_date` move with the aggregates refresh. Resync with
+  `node tools/rebuild_list_depth_closed_exams.mjs` (`--check` for the hermetic
+  CI comparison) whenever `civil_service_list_aggregates.json` refreshes —
+  the freshness gate is `stale_after_days: 95` against this file's own
+  `fetched_at`.
 
 ## List-establishment timing model
 

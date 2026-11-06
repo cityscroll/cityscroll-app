@@ -1,10 +1,10 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-11-04",
-  "sources_retrieved_as_of": "2026-11-04",
+  "generated_at": "2026-11-05",
+  "sources_retrieved_as_of": "2026-11-05",
   "data_current_as_of": "2026-10-21",
   "list_current_as_of": "2026-10-21",
-  "open_window_as_of": "2026-11-04",
+  "open_window_as_of": "2026-11-05",
   "annual_schedule_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
@@ -93,8 +93,8 @@
       "public-safety": {
         "id": "public-safety",
         "exam_count": 60,
-        "open_count": 2,
-        "upcoming_count": 31,
+        "open_count": 5,
+        "upcoming_count": 28,
         "closed_count": 27,
         "canceled_count": 0,
         "postponed_count": 0,
@@ -102,12 +102,13 @@
         "continuous_count": 0,
         "actionable_count": 33,
         "open_exam_numbers": [
-          "7315",
-          "7324"
-        ],
-        "upcoming_exam_numbers": [
           "7009",
           "7058",
+          "7315",
+          "7324",
+          "7332"
+        ],
+        "upcoming_exam_numbers": [
           "7303",
           "7304",
           "7305",
@@ -126,7 +127,6 @@
           "7326",
           "7328",
           "7330",
-          "7332",
           "7333",
           "7334",
           "7506",
@@ -205,8 +205,8 @@
       "health-care": {
         "id": "health-care",
         "exam_count": 20,
-        "open_count": 3,
-        "upcoming_count": 5,
+        "open_count": 4,
+        "upcoming_count": 4,
         "closed_count": 12,
         "canceled_count": 0,
         "postponed_count": 0,
@@ -214,12 +214,12 @@
         "continuous_count": 0,
         "actionable_count": 8,
         "open_exam_numbers": [
+          "7000",
           "7031",
           "7032",
           "7131"
         ],
         "upcoming_exam_numbers": [
-          "7000",
           "7025",
           "7026",
           "7053",
@@ -252,20 +252,21 @@
       "engineering-construction": {
         "id": "engineering-construction",
         "exam_count": 42,
-        "open_count": 0,
-        "upcoming_count": 13,
+        "open_count": 1,
+        "upcoming_count": 12,
         "closed_count": 29,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
         "actionable_count": 13,
-        "open_exam_numbers": [],
+        "open_exam_numbers": [
+          "7040"
+        ],
         "upcoming_exam_numbers": [
           "7020",
           "7022",
           "7039",
-          "7040",
           "7042",
           "7043",
           "7061",
@@ -353,22 +354,23 @@
       "community-social-services": {
         "id": "community-social-services",
         "exam_count": 24,
-        "open_count": 0,
-        "upcoming_count": 10,
+        "open_count": 1,
+        "upcoming_count": 9,
         "closed_count": 14,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
         "actionable_count": 10,
-        "open_exam_numbers": [],
+        "open_exam_numbers": [
+          "7074"
+        ],
         "upcoming_exam_numbers": [
           "7037",
           "7038",
           "7071",
           "7072",
           "7073",
-          "7074",
           "7301",
           "7511",
           "7518",
@@ -405,25 +407,26 @@
       "administration-finance": {
         "id": "administration-finance",
         "exam_count": 29,
-        "open_count": 0,
-        "upcoming_count": 15,
+        "open_count": 3,
+        "upcoming_count": 12,
         "closed_count": 14,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
         "actionable_count": 15,
-        "open_exam_numbers": [],
-        "upcoming_exam_numbers": [
+        "open_exam_numbers": [
           "7001",
+          "7017",
+          "7500"
+        ],
+        "upcoming_exam_numbers": [
           "7004",
           "7005",
-          "7017",
           "7019",
           "7057",
           "7060",
           "7067",
-          "7500",
           "7503",
           "7504",
           "7505",
@@ -467,32 +470,33 @@
       "trades-operations": {
         "id": "trades-operations",
         "exam_count": 45,
-        "open_count": 0,
-        "upcoming_count": 19,
+        "open_count": 4,
+        "upcoming_count": 15,
         "closed_count": 26,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
         "actionable_count": 19,
-        "open_exam_numbers": [],
+        "open_exam_numbers": [
+          "7015",
+          "7030",
+          "7050",
+          "7525"
+        ],
         "upcoming_exam_numbers": [
           "7008",
           "7014",
-          "7015",
           "7021",
-          "7030",
           "7044",
           "7045",
           "7046",
           "7048",
           "7049",
-          "7050",
           "7051",
           "7064",
           "7066",
           "7521",
-          "7525",
           "7526",
           "7536",
           "7540"
@@ -567,8 +571,8 @@
       "exam_count": 227,
       "area_count": 8,
       "tagged_non_other": 227,
-      "open_count": 5,
-      "upcoming_count": 96
+      "open_count": 18,
+      "upcoming_count": 83
     }
   },
   "sources": [
@@ -576,11 +580,11 @@
       "id": "dcas-open-competitive",
       "name": "DCAS Open Competitive Exams for Anyone",
       "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-      "verified_at": "2026-11-04",
+      "verified_at": "2026-11-05",
       "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
       "stale_after_days": 35,
       "method": "The published schedule table is read directly and cross-checked against the OASys active-exam listing. Reviewed Notice of Examination prose from the previous snapshot is carried forward only while the exam and its filing window are unchanged.",
-      "fetched_at": "2026-11-04"
+      "fetched_at": "2026-11-05"
     },
     {
       "id": "dcas-annual-schedule",
@@ -588,7 +592,7 @@
       "dataset_id": "4ptz-hmtc",
       "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
       "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-      "fetched_at": "2026-11-04",
+      "fetched_at": "2026-11-05",
       "data_current_as_of": "2026-07-22",
       "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
       "stale_after_days": 500
@@ -598,7 +602,7 @@
       "name": "Civil Service List (Active)",
       "dataset_id": "vx8i-nprf",
       "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
-      "fetched_at": "2026-11-04",
+      "fetched_at": "2026-11-05",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "privacy": "Only aggregate counts are retained; candidate records and names are not copied."
@@ -609,7 +613,7 @@
       "dataset_id": "dg92-zbpx",
       "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
       "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
-      "fetched_at": "2026-11-04",
+      "fetched_at": "2026-11-05",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."
@@ -638,8 +642,8 @@
       "name": "DCAS Notice of Examination fee/salary densify",
       "role": "Body-parsed APPLICATION FEE and minimum salary from public NOE PDFs, merged when the open-competitive snapshot lacks structured amounts. Annual schedule has no fee columns.",
       "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-      "fetched_at": "2026-08-02",
-      "verified_at": "2026-08-02",
+      "fetched_at": "2026-11-05",
+      "verified_at": "2026-11-05",
       "stale_after_days": 45,
       "freshness_required": false
     },
@@ -674,7 +678,7 @@
       "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
       "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
       "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-      "fetched_at": "2026-11-04",
+      "fetched_at": "2026-11-05",
       "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
       "stale_after_days": 3,
       "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
@@ -714,29 +718,29 @@
       "list_joined": 78
     },
     "noe_fee_salary_densify": {
-      "densify_records": 13,
+      "densify_records": 19,
       "densify_applied": 10,
       "fee_salary_non_null_before": {
         "total": 227,
-        "both": 25,
-        "rate": 0.11013215859030837
+        "both": 33,
+        "rate": 0.14537444933920704
       },
       "fee_salary_non_null_after": {
         "total": 227,
-        "both": 35,
-        "rate": 0.15418502202643172
+        "both": 43,
+        "rate": 0.1894273127753304
       }
     },
     "oasys_exam_map": {
       "source_id": "oasys-active-exams",
-      "map_records": 47,
-      "exams_deep_linked": 45,
-      "exams_landing": 182
+      "map_records": 51,
+      "exams_deep_linked": 49,
+      "exams_landing": 178
     },
     "noe_differentiators": {
       "densify_records": 9,
       "densify_applied": 7,
-      "exams_with_format": 29,
+      "exams_with_format": 33,
       "corpus": {
         "field_stats": {
           "exam_format": {
@@ -875,7 +879,7 @@
       "name": "Civil Service List (Active) — exam-level aggregates only",
       "dataset_id": "vx8i-nprf",
       "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-      "fetched_at": "2026-11-04",
+      "fetched_at": "2026-11-05",
       "privacy": "Only exam-level counts and list dates are retained; candidate records and names are not copied."
     },
     "summary": {
@@ -35956,12 +35960,34 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "health-care",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277000000.pdf",
+      "fee": 68,
+      "salary_min": 59885,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam",
+      "exam_format": "education_experience",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "education_experience"
+        },
+        {
+          "key": "fee",
+          "value": 68
+        },
+        {
+          "key": "salary_min",
+          "value": 59885
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -35972,20 +35998,11 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9739",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9739",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9739",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -36016,12 +36033,22 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
       ],
       "interest_area": "administration-finance",
-      "card_leads": [],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277001000.pdf",
+      "salary_publication": "The notice does not state a minimum annual salary for this title.",
+      "fee": 82,
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 82
+        }
+      ],
       "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36033,16 +36060,11 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_yet_ingested",
+        "class": "not_published",
         "missing": [
-          "fee",
           "salary_min"
         ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
       },
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
@@ -36136,12 +36158,23 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
       ],
       "interest_area": "public-safety",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277009000.pdf",
+      "fee": 61,
+      "salary_min": 41517,
+      "salary_note": "Current minimum annual salary",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 61
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36152,18 +36185,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
+      "fee_salary_gap": null,
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
       "list_establishment_forecast": {
@@ -36189,12 +36211,23 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
       ],
       "interest_area": "trades-operations",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277015000.pdf",
+      "fee": 61,
+      "salary_min": 43135,
+      "salary_note": "Current minimum annual salary",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 61
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36205,18 +36238,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
+      "fee_salary_gap": null,
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
       "list_establishment_forecast": {
@@ -36242,12 +36264,23 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
       ],
       "interest_area": "administration-finance",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277017000.pdf",
+      "fee": 61,
+      "salary_min": 42288,
+      "salary_note": "Current minimum annual salary",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 61
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36258,18 +36291,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
+      "fee_salary_gap": null,
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
       "list_establishment_forecast": {
@@ -36295,12 +36317,29 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "trades-operations",
-      "card_leads": [],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277030000.pdf",
+      "fee": 91,
+      "test_method": "Multiple-choice test",
+      "salary_publication": "The notice states a rate for this title rather than a yearly minimum salary.",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 91
+        }
+      ],
       "salary_band": "unknown",
-      "fee_level": "unknown",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36312,19 +36351,16 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": {
-        "class": "not_yet_ingested",
+        "class": "not_published",
         "missing": [
-          "fee",
           "salary_min"
         ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
+        "would_appear_in": "the Notice of Examination if DCAS stated the amount"
       },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "oasys_exam_id": "9686",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9686",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9686",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -36355,12 +36391,23 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
       ],
       "interest_area": "engineering-construction",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277040000.pdf",
+      "fee": 68,
+      "salary_min": 56447,
+      "salary_note": "Current minimum annual salary",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 68
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36371,18 +36418,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
+      "fee_salary_gap": null,
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
       "list_establishment_forecast": {
@@ -36415,9 +36451,12 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
       ],
       "interest_area": "trades-operations",
+      "notice_pending_note": "DCAS's schedule page linked a Notice of Examination PDF at the standard URL pattern (20277050000.pdf) before the file existed; confirmed 404 on 2026-11-05 on two separate checks while every other exam's linked PDF in this snapshot resolved. Treated as not yet published rather than carrying a dead link or an unverified salary claim; re-check when the schedule page republishes a working notice.",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -36528,12 +36567,23 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
       ],
       "interest_area": "public-safety",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277058000.pdf",
+      "fee": 68,
+      "salary_min": 47603,
+      "salary_note": "Current minimum annual salary",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 68
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36544,18 +36594,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
+      "fee_salary_gap": null,
       "official_application_url": "https://www.nyc.gov/examsforjobs",
       "application_handoff_mode": "landing",
       "list_establishment_forecast": {
@@ -36577,16 +36616,38 @@
       "title_code": "71651",
       "title": "Traffic Enforcement Agent",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25",
+      "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "public-safety",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277332000.pdf",
+      "fee": 0,
+      "salary_min": 48719,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 48719
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36597,20 +36658,11 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9692",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9692",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9692",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -36634,12 +36686,35 @@
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "interest_area": "community-social-services",
-      "card_leads": [],
-      "salary_band": "unknown",
-      "fee_level": "unknown",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277074000.pdf",
+      "fee": 68,
+      "salary_min": 55075,
+      "salary_max": 76972,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 68
+        },
+        {
+          "key": "salary_min",
+          "value": 55075
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -36650,20 +36725,11 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      },
-      "official_application_url": "https://www.nyc.gov/examsforjobs",
-      "application_handoff_mode": "landing",
+      "fee_salary_gap": null,
+      "oasys_exam_id": "9693",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9693",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9693",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",

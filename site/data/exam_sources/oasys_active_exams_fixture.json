@@ -1,6 +1,6 @@
 {
-  "fetched_at": "2026-11-04",
-  "fetched_at_utc": "2026-11-04T18:47:44.977Z",
+  "fetched_at": "2026-11-05",
+  "fetched_at_utc": "2026-11-05T12:13:07.741Z",
   "http_status": 200,
   "payload": [
     {
@@ -22,6 +22,43 @@
       "filingFee": 30,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20266126000.pdf"
+    },
+    {
+      "examId": 9739,
+      "title": "Addiction Counselor (NYC H+H)",
+      "examNumber": "7000",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-12-22T00:00:00",
+      "filingFee": 68,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277000000.pdf",
+      "examParts": [
+        {
+          "examId": 9739,
+          "examPartId": 5296,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 2,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T03:03:53.243",
+      "isAddedToTop": false
     },
     {
       "examId": 9653,
@@ -152,6 +189,64 @@
       "filingFee": 91,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277029000.pdf"
+    },
+    {
+      "examId": 9686,
+      "title": "Elevator Mechanic's Helper",
+      "examNumber": "7030",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 91,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277030000.pdf",
+      "examParts": [
+        {
+          "examId": 9686,
+          "examPartId": 5223,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9686,
+          "examPartId": 5224,
+          "partNo": 2,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T03:25:02.29",
+      "isAddedToTop": false
     },
     {
       "examId": 9669,
@@ -299,6 +394,64 @@
       "filingFee": 88,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277070000.pdf"
+    },
+    {
+      "examId": 9693,
+      "title": "Youth Development Specialist",
+      "examNumber": "7074",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 68,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277074000.pdf",
+      "examParts": [
+        {
+          "examId": 9693,
+          "examPartId": 5233,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9693,
+          "examPartId": 5234,
+          "partNo": 2,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T03:43:26.667",
+      "isAddedToTop": false
     },
     {
       "examId": 9670,
@@ -490,6 +643,43 @@
       "filingFee": 0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277331000.pdf"
+    },
+    {
+      "examId": 9692,
+      "title": "Traffic Enforcement Agent",
+      "examNumber": "7332",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-12-22T00:00:00",
+      "filingFee": 0,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277332000.pdf",
+      "examParts": [
+        {
+          "examId": 9692,
+          "examPartId": 5232,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-04T22:09:12.53",
+      "isAddedToTop": false
     },
     {
       "examId": 9654,

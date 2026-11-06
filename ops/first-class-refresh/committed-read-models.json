@@ -53,6 +53,30 @@
       "after": []
     },
     {
+      "id": "list-depth-closed-exams",
+      "command": [
+        "tools/rebuild_list_depth_closed_exams.mjs"
+      ],
+      "covers": [
+        "tools/rebuild_list_depth_closed_exams.mjs"
+      ],
+      "note": "Resyncs expected_list_count/expected_established_date from the already-refreshed civil_service_list_aggregates.json so build_staffing_exams.mjs's own freshness gate on this file does not block the staffing artifact rebuild. Its --check gate runs in the site-node test family (test/staffing_exams.test.mjs), not static-standards, so it is declared in additional_gate_builders below.",
+      "after": []
+    },
+    {
+      "id": "staffing-exams",
+      "command": [
+        "tools/build_staffing_exams.mjs"
+      ],
+      "covers": [
+        "tools/build_staffing_exams.mjs"
+      ],
+      "note": "Its --check gate runs in the site-node test family (test/staffing_exams.test.mjs), not static-standards, so it is declared in additional_gate_builders below.",
+      "after": [
+        "list-depth-closed-exams"
+      ]
+    },
+    {
       "id": "procurement-crosswalk",
       "command": [
         "tools/build_procurement_crosswalk.mjs"
@@ -202,6 +226,7 @@
       "note": "The boundary rebuilds every declared generated family in warehouse/derived_json_build_manifest.json, in the order that manifest fixes, and re-derives each one in check mode immediately after building it. It is the repository's ordered rebuild for derived JSON, so the refresh runs it rather than invoking the covered builders directly. It runs the families one at a time under a single declared cold-build time budget; nothing here fans the builders out in parallel.",
       "after": [
         "publication-guard",
+        "staffing-exams",
         "procurement-crosswalk",
         "entity-intelligence",
         "rules-semantic",
@@ -697,6 +722,7 @@
     "tools/build_source_health_observations.mjs",
     "tools/build_source_health_public_projection.mjs",
     "tools/build_source_vintage_observations.mjs",
+    "tools/build_staffing_exams.mjs",
     "tools/capture_assistant_setup_evidence.py",
     "tools/capture_board_land_positions_evidence.py",
     "tools/capture_committee_shared_members_evidence.py",
@@ -705,6 +731,7 @@
     "tools/evaluate_comparative_signals.mjs",
     "tools/first_class_refresh.mjs",
     "tools/land_filter_parity_receipt.mjs",
+    "tools/rebuild_list_depth_closed_exams.mjs",
     "tools/render_board_land_position_fixtures.mjs",
     "tools/render_committee_shared_members_fixtures.mjs",
     "worker/scripts/build_remote_mcp_evidence.mjs"

@@ -2,7 +2,7 @@
   "schema": "cityscroll.process_conformance.v1",
   "method": "mandate_expected_vs_observed_v1",
   "iteration": "v1",
-  "generated_at": "2026-08-11T21:12:40.677Z|2026-10-06T13:48:38.716Z|2026-11-04T04:22:02.123Z|2026-11-04T18:48:50.187Z|2026-11-05T01:02:50.535Z",
+  "generated_at": "2026-08-11T21:12:40.677Z|2026-10-06T13:48:38.716Z|2026-11-04T04:22:02.123Z|2026-11-04T18:48:50.187Z|2026-11-05T19:51:09.424Z",
   "as_of": "2026-11-05",
   "copy": {
     "lead": "Mandates set by law, alongside public records that show a related filing when one is found."
@@ -17236,7 +17236,7 @@
         }
       },
       "share_path": "/agencies/consumer-and-worker-protection/#mandates-conformance",
-      "candidate_corpus_size": 19,
+      "candidate_corpus_size": 20,
       "observations": {
         "65538-004": {
           "status": "expected_not_yet_observed",
@@ -32604,7 +32604,7 @@
         }
       },
       "share_path": "/agencies/finance/#mandates-conformance",
-      "candidate_corpus_size": 8,
+      "candidate_corpus_size": 7,
       "observations": {
         "57950-004": {
           "status": "expected_not_yet_observed",

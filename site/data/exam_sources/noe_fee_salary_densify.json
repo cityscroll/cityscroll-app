@@ -5,8 +5,8 @@
     "name": "DCAS Notice of Examination fee/salary densify",
     "role": "Body-parsed APPLICATION FEE and minimum salary from public NOE PDFs, merged when the open-competitive snapshot lacks structured amounts. Annual schedule has no fee columns.",
     "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-    "fetched_at": "2026-08-02",
-    "verified_at": "2026-08-02",
+    "fetched_at": "2026-11-05",
+    "verified_at": "2026-11-05",
     "stale_after_days": 45,
     "freshness_required": false
   },
@@ -158,6 +158,72 @@
       "salary_note": "Current minimum annual salary",
       "densify_method": "noe_pdf_body_multi_exam",
       "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7001",
+      "title": "Administrative Accountant",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277001000.pdf",
+      "fee": 82,
+      "salary_min": null,
+      "salary_max": null,
+      "salary_note": "Managerial Pay Plan (no numeric minimum in the notice)",
+      "densify_method": "noe_pdf_body",
+      "multi_exam_source": null
+    },
+    {
+      "exam_number": "7009",
+      "title": "Associate Fingerprint Technician",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277009000.pdf",
+      "fee": 61,
+      "salary_min": 41517,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body",
+      "multi_exam_source": null
+    },
+    {
+      "exam_number": "7015",
+      "title": "Bridge Operator",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277015000.pdf",
+      "fee": 61,
+      "salary_min": 43135,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body",
+      "multi_exam_source": null
+    },
+    {
+      "exam_number": "7017",
+      "title": "Cashier",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277017000.pdf",
+      "fee": 61,
+      "salary_min": 42288,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body",
+      "multi_exam_source": null
+    },
+    {
+      "exam_number": "7040",
+      "title": "Inspector (Construction)",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277040000.pdf",
+      "fee": 68,
+      "salary_min": 56447,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body",
+      "multi_exam_source": null
+    },
+    {
+      "exam_number": "7058",
+      "title": "Probation Officer Trainee",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277058000.pdf",
+      "fee": 68,
+      "salary_min": 47603,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body",
+      "multi_exam_source": null
     }
   ]
 }

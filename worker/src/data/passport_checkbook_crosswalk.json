@@ -2,7 +2,7 @@
   "schema_version": 1,
   "title": "Population-backed Checkbook Contracts ↔ PASSPort Public crosswalk",
   "observed_on": "2026-11-05",
-  "generated_at": "2026-11-05T01:02:25.093Z",
+  "generated_at": "2026-11-05T12:12:30.491Z",
   "sources": {
     "passport": "site/data/procurement_spine_sources.json#rows.passport_contracts",
     "checkbook": "site/data/procurement_spine_sources.json#rows.checkbook_contracts"

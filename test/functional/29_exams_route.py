@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import pathlib
 import sys
@@ -15,6 +16,29 @@ from fixture_clock import pin_fixture_clock  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "")
+STAFFING_EXAMS_SNAPSHOT = ROOT / "site" / "data" / "staffing_exams.json"
+
+
+def exams_fixture_day() -> str:
+    """The day the committed Exams snapshot keeps an upcoming card on page one.
+
+    open_window_as_of/generated_at are always the refresh's own build day, so on
+    a day the refresh opens a dense batch of exams they are the day most likely
+    to fill the first actionable page with open cards alone (see
+    test/exams_career_today.test.mjs, which locks this same preference order).
+    data_current_as_of/list_current_as_of are the slower DCAS Open Data
+    vintages and do not move with every refresh, so they anchor the pin here
+    instead of the generic money-route day fixture_clock.py otherwise falls
+    back to.
+    """
+    payload = json.loads(STAFFING_EXAMS_SNAPSHOT.read_text(encoding="utf-8"))
+    for key in ("data_current_as_of", "list_current_as_of", "open_window_as_of", "generated_at"):
+        value = str(payload.get(key) or "")[:10]
+        if len(value) == 10 and value[4] == "-" and value[7] == "-":
+            return value
+    raise AssertionError(
+        f"{STAFFING_EXAMS_SNAPSHOT} declares no vintage; the Exams fixture day cannot be derived"
+    )
 
 
 def wait_for_guide(page):
@@ -259,9 +283,10 @@ def main():
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(permissions=["clipboard-read", "clipboard-write"])
         # Exam windows are judged against the civic day. Pin that day to the committed
-        # fixture vintage so the first actionable page still includes an upcoming card
-        # when the real calendar has filled the page with newly opened exams.
-        pin_fixture_clock(context)
+        # Exams fixture vintage (not the generic money-route day) so the first
+        # actionable page still includes an upcoming card when the real calendar has
+        # filled the page with newly opened exams.
+        pin_fixture_clock(context, day=exams_fixture_day())
         page = context.new_page()
         run(page)
         context.close()
