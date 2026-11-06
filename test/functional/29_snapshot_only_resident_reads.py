@@ -90,7 +90,17 @@ def main() -> None:
             assert "No se pudo conectar a NYC Open Data" not in body, name
             if name == "zoning":
                 page.locator("#lkw").fill("1 Centre Street, New York, NY 10007")
-                with page.expect_response("**/data/address-index/manifest.json", timeout=10_000) as response_info:
+                # The default List auto-selects its first row on initial render, and that
+                # selection's own map-location resolution can already have resolved (and
+                # cached) the address-index manifest before this explicit search runs --
+                # which row is first, and whether it needs the geocode fallback at all,
+                # is a property of the live catalog this snapshot was taken from. Matching
+                # any address-index asset (manifest or a borough/street shard) rather than
+                # the manifest specifically keeps the assertion tied to "this search did a
+                # real client-side geocode lookup," not to a shard-of-the-day cache state.
+                with page.expect_response(
+                    lambda response: "/data/address-index/" in response.url, timeout=10_000
+                ) as response_info:
                     page.locator("#lkw").press("Enter")
                 assert response_info.value.ok
                 page.locator("#llist:not(.busy)").wait_for(state="visible", timeout=30_000)
