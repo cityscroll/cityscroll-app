@@ -41,6 +41,7 @@ const sourceRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council
 const boundaries = JSON.parse(readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url), "utf8"));
 const fixtureClockISOString = testClockISOString();
 const {
+  fixtureToday,
   fixtureEventDate,
   fixtureObservedDate,
   fixtureObservedAt,
@@ -51,11 +52,12 @@ const {
     date.setUTCDate(date.getUTCDate() + offset);
     return date.toISOString().slice(0, 10);
   }
+  const fixtureToday = fixtureDay(0);
   const fixtureEventDate = fixtureDay(-2);
   const fixtureObservedDate = fixtureDay(-5);
   const fixtureObservedAt = `${fixtureObservedDate}T12:00:00Z`;
   const fixtureCityRecordId = `${fixtureEventDate.replaceAll("-", "")}01`;
-  return { fixtureEventDate, fixtureObservedDate, fixtureObservedAt, fixtureCityRecordId };
+  return { fixtureToday, fixtureEventDate, fixtureObservedDate, fixtureObservedAt, fixtureCityRecordId };
 });
 
 const people = { by_person_id: {
@@ -260,6 +262,7 @@ test("gate 09: an accepted meeting source record renders once through its semant
     geography: { nodes: [], public_edges: [] },
     sourceInventory: { boards: [] },
     scorecard: { rows: [] },
+    today: fixtureToday,
     sourceRecords: [accepted.record],
     institutionEdges: { "bronx-cb-01": [accepted.edge] },
   });

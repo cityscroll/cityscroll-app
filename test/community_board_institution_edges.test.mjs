@@ -18,7 +18,7 @@ import { testClockISOString, withPinnedClock } from "./helpers/test_clock.mjs";
 
 const committeeRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/community_board_committees.json", import.meta.url)));
 const fixtureClockISOString = testClockISOString();
-const { fixtureEventDate, fixtureObservedAt, fixtureCityRecordId } = await withPinnedClock(fixtureClockISOString, () => {
+const { fixtureToday, fixtureEventDate, fixtureObservedAt, fixtureCityRecordId } = await withPinnedClock(fixtureClockISOString, () => {
   function fixtureTimestamp(now) {
     return `${now.slice(0, 10)}T12:00:00Z`;
   }
@@ -27,10 +27,11 @@ const { fixtureEventDate, fixtureObservedAt, fixtureCityRecordId } = await withP
     date.setUTCDate(date.getUTCDate() + offset);
     return date.toISOString().slice(0, 10);
   }
+  const fixtureToday = fixtureDay(0);
   const fixtureEventDate = fixtureDay(-2);
   const fixtureObservedAt = fixtureTimestamp(fixtureDay(-5));
   const fixtureCityRecordId = `${fixtureEventDate.replaceAll("-", "")}01`;
-  return { fixtureEventDate, fixtureObservedAt, fixtureCityRecordId };
+  return { fixtureToday, fixtureEventDate, fixtureObservedAt, fixtureCityRecordId };
 });
 
 const meeting = {
@@ -108,6 +109,7 @@ test("accepted identity is shared by Browse and the board institution page", () 
     sourceInventory: { boards: [] },
     scorecard: { rows: [] },
     geography: { nodes: [], public_edges: [] },
+    today: fixtureToday,
     institutionEdges: { "bronx-cb-01": [edge] },
   });
   const meetings = view.categories.find((category) => category.id === "meetings");
@@ -180,4 +182,64 @@ test("full-board and unresolved joint meetings retain the board host without a s
   }], { committeeRegistry, asOf: fixtureObservedAt });
   assert.equal(joint.length, 1);
   assert.equal(joint[0].from, "community-board:manhattan-cb-06");
+});
+
+test("constellation today input keeps the calendar day when the process clock crosses midnight", async () => {
+  const beforeMidnight = "2026-09-14T23:50:00.000Z";
+  const afterMidnight = "2026-09-15T00:10:00.000Z";
+  const pinnedToday = await withPinnedClock(beforeMidnight, () => new Date().toISOString().slice(0, 10));
+  assert.equal(pinnedToday, "2026-09-14");
+
+  function denseEdge(id, date) {
+    const to = `meeting:community_board:${id}`;
+    return {
+      relation: "hosts_meeting",
+      status: "promoted",
+      promoted: true,
+      from: "community-board:bronx-cb-01",
+      to,
+      target_id: to,
+      target_name: "Full Board Meeting",
+      href: `/meetings/${encodeURIComponent(to)}`,
+      join: { matched: true, event_date: date },
+      source_url: "https://board.example/calendar",
+      provenance: { source_url: "https://board.example/calendar" },
+    };
+  }
+
+  const institutionEdges = {
+    "bronx-cb-01": [
+      denseEdge("cb1-1", "2026-09-07"),
+      denseEdge("cb1-2", "2026-09-14"),
+      denseEdge("cb1-3", "2026-09-21"),
+    ],
+  };
+  const sources = {
+    sourceRegistry: { sources: [{ body_id: "bronx-cb-01", body_type: "community_board", name: "Bronx Community Board 1", borough: "Bronx" }] },
+    sourceInventory: { boards: [] },
+    scorecard: { rows: [] },
+    geography: { nodes: [], public_edges: [] },
+    institutionEdges,
+  };
+
+  await withPinnedClock(afterMidnight, () => {
+    const processToday = new Date().toISOString().slice(0, 10);
+    assert.equal(processToday, "2026-09-15");
+
+    const injected = buildCommunityBoardConstellationView("bronx-cb-01", {
+      ...sources,
+      today: pinnedToday,
+    });
+    assert.equal(injected.proceedings_calendar.render, true);
+    const injectedToday = injected.proceedings_calendar.weeks.flat().find((day) => day.is_today)?.date;
+    assert.equal(injectedToday, pinnedToday);
+
+    // Omitting today / generated_at / as_of reaches the Date fallback after the
+    // fixture pin is gone; under a post-midnight process clock that day drifts.
+    const leaked = buildCommunityBoardConstellationView("bronx-cb-01", sources);
+    assert.equal(leaked.proceedings_calendar.render, true);
+    const leakedToday = leaked.proceedings_calendar.weeks.flat().find((day) => day.is_today)?.date;
+    assert.equal(leakedToday, processToday);
+    assert.notEqual(leakedToday, pinnedToday);
+  });
 });
