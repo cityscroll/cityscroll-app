@@ -43,6 +43,7 @@ import {
 import { dualWriteLegistarObservations } from "./legistar_source_records.mjs";
 import { retainNativeMatterObservations } from "./matter_observation_journal.mjs";
 import { linksFromMeetingRecord } from "./subject_registry.mjs";
+import { TRANSIENT_UPSTREAM_STATUSES } from "./upstream_failure.mjs";
 
 /** Bump when vote/person mapping or spine assembly changes so young-but-stale KV rebuilds. */
 export const MEETING_OUTCOMES_VIEW_VERSION = 4;
@@ -61,6 +62,74 @@ export function meetingOutcomesViewNeedsRefresh(parsed, nowMs = Date.now()) {
   if (parsed.schema_version !== MEETING_OUTCOMES_VIEW_VERSION) return true;
   return false;
 }
+
+/** UTC hour of the primary daily Council refresh window ("0 8 * * *"). */
+export const MEETING_OUTCOMES_PRIMARY_UTC_HOUR = 8;
+
+/**
+ * Whether the stored view was generated at or after today's primary refresh
+ * window. A later same-day window re-attempts the acquisition only when this is
+ * false, so a morning that already published is never acquired twice. A missing
+ * or unreadable view counts as not published.
+ */
+export async function meetingOutcomesPublishedSincePrimary(env, now = new Date()) {
+  const at = new Date(now);
+  const primaryMs = Date.UTC(
+    at.getUTCFullYear(),
+    at.getUTCMonth(),
+    at.getUTCDate(),
+    MEETING_OUTCOMES_PRIMARY_UTC_HOUR,
+  );
+  let generatedAt = null;
+  try {
+    const raw = await env?.ALERT_STATE?.get?.(MEETING_OUTCOMES_KV_KEY);
+    generatedAt = raw ? JSON.parse(raw)?.generated_at || null : null;
+  } catch {
+    generatedAt = null;
+  }
+  const generatedMs = Date.parse(generatedAt);
+  return {
+    published: Number.isFinite(generatedMs) && generatedMs >= primaryMs,
+    generated_at: generatedAt,
+    since: new Date(primaryMs).toISOString(),
+  };
+}
+
+// The first two reads (City Record notices, the Legistar Events window) gate the
+// whole refresh, and the refresh runs once a day. One transient publisher
+// failure there used to discard the day's acquisition. Retry only while the
+// source is unwell (gateway/timeout statuses, dropped connections), never a
+// rejected request, and never sooner than a publisher's own Retry-After.
+export const MEETING_OUTCOMES_READ_RETRY_DELAYS_MS = Object.freeze([1_000, 3_000]);
+const TRANSIENT_LEGISTAR_KINDS = new Set(["rate-limited", "timeout", "network"]);
+
+function readRetryPolicy({ delaysMs = MEETING_OUTCOMES_READ_RETRY_DELAYS_MS, waitFn } = {}) {
+  return {
+    delaysMs,
+    waitFn: waitFn || ((milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds))),
+  };
+}
+
+// Retry-After is resolved against the refresh's own clock, so compare with that clock.
+function transientLegistarFailure(result, delayMs, now) {
+  if (result.kind === "http") return TRANSIENT_UPSTREAM_STATUSES.has(result.status);
+  if (!TRANSIENT_LEGISTAR_KINDS.has(result.kind)) return false;
+  if (result.kind !== "rate-limited" || !result.retryAfter) return true;
+  return Date.parse(result.retryAfter) - now.getTime() <= delayMs;
+}
+
+async function fetchLegistarEventsWindowWithRetry(options, retry) {
+  let result;
+  for (let attempt = 0; ; attempt += 1) {
+    result = await fetchLegistarEventsWindow(options);
+    const delayMs = retry.delaysMs[attempt];
+    if (result.ok || delayMs == null || !transientLegistarFailure(result, delayMs, new Date(options.now ?? Date.now()))) {
+      return result;
+    }
+    await retry.waitFn(delayMs);
+  }
+}
+
 export const NOTICE_LIMIT = 500;
 export const API_RECORD_LIMIT = 100;
 
@@ -780,7 +849,7 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
 async function buildNoticeRows(
   fetchImpl,
   now = new Date(),
-  { lookbackDays = 180, noticeLimit = NOTICE_LIMIT } = {},
+  { lookbackDays = 180, noticeLimit = NOTICE_LIMIT, retry = readRetryPolicy() } = {},
 ) {
   const boundedLookbackDays = Math.max(1, Math.min(3660, Number.parseInt(String(lookbackDays), 10) || 180));
   const boundedNoticeLimit = Math.max(1, Math.min(5000, Number.parseInt(String(noticeLimit), 10) || NOTICE_LIMIT));
@@ -791,11 +860,27 @@ async function buildNoticeRows(
     $order: "event_date DESC",
     $limit: String(boundedNoticeLimit),
   });
-  const response = await fetchImpl(`${SODA}?${params}`);
-  if (!response.ok) throw new Error(`City Record notices ${response.status}`);
-  const payload = await response.json();
-  if (!Array.isArray(payload)) throw new Error("City Record notices response is not an array");
-  return payload;
+  for (let attempt = 0; ; attempt += 1) {
+    const delayMs = retry.delaysMs[attempt];
+    let response;
+    try {
+      response = await fetchImpl(`${SODA}?${params}`);
+    } catch (error) {
+      if (delayMs == null) throw error;
+      await retry.waitFn(delayMs);
+      continue;
+    }
+    if (response.ok) {
+      const payload = await response.json();
+      if (!Array.isArray(payload)) throw new Error("City Record notices response is not an array");
+      return payload;
+    }
+    const error = new Error(`City Record notices ${response.status}`);
+    if (delayMs == null || !TRANSIENT_UPSTREAM_STATUSES.has(response.status)) throw error;
+    // Release the failed body before the next attempt takes another connection.
+    await response.body?.cancel?.();
+    await retry.waitFn(delayMs);
+  }
 }
 
 /**
@@ -953,8 +1038,10 @@ export async function buildMeetingOutcomesView({
   deferShadowWrites = false,
   lookbackDays = 180,
   noticeLimit = NOTICE_LIMIT,
+  readRetry = {},
 } = {}) {
-  const noticeRows = await buildNoticeRows(fetchImpl, now, { lookbackDays, noticeLimit });
+  const retry = readRetryPolicy(readRetry);
+  const noticeRows = await buildNoticeRows(fetchImpl, now, { lookbackDays, noticeLimit, retry });
 
   if (!token) {
     const view = buildMeetingOutcomes(noticeRows, [], [], []);
@@ -968,7 +1055,7 @@ export async function buildMeetingOutcomesView({
   // (no second Events request). A failure — rate limiting, malformed payload,
   // transport — fails the whole refresh so last-known-good KV snapshots for
   // both read models are retained.
-  const eventsFetch = await fetchLegistarEventsWindow({ token, fetchImpl, now, lookbackDays });
+  const eventsFetch = await fetchLegistarEventsWindowWithRetry({ token, fetchImpl, now, lookbackDays }, retry);
   if (!eventsFetch.ok) {
     throw new Error(`legistar-events-${eventsFetch.kind}${eventsFetch.status ? `-${eventsFetch.status}` : ""}`);
   }
@@ -1085,7 +1172,7 @@ export async function buildMeetingOutcomesView({
   };
 }
 
-export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new Date()) {
+export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new Date(), { readRetry } = {}) {
   if (!env?.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
   const token = env?.LEGISTAR_API_TOKEN || null;
   const view = await buildMeetingOutcomesView({
@@ -1094,6 +1181,7 @@ export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new D
     now,
     env,
     deferShadowWrites: true,
+    readRetry,
   });
   // dual_write, matter_journal, and the upcoming build state are run-scoped —
   // strip the first two so public clients never see them; the upcoming view is
