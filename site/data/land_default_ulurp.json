@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-04T18:22:03.270Z",
+  "generated_at": "2026-11-06T14:51:26.447Z",
   "source": {
     "name": "Zoning Application Portal projects (Open Data)",
     "dataset": "hgx4-8ukb",
@@ -17,70 +17,17 @@
   "count": 40,
   "projects": [
     {
-      "project_id": "2020M0385",
-      "project_name": "1325 Ave of the Americas-Text Amendment/Cert",
-      "primary_applicant": "Neil Weisbard",
+      "project_id": "2023M0452",
+      "project_name": "Allen Street Mall Demapping",
+      "primary_applicant": "DPR - Department of Parks & Recreation NYC",
       "public_status": "Completed",
       "project_status": "Active",
       "borough": "Manhattan",
-      "community_district": "M05",
-      "actions": "ZR; ZC; LD; ZC",
-      "mih_flag": "false",
-      "current_milestone": "EAS - Final Letter Sent",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "2020K0444",
-      "project_name": "20 Berry Street",
-      "primary_applicant": "hadi Hajjar",
-      "public_status": "Completed",
-      "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K01",
-      "actions": "ZM; ZR; ZS; LD",
-      "mih_flag": "false",
-      "current_milestone": "EAS - Final Letter Sent",
-      "ulurp_numbers": "C240271ZMK; N240272ZRK; C240273ZSK; 260016LDK",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "district_not_in_far_table"
-      }
-    },
-    {
-      "project_id": "2024Q0135",
-      "project_name": "Willets Point Phase II Mapping Actions",
-      "primary_applicant": "EDC - Economic Development Corporation for NYC",
-      "public_status": "Completed",
-      "project_status": "Active",
-      "borough": "Queens",
-      "community_district": "Q07",
-      "actions": "MM",
+      "community_district": "M03",
+      "actions": "MM; ZR",
       "mih_flag": "false",
       "current_milestone": "MM - Final Letter Sent",
-      "ulurp_numbers": "240058MMQ",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "P2012X0048",
-      "project_name": "GRANT PARK MAPPING",
-      "primary_applicant": "Antonios Michelakis",
-      "public_status": "Completed",
-      "project_status": "Active",
-      "borough": "Bronx",
-      "community_district": "X04",
-      "ulurp_numbers": "C090189MMX",
+      "ulurp_numbers": "250306MMM; N250307ZRM",
       "ulurp_non": "ULURP",
       "regulatory_effect": "unknown",
       "regulatory_effect_confidence": "unknown",
@@ -108,17 +55,14 @@
       }
     },
     {
-      "project_id": "2023M0452",
-      "project_name": "Allen Street Mall Demapping",
-      "primary_applicant": "DPR - Department of Parks & Recreation NYC",
+      "project_id": "P2009K0185",
+      "project_name": "CONEY ISLAND COMPREHENSIVE PLAN",
+      "primary_applicant": "CAS/SBS",
       "public_status": "Completed",
       "project_status": "Active",
-      "borough": "Manhattan",
-      "community_district": "M03",
-      "actions": "MM; ZR",
-      "mih_flag": "false",
-      "current_milestone": "MM - Final Letter Sent",
-      "ulurp_numbers": "250306MMM; N250307ZRM",
+      "borough": "Brooklyn",
+      "community_district": "K13",
+      "ulurp_numbers": "C090277PPK; C090272ZMK; C090274PQK; C090275PQK; C090276HAK",
       "ulurp_non": "ULURP",
       "regulatory_effect": "unknown",
       "regulatory_effect_confidence": "unknown",
@@ -127,38 +71,70 @@
       }
     },
     {
-      "project_id": "2026R0127",
-      "project_name": "FDNY Cont'd Use of WTC Unit 1688 Victory Blvd",
-      "primary_applicant": "FDNY - Fire Department of NYC",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Staten Island",
-      "community_district": "R01",
-      "actions": "PQ",
-      "mih_flag": "false",
-      "current_milestone": "PQ - Review Session - Post Hearing Follow-Up / Future Votes",
-      "current_milestone_date": "2026-07-03T00:00:00.000",
-      "ulurp_numbers": "260330PQR",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "2025K0305",
-      "project_name": "Westshore LSGD Mapping Actions",
-      "primary_applicant": "Watershore Views LLC",
-      "public_status": "Filed",
+      "project_id": "2020K0444",
+      "project_name": "20 Berry Street",
+      "primary_applicant": "hadi Hajjar",
+      "public_status": "Completed",
       "project_status": "Active",
       "borough": "Brooklyn",
-      "community_district": "K13,K11",
+      "community_district": "K01",
+      "actions": "ZM; ZR; ZS; LD",
+      "mih_flag": "false",
+      "current_milestone": "EAS - Final Letter Sent",
+      "ulurp_numbers": "C240271ZMK; N240272ZRK; C240273ZSK; 260016LDK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
+    },
+    {
+      "project_id": "2023Q0351",
+      "project_name": "Bud Place Rezoning",
+      "primary_applicant": "Kingsland Group LLC",
+      "public_status": "Noticed",
+      "project_status": "Active",
+      "borough": "Queens",
+      "community_district": "Q07",
+      "actions": "ZM; ZR",
+      "mih_flag": "false",
+      "ulurp_numbers": "260331ZMQ; N260332ZRQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
+    },
+    {
+      "project_id": "P2012X0048",
+      "project_name": "GRANT PARK MAPPING",
+      "primary_applicant": "Antonios Michelakis",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "borough": "Bronx",
+      "community_district": "X04",
+      "ulurp_numbers": "C090189MMX",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2024Q0135",
+      "project_name": "Willets Point Phase II Mapping Actions",
+      "primary_applicant": "EDC - Economic Development Corporation for NYC",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "borough": "Queens",
+      "community_district": "Q07",
       "actions": "MM",
       "mih_flag": "false",
-      "current_milestone": "MM - Review Filed Land Use Application",
-      "current_milestone_date": "2026-07-02T00:00:00.000",
-      "ulurp_numbers": "250308MMK",
+      "current_milestone": "MM - Final Letter Sent",
+      "ulurp_numbers": "240058MMQ",
       "ulurp_non": "ULURP",
       "regulatory_effect": "unknown",
       "regulatory_effect_confidence": "unknown",
@@ -167,17 +143,18 @@
       }
     },
     {
-      "project_id": "2026K0123",
-      "project_name": "1550 Bedford Avenue Rezoning",
-      "primary_applicant": "Brian Ezra",
-      "public_status": "Filed",
+      "project_id": "2026X0180",
+      "project_name": "1701 Boone Avenue Rezoning",
+      "primary_applicant": "Aden Wiener",
+      "public_status": "In Public Review",
       "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K09",
-      "actions": "UK; ZM; ZR; EAS",
+      "borough": "Bronx",
+      "community_district": "X03",
+      "actions": "ZM; ZR",
       "mih_flag": "false",
-      "current_milestone": "ZM - Review Filed Land Use Application",
-      "current_milestone_date": "2026-07-02T00:00:00.000",
+      "current_milestone": "EAS - Community Board Referral",
+      "current_milestone_date": "2026-10-14T00:00:00.000",
+      "ulurp_numbers": "270008ZMX; N270009ZRX",
       "ulurp_non": "ULURP",
       "regulatory_effect": "upzone",
       "regulatory_effect_confidence": "medium",
@@ -185,25 +162,9 @@
         "existing": {
           "districts": [
             {
-              "id": "C8-2",
+              "id": "R6A",
               "kind": "base_district",
-              "max_far": 2,
-              "citation": {
-                "section": "ZR 33-122",
-                "title": "Commercial buildings in all other Commercial Districts",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
-              }
-            }
-          ],
-          "max_far": 2,
-          "has_overlay": false
-        },
-        "proposed": {
-          "districts": [
-            {
-              "id": "R9A",
-              "kind": "base_district",
-              "max_far": 9.02,
+              "max_far": 3.9,
               "citation": {
                 "section": "ZR 23-22",
                 "title": "Floor Area Regulations for R6 Through R12 Districts",
@@ -221,7 +182,33 @@
               }
             }
           ],
-          "max_far": 9.02,
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R8A",
+              "kind": "base_district",
+              "max_far": 7.2,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 7.2,
           "has_overlay": true
         },
         "method": "project_brief_district_pair_max_far_v1",
@@ -232,27 +219,200 @@
       }
     },
     {
-      "project_id": "2024Q0325",
-      "project_name": "2-28 Beach 87th Street Rezoning",
-      "primary_applicant": "Beach 87th Street Associates, LLC",
-      "public_status": "Noticed",
+      "project_id": "2025M0399",
+      "project_name": "140 East 41st Street POPS",
+      "primary_applicant": "Neil Weisbard",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "borough": "Manhattan",
+      "community_district": "M06",
+      "actions": "ZC; ZC; LD; LD; CS",
+      "mih_flag": "false",
+      "current_milestone": "ZC - Review Filed Land Use Application",
+      "current_milestone_date": "2026-10-09T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2024M0194",
+      "project_name": "23-27 Allen Street Hotel Special Permit",
+      "primary_applicant": "Javier Martinez",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "borough": "Manhattan",
+      "community_district": "M03",
+      "actions": "ZS",
+      "mih_flag": "false",
+      "current_milestone": "ZS - Prepare Filed Land Use Application",
+      "current_milestone_date": "2026-10-09T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2023Q0177",
+      "project_name": "50-02 Queens Blvd Rezoning",
+      "primary_applicant": "5002 Woodside Development LLC",
+      "public_status": "In Public Review",
       "project_status": "Active",
       "borough": "Queens",
-      "community_district": "Q14",
+      "community_district": "Q02",
+      "actions": "ZM; ZR",
+      "mih_flag": "true",
+      "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
+      "current_milestone_date": "2026-10-09T00:00:00.000",
+      "ulurp_numbers": "240316ZMQ; N240317ZRQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
+    },
+    {
+      "project_id": "2024X0217",
+      "project_name": "Melrose Cornerstone B2",
+      "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development",
+      "public_status": "Noticed",
+      "project_status": "Active",
+      "borough": "Bronx",
+      "community_district": "X01",
+      "actions": "HA; HU",
+      "mih_flag": "false",
+      "current_milestone": "ZS - Review Filed Land Use Application",
+      "current_milestone_date": "2026-10-09T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2024M0148",
+      "project_name": "22 East 119th Street Rezoning",
+      "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development",
+      "public_status": "Noticed",
+      "project_status": "Active",
+      "borough": "Manhattan",
+      "community_district": "M11",
+      "actions": "ZM; HA; ZR",
+      "mih_flag": "false",
+      "current_milestone": "ZM - Review Filed Land Use Application",
+      "current_milestone_date": "2026-10-09T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
+    },
+    {
+      "project_id": "2026X0270",
+      "project_name": "3400 Park Avenue Rezoning",
+      "primary_applicant": "Azimuth Development Group",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "borough": "Bronx",
+      "community_district": "X03",
       "actions": "ZM; ZR",
       "mih_flag": "false",
       "current_milestone": "ZM - Review Filed Land Use Application",
-      "current_milestone_date": "2026-07-02T00:00:00.000",
+      "current_milestone_date": "2026-10-08T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
+    },
+    {
+      "project_id": "2024M0193",
+      "project_name": "Studio 54 Rehabilitation and Text Amendment",
+      "primary_applicant": "Christopher N",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "borough": "Manhattan",
+      "community_district": "M05",
+      "actions": "ZR; ZS; LD",
+      "mih_flag": "false",
+      "current_milestone": "EAS - City Council Review",
+      "current_milestone_date": "2026-10-08T00:00:00.000",
+      "ulurp_numbers": "N260211ZRM; 260212ZSM; 260213LDM",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2026Q0371",
+      "project_name": "106-03 Sutphin Blvd FRESH Certification",
+      "primary_applicant": "Lin Ye",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "borough": "Queens",
+      "community_district": "Q12",
+      "actions": "ZC; LD",
+      "mih_flag": "false",
+      "current_milestone": "ZC - Review Filed Land Use Application",
+      "current_milestone_date": "2026-10-08T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2022Q0214",
+      "project_name": "43-02 Ditmars Boulevard Rezoning",
+      "primary_applicant": "LaGuardia Center Realty LLC",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "borough": "Queens",
+      "community_district": "Q01",
+      "actions": "ZM; ZR",
+      "mih_flag": "true",
+      "current_milestone": "ZM - Review Filed Land Use Application",
+      "current_milestone_date": "2026-10-07T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
+    },
+    {
+      "project_id": "2023K0400",
+      "project_name": "Pemmil West 25th Street Rezoning",
+      "primary_applicant": "Pemmil Land Holdings LLC",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "borough": "Brooklyn",
+      "community_district": "K13",
+      "actions": "ZM; ZR; ZS",
+      "mih_flag": "false",
+      "current_milestone": "ZR - Prepare Filed Land Use Application",
+      "current_milestone_date": "2026-10-07T00:00:00.000",
       "ulurp_non": "ULURP",
       "regulatory_effect": "upzone",
-      "regulatory_effect_confidence": "high",
+      "regulatory_effect_confidence": "medium",
       "regulatory_effect_basis": {
         "existing": {
           "districts": [
             {
-              "id": "R4-1",
+              "id": "R5",
               "kind": "base_district",
-              "max_far": 1.5,
+              "max_far": 2,
               "citation": {
                 "section": "ZR 23-21",
                 "title": "Floor Area Regulations for R1 Through R5 Districts",
@@ -260,23 +420,118 @@
               }
             }
           ],
-          "max_far": 1.5,
+          "max_far": 2,
           "has_overlay": false
         },
         "proposed": {
           "districts": [
             {
-              "id": "R7A",
+              "id": "R6-1",
               "kind": "base_district",
-              "max_far": 5.01,
+              "max_far": 3.9,
               "citation": {
                 "section": "ZR 23-22",
                 "title": "Floor Area Regulations for R6 Through R12 Districts",
                 "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
               }
+            },
+            {
+              "id": "R7-3",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
             }
           ],
-          "max_far": 5.01,
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
+    },
+    {
+      "project_id": "2026Q0128",
+      "project_name": "Astoria Cove WF Cert and Substantial Compliance",
+      "primary_applicant": "Ron Mandel",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "borough": "Queens",
+      "community_district": "Q01",
+      "actions": "ZC; CS; LD",
+      "mih_flag": "false",
+      "current_milestone": "ZC - Prepare Filed Land Use Application",
+      "current_milestone_date": "2026-10-07T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2022K0416",
+      "project_name": "1584 Flatbush Avenue Rezoning",
+      "primary_applicant": "Eddie Mizrachi",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "borough": "Brooklyn",
+      "community_district": "K14",
+      "actions": "ZM; ZR",
+      "mih_flag": "false",
+      "current_milestone": "EAS - Borough President Referral",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
+      "ulurp_numbers": "260315ZMK; N260316ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "C4-4A",
+              "kind": "base_district",
+              "max_far": 4,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 4,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "C6-3",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 6,
           "has_overlay": false
         },
         "method": "project_brief_district_pair_max_far_v1",
@@ -287,216 +542,18 @@
       }
     },
     {
-      "project_id": "2024K0214",
-      "project_name": "341-361 Highland Boulevard Rezoning",
-      "primary_applicant": "david grunfeld",
-      "public_status": "Filed",
+      "project_id": "2026K0233",
+      "project_name": "240 Nassau Street",
+      "primary_applicant": "New York City Education Construction Fund",
+      "public_status": "In Public Review",
       "project_status": "Active",
       "borough": "Brooklyn",
-      "community_district": "K05",
-      "actions": "ZM; ZR",
+      "community_district": "K02",
+      "actions": "ZM; ZR; ZS",
       "mih_flag": "true",
-      "current_milestone": "Ad-hoc - Review Filed Land Use Application",
-      "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "district_pair_missing"
-      }
-    },
-    {
-      "project_id": "2024M0244",
-      "project_name": "Dewitt Clinton Park North (801 Eleventh Avenue)",
-      "primary_applicant": "801 11th Avenue LLC",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Manhattan",
-      "community_district": "M04",
-      "actions": "ZS; ZM; ZR; LD; LD",
-      "mih_flag": "false",
-      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
-      "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_numbers": "C260015ZSM; C260013ZMM; N260014ZRM; 260201LDM; 260202LDM",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "district_not_in_far_table"
-      }
-    },
-    {
-      "project_id": "2025M0338",
-      "project_name": "Imperial Theatre Text Amendment",
-      "primary_applicant": "Imperial Theater LLC",
-      "public_status": "Noticed",
-      "project_status": "Active",
-      "borough": "Manhattan",
-      "community_district": "M05",
-      "actions": "ZS; ZR; LD",
-      "mih_flag": "false",
-      "current_milestone": "ZS - Review Filed Land Use Application",
-      "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "2024K0358",
-      "project_name": "Monitor Point",
-      "primary_applicant": "GO Quay LLC",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K01",
-      "actions": "ZM; ZR; ZS; ZC; LD",
-      "mih_flag": "false",
-      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
-      "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_numbers": "C260105ZMK; N260106ZRK; C260107ZSK; N260108ZCK; 260110LDK",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "district_pair_missing"
-      }
-    },
-    {
-      "project_id": "2023M0213",
-      "project_name": "Dewitt Clinton Park North (629 West 54th Street)",
-      "primary_applicant": "760 12th LLC",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Manhattan",
-      "community_district": "M04",
-      "actions": "ZM; ZS; ZR; LD; LD",
-      "mih_flag": "true",
-      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
-      "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_numbers": "C260060ZMM; C260061ZSM; N260062ZRM; 260199LDM; 260200LDM",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "district_not_in_far_table"
-      }
-    },
-    {
-      "project_id": "2019K0383",
-      "project_name": "East 14th Street and Locust Avenue Rezoning",
-      "primary_applicant": "E 14 Realty Holdings LLC",
-      "public_status": "Filed",
-      "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K14",
-      "actions": "ZM; ZR",
-      "mih_flag": "true",
-      "current_milestone": "ZM - Prepare Filed Land Use Application",
-      "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_numbers": "210395ZMK; N210396ZRK",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "district_not_in_far_table"
-      }
-    },
-    {
-      "project_id": "2025K0287",
-      "project_name": "Monitor Point - 56 Quay Demapping",
-      "primary_applicant": "GO Quay LLC",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K01",
-      "actions": "MM",
-      "mih_flag": "false",
-      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
-      "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_numbers": "250326MMK",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "2025M0252",
-      "project_name": "Flatiron NoMad Major Concessions",
-      "primary_applicant": "NYC DOT Department of Transportation",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Manhattan",
-      "community_district": "M05",
-      "actions": "MC",
-      "mih_flag": "false",
-      "current_milestone": "MC - CPC Public Meeting - Vote",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260123MCM",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "2024K0286",
-      "project_name": "200 Kent Avenue Rezoning",
-      "primary_applicant": "200 Kent I LLC",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K01",
-      "actions": "ZM; ZR",
-      "mih_flag": "false",
-      "current_milestone": "EAS - CPC Public Meeting - Vote",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260149ZMK; 260150ZRK",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "district_not_in_far_table"
-      }
-    },
-    {
-      "project_id": "2023M0116",
-      "project_name": "St. Augustine's Preservation and Redevelopment",
-      "primary_applicant": "August330Madison Partners LLC",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Manhattan",
-      "community_district": "M03",
-      "actions": "ZS; LD",
-      "mih_flag": "false",
-      "current_milestone": "EAS - CPC Public Meeting - Vote",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "250336ZSM; 250337LDM",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "2024Q0219",
-      "project_name": "135-27 Sapphire Street Rezoning",
-      "primary_applicant": "135 Sapphire LLC",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Queens",
-      "community_district": "Q10",
-      "actions": "ZM; ZR",
-      "mih_flag": "false",
-      "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "250329ZMQ; N250330ZRQ",
+      "current_milestone": "ZM - Borough President Referral",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
+      "ulurp_numbers": "260395ZMK; 260396ZRK; 260397ZSK",
       "ulurp_non": "ULURP",
       "regulatory_effect": "upzone",
       "regulatory_effect_confidence": "high",
@@ -504,23 +561,7 @@
         "existing": {
           "districts": [
             {
-              "id": "R4",
-              "kind": "base_district",
-              "max_far": 1.5,
-              "citation": {
-                "section": "ZR 23-21",
-                "title": "Floor Area Regulations for R1 Through R5 Districts",
-                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
-              }
-            }
-          ],
-          "max_far": 1.5,
-          "has_overlay": false
-        },
-        "proposed": {
-          "districts": [
-            {
-              "id": "R6A",
+              "id": "R6",
               "kind": "base_district",
               "max_far": 3.9,
               "citation": {
@@ -533,6 +574,22 @@
           "max_far": 3.9,
           "has_overlay": false
         },
+        "proposed": {
+          "districts": [
+            {
+              "id": "C6-12",
+              "kind": "base_district",
+              "max_far": 15,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 15,
+          "has_overlay": false
+        },
         "method": "project_brief_district_pair_max_far_v1",
         "far_table": {
           "schema": "cityscroll.zoning_max_far.v1",
@@ -541,23 +598,63 @@
       }
     },
     {
-      "project_id": "2026R0186",
-      "project_name": "336 Meredith Avenue Fleet Maintenance Facility",
-      "primary_applicant": "DPR - Department of Parks & Recreation NYC",
+      "project_id": "2023Q0125",
+      "project_name": "21-31 46th Ave Rezoning",
+      "primary_applicant": "21-31 Holdings, LLC",
       "public_status": "In Public Review",
       "project_status": "Active",
-      "borough": "Staten Island",
-      "community_district": "R02",
-      "actions": "PC",
+      "borough": "Queens",
+      "community_district": "Q02",
+      "actions": "ZM; ZR",
       "mih_flag": "false",
-      "current_milestone": "PC - CPC Public Meeting - Vote",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260248PCR",
+      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
+      "ulurp_numbers": "250125ZMQ; N250126ZRQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
+    },
+    {
+      "project_id": "2022X0393",
+      "project_name": "110 East 138th Street/63 Exterior Street",
+      "primary_applicant": "east 138th street JV associates LLC",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "borough": "Bronx",
+      "community_district": "X01",
+      "actions": "ZS; ZC; LD; HA; ZA; ZA; ZA",
+      "mih_flag": "false",
+      "current_milestone": "HA - Review Session - Pre-Hearing Review / Post Referral",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
+      "ulurp_numbers": "260190ZSX; N260191ZCX; 260192LDX; 260193HAX; N260194ZAX; N260195ZAX; N260336ZAX",
       "ulurp_non": "ULURP",
       "regulatory_effect": "unknown",
       "regulatory_effect_confidence": "unknown",
       "regulatory_effect_basis": {
         "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2024K0196",
+      "project_name": "132 Melrose Street Rezoning",
+      "primary_applicant": "Melrose Towers Corp",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "borough": "Brooklyn",
+      "community_district": "K04",
+      "actions": "ZM; ZR",
+      "mih_flag": "false",
+      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
+      "ulurp_numbers": "260135ZMK; 260136ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
       }
     },
     {
@@ -570,8 +667,8 @@
       "community_district": "K10",
       "actions": "ZM; ZR",
       "mih_flag": "false",
-      "current_milestone": "EAS - CPC Public Meeting - Public Hearing",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
+      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
       "ulurp_numbers": "260238ZMK; 260239ZRK",
       "ulurp_non": "ULURP",
       "regulatory_effect": "upzone",
@@ -647,201 +744,22 @@
       }
     },
     {
-      "project_id": "2023X0149",
-      "project_name": "Sojourner Truth - Mapes Rezoning",
-      "primary_applicant": "Phipps Houses",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Bronx",
-      "community_district": "X06",
-      "actions": "ZM; ZR",
-      "mih_flag": "false",
-      "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "240206ZMX; N240207ZRX",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "upzone",
-      "regulatory_effect_confidence": "medium",
-      "regulatory_effect_basis": {
-        "existing": {
-          "districts": [
-            {
-              "id": "R7-1",
-              "kind": "base_district",
-              "max_far": 5.01,
-              "citation": {
-                "section": "ZR 23-22",
-                "title": "Floor Area Regulations for R6 Through R12 Districts",
-                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
-              }
-            },
-            {
-              "id": "C1-4",
-              "kind": "commercial_overlay",
-              "max_far": null,
-              "citation": {
-                "section": "ZR 33-121",
-                "title": "Bulk governed by Residence District regulations",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
-              }
-            }
-          ],
-          "max_far": 5.01,
-          "has_overlay": true
-        },
-        "proposed": {
-          "districts": [
-            {
-              "id": "R8",
-              "kind": "base_district",
-              "max_far": 8.64,
-              "citation": {
-                "section": "ZR 23-22",
-                "title": "Floor Area Regulations for R6 Through R12 Districts",
-                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
-              }
-            },
-            {
-              "id": "C2-4",
-              "kind": "commercial_overlay",
-              "max_far": null,
-              "citation": {
-                "section": "ZR 33-121",
-                "title": "Bulk governed by Residence District regulations",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
-              }
-            }
-          ],
-          "max_far": 8.64,
-          "has_overlay": true
-        },
-        "method": "project_brief_district_pair_max_far_v1",
-        "far_table": {
-          "schema": "cityscroll.zoning_max_far.v1",
-          "as_of": "2025-12-31"
-        }
-      }
-    },
-    {
-      "project_id": "2022K0416",
-      "project_name": "1584 Flatbush Avenue Rezoning",
-      "primary_applicant": "Sheldon Lobel P.C",
+      "project_id": "2025Q0124",
+      "project_name": "Steinway Street and 34th Avenue Rezoning",
+      "primary_applicant": "Frank St. Jacques",
       "public_status": "Noticed",
       "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K14",
-      "actions": "ZM; ZR",
-      "mih_flag": "false",
-      "current_milestone": "EAS - Project Readiness",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260315ZMK; N260316ZRK",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "upzone",
-      "regulatory_effect_confidence": "high",
-      "regulatory_effect_basis": {
-        "existing": {
-          "districts": [
-            {
-              "id": "C4-4A",
-              "kind": "base_district",
-              "max_far": 4,
-              "citation": {
-                "section": "ZR 33-122",
-                "title": "Commercial buildings in all other Commercial Districts",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
-              }
-            }
-          ],
-          "max_far": 4,
-          "has_overlay": false
-        },
-        "proposed": {
-          "districts": [
-            {
-              "id": "C6-3",
-              "kind": "base_district",
-              "max_far": 6,
-              "citation": {
-                "section": "ZR 33-122",
-                "title": "Commercial buildings in all other Commercial Districts",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
-              }
-            }
-          ],
-          "max_far": 6,
-          "has_overlay": false
-        },
-        "method": "project_brief_district_pair_max_far_v1",
-        "far_table": {
-          "schema": "cityscroll.zoning_max_far.v1",
-          "as_of": "2025-12-31"
-        }
-      }
-    },
-    {
-      "project_id": "2025Q0142",
-      "project_name": "47-03 108th Street Rezoning",
-      "primary_applicant": "108 Realty Group Inc.",
-      "public_status": "In Public Review",
-      "project_status": "Active",
       "borough": "Queens",
-      "community_district": "Q04",
+      "community_district": "Q01",
       "actions": "ZM; ZR",
       "mih_flag": "false",
-      "current_milestone": "EAS - CPC Public Meeting - Vote",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260147ZMQ; N260148ZRQ",
+      "current_milestone": "ZM - Review Filed Land Use Application",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
       "ulurp_non": "ULURP",
-      "regulatory_effect": "upzone",
-      "regulatory_effect_confidence": "medium",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
       "regulatory_effect_basis": {
-        "existing": {
-          "districts": [
-            {
-              "id": "R6B",
-              "kind": "base_district",
-              "max_far": 2.4,
-              "citation": {
-                "section": "ZR 23-22",
-                "title": "Floor Area Regulations for R6 Through R12 Districts",
-                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
-              }
-            }
-          ],
-          "max_far": 2.4,
-          "has_overlay": false
-        },
-        "proposed": {
-          "districts": [
-            {
-              "id": "R7X",
-              "kind": "base_district",
-              "max_far": 6,
-              "citation": {
-                "section": "ZR 23-22",
-                "title": "Floor Area Regulations for R6 Through R12 Districts",
-                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
-              }
-            },
-            {
-              "id": "C2-4",
-              "kind": "commercial_overlay",
-              "max_far": null,
-              "citation": {
-                "section": "ZR 33-121",
-                "title": "Bulk governed by Residence District regulations",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
-              }
-            }
-          ],
-          "max_far": 6,
-          "has_overlay": true
-        },
-        "method": "project_brief_district_pair_max_far_v1",
-        "far_table": {
-          "schema": "cityscroll.zoning_max_far.v1",
-          "as_of": "2025-12-31"
-        }
+        "reason": "district_not_in_far_table"
       }
     },
     {
@@ -854,8 +772,8 @@
       "community_district": "Q06",
       "actions": "ZM; ZR",
       "mih_flag": "false",
-      "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
+      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
       "ulurp_numbers": "260186ZMQ; 260187ZRQ",
       "ulurp_non": "ULURP",
       "regulatory_effect": "upzone",
@@ -911,106 +829,6 @@
       }
     },
     {
-      "project_id": "2025R0222",
-      "project_name": "St. Joseph by the Sea Special Permit",
-      "primary_applicant": "Ronald Fasone",
-      "public_status": "Noticed",
-      "project_status": "Active",
-      "borough": "Staten Island",
-      "community_district": "R03",
-      "actions": "RS; RC; RA; LD",
-      "mih_flag": "false",
-      "current_milestone": "RS - Project Readiness",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260323RSR; 260324RCR; 260325RAR; 260389LDR",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "2025R0137",
-      "project_name": "Staten Island Family Court Consolidation",
-      "primary_applicant": "Mayor's Office of Criminal Justice",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Staten Island",
-      "community_district": "R01",
-      "actions": "PS",
-      "mih_flag": "false",
-      "current_milestone": "PS - CPC Public Meeting - Vote",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260227PSR",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "2025Q0316",
-      "project_name": "Queens CD 2 Walk to Park Site Selection/Acq.",
-      "primary_applicant": "DPR - Department of Parks & Recreation NYC",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Queens",
-      "community_district": "Q02",
-      "actions": "PC",
-      "mih_flag": "false",
-      "current_milestone": "PC - CPC Public Meeting - Vote",
-      "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "C260089PCQ",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "2026Q0210",
-      "project_name": "Atlantic Avenue Demapping",
-      "primary_applicant": "New York City Department of City Planning",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Queens",
-      "community_district": "Q12",
-      "actions": "MM",
-      "mih_flag": "false",
-      "current_milestone": "MM - City Council Review",
-      "current_milestone_date": "2026-06-27T00:00:00.000",
-      "ulurp_numbers": "260226MMQ",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
-      "project_id": "2025M0395",
-      "project_name": "Herald Center Signage Text Amendment and SP",
-      "primary_applicant": "Louis Jerome",
-      "public_status": "Noticed",
-      "project_status": "Active",
-      "borough": "Manhattan",
-      "community_district": "M05",
-      "actions": "ZS; ZR",
-      "mih_flag": "false",
-      "current_milestone": "EAS - Project Readiness",
-      "current_milestone_date": "2026-06-26T00:00:00.000",
-      "ulurp_numbers": "260282ZSM; 260283ZRM",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "not_map_amendment"
-      }
-    },
-    {
       "project_id": "2022K0430",
       "project_name": "Park Avenue Brooklyn Rezoning",
       "primary_applicant": "Park Avenue Rezoning Partners LLC",
@@ -1020,8 +838,8 @@
       "community_district": "K03",
       "actions": "ZM; ZR",
       "mih_flag": "true",
-      "current_milestone": "EIS - Review Session - Pre-Hearing Review / Post Referral",
-      "current_milestone_date": "2026-06-26T00:00:00.000",
+      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
       "ulurp_numbers": "240218ZMK; N240219ZRK",
       "ulurp_non": "ULURP",
       "regulatory_effect": "unknown",
@@ -1031,17 +849,176 @@
       }
     },
     {
-      "project_id": "2026K0233",
-      "project_name": "240 Nassau Street",
-      "primary_applicant": "New York City Education Construction Fund",
+      "project_id": "2024K0240",
+      "project_name": "289 Kent Avenue Rezoning",
+      "primary_applicant": "Jeremy Kozin",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "borough": "Brooklyn",
+      "community_district": "K01",
+      "actions": "ZM; ZR",
+      "mih_flag": "false",
+      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
+      "ulurp_numbers": "260087ZMK; 260088ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
+    },
+    {
+      "project_id": "2025K0306",
+      "project_name": "1900 Shore Parkway Rezoning",
+      "primary_applicant": "Richard Lobel",
       "public_status": "Noticed",
       "project_status": "Active",
       "borough": "Brooklyn",
-      "community_district": "K02",
-      "actions": "ZM; ZR; ZS",
+      "community_district": "K11",
+      "actions": "ZM",
+      "mih_flag": "false",
+      "current_milestone": "EAS - Review Session - Certified / Referred",
+      "current_milestone_date": "2026-10-05T00:00:00.000",
+      "ulurp_numbers": "260245ZMK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
+    },
+    {
+      "project_id": "2025K0470",
+      "project_name": "Mill Basin Plaza Special Permit and WPAA Auths",
+      "primary_applicant": "Nicholas Brown",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "borough": "Brooklyn",
+      "community_district": "K18",
+      "actions": "ZC; ZA; ZS",
+      "mih_flag": "false",
+      "current_milestone": "ZM - Prepare Filed Land Use Application",
+      "current_milestone_date": "2026-10-05T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2026K0322",
+      "project_name": "1571 McDonald Avenue Rezoning II",
+      "primary_applicant": "LENNY VAYS",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "borough": "Brooklyn",
+      "community_district": "K12",
+      "actions": "ZM; ZR",
       "mih_flag": "true",
-      "current_milestone": "ZM - Prepare Filed Land Use Fee Payment",
-      "current_milestone_date": "2026-06-26T00:00:00.000",
+      "current_milestone": "ZM - Review Filed Land Use Application",
+      "current_milestone_date": "2026-10-05T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
+    },
+    {
+      "project_id": "2023K0357",
+      "project_name": "East 56th Street Demapping",
+      "primary_applicant": "Captain Holdings Corp.",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "borough": "Brooklyn",
+      "community_district": "K18",
+      "actions": "MM",
+      "mih_flag": "false",
+      "current_milestone": "EAS - Community Board Referral",
+      "current_milestone_date": "2026-10-03T00:00:00.000",
+      "ulurp_numbers": "C 250145MMK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2025K0232",
+      "project_name": "900 60th Street Rezoning",
+      "primary_applicant": "90060 AMG LLC",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "borough": "Brooklyn",
+      "community_district": "K12",
+      "actions": "ZM; ZR",
+      "mih_flag": "true",
+      "current_milestone": "EAS - Community Board Referral",
+      "current_milestone_date": "2026-10-03T00:00:00.000",
+      "ulurp_numbers": "260299ZMK; N260300ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
+    },
+    {
+      "project_id": "2025M0338",
+      "project_name": "Imperial Theatre Text Amendment",
+      "primary_applicant": "Imperial Theater LLC",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "borough": "Manhattan",
+      "community_district": "M05",
+      "actions": "ZS; ZR; LD",
+      "mih_flag": "false",
+      "current_milestone": "EAS - Community Board Referral",
+      "current_milestone_date": "2026-10-02T00:00:00.000",
+      "ulurp_numbers": "260275ZSM; N260276ZRM; 260277LDM",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
+    },
+    {
+      "project_id": "2025X0283",
+      "project_name": "Fordham Landing South Rezoning",
+      "primary_applicant": "DS Fordham Landing 1 LLC",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "borough": "Bronx",
+      "community_district": "X07",
+      "actions": "ZM",
+      "mih_flag": "false",
+      "current_milestone": "EAS - Community Board Referral",
+      "current_milestone_date": "2026-10-02T00:00:00.000",
+      "ulurp_numbers": "260173ZMX",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
+    },
+    {
+      "project_id": "2024Q0325",
+      "project_name": "2-28 Beach 87th Street Rezoning",
+      "primary_applicant": "Beach 87th Street Associates, LLC",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "borough": "Queens",
+      "community_district": "Q14",
+      "actions": "ZM; ZR",
+      "mih_flag": "false",
+      "current_milestone": "EAS - Community Board Referral",
+      "current_milestone_date": "2026-10-02T00:00:00.000",
+      "ulurp_numbers": "C260230ZMQ; N260231ZRQ",
       "ulurp_non": "ULURP",
       "regulatory_effect": "upzone",
       "regulatory_effect_confidence": "high",
@@ -1049,84 +1026,9 @@
         "existing": {
           "districts": [
             {
-              "id": "R6",
+              "id": "R4-1",
               "kind": "base_district",
-              "max_far": 3.9,
-              "citation": {
-                "section": "ZR 23-22",
-                "title": "Floor Area Regulations for R6 Through R12 Districts",
-                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
-              }
-            }
-          ],
-          "max_far": 3.9,
-          "has_overlay": false
-        },
-        "proposed": {
-          "districts": [
-            {
-              "id": "C6-12",
-              "kind": "base_district",
-              "max_far": 15,
-              "citation": {
-                "section": "ZR 33-122",
-                "title": "Commercial buildings in all other Commercial Districts",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
-              }
-            }
-          ],
-          "max_far": 15,
-          "has_overlay": false
-        },
-        "method": "project_brief_district_pair_max_far_v1",
-        "far_table": {
-          "schema": "cityscroll.zoning_max_far.v1",
-          "as_of": "2025-12-31"
-        }
-      }
-    },
-    {
-      "project_id": "2024K0196",
-      "project_name": "132 Melrose Street Rezoning",
-      "primary_applicant": "Melrose Towers Corp",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K04",
-      "actions": "ZM; ZR",
-      "mih_flag": "false",
-      "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
-      "current_milestone_date": "2026-06-26T00:00:00.000",
-      "ulurp_numbers": "260135ZMK; 260136ZRK",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "unknown",
-      "regulatory_effect_confidence": "unknown",
-      "regulatory_effect_basis": {
-        "reason": "district_pair_missing"
-      }
-    },
-    {
-      "project_id": "2023Q0303",
-      "project_name": "165-25 Union Turnpike Rezoning",
-      "primary_applicant": "165-25 Union Turnpike LLC",
-      "public_status": "Noticed",
-      "project_status": "Active",
-      "borough": "Queens",
-      "community_district": "Q08",
-      "actions": "ZM; ZR",
-      "mih_flag": "true",
-      "current_milestone": "ZM - Review Filed Land Use Application",
-      "current_milestone_date": "2026-06-26T00:00:00.000",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "upzone",
-      "regulatory_effect_confidence": "medium",
-      "regulatory_effect_basis": {
-        "existing": {
-          "districts": [
-            {
-              "id": "R3-2",
-              "kind": "base_district",
-              "max_far": 1,
+              "max_far": 1.5,
               "citation": {
                 "section": "ZR 23-21",
                 "title": "Floor Area Regulations for R1 Through R5 Districts",
@@ -1134,34 +1036,24 @@
               }
             }
           ],
-          "max_far": 1,
+          "max_far": 1.5,
           "has_overlay": false
         },
         "proposed": {
           "districts": [
             {
-              "id": "R6A",
+              "id": "R7A",
               "kind": "base_district",
-              "max_far": 3.9,
+              "max_far": 5.01,
               "citation": {
                 "section": "ZR 23-22",
                 "title": "Floor Area Regulations for R6 Through R12 Districts",
                 "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
               }
-            },
-            {
-              "id": "C2-3",
-              "kind": "commercial_overlay",
-              "max_far": null,
-              "citation": {
-                "section": "ZR 33-121",
-                "title": "Bulk governed by Residence District regulations",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
-              }
             }
           ],
-          "max_far": 3.9,
-          "has_overlay": true
+          "max_far": 5.01,
+          "has_overlay": false
         },
         "method": "project_brief_district_pair_max_far_v1",
         "far_table": {
@@ -1171,113 +1063,57 @@
       }
     },
     {
-      "project_id": "2025K0154",
-      "project_name": "1166 Bedford Avenue Rezoning",
-      "primary_applicant": "Khalifah Residences LLC",
+      "project_id": "2024Q0324",
+      "project_name": "32-02 Linden Place Rezoning",
+      "primary_applicant": "Vernon 298 LLC",
       "public_status": "In Public Review",
       "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K03",
+      "borough": "Queens",
+      "community_district": "Q07",
       "actions": "ZM; ZR",
-      "mih_flag": "true",
-      "current_milestone": "EAS - City Council Review",
-      "current_milestone_date": "2026-06-25T00:00:00.000",
-      "ulurp_numbers": "260162ZMK; 260163ZRK",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "upzone",
-      "regulatory_effect_confidence": "medium",
-      "regulatory_effect_basis": {
-        "existing": {
-          "districts": [
-            {
-              "id": "R6A",
-              "kind": "base_district",
-              "max_far": 3.9,
-              "citation": {
-                "section": "ZR 23-22",
-                "title": "Floor Area Regulations for R6 Through R12 Districts",
-                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
-              }
-            },
-            {
-              "id": "C2-4",
-              "kind": "commercial_overlay",
-              "max_far": null,
-              "citation": {
-                "section": "ZR 33-121",
-                "title": "Bulk governed by Residence District regulations",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
-              }
-            }
-          ],
-          "max_far": 3.9,
-          "has_overlay": true
-        },
-        "proposed": {
-          "districts": [
-            {
-              "id": "R7X",
-              "kind": "base_district",
-              "max_far": 6,
-              "citation": {
-                "section": "ZR 23-22",
-                "title": "Floor Area Regulations for R6 Through R12 Districts",
-                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
-              }
-            },
-            {
-              "id": "C2-4",
-              "kind": "commercial_overlay",
-              "max_far": null,
-              "citation": {
-                "section": "ZR 33-121",
-                "title": "Bulk governed by Residence District regulations",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
-              }
-            }
-          ],
-          "max_far": 6,
-          "has_overlay": true
-        },
-        "method": "project_brief_district_pair_max_far_v1",
-        "far_table": {
-          "schema": "cityscroll.zoning_max_far.v1",
-          "as_of": "2025-12-31"
-        }
-      }
-    },
-    {
-      "project_id": "2024K0421",
-      "project_name": "2233 Flatbush Avenue Rezoning",
-      "primary_applicant": "AYRES 2233 LLC",
-      "public_status": "Noticed",
-      "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K18",
-      "actions": "ZM; ZR",
-      "mih_flag": "true",
-      "current_milestone": "ZM - Review Filed Land Use Application",
-      "current_milestone_date": "2026-06-25T00:00:00.000",
+      "mih_flag": "false",
+      "current_milestone": "EAS - Community Board Referral",
+      "current_milestone_date": "2026-10-02T00:00:00.000",
+      "ulurp_numbers": "260383ZMQ; 260384ZRQ",
       "ulurp_non": "ULURP",
       "regulatory_effect": "unknown",
       "regulatory_effect_confidence": "unknown",
       "regulatory_effect_basis": {
-        "reason": "district_pair_missing"
+        "reason": "district_not_in_far_table"
       }
     },
     {
-      "project_id": "2022Q0449",
-      "project_name": "63-02 Fresh Pond Road Rezoning",
-      "primary_applicant": "63-02 Fresh Pond Realty LLC",
+      "project_id": "2022Q0160",
+      "project_name": "10-86 Cypress Avenue Rezoning",
+      "primary_applicant": "CYPRESS B.Z.V. CORP.",
       "public_status": "In Public Review",
       "project_status": "Active",
       "borough": "Queens",
       "community_district": "Q05",
       "actions": "ZM; ZR",
       "mih_flag": "true",
-      "current_milestone": "EAS - City Council Review",
-      "current_milestone_date": "2026-06-25T00:00:00.000",
-      "ulurp_numbers": "260155ZMQ; N260156ZRQ",
+      "current_milestone": "EAS - Community Board Referral",
+      "current_milestone_date": "2026-10-02T00:00:00.000",
+      "ulurp_numbers": "260165ZMQ; 260166ZRQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
+    },
+    {
+      "project_id": "2025Q0494",
+      "project_name": "120-27 84th Avenue Rezoning",
+      "primary_applicant": "Levy Family Real Estate Trust and Levy partners LLC",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "borough": "Queens",
+      "community_district": "Q09",
+      "actions": "ZM; ZR",
+      "mih_flag": "false",
+      "current_milestone": "Ad-hoc - Review Filed Land Use Application",
+      "current_milestone_date": "2026-10-01T00:00:00.000",
       "ulurp_non": "ULURP",
       "regulatory_effect": "upzone",
       "regulatory_effect_confidence": "medium",
@@ -1285,9 +1121,9 @@
         "existing": {
           "districts": [
             {
-              "id": "R5B",
+              "id": "R4A",
               "kind": "base_district",
-              "max_far": 2,
+              "max_far": 1.5,
               "citation": {
                 "section": "ZR 23-21",
                 "title": "Floor Area Regulations for R1 Through R5 Districts",
@@ -1295,25 +1131,25 @@
               }
             },
             {
-              "id": "C1-4",
-              "kind": "commercial_overlay",
-              "max_far": null,
+              "id": "R6B",
+              "kind": "base_district",
+              "max_far": 2.4,
               "citation": {
-                "section": "ZR 33-121",
-                "title": "Bulk governed by Residence District regulations",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
               }
             }
           ],
-          "max_far": 2,
-          "has_overlay": true
+          "max_far": 2.4,
+          "has_overlay": false
         },
         "proposed": {
           "districts": [
             {
-              "id": "R6A",
+              "id": "R6D",
               "kind": "base_district",
-              "max_far": 3.9,
+              "max_far": 3,
               "citation": {
                 "section": "ZR 23-22",
                 "title": "Floor Area Regulations for R6 Through R12 Districts",
@@ -1329,95 +1165,19 @@
                 "title": "Bulk governed by Residence District regulations",
                 "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
               }
-            }
-          ],
-          "max_far": 3.9,
-          "has_overlay": true
-        },
-        "method": "project_brief_district_pair_max_far_v1",
-        "far_table": {
-          "schema": "cityscroll.zoning_max_far.v1",
-          "as_of": "2025-12-31"
-        }
-      }
-    },
-    {
-      "project_id": "2023K0183",
-      "project_name": "2950 West 24th St Rezoning",
-      "primary_applicant": "Ocean Towers Partners LLC",
-      "public_status": "In Public Review",
-      "project_status": "Active",
-      "borough": "Brooklyn",
-      "community_district": "K13",
-      "actions": "ZM; ZR; ZS; LD; ZS",
-      "mih_flag": "true",
-      "current_milestone": "EAS - City Council Review",
-      "current_milestone_date": "2026-06-25T00:00:00.000",
-      "ulurp_numbers": "250248ZMK; N250249ZRK; 250250ZSK; 250251LDK; 250215ZSK",
-      "ulurp_non": "ULURP",
-      "regulatory_effect": "upzone",
-      "regulatory_effect_confidence": "medium",
-      "regulatory_effect_basis": {
-        "existing": {
-          "districts": [
+            },
             {
-              "id": "R6",
+              "id": "R6B",
               "kind": "base_district",
-              "max_far": 3.9,
+              "max_far": 2.4,
               "citation": {
                 "section": "ZR 23-22",
                 "title": "Floor Area Regulations for R6 Through R12 Districts",
                 "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
               }
-            },
-            {
-              "id": "C1-2",
-              "kind": "commercial_overlay",
-              "max_far": null,
-              "citation": {
-                "section": "ZR 33-121",
-                "title": "Bulk governed by Residence District regulations",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
-              }
             }
           ],
-          "max_far": 3.9,
-          "has_overlay": true
-        },
-        "proposed": {
-          "districts": [
-            {
-              "id": "R6",
-              "kind": "base_district",
-              "max_far": 3.9,
-              "citation": {
-                "section": "ZR 23-22",
-                "title": "Floor Area Regulations for R6 Through R12 Districts",
-                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
-              }
-            },
-            {
-              "id": "R7-3",
-              "kind": "base_district",
-              "max_far": 6,
-              "citation": {
-                "section": "ZR 23-22",
-                "title": "Floor Area Regulations for R6 Through R12 Districts",
-                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
-              }
-            },
-            {
-              "id": "C2-4",
-              "kind": "commercial_overlay",
-              "max_far": null,
-              "citation": {
-                "section": "ZR 33-121",
-                "title": "Bulk governed by Residence District regulations",
-                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
-              }
-            }
-          ],
-          "max_far": 6,
+          "max_far": 3,
           "has_overlay": true
         },
         "method": "project_brief_district_pair_max_far_v1",
@@ -1435,142 +1195,42 @@
       "name": "CityScroll ZAP outcomes daily read model",
       "endpoint": "https://api.cityscroll.org/zap-outcomes"
     },
-    "present_count": 34,
+    "present_count": 27,
     "absent_count": 0,
-    "missing_count": 6,
+    "missing_count": 13,
     "by_project": {
-      "2020M0385": {
-        "project_id": "2020M0385",
-        "snapshot_state": "unavailable"
-      },
-      "2020K0444": {
-        "project_id": "2020K0444",
-        "snapshot_state": "unavailable"
-      },
-      "2024Q0135": {
-        "project_id": "2024Q0135",
-        "snapshot_state": "unavailable"
-      },
-      "P2012X0048": {
-        "project_id": "P2012X0048",
+      "2023M0452": {
+        "project_id": "2023M0452",
         "snapshot_state": "unavailable"
       },
       "2020Q0317": {
         "project_id": "2020Q0317",
         "snapshot_state": "unavailable"
       },
-      "2023M0452": {
-        "project_id": "2023M0452",
+      "P2009K0185": {
+        "project_id": "P2009K0185",
         "snapshot_state": "unavailable"
       },
-      "2026R0127": {
-        "project_id": "2026R0127",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2026R0127",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-04T08:00:57.714Z"
-        },
-        "generated_at": "2026-11-04T08:00:57.714Z",
-        "open_data": {
-          "project_id": "2026R0127",
-          "public_status": "In Public Review",
-          "current_milestone": "PQ - Review Session - Post Hearing Follow-Up / Future Votes",
-          "current_milestone_date": "2026-07-03T00:00:00.000",
-          "noticed_date": "2026-04-10T00:00:00.000",
-          "actions": "PQ",
-          "ulurp_numbers": "260330PQR",
-          "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-04T08:00:52.310Z"
-          },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
+      "2020K0444": {
+        "project_id": "2020K0444",
+        "snapshot_state": "unavailable"
       },
-      "2025K0305": {
-        "project_id": "2025K0305",
-        "public_status": "Filed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2025K0305",
+      "2023Q0351": {
+        "project_id": "2023Q0351",
+        "public_status": "Noticed",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0351",
         "join": {
           "matched": true,
           "method": "exact_project_id",
           "reason": null
         },
         "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:18:06.707Z"
-        },
-        "generated_at": "2026-10-17T03:18:06.707Z",
+        "generated_at": "2026-09-27T13:13:07.594Z",
         "open_data": {
-          "project_id": "2025K0305",
-          "public_status": "Filed",
-          "current_milestone": "MM - Review Filed Land Use Application",
-          "current_milestone_date": "2026-07-02T00:00:00.000",
-          "actions": "MM",
-          "ulurp_numbers": "250308MMK",
-          "ulurp_non": "ULURP",
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2026K0123": {
-        "project_id": "2026K0123",
-        "public_status": "In Public Review",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2026K0123",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:17:44.410Z"
-        },
-        "generated_at": "2026-10-17T03:17:44.410Z",
-        "open_data": {
-          "project_id": "2026K0123",
+          "project_id": "2023Q0351",
           "public_status": "Filed",
           "current_milestone": "ZM - Review Filed Land Use Application",
-          "current_milestone_date": "2026-07-02T00:00:00.000",
-          "actions": "UK; ZM; ZR; EAS",
-          "ulurp_numbers": null,
-          "ulurp_non": "ULURP",
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2024Q0325": {
-        "project_id": "2024Q0325",
-        "public_status": "In Public Review",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2024Q0325",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:10:51.605Z"
-        },
-        "generated_at": "2026-10-17T03:10:51.605Z",
-        "open_data": {
-          "project_id": "2024Q0325",
-          "public_status": "Noticed",
-          "current_milestone": "ZM - Review Filed Land Use Application",
-          "current_milestone_date": "2026-07-02T00:00:00.000",
-          "noticed_date": "2026-03-13T00:00:00.000",
+          "current_milestone_date": "2026-04-16T00:00:00.000",
           "actions": "ZM; ZR",
           "ulurp_numbers": null,
           "ulurp_non": "ULURP",
@@ -1578,37 +1238,18 @@
         },
         "snapshot_state": "present"
       },
-      "2024K0214": {
-        "project_id": "2024K0214",
-        "public_status": "Filed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2024K0214",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:18:12.691Z"
-        },
-        "generated_at": "2026-10-17T03:18:12.691Z",
-        "open_data": {
-          "project_id": "2024K0214",
-          "public_status": "Filed",
-          "current_milestone": "Ad-hoc - Review Filed Land Use Application",
-          "current_milestone_date": "2026-07-01T00:00:00.000",
-          "actions": "ZM; ZR",
-          "ulurp_numbers": null,
-          "ulurp_non": "ULURP",
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
+      "P2012X0048": {
+        "project_id": "P2012X0048",
+        "snapshot_state": "unavailable"
       },
-      "2024M0244": {
-        "project_id": "2024M0244",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2024M0244",
+      "2024Q0135": {
+        "project_id": "2024Q0135",
+        "snapshot_state": "unavailable"
+      },
+      "2026X0180": {
+        "project_id": "2026X0180",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2026X0180",
         "join": {
           "matched": true,
           "method": "exact_project_id",
@@ -1617,31 +1258,35 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:00:27.330Z"
+          "observed_at": "2026-11-06T08:00:39.024Z"
         },
-        "generated_at": "2026-11-03T08:00:27.330Z",
+        "generated_at": "2026-11-06T08:00:39.024Z",
         "open_data": {
-          "project_id": "2024M0244",
+          "project_id": "2026X0180",
           "public_status": "In Public Review",
-          "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
-          "current_milestone_date": "2026-07-01T00:00:00.000",
-          "noticed_date": "2025-09-05T00:00:00.000",
-          "actions": "ZS; ZM; ZR; LD; LD",
-          "ulurp_numbers": "C260015ZSM; C260013ZMM; N260014ZRM; 260201LDM; 260202LDM",
+          "current_milestone": "EAS - Community Board Referral",
+          "current_milestone_date": "2026-10-14T00:00:00.000",
+          "noticed_date": "2026-09-04T00:00:00.000",
+          "actions": "ZM; ZR",
+          "ulurp_numbers": "270008ZMX; N270009ZRX",
           "ulurp_non": "ULURP",
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
+            "observed_at": "2026-11-06T08:00:10.301Z"
           },
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
       },
-      "2025M0338": {
-        "project_id": "2025M0338",
-        "public_status": "In Public Review",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2025M0338",
+      "2025M0399": {
+        "project_id": "2025M0399",
+        "snapshot_state": "unavailable"
+      },
+      "2024M0194": {
+        "project_id": "2024M0194",
+        "public_status": "Filed",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2024M0194",
         "join": {
           "matched": true,
           "method": "exact_project_id",
@@ -1650,92 +1295,25 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:10:54.980Z"
+          "observed_at": "2026-10-17T03:23:54.056Z"
         },
-        "generated_at": "2026-10-17T03:10:54.980Z",
+        "generated_at": "2026-10-17T03:23:54.056Z",
         "open_data": {
-          "project_id": "2025M0338",
-          "public_status": "Noticed",
+          "project_id": "2024M0194",
+          "public_status": "Filed",
           "current_milestone": "ZS - Review Filed Land Use Application",
-          "current_milestone_date": "2026-07-01T00:00:00.000",
-          "noticed_date": "2026-03-27T00:00:00.000",
-          "actions": "ZS; ZR; LD",
+          "current_milestone_date": "2026-03-24T00:00:00.000",
+          "actions": "ZS",
           "ulurp_numbers": null,
           "ulurp_non": "ULURP",
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
       },
-      "2024K0358": {
-        "project_id": "2024K0358",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2024K0358",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:00:42.405Z"
-        },
-        "generated_at": "2026-11-03T08:00:42.405Z",
-        "open_data": {
-          "project_id": "2024K0358",
-          "public_status": "In Public Review",
-          "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
-          "current_milestone_date": "2026-07-01T00:00:00.000",
-          "noticed_date": "2025-10-03T00:00:00.000",
-          "actions": "ZM; ZR; ZS; ZC; LD",
-          "ulurp_numbers": "C260105ZMK; N260106ZRK; C260107ZSK; N260108ZCK; 260110LDK",
-          "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
-          },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2023M0213": {
-        "project_id": "2023M0213",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2023M0213",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:00:41.594Z"
-        },
-        "generated_at": "2026-11-03T08:00:41.594Z",
-        "open_data": {
-          "project_id": "2023M0213",
-          "public_status": "In Public Review",
-          "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
-          "current_milestone_date": "2026-07-01T00:00:00.000",
-          "noticed_date": "2025-09-05T00:00:00.000",
-          "actions": "ZM; ZS; ZR; LD; LD",
-          "ulurp_numbers": "C260060ZMM; C260061ZSM; N260062ZRM; 260199LDM; 260200LDM",
-          "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
-          },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2019K0383": {
-        "project_id": "2019K0383",
+      "2023Q0177": {
+        "project_id": "2023Q0177",
         "public_status": "In Public Review",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2019K0383",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0177",
         "join": {
           "matched": true,
           "method": "exact_project_id",
@@ -1744,190 +1322,43 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:18:12.983Z"
+          "observed_at": "2026-11-06T08:00:44.280Z"
         },
-        "generated_at": "2026-10-17T03:18:12.983Z",
+        "generated_at": "2026-11-06T08:00:44.280Z",
         "open_data": {
-          "project_id": "2019K0383",
-          "public_status": "Filed",
-          "current_milestone": "ZM - Prepare Filed Land Use Application",
-          "current_milestone_date": "2026-07-01T00:00:00.000",
-          "actions": "ZM; ZR",
-          "ulurp_numbers": "210395ZMK; N210396ZRK",
-          "ulurp_non": "ULURP",
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2025K0287": {
-        "project_id": "2025K0287",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2025K0287",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:00:28.855Z"
-        },
-        "generated_at": "2026-11-03T08:00:28.855Z",
-        "open_data": {
-          "project_id": "2025K0287",
-          "public_status": "In Public Review",
-          "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
-          "current_milestone_date": "2026-07-01T00:00:00.000",
-          "noticed_date": "2025-10-03T00:00:00.000",
-          "actions": "MM",
-          "ulurp_numbers": "250326MMK",
-          "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
-          },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2025M0252": {
-        "project_id": "2025M0252",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2025M0252",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-02T08:02:05.995Z"
-        },
-        "generated_at": "2026-11-02T08:02:05.995Z",
-        "open_data": {
-          "project_id": "2025M0252",
-          "public_status": "In Public Review",
-          "current_milestone": "MC - CPC Public Meeting - Vote",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2025-10-31T00:00:00.000",
-          "actions": "MC",
-          "ulurp_numbers": "260123MCM",
-          "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-02T08:00:06.573Z"
-          },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2024K0286": {
-        "project_id": "2024K0286",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2024K0286",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-02T08:02:18.412Z"
-        },
-        "generated_at": "2026-11-02T08:02:18.412Z",
-        "open_data": {
-          "project_id": "2024K0286",
-          "public_status": "In Public Review",
-          "current_milestone": "EAS - CPC Public Meeting - Vote",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2026-01-30T00:00:00.000",
-          "actions": "ZM; ZR",
-          "ulurp_numbers": "260149ZMK; 260150ZRK",
-          "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-02T08:00:06.573Z"
-          },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2023M0116": {
-        "project_id": "2023M0116",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2023M0116",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:01:33.814Z"
-        },
-        "generated_at": "2026-11-03T08:01:33.814Z",
-        "open_data": {
-          "project_id": "2023M0116",
-          "public_status": "In Public Review",
-          "current_milestone": "EAS - CPC Public Meeting - Vote",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2026-01-16T00:00:00.000",
-          "actions": "ZS; LD",
-          "ulurp_numbers": "250336ZSM; 250337LDM",
-          "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
-          },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2024Q0219": {
-        "project_id": "2024Q0219",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2024Q0219",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:01:20.846Z"
-        },
-        "generated_at": "2026-11-03T08:01:20.846Z",
-        "open_data": {
-          "project_id": "2024Q0219",
+          "project_id": "2023Q0177",
           "public_status": "In Public Review",
           "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2025-12-05T00:00:00.000",
+          "current_milestone_date": "2026-10-09T00:00:00.000",
+          "noticed_date": "2026-01-30T00:00:00.000",
           "actions": "ZM; ZR",
-          "ulurp_numbers": "250329ZMQ; N250330ZRQ",
+          "ulurp_numbers": "240316ZMQ; N240317ZRQ",
           "ulurp_non": "ULURP",
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
+            "observed_at": "2026-11-06T08:00:10.301Z"
           },
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
       },
-      "2026R0186": {
-        "project_id": "2026R0186",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2026R0186",
+      "2024X0217": {
+        "project_id": "2024X0217",
+        "snapshot_state": "unavailable"
+      },
+      "2024M0148": {
+        "project_id": "2024M0148",
+        "snapshot_state": "unavailable"
+      },
+      "2026X0270": {
+        "project_id": "2026X0270",
+        "snapshot_state": "unavailable"
+      },
+      "2024M0193": {
+        "project_id": "2024M0193",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2024M0193",
         "join": {
           "matched": true,
           "method": "exact_project_id",
@@ -1936,22 +1367,258 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:01:08.143Z"
+          "observed_at": "2026-11-06T08:01:05.706Z"
         },
-        "generated_at": "2026-11-03T08:01:08.143Z",
+        "generated_at": "2026-11-06T08:01:05.706Z",
         "open_data": {
-          "project_id": "2026R0186",
+          "project_id": "2024M0193",
           "public_status": "In Public Review",
-          "current_milestone": "PC - CPC Public Meeting - Vote",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2026-01-02T00:00:00.000",
-          "actions": "PC",
-          "ulurp_numbers": "260248PCR",
+          "current_milestone": "EAS - City Council Review",
+          "current_milestone_date": "2026-10-08T00:00:00.000",
+          "noticed_date": "2026-02-27T00:00:00.000",
+          "actions": "ZR; ZS; LD",
+          "ulurp_numbers": "N260211ZRM; 260212ZSM; 260213LDM",
           "ulurp_non": "ULURP",
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
+            "observed_at": "2026-11-06T08:00:10.301Z"
+          },
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2026Q0371": {
+        "project_id": "2026Q0371",
+        "snapshot_state": "unavailable"
+      },
+      "2022Q0214": {
+        "project_id": "2022Q0214",
+        "public_status": "Filed",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0214",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-10-17T03:28:32.479Z"
+        },
+        "generated_at": "2026-10-17T03:28:32.479Z",
+        "open_data": {
+          "project_id": "2022Q0214",
+          "public_status": "Filed",
+          "current_milestone": "ZM - Review Filed Land Use Application",
+          "current_milestone_date": "2025-04-29T00:00:00.000",
+          "actions": "ZM; ZR",
+          "ulurp_numbers": null,
+          "ulurp_non": "ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2023K0400": {
+        "project_id": "2023K0400",
+        "public_status": "Filed",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2023K0400",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "generated_at": "2026-09-20T13:10:27.629Z",
+        "open_data": {
+          "project_id": "2023K0400",
+          "public_status": "Filed",
+          "current_milestone": "ZR - Prepare Filed Land Use Application",
+          "current_milestone_date": "2024-10-22T00:00:00.000",
+          "actions": "ZM; ZR; ZS",
+          "ulurp_numbers": null,
+          "ulurp_non": "ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2026Q0128": {
+        "project_id": "2026Q0128",
+        "public_status": "Filed",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2026Q0128",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-10-17T03:20:49.663Z"
+        },
+        "generated_at": "2026-10-17T03:20:49.663Z",
+        "open_data": {
+          "project_id": "2026Q0128",
+          "public_status": "Filed",
+          "current_milestone": "ZC - Review Filed Land Use Application",
+          "current_milestone_date": "2026-05-28T00:00:00.000",
+          "actions": "ZC; CS",
+          "ulurp_numbers": null,
+          "ulurp_non": "Non-ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2022K0416": {
+        "project_id": "2022K0416",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2022K0416",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-11-06T08:01:54.920Z"
+        },
+        "generated_at": "2026-11-06T08:01:54.920Z",
+        "open_data": {
+          "project_id": "2022K0416",
+          "public_status": "In Public Review",
+          "current_milestone": "EAS - Borough President Referral",
+          "current_milestone_date": "2026-10-06T00:00:00.000",
+          "noticed_date": "2026-06-12T00:00:00.000",
+          "actions": "ZM; ZR",
+          "ulurp_numbers": "260315ZMK; N260316ZRK",
+          "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-11-06T08:00:10.301Z"
+          },
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2026K0233": {
+        "project_id": "2026K0233",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2026K0233",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-10-17T03:11:54.579Z"
+        },
+        "generated_at": "2026-10-17T03:11:54.579Z",
+        "open_data": {
+          "project_id": "2026K0233",
+          "public_status": "Noticed",
+          "current_milestone": "ZM - Prepare Filed Land Use Fee Payment",
+          "current_milestone_date": "2026-06-26T00:00:00.000",
+          "noticed_date": "2026-06-26T00:00:00.000",
+          "actions": "ZM; ZR; ZS",
+          "ulurp_numbers": null,
+          "ulurp_non": "ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2023Q0125": {
+        "project_id": "2023Q0125",
+        "public_status": "Completed",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0125",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-11-06T08:01:35.653Z"
+        },
+        "generated_at": "2026-11-06T08:01:35.653Z",
+        "open_data": {
+          "project_id": "2023Q0125",
+          "public_status": "In Public Review",
+          "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+          "current_milestone_date": "2026-10-06T00:00:00.000",
+          "noticed_date": "2025-12-19T00:00:00.000",
+          "actions": "ZM; ZR",
+          "ulurp_numbers": "250125ZMQ; N250126ZRQ",
+          "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-11-06T08:00:10.301Z"
+          },
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2022X0393": {
+        "project_id": "2022X0393",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2022X0393",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-10-17T03:07:39.752Z"
+        },
+        "generated_at": "2026-10-17T03:07:39.752Z",
+        "open_data": {
+          "project_id": "2022X0393",
+          "public_status": "In Public Review",
+          "current_milestone": "HA - Community Board Referral",
+          "current_milestone_date": "2026-06-24T00:00:00.000",
+          "noticed_date": "2025-12-05T00:00:00.000",
+          "actions": "ZS; ZC; LD; HA; ZA; ZA; ZA",
+          "ulurp_numbers": "260190ZSX; N260191ZCX; 260192LDX; 260193HAX; N260194ZAX; N260195ZAX; N260336ZAX",
+          "ulurp_non": "ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2024K0196": {
+        "project_id": "2024K0196",
+        "public_status": "Completed",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2024K0196",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-11-06T08:01:20.373Z"
+        },
+        "generated_at": "2026-11-06T08:01:20.373Z",
+        "open_data": {
+          "project_id": "2024K0196",
+          "public_status": "In Public Review",
+          "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+          "current_milestone_date": "2026-10-06T00:00:00.000",
+          "noticed_date": "2026-01-30T00:00:00.000",
+          "actions": "ZM; ZR",
+          "ulurp_numbers": "260135ZMK; 260136ZRK",
+          "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-11-06T08:00:10.301Z"
           },
           "lookup_path": "warehouse"
         },
@@ -1990,96 +1657,25 @@
         },
         "snapshot_state": "present"
       },
-      "2023X0149": {
-        "project_id": "2023X0149",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2023X0149",
+      "2025Q0124": {
+        "project_id": "2025Q0124",
+        "public_status": "Noticed",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2025Q0124",
         "join": {
           "matched": true,
           "method": "exact_project_id",
           "reason": null
         },
         "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:00:55.431Z"
-        },
-        "generated_at": "2026-11-03T08:00:55.431Z",
+        "generated_at": "2026-09-27T13:14:23.362Z",
         "open_data": {
-          "project_id": "2023X0149",
-          "public_status": "In Public Review",
-          "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2026-02-27T00:00:00.000",
+          "project_id": "2025Q0124",
+          "public_status": "Filed",
+          "current_milestone": "ZM - Prepare Filed Land Use Application",
+          "current_milestone_date": "2025-10-06T00:00:00.000",
           "actions": "ZM; ZR",
-          "ulurp_numbers": "240206ZMX; N240207ZRX",
+          "ulurp_numbers": null,
           "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
-          },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2022K0416": {
-        "project_id": "2022K0416",
-        "public_status": "In Public Review",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2022K0416",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:11:13.529Z"
-        },
-        "generated_at": "2026-10-17T03:11:13.529Z",
-        "open_data": {
-          "project_id": "2022K0416",
-          "public_status": "Noticed",
-          "current_milestone": "EAS - Project Readiness",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2026-06-12T00:00:00.000",
-          "actions": "ZM; ZR",
-          "ulurp_numbers": "260315ZMK; N260316ZRK",
-          "ulurp_non": "ULURP",
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2025Q0142": {
-        "project_id": "2025Q0142",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2025Q0142",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:00:54.774Z"
-        },
-        "generated_at": "2026-11-03T08:00:54.774Z",
-        "open_data": {
-          "project_id": "2025Q0142",
-          "public_status": "In Public Review",
-          "current_milestone": "EAS - CPC Public Meeting - Vote",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2025-12-05T00:00:00.000",
-          "actions": "ZM; ZR",
-          "ulurp_numbers": "260147ZMQ; N260148ZRQ",
-          "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
-          },
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
@@ -2096,14 +1692,14 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:01:33.252Z"
+          "observed_at": "2026-11-06T08:01:19.572Z"
         },
-        "generated_at": "2026-11-03T08:01:33.252Z",
+        "generated_at": "2026-11-06T08:01:19.572Z",
         "open_data": {
           "project_id": "2025Q0247",
           "public_status": "In Public Review",
-          "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
+          "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+          "current_milestone_date": "2026-10-06T00:00:00.000",
           "noticed_date": "2026-03-27T00:00:00.000",
           "actions": "ZM; ZR",
           "ulurp_numbers": "260186ZMQ; 260187ZRQ",
@@ -2111,158 +1707,8 @@
           "source_observation": {
             "source_system": "zap_projects_open_data",
             "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
+            "observed_at": "2026-11-06T08:00:10.301Z"
           },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2025R0222": {
-        "project_id": "2025R0222",
-        "public_status": "In Public Review",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2025R0222",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:11:05.410Z"
-        },
-        "generated_at": "2026-10-17T03:11:05.410Z",
-        "open_data": {
-          "project_id": "2025R0222",
-          "public_status": "Noticed",
-          "current_milestone": "RS - Project Readiness",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2026-05-01T00:00:00.000",
-          "actions": "RS; RC; RA; LD",
-          "ulurp_numbers": "260323RSR; 260324RCR; 260325RAR; 260389LDR",
-          "ulurp_non": "ULURP",
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2025R0137": {
-        "project_id": "2025R0137",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2025R0137",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-02T08:02:00.550Z"
-        },
-        "generated_at": "2026-11-02T08:02:00.550Z",
-        "open_data": {
-          "project_id": "2025R0137",
-          "public_status": "In Public Review",
-          "current_milestone": "PS - CPC Public Meeting - Vote",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2025-12-19T00:00:00.000",
-          "actions": "PS",
-          "ulurp_numbers": "260227PSR",
-          "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-02T08:00:06.573Z"
-          },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2025Q0316": {
-        "project_id": "2025Q0316",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2025Q0316",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-11-03T08:01:07.698Z"
-        },
-        "generated_at": "2026-11-03T08:01:07.698Z",
-        "open_data": {
-          "project_id": "2025Q0316",
-          "public_status": "In Public Review",
-          "current_milestone": "PC - CPC Public Meeting - Vote",
-          "current_milestone_date": "2026-06-30T00:00:00.000",
-          "noticed_date": "2025-08-15T00:00:00.000",
-          "actions": "PC",
-          "ulurp_numbers": "C260089PCQ",
-          "ulurp_non": "ULURP",
-          "source_observation": {
-            "source_system": "zap_projects_open_data",
-            "observation_status": "observed",
-            "observed_at": "2026-11-03T08:00:06.665Z"
-          },
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2026Q0210": {
-        "project_id": "2026Q0210",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2026Q0210",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:07:06.291Z"
-        },
-        "generated_at": "2026-10-17T03:07:06.291Z",
-        "open_data": {
-          "project_id": "2026Q0210",
-          "public_status": "In Public Review",
-          "current_milestone": "MM - City Council Review",
-          "current_milestone_date": "2026-06-27T00:00:00.000",
-          "noticed_date": "2026-01-16T00:00:00.000",
-          "actions": "MM",
-          "ulurp_numbers": "260226MMQ",
-          "ulurp_non": "ULURP",
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2025M0395": {
-        "project_id": "2025M0395",
-        "public_status": "In Public Review",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2025M0395",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:11:05.488Z"
-        },
-        "generated_at": "2026-10-17T03:11:05.488Z",
-        "open_data": {
-          "project_id": "2025M0395",
-          "public_status": "Noticed",
-          "current_milestone": "EAS - Project Readiness",
-          "current_milestone_date": "2026-06-26T00:00:00.000",
-          "noticed_date": "2026-06-12T00:00:00.000",
-          "actions": "ZS; ZR",
-          "ulurp_numbers": "260282ZSM; 260283ZRM",
-          "ulurp_non": "ULURP",
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
@@ -2295,38 +1741,10 @@
         },
         "snapshot_state": "present"
       },
-      "2026K0233": {
-        "project_id": "2026K0233",
-        "public_status": "In Public Review",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2026K0233",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:11:54.579Z"
-        },
-        "generated_at": "2026-10-17T03:11:54.579Z",
-        "open_data": {
-          "project_id": "2026K0233",
-          "public_status": "Noticed",
-          "current_milestone": "ZM - Prepare Filed Land Use Fee Payment",
-          "current_milestone_date": "2026-06-26T00:00:00.000",
-          "noticed_date": "2026-06-26T00:00:00.000",
-          "actions": "ZM; ZR; ZS",
-          "ulurp_numbers": null,
-          "ulurp_non": "ULURP",
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2024K0196": {
-        "project_id": "2024K0196",
+      "2024K0240": {
+        "project_id": "2024K0240",
         "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2024K0196",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2024K0240",
         "join": {
           "matched": true,
           "method": "exact_project_id",
@@ -2335,82 +1753,31 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:07:26.920Z"
+          "observed_at": "2026-11-06T08:01:54.615Z"
         },
-        "generated_at": "2026-10-17T03:07:26.920Z",
+        "generated_at": "2026-11-06T08:01:54.615Z",
         "open_data": {
-          "project_id": "2024K0196",
+          "project_id": "2024K0240",
           "public_status": "In Public Review",
-          "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
-          "current_milestone_date": "2026-06-26T00:00:00.000",
-          "noticed_date": "2026-01-30T00:00:00.000",
+          "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+          "current_milestone_date": "2026-10-06T00:00:00.000",
+          "noticed_date": "2026-02-27T00:00:00.000",
           "actions": "ZM; ZR",
-          "ulurp_numbers": "260135ZMK; 260136ZRK",
+          "ulurp_numbers": "260087ZMK; 260088ZRK",
           "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-11-06T08:00:10.301Z"
+          },
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
       },
-      "2023Q0303": {
-        "project_id": "2023Q0303",
-        "public_status": "In Public Review",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2023Q0303",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:11:13.584Z"
-        },
-        "generated_at": "2026-10-17T03:11:13.584Z",
-        "open_data": {
-          "project_id": "2023Q0303",
-          "public_status": "Noticed",
-          "current_milestone": "ZM - Review Filed Land Use Application",
-          "current_milestone_date": "2026-06-26T00:00:00.000",
-          "noticed_date": "2026-06-26T00:00:00.000",
-          "actions": "ZM; ZR",
-          "ulurp_numbers": null,
-          "ulurp_non": "ULURP",
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2025K0154": {
-        "project_id": "2025K0154",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2025K0154",
-        "join": {
-          "matched": true,
-          "method": "exact_project_id",
-          "reason": null
-        },
-        "filled": true,
-        "stage_observation": {
-          "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:07:26.170Z"
-        },
-        "generated_at": "2026-10-17T03:07:26.170Z",
-        "open_data": {
-          "project_id": "2025K0154",
-          "public_status": "In Public Review",
-          "current_milestone": "EAS - City Council Review",
-          "current_milestone_date": "2026-06-25T00:00:00.000",
-          "noticed_date": "2025-12-19T00:00:00.000",
-          "actions": "ZM; ZR",
-          "ulurp_numbers": "260162ZMK; 260163ZRK",
-          "ulurp_non": "ULURP",
-          "lookup_path": "warehouse"
-        },
-        "snapshot_state": "present"
-      },
-      "2024K0421": {
-        "project_id": "2024K0421",
+      "2025K0306": {
+        "project_id": "2025K0306",
         "public_status": "Noticed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2024K0421",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2025K0306",
         "join": {
           "matched": true,
           "method": "exact_project_id",
@@ -2419,15 +1786,101 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:11:53.701Z"
+          "observed_at": "2026-10-17T03:14:00.895Z"
         },
-        "generated_at": "2026-10-17T03:11:53.701Z",
+        "generated_at": "2026-10-17T03:14:00.895Z",
         "open_data": {
-          "project_id": "2024K0421",
+          "project_id": "2025K0306",
           "public_status": "Noticed",
           "current_milestone": "ZM - Review Filed Land Use Application",
-          "current_milestone_date": "2026-06-25T00:00:00.000",
+          "current_milestone_date": "2026-02-25T00:00:00.000",
           "noticed_date": "2026-06-26T00:00:00.000",
+          "actions": "ZM",
+          "ulurp_numbers": null,
+          "ulurp_non": "ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2025K0470": {
+        "project_id": "2025K0470",
+        "public_status": "Filed",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2025K0470",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-10-17T03:20:55.931Z"
+        },
+        "generated_at": "2026-10-17T03:20:55.931Z",
+        "open_data": {
+          "project_id": "2025K0470",
+          "public_status": "Filed",
+          "current_milestone": "ZM - Prepare Filed Land Use Application",
+          "current_milestone_date": "2026-05-26T00:00:00.000",
+          "actions": "ZC; ZA; ZS",
+          "ulurp_numbers": null,
+          "ulurp_non": "ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2026K0322": {
+        "project_id": "2026K0322",
+        "snapshot_state": "unavailable"
+      },
+      "2023K0357": {
+        "project_id": "2023K0357",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2023K0357",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-10-17T03:14:48.077Z"
+        },
+        "generated_at": "2026-10-17T03:14:48.077Z",
+        "open_data": {
+          "project_id": "2023K0357",
+          "public_status": "Noticed",
+          "current_milestone": "MM - Review Filed Land Use Application",
+          "current_milestone_date": "2026-01-20T00:00:00.000",
+          "noticed_date": "2026-04-10T00:00:00.000",
+          "actions": "MM",
+          "ulurp_numbers": "250145 MMK",
+          "ulurp_non": "ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2025K0232": {
+        "project_id": "2025K0232",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2025K0232",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-10-17T03:22:39.609Z"
+        },
+        "generated_at": "2026-10-17T03:22:39.609Z",
+        "open_data": {
+          "project_id": "2025K0232",
+          "public_status": "Filed",
+          "current_milestone": "ZM - Review Filed Land Use Application",
+          "current_milestone_date": "2026-05-06T00:00:00.000",
           "actions": "ZM; ZR",
           "ulurp_numbers": null,
           "ulurp_non": "ULURP",
@@ -2435,10 +1888,10 @@
         },
         "snapshot_state": "present"
       },
-      "2022Q0449": {
-        "project_id": "2022Q0449",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0449",
+      "2025M0338": {
+        "project_id": "2025M0338",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2025M0338",
         "join": {
           "matched": true,
           "method": "exact_project_id",
@@ -2447,26 +1900,26 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:07:18.424Z"
+          "observed_at": "2026-10-17T03:10:54.980Z"
         },
-        "generated_at": "2026-10-17T03:07:18.424Z",
+        "generated_at": "2026-10-17T03:10:54.980Z",
         "open_data": {
-          "project_id": "2022Q0449",
-          "public_status": "In Public Review",
-          "current_milestone": "EAS - City Council Review",
-          "current_milestone_date": "2026-06-25T00:00:00.000",
-          "noticed_date": "2025-12-05T00:00:00.000",
-          "actions": "ZM; ZR",
-          "ulurp_numbers": "260155ZMQ; N260156ZRQ",
+          "project_id": "2025M0338",
+          "public_status": "Noticed",
+          "current_milestone": "ZS - Review Filed Land Use Application",
+          "current_milestone_date": "2026-07-01T00:00:00.000",
+          "noticed_date": "2026-03-27T00:00:00.000",
+          "actions": "ZS; ZR; LD",
+          "ulurp_numbers": null,
           "ulurp_non": "ULURP",
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
       },
-      "2023K0183": {
-        "project_id": "2023K0183",
-        "public_status": "Completed",
-        "portal_url": "https://zap.planning.nyc.gov/projects/2023K0183",
+      "2025X0283": {
+        "project_id": "2025X0283",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2025X0283",
         "join": {
           "matched": true,
           "method": "exact_project_id",
@@ -2475,21 +1928,107 @@
         "filled": true,
         "stage_observation": {
           "source_system": "zap_project_api",
-          "observed_at": "2026-10-17T03:07:39.938Z"
+          "observed_at": "2026-10-17T03:14:47.879Z"
         },
-        "generated_at": "2026-10-17T03:07:39.938Z",
+        "generated_at": "2026-10-17T03:14:47.879Z",
         "open_data": {
-          "project_id": "2023K0183",
-          "public_status": "In Public Review",
-          "current_milestone": "EAS - City Council Review",
-          "current_milestone_date": "2026-06-25T00:00:00.000",
-          "noticed_date": "2025-10-31T00:00:00.000",
-          "actions": "ZM; ZR; ZS; LD; ZS",
-          "ulurp_numbers": "250248ZMK; N250249ZRK; 250250ZSK; 250251LDK; 250215ZSK",
+          "project_id": "2025X0283",
+          "public_status": "Noticed",
+          "current_milestone": "EAS - Project Readiness",
+          "current_milestone_date": "2026-02-04T00:00:00.000",
+          "noticed_date": "2025-11-14T00:00:00.000",
+          "actions": "ZM",
+          "ulurp_numbers": "260173ZMX",
           "ulurp_non": "ULURP",
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
+      },
+      "2024Q0325": {
+        "project_id": "2024Q0325",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2024Q0325",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-10-17T03:10:51.605Z"
+        },
+        "generated_at": "2026-10-17T03:10:51.605Z",
+        "open_data": {
+          "project_id": "2024Q0325",
+          "public_status": "Noticed",
+          "current_milestone": "ZM - Review Filed Land Use Application",
+          "current_milestone_date": "2026-07-02T00:00:00.000",
+          "noticed_date": "2026-03-13T00:00:00.000",
+          "actions": "ZM; ZR",
+          "ulurp_numbers": null,
+          "ulurp_non": "ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2024Q0324": {
+        "project_id": "2024Q0324",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2024Q0324",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-10-17T03:19:07.258Z"
+        },
+        "generated_at": "2026-10-17T03:19:07.258Z",
+        "open_data": {
+          "project_id": "2024Q0324",
+          "public_status": "Filed",
+          "current_milestone": "ZM - Review Filed Land Use Application",
+          "current_milestone_date": "2026-06-22T00:00:00.000",
+          "actions": "ZM; ZR",
+          "ulurp_numbers": null,
+          "ulurp_non": "ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2022Q0160": {
+        "project_id": "2022Q0160",
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0160",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-10-17T03:23:54.248Z"
+        },
+        "generated_at": "2026-10-17T03:23:54.248Z",
+        "open_data": {
+          "project_id": "2022Q0160",
+          "public_status": "Filed",
+          "current_milestone": "ZM - Review Filed Land Use Application",
+          "current_milestone_date": "2026-04-01T00:00:00.000",
+          "actions": "ZM; ZR",
+          "ulurp_numbers": null,
+          "ulurp_non": "ULURP",
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
+      },
+      "2025Q0494": {
+        "project_id": "2025Q0494",
+        "snapshot_state": "unavailable"
       }
     }
   }

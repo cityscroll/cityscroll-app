@@ -2,8 +2,8 @@
   "schema": "cityscroll.land_place_evidence_shard.v1",
   "key": "5e",
   "association_kind": "published_project_lot",
-  "generation_id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-  "project_count": 3,
+  "generation_id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+  "project_count": 2,
   "projects": {
     "2019K0219": {
       "association_kind": "published_project_lot",
@@ -875,122 +875,6 @@
         "borough": "Brooklyn",
         "community_district": "K16",
         "council_district": "37"
-      }
-    },
-    "2024K0358": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbls": [
-        "3025900001",
-        "3025900025"
-      ],
-      "invalid_bbls": [],
-      "bbls": {
-        "3025900001": {
-          "layers": {
-            "borough": {
-              "status": "matched",
-              "ids": [
-                "3"
-              ]
-            },
-            "community_district": {
-              "status": "matched",
-              "ids": [
-                "K01"
-              ]
-            },
-            "council_district": {
-              "status": "matched",
-              "ids": [
-                "33"
-              ]
-            },
-            "nta2020": {
-              "status": "matched",
-              "ids": [
-                "BK0101"
-              ]
-            },
-            "police_precinct": {
-              "status": "matched",
-              "ids": [
-                "94"
-              ]
-            }
-          }
-        },
-        "3025900025": {
-          "layers": {
-            "borough": {
-              "status": "matched",
-              "ids": [
-                "3"
-              ]
-            },
-            "community_district": {
-              "status": "matched",
-              "ids": [
-                "K01"
-              ]
-            },
-            "council_district": {
-              "status": "matched",
-              "ids": [
-                "33"
-              ]
-            },
-            "nta2020": {
-              "status": "matched",
-              "ids": [
-                "BK0101"
-              ]
-            },
-            "police_precinct": {
-              "status": "matched",
-              "ids": [
-                "94"
-              ]
-            }
-          }
-        }
-      },
-      "places": {
-        "borough": {
-          "3": [
-            "3025900001",
-            "3025900025"
-          ]
-        },
-        "community_district": {
-          "K01": [
-            "3025900001",
-            "3025900025"
-          ]
-        },
-        "council_district": {
-          "33": [
-            "3025900001",
-            "3025900025"
-          ]
-        },
-        "nta2020": {
-          "BK0101": [
-            "3025900001",
-            "3025900025"
-          ]
-        },
-        "police_precinct": {
-          "94": [
-            "3025900001",
-            "3025900025"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Brooklyn",
-        "community_district": "K01",
-        "council_district": "33"
       }
     }
   }

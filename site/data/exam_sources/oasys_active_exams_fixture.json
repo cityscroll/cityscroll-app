@@ -1,6 +1,6 @@
 {
-  "fetched_at": "2026-11-05",
-  "fetched_at_utc": "2026-11-05T12:13:07.741Z",
+  "fetched_at": "2026-11-06",
+  "fetched_at_utc": "2026-11-06T15:10:49.517Z",
   "http_status": 200,
   "payload": [
     {
@@ -61,6 +61,43 @@
       "isAddedToTop": false
     },
     {
+      "examId": 9681,
+      "title": "Administrative Accountant",
+      "examNumber": "7001",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 82,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277001000.pdf",
+      "examParts": [
+        {
+          "examId": 9681,
+          "examPartId": 5216,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T09:15:47.007",
+      "isAddedToTop": false
+    },
+    {
       "examId": 9653,
       "title": "Administrative Labor Relations Analyst",
       "examNumber": "7003",
@@ -79,6 +116,43 @@
       "filingFee": 82,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277006000.pdf"
+    },
+    {
+      "examId": 9683,
+      "title": "Associate Fingerprint Technician",
+      "examNumber": "7009",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 61,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277009000.pdf",
+      "examParts": [
+        {
+          "examId": 9683,
+          "examPartId": 5219,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T13:40:27.013",
+      "isAddedToTop": false
     },
     {
       "examId": 9676,
@@ -121,6 +195,43 @@
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277013000.pdf"
     },
     {
+      "examId": 9684,
+      "title": "Bridge Operator",
+      "examNumber": "7015",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 61,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277015000.pdf",
+      "examParts": [
+        {
+          "examId": 9684,
+          "examPartId": 5220,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T14:36:52.52",
+      "isAddedToTop": false
+    },
+    {
       "examId": 9629,
       "title": "Caseworker",
       "examNumber": "7016",
@@ -129,6 +240,64 @@
       "filingFee": 68,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277016000.pdf"
+    },
+    {
+      "examId": 9685,
+      "title": "Cashier",
+      "examNumber": "7017",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 61,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277017000.pdf",
+      "examParts": [
+        {
+          "examId": 9685,
+          "examPartId": 5221,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9685,
+          "examPartId": 5222,
+          "partNo": 2,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T10:04:41.783",
+      "isAddedToTop": false
     },
     {
       "examId": 9631,
@@ -326,6 +495,64 @@
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277036000.pdf"
     },
     {
+      "examId": 9687,
+      "title": "Inspector (Construction)",
+      "examNumber": "7040",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 68,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277040000.pdf",
+      "examParts": [
+        {
+          "examId": 9687,
+          "examPartId": 5225,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9687,
+          "examPartId": 5226,
+          "partNo": 2,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T12:19:22.067",
+      "isAddedToTop": false
+    },
+    {
       "examId": 9660,
       "title": "Inspector (Electrical)",
       "examNumber": "7041",
@@ -344,6 +571,43 @@
       "filingFee": 82,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277047000.pdf"
+    },
+    {
+      "examId": 9688,
+      "title": "Metal Work Mechanic",
+      "examNumber": "7050",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 101,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277050000.pdf",
+      "examParts": [
+        {
+          "examId": 9688,
+          "examPartId": 5227,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T16:47:10.063",
+      "isAddedToTop": false
     },
     {
       "examId": 9667,
@@ -374,6 +638,43 @@
       "filingFee": 91,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277056000.pdf"
+    },
+    {
+      "examId": 9691,
+      "title": "Probation Officer Trainee",
+      "examNumber": "7058",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 68,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277058000.pdf",
+      "examParts": [
+        {
+          "examId": 9691,
+          "examPartId": 5231,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T16:29:09.79",
+      "isAddedToTop": false
     },
     {
       "examId": 9662,
@@ -682,6 +983,64 @@
       "isAddedToTop": false
     },
     {
+      "examId": 9682,
+      "title": "Administrative Accountant (Prom)",
+      "examNumber": "7500",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 82,
+      "isPromotional": true,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277500000.pdf",
+      "examParts": [
+        {
+          "examId": 9682,
+          "examPartId": 5217,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9682,
+          "examPartId": 5218,
+          "partNo": 2,
+          "partTypeCode": "EL",
+          "title": "Eligibility Check",
+          "examPartType": {
+            "partTypeCode": "EL",
+            "partTypeDescription": "Eligibility Check",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T11:55:23.83",
+      "isAddedToTop": false
+    },
+    {
       "examId": 9654,
       "title": "Administrative Labor Relations Analyst (Prom)",
       "examNumber": "7502",
@@ -750,6 +1109,64 @@
       "filingFee": 101,
       "isPromotional": true,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277522000.pdf"
+    },
+    {
+      "examId": 9689,
+      "title": "Metal Work Mechanic (Prom)",
+      "examNumber": "7525",
+      "filingStart": "2026-11-05T00:00:00",
+      "filingEnd": "2026-11-25T00:00:00",
+      "filingFee": 101,
+      "isPromotional": true,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277525000.pdf",
+      "examParts": [
+        {
+          "examId": 9689,
+          "examPartId": 5228,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        },
+        {
+          "examId": 9689,
+          "examPartId": 5229,
+          "partNo": 2,
+          "partTypeCode": "EL",
+          "title": "Eligibility Check",
+          "examPartType": {
+            "partTypeCode": "EL",
+            "partTypeDescription": "Eligibility Check",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-11-05T16:59:38.32",
+      "isAddedToTop": false
     },
     {
       "examId": 9644,

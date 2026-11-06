@@ -6,14 +6,14 @@
     "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
     "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
     "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-    "fetched_at": "2026-11-05",
+    "fetched_at": "2026-11-06",
     "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
     "stale_after_days": 3,
     "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
   },
   "summary": {
-    "input_rows": 51,
-    "mapped": 51,
+    "input_rows": 60,
+    "mapped": 60,
     "skipped": 0
   },
   "records": [
@@ -54,6 +54,18 @@
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9739"
     },
     {
+      "exam_number": "7001",
+      "oasys_exam_id": "9681",
+      "title": "Administrative Accountant",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 82,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9681",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277001000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9681"
+    },
+    {
       "exam_number": "7003",
       "oasys_exam_id": "9653",
       "title": "Administrative Labor Relations Analyst",
@@ -76,6 +88,18 @@
       "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625",
       "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277006000.pdf",
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+    },
+    {
+      "exam_number": "7009",
+      "oasys_exam_id": "9683",
+      "title": "Associate Fingerprint Technician",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 61,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9683",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277009000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9683"
     },
     {
       "exam_number": "7010",
@@ -126,6 +150,18 @@
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
     },
     {
+      "exam_number": "7015",
+      "oasys_exam_id": "9684",
+      "title": "Bridge Operator",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 61,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9684",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277015000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9684"
+    },
+    {
       "exam_number": "7016",
       "oasys_exam_id": "9629",
       "title": "Caseworker",
@@ -136,6 +172,18 @@
       "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
       "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277016000.pdf",
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+    },
+    {
+      "exam_number": "7017",
+      "oasys_exam_id": "9685",
+      "title": "Cashier",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 61,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9685",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277017000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9685"
     },
     {
       "exam_number": "7018",
@@ -282,6 +330,18 @@
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9659"
     },
     {
+      "exam_number": "7040",
+      "oasys_exam_id": "9687",
+      "title": "Inspector (Construction)",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 68,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9687",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277040000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9687"
+    },
+    {
       "exam_number": "7041",
       "oasys_exam_id": "9660",
       "title": "Inspector (Electrical)",
@@ -304,6 +364,18 @@
       "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9666",
       "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277047000.pdf",
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9666"
+    },
+    {
+      "exam_number": "7050",
+      "oasys_exam_id": "9688",
+      "title": "Metal Work Mechanic",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 101,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9688",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277050000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9688"
     },
     {
       "exam_number": "7052",
@@ -340,6 +412,18 @@
       "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9643",
       "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277056000.pdf",
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9643"
+    },
+    {
+      "exam_number": "7058",
+      "oasys_exam_id": "9691",
+      "title": "Probation Officer Trainee",
+      "is_promotional": false,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 68,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9691",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277058000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9691"
     },
     {
       "exam_number": "7065",
@@ -522,6 +606,18 @@
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9692"
     },
     {
+      "exam_number": "7500",
+      "oasys_exam_id": "9682",
+      "title": "Administrative Accountant (Prom)",
+      "is_promotional": true,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 82,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9682",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277500000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9682"
+    },
+    {
       "exam_number": "7502",
       "oasys_exam_id": "9654",
       "title": "Administrative Labor Relations Analyst (Prom)",
@@ -604,6 +700,18 @@
       "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9642",
       "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277522000.pdf",
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9642"
+    },
+    {
+      "exam_number": "7525",
+      "oasys_exam_id": "9689",
+      "title": "Metal Work Mechanic (Prom)",
+      "is_promotional": true,
+      "filing_start": "2026-11-05",
+      "filing_end": "2026-11-25",
+      "filing_fee": 101,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9689",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277525000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9689"
     },
     {
       "exam_number": "7527",

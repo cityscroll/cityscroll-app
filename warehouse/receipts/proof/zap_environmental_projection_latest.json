@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.zap_environmental_projection.v1",
   "dataset_id": "hgx4-8ukb",
-  "generated_at": "2026-10-22T20:20:44.090Z",
-  "lookup_materialized_at": "2026-10-22T20:20:44.090Z",
-  "overlay_as_of": "2026-10-22T20:20:44.090Z",
+  "generated_at": "2026-11-06T15:11:20.121Z",
+  "lookup_materialized_at": "2026-11-06T15:11:20.121Z",
+  "overlay_as_of": "2026-11-06T15:11:20.121Z",
   "mode": "soda_sell_facing",
   "coverage": {
     "schema": "cityscroll.zap_environmental_projection.v1",
@@ -16,21 +16,21 @@
       }
     ],
     "counts": {
-      "row_count": 238,
-      "ceqr_number_present": 211,
-      "ceqr_type_present": 217,
-      "ceqr_lead_agency_present": 206,
-      "environmental_review_type_present": 113,
-      "environmental_milestone_present": 120,
-      "environmental_milestone_date_present": 120,
-      "ceqr_number_absent": 27,
-      "environmental_status_source_field_absent": 238
+      "row_count": 237,
+      "ceqr_number_present": 214,
+      "ceqr_type_present": 221,
+      "ceqr_lead_agency_present": 226,
+      "environmental_review_type_present": 87,
+      "environmental_milestone_present": 89,
+      "environmental_milestone_date_present": 89,
+      "ceqr_number_absent": 23,
+      "environmental_status_source_field_absent": 237
     }
   },
   "first_paint": {
     "artifact": "site/data/land_default_ulurp.json",
-    "land_default_bytes": 85923,
-    "land_default_gzip_bytes": 7071,
+    "land_default_bytes": 70962,
+    "land_default_gzip_bytes": 6471,
     "land_default_has_environmental_projection": false,
     "growth_pct": 0,
     "threshold_pct": 5,

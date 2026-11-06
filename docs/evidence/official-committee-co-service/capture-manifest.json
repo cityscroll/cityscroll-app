@@ -35,7 +35,7 @@
         "height": 900
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
+      "repository_revision": "827354e799b9d078908021bddd5c93248320e724",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
@@ -44,7 +44,7 @@
       "data_vintage": {
         "committee_graph_generated_at": "2026-11-05T14:58:31Z",
         "committee_graph_as_of": "2026-11-05",
-        "person_hub_generated_at": "2026-11-04T18:29:00.752Z"
+        "person_hub_generated_at": "2026-11-06T14:57:39.161Z"
       },
       "assertion": "The profile names the other member with the committees and dates both were listed on 2026-11-05; a committee whose service ended before 2026-11-05 appears in this member's membership history and never as service together on that day.",
       "assertion_holds": true,
@@ -637,7 +637,7 @@
         "height": 900
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
+      "repository_revision": "827354e799b9d078908021bddd5c93248320e724",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
@@ -646,7 +646,7 @@
       "data_vintage": {
         "committee_graph_generated_at": "2026-11-05T14:58:31Z",
         "committee_graph_as_of": "2026-11-05",
-        "person_hub_generated_at": "2026-11-04T18:29:00.752Z"
+        "person_hub_generated_at": "2026-11-06T14:57:39.161Z"
       },
       "assertion": "Tab reaches the colleague link, Enter opens their profile, the reciprocal section names this member, the shared committee record lists both, and Back returns to the profile the walk started from.",
       "assertion_holds": true,
@@ -665,7 +665,7 @@
         "tab_presses_to_colleague_link": 91,
         "colleague_link_reached_by_keyboard": true,
         "colleague_link_focus_visible": true,
-        "colleague_url": "http://127.0.0.1:60642/officials/7824/",
+        "colleague_url": "http://127.0.0.1:36009/officials/7824/",
         "reciprocal_row": {
           "official_id": "7801",
           "name": "\nChristopher Marte",
@@ -691,7 +691,7 @@
           ],
           "shared_caucuses": 3
         },
-        "committee_url": "http://127.0.0.1:60642/committees/5106/",
+        "committee_url": "http://127.0.0.1:36009/committees/5106/",
         "committee_title": "Committee on Parks and Recreation",
         "committee_member_ids": [
           "5259",
@@ -746,8 +746,8 @@
           "7824"
         ],
         "committee_render_sha256": "0208e6448684d678c633ff073c998bc8bf2d5b6d9f8e98084e9751b3de29ace6",
-        "back_url": "http://127.0.0.1:60642/officials/7824/",
-        "start_url": "http://127.0.0.1:60642/officials/7801/",
+        "back_url": "http://127.0.0.1:36009/officials/7824/",
+        "start_url": "http://127.0.0.1:36009/officials/7801/",
         "render_scope": "outerHTML of [data-official-coservice] after the walk returns",
         "render_sha256": "8e004c2fd59fa37cdf27ec1d644cec29f51c5cc86e3df2972daa92c381544955"
       },
@@ -765,7 +765,7 @@
         "height": 844
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
+      "repository_revision": "827354e799b9d078908021bddd5c93248320e724",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
@@ -774,7 +774,7 @@
       "data_vintage": {
         "committee_graph_generated_at": "2026-11-05T14:58:31Z",
         "committee_graph_as_of": "2026-11-05",
-        "person_hub_generated_at": "2026-11-04T18:29:00.752Z"
+        "person_hub_generated_at": "2026-11-06T14:57:39.161Z"
       },
       "assertion": "At a touch viewport the section renders the same markup as the desktop capture and the document does not scroll sideways.",
       "assertion_holds": true,
@@ -1333,7 +1333,7 @@
         "height": 900
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "0ba9bb6a9de8a099548f3141cc4e93363c602fcd",
+      "repository_revision": "827354e799b9d078908021bddd5c93248320e724",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
@@ -1342,7 +1342,7 @@
       "data_vintage": {
         "committee_graph_generated_at": "2026-11-05T14:58:31Z",
         "committee_graph_as_of": "2026-11-05",
-        "person_hub_generated_at": "2026-11-04T18:29:00.752Z"
+        "person_hub_generated_at": "2026-11-06T14:57:39.161Z"
       },
       "assertion": "A profile with no supported co-service row renders no section at all rather than an empty one, and the rest of the profile is unaffected.",
       "assertion_holds": true,

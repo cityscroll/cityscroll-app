@@ -2,8 +2,8 @@
   "schema": "cityscroll.land_place_evidence_shard.v1",
   "key": "97",
   "association_kind": "published_project_lot",
-  "generation_id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-  "project_count": 2,
+  "generation_id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+  "project_count": 3,
   "projects": {
     "2022X0150": {
       "association_kind": "published_project_lot",
@@ -1355,6 +1355,25 @@
         "borough": "Queens",
         "community_district": "Q06",
         "council_district": "29"
+      }
+    },
+    "2026Q0371": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbls": [],
+      "invalid_bbls": [],
+      "bbls": {},
+      "places": {
+        "borough": {},
+        "community_district": {},
+        "council_district": {},
+        "nta2020": {},
+        "police_precinct": {}
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q12",
+        "council_district": "28"
       }
     }
   }

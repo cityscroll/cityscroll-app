@@ -1,28 +1,26 @@
 {
   "schema_version": 2,
   "kind": "land_upcoming_hearings_materialization",
-  "observed_at": "2026-10-22T20:14:02.361Z",
+  "observed_at": "2026-11-06T14:57:16.974Z",
   "method": "zap_published_hearing_sweep_v2",
   "mode": "live",
-  "projects_listed": 235,
+  "projects_listed": 234,
   "projects_fetched": 234,
-  "projects_failed": 1,
-  "unavailable_project_ids": [
-    "2026X0464"
-  ],
-  "hearings_extracted": 423,
-  "disposition_hearings_extracted": 99,
-  "milestone_hearings_extracted": 324,
-  "before_upcoming_count": 2,
-  "milestone_upcoming_count": 148,
-  "incremental_milestone_count": 148,
+  "projects_failed": 0,
+  "unavailable_project_ids": [],
+  "hearings_extracted": 379,
+  "disposition_hearings_extracted": 67,
+  "milestone_hearings_extracted": 312,
+  "before_upcoming_count": 1,
+  "milestone_upcoming_count": 160,
+  "incremental_milestone_count": 160,
   "accepted_milestone_classes": {
-    "cpc_pre_hearing_review_session": 77,
-    "cpc_public_hearing": 71
+    "cpc_pre_hearing_review_session": 85,
+    "cpc_public_hearing": 75
   },
-  "published_meeting_dates_evaluated": 897,
-  "hearing_shaped_candidates_reviewed": 846,
-  "upcoming_count": 150,
+  "published_meeting_dates_evaluated": 823,
+  "hearing_shaped_candidates_reviewed": 799,
+  "upcoming_count": 161,
   "statuses": [
     "In Public Review",
     "Noticed",
@@ -32,23 +30,23 @@
   "detector_ok": true,
   "detector_findings": [],
   "sample_project_ids": [
-    "2020Q0157",
-    "2020Q0353",
-    "2022X0393",
-    "2023K0231",
-    "2023Q0177",
-    "2024K0274",
-    "2024M0267",
-    "2025M0395",
-    "2025Q0304",
-    "2025Q0331",
-    "2019K0147",
-    "2023M0117"
+    "2026X0180",
+    "2021K0261",
+    "2022K0416",
+    "2023Q0328",
+    "2023Q0364",
+    "2024Q0189",
+    "2024R0332",
+    "2026K0233",
+    "2026M0164",
+    "2026M0515",
+    "2026Q0320",
+    "2023R0259"
   ],
   "reviewed_false_positive_sample": [
     {
-      "project_id": "2026R0127",
-      "milestone_id": "4b779703-3c8f-f011-b4cc-001dd80340cd",
+      "project_id": "2025K0497",
+      "milestone_id": "55af3f7c-775e-f011-bec2-001dd80a67c9",
       "source_title": "Review Session - Certified / Referred",
       "display_title": "Application Reviewed at City Planning Commission Review Session",
       "meeting_date": "2026-05-11",
@@ -56,101 +54,101 @@
       "review_result": "outside_exact_title_contract"
     },
     {
-      "project_id": "2026R0127",
-      "milestone_id": "02b19b09-3c8f-f011-b4cc-001dd80340cd",
+      "project_id": "2026X0180",
+      "milestone_id": "826a589d-43d4-f011-8544-001dd80340cd",
+      "source_title": "Review Session - Certified / Referred",
+      "display_title": "Application Reviewed at City Planning Commission Review Session",
+      "meeting_date": "2026-10-05",
+      "status": "Completed",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2023Q0177",
+      "milestone_id": "92bf0c39-0c77-ed11-81ab-001dd806a702",
+      "source_title": "Review Session - Certified / Referred",
+      "display_title": "Application Reviewed at City Planning Commission Review Session",
+      "meeting_date": "2026-06-01",
+      "status": "Completed",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2023Q0177",
+      "milestone_id": "ebc00c39-0c77-ed11-81ab-001dd806a702",
+      "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
+      "display_title": "Post Hearing Follow-Up / Future Votes",
+      "meeting_date": "2026-11-16",
+      "status": "In Progress",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2023Q0177",
+      "milestone_id": "2cc10c39-0c77-ed11-81ab-001dd806a702",
+      "source_title": "CPC Public Meeting - Vote",
+      "display_title": "City Planning Commission Vote",
+      "meeting_date": "2026-11-18",
+      "status": "Not Started",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2027K0210",
+      "milestone_id": "e5285ddf-0fbd-f111-aaae-001dd80b8f49",
+      "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
+      "display_title": "Post Hearing Follow-Up / Future Votes",
+      "meeting_date": "2026-12-14",
+      "status": "Not Started",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2027K0210",
+      "milestone_id": "f6285ddf-0fbd-f111-aaae-001dd80b8f49",
+      "source_title": "CPC Public Meeting - Vote",
+      "display_title": "City Planning Commission Vote",
+      "meeting_date": "2026-12-16",
+      "status": "Not Started",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2024M0193",
+      "milestone_id": "aa79b3c1-86cb-ee11-9079-001dd8306bd4",
+      "source_title": "Review Session - Certified / Referred",
+      "display_title": "Application Reviewed at City Planning Commission Review Session",
+      "meeting_date": "2026-06-01",
+      "status": "Completed",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2024M0193",
+      "milestone_id": "867ab3c1-86cb-ee11-9079-001dd8306bd4",
+      "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
+      "display_title": "Post Hearing Follow-Up / Future Votes",
+      "meeting_date": "2026-10-05",
+      "status": "Completed",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2024M0193",
+      "milestone_id": "9a7ab3c1-86cb-ee11-9079-001dd8306bd4",
+      "source_title": "CPC Public Meeting - Vote",
+      "display_title": "City Planning Commission Vote",
+      "meeting_date": "2026-10-07",
+      "status": "Completed",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2024K0196",
+      "milestone_id": "8c3dd848-948d-ef11-ac21-001dd809d9d4",
+      "source_title": "Review Session - Certified / Referred",
+      "display_title": "Application Reviewed at City Planning Commission Review Session",
+      "meeting_date": "2026-03-16",
+      "status": "Completed",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2024K0196",
+      "milestone_id": "2c3ed848-948d-ef11-ac21-001dd809d9d4",
       "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
       "display_title": "Post Hearing Follow-Up / Future Votes",
       "meeting_date": "2026-07-27",
-      "status": "Completed",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2026R0127",
-      "milestone_id": "1fb19b09-3c8f-f011-b4cc-001dd80340cd",
-      "source_title": "CPC Public Meeting - Vote",
-      "display_title": "City Planning Commission Vote",
-      "meeting_date": "2026-07-29",
-      "status": "Completed",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2025K0287",
-      "milestone_id": "51f61022-d2b7-ef11-b8e9-001dd805533f",
-      "source_title": "Review Session - Certified / Referred",
-      "display_title": "Application Reviewed at City Planning Commission Review Session",
-      "meeting_date": "2025-12-15",
-      "status": "Completed",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2025K0287",
-      "milestone_id": "893a0928-d2b7-ef11-b8e9-001dd805533f",
-      "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
-      "display_title": "Post Hearing Follow-Up / Future Votes",
-      "meeting_date": "2026-05-11",
-      "status": "Completed",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2025K0287",
-      "milestone_id": "b83a0928-d2b7-ef11-b8e9-001dd805533f",
-      "source_title": "CPC Public Meeting - Vote",
-      "display_title": "City Planning Commission Vote",
-      "meeting_date": "2026-05-13",
-      "status": "Completed",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2024M0244",
-      "milestone_id": "166dfe7a-7cb2-ef11-b8e9-001dd809b68c",
-      "source_title": "Review Session - Certified / Referred",
-      "display_title": "Application Reviewed at City Planning Commission Review Session",
-      "meeting_date": "2025-12-15",
-      "status": "Completed",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2024M0244",
-      "milestone_id": "b48ec11f-fd8b-ef11-ac21-001dd80552a0",
-      "source_title": "DEIS Public Hearing Held",
-      "display_title": "Draft Environmental Impact Statement Public Hearing",
-      "meeting_date": "2026-04-01",
-      "status": "Completed",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2024M0244",
-      "milestone_id": "32721a81-7cb2-ef11-b8e9-001dd809b68c",
-      "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
-      "display_title": "Post Hearing Follow-Up / Future Votes",
-      "meeting_date": "2026-05-11",
-      "status": "Completed",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2024M0244",
-      "milestone_id": "3d721a81-7cb2-ef11-b8e9-001dd809b68c",
-      "source_title": "CPC Public Meeting - Vote",
-      "display_title": "City Planning Commission Vote",
-      "meeting_date": "2026-05-13",
-      "status": "Completed",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2023M0213",
-      "milestone_id": "2bd989af-8ad7-f011-8544-001dd80a67c9",
-      "source_title": "Review Session - Certified / Referred",
-      "display_title": "Application Reviewed at City Planning Commission Review Session",
-      "meeting_date": "2025-12-15",
-      "status": "Completed",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2023M0213",
-      "milestone_id": "d9f598a3-8ad7-f011-8544-001dd80a67c9",
-      "source_title": "DEIS Public Hearing Held",
-      "display_title": "Draft Environmental Impact Statement Public Hearing",
-      "meeting_date": "2026-04-01",
       "status": "Completed",
       "review_result": "outside_exact_title_contract"
     }

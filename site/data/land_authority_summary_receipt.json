@@ -1,59 +1,77 @@
 {
   "schema": "cityscroll.land_authority_summary_receipt.v1",
   "join_version": "ldp06_authority_summary_v1",
-  "generated_at": "2026-11-04T18:22:03.270Z",
+  "generated_at": "2026-11-06T14:51:26.447Z",
   "counts": {
     "universe": 40,
-    "resolved": 24,
-    "unknown": 16
+    "resolved": 16,
+    "unknown": 24
   },
   "resolved_project_ids": [
     "2024Q0135",
-    "2026R0127",
-    "2025K0305",
-    "2026K0123",
-    "2024Q0325",
-    "2024K0214",
-    "2025M0338",
-    "2025K0287",
-    "2025M0252",
-    "2024K0286",
-    "2023M0116",
-    "2026R0186",
-    "2025K0284",
-    "2025Q0247",
-    "2025R0222",
-    "2025R0137",
-    "2025Q0316",
-    "2026Q0210",
-    "2025M0395",
+    "2024M0194",
+    "2022Q0214",
+    "2023K0400",
     "2026K0233",
     "2024K0196",
-    "2023Q0303",
-    "2025K0154",
-    "2024K0421"
+    "2025K0284",
+    "2025Q0124",
+    "2025Q0247",
+    "2024K0240",
+    "2025K0306",
+    "2025K0470",
+    "2023K0357",
+    "2025X0283",
+    "2024Q0324",
+    "2022Q0160"
   ],
   "unknown_project_ids": [
-    "2020M0385",
-    "2020K0444",
-    "P2012X0048",
-    "2020Q0317",
     "2023M0452",
-    "2024M0244",
-    "2024K0358",
-    "2023M0213",
-    "2019K0383",
-    "2024Q0219",
-    "2023X0149",
+    "2020Q0317",
+    "P2009K0185",
+    "2020K0444",
+    "2023Q0351",
+    "P2012X0048",
+    "2026X0180",
+    "2025M0399",
+    "2023Q0177",
+    "2024X0217",
+    "2024M0148",
+    "2026X0270",
+    "2024M0193",
+    "2026Q0371",
+    "2026Q0128",
     "2022K0416",
-    "2025Q0142",
+    "2023Q0125",
+    "2022X0393",
     "2022K0430",
-    "2022Q0449",
-    "2023K0183"
+    "2026K0322",
+    "2025K0232",
+    "2025M0338",
+    "2024Q0325",
+    "2025Q0494"
   ],
   "outcomes": [
     {
-      "project_id": "2020M0385",
+      "project_id": "2023M0452",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
+      "observed_status": "no_observation",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2020Q0317",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
+      "observed_status": "no_observation",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "P2009K0185",
       "status": "unknown",
       "reason": "unresolved_procedure",
       "procedure_resolution": "unknown",
@@ -71,12 +89,12 @@
       "published_next_status": "none"
     },
     {
-      "project_id": "2024Q0135",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.application_certification",
-      "observed_status": "no_observation",
+      "project_id": "2023Q0351",
+      "status": "unknown",
+      "reason": "unresolved_procedure",
+      "procedure_resolution": "unknown",
+      "current_stage_id": null,
+      "observed_status": "draft_only",
       "published_next_status": "none"
     },
     {
@@ -89,34 +107,34 @@
       "published_next_status": "none"
     },
     {
-      "project_id": "2020Q0317",
-      "status": "unknown",
-      "reason": "mixed_procedure",
-      "procedure_resolution": "mixed",
-      "current_stage_id": null,
-      "observed_status": "no_observation",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2023M0452",
-      "status": "unknown",
-      "reason": "mixed_procedure",
-      "procedure_resolution": "mixed",
-      "current_stage_id": null,
-      "observed_status": "no_observation",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2026R0127",
+      "project_id": "2024Q0135",
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_council_review",
-      "observed_status": "observed",
+      "current_stage_id": "ulurp_197c.application_certification",
+      "observed_status": "no_observation",
       "published_next_status": "none"
     },
     {
-      "project_id": "2025K0305",
+      "project_id": "2026X0180",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
+      "observed_status": "no_observation",
+      "published_next_status": "published"
+    },
+    {
+      "project_id": "2025M0399",
+      "status": "unknown",
+      "reason": "unresolved_procedure",
+      "procedure_resolution": "unknown",
+      "current_stage_id": null,
+      "observed_status": "no_observation",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2024M0194",
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
@@ -125,25 +143,70 @@
       "published_next_status": "published"
     },
     {
-      "project_id": "2026K0123",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.community_board_review",
-      "observed_status": "draft_only",
+      "project_id": "2023Q0177",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
+      "observed_status": "observed",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2024X0217",
+      "status": "unknown",
+      "reason": "unresolved_procedure",
+      "procedure_resolution": "unknown",
+      "current_stage_id": null,
+      "observed_status": "no_observation",
       "published_next_status": "published"
     },
     {
-      "project_id": "2024Q0325",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.community_board_review",
-      "observed_status": "draft_only",
+      "project_id": "2024M0148",
+      "status": "unknown",
+      "reason": "unresolved_procedure",
+      "procedure_resolution": "unknown",
+      "current_stage_id": null,
+      "observed_status": "no_observation",
       "published_next_status": "published"
     },
     {
-      "project_id": "2024K0214",
+      "project_id": "2026X0270",
+      "status": "unknown",
+      "reason": "unresolved_procedure",
+      "procedure_resolution": "unknown",
+      "current_stage_id": null,
+      "observed_status": "no_observation",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2024M0193",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
+      "observed_status": "observed",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2026Q0371",
+      "status": "unknown",
+      "reason": "unresolved_procedure",
+      "procedure_resolution": "unknown",
+      "current_stage_id": null,
+      "observed_status": "no_observation",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2022Q0214",
+      "status": "resolved",
+      "reason": null,
+      "procedure_resolution": "uniform",
+      "current_stage_id": "ulurp_197c.application_certification",
+      "observed_status": "draft_only",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2023K0400",
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
@@ -152,88 +215,34 @@
       "published_next_status": "published"
     },
     {
-      "project_id": "2024M0244",
-      "status": "unknown",
-      "reason": "mixed_procedure",
-      "procedure_resolution": "mixed",
-      "current_stage_id": null,
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2025M0338",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.community_board_review",
-      "observed_status": "draft_only",
-      "published_next_status": "published"
-    },
-    {
-      "project_id": "2024K0358",
-      "status": "unknown",
-      "reason": "mixed_procedure",
-      "procedure_resolution": "mixed",
-      "current_stage_id": null,
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2023M0213",
-      "status": "unknown",
-      "reason": "mixed_procedure",
-      "procedure_resolution": "mixed",
-      "current_stage_id": null,
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2019K0383",
+      "project_id": "2026Q0128",
       "status": "unknown",
       "reason": "mixed_procedure",
       "procedure_resolution": "mixed",
       "current_stage_id": null,
       "observed_status": "no_observation",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2022K0416",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
+      "observed_status": "observed",
       "published_next_status": "published"
     },
     {
-      "project_id": "2025K0287",
+      "project_id": "2026K0233",
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.mayoral_review",
+      "current_stage_id": "ulurp_197c.borough_president_review",
       "observed_status": "observed",
-      "published_next_status": "none"
+      "published_next_status": "published"
     },
     {
-      "project_id": "2025M0252",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_council_review",
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2024K0286",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.mayoral_review",
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2023M0116",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_council_review",
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2024Q0219",
+      "project_id": "2023Q0125",
       "status": "unknown",
       "reason": "mixed_procedure",
       "procedure_resolution": "mixed",
@@ -242,11 +251,20 @@
       "published_next_status": "none"
     },
     {
-      "project_id": "2026R0186",
+      "project_id": "2022X0393",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
+      "observed_status": "observed",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2024K0196",
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_council_review",
+      "current_stage_id": "ulurp_197c.mayoral_review",
       "observed_status": "observed",
       "published_next_status": "none"
     },
@@ -260,30 +278,12 @@
       "published_next_status": "none"
     },
     {
-      "project_id": "2023X0149",
-      "status": "unknown",
-      "reason": "mixed_procedure",
-      "procedure_resolution": "mixed",
-      "current_stage_id": null,
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2022K0416",
-      "status": "unknown",
-      "reason": "mixed_procedure",
-      "procedure_resolution": "mixed",
-      "current_stage_id": null,
+      "project_id": "2025Q0124",
+      "status": "resolved",
+      "reason": null,
+      "procedure_resolution": "uniform",
+      "current_stage_id": "ulurp_197c.application_certification",
       "observed_status": "draft_only",
-      "published_next_status": "published"
-    },
-    {
-      "project_id": "2025Q0142",
-      "status": "unknown",
-      "reason": "mixed_procedure",
-      "procedure_resolution": "mixed",
-      "current_stage_id": null,
-      "observed_status": "observed",
       "published_next_status": "none"
     },
     {
@@ -296,51 +296,6 @@
       "published_next_status": "none"
     },
     {
-      "project_id": "2025R0222",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.community_board_review",
-      "observed_status": "no_observation",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2025R0137",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_council_review",
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2025Q0316",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_council_review",
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2026Q0210",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.mayoral_review",
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2025M0395",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.city_planning_commission_review",
-      "observed_status": "observed",
-      "published_next_status": "published"
-    },
-    {
       "project_id": "2022K0430",
       "status": "unknown",
       "reason": "mixed_procedure",
@@ -350,16 +305,7 @@
       "published_next_status": "none"
     },
     {
-      "project_id": "2026K0233",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.borough_president_review",
-      "observed_status": "observed",
-      "published_next_status": "published"
-    },
-    {
-      "project_id": "2024K0196",
+      "project_id": "2024K0240",
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
@@ -368,25 +314,7 @@
       "published_next_status": "none"
     },
     {
-      "project_id": "2023Q0303",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.community_board_review",
-      "observed_status": "draft_only",
-      "published_next_status": "published"
-    },
-    {
-      "project_id": "2025K0154",
-      "status": "resolved",
-      "reason": null,
-      "procedure_resolution": "uniform",
-      "current_stage_id": "ulurp_197c.mayoral_review",
-      "observed_status": "observed",
-      "published_next_status": "none"
-    },
-    {
-      "project_id": "2024K0421",
+      "project_id": "2025K0306",
       "status": "resolved",
       "reason": null,
       "procedure_resolution": "uniform",
@@ -395,22 +323,94 @@
       "published_next_status": "published"
     },
     {
-      "project_id": "2022Q0449",
+      "project_id": "2025K0470",
+      "status": "resolved",
+      "reason": null,
+      "procedure_resolution": "uniform",
+      "current_stage_id": "ulurp_197c.application_certification",
+      "observed_status": "draft_only",
+      "published_next_status": "published"
+    },
+    {
+      "project_id": "2026K0322",
       "status": "unknown",
-      "reason": "mixed_procedure",
-      "procedure_resolution": "mixed",
+      "reason": "unresolved_procedure",
+      "procedure_resolution": "unknown",
       "current_stage_id": null,
-      "observed_status": "observed",
+      "observed_status": "no_observation",
       "published_next_status": "none"
     },
     {
-      "project_id": "2023K0183",
+      "project_id": "2023K0357",
+      "status": "resolved",
+      "reason": null,
+      "procedure_resolution": "uniform",
+      "current_stage_id": "ulurp_197c.community_board_review",
+      "observed_status": "draft_only",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2025K0232",
       "status": "unknown",
       "reason": "mixed_procedure",
       "procedure_resolution": "mixed",
       "current_stage_id": null,
-      "observed_status": "observed",
+      "observed_status": "draft_only",
+      "published_next_status": "published"
+    },
+    {
+      "project_id": "2025M0338",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
+      "observed_status": "draft_only",
+      "published_next_status": "published"
+    },
+    {
+      "project_id": "2025X0283",
+      "status": "resolved",
+      "reason": null,
+      "procedure_resolution": "uniform",
+      "current_stage_id": "ulurp_197c.community_board_review",
+      "observed_status": "draft_only",
       "published_next_status": "none"
+    },
+    {
+      "project_id": "2024Q0325",
+      "status": "unknown",
+      "reason": "mixed_procedure",
+      "procedure_resolution": "mixed",
+      "current_stage_id": null,
+      "observed_status": "draft_only",
+      "published_next_status": "published"
+    },
+    {
+      "project_id": "2024Q0324",
+      "status": "resolved",
+      "reason": null,
+      "procedure_resolution": "uniform",
+      "current_stage_id": "ulurp_197c.community_board_review",
+      "observed_status": "draft_only",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2022Q0160",
+      "status": "resolved",
+      "reason": null,
+      "procedure_resolution": "uniform",
+      "current_stage_id": "ulurp_197c.community_board_review",
+      "observed_status": "no_observation",
+      "published_next_status": "none"
+    },
+    {
+      "project_id": "2025Q0494",
+      "status": "unknown",
+      "reason": "unresolved_procedure",
+      "procedure_resolution": "unknown",
+      "current_stage_id": null,
+      "observed_status": "no_observation",
+      "published_next_status": "published"
     }
   ],
   "inputs": {
@@ -418,17 +418,17 @@
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-11-04T18:22:03.270Z"
+        "generated_at": "2026-11-06T14:51:26.447Z"
       },
-      "sha256": "30bd756f405daa1666195ff361a83ebd22a4db04c376b6b192c47cd8c010f80d"
+      "sha256": "b36d5940d69218f7bd8c977c098986cae554b75eef0c964131998c101a9f2147"
     },
     "land_outcomes_seed": {
       "path": "site/data/land_outcomes_seed.json",
-      "count": 34,
+      "count": 27,
       "vintage": {
-        "generated_at": "2026-11-04T18:22:03.270Z"
+        "generated_at": "2026-11-06T14:51:26.447Z"
       },
-      "sha256": "7f4904f50eaf3fb003bb796a426a8409cd1c57b48f8e1f8f77818a4411e64724"
+      "sha256": "f10fb7b3191de3fe36a39549bf6b7cffda48458cf1b7f3a8db10a998b19de237"
     },
     "geography": {
       "path": "site/data/community_board_geography_lookup.json",
@@ -439,11 +439,11 @@
     },
     "upcoming_hearings": {
       "path": "site/data/land_upcoming_hearings.json",
-      "count": 136,
+      "count": 161,
       "vintage": {
-        "generated_at": "2026-11-04T18:28:25.658Z"
+        "generated_at": "2026-11-06T14:57:16.974Z"
       },
-      "sha256": "5a0225cd76f021e303cad82ea24ef179e2af2731418f6d46731568ee2847a526"
+      "sha256": "df41ce35fece3669ad56566b4e0a0d147aff4ade523ae01ca5b4902358a7d329"
     },
     "join_keys": [
       "project_id"
@@ -452,7 +452,7 @@
   "generation": {
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
-    "payload_bytes": 103558,
-    "payload_sha256": "f436f9dc9b838f68fb53aa79f644d57fceb1aa1038ab83b6e49bbf390561e0f8"
+    "payload_bytes": 86764,
+    "payload_sha256": "3a77b83d18daadcae9fe04adb5517c2ab757dbb4a88eaf8e18fc74bc3fad9bd4"
   }
 }
