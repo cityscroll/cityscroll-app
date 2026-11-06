@@ -243,6 +243,25 @@ test("classic program-history-profile-scrub.js precedes analytics.js and clarity
   assert.doesNotMatch(scrubTagMatch[0], /\bdefer\b|\basync\b|type="module"/);
 });
 
+test("rendered program-profile-form inputs are explicitly Clarity-masked", () => {
+  const journey = buildProgramJourney({
+    profile: DEFAULT_TRAINING_PROFILE,
+    records: corpus.records,
+  });
+  const html = renderProgramJourneyHtml(journey);
+  const formMatch = html.match(/<form class="program-profile-form"[\s\S]*?<\/form>/);
+  assert.ok(formMatch, "program-profile-form missing");
+  const fieldTags = formMatch[0].match(/<(?:input|select|textarea)\b[^>]*>/g) || [];
+  assert.ok(fieldTags.length > 0, "expected form fields in program-profile-form");
+  for (const tag of fieldTags) {
+    assert.match(
+      tag,
+      /data-clarity-mask="true"/,
+      `form field must declare data-clarity-mask="true" so masking does not depend on the Clarity dashboard setting: ${tag}`,
+    );
+  }
+});
+
 test("program profile persists across sessionStorage remount (Back restores keywords)", () => {
   const storage = new FakeStorage();
   const typed = profileFromFormValues({

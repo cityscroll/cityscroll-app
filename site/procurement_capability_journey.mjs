@@ -193,17 +193,17 @@ function renderProfileForm(profile) {
     <legend>Your stated capabilities</legend>
     <p class="capability-form-help">Answers stay in this browser session for the comparison. They do not change published award facts or any pursuit note you already saved.</p>
     <label>Capability keywords
-      <input name="capability_keywords" type="text" value="${esc(keywords)}" autocomplete="off">
+      <input name="capability_keywords" type="text" value="${esc(keywords)}" autocomplete="off" data-clarity-mask="true">
     </label>
     <label>Jet-vac truck service available?
-      <select name="jet_vac_truck">
+      <select name="jet_vac_truck" data-clarity-mask="true">
         <option value="" ${jet == null ? "selected" : ""}>Unspecified</option>
         <option value="true" ${jet === true ? "selected" : ""}>Yes</option>
         <option value="false" ${jet === false ? "selected" : ""}>No</option>
       </select>
     </label>
     <label>Landscaping / vegetation trimming available?
-      <select name="landscaping">
+      <select name="landscaping" data-clarity-mask="true">
         <option value="" ${land == null ? "selected" : ""}>Unspecified</option>
         <option value="true" ${land === true ? "selected" : ""}>Yes</option>
         <option value="false" ${land === false ? "selected" : ""}>No</option>
