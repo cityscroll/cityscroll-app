@@ -77,6 +77,17 @@
       ]
     },
     {
+      "id": "ceqr-milestone-reconciliation",
+      "command": [
+        "tools/build_ceqr_project_milestone_reconciliation.mjs"
+      ],
+      "covers": [
+        "tools/build_ceqr_project_milestone_reconciliation.mjs"
+      ],
+      "note": "Rebuilds the LDP-13 CEQR/ZAP reconciliation receipt from the already-refreshed site/data/zap_projects_warehouse_lookup.json so its own --check gate does not go stale against a refreshed ZAP lookup. That gate is not a literal static-standards workflow line: it is invoked as the A4 non-regression check nested inside tools/build_seqra_structured_adapters.mjs, which test/warehouse_seqra_structured_adapters.test.mjs (site-node family) runs in its default, receipt-writing mode. Left stale, that test's own run of the builder embeds the --check failure's stack trace -- including the CI runner's absolute path -- into the committed seqra_structured_adapters_latest.json receipt, which then fails the home-path-leak guard. Declared in additional_gate_builders below since it is a site-node, not static-standards, gate.",
+      "after": []
+    },
+    {
       "id": "procurement-crosswalk",
       "command": [
         "tools/build_procurement_crosswalk.mjs"
@@ -688,6 +699,7 @@
     "tools/build_agency_documents.mjs",
     "tools/build_agency_lifecycle_conformance.mjs",
     "tools/build_agency_source_identity_snapshot.mjs",
+    "tools/build_ceqr_project_milestone_reconciliation.mjs",
     "tools/build_community_board_constellation_documents.mjs",
     "tools/build_community_board_district_projects.mjs",
     "tools/build_community_board_full_board_meetings.mjs",

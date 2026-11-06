@@ -84,24 +84,29 @@ describe("committed bounded CEQR observation", () => {
     assert.equal(committedReceipt.source_inventory.projects.duplicate_keys, 14);
     assert.equal(committedReceipt.source_inventory.projects.revision_keys, 14);
     assert.equal(committedReceipt.source_inventory.milestones.retained_rows, 34820);
-    assert.equal(committedReceipt.reconciliation.exact_project_matches, 195);
-    assert.equal(committedReceipt.reconciliation.joined_milestone_rows, 497);
-    assert.equal(committedReceipt.reconciliation.projects_with_incremental_milestones, 180);
+    assert.equal(committedReceipt.reconciliation.exact_project_matches, 158);
+    assert.equal(committedReceipt.reconciliation.joined_milestone_rows, 414);
+    assert.equal(committedReceipt.reconciliation.projects_with_incremental_milestones, 147);
     assert.equal(committedReceipt.gate.result, "GO");
-    assert.match(committedReceipt.gate.rationale, /195 exact project joins.*180 add milestone history/);
+    assert.match(committedReceipt.gate.rationale, /158 exact project joins.*147 add milestone history/);
     assert.equal(committedReceipt.gate.resident_ingestion_committed, false);
   });
 
-  it("retains the exact 26DCP139X join and keeps the EAS specimen unjoined", () => {
+  it("retains the exact 26DCP139X join and keeps the unjoined specimen's retained key inspectable", () => {
     const joined = committedReceipt.joined_projects.find((row) => row.ceqr_key === "26DCP139X");
     assert.equal(joined.zap_project_id, "2026X0354");
     assert.equal(joined.project.source_record_id, "row-rxs4~ejga-sk5r");
     assert.equal(joined.milestones.rows[0].source_record_id, "row-2qpe~vxi6~btfn");
     assert.equal(joined.milestones.rows[0].milestone_name, "Type II Memo");
+    // project_2026K0123 was EAS-only with no ULURP numbers when this specimen
+    // was first pinned; by this refreshed ZAP vintage it has since been
+    // certified into ULURP (actions carry ZM/ZR, ulurp_numbers is populated),
+    // and it still carries a retained CEQR key the frozen CEQR Projects
+    // extract does not resolve.
     const eas = committedReceipt.zap_eligibility.specimens.project_2026K0123;
-    assert.equal(eas.ulurp_numbers, null);
-    assert.match(eas.actions, /EAS/);
-    assert.equal(eas.retained_ceqr_key, "78DCP250K");
+    assert.equal(eas.ulurp_numbers, "260409ZMK; N260410ZRK");
+    assert.equal(eas.actions, "ZM; ZR");
+    assert.equal(eas.retained_ceqr_key, "27DCP017K");
     assert.equal(eas.exact_ceqr_project_join, false);
     assert.equal(eas.inferred_from_eas, false);
   });
