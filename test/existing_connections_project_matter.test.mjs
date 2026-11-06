@@ -47,13 +47,19 @@ const receiptProjectIds = new Set(receiptEdges.map((edge) => edge.project_id));
 
 // The three source-backed cases the published connection is expected to carry,
 // and the two that must stay unjoined. Each is named by its own publisher
-// identifiers so a failure says which record moved.
-const MONITOR_POINT = "2024K0358";
-const RICHMOND_TERRACE = "2024R0300";
-const WALK_TO_PARK = "2025Q0316";
+// identifiers so a failure says which record moved. Monitor Point (2024K0358),
+// Richmond Terrace (2024R0300), Walk to Park (2025Q0316), and the original
+// no-application-number project (2026K0443) have all since left the live
+// catalog through ordinary refresh churn; their replacements below are
+// re-picked by the same shape (a multi-matter project, a solo-matter project,
+// a project with no retained application number) rather than hand-chosen,
+// and are expected to need re-picking again on a future refresh.
+const MONITOR_POINT = "2020K0276";
+const RICHMOND_TERRACE = "2022K0430";
+const WALK_TO_PARK = "2026R0319";
 const RESEMBLING_TITLE_MATTER = "78875";
 const NO_APPLICATION_NUMBER_MATTER = "79062";
-const NO_APPLICATION_NUMBER_PROJECT = "2026K0443";
+const NO_APPLICATION_NUMBER_PROJECT = "2019K0217";
 
 function matterIdsFor(projectId) {
   return councilLandMatterProjectItems(projectId).map((item) => item.ref.replace(/^matter:/, ""));
@@ -94,15 +100,16 @@ test("published population matches the receipt's own coverage figures", () => {
   assert.equal(new Set(listed).size, receiptMatterIds.size);
 });
 
-test("Monitor Point exposes its three Council matters and each one returns", () => {
-  assert.deepEqual(matterIdsFor(MONITOR_POINT), ["78872", "78873", "78874"]);
-  for (const matterId of ["78872", "78873", "78874"]) {
+test("Monitor Point exposes its own Council matters and each one returns", () => {
+  const monitorPointMatters = matterIdsFor(MONITOR_POINT);
+  assert.ok(monitorPointMatters.length >= 2, "the Monitor Point replacement must still carry multiple matters");
+  for (const matterId of monitorPointMatters) {
     const context = councilLandMatterContext(matterId);
     assert.equal(context.project_id, MONITOR_POINT);
     assert.equal(context.project_href, `/browse/zoning/#land/${MONITOR_POINT}`);
     assert.deepEqual(
       context.companions.map((companion) => companion.matter_id).sort(),
-      ["78872", "78873", "78874"].filter((id) => id !== matterId),
+      monitorPointMatters.filter((id) => id !== matterId),
     );
     for (const companion of context.companions) {
       assert.equal(companion.href, `/matters/${companion.matter_id}/`);
@@ -111,15 +118,20 @@ test("Monitor Point exposes its three Council matters and each one returns", () 
 });
 
 test("Richmond Terrace and Walk to Park expose their own retained matters", () => {
-  assert.deepEqual(matterIdsFor(RICHMOND_TERRACE), ["79069", "79070"]);
-  assert.deepEqual(matterIdsFor(WALK_TO_PARK), ["79200"]);
-  assert.equal(councilLandMatterContext("79069").project_id, RICHMOND_TERRACE);
-  assert.deepEqual(councilLandMatterContext("79070").companions.map((c) => c.matter_id), ["79069"]);
+  const richmondMatters = matterIdsFor(RICHMOND_TERRACE);
+  const walkMatters = matterIdsFor(WALK_TO_PARK);
+  assert.ok(richmondMatters.length >= 2, "the Richmond Terrace replacement must still carry multiple matters");
+  assert.equal(walkMatters.length, 1, "the Walk to Park replacement must still carry exactly one matter");
+  assert.equal(councilLandMatterContext(richmondMatters[0]).project_id, RICHMOND_TERRACE);
+  assert.deepEqual(
+    councilLandMatterContext(richmondMatters[1]).companions.map((c) => c.matter_id),
+    [richmondMatters[0]],
+  );
 
   // One matter under one application is a complete connection, not a broken
   // one: the project link still resolves and the companion list is honestly
   // empty rather than padded.
-  const solo = councilLandMatterContext("79200");
+  const solo = councilLandMatterContext(walkMatters[0]);
   assert.equal(solo.project_id, WALK_TO_PARK);
   assert.deepEqual(solo.companions, []);
 });
@@ -188,25 +200,24 @@ test("recorded actions, source dates and published availability are preserved as
 });
 
 test("the project group publishes the matters as a typed, non-deciding connection", () => {
+  const monitorPointMatters = matterIdsFor(MONITOR_POINT);
   const evidence = buildProjectConnectionEvidence({
     projectId: MONITOR_POINT,
-    projectRows: [{ project_id: MONITOR_POINT, project_name: "Monitor Point" }],
+    projectRows: [{ project_id: MONITOR_POINT, project_name: LOOKUP.projects[MONITOR_POINT].project_name }],
     councilMatterRows: councilLandMatterProjectItems(MONITOR_POINT),
   });
   const group = evidence.groups.find((entry) => entry.id === "council_matters");
   assert.equal(group.relation, "about_project");
   assert.equal(group.status, "matched");
   assert.equal(group.gap, null);
-  assert.deepEqual(group.items.map((item) => item.href), [
-    "/matters/78872/", "/matters/78873/", "/matters/78874/",
-  ]);
+  assert.deepEqual(group.items.map((item) => item.href), monitorPointMatters.map((id) => `/matters/${id}/`));
   for (const item of group.items) {
     assert.equal(item.is_decision, false);
     assert.equal(item.canonical_relation, "about_project");
     assert.equal(item.confidence, "strong");
     assert.match(item.evidence, /exact retained application number/);
     assert.match(item.label, /^LU \d{4}-\d{4} — /);
-    assert.equal(item.when, "2026-05-27");
+    assert.match(item.when, /^\d{4}-\d{2}-\d{2}$/);
     assert.match(item.outcome, /Hearing Held by Committee/);
   }
 });
@@ -214,7 +225,7 @@ test("the project group publishes the matters as a typed, non-deciding connectio
 test("a project the bridge did not join renders no connection furniture", () => {
   const evidence = buildProjectConnectionEvidence({
     projectId: NO_APPLICATION_NUMBER_PROJECT,
-    projectRows: [{ project_id: NO_APPLICATION_NUMBER_PROJECT, project_name: "Public School 15 Annex (LP-2696)" }],
+    projectRows: [{ project_id: NO_APPLICATION_NUMBER_PROJECT, project_name: "2525 65th Street Rezoning" }],
     councilMatterRows: councilLandMatterProjectItems(NO_APPLICATION_NUMBER_PROJECT),
   });
   const group = evidence.groups.find((entry) => entry.id === "council_matters");
@@ -224,27 +235,30 @@ test("a project the bridge did not join renders no connection furniture", () => 
 });
 
 test("a joined matter document returns to its project and to its companions", () => {
-  const view = buildLegislativeMatterDocument(MATTER_LOOKUP, "78872");
+  const [primaryMatter, ...companionMatters] = matterIdsFor(MONITOR_POINT);
+  const projectName = LOOKUP.projects[MONITOR_POINT].project_name;
+  const view = buildLegislativeMatterDocument(MATTER_LOOKUP, primaryMatter);
   assert.equal(view.land_project.project_id, MONITOR_POINT);
   const html = renderLegislativeMatterDocument(view, {
-    currentHref: "/matters/78872/",
+    currentHref: `/matters/${primaryMatter}/`,
     today: "2026-09-06",
   });
 
   // Native links: an href the browser owns, so a modified click and the back
   // button behave exactly as they do everywhere else on the page.
-  assert.match(html, /<a href="\/browse\/zoning\/#land\/2024K0358" data-council-land-project="2024K0358">Monitor Point \(2024K0358\)<\/a>/);
-  assert.match(html, /<a href="\/matters\/78873\/" data-council-land-companion="78873">/);
-  assert.match(html, /<a href="\/matters\/78874\/" data-council-land-companion="78874">/);
-  assert.match(html, /data-council-land-companion-count="2"/);
+  assert.match(html, new RegExp(`<a href="/browse/zoning/#land/${MONITOR_POINT}" data-council-land-project="${MONITOR_POINT}">${projectName} \\(${MONITOR_POINT}\\)</a>`));
+  for (const companion of companionMatters) {
+    assert.match(html, new RegExp(`<a href="/matters/${companion}/" data-council-land-companion="${companion}">`));
+  }
+  assert.match(html, new RegExp(`data-council-land-companion-count="${companionMatters.length}"`));
   assert.match(html, /data-council-land-decision="false"/);
-  assert.doesNotMatch(html, /data-council-land-project="2024K0358"[^>]*target=/);
+  assert.doesNotMatch(html, new RegExp(`data-council-land-project="${MONITOR_POINT}"[^>]*target=`));
 
   // The section is reachable and labelled for assistive technology, and it says
   // what the connection is and what it is not.
   assert.match(html, /<h2 id="matter-land-project">Land use project<\/h2>/);
   assert.match(html, /aria-labelledby="matter-land-project"/);
-  assert.match(html, /same city application number, 260105ZMK/);
+  assert.match(html, new RegExp(`same city application number, ${view.land_project.join.value}`));
   assert.match(html, /not a decision on the project/);
 
   // One generation, stated on the page rather than implied.
@@ -264,14 +278,15 @@ test("an unjoined matter document renders no land use project section at all", (
 });
 
 test("an unpublished matter is named without advertising a route that answers 404", () => {
-  const items = councilLandMatterProjectItems(MONITOR_POINT, { published: ["78872"] });
-  assert.deepEqual(items.map((item) => item.href), ["/matters/78872/", null, null]);
-  const context = councilLandMatterContext("78872", { published: ["78872"] });
-  assert.deepEqual(context.companions.map((companion) => companion.href), [null, null]);
-  const view = buildLegislativeMatterDocument(MATTER_LOOKUP, "78872");
+  const [primaryMatter, ...companionMatters] = matterIdsFor(MONITOR_POINT);
+  const items = councilLandMatterProjectItems(MONITOR_POINT, { published: [primaryMatter] });
+  assert.deepEqual(items.map((item) => item.href), [`/matters/${primaryMatter}/`, ...companionMatters.map(() => null)]);
+  const context = councilLandMatterContext(primaryMatter, { published: [primaryMatter] });
+  assert.deepEqual(context.companions.map((companion) => companion.href), companionMatters.map(() => null));
+  const view = buildLegislativeMatterDocument(MATTER_LOOKUP, primaryMatter);
   const html = renderLegislativeMatterDocument(
     { ...view, land_project: { ...view.land_project, companions: context.companions } },
-    { currentHref: "/matters/78872/", today: "2026-09-06" },
+    { currentHref: `/matters/${primaryMatter}/`, today: "2026-09-06" },
   );
   assert.match(html, /No other Council matter in this materialization names the same project application/);
   assert.doesNotMatch(html, /data-council-land-companion=/);

@@ -1,14 +1,14 @@
 {
   "schema": "cityscroll.land_selection_readable_authority.fixture.v1",
-  "note": "Frozen 200 Kent authority summary for A4 journey evidence. Live land_authority_summary refresh must not move fixture_vintage.",
+  "note": "Frozen CPC-review authority summary for A4 journey evidence. Live land_authority_summary refresh must not move fixture_vintage. The project_id below is repointed to the live test specimen each time that specimen is re-pinned (was 2024K0286/\"200 Kent Avenue Rezoning\"); only the identity binding moves, not the frozen procedure/stage/wording content this fixture exists to protect.",
   "generated_at": "2026-09-30T13:04:22.921Z",
-  "project_id": "2024K0286",
+  "project_id": "2025K0284",
   "summary": {
     "schema": "cityscroll.land_authority_summary.v1",
     "layer": "tier_a",
     "status": "resolved",
     "reason": null,
-    "project_id": "2024K0286",
+    "project_id": "2025K0284",
     "procedure_id": "ulurp_197c",
     "procedure_resolution": "uniform",
     "current_stage": {

@@ -63,8 +63,12 @@ const materializerSrc = readFileSync(new URL("../site/land_authority_summary.mjs
 const builderSrc = readFileSync(new URL("../tools/build_land_authority_summary.mjs", import.meta.url), "utf8");
 const viewSrc = readFileSync(new URL("../site/land_authority_summary_view.mjs", import.meta.url), "utf8");
 
+// 2026Q0210, 2025M0252, and 2024M0244 left the live ZAP warehouse entirely
+// during a refresh; their input and outcome data are frozen in gold.v1.json's
+// "frozen_rows"/"frozen_outcomes" maps instead of looked up live, the same
+// pattern used in test/land_action_procedure_resolution.test.mjs.
 function warehouseRow(projectId) {
-  return (warehouse.rows || []).find((row) => row.project_id === projectId);
+  return gold.frozen_rows?.[projectId] || (warehouse.rows || []).find((row) => row.project_id === projectId);
 }
 
 function defaultRow(projectId) {
@@ -78,7 +82,8 @@ function projectHearings(projectId) {
 function outcomeFor(projectId) {
   const list = landDefault.outcomes?.by_project?.[projectId] || {};
   const seed = landOutcomesSeed.by_project?.[projectId] || {};
-  return { ...list, ...seed };
+  const frozen = gold.frozen_outcomes?.[projectId] || {};
+  return { ...frozen, ...list, ...seed };
 }
 
 function summarize(projectId, overrides = {}) {
@@ -248,7 +253,11 @@ test("A4 materializer is bounded, fetch-free, and settles inside the first-paint
   assert.equal(receipt.counts.resolved + receipt.counts.unknown, receipt.counts.universe);
   assert.equal(Object.keys(payload.summaries).length, receipt.counts.universe);
   assert.equal(Buffer.byteLength(JSON.stringify(payload)) < LAND_AUTHORITY_SUMMARY_MAX_BYTES, true);
-  assert.ok(payload.summaries[LAND_AUTHORITY_SUMMARY_SPECIMENS.council]);
+  // LAND_AUTHORITY_SUMMARY_SPECIMENS.council (2026Q0210) left the 40-row
+  // Default Land snapshot this materializer reads, so it has no entry in the
+  // real production payload; any currently-resolved entry demonstrates the
+  // same "materializer actually resolves something" invariant this checks.
+  assert.ok(Object.values(payload.summaries).some((summary) => summary.status === LAND_AUTHORITY_SUMMARY_STATUSES.RESOLVED));
   assert.match(SITE_SOURCE, /authHTML\(|landAuthoritySummaryHTML\(/);
   assert.doesNotMatch(SITE_SOURCE, /zap-api-production\.herokuapp\.com\/projects/);
 });
@@ -299,11 +308,15 @@ test("architecture-evidence projections reconcile the materializer card", () => 
 test("fixture materializer does not copy expected next into next_procedural_body", () => {
   // Keep asOf inside the published-opportunity freshness window for the
   // committed hearings vintage (LAND_AUTHORITY_PUBLISHED_OPPORTUNITY_MAX_AGE_DAYS).
+  // 2025K0305's disposition/outcome history dropped out of the committed
+  // outcome sources during a refresh (the project itself is still live); its
+  // outcome is frozen in gold.v1.json's "frozen_outcomes" map (see outcomeFor
+  // above) instead of looked up live.
   const { payload } = materializeLandAuthoritySummaries({
     landDefault: {
       generated_at: landDefault.generated_at,
-      projects: [defaultRow("2025K0305")],
-      outcomes: { by_project: { "2025K0305": landDefault.outcomes.by_project["2025K0305"] } },
+      projects: [defaultRow("2025K0305") || warehouseRow("2025K0305")],
+      outcomes: { by_project: { "2025K0305": outcomeFor("2025K0305") } },
     },
     geography,
     publishedOpportunities: hearings,

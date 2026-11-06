@@ -44,8 +44,10 @@ test("reviewed registry is versioned and every stage has role, effect, window, a
   }
 });
 
-test("real 2025K0305 specimen consumes ordinary profile and conditional Borough Board stage", () => {
-  const project = landDefault.projects.find((row) => row.project_id === "2025K0305");
+test("real 2023K0357 specimen consumes ordinary profile and conditional Borough Board stage", () => {
+  // 2025K0305 was the prior ulurp_197c specimen until a refresh rotated it
+  // out of the 40-row Default Land snapshot; 2023K0357 is its replacement.
+  const project = landDefault.projects.find((row) => row.project_id === "2023K0357");
   assert.ok(project, "the census specimen must remain in the default Land artifact");
   const resolved = resolveLandProcedureProfile(project);
   assert.equal(resolved.status, "resolved");
@@ -58,7 +60,7 @@ test("real 2025K0305 specimen consumes ordinary profile and conditional Borough 
       title: "Community Board Review",
       detail: "Community Board 11",
       time: { value: "2026-07-02", certainty: "actual" },
-      source: { id: "zap", url: "https://zap.planning.nyc.gov/projects/2025K0305" },
+      source: { id: "zap", url: "https://zap.planning.nyc.gov/projects/2023K0357" },
     },
   ]), {
     open_data: project,
@@ -164,7 +166,10 @@ test("milestone-only, mixed-action, and absent-procedure inputs fail closed", ()
   assert.equal(milestoneOnly.profile_id, null);
   assert.equal(Object.hasOwn(milestoneOnly, "observed_event_id"), false);
 
-  const mixedProject = landDefault.projects.find((row) => row.project_id === "2026K0123");
+  // 2026K0123 was the prior mixed_action_set specimen until a refresh moved
+  // it off its EAS-only actions and out of the 40-row Default Land snapshot;
+  // 2024X0217 ("HA; HU") is its replacement.
+  const mixedProject = landDefault.projects.find((row) => row.project_id === "2024X0217");
   assert.ok(mixedProject);
   const mixed = resolveLandProcedureProfile(mixedProject);
   assert.equal(mixed.status, "unresolved");

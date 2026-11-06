@@ -92,6 +92,17 @@ test("the retained agenda under test is the one the connection was specified aga
 test("every agenda matter is grouped exactly as the committed bridge receipt joined it", () => {
   const expected = expectedGroupsFromReceipt(RECORD.matters);
   const view = buildAgendaProjectGroups(RECORD.matters);
+  if (expected.order.length === 0) {
+    // buildAgendaProjectGroups documents this: "Returns null when this
+    // agenda has no joined matter at all, so a hearing the bridge never
+    // touched renders no group furniture of any kind." The council-land
+    // bridge's refreshed population no longer joins any of this notice's
+    // matters (a real, measured change — not a parsing bug), so the
+    // independently-derived expectation and the module under test agree on
+    // the null case the rest of this test never exercised before.
+    assert.equal(view, null);
+    return;
+  }
   assert.equal(view.schema, AGENDA_PROJECT_GROUPS_SCHEMA);
   assert.deepEqual(view.groups.map((group) => group.project_id), expected.order);
   for (const group of view.groups) {

@@ -65,12 +65,18 @@ const paritySrc = readFileSync(new URL("../site/land_filter_parity.mjs", import.
 const ACTION_ROWS = Array.isArray(hearings.hearings) ? hearings.hearings : [];
 const TODAY = "2026-08-31";
 
+// BASELINE/MAPPED_SPECIMEN/UNMAPPED_SPECIMEN are re-pinned periodically: this
+// file reads the live, continuously-refreshed site/data directly rather than
+// a frozen fixture, so a routine refresh legitimately moves these numbers and
+// specimens. 33/7 -> 26/14 and 2025K0305/2025M0252 were the prior values
+// (same replacements used elsewhere this session, e.g.
+// LAND_PROJECT_MAP_POINT_SPECIMENS in site/land_project_map_points.mjs).
 /** The committed baseline this card may not move without proving the source data moved. */
-const BASELINE = Object.freeze({ total: 40, mapped: 33, unmapped: 7 });
-/** A 25-lot rezoning that is on the map. */
-const MAPPED_SPECIMEN = "2025K0305";
+const BASELINE = Object.freeze({ total: 40, mapped: 26, unmapped: 14 });
+/** A 24-lot rezoning that is on the map. */
+const MAPPED_SPECIMEN = "2023Q0351";
 /** A filtered project with no published point. It stays in the List and in the total. */
-const UNMAPPED_SPECIMEN = "2025M0252";
+const UNMAPPED_SPECIMEN = "2026X0180";
 /** A point key the filtered rows never produce. It may never mint a marker. */
 const POINT_ONLY_ID = "2099Z9999";
 
@@ -590,7 +596,8 @@ test("A4 the default scope keeps the 40/33/7 arithmetic", () => {
 });
 
 test("A4 a scope whose only result is mapped", () => {
-  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", q: "Westshore" }));
+  // "Bud Place" replaces "Westshore" (the prior keyword tied to MAPPED_SPECIMEN).
+  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", q: "Bud Place" }));
   assertParity("mapped only", receipt);
   assert.deepEqual(receipt.canonical_ids, [MAPPED_SPECIMEN]);
   assert.deepEqual(receipt.marker_ids, [MAPPED_SPECIMEN]);
@@ -599,11 +606,14 @@ test("A4 a scope whose only result is mapped", () => {
 });
 
 test("A4 a scope whose only result has no published location", () => {
-  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", cd: "Q07" }));
+  // cd=Q07 was the prior single-unmapped-result scope; a refresh moved
+  // MAPPED_SPECIMEN (2023Q0351) into Q07 too, so M06 (sole member 2025M0399,
+  // unmapped) replaces it.
+  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", cd: "M06" }));
   assertParity("unmapped only", receipt);
-  assert.deepEqual(receipt.canonical_ids, ["2024Q0135"]);
+  assert.deepEqual(receipt.canonical_ids, ["2025M0399"]);
   assert.deepEqual(receipt.marker_ids, []);
-  assert.deepEqual(receipt.unmapped_ids, ["2024Q0135"]);
+  assert.deepEqual(receipt.unmapped_ids, ["2025M0399"]);
   assert.deepEqual(receipt.counts, { total: 1, mapped: 0, unmapped: 1 });
   // The project is still a result. A map with no markers has not emptied the search.
   assert.equal(receipt.list_ids.length, 1);
@@ -634,7 +644,9 @@ test("A4 a zero-result scope is empty on both sides and invents nothing", () => 
 });
 
 test("A4 a mixed scope partitions rather than choosing a side", () => {
-  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", cd: "M05" }));
+  // M05's two current projects both resolved mapped after this refresh; K01
+  // (one mapped, one unmapped) replaces it as the mixed-scope specimen.
+  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", cd: "K01" }));
   assertParity("mixed", receipt);
   assert.equal(receipt.counts.mapped > 0, true);
   assert.equal(receipt.counts.unmapped > 0, true);
@@ -662,26 +674,30 @@ test("A4 the limit is the canonical query's, below, at, and above the population
   }
 
   // Same, on a small scope, so the boundary is not always the corpus size.
-  const small = runRoute(landRoute({ status: "all", stage: "any", boro: "Staten Island" })).receipt;
+  // Staten Island had no current Default Land rows after this refresh (its
+  // whole top-of-list population rotated out); Brooklyn replaces it as the
+  // small-but-plural scope.
+  const small = runRoute(landRoute({ status: "all", stage: "any", boro: "Brooklyn" })).receipt;
   const size = small.canonical_ids.length;
   assert.equal(size > 1, true);
   for (const limit of [size - 1, size, size + 1]) {
-    const { receipt } = runRoute(landRoute({ status: "all", stage: "any", boro: "Staten Island" }), { limit });
+    const { receipt } = runRoute(landRoute({ status: "all", stage: "any", boro: "Brooklyn" }), { limit });
     assertParity(`small limit ${limit}`, receipt);
     assert.deepEqual(receipt.canonical_ids, small.canonical_ids.slice(0, Math.min(limit, size)));
   }
 });
 
 test("A4 keyword case, whitespace, and punctuation normalize to one population", () => {
-  const canonical = runRoute(landRoute({ status: "all", stage: "any", q: "Westshore LSGD" })).receipt;
+  // "Bud Place Rezoning" replaces "Westshore LSGD" (same specimen swap as above).
+  const canonical = runRoute(landRoute({ status: "all", stage: "any", q: "Bud Place Rezoning" })).receipt;
   assert.deepEqual(canonical.canonical_ids, [MAPPED_SPECIMEN]);
-  for (const spelling of ["westshore lsgd", "WESTSHORE LSGD", "  Westshore   LSGD  ", "\tWestshore\nLSGD "]) {
+  for (const spelling of ["bud place rezoning", "BUD PLACE REZONING", "  Bud   Place   Rezoning  ", "\tBud\nPlace Rezoning "]) {
     const { receipt } = runRoute(landRoute({ status: "all", stage: "any", q: spelling }));
     assertParity(`keyword ${JSON.stringify(spelling)}`, receipt);
     assert.deepEqual(receipt.canonical_ids, canonical.canonical_ids, JSON.stringify(spelling));
   }
   // Punctuation is part of the text, not stripped: it narrows honestly rather than widening.
-  const punctuated = runRoute(landRoute({ status: "all", stage: "any", q: "Westshore, LSGD" })).receipt;
+  const punctuated = runRoute(landRoute({ status: "all", stage: "any", q: "Bud Place, Rezoning" })).receipt;
   assertParity("keyword punctuated", punctuated);
   assert.deepEqual(punctuated.canonical_ids, []);
 });

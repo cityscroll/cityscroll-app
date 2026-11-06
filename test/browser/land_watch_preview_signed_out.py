@@ -19,9 +19,17 @@ from browser_support import launched_chromium
 
 ROOT = Path(__file__).resolve().parents[2]
 MEMBERSHIP_PATH = ROOT / "site" / "data" / "land_place_membership.json"
+# QN0602 is the current specimen NTA: every one of its live ZAP members
+# resolves ULURP/ELURP and Active, so the full membership set survives this
+# preview's default land-procedure and status facets exactly (this journey
+# asserts preview == membership, not just a subset). This was SI0105 until a
+# routine refresh retired that NTA's only member (2026R0127) from the live
+# population; this journey reads committed site/data directly rather than a
+# frozen fixture, so the specimen NTA is expected to need re-pinning
+# periodically.
 WATCH_ROUTE = (
     "/following?lens=land&filter="
-    "%7B%22geographies%22%3A%5B%22geography%3Anta2020%3ASI0105%22%5D%7D&count=1"
+    "%7B%22geographies%22%3A%5B%22geography%3Anta2020%3AQN0602%22%5D%7D&count=1"
 )
 PREVIEW_ID_RE = re.compile(r'data-preview-id="([^"]+)"')
 STATUS_RE = re.compile(r'data-following-preview-status="([^"]+)"')
@@ -69,13 +77,13 @@ def stop_server(process: subprocess.Popen) -> None:
 def independent_membership_ids() -> list[str]:
     """Observe membership from the committed public index (not from preview HTML)."""
     payload = json.loads(MEMBERSHIP_PATH.read_text(encoding="utf-8"))
-    ids = payload.get("by_geography", {}).get("nta2020", {}).get("SI0105") or []
+    ids = payload.get("by_geography", {}).get("nta2020", {}).get("QN0602") or []
     return sorted({str(item) for item in ids if item})
 
 
 def emptied_membership_path(tmp: Path) -> Path:
     payload = json.loads(MEMBERSHIP_PATH.read_text(encoding="utf-8"))
-    payload.setdefault("by_geography", {}).setdefault("nta2020", {})["SI0105"] = []
+    payload.setdefault("by_geography", {}).setdefault("nta2020", {})["QN0602"] = []
     out = tmp / "emptied-land-place-membership.json"
     out.write_text(json.dumps(payload), encoding="utf-8")
     return out
@@ -149,7 +157,7 @@ def record_parity(preview_ids: list[str], membership_ids: list[str]) -> dict:
         "preview_project_ids": sorted(preview),
         "membership_project_ids": sorted(membership),
         "preview_project_ids_source": "browser-following-preview-markup",
-        "membership_project_ids_source": "committed-land-place-membership-by_geography.nta2020.SI0105",
+        "membership_project_ids_source": "committed-land-place-membership-by_geography.nta2020.QN0602",
         "parity_equal": preview == membership and bool(membership),
         "intersection": sorted(preview & membership),
     }
@@ -157,7 +165,7 @@ def record_parity(preview_ids: list[str], membership_ids: list[str]) -> dict:
 
 def main() -> int:
     membership_ids = independent_membership_ids()
-    assert membership_ids, "SI0105 membership must stay populated for the signed-out preview journey"
+    assert membership_ids, "QN0602 membership must stay populated for the signed-out preview journey"
 
     process, base = start_server()
     try:

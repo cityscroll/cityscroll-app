@@ -60,10 +60,46 @@ const PARCEL_MANIFEST = path.join(ROOT, PARCEL_GEOGRAPHY_MANIFEST_PATH);
 const PARCEL_DIR = path.join(ROOT, "site/data/parcel-geography");
 const ADDRESS_MANIFEST = path.join(ROOT, "site/data/address-index/manifest.json");
 
+// A refresh-sensitive specimen picker: rather than pinning a literal project
+// id that a later refresh's catalog churn can retire, this resolves to the
+// first live project (in catalog order) that satisfies the shape the test
+// actually needs -- present in the BBL index with at least one retained BBL,
+// and carrying an evidence shard with a resolvable valid BBL / parcel shard.
+// westshore (2025K0305) stays a literal below: it is still live and its own
+// role (a multi-BBL project with >=2 retained BBLs) is cheap to re-verify.
+function pickAnchorProject({ exclude = [] } = {}) {
+  const catalog = loadJson(CATALOG);
+  const bbl = loadJson(BBL_INDEX);
+  const membership = loadJson(LAND_PLACE_MEMBERSHIP_PATH);
+  const bblByProject = new Map(bbl.rows.map((row) => [row.project_id, row]));
+  for (const project of catalog.projects) {
+    const id = project.project_id;
+    if (exclude.includes(id)) continue;
+    const bblRow = bblByProject.get(id);
+    if (!bblRow || !(bblRow.bbls || []).length) continue;
+    const entry = membership.by_project?.[id];
+    if (!entry?.evidence_shard) continue;
+    const shard = loadJson(path.join(ROOT, LAND_PLACE_EVIDENCE_DIR, `${entry.evidence_shard}.json`));
+    const validBbls = shard.projects?.[id]?.valid_bbls || [];
+    if (!validBbls.length) continue;
+    const shardKey = parcelShardKey(validBbls[0]);
+    if (!existsSync(path.join(PARCEL_DIR, `${shardKey}.json`))) continue;
+    const ntaId = Object.entries(membership.by_geography?.nta2020 || {})
+      .find(([, members]) => members.includes(id))?.[0];
+    if (!ntaId) continue;
+    return { id, ntaId };
+  }
+  throw new Error("pickAnchorProject found no live candidate");
+}
+
+const FDNY_PICK = pickAnchorProject();
+const DEWITT_PICK = pickAnchorProject({ exclude: [FDNY_PICK.id] });
+
 const ANCHORS = Object.freeze({
-  fdny: "2026R0127",
+  fdny: FDNY_PICK.id,
+  fdnyNta: FDNY_PICK.ntaId,
   westshore: "2025K0305",
-  dewitt: "2023M0213",
+  dewitt: DEWITT_PICK.id,
 });
 
 
@@ -173,12 +209,12 @@ test("A1 [outcome] first run projects baseline catalog; unchanged inputs keep by
   await withTempDir("land-place-refresh-a1-", async (tempDir) => {
     const paths = seedTempPublication(tempDir);
     const catalog = loadJson(paths.catalogPath);
-    assert.equal(catalog.project_count, 244);
+    assert.equal(catalog.project_count, 243);
 
     const first = refreshFromPaths(paths);
     assert.equal(first.ok, true, JSON.stringify(first.receipt?.failure || first));
     assert.equal(first.status, "activated");
-    assert.equal(first.index.project_count, 244);
+    assert.equal(first.index.project_count, 243);
     assert.ok(first.active_generation);
 
     const active = loadActiveLandPlaceGeneration(paths.publicDir);
@@ -186,7 +222,7 @@ test("A1 [outcome] first run projects baseline catalog; unchanged inputs keep by
     assert.equal(active.index.generation.id, first.active_generation);
     assert.equal(active.evidence.generation_id, first.active_generation);
     assert.equal(active.reverse.generation_id, first.active_generation);
-    assert.equal(active.index.project_count, 244);
+    assert.equal(active.index.project_count, 243);
 
     const consumers = buildLandPlaceConsumers(active.index, active.evidenceShards);
     const validation = validateLandPlaceConsumers(consumers, first.active_generation);
@@ -237,7 +273,7 @@ test("A1 [outcome] first run projects baseline catalog; unchanged inputs keep by
     assert.deepEqual(edited.plan.rebuild_project_ids, [ANCHORS.westshore]);
 
     const after = loadJson(paths.activeIndexPath);
-    assert.equal(after.project_count, 244);
+    assert.equal(after.project_count, 243);
     assert.notEqual(after.generation.id, first.active_generation);
     assert.notEqual(
       JSON.stringify(after.by_project[ANCHORS.westshore]),
@@ -281,7 +317,7 @@ test("A2 [outcome] removing a project clears compact and reverse entries; parcel
     const active = loadActiveLandPlaceGeneration(paths.publicDir);
     assert.equal(active.index.by_project[ANCHORS.fdny], undefined);
     assert.equal(
-      projectsForGeography(active.index, "nta2020", "SI0105").includes(ANCHORS.fdny),
+      projectsForGeography(active.index, "nta2020", ANCHORS.fdnyNta).includes(ANCHORS.fdny),
       false,
     );
     assert.equal(active.index.project_count, 2);
@@ -660,7 +696,7 @@ test("production refresh command backfills and --check validates active consumer
     const summary = JSON.parse(run.stdout.trim().split("\n").at(-1));
     assert.equal(summary.ok, true);
     assert.ok(summary.active_generation);
-    assert.equal(summary.project_count, 244);
+    assert.equal(summary.project_count, 243);
 
     const check = spawnSync(process.execPath, [
       path.join(ROOT, "tools/land_place_refresh.mjs"),

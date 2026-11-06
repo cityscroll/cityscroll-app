@@ -12,25 +12,25 @@
   "inputs": {
     "land_project_catalog": {
       "path": "site/data/land_project_catalog.json",
-      "count": 244,
+      "count": 243,
       "vintage": {
         "schema": "cityscroll.land_project_catalog.v1",
-        "project_count": 244,
-        "warehouse_materialized_at": "2026-11-04T18:48:50.187Z",
-        "defaults_generated_at": "2026-11-04T18:22:03.270Z",
-        "content_id": "fnv1a32:a3b58007:244"
+        "project_count": 243,
+        "warehouse_materialized_at": "2026-11-06T15:11:20.121Z",
+        "defaults_generated_at": "2026-11-06T14:51:26.447Z",
+        "content_id": "fnv1a32:42579b83:243"
       },
-      "sha256": "74fed55a3009716ebfd0852ec7ddc4fb57b4df00e84a631a8ab3c93dd73cd7ab"
+      "sha256": "2eec4cc7710b3b73de5e626c0d154aeb56bef47e3fb33ce21e71a24148b00d31"
     },
     "land_default": {
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-11-04T18:22:03.270Z",
+        "generated_at": "2026-11-06T14:51:26.447Z",
         "schema_version": 1,
         "delivery_tier": "inline-at-build"
       },
-      "sha256": "30bd756f405daa1666195ff361a83ebd22a4db04c376b6b192c47cd8c010f80d"
+      "sha256": "b36d5940d69218f7bd8c977c098986cae554b75eef0c964131998c101a9f2147"
     },
     "zap_bbl": {
       "path": "site/data/zap_bbl_warehouse_lookup.json",
@@ -59,22 +59,21 @@
     ]
   },
   "counts": {
-    "universe": 244,
-    "mapped": 229,
+    "universe": 243,
+    "mapped": 185,
     "unmapped": 0,
     "rejected": 0,
-    "source_missing": 15
+    "source_missing": 58
   },
   "output": {
-    "mapped": 229,
+    "mapped": 185,
     "unmapped": 0,
     "rejected": 0,
-    "source_missing": 15
+    "source_missing": 58
   },
   "mapped_project_ids": [
     "2018X0438",
     "2019K0147",
-    "2019K0190",
     "2019K0217",
     "2019K0219",
     "2019K0301",
@@ -85,7 +84,6 @@
     "2019M0453",
     "2019M0455",
     "2019R0267",
-    "2019X0255",
     "2020K0276",
     "2020K0370",
     "2020K0413",
@@ -111,7 +109,6 @@
     "2021Q0168",
     "2021Q0439",
     "2021R0348",
-    "2021X0247",
     "2022K0121",
     "2022K0171",
     "2022K0252",
@@ -125,14 +122,12 @@
     "2022Q0196",
     "2022Q0214",
     "2022Q0248",
-    "2022Q0449",
     "2022R0134",
     "2022X0150",
     "2022X0392",
     "2022X0393",
     "2023K0126",
     "2023K0148",
-    "2023K0183",
     "2023K0203",
     "2023K0231",
     "2023K0248",
@@ -141,10 +136,8 @@
     "2023K0368",
     "2023K0398",
     "2023K0400",
-    "2023M0116",
     "2023M0117",
     "2023M0200",
-    "2023M0213",
     "2023M0271",
     "2023M0309",
     "2023M0316",
@@ -176,13 +169,10 @@
     "2024K0233",
     "2024K0240",
     "2024K0274",
-    "2024K0286",
     "2024K0294",
     "2024K0299",
-    "2024K0358",
     "2024K0369",
     "2024K0421",
-    "2024K0437",
     "2024K0444",
     "2024M0104",
     "2024M0120",
@@ -190,11 +180,8 @@
     "2024M0194",
     "2024M0223",
     "2024M0243",
-    "2024M0244",
     "2024M0267",
     "2024M0372",
-    "2024Q0113",
-    "2024Q0164",
     "2024Q0189",
     "2024Q0219",
     "2024Q0292",
@@ -202,56 +189,40 @@
     "2024Q0324",
     "2024Q0325",
     "2024Q0356",
-    "2024R0137",
     "2024R0289",
-    "2024R0300",
     "2024R0332",
     "2024R0425",
-    "2024X0132",
     "2024X0210",
     "2025K0150",
-    "2025K0154",
     "2025K0226",
     "2025K0229",
     "2025K0232",
     "2025K0250",
     "2025K0284",
-    "2025K0287",
     "2025K0293",
     "2025K0305",
     "2025K0306",
     "2025K0318",
     "2025K0374",
-    "2025K0419",
     "2025K0470",
     "2025K0497",
     "2025M0115",
     "2025M0265",
-    "2025M0329",
     "2025M0332",
     "2025M0338",
     "2025M0360",
     "2025M0395",
     "2025M0441",
-    "2025M0473",
     "2025Q0124",
-    "2025Q0142",
     "2025Q0155",
     "2025Q0247",
     "2025Q0304",
     "2025Q0314",
-    "2025Q0316",
     "2025Q0331",
     "2025Q0335",
-    "2025Q0445",
-    "2025R0137",
-    "2025R0140",
     "2025R0222",
     "2025R0277",
-    "2025R0285",
-    "2025R0309",
     "2025R0312",
-    "2025R0398",
     "2025X0116",
     "2025X0143",
     "2025X0283",
@@ -259,7 +230,6 @@
     "2026K0123",
     "2026K0129",
     "2026K0233",
-    "2026K0443",
     "2026M0120",
     "2026M0136",
     "2026M0164",
@@ -267,24 +237,10 @@
     "2026M0211",
     "2026M0247",
     "2026M0275",
-    "2026M0366",
-    "2026M0432",
-    "2026M0444",
-    "2026M0445",
     "2026Q0128",
-    "2026Q0210",
     "2026Q0320",
-    "2026R0127",
-    "2026R0137",
-    "2026R0142",
     "2026R0145",
-    "2026R0166",
-    "2026R0186",
-    "2026R0189",
-    "2026R0195",
-    "2026R0196",
     "2026R0319",
-    "2026X0274",
     "2026X0282",
     "2026X0354",
     "2026X0362",
@@ -306,39 +262,125 @@
   "rejected_project_ids": [],
   "source_missing_project_ids": [
     "2020K0444",
-    "2020M0385",
     "2020Q0317",
+    "2022K0366",
     "2022Y0395",
     "2023M0452",
+    "2023Q0144",
+    "2023R0259",
+    "2024M0148",
     "2024M0278",
     "2024Q0135",
-    "2025M0252",
+    "2024Q0434",
+    "2024X0217",
+    "2024X0309",
+    "2025K0234",
+    "2025K0356",
+    "2025K0417",
+    "2025K0434",
+    "2025M0399",
     "2025M0464",
+    "2025Q0144",
+    "2025Q0230",
+    "2025Q0288",
+    "2025Q0403",
+    "2025Q0476",
+    "2025Q0494",
+    "2025X0147",
+    "2025X0256",
+    "2025X0264",
+    "2025X0296",
+    "2025X0462",
     "2025Y0279",
+    "2026K0117",
+    "2026K0322",
+    "2026M0108",
+    "2026M0163",
+    "2026M0208",
+    "2026M0250",
+    "2026M0382",
+    "2026M0454",
+    "2026M0455",
+    "2026M0515",
+    "2026Q0184",
+    "2026Q0198",
+    "2026Q0371",
+    "2026Q0460",
+    "2026R0299",
     "2026R0327",
-    "2026X0464",
+    "2026R0338",
+    "2026R0368",
+    "2026X0180",
+    "2026X0270",
+    "2026X0514",
     "2026Y0360",
+    "2027K0210",
+    "2027Q0181",
+    "P2009K0185",
     "P2009M0029",
     "P2012X0048"
   ],
   "unmapped_exact_bbl_missing_centroid": [
     "2020K0444",
-    "2020M0385",
     "2020Q0317",
     "2023M0452",
     "2024M0278",
     "2024Q0135",
+    "P2009K0185",
     "P2009M0029",
     "P2012X0048"
   ],
   "unmapped_no_retained_bbl": [
+    "2022K0366",
     "2022Y0395",
-    "2025M0252",
+    "2023Q0144",
+    "2023R0259",
+    "2024M0148",
+    "2024Q0434",
+    "2024X0217",
+    "2024X0309",
+    "2025K0234",
+    "2025K0356",
+    "2025K0417",
+    "2025K0434",
+    "2025M0399",
     "2025M0464",
+    "2025Q0144",
+    "2025Q0230",
+    "2025Q0288",
+    "2025Q0403",
+    "2025Q0476",
+    "2025Q0494",
+    "2025X0147",
+    "2025X0256",
+    "2025X0264",
+    "2025X0296",
+    "2025X0462",
     "2025Y0279",
+    "2026K0117",
+    "2026K0322",
+    "2026M0108",
+    "2026M0163",
+    "2026M0208",
+    "2026M0250",
+    "2026M0382",
+    "2026M0454",
+    "2026M0455",
+    "2026M0515",
+    "2026Q0184",
+    "2026Q0198",
+    "2026Q0371",
+    "2026Q0460",
+    "2026R0299",
     "2026R0327",
-    "2026X0464",
-    "2026Y0360"
+    "2026R0338",
+    "2026R0368",
+    "2026X0180",
+    "2026X0270",
+    "2026X0514",
+    "2026Y0360",
+    "2027K0210",
+    "2027Q0181"
   ],
   "outcomes": [
     {
@@ -360,16 +402,6 @@
       "bbl_count": 3,
       "exact_bbl_count": 3,
       "selected_bbl": "3074230036"
-    },
-    {
-      "project_id": "2019K0190",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 15,
-      "exact_bbl_count": 15,
-      "selected_bbl": "3018970006"
     },
     {
       "project_id": "2019K0217",
@@ -472,16 +504,6 @@
       "selected_bbl": "5037140001"
     },
     {
-      "project_id": "2019X0255",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "2034550001"
-    },
-    {
       "project_id": "2020K0276",
       "status": "mapped",
       "reason": null,
@@ -560,16 +582,6 @@
       "bbl_count": 3,
       "exact_bbl_count": 3,
       "selected_bbl": "1017490048"
-    },
-    {
-      "project_id": "2020M0385",
-      "status": "source_missing",
-      "reason": "exact_bbl_missing_centroid",
-      "method": "unmapped",
-      "precision": null,
-      "bbl_count": 0,
-      "exact_bbl_count": 2,
-      "selected_bbl": null
     },
     {
       "project_id": "2020M0429",
@@ -762,16 +774,6 @@
       "selected_bbl": "5022670006"
     },
     {
-      "project_id": "2021X0247",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "2055597501"
-    },
-    {
       "project_id": "2022K0121",
       "status": "mapped",
       "reason": null,
@@ -810,6 +812,16 @@
       "bbl_count": 3,
       "exact_bbl_count": 3,
       "selected_bbl": "3018680061"
+    },
+    {
+      "project_id": "2022K0366",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2022K0416",
@@ -902,16 +914,6 @@
       "selected_bbl": "4096490037"
     },
     {
-      "project_id": "2022Q0449",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 14,
-      "exact_bbl_count": 14,
-      "selected_bbl": "4035220023"
-    },
-    {
       "project_id": "2022R0134",
       "status": "mapped",
       "reason": null,
@@ -980,16 +982,6 @@
       "bbl_count": 3,
       "exact_bbl_count": 3,
       "selected_bbl": "3031900012"
-    },
-    {
-      "project_id": "2023K0183",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "3070550013"
     },
     {
       "project_id": "2023K0203",
@@ -1072,16 +1064,6 @@
       "selected_bbl": "3070140002"
     },
     {
-      "project_id": "2023M0116",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "1002670019"
-    },
-    {
       "project_id": "2023M0117",
       "status": "mapped",
       "reason": null,
@@ -1100,16 +1082,6 @@
       "bbl_count": 1,
       "exact_bbl_count": 1,
       "selected_bbl": "1004150077"
-    },
-    {
-      "project_id": "2023M0213",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 7,
-      "exact_bbl_count": 7,
-      "selected_bbl": "1011070005"
     },
     {
       "project_id": "2023M0271",
@@ -1170,6 +1142,16 @@
       "bbl_count": 1,
       "exact_bbl_count": 1,
       "selected_bbl": "4000760011"
+    },
+    {
+      "project_id": "2023Q0144",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2023Q0177",
@@ -1290,6 +1272,16 @@
       "bbl_count": 1,
       "exact_bbl_count": 1,
       "selected_bbl": "5071000028"
+    },
+    {
+      "project_id": "2023R0259",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2023R0281",
@@ -1432,16 +1424,6 @@
       "selected_bbl": "3061310001"
     },
     {
-      "project_id": "2024K0286",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "3023560001"
-    },
-    {
       "project_id": "2024K0294",
       "status": "mapped",
       "reason": null,
@@ -1462,16 +1444,6 @@
       "selected_bbl": "3046160064"
     },
     {
-      "project_id": "2024K0358",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2,
-      "exact_bbl_count": 2,
-      "selected_bbl": "3025900001"
-    },
-    {
       "project_id": "2024K0369",
       "status": "mapped",
       "reason": null,
@@ -1490,16 +1462,6 @@
       "bbl_count": 11,
       "exact_bbl_count": 11,
       "selected_bbl": "3084870021"
-    },
-    {
-      "project_id": "2024K0437",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "3018590024"
     },
     {
       "project_id": "2024K0444",
@@ -1530,6 +1492,16 @@
       "bbl_count": 1,
       "exact_bbl_count": 1,
       "selected_bbl": "1012857501"
+    },
+    {
+      "project_id": "2024M0148",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2024M0193",
@@ -1572,16 +1544,6 @@
       "selected_bbl": "1002827503"
     },
     {
-      "project_id": "2024M0244",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 8,
-      "exact_bbl_count": 8,
-      "selected_bbl": "1011070005"
-    },
-    {
       "project_id": "2024M0267",
       "status": "mapped",
       "reason": null,
@@ -1612,16 +1574,6 @@
       "selected_bbl": "1008290050"
     },
     {
-      "project_id": "2024Q0113",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 24,
-      "exact_bbl_count": 24,
-      "selected_bbl": "4019940007"
-    },
-    {
       "project_id": "2024Q0135",
       "status": "source_missing",
       "reason": "exact_bbl_missing_centroid",
@@ -1630,16 +1582,6 @@
       "bbl_count": 0,
       "exact_bbl_count": 25,
       "selected_bbl": null
-    },
-    {
-      "project_id": "2024Q0164",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 6,
-      "exact_bbl_count": 6,
-      "selected_bbl": "4069670030"
     },
     {
       "project_id": "2024Q0189",
@@ -1712,14 +1654,14 @@
       "selected_bbl": "4073090001"
     },
     {
-      "project_id": "2024R0137",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5000970030"
+      "project_id": "2024Q0434",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2024R0289",
@@ -1730,16 +1672,6 @@
       "bbl_count": 1,
       "exact_bbl_count": 1,
       "selected_bbl": "5065520054"
-    },
-    {
-      "project_id": "2024R0300",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 5,
-      "exact_bbl_count": 5,
-      "selected_bbl": "5000130071"
     },
     {
       "project_id": "2024R0332",
@@ -1762,16 +1694,6 @@
       "selected_bbl": "5072070060"
     },
     {
-      "project_id": "2024X0132",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 4,
-      "exact_bbl_count": 4,
-      "selected_bbl": "2038020013"
-    },
-    {
       "project_id": "2024X0210",
       "status": "mapped",
       "reason": null,
@@ -1782,6 +1704,26 @@
       "selected_bbl": "2027060082"
     },
     {
+      "project_id": "2024X0217",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2024X0309",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
       "project_id": "2025K0150",
       "status": "mapped",
       "reason": null,
@@ -1790,16 +1732,6 @@
       "bbl_count": 4,
       "exact_bbl_count": 4,
       "selected_bbl": "3002080012"
-    },
-    {
-      "project_id": "2025K0154",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3,
-      "exact_bbl_count": 3,
-      "selected_bbl": "3019900030"
     },
     {
       "project_id": "2025K0226",
@@ -1832,6 +1764,16 @@
       "selected_bbl": "3057150004"
     },
     {
+      "project_id": "2025K0234",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
       "project_id": "2025K0250",
       "status": "mapped",
       "reason": null,
@@ -1850,16 +1792,6 @@
       "bbl_count": 1,
       "exact_bbl_count": 1,
       "selected_bbl": "3061090001"
-    },
-    {
-      "project_id": "2025K0287",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "3025900025"
     },
     {
       "project_id": "2025K0293",
@@ -1902,6 +1834,16 @@
       "selected_bbl": "3007070057"
     },
     {
+      "project_id": "2025K0356",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
       "project_id": "2025K0374",
       "status": "mapped",
       "reason": null,
@@ -1912,14 +1854,24 @@
       "selected_bbl": "3070920020"
     },
     {
-      "project_id": "2025K0419",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2,
-      "exact_bbl_count": 2,
-      "selected_bbl": "3021070002"
+      "project_id": "2025K0417",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2025K0434",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2025K0470",
@@ -1952,16 +1904,6 @@
       "selected_bbl": "1012930003"
     },
     {
-      "project_id": "2025M0252",
-      "status": "source_missing",
-      "reason": "no_retained_bbl",
-      "method": "unmapped",
-      "precision": null,
-      "bbl_count": 0,
-      "exact_bbl_count": 0,
-      "selected_bbl": null
-    },
-    {
       "project_id": "2025M0265",
       "status": "mapped",
       "reason": null,
@@ -1970,16 +1912,6 @@
       "bbl_count": 11,
       "exact_bbl_count": 11,
       "selected_bbl": "1013757504"
-    },
-    {
-      "project_id": "2025M0329",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "1002187505"
     },
     {
       "project_id": "2025M0332",
@@ -2022,6 +1954,16 @@
       "selected_bbl": "1008097502"
     },
     {
+      "project_id": "2025M0399",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
       "project_id": "2025M0441",
       "status": "mapped",
       "reason": null,
@@ -2042,16 +1984,6 @@
       "selected_bbl": null
     },
     {
-      "project_id": "2025M0473",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 5,
-      "exact_bbl_count": 5,
-      "selected_bbl": "1013290025"
-    },
-    {
       "project_id": "2025Q0124",
       "status": "mapped",
       "reason": null,
@@ -2062,14 +1994,14 @@
       "selected_bbl": "4006720019"
     },
     {
-      "project_id": "2025Q0142",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "4020030001"
+      "project_id": "2025Q0144",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2025Q0155",
@@ -2082,6 +2014,16 @@
       "selected_bbl": "4052770025"
     },
     {
+      "project_id": "2025Q0230",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
       "project_id": "2025Q0247",
       "status": "mapped",
       "reason": null,
@@ -2090,6 +2032,16 @@
       "bbl_count": 2,
       "exact_bbl_count": 2,
       "selected_bbl": "4022210001"
+    },
+    {
+      "project_id": "2025Q0288",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2025Q0304",
@@ -2112,16 +2064,6 @@
       "selected_bbl": "4015460025"
     },
     {
-      "project_id": "2025Q0316",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 25,
-      "exact_bbl_count": 25,
-      "selected_bbl": "4002760035"
-    },
-    {
       "project_id": "2025Q0331",
       "status": "mapped",
       "reason": null,
@@ -2142,34 +2084,34 @@
       "selected_bbl": "4019060001"
     },
     {
-      "project_id": "2025Q0445",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2,
-      "exact_bbl_count": 2,
-      "selected_bbl": "4049780025"
+      "project_id": "2025Q0403",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
-      "project_id": "2025R0137",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3,
-      "exact_bbl_count": 3,
-      "selected_bbl": "5000090022"
+      "project_id": "2025Q0476",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
-      "project_id": "2025R0140",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5074650126"
+      "project_id": "2025Q0494",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2025R0222",
@@ -2192,26 +2134,6 @@
       "selected_bbl": "5009530101"
     },
     {
-      "project_id": "2025R0285",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5006140010"
-    },
-    {
-      "project_id": "2025R0309",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 3,
-      "exact_bbl_count": 3,
-      "selected_bbl": "5064000054"
-    },
-    {
       "project_id": "2025R0312",
       "status": "mapped",
       "reason": null,
@@ -2220,16 +2142,6 @@
       "bbl_count": 3,
       "exact_bbl_count": 3,
       "selected_bbl": "5008910052"
-    },
-    {
-      "project_id": "2025R0398",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2,
-      "exact_bbl_count": 2,
-      "selected_bbl": "5000360025"
     },
     {
       "project_id": "2025X0116",
@@ -2252,6 +2164,36 @@
       "selected_bbl": "2041200016"
     },
     {
+      "project_id": "2025X0147",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2025X0256",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2025X0264",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
       "project_id": "2025X0283",
       "status": "mapped",
       "reason": null,
@@ -2260,6 +2202,16 @@
       "bbl_count": 3,
       "exact_bbl_count": 3,
       "selected_bbl": "2032310264"
+    },
+    {
+      "project_id": "2025X0296",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2025X0385",
@@ -2272,7 +2224,27 @@
       "selected_bbl": "2025970001"
     },
     {
+      "project_id": "2025X0462",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
       "project_id": "2025Y0279",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2026K0117",
       "status": "source_missing",
       "reason": "no_retained_bbl",
       "method": "unmapped",
@@ -2312,14 +2284,24 @@
       "selected_bbl": "3001100025"
     },
     {
-      "project_id": "2026K0443",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 2,
-      "exact_bbl_count": 2,
-      "selected_bbl": "3001747503"
+      "project_id": "2026K0322",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2026M0108",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2026M0120",
@@ -2342,6 +2324,16 @@
       "selected_bbl": "1013760001"
     },
     {
+      "project_id": "2026M0163",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
       "project_id": "2026M0164",
       "status": "mapped",
       "reason": null,
@@ -2360,6 +2352,16 @@
       "bbl_count": 4,
       "exact_bbl_count": 4,
       "selected_bbl": "1012730009"
+    },
+    {
+      "project_id": "2026M0208",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2026M0211",
@@ -2382,6 +2384,16 @@
       "selected_bbl": "1010090017"
     },
     {
+      "project_id": "2026M0250",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
       "project_id": "2026M0275",
       "status": "mapped",
       "reason": null,
@@ -2392,44 +2404,44 @@
       "selected_bbl": "1012840021"
     },
     {
-      "project_id": "2026M0366",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 8,
-      "exact_bbl_count": 8,
-      "selected_bbl": "1014460004"
+      "project_id": "2026M0382",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
-      "project_id": "2026M0432",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "1012687501"
+      "project_id": "2026M0454",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
-      "project_id": "2026M0444",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "1003410026"
+      "project_id": "2026M0455",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
-      "project_id": "2026M0445",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "1007540034"
+      "project_id": "2026M0515",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2026Q0128",
@@ -2442,14 +2454,24 @@
       "selected_bbl": "4009070001"
     },
     {
-      "project_id": "2026Q0210",
-      "status": "mapped",
-      "reason": null,
-      "method": "multi_bbl_anchor",
-      "precision": "anchor",
-      "bbl_count": 25,
-      "exact_bbl_count": 25,
-      "selected_bbl": "4100010001"
+      "project_id": "2026Q0184",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2026Q0198",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2026Q0320",
@@ -2462,34 +2484,24 @@
       "selected_bbl": "4021890002"
     },
     {
-      "project_id": "2026R0127",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5007087501"
+      "project_id": "2026Q0371",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
-      "project_id": "2026R0137",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5000920001"
-    },
-    {
-      "project_id": "2026R0142",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5008710240"
+      "project_id": "2026Q0460",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2026R0145",
@@ -2502,54 +2514,14 @@
       "selected_bbl": "5030660174"
     },
     {
-      "project_id": "2026R0166",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5005690361"
-    },
-    {
-      "project_id": "2026R0186",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5028100080"
-    },
-    {
-      "project_id": "2026R0189",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5008320110"
-    },
-    {
-      "project_id": "2026R0195",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5006180107"
-    },
-    {
-      "project_id": "2026R0196",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "5006180125"
+      "project_id": "2026R0299",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2026R0319",
@@ -2572,14 +2544,44 @@
       "selected_bbl": null
     },
     {
-      "project_id": "2026X0274",
-      "status": "mapped",
-      "reason": null,
-      "method": "single_bbl_centroid",
-      "precision": "exact",
-      "bbl_count": 1,
-      "exact_bbl_count": 1,
-      "selected_bbl": "2059450079"
+      "project_id": "2026R0338",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2026R0368",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2026X0180",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2026X0270",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
     },
     {
       "project_id": "2026X0282",
@@ -2612,7 +2614,7 @@
       "selected_bbl": "2025710001"
     },
     {
-      "project_id": "2026X0464",
+      "project_id": "2026X0514",
       "status": "source_missing",
       "reason": "no_retained_bbl",
       "method": "unmapped",
@@ -2629,6 +2631,36 @@
       "precision": null,
       "bbl_count": 0,
       "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2027K0210",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2027Q0181",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "P2009K0185",
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 1,
       "selected_bbl": null
     },
     {
@@ -2787,20 +2819,13 @@
     "resolver_version": "cityscroll.land_project_geography.v1",
     "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1",
     "payload_path": "site/data/land_project_map_points.json",
-    "payload_bytes": 39360,
-    "payload_sha256": "358b2dfd9a9476ee814fe751df1b8e4d1c487a3dfc7e2cd9fa3353dc3296abdf",
+    "payload_bytes": 35982,
+    "payload_sha256": "a92374796d385bd1a38d6613106177d659ffe21b9f054202a4cb46b7feb8334f",
     "geometry_shard_dir": "site/data/land-project-geometry",
     "geometry_shard_keys": [
-      "00",
       "2a",
-      "2b",
-      "82",
-      "b8",
-      "b9",
-      "ba",
-      "cf",
-      "e7"
+      "b9"
     ],
-    "geometry_shard_count": 9
+    "geometry_shard_count": 2
   }
 }

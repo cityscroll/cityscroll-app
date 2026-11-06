@@ -43,6 +43,35 @@ const audit = JSON.parse(
 const landDefault = JSON.parse(readFileSync(join(ROOT, "site/data/land_default_ulurp.json"), "utf8"));
 const landOutcomesSeed = JSON.parse(readFileSync(join(ROOT, "site/data/land_outcomes_seed.json"), "utf8"));
 
+/**
+ * Find a currently-live project whose draft dispositions still demonstrate
+ * the shape this file's A4 test needs: at least two distinct Community Board
+ * draft rows plus a Borough Board/Borough President draft row, none accepted.
+ * 2025K0305 was the prior hardcoded specimen; its dispositions rotated away
+ * from this shape in a later refresh, so this re-derives a live specimen
+ * instead of re-pinning a fresh literal that the next refresh could break
+ * the same way.
+ */
+function findDraftMultiBodySpecimen() {
+  const byProject = new Map();
+  for (const [projectId, outcome] of Object.entries(landDefault.outcomes?.by_project || {})) {
+    byProject.set(projectId, { ...(byProject.get(projectId) || {}), ...outcome });
+  }
+  for (const [projectId, outcome] of Object.entries(landOutcomesSeed.by_project || {})) {
+    byProject.set(projectId, { ...(byProject.get(projectId) || {}), ...outcome });
+  }
+  for (const [projectId, outcome] of byProject) {
+    const drafts = (outcome.dispositions || []).filter((row) => row.status === "Draft");
+    const communityBoardRows = drafts.filter((row) => row.representing === "Community Board");
+    const boroughRow = drafts.find((row) => /Borough Board|BP/.test((row.representing || "") + (row.name || "")));
+    const distinctBoards = new Set(communityBoardRows.map((row) => row.name));
+    if (distinctBoards.size >= 2 && boroughRow) {
+      return { projectId, outcome, drafts, communityBoardRows: [...communityBoardRows], boroughRow };
+    }
+  }
+  return null;
+}
+
 const HEARING_2023X0149 = Object.freeze({
   request_id: "20260608005",
   agency_name: "Borough President - Bronx",
@@ -181,30 +210,26 @@ test("A1 hearing 2023X0149 is an exact project-related proceeding, not a decisio
   assert.equal(audit.specimens.hearing_2023X0149.project_id, "2023X0149");
 });
 
-test("A4 draft 2025K0305 CB11/CB13/Borough Board rows are not decisions", () => {
-  const outcome = {
-    ...(landDefault.outcomes.by_project["2025K0305"] || {}),
-    ...(landOutcomesSeed.by_project["2025K0305"] || {}),
-  };
-  assert.ok(outcome);
-  const drafts = (outcome.dispositions || []).filter((row) => row.status === "Draft");
+test("A4 draft multi-community-board/Borough Board rows are not decisions", () => {
+  const specimen = findDraftMultiBodySpecimen();
+  assert.ok(specimen, "no live project currently has 2+ draft Community Board rows plus a draft Borough Board/BP row");
+  const { projectId, outcome, drafts, communityBoardRows, boroughRow } = specimen;
   assert.ok(drafts.length >= 3);
-  assert.ok(drafts.some((row) => /CB11/.test(row.name)));
-  assert.ok(drafts.some((row) => /CB13/.test(row.name)));
-  assert.ok(drafts.some((row) => /Borough Board|BP/.test(row.representing + row.name)));
+  assert.ok(communityBoardRows.length >= 2);
+  assert.ok(boroughRow);
   for (const row of drafts) {
     const classified = classifyLandDispositionRelation({
       disposition: row,
-      project_id: "2025K0305",
+      project_id: projectId,
     });
     assert.equal(classified.accepted, false, row.name);
     assert.equal(classified.reason, "draft_only");
     assert.equal(classified.is_decision, false);
-    assert.equal(documentedDecisionFromDisposition(row, { project_id: "2025K0305" }), null);
+    assert.equal(documentedDecisionFromDisposition(row, { project_id: projectId }), null);
   }
   const connections = buildProjectConnectionEvidence({
-    projectId: "2025K0305",
-    projectRows: [{ project_id: "2025K0305", project_name: "2025K0305" }],
+    projectId,
+    projectRows: [{ project_id: projectId, project_name: projectId }],
     outcome,
   });
   const decisions = connections.groups.find((group) => group.id === "decisions");

@@ -74,8 +74,12 @@ function t(key, values = {}) {
 }
 
 const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40 });
-const MAPPED_SPECIMEN = "2025K0305";
-const UNMAPPED_SPECIMEN = "2025M0252";
+// 2025K0305 and 2025M0252 were the prior specimens until a refresh rotated
+// them out of the 40-row Default Land snapshot (same replacements used
+// elsewhere this session, e.g. LAND_PROJECT_MAP_POINT_SPECIMENS in
+// site/land_project_map_points.mjs).
+const MAPPED_SPECIMEN = "2023Q0351";
+const UNMAPPED_SPECIMEN = "2026X0180";
 // A point the projection knows and the filtered rows do not. It is the whole "the map is not
 // a search" question in one id: it has a perfectly good coordinate and still may not appear.
 const POINT_ONLY_ID = "2099Z9999";
@@ -163,21 +167,21 @@ test("A1 the painted map carries one routed marker per mapped row and routes now
 
 /* ===== A2: the map's count and the List's count are both told ===== */
 
-test("A2 default Map reports 40 total, 33 mapped and 7 unmapped, consistently", () => {
+test("A2 default Map reports 40 total, 26 mapped and 14 unmapped, consistently", () => {
   const model = modelFor();
-  assert.deepEqual({ ...model.counts }, { total: 40, mapped: 33, unmapped: 7 });
+  assert.deepEqual({ ...model.counts }, { total: 40, mapped: 26, unmapped: 14 });
   assert.equal(model.counts.mapped + model.counts.unmapped, model.counts.total);
 
   const html = htmlFor(model);
   assert.equal(attr(html, "data-land-map-total")[0], "40");
-  assert.equal(attr(html, "data-land-map-mapped")[0], "33");
-  assert.equal(attr(html, "data-land-map-unmapped")[0], "7");
+  assert.equal(attr(html, "data-land-map-mapped")[0], "26");
+  assert.equal(attr(html, "data-land-map-unmapped")[0], "14");
 
   // The failure this card exists to prevent: the marker count standing in for the total.
   const markers = [...html.matchAll(/class="land-map-marker"/g)].length;
-  assert.equal(markers, 33);
+  assert.equal(markers, 26);
   assert.notEqual(markers, model.counts.total);
-  assert.ok(html.includes(t("land_map_unmapped_note", { n: 7 })), "the 7 unmapped rows are stated, not implied");
+  assert.ok(html.includes(t("land_map_unmapped_note", { n: 14 })), "the 14 unmapped rows are stated, not implied");
 });
 
 test("A2 the unmapped specimen keeps its identity in the count and never reaches the canvas", () => {
@@ -201,13 +205,13 @@ test("A3 marker labels name the placement method and its precision", () => {
   assert.ok(specimen);
   assert.equal(specimen.method, "multi_bbl_anchor");
   assert.equal(specimen.precision, KNOWN_LAND_POINT_PRECISIONS.ANCHOR);
-  assert.equal(specimen.bblCount, 25);
+  assert.equal(specimen.bblCount, 24);
 
   assert.ok(specimen.label.includes(specimen.title), "the label names the project");
-  assert.ok(specimen.label.includes(t("land_map_method_multi_bbl_anchor", { n: 25 })),
+  assert.ok(specimen.label.includes(t("land_map_method_multi_bbl_anchor", { n: 24 })),
     "the label names the method, with the lot count it was anchored across");
   assert.ok(specimen.label.includes(t("land_map_precision_anchor")), "the label names the precision");
-  assert.ok(specimen.label.includes("25"), "a 25-lot anchor says 25");
+  assert.ok(specimen.label.includes("24"), "a 24-lot anchor says 24");
 });
 
 test("A3 anchor and representative markers never claim an exact address", () => {
@@ -339,7 +343,7 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
   for (const [width] of receipt.viewports) {
     const after = receipt.after[`default-map@${width}`];
     assert.ok(after, `no default-map capture at ${width}px`);
-    assert.deepEqual(after.counts_published, { total: 40, mapped: 33, unmapped: 7 });
+    assert.deepEqual(after.counts_published, { total: 40, mapped: 26, unmapped: 14 });
     assert.equal(after.markers, 33);
     // Every marker painted is a marker a resident can follow.
     assert.equal(after.marker_links, after.markers);
@@ -363,7 +367,7 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
   for (const [width] of receipt.viewports) {
     const filtered = receipt.after[`filtered-map@${width}`];
     assert.ok(filtered.counts_published.total < 40);
-    assert.ok(filtered.counts_published.mapped < 33, "a filtered map painted the whole projection");
+    assert.ok(filtered.counts_published.mapped < 26, "a filtered map painted the whole projection");
     assert.equal(
       filtered.counts_published.mapped + filtered.counts_published.unmapped,
       filtered.counts_published.total,
@@ -373,15 +377,18 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
 });
 
 test("LM-17 landMapParcelSvg draws only markers that carry a shape, and never interactively", () => {
-  const shape = committedGeometryShape("2026R0127");
+  // 2026R0127 (single-lot, has a committed shape) and 2025K0305 (multi-lot,
+  // no shape) were the prior specimens; 2025K0284 and 2023Q0351 replace them
+  // (same replacements used elsewhere this session).
+  const shape = committedGeometryShape("2025K0284");
   const markerLayer = [
-    { projectId: "2026R0127", geometry: shape, label: "One lot" },
-    { projectId: "2025K0305", geometry: null, label: "Many lots" },
+    { projectId: "2025K0284", geometry: shape, label: "One lot" },
+    { projectId: "2023Q0351", geometry: null, label: "Many lots" },
   ];
   const svg = landMapParcelSvg(markerLayer, { escape: (v) => String(v ?? "") });
   assert.match(svg, /<g class="land-map-parcels" aria-hidden="true">/);
-  assert.match(svg, /data-land-map-project="2026R0127"/);
-  assert.doesNotMatch(svg, /data-land-map-project="2025K0305"/);
+  assert.match(svg, /data-land-map-project="2025K0284"/);
+  assert.doesNotMatch(svg, /data-land-map-project="2023Q0351"/);
   assert.match(svg, /pointer-events="none"/);
   assert.match(svg, /<title>One lot<\/title>/);
   assert.doesNotMatch(svg, /<a /, "a parcel outline must never be its own control");
@@ -393,7 +400,7 @@ test("LM-17 landMapParcelSvg renders nothing for an empty marker layer", () => {
 });
 
 test("LM-17 a marker's committed shape survives the full model-to-SVG pipeline", () => {
-  const SINGLE_BBL_SPECIMEN = "2026R0127";
+  const SINGLE_BBL_SPECIMEN = "2025K0284";
   const shape = committedGeometryShape(SINGLE_BBL_SPECIMEN);
   const model = modelFor(
     {},

@@ -144,8 +144,12 @@ function render(summary) {
   return landAuthoritySummaryHTML(summary, { t, escape });
 }
 
-test("A1/A2 2025M0252 CPC decision role renders in plain terms while CB/BP advisory recommendations stay visible and separate", () => {
-  const summary = summarize("2025M0252");
+test("A1/A2 2025K0284 CPC decision role renders in plain terms while CB/BP advisory recommendations stay visible and separate", () => {
+  // 2025M0252 was the prior specimen until a refresh retired it from the
+  // live catalog; 2025K0284 replaces it with the same decision_maker role
+  // and the same shape of prior CB/BP advisory recommendations (Brooklyn CB10
+  // and the Brooklyn Borough President, rather than Manhattan's).
+  const summary = summarize("2025K0284");
   const expected = gold.specimens["cpc-vs-observed-2025M0252"].expect;
   assert.equal(summary.current_role, "decision_maker");
   const html = render(summary);
@@ -158,13 +162,15 @@ test("A1/A2 2025M0252 CPC decision role renders in plain terms while CB/BP advis
   // Prior CB/BP advisory recommendations remain visible as separate events,
   // each still marked advisory, regardless of the current decision role.
   assert.match(html, /data-land-authority-observed-kind="advisory"/);
-  assert.match(html, /community-board:manhattan-cb-05/);
-  assert.match(html, /borough-president:manhattan/);
+  assert.match(html, /community-board:brooklyn-cb-10/);
+  assert.match(html, /borough-president:brooklyn/);
   assert.equal(expected.current_role, "decision_maker");
 });
 
-test("A1/A2 2026Q0210 conditional decision-maker renders its own plain role, never the plain 'Can decide' of an unconditional decider", () => {
-  const summary = summarize("2026Q0210");
+test("A1/A2 2023Q0450 conditional decision-maker renders its own plain role, never the plain 'Can decide' of an unconditional decider", () => {
+  // 2026Q0210 was the prior specimen until a refresh retired it from the
+  // live catalog; 2023Q0450 replaces it with the same conditional_decision_maker role.
+  const summary = summarize("2023Q0450");
   assert.equal(summary.current_role, "conditional_decision_maker");
   const html = render(summary);
   assert.match(html, /data-land-authority-plain-role="conditional_decision_maker"[^>]*>Can decide, conditioned on another body's action</);
@@ -251,7 +257,7 @@ test("A6 a hearing row referencing a project with no attached or looked-up autho
 });
 
 test("A7 existing follow, calendar, source, and observed-recommendation affordances remain intact beside the new plain-role line", () => {
-  const html = render(summarize("2025M0252"));
+  const html = render(summarize("2025K0284"));
   assert.match(html, /data-land-authority-follow="1"/);
   assert.match(html, /data-project-follow="project"/);
   assert.match(html, /Follow this project/);

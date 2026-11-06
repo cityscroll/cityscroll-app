@@ -92,6 +92,28 @@ function viewFor(projectId, rows = WAREHOUSE_ROWS) {
   });
 }
 
+// Finds an applicant with exactly N currently-retained projects, deterministically
+// (lowest project_id first), rather than pinning a specific pair of ids: which
+// applicant has exactly two live projects changes with every refresh (2024K0358 /
+// "GO Quay LLC" was the prior pick; both of its projects have since left the
+// retained corpus).
+function pairedApplicantSpecimen(rows = WAREHOUSE_ROWS, count = 2) {
+  const byApplicant = new Map();
+  for (const row of rows) {
+    const label = String(row.primary_applicant || "").trim();
+    if (!label) continue;
+    if (!byApplicant.has(label)) byApplicant.set(label, []);
+    byApplicant.get(label).push(row);
+  }
+  const match = [...byApplicant.entries()]
+    .filter(([, projects]) => projects.length === count)
+    .sort(([, a], [, b]) => a[0].project_id.localeCompare(b[0].project_id))[0];
+  assert.ok(match, `the retained corpus must carry at least one applicant with exactly ${count} projects`);
+  const [label, projects] = match;
+  projects.sort((a, b) => a.project_id.localeCompare(b.project_id));
+  return { label, projects };
+}
+
 test("the reviewed baseline repeats 18 exact applicant labels across 42 of 238 projects", (t) => {
   const baseline = baselineRows();
   if (!baseline) {
@@ -340,12 +362,13 @@ test("a failed load stays unavailable and never becomes a no-other-projects clai
 });
 
 test("the rendered section is an expanded native disclosure of native links", () => {
-  const html = render(viewFor("2024K0358"));
+  const { label, projects: [first, second] } = pairedApplicantSpecimen();
+  const html = render(viewFor(first.project_id));
   assert.match(html, /<details class="land-same-applicant-disclosure"[^>]*open>/);
   assert.match(html, /<summary class="land-same-applicant-summary">/);
-  assert.match(html, /<a class="land-same-applicant-link" href="#land\/2025K0287"/);
-  assert.match(html, /data-project-ref="project:2024K0358"/);
-  assert.match(html, /data-applicant-label="GO Quay LLC"/);
+  assert.match(html, new RegExp(`<a class="land-same-applicant-link" href="#land/${second.project_id}"`));
+  assert.match(html, new RegExp(`data-project-ref="project:${first.project_id}"`));
+  assert.match(html, new RegExp(`data-applicant-label="${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
   assert.match(html, /data-same-applicant-total="1"/);
   assert.match(html, /land_same_applicant_count_one:1/);
   // Inspecting the list must not navigate, subscribe or post anywhere.
@@ -407,7 +430,8 @@ test("a group larger than the display bound keeps an exact visible total", () =>
 });
 
 test("the view is a pure read of the rows it is handed", () => {
-  const view = viewFor("2024K0358");
+  const { projects: [first] } = pairedApplicantSpecimen();
+  const view = viewFor(first.project_id);
   assert.equal(view.schema, LAND_SAME_APPLICANT_SCHEMA);
   assert.equal(view.vintage, WAREHOUSE.materialized_at);
   assert.equal(view.scope, "retained_land_project_snapshot");

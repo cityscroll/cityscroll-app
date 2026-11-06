@@ -133,12 +133,16 @@ test("A1 2025K0305 explains CB11, CB13, Brooklyn Borough Board, and Borough Pres
 });
 
 test("A2 draft Borough Board dispositions never become an observed recommendation", () => {
-  const dispositions = outcomesFor("2025K0305").dispositions || [];
+  // 2025K0305 left site/data/land_outcomes_seed.json during a refresh;
+  // 2023K0357 is the current all-draft, multi-body (including Borough
+  // Board) replacement, same specimen used for this purpose in
+  // test/land_actor_outcome.test.mjs.
+  const dispositions = outcomesFor("2023K0357").dispositions || [];
   assert.equal(dispositions.length, 4);
   assert.equal(dispositions.every((row) => row.status === "Draft"), true);
   assert.ok(dispositions.some((row) => row.representing === "Borough Board"));
   assert.equal(dispositions.every((row) => observedRecommendationFromDisposition(row) == null), true);
-  const projection = project(warehouseRow("2025K0305"));
+  const projection = project(warehouseRow("2023K0357"));
   assert.equal(projection.status, "resolved");
   assert.equal(projection.edges.every((edge) => edge.observed === false), true);
   assert.equal(projection.edges.some((edge) => edge.relation === "issues_recommendation"), false);
@@ -156,13 +160,14 @@ test("A3 each accepted edge retains geography, vintage, profile version, rule, a
   }
 });
 
-test("A4 single-CD 2025M0252 has no Borough Board role", () => {
-  const row = warehouseRow("2025M0252");
-  assert.equal(row.community_district, "M05");
+test("A4 single-CD 2019K0219 has no Borough Board role", () => {
+  // 2025M0252 left the live ZAP warehouse during a refresh; 2019K0219 is a
+  // currently-live single-CD replacement with the same resolved, non-Borough-Board shape.
+  const row = warehouseRow("2019K0219");
+  assert.equal(row.community_district, "K01");
   const projection = project(row);
-  const expected = gold.specimens["negative-single-cd-2025M0252"].expect;
-  assert.equal(projection.status, expected.status);
-  assert.deepEqual(bodyRefs(projection), expected.body_refs);
+  assert.equal(projection.status, "resolved");
+  assert.deepEqual(bodyRefs(projection), ["community-board:brooklyn-cb-01", "borough-president:brooklyn"]);
   assert.equal(projection.facts.borough_board, false);
   assert.equal(projection.edges.some((edge) => edge.role === "affected_borough_board"), false);
 });
@@ -187,13 +192,30 @@ test("A4 cross-borough, missing-CD, and title-only fixtures stay free of unsuppo
 });
 
 test("A4 mixed and unknown procedures remain unresolved and non-linking", () => {
-  const mixed = project(warehouseRow("2024M0244"));
+  // 2024M0244 left the live ZAP warehouse during a refresh; its input is
+  // frozen here the same way it is in test/land_action_procedure_resolution.test.mjs.
+  const mixed = project({
+    project_id: "2024M0244",
+    actions: "ZS; ZM; ZR; LD; LD",
+    ulurp_numbers: "C260015ZSM; C260013ZMM; N260014ZRM; 260201LDM; 260202LDM",
+    ulurp_non: "ULURP",
+    // Location fields are not pinned elsewhere for this frozen specimen, so
+    // this is a plausible Manhattan placeholder (the "M" in the project id),
+    // only to get past the location check; the assertions below are about
+    // procedure resolution, not this specific geography.
+    borough: "Manhattan",
+    community_district: "M04",
+  });
   assert.equal(mixed.status, "unresolved");
   assert.equal(mixed.reason, "mixed_procedure");
   assert.equal(mixed.linking, false);
   assert.equal(mixed.edges.length, 0);
 
-  const unknown = project(warehouseRow("2026K0123"));
+  // 2026K0123 was certified into ULURP during a refresh (it now resolves
+  // mixed_procedure instead of unresolved_procedure, same real-world
+  // progression noted elsewhere in this PR); 2026Q0184 is the current
+  // unresolved_procedure replacement.
+  const unknown = project(warehouseRow("2026Q0184"));
   assert.equal(unknown.status, "unresolved");
   assert.equal(unknown.reason, "unresolved_procedure");
   assert.equal(unknown.edges.length, 0);

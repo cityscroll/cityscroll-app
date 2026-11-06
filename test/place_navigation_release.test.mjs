@@ -70,18 +70,26 @@ const REQUIRED_DELIVERY_COMMIT = "bcbb626ce3cf7d07e5fdd5a0088ff4951525db4c";
 const PUBLIC_ALIAS = "cc6bdbee29292";
 const WATCH_PREVIEW_PERTURBATION_ID = "1999Z9999";
 
+// Specimens re-pinned after a refresh rotated the prior ones out of the live
+// catalog: fdny/si0105 (was 2026R0127/SI0105), dewitt (was 2023M0213/MN0401
+// /MN0402 — no live Manhattan project currently spans two NTAs, so this now
+// uses a Queens multi-NTA project), queens/bronxHoldout (were 2025Q0142/
+// QN0402 and 2019X0255/BX0902), noBblManhattan (was 2025M0252). See the
+// matching re-pin in tools/capture_place_navigation_release.py and
+// site/place_navigation_continuity.mjs's placeNavigationSi0105BoardJourney
+// (name kept for minimal diff). westshore/citywide/springCreek are unchanged.
 const ANCHORS = Object.freeze({
   kensington: "nta2020:BK1203",
-  si0105: "nta2020:SI0105",
-  si0105Full: "geography:nta2020:SI0105",
-  fdny: "2026R0127",
+  si0105: "nta2020:BX0903",
+  si0105Full: "geography:nta2020:BX0903",
+  fdny: "2023X0347",
   westshore: "2025K0305",
-  dewitt: "2023M0213",
-  queensHoldoutProject: "2025Q0142",
-  queensHoldoutNta: "nta2020:QN0402",
-  bronxHoldoutProject: "2019X0255",
-  bronxHoldoutNta: "nta2020:BX0902",
-  noBblManhattan: "2025M0252",
+  dewitt: "2020Q0240",
+  queensHoldoutProject: "2020Q0157",
+  queensHoldoutNta: "nta2020:QN1403",
+  bronxHoldoutProject: "2025X0143",
+  bronxHoldoutNta: "nta2020:BX1102",
+  noBblManhattan: "2025M0464",
   citywide: "2022Y0395",
   springCreek: "nta2020:BK0504",
 });
@@ -155,21 +163,21 @@ test("A1: Kensington two-board path, FDNY SI0105/R01 path, Westshore and Manhatt
 
   const fdnyRecord = catalogProject(shared.catalog, ANCHORS.fdny);
   assert.ok(fdnyRecord, "catalog retains FDNY project");
-  assert.match(landProjectDisplayTitle(fdnyRecord), /Cont'?d Use|Continued Use|WTC Unit/i);
+  assert.match(landProjectDisplayTitle(fdnyRecord), /Demapping|Norton/i);
   assert.equal(normalizeLandUseActionType(fdnyRecord).is_rezoning, false);
 
   const fdnyView = placeView(shared, ANCHORS.fdny);
   assert.ok(fdnyView, "FDNY place links present");
   assert.deepEqual(
     fdnyView.neighborhoods.map((item) => item.nta_id),
-    ["SI0105"],
+    ["BX0903"],
   );
-  assert.ok(fdnyView.districts.some((board) => board.board_id === "staten-island-cb-01"));
-  assert.ok(fdnyView.districts.some((board) => board.community_district_id === "R01"));
+  assert.ok(fdnyView.districts.some((board) => board.board_id === "bronx-cb-09"));
+  assert.ok(fdnyView.districts.some((board) => board.community_district_id === "X09"));
   const fdnyHtml = renderLandDetailPlaceLinksSection(fdnyView);
   assert.match(fdnyHtml, /data-land-detail-place-links/);
-  assert.match(fdnyHtml, /SI0105|Westerleigh/);
-  assert.match(fdnyHtml, /staten-island-cb-01/);
+  assert.match(fdnyHtml, /BX0903|Castle Hill|Unionport/);
+  assert.match(fdnyHtml, /bronx-cb-09/);
 
   const boundary = buildLandDetailBoundaryLayersView({
     projectId: ANCHORS.fdny,
@@ -194,26 +202,26 @@ test("A1: Kensington two-board path, FDNY SI0105/R01 path, Westshore and Manhatt
 
   const dewittMem = landDetailPlaceMembershipForProject(shared.membership, ANCHORS.dewitt);
   const dewittCoverage = landPlaceLayerCoverage(dewittMem, "nta2020");
-  assert.deepEqual(dewittMem.layers.nta2020.places.slice().sort(), ["MN0401", "MN0402"]);
-  assert.equal(dewittCoverage.matched, 5);
-  assert.equal(dewittCoverage.total, 7);
+  assert.deepEqual(dewittMem.layers.nta2020.places.slice().sort(), ["QN1201", "QN1205"]);
+  assert.equal(dewittCoverage.matched, 4);
+  assert.equal(dewittCoverage.total, 4);
   const dewittView = placeView(shared, ANCHORS.dewitt);
-  assert.ok(dewittView.neighborhoods.some((item) => item.nta_id === "MN0401"));
-  assert.ok(dewittView.neighborhoods.some((item) => item.nta_id === "MN0402"));
+  assert.ok(dewittView.neighborhoods.some((item) => item.nta_id === "QN1201"));
+  assert.ok(dewittView.neighborhoods.some((item) => item.nta_id === "QN1205"));
 
   const journey = placeNavigationSi0105BoardJourney({ view: "map" });
-  assert.match(journey.near_you_href, /geography%3Anta2020%3ASI0105|geography:nta2020:SI0105/);
-  const siMembers = shared.membership?.by_geography?.nta2020?.SI0105 || [];
-  assert.ok(siMembers.length >= 1, "SI0105 membership must stay populated");
+  assert.match(journey.near_you_href, /geography%3Anta2020%3ABX0903|geography:nta2020:BX0903/);
+  const siMembers = shared.membership?.by_geography?.nta2020?.BX0903 || [];
+  assert.ok(siMembers.length >= 1, "BX0903 membership must stay populated");
   assert.match(journey.land_detail_href, /#land\/([^/?#]+)/);
   const journeyProjectId = decodeURIComponent(
     journey.land_detail_href.match(/#land\/([^/?#]+)/)[1],
   );
   assert.ok(
     siMembers.includes(journeyProjectId),
-    `journey land detail ${journeyProjectId} must stay inside SI0105 membership`,
+    `journey land detail ${journeyProjectId} must stay inside BX0903 membership`,
   );
-  assert.match(journey.board_href, /staten-island-cb-01/);
+  assert.match(journey.board_href, /bronx-cb-09/);
 });
 
 test("A2: Queens/Bronx holdouts share general paths; no-BBL, citywide, special district, failed shard stay honest", () => {
@@ -223,30 +231,30 @@ test("A2: Queens/Bronx holdouts share general paths; no-BBL, citywide, special d
     ANCHORS.queensHoldoutNta,
     shared.associations,
   );
-  assert.deepEqual(queensBoard.boards.map((board) => board.board_id), ["queens-cb-04"]);
+  assert.deepEqual(queensBoard.boards.map((board) => board.board_id), ["queens-cb-14"]);
   const bronxBoard = resolveBoardNeighborhoodSelection(
     ANCHORS.bronxHoldoutNta,
     shared.associations,
   );
-  assert.deepEqual(bronxBoard.boards.map((board) => board.board_id), ["bronx-cb-09"]);
+  assert.deepEqual(bronxBoard.boards.map((board) => board.board_id), ["bronx-cb-11"]);
 
   assert.equal(
-    shared.membership.by_geography.nta2020.QN0402.includes(ANCHORS.queensHoldoutProject),
+    shared.membership.by_geography.nta2020.QN1403.includes(ANCHORS.queensHoldoutProject),
     true,
   );
   assert.equal(
-    shared.membership.by_geography.nta2020.BX0902.includes(ANCHORS.bronxHoldoutProject),
+    shared.membership.by_geography.nta2020.BX1102.includes(ANCHORS.bronxHoldoutProject),
     true,
   );
   const queensView = placeView(shared, ANCHORS.queensHoldoutProject);
-  assert.deepEqual(queensView.neighborhoods.map((item) => item.nta_id), ["QN0402"]);
+  assert.deepEqual(queensView.neighborhoods.map((item) => item.nta_id), ["QN1403"]);
   const bronxView = placeView(shared, ANCHORS.bronxHoldoutProject);
-  assert.deepEqual(bronxView.neighborhoods.map((item) => item.nta_id), ["BX0902"]);
+  assert.deepEqual(bronxView.neighborhoods.map((item) => item.nta_id), ["BX1102"]);
 
   // Capture/verify tools must name holdouts in shared case tables, not project-specific branches.
   const captureSource = readFileSync(CAPTURE_TOOL, "utf8");
-  assert.match(captureSource, /queens-holdout|QN0402/);
-  assert.match(captureSource, /bronx-holdout|BX0902/);
+  assert.match(captureSource, /queens-holdout|QN1403/);
+  assert.match(captureSource, /bronx-holdout|BX1102/);
   assert.ok(
     captureSource.includes(ANCHORS.queensHoldoutProject),
     "capture tool must name the Queens holdout project id",
@@ -308,7 +316,7 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
   );
   assert.match(
     captureSource,
-    /served-preview-markup|served-membership-by_geography\.nta2020\.SI0105/,
+    /served-preview-markup|served-membership-by_geography\.nta2020\.BX0903/,
   );
   assert.match(
     captureSource,
@@ -323,8 +331,8 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
   assert.doesNotMatch(captureSource, /pytest\.skip|unittest\.skip|optional browser/i);
 
   const shared = loadShared();
-  const siMembers = shared.membership?.by_geography?.nta2020?.SI0105 || [];
-  assert.ok(siMembers.length >= 1, "SI0105 membership must stay populated");
+  const siMembers = shared.membership?.by_geography?.nta2020?.BX0903 || [];
+  assert.ok(siMembers.length >= 1, "BX0903 membership must stay populated");
   const continuityProjectId = siMembers.includes(ANCHORS.fdny) ? ANCHORS.fdny : siMembers[0];
   for (const width of [390, 1440]) {
     assert.equal(width === 390 || width === 1440, true);
@@ -336,7 +344,7 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
     });
     const nearYou = placeNavigationNearYouHref(state);
     assert.match(nearYou, /near-you/);
-    assert.match(nearYou, /SI0105/);
+    assert.match(nearYou, /BX0903/);
     const land = placeNavigationLandDetailHref(state);
     assert.match(land, /#land\/([^/?#]+)/);
     const landProjectId = decodeURIComponent(land.match(/#land\/([^/?#]+)/)[1]);
@@ -372,10 +380,10 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
     catalogRows: shared.catalog.projects,
     placeMembership: shared.membership,
   });
-  assert.match(handoff.results_href || nearYouLandResultsHref(scope), /geo=geography%3Anta2020%3ASI0105/);
+  assert.match(handoff.results_href || nearYouLandResultsHref(scope), /geo=geography%3Anta2020%3ABX0903/);
   assert.match(
     handoff.record_href || nearYouLandRecordHref(ANCHORS.fdny, { scope }),
-    /#land\/2026R0127/,
+    new RegExp(`#land/${ANCHORS.fdny}`),
   );
 
   const prepared = prepareLandNtaWatchFilter({
@@ -390,7 +398,7 @@ test("A3: capture contract measures 390 and 1440 with real stylesheet, keyboard,
   });
   assert.equal(watchIds.ids.includes(ANCHORS.fdny), true);
 
-  const membershipIds = shared.membership.by_geography.nta2020.SI0105.slice().sort();
+  const membershipIds = shared.membership.by_geography.nta2020.BX0903.slice().sort();
   assert.deepEqual(membershipIds, [ANCHORS.fdny]);
   // Module oracle still proves land NTA watch ids agree with membership when both
   // are independently available; the production packet must not synthesise a
@@ -472,12 +480,12 @@ test("A4: published catalog, place index, district activity, and links share com
 
   const catalog = shared.catalog;
   assert.ok(catalog.projects?.length >= 200);
-  assert.equal(shared.membership.project_count, 244);
+  assert.equal(shared.membership.project_count, 243);
 
   const districtActivity = readJson("site/data/district_activity.json");
   assert.ok(districtActivity.schema || districtActivity.by_council_district);
 
-  const siIds = shared.membership.by_geography.nta2020.SI0105.slice().sort();
+  const siIds = shared.membership.by_geography.nta2020.BX0903.slice().sort();
   assert.deepEqual(siIds, [ANCHORS.fdny]);
 
   const captureSource = readFileSync(CAPTURE_TOOL, "utf8");
@@ -606,11 +614,11 @@ test("A5: verify command invokes the production runner and fails on unmet assert
         assert.ok(Array.isArray(values.membership_project_ids), `${row.name} membership set`);
         assert.equal(
           values.membership_project_ids_source,
-          "served-membership-by_geography.nta2020.SI0105",
+          "served-membership-by_geography.nta2020.BX0903",
         );
         assert.equal(values.watch_address_count, 1, `${row.name} watch address count`);
         assert.ok(
-          (values.watch_address_geographies || []).includes("geography:nta2020:SI0105"),
+          (values.watch_address_geographies || []).includes("geography:nta2020:BX0903"),
           `${row.name} watch address scope`,
         );
         assert.equal(values.watch_address_scope_ok, true, `${row.name} watch address ok`);

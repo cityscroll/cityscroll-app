@@ -44,13 +44,17 @@ import { normalizeGeographyKey } from "../site/scope_v0.mjs";
 
 const ROOT = process.cwd();
 
+// fdny/si0105/boardSi1 re-pinned after a refresh rotated the prior ones
+// (2026R0127/SI0105/staten-island-cb-01) out of the live catalog; see the
+// matching re-pin in site/place_navigation_continuity.mjs's
+// placeNavigationSi0105BoardJourney (name kept for minimal diff).
 const ANCHORS = Object.freeze({
-  fdny: "2026R0127",
+  fdny: "2023X0347",
   dewitt: "2023M0213",
-  si0105: "geography:nta2020:SI0105",
+  si0105: "geography:nta2020:BX0903",
   bk1203: "nta2020:BK1203",
   bk1203Full: "geography:nta2020:BK1203",
-  boardSi1: "staten-island-cb-01",
+  boardSi1: "bronx-cb-09",
   boardBk12: "brooklyn-cb-12",
   boardBk14: "brooklyn-cb-14",
 });
@@ -93,8 +97,8 @@ describe("place_navigation_continuity", () => {
       placeMembership: membership,
     });
     assert.equal(handoff.selection.status, "selected");
-    assert.match(handoff.record_href, /geo=geography%3Anta2020%3ASI0105/);
-    assert.match(handoff.record_href, /#land\/2026R0127/);
+    assert.match(handoff.record_href, /geo=geography%3Anta2020%3ABX0903/);
+    assert.match(handoff.record_href, new RegExp(`#land/${ANCHORS.fdny}`));
 
     const journey = placeNavigationSi0105BoardJourney({
       view: "map",
@@ -105,7 +109,7 @@ describe("place_navigation_continuity", () => {
     assert.match(journey.near_you_href, /^\/near-you\/\?/);
     assert.deepEqual(decodeGeoParams(journey.near_you_href).map(normalizeGeographyKey), [ANCHORS.si0105]);
     assert.match(journey.land_detail_href, /view=map/);
-    assert.match(journey.land_detail_href, /#land\/2026R0127\?boundaries=nta/);
+    assert.match(journey.land_detail_href, new RegExp(`#land/${ANCHORS.fdny}\\?boundaries=nta`));
     assert.equal(journey.board_href, `/community-boards/${ANCHORS.boardSi1}/`);
     assert.deepEqual(placeNavigationFindings(journey.land_detail_href), []);
     assert.deepEqual(placeNavigationFindings(journey.board_href), []);
@@ -333,7 +337,7 @@ describe("place_navigation_continuity", () => {
 
     // Encoded parameters strip unknowns and keep allowlisted keys.
     const noisy = stripPlaceNavigationUnknown(
-      "geo=geography%3Anta2020%3ASI0105&view=map&return=https://x&session=1&utm_source=y&address=Victory",
+      "geo=geography%3Anta2020%3ABX0903&view=map&return=https://x&session=1&utm_source=y&address=Victory",
     );
     assert.equal(noisy.params.get("geo"), ANCHORS.si0105);
     assert.equal(noisy.params.get("view"), "map");

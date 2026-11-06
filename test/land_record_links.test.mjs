@@ -117,9 +117,16 @@ test("publisher place pivots schedule lot-derived place links from the selected 
 });
 
 test("hydrate paints lot-derived place links beside publisher Where pivots", async () => {
+  // 2026R0127 was the prior hardcoded specimen until a refresh retired it
+  // from the live catalog. Staten Island Community District R01 is a fixed
+  // geographic fact (its board name never changes), so this picks whichever
+  // live project currently sits in R01 rather than re-pinning a project id
+  // the next refresh could retire the same way; the specific neighborhood
+  // name below depends on that project's own BBL and is checked structurally
+  // instead of by literal name.
   const catalog = readJson("site/data/land_project_catalog.json");
-  const record = (catalog.projects || []).find((row) => row.project_id === "2026R0127");
-  assert.ok(record);
+  const record = (catalog.projects || []).find((row) => row.community_district === "R01");
+  assert.ok(record, "no live project currently sits in Staten Island CD R01");
 
   const files = new Map([
     ["land_place_membership.json", readJson("site/data/land_place_membership.json")],
@@ -165,7 +172,11 @@ test("hydrate paints lot-derived place links beside publisher Where pivots", asy
     labelForCouncilDistrict: (value) => `Council District ${value}`,
   });
   assert.ok(view);
-  assert.match(detail.nodes.host.innerHTML, /Westerleigh-Castleton Corners/);
+  assert.match(
+    detail.nodes.host.innerHTML,
+    /land-detail-place-nta-link"[^>]*>(?:<span[^>]*>[^<]*<\/span>)?([^<]*\S[^<]*)</,
+    "a lot-derived neighborhood name must render",
+  );
   assert.match(detail.nodes.host.innerHTML, /Staten Island Community Board 1/);
   assert.match(detail.nodes.community.innerHTML, /href=/);
 });

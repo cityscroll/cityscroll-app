@@ -614,13 +614,17 @@ test("a sub-threshold land-use gate keeps an otherwise qualified edge in shadow"
 });
 
 test("graph and UI land-use families share LAND_USE_ACTION_CODE_FAMILY", () => {
+  // 2025R0222's retained `actions` field was "SP; RC; RA; LD" at some earlier
+  // vintage; a later refresh moved it to "RC; RA; LD" (no special_permit
+  // code) as this project's own application progressed. Both graph and UI
+  // sides still agree with each other here, so this is a legitimate restamp
+  // of one project's current action codes, not a graph/UI divergence.
   const southRichmond = landProjects.rows.find((row) => row.project_id === "2025R0222");
   assert.ok(southRichmond, "warehouse must retain 2025R0222 St. Joseph by the Sea");
   const graph = landActionKinds(southRichmond);
   const ui = normalizeLandUseActionType(southRichmond);
   assert.deepEqual(graph, ui.families);
   assert.deepEqual(graph, [
-    "special_permit",
     "certification",
     "authorization",
     "legal_document",

@@ -39,7 +39,7 @@ const landDefault = JSON.parse(read("site", "data", "land_default_ulurp.json"));
 const points = JSON.parse(read("site", "data", "land_project_map_points.json"));
 const authorityPayload = JSON.parse(read("site", "data", "land_authority_summary.json"));
 const authoritySummaries = authorityPayload.summaries || authorityPayload;
-// Frozen 200 Kent authority slice for A4 journey evidence vintage.
+// Frozen Fort Hamilton Mews authority slice for A4 journey evidence vintage.
 const kentAuthorityFixture = JSON.parse(
   read("test", "fixtures", "land_selection_readable_authority", "kent_authority_summary.json"),
 );
@@ -56,8 +56,19 @@ function t(key, values = {}) {
     Object.prototype.hasOwnProperty.call(values, name) ? String(values[name]) : whole);
 }
 
-/** 200 Kent Avenue Rezoning — the observed selection specimen. */
-const KENT_ID = "2024K0286";
+/**
+ * FORT HAMILTON MEWS REZONING — the observed selection specimen.
+ * This was "200 Kent Avenue Rezoning" (2024K0286) until a refresh rotated it
+ * out of the live Default Land snapshot; this project matches
+ * LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl in site/land_project_map_points.mjs
+ * (single-BBL exact precision), which this file's A2 test also needs.
+ * RAW_PROCEDURE/RAW_STAGE below are matched against the frozen fixture
+ * (test/fixtures/land_selection_readable_authority/kent_authority_summary.json),
+ * not this project's own live authority summary, and stay unchanged. The
+ * KENT_ID identifier is kept for minimal diff; it no longer names a Kent
+ * Avenue project.
+ */
+const KENT_ID = "2025K0284";
 const RAW_PROCEDURE = "ulurp_197c";
 const RAW_STAGE = "ulurp_197c.city_planning_commission_review";
 
@@ -77,11 +88,11 @@ function visibleText(html) {
 
 function kentRow(summaryOverrides = null) {
   const base = landDefault.projects.find((row) => row.project_id === KENT_ID);
-  assert.ok(base, "200 Kent Avenue Rezoning is missing from the land default snapshot");
+  assert.ok(base, "FORT HAMILTON MEWS REZONING is missing from the land default snapshot");
   const summary = summaryOverrides === null
     ? structuredClone(authoritySummaries[KENT_ID])
     : summaryOverrides;
-  assert.ok(summary || summaryOverrides === undefined, "authority summary missing for 200 Kent");
+  assert.ok(summary || summaryOverrides === undefined, "authority summary missing for Fort Hamilton Mews");
   return {
     ...structuredClone(base),
     authority_summary: summary,
@@ -122,7 +133,7 @@ function syntheticSummary(overrides = {}) {
   };
 }
 
-test("A1: selecting 200 Kent keeps map context and actions with procedure and stage wording residents can read", () => {
+test("A1: selecting Fort Hamilton Mews keeps map context and actions with procedure and stage wording residents can read", () => {
   // Pin the stage wording against the frozen fixture — live land authority
   // summaries advance as the publisher window rolls, which is a population
   // property rather than a selection-rendering contract.
@@ -131,12 +142,12 @@ test("A1: selecting 200 Kent keeps map context and actions with procedure and st
   assert.equal(row.authority_summary.current_stage.stage_id, RAW_STAGE);
   assert.ok(
     landDefault.projects.some((project) => project.project_id === KENT_ID),
-    "200 Kent remains in the default Land list population",
+    "Fort Hamilton Mews remains in the default Land list population",
   );
 
   const html = selectionHTML(row);
   assert.match(html, new RegExp(`id="${LAND_MAP_SELECTION_ID}"`));
-  assert.match(html, /200 Kent Avenue Rezoning/);
+  assert.match(html, /FORT HAMILTON MEWS REZONING/);
   assert.match(html, /data-land-map-authority="1"/);
   assert.doesNotMatch(html, /role="dialog"|aria-modal="true"/);
 
@@ -286,7 +297,7 @@ test("A4: browsing-contract fixture stays a nonmodal selection panel", () => {
 test("A4: failed-detail recovery keeps the last coherent summary and explicit record link", () => {
   const html = selectionHTML(kentRow());
   // A failed later detail fetch must not strip the already-painted selection or its link.
-  assert.match(html, /200 Kent Avenue Rezoning/);
+  assert.match(html, /FORT HAMILTON MEWS REZONING/);
   assert.match(html, /data-land-map-authority="1"/);
   assert.match(html, new RegExp(`data-land-map-detail="${KENT_ID}"`));
   assert.match(html, new RegExp(`href="${landProjectPath(KENT_ID).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
@@ -329,7 +340,7 @@ test("A4: record the applicable journey evidence with revision, route, viewport,
     viewports,
     specimen: {
       project_id: KENT_ID,
-      project_name: "200 Kent Avenue Rezoning",
+      project_name: "FORT HAMILTON MEWS REZONING",
       procedure_id: row.authority_summary.procedure_id,
       stage_id: row.authority_summary.current_stage?.stage_id || null,
     },
@@ -340,7 +351,7 @@ test("A4: record the applicable journey evidence with revision, route, viewport,
       id: "land-map-selection-readable-authority",
       sequence: [
         "set_scope_view_map",
-        "inspect_200_kent",
+        "inspect_fort_hamilton_mews",
         "dismiss_clear_selection",
         "open_full_record",
         "back_to_map",
@@ -385,7 +396,7 @@ test("A4: record the applicable journey evidence with revision, route, viewport,
       route,
       harness: "test/land_selection_readable_authority.test.mjs",
       assertion:
-        "set map view, inspect 200 Kent, clear selection, open the explicit full record, return with Back, and continue; cover narrow/touch, keyboard, no-JavaScript, and failed-detail variants",
+        "set map view, inspect Fort Hamilton Mews, clear selection, open the explicit full record, return with Back, and continue; cover narrow/touch, keyboard, no-JavaScript, and failed-detail variants",
       html_sha256: sha256(html),
       text_sha256: sha256(text),
     },

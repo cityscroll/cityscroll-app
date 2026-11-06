@@ -45,11 +45,22 @@ const BBL_PATH = join(ROOT, "site/data/zap_bbl_warehouse_lookup.json");
 const INDEX_PATH = join(ROOT, LAND_PLACE_MEMBERSHIP_PATH);
 const EVIDENCE_DIR = join(ROOT, LAND_PLACE_EVIDENCE_DIR);
 
+// fdny (was 2026R0127, 1 BBL/1 NTA), dewitt (was 2023M0213, 7 BBL/2 NTA
+// partial coverage), and noBblManhattan (was 2025M0252) were retired from
+// the live catalog by a refresh. Replacements, re-verified against
+// committed site/data as of this pass: fdny keeps the 1-BBL/1-NTA shape
+// (BK1204); dewitt keeps the 7-BBL shape but no current catalog project
+// spans exactly 2 NTAs at 7 BBLs, so it is now single-NTA/fully-matched
+// (BK1403, 7/7) rather than dual-NTA/partial -- a narrower demonstration,
+// not a looser assertion; noBblManhattan is Manhattan/no-BBL (M06).
+// westshore and citywide are unchanged -- their parcel data has not moved.
+// This file reads committed site/data directly rather than a frozen
+// fixture, so these anchors are expected to need re-pinning periodically.
 const ANCHORS = Object.freeze({
-  fdny: "2026R0127",
+  fdny: "2019K0217",
   westshore: "2025K0305",
-  dewitt: "2023M0213",
-  noBblManhattan: "2025M0252",
+  dewitt: "2020K0276",
+  noBblManhattan: "2025M0399",
   citywide: "2022Y0395",
 });
 
@@ -115,16 +126,16 @@ describe("land_place_membership", () => {
     const index = readJson(INDEX_PATH);
     assert.equal(index.schema, LAND_PLACE_MEMBERSHIP_SCHEMA);
     assert.equal(index.association_kind, LAND_PLACE_ASSOCIATION_KIND);
-    assert.equal(index.project_count, 244);
+    assert.equal(index.project_count, 243);
 
     const fdny = index.by_project[ANCHORS.fdny];
     assert.ok(fdny, "FDNY project present");
-    assert.deepEqual(fdny.layers.nta2020.places, ["SI0105"]);
-    assert.deepEqual(fdny.layers.community_district.places, ["R01"]);
-    assert.deepEqual(fdny.layers.council_district.places, ["49"]);
-    assert.ok(projectsForGeography(index, "nta2020", "SI0105").includes(ANCHORS.fdny));
-    assert.ok(projectsForGeography(index, "community_district", "R01").includes(ANCHORS.fdny));
-    assert.ok(projectsForGeography(index, "council_district", "49").includes(ANCHORS.fdny));
+    assert.deepEqual(fdny.layers.nta2020.places, ["BK1204"]);
+    assert.deepEqual(fdny.layers.community_district.places, ["K11"]);
+    assert.deepEqual(fdny.layers.council_district.places, ["44"]);
+    assert.ok(projectsForGeography(index, "nta2020", "BK1204").includes(ANCHORS.fdny));
+    assert.ok(projectsForGeography(index, "community_district", "K11").includes(ANCHORS.fdny));
+    assert.ok(projectsForGeography(index, "council_district", "44").includes(ANCHORS.fdny));
 
     const westshore = index.by_project[ANCHORS.westshore];
     assert.ok(westshore);
@@ -144,11 +155,10 @@ describe("land_place_membership", () => {
 
     const dewitt = index.by_project[ANCHORS.dewitt];
     assert.ok(dewitt);
-    assert.deepEqual(dewitt.layers.nta2020.places, ["MN0401", "MN0402"]);
+    assert.deepEqual(dewitt.layers.nta2020.places, ["BK1403"]);
     const dewittCoverage = landPlaceLayerCoverage(dewitt, "nta2020");
-    assert.equal(dewittCoverage.fraction, "5/7");
-    assert.ok(projectsForGeography(index, "nta2020", "MN0401").includes(ANCHORS.dewitt));
-    assert.ok(projectsForGeography(index, "nta2020", "MN0402").includes(ANCHORS.dewitt));
+    assert.equal(dewittCoverage.fraction, "7/7");
+    assert.ok(projectsForGeography(index, "nta2020", "BK1403").includes(ANCHORS.dewitt));
   });
 
   it("A2 evidence shards list contributing BBLs; duplicates do not inflate; multi-area once per area", () => {
@@ -242,7 +252,7 @@ describe("land_place_membership", () => {
       // Publisher geography is retained and never copied into by_geography.
       assert.ok(entry.publisher_geography);
       if (projectId === ANCHORS.noBblManhattan) {
-        assert.equal(entry.publisher_geography.community_district, "M05");
+        assert.equal(entry.publisher_geography.community_district, "M06");
       }
       if (projectId === ANCHORS.citywide) {
         assert.equal(entry.publisher_geography.borough, "Citywide");
@@ -357,8 +367,8 @@ describe("land_place_membership", () => {
 
       assert.equal(built.index.by_project[ANCHORS.westshore].layers.nta2020.places.length, 2);
       assert.equal(landPlaceLayerCoverage(built.index.by_project[ANCHORS.westshore], "nta2020").fraction, "14/25");
-      assert.equal(landPlaceLayerCoverage(built.index.by_project[ANCHORS.dewitt], "nta2020").fraction, "5/7");
-      assert.deepEqual(built.index.by_project[ANCHORS.fdny].layers.nta2020.places, ["SI0105"]);
+      assert.equal(landPlaceLayerCoverage(built.index.by_project[ANCHORS.dewitt], "nta2020").fraction, "7/7");
+      assert.deepEqual(built.index.by_project[ANCHORS.fdny].layers.nta2020.places, ["BK1204"]);
 
       assert.equal(
         built.index.by_project[ANCHORS.noBblManhattan].bbl_association_state,
@@ -559,7 +569,7 @@ describe("land_place_membership", () => {
     const built = buildLandPlaceMembershipFromRepo(ROOT);
     assert.equal(Object.keys(built.evidenceShards).length, LAND_PLACE_EVIDENCE_SHARD_COUNT);
     assert.equal(built.index.schema, LAND_PLACE_MEMBERSHIP_SCHEMA);
-    assert.equal(built.index.project_count, 244);
+    assert.equal(built.index.project_count, 243);
     assert.equal(built.index.association_kind, LAND_PLACE_ASSOCIATION_KIND);
 
     if (existsSync(INDEX_PATH)) {
@@ -571,6 +581,6 @@ describe("land_place_membership", () => {
     const warehouse = readJson(join(ROOT, "site/data/zap_projects_warehouse_lookup.json"));
     const defaults = readJson(join(ROOT, "site/data/land_default_ulurp.json"));
     const catalog = buildLandProjectCatalog({ warehouse, defaults });
-    assert.equal(catalog.project_count, 244);
+    assert.equal(catalog.project_count, 243);
   });
 });

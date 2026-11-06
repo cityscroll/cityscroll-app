@@ -47,9 +47,24 @@ const catalogRows = landProjectRowsFromPayload(catalog);
 // production; prime it once here so the direct transform calls see the same rows.
 await ensureLandProjectCatalogRows();
 
+// SI0201 and MN0502 are the current Staten Island / Manhattan NTA specimens.
+// SI0201's sole live ZAP member (2019R0267) resolves as ULURP; MN0502 has
+// several ULURP/ELURP members (e.g. 2020M0429) among a larger roll. Either
+// shape survives the default land-procedure facet ("review" admits
+// ULURP/ELURP only), which a Non-ULURP-only membership never does.
+// SI0105 was the prior Staten Island specimen until a routine refresh retired
+// its only member (2026R0127, ULURP) from the live population; the adjacent
+// single-member NTA (SI0302/2026R0319) was rejected as a replacement because
+// its only member is Non-ULURP and so never survives the default facet.
+// MN0401 was the prior Manhattan specimen; its membership was already
+// entirely Non-ULURP before this refresh (an unrelated, pre-existing gap this
+// file's SI0105 failure had been masking), so it never actually delivered
+// under the default facet either. These tests read committed site/data
+// directly rather than a frozen fixture, so the specimen NTAs are expected to
+// need re-pinning periodically.
 const NTA = Object.freeze({
-  SI0105: "geography:nta2020:SI0105",
-  MN0401: "geography:nta2020:MN0401",
+  SI0201: "geography:nta2020:SI0201",
+  MN0502: "geography:nta2020:MN0502",
 });
 
 function browseIds(route, { limit = catalogRows.length } = {}) {
@@ -73,8 +88,8 @@ function deliveryIds(filter) {
   return rows.map((row) => row.project_id || row.id).filter(Boolean);
 }
 
-test("A1 SI0105 and MN0401 browse, preview transform, and matching helper share pre-limit IDs", () => {
-  for (const [nta, key] of [["SI0105", NTA.SI0105], ["MN0401", NTA.MN0401]]) {
+test("A1 SI0201 and MN0502 browse, preview transform, and matching helper share pre-limit IDs", () => {
+  for (const [nta, key] of [["SI0201", NTA.SI0201], ["MN0502", NTA.MN0502]]) {
     const filter = { status: "all", stage: "any", geographies: [key] };
     const browse = browseIds(`#land?status=all&stage=any&geo=${encodeURIComponent(key)}`);
     const delivered = deliveryIds(filter);
@@ -100,34 +115,34 @@ test("A1 SI0105 and MN0401 browse, preview transform, and matching helper share 
   }
 });
 
-test("A1 supported facets stay aligned across browse and delivery for SI0105", () => {
+test("A1 supported facets stay aligned across browse and delivery for SI0201", () => {
   const filter = {
     status: "all",
     stage: "any",
     boro: "Staten Island",
-    geographies: [NTA.SI0105],
+    geographies: [NTA.SI0201],
   };
   const browse = browseIds(
-    `#land?status=all&stage=any&boro=Staten%20Island&geo=${encodeURIComponent(NTA.SI0105)}`,
+    `#land?status=all&stage=any&boro=Staten%20Island&geo=${encodeURIComponent(NTA.SI0201)}`,
   );
   const delivered = deliveryIds(filter);
-  const members = membership?.by_geography?.nta2020?.SI0105 || [];
+  const members = membership?.by_geography?.nta2020?.SI0201 || [];
   assert.deepEqual(delivered, browse);
-  assert.ok(members.length >= 1, "SI0105 membership must stay populated");
-  assert.ok(delivered.length >= 1, "SI0105 faceted delivery must stay non-empty");
+  assert.ok(members.length >= 1, "SI0201 membership must stay populated");
+  assert.ok(delivered.length >= 1, "SI0201 faceted delivery must stay non-empty");
   for (const id of delivered) {
-    assert.ok(members.includes(id), `SI0105 faceted delivery ${id} must stay inside membership`);
+    assert.ok(members.includes(id), `SI0201 faceted delivery ${id} must stay inside membership`);
   }
 });
 
 test("A2 no-BBL / publisher-only projects stay outside NTA subscriptions", () => {
-  for (const key of [NTA.SI0105, NTA.MN0401]) {
+  for (const key of [NTA.SI0201, NTA.MN0502]) {
     const delivered = deliveryIds({ status: "all", stage: "any", geographies: [key] });
     assert.equal(delivered.includes("2025M0252"), false, "publisher-only CD must not enter");
     assert.equal(delivered.includes("2022Y0395"), false, "citywide no-BBL must not enter");
   }
   const disclosure = landNtaWatchMatchingIds({
-    filter: { status: "all", geographies: [NTA.SI0105] },
+    filter: { status: "all", geographies: [NTA.SI0201] },
     catalogRows,
     placeMembership: membership,
     activityPayload: activity,
@@ -142,7 +157,7 @@ test("A3 missing current artifact skips instead of emitting a successful empty d
   const prepared = prepareWatchFilter("land", {
     status: "all",
     stage: "any",
-    geographies: [NTA.SI0105],
+    geographies: [NTA.SI0201],
   });
   const query = compileSub({ lens: "land", filter: prepared.filter }, TODAY);
   assert.throws(
@@ -155,26 +170,26 @@ test("A3 missing current artifact skips instead of emitting a successful empty d
   );
   assert.equal(landGeographyArtifactState(NEAR_YOU_FLOOR).status, "unavailable");
 
-  // Converse control: a ready artifact still delivers the current SI0105 members.
-  const members = membership?.by_geography?.nta2020?.SI0105 || [];
-  assert.ok(members.length >= 1, "SI0105 membership must stay populated for the converse control");
+  // Converse control: a ready artifact still delivers the current SI0201 members.
+  const members = membership?.by_geography?.nta2020?.SI0201 || [];
+  assert.ok(members.length >= 1, "SI0201 membership must stay populated for the converse control");
   const rows = query.transformRows(activity);
   const delivered = rows.map((row) => row.project_id).filter(Boolean);
   assert.ok(delivered.length >= 1);
   for (const id of delivered) {
-    assert.ok(members.includes(id), `SI0105 ready delivery ${id} must stay inside membership`);
+    assert.ok(members.includes(id), `SI0201 ready delivery ${id} must stay inside membership`);
   }
 });
 
 test("A3 unavailable artifact does not clear previously seen membership as a geographic departure", async () => {
   // Ordering observation: inject the failure between compile and seen mutation.
-  const members = membership?.by_geography?.nta2020?.SI0105 || [];
-  assert.ok(members.length >= 1, "SI0105 membership must stay populated for the seen-set control");
+  const members = membership?.by_geography?.nta2020?.SI0201 || [];
+  assert.ok(members.length >= 1, "SI0201 membership must stay populated for the seen-set control");
   const retainedId = members[0];
   const seen = new Set([`land:${retainedId}`]);
   const prepared = prepareWatchFilter("land", {
     status: "all",
-    geographies: [NTA.SI0105],
+    geographies: [NTA.SI0201],
   });
   const query = compileSub({ lens: "land", filter: prepared.filter }, TODAY);
 
@@ -232,7 +247,7 @@ test("A5 every required dimension alone and with geographies; stage+filingEviden
       }
     }
 
-    const withGeo = { ...facet, geographies: [NTA.MN0401] };
+    const withGeo = { ...facet, geographies: [NTA.MN0502] };
     const delivered = deliveryIds(withGeo);
     const browseRoute = new URLSearchParams({ status: "all", stage: facet.stage || "any" });
     if (facet.boro) browseRoute.set("boro", facet.boro);
@@ -242,7 +257,7 @@ test("A5 every required dimension alone and with geographies; stage+filingEviden
     if (facet.procedure) browseRoute.set("procedure", facet.procedure);
     if (facet.family) browseRoute.set("family", facet.family);
     if (facet.futureAction) browseRoute.set("future", facet.futureAction);
-    browseRoute.set("geo", NTA.MN0401);
+    browseRoute.set("geo", NTA.MN0502);
     // Facets without route keys still compare through the matching helper oracle.
     const match = landNtaWatchMatchingIds({
       filter: withGeo,
@@ -259,14 +274,14 @@ test("A5 every required dimension alone and with geographies; stage+filingEviden
     status: "all",
     stage: "any",
     filingEvidence: "required",
-    geographies: [NTA.MN0401],
+    geographies: [NTA.MN0502],
   };
   const combinedDelivered = deliveryIds(combined);
   const combinedBrowse = landCanonicalIds(filterLandSnapshot(catalogRows, {
     status: "all",
     stage: "any",
     filingEvidence: "required",
-    geographies: [NTA.MN0401],
+    geographies: [NTA.MN0502],
     placeMembership: membership,
     limit: catalogRows.length,
   }));
@@ -274,7 +289,7 @@ test("A5 every required dimension alone and with geographies; stage+filingEviden
 });
 
 test("A2/A5 positive control: broadening detector fails when a citywide id is injected", () => {
-  const filter = { status: "all", stage: "any", geographies: [NTA.SI0105] };
+  const filter = { status: "all", stage: "any", geographies: [NTA.SI0201] };
   const delivered = deliveryIds(filter);
   assert.deepEqual(
     [...landNtaWatchBroadeningFindings({
@@ -297,12 +312,12 @@ test("A2/A5 positive control: broadening detector fails when a citywide id is in
 test("transformLandGeographyWatchRows OR-unions multi-NTA geography keys", () => {
   const rows = transformLandGeographyWatchRows(
     activity,
-    { status: "all", stage: "any", geographies: [NTA.SI0105, NTA.MN0401] },
+    { status: "all", stage: "any", geographies: [NTA.SI0201, NTA.MN0502] },
     { catalogRows, today: TODAY },
   );
   const ids = rows.map((row) => row.project_id).filter(Boolean);
-  const siMembers = membership?.by_geography?.nta2020?.SI0105 || [];
-  const mnMembers = membership?.by_geography?.nta2020?.MN0401 || [];
+  const siMembers = membership?.by_geography?.nta2020?.SI0201 || [];
+  const mnMembers = membership?.by_geography?.nta2020?.MN0502 || [];
   assert.ok(siMembers.length >= 1 && mnMembers.length >= 1);
   // OR-union: every delivered id belongs to at least one of the NTAs, and each
   // NTA contributes at least one id when membership is populated.
@@ -310,11 +325,11 @@ test("transformLandGeographyWatchRows OR-unions multi-NTA geography keys", () =>
   for (const id of ids) {
     assert.ok(
       siMembers.includes(id) || mnMembers.includes(id),
-      `multi-NTA delivery ${id} must stay inside SI0105∪MN0401 membership`,
+      `multi-NTA delivery ${id} must stay inside SI0201∪MN0502 membership`,
     );
   }
-  assert.ok(ids.some((id) => siMembers.includes(id)), "SI0105 must contribute under OR-union");
-  assert.ok(ids.some((id) => mnMembers.includes(id)), "MN0401 must contribute under OR-union");
+  assert.ok(ids.some((id) => siMembers.includes(id)), "SI0201 must contribute under OR-union");
+  assert.ok(ids.some((id) => mnMembers.includes(id)), "MN0502 must contribute under OR-union");
 });
 
 void ROOT_PATH;

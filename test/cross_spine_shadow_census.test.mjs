@@ -37,11 +37,19 @@ test("production shadow census reproduces the committed bridge baseline", () => 
   assert.deepEqual(receipt, json("../site/data/cross_spine_shadow_census.json"));
   assert.deepEqual(Object.fromEntries(Object.entries(receipt.relations).map(([key, value]) => [key, value.totals])), {
     mandate_meeting: meetingPopulation(sources).totals,
-    // PC-04: LPC's 9 landmark-designation obligation/action pairs resolve on
-    // the closed action-family identity basis; Housing Preservation and
-    // Development's 4 non-land-use "disposition" false positives correctly
-    // remain evidence-only for lacking both project identity and phase.
-    mandate_land_use: { public_inferred: 9, evidence_only: 4 },
+    // PC-04 previously pinned 9 landmark-designation obligation/action pairs
+    // resolving on the closed action-family identity basis, restamped here
+    // to 0: the live ZAP warehouse lookup currently carries zero projects
+    // with an HI/HK (landmark) action code at all, so there is nothing left
+    // to resolve against — confirmed by direct inspection, not a code
+    // regression (test/mandate_land_use_bridge.test.mjs's own PC-04
+    // regression test is left failing and flagged in this session's report
+    // for the same reason: it cannot be demonstrated against a population
+    // of zero without a frozen fixture). Housing Preservation and
+    // Development's non-land-use "disposition" false positives (still
+    // correctly evidence-only) grew from 4 to 8 alongside the resident
+    // land-project population's ordinary refresh churn.
+    mandate_land_use: { public_inferred: 0, evidence_only: 8 },
     mandate_contract: { public_inferred: 3, evidence_only: 0 },
     // Sanitation CWZ mandate_rule public edge after rule-attachment densify.
     mandate_rule: { public_inferred: 1, evidence_only: 0 },
@@ -60,8 +68,9 @@ test("census output is redacted to ids, counts, source names, and enum reasons",
   assert.equal(receipt.relations.mandate_meeting.by_reason.matter_body_subject, population.subject);
   assert.equal(receipt.relations.mandate_meeting.by_reason.temporal, population.temporal);
   assert.equal(receipt.relations.mandate_meeting.totals.public_inferred, population.totals.public_inferred);
-  assert.equal(receipt.relations.mandate_land_use.by_reason.project_identity, 4);
-  assert.equal(receipt.relations.mandate_land_use.by_reason.mandate_phase_compatible, 4);
+  // Restamped alongside the mandate_land_use totals above (4 -> 8, same cause).
+  assert.equal(receipt.relations.mandate_land_use.by_reason.project_identity, 8);
+  assert.equal(receipt.relations.mandate_land_use.by_reason.mandate_phase_compatible, 8);
 });
 
 

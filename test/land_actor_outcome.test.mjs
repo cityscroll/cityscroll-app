@@ -45,33 +45,40 @@ function dispositions(projectId) {
     || [];
 }
 
-const CANARY_CB13 = "2023K0183";
-const CANARY_CB5_BP = "2025M0252";
-const CANARY_DRAFT = "2025K0305";
+// 2023K0183, 2025M0252, and 2025K0305 were the prior specimens until a
+// refresh rotated their rows out of site/data/land_outcomes_seed.json
+// entirely; this file reads committed site/data directly rather than a
+// frozen fixture, so the specimens are expected to need re-pinning
+// periodically. Replacements were found by scanning land_outcomes_seed.json
+// for a currently-live project with the same disposition shape (voted
+// CB+BP for CB13/CB5_BP, all-draft multi-body for the draft canary).
+const CANARY_CB13 = "2025K0284";
+const CANARY_CB5_BP = "2025Q0247";
+const CANARY_DRAFT = "2023K0357";
 
 // ---------------------------------------------------------------------------
 // A1 — canonical actor ref/kind, observed action, raw outcome, and
 // profile-derived legal effect as separate fields.
 // ---------------------------------------------------------------------------
 
-test("A1 CB13 unfavorable on 2023K0183 normalizes to a recommendation, never a decision", () => {
+test("A1 CB13 unfavorable on 2025K0284 normalizes to a recommendation, never a decision", () => {
   const rows = dispositions(CANARY_CB13);
-  const cb13 = rows.find((row) => /CB13/.test(row.name));
-  assert.equal(cb13.id, "e88ccfda-3c19-f011-998b-001dd806079d");
+  const cb13 = rows.find((row) => /CB10/.test(row.name));
+  assert.equal(cb13.id, "36ca2c68-c6f7-f011-8407-001dd80822c1");
   const outcome = buildActorObservedOutcome(cb13, { projectId: CANARY_CB13, project: project(CANARY_CB13) });
   assert.equal(outcome.schema, LAND_ACTOR_OUTCOME_SCHEMA);
   assert.equal(outcome.actor_kind, ACTOR_KIND_COMMUNITY_BOARD);
-  assert.equal(outcome.actor_ref, "community-board:brooklyn-cb-13");
+  assert.equal(outcome.actor_ref, "community-board:brooklyn-cb-10");
   // The negative rule, structurally: "Unfavorable" reads like a rejection,
-  // but CB13 is advisory — it only ever issues a recommendation.
+  // but CB10 is advisory — it only ever issues a recommendation.
   assert.equal(outcome.observed_action, OBSERVED_ACTION.ISSUES_RECOMMENDATION);
   assert.notEqual(outcome.observed_action, OBSERVED_ACTION.REJECTS);
   assert.equal(outcome.is_advisory, true);
   assert.equal(outcome.raw_outcome, "Unfavorable");
-  assert.equal(outcome.observed_at, "2026-03-25");
-  assert.deepEqual(outcome.vote_tally, { for: 1, against: 29, abstain: 5 });
-  assert.equal(outcome.disposition_id, "e88ccfda-3c19-f011-998b-001dd806079d");
-  assert.equal(outcome.action_key, "project:2023K0183:disposition:e88ccfda-3c19-f011-998b-001dd806079d");
+  assert.equal(outcome.observed_at, "2026-05-18");
+  assert.deepEqual(outcome.vote_tally, { for: 31, against: 3, abstain: 0 });
+  assert.equal(outcome.disposition_id, "36ca2c68-c6f7-f011-8407-001dd80822c1");
+  assert.equal(outcome.action_key, "project:2025K0284:disposition:36ca2c68-c6f7-f011-8407-001dd80822c1");
   assert.equal(outcome.spine_phase_id, "community_board");
   // Raw source and vote tallies are preserved byte-for-byte, not paraphrased.
   assert.equal(outcome.raw_outcome, cb13.community_board);
@@ -79,19 +86,19 @@ test("A1 CB13 unfavorable on 2023K0183 normalizes to a recommendation, never a d
   assert.equal(outcome.vote_tally.against, cb13.votes_against);
 });
 
-test("A1 BP conditional-favorable on 2023K0183 resolves an exact Brooklyn actor ref from the project id", () => {
+test("A1 BP favorable on 2025K0284 resolves an exact Brooklyn actor ref from the project id", () => {
   const rows = dispositions(CANARY_CB13);
   const bp = rows.find((row) => row.representing === "Borough President");
   const outcome = buildActorObservedOutcome(bp, { projectId: CANARY_CB13, project: project(CANARY_CB13) });
   assert.equal(outcome.actor_kind, ACTOR_KIND_BOROUGH_PRESIDENT);
   assert.equal(outcome.actor_ref, "borough-president:brooklyn");
   assert.equal(outcome.observed_action, OBSERVED_ACTION.ISSUES_RECOMMENDATION);
-  assert.equal(outcome.raw_outcome, "Conditional Favorable");
+  assert.equal(outcome.raw_outcome, "Favorable");
   assert.equal(outcome.vote_tally, null);
   assert.equal(outcome.spine_phase_id, "borough_president");
 });
 
-test("A1 CB5/BP conditional-favorable on 2025M0252 carries a profile-derived legal effect kept separate from the raw value", () => {
+test("A1 CB/BP conditional-favorable on 2025Q0247 carries a profile-derived legal effect kept separate from the raw value", () => {
   const outcomes = buildActorObservedOutcomes(dispositions(CANARY_CB5_BP), {
     projectId: CANARY_CB5_BP,
     project: project(CANARY_CB5_BP),
@@ -99,10 +106,10 @@ test("A1 CB5/BP conditional-favorable on 2025M0252 carries a profile-derived leg
   assert.equal(outcomes.length, 2);
   const cb5 = outcomes.find((row) => row.actor_kind === ACTOR_KIND_COMMUNITY_BOARD);
   const bp = outcomes.find((row) => row.actor_kind === ACTOR_KIND_BOROUGH_PRESIDENT);
-  assert.equal(cb5.actor_ref, "community-board:manhattan-cb-05");
+  assert.equal(cb5.actor_ref, "community-board:queens-cb-06");
   assert.equal(cb5.raw_outcome, "Conditional Favorable");
-  assert.deepEqual(cb5.vote_tally, { for: 31, against: 1, abstain: 1 });
-  assert.equal(bp.actor_ref, "borough-president:manhattan");
+  assert.deepEqual(cb5.vote_tally, { for: 36, against: 4, abstain: 0 });
+  assert.equal(bp.actor_ref, "borough-president:queens");
   assert.equal(bp.raw_outcome, "Conditional Favorable");
   for (const row of [cb5, bp]) {
     assert.equal(row.legal_effect_from_profile.role, "advisory_reviewer");
@@ -189,14 +196,16 @@ test("A2 the matrix and the phase-spine timeline consume the identical observed_
   const cbPhase = spine.all_phases.find((phase) => phase.id === "community_board");
   const bpPhase = spine.all_phases.find((phase) => phase.id === "borough_president");
   assert.equal(spine.observed_outcomes, outcomes, "the exact same array reference, not a re-derived copy");
+  const cbOutcome = outcomes.find((row) => row.actor_kind === ACTOR_KIND_COMMUNITY_BOARD);
+  const bpOutcome = outcomes.find((row) => row.actor_kind === ACTOR_KIND_BOROUGH_PRESIDENT);
   assert.equal(cbPhase.observed_outcomes.length, 1);
-  assert.equal(cbPhase.observed_outcomes[0], outcomes[0], "same object, not a paraphrase");
+  assert.equal(cbPhase.observed_outcomes[0], cbOutcome, "same object, not a paraphrase");
   assert.equal(bpPhase.observed_outcomes.length, 1);
-  assert.equal(bpPhase.observed_outcomes[0], outcomes[1]);
-  const matrixCbRow = matrixRows.find((row) => row.body_ref === "community-board:brooklyn-cb-13");
-  assert.equal(matrixCbRow.raw_outcome, outcomes[0].raw_outcome);
-  assert.equal(matrixCbRow.observed_action, outcomes[0].observed_action);
-  assert.equal(matrixCbRow.action_key, outcomes[0].action_key);
+  assert.equal(bpPhase.observed_outcomes[0], bpOutcome);
+  const matrixCbRow = matrixRows.find((row) => row.body_ref === "community-board:brooklyn-cb-10");
+  assert.equal(matrixCbRow.raw_outcome, cbOutcome.raw_outcome);
+  assert.equal(matrixCbRow.observed_action, cbOutcome.observed_action);
+  assert.equal(matrixCbRow.action_key, cbOutcome.action_key);
 });
 
 test("A2 buildLandPhaseView derives observed_outcomes from opts.dispositions when not precomputed", () => {
@@ -214,14 +223,22 @@ test("A2 buildLandPhaseView derives observed_outcomes from opts.dispositions whe
 // records never become observed recommendations or decisions.
 // ---------------------------------------------------------------------------
 
-test("A3 2025K0305 draft-only rows produce zero observed outcomes; the affected Borough Board shows not-found in the matrix", () => {
+test("A3 2023K0357 draft-only rows produce zero observed outcomes; the affected Borough Board shows not-found in the matrix", () => {
   const outcomes = buildActorObservedOutcomes(dispositions(CANARY_DRAFT), {
     projectId: CANARY_DRAFT,
     project: project(CANARY_DRAFT),
   });
   assert.deepEqual(outcomes, []);
 
-  const affected = projectAffectedReviewBodies(project(CANARY_DRAFT), { geography });
+  // 2023K0357's own real disposition rows name both brooklyn-cb-17 and
+  // brooklyn-cb-18, but its committed single-CD field (K18) alone never
+  // triggers Borough Board involvement; no project in the current 40-row
+  // Default Land snapshot spans multiple community districts in one borough
+  // (a zero-population gap this refresh, not a bug). Widening the real
+  // project's own community_district to the span its real dispositions
+  // already reference reproduces that fact without inventing a new project.
+  const multiDistrictProject = { ...project(CANARY_DRAFT), community_district: "K17; K18" };
+  const affected = projectAffectedReviewBodies(multiDistrictProject, { geography });
   assert.equal(affected.status, "resolved");
   assert.ok(affected.facts.borough_boards.includes("borough-board:brooklyn"));
 
@@ -326,11 +343,22 @@ test("A3 profile/phase evidence alone — with no disposition row — never fabr
 // ---------------------------------------------------------------------------
 
 test("A4 legal effect is null with an honest reason when the procedure does not resolve to one profile", () => {
-  // 2023K0183 carries five actions (ZM/ZR/ZS/LD/ZS) that do not resolve to a
-  // single uniform procedure id — legal effect must stay null, never guess.
+  // Needs a project whose own actions do not resolve to a single uniform
+  // procedure id; CANARY_CB13's replacement (2025K0284) has uniform ZM/ZR
+  // actions, so this specific case reuses the mixed-action row frozen for
+  // the land_action_procedure_resolution.test.mjs specimen (2024M0244, which
+  // left the live ZAP warehouse during a refresh) — legal effect must stay
+  // null, never guess, regardless of which real disposition rows are paired
+  // with it.
+  const mixedProject = {
+    project_id: "2024M0244",
+    actions: "ZS; ZM; ZR; LD; LD",
+    ulurp_numbers: "C260015ZSM; C260013ZMM; N260014ZRM; 260201LDM; 260202LDM",
+    ulurp_non: "ULURP",
+  };
   const outcomes = buildActorObservedOutcomes(dispositions(CANARY_CB13), {
     projectId: CANARY_CB13,
-    project: project(CANARY_CB13),
+    project: mixedProject,
   });
   for (const outcome of outcomes) {
     assert.equal(outcome.legal_effect_from_profile, null);
@@ -379,10 +407,10 @@ test("A4 the matrix table renders Body, observed action, raw value, date, vote/d
   const rows = buildLandOutcomesMatrixRows(outcomes, { affectedEdges: [] });
   const html = landOutcomesMatrixHTML(rows, { t: (key, vars) => (vars ? `${key}:${JSON.stringify(vars)}` : key), escape: (v) => String(v ?? "") });
   assert.match(html, /data-land-outcomes-matrix="1"/);
-  assert.match(html, /community-board:manhattan-cb-05/);
-  assert.match(html, /borough-president:manhattan/);
+  assert.match(html, /community-board:queens-cb-06/);
+  assert.match(html, /borough-president:queens/);
   assert.match(html, /Conditional Favorable/);
-  assert.match(html, /2026-04-09/);
+  assert.match(html, /2026-05-13/);
   assert.match(html, /land_outcomes_matrix_action_issues_recommendation/);
   assert.match(html, /advisory, not binding/);
   assert.match(html, /land_authority_advisory/);

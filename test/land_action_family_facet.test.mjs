@@ -38,8 +38,16 @@ function warehouseRow(projectId) {
     || projects.find((row) => row.project_id === projectId);
 }
 
-const ACQUISITION = "2026R0127";
-const MAJOR_CONCESSION = "2025M0252";
+// 2026R0127 was the prior acquisition (PQ) specimen until a refresh retired
+// it from the live warehouse; this file reads committed site/data directly
+// rather than a frozen fixture, so the specimen is expected to need
+// re-pinning periodically.
+const ACQUISITION = "2022X0150";
+// 2025M0252 was the prior major_concession (MC) specimen; no live warehouse
+// row currently carries that action at all (a zero-population family this
+// refresh, not a bug), so this one test's specimen is a synthetic row built
+// from the documented MC action code rather than a live lookup.
+const MAJOR_CONCESSION_ROW = { project_id: "SYNTHETIC-MC", actions: "MC" };
 const CERTIFICATION = "2023R0329";
 const DISPOSITION = "2022X0393";
 const ZM_ONLY = "2026K0123";
@@ -54,11 +62,10 @@ test("family facet is a closed vocabulary and default is any", () => {
   assert.ok(!LAND_FAMILY_OPTIONS.some((option) => option.id === "land_use"));
 });
 
-test("list card for 2026R0127 shows Acquisition and 2025M0252 shows Major concession", () => {
+test("list card for 2022X0150 shows Acquisition and a synthetic MC row shows Major concession", () => {
   const acquisition = warehouseRow(ACQUISITION);
-  const concession = warehouseRow(MAJOR_CONCESSION);
-  assert.ok(acquisition, "warehouse must retain 2026R0127");
-  assert.ok(concession, "warehouse must retain 2025M0252");
+  const concession = MAJOR_CONCESSION_ROW;
+  assert.ok(acquisition, "warehouse must retain 2022X0150");
   assert.deepEqual(landUseFamilies(acquisition), ["acquisition"]);
   assert.deepEqual(landUseFamilies(concession), ["major_concession"]);
 

@@ -13,8 +13,8 @@
   },
   "baseline": {
     "total": 40,
-    "mapped": 33,
-    "unmapped": 7
+    "mapped": 26,
+    "unmapped": 14
   },
   "inventory": {
     "query_dimensions": [
@@ -171,7 +171,7 @@
   "fixtures": [
     {
       "id": "default-list",
-      "proves": "The whole filtered population in List: the 40/33/7 arithmetic.",
+      "proves": "The whole filtered population in List: the 40/26/14 arithmetic.",
       "route": "#land?status=all&stage=any",
       "view": "list",
       "state": {
@@ -810,7 +810,7 @@
     {
       "id": "mapped-only",
       "proves": "A scope whose only result is on the map.",
-      "route": "#land?status=all&stage=any&q=Westshore&view=map",
+      "route": "#land?status=all&stage=any&q=Bud%20Place&view=map",
       "view": "map",
       "state": {
         "status": "all",
@@ -823,7 +823,7 @@
         "borough": "",
         "communityDistrict": "",
         "councilDistrict": "",
-        "keyword": "Westshore",
+        "keyword": "Bud Place",
         "geographies": null,
         "attendance": "",
         "closingWeek": false,
@@ -841,7 +841,7 @@
         "borough": "",
         "communityDistrict": "",
         "councilDistrict": "",
-        "keyword": "Westshore",
+        "keyword": "Bud Place",
         "geographies": null,
         "projectIds": null,
         "placeMembership": null,
@@ -852,25 +852,31 @@
       "semantic_scope": {
         "status": "all",
         "stage": "any",
-        "keyword": "Westshore"
+        "keyword": "Bud Place"
       },
       "watch_scope": {
         "filter": {
           "keywords": [
-            "Westshore"
+            "Bud Place"
           ],
           "stage": "any",
           "status": "all"
         },
         "lens": "land"
       },
-      "canonical_ids": [],
-      "list_ids": [],
-      "marker_ids": [],
+      "canonical_ids": [
+        "2023Q0351"
+      ],
+      "list_ids": [
+        "2023Q0351"
+      ],
+      "marker_ids": [
+        "2023Q0351"
+      ],
       "unmapped_ids": [],
       "counts": {
-        "total": 0,
-        "mapped": 0,
+        "total": 1,
+        "mapped": 1,
         "unmapped": 0
       },
       "partition": {
@@ -884,7 +890,7 @@
     {
       "id": "unmapped-only",
       "proves": "A scope whose only result has no published location. It stays a result.",
-      "route": "#land?status=all&stage=any&cd=Q07&view=map",
+      "route": "#land?status=all&stage=any&cd=M06&view=map",
       "view": "map",
       "state": {
         "status": "all",
@@ -895,7 +901,7 @@
         "regulatoryEffect": "any",
         "filingEvidence": "any",
         "borough": "",
-        "communityDistrict": "Q07",
+        "communityDistrict": "M06",
         "councilDistrict": "",
         "keyword": "",
         "geographies": null,
@@ -913,7 +919,7 @@
         "regulatoryEffect": "any",
         "filingEvidence": "any",
         "borough": "",
-        "communityDistrict": "Q07",
+        "communityDistrict": "M06",
         "councilDistrict": "",
         "keyword": "",
         "geographies": null,
@@ -926,36 +932,29 @@
       "semantic_scope": {
         "status": "all",
         "stage": "any",
-        "communityDistrict": "Q07"
+        "communityDistrict": "M06"
       },
       "watch_scope": {
         "filter": {
-          "communityDistrict": "Q07",
+          "communityDistrict": "M06",
           "stage": "any",
           "status": "all"
         },
         "lens": "land"
       },
       "canonical_ids": [
-        "2024Q0324",
-        "2023Q0351",
-        "2024Q0135"
+        "2025M0399"
       ],
       "list_ids": [
-        "2024Q0324",
-        "2023Q0351",
-        "2024Q0135"
+        "2025M0399"
       ],
-      "marker_ids": [
-        "2024Q0324",
-        "2023Q0351"
-      ],
+      "marker_ids": [],
       "unmapped_ids": [
-        "2024Q0135"
+        "2025M0399"
       ],
       "counts": {
-        "total": 3,
-        "mapped": 2,
+        "total": 1,
+        "mapped": 0,
         "unmapped": 1
       },
       "partition": {
@@ -1060,7 +1059,7 @@
     {
       "id": "mixed",
       "proves": "Both sides of the partition are populated.",
-      "route": "#land?status=all&stage=any&cd=M05&view=map",
+      "route": "#land?status=all&stage=any&cd=K01&view=map",
       "view": "map",
       "state": {
         "status": "all",
@@ -1071,7 +1070,7 @@
         "regulatoryEffect": "any",
         "filingEvidence": "any",
         "borough": "",
-        "communityDistrict": "M05",
+        "communityDistrict": "K01",
         "councilDistrict": "",
         "keyword": "",
         "geographies": null,
@@ -1089,7 +1088,7 @@
         "regulatoryEffect": "any",
         "filingEvidence": "any",
         "borough": "",
-        "communityDistrict": "M05",
+        "communityDistrict": "K01",
         "councilDistrict": "",
         "keyword": "",
         "geographies": null,
@@ -1102,33 +1101,34 @@
       "semantic_scope": {
         "status": "all",
         "stage": "any",
-        "communityDistrict": "M05"
+        "communityDistrict": "K01"
       },
       "watch_scope": {
         "filter": {
-          "communityDistrict": "M05",
+          "communityDistrict": "K01",
           "stage": "any",
           "status": "all"
         },
         "lens": "land"
       },
       "canonical_ids": [
-        "2024M0193",
-        "2025M0338"
+        "2024K0240",
+        "2020K0444"
       ],
       "list_ids": [
-        "2024M0193",
-        "2025M0338"
+        "2024K0240",
+        "2020K0444"
       ],
       "marker_ids": [
-        "2024M0193",
-        "2025M0338"
+        "2024K0240"
       ],
-      "unmapped_ids": [],
+      "unmapped_ids": [
+        "2020K0444"
+      ],
       "counts": {
         "total": 2,
-        "mapped": 2,
-        "unmapped": 0
+        "mapped": 1,
+        "unmapped": 1
       },
       "partition": {
         "disjoint": true,

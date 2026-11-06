@@ -44,7 +44,7 @@ function minimalGeographyLayers() {
       source: { contract_id: "dcp-nta2020-boundaries" },
       vintage: { id: "26B" },
       features: [
-        { id: "SI0105", label: "Westerleigh-Castleton Corners" },
+        { id: "SI0201", label: "Grasmere-Arrochar-South Beach-Dongan Hills" },
         { id: "BK1301", label: "Coney Island-Sea Gate" },
         { id: "BK1391", label: "Calvert Vaux Park" },
         { id: "MN0401", label: "Hell's Kitchen" },
@@ -67,7 +67,7 @@ function minimalGeographyLayers() {
       source: { contract_id: "community-district-boundaries" },
       vintage: { id: "2026-05-26" },
       features: [
-        { id: "R01", label: "Staten Island Community District 1" },
+        { id: "R02", label: "Staten Island Community District 2" },
         { id: "K13", label: "Brooklyn Community District 13" },
         { id: "K11", label: "Brooklyn Community District 11" },
         { id: "M04", label: "Manhattan Community District 4" },
@@ -95,10 +95,10 @@ function minimalGeographyLayers() {
 
 function buildLandActivity(opts = {}) {
   const ids = opts.projectIds || [
-    "2026R0127",
+    "2019R0267",
     "2025K0305",
-    "2023M0213",
-    "2025M0252",
+    "2024K0444",
+    "2026X0180",
     "2022Y0395",
   ];
   return buildDistrictActivity({
@@ -126,12 +126,12 @@ test("A1: retained NTA anchors appear once from the shared place index", () => {
   // Build with every retained member for the acceptance NTAs so the activity
   // mirror can prove one-shot listing without pinning named ULURP ids.
   const ntaMembers = membership?.by_geography?.nta2020 || {};
-  const requiredNtas = ["SI0105", "BK1301", "BK1391", "MN0401", "MN0402"];
+  const requiredNtas = ["SI0201", "BK1301", "BK1391", "MN0401", "MN0402"];
   const projectIds = new Set([
-    "2026R0127",
+    "2019R0267",
     "2025K0305",
-    "2023M0213",
-    "2025M0252",
+    "2024K0444",
+    "2026X0180",
     "2022Y0395",
   ]);
   for (const ntaId of requiredNtas) {
@@ -151,10 +151,10 @@ test("A1: retained NTA anchors appear once from the shared place index", () => {
     }
   }
 
-  const siMembers = ntaMembers.SI0105 || [];
+  const siMembers = ntaMembers.SI0201 || [];
   const siRecord = activity.records.land[siMembers[0]];
-  assert.ok(siRecord, "SI0105 membership must produce a Land activity record");
-  const siNta = siRecord.place.geographies.find((geo) => geo.key === civicGeographyKey("nta2020", "SI0105"));
+  assert.ok(siRecord, "SI0201 membership must produce a Land activity record");
+  const siNta = siRecord.place.geographies.find((geo) => geo.key === civicGeographyKey("nta2020", "SI0201"));
   assert.equal(siNta.location_role, "project_geometry");
   assert.equal(siNta.association_kind, LAND_PLACE_ASSOCIATION_KIND);
   assert.equal(siNta.method, LAND_PLACE_ASSOCIATION_KIND);
@@ -174,7 +174,7 @@ test("A2: no-BBL citywide and publisher-only CD never become physical NTA eviden
   for (const key of ntaKeys) {
     const land = activity.geography_items.by_key?.[key]?.land || [];
     assert.equal(land.includes("2022Y0395"), false, `${key} must omit citywide no-BBL`);
-    assert.equal(land.includes("2025M0252"), false, `${key} must omit publisher-only CD`);
+    assert.equal(land.includes("2026X0180"), false, `${key} must omit publisher-only CD`);
   }
 
   // Positive control: a forged CD→NTA crosswalk slot would fail this checker.
@@ -182,12 +182,12 @@ test("A2: no-BBL citywide and publisher-only CD never become physical NTA eviden
     ...membership,
     by_project: {
       ...membership.by_project,
-      "2025M0252": {
-        ...membership.by_project["2025M0252"],
+      "2026X0180": {
+        ...membership.by_project["2026X0180"],
         layers: {
-          ...membership.by_project["2025M0252"].layers,
+          ...membership.by_project["2026X0180"].layers,
           nta2020: {
-            ...membership.by_project["2025M0252"].layers.nta2020,
+            ...membership.by_project["2026X0180"].layers.nta2020,
             places: ["MN0401"],
           },
         },
@@ -197,15 +197,15 @@ test("A2: no-BBL citywide and publisher-only CD never become physical NTA eviden
       ...membership.by_geography,
       nta2020: {
         ...membership.by_geography.nta2020,
-        MN0401: [...(membership.by_geography.nta2020.MN0401 || []), "2025M0252"],
+        MN0401: [...(membership.by_geography.nta2020.MN0401 || []), "2026X0180"],
       },
     },
   };
   const forgedActivity = buildLandActivity({ landPlaceMembership: forged });
-  assert.equal(landIdsForNta(forgedActivity, "MN0401").includes("2025M0252"), true);
+  assert.equal(landIdsForNta(forgedActivity, "MN0401").includes("2026X0180"), true);
   // Real membership still excludes the publisher-only project.
-  assert.equal(landIdsForNta(activity, "MN0401").includes("2025M0252"), false);
-  assert.equal(landNtaSlotsFromMembershipEntry(membership.by_project["2025M0252"]).length, 0);
+  assert.equal(landIdsForNta(activity, "MN0401").includes("2026X0180"), false);
+  assert.equal(landNtaSlotsFromMembershipEntry(membership.by_project["2026X0180"]).length, 0);
   assert.equal(landNtaSlotsFromMembershipEntry(membership.by_project["2022Y0395"]).length, 0);
 });
 
@@ -217,13 +217,13 @@ test("A3: unavailable membership yields unavailable Land place query and keeps p
   assert.deepEqual(readyCoverage.source_dates, membership.source_dates);
 
   const missing = buildLandActivity({ landPlaceMembership: null });
-  const missingKey = civicGeographyKey("nta2020", "SI0105");
+  const missingKey = civicGeographyKey("nta2020", "SI0201");
   const missingProjection = geographyRecordProjection(missing, { key: missingKey, lens: "land" });
   assert.equal(missingProjection.state, "unavailable");
   assert.equal(missingProjection.exact, false);
   assert.equal(missingProjection.count, null);
   assert.deepEqual(
-    landDistrictActivityNtaFindings(missing, null, "SI0105"),
+    landDistrictActivityNtaFindings(missing, null, "SI0201"),
     [],
   );
 
@@ -236,7 +236,7 @@ test("A3: unavailable membership yields unavailable Land place query and keeps p
   assert.equal(corrupt.sources.land.place_membership.reason, "land_place_membership_corrupt");
 
   // Publisher CD land queries remain available when only the NTA place index is down.
-  const cdKey = civicGeographyKey("community_district", "R01");
+  const cdKey = civicGeographyKey("community_district", "R02");
   // Ensure the publisher slot still materialized the CD key.
   const readyCd = geographyRecordProjection(ready, { key: cdKey, lens: "land" });
   assert.ok(readyCd.state === "ready" || readyCd.state === "zero");
@@ -259,9 +259,9 @@ test("A4: complete per-NTA ID sets match L02 and preserve publisher role regress
 
   // Positive control: dropping an expected ID is observable.
   const drifted = structuredClone(activity);
-  const siKey = civicGeographyKey("nta2020", "SI0105");
+  const siKey = civicGeographyKey("nta2020", "SI0201");
   drifted.geography_items.by_key[siKey].land = [];
-  assert.ok(landDistrictActivityNtaFindings(drifted, membership, "SI0105").length > 0);
+  assert.ok(landDistrictActivityNtaFindings(drifted, membership, "SI0201").length > 0);
 
   // Publisher role regression: CD/council methods stay publisher_*, NTA stays published_project_lot.
   const westshore = activity.records.land["2025K0305"];

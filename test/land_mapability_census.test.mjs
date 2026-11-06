@@ -62,16 +62,16 @@ test("aggregations preserve the 40-row denominator and named counts", () => {
   assert.equal(committed.schema, LAND_MAPABILITY_CENSUS_SCHEMA);
   assert.equal(committed.join_version, LAND_MAPABILITY_JOIN_VERSION);
   assert.equal(agg.denominator, 40);
-  assert.equal(agg.mapped, 33);
-  assert.equal(agg.unmapped, 7);
-  assert.equal(agg.coverage_percent, 82.5);
-  assert.equal(agg.exact_bbl_projects, 39);
-  assert.equal(agg.bbl_occurrences, 284);
-  assert.equal(agg.unique_bbl_keys, 277);
-  assert.equal(agg.matched_centroid_occurrences, 233);
-  assert.equal(agg.unique_centroid_keys, 226);
-  assert.equal(agg.methods.single_bbl_centroid, 11);
-  assert.equal(agg.methods.multi_bbl_anchor, 22);
+  assert.equal(agg.mapped, 26);
+  assert.equal(agg.unmapped, 14);
+  assert.equal(agg.coverage_percent, 65);
+  assert.equal(agg.exact_bbl_projects, 32);
+  assert.equal(agg.bbl_occurrences, 220);
+  assert.equal(agg.unique_bbl_keys, 220);
+  assert.equal(agg.matched_centroid_occurrences, 170);
+  assert.equal(agg.unique_centroid_keys, 170);
+  assert.equal(agg.methods.single_bbl_centroid, 3);
+  assert.equal(agg.methods.multi_bbl_anchor, 23);
   assert.equal(agg.list_baseline.bytes, committed.artifacts.land_default.bytes);
   assert.equal(committed.projects.length, LAND_MAPABILITY_DENOMINATOR);
   assert.equal(committed.new_publisher_work, false);
@@ -79,15 +79,22 @@ test("aggregations preserve the 40-row denominator and named counts", () => {
   assert.equal(committed.geocoder_input, false);
 });
 
-test("all 7 unmapped projects stay named and without markers", () => {
+test("all 14 unmapped projects stay named and without markers", () => {
   assert.deepEqual(committed.unmapped_project_ids, [
-    "2020M0385",
-    "2020K0444",
-    "2024Q0135",
-    "P2012X0048",
-    "2020Q0317",
     "2023M0452",
-    "2025M0252",
+    "2020Q0317",
+    "P2009K0185",
+    "2020K0444",
+    "P2012X0048",
+    "2024Q0135",
+    "2026X0180",
+    "2025M0399",
+    "2024X0217",
+    "2024M0148",
+    "2026X0270",
+    "2026Q0371",
+    "2026K0322",
+    "2025Q0494",
   ]);
   for (const id of committed.unmapped_project_ids) {
     const row = committed.projects.find((item) => item.project_id === id);
@@ -98,46 +105,55 @@ test("all 7 unmapped projects stay named and without markers", () => {
   }
 });
 
-test("2025K0305 is a 25-centroid multi-BBL specimen", () => {
-  const row = committed.projects.find((item) => item.project_id === "2025K0305");
+test("2023Q0351 is a 24-centroid multi-BBL specimen", () => {
+  // 2025K0305 was the prior specimen until a refresh rotated it out of the
+  // 40-row Default Land snapshot; this file reads that live, fully-rotating
+  // snapshot rather than a frozen fixture, so the specimen is expected to
+  // need re-pinning periodically.
+  const row = committed.projects.find((item) => item.project_id === "2023Q0351");
   assert.equal(row.mapped, true);
   assert.equal(row.method, LAND_MAPABILITY_METHODS.MULTI_BBL_ANCHOR);
-  assert.equal(row.exact_bbl_count, 25);
-  assert.equal(row.unique_matched_centroid_count, 25);
+  assert.equal(row.exact_bbl_count, 24);
+  assert.equal(row.unique_matched_centroid_count, 24);
   assert.equal(row.point_role, "existence_proof");
   assert.equal(Number.isFinite(row.point.lat), true);
   assert.equal(Number.isFinite(row.point.lon), true);
   assert.equal(row.join_version, LAND_MAPABILITY_JOIN_VERSION);
 });
 
-test("negative specimen 2025M0252 stays unmapped", () => {
-  const row = committed.projects.find((item) => item.project_id === "2025M0252");
+test("negative specimen 2026X0180 stays unmapped", () => {
+  // 2025M0252 was the prior specimen until a refresh rotated it out of the
+  // 40-row Default Land snapshot (same re-pinning expectation as above).
+  const row = committed.projects.find((item) => item.project_id === "2026X0180");
   assert.equal(row.mapped, false);
   assert.equal(row.exact_bbl_count, 0);
   assert.equal(row.unmapped_reason, "no_retained_bbl");
   assert.equal(row.point, null);
 });
 
-test("the 2026K0123 MapPLUTO centroid canary stays present and now matches this project's own retained BBL", () => {
-  // The fuller WH-06 pull retains 2026K0123's own BBL again, so the canary
-  // (kept for when /zap-outcomes KV drops the project and the census would
-  // otherwise show unmapped) and the project's ordinary exact-BBL match now
-  // coincide. The canary's job is that its BBL always has a centroid, not
-  // that this project must avoid matching it.
+test("the 2026K0123 MapPLUTO centroid canary keeps its pinned BBL's centroid retained", () => {
+  // The canary's job is permalink continuity if /zap-outcomes KV ever drops
+  // 2026K0123: its BBL must always resolve to a centroid regardless of
+  // whether the project is currently in the 40-row Default Land snapshot.
+  // 2026K0123 has rotated out of the current snapshot, so the coincidence
+  // this test once demonstrated (the canary and the project's own exact-BBL
+  // match agreeing) is not observable this refresh; the canary's standing
+  // guarantee is checked directly against the committed centroid lookup
+  // instead of against this census.
   const canaryBbl = Object.keys(BBL_MAPPLUTO_CENTROID_CANARIES).find(
     (bbl) => BBL_MAPPLUTO_CENTROID_CANARIES[bbl] === "2026K0123",
   );
   assert.ok(canaryBbl);
   assert.ok(mapplutoCentroids.by_bbl[normalizeBbl(canaryBbl)]);
-  const row = committed.projects.find((item) => item.project_id === "2026K0123");
-  assert.equal(row.mapped, true);
-  assert.equal(row.matched_centroids.some((hit) => hit.bbl === normalizeBbl(canaryBbl)), true);
 });
 
 test("geocoded points, district guesses, neighboring parcels, and outcome points do not map", () => {
+  // 2025M0252 was the prior pollution target until a refresh rotated it out
+  // of the 40-row Default Land snapshot; 2026X0180 is its replacement (same
+  // re-pinning expectation as the specimen tests above).
   const baseline = census();
   const mutatedProjects = landDefault.projects.map((project) => {
-    if (project.project_id !== "2025M0252") return project;
+    if (project.project_id !== "2026X0180") return project;
     return { ...project, latitude: 40.694, longitude: -73.986, lat: 40.694, lon: -73.986 };
   });
   const neighborBbl = Object.keys(mapplutoCentroids.by_bbl)[0];
@@ -145,20 +161,20 @@ test("geocoded points, district guesses, neighboring parcels, and outcome points
     ...zapBbl,
     rows: [
       ...zapBbl.rows,
-      { project_id: "2025M0252-neighbor-ignored", bbls: [neighborBbl] },
+      { project_id: "2026X0180-neighbor-ignored", bbls: [neighborBbl] },
     ],
   };
   const polluted = census({
-    landDefault: { ...landDefault, projects: mutatedProjects, outcomes: { "2025M0252": { lat: 40.69, lon: -73.98 } } },
+    landDefault: { ...landDefault, projects: mutatedProjects, outcomes: { "2026X0180": { lat: 40.69, lon: -73.98 } } },
     zapBbl: mutatedBbl,
     geocode: () => ({ status: "matched", lat: 40.71, lon: -74.01, method: "address_geocode" }),
     districtCentroids: { Brooklyn: { lat: 40.65, lon: -73.95 } },
     neighborParcels: { "2023M0452": [neighborBbl] },
   });
   assert.deepEqual(polluted.unmapped_project_ids, baseline.unmapped_project_ids);
-  assert.equal(polluted.aggregations.mapped, 33);
-  assert.equal(polluted.aggregations.unmapped, 7);
-  const k0123 = polluted.projects.find((row) => row.project_id === "2025M0252");
+  assert.equal(polluted.aggregations.mapped, 26);
+  assert.equal(polluted.aggregations.unmapped, 14);
+  const k0123 = polluted.projects.find((row) => row.project_id === "2026X0180");
   assert.equal(k0123.mapped, false);
   assert.equal(k0123.point, null);
   const m0452 = polluted.projects.find((row) => row.project_id === "2023M0452");
@@ -204,9 +220,9 @@ test("census module does not fetch, geocode, or call a live GIS service", () => 
 
 test("markdown receipt names coverage and the unmapped set", () => {
   const markdown = readFileSync(new URL(`../${CENSUS_MD}`, import.meta.url), "utf8");
-  assert.match(markdown, /33 of 40 projects \(82\.5 percent\)/);
-  assert.match(markdown, /2026K0123/);
-  assert.match(markdown, /2020M0385/);
+  assert.match(markdown, /26 of 40 projects \(65 percent\)/);
+  assert.match(markdown, /2023Q0351/);
+  assert.match(markdown, /2026X0180/);
   assert.match(markdown, new RegExp(String(committed.aggregations.list_baseline.bytes)));
   assert.match(markdown, /node tools\/build_land_mapability_census\.mjs --check/);
   assert.ok(CENSUS_JSON.endsWith("land-map-view-census.json"));

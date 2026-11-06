@@ -45,10 +45,16 @@ function t(key, values = {}) {
 }
 
 const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40 });
-/** A 25-lot rezoning: on the map, and emphatically not at an address. */
-const ANCHOR_SPECIMEN = "2025K0305";
+// 2025K0305 (anchor) and 2025M0252 (unmapped) were the prior specimens until a
+// refresh rotated them out of the 40-row Default Land snapshot; this file
+// reads committed site/data directly rather than a frozen fixture, so these
+// specimens are expected to need re-pinning periodically (same replacements
+// used elsewhere this session, e.g. LAND_PROJECT_MAP_POINT_SPECIMENS in
+// site/land_project_map_points.mjs).
+/** A 24-lot rezoning: on the map, and emphatically not at an address. */
+const ANCHOR_SPECIMEN = "2023Q0351";
 /** A project with no published point at all -- reachable only through the List. */
-const UNMAPPED_SPECIMEN = "2025M0252";
+const UNMAPPED_SPECIMEN = "2026X0180";
 
 const rowsFor = (overrides = {}) =>
   filterLandSnapshot(landDefault.projects, { ...DEFAULT_FILTER, ...overrides });
@@ -66,8 +72,8 @@ const panelFor = (selectedProjectId, currentHash = "#land") =>
 test("the default 40-row corpus keeps its documented mapped/unmapped split", () => {
   const model = modelFor(null);
   assert.equal(model.counts.total, 40);
-  assert.equal(model.counts.mapped, 33);
-  assert.equal(model.counts.unmapped, 7);
+  assert.equal(model.counts.mapped, 26);
+  assert.equal(model.counts.unmapped, 14);
   const rows = rowsFor();
   assert.ok(rows.some((row) => row.project_id === ANCHOR_SPECIMEN), "anchor specimen left the corpus");
   assert.ok(rows.some((row) => row.project_id === UNMAPPED_SPECIMEN), "unmapped specimen left the corpus");

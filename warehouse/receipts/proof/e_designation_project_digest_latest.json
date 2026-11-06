@@ -22,7 +22,338 @@
     "rejected": 4
   },
   "specimens": {
-    "positive": null,
+    "positive": {
+      "schema": "cityscroll.e_designation_project_digest.v1",
+      "project_id": "2019K0219",
+      "coverage": "partial",
+      "eligible_lot_count": 4,
+      "matched_lot_count": 3,
+      "matched_lots": [
+        "3024720020",
+        "3024720021",
+        "3024720025"
+      ],
+      "unmatched_lots": [
+        "3024720003"
+      ],
+      "conditions": [
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720020",
+          "designation_number": "E-317",
+          "condition_category": "air_quality",
+          "condition_value": "Air quality requirements",
+          "condition_description": "Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Hazardous Materials* Phase I and Phase II Testing Protocol;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-52rp_uim8_5m6d",
+          "source_date": "2013-12-10T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-52rp_uim8_5m6d'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720020",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720020",
+          "designation_number": "E-138",
+          "condition_category": "hazardous_materials",
+          "condition_value": "Hazardous materials requirements",
+          "condition_description": "Underground Gasoline Storage Tanks* Testing Protocol.;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-6v68-y38f.fhbw",
+          "source_date": "2005-05-11T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-6v68-y38f.fhbw'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720020",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720020",
+          "designation_number": "E-317",
+          "condition_category": "hazardous_materials",
+          "condition_value": "Hazardous materials requirements",
+          "condition_description": "Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Hazardous Materials* Phase I and Phase II Testing Protocol;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-52rp_uim8_5m6d",
+          "source_date": "2013-12-10T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-52rp_uim8_5m6d'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720020",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720020",
+          "designation_number": "E-138",
+          "condition_category": "noise",
+          "condition_value": "Noise requirements",
+          "condition_description": "Underground Gasoline Storage Tanks* Testing Protocol.;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-6v68-y38f.fhbw",
+          "source_date": "2005-05-11T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-6v68-y38f.fhbw'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720020",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720020",
+          "designation_number": "E-317",
+          "condition_category": "noise",
+          "condition_value": "Noise requirements",
+          "condition_description": "Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Hazardous Materials* Phase I and Phase II Testing Protocol;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-52rp_uim8_5m6d",
+          "source_date": "2013-12-10T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-52rp_uim8_5m6d'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720020",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720021",
+          "designation_number": "E-317",
+          "condition_category": "air_quality",
+          "condition_value": "Air quality requirements",
+          "condition_description": "Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Hazardous Materials* Phase I and Phase II Testing Protocol;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-xpmz-dcp2-ejzg",
+          "source_date": "2013-12-10T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-xpmz-dcp2-ejzg'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720021",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720021",
+          "designation_number": "E-138",
+          "condition_category": "hazardous_materials",
+          "condition_value": "Hazardous materials requirements",
+          "condition_description": "Underground Gasoline Storage Tanks* Testing Protocol.;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-jtbv.z4uc~vvs7",
+          "source_date": "2005-05-11T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-jtbv.z4uc~vvs7'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720021",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720021",
+          "designation_number": "E-317",
+          "condition_category": "hazardous_materials",
+          "condition_value": "Hazardous materials requirements",
+          "condition_description": "Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Hazardous Materials* Phase I and Phase II Testing Protocol;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-xpmz-dcp2-ejzg",
+          "source_date": "2013-12-10T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-xpmz-dcp2-ejzg'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720021",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720021",
+          "designation_number": "E-138",
+          "condition_category": "noise",
+          "condition_value": "Noise requirements",
+          "condition_description": "Underground Gasoline Storage Tanks* Testing Protocol.;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-jtbv.z4uc~vvs7",
+          "source_date": "2005-05-11T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-jtbv.z4uc~vvs7'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720021",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720021",
+          "designation_number": "E-317",
+          "condition_category": "noise",
+          "condition_value": "Noise requirements",
+          "condition_description": "Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Hazardous Materials* Phase I and Phase II Testing Protocol;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-xpmz-dcp2-ejzg",
+          "source_date": "2013-12-10T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-xpmz-dcp2-ejzg'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720021",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720025",
+          "designation_number": "E-317",
+          "condition_category": "air_quality",
+          "condition_value": "Air quality requirements",
+          "condition_description": "Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Hazardous Materials* Phase I and Phase II Testing Protocol;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-xxng_2xdd-ke3z",
+          "source_date": "2013-12-10T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-xxng_2xdd-ke3z'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720025",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720025",
+          "designation_number": "E-138",
+          "condition_category": "hazardous_materials",
+          "condition_value": "Hazardous materials requirements",
+          "condition_description": "Underground Gasoline Storage Tanks* Testing Protocol.;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-y2wu-b27g.cjng",
+          "source_date": "2005-05-11T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-y2wu-b27g.cjng'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720025",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720025",
+          "designation_number": "E-317",
+          "condition_category": "hazardous_materials",
+          "condition_value": "Hazardous materials requirements",
+          "condition_description": "Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Hazardous Materials* Phase I and Phase II Testing Protocol;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-xxng_2xdd-ke3z",
+          "source_date": "2013-12-10T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-xxng_2xdd-ke3z'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720025",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720025",
+          "designation_number": "E-138",
+          "condition_category": "noise",
+          "condition_value": "Noise requirements",
+          "condition_description": "Underground Gasoline Storage Tanks* Testing Protocol.;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-y2wu-b27g.cjng",
+          "source_date": "2005-05-11T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-y2wu-b27g.cjng'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720025",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        },
+        {
+          "project_id": "2019K0219",
+          "bbl": "3024720025",
+          "designation_number": "E-317",
+          "condition_category": "noise",
+          "condition_value": "Noise requirements",
+          "condition_description": "Air Quality - HVAC natural gas with low Nox only;Exhaust stack location limitations;Hazardous Materials* Phase I and Phase II Testing Protocol;Window Wall Attenuation & Alternate Ventilation",
+          "source_dataset": "hxm3-23vy",
+          "source_row_id": "row-xxng_2xdd-ke3z",
+          "source_date": "2013-12-10T00:00:00.000",
+          "source_vintage": "2026-08-12",
+          "source_url": "https://data.cityofnewyork.us/resource/hxm3-23vy.json?$where=:id='row-xxng_2xdd-ke3z'",
+          "join_method": "exact_bbl_intersection",
+          "join_method_version": "ldp15_exact_keys_v1",
+          "join_key": "3024720025",
+          "join_basis": {
+            "exact_ulurp": false,
+            "exact_ceqr": false,
+            "exact_bbl_intersection": true
+          }
+        }
+      ]
+    },
     "explicit_non_match": {
       "schema": "cityscroll.e_designation_project_digest.v1",
       "project_id": "2022M0258",

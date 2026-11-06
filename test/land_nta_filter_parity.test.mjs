@@ -40,11 +40,12 @@ assert.equal(membership.schema, LAND_PLACE_MEMBERSHIP_SCHEMA_ID);
 assert.ok(catalogRows.length >= 200);
 
 const NTA = Object.freeze({
-  SI0105: "geography:nta2020:SI0105",
+  SI0201: "geography:nta2020:SI0201",
   BK1301: "geography:nta2020:BK1301",
   BK1391: "geography:nta2020:BK1391",
   MN0401: "geography:nta2020:MN0401",
   MN0402: "geography:nta2020:MN0402",
+  MN0502: "geography:nta2020:MN0502",
 });
 
 function ntaMembers(ntaId) {
@@ -157,15 +158,15 @@ function runLandQuery(route, {
 
 describe("land NTA geography filter parity", () => {
   it("A1 same NTA plus stage query yields identical ordered IDs across direct load and List/Map receipt", () => {
-    const route = `#land?status=all&stage=any&geo=${encodeURIComponent(NTA.SI0105)}`;
+    const route = `#land?status=all&stage=any&geo=${encodeURIComponent(NTA.SI0201)}`;
     const direct = runLandQuery(route);
     const again = runLandQuery(route);
     assert.deepEqual(direct.ids, again.ids);
-    const members = ntaMembers("SI0105");
-    assert.ok(members.length >= 1, "SI0105 membership must stay populated");
-    assert.ok(direct.ids.length >= 1, "SI0105 query must stay non-empty while membership is populated");
+    const members = ntaMembers("SI0201");
+    assert.ok(members.length >= 1, "SI0201 membership must stay populated");
+    assert.ok(direct.ids.length >= 1, "SI0201 query must stay non-empty while membership is populated");
     for (const id of direct.ids) {
-      assert.ok(members.includes(id), `SI0105 result ${id} must stay inside membership`);
+      assert.ok(members.includes(id), `SI0201 result ${id} must stay inside membership`);
     }
     assert.deepEqual(direct.receipt.list_ids, direct.ids);
     assert.deepEqual(
@@ -174,12 +175,12 @@ describe("land NTA geography filter parity", () => {
     );
 
     const semantic = landSemanticScopeFromState(direct.state);
-    assert.deepEqual(semantic.geographies, [NTA.SI0105]);
+    assert.deepEqual(semantic.geographies, [NTA.SI0201]);
 
     const oracle = oracleLandIds(catalogRows, {
       status: "all",
       stage: "any",
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       limit: LAND_DEFAULT_RESULT_LIMIT,
     });
     assert.deepEqual(direct.ids, oracle.ids);
@@ -213,24 +214,27 @@ describe("land NTA geography filter parity", () => {
   });
 
   it("A1 cross-facet AND keeps only projects that satisfy geography and borough together", () => {
-    const route = `#land?status=all&stage=any&boro=Manhattan&geo=${encodeURIComponent(NTA.MN0401)}`;
+    // MN0401's live members are all Non-ULURP, which the default land-procedure
+    // facet ("review" admits ULURP/ELURP only) never surfaces, so this test
+    // uses MN0502 (same Manhattan borough, has ULURP/ELURP members) instead.
+    const route = `#land?status=all&stage=any&boro=Manhattan&geo=${encodeURIComponent(NTA.MN0502)}`;
     const { ids } = runLandQuery(route);
-    const members = ntaMembers("MN0401");
-    assert.ok(members.length >= 1, "MN0401 membership must stay populated");
-    assert.ok(ids.length >= 1, "Manhattan∩MN0401 must stay non-empty while membership is populated");
+    const members = ntaMembers("MN0502");
+    assert.ok(members.length >= 1, "MN0502 membership must stay populated");
+    assert.ok(ids.length >= 1, "Manhattan∩MN0502 must stay non-empty while membership is populated");
     for (const id of ids) {
       const row = catalogRows.find((item) => item.project_id === id);
       assert.equal(row?.borough, "Manhattan");
       assert.ok(members.includes(id));
     }
     const brooklynOnly = runLandQuery(
-      `#land?status=all&stage=any&boro=Brooklyn&geo=${encodeURIComponent(NTA.MN0401)}`,
+      `#land?status=all&stage=any&boro=Brooklyn&geo=${encodeURIComponent(NTA.MN0502)}`,
     );
     assert.deepEqual(brooklynOnly.ids, []);
   });
 
   it("A2 a qualifying project after forty unfiltered records remains eligible under area-before-limit", () => {
-    const target = "2026R0127";
+    const target = "2019R0267";
     const filler = catalogRows
       .filter((row) => row.project_id !== target)
       .slice(0, LAND_DEFAULT_RESULT_LIMIT);
@@ -241,7 +245,7 @@ describe("land NTA geography filter parity", () => {
     ];
     assert.equal(rows.length, LAND_DEFAULT_RESULT_LIMIT + 1);
 
-    // Old wrong order: presentation limit first, then geography — the SI0105 project is gone.
+    // Old wrong order: presentation limit first, then geography — the SI0201 project is gone.
     const truncated = rows.slice(0, LAND_DEFAULT_RESULT_LIMIT);
     assert.equal(truncated.some((row) => row.project_id === target), false);
     const withoutGeoFirst = filterLandSnapshot(truncated, {
@@ -250,7 +254,7 @@ describe("land NTA geography filter parity", () => {
       procedure: "any",
       family: "any",
       today: TODAY,
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       placeMembership: membership,
       limit: LAND_DEFAULT_RESULT_LIMIT,
     });
@@ -262,7 +266,7 @@ describe("land NTA geography filter parity", () => {
       procedure: "any",
       family: "any",
       today: TODAY,
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       placeMembership: membership,
       limit: LAND_DEFAULT_RESULT_LIMIT,
     });
@@ -271,7 +275,7 @@ describe("land NTA geography filter parity", () => {
     const oracle = oracleLandIds(rows, {
       status: "all",
       stage: "any",
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       limit: LAND_DEFAULT_RESULT_LIMIT,
     });
     assert.deepEqual(landCanonicalIds(withGeo), oracle.ids);
@@ -281,17 +285,17 @@ describe("land NTA geography filter parity", () => {
     const blockIds = catalogRows
       .filter((row) => row.borough === "Brooklyn")
       .map((row) => row.project_id)
-      .filter((id) => !ntaMembers("SI0105").includes(id))
+      .filter((id) => !ntaMembers("SI0201").includes(id))
       .slice(0, 12);
     assert.ok(blockIds.length >= 5);
-    assert.equal(blockIds.includes("2026R0127"), false);
+    assert.equal(blockIds.includes("2019R0267"), false);
 
     const rows = filterLandSnapshot(catalogRows, {
       status: "all",
       stage: "any",
       today: TODAY,
       projectIds: blockIds,
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       placeMembership: membership,
       limit: LAND_ADDRESS_RESULT_LIMIT,
     });
@@ -317,8 +321,8 @@ describe("land NTA geography filter parity", () => {
       borough: "Staten Island",
       limit: LAND_DEFAULT_RESULT_LIMIT,
     });
-    assert.ok(broadened.some((row) => row.project_id === "2026R0127"));
-    assert.equal(landCanonicalIds(rows).includes("2026R0127"), false);
+    assert.ok(broadened.some((row) => row.project_id === "2019R0267"));
+    assert.equal(landCanonicalIds(rows).includes("2019R0267"), false);
   });
 
   it("A3 empty geography-filtered results expose a clear-area control in the Land empty state", () => {
@@ -358,7 +362,7 @@ describe("land NTA geography filter parity", () => {
   });
 
   it("A4 missing membership index is unavailable, not a successful empty citywide query", () => {
-    const constraint = resolveLandNtaGeographyConstraint([NTA.SI0105], null);
+    const constraint = resolveLandNtaGeographyConstraint([NTA.SI0201], null);
     assert.equal(constraint.status, "unavailable");
     assert.equal(constraint.projectIds, null);
 
@@ -366,7 +370,7 @@ describe("land NTA geography filter parity", () => {
       status: "all",
       stage: "any",
       today: TODAY,
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       placeMembership: null,
       limit: LAND_DEFAULT_RESULT_LIMIT,
     });
@@ -381,7 +385,7 @@ describe("land NTA geography filter parity", () => {
   });
 
   it("A4 checker reports coherent constraints and a positive-control corruption", () => {
-    const ready = resolveLandNtaGeographyConstraint([NTA.SI0105], membership);
+    const ready = resolveLandNtaGeographyConstraint([NTA.SI0201], membership);
     assert.equal(ready.status, "ready");
     assert.deepEqual(landNtaGeographyConstraintFindings(ready), []);
 
@@ -391,9 +395,9 @@ describe("land NTA geography filter parity", () => {
 
     const broken = {
       status: "ready",
-      keys: [NTA.SI0105],
+      keys: [NTA.SI0201],
       invalidKeys: [],
-      ntaIds: ["SI0105"],
+      ntaIds: ["SI0201"],
       projectIds: null,
     };
     const findings = landNtaGeographyConstraintFindings(broken);
@@ -401,7 +405,11 @@ describe("land NTA geography filter parity", () => {
   });
 
   it("A5 address-branch thirtieth-candidate and lexical pre-limit survivors match the full-catalog oracle", () => {
-    const target = "2026R0127";
+    // 2026R0127 ("...Victory Blvd") was the prior SI0105 target until a
+    // refresh retired it from the live catalog; 2019R0267 is its replacement
+    // in SI0201, with "bluebelt" (from its own project_name) replacing
+    // "victory" as the lexical token below.
+    const target = "2019R0267";
     const addressFiller = catalogRows
       .filter((row) => row.project_id !== target)
       .map((row) => row.project_id)
@@ -419,7 +427,7 @@ describe("land NTA geography filter parity", () => {
       family: "any",
       today: TODAY,
       projectIds: addressCandidates,
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       placeMembership: membership,
       limit: LAND_ADDRESS_RESULT_LIMIT,
     });
@@ -429,16 +437,16 @@ describe("land NTA geography filter parity", () => {
       status: "all",
       stage: "any",
       projectIds: addressCandidates,
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       limit: LAND_ADDRESS_RESULT_LIMIT,
     });
     assert.deepEqual(landCanonicalIds(addressRows), addressOracle.ids);
 
     // Lexical pre-limit: old path truncated the catalog before keyword/geography, dropping the
     // matching NTA row that sits after the ordinary forty-project ceiling.
-    const token = "victory";
+    const token = "bluebelt";
     const lexicalTarget = catalogRows.find((row) => row.project_id === target);
-    assert.match(String(lexicalTarget.project_name || "").toLowerCase(), /victory/);
+    assert.match(String(lexicalTarget.project_name || "").toLowerCase(), /bluebelt/);
     const lexicalFiller = catalogRows
       .filter((row) => row.project_id !== target)
       .map((row) => ({
@@ -455,7 +463,7 @@ describe("land NTA geography filter parity", () => {
       family: "any",
       today: TODAY,
       keyword: token,
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       placeMembership: membership,
       limit: LAND_DEFAULT_RESULT_LIMIT,
     });
@@ -468,7 +476,7 @@ describe("land NTA geography filter parity", () => {
       family: "any",
       today: TODAY,
       keyword: token,
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       placeMembership: membership,
       limit: LAND_DEFAULT_RESULT_LIMIT,
     });
@@ -478,13 +486,17 @@ describe("land NTA geography filter parity", () => {
       status: "all",
       stage: "any",
       keyword: token,
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       limit: LAND_DEFAULT_RESULT_LIMIT,
     });
     assert.deepEqual(landCanonicalIds(lexicalFiltered), lexicalOracle.ids);
   });
 
   it("A1/A4 ordinary, lexical, and address branches all thread geographies through landSnapshotQueryFromState", () => {
+    // "park" matched a prior MN0401/MN0402 member's name; the current members
+    // no longer include one, but "57th" (515 West 57th Street Rezoning,
+    // MN0402's own ULURP member) still resolves non-empty under the default
+    // land-procedure facet.
     const mn0401 = ntaMembers("MN0401");
     const mn0402 = ntaMembers("MN0402");
     assert.ok(mn0401.length >= 1 && mn0402.length >= 1, "MN0401/MN0402 membership must stay populated");
@@ -492,7 +504,7 @@ describe("land NTA geography filter parity", () => {
     const state = landFilterStateFromRouteParams({
       status: "all",
       stage: "any",
-      q: "park",
+      q: "57th",
       geo: [NTA.MN0401, NTA.MN0402],
     });
     const ordinary = landSnapshotQueryFromState(state, {

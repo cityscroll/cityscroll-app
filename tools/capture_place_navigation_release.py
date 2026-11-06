@@ -75,31 +75,37 @@ BOARD_CASES = (
         "heading_re": r"Boards overlapping Kensington",
     },
     {
+        # Was QN0402/queens-cb-04 (project 2025Q0142) until a refresh retired
+        # that NTA's exclusive member from the live catalog.
         "id": "queens-holdout",
-        "geo": "nta2020:QN0402",
-        "label": "Corona",
-        "board_ids": ["queens-cb-04"],
-        "profile_board": "queens-cb-04",
-        "heading_re": r"Board overlapping Corona",
+        "geo": "nta2020:QN1403",
+        "label": "Breezy Point-Belle Harbor-Rockaway Park-Broad Channel",
+        "board_ids": ["queens-cb-14"],
+        "profile_board": "queens-cb-14",
+        "heading_re": r"Board overlapping",
     },
     {
+        # Was BX0902/bronx-cb-09 (project 2019X0255) until a refresh retired
+        # that NTA's exclusive member from the live catalog.
         "id": "bronx-holdout",
-        "geo": "nta2020:BX0902",
-        "label": "Soundview",
-        "board_ids": ["bronx-cb-09"],
-        "profile_board": "bronx-cb-09",
+        "geo": "nta2020:BX1102",
+        "label": "Morris Park",
+        "board_ids": ["bronx-cb-11"],
+        "profile_board": "bronx-cb-11",
         "heading_re": r"Board overlapping",
     },
 )
 
 LAND_DETAIL_CASES = (
     {
+        # Was 2026R0127/SI0105/staten-island-cb-01/R01 until a refresh
+        # retired that NTA's only member from the live catalog.
         "id": "fdny-si0105",
-        "project_id": "2026R0127",
-        "nta_ids": ["SI0105"],
-        "board_ids": ["staten-island-cb-01"],
-        "community_district_ids": ["R01"],
-        "identity_re": r"Cont(?:inued|\.?d)?\s+Use|FDNY",
+        "project_id": "2023X0347",
+        "nta_ids": ["BX0903"],
+        "board_ids": ["bronx-cb-09"],
+        "community_district_ids": ["X09"],
+        "identity_re": r"Demapping|Norton",
         "forbid_rezoning_identity": True,
         "coverage": None,
         "measure_place_links_width": True,
@@ -116,20 +122,25 @@ LAND_DETAIL_CASES = (
         "measure_place_links_width": False,
     },
     {
+        # Was 2023M0213/MN0401/MN0402 until a refresh retired that project
+        # from the live catalog; no live Manhattan project currently spans
+        # two NTAs, so this now uses a Queens multi-NTA project instead.
         "id": "manhattan-partial",
-        "project_id": "2023M0213",
-        "nta_ids": ["MN0401", "MN0402"],
+        "project_id": "2020Q0240",
+        "nta_ids": ["QN1201", "QN1205"],
         "board_ids": [],
         "community_district_ids": [],
         "identity_re": None,
         "forbid_rezoning_identity": False,
-        "coverage": {"matched": 5, "total": 7},
+        "coverage": {"matched": 4, "total": 4},
         "measure_place_links_width": False,
     },
     {
+        # Was 2025Q0142/QN0402 until a refresh retired that NTA's exclusive
+        # member from the live catalog.
         "id": "queens-holdout-land",
-        "project_id": "2025Q0142",
-        "nta_ids": ["QN0402"],
+        "project_id": "2020Q0157",
+        "nta_ids": ["QN1403"],
         "board_ids": [],
         "community_district_ids": [],
         "identity_re": None,
@@ -138,9 +149,11 @@ LAND_DETAIL_CASES = (
         "measure_place_links_width": False,
     },
     {
+        # Was 2019X0255/BX0902 until a refresh retired that NTA's exclusive
+        # member from the live catalog.
         "id": "bronx-holdout-land",
-        "project_id": "2019X0255",
-        "nta_ids": ["BX0902"],
+        "project_id": "2025X0143",
+        "nta_ids": ["BX1102"],
         "board_ids": [],
         "community_district_ids": [],
         "identity_re": None,
@@ -150,11 +163,11 @@ LAND_DETAIL_CASES = (
     },
 )
 
-NEAR_YOU_SI0105_ROUTE = (
-    "/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ASI0105"
+NEAR_YOU_BX0903_ROUTE = (
+    "/near-you/?v=0&lens=land&surface=records&geo=geography%3Anta2020%3ABX0903"
 )
-LAND_BROWSE_SI0105_ROUTE = (
-    "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ASI0105"
+LAND_BROWSE_BX0903_ROUTE = (
+    "/browse/zoning/?status=all&stage=any&geo=geography%3Anta2020%3ABX0903"
 )
 LAND_DETAIL_HASH_ROUTE = "/browse/zoning/#land/{project_id}"
 
@@ -320,11 +333,11 @@ def require_served_subjects(
     by_project = membership.get("by_project") or {}
     by_nta = ((membership.get("by_geography") or {}).get("nta2020") or {})
     for project_id, expected_ntas in (
-        ("2026R0127", {"SI0105"}),
+        ("2023X0347", {"BX0903"}),
         ("2025K0305", {"BK1301", "BK1391"}),
-        ("2023M0213", {"MN0401", "MN0402"}),
-        ("2025Q0142", {"QN0402"}),
-        ("2019X0255", {"BX0902"}),
+        ("2020Q0240", {"QN1201", "QN1205"}),
+        ("2020Q0157", {"QN1403"}),
+        ("2025X0143", {"BX1102"}),
     ):
         entry = by_project.get(project_id)
         if not isinstance(entry, dict):
@@ -334,9 +347,9 @@ def require_served_subjects(
             raise ServedDataMissingError(
                 f"served membership for {project_id} lacks NTAs {sorted(expected_ntas)}; got {sorted(places)}"
             )
-    si_ids = by_nta.get("SI0105") or []
-    if not isinstance(si_ids, list) or "2026R0127" not in si_ids:
-        raise ServedDataMissingError("served membership SI0105 must include 2026R0127")
+    si_ids = by_nta.get("BX0903") or []
+    if not isinstance(si_ids, list) or "2023X0347" not in si_ids:
+        raise ServedDataMissingError("served membership BX0903 must include 2023X0347")
 
     catalog = fetch_json(
         catalog_url,
@@ -363,8 +376,8 @@ def require_served_subjects(
         catalog_ids = {str(key) for key in projects.keys()}
     else:
         catalog_ids = set()
-    if "2026R0127" not in catalog_ids:
-        raise ServedDataMissingError("served catalog missing project 2026R0127")
+    if "2023X0347" not in catalog_ids:
+        raise ServedDataMissingError("served catalog missing project 2023X0347")
 
     board_index = fetch_json(
         board_index_url,
@@ -377,9 +390,9 @@ def require_served_subjects(
     board_by_nta = board_index.get("by_nta") or {}
     for nta, expected in (
         ("BK1203", {"brooklyn-cb-12", "brooklyn-cb-14"}),
-        ("QN0402", {"queens-cb-04"}),
-        ("BX0902", {"bronx-cb-09"}),
-        ("SI0105", {"staten-island-cb-01"}),
+        ("QN1403", {"queens-cb-14"}),
+        ("BX1102", {"bronx-cb-11"}),
+        ("BX0903", {"bronx-cb-09"}),
     ):
         rows = board_by_nta.get(nta) or []
         boards = {row.get("board_id") for row in rows if isinstance(row, dict)}
@@ -436,18 +449,18 @@ def require_served_subjects(
         ),
         (
             "land-browse-si0105",
-            LAND_BROWSE_SI0105_ROUTE,
+            LAND_BROWSE_BX0903_ROUTE,
             ("browse/zoning",),
         ),
         (
-            "land-detail-2026R0127",
+            "land-detail-2023X0347",
             "/browse/zoning/",
             ("land",),
         ),
         (
             "near-you-si0105-land",
-            NEAR_YOU_SI0105_ROUTE,
-            ("near-you", "lens=land", "SI0105"),
+            NEAR_YOU_BX0903_ROUTE,
+            ("near-you", "lens=land", "BX0903"),
         ),
     )
     html_sha: dict[str, str] = {}
@@ -1042,7 +1055,7 @@ def observe_near_you_handoff(
     served_revision: str | None = None,
 ) -> dict:
     name, width, height = viewport
-    route = NEAR_YOU_SI0105_ROUTE
+    route = NEAR_YOU_BX0903_ROUTE
     page.set_viewport_size({"width": width, "height": height})
     goto_with_receipt(
         page,
@@ -1056,10 +1069,10 @@ def observe_near_you_handoff(
         page.wait_for_function(
             """() => {
               const hrefs = [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href') || '');
-              if (hrefs.some((h) => h.includes('2026R0127'))) return true;
+              if (hrefs.some((h) => h.includes('2023X0347'))) return true;
               for (const el of document.querySelectorAll('[data-near-you-record-inspection]')) {
                 const raw = el.getAttribute('data-near-you-record-inspection') || '';
-                if (raw.includes('2026R0127')) return true;
+                if (raw.includes('2023X0347')) return true;
               }
               return false;
             }""",
@@ -1075,26 +1088,26 @@ def observe_near_you_handoff(
         """() => {
           const hrefs = [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href') || '');
           const results = hrefs.filter((h) =>
-            h.includes('/browse/zoning/') && h.includes('geo=') && h.includes('SI0105')
+            h.includes('/browse/zoning/') && h.includes('geo=') && h.includes('BX0903')
           );
-          const records = hrefs.filter((h) => h.includes('2026R0127'));
+          const records = hrefs.filter((h) => h.includes('2023X0347'));
           // Preview inspect stays a button; record destinations also appear on
           // data-near-you-record-inspection payloads as no-JS-readable hrefs.
           for (const el of document.querySelectorAll('[data-near-you-record-inspection]')) {
             try {
               const payload = JSON.parse(el.getAttribute('data-near-you-record-inspection') || 'null');
-              if (payload?.href && String(payload.href).includes('2026R0127')) {
+              if (payload?.href && String(payload.href).includes('2023X0347')) {
                 records.push(String(payload.href));
               }
-              if (payload?.uid === '2026R0127' && payload?.href) {
+              if (payload?.uid === '2023X0347' && payload?.href) {
                 records.push(String(payload.href));
               }
             } catch (_error) {}
           }
           const watch = hrefs.filter((h) =>
-            (h.includes('/following') || h.includes('watch')) && h.includes('SI0105')
+            (h.includes('/following') || h.includes('watch')) && h.includes('BX0903')
           );
-          const nojs = hrefs.filter((h) => h.includes('SI0105') && h.includes('geo='));
+          const nojs = hrefs.filter((h) => h.includes('BX0903') && h.includes('geo='));
           return {
             results_hrefs: [...new Set(results)].slice(0, 8),
             record_hrefs: [...new Set(records)].slice(0, 8),
@@ -1105,9 +1118,9 @@ def observe_near_you_handoff(
         }"""
     )
     if not link_probe.get("results_hrefs"):
-        raise SystemExit(f"near-you-si0105@{name}: Land results href with geo SI0105 missing")
-    if not any("2026R0127" in href for href in link_probe.get("record_hrefs") or []):
-        raise SystemExit(f"near-you-si0105@{name}: record link for 2026R0127 missing")
+        raise SystemExit(f"near-you-si0105@{name}: Land results href with geo BX0903 missing")
+    if not any("2023X0347" in href for href in link_probe.get("record_hrefs") or []):
+        raise SystemExit(f"near-you-si0105@{name}: record link for 2023X0347 missing")
     if not link_probe.get("nojs_geo_hrefs"):
         raise SystemExit(f"near-you-si0105@{name}: no-JS geo anchors missing from DOM")
 
@@ -1126,21 +1139,21 @@ def observe_near_you_handoff(
         kind=f"browser-land-browse-from-near-you-{name}",
     )
     restored = page.evaluate("() => window.location.search + window.location.hash")
-    if "SI0105" not in restored and "geography%3Anta2020%3ASI0105" not in restored:
-        if "SI0105" not in page.url:
+    if "BX0903" not in restored and "geography%3Anta2020%3ABX0903" not in restored:
+        if "BX0903" not in page.url:
             raise SystemExit(f"near-you-si0105@{name}: copied Land browse URL lost geo ({restored!r})")
 
     # Browser back should return toward Near You place scope when history allows.
     page.go_back()
     page.wait_for_timeout(500)
     after_back = page.evaluate("() => window.location.pathname + window.location.search + window.location.hash")
-    back_restored_place = "SI0105" in after_back or "near-you" in after_back
+    back_restored_place = "BX0903" in after_back or "near-you" in after_back
 
     # Forward restores the Land browse geo when history stack permits.
     page.go_forward()
     page.wait_for_timeout(500)
     after_forward = page.evaluate("() => window.location.pathname + window.location.search + window.location.hash")
-    forward_restored = "SI0105" in after_forward or "zoning" in after_forward
+    forward_restored = "BX0903" in after_forward or "zoning" in after_forward
 
     html = page.content()
     shot = save_screenshot(page, f"near-you-si0105-{name}")
@@ -1149,7 +1162,7 @@ def observe_near_you_handoff(
         "route": route,
         "viewport": {"width": width, "height": height},
         "assertion": (
-            "Near You land lens for SI0105 carries Land results geo continuity and 2026R0127 record links"
+            "Near You land lens for BX0903 carries Land results geo continuity and 2023X0347 record links"
         ),
         "sha256": sha256_text(html),
         "file": None,
@@ -1170,11 +1183,11 @@ def observe_near_you_handoff(
 
 
 LAND_PROJECT_ID_RE = re.compile(r"\b20\d{2}[A-Z]\d{4}\b")
-WATCH_PREVIEW_MEMBERSHIP_SOURCE = "served-membership-by_geography.nta2020.SI0105"
+WATCH_PREVIEW_MEMBERSHIP_SOURCE = "served-membership-by_geography.nta2020.BX0903"
 WATCH_PREVIEW_MARKUP_SOURCE = "served-preview-markup"
 WATCH_PREVIEW_TOOLING_CONTROL_SOURCE = "tooling-control-preview"
 WATCH_PREVIEW_PERTURBATION_ID = "1999Z9999"
-WATCH_ADDRESS_EXPECTED_SCOPE = "geography:nta2020:SI0105"
+WATCH_ADDRESS_EXPECTED_SCOPE = "geography:nta2020:BX0903"
 WATCH_ADDRESS_EXPECTED_COUNT = 1
 WATCH_ADDRESS_EXPECTED_LENS = "land"
 
@@ -1222,7 +1235,7 @@ def watch_preview_parity_holds(parity: dict) -> bool:
     membership_source = str(parity.get("membership_project_ids_source") or "")
     if not preview_source or not membership_source or preview_source == membership_source:
         return False
-    return bool(parity.get("parity_equal")) and "2026R0127" in set(
+    return bool(parity.get("parity_equal")) and "2023X0347" in set(
         parity.get("intersection") or []
     )
 
@@ -1231,7 +1244,7 @@ def assert_watch_preview_parity(parity: dict, *, label: str) -> None:
     if not watch_preview_parity_holds(parity):
         raise SystemExit(
             f"{label}: watch-preview parity requires independently sourced equal "
-            f"preview and membership project sets that include 2026R0127; got {parity}"
+            f"preview and membership project sets that include 2023X0347; got {parity}"
         )
 
 
@@ -1269,7 +1282,7 @@ def positive_control_watch_preview_parity_rejects_perturbation(
 def record_watch_address(watch_href: str | None, *, label: str) -> dict:
     """Record the observable Following watch address scope and count."""
     if not watch_href:
-        raise SystemExit(f"{label}: Following land SI0105 watch address missing")
+        raise SystemExit(f"{label}: Following land BX0903 watch address missing")
     parsed = urllib.parse.urlparse(watch_href)
     qs = urllib.parse.parse_qs(parsed.query)
     lens = (qs.get("lens") or [None])[0]
@@ -1321,16 +1334,16 @@ def observe_watch_preview(
     name, width, height = viewport
     label = f"watch-preview@{name}"
     membership_project_ids = sorted({str(item) for item in membership_si0105_ids if item})
-    if "2026R0127" not in set(membership_project_ids):
+    if "2023X0347" not in set(membership_project_ids):
         raise SystemExit(
-            f"{label}: neighbourhood membership SI0105 missing 2026R0127 "
+            f"{label}: neighbourhood membership BX0903 missing 2023X0347 "
             f"({membership_project_ids})"
         )
 
     page.set_viewport_size({"width": width, "height": height})
     goto_with_receipt(
         page,
-        absolute(base, NEAR_YOU_SI0105_ROUTE),
+        absolute(base, NEAR_YOU_BX0903_ROUTE),
         request_log=request_log,
         served_revision=served_revision,
         kind=f"browser-watch-preview-source-{name}",
@@ -1344,7 +1357,7 @@ def observe_watch_preview(
     watch_href = page.evaluate(
         """() => {
           const hrefs = [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href') || '');
-          const hit = hrefs.find((h) => h.includes('/following') && h.includes('SI0105') && /land/i.test(h));
+          const hit = hrefs.find((h) => h.includes('/following') && h.includes('BX0903') && /land/i.test(h));
           return hit || null;
         }"""
     )
@@ -1431,12 +1444,12 @@ def observe_watch_preview(
         assert_watch_preview_parity(parity, label=label)
         preview.update(parity)
         preview["preview_intersects_membership"] = bool(parity["intersection"])
-        preview["includes_2026R0127"] = "2026R0127" in set(parity["intersection"])
+        preview["includes_2023X0347"] = "2023X0347" in set(parity["intersection"])
         preview["observation"] = (
-            "served Following preview markup enumerated project ids for SI0105 land watch"
+            "served Following preview markup enumerated project ids for BX0903 land watch"
         )
         assertion = (
-            "Watch-preview project set from served markup compared to SI0105 membership "
+            "Watch-preview project set from served markup compared to BX0903 membership "
             "with independently sourced intersection and differences"
         )
     else:
@@ -1456,7 +1469,7 @@ def observe_watch_preview(
     shot = save_screenshot(page, f"watch-preview-{name}")
     return {
         "name": f"watch-preview-si0105-{name}",
-        "route": watch_href or NEAR_YOU_SI0105_ROUTE,
+        "route": watch_href or NEAR_YOU_BX0903_ROUTE,
         "viewport": {"width": width, "height": height},
         "assertion": assertion,
         "sha256": sha256_text(html),
@@ -1474,7 +1487,7 @@ def observe_all_id_query_parity(
     request_log: list[dict] | None = None,
     served_revision: str | None = None,
 ) -> dict:
-    route = LAND_BROWSE_SI0105_ROUTE
+    route = LAND_BROWSE_BX0903_ROUTE
     page.set_viewport_size({"width": 1440, "height": 900})
     goto_with_receipt(
         page,
@@ -1486,7 +1499,7 @@ def observe_all_id_query_parity(
     try:
         page.wait_for_function(
             """() => [...document.querySelectorAll('a[href*="#land/"]')]
-              .some((a) => (a.getAttribute('href') || '').includes('2026R0127'))""",
+              .some((a) => (a.getAttribute('href') || '').includes('2023X0347'))""",
             timeout=20_000,
         )
     except Exception:
@@ -1524,18 +1537,18 @@ def observe_all_id_query_parity(
             "list_ids": list_ids,
             "marker_ids": marker_ids,
             "union_ids": sorted(set(list_ids) | set(marker_ids)),
-            "includes_2026R0127": "2026R0127" in set(list_ids) | set(marker_ids),
+            "includes_2023X0347": "2023X0347" in set(list_ids) | set(marker_ids),
         }
     else:
-        method = "served-membership-by_geography.nta2020.SI0105"
+        method = "served-membership-by_geography.nta2020.BX0903"
         observed = {
             "list_ids": [],
             "marker_ids": [],
             "membership_project_ids": list(membership_si0105_ids),
-            "includes_2026R0127": "2026R0127" in set(membership_si0105_ids),
+            "includes_2023X0347": "2023X0347" in set(membership_si0105_ids),
         }
-        if "2026R0127" not in set(membership_si0105_ids):
-            raise SystemExit("all-id parity: membership SI0105 missing 2026R0127")
+        if "2023X0347" not in set(membership_si0105_ids):
+            raise SystemExit("all-id parity: membership BX0903 missing 2023X0347")
 
     html = page.content()
     shot = save_screenshot(page, "land-browse-all-id-parity-desktop")
@@ -1543,7 +1556,7 @@ def observe_all_id_query_parity(
         "name": "land-browse-all-id-parity-desktop",
         "route": route,
         "viewport": {"width": 1440, "height": 900},
-        "assertion": "Land browse SI0105 all-ID query parity recorded via DOM or membership",
+        "assertion": "Land browse BX0903 all-ID query parity recorded via DOM or membership",
         "sha256": sha256_text(html),
         "file": None,
         "local_screenshot": str(shot),
@@ -2052,9 +2065,9 @@ def run_check(out_path: Path, manifest_path: Path) -> int:
                         file=sys.stderr,
                     )
                     return 2
-                if "2026R0127" not in set(values.get("intersection") or []):
+                if "2023X0347" not in set(values.get("intersection") or []):
                     print(
-                        f"watch-preview row {row.get('name')} intersection must include 2026R0127",
+                        f"watch-preview row {row.get('name')} intersection must include 2023X0347",
                         file=sys.stderr,
                     )
                     return 2
