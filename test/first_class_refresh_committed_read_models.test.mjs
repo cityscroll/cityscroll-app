@@ -99,6 +99,36 @@ test("both halves of the refresh run the rebuild", () => {
   );
 });
 
+test("the staffing-exams first-class artifact's rebuild steps are registered and ordered", () => {
+  // tools/build_staffing_exams.mjs had no rebuild_sequence step at all, so
+  // neither refresh path ever reran it: the refreshed open-competitive and
+  // OASys snapshots committed cleanly while the served staffing artifact
+  // derived from them went stale. list_depth_closed_exams.json's own
+  // freshness gate (list-depth-closed-exams, this file's sibling step) must
+  // run first or build_staffing_exams.mjs fails closed before it can rebuild
+  // anything. Both runs through "both halves of the refresh run the rebuild"
+  // above, but that test only proves the generic rebuild call exists and is
+  // ordered before publication; it stays green even if these two specific
+  // steps are removed from the registry, which is exactly the regression
+  // this test exists to catch.
+  const registry = readRegistry(REPO_ROOT);
+  const byId = new Map(registry.rebuild_sequence.map((step, index) => [step.id, { step, index }]));
+  const listDepth = byId.get("list-depth-closed-exams");
+  const staffing = byId.get("staffing-exams");
+  assert.ok(listDepth, "committed-read-models.json must register a list-depth-closed-exams step");
+  assert.ok(staffing, "committed-read-models.json must register a staffing-exams step");
+  assert.deepEqual(listDepth.step.command, ["tools/rebuild_list_depth_closed_exams.mjs"]);
+  assert.deepEqual(staffing.step.command, ["tools/build_staffing_exams.mjs"]);
+  assert.ok(
+    listDepth.index < staffing.index,
+    "list-depth-closed-exams must run before staffing-exams in the rebuild sequence",
+  );
+  assert.ok(
+    (staffing.step.after || []).includes("list-depth-closed-exams"),
+    "staffing-exams must declare list-depth-closed-exams as a dependency, not just happen to run after it",
+  );
+});
+
 test("a failing rebuild step still reaches the summary and pull-request steps, and the run stays visibly red", () => {
   const workflow = readFileSync(WORKFLOW, "utf8");
   const steps = workflow.split(/^ {6}- name:/m).slice(1).map((body) => `- name:${body}`);
