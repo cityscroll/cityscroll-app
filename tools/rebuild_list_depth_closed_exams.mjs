@@ -53,15 +53,21 @@ export async function rebuildListDepthClosed({ today, closed, aggregates } = {})
 async function main() {
   const check = process.argv.includes("--check");
   const [closed, aggregates] = await Promise.all([readJson(CLOSED_FILE), readJson(AGGREGATES_FILE)]);
-  const rebuilt = await rebuildListDepthClosed({ closed, aggregates });
-  const output = stableJson(rebuilt);
   if (check) {
+    // A hermetic, wall-clock-independent check: the committed fetched_at stamp
+    // is a human-visible fact about when this ran, not something --check should
+    // restamp by comparing against whatever day it happens to run on. Pin to
+    // the file's own committed stamp so this only fails when the record values
+    // themselves have drifted against the aggregates snapshot.
+    const rebuilt = await rebuildListDepthClosed({ today: closed.source.fetched_at, closed, aggregates });
+    const output = stableJson(rebuilt);
     const current = await readFile(CLOSED_FILE, "utf8");
     assert.equal(output, current, "list_depth_closed_exams.json is stale against civil_service_list_aggregates.json; run node tools/rebuild_list_depth_closed_exams.mjs");
     console.log("list_depth_closed_exams.json is current");
     return;
   }
-  await writeFile(CLOSED_FILE, output);
+  const rebuilt = await rebuildListDepthClosed({ closed, aggregates });
+  await writeFile(CLOSED_FILE, stableJson(rebuilt));
   console.log(`rebuilt list_depth_closed_exams.json (${rebuilt.records.length} exams)`);
 }
 
