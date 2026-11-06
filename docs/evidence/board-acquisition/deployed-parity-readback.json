@@ -1,0 +1,1980 @@
+{
+  "schema": "cityscroll.board_acquisition_deployed_parity.v1",
+  "produced_by": "tools/capture_board_acquisition_deployed_parity.mjs",
+  "evidence_class": "external_live_endpoint",
+  "execution_environment": "external-network-observed",
+  "observed_at": "2026-11-06T09:56:51.450Z",
+  "provenance": {
+    "kind": "deployed",
+    "transport": "public-internet",
+    "fetch_overridden": false,
+    "run_id": "283f7d56-fb61-42e6-ab54-6a515d5aa75b"
+  },
+  "deployment": {
+    "base_url": "https://api.cityscroll.org",
+    "health_path": "/health",
+    "read_path": "/hearings",
+    "health_response_status": 200,
+    "commit": "d21d6042dd10da77bfc8207ffae467941592bec6",
+    "environment": "production",
+    "commit_shape_valid": true,
+    "commit_ancestry_verified_against": "origin/main",
+    "commit_is_ancestor_of_origin_main": true,
+    "origin_main_tip_at_capture": "d3dd185416d2ccdb19bac4c3b4b507598ec2f426"
+  },
+  "tracked_index": {
+    "path": "site/data/community_board_meeting_index.json",
+    "generated_at": "2026-11-04T18:16:29.907Z",
+    "code_revision": "674c62e817c83f8728f8e852e50a5f9179e44899"
+  },
+  "counts": {
+    "sources_attempted": 7,
+    "sources_observed": 7,
+    "sources_recovered": 7
+  },
+  "sources": [
+    {
+      "board_id": "bronx-cb-06",
+      "board_name": "Bronx Community Board 6",
+      "attempted": true,
+      "observed": true,
+      "recovered": true,
+      "recovery_basis": "record_identity_binding",
+      "deployed_read": {
+        "availability": "complete",
+        "source_status": "stale",
+        "source_generated_at": "2026-11-04T18:16:29.907Z",
+        "total_matches": 21,
+        "rows_examined": 21,
+        "pages_fetched": 1,
+        "truncated": false
+      },
+      "registered_source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+      "served_source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+      "registered_source_url_matches_served": true,
+      "acquisition_observed_at": "2026-09-23T05:09:59.711Z",
+      "tracked_record_count": 21,
+      "count_parity": "exact",
+      "record_binding": {
+        "assertion": "every examined deployed row carries this board's identity; digest covers all examined identities in served order",
+        "examined_row_count": 21,
+        "rows_bound_to_board": 21,
+        "identities": [
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11-2/",
+            "event_date": "2026-09-23T18:30:00-04:00",
+            "title": "General Board Meeting"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee/",
+            "event_date": "2026-09-30T18:30:00-04:00",
+            "title": "Executive Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-10-12/",
+            "event_date": "2026-10-12T12:00:00-04:00",
+            "title": "Disciplinary Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-10-13/",
+            "event_date": "2026-10-13T18:30:00-04:00",
+            "title": "Housing & Land Use, Youth & Education Committees"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-10-14/",
+            "event_date": "2026-10-14T18:30:00-04:00",
+            "title": "Economic Development, Environment & Parks, Sanitation Committees"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/",
+            "event_date": "2026-10-15T18:30:00-04:00",
+            "title": "Transportation & Health Committees"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/public-safety-committee-4/2026-10-21/",
+            "event_date": "2026-10-21T18:30:00-04:00",
+            "title": "Public Safety & Licensing Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11-3/",
+            "event_date": "2026-10-28T18:30:00-04:00",
+            "title": "General Board Meeting"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11/2026-10-28/",
+            "event_date": "2026-10-28T18:30:00-04:00",
+            "title": "General Board Meeting"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-11-04/",
+            "event_date": "2026-11-04T18:30:00-05:00",
+            "title": "Executive Committee (TBD)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-11-09/",
+            "event_date": "2026-11-09T12:00:00-05:00",
+            "title": "Disciplinary Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-11-10/",
+            "event_date": "2026-11-10T18:30:00-05:00",
+            "title": "Housing & Land Use, Youth & Education Committees"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees-2/2026-11-11/",
+            "event_date": "2026-11-11T18:30:00-05:00",
+            "title": "Economic Development, Environment & Parks, Sanitation, Public Safety Committees"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-11-12/",
+            "event_date": "2026-11-12T18:30:00-05:00",
+            "title": "Transportation & Health Committees"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board/2026-11-18/",
+            "event_date": "2026-11-18T18:30:00-05:00",
+            "title": "General Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-12-02/",
+            "event_date": "2026-12-02T18:30:00-05:00",
+            "title": "Executive Committee (TBD)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-12-08/",
+            "event_date": "2026-12-08T18:30:00-05:00",
+            "title": "Housing & Land Use, Youth & Education Committees"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees-2/2026-12-09/",
+            "event_date": "2026-12-09T18:30:00-05:00",
+            "title": "Economic Development, Environment & Parks, Sanitation, Public Safety Committees"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-12-10/",
+            "event_date": "2026-12-10T18:30:00-05:00",
+            "title": "Transportation & Health Committees"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-12-14/",
+            "event_date": "2026-12-14T12:00:00-05:00",
+            "title": "Disciplinary Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board/2026-12-16/",
+            "event_date": "2026-12-16T18:30:00-05:00",
+            "title": "General Board"
+          }
+        ],
+        "identities_count": 21,
+        "identities_sha256": "8efda4c0585731f6c0c87ff692840333a9a9a3f6ad7e1d8f6e0ce62ebfbc7413",
+        "acquisition_receipt": {
+          "source_url": "https://cbbronx.cityofnewyork.us/cb6/calendar/",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "parser": "html_pdf_v1",
+          "fetch_status": "200",
+          "content_sha256": "5f845b3c84126ecb7b155a5c41c56822be2af66a4b0e54b9f3c5f7a32a08acfd"
+        }
+      }
+    },
+    {
+      "board_id": "bronx-cb-08",
+      "board_name": "Bronx Community Board 8",
+      "attempted": true,
+      "observed": true,
+      "recovered": true,
+      "recovery_basis": "record_identity_binding",
+      "deployed_read": {
+        "availability": "complete",
+        "source_status": "stale",
+        "source_generated_at": "2026-11-04T18:16:29.907Z",
+        "total_matches": 15,
+        "rows_examined": 15,
+        "pages_fetched": 1,
+        "truncated": false
+      },
+      "registered_source_url": "https://cbbronx.cityofnewyork.us/cb8/events/list/",
+      "served_source_url": "https://cbbronx.cityofnewyork.us/cb8/events/list/",
+      "registered_source_url_matches_served": true,
+      "acquisition_observed_at": "2026-09-30T12:59:02.901Z",
+      "tracked_record_count": 15,
+      "count_parity": "exact",
+      "record_binding": {
+        "assertion": "every examined deployed row carries this board's identity; digest covers all examined identities in served order",
+        "examined_row_count": 15,
+        "rows_bound_to_board": 15,
+        "identities": [
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/aging/2026-10-12/",
+            "event_date": "2026-10-12T16:00:00+00:00",
+            "title": "Aging"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/executive-2-2/2026-10-12/",
+            "event_date": "2026-10-12T19:00:00+00:00",
+            "title": "EXECUTIVE COMMITTEE"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/law-rules-ethics-2/2026-10-12/",
+            "event_date": "2026-10-12T19:00:00+00:00",
+            "title": "Law, Rules & Ethics"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-10-13/",
+            "event_date": "2026-10-13T19:00:00+00:00",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/health-hospitals-social-services/2026-10-14/",
+            "event_date": "2026-10-14T19:00:00+00:00",
+            "title": "Health, Hospitals & Social Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/environment-sanitation-2/2026-10-21/",
+            "event_date": "2026-10-21T19:00:00+00:00",
+            "title": "Environment & Sanitation"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/education-libraries-cultural-affairs/2026-10-27/",
+            "event_date": "2026-10-27T19:30:00+00:00",
+            "title": "Education, Libraries & Cultural Affairs"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/aging/2026-11-09/",
+            "event_date": "2026-11-09T16:00:00+00:00",
+            "title": "Aging"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/executive-2-2/2026-11-09/",
+            "event_date": "2026-11-09T19:00:00+00:00",
+            "title": "EXECUTIVE COMMITTEE"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/law-rules-ethics-2/2026-11-09/",
+            "event_date": "2026-11-09T19:00:00+00:00",
+            "title": "Law, Rules & Ethics"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-11-10/",
+            "event_date": "2026-11-10T19:00:00+00:00",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/health-hospitals-social-services/2026-11-11/",
+            "event_date": "2026-11-11T19:00:00+00:00",
+            "title": "Health, Hospitals & Social Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/environment-sanitation-2/2026-11-18/",
+            "event_date": "2026-11-18T19:00:00+00:00",
+            "title": "Environment & Sanitation"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/education-libraries-cultural-affairs/2026-11-24/",
+            "event_date": "2026-11-24T19:30:00+00:00",
+            "title": "Education, Libraries & Cultural Affairs"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-12-08/",
+            "event_date": "2026-12-08T19:00:00+00:00",
+            "title": "Full Board"
+          }
+        ],
+        "identities_count": 15,
+        "identities_sha256": "8febf5df5df59a39aea88e9f1f2ac8518d00c8f0adcbb2416742f923f0c956ae",
+        "acquisition_receipt": {
+          "source_url": "https://cbbronx.cityofnewyork.us/cb8/events/list/",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "parser": "html_pdf_v1",
+          "fetch_status": "200",
+          "content_sha256": "1737d57c4916cdf7c911c54145bef02fd463450e8fee33c4b0011c02540f8dd6"
+        }
+      }
+    },
+    {
+      "board_id": "manhattan-cb-02",
+      "board_name": "Manhattan Community Board 2",
+      "attempted": true,
+      "observed": true,
+      "recovered": true,
+      "recovery_basis": "record_identity_binding",
+      "deployed_read": {
+        "availability": "complete",
+        "source_status": "stale",
+        "source_generated_at": "2026-11-04T18:16:29.907Z",
+        "total_matches": 39,
+        "rows_examined": 39,
+        "pages_fetched": 2,
+        "truncated": false
+      },
+      "registered_source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
+      "served_source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
+      "registered_source_url_matches_served": true,
+      "acquisition_observed_at": "2026-09-30T12:59:02.901Z",
+      "tracked_record_count": 39,
+      "count_parity": "exact",
+      "record_binding": {
+        "assertion": "every examined deployed row carries this board's identity; digest covers all examined identities in served order",
+        "examined_row_count": 39,
+        "rows_bound_to_board": 39,
+        "identities": [
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/cannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only-8/",
+            "event_date": "2026-08-31T18:30:00-04:00",
+            "title": "CANCELLED – CANNABIS LICENSING – Mar Fitzgerald, Chair; Patricia Laraia, Vice Chair – IN PERSON ONLY"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-1-donna-raftery-chair-in-person-only-21/",
+            "event_date": "2026-09-08T18:30:00-04:00",
+            "title": "SLA LICENSING-1 — Donna Raftery, Chair – IN PERSON ONLY"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-20/",
+            "event_date": "2026-09-09T18:30:00-04:00",
+            "title": "PARKS & WATERFRONT – Rich Caccappolo, Chair; Susanna Aaron, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-in-person-only-21/",
+            "event_date": "2026-09-10T18:30:00-04:00",
+            "title": "SLA LICENSING-2 — Donna Raftery, Chair – IN PERSON ONLY"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-19/",
+            "event_date": "2026-09-14T18:30:00-04:00",
+            "title": "STREET ACTIVITIES & RESILIEINCY – Will Benesh, Chair; Erika Olson, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
+            "event_date": "2026-09-15T18:30:00-04:00",
+            "title": "OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-31/",
+            "event_date": "2026-09-17T18:00:00-04:00",
+            "title": "LANDMARKS – Chenault Spence, Chair; Susan Gammie, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-16/",
+            "event_date": "2026-09-22T18:30:00-04:00",
+            "title": "EXECUTIVE – Valerie De La Rosa, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-11/",
+            "event_date": "2026-09-24T18:30:00-04:00",
+            "title": "FULL BOARD – Valerie De La Rosa, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/traffic-janet-liff-vice-chair-9/",
+            "event_date": "2026-09-29T18:30:00-04:00",
+            "title": "TRAFFIC & TRANSPORTATION – Jeannine Kiely, Chair; Janet Liff, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-20/",
+            "event_date": "2026-10-05T18:30:00-04:00",
+            "title": "STREET ACTIVITIES & RESILIENCY – Will Benesh, Chair; Erika Olson, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-1-donna-raftery-chair-13/",
+            "event_date": "2026-10-06T18:30:00-04:00",
+            "title": "SLA LICENSING-1 — Donna Raftery, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-22/",
+            "event_date": "2026-10-07T18:30:00-04:00",
+            "title": "PARKS & WATERFRONT – Rich Caccappolo, Chair; Susanna Aaron, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/education-human-services-antony-wong-chair/",
+            "event_date": "2026-10-08T18:30:00-04:00",
+            "title": "CANCELED – EDUCATION & HUMAN SERVICES – Antony Wong, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-16/",
+            "event_date": "2026-10-08T18:30:00-04:00",
+            "title": "SLA LICENSING-2 — Donna Raftery, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/columbus-day-indigenous-peoples-day/",
+            "event_date": "2026-10-12T00:00:00-04:00",
+            "title": "Columbus Day / Indigenous People’s Day"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-30/",
+            "event_date": "2026-10-13T18:30:00-04:00",
+            "title": "OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/land-use-katy-bordonaro-vice-chair-9/",
+            "event_date": "2026-10-14T18:30:00-04:00",
+            "title": "LAND USE & HOUSING – Eugene Yoo, Chair; Katy Bordonaro, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-32/",
+            "event_date": "2026-10-15T18:30:00-04:00",
+            "title": "LANDMARKS (first session) – Chenault Spence, Chair; Susan Gammie, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/cannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-25/",
+            "event_date": "2026-10-19T17:30:00-04:00",
+            "title": "CANNABIS LICENSING – Mar Fitzgerald, Chair; Patricia Laraia, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-34/",
+            "event_date": "2026-10-19T18:30:00-04:00",
+            "title": "LANDMARKS (second session) – Chenault Spence, Chair; Susan Gammie, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/31259/",
+            "event_date": "2026-10-20T18:30:00-04:00",
+            "title": "EXECUTIVE – Valerie De La Rosa, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/traffic-janet-liff-vice-chair-8/",
+            "event_date": "2026-10-21T18:30:00-04:00",
+            "title": "TRAFFIC & TRANSPORTATION – Jeannine Kiely, Chair; Janet Liff, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-12/",
+            "event_date": "2026-10-22T18:30:00-04:00",
+            "title": "FULL BOARD – Valerie De La Rosa, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/31877/",
+            "event_date": "2026-11-04T18:30:00-05:00",
+            "title": "SLA LICENSING-1 – Donna Raftery, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-23/",
+            "event_date": "2026-11-04T18:30:00-05:00",
+            "title": "PARKS & WATERFRONT – Rich Caccappolo, Chair; Susanna Aaron, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/31883/",
+            "event_date": "2026-11-05T18:30:00-05:00",
+            "title": "SLA LICENSING-2 – Donna Raftery, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/land-use-katy-bordonaro-vice-chair-10/",
+            "event_date": "2026-11-09T18:30:00-05:00",
+            "title": "LAND USE & HOUSING – Eugene Yoo, Chair; Katy Bordonaro, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/street-activities-erika-olson-vice-chair-21/",
+            "event_date": "2026-11-09T18:30:00-05:00",
+            "title": "STREET ACTIVITIES & RESILIENCY – Will Benesh, Chair; Erika Olson, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-31/",
+            "event_date": "2026-11-10T18:30:00-05:00",
+            "title": "OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-chenault-spence-chair-susan-gammie-vice-chair-33/",
+            "event_date": "2026-11-12T18:30:00-05:00",
+            "title": "LANDMARKS – Chenault Spence, Chair; Susan Gammie, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/cannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-26/",
+            "event_date": "2026-11-16T17:30:00-05:00",
+            "title": "CANNABIS LICENSING – Mar Fitzgerald, Chair; Patricia Laraia, Vice Chair – IN PERSON ONLY"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/landmarks-second-session-chenault-spence-chair-susan-gammie-vice-chair/",
+            "event_date": "2026-11-16T18:30:00-05:00",
+            "title": "LANDMARKS (Second Session) – Chenault Spence, Chair; Susan Gammie, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/executive-valerie-de-la-rosa-chair-17/",
+            "event_date": "2026-11-17T18:30:00-05:00",
+            "title": "EXECUTIVE – Valerie De La Rosa, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/full-board-valerie-de-la-rosa-chair-13/",
+            "event_date": "2026-11-19T18:30:00-05:00",
+            "title": "FULL BOARD – Valerie De La Rosa, Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/traffic-janet-liff-vice-chair-10/",
+            "event_date": "2026-11-24T18:30:00-05:00",
+            "title": "TRAFFIC & TRANSPORTATION – Jeannine Kiely, Chair; Janet Liff, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-1-donna-raftery-chair-in-person-only-22/",
+            "event_date": "2026-12-01T18:30:00-05:00",
+            "title": "SLA LICENSING-1 – Donna Raftery, Chair — IN PERSON ONLY"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/parks-susanna-aaron-vice-chair-24/",
+            "event_date": "2026-12-02T18:30:00-05:00",
+            "title": "PARKS & WATERFRONT – Rich Caccappolo, Chair; Susanna Aaron, Vice Chair"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/sla-licensing-2-donna-raftery-chair-in-person-only-22/",
+            "event_date": "2026-12-03T18:30:00-05:00",
+            "title": "SLA LICENSING-2 — Donna Raftery, Chair – IN PERSON ONLY"
+          }
+        ],
+        "identities_count": 39,
+        "identities_sha256": "c97b747354b37f6edbde2bf6dbc99a885143bea39756e0dc878ecac24f39cada",
+        "acquisition_receipt": {
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "parser": "html_pdf_v1",
+          "fetch_status": "200",
+          "content_sha256": "59c1b53c10d4220bdc9ff49a797fca2ce3364346bfd4fec415d0f583fbdf9993"
+        }
+      }
+    },
+    {
+      "board_id": "manhattan-cb-04",
+      "board_name": "Manhattan Community Board 4",
+      "attempted": true,
+      "observed": true,
+      "recovered": true,
+      "recovery_basis": "record_identity_binding",
+      "deployed_read": {
+        "availability": "complete",
+        "source_status": "stale",
+        "source_generated_at": "2026-11-04T18:16:29.907Z",
+        "total_matches": 40,
+        "rows_examined": 40,
+        "pages_fetched": 2,
+        "truncated": false
+      },
+      "registered_source_url": "https://cbmanhattan.cityofnewyork.us/cb4/calendar/",
+      "served_source_url": "https://cbmanhattan.cityofnewyork.us/cb4/calendar/",
+      "registered_source_url_matches_served": true,
+      "acquisition_observed_at": "2026-09-30T12:59:02.901Z",
+      "tracked_record_count": 40,
+      "count_parity": "exact",
+      "record_binding": {
+        "assertion": "every examined deployed row carries this board's identity; digest covers all examined identities in served order",
+        "examined_row_count": 40,
+        "rows_bound_to_board": 40,
+        "identities": [
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/",
+            "event_date": "2026-09-02T18:30:00-04:00",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-labor-day-7/",
+            "event_date": "2026-09-07T00:00:00-04:00",
+            "title": "OFFICE CLOSED – Labor Day"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-67/",
+            "event_date": "2026-09-08T18:30:00-04:00",
+            "title": "Business License & Permits Committee (BLP)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-58/",
+            "event_date": "2026-09-09T18:30:00-04:00",
+            "title": "Clinton/Hell’s Kitchen Land Use Committee (CHKLU)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-59/",
+            "event_date": "2026-09-10T18:30:00-04:00",
+            "title": "Waterfront, Parks & Environment Committee (WPE)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-24/",
+            "event_date": "2026-09-14T18:30:00-04:00",
+            "title": "Arts, Culture, Education & Schools Committee (ACES)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-25/",
+            "event_date": "2026-09-16T18:30:00-04:00",
+            "title": "Transportation Planning Committee (TPC)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-3/",
+            "event_date": "2026-09-17T18:30:00-04:00",
+            "title": "Economic Development & Public Safety Committee (EDPS)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-61/",
+            "event_date": "2026-09-22T18:30:00-04:00",
+            "title": "Chelsea Land Use Committee (CLU)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-52/",
+            "event_date": "2026-09-23T18:30:00-04:00",
+            "title": "Housing, Health & Human Services Committee (HHHS)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-15/",
+            "event_date": "2026-09-28T17:00:00-04:00",
+            "title": "Budget Task Force"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-59/",
+            "event_date": "2026-09-28T18:30:00-04:00",
+            "title": "Executive Committee (EXEC)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-53/",
+            "event_date": "2026-10-01T18:30:00-04:00",
+            "title": "Housing, Health & Human Services Committee (HHHS)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-25/",
+            "event_date": "2026-10-05T18:30:00-04:00",
+            "title": "Arts, Culture, Education & Schools Committee (ACES)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-67/",
+            "event_date": "2026-10-07T18:30:00-04:00",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-60/",
+            "event_date": "2026-10-08T18:30:00-04:00",
+            "title": "CANCELED: Waterfront, Parks & Environment Committee (WPE)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-columbus-day-7/",
+            "event_date": "2026-10-12T00:00:00-04:00",
+            "title": "OFFICE CLOSED – Columbus Day"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-68/",
+            "event_date": "2026-10-13T18:30:00-04:00",
+            "title": "Business License & Permits Committee (BLP)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-59/",
+            "event_date": "2026-10-14T18:30:00-04:00",
+            "title": "Clinton/Hell’s Kitchen Land Use Committee (CHKLU)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-4/",
+            "event_date": "2026-10-15T18:30:00-04:00",
+            "title": "Economic Development & Public Safety Committee (EDPS)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-62/",
+            "event_date": "2026-10-19T18:30:00-04:00",
+            "title": "Chelsea Land Use Committee (CLU)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/budget-task-force-16/",
+            "event_date": "2026-10-20T18:30:00-04:00",
+            "title": "Budget Task Force"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-26/",
+            "event_date": "2026-10-21T18:30:00-04:00",
+            "title": "Transportation Planning Committee (TPC)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/nominating-committee-6/",
+            "event_date": "2026-10-22T18:30:00-04:00",
+            "title": "Nominating Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-60/",
+            "event_date": "2026-10-26T18:30:00-04:00",
+            "title": "CANCELED: Executive Committee (EXEC)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/clinton-hells-kitchen-land-use-committee-chklu-60/",
+            "event_date": "2026-11-02T18:30:00-05:00",
+            "title": "CANCELED: Clinton/Hell’s Kitchen Land Use Committee (CHKLU)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-election-day-7/",
+            "event_date": "2026-11-03T00:00:00-05:00",
+            "title": "OFFICE CLOSED – Election Day"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-68/",
+            "event_date": "2026-11-04T18:30:00-05:00",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-54/",
+            "event_date": "2026-11-05T18:30:00-05:00",
+            "title": "Housing, Health & Human Services Committee (HHHS)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/arts-culture-education-schools-committee-aces-26/",
+            "event_date": "2026-11-09T18:30:00-05:00",
+            "title": "Arts, Culture, Education & Schools Committee (ACES)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/business-license-permits-committee-blp-69/",
+            "event_date": "2026-11-10T18:30:00-05:00",
+            "title": "Business License & Permits Committee (BLP)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-veterans-day-5/",
+            "event_date": "2026-11-11T00:00:00-05:00",
+            "title": "OFFICE CLOSED – Veteran’s Day"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/waterfront-parks-environment-committee-wpe-61/",
+            "event_date": "2026-11-12T18:30:00-05:00",
+            "title": "Waterfront, Parks, & Environment Committee (WPE)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/chelsea-land-use-committee-clu-63/",
+            "event_date": "2026-11-16T18:30:00-05:00",
+            "title": "Chelsea Land Use Committee (CLU)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/transportation-planning-committee-tpc-27/",
+            "event_date": "2026-11-18T18:30:00-05:00",
+            "title": "Transportation Planning Committee (TPC)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/economic-development-public-safety-committee-edps-5/",
+            "event_date": "2026-11-19T18:30:00-05:00",
+            "title": "Economic Development & Public Safety Committee (EDPS)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/executive-committee-exec-61/",
+            "event_date": "2026-11-23T18:30:00-05:00",
+            "title": "Executive Committee (EXEC)"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/office-closed-thanksgiving-day-7/",
+            "event_date": "2026-11-26T00:00:00-05:00",
+            "title": "OFFICE CLOSED – Thanksgiving Day"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-69/",
+            "event_date": "2026-12-02T18:30:00-05:00",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/housing-health-human-services-committee-hhhs-55/",
+            "event_date": "2026-12-03T18:30:00-05:00",
+            "title": "Housing, Health & Human Services Committee (HHHS)"
+          }
+        ],
+        "identities_count": 40,
+        "identities_sha256": "e071140370b01a268a09a3dcec877682cb70569286af8090c78f4ba35f6445d9",
+        "acquisition_receipt": {
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb4/calendar/",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "parser": "html_pdf_v1",
+          "fetch_status": "200",
+          "content_sha256": "c9efb1a79c2da25c106c44c613f9f94c57a4be61bc316d9486f9b81831678df9"
+        }
+      }
+    },
+    {
+      "board_id": "manhattan-cb-10",
+      "board_name": "Manhattan Community Board 10",
+      "attempted": true,
+      "observed": true,
+      "recovered": true,
+      "recovery_basis": "record_identity_binding",
+      "deployed_read": {
+        "availability": "complete",
+        "source_status": "stale",
+        "source_generated_at": "2026-11-04T18:16:29.907Z",
+        "total_matches": 44,
+        "rows_examined": 44,
+        "pages_fetched": 2,
+        "truncated": false
+      },
+      "registered_source_url": "https://cbmanhattan.cityofnewyork.us/cb10/events/",
+      "served_source_url": "https://cbmanhattan.cityofnewyork.us/cb10/events/",
+      "registered_source_url_matches_served": true,
+      "acquisition_observed_at": "2026-09-30T12:59:02.901Z",
+      "tracked_record_count": 44,
+      "count_parity": "exact",
+      "record_binding": {
+        "assertion": "every examined deployed row carries this board's identity; digest covers all examined identities in served order",
+        "examined_row_count": 44,
+        "rows_bound_to_board": 44,
+        "identities": [
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2-2/",
+            "event_date": "2026-09-02T18:00:00-04:00",
+            "title": "General Board Meeting"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-09-08/",
+            "event_date": "2026-09-08T18:30:00-04:00",
+            "title": "Committee Meeting: Transportation Landmarks and Historic Preservation"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3/2026-09-09/",
+            "event_date": "2026-09-09T18:30:00-04:00",
+            "title": "Parks & Recreation Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-09-10/",
+            "event_date": "2026-09-10T18:30:00-04:00",
+            "title": "Committee Meeting: Economic Development Technologies and Communications"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-14-2-6-2/2026-09-14/",
+            "event_date": "2026-09-14T18:30:00-04:00",
+            "title": "Committee Meeting: Arts and Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-09-15/",
+            "event_date": "2026-09-15T18:30:00-04:00",
+            "title": "Education, Youth, and Libraries"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-09-16/",
+            "event_date": "2026-09-16T18:30:00-04:00",
+            "title": "Committee Meeting – Public Safety"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2/2026-09-17/",
+            "event_date": "2026-09-17T18:30:00-04:00",
+            "title": "Committee Meeting: Land Use & Housing"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/juneteenth-2-4/2026-09-17/",
+            "event_date": "2026-09-17T10:00:00-04:00",
+            "title": "Senior Task Force"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-09-21/",
+            "event_date": "2026-09-21T06:30:00-04:00",
+            "title": "Committee Meeting: Health and Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3-2-2/",
+            "event_date": "2026-09-28T18:30:00-04:00",
+            "title": "Committee Meeting – Government & Budget Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-5/2026-09-28/",
+            "event_date": "2026-09-28T18:30:00-04:00",
+            "title": "Committee Meeting – Government & Budget Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-executive-3/",
+            "event_date": "2026-10-01T18:30:00-04:00",
+            "title": "Committee Meeting – Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-9/",
+            "event_date": "2026-10-05T18:30:00-04:00",
+            "title": "Committee Meeting: Arts and Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-10-07/",
+            "event_date": "2026-10-07T18:00:00-04:00",
+            "title": "General Board Meeting"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-5/",
+            "event_date": "2026-10-07T18:00:00-04:00",
+            "title": "General Board Meeting"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-10-07/",
+            "event_date": "2026-10-07T18:00:00-04:00",
+            "title": "General Board Meeting"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14-8/",
+            "event_date": "2026-10-08T18:30:00-04:00",
+            "title": "Committee Meeting: Economic Development Technologies and Communications"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-10-08/",
+            "event_date": "2026-10-08T18:30:00-04:00",
+            "title": "Committee Meeting: Economic Development Technologies and Communications"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-10-13/",
+            "event_date": "2026-10-13T18:30:00-04:00",
+            "title": "Committee Meeting: Transportation Landmarks and Historic Preservation"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3/2026-10-14/",
+            "event_date": "2026-10-14T18:30:00-04:00",
+            "title": "Parks & Recreation Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2-3/",
+            "event_date": "2026-10-15T18:30:00-04:00",
+            "title": "Committee Meeting: Land Use & Housing"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-land-use-16-2-2-2/2026-10-15/",
+            "event_date": "2026-10-15T18:30:00-04:00",
+            "title": "Committee Meeting: Land Use & Housing"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/juneteenth-2-4-2/",
+            "event_date": "2026-10-15T10:00:00-04:00",
+            "title": "Senior Task Force"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/juneteenth-2-4/2026-10-15/",
+            "event_date": "2026-10-15T10:00:00-04:00",
+            "title": "Senior Task Force"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2-3/",
+            "event_date": "2026-10-19T06:30:00-04:00",
+            "title": "Committee Meeting: Health and Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-10-19/",
+            "event_date": "2026-10-19T06:30:00-04:00",
+            "title": "Committee Meeting: Health and Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5-4/",
+            "event_date": "2026-10-20T18:30:00-04:00",
+            "title": "Education, Youth, and Libraries"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-10-20/",
+            "event_date": "2026-10-20T18:30:00-04:00",
+            "title": "Education, Youth, and Libraries"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2-3/",
+            "event_date": "2026-10-21T18:30:00-04:00",
+            "title": "Committee Meeting – Public Safety"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-10-21/",
+            "event_date": "2026-10-21T18:30:00-04:00",
+            "title": "Committee Meeting – Public Safety"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-3-2/2026-10-26/",
+            "event_date": "2026-10-26T18:30:00-04:00",
+            "title": "Committee Meeting – Government & Budget Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-housing-17-6-2-3-5/2026-10-26/",
+            "event_date": "2026-10-26T18:30:00-04:00",
+            "title": "Committee Meeting – Government & Budget Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-executive-2023-02-28-5-3-2/2026-10-28/",
+            "event_date": "2026-10-28T18:30:00-04:00",
+            "title": "Committee Meeting – Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2-3/",
+            "event_date": "2026-11-04T18:00:00-05:00",
+            "title": "General Board Meeting"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-7/",
+            "event_date": "2026-11-04T18:00:00-05:00",
+            "title": "General Board Meeting"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/parks-recreation-committee-3-3-3-3/",
+            "event_date": "2026-11-05T18:30:00-05:00",
+            "title": "Parks & Recreation Committee"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-arts-and-culture-14-2-6-2/2026-11-09/",
+            "event_date": "2026-11-09T18:30:00-05:00",
+            "title": "Committee Meeting: Arts and Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-transportation-landmarks-and-historic-preservation-15-5-2-2-2-3-2-2/2026-11-10/",
+            "event_date": "2026-11-10T18:30:00-05:00",
+            "title": "Committee Meeting: Transportation Landmarks and Historic Preservation"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-economic-development-technologies-and-communications-14/2026-11-12/",
+            "event_date": "2026-11-12T18:30:00-05:00",
+            "title": "Committee Meeting: Economic Development Technologies and Communications"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-health-and-human-services-10-2-2-2-2-2/2026-11-16/",
+            "event_date": "2026-11-16T06:30:00-05:00",
+            "title": "Committee Meeting: Health and Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-education-youth-libraries-03-21-23-5/2026-11-17/",
+            "event_date": "2026-11-17T18:30:00-05:00",
+            "title": "Education, Youth, and Libraries"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/committee-meeting-public-safety-18-2/2026-11-18/",
+            "event_date": "2026-11-18T18:30:00-05:00",
+            "title": "Committee Meeting – Public Safety"
+          },
+          {
+            "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/juneteenth-2-4/2026-11-19/",
+            "event_date": "2026-11-19T10:00:00-05:00",
+            "title": "Senior Task Force"
+          }
+        ],
+        "identities_count": 44,
+        "identities_sha256": "b1e0710fa1a34cc5db946eeb0e83332f295f200401bc018b05825f2fe18a3251",
+        "acquisition_receipt": {
+          "source_url": "https://cbmanhattan.cityofnewyork.us/cb10/events/",
+          "observed_at": "2026-09-30T12:59:02.901Z",
+          "parser": "html_pdf_v1",
+          "fetch_status": "200",
+          "content_sha256": "68c50a4f802671e4342790df92f3e90d306fdb0a5fc035c2a4ab59fdedce3745"
+        }
+      }
+    },
+    {
+      "board_id": "manhattan-cb-11",
+      "board_name": "Manhattan Community Board 11",
+      "attempted": true,
+      "observed": true,
+      "recovered": true,
+      "recovery_basis": "record_identity_binding",
+      "deployed_read": {
+        "availability": "complete",
+        "source_status": "stale",
+        "source_generated_at": "2026-11-04T18:16:29.907Z",
+        "total_matches": 125,
+        "rows_examined": 125,
+        "pages_fetched": 5,
+        "truncated": false
+      },
+      "registered_source_url": "https://www.cb11m.org/calendar/",
+      "served_source_url": "https://www.cb11m.org/calendar/",
+      "registered_source_url_matches_served": true,
+      "acquisition_observed_at": "2026-09-23T05:09:59.711Z",
+      "tracked_record_count": 125,
+      "count_parity": "exact",
+      "record_binding": {
+        "assertion": "every examined deployed row carries this board's identity; digest covers all examined identities in served order",
+        "examined_row_count": 125,
+        "rows_bound_to_board": 125,
+        "identities": [
+          {
+            "meeting_id": "meeting:community_board:recwE1SVS6LZ05zBr",
+            "event_date": "2026-06-25",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:recBJtVG3qtRmCpBd",
+            "event_date": "2026-07-15",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:recQ49CYrIOAmUqeg",
+            "event_date": "2026-07-16",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec2D0VKU53VevHXr",
+            "event_date": "2026-07-22",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:recbiJJVgYHykNAis",
+            "event_date": "2026-09-01",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:recqZlYhRHXKTXHOA",
+            "event_date": "2026-09-01",
+            "title": "District Needs & Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:recGBHUJrrN9MBJGV",
+            "event_date": "2026-09-02",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:recyDJwpvAED4vBih",
+            "event_date": "2026-09-02",
+            "title": "Public Safety & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:recV0nPQoOtlTnmpA",
+            "event_date": "2026-09-03",
+            "title": "Environment, Open Space & Parks"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec40ahXvqRNpJN41",
+            "event_date": "2026-09-08",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:recq0Fa6sPSbMmDib",
+            "event_date": "2026-09-09",
+            "title": "Housing & Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:recCUxAqawlygvkw5",
+            "event_date": "2026-09-10",
+            "title": "Economic Development & Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:recjaTt6mlQoHMaAh",
+            "event_date": "2026-09-14",
+            "title": "Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec1uA1X3lFd2SBdO",
+            "event_date": "2026-09-15",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:recLUaFbQe9dHmlEc",
+            "event_date": "2026-09-16",
+            "title": "Board Oversight"
+          },
+          {
+            "meeting_id": "meeting:community_board:reci8Gw5Hu4vLXIRJ",
+            "event_date": "2026-09-22",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:recirDkekViJCC517",
+            "event_date": "2026-10-01",
+            "title": "Environment, Open Space & Parks"
+          },
+          {
+            "meeting_id": "meeting:community_board:recEUl78ABzNOBmqB",
+            "event_date": "2026-10-06",
+            "title": "District Needs & Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:recfbe7FHz2hhAnTy",
+            "event_date": "2026-10-06",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec350Qrub0fIMil0",
+            "event_date": "2026-10-07",
+            "title": "Public Safety & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:recdaAgj9LHruxOuK",
+            "event_date": "2026-10-07",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:rectQy6gJVEczYvLa",
+            "event_date": "2026-10-08",
+            "title": "Economic Development & Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:recef8b2IWjot8bs4",
+            "event_date": "2026-10-13",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:recSrxsBujckCUo4u",
+            "event_date": "2026-10-14",
+            "title": "Housing & Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:recXo04A65TINqzsO",
+            "event_date": "2026-10-19",
+            "title": "Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec3U8HXTujXivKId",
+            "event_date": "2026-10-20",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:recaGAyRZj5i2MBqG",
+            "event_date": "2026-10-21",
+            "title": "Board Oversight"
+          },
+          {
+            "meeting_id": "meeting:community_board:recVSMigOWpk2U9vd",
+            "event_date": "2026-10-27",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:recBBtJ9r0MPjUgre",
+            "event_date": "2026-11-04",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:recxqcbtpqCwfzgoz",
+            "event_date": "2026-11-04",
+            "title": "Public Safety & Transportation CANCELLED"
+          },
+          {
+            "meeting_id": "meeting:community_board:recMnRfUkn8BJDsQd",
+            "event_date": "2026-11-05",
+            "title": "Environment, Open Space & Parks"
+          },
+          {
+            "meeting_id": "meeting:community_board:recs69FPGwbvVFmGi",
+            "event_date": "2026-11-09",
+            "title": "Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec9n3rxbrUPCjTLU",
+            "event_date": "2026-11-10",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:recftHwx5suiIvdmv",
+            "event_date": "2026-11-10",
+            "title": "District Needs & Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:recDFqEx9EKkv2w6O",
+            "event_date": "2026-11-12",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:recnM1VbubLuVbavY",
+            "event_date": "2026-11-12",
+            "title": "Economic Development & Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec5rtCFiNPjsdwJs",
+            "event_date": "2026-11-17",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:recT6acnvboUkNR82",
+            "event_date": "2026-11-18",
+            "title": "Housing & Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec2bBcOQxTsZoFO0",
+            "event_date": "2026-11-19",
+            "title": "Board Oversight"
+          },
+          {
+            "meeting_id": "meeting:community_board:recCaFpqRHgzdNd3x",
+            "event_date": "2026-11-24",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec2VVTO3Zkq4lJew",
+            "event_date": "2026-12-01",
+            "title": "District Needs & Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:reccFU25To4TfBSPz",
+            "event_date": "2026-12-01",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:recnWu7xK8OOh9kSN",
+            "event_date": "2026-12-02",
+            "title": "Public Safety & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:recqwC7HSGOfBBNb6",
+            "event_date": "2026-12-02",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:recEni6veDzocqRM9",
+            "event_date": "2026-12-03",
+            "title": "Environment, Open Space & Parks"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec7pxqzVXVj64WbD",
+            "event_date": "2026-12-08",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:recLtbu8TpKCI4mAd",
+            "event_date": "2026-12-09",
+            "title": "Housing & Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:reccoiripLVBGDZlG",
+            "event_date": "2026-12-10",
+            "title": "Economic Development & Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:recphn6vxjMLQE90N",
+            "event_date": "2026-12-14",
+            "title": "Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec3Gaa44jsP1UyJx",
+            "event_date": "2026-12-15",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec1liLfWRN7j8TFp",
+            "event_date": "2026-12-16",
+            "title": "Board Oversight"
+          },
+          {
+            "meeting_id": "meeting:community_board:recbnhZeXySgLog3t",
+            "event_date": "2026-12-22",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec0zjlFvgr978NKu",
+            "event_date": "2027-01-05",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:recue2GPyKqqSz45Z",
+            "event_date": "2027-01-05",
+            "title": "District Needs & Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:recOk9EwZVJfEO8Gu",
+            "event_date": "2027-01-06",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:recXMR7T0zAXNeuaM",
+            "event_date": "2027-01-06",
+            "title": "Public Safety & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:recM0orZ6QVgehCTT",
+            "event_date": "2027-01-07",
+            "title": "Environment, Open Space & Parks"
+          },
+          {
+            "meeting_id": "meeting:community_board:recbWSuaH8juNQvfj",
+            "event_date": "2027-01-11",
+            "title": "Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:recRRYfDnY9ts5Fm9",
+            "event_date": "2027-01-12",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:recyEMXcM07KxfqBC",
+            "event_date": "2027-01-13",
+            "title": "Housing & Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:recuuLJa2ppDPZfiu",
+            "event_date": "2027-01-14",
+            "title": "Economic Development & Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:recmr87RgmAqtzaJM",
+            "event_date": "2027-01-19",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:recZk2HM1YO3EBJLn",
+            "event_date": "2027-01-20",
+            "title": "Board Oversight"
+          },
+          {
+            "meeting_id": "meeting:community_board:reccmVv3VR6PNjt87",
+            "event_date": "2027-01-26",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:recfkDWoguKmjo9uk",
+            "event_date": "2027-02-02",
+            "title": "District Needs & Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:recPN8mLpOBOMn2bG",
+            "event_date": "2027-02-02",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:receWHh8To4CJndp3",
+            "event_date": "2027-02-03",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:reci8N8iaRZp6ebuf",
+            "event_date": "2027-02-03",
+            "title": "Public Safety & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:recIlaCWvOgMiL3BN",
+            "event_date": "2027-02-04",
+            "title": "Environment, Open Space & Parks"
+          },
+          {
+            "meeting_id": "meeting:community_board:recVLmzkmRYCxjT8j",
+            "event_date": "2027-02-08",
+            "title": "Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec7Ud2jt1DpdprgL",
+            "event_date": "2027-02-09",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:recOe2QDuPDuxcAuc",
+            "event_date": "2027-02-10",
+            "title": "Housing & Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:recNgkPxBPwueXgcw",
+            "event_date": "2027-02-11",
+            "title": "Economic Development & Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:recrtVkWUI7tt14bR",
+            "event_date": "2027-02-16",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:recCttziebyjZgh0X",
+            "event_date": "2027-02-17",
+            "title": "Board Oversight"
+          },
+          {
+            "meeting_id": "meeting:community_board:reck8COOS2RSGNWqV",
+            "event_date": "2027-02-23",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:recaw6LkKYswJDhvw",
+            "event_date": "2027-03-02",
+            "title": "District Needs & Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:recylmSp3xuDs4wFz",
+            "event_date": "2027-03-02",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:recNnXbQniJYdLcxT",
+            "event_date": "2027-03-03",
+            "title": "Public Safety & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:recy7xD1mrEju5q5a",
+            "event_date": "2027-03-03",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:reciyzSStRQHw6Hg9",
+            "event_date": "2027-03-04",
+            "title": "Environment, Open Space & Parks"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec3JoqF7FDjlywx8",
+            "event_date": "2027-03-08",
+            "title": "Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec3uY56ood9Fwudz",
+            "event_date": "2027-03-10",
+            "title": "Housing & Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec8RPhdt2P5PmJjo",
+            "event_date": "2027-03-11",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:recmCHklAkYFIZ1EC",
+            "event_date": "2027-03-11",
+            "title": "Economic Development & Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:reckxjYoiN4mTqqG3",
+            "event_date": "2027-03-16",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:recq49763cGcBM5ch",
+            "event_date": "2027-03-17",
+            "title": "Board Oversight"
+          },
+          {
+            "meeting_id": "meeting:community_board:recn4cmgnqYToo3kg",
+            "event_date": "2027-03-23",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:recNZQuKkkEBFWrxm",
+            "event_date": "2027-04-01",
+            "title": "Environment, Open Space & Parks"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec5j4ZNyggmUPuZR",
+            "event_date": "2027-04-06",
+            "title": "District Needs & Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:recPdtDf08j1z19OM",
+            "event_date": "2027-04-06",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec02a1sSMb60uVQf",
+            "event_date": "2027-04-07",
+            "title": "Public Safety & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:recgh1bk963GemTPz",
+            "event_date": "2027-04-07",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec6iJWMCxMds23IH",
+            "event_date": "2027-04-08",
+            "title": "Economic Development & Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:recFIXKwWE9gXhAhN",
+            "event_date": "2027-04-12",
+            "title": "Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:recuqK8JdqDdPIAVr",
+            "event_date": "2027-04-13",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec2q5cLpIZ523R8Q",
+            "event_date": "2027-04-14",
+            "title": "Housing & Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:recSoi1rcluol3bbu",
+            "event_date": "2027-04-20",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:reccAU75o1Cn9gkR8",
+            "event_date": "2027-04-21",
+            "title": "Board Oversight"
+          },
+          {
+            "meeting_id": "meeting:community_board:recW44h1IRvQa3AOs",
+            "event_date": "2027-04-27",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:recA5HI4OSOxbHi7l",
+            "event_date": "2027-05-04",
+            "title": "District Needs & Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:recrtHMGRGJT8mWNV",
+            "event_date": "2027-05-04",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec05TuWcSnNfyK4P",
+            "event_date": "2027-05-05",
+            "title": "Public Safety & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec4FqSSN7xtwS8Km",
+            "event_date": "2027-05-05",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:recmYw2m3grb2tNz5",
+            "event_date": "2027-05-06",
+            "title": "Environment, Open Space & Parks"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec1VwkQvI9Re7pJZ",
+            "event_date": "2027-05-10",
+            "title": "Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:recUHlSbo2HRmTKxm",
+            "event_date": "2027-05-11",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:recAgAGi1a1v7kbJu",
+            "event_date": "2027-05-12",
+            "title": "Housing & Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec4yAxor9mzDvFWs",
+            "event_date": "2027-05-13",
+            "title": "Economic Development & Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:recWsxJPSTYd1wBmO",
+            "event_date": "2027-05-18",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:recCsLQVWnFU678nz",
+            "event_date": "2027-05-19",
+            "title": "Board Oversight"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec6VxYqAAbrFL8Wq",
+            "event_date": "2027-05-25",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec2q4Mi1DkZNJdil",
+            "event_date": "2027-06-01",
+            "title": "Second Avenue Subway Taskforce"
+          },
+          {
+            "meeting_id": "meeting:community_board:rece17HhtedKFXs4o",
+            "event_date": "2027-06-01",
+            "title": "District Needs & Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec7GrCqCIRGQXh2x",
+            "event_date": "2027-06-02",
+            "title": "Licenses & Permits"
+          },
+          {
+            "meeting_id": "meeting:community_board:recECUsXhavxKrTcH",
+            "event_date": "2027-06-02",
+            "title": "Public Safety & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:recGujXx4SgVoYfyb",
+            "event_date": "2027-06-03",
+            "title": "Environment, Open Space & Parks"
+          },
+          {
+            "meeting_id": "meeting:community_board:reck5aHOWuMMEMjPz",
+            "event_date": "2027-06-08",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:recVAUzUH1DkdH2nm",
+            "event_date": "2027-06-09",
+            "title": "Housing & Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec4IffXmADaLbnvi",
+            "event_date": "2027-06-10",
+            "title": "Economic Development & Culture"
+          },
+          {
+            "meeting_id": "meeting:community_board:recmmY58TAfh1ygfT",
+            "event_date": "2027-06-14",
+            "title": "Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec5chzggrCYKh199",
+            "event_date": "2027-06-15",
+            "title": "Full Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:rec7QmzqZXVUU732f",
+            "event_date": "2027-06-16",
+            "title": "Board Oversight"
+          },
+          {
+            "meeting_id": "meeting:community_board:recqMJOQ8JwuOl3lR",
+            "event_date": "2027-06-22",
+            "title": "Executive"
+          },
+          {
+            "meeting_id": "meeting:community_board:reciNqTUcFf6LNSUs",
+            "event_date": "2027-07-20",
+            "title": "Full Board (tentative)"
+          }
+        ],
+        "identities_count": 125,
+        "identities_sha256": "3538bce356dda4708fccabe2bc9940673659badb79b75cd109dc41fd9dd08038",
+        "acquisition_receipt": {
+          "source_url": "https://www.cb11m.org/calendar/",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "parser": "airtable_v1",
+          "fetch_status": "200",
+          "content_sha256": "0603cb9b76b3ceca37af13fba60e5cead9b2b040063a23b2e02b796f523858b8"
+        }
+      }
+    },
+    {
+      "board_id": "manhattan-cb-12",
+      "board_name": "Manhattan Community Board 12",
+      "attempted": true,
+      "observed": true,
+      "recovered": true,
+      "recovery_basis": "record_identity_binding",
+      "deployed_read": {
+        "availability": "complete",
+        "source_status": "stale",
+        "source_generated_at": "2026-11-04T18:16:29.907Z",
+        "total_matches": 49,
+        "rows_examined": 49,
+        "pages_fetched": 2,
+        "truncated": false
+      },
+      "registered_source_url": "https://cb12m.org/en/calendar",
+      "served_source_url": "https://cb12m.org/en/calendar",
+      "registered_source_url_matches_served": true,
+      "acquisition_observed_at": "2026-09-23T05:09:59.711Z",
+      "tracked_record_count": 49,
+      "count_parity": "exact",
+      "record_binding": {
+        "assertion": "every examined deployed row carries this board's identity; digest covers all examined identities in served order",
+        "examined_row_count": 49,
+        "rows_bound_to_board": 49,
+        "identities": [
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-01:business-development",
+            "event_date": "2026-09-01T19:00:00-04:00",
+            "title": "Business Development"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-02:public-safety",
+            "event_date": "2026-09-02T18:30:00-04:00",
+            "title": "Public Safety"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-03:concerns-of-the-aging",
+            "event_date": "2026-09-03T10:30:00-04:00",
+            "title": "Concerns of the Aging"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-03:health-environment",
+            "event_date": "2026-09-03T19:00:00-04:00",
+            "title": "Health & Environment"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-08:parks-cultural-affairs",
+            "event_date": "2026-09-08T18:30:00-04:00",
+            "title": "Parks & Cultural Affairs"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-08:traffic-transportation",
+            "event_date": "2026-09-08T19:00:00-04:00",
+            "title": "Traffic & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-09:land-use",
+            "event_date": "2026-09-09T19:00:00-04:00",
+            "title": "Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-09:licensing",
+            "event_date": "2026-09-09T18:30:00-04:00",
+            "title": "Licensing"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-10:housing-human-services",
+            "event_date": "2026-09-10T18:30:00-04:00",
+            "title": "Housing & Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-10:youth-education",
+            "event_date": "2026-09-10T18:30:00-04:00",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-14:district-service-cabinet",
+            "event_date": "2026-09-14T10:00:00-04:00",
+            "title": "District Service Cabinet"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-14:executive-cmte",
+            "event_date": "2026-09-14T18:30:00-04:00",
+            "title": "Executive Cmte."
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-09-22:general-board",
+            "event_date": "2026-09-22T18:30:00-04:00",
+            "title": "General Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-01:health-environment",
+            "event_date": "2026-10-01T19:00:00-04:00",
+            "title": "Health & Environment"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-01:housing-human-services",
+            "event_date": "2026-10-01T18:30:00-04:00",
+            "title": "Housing & Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-03:annual-little-red-lighthouse-festival",
+            "event_date": "2026-10-03T12:00:00-04:00",
+            "title": "Annual Little Red Lighthouse Festival"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-03:donetta-riley-way-street-co-naming-ceremony",
+            "event_date": "2026-10-03T12:00:00-04:00",
+            "title": "Donetta Riley Way Street Co-Naming Ceremony"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-03:gwec-wellness-fair",
+            "event_date": "2026-10-03T08:00:00-04:00",
+            "title": "GWEC Wellness Fair"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-05:traffic-transportation",
+            "event_date": "2026-10-05T19:00:00-04:00",
+            "title": "Traffic & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-06:business-development",
+            "event_date": "2026-10-06T19:00:00-04:00",
+            "title": "Business Development"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-07:land-use",
+            "event_date": "2026-10-07T19:00:00-04:00",
+            "title": "Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-07:public-safety",
+            "event_date": "2026-10-07T18:30:00-04:00",
+            "title": "Public Safety"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-10:community-recycling-event",
+            "event_date": "2026-10-10T10:00:00-04:00",
+            "title": "Community Recycling Event"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-13:parks-cultural-affairs",
+            "event_date": "2026-10-13T18:30:00-04:00",
+            "title": "Parks & Cultural Affairs"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-14:licensing",
+            "event_date": "2026-10-14T18:30:00-04:00",
+            "title": "Licensing"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-15:concerns-of-the-aging",
+            "event_date": "2026-10-15T10:30:00-04:00",
+            "title": "Concerns of the Aging"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-15:youth-education",
+            "event_date": "2026-10-15T18:30:00-04:00",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-19:district-service-cabinet",
+            "event_date": "2026-10-19T10:00:00-04:00",
+            "title": "District Service Cabinet"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-19:executive-cmte",
+            "event_date": "2026-10-19T18:30:00-04:00",
+            "title": "Executive Cmte."
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-21:residential-parking-town-hall",
+            "event_date": "2026-10-21T18:00:00-04:00",
+            "title": "Residential Parking Town Hall"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-27:general-board",
+            "event_date": "2026-10-27T19:00:00-04:00",
+            "title": "General Board"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-27:public-hearing-on-the-district-budget",
+            "event_date": "2026-10-27T18:00:00-04:00",
+            "title": "Public Hearing on the District Budget"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-10-28:cafecito",
+            "event_date": "2026-10-28T17:00:00-04:00",
+            "title": "Cafecito"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-02:traffic-transportation",
+            "event_date": "2026-11-02T19:00:00-05:00",
+            "title": "Traffic & Transportation"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-04:land-use",
+            "event_date": "2026-11-04T19:00:00-05:00",
+            "title": "Land Use"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-04:public-safety",
+            "event_date": "2026-11-04T18:30:00-05:00",
+            "title": "Public Safety"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-05:concerns-of-the-aging",
+            "event_date": "2026-11-05T10:30:00-05:00",
+            "title": "Concerns of the Aging"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-05:health-environment",
+            "event_date": "2026-11-05T19:00:00-05:00",
+            "title": "Health & Environment"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-05:housing-human-services",
+            "event_date": "2026-11-05T18:30:00-05:00",
+            "title": "Housing & Human Services"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-06:saint-spyridon-greek-food-festival",
+            "event_date": "2026-11-06T12:00:00-05:00",
+            "title": "Saint Spyridon Greek Food Festival"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-06:saint-spyridon-greek-food-festival:collision-2",
+            "event_date": "2026-11-06T12:00:00-05:00",
+            "title": "Saint Spyridon Greek Food Festival"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-06:saint-spyridon-greek-food-festival:collision-3",
+            "event_date": "2026-11-06T12:00:00-05:00",
+            "title": "Saint Spyridon Greek Food Festival"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-09:district-service-cabinet",
+            "event_date": "2026-11-09T10:00:00-05:00",
+            "title": "District Service Cabinet"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-10:business-development",
+            "event_date": "2026-11-10T19:00:00-05:00",
+            "title": "Business Development"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-10:parks-cultural-affairs",
+            "event_date": "2026-11-10T18:30:00-05:00",
+            "title": "Parks & Cultural Affairs"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-12:licensing",
+            "event_date": "2026-11-12T18:30:00-05:00",
+            "title": "Licensing"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-12:youth-education",
+            "event_date": "2026-11-12T18:30:00-05:00",
+            "title": "Youth & Education"
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-16:executive-cmte",
+            "event_date": "2026-11-16T18:30:00-05:00",
+            "title": "Executive Cmte."
+          },
+          {
+            "meeting_id": "meeting:community_board:nyc-calendar:manhattan-cb-12:2026-11-23:general-board",
+            "event_date": "2026-11-23T18:30:00-05:00",
+            "title": "General Board"
+          }
+        ],
+        "identities_count": 49,
+        "identities_sha256": "937f7e8471f9c11773f3998eefd681481a9f4dd095b391f91792a648d431db48",
+        "acquisition_receipt": {
+          "source_url": "https://cb12m.org/en/calendar",
+          "observed_at": "2026-09-23T05:09:59.711Z",
+          "parser": "nyc_official_calendar_v1",
+          "fetch_status": "200",
+          "content_sha256": "ebf8847264798c1b1b28c711d2fa7d1e977eaab01a7eddd9ea6754b97b48b946"
+        }
+      }
+    }
+  ],
+  "status": "all_sources_recovered",
+  "evidence_binding": {
+    "digest_input": "sha256 over canonical JSON of schema, observed_at, run_id, deployment commit, and per-source identities digests",
+    "digest": "fad98247e87de7407ca238d6629f8972ab57ccbde8e506d8cc00a239441b9eb6"
+  }
+}
