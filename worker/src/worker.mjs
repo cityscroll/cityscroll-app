@@ -86,6 +86,7 @@ import { handleProperties, refreshProperties } from "./property.mjs";
 import { handleFranchiseConcessions, refreshFranchiseConcessions } from "./franchise_concession.mjs";
 import { handleRules, refreshRules } from "./rules.mjs";
 import { handleMeetingOutcomes, handleAdminMeetingOutcomesRefresh, refreshMeetingOutcomes } from "./meeting_outcomes.mjs";
+import { meetingOutcomesPublishedSincePrimary } from "./lib/meeting_outcomes.mjs";
 import { refreshExactMatterRoster } from "./lib/matter_exact_refresh.mjs";
 import { handleSourceVault } from "./source_vault.mjs";
 import { EMMONS_CHECKBOOK_ANCHOR, handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
@@ -222,6 +223,28 @@ async function runAcquisitionStep({ env, sourceContractId, runId, label, logLabe
   if (step.ok) console.log(`${logLabel}:`, JSON.stringify(step.value));
   else console.error(`${logLabel} refresh failed:`, String(step.error?.message || step.error));
   return step;
+}
+
+// The 08:00 window is the primary daily Council refresh, and its view ages past
+// the 36-hour serving limit after a single missed day. The 10:00 window therefore
+// re-attempts once, as a fresh acquisition, only when today's 08:00 attempt did
+// not publish. Cost probes never acquire.
+async function reattemptMissedMeetingOutcomes(env, event, runId) {
+  if (event.costProbe === true) return null;
+  const publication = await meetingOutcomesPublishedSincePrimary(
+    env,
+    new Date(event.scheduledTime ?? Date.now()),
+  );
+  if (publication?.published) return null;
+  console.log("meeting outcomes re-attempt:", JSON.stringify({
+    generated_at: publication?.generated_at ?? null,
+    since: publication?.since ?? null,
+  }));
+  return runAcquisitionStep({
+    env, sourceContractId: "nyc-council-legistar", runId,
+    label: "meeting outcomes re-attempt", logLabel: "meeting outcomes re-attempt",
+    work: (signal) => signal ? refreshMeetingOutcomes(env, fetchWithSignal(signal)) : refreshMeetingOutcomes(env),
+  });
 }
 
 async function runAdvisoryStep(env, label, work) {
@@ -705,6 +728,7 @@ const worker = {
       // STARTED_NOT_FINISHED stall. Queue handoff is the path that completed 2026-10-12.
       // A killed isolate after STARTED still reads as STARTED_NOT_FINISHED, never MISSING_RUN.
       if (event.cron === "0 10 * * *") {
+      try {
       const shadowNow = new Date(event.scheduledTime ?? Date.now());
       const shadowDay = shadowNow.toISOString().slice(0, 10);
       const shadowInvocationId = `digest-shadow:${event.cron}:${shadowNow.toISOString()}`;
@@ -821,6 +845,10 @@ const worker = {
         } catch (persistError) {
           console.error("digest shadow failure receipt failed:", String(persistError?.message || persistError));
         }
+      }
+      } finally {
+        // After the rehearsal hand-off, whichever path it returned through.
+        await reattemptMissedMeetingOutcomes(env, event, runId);
       }
         return;
       }

@@ -75,8 +75,8 @@ Repeated windows leave an already stored daily aggregate unchanged.
 
 | UTC schedule | Responsibility |
 |---|---|
-| `0 8 * * *` | Independently refreshes the sell-facing ZAP project lookup and then force-rematerializes Land outcomes from that lookup; it also refreshes Land upcoming hearings and staffing exams into `ALERT_STATE`, so those reads do not wait behind the digest chain. |
-| `0 10 * * *` | Delivery-free digest shadow rehearsal. It renders and validates without sending; three calendar days without a `READY` rehearsal holds delivery. |
+| `0 8 * * *` | Publishes the Council meeting-outcomes view first, retrying a transient failure of its first publisher reads a bounded number of times. It then independently refreshes the sell-facing ZAP project lookup and then force-rematerializes Land outcomes from that lookup; it also refreshes Land upcoming hearings and staffing exams into `ALERT_STATE`, so those reads do not wait behind the digest chain. |
+| `0 10 * * *` | Delivery-free digest shadow rehearsal. It renders and validates without sending; three calendar days without a `READY` rehearsal holds delivery. After the rehearsal hand-off it re-attempts the Council meeting-outcomes refresh once, as a fresh acquisition, only when the stored view was not generated at or after that day's `0 8 * * *` window. |
 | `0 13 * * *` | The delivery chain: Socrata to D1 ingest refresh, prior-cycle pre-warm, hearings, Property and vendor projection rebuilds, payroll title mart refresh, then digest fan-out under the send caps. |
 
 **UTC is authoritative.** These are the expressions Cloudflare schedules, and
