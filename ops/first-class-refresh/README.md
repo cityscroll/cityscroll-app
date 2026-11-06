@@ -104,6 +104,18 @@ read model derived from them, writes the freshness report, and opens a pull
 request when something changed. It never pushes to the default branch and never
 merges.
 
+`tools/open_warehouse_refresh_pr.sh` owns that pull request once the branch is
+pushed: it opens one or updates the existing one on the dated branch, arms
+automatic merge once every required check on that exact head passes (the same
+`tools/queue_automation_pr_after_checks.sh` gate the first-class refresh uses),
+and then closes older open warehouse refresh pull requests as superseded. Every
+run starts from a fast-forwarded default branch (the invariant below), so a
+superseded branch's single commit carries nothing the newer one lacks. A
+predecessor that has a comment, a review, or a commit this job did not make
+itself is left open rather than closed, since that is no longer purely this
+job's own output. `test/open_warehouse_refresh_pr.test.mjs` exercises this
+against a local remote.
+
 PDC and OATH are required hosted refreshes. Their acquisition commands first
 capture the live publisher response and a receipt in ignored `.artifacts/`
 scratch space; their owning builders then parse those exact bytes and replace

@@ -108,13 +108,10 @@ git commit --quiet -m "Refresh warehouse-backed resident datasets"
 echo "force-pushing $DATA_BRANCH (only ever the job's own dated data branch)"
 git push --quiet --force-with-lease origin HEAD
 
-PR_URL="$(gh pr create --fill --base "$DEFAULT_BRANCH" 2>/dev/null || true)"
-if [ -n "$PR_URL" ]; then
-  echo "pull request opened: $PR_URL"
-else
-  PR_URL="$(gh pr view "$DATA_BRANCH" --json url --jq .url 2>/dev/null || true)"
-  echo "pull request already open: ${PR_URL:-unknown}"
-fi
+# Opens or updates the pull request on this branch, arms it for the merge
+# queue once its checks pass, and closes older open warehouse refresh pull
+# requests as superseded. See tools/open_warehouse_refresh_pr.sh.
+"$SCRIPT_DIR/../../tools/open_warehouse_refresh_pr.sh" "$DATA_BRANCH" "$DEFAULT_BRANCH" "$DATA_BRANCH_PREFIX"
 
 # The pull request above already carries whatever rebuilt cleanly; this only
 # decides whether the run itself is reported healthy.
