@@ -232,14 +232,75 @@ test("live Landmarks materialization restores the class-governed zoning edges (P
   // the law is written to govern every landmark item under consideration,
   // not one of them — so a legitimate identity basis other than place must
   // be established, or these obligations wrongly render as though nothing
-  // were expected of the agency at all. A deterministic rebuild from the
-  // currently committed sources must reproduce exactly the 3 obligations x
-  // 3 in-flight LPC landmark designations = 9 edges the committed
-  // conformance lookup has historically carried for this agency.
+  // were expected of the agency at all. The obligations (54431-001/002/003,
+  // law text, not population data) are still live and unaffected. The three
+  // in-flight LPC landmark designations this regression exercises
+  // (2026K0443, 2026M0444, 2026M0445 — all action "HI") completed and left
+  // both the live ZAP warehouse lookup and the entity-intelligence land
+  // domain during a refresh, so the live population currently has zero
+  // in-flight LPC landmark designations to materialize against at all. The
+  // three designations' real rows are frozen below (verbatim from commit
+  // 827354e79, the generation this regression was last measured against)
+  // so the real PC-04 identity-basis logic keeps being exercised rather than
+  // silently losing its only regression case to ordinary project
+  // completion.
+  const frozenLandProjects = { rows: [
+    {
+      project_id: "2026K0443",
+      project_name: "Public School 15 Annex (LP-2696)",
+      actions: "HI",
+      primary_applicant: "LPC - NYC Landmarks Preservation Commission",
+      current_milestone: "HI - City Council Review",
+    },
+    {
+      project_id: "2026M0444",
+      project_name: "Church of Saint Mary (LP-2694)",
+      actions: "HI",
+      primary_applicant: "LPC - NYC Landmarks Preservation Commission",
+      current_milestone: "HI - City Council Review",
+    },
+    {
+      project_id: "2026M0445",
+      project_name: "Lithuanian Alliance Building (LP-2695)",
+      actions: "HI",
+      primary_applicant: "LPC - NYC Landmarks Preservation Commission",
+      current_milestone: "HI - City Council Review",
+    },
+  ] };
+  const frozenIntelligence = {
+    by_ref: {
+      "agency:id:landmarks-preservation-commission": {
+        domains: {
+          land: {
+            objects: frozenLandProjects.rows.map((row) => ({
+              subject_ref: `project:${row.project_id}`,
+              domain: "land",
+              object_kind: "project",
+              label: row.project_name,
+              project_id: row.project_id,
+              root_ref: "agency:id:landmarks-preservation-commission",
+              root_kind: "agency",
+              href: `#land?project=${row.project_id}`,
+              provenance: {
+                source_system: "soda",
+                source_record_id: `soda:${row.project_id}`,
+                source_fields: ["primary_applicant"],
+                basis: "land_primary_applicant",
+                input_value: row.primary_applicant,
+              },
+              link_type: "applicant_agency",
+              confidence: "tentative",
+              method: "agency_canonical_v1",
+            })),
+          },
+        },
+      },
+    },
+  };
   const view = buildAgencyConstellationView("landmarks-preservation-commission", {
     obligations,
-    intelligence,
-    land_projects: landProjects,
+    intelligence: frozenIntelligence,
+    land_projects: frozenLandProjects,
   });
   const landUse = view.mandates_land_use;
   assert.equal(landUse.edges.length, 9);

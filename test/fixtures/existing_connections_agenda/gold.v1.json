@@ -1,0 +1,279 @@
+{
+  "generated_at": "2026-09-05T00:00:00.000Z",
+  "matters": {
+    "78872": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260105ZMK",
+      "matter_file": "LU 0067-2026",
+      "matter_id": "78872",
+      "project_id": "2024K0358",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78872",
+      "title": "Zoning, Monitor Point, Brooklyn (C 260105 ZMK)."
+    },
+    "78873": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260106ZRK",
+      "matter_file": "LU 0068-2026",
+      "matter_id": "78873",
+      "project_id": "2024K0358",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78873",
+      "title": "Zoning, Monitor Point, Brooklyn (N 260106 ZRK)."
+    },
+    "78874": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260107ZSK",
+      "matter_file": "LU 0069-2026",
+      "matter_id": "78874",
+      "project_id": "2024K0358",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78874",
+      "title": "Zoning, Monitor Point, Brooklyn (C 260107 ZSK)."
+    },
+    "78876": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "250326MMK",
+      "matter_file": "LU 0071-2026",
+      "matter_id": "78876",
+      "project_id": "2025K0287",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78876",
+      "title": "Zoning, Monitor Point, Brooklyn (C 250326 MMK)."
+    },
+    "78877": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260013ZMM",
+      "matter_file": "LU 0072-2026",
+      "matter_id": "78877",
+      "project_id": "2024M0244",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78877",
+      "title": "Zoning, Dewitt Clinton Park North (801 Eleventh Avenue), Manhattan (C 260013 ZMM)."
+    },
+    "78878": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260014ZRM",
+      "matter_file": "LU 0073-2026",
+      "matter_id": "78878",
+      "project_id": "2024M0244",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78878",
+      "title": "Zoning, Dewitt Clinton Park North (801 Eleventh Avenue), Manhattan (N 260014 ZRM)."
+    },
+    "78879": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260015ZSM",
+      "matter_file": "LU 0074-2026",
+      "matter_id": "78879",
+      "project_id": "2024M0244",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78879",
+      "title": "Zoning, Dewitt Clinton Park North (801 Eleventh Avenue), Manhattan (C 260015 ZSM)."
+    },
+    "78880": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260060ZMM",
+      "matter_file": "LU 0075-2026",
+      "matter_id": "78880",
+      "project_id": "2023M0213",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78880",
+      "title": "Zoning, Dewitt Clinton Park North (629 West 54th Street), Manhattan (C 260060 ZMM)."
+    },
+    "78881": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260062ZRM",
+      "matter_file": "LU 0076-2026",
+      "matter_id": "78881",
+      "project_id": "2023M0213",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78881",
+      "title": "Zoning, Dewitt Clinton Park North (629 West 54th Street), Manhattan (N 260062 ZRM)."
+    },
+    "78882": {
+      "appearances": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "event_date": "2026-05-27",
+          "event_id": "22390",
+          "event_name": "Subcommittee on Zoning and Franchises",
+          "named_votes": null,
+          "outcome": "Laid Over by Subcommittee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260061ZSM",
+      "matter_file": "LU 0077-2026",
+      "matter_id": "78882",
+      "project_id": "2023M0213",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78882",
+      "title": "Zoning, Dewitt Clinton Park North (629 West 54th Street), Manhattan (C 260061 ZSM)."
+    }
+  },
+  "projects": {
+    "2023M0213": {
+      "matter_ids": [
+        "78880",
+        "78881",
+        "78882"
+      ],
+      "project_id": "2023M0213",
+      "project_name": "Dewitt Clinton Park North (629 West 54th Street)"
+    },
+    "2024K0358": {
+      "matter_ids": [
+        "78872",
+        "78873",
+        "78874"
+      ],
+      "project_id": "2024K0358",
+      "project_name": "Monitor Point"
+    },
+    "2024M0244": {
+      "matter_ids": [
+        "78877",
+        "78878",
+        "78879"
+      ],
+      "project_id": "2024M0244",
+      "project_name": "Dewitt Clinton Park North (801 Eleventh Avenue)"
+    },
+    "2025K0287": {
+      "matter_ids": [
+        "78876"
+      ],
+      "project_id": "2025K0287",
+      "project_name": "Monitor Point - 56 Quay Demapping"
+    }
+  },
+  "relation": {
+    "canonical": "about_project",
+    "compatibility": "decides_land_project",
+    "is_decision": false,
+    "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+    "proceeding": "reviews_project"
+  },
+  "schema": "cityscroll.council_land_matter_links.v1"
+}

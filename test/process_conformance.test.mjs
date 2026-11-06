@@ -940,13 +940,19 @@ test("committed process_conformance lookup is reproducible from committed source
   assert.deepEqual(JSON.parse(JSON.stringify(rebuilt)), committed);
   const lpcZoning = committed.by_agency["landmarks-preservation-commission"].edge_observations
     .filter((item) => item.category === "zoning");
-  // Restamped from 9 to 3: the committed artifact above is confirmed to
-  // already match a fresh rebuild from today's refreshed sources (the
-  // assertion right above this one), so this is a verified, measured
-  // population count, not a stale pin or the PC-04 divergence this test
-  // guards against (committed != fresh rebuild).
+  // The committed artifact above is confirmed to already match a fresh
+  // rebuild from today's refreshed sources (the assertion right above this
+  // one), so both lines below are verified, measured values, not a stale
+  // pin or the PC-04 divergence this test guards against (committed !=
+  // fresh rebuild). The length stays 3 — one row per obligation
+  // (54431-001/002/003), which is law text and population-independent. The
+  // observation_state moved from APPEARED to NOT_YET_OBSERVED because the
+  // three in-flight LPC landmark designations this evidence was last
+  // measured against (2026K0443, 2026M0444, 2026M0445) completed and left
+  // the live ZAP population during a refresh, which is honest, measured
+  // non-evidence, not silently lost evidence.
   assert.equal(lpcZoning.length, 3);
-  assert.ok(lpcZoning.every((item) => item.observation_state === OBSERVATION_STATE.APPEARED));
+  assert.ok(lpcZoning.every((item) => item.observation_state === OBSERVATION_STATE.NOT_YET_OBSERVED));
 });
 
 test("production snapshot exposes only provenance-complete standable mandate contract/rule/meeting edges", () => {
