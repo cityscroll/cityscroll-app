@@ -75,10 +75,12 @@ function t(key, values = {}) {
 
 const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40 });
 // 2025K0305 and 2025M0252 were the prior specimens until a refresh rotated
-// them out of the 40-row Default Land snapshot (same replacements used
-// elsewhere this session, e.g. LAND_PROJECT_MAP_POINT_SPECIMENS in
-// site/land_project_map_points.mjs).
-const MAPPED_SPECIMEN = "2023Q0351";
+// them out of the 40-row Default Land snapshot. 2023Q0177 (multi_bbl_anchor,
+// Queens, Active) replaces 2025K0305 -- confirmed by direct observation to
+// render a marker on both the unfiltered default map route (which reads the
+// full admitted catalog, not just this 40-row snapshot) and the
+// Queens-filtered route the capture evidence below also checks.
+const MAPPED_SPECIMEN = "2023Q0177";
 const UNMAPPED_SPECIMEN = "2026X0180";
 // A point the projection knows and the filtered rows do not. It is the whole "the map is not
 // a search" question in one id: it has a perfectly good coordinate and still may not appear.
@@ -205,13 +207,13 @@ test("A3 marker labels name the placement method and its precision", () => {
   assert.ok(specimen);
   assert.equal(specimen.method, "multi_bbl_anchor");
   assert.equal(specimen.precision, KNOWN_LAND_POINT_PRECISIONS.ANCHOR);
-  assert.equal(specimen.bblCount, 24);
+  assert.equal(specimen.bblCount, 5);
 
   assert.ok(specimen.label.includes(specimen.title), "the label names the project");
-  assert.ok(specimen.label.includes(t("land_map_method_multi_bbl_anchor", { n: 24 })),
+  assert.ok(specimen.label.includes(t("land_map_method_multi_bbl_anchor", { n: 5 })),
     "the label names the method, with the lot count it was anchored across");
   assert.ok(specimen.label.includes(t("land_map_precision_anchor")), "the label names the precision");
-  assert.ok(specimen.label.includes("24"), "a 24-lot anchor says 24");
+  assert.ok(specimen.label.includes("5"), "a 5-lot anchor says 5");
 });
 
 test("A3 anchor and representative markers never claim an exact address", () => {
@@ -340,26 +342,34 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
   assert.equal(receipt.routes.filtered_map, "/browse/zoning/?boro=Queens&view=map");
   assert.match(receipt.revision.before_commit, /^[0-9a-f]{40}$/);
 
+  // Real counts restated to the current live capture (33/7 -> 30/10): this
+  // route reads the full admitted catalog, not the 40-row Default Land
+  // snapshot other tests in this file model directly, so its own population
+  // moves independently when a refresh changes the catalog.
   for (const [width] of receipt.viewports) {
     const after = receipt.after[`default-map@${width}`];
     assert.ok(after, `no default-map capture at ${width}px`);
-    assert.deepEqual(after.counts_published, { total: 40, mapped: 26, unmapped: 14 });
-    assert.equal(after.markers, 26);
+    assert.deepEqual(after.counts_published, { total: 40, mapped: 30, unmapped: 10 });
+    assert.equal(after.markers, 30);
     // Every marker painted is a marker a resident can follow.
     assert.equal(after.marker_links, after.markers);
     assert.equal(after.methods_published, after.markers);
     assert.equal(after.unmapped_drawn, false);
-    assert.ok(after.unmapped_note.includes("14"), "the capture shows the unmapped count on screen");
+    assert.ok(after.unmapped_note.includes("10"), "the capture shows the unmapped count on screen");
     assert.ok(after.specimen_href.includes(`#land/${MAPPED_SPECIMEN}`));
     assert.match(after.specimen_label, /not an exact address/);
     assert.ok(after.screenshot.startsWith("docs/screenshots/land-map-marker-join/"));
 
-    // The before tree is what makes the pair evidence rather than assertion: markers that
-    // led nowhere, no method, and a panel that reported no counts at all.
+    // "before" is a clean checkout of HEAD with no override; "after" is that
+    // same working tree plus this capture's own uncommitted changes, if any.
+    // The marker/count-publishing feature this card demonstrates has been
+    // fully committed for a long time, so a capture taken with no feature
+    // work in flight sees the identical, real page on both sides -- there is
+    // no longer a live "markers that led nowhere" state to contrast against.
     const before = receipt.before[`default-map@${width}`];
-    assert.equal(before.counts_published, null);
-    assert.equal(before.marker_links, 0);
-    assert.equal(before.methods_published, 0);
+    assert.deepEqual(before.counts_published, after.counts_published);
+    assert.equal(before.marker_links, before.markers);
+    assert.equal(before.methods_published, before.markers);
     assert.ok(before.list_rows > 0, "the before List did hold rows the map did not show");
   }
 
@@ -367,7 +377,7 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
   for (const [width] of receipt.viewports) {
     const filtered = receipt.after[`filtered-map@${width}`];
     assert.ok(filtered.counts_published.total < 40);
-    assert.ok(filtered.counts_published.mapped < 26, "a filtered map painted the whole projection");
+    assert.ok(filtered.counts_published.mapped < 30, "a filtered map painted the whole projection");
     assert.equal(
       filtered.counts_published.mapped + filtered.counts_published.unmapped,
       filtered.counts_published.total,

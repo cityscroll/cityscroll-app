@@ -1,0 +1,23 @@
+{
+  "request_id": "20260827003",
+  "meeting_id": "meeting:city_record:20260827003",
+  "agency_name": "Transportation",
+  "short_title": "Dining Out NYC Public Hearings",
+  "start_date": "2026-09-02T00:00:00.000",
+  "event_date": "2026-09-17T11:00:00.000",
+  "type_of_notice_description": "Public Hearings",
+  "section_name": "Public Hearings and Meetings",
+  "source_system": "city_record",
+  "meeting_origin": "city_record_notice",
+  "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827003",
+  "matter_subject": {
+    "schema": "cityscroll.meeting_matter_stamp.v1",
+    "subject_tokens": [
+      "draft", "copy", "revocable", "consent", "agreement", "obtained", "cost", "submitting",
+      "request", "diningoutnyc", "info", "requestcopy", "zoom", "commencing", "17th",
+      "authorizing", "fifth", "pura", "vida", "miami", "modify", "existing", "sidewalk",
+      "cafe", "adjacent", "borough", "manhattan"
+    ],
+    "matter_ids": []
+  }
+}
