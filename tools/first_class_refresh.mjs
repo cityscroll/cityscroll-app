@@ -64,7 +64,10 @@ export function scheduledFreshnessEvaluationNow({
   const cadenceMs = Number(cadenceHours) * 3_600_000;
   const hardMs = Number(hardMaximumAgeHours) * 3_600_000;
   if (!Number.isFinite(vintageMs) || !Number.isFinite(wallMs)) {
-    const fallback = validInstant(String(evalSource || wallNow || "")) || new Date().toISOString();
+    const fallback = validInstant(String(evalSource || wallNow || ""));
+    if (!fallback) {
+      throw new Error("scheduledFreshnessEvaluationNow requires parseable vintage and wallNow");
+    }
     return fallback;
   }
   const ambientAgeMs = wallMs - vintageMs;
