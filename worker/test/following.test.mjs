@@ -482,21 +482,49 @@ test("meeting delivery temporal fixtures cover replay, join, reschedule, cancell
   assert.equal(reconciled.fresh[0].meeting_id, FIXTURE_MEETING_ID);
 });
 
+// Selected by rule instead of a fixed NTA id: the first NTA2020 geography
+// (sorted) whose committed membership survives this preview's default
+// land-procedure and status filters with at least one preview id, so a
+// refresh that retires the current specimen's only member (as one already
+// retired SI0105's 2026R0127, which a later re-pin to SI0304's 2024R0332
+// also needed) cannot re-break this file. This file reads committed
+// site/data directly rather than a frozen fixture, so the specimen is
+// expected to rotate.
+async function findPopulatedLandNtaSpecimen(membershipDoc) {
+  const byNta = membershipDoc?.by_geography?.nta2020 || {};
+  for (const ntaKey of Object.keys(byNta).sort()) {
+    const members = byNta[ntaKey] || [];
+    if (!members.length) continue;
+    const filter = encodeURIComponent(JSON.stringify({
+      geographies: [`geography:nta2020:${ntaKey}`],
+    }));
+    const response = await handleFollowing(new Request(
+      `https://cityscroll.org/following?lens=land&filter=${filter}&count=1`,
+    ), {}, {}, {
+      todayISO: "2026-09-26",
+      fetchImpl: async () => {
+        throw new Error("Land geography preview must not fetch open-data or Near You");
+      },
+    });
+    const html = await response.text();
+    const previewIds = [...html.matchAll(/data-preview-id="([^"]+)"/g)].map((m) => m[1]);
+    if (previewIds.length >= 1 && previewIds.every((id) => members.includes(id))) {
+      return { ntaKey, members };
+    }
+  }
+  throw new Error("no NTA2020 geography currently has a populated, filter-surviving Land preview member");
+}
+
+const LAND_NTA_MEMBERSHIP_DOC = JSON.parse(
+  readFileSync(new URL("../../site/data/land_place_membership.json", import.meta.url), "utf8"),
+);
+const LAND_NTA_SPECIMEN = await findPopulatedLandNtaSpecimen(LAND_NTA_MEMBERSHIP_DOC);
+
 test("anonymous Land geography Following preview uses public place membership", async () => {
-  const membershipDoc = JSON.parse(
-    readFileSync(new URL("../../site/data/land_place_membership.json", import.meta.url), "utf8"),
-  );
-  // SI0304 is the current specimen: its 2024R0332 member resolves ULURP and
-  // Active, which this preview (no explicit status facet) needs to survive
-  // both the default land-procedure and default status filters. This was
-  // SI0105 until a routine refresh retired that NTA's only member
-  // (2026R0127) from the live population; this file reads committed
-  // site/data directly rather than a frozen fixture, so the specimen is
-  // expected to need re-pinning periodically.
-  const members = membershipDoc?.by_geography?.nta2020?.SI0304 || [];
-  assert.ok(members.length >= 1, "SI0304 membership must stay populated for the preview invariant");
+  const { ntaKey, members } = LAND_NTA_SPECIMEN;
+  assert.ok(members.length >= 1, `${ntaKey} membership must stay populated for the preview invariant`);
   const filter = encodeURIComponent(JSON.stringify({
-    geographies: ["geography:nta2020:SI0304"],
+    geographies: [`geography:nta2020:${ntaKey}`],
   }));
   const response = await handleFollowing(new Request(
     `https://cityscroll.org/following?lens=land&filter=${filter}&count=1`,
@@ -512,7 +540,7 @@ test("anonymous Land geography Following preview uses public place membership", 
   const previewIds = [...html.matchAll(/data-preview-id="([^"]+)"/g)].map((m) => m[1]);
   assert.ok(previewIds.length >= 1, "populated membership must yield at least one preview id");
   for (const id of previewIds) {
-    assert.ok(members.includes(id), `preview id ${id} must stay inside SI0304 membership`);
+    assert.ok(members.includes(id), `preview id ${id} must stay inside ${ntaKey} membership`);
   }
   assert.match(html, /data-session-recognized="false"/);
   assert.match(html, /data-following-subscribe-form/);
@@ -524,10 +552,11 @@ test("anonymous Land geography Following preview uses public place membership", 
 });
 
 test("anonymous Land geography Following preview shows the empty state when membership is emptied", async () => {
+  const { ntaKey } = LAND_NTA_SPECIMEN;
   const membership = JSON.parse(readFileSync(new URL("../../site/data/land_place_membership.json", import.meta.url), "utf8"));
-  membership.by_geography.nta2020.SI0304 = [];
+  membership.by_geography.nta2020[ntaKey] = [];
   const filter = encodeURIComponent(JSON.stringify({
-    geographies: ["geography:nta2020:SI0304"],
+    geographies: [`geography:nta2020:${ntaKey}`],
   }));
   const response = await handleFollowing(new Request(
     `https://cityscroll.org/following?lens=land&filter=${filter}&count=1`,

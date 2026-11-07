@@ -28,13 +28,12 @@ const hearings = requireJson("../site/data/land_upcoming_hearings.json");
 const viewSrc = readFileSync(new URL("../site/land_authority_summary_view.mjs", import.meta.url), "utf8");
 const landSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
 
-// 2025M0252 and 2026Q0210 left the live ZAP warehouse entirely during a
-// refresh, and 2026K0123 progressed off the unresolved-procedure shape this
-// panel demonstrates (now resolves mixed_procedure); their input/outcome data
-// are frozen in gold.v1.json's "frozen_rows"/"frozen_outcomes" maps instead
-// of looked up live, the same pattern used in
-// test/land_action_procedure_resolution.test.mjs and
-// test/land_authority_summary.test.mjs.
+// 2025M0252, 2026Q0210, 2024M0244, 2026K0123, and 2025K0305 are frozen
+// specimens: their input/outcome data live in gold.v1.json's
+// "frozen_rows"/"frozen_outcomes" maps instead of being looked up live, the
+// same pattern used in test/land_action_procedure_resolution.test.mjs and
+// test/land_authority_summary.test.mjs, so a daily refresh rotating any of
+// them out of the live warehouse or default snapshot cannot break this file.
 function warehouseRow(projectId) {
   return gold.frozen_rows?.[projectId] || (warehouse.rows || []).find((row) => row.project_id === projectId);
 }

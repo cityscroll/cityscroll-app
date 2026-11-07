@@ -63,11 +63,10 @@ const ADDRESS_MANIFEST = path.join(ROOT, "site/data/address-index/manifest.json"
 // A refresh-sensitive specimen picker: rather than pinning a literal project
 // id that a later refresh's catalog churn can retire, this resolves to the
 // first live project (in catalog order) that satisfies the shape the test
-// actually needs -- present in the BBL index with at least one retained BBL,
-// and carrying an evidence shard with a resolvable valid BBL / parcel shard.
-// westshore (2025K0305) stays a literal below: it is still live and its own
-// role (a multi-BBL project with >=2 retained BBLs) is cheap to re-verify.
-function pickAnchorProject({ exclude = [] } = {}) {
+// actually needs -- present in the BBL index with at least `minBbls` retained
+// BBLs, and carrying an evidence shard with a resolvable valid BBL / parcel
+// shard.
+function pickAnchorProject({ exclude = [], minBbls = 1 } = {}) {
   const catalog = loadJson(CATALOG);
   const bbl = loadJson(BBL_INDEX);
   const membership = loadJson(LAND_PLACE_MEMBERSHIP_PATH);
@@ -76,7 +75,7 @@ function pickAnchorProject({ exclude = [] } = {}) {
     const id = project.project_id;
     if (exclude.includes(id)) continue;
     const bblRow = bblByProject.get(id);
-    if (!bblRow || !(bblRow.bbls || []).length) continue;
+    if (!bblRow || (bblRow.bbls || []).length < minBbls) continue;
     const entry = membership.by_project?.[id];
     if (!entry?.evidence_shard) continue;
     const shard = loadJson(path.join(ROOT, LAND_PLACE_EVIDENCE_DIR, `${entry.evidence_shard}.json`));
@@ -93,12 +92,13 @@ function pickAnchorProject({ exclude = [] } = {}) {
 }
 
 const FDNY_PICK = pickAnchorProject();
-const DEWITT_PICK = pickAnchorProject({ exclude: [FDNY_PICK.id] });
+const WESTSHORE_PICK = pickAnchorProject({ exclude: [FDNY_PICK.id], minBbls: 2 });
+const DEWITT_PICK = pickAnchorProject({ exclude: [FDNY_PICK.id, WESTSHORE_PICK.id] });
 
 const ANCHORS = Object.freeze({
   fdny: FDNY_PICK.id,
   fdnyNta: FDNY_PICK.ntaId,
-  westshore: "2025K0305",
+  westshore: WESTSHORE_PICK.id,
   dewitt: DEWITT_PICK.id,
 });
 

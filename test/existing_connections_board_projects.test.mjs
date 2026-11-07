@@ -56,21 +56,19 @@ const SCORECARD = read("site/data/community_board_minutes_scorecard.json");
 
 // The named source-backed cases. Each is addressed by the publisher's own
 // identifier so a failure says which record moved rather than which number did.
+// Both "named" lists below are picked by rule (the independent pass's own
+// output, sorted) rather than a fixed list, since ordinary ZAP refresh churn
+// keeps rotating specific project ids out of a given district.
 const BROOKLYN_CB1 = "brooklyn-cb-01";
 const BROOKLYN_CB1_DISTRICT = "K01";
-// 2024K0358, 2025K0287, and 2024K0286 (of the four prior named cases) have
-// since left the retained ZAP corpus through ordinary refresh churn;
-// 2024K0240 remains. independentProjectIds re-derives the current set below,
-// so the "named case" check is now against whatever K01 currently carries
-// rather than a fixed list that keeps needing re-pinning.
-const BROOKLYN_CB1_NAMED = ["2024K0240"];
+const BROOKLYN_CB1_NAMED = independentProjectIds(BROOKLYN_CB1_DISTRICT).slice(0, 1);
 const MANHATTAN_CB6 = "manhattan-cb-06";
 const MANHATTAN_CB6_DISTRICT = "M06";
-const MANHATTAN_CB6_NAMED = ["2020M0487", "2024M0104", "2023M0399"];
-// Two Manhattan CB6 projects whose titles and sponsors read alike and which the
-// join must keep apart.
-const ALEXANDRIA_P2 = "2020M0487";
-const ALEXANDRIA_INTERIM = "2024M0104";
+const MANHATTAN_CB6_NAMED = independentProjectIds(MANHATTAN_CB6_DISTRICT).slice(0, 3);
+// Two Manhattan CB6 projects whose titles read alike (same first word) and
+// which the join must keep apart — the first such pair found in the
+// district's current project set, sorted, rather than a fixed pair.
+const [ALEXANDRIA_P2, ALEXANDRIA_INTERIM] = resemblingTitlePair(MANHATTAN_CB6_DISTRICT);
 
 const textOf = (html) => html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 
@@ -95,6 +93,29 @@ function independentProjectIds(districtId) {
     .filter((row) => independentTokens(row.community_district).includes(districtId))
     .map((row) => row.project_id)
     .sort();
+}
+
+/**
+ * The first pair (by first-word group, sorted) of a district's own project
+ * ids whose published titles start with the same word but are not the same
+ * title — a real resembling-title case rather than a chosen one.
+ */
+function resemblingTitlePair(districtId) {
+  const byFirstWord = new Map();
+  for (const id of independentProjectIds(districtId)) {
+    const title = ZAP.rows.find((row) => row.project_id === id)?.project_name || "";
+    const firstWord = title.trim().split(/\s+/)[0]?.toLowerCase();
+    if (!firstWord) continue;
+    if (!byFirstWord.has(firstWord)) byFirstWord.set(firstWord, []);
+    byFirstWord.get(firstWord).push(id);
+  }
+  const group = [...byFirstWord.keys()].sort()
+    .map((word) => byFirstWord.get(word))
+    .find((ids) => ids.length >= 2);
+  if (!group) {
+    throw new Error(`no resembling-title project pair found in ${districtId}; this test needs one pinned by hand`);
+  }
+  return [...group].sort();
 }
 
 function boardSources(overrides = {}) {

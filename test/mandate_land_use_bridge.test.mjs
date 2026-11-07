@@ -675,21 +675,32 @@ test("a sub-threshold land-use gate keeps an otherwise qualified edge in shadow"
 });
 
 test("graph and UI land-use families share LAND_USE_ACTION_CODE_FAMILY", () => {
-  // 2025R0222's retained `actions` field was "SP; RC; RA; LD" at some earlier
-  // vintage; a later refresh moved it to "RC; RA; LD" (no special_permit
-  // code) as this project's own application progressed. Both graph and UI
-  // sides still agree with each other here, so this is a legitimate restamp
-  // of one project's current action codes, not a graph/UI divergence.
-  const southRichmond = landProjects.rows.find((row) => row.project_id === "2025R0222");
-  assert.ok(southRichmond, "warehouse must retain 2025R0222 St. Joseph by the Sea");
-  const graph = landActionKinds(southRichmond);
-  const ui = normalizeLandUseActionType(southRichmond);
+  // A project's `actions` field is a live, continuously-refreshed value that
+  // advances as its application progresses (e.g. 2025R0222 lost its
+  // special_permit code between refreshes once that stage completed), so
+  // pin the real multi-code specimen by rule instead of a fixed project id:
+  // the first project (sorted by id) whose live actions resolve to at least
+  // two distinct, non-landmark families, proving graph/UI agreement on a
+  // real multi-code row rather than just the single-code loop below.
+  const multiFamilyRow = [...landProjects.rows]
+    .sort((a, b) => (a.project_id < b.project_id ? -1 : a.project_id > b.project_id ? 1 : 0))
+    .find((row) => {
+      const kinds = landActionKinds(row);
+      return (
+        kinds.length >= 2 &&
+        !kinds.includes("landmark") &&
+        !kinds.includes("landmark_designation")
+      );
+    });
+  assert.ok(multiFamilyRow, "warehouse must retain at least one project with 2+ non-landmark action families");
+  const graph = landActionKinds(multiFamilyRow);
+  const ui = normalizeLandUseActionType(multiFamilyRow);
   assert.deepEqual(graph, ui.families);
-  assert.deepEqual(graph, [
-    "certification",
-    "authorization",
-    "legal_document",
-  ]);
+  assert.ok(graph.length >= 2, "specimen must resolve to at least two distinct action families");
+  assert.ok(
+    String(multiFamilyRow.actions || "").includes(";"),
+    "specimen must carry multiple ';'-separated action codes to exercise multi-code parsing",
+  );
   assert.ok(!graph.includes("landmark"));
   assert.ok(!graph.includes("landmark_designation"));
 

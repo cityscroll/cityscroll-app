@@ -273,7 +273,20 @@ class Run:
 
 
 def open_row(page, committee_id):
-    page.click(f'a.committee-shared-open[href="#committee-shared-membership-{committee_id}"]')
+    # A committee's shared-membership row only ships inside the page's own
+    # initially-visible list, or inside a collapsed ".committee-shared-overflow"
+    # (CSS :target disclosure), depending on how many committees the subject
+    # currently shares members with -- a population that grows and shrinks
+    # with ordinary refresh churn. Reveal the overflow section first when the
+    # target row's own open control is not yet visible, rather than assuming
+    # a fixed row always lands in the initially-visible set.
+    target_selector = f'a.committee-shared-open[href="#committee-shared-membership-{committee_id}"]'
+    target = page.locator(target_selector)
+    if target.count() and not target.first.is_visible():
+        overflow_toggle = page.locator('a.committee-shared-open[href="#committee-shared-membership-more"]')
+        if overflow_toggle.count() and overflow_toggle.first.is_visible():
+            overflow_toggle.first.click()
+    page.click(target_selector)
     return page.evaluate(EXPANSION_PROBE, f"committee-shared-membership-{committee_id}")
 
 

@@ -31,26 +31,27 @@ const gold = JSON.parse(
 const geography = JSON.parse(
   readFileSync(join(ROOT, "site/data/community_board_geography_lookup.json"), "utf8"),
 );
-const warehouse = JSON.parse(
-  readFileSync(join(ROOT, "site/data/zap_projects_warehouse_lookup.json"), "utf8"),
-);
-const landDefault = JSON.parse(
-  readFileSync(join(ROOT, "site/data/land_default_ulurp.json"), "utf8"),
-);
-const landOutcomesSeed = JSON.parse(
-  readFileSync(join(ROOT, "site/data/land_outcomes_seed.json"), "utf8"),
+// The four specimens below (2025K0305, 2023K0357, 2019K0219, 2026Q0184) are
+// frozen from the live warehouse/outcomes data rather than read live: each
+// demonstrates a specific resolution shape (cross-CD same-borough, draft-only
+// multi-body, single-CD, unresolved-procedure) that the daily refresh is free
+// to rotate out of the live population, as it has already done once for this
+// file's prior specimens. Freezing keeps the real, once-measured shape under
+// test instead of re-pinning to a new live id every time the population moves.
+const frozen = JSON.parse(
+  readFileSync(join(ROOT, "test/fixtures/land_affected_review_body/frozen_rows.v1.json"), "utf8"),
 );
 
 function outcomesFor(projectId) {
-  // Rich dispositions ship in land_outcomes_seed.json so the list snapshot
-  // stays inside its fixed byte budget.
-  const list = landDefault.outcomes?.by_project?.[projectId] || {};
-  const seed = landOutcomesSeed.by_project?.[projectId] || {};
-  return { ...list, ...seed };
+  const found = frozen.outcomes?.[projectId];
+  if (found) return found;
+  throw new Error(`no frozen outcomes for ${projectId}`);
 }
 
 function warehouseRow(projectId) {
-  return (warehouse.rows || []).find((row) => row.project_id === projectId);
+  const row = frozen.rows?.[projectId];
+  if (!row) throw new Error(`no frozen warehouse row for ${projectId}`);
+  return row;
 }
 
 function project(row) {
@@ -133,10 +134,8 @@ test("A1 2025K0305 explains CB11, CB13, Brooklyn Borough Board, and Borough Pres
 });
 
 test("A2 draft Borough Board dispositions never become an observed recommendation", () => {
-  // 2025K0305 left site/data/land_outcomes_seed.json during a refresh;
-  // 2023K0357 is the current all-draft, multi-body (including Borough
-  // Board) replacement, same specimen used for this purpose in
-  // test/land_actor_outcome.test.mjs.
+  // 2023K0357 is a frozen all-draft, multi-body (including Borough Board)
+  // specimen, same one used for this purpose in test/land_actor_outcome.test.mjs.
   const dispositions = outcomesFor("2023K0357").dispositions || [];
   assert.equal(dispositions.length, 4);
   assert.equal(dispositions.every((row) => row.status === "Draft"), true);
@@ -161,8 +160,7 @@ test("A3 each accepted edge retains geography, vintage, profile version, rule, a
 });
 
 test("A4 single-CD 2019K0219 has no Borough Board role", () => {
-  // 2025M0252 left the live ZAP warehouse during a refresh; 2019K0219 is a
-  // currently-live single-CD replacement with the same resolved, non-Borough-Board shape.
+  // 2019K0219 is a frozen single-CD specimen with a resolved, non-Borough-Board shape.
   const row = warehouseRow("2019K0219");
   assert.equal(row.community_district, "K01");
   const projection = project(row);
@@ -211,10 +209,7 @@ test("A4 mixed and unknown procedures remain unresolved and non-linking", () => 
   assert.equal(mixed.linking, false);
   assert.equal(mixed.edges.length, 0);
 
-  // 2026K0123 was certified into ULURP during a refresh (it now resolves
-  // mixed_procedure instead of unresolved_procedure, same real-world
-  // progression noted elsewhere in this PR); 2026Q0184 is the current
-  // unresolved_procedure replacement.
+  // 2026Q0184 is a frozen unresolved_procedure specimen.
   const unknown = project(warehouseRow("2026Q0184"));
   assert.equal(unknown.status, "unresolved");
   assert.equal(unknown.reason, "unresolved_procedure");

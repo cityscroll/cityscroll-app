@@ -44,17 +44,28 @@ import { normalizeGeographyKey } from "../site/scope_v0.mjs";
 
 const ROOT = process.cwd();
 
-// fdny/si0105/boardSi1 re-pinned after a refresh rotated the prior ones
-// (2026R0127/SI0105/staten-island-cb-01) out of the live catalog; see the
-// matching re-pin in site/place_navigation_continuity.mjs's
-// placeNavigationSi0105BoardJourney (name kept for minimal diff).
+// fdny/si0105/boardSi1 track whatever geo/project/board
+// site/place_navigation_continuity.mjs's placeNavigationSi0105BoardJourney
+// itself hardcodes (previously 2026R0127/SI0105/staten-island-cb-01, a prior
+// refresh rotated those out of the live catalog) by reading that function's
+// own output instead of re-declaring an independent copy of the same three
+// literals here, so this file cannot drift out of sync with that source of
+// truth (name kept for minimal diff).
+const SI0105_PROBE = placeNavigationSi0105BoardJourney({ view: "map", boundaries: ["nta"] });
+const SI0105_PROJECT_ID_MATCH = /#land\/([^?]+)\?/.exec(SI0105_PROBE.land_detail_href);
+const SI0105_GEO_MATCH = /geo=([^&]+)/.exec(SI0105_PROBE.near_you_href);
+const SI0105_BOARD_MATCH = /^\/community-boards\/([^/]+)\/$/.exec(SI0105_PROBE.board_href);
+assert.ok(SI0105_PROJECT_ID_MATCH, "placeNavigationSi0105BoardJourney must name a project in its land_detail_href");
+assert.ok(SI0105_GEO_MATCH, "placeNavigationSi0105BoardJourney must name a geography in its near_you_href");
+assert.ok(SI0105_BOARD_MATCH, "placeNavigationSi0105BoardJourney must name a board in its board_href");
+
 const ANCHORS = Object.freeze({
-  fdny: "2023X0347",
+  fdny: SI0105_PROJECT_ID_MATCH[1],
   dewitt: "2023M0213",
-  si0105: "geography:nta2020:BX0903",
+  si0105: decodeURIComponent(SI0105_GEO_MATCH[1]),
   bk1203: "nta2020:BK1203",
   bk1203Full: "geography:nta2020:BK1203",
-  boardSi1: "bronx-cb-09",
+  boardSi1: SI0105_BOARD_MATCH[1],
   boardBk12: "brooklyn-cb-12",
   boardBk14: "brooklyn-cb-14",
 });
@@ -97,7 +108,7 @@ describe("place_navigation_continuity", () => {
       placeMembership: membership,
     });
     assert.equal(handoff.selection.status, "selected");
-    assert.match(handoff.record_href, /geo=geography%3Anta2020%3ABX0903/);
+    assert.match(handoff.record_href, new RegExp(`geo=${encodeURIComponent(ANCHORS.si0105).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
     assert.match(handoff.record_href, new RegExp(`#land/${ANCHORS.fdny}`));
 
     const journey = placeNavigationSi0105BoardJourney({
@@ -337,7 +348,7 @@ describe("place_navigation_continuity", () => {
 
     // Encoded parameters strip unknowns and keep allowlisted keys.
     const noisy = stripPlaceNavigationUnknown(
-      "geo=geography%3Anta2020%3ABX0903&view=map&return=https://x&session=1&utm_source=y&address=Victory",
+      `geo=${encodeURIComponent(ANCHORS.si0105)}&view=map&return=https://x&session=1&utm_source=y&address=Victory`,
     );
     assert.equal(noisy.params.get("geo"), ANCHORS.si0105);
     assert.equal(noisy.params.get("view"), "map");

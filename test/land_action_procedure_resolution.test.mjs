@@ -101,22 +101,21 @@ test("A1 uniform 2025K0305 is one MM track with the matching application id", ()
 
 test("A1/A2 2026Q0184 stays unknown and does not inherit project ULURP", () => {
   // 2026K0123 was the prior unknown-track specimen until a refresh certified
-  // it into ULURP with real application numbers (same real-world project
-  // progression the CEQR reconciliation fix in this PR also accounts for),
-  // so it no longer has an unresolved/unknown action. 2026Q0184 is its
-  // replacement, found by scanning for a currently-unresolved, ULURP-typed,
-  // no-application-number row.
-  const row = warehouseRow("2026Q0184");
+  // it into ULURP with real application numbers; 2026Q0184 was its live
+  // replacement, and is now frozen here too (gold.v1.json's "row" field)
+  // since the same ordinary refresh churn that retired 2026K0123 can retire
+  // 2026Q0184's unresolved/unknown action set just as easily.
+  const row = gold.specimens["unknown-2026Q0184"].row;
+  const expected = gold.specimens["unknown-2026Q0184"].expect;
   assert.equal(row.ulurp_non, "ULURP");
   assert.equal(row.ulurp_numbers, null);
   const resolved = resolveLandActionProcedures(row);
-  assert.equal(resolved.procedure_resolution, "unknown");
-  assert.equal(resolved.land_actions.length, 2);
-  assert.deepEqual(resolved.land_actions.map((action) => action.action_type), ["ZA", "EAS"]);
+  assert.equal(resolved.procedure_resolution, expected.procedure_resolution);
+  assert.equal(resolved.land_actions.length, expected.action_count);
+  assert.deepEqual(resolved.land_actions.map((action) => action.action_type), expected.action_types);
   assert.equal(resolved.land_actions.every((action) => action.status === "unresolved"), true);
   assert.equal(resolved.land_actions.every((action) => action.procedure_id == null), true);
-  assert.equal(resolved.land_actions[0].unresolved_reason, "missing_application_id");
-  assert.equal(resolved.land_actions[1].unresolved_reason, "unsupported_action_token");
+  assert.deepEqual(resolved.land_actions.map((action) => action.unresolved_reason), expected.unresolved_reasons);
   assert.equal(resolved.land_actions[1].application_id, row.ceqr_number);
 });
 
@@ -205,8 +204,12 @@ test("A4 action filters, mandate procedure kinds, and phase-spine inputs stay in
   // limit:500 (not the 40-row default) so this check is about family+procedure
   // filtering, not which rows rank in a milestone-date-sorted top 40 today.
   const rezoning = filterLandSnapshot(projects, { family: "rezoning", procedure: "review", limit: 500 });
-  assert.ok(rezoning.some((row) => row.project_id === "2026K0123"));
-  assert.equal(landRowMatchesFamily(warehouseRow("2026K0123"), "rezoning"), true);
+  // Any currently live rezoning-family ULURP review row demonstrates the
+  // same filter+family agreement; picked by rule (first by id) rather than a
+  // fixed id, since ordinary refresh churn rotates the population.
+  const rezoningSpecimen = [...rezoning].sort((a, b) => a.project_id.localeCompare(b.project_id))[0];
+  assert.ok(rezoningSpecimen, "the live catalog must retain at least one rezoning-family ULURP review row");
+  assert.equal(landRowMatchesFamily(warehouseRow(rezoningSpecimen.project_id), "rezoning"), true);
 
   const mixed = gold.specimens["mixed-2024M0244"].row;
   assert.deepEqual(landProcedureKinds(mixed), ["ulurp"]);
@@ -400,7 +403,7 @@ test("A4 a C-prefixed identifier never overrides an explicit publisher ELURP pro
 test("A6 existing mixed/unknown multi-action canaries stay mixed/unknown with no ZAP action evidence", () => {
   const mixed = resolveLandActionProcedures(gold.specimens["mixed-2024M0244"].row);
   assert.equal(mixed.procedure_resolution, "mixed");
-  const unknown = resolveLandActionProcedures(warehouseRow("2026Q0184"));
+  const unknown = resolveLandActionProcedures(gold.specimens["unknown-2026Q0184"].row);
   assert.equal(unknown.procedure_resolution, "unknown");
 });
 

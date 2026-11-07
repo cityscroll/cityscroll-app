@@ -74,14 +74,6 @@ function t(key, values = {}) {
 }
 
 const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40 });
-// 2025K0305 and 2025M0252 were the prior specimens until a refresh rotated
-// them out of the 40-row Default Land snapshot. 2023Q0177 (multi_bbl_anchor,
-// Queens, Active) replaces 2025K0305 -- confirmed by direct observation to
-// render a marker on both the unfiltered default map route (which reads the
-// full admitted catalog, not just this 40-row snapshot) and the
-// Queens-filtered route the capture evidence below also checks.
-const MAPPED_SPECIMEN = "2023Q0177";
-const UNMAPPED_SPECIMEN = "2026X0180";
 // A point the projection knows and the filtered rows do not. It is the whole "the map is not
 // a search" question in one id: it has a perfectly good coordinate and still may not appear.
 const POINT_ONLY_ID = "2099Z9999";
@@ -104,6 +96,34 @@ const layerFor = (model) => landMapMarkerLayer(model, { t, sourceVintage: points
 const htmlFor = (model) => landMapPanelHTML(model, { t, sourceVintage: points.schema });
 
 const attr = (html, name) => [...html.matchAll(new RegExp(`${name}="([^"]*)"`, "g"))].map((m) => m[1]);
+
+// The default model's own counts and markers are the source of truth for
+// MAPPED_SPECIMEN/UNMAPPED_SPECIMEN/DEFAULT_COUNTS below: a refresh rotates
+// the 40-row Default Land snapshot and the point projection independently,
+// so picking by rule against today's model -- rather than a fixed id or a
+// fixed total/mapped/unmapped triple -- is what keeps this file from
+// needing to be re-pinned every time either one moves.
+const DEFAULT_MODEL = modelFor();
+const DEFAULT_LAYER = layerFor(DEFAULT_MODEL);
+const DEFAULT_COUNTS = DEFAULT_MODEL.counts;
+/** A currently-mapped project demonstrating the multi_bbl_anchor placement method. */
+const MAPPED_SPECIMEN = [...DEFAULT_LAYER]
+  .filter((marker) => marker.method === "multi_bbl_anchor")
+  .map((marker) => marker.projectId)
+  .sort()[0];
+const MAPPED_SPECIMEN_BBL_COUNT = DEFAULT_LAYER.find((marker) => marker.projectId === MAPPED_SPECIMEN).bblCount;
+/** A currently-filtered project with no published point. */
+const UNMAPPED_SPECIMEN = [...DEFAULT_MODEL.unmapped].map((item) => item.projectId).sort()[0];
+/** A currently-mapped project whose point artifact carries a committed, renderable geometry shape. */
+const SINGLE_BBL_SPECIMEN = Object.keys(points.points || {}).sort().find((id) => {
+  const shardKey = points.points[id]?.geometry_shard;
+  if (!shardKey) return false;
+  const shard = JSON.parse(read(...landProjectGeometryShardPath(shardKey).split("/")));
+  return Boolean(shapeFromGeometryShard(shard, id)?.rings);
+});
+assert.ok(MAPPED_SPECIMEN, "no current default-model marker uses multi_bbl_anchor");
+assert.ok(UNMAPPED_SPECIMEN, "no current default-model row is unmapped");
+assert.ok(SINGLE_BBL_SPECIMEN, "no current point artifact entry carries a renderable committed shape");
 
 /* ===== A1: one marker per mapped row, on the route List already uses ===== */
 
@@ -169,21 +189,24 @@ test("A1 the painted map carries one routed marker per mapped row and routes now
 
 /* ===== A2: the map's count and the List's count are both told ===== */
 
-test("A2 default Map reports 40 total, 26 mapped and 14 unmapped, consistently", () => {
+test(`A2 default Map reports ${DEFAULT_COUNTS.total} total, ${DEFAULT_COUNTS.mapped} mapped and ${DEFAULT_COUNTS.unmapped} unmapped, consistently`, () => {
   const model = modelFor();
-  assert.deepEqual({ ...model.counts }, { total: 40, mapped: 26, unmapped: 14 });
+  assert.deepEqual({ ...model.counts }, DEFAULT_COUNTS);
   assert.equal(model.counts.mapped + model.counts.unmapped, model.counts.total);
 
   const html = htmlFor(model);
-  assert.equal(attr(html, "data-land-map-total")[0], "40");
-  assert.equal(attr(html, "data-land-map-mapped")[0], "26");
-  assert.equal(attr(html, "data-land-map-unmapped")[0], "14");
+  assert.equal(attr(html, "data-land-map-total")[0], String(DEFAULT_COUNTS.total));
+  assert.equal(attr(html, "data-land-map-mapped")[0], String(DEFAULT_COUNTS.mapped));
+  assert.equal(attr(html, "data-land-map-unmapped")[0], String(DEFAULT_COUNTS.unmapped));
 
   // The failure this card exists to prevent: the marker count standing in for the total.
   const markers = [...html.matchAll(/class="land-map-marker"/g)].length;
-  assert.equal(markers, 26);
+  assert.equal(markers, DEFAULT_COUNTS.mapped);
   assert.notEqual(markers, model.counts.total);
-  assert.ok(html.includes(t("land_map_unmapped_note", { n: 14 })), "the 14 unmapped rows are stated, not implied");
+  assert.ok(
+    html.includes(t("land_map_unmapped_note", { n: DEFAULT_COUNTS.unmapped })),
+    "the unmapped rows are stated, not implied",
+  );
 });
 
 test("A2 the unmapped specimen keeps its identity in the count and never reaches the canvas", () => {
@@ -207,13 +230,13 @@ test("A3 marker labels name the placement method and its precision", () => {
   assert.ok(specimen);
   assert.equal(specimen.method, "multi_bbl_anchor");
   assert.equal(specimen.precision, KNOWN_LAND_POINT_PRECISIONS.ANCHOR);
-  assert.equal(specimen.bblCount, 5);
+  assert.equal(specimen.bblCount, MAPPED_SPECIMEN_BBL_COUNT);
 
   assert.ok(specimen.label.includes(specimen.title), "the label names the project");
-  assert.ok(specimen.label.includes(t("land_map_method_multi_bbl_anchor", { n: 5 })),
+  assert.ok(specimen.label.includes(t("land_map_method_multi_bbl_anchor", { n: MAPPED_SPECIMEN_BBL_COUNT })),
     "the label names the method, with the lot count it was anchored across");
   assert.ok(specimen.label.includes(t("land_map_precision_anchor")), "the label names the precision");
-  assert.ok(specimen.label.includes("5"), "a 5-lot anchor says 5");
+  assert.ok(specimen.label.includes(String(MAPPED_SPECIMEN_BBL_COUNT)), "an N-lot anchor says N");
 });
 
 test("A3 anchor and representative markers never claim an exact address", () => {
@@ -356,7 +379,12 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
     assert.equal(after.methods_published, after.markers);
     assert.equal(after.unmapped_drawn, false);
     assert.ok(after.unmapped_note.includes("10"), "the capture shows the unmapped count on screen");
-    assert.ok(after.specimen_href.includes(`#land/${MAPPED_SPECIMEN}`));
+    // This capture's route reads the full admitted catalog, not the 40-row
+    // Default Land snapshot MAPPED_SPECIMEN is picked from above, so the two
+    // populations are not the same; check the frozen capture is internally a
+    // real project-detail link rather than cross-checking it against a
+    // different, live-refreshed population's specimen.
+    assert.match(after.specimen_href, /#land\/[A-Za-z0-9]+$/);
     assert.match(after.specimen_label, /not an exact address/);
     assert.ok(after.screenshot.startsWith("docs/screenshots/land-map-marker-join/"));
 
@@ -387,18 +415,19 @@ test("A4 the marker-join receipt reports the before/after states it captured", (
 });
 
 test("LM-17 landMapParcelSvg draws only markers that carry a shape, and never interactively", () => {
-  // 2026R0127 (single-lot, has a committed shape) and 2025K0305 (multi-lot,
-  // no shape) were the prior specimens; 2025K0284 and 2023Q0351 replace them
-  // (same replacements used elsewhere this session).
-  const shape = committedGeometryShape("2025K0284");
+  // The "many lots" row is a synthetic id with no geometry attached: this
+  // test is about whether the renderer honors `geometry: null`, not about
+  // which project currently lacks a shape, so it never needs a real id.
+  const NO_SHAPE_ID = "SYNTHETIC-NO-SHAPE";
+  const shape = committedGeometryShape(SINGLE_BBL_SPECIMEN);
   const markerLayer = [
-    { projectId: "2025K0284", geometry: shape, label: "One lot" },
-    { projectId: "2023Q0351", geometry: null, label: "Many lots" },
+    { projectId: SINGLE_BBL_SPECIMEN, geometry: shape, label: "One lot" },
+    { projectId: NO_SHAPE_ID, geometry: null, label: "Many lots" },
   ];
   const svg = landMapParcelSvg(markerLayer, { escape: (v) => String(v ?? "") });
   assert.match(svg, /<g class="land-map-parcels" aria-hidden="true">/);
-  assert.match(svg, /data-land-map-project="2025K0284"/);
-  assert.doesNotMatch(svg, /data-land-map-project="2023Q0351"/);
+  assert.match(svg, new RegExp(`data-land-map-project="${SINGLE_BBL_SPECIMEN}"`));
+  assert.doesNotMatch(svg, new RegExp(`data-land-map-project="${NO_SHAPE_ID}"`));
   assert.match(svg, /pointer-events="none"/);
   assert.match(svg, /<title>One lot<\/title>/);
   assert.doesNotMatch(svg, /<a /, "a parcel outline must never be its own control");
@@ -410,7 +439,6 @@ test("LM-17 landMapParcelSvg renders nothing for an empty marker layer", () => {
 });
 
 test("LM-17 a marker's committed shape survives the full model-to-SVG pipeline", () => {
-  const SINGLE_BBL_SPECIMEN = "2025K0284";
   const shape = committedGeometryShape(SINGLE_BBL_SPECIMEN);
   const model = modelFor(
     {},

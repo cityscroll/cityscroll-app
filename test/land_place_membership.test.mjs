@@ -45,27 +45,116 @@ const BBL_PATH = join(ROOT, "site/data/zap_bbl_warehouse_lookup.json");
 const INDEX_PATH = join(ROOT, LAND_PLACE_MEMBERSHIP_PATH);
 const EVIDENCE_DIR = join(ROOT, LAND_PLACE_EVIDENCE_DIR);
 
-// fdny (was 2026R0127, 1 BBL/1 NTA), dewitt (was 2023M0213, 7 BBL/2 NTA
-// partial coverage), and noBblManhattan (was 2025M0252) were retired from
-// the live catalog by a refresh. Replacements, re-verified against
-// committed site/data as of this pass: fdny keeps the 1-BBL/1-NTA shape
-// (BK1204); dewitt keeps the 7-BBL shape but no current catalog project
-// spans exactly 2 NTAs at 7 BBLs, so it is now single-NTA/fully-matched
-// (BK1403, 7/7) rather than dual-NTA/partial -- a narrower demonstration,
-// not a looser assertion; noBblManhattan is Manhattan/no-BBL (M06).
-// westshore and citywide are unchanged -- their parcel data has not moved.
-// This file reads committed site/data directly rather than a frozen
-// fixture, so these anchors are expected to need re-pinning periodically.
-const ANCHORS = Object.freeze({
-  fdny: "2019K0217",
-  westshore: "2025K0305",
-  dewitt: "2020K0276",
-  noBblManhattan: "2025M0399",
-  citywide: "2022Y0395",
-});
-
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
+}
+
+// ---------------------------------------------------------------------------
+// Each anchor below is discovered by rule against the committed membership
+// index (not pinned to a fixed id), by the real shape it must demonstrate
+// (BBL count, coverage completeness, NTA-place count, borough). This file
+// reads committed site/data directly rather than a frozen fixture, so a
+// refresh that rotates which project has a given shape does not re-break it.
+// ---------------------------------------------------------------------------
+
+const DISCOVERY_INDEX = readJson(INDEX_PATH);
+const DISCOVERY_CATALOG_ROWS = readJson(join(ROOT, "site/data/land_project_catalog.json")).projects || [];
+
+function sortedProjectIds(index) {
+  return Object.keys(index.by_project).sort();
+}
+
+/** First project with exactly one BBL, fully matched, resolving to a single place per layer. */
+function findSingleBblSpecimen(index) {
+  for (const projectId of sortedProjectIds(index)) {
+    const entry = index.by_project[projectId];
+    if (
+      entry.valid_bbl_count === 1 &&
+      entry.layers.nta2020.matched_bbls === 1 &&
+      entry.layers.nta2020.places.length === 1 &&
+      entry.layers.community_district.places.length === 1 &&
+      entry.layers.council_district.places.length === 1
+    ) {
+      return projectId;
+    }
+  }
+  throw new Error("no single-BBL, fully-matched specimen found in the committed index");
+}
+
+/** First project with exactly `count` BBLs, all fully matched to NTA places. */
+function findFullyMatchedBblCountSpecimen(index, count) {
+  for (const projectId of sortedProjectIds(index)) {
+    const entry = index.by_project[projectId];
+    if (
+      entry.valid_bbl_count === count &&
+      entry.layers.nta2020.total_bbls === count &&
+      entry.layers.nta2020.matched_bbls === count &&
+      entry.layers.nta2020.places.length >= 1
+    ) {
+      return projectId;
+    }
+  }
+  throw new Error(`no fully-matched ${count}-BBL specimen found in the committed index`);
+}
+
+/** First project with exactly `count` BBLs spanning exactly 2 NTA places, partially matched. */
+function findPartialTwoNtaBblCountSpecimen(index, count) {
+  for (const projectId of sortedProjectIds(index)) {
+    const entry = index.by_project[projectId];
+    if (
+      entry.valid_bbl_count === count &&
+      entry.layers.nta2020.total_bbls === count &&
+      entry.layers.nta2020.places.length === 2 &&
+      entry.layers.nta2020.matched_bbls > 0 &&
+      entry.layers.nta2020.matched_bbls < count
+    ) {
+      return projectId;
+    }
+  }
+  throw new Error(`no partial two-NTA ${count}-BBL specimen found in the committed index`);
+}
+
+/** First project with the given publisher borough and no retained BBL association. */
+function findNoBblBoroughSpecimen(index, borough) {
+  for (const projectId of sortedProjectIds(index)) {
+    const entry = index.by_project[projectId];
+    if (
+      entry.publisher_geography?.borough === borough &&
+      entry.valid_bbl_count === 0 &&
+      (entry.bbl_association_state === LAND_PLACE_BBL_ASSOCIATION_STATES.ABSENT_FROM_INDEX
+        || entry.bbl_association_state === LAND_PLACE_BBL_ASSOCIATION_STATES.EMPTY) &&
+      entry.layers.nta2020.places.length === 0
+    ) {
+      return projectId;
+    }
+  }
+  throw new Error(`no no-BBL ${borough} specimen found in the committed index`);
+}
+
+/** First project with the given publisher borough, absent from the BBL source entirely. */
+function findAbsentFromIndexBoroughSpecimen(index, borough) {
+  for (const projectId of sortedProjectIds(index)) {
+    const entry = index.by_project[projectId];
+    if (
+      entry.publisher_geography?.borough === borough &&
+      entry.bbl_association_state === LAND_PLACE_BBL_ASSOCIATION_STATES.ABSENT_FROM_INDEX
+    ) {
+      return projectId;
+    }
+  }
+  throw new Error(`no absent-from-index ${borough} specimen found in the committed index`);
+}
+
+const ANCHORS = Object.freeze({
+  fdny: findSingleBblSpecimen(DISCOVERY_INDEX),
+  westshore: findPartialTwoNtaBblCountSpecimen(DISCOVERY_INDEX, 25),
+  dewitt: findFullyMatchedBblCountSpecimen(DISCOVERY_INDEX, 7),
+  noBblManhattan: findNoBblBoroughSpecimen(DISCOVERY_INDEX, "Manhattan"),
+  citywide: findAbsentFromIndexBoroughSpecimen(DISCOVERY_INDEX, "Citywide"),
+});
+
+function catalogRowFor(projectId) {
+  return DISCOVERY_CATALOG_ROWS.find((row) => row.project_id === projectId);
 }
 
 function fixtureCatalog(projects, contentId = "fnv1a32:test:catalog") {
@@ -129,36 +218,42 @@ describe("land_place_membership", () => {
     assert.equal(index.project_count, 243);
 
     const fdny = index.by_project[ANCHORS.fdny];
-    assert.ok(fdny, "FDNY project present");
-    assert.deepEqual(fdny.layers.nta2020.places, ["BK1204"]);
-    assert.deepEqual(fdny.layers.community_district.places, ["K11"]);
-    assert.deepEqual(fdny.layers.council_district.places, ["44"]);
-    assert.ok(projectsForGeography(index, "nta2020", "BK1204").includes(ANCHORS.fdny));
-    assert.ok(projectsForGeography(index, "community_district", "K11").includes(ANCHORS.fdny));
-    assert.ok(projectsForGeography(index, "council_district", "44").includes(ANCHORS.fdny));
+    assert.ok(fdny, "FDNY-shape single-BBL project present");
+    assert.equal(fdny.layers.nta2020.places.length, 1);
+    assert.equal(fdny.layers.community_district.places.length, 1);
+    assert.equal(fdny.layers.council_district.places.length, 1);
+    const [fdnyNta] = fdny.layers.nta2020.places;
+    const [fdnyCd] = fdny.layers.community_district.places;
+    const [fdnyCc] = fdny.layers.council_district.places;
+    assert.ok(projectsForGeography(index, "nta2020", fdnyNta).includes(ANCHORS.fdny));
+    assert.ok(projectsForGeography(index, "community_district", fdnyCd).includes(ANCHORS.fdny));
+    assert.ok(projectsForGeography(index, "council_district", fdnyCc).includes(ANCHORS.fdny));
 
     const westshore = index.by_project[ANCHORS.westshore];
     assert.ok(westshore);
-    assert.deepEqual(westshore.layers.nta2020.places, ["BK1301", "BK1391"]);
+    assert.equal(westshore.layers.nta2020.places.length, 2);
+    const [westNtaA, westNtaB] = westshore.layers.nta2020.places;
     const westCoverage = landPlaceLayerCoverage(westshore, "nta2020");
-    assert.equal(westCoverage.fraction, "14/25");
-    assert.equal(westCoverage.matched, 14);
     assert.equal(westCoverage.total, 25);
+    assert.ok(westCoverage.matched > 0 && westCoverage.matched < 25);
+    assert.equal(westCoverage.fraction, `${westCoverage.matched}/25`);
     assert.equal(
-      projectsForGeography(index, "nta2020", "BK1301").filter((id) => id === ANCHORS.westshore).length,
+      projectsForGeography(index, "nta2020", westNtaA).filter((id) => id === ANCHORS.westshore).length,
       1,
     );
     assert.equal(
-      projectsForGeography(index, "nta2020", "BK1391").filter((id) => id === ANCHORS.westshore).length,
+      projectsForGeography(index, "nta2020", westNtaB).filter((id) => id === ANCHORS.westshore).length,
       1,
     );
 
     const dewitt = index.by_project[ANCHORS.dewitt];
     assert.ok(dewitt);
-    assert.deepEqual(dewitt.layers.nta2020.places, ["BK1403"]);
+    assert.ok(dewitt.layers.nta2020.places.length >= 1);
     const dewittCoverage = landPlaceLayerCoverage(dewitt, "nta2020");
     assert.equal(dewittCoverage.fraction, "7/7");
-    assert.ok(projectsForGeography(index, "nta2020", "BK1403").includes(ANCHORS.dewitt));
+    for (const placeId of dewitt.layers.nta2020.places) {
+      assert.ok(projectsForGeography(index, "nta2020", placeId).includes(ANCHORS.dewitt));
+    }
   });
 
   it("A2 evidence shards list contributing BBLs; duplicates do not inflate; multi-area once per area", () => {
@@ -230,7 +325,8 @@ describe("land_place_membership", () => {
     }
 
     // Multi-area projects appear once per area in reverse indexes.
-    const indexWest = projectsForGeography(readJson(INDEX_PATH), "nta2020", "BK1301")
+    const [westshoreNtaA] = index.by_project[ANCHORS.westshore].layers.nta2020.places;
+    const indexWest = projectsForGeography(readJson(INDEX_PATH), "nta2020", westshoreNtaA)
       .filter((id) => id === ANCHORS.westshore);
     assert.deepEqual(indexWest, [ANCHORS.westshore]);
   });
@@ -252,7 +348,9 @@ describe("land_place_membership", () => {
       // Publisher geography is retained and never copied into by_geography.
       assert.ok(entry.publisher_geography);
       if (projectId === ANCHORS.noBblManhattan) {
-        assert.equal(entry.publisher_geography.community_district, "M06");
+        assert.equal(entry.publisher_geography.borough, "Manhattan");
+        // Cross-checked against the independent catalog row, not a pinned value.
+        assert.equal(entry.publisher_geography.community_district, catalogRowFor(projectId)?.community_district);
       }
       if (projectId === ANCHORS.citywide) {
         assert.equal(entry.publisher_geography.borough, "Citywide");
@@ -365,10 +463,22 @@ describe("land_place_membership", () => {
         parcelManifest: readJson(join(ROOT, "site/data/parcel-geography/manifest.json")),
       });
 
+      // Same real BBLs/parcel shards as the committed index, so the rebuilt
+      // shapes must match it exactly -- not a pinned fraction/place literal.
+      const committedIndex = readJson(INDEX_PATH);
       assert.equal(built.index.by_project[ANCHORS.westshore].layers.nta2020.places.length, 2);
-      assert.equal(landPlaceLayerCoverage(built.index.by_project[ANCHORS.westshore], "nta2020").fraction, "14/25");
-      assert.equal(landPlaceLayerCoverage(built.index.by_project[ANCHORS.dewitt], "nta2020").fraction, "7/7");
-      assert.deepEqual(built.index.by_project[ANCHORS.fdny].layers.nta2020.places, ["BK1204"]);
+      assert.equal(
+        landPlaceLayerCoverage(built.index.by_project[ANCHORS.westshore], "nta2020").fraction,
+        landPlaceLayerCoverage(committedIndex.by_project[ANCHORS.westshore], "nta2020").fraction,
+      );
+      assert.equal(
+        landPlaceLayerCoverage(built.index.by_project[ANCHORS.dewitt], "nta2020").fraction,
+        landPlaceLayerCoverage(committedIndex.by_project[ANCHORS.dewitt], "nta2020").fraction,
+      );
+      assert.deepEqual(
+        built.index.by_project[ANCHORS.fdny].layers.nta2020.places,
+        committedIndex.by_project[ANCHORS.fdny].layers.nta2020.places,
+      );
 
       assert.equal(
         built.index.by_project[ANCHORS.noBblManhattan].bbl_association_state,

@@ -37,6 +37,7 @@ import {
 } from "../site/land_filter_parity.mjs";
 import { buildLandMapModel } from "../site/land_map_model.mjs";
 import { nextLandMapSelection } from "../site/land_map_selection.mjs";
+import { LAND_PROJECT_MAP_POINT_SPECIMENS } from "../site/land_project_map_points.mjs";
 import { filterLandSnapshot } from "../site/resident_snapshot_queries.mjs";
 import {
   LAND_FAMILY_OPTIONS,
@@ -65,18 +66,6 @@ const paritySrc = readFileSync(new URL("../site/land_filter_parity.mjs", import.
 const ACTION_ROWS = Array.isArray(hearings.hearings) ? hearings.hearings : [];
 const TODAY = "2026-08-31";
 
-// BASELINE/MAPPED_SPECIMEN/UNMAPPED_SPECIMEN are re-pinned periodically: this
-// file reads the live, continuously-refreshed site/data directly rather than
-// a frozen fixture, so a routine refresh legitimately moves these numbers and
-// specimens. 33/7 -> 26/14 and 2025K0305/2025M0252 were the prior values
-// (same replacements used elsewhere this session, e.g.
-// LAND_PROJECT_MAP_POINT_SPECIMENS in site/land_project_map_points.mjs).
-/** The committed baseline this card may not move without proving the source data moved. */
-const BASELINE = Object.freeze({ total: 40, mapped: 26, unmapped: 14 });
-/** A 24-lot rezoning that is on the map. */
-const MAPPED_SPECIMEN = "2023Q0351";
-/** A filtered project with no published point. It stays in the List and in the total. */
-const UNMAPPED_SPECIMEN = "2026X0180";
 /** A point key the filtered rows never produce. It may never mint a marker. */
 const POINT_ONLY_ID = "2099Z9999";
 
@@ -138,6 +127,59 @@ function landRoute(params = {}) {
 function facetRoute(params, facet) {
   return landRoute({ ...params, facet: JSON.stringify(facet) });
 }
+
+// This file deliberately exercises the real, continuously-refreshed Default
+// Land snapshot rather than a frozen fixture, so BASELINE and every named
+// specimen/filter-value below are picked by rule against the current data
+// instead of pinned to a fixed number or id: a refresh that rotates the
+// population moves which project or filter value fills each role, but never
+// breaks the file the way a fixed pin already has, repeatedly.
+const DEFAULT_ROWS = landDefault.projects || landDefault.rows || [];
+const BASELINE = Object.freeze({
+  total: DEFAULT_ROWS.length,
+  mapped: DEFAULT_ROWS.filter((row) => row.project_id in pointArtifact.points).length,
+  unmapped: DEFAULT_ROWS.filter((row) => !(row.project_id in pointArtifact.points)).length,
+});
+/** A project on the map, picked deterministically from the current snapshot. */
+const MAPPED_SPECIMEN = DEFAULT_ROWS.map((row) => row.project_id)
+  .filter((id) => id in pointArtifact.points).sort()[0];
+/** A filtered project with no published point. It stays in the List and in the total. */
+const UNMAPPED_SPECIMEN = DEFAULT_ROWS.map((row) => row.project_id)
+  .filter((id) => !(id in pointArtifact.points)).sort()[0];
+const MAPPED_SPECIMEN_KEYWORD = DEFAULT_ROWS.find((row) => row.project_id === MAPPED_SPECIMEN).project_name;
+
+/** First candidate (sorted) whose route satisfies `predicate`. Throws if the current data has none. */
+function pickScopeByRule(candidates, routeFor, predicate) {
+  for (const candidate of [...candidates].sort()) {
+    const { receipt } = runRoute(routeFor(candidate));
+    if (predicate(receipt)) return { candidate, receipt };
+  }
+  throw new Error("no current candidate satisfies the required scope shape");
+}
+
+const CD_CANDIDATES = [...new Set(
+  DEFAULT_ROWS.flatMap((row) => String(row.community_district || "").split(",").map((s) => s.trim()).filter(Boolean)),
+)];
+const BORO_CANDIDATES = [...new Set(DEFAULT_ROWS.map((row) => row.borough).filter(Boolean))];
+
+/** A community district whose only current result has no published location. */
+const UNMAPPED_ONLY_SCOPE = pickScopeByRule(
+  CD_CANDIDATES,
+  (cd) => landRoute({ status: "all", stage: "any", cd }),
+  (receipt) => receipt.counts.total === 1 && receipt.counts.unmapped === 1,
+);
+/** A community district whose current results are a genuine mapped/unmapped mix. */
+const MIXED_CD = pickScopeByRule(
+  CD_CANDIDATES,
+  (cd) => landRoute({ status: "all", stage: "any", cd }),
+  (receipt) => receipt.counts.mapped > 0 && receipt.counts.unmapped > 0,
+).candidate;
+/** A borough whose current result set is small but plural, for the limit boundary below. */
+const PLURAL_BORO = pickScopeByRule(
+  BORO_CANDIDATES,
+  (boro) => landRoute({ status: "all", stage: "any", boro }),
+  (receipt) => receipt.canonical_ids.length > 1,
+).candidate;
 
 /** The one assertion every fixture makes. Named so a failure says which fixture broke it. */
 function assertParity(label, receipt) {
@@ -585,7 +627,7 @@ test("A3 a filter change clears an out-of-scope selection without changing the n
 
 /* ---------------------------------------- A4: the populations that hide in count-only tests --- */
 
-test("A4 the default scope keeps the 40/33/7 arithmetic", () => {
+test(`A4 the default scope keeps the ${BASELINE.total}/${BASELINE.mapped}/${BASELINE.unmapped} arithmetic`, () => {
   const { receipt } = runRoute(landRoute({ status: "all", stage: "any" }));
   assertParity("default", receipt);
   assert.equal(receipt.counts.total, BASELINE.total);
@@ -596,8 +638,7 @@ test("A4 the default scope keeps the 40/33/7 arithmetic", () => {
 });
 
 test("A4 a scope whose only result is mapped", () => {
-  // "Bud Place" replaces "Westshore" (the prior keyword tied to MAPPED_SPECIMEN).
-  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", q: "Bud Place" }));
+  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", q: MAPPED_SPECIMEN_KEYWORD }));
   assertParity("mapped only", receipt);
   assert.deepEqual(receipt.canonical_ids, [MAPPED_SPECIMEN]);
   assert.deepEqual(receipt.marker_ids, [MAPPED_SPECIMEN]);
@@ -606,14 +647,13 @@ test("A4 a scope whose only result is mapped", () => {
 });
 
 test("A4 a scope whose only result has no published location", () => {
-  // cd=Q07 was the prior single-unmapped-result scope; a refresh moved
-  // MAPPED_SPECIMEN (2023Q0351) into Q07 too, so M06 (sole member 2025M0399,
-  // unmapped) replaces it.
-  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", cd: "M06" }));
+  const { candidate: cd, receipt: picked } = UNMAPPED_ONLY_SCOPE;
+  const onlyId = picked.canonical_ids[0];
+  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", cd }));
   assertParity("unmapped only", receipt);
-  assert.deepEqual(receipt.canonical_ids, ["2025M0399"]);
+  assert.deepEqual(receipt.canonical_ids, [onlyId]);
   assert.deepEqual(receipt.marker_ids, []);
-  assert.deepEqual(receipt.unmapped_ids, ["2025M0399"]);
+  assert.deepEqual(receipt.unmapped_ids, [onlyId]);
   assert.deepEqual(receipt.counts, { total: 1, mapped: 0, unmapped: 1 });
   // The project is still a result. A map with no markers has not emptied the search.
   assert.equal(receipt.list_ids.length, 1);
@@ -644,9 +684,7 @@ test("A4 a zero-result scope is empty on both sides and invents nothing", () => 
 });
 
 test("A4 a mixed scope partitions rather than choosing a side", () => {
-  // M05's two current projects both resolved mapped after this refresh; K01
-  // (one mapped, one unmapped) replaces it as the mixed-scope specimen.
-  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", cd: "K01" }));
+  const { receipt } = runRoute(landRoute({ status: "all", stage: "any", cd: MIXED_CD }));
   assertParity("mixed", receipt);
   assert.equal(receipt.counts.mapped > 0, true);
   assert.equal(receipt.counts.unmapped > 0, true);
@@ -674,30 +712,40 @@ test("A4 the limit is the canonical query's, below, at, and above the population
   }
 
   // Same, on a small scope, so the boundary is not always the corpus size.
-  // Staten Island had no current Default Land rows after this refresh (its
-  // whole top-of-list population rotated out); Brooklyn replaces it as the
-  // small-but-plural scope.
-  const small = runRoute(landRoute({ status: "all", stage: "any", boro: "Brooklyn" })).receipt;
+  const small = runRoute(landRoute({ status: "all", stage: "any", boro: PLURAL_BORO })).receipt;
   const size = small.canonical_ids.length;
   assert.equal(size > 1, true);
   for (const limit of [size - 1, size, size + 1]) {
-    const { receipt } = runRoute(landRoute({ status: "all", stage: "any", boro: "Brooklyn" }), { limit });
+    const { receipt } = runRoute(landRoute({ status: "all", stage: "any", boro: PLURAL_BORO }), { limit });
     assertParity(`small limit ${limit}`, receipt);
     assert.deepEqual(receipt.canonical_ids, small.canonical_ids.slice(0, Math.min(limit, size)));
   }
 });
 
 test("A4 keyword case, whitespace, and punctuation normalize to one population", () => {
-  // "Bud Place Rezoning" replaces "Westshore LSGD" (same specimen swap as above).
-  const canonical = runRoute(landRoute({ status: "all", stage: "any", q: "Bud Place Rezoning" })).receipt;
+  const keyword = MAPPED_SPECIMEN_KEYWORD;
+  const firstSpace = keyword.indexOf(" ");
+  const tabNewlineSpelling = firstSpace === -1
+    ? `\t${keyword} `
+    : `\t${keyword.slice(0, firstSpace)}\n${keyword.slice(firstSpace + 1)} `;
+  const canonical = runRoute(landRoute({ status: "all", stage: "any", q: keyword })).receipt;
   assert.deepEqual(canonical.canonical_ids, [MAPPED_SPECIMEN]);
-  for (const spelling of ["bud place rezoning", "BUD PLACE REZONING", "  Bud   Place   Rezoning  ", "\tBud\nPlace Rezoning "]) {
+  for (const spelling of [
+    keyword.toLowerCase(),
+    keyword.toUpperCase(),
+    `  ${keyword.replace(/ /g, "   ")}  `,
+    tabNewlineSpelling,
+  ]) {
     const { receipt } = runRoute(landRoute({ status: "all", stage: "any", q: spelling }));
     assertParity(`keyword ${JSON.stringify(spelling)}`, receipt);
     assert.deepEqual(receipt.canonical_ids, canonical.canonical_ids, JSON.stringify(spelling));
   }
   // Punctuation is part of the text, not stripped: it narrows honestly rather than widening.
-  const punctuated = runRoute(landRoute({ status: "all", stage: "any", q: "Bud Place, Rezoning" })).receipt;
+  const lastSpace = keyword.lastIndexOf(" ");
+  const punctuatedSpelling = lastSpace === -1
+    ? `${keyword},`
+    : `${keyword.slice(0, lastSpace)},${keyword.slice(lastSpace)}`;
+  const punctuated = runRoute(landRoute({ status: "all", stage: "any", q: punctuatedSpelling })).receipt;
   assertParity("keyword punctuated", punctuated);
   assert.deepEqual(punctuated.canonical_ids, []);
 });

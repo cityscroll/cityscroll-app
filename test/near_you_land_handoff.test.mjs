@@ -41,26 +41,9 @@ import {
 import { filterLandSnapshot } from "../site/resident_snapshot_queries.mjs";
 import { migrateLegacyUrl } from "../site/route_migration.mjs";
 import { normalizeGeographyKey, scopeWithGeographies } from "../site/scope_v0.mjs";
+import { landRowMatchesFamily } from "../site/land_status_facets.mjs";
 
 const ROOT = process.cwd();
-
-// Specimens re-pinned after a refresh rotated the prior ones out of the live
-// catalog (fdny was 2026R0127; dewitt/mn0401/mn0402 were 2023M0213/MN0401/
-// MN0402; see similar notes in worker/test/land_nta_watch_parity.test.mjs).
-// fdny/si0105 now point at a Staten Island NTA whose sole live member is a
-// real ULURP, acquisition-family project (2023R0199); dewitt/mn0401/mn0402 now point at a
-// Brooklyn project ("Westshore Rezoning LSGD") that spans two NTAs, since no
-// live Manhattan project currently spans two NTAs — the "mn" key names are
-// kept for minimal diff and no longer mean Manhattan specifically.
-const ANCHORS = Object.freeze({
-  fdny: "2023R0199",
-  dewitt: "2024K0444",
-  noBbl: "2025M0252",
-  citywide: "2022Y0395",
-  si0105: "geography:nta2020:SI0305",
-  mn0401: "geography:nta2020:BK1301",
-  mn0402: "geography:nta2020:BK1391",
-});
 
 function readJson(relative) {
   return JSON.parse(readFileSync(join(ROOT, relative), "utf8"));
@@ -80,6 +63,107 @@ function scopeFor(...geoKeys) {
   return scopeFromNearYouUrl(`/near-you/?${params}`);
 }
 
+// Specimens are selected by rule against the live catalog + place membership
+// instead of a fixed project id / NTA pair, so a refresh that retires the
+// previous specimen cannot re-break this file (it previously pinned fdny as
+// 2026R0127 under geography:nta2020:SI0105, then 2023R0199 under SI0305;
+// dewitt/mn0401/mn0402 as 2023M0213/MN0401/MN0402, then 2024K0444/BK1301/
+// BK1391 — each re-pin a bare literal that rotates again on the next
+// refresh; see similar notes in worker/test/land_nta_watch_parity.test.mjs).
+function findSingleMemberNtaSpecimen(rows, membership) {
+  const ntaToProjects = new Map();
+  for (const row of rows) {
+    const places = membership.by_project?.[row.project_id]?.layers?.nta2020?.places || [];
+    for (const nta of places) {
+      const key = `geography:nta2020:${nta}`;
+      if (!ntaToProjects.has(key)) ntaToProjects.set(key, new Set());
+      ntaToProjects.get(key).add(row.project_id);
+    }
+  }
+  const sortedNtaKeys = [...ntaToProjects.keys()].sort();
+  for (const ntaKey of sortedNtaKeys) {
+    const ids = nearYouLandPreLimitIds({
+      scope: scopeFor(ntaKey),
+      catalogRows: rows,
+      placeMembership: membership,
+    });
+    if (ids.length !== 1) continue;
+    const projectId = ids[0];
+    const row = rows.find((candidate) => candidate.project_id === projectId);
+    // A4 also exercises this specimen under an explicit family=acquisition
+    // facet, so the singleton must itself be acquisition-family.
+    if (!row || !landRowMatchesFamily(row, "acquisition")) continue;
+    return { ntaKey, projectId };
+  }
+  throw new Error("no live NTA currently has exactly one eligible, acquisition-family Land project");
+}
+
+function findDualMemberNtaSpecimen(rows, membership, excludeProjectId) {
+  const sortedRows = [...rows].sort((a, b) =>
+    (a.project_id < b.project_id ? -1 : a.project_id > b.project_id ? 1 : 0));
+  for (const row of sortedRows) {
+    const projectId = row.project_id;
+    if (projectId === excludeProjectId) continue;
+    const places = membership.by_project?.[projectId]?.layers?.nta2020?.places || [];
+    if (places.length !== 2) continue;
+    const [ntaA, ntaB] = places.map((place) => `geography:nta2020:${place}`).sort();
+    const idsA = nearYouLandPreLimitIds({ scope: scopeFor(ntaA), catalogRows: rows, placeMembership: membership });
+    const idsB = nearYouLandPreLimitIds({ scope: scopeFor(ntaB), catalogRows: rows, placeMembership: membership });
+    const idsBoth = nearYouLandPreLimitIds({
+      scope: scopeFor(ntaA, ntaB),
+      catalogRows: rows,
+      placeMembership: membership,
+    });
+    const once = (ids) => ids.filter((id) => id === projectId).length === 1;
+    if (once(idsA) && once(idsB) && once(idsBoth)) {
+      return { projectId, mn0401: ntaA, mn0402: ntaB };
+    }
+  }
+  throw new Error("no live project currently spans exactly two NTAs with a single eligible membership in each");
+}
+
+// noBbl/citywide only need to be real projects outside the single-member
+// NTA's scope (neither test cares why); pick deterministically from the
+// live catalog instead of two more fixed ids that can rotate out.
+function findOutOfScopeProjectIds(rows, membership, ntaKey, exclude, count) {
+  const inScope = new Set(
+    nearYouLandPreLimitIds({ scope: scopeFor(ntaKey), catalogRows: rows, placeMembership: membership }),
+  );
+  const excludeSet = new Set(exclude);
+  const picked = [];
+  for (const projectId of [...rows].map((row) => row.project_id).sort()) {
+    if (inScope.has(projectId) || excludeSet.has(projectId)) continue;
+    picked.push(projectId);
+    if (picked.length === count) return picked;
+  }
+  throw new Error("not enough live out-of-scope projects found for noBbl/citywide specimens");
+}
+
+const { membership: anchorMembership, catalog: anchorCatalog } = loadShared();
+const singleMemberSpecimen = findSingleMemberNtaSpecimen(anchorCatalog.projects, anchorMembership);
+const dualMemberSpecimen = findDualMemberNtaSpecimen(
+  anchorCatalog.projects,
+  anchorMembership,
+  singleMemberSpecimen.projectId,
+);
+const [outOfScopeId1, outOfScopeId2] = findOutOfScopeProjectIds(
+  anchorCatalog.projects,
+  anchorMembership,
+  singleMemberSpecimen.ntaKey,
+  [singleMemberSpecimen.projectId, dualMemberSpecimen.projectId],
+  2,
+);
+
+const ANCHORS = Object.freeze({
+  fdny: singleMemberSpecimen.projectId,
+  dewitt: dualMemberSpecimen.projectId,
+  noBbl: outOfScopeId1,
+  citywide: outOfScopeId2,
+  si0105: singleMemberSpecimen.ntaKey,
+  mn0401: dualMemberSpecimen.mn0401,
+  mn0402: dualMemberSpecimen.mn0402,
+});
+
 function decodeGeoParams(href) {
   const url = new URL(href, "https://cityscroll.org");
   return url.searchParams.getAll("geo").map((value) => {
@@ -92,7 +176,7 @@ function decodeGeoParams(href) {
 }
 
 describe("near_you_land_handoff", () => {
-  it("A1: SI0305 opens Land with 2023R0199 eligible; either multi-NTA project NTA keeps 2024K0444 once", () => {
+  it("A1: a single-member NTA opens Land with its sole project eligible; either multi-NTA project NTA keeps its project once", () => {
     const { membership, catalog } = loadShared();
     const rows = catalog.projects;
 
@@ -130,7 +214,7 @@ describe("near_you_land_handoff", () => {
     });
     assert.equal(bothIds.filter((id) => id === ANCHORS.dewitt).length, 1);
 
-    // Converse control: a geography-less handoff must not claim the SI0105 singleton.
+    // Converse control: a geography-less handoff must not claim the single-member-NTA singleton.
     const citywideIds = nearYouLandPreLimitIds({
       scope: scopeFromNearYouUrl("/near-you/?v=0&lens=land"),
       catalogRows: rows,
@@ -307,15 +391,21 @@ describe("near_you_land_handoff", () => {
     assert.deepEqual(decodeGeoParams(view.browseHref), [ANCHORS.si0105]);
 
     const fdny = (view.results?.records || []).find((row) => row.id === ANCHORS.fdny);
-    assert.ok(fdny, `SI0305 land results must include ${ANCHORS.fdny}`);
+    assert.ok(fdny, `${ANCHORS.si0105} land results must include ${ANCHORS.fdny}`);
     assert.equal(fdny.route, nearYouLandRecordHref(ANCHORS.fdny, { scope: landScope }));
-    assert.match(fdny.route, new RegExp(`geo=geography%3Anta2020%3ASI0305|#land/${ANCHORS.fdny}`));
+    assert.match(
+      fdny.route,
+      new RegExp(`geo=${encodeURIComponent(ANCHORS.si0105).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}|#land/${ANCHORS.fdny}`),
+    );
     assert.deepEqual(decodeGeoParams(fdny.route), [ANCHORS.si0105]);
     assert.equal(affordanceActionRole({ href: fdny.route }), AFFORDANCE_ACTION_ROLES.navigate);
     assert.equal(affordanceActionRole({ href: view.browseHref }), AFFORDANCE_ACTION_ROLES.navigate);
 
     const body = renderNearYouBody(view);
-    assert.match(body, /href="\/browse\/zoning\/\?[^"]*geo=geography%3Anta2020%3ASI0305/);
+    assert.match(
+      body,
+      new RegExp(`href="/browse/zoning/\\?[^"]*geo=${encodeURIComponent(ANCHORS.si0105).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`),
+    );
     const deferred = renderNearYouDeferredBody(view);
     // Inspect remains a button; Land results and full-record destinations are real anchors.
     assert.match(deferred, /<button[^>]*class="[^"]*near-record-inspect/);

@@ -60,14 +60,6 @@ function t(key, values = {}) {
 }
 
 const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40 });
-// 2025K0305 and 2025M0252 were the prior specimens until a refresh rotated
-// them out of the 40-row Default Land snapshot (same replacements used
-// elsewhere this session, e.g. LAND_PROJECT_MAP_POINT_SPECIMENS in
-// site/land_project_map_points.mjs).
-/** A 24-lot rezoning: on the map, and emphatically not at an address. */
-const ANCHOR_SPECIMEN = "2023Q0351";
-/** A project with no published point at all. Reachable through the List, never through a marker. */
-const UNMAPPED_SPECIMEN = "2026X0180";
 /** A point the projection knows and no filtered row claims. */
 const POINT_ONLY_ID = "2099Z9999";
 
@@ -88,6 +80,29 @@ const modelFor = (selectedProjectId, overrides = {}) => buildLandMapModel({
   selectedProjectId,
   filters: { ...DEFAULT_FILTER, ...overrides },
 });
+
+// A refresh rotates the 40-row Default Land snapshot and the point
+// projection independently, so ANCHOR_SPECIMEN/UNMAPPED_SPECIMEN/the
+// excluding borough below are picked by rule against today's model rather
+// than pinned to fixed ids and a fixed lot count.
+const DEFAULT_MODEL = modelFor(null);
+/** A currently-mapped project demonstrating the multi_bbl_anchor placement method. */
+const ANCHOR_SPECIMEN = [...landMapMarkerLayer(DEFAULT_MODEL, { t })]
+  .filter((marker) => marker.method === "multi_bbl_anchor")
+  .map((marker) => marker.projectId)
+  .sort()[0];
+const ANCHOR_SPECIMEN_BBL_COUNT = landMapMarkerLayer(DEFAULT_MODEL, { t })
+  .find((marker) => marker.projectId === ANCHOR_SPECIMEN).bblCount;
+/** A project with no published point at all. Reachable through the List, never through a marker. */
+const UNMAPPED_SPECIMEN = [...DEFAULT_MODEL.unmapped].map((item) => item.projectId).sort()[0];
+/** A borough the anchor specimen's own row is not in. */
+const ANCHOR_SPECIMEN_BOROUGH = rowsFor().find((row) => row.project_id === ANCHOR_SPECIMEN).borough;
+const EXCLUDING_BOROUGH = [...new Set(rowsFor().map((row) => row.borough))]
+  .filter((borough) => borough !== ANCHOR_SPECIMEN_BOROUGH)
+  .sort()[0];
+assert.ok(ANCHOR_SPECIMEN, "no current default-model marker uses multi_bbl_anchor");
+assert.ok(UNMAPPED_SPECIMEN, "no current default-model row is unmapped");
+assert.ok(EXCLUDING_BOROUGH, "no current borough excludes the anchor specimen");
 
 const panelFor = (selectedProjectId, overrides = {}) =>
   landMapPanelHTML(modelFor(selectedProjectId, overrides), { t, sourceVintage: points.schema });
@@ -154,15 +169,16 @@ test("the selected detail action is the canonical List route and nothing else", 
 });
 
 test("a filtered-out project cannot be selected, and is never resurrected", () => {
-  // Brooklyn holds no Queens specimen (ANCHOR_SPECIMEN, 2023Q0351, is Queens).
-  // The id is remembered by the caller; the model refuses.
-  const narrowed = modelFor(ANCHOR_SPECIMEN, { borough: "Brooklyn" });
+  // EXCLUDING_BOROUGH holds no row for ANCHOR_SPECIMEN, picked by rule
+  // against ANCHOR_SPECIMEN's own current borough. The id is remembered by
+  // the caller; the model refuses.
+  const narrowed = modelFor(ANCHOR_SPECIMEN, { borough: EXCLUDING_BOROUGH });
   assert.equal(narrowed.selectedProjectId, null, "a filtered-out project stayed selected");
   assert.equal(narrowed.selectedMarker, null);
   assert.equal(narrowed.markers.filter((marker) => marker.selected).length, 0);
   assert.equal(landMapSelectionHTML(narrowed, { t, sourceVintage: points.schema }), "");
   // And the refusal costs the population nothing.
-  const unselected = modelFor(null, { borough: "Brooklyn" });
+  const unselected = modelFor(null, { borough: EXCLUDING_BOROUGH });
   assert.deepEqual(narrowed.counts, unselected.counts);
   assert.ok(narrowed.counts.total > 0, "the borough filter emptied the result set");
 });
@@ -200,7 +216,10 @@ test("the summary keeps method, precision and source vintage, and calls an ancho
   assert.ok(html.includes('data-land-map-precision="anchor"'));
   assert.ok(html.includes(`data-land-map-source-vintage="${points.schema}"`),
     "the selection dropped the projection vintage it was placed from");
-  assert.ok(html.includes(t("land_map_method_multi_bbl_anchor", { n: 24 })), "the 24-lot anchor lost its count");
+  assert.ok(
+    html.includes(t("land_map_method_multi_bbl_anchor", { n: ANCHOR_SPECIMEN_BBL_COUNT })),
+    "the anchor lost its lot count",
+  );
   assert.ok(html.includes(t("land_map_precision_anchor")));
   assert.ok(/not an exact address/.test(html), "a multi-lot anchor did not disclaim exactness");
 

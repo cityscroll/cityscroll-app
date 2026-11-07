@@ -45,21 +45,72 @@ const receiptEdges = RECEIPT.materialized_edges;
 const receiptMatterIds = new Set(receiptEdges.map((edge) => edge.council_depth.matter.matter_id));
 const receiptProjectIds = new Set(receiptEdges.map((edge) => edge.project_id));
 
+const TITLE_STOPWORDS = new Set([
+  "avenue", "ave", "street", "st", "rezoning", "zoning", "landmarks", "the", "of", "and",
+  "boulevard", "road", "place", "amendment", "designation", "open", "space", "brooklyn",
+  "queens", "bronx", "manhattan", "staten", "island", "park", "site", "selection",
+  "acquisition", "north", "south", "east", "west", "walk",
+]);
+
+function significantWords(text) {
+  return (text || "").toLowerCase().match(/[a-z]{4,}/g)?.filter((word) => !TITLE_STOPWORDS.has(word)) || [];
+}
+
+/**
+ * The first (by project id, then matter id) published matter whose own title
+ * shares a significant word with some joined project's published name, while
+ * that matter is not among that project's own matter_ids — a genuine
+ * resembling-title negative control rather than a chosen one.
+ */
+function findResemblingTitleCase() {
+  const candidates = [];
+  for (const [projectId, project] of Object.entries(LOOKUP.projects)) {
+    const projectWords = new Set(significantWords(project.project_name));
+    if (!projectWords.size) continue;
+    for (const [matterId, matter] of Object.entries(MATTER_LOOKUP.matters)) {
+      if (project.matter_ids.includes(matterId)) continue;
+      if (significantWords(matter.title).some((word) => projectWords.has(word))) {
+        candidates.push({ projectId, matterId });
+      }
+    }
+  }
+  candidates.sort((a, b) => a.projectId.localeCompare(b.projectId) || a.matterId.localeCompare(b.matterId));
+  if (!candidates.length) {
+    throw new Error("no resembling-title negative-control pair found in the live catalog; pin one by hand");
+  }
+  return candidates[0];
+}
+
 // The three source-backed cases the published connection is expected to carry,
-// and the two that must stay unjoined. Each is named by its own publisher
-// identifiers so a failure says which record moved. Monitor Point (2024K0358),
-// Richmond Terrace (2024R0300), Walk to Park (2025Q0316), and the original
-// no-application-number project (2026K0443) have all since left the live
-// catalog through ordinary refresh churn; their replacements below are
-// re-picked by the same shape (a multi-matter project, a solo-matter project,
-// a project with no retained application number) rather than hand-chosen,
-// and are expected to need re-picking again on a future refresh.
-const MONITOR_POINT = "2020K0276";
-const RICHMOND_TERRACE = "2022K0430";
-const WALK_TO_PARK = "2026R0319";
-const RESEMBLING_TITLE_MATTER = "78875";
-const NO_APPLICATION_NUMBER_MATTER = "79062";
-const NO_APPLICATION_NUMBER_PROJECT = "2019K0217";
+// and the two that must stay unjoined — each picked by rule against the
+// currently live, committed data rather than a fixed id, since ordinary
+// refresh churn keeps retiring whichever specific project or matter last
+// demonstrated a given shape (a multi-matter project, a solo-matter project,
+// a project with no retained application number, a matter whose own title
+// resembles a joined project's name but is not that project's own matter).
+const JOINED_PROJECTS_BY_MATTER_COUNT = Object.entries(LOOKUP.projects)
+  .map(([projectId, project]) => ({ projectId, matterCount: project.matter_ids.length }))
+  .sort((a, b) => a.projectId.localeCompare(b.projectId));
+const MULTI_MATTER_PROJECTS = JOINED_PROJECTS_BY_MATTER_COUNT
+  .filter((row) => row.matterCount >= 2)
+  .map((row) => row.projectId);
+const SOLO_MATTER_PROJECTS = JOINED_PROJECTS_BY_MATTER_COUNT
+  .filter((row) => row.matterCount === 1)
+  .map((row) => row.projectId);
+const [MONITOR_POINT, RICHMOND_TERRACE] = MULTI_MATTER_PROJECTS;
+const [WALK_TO_PARK] = SOLO_MATTER_PROJECTS;
+const NO_APPLICATION_NUMBER_PROJECT = ZAP.rows
+  .filter((row) => row.ulurp_numbers === null && !LOOKUP.projects[row.project_id])
+  .map((row) => row.project_id)
+  .sort()[0];
+
+const ALL_JOINED_MATTER_IDS = new Set(Object.values(LOOKUP.projects).flatMap((project) => project.matter_ids));
+const RESEMBLING_TITLE_CASE = findResemblingTitleCase();
+const RESEMBLING_TITLE_PROJECT = RESEMBLING_TITLE_CASE.projectId;
+const RESEMBLING_TITLE_MATTER = RESEMBLING_TITLE_CASE.matterId;
+const NO_APPLICATION_NUMBER_MATTER = Object.keys(MATTER_LOOKUP.matters)
+  .filter((matterId) => !ALL_JOINED_MATTER_IDS.has(matterId) && matterId !== RESEMBLING_TITLE_MATTER)
+  .sort()[0];
 
 function matterIdsFor(projectId) {
   return councilLandMatterProjectItems(projectId).map((item) => item.ref.replace(/^matter:/, ""));
@@ -151,13 +202,18 @@ test("every published link is reciprocal in both directions", () => {
 });
 
 test("a resembling title never joins, and an absent application number never joins", () => {
-  // This matter's title names the same development as the three joined ones,
-  // but its application number is not in that project's retained list.
+  // This matter's title shares a significant word with RESEMBLING_TITLE_PROJECT's
+  // published name, but its application number is not in that project's
+  // retained list.
   const resembling = MATTER_LOOKUP.matters[RESEMBLING_TITLE_MATTER];
   assert.ok(resembling, "the negative control must still be a published matter");
-  assert.match(resembling.title, /Monitor Point/);
+  const resemblingProjectName = LOOKUP.projects[RESEMBLING_TITLE_PROJECT].project_name;
+  assert.ok(
+    significantWords(resembling.title).some((word) => significantWords(resemblingProjectName).includes(word)),
+    `${resembling.title} must still read like ${resemblingProjectName}`,
+  );
   assert.equal(councilLandMatterContext(RESEMBLING_TITLE_MATTER), null);
-  assert.ok(!matterIdsFor(MONITOR_POINT).includes(RESEMBLING_TITLE_MATTER));
+  assert.ok(!matterIdsFor(RESEMBLING_TITLE_PROJECT).includes(RESEMBLING_TITLE_MATTER));
 
   // The project side of the same rule: a project whose source carries no
   // application number gets no matter, however closely the names read.
@@ -223,9 +279,10 @@ test("the project group publishes the matters as a typed, non-deciding connectio
 });
 
 test("a project the bridge did not join renders no connection furniture", () => {
+  const noApplicationNumberProjectName = ZAP.rows.find((row) => row.project_id === NO_APPLICATION_NUMBER_PROJECT).project_name;
   const evidence = buildProjectConnectionEvidence({
     projectId: NO_APPLICATION_NUMBER_PROJECT,
-    projectRows: [{ project_id: NO_APPLICATION_NUMBER_PROJECT, project_name: "2525 65th Street Rezoning" }],
+    projectRows: [{ project_id: NO_APPLICATION_NUMBER_PROJECT, project_name: noApplicationNumberProjectName }],
     councilMatterRows: councilLandMatterProjectItems(NO_APPLICATION_NUMBER_PROJECT),
   });
   const group = evidence.groups.find((entry) => entry.id === "council_matters");

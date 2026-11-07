@@ -51,21 +51,64 @@ import { landDetailPlaceMembershipForProject } from "../site/land_detail_place_l
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const REPO = join(ROOT, "..");
 const EVIDENCE_DIR = join(REPO, "docs", "evidence", "land-detail-boundary-layers");
-// fdny (2026R0127) and dewitt (2023M0213) were the prior specimens until a
-// refresh retired them entirely from the live ZAP catalog (westshore,
-// 2025K0305, stays valid: it only left the 40-row Default Land snapshot, not
-// the full admitted catalog this file's membership lookup reads). 2019M0059
-// (single-NTA MN0401/M04) and 2024K0444 (multi-NTA BK1301+BK1391, uncovered
-// BBL) replace them with the same membership shapes.
-const ANCHORS = Object.freeze({
-  fdny: "2019M0059",
-  westshore: "2025K0305",
-  dewitt: "2024K0444",
-});
-
 function readJson(relative) {
   return JSON.parse(readFileSync(join(REPO, relative), "utf8"));
 }
+
+// fdny and dewitt are selected by rule against the live committed
+// place-membership index (same shapes the prior fixed-id specimens
+// demonstrated: a single-lot/single-NTA/single-CD, fully covered project for
+// "fdny", and a two-NTA project with an uncovered display-anchor BBL for
+// "dewitt"), so a refresh that retires whichever project currently fills
+// each role cannot re-break this file the way it already broke the prior
+// fixed ids (2026R0127 and 2023M0213). westshore (2025K0305) stays a fixed
+// id: PR 2899 confirmed it remains valid in the full admitted catalog this
+// file's membership lookup reads -- it only left the smaller 40-row Default
+// Land snapshot other files read.
+function pickMembershipSpecimen(membershipIndex, excludeIds, predicate) {
+  const ids = Object.keys(membershipIndex.by_project || {})
+    .filter((id) => !excludeIds.has(id))
+    .sort();
+  for (const id of ids) {
+    if (predicate(membershipIndex.by_project[id])) return id;
+  }
+  throw new Error("no current land_place_membership.json entry satisfies the required specimen shape");
+}
+
+const WESTSHORE_SPECIMEN = "2025K0305";
+const SPECIMEN_MEMBERSHIP_INDEX = readJson("site/data/land_place_membership.json");
+const DEWITT_SPECIMEN = pickMembershipSpecimen(
+  SPECIMEN_MEMBERSHIP_INDEX,
+  new Set([WESTSHORE_SPECIMEN]),
+  (entry) => (entry.layers?.nta2020?.places || []).length === 2 && (entry.layers?.nta2020?.uncovered_bbls || 0) >= 1,
+);
+const FDNY_SPECIMEN = pickMembershipSpecimen(
+  SPECIMEN_MEMBERSHIP_INDEX,
+  new Set([WESTSHORE_SPECIMEN, DEWITT_SPECIMEN]),
+  (entry) => {
+    const nta = entry.layers?.nta2020;
+    const cd = entry.layers?.community_district;
+    return nta?.total_bbls === 1
+      && (nta.places || []).length === 1
+      && (cd?.places || []).length === 1
+      && nta.uncovered_bbls === 0;
+  },
+);
+const FDNY_NTA_ID = SPECIMEN_MEMBERSHIP_INDEX.by_project[FDNY_SPECIMEN].layers.nta2020.places[0];
+const FDNY_CD_ID = SPECIMEN_MEMBERSHIP_INDEX.by_project[FDNY_SPECIMEN].layers.community_district.places[0];
+// Rule-picked like FDNY_SPECIMEN above: derive the expected NTA/CD ids from
+// whichever project the rule actually picked, not from a snapshot of what it
+// happened to pick when this was last written, so a refresh that moves which
+// project satisfies pickMembershipSpecimen's predicate cannot silently
+// desync the specimen id from its expected shape.
+const DEWITT_NTA_IDS = SPECIMEN_MEMBERSHIP_INDEX.by_project[DEWITT_SPECIMEN].layers.nta2020.places;
+const DEWITT_CD_IDS = SPECIMEN_MEMBERSHIP_INDEX.by_project[DEWITT_SPECIMEN].layers.community_district.places;
+
+const ANCHORS = Object.freeze({
+  fdny: FDNY_SPECIMEN,
+  westshore: WESTSHORE_SPECIMEN,
+  dewitt: DEWITT_SPECIMEN,
+});
 
 function sha256Text(text) {
   return createHash("sha256").update(String(text)).digest("hex");
@@ -253,19 +296,22 @@ describe("land_detail_boundary_layers route state", () => {
 });
 
 describe("A1: FDNY and multi-area outlines from membership ids", () => {
-  it("FDNY requests SI0105 and R01 features without inventing membership from geometry", () => {
+  it(`FDNY-shaped specimen requests ${FDNY_NTA_ID} and ${FDNY_CD_ID} features without inventing membership from geometry`, () => {
     const shared = loadShared();
     const membership = membershipFor(ANCHORS.fdny, shared);
-    assert.deepEqual(landDetailBoundaryPlaceIds(membership, "nta"), ["MN0401"]);
-    assert.deepEqual(landDetailBoundaryPlaceIds(membership, "cd"), ["M04"]);
+    assert.deepEqual(landDetailBoundaryPlaceIds(membership, "nta"), [FDNY_NTA_ID]);
+    assert.deepEqual(landDetailBoundaryPlaceIds(membership, "cd"), [FDNY_CD_ID]);
 
-    const ntaFeatures = selectBoundaryFeatures(shared.nta, ["MN0401"], "nta2020");
-    const cdFeatures = selectBoundaryFeatures(shared.cd, ["M04"], "community_district");
+    const ntaFeatures = selectBoundaryFeatures(shared.nta, [FDNY_NTA_ID], "nta2020");
+    const cdFeatures = selectBoundaryFeatures(shared.cd, [FDNY_CD_ID], "community_district");
     assert.equal(ntaFeatures.length, 1);
-    assert.equal(ntaFeatures[0].id, "MN0401");
-    assert.match(ntaFeatures[0].properties.label, /Chelsea-Hudson Yards/);
+    assert.equal(ntaFeatures[0].id, FDNY_NTA_ID);
+    assert.equal(
+      ntaFeatures[0].properties.label,
+      shared.nta.features.find((feature) => feature.id === FDNY_NTA_ID)?.label,
+    );
     assert.equal(cdFeatures.length, 1);
-    assert.equal(cdFeatures[0].id, "M04");
+    assert.equal(cdFeatures[0].id, FDNY_CD_ID);
 
     // Positive control: asking for an id that is absent must fail this checker.
     const missing = selectBoundaryFeatures(shared.nta, ["ZZ9999"], "nta2020");
@@ -280,8 +326,8 @@ describe("A1: FDNY and multi-area outlines from membership ids", () => {
     assert.equal(view.schema, LAND_DETAIL_BOUNDARY_LAYERS_SCHEMA);
     const ntaLayer = view.layers.find((layer) => layer.token === "nta");
     const cdLayer = view.layers.find((layer) => layer.token === "cd");
-    assert.deepEqual(ntaLayer.features.map((feature) => feature.id), ["MN0401"]);
-    assert.deepEqual(cdLayer.features.map((feature) => feature.id), ["M04"]);
+    assert.deepEqual(ntaLayer.features.map((feature) => feature.id), [FDNY_NTA_ID]);
+    assert.deepEqual(cdLayer.features.map((feature) => feature.id), [FDNY_CD_ID]);
     assert.equal(ntaLayer.geometry_fidelity, "simplified");
   });
 
@@ -289,7 +335,7 @@ describe("A1: FDNY and multi-area outlines from membership ids", () => {
     const shared = loadShared();
     for (const [projectId, expectedNta, expectedCd] of [
       [ANCHORS.westshore, ["BK1301", "BK1391"], ["K11", "K13"]],
-      [ANCHORS.dewitt, ["BK1301", "BK1391"], ["K11", "K13"]],
+      [ANCHORS.dewitt, DEWITT_NTA_IDS, DEWITT_CD_IDS],
     ]) {
       const membership = membershipFor(projectId, shared);
       assert.deepEqual(landDetailBoundaryPlaceIds(membership, "nta"), expectedNta);
@@ -313,7 +359,7 @@ describe("A1: FDNY and multi-area outlines from membership ids", () => {
   });
 });
 
-describe("A2: toggles do not change query membership; uncovered anchors keep Manhattan outlines", () => {
+describe("A2: toggles do not change query membership; uncovered anchors keep their outlines", () => {
   it("enabling outlines leaves Land filter identity and result-count inputs untouched", () => {
     const base = "#land?boro=Manhattan&stage=public_review";
     const withNta = routeHashWithLandDetailBoundaries(base, ["nta"]);
@@ -328,16 +374,20 @@ describe("A2: toggles do not change query membership; uncovered anchors keep Man
     assert.notDeepEqual(changed.place.boroughs, scopeBefore.place.boroughs);
   });
 
-  it("Dewitt keeps BK1301/BK1391 even though the display anchor BBL is uncovered", () => {
+  it(`Dewitt-shaped specimen keeps ${DEWITT_NTA_IDS.join("/")} even though the display anchor BBL is uncovered`, () => {
     const shared = loadShared();
     const membership = membershipFor(ANCHORS.dewitt, shared);
     const nta = membership.layers.nta2020;
     assert.equal(nta.uncovered_bbls >= 1, true);
-    assert.deepEqual(nta.places, ["BK1301", "BK1391"]);
+    assert.deepEqual(nta.places, DEWITT_NTA_IDS);
     const features = selectBoundaryFeatures(shared.nta, nta.places, "nta2020");
-    assert.deepEqual(features.map((feature) => feature.id), ["BK1301", "BK1391"]);
-    assert.match(features[0].properties.label, /Gravesend/);
-    assert.match(features[1].properties.label, /Calvert Vaux Park/);
+    assert.deepEqual(features.map((feature) => feature.id), DEWITT_NTA_IDS);
+    for (const [index, ntaId] of DEWITT_NTA_IDS.entries()) {
+      assert.equal(
+        features[index].properties.label,
+        shared.nta.features.find((feature) => feature.id === ntaId)?.label,
+      );
+    }
   });
 });
 
@@ -507,9 +557,9 @@ describe("A3: lazy fetch ordering and failed-layer isolation", () => {
     ntaShouldFail = false;
     __resetLandDetailBoundaryCachesForTests();
     await controller.enable("nta");
-    assert.ok(mapLayers.some((layer) => layer.id === "MN0401"));
+    assert.ok(mapLayers.some((layer) => layer.id === FDNY_NTA_ID));
     assert.deepEqual(controller.getFailures(), []);
-    assert.ok(events.includes("back:MN0401"));
+    assert.ok(events.includes(`back:${FDNY_NTA_ID}`));
   });
 });
 

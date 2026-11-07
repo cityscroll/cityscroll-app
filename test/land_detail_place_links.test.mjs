@@ -14,6 +14,7 @@ import {
   affordanceActionRole,
 } from "../site/affordance_grammar.mjs";
 import { communityBoardIdFromCommunityDistrict } from "../site/community_board_geography.mjs";
+import { communityDistrictDisplayName } from "../site/community_board_links.mjs";
 import { normalizeLandUseActionType } from "../site/land_use_action_type.mjs";
 import {
   LAND_DETAIL_PLACE_LINKS_HEADING,
@@ -37,23 +38,98 @@ import { normalizeGeographyKey } from "../site/scope_v0.mjs";
 
 const ROOT = process.cwd();
 
-// fdny (2026R0127), dewitt (2023M0213), and noBblManhattan (2025M0252) were
-// the prior specimens until a refresh retired them from the live ZAP
-// catalog (westshore, 2025K0305, stays valid: it only left the 40-row
-// Default Land snapshot, not the full admitted catalog this file reads).
-// 2019M0059 (single-NTA MN0401/M04), 2024K0444 (multi-NTA BK1301+BK1391,
-// partial coverage), and 2025M0399 (Manhattan, no retained BBL) replace
-// them with the same membership shapes.
-const ANCHORS = Object.freeze({
-  fdny: "2019M0059",
-  westshore: "2025K0305",
-  dewitt: "2024K0444",
-  noBblManhattan: "2025M0399",
-  citywide: "2022Y0395",
-});
-
 function readJson(relative) {
   return JSON.parse(readFileSync(join(ROOT, relative), "utf8"));
+}
+
+// fdny, dewitt, noBblManhattan, and citywide are selected by rule against the
+// live committed place-membership index (same shapes the prior fixed-id
+// specimens demonstrated: a single-lot/single-NTA/single-CD catalog project
+// for "fdny", a two-NTA project with a partial-coverage display anchor for
+// "dewitt", a no-retained-BBL Manhattan project for "noBblManhattan", and a
+// no-retained-BBL Citywide project for "citywide"), so a refresh that
+// retires whichever project currently fills each role cannot re-break this
+// file the way it already broke the prior fixed ids (2026R0127, 2023M0213,
+// 2025M0252). westshore (2025K0305) stays a fixed id: PR 2899 confirmed it
+// remains valid in the full admitted catalog this file reads -- it only left
+// the smaller 40-row Default Land snapshot other files read.
+function pickMembershipSpecimen(membershipIndex, excludeIds, predicate) {
+  const ids = Object.keys(membershipIndex.by_project || {})
+    .filter((id) => !excludeIds.has(id))
+    .sort();
+  for (const id of ids) {
+    if (predicate(id, membershipIndex.by_project[id])) return id;
+  }
+  throw new Error("no current land_place_membership.json entry satisfies the required specimen shape");
+}
+
+const SPECIMEN_MEMBERSHIP_INDEX = readJson("site/data/land_place_membership.json");
+const SPECIMEN_CATALOG_IDS = new Set(
+  (readJson("site/data/land_project_catalog.json").projects || []).map((row) => row.project_id),
+);
+
+const WESTSHORE_SPECIMEN = "2025K0305";
+const DEWITT_SPECIMEN = pickMembershipSpecimen(
+  SPECIMEN_MEMBERSHIP_INDEX,
+  new Set([WESTSHORE_SPECIMEN]),
+  (id, entry) => (entry.layers?.nta2020?.places || []).length === 2 && (entry.layers?.nta2020?.uncovered_bbls || 0) >= 1,
+);
+const FDNY_SPECIMEN = pickMembershipSpecimen(
+  SPECIMEN_MEMBERSHIP_INDEX,
+  new Set([WESTSHORE_SPECIMEN, DEWITT_SPECIMEN]),
+  (id, entry) => {
+    const nta = entry.layers?.nta2020;
+    const cd = entry.layers?.community_district;
+    return nta?.total_bbls === 1
+      && (nta.places || []).length === 1
+      && (cd?.places || []).length === 1
+      && nta.uncovered_bbls === 0
+      && SPECIMEN_CATALOG_IDS.has(id);
+  },
+);
+const CITYWIDE_SPECIMEN = pickMembershipSpecimen(
+  SPECIMEN_MEMBERSHIP_INDEX,
+  new Set([WESTSHORE_SPECIMEN, DEWITT_SPECIMEN, FDNY_SPECIMEN]),
+  (id, entry) => entry.publisher_geography?.borough === "Citywide" && entry.bbl_association_state === "absent_from_index",
+);
+const NO_BBL_MANHATTAN_SPECIMEN = pickMembershipSpecimen(
+  SPECIMEN_MEMBERSHIP_INDEX,
+  new Set([WESTSHORE_SPECIMEN, DEWITT_SPECIMEN, FDNY_SPECIMEN, CITYWIDE_SPECIMEN]),
+  (id, entry) => entry.publisher_geography?.borough === "Manhattan" && entry.bbl_association_state === "absent_from_index",
+);
+
+const ANCHORS = Object.freeze({
+  fdny: FDNY_SPECIMEN,
+  westshore: WESTSHORE_SPECIMEN,
+  dewitt: DEWITT_SPECIMEN,
+  noBblManhattan: NO_BBL_MANHATTAN_SPECIMEN,
+  citywide: CITYWIDE_SPECIMEN,
+});
+
+const FDNY_MEMBERSHIP = SPECIMEN_MEMBERSHIP_INDEX.by_project[FDNY_SPECIMEN];
+const FDNY_NTA_ID = FDNY_MEMBERSHIP.layers.nta2020.places[0];
+const FDNY_CD_ID = FDNY_MEMBERSHIP.layers.community_district.places[0];
+
+const BOROUGH_BY_CD_PREFIX = Object.freeze({
+  X: "Bronx",
+  K: "Brooklyn",
+  M: "Manhattan",
+  Q: "Queens",
+  R: "Staten Island",
+});
+
+function expectedDistrictLabel(cdId) {
+  const borough = BOROUGH_BY_CD_PREFIX[cdId[0]];
+  return communityDistrictDisplayName({ borough, id: cdId });
+}
+
+function expectedBoardLabel(boardId) {
+  const match = /^([a-z]+(?:-[a-z]+)*)-cb-(\d{2})$/.exec(String(boardId || "").toLowerCase());
+  if (!match) return null;
+  const borough = Object.values(BOROUGH_BY_CD_PREFIX).find(
+    (name) => name.toLowerCase().replace(/\s+/g, "-") === match[1],
+  );
+  return borough ? `${borough} Community Board ${Number(match[2])}` : null;
 }
 
 function loadCatalogProject(projectId) {
@@ -102,43 +178,42 @@ function nativeAnchors(html) {
 }
 
 describe("land_detail_place_links", () => {
-  it("A1: FDNY-replacement names Chelsea-Hudson Yards, Manhattan board 4, and single-area identity", () => {
+  it(`A1: FDNY-shaped specimen names its real ${FDNY_NTA_ID} label, board, and single-area identity`, () => {
     const shared = loadShared();
     const record = loadCatalogProject(ANCHORS.fdny);
-    assert.ok(record, "catalog retains the fdny-replacement project");
+    assert.ok(record, "catalog retains the fdny-shaped project");
 
     const view = viewFor(ANCHORS.fdny, shared);
-    assert.ok(view, "fdny-replacement physical membership present");
+    assert.ok(view, "fdny-shaped physical membership present");
     assert.equal(view.schema, LAND_DETAIL_PLACE_LINKS_SCHEMA);
     assert.equal(view.heading, LAND_DETAIL_PLACE_LINKS_HEADING);
     assert.equal(view.project_path, landProjectPath(ANCHORS.fdny));
 
-    const nta = view.neighborhoods.find((item) => item.nta_id === "MN0401");
-    assert.ok(nta, "MN0401 membership retained");
-    assert.match(nta.label, /Chelsea-Hudson Yards/);
-    assert.equal(nta.subtype, "residential");
-    assert.equal(nta.kind_label, "Neighborhood");
-    assertRestoresNtaKey(nta.href, "MN0401");
+    const expectedNtaLabel = shared.labelIndex?.[FDNY_NTA_ID];
+    const expectedSubtype = shared.subtypeIndex?.[FDNY_NTA_ID];
+    const nta = view.neighborhoods.find((item) => item.nta_id === FDNY_NTA_ID);
+    assert.ok(nta, `${FDNY_NTA_ID} membership retained`);
+    assert.equal(nta.label, expectedNtaLabel);
+    assert.equal(nta.subtype, expectedSubtype);
+    assert.equal(nta.kind_label, ntaSubtypeKindLabel(expectedSubtype));
+    assertRestoresNtaKey(nta.href, FDNY_NTA_ID);
     assert.match(nta.href, /lens=land/);
 
-    const district = view.districts.find((item) => item.community_district_id === "M04");
-    assert.ok(district, "M04 lot membership retained");
-    assert.match(district.district_label, /Manhattan Community District 4/);
-    assert.equal(district.board_id, "manhattan-cb-04");
-    assert.equal(
-      district.board_id,
-      communityBoardIdFromCommunityDistrict("M04", shared.geography),
-    );
-    assert.equal(district.board_href, "/community-boards/manhattan-cb-04/");
-    assert.match(district.board_label, /Manhattan Community Board 4/);
+    const expectedBoardId = communityBoardIdFromCommunityDistrict(FDNY_CD_ID, shared.geography);
+    const district = view.districts.find((item) => item.community_district_id === FDNY_CD_ID);
+    assert.ok(district, `${FDNY_CD_ID} lot membership retained`);
+    assert.equal(district.district_label, expectedDistrictLabel(FDNY_CD_ID));
+    assert.equal(district.board_id, expectedBoardId);
+    assert.equal(district.board_href, `/community-boards/${expectedBoardId}/`);
+    assert.equal(district.board_label, expectedBoardLabel(expectedBoardId));
 
-    const mnMembers = shared.index?.by_geography?.nta2020?.MN0401 || [];
-    assert.ok(mnMembers.length >= 1, "MN0401 membership must stay populated");
-    assert.ok(mnMembers.includes(ANCHORS.fdny), "fdny-replacement anchor must remain inside MN0401 membership");
+    const mnMembers = shared.index?.by_geography?.nta2020?.[FDNY_NTA_ID] || [];
+    assert.ok(mnMembers.length >= 1, `${FDNY_NTA_ID} membership must stay populated`);
+    assert.ok(mnMembers.includes(ANCHORS.fdny), `fdny-shaped anchor must remain inside ${FDNY_NTA_ID} membership`);
 
     const html = renderLandDetailPlaceLinksSection(view);
-    assert.match(html, /Chelsea-Hudson Yards/);
-    assert.match(html, /Manhattan Community Board 4/);
+    assert.match(html, new RegExp(expectedNtaLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(html, new RegExp(expectedBoardLabel(expectedBoardId).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
     assert.ok(
       html.includes(`data-project-path="${view.project_path}"`),
       "place-links markup must carry the rendered project path",
@@ -227,7 +302,10 @@ describe("land_detail_place_links", () => {
     }
 
     const manhattan = landDetailPlaceMembershipForProject(shared.index, ANCHORS.noBblManhattan);
-    assert.equal(manhattan.publisher_geography.community_district, "M06");
+    // A real Manhattan community district, not a specific pinned number: the
+    // no-retained-BBL specimen is picked by rule and its exact district is
+    // free to move with the live population.
+    assert.match(manhattan.publisher_geography.community_district, /^M\d{2}$/);
     assert.equal(manhattan.publisher_geography.borough, "Manhattan");
 
     const citywide = landDetailPlaceMembershipForProject(shared.index, ANCHORS.citywide);
@@ -296,8 +374,8 @@ describe("land_detail_place_links", () => {
 
     // Publisher-versus-lot separation: publisher geography is retained on the
     // model but the physical section lists only lot-derived places.
-    assert.equal(view.publisher_geography.community_district, "M04");
-    assert.equal(view.publisher_geography.borough, "Manhattan");
+    assert.equal(view.publisher_geography.community_district, FDNY_MEMBERSHIP.publisher_geography.community_district);
+    assert.equal(view.publisher_geography.borough, FDNY_MEMBERSHIP.publisher_geography.borough);
     assert.match(html, /Publisher-reported districts stay in Where above/);
     assert.doesNotMatch(html, /data-land-record-place=/);
     // Resident HTML must not leak implementation schema tokens into disclosure.

@@ -35,6 +35,7 @@ from playwright.sync_api import Route, sync_playwright
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from a11y_gate import failing_violations  # noqa: E402
+from land_map_specimens import find_marker_by_method  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 MAP_ROUTE = "/browse/zoning/?view=map"
@@ -43,12 +44,21 @@ PROJECTION = "data/land_project_map_points.json"
 AXE = str(ROOT / "test" / "functional" / "assets" / "axe.min.js")
 
 # The same multi-lot anchor LM-06/LM-07 established: on the map, and emphatically not at an
-# address. The unmapped specimen is derived at runtime (see `find_unmapped_specimen`)
-# rather than pinned to one id: which rows the committed projection leaves unplaced shifts
-# as the projection's own source vintage advances, and this proof is about an unmapped
-# project reaching List through its complete textual index, not about which project that is.
-ANCHOR_SPECIMEN = "2022K0430"
+# address. Resolved at runtime (see `resolve_anchor_specimen`), same reasoning as the unmapped
+# specimen below: which project is a multi-lot anchor shifts as the projection's source
+# vintage advances, and this proof is about reaching a multi-lot anchor by real Tab order, not
+# about which project that is.
+ANCHOR_SPECIMEN = ""
 EXPECTED_TOTAL = 40
+
+
+def resolve_anchor_specimen(browser) -> None:
+    global ANCHOR_SPECIMEN
+    page = new_page(browser)
+    page.goto(f"{BASE}{MAP_ROUTE}", wait_until="domcontentloaded", timeout=45_000)
+    wait_for_map(page)
+    ANCHOR_SPECIMEN = find_marker_by_method(page, "multi_bbl_anchor")
+    page.close()
 
 # Bounded so a real regression (the marker dropping out of the tab order entirely) fails
 # loudly instead of hanging. Generous on purpose: the Land toolbar's export controls sit
@@ -374,6 +384,8 @@ def main() -> None:
         page = new_page(browser)
         page.goto(f"{BASE}{LIST_ROUTE}", wait_until="domcontentloaded", timeout=45_000)  # warm the route once
         page.close()
+
+        resolve_anchor_specimen(browser)
 
         page = new_page(browser)
         check_specimen_walkthrough_by_real_tab_order(page)
