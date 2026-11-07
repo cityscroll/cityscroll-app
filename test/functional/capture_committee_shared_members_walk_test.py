@@ -39,6 +39,20 @@ class ClickReached(Exception):
     """Raised by FakePage.click so a test can prove a click was attempted."""
 
 
+class FakeLocator:
+    """A locator that always reports nothing found.
+
+    open_row probes a target row's own visibility (to decide whether an
+    overflow section needs revealing first) before its real click; this fake
+    carries no virtual DOM, so it always reports count() == 0, which keeps
+    open_row on its original single-click path -- the same path these tests
+    were written against.
+    """
+
+    def count(self):
+        return 0
+
+
 class FakePage:
     def __init__(self, *, raise_on_click=False):
         self.raise_on_click = raise_on_click
@@ -48,6 +62,9 @@ class FakePage:
 
     def goto(self, url, wait_until=None):
         self.goto_calls.append((url, wait_until))
+
+    def locator(self, selector):
+        return FakeLocator()
 
     def click(self, selector):
         self.click_calls.append(selector)
