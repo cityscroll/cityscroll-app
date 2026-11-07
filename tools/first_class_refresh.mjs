@@ -31,6 +31,62 @@ export function productionFreshnessGate(artifact) {
   return PRODUCTION_FRESHNESS_GATES.includes(gate) ? gate : "block";
 }
 
+/**
+ * Evaluation clock for a committed artifact a scheduled refresh keeps current.
+ *
+ * Ambient (wall) runs keep the real production-staleness canary: if the wall
+ * age already exceeds the hard maximum, evaluate at wallNow so the surface is
+ * stale. Under a shifted evaluation clock, when the wall age is still inside
+ * the hard maximum, project refreshes at the declared cadence so time-travel
+ * does not treat a frozen commit as aged past a limit the schedule would have
+ * kept inside. Never loosens hard_maximum_age_hours and never restamps data.
+ *
+ * @param {{
+ *   vintage: string,
+ *   cadenceHours: number,
+ *   hardMaximumAgeHours: number,
+ *   wallNow: string|number|Date,
+ *   evaluationNow?: string|number|Date,
+ * }} params
+ * @returns {string} ISO evaluation timestamp for buildFirstClassFreshnessReport
+ */
+export function scheduledFreshnessEvaluationNow({
+  vintage,
+  cadenceHours,
+  hardMaximumAgeHours,
+  wallNow,
+  evaluationNow,
+} = {}) {
+  const vintageMs = Date.parse(String(vintage || ""));
+  const wallMs = wallNow instanceof Date ? wallNow.getTime() : Date.parse(String(wallNow || ""));
+  const evalSource = evaluationNow == null ? wallNow : evaluationNow;
+  const evalMs = evalSource instanceof Date ? evalSource.getTime() : Date.parse(String(evalSource || ""));
+  const cadenceMs = Number(cadenceHours) * 3_600_000;
+  const hardMs = Number(hardMaximumAgeHours) * 3_600_000;
+  if (!Number.isFinite(vintageMs) || !Number.isFinite(wallMs)) {
+    const fallback = validInstant(String(evalSource || wallNow || ""));
+    if (!fallback) {
+      throw new Error("scheduledFreshnessEvaluationNow requires parseable vintage and wallNow");
+    }
+    return fallback;
+  }
+  const ambientAgeMs = wallMs - vintageMs;
+  // Genuinely stale on the wall clock: keep the canary's real failure mode.
+  if (!(Number.isFinite(hardMs) && hardMs >= 0) || ambientAgeMs > hardMs) {
+    return new Date(wallMs).toISOString();
+  }
+  if (!Number.isFinite(evalMs) || Math.abs(evalMs - wallMs) < 1_000) {
+    return new Date(wallMs).toISOString();
+  }
+  // Time-travel with a still-current ambient vintage: project cadence refreshes.
+  if (!(cadenceMs > 0)) {
+    return new Date(wallMs).toISOString();
+  }
+  const elapsed = Math.max(0, evalMs - vintageMs);
+  const sinceProjectedRefresh = elapsed % cadenceMs;
+  return new Date(vintageMs + sinceProjectedRefresh).toISOString();
+}
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CONTRACTS_PATH = join(ROOT, "site/data/source_contracts.json");
 const OBSERVATIONS_PATH = join(ROOT, "site/data/source_health_observations.json");

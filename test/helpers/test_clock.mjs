@@ -4,6 +4,15 @@ export const TEST_CLOCK_ENV = "CITYSCROLL_TEST_TIME_SHIFT_DAYS";
 export const TEST_CLOCK_PIN_ENV = "CITYSCROLL_TEST_TIME_PIN";
 export const MILLISECONDS_PER_DAY = 86_400_000;
 
+/** Unshifted wall clock, even when CITYSCROLL_TEST_TIME_SHIFT_DAYS is installed. */
+export function wallClockISOString() {
+  return new NativeDate().toISOString();
+}
+
+export function wallClockNow() {
+  return NativeDate.now();
+}
+
 export function testClockISOString() {
   return new globalThis.Date().toISOString();
 }
