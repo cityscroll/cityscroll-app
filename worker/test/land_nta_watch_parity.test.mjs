@@ -47,26 +47,6 @@ const catalogRows = landProjectRowsFromPayload(catalog);
 // production; prime it once here so the direct transform calls see the same rows.
 await ensureLandProjectCatalogRows();
 
-// SI0201 and MN0502 are the current Staten Island / Manhattan NTA specimens.
-// SI0201's sole live ZAP member (2019R0267) resolves as ULURP; MN0502 has
-// several ULURP/ELURP members (e.g. 2020M0429) among a larger roll. Either
-// shape survives the default land-procedure facet ("review" admits
-// ULURP/ELURP only), which a Non-ULURP-only membership never does.
-// SI0105 was the prior Staten Island specimen until a routine refresh retired
-// its only member (2026R0127, ULURP) from the live population; the adjacent
-// single-member NTA (SI0302/2026R0319) was rejected as a replacement because
-// its only member is Non-ULURP and so never survives the default facet.
-// MN0401 was the prior Manhattan specimen; its membership was already
-// entirely Non-ULURP before this refresh (an unrelated, pre-existing gap this
-// file's SI0105 failure had been masking), so it never actually delivered
-// under the default facet either. These tests read committed site/data
-// directly rather than a frozen fixture, so the specimen NTAs are expected to
-// need re-pinning periodically.
-const NTA = Object.freeze({
-  SI0201: "geography:nta2020:SI0201",
-  MN0502: "geography:nta2020:MN0502",
-});
-
 function browseIds(route, { limit = catalogRows.length } = {}) {
   const state = landFilterStateFromRouteParams(route);
   const query = landSnapshotQueryFromState(state, {
@@ -88,8 +68,40 @@ function deliveryIds(filter) {
   return rows.map((row) => row.project_id || row.id).filter(Boolean);
 }
 
-test("A1 SI0201 and MN0502 browse, preview transform, and matching helper share pre-limit IDs", () => {
-  for (const [nta, key] of [["SI0201", NTA.SI0201], ["MN0502", NTA.MN0502]]) {
+// Staten Island / Manhattan NTA specimens, selected by rule instead of a
+// fixed id: the first NTA (sorted) under each borough prefix whose committed
+// membership survives the default land-procedure facet ("review" admits
+// ULURP/ELURP only) with at least one delivered id, so a refresh that
+// retires the current specimen's only ULURP/ELURP member (as one already
+// retired SI0105's 2026R0127, and a prior re-pin to SI0201/MN0502 also
+// needed) cannot re-break this file. These tests read committed site/data
+// directly rather than a frozen fixture, so the specimen NTAs are expected
+// to need re-pinning periodically.
+function findDefaultFacetNtaSpecimen(prefix, excludeNta = null) {
+  const byNta = membership?.by_geography?.nta2020 || {};
+  for (const nta of Object.keys(byNta).sort()) {
+    if (!nta.startsWith(prefix) || nta === excludeNta) continue;
+    const members = byNta[nta] || [];
+    if (!members.length) continue;
+    const key = `geography:nta2020:${nta}`;
+    const delivered = deliveryIds({ status: "all", stage: "any", geographies: [key] });
+    if (delivered.length >= 1 && delivered.every((id) => members.includes(id))) {
+      return nta;
+    }
+  }
+  throw new Error(`no ${prefix}-prefixed NTA currently delivers under the default land-procedure facet`);
+}
+
+const SI_SPECIMEN = findDefaultFacetNtaSpecimen("SI");
+const MN_SPECIMEN = findDefaultFacetNtaSpecimen("MN", SI_SPECIMEN);
+
+const NTA = Object.freeze({
+  SI0201: `geography:nta2020:${SI_SPECIMEN}`,
+  MN0502: `geography:nta2020:${MN_SPECIMEN}`,
+});
+
+test("A1 the Staten Island and Manhattan NTA specimens browse, preview transform, and matching helper share pre-limit IDs", () => {
+  for (const [nta, key] of [[SI_SPECIMEN, NTA.SI0201], [MN_SPECIMEN, NTA.MN0502]]) {
     const filter = { status: "all", stage: "any", geographies: [key] };
     const browse = browseIds(`#land?status=all&stage=any&geo=${encodeURIComponent(key)}`);
     const delivered = deliveryIds(filter);
@@ -126,7 +138,7 @@ test("A1 supported facets stay aligned across browse and delivery for SI0201", (
     `#land?status=all&stage=any&boro=Staten%20Island&geo=${encodeURIComponent(NTA.SI0201)}`,
   );
   const delivered = deliveryIds(filter);
-  const members = membership?.by_geography?.nta2020?.SI0201 || [];
+  const members = membership?.by_geography?.nta2020?.[SI_SPECIMEN] || [];
   assert.deepEqual(delivered, browse);
   assert.ok(members.length >= 1, "SI0201 membership must stay populated");
   assert.ok(delivered.length >= 1, "SI0201 faceted delivery must stay non-empty");
@@ -171,7 +183,7 @@ test("A3 missing current artifact skips instead of emitting a successful empty d
   assert.equal(landGeographyArtifactState(NEAR_YOU_FLOOR).status, "unavailable");
 
   // Converse control: a ready artifact still delivers the current SI0201 members.
-  const members = membership?.by_geography?.nta2020?.SI0201 || [];
+  const members = membership?.by_geography?.nta2020?.[SI_SPECIMEN] || [];
   assert.ok(members.length >= 1, "SI0201 membership must stay populated for the converse control");
   const rows = query.transformRows(activity);
   const delivered = rows.map((row) => row.project_id).filter(Boolean);
@@ -183,7 +195,7 @@ test("A3 missing current artifact skips instead of emitting a successful empty d
 
 test("A3 unavailable artifact does not clear previously seen membership as a geographic departure", async () => {
   // Ordering observation: inject the failure between compile and seen mutation.
-  const members = membership?.by_geography?.nta2020?.SI0201 || [];
+  const members = membership?.by_geography?.nta2020?.[SI_SPECIMEN] || [];
   assert.ok(members.length >= 1, "SI0201 membership must stay populated for the seen-set control");
   const retainedId = members[0];
   const seen = new Set([`land:${retainedId}`]);
@@ -316,8 +328,8 @@ test("transformLandGeographyWatchRows OR-unions multi-NTA geography keys", () =>
     { catalogRows, today: TODAY },
   );
   const ids = rows.map((row) => row.project_id).filter(Boolean);
-  const siMembers = membership?.by_geography?.nta2020?.SI0201 || [];
-  const mnMembers = membership?.by_geography?.nta2020?.MN0502 || [];
+  const siMembers = membership?.by_geography?.nta2020?.[SI_SPECIMEN] || [];
+  const mnMembers = membership?.by_geography?.nta2020?.[MN_SPECIMEN] || [];
   assert.ok(siMembers.length >= 1 && mnMembers.length >= 1);
   // OR-union: every delivered id belongs to at least one of the NTAs, and each
   // NTA contributes at least one id when membership is populated.

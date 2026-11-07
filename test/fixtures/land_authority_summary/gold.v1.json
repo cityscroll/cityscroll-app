@@ -172,7 +172,7 @@
             "rejected": [],
             "selection_method": "publisher_ulurp_non_with_matching_identifier",
             "profile_id": "ulurp_197c",
-            "profile_label": "Uniform Land Use Review Procedure (\u00a7 197-c)"
+            "profile_label": "Uniform Land Use Review Procedure (§ 197-c)"
           },
           "href": null
         }
@@ -222,7 +222,7 @@
             "procedure_id": "ulurp_197c",
             "boundary_vintage": "2026-05-26",
             "legal_basis": {
-              "citation": "NYC Charter \u00a7 196",
+              "citation": "NYC Charter § 196",
               "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
             },
             "explanation": "Queens Community Board 12 has a review role because this application includes land in community district Q12."
@@ -247,7 +247,7 @@
             "procedure_id": "ulurp_197c",
             "boundary_vintage": "2026-05-26",
             "legal_basis": {
-              "citation": "NYC Charter \u00a7 196",
+              "citation": "NYC Charter § 196",
               "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
             },
             "explanation": "The Queens Borough President has a review role because this application includes land in Queens."
@@ -268,7 +268,7 @@
             "ulurp_non"
           ],
           "legal_basis": {
-            "citation": "NYC Charter \u00a7 196",
+            "citation": "NYC Charter § 196",
             "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
           },
           "derivation_rules": {
@@ -307,7 +307,7 @@
           "agency:id:city-council"
         ],
         "current_role": "conditional_decision_maker",
-        "effect": "When \u00a7 197-d review applies, may approve, approve with modifications, or disapprove the CPC decision; otherwise this stage is not expected.",
+        "effect": "When § 197-d review applies, may approve, approve with modifications, or disapprove the CPC decision; otherwise this stage is not expected.",
         "source_basis": {
           "profile": {
             "procedure_id": "ulurp_197c",
@@ -484,7 +484,7 @@
             "rejected": [],
             "selection_method": "publisher_ulurp_non_with_matching_identifier",
             "profile_id": "ulurp_197c",
-            "profile_label": "Uniform Land Use Review Procedure (\u00a7 197-c)"
+            "profile_label": "Uniform Land Use Review Procedure (§ 197-c)"
           },
           "href": null
         }
@@ -534,7 +534,7 @@
             "procedure_id": "ulurp_197c",
             "boundary_vintage": "2026-05-26",
             "legal_basis": {
-              "citation": "NYC Charter \u00a7 196",
+              "citation": "NYC Charter § 196",
               "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
             },
             "explanation": "Manhattan Community Board 5 has a review role because this application includes land in community district M05."
@@ -559,7 +559,7 @@
             "procedure_id": "ulurp_197c",
             "boundary_vintage": "2026-05-26",
             "legal_basis": {
-              "citation": "NYC Charter \u00a7 196",
+              "citation": "NYC Charter § 196",
               "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
             },
             "explanation": "The Manhattan Borough President has a review role because this application includes land in Manhattan."
@@ -580,7 +580,7 @@
             "ulurp_non"
           ],
           "legal_basis": {
-            "citation": "NYC Charter \u00a7 196",
+            "citation": "NYC Charter § 196",
             "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
           },
           "derivation_rules": {
@@ -790,7 +790,7 @@
             "identifier_kind": "ulurp_application",
             "selection_method": "ulurp_type_letter_exact",
             "profile_id": "ulurp_197c",
-            "profile_label": "Uniform Land Use Review Procedure (\u00a7 197-c)"
+            "profile_label": "Uniform Land Use Review Procedure (§ 197-c)"
           },
           "href": null
         },
@@ -819,7 +819,7 @@
             "identifier_kind": "ulurp_application",
             "selection_method": "ulurp_type_letter_exact",
             "profile_id": "ulurp_197c",
-            "profile_label": "Uniform Land Use Review Procedure (\u00a7 197-c)"
+            "profile_label": "Uniform Land Use Review Procedure (§ 197-c)"
           },
           "href": null
         },
@@ -941,7 +941,7 @@
             "ulurp_non"
           ],
           "legal_basis": {
-            "citation": "NYC Charter \u00a7 196",
+            "citation": "NYC Charter § 196",
             "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
           },
           "derivation_rules": {
@@ -1291,7 +1291,7 @@
             "ulurp_non"
           ],
           "legal_basis": {
-            "citation": "NYC Charter \u00a7 196",
+            "citation": "NYC Charter § 196",
             "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
           },
           "derivation_rules": {
@@ -1373,6 +1373,1215 @@
         }
       },
       "row_note": "Frozen: 2026K0123 progressed from an unresolved procedure to mixed_procedure (ZM/ZR certified) during a refresh; this specimen pins the earlier unresolved-procedure shape the test demonstrates."
+    },
+    "2025K0305": {
+      "project_id": "2025K0305",
+      "project_name": "Westshore LSGD Mapping Actions",
+      "public_status": "Filed",
+      "project_status": "Active",
+      "approval_date": null,
+      "completed_date": null,
+      "ulurp_numbers": "250308MMK",
+      "borough": "Brooklyn",
+      "community_district": "K13,K11",
+      "cc_district": "47",
+      "actions": "MM",
+      "current_milestone": "MM - Review Filed Land Use Application",
+      "current_milestone_date": "2026-07-31T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "primary_applicant": "Watershore Views LLC",
+      "mih_flag": "false",
+      "app_filed_date": "2025-06-24T00:00:00.000",
+      "noticed_date": null,
+      "certified_referred": null,
+      "ceqr_number": null,
+      "ceqr_type": null,
+      "ceqr_leadagency": null,
+      "eas_eis": null,
+      "current_envmilestone": null,
+      "current_envmilestone_date": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      },
+      "ceqr_lead_agency": null,
+      "environmental_review_type": null,
+      "environmental_status": null,
+      "environmental_milestone": null,
+      "environmental_milestone_date": null,
+      "environmental_projection": {
+        "schema": "cityscroll.zap_environmental_projection.v1",
+        "source_dataset_id": "hgx4-8ukb",
+        "source_record_id": "2025K0305",
+        "as_of": "2026-11-06T15:11:20.121Z",
+        "cutoff": "2026-11-06T15:11:20.121Z",
+        "fields": {
+          "ceqr_number": {
+            "value": null,
+            "presence": "absent",
+            "source_field": "ceqr_number"
+          },
+          "ceqr_type": {
+            "value": null,
+            "presence": "absent",
+            "source_field": "ceqr_type"
+          },
+          "ceqr_lead_agency": {
+            "value": null,
+            "presence": "absent",
+            "source_field": "ceqr_leadagency"
+          },
+          "environmental_review_type": {
+            "value": null,
+            "presence": "absent",
+            "source_field": "eas_eis"
+          },
+          "environmental_status": {
+            "value": null,
+            "presence": "source_field_absent",
+            "source_field": null,
+            "gap": "zap_projects_hgx4-8ukb_has_no_environmental_status_column"
+          },
+          "environmental_milestone": {
+            "value": null,
+            "presence": "absent",
+            "source_field": "current_envmilestone"
+          },
+          "environmental_milestone_date": {
+            "value": null,
+            "presence": "absent",
+            "source_field": "current_envmilestone_date"
+          }
+        }
+      },
+      "land_actions": [
+        {
+          "application_id": "250308MMK",
+          "action_type": "MM",
+          "procedure_id": "ulurp_197c",
+          "status": "resolved",
+          "source_fields": [
+            "actions",
+            "ulurp_numbers",
+            "ulurp_non"
+          ],
+          "source_vintage": "2026-11-06T15:11:20.121Z",
+          "profile_version": "2026-08-27.v1",
+          "unresolved_reason": null,
+          "aliases": [],
+          "evidence": {
+            "source_system": "zap-projects-open-data",
+            "source_record_id": "zap-projects-open-data:2025K0305",
+            "source_vintage": "2026-11-06T15:11:20.121Z",
+            "action_source_field": "actions",
+            "action_token": "MM",
+            "identifier_source_field": "ulurp_numbers",
+            "identifier_raw": "250308MMK",
+            "identifier_type": null,
+            "identifier_kind": "ulurp_application",
+            "rejected": [],
+            "selection_method": "publisher_ulurp_non_with_matching_identifier",
+            "profile_id": "ulurp_197c",
+            "profile_label": "Uniform Land Use Review Procedure (§ 197-c)"
+          },
+          "href": null
+        }
+      ],
+      "procedure_resolution": "uniform",
+      "affected_review_body_for": {
+        "schema": "cityscroll.affected_review_body_for.v1",
+        "relation": "affected_review_body_for",
+        "layer": "normative",
+        "status": "resolved",
+        "linking": true,
+        "project_id": "2025K0305",
+        "procedure_id": "ulurp_197c",
+        "procedure_resolution": "uniform",
+        "profile_version": "2026-08-27.v1",
+        "boundary_vintage": "2026-05-26",
+        "reason": null,
+        "facts": {
+          "community_boards": [
+            "community-board:brooklyn-cb-11",
+            "community-board:brooklyn-cb-13"
+          ],
+          "borough_president": "borough-president:brooklyn",
+          "borough_presidents": [
+            "borough-president:brooklyn"
+          ],
+          "borough_board": true,
+          "borough_boards": [
+            "borough-board:brooklyn"
+          ]
+        },
+        "edges": [
+          {
+            "schema": "cityscroll.affected_review_body_for.v1",
+            "relation": "affected_review_body_for",
+            "layer": "normative",
+            "status": "accepted",
+            "linking": true,
+            "observed": false,
+            "project_id": "2025K0305",
+            "body_ref": "community-board:brooklyn-cb-11",
+            "role": "affected_community_board",
+            "href": "/community-boards/brooklyn-cb-11/",
+            "source_borough": "Brooklyn",
+            "source_community_districts": [
+              "K11"
+            ],
+            "derivation_rule": "exact_cd_covers",
+            "profile_version": "2026-08-27.v1",
+            "procedure_id": "ulurp_197c",
+            "boundary_vintage": "2026-05-26",
+            "legal_basis": {
+              "citation": "NYC Charter § 196",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+            },
+            "explanation": "Brooklyn Community Board 11 has a review role because this application includes land in community district K11."
+          },
+          {
+            "schema": "cityscroll.affected_review_body_for.v1",
+            "relation": "affected_review_body_for",
+            "layer": "normative",
+            "status": "accepted",
+            "linking": true,
+            "observed": false,
+            "project_id": "2025K0305",
+            "body_ref": "community-board:brooklyn-cb-13",
+            "role": "affected_community_board",
+            "href": "/community-boards/brooklyn-cb-13/",
+            "source_borough": "Brooklyn",
+            "source_community_districts": [
+              "K13"
+            ],
+            "derivation_rule": "exact_cd_covers",
+            "profile_version": "2026-08-27.v1",
+            "procedure_id": "ulurp_197c",
+            "boundary_vintage": "2026-05-26",
+            "legal_basis": {
+              "citation": "NYC Charter § 196",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+            },
+            "explanation": "Brooklyn Community Board 13 has a review role because this application includes land in community district K13."
+          },
+          {
+            "schema": "cityscroll.affected_review_body_for.v1",
+            "relation": "affected_review_body_for",
+            "layer": "normative",
+            "status": "accepted",
+            "linking": true,
+            "observed": false,
+            "project_id": "2025K0305",
+            "body_ref": "borough-president:brooklyn",
+            "role": "affected_borough_president",
+            "href": "/agencies/borough-president-brooklyn/",
+            "source_borough": "Brooklyn",
+            "source_community_districts": [
+              "K11",
+              "K13"
+            ],
+            "derivation_rule": "exact_borough_of_affected_cds",
+            "profile_version": "2026-08-27.v1",
+            "procedure_id": "ulurp_197c",
+            "boundary_vintage": "2026-05-26",
+            "legal_basis": {
+              "citation": "NYC Charter § 196",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+            },
+            "explanation": "The Brooklyn Borough President has a review role because this application includes land in Brooklyn."
+          },
+          {
+            "schema": "cityscroll.affected_review_body_for.v1",
+            "relation": "affected_review_body_for",
+            "layer": "normative",
+            "status": "accepted",
+            "linking": true,
+            "observed": false,
+            "project_id": "2025K0305",
+            "body_ref": "borough-board:brooklyn",
+            "role": "affected_borough_board",
+            "href": null,
+            "source_borough": "Brooklyn",
+            "source_community_districts": [
+              "K11",
+              "K13"
+            ],
+            "derivation_rule": "same_borough_distinct_community_districts",
+            "profile_version": "2026-08-27.v1",
+            "procedure_id": "ulurp_197c",
+            "boundary_vintage": "2026-05-26",
+            "legal_basis": {
+              "citation": "NYC Charter § 196",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+            },
+            "explanation": "The Brooklyn Borough Board has a review role because this application includes land in two or more community districts in Brooklyn (K11, K13)."
+          }
+        ],
+        "geography_source": {
+          "borough": "Brooklyn",
+          "community_district": "K13,K11",
+          "source_fields": [
+            "community_district"
+          ]
+        },
+        "provenance": {
+          "source_fields": [
+            "community_district",
+            "actions",
+            "ulurp_numbers",
+            "ulurp_non"
+          ],
+          "legal_basis": {
+            "citation": "NYC Charter § 196",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+          },
+          "derivation_rules": {
+            "community_board": "exact_cd_covers",
+            "borough_president": "exact_borough_of_affected_cds",
+            "borough_board": "same_borough_distinct_community_districts"
+          },
+          "covers_relation": "community-board --covers--> community-district"
+        }
+      },
+      "affected_review_bodies": {
+        "community_boards": [
+          "community-board:brooklyn-cb-11",
+          "community-board:brooklyn-cb-13"
+        ],
+        "borough_president": "borough-president:brooklyn",
+        "borough_presidents": [
+          "borough-president:brooklyn"
+        ],
+        "borough_board": true,
+        "borough_boards": [
+          "borough-board:brooklyn"
+        ]
+      },
+      "authority_summary": {
+        "schema": "cityscroll.land_authority_summary.v1",
+        "layer": "tier_a",
+        "status": "resolved",
+        "reason": null,
+        "project_id": "2025K0305",
+        "procedure_id": "ulurp_197c",
+        "procedure_resolution": "uniform",
+        "current_stage": {
+          "stage_id": "ulurp_197c.application_certification",
+          "spine_phase_id": "pre_application",
+          "status": "known"
+        },
+        "current_actor_refs": [
+          "agency:id:city-planning"
+        ],
+        "current_role": "administrative_certifier",
+        "effect": "Receives and circulates the application, then certifies it as complete for review.",
+        "source_basis": {
+          "profile": {
+            "procedure_id": "ulurp_197c",
+            "stage_id": "ulurp_197c.application_certification",
+            "role": "administrative_certifier"
+          },
+          "phase": {
+            "current_milestone": "MM - Review Filed Land Use Application",
+            "phase_id": "pre_application",
+            "milestone_phase_id": "pre_application"
+          },
+          "geography": {
+            "status": "resolved",
+            "profile_version": "2026-08-27.v1",
+            "boundary_vintage": "2026-05-26"
+          },
+          "publisher": {
+            "source": null,
+            "source_id": null,
+            "checked": false,
+            "checked_vintage": null
+          }
+        },
+        "expected_next_stage": {
+          "stage_id": "ulurp_197c.community_board_review",
+          "spine_phase_id": "community_board",
+          "status": "known"
+        },
+        "published_next_opportunity": {
+          "status": "unknown",
+          "checked": false,
+          "checked_vintage": null,
+          "source_id": null,
+          "source": null,
+          "label": null,
+          "date": null,
+          "representing": null,
+          "phase_id": null,
+          "body_ref": null
+        },
+        "next_procedural_body": null,
+        "affected_actor_refs": [
+          {
+            "body_ref": "community-board:brooklyn-cb-11",
+            "role": "affected_community_board"
+          },
+          {
+            "body_ref": "community-board:brooklyn-cb-13",
+            "role": "affected_community_board"
+          },
+          {
+            "body_ref": "borough-president:brooklyn",
+            "role": "affected_borough_president"
+          },
+          {
+            "body_ref": "borough-board:brooklyn",
+            "role": "affected_borough_board"
+          }
+        ],
+        "observed": {
+          "status": "no_observation",
+          "recommendations": []
+        },
+        "freshness": {
+          "generated_at": "2026-11-06T15:11:20.121Z",
+          "as_of": "2026-11-06T15:11:20.121Z",
+          "source_vintages": {
+            "project_milestone_date": "2026-07-31T00:00:00.000",
+            "outcomes_generated_at": null,
+            "hearings_generated_at": null
+          }
+        }
+      }
+    },
+    "2025K0284": {
+      "project_id": "2025K0284",
+      "project_name": "FORT HAMILTON MEWS REZONING",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "approval_date": "2026-10-06T00:00:00.000",
+      "completed_date": null,
+      "ulurp_numbers": "260238ZMK; 260239ZRK",
+      "borough": "Brooklyn",
+      "community_district": "K10",
+      "cc_district": "47",
+      "actions": "ZM; ZR",
+      "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+      "current_milestone_date": "2026-10-06T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "primary_applicant": "9305 5th Ave LLC",
+      "mih_flag": "false",
+      "app_filed_date": "2026-01-22T00:00:00.000",
+      "noticed_date": "2026-02-13T00:00:00.000",
+      "certified_referred": "2026-03-16T00:00:00.000",
+      "ceqr_number": "26DCP111K",
+      "ceqr_type": "Type II",
+      "ceqr_leadagency": "DCP",
+      "eas_eis": null,
+      "current_envmilestone": "EAS - Prepare Draft EAS",
+      "current_envmilestone_date": "2026-03-09T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6B",
+              "kind": "base_district",
+              "max_far": 2.4,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-3",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R5B",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 2.4,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7X",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      },
+      "ceqr_lead_agency": "DCP",
+      "environmental_review_type": null,
+      "environmental_status": null,
+      "environmental_milestone": "EAS - Prepare Draft EAS",
+      "environmental_milestone_date": "2026-03-09T00:00:00.000",
+      "environmental_projection": {
+        "schema": "cityscroll.zap_environmental_projection.v1",
+        "source_dataset_id": "hgx4-8ukb",
+        "source_record_id": "2025K0284",
+        "as_of": "2026-11-06T15:11:20.121Z",
+        "cutoff": "2026-11-06T15:11:20.121Z",
+        "fields": {
+          "ceqr_number": {
+            "value": "26DCP111K",
+            "presence": "present",
+            "source_field": "ceqr_number"
+          },
+          "ceqr_type": {
+            "value": "Type II",
+            "presence": "present",
+            "source_field": "ceqr_type"
+          },
+          "ceqr_lead_agency": {
+            "value": "DCP",
+            "presence": "present",
+            "source_field": "ceqr_leadagency"
+          },
+          "environmental_review_type": {
+            "value": null,
+            "presence": "absent",
+            "source_field": "eas_eis"
+          },
+          "environmental_status": {
+            "value": null,
+            "presence": "source_field_absent",
+            "source_field": null,
+            "gap": "zap_projects_hgx4-8ukb_has_no_environmental_status_column"
+          },
+          "environmental_milestone": {
+            "value": "EAS - Prepare Draft EAS",
+            "presence": "present",
+            "source_field": "current_envmilestone"
+          },
+          "environmental_milestone_date": {
+            "value": "2026-03-09T00:00:00.000",
+            "presence": "present",
+            "source_field": "current_envmilestone_date"
+          }
+        }
+      },
+      "land_actions": [
+        {
+          "application_id": "260238ZMK",
+          "action_type": "ZM",
+          "procedure_id": "ulurp_197c",
+          "status": "resolved",
+          "source_fields": [
+            "actions",
+            "ulurp_numbers",
+            "ulurp_non"
+          ],
+          "source_vintage": "2026-11-06T15:11:20.121Z",
+          "profile_version": "2026-08-27.v1",
+          "unresolved_reason": null,
+          "aliases": [],
+          "evidence": {
+            "source_system": "zap-projects-open-data",
+            "source_record_id": "zap-projects-open-data:2025K0284",
+            "source_vintage": "2026-11-06T15:11:20.121Z",
+            "action_source_field": "actions",
+            "action_token": "ZM",
+            "identifier_source_field": "ulurp_numbers",
+            "identifier_raw": "260238ZMK",
+            "identifier_type": null,
+            "identifier_kind": "ulurp_application",
+            "rejected": [],
+            "selection_method": "publisher_ulurp_non_with_matching_identifier",
+            "profile_id": "ulurp_197c",
+            "profile_label": "Uniform Land Use Review Procedure (§ 197-c)"
+          },
+          "href": null
+        },
+        {
+          "application_id": "260239ZRK",
+          "action_type": "ZR",
+          "procedure_id": "ulurp_197c",
+          "status": "resolved",
+          "source_fields": [
+            "actions",
+            "ulurp_numbers",
+            "ulurp_non"
+          ],
+          "source_vintage": "2026-11-06T15:11:20.121Z",
+          "profile_version": "2026-08-27.v1",
+          "unresolved_reason": null,
+          "aliases": [],
+          "evidence": {
+            "source_system": "zap-projects-open-data",
+            "source_record_id": "zap-projects-open-data:2025K0284",
+            "source_vintage": "2026-11-06T15:11:20.121Z",
+            "action_source_field": "actions",
+            "action_token": "ZR",
+            "identifier_source_field": "ulurp_numbers",
+            "identifier_raw": "260239ZRK",
+            "identifier_type": null,
+            "identifier_kind": "ulurp_application",
+            "rejected": [],
+            "selection_method": "publisher_ulurp_non_with_matching_identifier",
+            "profile_id": "ulurp_197c",
+            "profile_label": "Uniform Land Use Review Procedure (§ 197-c)"
+          },
+          "href": null
+        }
+      ],
+      "procedure_resolution": "uniform",
+      "affected_review_body_for": {
+        "schema": "cityscroll.affected_review_body_for.v1",
+        "relation": "affected_review_body_for",
+        "layer": "normative",
+        "status": "resolved",
+        "linking": true,
+        "project_id": "2025K0284",
+        "procedure_id": "ulurp_197c",
+        "procedure_resolution": "uniform",
+        "profile_version": "2026-08-27.v1",
+        "boundary_vintage": "2026-05-26",
+        "reason": null,
+        "facts": {
+          "community_boards": [
+            "community-board:brooklyn-cb-10"
+          ],
+          "borough_president": "borough-president:brooklyn",
+          "borough_presidents": [
+            "borough-president:brooklyn"
+          ],
+          "borough_board": false,
+          "borough_boards": []
+        },
+        "edges": [
+          {
+            "schema": "cityscroll.affected_review_body_for.v1",
+            "relation": "affected_review_body_for",
+            "layer": "normative",
+            "status": "accepted",
+            "linking": true,
+            "observed": false,
+            "project_id": "2025K0284",
+            "body_ref": "community-board:brooklyn-cb-10",
+            "role": "affected_community_board",
+            "href": "/community-boards/brooklyn-cb-10/",
+            "source_borough": "Brooklyn",
+            "source_community_districts": [
+              "K10"
+            ],
+            "derivation_rule": "exact_cd_covers",
+            "profile_version": "2026-08-27.v1",
+            "procedure_id": "ulurp_197c",
+            "boundary_vintage": "2026-05-26",
+            "legal_basis": {
+              "citation": "NYC Charter § 196",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+            },
+            "explanation": "Brooklyn Community Board 10 has a review role because this application includes land in community district K10."
+          },
+          {
+            "schema": "cityscroll.affected_review_body_for.v1",
+            "relation": "affected_review_body_for",
+            "layer": "normative",
+            "status": "accepted",
+            "linking": true,
+            "observed": false,
+            "project_id": "2025K0284",
+            "body_ref": "borough-president:brooklyn",
+            "role": "affected_borough_president",
+            "href": "/agencies/borough-president-brooklyn/",
+            "source_borough": "Brooklyn",
+            "source_community_districts": [
+              "K10"
+            ],
+            "derivation_rule": "exact_borough_of_affected_cds",
+            "profile_version": "2026-08-27.v1",
+            "procedure_id": "ulurp_197c",
+            "boundary_vintage": "2026-05-26",
+            "legal_basis": {
+              "citation": "NYC Charter § 196",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+            },
+            "explanation": "The Brooklyn Borough President has a review role because this application includes land in Brooklyn."
+          }
+        ],
+        "geography_source": {
+          "borough": "Brooklyn",
+          "community_district": "K10",
+          "source_fields": [
+            "community_district"
+          ]
+        },
+        "provenance": {
+          "source_fields": [
+            "community_district",
+            "actions",
+            "ulurp_numbers",
+            "ulurp_non"
+          ],
+          "legal_basis": {
+            "citation": "NYC Charter § 196",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+          },
+          "derivation_rules": {
+            "community_board": "exact_cd_covers",
+            "borough_president": "exact_borough_of_affected_cds",
+            "borough_board": "same_borough_distinct_community_districts"
+          },
+          "covers_relation": "community-board --covers--> community-district"
+        }
+      },
+      "affected_review_bodies": {
+        "community_boards": [
+          "community-board:brooklyn-cb-10"
+        ],
+        "borough_president": "borough-president:brooklyn",
+        "borough_presidents": [
+          "borough-president:brooklyn"
+        ],
+        "borough_board": false,
+        "borough_boards": []
+      },
+      "authority_summary": {
+        "schema": "cityscroll.land_authority_summary.v1",
+        "layer": "tier_a",
+        "status": "resolved",
+        "reason": null,
+        "project_id": "2025K0284",
+        "procedure_id": "ulurp_197c",
+        "procedure_resolution": "uniform",
+        "current_stage": {
+          "stage_id": "ulurp_197c.city_planning_commission_review",
+          "spine_phase_id": "cpc",
+          "status": "known"
+        },
+        "current_actor_refs": [
+          "agency:id:city-planning-commission"
+        ],
+        "current_role": "decision_maker",
+        "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
+        "source_basis": {
+          "profile": {
+            "procedure_id": "ulurp_197c",
+            "stage_id": "ulurp_197c.city_planning_commission_review",
+            "role": "decision_maker"
+          },
+          "phase": {
+            "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
+            "phase_id": "cpc",
+            "milestone_phase_id": "cpc"
+          },
+          "geography": {
+            "status": "resolved",
+            "profile_version": "2026-08-27.v1",
+            "boundary_vintage": "2026-05-26"
+          },
+          "publisher": {
+            "source": null,
+            "source_id": null,
+            "checked": false,
+            "checked_vintage": null
+          }
+        },
+        "expected_next_stage": null,
+        "published_next_opportunity": {
+          "status": "unknown",
+          "checked": false,
+          "checked_vintage": null,
+          "source_id": null,
+          "source": null,
+          "label": null,
+          "date": null,
+          "representing": null,
+          "phase_id": null,
+          "body_ref": null
+        },
+        "next_procedural_body": null,
+        "affected_actor_refs": [
+          {
+            "body_ref": "community-board:brooklyn-cb-10",
+            "role": "affected_community_board"
+          },
+          {
+            "body_ref": "borough-president:brooklyn",
+            "role": "affected_borough_president"
+          }
+        ],
+        "observed": {
+          "status": "no_observation",
+          "recommendations": []
+        },
+        "freshness": {
+          "generated_at": "2026-11-06T15:11:20.121Z",
+          "as_of": "2026-11-06T15:11:20.121Z",
+          "source_vintages": {
+            "project_milestone_date": "2026-10-06T00:00:00.000",
+            "outcomes_generated_at": null,
+            "hearings_generated_at": null
+          }
+        }
+      }
+    },
+    "2023Q0450": {
+      "project_id": "2023Q0450",
+      "project_name": "100-12 Queens Boulevard Rezoning",
+      "public_status": "In Public Review",
+      "project_status": "Active",
+      "approval_date": null,
+      "completed_date": null,
+      "ulurp_numbers": "260184ZMQ; 260185ZRQ",
+      "borough": "Queens",
+      "community_district": "Q06",
+      "cc_district": "29",
+      "actions": "ZM; ZR",
+      "current_milestone": "EAS - City Council Review",
+      "current_milestone_date": "2026-09-26T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "primary_applicant": "100 Queens Blvd Co. LLC",
+      "mih_flag": "false",
+      "app_filed_date": "2025-11-20T00:00:00.000",
+      "noticed_date": "2026-05-13T00:00:00.000",
+      "certified_referred": "2026-06-01T00:00:00.000",
+      "ceqr_number": "26DCP077Q",
+      "ceqr_type": "Unlisted",
+      "ceqr_leadagency": "DCP",
+      "eas_eis": "EAS",
+      "current_envmilestone": "EAS - Review Filed EAS",
+      "current_envmilestone_date": "2026-05-28T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R7-1",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C1-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R9X",
+              "kind": "base_district",
+              "max_far": 10.8,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R4B",
+              "kind": "base_district",
+              "max_far": 1.5,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C1-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R7-1",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 10.8,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      },
+      "ceqr_lead_agency": "DCP",
+      "environmental_review_type": "EAS",
+      "environmental_status": null,
+      "environmental_milestone": "EAS - Review Filed EAS",
+      "environmental_milestone_date": "2026-05-28T00:00:00.000",
+      "environmental_projection": {
+        "schema": "cityscroll.zap_environmental_projection.v1",
+        "source_dataset_id": "hgx4-8ukb",
+        "source_record_id": "2023Q0450",
+        "as_of": "2026-11-06T15:11:20.121Z",
+        "cutoff": "2026-11-06T15:11:20.121Z",
+        "fields": {
+          "ceqr_number": {
+            "value": "26DCP077Q",
+            "presence": "present",
+            "source_field": "ceqr_number"
+          },
+          "ceqr_type": {
+            "value": "Unlisted",
+            "presence": "present",
+            "source_field": "ceqr_type"
+          },
+          "ceqr_lead_agency": {
+            "value": "DCP",
+            "presence": "present",
+            "source_field": "ceqr_leadagency"
+          },
+          "environmental_review_type": {
+            "value": "EAS",
+            "presence": "present",
+            "source_field": "eas_eis"
+          },
+          "environmental_status": {
+            "value": null,
+            "presence": "source_field_absent",
+            "source_field": null,
+            "gap": "zap_projects_hgx4-8ukb_has_no_environmental_status_column"
+          },
+          "environmental_milestone": {
+            "value": "EAS - Review Filed EAS",
+            "presence": "present",
+            "source_field": "current_envmilestone"
+          },
+          "environmental_milestone_date": {
+            "value": "2026-05-28T00:00:00.000",
+            "presence": "present",
+            "source_field": "current_envmilestone_date"
+          }
+        }
+      },
+      "land_actions": [
+        {
+          "application_id": "260184ZMQ",
+          "action_type": "ZM",
+          "procedure_id": "ulurp_197c",
+          "status": "resolved",
+          "source_fields": [
+            "actions",
+            "ulurp_numbers",
+            "ulurp_non"
+          ],
+          "source_vintage": "2026-11-06T15:11:20.121Z",
+          "profile_version": "2026-08-27.v1",
+          "unresolved_reason": null,
+          "aliases": [],
+          "evidence": {
+            "source_system": "zap-projects-open-data",
+            "source_record_id": "zap-projects-open-data:2023Q0450",
+            "source_vintage": "2026-11-06T15:11:20.121Z",
+            "action_source_field": "actions",
+            "action_token": "ZM",
+            "identifier_source_field": "ulurp_numbers",
+            "identifier_raw": "260184ZMQ",
+            "identifier_type": null,
+            "identifier_kind": "ulurp_application",
+            "rejected": [],
+            "selection_method": "publisher_ulurp_non_with_matching_identifier",
+            "profile_id": "ulurp_197c",
+            "profile_label": "Uniform Land Use Review Procedure (§ 197-c)"
+          },
+          "href": null
+        },
+        {
+          "application_id": "260185ZRQ",
+          "action_type": "ZR",
+          "procedure_id": "ulurp_197c",
+          "status": "resolved",
+          "source_fields": [
+            "actions",
+            "ulurp_numbers",
+            "ulurp_non"
+          ],
+          "source_vintage": "2026-11-06T15:11:20.121Z",
+          "profile_version": "2026-08-27.v1",
+          "unresolved_reason": null,
+          "aliases": [],
+          "evidence": {
+            "source_system": "zap-projects-open-data",
+            "source_record_id": "zap-projects-open-data:2023Q0450",
+            "source_vintage": "2026-11-06T15:11:20.121Z",
+            "action_source_field": "actions",
+            "action_token": "ZR",
+            "identifier_source_field": "ulurp_numbers",
+            "identifier_raw": "260185ZRQ",
+            "identifier_type": null,
+            "identifier_kind": "ulurp_application",
+            "rejected": [],
+            "selection_method": "publisher_ulurp_non_with_matching_identifier",
+            "profile_id": "ulurp_197c",
+            "profile_label": "Uniform Land Use Review Procedure (§ 197-c)"
+          },
+          "href": null
+        }
+      ],
+      "procedure_resolution": "uniform",
+      "affected_review_body_for": {
+        "schema": "cityscroll.affected_review_body_for.v1",
+        "relation": "affected_review_body_for",
+        "layer": "normative",
+        "status": "resolved",
+        "linking": true,
+        "project_id": "2023Q0450",
+        "procedure_id": "ulurp_197c",
+        "procedure_resolution": "uniform",
+        "profile_version": "2026-08-27.v1",
+        "boundary_vintage": "2026-05-26",
+        "reason": null,
+        "facts": {
+          "community_boards": [
+            "community-board:queens-cb-06"
+          ],
+          "borough_president": "borough-president:queens",
+          "borough_presidents": [
+            "borough-president:queens"
+          ],
+          "borough_board": false,
+          "borough_boards": []
+        },
+        "edges": [
+          {
+            "schema": "cityscroll.affected_review_body_for.v1",
+            "relation": "affected_review_body_for",
+            "layer": "normative",
+            "status": "accepted",
+            "linking": true,
+            "observed": false,
+            "project_id": "2023Q0450",
+            "body_ref": "community-board:queens-cb-06",
+            "role": "affected_community_board",
+            "href": "/community-boards/queens-cb-06/",
+            "source_borough": "Queens",
+            "source_community_districts": [
+              "Q06"
+            ],
+            "derivation_rule": "exact_cd_covers",
+            "profile_version": "2026-08-27.v1",
+            "procedure_id": "ulurp_197c",
+            "boundary_vintage": "2026-05-26",
+            "legal_basis": {
+              "citation": "NYC Charter § 196",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+            },
+            "explanation": "Queens Community Board 6 has a review role because this application includes land in community district Q06."
+          },
+          {
+            "schema": "cityscroll.affected_review_body_for.v1",
+            "relation": "affected_review_body_for",
+            "layer": "normative",
+            "status": "accepted",
+            "linking": true,
+            "observed": false,
+            "project_id": "2023Q0450",
+            "body_ref": "borough-president:queens",
+            "role": "affected_borough_president",
+            "href": "/agencies/borough-president-queens/",
+            "source_borough": "Queens",
+            "source_community_districts": [
+              "Q06"
+            ],
+            "derivation_rule": "exact_borough_of_affected_cds",
+            "profile_version": "2026-08-27.v1",
+            "procedure_id": "ulurp_197c",
+            "boundary_vintage": "2026-05-26",
+            "legal_basis": {
+              "citation": "NYC Charter § 196",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+            },
+            "explanation": "The Queens Borough President has a review role because this application includes land in Queens."
+          }
+        ],
+        "geography_source": {
+          "borough": "Queens",
+          "community_district": "Q06",
+          "source_fields": [
+            "community_district"
+          ]
+        },
+        "provenance": {
+          "source_fields": [
+            "community_district",
+            "actions",
+            "ulurp_numbers",
+            "ulurp_non"
+          ],
+          "legal_basis": {
+            "citation": "NYC Charter § 196",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+          },
+          "derivation_rules": {
+            "community_board": "exact_cd_covers",
+            "borough_president": "exact_borough_of_affected_cds",
+            "borough_board": "same_borough_distinct_community_districts"
+          },
+          "covers_relation": "community-board --covers--> community-district"
+        }
+      },
+      "affected_review_bodies": {
+        "community_boards": [
+          "community-board:queens-cb-06"
+        ],
+        "borough_president": "borough-president:queens",
+        "borough_presidents": [
+          "borough-president:queens"
+        ],
+        "borough_board": false,
+        "borough_boards": []
+      },
+      "authority_summary": {
+        "schema": "cityscroll.land_authority_summary.v1",
+        "layer": "tier_a",
+        "status": "resolved",
+        "reason": null,
+        "project_id": "2023Q0450",
+        "procedure_id": "ulurp_197c",
+        "procedure_resolution": "uniform",
+        "current_stage": {
+          "stage_id": "ulurp_197c.city_council_review",
+          "spine_phase_id": "city_council",
+          "status": "known"
+        },
+        "current_actor_refs": [
+          "agency:id:city-council"
+        ],
+        "current_role": "conditional_decision_maker",
+        "effect": "When § 197-d review applies, may approve, approve with modifications, or disapprove the CPC decision; otherwise this stage is not expected.",
+        "source_basis": {
+          "profile": {
+            "procedure_id": "ulurp_197c",
+            "stage_id": "ulurp_197c.city_council_review",
+            "role": "conditional_decision_maker"
+          },
+          "phase": {
+            "current_milestone": "EAS - City Council Review",
+            "phase_id": "city_council",
+            "milestone_phase_id": "city_council"
+          },
+          "geography": {
+            "status": "resolved",
+            "profile_version": "2026-08-27.v1",
+            "boundary_vintage": "2026-05-26"
+          },
+          "publisher": {
+            "source": null,
+            "source_id": null,
+            "checked": false,
+            "checked_vintage": null
+          }
+        },
+        "expected_next_stage": {
+          "stage_id": "ulurp_197c.mayoral_review",
+          "spine_phase_id": "mayoral_appeals",
+          "status": "known"
+        },
+        "published_next_opportunity": {
+          "status": "unknown",
+          "checked": false,
+          "checked_vintage": null,
+          "source_id": null,
+          "source": null,
+          "label": null,
+          "date": null,
+          "representing": null,
+          "phase_id": null,
+          "body_ref": null
+        },
+        "next_procedural_body": null,
+        "affected_actor_refs": [
+          {
+            "body_ref": "community-board:queens-cb-06",
+            "role": "affected_community_board"
+          },
+          {
+            "body_ref": "borough-president:queens",
+            "role": "affected_borough_president"
+          }
+        ],
+        "observed": {
+          "status": "no_observation",
+          "recommendations": []
+        },
+        "freshness": {
+          "generated_at": "2026-11-06T15:11:20.121Z",
+          "as_of": "2026-11-06T15:11:20.121Z",
+          "source_vintages": {
+            "project_milestone_date": "2026-09-26T00:00:00.000",
+            "outcomes_generated_at": null,
+            "hearings_generated_at": null
+          }
+        }
+      }
     }
   },
   "frozen_outcomes": {
@@ -1920,7 +3129,7 @@
           "source_title": "Request for Appeals Board Review",
           "source_title_field": "milestonename",
           "review_meeting_at": null,
-          "description": "The Applicant and the Affordable Housing Appeals Board have five days to review the City Council\u2019s decision and request a call up or appeal.",
+          "description": "The Applicant and the Affordable Housing Appeals Board have five days to review the City Council’s decision and request a call up or appeal.",
           "status": "Completed",
           "outcome": "No Appeal",
           "sequence": 64,
@@ -1951,7 +3160,7 @@
       ],
       "statutory_clock": {
         "schema_version": 1,
-        "statute_ref": "NYC Charter \u00a7197-c",
+        "statute_ref": "NYC Charter §197-c",
         "model_name": "ulurp_statutory_clock",
         "model_version": "1.0.0",
         "status": "completed",
@@ -1968,7 +3177,7 @@
             "model_stage": "community_board",
             "outer_bound_due_date": "2026-04-19",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -1986,7 +3195,7 @@
             "model_stage": "borough_president",
             "outer_bound_due_date": "2026-05-19",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -2004,7 +3213,7 @@
             "model_stage": "cpc",
             "outer_bound_due_date": "2026-07-18",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -2022,7 +3231,7 @@
             "model_stage": "city_council",
             "outer_bound_due_date": "2026-09-06",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -2040,7 +3249,7 @@
             "model_stage": "mayoral_appeals",
             "outer_bound_due_date": "2026-09-11",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -2055,7 +3264,7 @@
           "predicted_event_kind": "land.zap_disposition",
           "due_date": "2026-09-11",
           "cumulative_days": 205,
-          "statute_ref": "NYC Charter \u00a7197-c",
+          "statute_ref": "NYC Charter §197-c",
           "status": "completed",
           "completed_at": "2026-07-21",
           "evidence_id": "ulurp-disposition-complete:2026Q0210:2026-07-21"
@@ -2913,7 +4122,7 @@
       ],
       "statutory_clock": {
         "schema_version": 1,
-        "statute_ref": "NYC Charter \u00a7197-c",
+        "statute_ref": "NYC Charter §197-c",
         "model_name": "ulurp_statutory_clock",
         "model_version": "1.0.0",
         "status": "completed",
@@ -2930,7 +4139,7 @@
             "model_stage": "community_board",
             "outer_bound_due_date": "2026-04-03",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -2948,7 +4157,7 @@
             "model_stage": "borough_president",
             "outer_bound_due_date": "2026-05-03",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -2966,7 +4175,7 @@
             "model_stage": "cpc",
             "outer_bound_due_date": "2026-07-02",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -2984,7 +4193,7 @@
             "model_stage": "city_council",
             "outer_bound_due_date": "2026-08-21",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -3002,7 +4211,7 @@
             "model_stage": "mayoral_appeals",
             "outer_bound_due_date": "2026-08-26",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -3017,7 +4226,7 @@
           "predicted_event_kind": "land.zap_disposition",
           "due_date": "2026-08-26",
           "cumulative_days": 205,
-          "statute_ref": "NYC Charter \u00a7197-c",
+          "statute_ref": "NYC Charter §197-c",
           "status": "completed",
           "completed_at": "2026-08-13",
           "evidence_id": "ulurp-disposition-complete:2025M0252:2026-08-13"
@@ -4425,7 +5634,7 @@
           "source_title": "Request for Appeals Board Review",
           "source_title_field": "milestonename",
           "review_meeting_at": null,
-          "description": "The Applicant and the Affordable Housing Appeals Board have five days to review the City Council\u2019s decision and request a call up or appeal.",
+          "description": "The Applicant and the Affordable Housing Appeals Board have five days to review the City Council’s decision and request a call up or appeal.",
           "status": "Completed",
           "outcome": "No Appeal",
           "sequence": 64,
@@ -4456,7 +5665,7 @@
       ],
       "statutory_clock": {
         "schema_version": 1,
-        "statute_ref": "NYC Charter \u00a7197-c",
+        "statute_ref": "NYC Charter §197-c",
         "model_name": "ulurp_statutory_clock",
         "model_version": "1.0.0",
         "status": "completed",
@@ -4473,7 +5682,7 @@
             "model_stage": "community_board",
             "outer_bound_due_date": "2026-02-13",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -4491,7 +5700,7 @@
             "model_stage": "borough_president",
             "outer_bound_due_date": "2026-03-15",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -4509,7 +5718,7 @@
             "model_stage": "cpc",
             "outer_bound_due_date": "2026-05-14",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -4527,7 +5736,7 @@
             "model_stage": "city_council",
             "outer_bound_due_date": "2026-07-03",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -4545,7 +5754,7 @@
             "model_stage": "mayoral_appeals",
             "outer_bound_due_date": "2026-07-08",
             "due_date": null,
-            "statute_ref": "NYC Charter \u00a7197-c",
+            "statute_ref": "NYC Charter §197-c",
             "start_date": null,
             "start_basis": null,
             "deadline_basis": null,
@@ -4560,7 +5769,7 @@
           "predicted_event_kind": "land.zap_disposition",
           "due_date": "2026-07-08",
           "cumulative_days": 205,
-          "statute_ref": "NYC Charter \u00a7197-c",
+          "statute_ref": "NYC Charter §197-c",
           "status": "completed",
           "completed_at": "2026-07-21",
           "evidence_id": "ulurp-disposition-complete:2024M0244:2026-07-21"
@@ -5809,7 +7018,7 @@
           "source_title": "Borough Board Referral",
           "source_title_field": "milestonename",
           "review_meeting_at": null,
-          "description": "The Borough Board has 30 days concurrent with the Borough President\u2019s review period to review the application and issue a recommendation.",
+          "description": "The Borough Board has 30 days concurrent with the Borough President’s review period to review the application and issue a recommendation.",
           "status": "Not Started",
           "outcome": null,
           "sequence": 50,
@@ -5874,7 +7083,7 @@
       ],
       "statutory_clock": {
         "schema_version": 1,
-        "statute_ref": "NYC Charter \u00a7197-c",
+        "statute_ref": "NYC Charter §197-c",
         "model_name": "ulurp_statutory_clock",
         "model_version": "1.0.0",
         "status": "ineligible",
@@ -6134,6 +7343,1294 @@
         }
       ],
       "n_documents": 61
-    }
+    },
+    "2025K0284": {
+      "project_id": "2025K0284",
+      "public_status": "Completed",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2025K0284",
+      "join": {
+        "matched": true,
+        "method": "exact_project_id",
+        "reason": null
+      },
+      "filled": true,
+      "stage_observation": {
+        "source_system": "zap_project_api",
+        "observed_at": "2026-11-02T08:02:17.994Z"
+      },
+      "generated_at": "2026-11-02T08:02:17.994Z",
+      "open_data": {
+        "project_id": "2025K0284",
+        "public_status": "In Public Review",
+        "current_milestone": "EAS - CPC Public Meeting - Public Hearing",
+        "current_milestone_date": "2026-06-30T00:00:00.000",
+        "noticed_date": "2026-02-13T00:00:00.000",
+        "actions": "ZM; ZR",
+        "ulurp_numbers": "260238ZMK; 260239ZRK",
+        "ulurp_non": "ULURP",
+        "source_observation": {
+          "source_system": "zap_projects_open_data",
+          "observation_status": "observed",
+          "observed_at": "2026-11-02T08:00:06.573Z"
+        },
+        "lookup_path": "warehouse"
+      },
+      "snapshot_state": "present",
+      "spine": {
+        "schema_version": 1,
+        "project_id": "2025K0284",
+        "join": {
+          "zap": {
+            "matched": true,
+            "method": "exact_project_id",
+            "reason": null
+          },
+          "city_record": {
+            "matched": false,
+            "method": "exact_ulurp_token",
+            "count": 0
+          }
+        },
+        "events": [
+          {
+            "id": "zap-milestone:9d072b39-e4cd-ef11-b8e9-001dd809b68c",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Prepare Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-01-14",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:a5072b39-e4cd-ef11-b8e9-001dd809b68c",
+            "kind": "zap_milestone",
+            "title": "Land Use Fee Paid",
+            "source_title": "Prepare Filed Land Use Fee Payment",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-01-22",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:c5072b39-e4cd-ef11-b8e9-001dd809b68c",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Review Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-02-03",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:41b8b5f0-4601-f111-8407-001dd80f20e8",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Prepare Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-02-09",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:d5b8b5f0-4601-f111-8407-001dd80f20e8",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Review Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-02-13",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:f0594e82-f808-f111-8407-001dd80abd97",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Prepare Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-03-04",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:be124988-f808-f111-8407-001dd80abd97",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Review Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-03-05",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:892bd077-c618-f111-8341-001dd80e9823",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Prepare Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-03-06",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:f42bd077-c618-f111-8341-001dd80e9823",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Review Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-03-09",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:27dfb1fe-7cff-ef11-9340-001dd80bde22",
+            "kind": "zap_milestone",
+            "title": "Application Reviewed at City Planning Commission Review Session",
+            "source_title": "Review Session - Certified / Referred",
+            "source_title_field": "milestonename",
+            "detail": "Certified",
+            "status": "Completed",
+            "outcome": "Certified",
+            "time": {
+              "value": "2026-03-16",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-disposition:36ca2c68-c6f7-f011-8407-001dd80822c1+8aca2c68-c6f7-f011-8407-001dd80822c1",
+            "kind": "zap_disposition",
+            "title": "Community Board",
+            "detail": "Unfavorable",
+            "status": "Submitted",
+            "outcome": "Unfavorable",
+            "time": {
+              "value": "2026-05-18",
+              "precision": "day",
+              "basis": "vote_date",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:52dfb1fe-7cff-ef11-9340-001dd80bde22",
+            "kind": "zap_milestone",
+            "title": "Community Board Review",
+            "source_title": "Community Board Referral",
+            "source_title_field": "milestonename",
+            "detail": "Disapproved",
+            "status": "Completed",
+            "outcome": "Disapproved",
+            "time": {
+              "value": "2026-05-21",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-disposition:f3d9b274-c6f7-f011-8407-001dd803b4d1+fbd9b274-c6f7-f011-8407-001dd803b4d1",
+            "kind": "zap_disposition",
+            "title": "Borough President",
+            "detail": "Favorable",
+            "status": "Submitted",
+            "outcome": "Favorable",
+            "time": {
+              "value": "2026-06-10",
+              "precision": "day",
+              "basis": "hearing_date",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:76dfb1fe-7cff-ef11-9340-001dd80bde22",
+            "kind": "zap_milestone",
+            "title": "Borough President Review",
+            "source_title": "Borough President Referral",
+            "source_title_field": "milestonename",
+            "detail": "Multiple Borough President Recommendations",
+            "status": "Completed",
+            "outcome": "Multiple Borough President Recommendations",
+            "time": {
+              "value": "2026-06-23",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:c2dfb1fe-7cff-ef11-9340-001dd80bde22",
+            "kind": "zap_milestone",
+            "title": "Review Session - Pre-Hearing Review / Post Referral",
+            "source_title": "Review Session - Pre-Hearing Review / Post Referral",
+            "source_title_field": "milestonename",
+            "detail": "To Public Hearing",
+            "status": "Completed",
+            "outcome": "To Public Hearing",
+            "time": {
+              "value": "2026-06-29",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:d2dfb1fe-7cff-ef11-9340-001dd80bde22",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Review",
+            "source_title": "CPC Public Meeting - Public Hearing",
+            "source_title_field": "milestonename",
+            "detail": "Hearing Closed",
+            "status": "Completed",
+            "outcome": "Hearing Closed",
+            "time": {
+              "value": "2026-07-01",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:e1dfb1fe-7cff-ef11-9340-001dd80bde22",
+            "kind": "zap_milestone",
+            "title": "Post Hearing Follow-Up / Future Votes",
+            "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-08-10",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:f3dfb1fe-7cff-ef11-9340-001dd80bde22",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Vote",
+            "source_title": "CPC Public Meeting - Vote",
+            "source_title_field": "milestonename",
+            "detail": "Approval",
+            "status": "Completed",
+            "outcome": "Approval",
+            "time": {
+              "value": "2026-08-12",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:01e0b1fe-7cff-ef11-9340-001dd80bde22",
+            "kind": "zap_milestone",
+            "title": "City Council Review",
+            "source_title": "City Council Review",
+            "source_title_field": "milestonename",
+            "detail": "CC refers modification application back to CPC",
+            "status": "Completed",
+            "outcome": "CC refers modification application back to CPC",
+            "time": {
+              "value": "2026-10-06",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:62e610de-bdc1-f111-aaae-001dd80b8f49",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Review of City Council Modification",
+            "source_title": "CPC Review of Modification Scope",
+            "source_title_field": "milestonename",
+            "detail": "Send Letter to City Council",
+            "status": "Completed",
+            "outcome": "Send Letter to City Council",
+            "time": {
+              "value": "2026-10-07",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:231dac40-11c7-f111-aaae-001dd80b8f49",
+            "kind": "zap_milestone",
+            "title": "City Council Review",
+            "source_title": "City Council Review",
+            "source_title_field": "milestonename",
+            "detail": "Adopted with Modifications",
+            "status": "Completed",
+            "outcome": "Adopted with Modifications",
+            "time": {
+              "value": "2026-10-08",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:421576a2-990f-f111-8407-001dd803dca7",
+            "kind": "zap_milestone",
+            "title": "Request for Appeals Board Review",
+            "source_title": "Request for Appeals Board Review",
+            "source_title_field": "milestonename",
+            "detail": "No Appeal",
+            "status": "Completed",
+            "outcome": "No Appeal",
+            "time": {
+              "value": "2026-10-13",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:f5e8a6b4-990f-f111-8407-001dd803dca7",
+            "kind": "zap_milestone",
+            "title": "Appeals Board Review",
+            "source_title": "Appeals Board Review",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2027-01-05",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2025K0284"
+            },
+            "source_observation": {
+              "source_system": "zap_project_api",
+              "observation_status": "retained",
+              "observed_at": null
+            }
+          }
+        ],
+        "gaps": [
+          {
+            "slot": "city_record_notices",
+            "class": "source_unavailable",
+            "taxonomy": false,
+            "source": "City Record Online",
+            "retained": false,
+            "observed": false
+          }
+        ],
+        "lag": {
+          "open_data_vs_portal": {
+            "status": "behind",
+            "days": 106,
+            "open_data_date": "2026-06-30",
+            "portal_date": "2026-10-14"
+          }
+        }
+      },
+      "milestones": [
+        {
+          "id": "9d072b39-e4cd-ef11-b8e9-001dd809b68c",
+          "title": "Land Use Application Filed",
+          "source_title": "Prepare Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 26,
+          "time": {
+            "value": "2026-01-14",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "a5072b39-e4cd-ef11-b8e9-001dd809b68c",
+          "title": "Land Use Fee Paid",
+          "source_title": "Prepare Filed Land Use Fee Payment",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 28,
+          "time": {
+            "value": "2026-01-22",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "c5072b39-e4cd-ef11-b8e9-001dd809b68c",
+          "title": "Land Use Application Filed",
+          "source_title": "Review Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 29,
+          "time": {
+            "value": "2026-02-03",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "41b8b5f0-4601-f111-8407-001dd80f20e8",
+          "title": "Land Use Application Filed",
+          "source_title": "Prepare Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 26,
+          "time": {
+            "value": "2026-02-09",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "d5b8b5f0-4601-f111-8407-001dd80f20e8",
+          "title": "Land Use Application Filed",
+          "source_title": "Review Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 29,
+          "time": {
+            "value": "2026-02-13",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "f0594e82-f808-f111-8407-001dd80abd97",
+          "title": "Land Use Application Filed",
+          "source_title": "Prepare Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 26,
+          "time": {
+            "value": "2026-03-04",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "be124988-f808-f111-8407-001dd80abd97",
+          "title": "Land Use Application Filed",
+          "source_title": "Review Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 29,
+          "time": {
+            "value": "2026-03-05",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "892bd077-c618-f111-8341-001dd80e9823",
+          "title": "Land Use Application Filed",
+          "source_title": "Prepare Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 26,
+          "time": {
+            "value": "2026-03-06",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "f42bd077-c618-f111-8341-001dd80e9823",
+          "title": "Land Use Application Filed",
+          "source_title": "Review Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 29,
+          "time": {
+            "value": "2026-03-09",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "27dfb1fe-7cff-ef11-9340-001dd80bde22",
+          "title": "Application Reviewed at City Planning Commission Review Session",
+          "source_title": "Review Session - Certified / Referred",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-03-16T04:00:00.000Z",
+          "description": "A \"Review Session\" milestone signifies that the application has been sent to the City Planning Commission (CPC) and is ready for review. The \"Review\" milestone represents the period of time (up to 60 days) that the CPC reviews the application before their vote.",
+          "status": "Completed",
+          "outcome": "Certified",
+          "sequence": 46,
+          "time": {
+            "value": "2026-03-16",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "52dfb1fe-7cff-ef11-9340-001dd80bde22",
+          "title": "Community Board Review",
+          "source_title": "Community Board Referral",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The Community Board has 60 days from the time of referral (nine days after certification) to hold a hearing and issue a recommendation.",
+          "status": "Completed",
+          "outcome": "Disapproved",
+          "sequence": 48,
+          "time": {
+            "value": "2026-05-21",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "76dfb1fe-7cff-ef11-9340-001dd80bde22",
+          "title": "Borough President Review",
+          "source_title": "Borough President Referral",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The Borough President has 30 days after the Community Board issues a recommendation to review the application and issue a recommendation.",
+          "status": "Completed",
+          "outcome": "Multiple Borough President Recommendations",
+          "sequence": 49,
+          "time": {
+            "value": "2026-06-23",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "c2dfb1fe-7cff-ef11-9340-001dd80bde22",
+          "title": "Review Session - Pre-Hearing Review / Post Referral",
+          "source_title": "Review Session - Pre-Hearing Review / Post Referral",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-06-29T04:00:00.000Z",
+          "description": null,
+          "status": "Completed",
+          "outcome": "To Public Hearing",
+          "sequence": 53,
+          "time": {
+            "value": "2026-06-29",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "d2dfb1fe-7cff-ef11-9340-001dd80bde22",
+          "title": "City Planning Commission Review",
+          "source_title": "CPC Public Meeting - Public Hearing",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-07-01T04:00:00.000Z",
+          "description": "The City Planning Commission has 60 days after the Borough President issues a recommendation to hold a hearing and vote on an application.",
+          "status": "Completed",
+          "outcome": "Hearing Closed",
+          "sequence": 54,
+          "time": {
+            "value": "2026-07-01",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "e1dfb1fe-7cff-ef11-9340-001dd80bde22",
+          "title": "Post Hearing Follow-Up / Future Votes",
+          "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-08-10T04:00:00.000Z",
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 56,
+          "time": {
+            "value": "2026-08-10",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "f3dfb1fe-7cff-ef11-9340-001dd80bde22",
+          "title": "City Planning Commission Vote",
+          "source_title": "CPC Public Meeting - Vote",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-08-12T04:00:00.000Z",
+          "description": null,
+          "status": "Completed",
+          "outcome": "Approval",
+          "sequence": 57,
+          "time": {
+            "value": "2026-08-12",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "01e0b1fe-7cff-ef11-9340-001dd80bde22",
+          "title": "City Council Review",
+          "source_title": "City Council Review",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The City Council has 50 days from receiving the City Planning Commission report to call up the application, hold a hearing and vote on the application.",
+          "status": "Completed",
+          "outcome": "CC refers modification application back to CPC",
+          "sequence": 58,
+          "time": {
+            "value": "2026-10-06",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "62e610de-bdc1-f111-aaae-001dd80b8f49",
+          "title": "City Planning Commission Review of City Council Modification",
+          "source_title": "CPC Review of Modification Scope",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-10-07T04:00:00.000Z",
+          "description": null,
+          "status": "Completed",
+          "outcome": "Send Letter to City Council",
+          "sequence": 0,
+          "time": {
+            "value": "2026-10-07",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "231dac40-11c7-f111-aaae-001dd80b8f49",
+          "title": "City Council Review",
+          "source_title": "City Council Review",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The City Council has 50 days from receiving the City Planning Commission report to call up the application, hold a hearing and vote on the application.",
+          "status": "Completed",
+          "outcome": "Adopted with Modifications",
+          "sequence": 58,
+          "time": {
+            "value": "2026-10-08",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "421576a2-990f-f111-8407-001dd803dca7",
+          "title": "Request for Appeals Board Review",
+          "source_title": "Request for Appeals Board Review",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The Applicant and the Affordable Housing Appeals Board have five days to review the City Council’s decision and request a call up or appeal.",
+          "status": "Completed",
+          "outcome": "No Appeal",
+          "sequence": 64,
+          "time": {
+            "value": "2026-10-13",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "f5e8a6b4-990f-f111-8407-001dd803dca7",
+          "title": "Appeals Board Review",
+          "source_title": "Appeals Board Review",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The Affordable Housing Appeals Board has 15 days after the call up or appeal to restore the City Planning Commission action, partially restore the City Planning Commission action, or sustain the City Council action.",
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 65,
+          "time": {
+            "value": "2027-01-05",
+            "precision": "day",
+            "basis": "planned_completion",
+            "certainty": "planned"
+          },
+          "source_observation": {
+            "source_system": "zap_project_api",
+            "observation_status": "retained",
+            "observed_at": null
+          }
+        }
+      ],
+      "statutory_clock": {
+        "schema_version": 1,
+        "statute_ref": "NYC Charter §197-c",
+        "model_name": "ulurp_statutory_clock",
+        "model_version": "1.0.0",
+        "status": "completed",
+        "reason": "project_completed",
+        "certified_date": "2026-03-16",
+        "total_days": 205,
+        "phases": [
+          {
+            "phase_id": "community_board",
+            "short": "CB",
+            "label_key": "land_phase_community_board",
+            "days": 60,
+            "cumulative_days": 60,
+            "model_stage": "community_board",
+            "outer_bound_due_date": "2026-05-15",
+            "due_date": null,
+            "statute_ref": "NYC Charter §197-c",
+            "start_date": null,
+            "start_basis": null,
+            "deadline_basis": null,
+            "deadline_certainty": "completed",
+            "status": "completed",
+            "completed_at": "2026-05-18",
+            "evidence_id": "zap-disposition:36ca2c68-c6f7-f011-8407-001dd80822c1+8aca2c68-c6f7-f011-8407-001dd80822c1"
+          },
+          {
+            "phase_id": "borough_president",
+            "short": "BP",
+            "label_key": "land_phase_borough_president",
+            "days": 30,
+            "cumulative_days": 90,
+            "model_stage": "borough_president",
+            "outer_bound_due_date": "2026-06-14",
+            "due_date": null,
+            "statute_ref": "NYC Charter §197-c",
+            "start_date": null,
+            "start_basis": null,
+            "deadline_basis": null,
+            "deadline_certainty": "completed",
+            "status": "completed",
+            "completed_at": "2026-06-10",
+            "evidence_id": "zap-disposition:f3d9b274-c6f7-f011-8407-001dd803b4d1+fbd9b274-c6f7-f011-8407-001dd803b4d1"
+          },
+          {
+            "phase_id": "cpc",
+            "short": "CPC",
+            "label_key": "land_phase_cpc",
+            "days": 60,
+            "cumulative_days": 150,
+            "model_stage": "cpc",
+            "outer_bound_due_date": "2026-08-13",
+            "due_date": null,
+            "statute_ref": "NYC Charter §197-c",
+            "start_date": null,
+            "start_basis": null,
+            "deadline_basis": null,
+            "deadline_certainty": "completed",
+            "status": "completed",
+            "completed_at": "2026-06-29",
+            "evidence_id": "zap-milestone:c2dfb1fe-7cff-ef11-9340-001dd80bde22"
+          },
+          {
+            "phase_id": "city_council",
+            "short": "Council",
+            "label_key": "land_phase_city_council",
+            "days": 50,
+            "cumulative_days": 200,
+            "model_stage": "city_council",
+            "outer_bound_due_date": "2026-10-02",
+            "due_date": null,
+            "statute_ref": "NYC Charter §197-c",
+            "start_date": null,
+            "start_basis": null,
+            "deadline_basis": null,
+            "deadline_certainty": "completed",
+            "status": "completed",
+            "completed_at": "2026-10-06",
+            "evidence_id": "zap-milestone:01e0b1fe-7cff-ef11-9340-001dd80bde22"
+          },
+          {
+            "phase_id": "mayoral_appeals",
+            "short": "Mayor",
+            "label_key": "land_phase_mayoral_appeals",
+            "days": 5,
+            "cumulative_days": 205,
+            "model_stage": "mayoral_appeals",
+            "outer_bound_due_date": "2026-10-07",
+            "due_date": null,
+            "statute_ref": "NYC Charter §197-c",
+            "start_date": null,
+            "start_basis": null,
+            "deadline_basis": null,
+            "deadline_certainty": "completed",
+            "status": "completed",
+            "completed_at": "2026-10-13",
+            "evidence_id": "zap-milestone:421576a2-990f-f111-8407-001dd803dca7"
+          }
+        ],
+        "disposition": {
+          "phase_id": "disposition",
+          "predicted_event_kind": "land.zap_disposition",
+          "due_date": "2026-10-07",
+          "cumulative_days": 205,
+          "statute_ref": "NYC Charter §197-c",
+          "status": "completed",
+          "completed_at": "2026-10-13",
+          "evidence_id": "ulurp-disposition-complete:2025K0284:2026-10-13"
+        },
+        "evidence_event_ids": [
+          "zap-certified-referred:2025K0284:2026-03-16",
+          "zap-milestone:27dfb1fe-7cff-ef11-9340-001dd80bde22"
+        ],
+        "generated_at": "2026-11-02T08:02:17.994Z"
+      },
+      "source_observations": {
+        "zap_api": {
+          "source_system": "zap_project_api",
+          "acquisition_status": "ok",
+          "observation_status": "observed_and_retained",
+          "observed_at": "2026-11-02T08:02:17.994Z",
+          "retained_observed_at": "2026-10-17T03:07:05.848Z"
+        },
+        "open_data": {
+          "source_system": "zap_projects_open_data",
+          "acquisition_status": "ok",
+          "observation_status": "observed",
+          "observed_at": "2026-11-02T08:00:06.573Z",
+          "attempted_at": "2026-11-02T08:02:17.994Z"
+        },
+        "city_record": {
+          "source_system": "city_record",
+          "acquisition_status": "unavailable",
+          "observation_status": "unavailable",
+          "observed_at": "2026-10-13T13:13:58.892Z",
+          "retained_observed_at": null,
+          "attempted_at": "2026-11-02T08:02:17.994Z",
+          "observed_count": 0,
+          "retained_count": 0
+        },
+        "bbl": {
+          "source_system": "zap_bbl_open_data",
+          "acquisition_status": "ok",
+          "observation_status": "observed",
+          "observed_at": "2026-10-05T17:35:26.970Z",
+          "attempted_at": "2026-11-02T08:02:17.994Z"
+        },
+        "dob": {
+          "source_system": "dob_now",
+          "acquisition_status": "ok",
+          "observation_status": "observed",
+          "observed_at": "2026-11-02T08:02:16.216Z",
+          "attempted_at": "2026-11-02T08:02:17.994Z"
+        }
+      },
+      "actions": [
+        {
+          "id": "b853fe32-e4cd-ef11-b8e9-001dd809b68c",
+          "action": "ZM",
+          "ulurp_number": "C260238ZMK",
+          "status": "Approved",
+          "approved": true,
+          "cc_resolution": null,
+          "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_B853FE32E4CDEF11B8E9001DD809B68C"
+        },
+        {
+          "id": "c7754645-e4cd-ef11-b8e9-001dd809b68c",
+          "action": "ZR",
+          "ulurp_number": "N260239ZRK",
+          "status": "Approved",
+          "approved": true,
+          "cc_resolution": null,
+          "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_C7754645E4CDEF11B8E9001DD809B68C"
+        }
+      ],
+      "approved_actions": [
+        {
+          "id": "b853fe32-e4cd-ef11-b8e9-001dd809b68c",
+          "action": "ZM",
+          "ulurp_number": "C260238ZMK",
+          "status": "Approved",
+          "approved": true,
+          "cc_resolution": null,
+          "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZM_Zoning Map Amendment_B853FE32E4CDEF11B8E9001DD809B68C"
+        },
+        {
+          "id": "c7754645-e4cd-ef11-b8e9-001dd809b68c",
+          "action": "ZR",
+          "ulurp_number": "N260239ZRK",
+          "status": "Approved",
+          "approved": true,
+          "cc_resolution": null,
+          "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/ZR_Zoning Text Amendment_C7754645E4CDEF11B8E9001DD809B68C"
+        }
+      ],
+      "dispositions": [
+        {
+          "id": "f3d9b274-c6f7-f011-8407-001dd803b4d1",
+          "name": "2025K0284_ZM_BK BP",
+          "status": "Submitted",
+          "representing": "Borough President",
+          "vote_date": null,
+          "hearing_date": "2026-06-10",
+          "hearing_at": "2026-06-10T22:00:00.000Z",
+          "hearing_location": "Brooklyn Borough Hall, 209 Joralemon Street, Brooklyn NY 11201",
+          "vote_location": null,
+          "community_board": null,
+          "board_id": null,
+          "borough_president": "Favorable",
+          "borough_board": null,
+          "votes_for": null,
+          "votes_against": null,
+          "votes_abstain": null,
+          "n_documents": 4,
+          "action_codes": [
+            "ZM",
+            "ZR"
+          ],
+          "source_ids": [
+            "f3d9b274-c6f7-f011-8407-001dd803b4d1",
+            "fbd9b274-c6f7-f011-8407-001dd803b4d1"
+          ],
+          "n_source_rows": 2
+        },
+        {
+          "id": "36ca2c68-c6f7-f011-8407-001dd80822c1",
+          "name": "2025K0284_ZM_BK CB10",
+          "status": "Submitted",
+          "representing": "Community Board",
+          "vote_date": "2026-05-18",
+          "hearing_date": "2026-05-18",
+          "hearing_at": "2026-05-18T23:00:00.000Z",
+          "hearing_location": "Bay Ridge Center 15 Bay Ridge Avenue Brooklyn, NY 11220",
+          "vote_location": "15 Bay Ridge Avenue, Brooklyn, NY",
+          "community_board": "Unfavorable",
+          "board_id": "brooklyn-cb-10",
+          "borough_president": null,
+          "borough_board": null,
+          "votes_for": 31,
+          "votes_against": 3,
+          "votes_abstain": 0,
+          "n_documents": 4,
+          "action_codes": [
+            "ZM",
+            "ZR"
+          ],
+          "source_ids": [
+            "36ca2c68-c6f7-f011-8407-001dd80822c1",
+            "8aca2c68-c6f7-f011-8407-001dd80822c1"
+          ],
+          "n_source_rows": 2
+        }
+      ],
+      "documents": [
+        {
+          "kind": "disposition",
+          "id": "01QY2C5KJBZN3BDQZANRAJWLYQVIUD3IPN",
+          "group_id": "f3d9b274-c6f7-f011-8407-001dd803b4d1",
+          "group_name": "2025K0284_ZM_BK BP",
+          "name": "Borough President Recommendation.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KJBZN3BDQZANRAJWLYQVIUD3IPN",
+          "time_created": "2026-06-26T16:11:13Z"
+        },
+        {
+          "kind": "disposition",
+          "id": "01QY2C5KJYOIHZHIL4VVFYXCBHFN7PIZ3V",
+          "group_id": "f3d9b274-c6f7-f011-8407-001dd803b4d1",
+          "group_name": "2025K0284_ZM_BK BP",
+          "name": "Fort Hamilton Mews Rezoning C260238ZMK N260239ZRK_Updated.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KJYOIHZHIL4VVFYXCBHFN7PIZ3V",
+          "time_created": "2026-06-26T16:10:49Z"
+        },
+        {
+          "kind": "disposition",
+          "id": "01QY2C5KMAWOOJMBD5NJCZYFQKGM3KWNHR",
+          "group_id": "fbd9b274-c6f7-f011-8407-001dd803b4d1",
+          "group_name": "2025K0284_ZR_BK BP",
+          "name": "Borough President Recommendation.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KMAWOOJMBD5NJCZYFQKGM3KWNHR",
+          "time_created": "2026-06-26T16:12:14Z"
+        },
+        {
+          "kind": "disposition",
+          "id": "01QY2C5KIDXGBW4Y3XJFDZ6Y2SEJYKBWZH",
+          "group_id": "fbd9b274-c6f7-f011-8407-001dd803b4d1",
+          "group_name": "2025K0284_ZR_BK BP",
+          "name": "Fort Hamilton Mews Rezoning C260238ZMK N260239ZRK_Updated.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KIDXGBW4Y3XJFDZ6Y2SEJYKBWZH",
+          "time_created": "2026-06-26T16:11:49Z"
+        },
+        {
+          "kind": "disposition",
+          "id": "01QY2C5KL4UVJMMJWYNBEJQOJXKXF33DSH",
+          "group_id": "36ca2c68-c6f7-f011-8407-001dd80822c1",
+          "group_name": "2025K0284_ZM_BK CB10",
+          "name": "CB10 Recommendation - 9305 5th Avenue, Ft. Hamilton MEWS.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KL4UVJMMJWYNBEJQOJXKXF33DSH",
+          "time_created": "2026-05-21T17:38:15Z"
+        },
+        {
+          "kind": "disposition",
+          "id": "01QY2C5KNWLZPRMSIQSVBLBSIS2IQCFSZD",
+          "group_id": "36ca2c68-c6f7-f011-8407-001dd80822c1",
+          "group_name": "2025K0284_ZM_BK CB10",
+          "name": "Community -Borough Board Recommendation.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KNWLZPRMSIQSVBLBSIS2IQCFSZD",
+          "time_created": "2026-05-22T03:05:46Z"
+        },
+        {
+          "kind": "disposition",
+          "id": "01QY2C5KPQZMBCAYPYDBCLR3NV5IQWVPMO",
+          "group_id": "8aca2c68-c6f7-f011-8407-001dd80822c1",
+          "group_name": "2025K0284_ZR_BK CB10",
+          "name": "CB10 Recommendation - 9305 5th Avenue, Ft. Hamilton MEWS.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KPQZMBCAYPYDBCLR3NV5IQWVPMO",
+          "time_created": "2026-05-21T17:38:19Z"
+        },
+        {
+          "kind": "disposition",
+          "id": "01QY2C5KNMDW2FXAJ5CFEYZZ32EBF6CF7D",
+          "group_id": "8aca2c68-c6f7-f011-8407-001dd80822c1",
+          "group_name": "2025K0284_ZR_BK CB10",
+          "name": "Community -Borough Board Recommendation.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KNMDW2FXAJ5CFEYZZ32EBF6CF7D",
+          "time_created": "2026-05-22T03:05:50Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KMBV52YDH53O5E2SNL4DOAXBPYJ",
+          "group_id": "4a6b93c7-3776-f111-ab0d-001dd800e224",
+          "group_name": "2025K0284_Post-Cert LU_1",
+          "name": "22.-Proposed-Zoning-Text---App-F-MIH-r2.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KMBV52YDH53O5E2SNL4DOAXBPYJ",
+          "time_created": "2026-08-11T17:37:41Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KJTJUN3CV2JEVBKOYXF7HQRDP5A",
+          "group_id": "4a6b93c7-3776-f111-ab0d-001dd800e224",
+          "group_name": "2025K0284_Post-Cert LU_1",
+          "name": "LandUse.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KJTJUN3CV2JEVBKOYXF7HQRDP5A",
+          "time_created": "2026-07-21T13:33:37Z"
+        }
+      ],
+      "n_documents": 85
+    },
+    "2023Q0450": {}
   }
 }

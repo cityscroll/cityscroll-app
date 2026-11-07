@@ -48,12 +48,47 @@ const catalog = readJson("site/data/land_project_catalog.json");
 const membership = readJson("site/data/land_place_membership.json");
 const catalogRows = landProjectRowsFromPayload(catalog);
 
-// SI0201 (sole live member 2019R0267, ULURP) replaces the prior SI0105
-// specimen (2026R0127) after a refresh retired that NTA's only member; this
-// file reads committed site/data directly, so the specimen NTA is expected
-// to need re-pinning periodically.
+function ntaKey(ntaId) {
+  return `geography:nta2020:${ntaId}`;
+}
+
+/**
+ * First NTA (sorted) with a real, query-ready, non-empty match -- discovered
+ * by rule against the live committed catalog/membership rather than pinned,
+ * so a refresh that rotates NTA membership does not re-break this file.
+ */
+function findSoleMemberNtaSpecimen() {
+  const ntaIds = Object.keys(membership.by_geography?.nta2020 || {}).sort();
+  for (const ntaId of ntaIds) {
+    const members = membership.by_geography.nta2020[ntaId] || [];
+    if (!members.length) continue;
+    const match = landNtaWatchMatchingIds({
+      filter: { status: "all", stage: "any", geographies: [ntaKey(ntaId)] },
+      catalogRows,
+      placeMembership: membership,
+      source: "browse",
+      today: TODAY,
+    });
+    if (match.status === "ready" && match.ids.length >= 1) {
+      return { ntaId, target: match.ids[0] };
+    }
+  }
+  throw new Error("no non-empty, query-ready NTA specimen found in the live catalog");
+}
+
+/** A real catalog project id outside the given NTA's membership and distinct from `target`. */
+function findOutOfAreaProjectId(ntaId, target) {
+  const members = new Set(membership.by_geography?.nta2020?.[ntaId] || []);
+  const row = catalogRows.find((item) => item.project_id !== target && !members.has(item.project_id));
+  if (!row) throw new Error(`no out-of-area id found outside ${ntaId}`);
+  return row.project_id;
+}
+
+const { ntaId: SI_NTA_ID, target: SI_TARGET_ID } = findSoleMemberNtaSpecimen();
+const OUT_OF_AREA_ID = findOutOfAreaProjectId(SI_NTA_ID, SI_TARGET_ID);
+
 const NTA = Object.freeze({
-  SI0201: "geography:nta2020:SI0201",
+  SI0201: ntaKey(SI_NTA_ID),
   MN0401: "geography:nta2020:MN0401",
 });
 
@@ -139,7 +174,7 @@ describe("land NTA watch scope aliases and roundtrip", () => {
   it("A4 refuses address/projectIds narrowing with an explicit correction instead of dropping it", () => {
     const refused = prepareLandNtaWatchFilter({
       geographies: [NTA.SI0201],
-      projectIds: ["2019R0267"],
+      projectIds: [SI_TARGET_ID],
     });
     assert.equal(refused.ok, false);
     assert.equal(refused.reason, "land-address-narrowing-present");
@@ -147,7 +182,7 @@ describe("land NTA watch scope aliases and roundtrip", () => {
 
     const viaPrepare = prepareWatchFilter("land", {
       geographies: [NTA.SI0201],
-      projectIds: ["2019R0267"],
+      projectIds: [SI_TARGET_ID],
     });
     assert.equal(viaPrepare.ok, false);
     assert.equal(viaPrepare.reason, "land-address-narrowing-present");
@@ -183,7 +218,7 @@ describe("land NTA watch scope aliases and roundtrip", () => {
 });
 
 describe("land NTA watch matching against retained catalog evidence", () => {
-  it("A1/A5 SI0201 geography-only matching equals browse pre-limit IDs and stays inside membership", () => {
+  it("A1/A5 the SI0201-equivalent specimen's geography-only matching equals browse pre-limit IDs and stays inside membership", () => {
     const filter = { status: "all", stage: "any", geographies: [NTA.SI0201] };
     const browseState = landFilterStateFromRouteParams(
       `#land?status=all&stage=any&geo=${encodeURIComponent(NTA.SI0201)}`,
@@ -204,14 +239,13 @@ describe("land NTA watch matching against retained catalog evidence", () => {
     });
     assert.equal(match.status, "ready");
     assert.deepEqual([...match.ids], browseIds);
-    const members = membership?.by_geography?.nta2020?.SI0201 || [];
-    assert.ok(members.length >= 1, "SI0201 membership must stay populated");
-    assert.ok(match.ids.length >= 1, "SI0201 watch match must stay non-empty while membership is populated");
+    const members = membership?.by_geography?.nta2020?.[SI_NTA_ID] || [];
+    assert.ok(members.length >= 1, `${SI_NTA_ID} membership must stay populated`);
+    assert.ok(match.ids.length >= 1, `${SI_NTA_ID} watch match must stay non-empty while membership is populated`);
     for (const id of match.ids) {
-      assert.ok(members.includes(id), `SI0201 watch id ${id} must stay inside membership`);
+      assert.ok(members.includes(id), `${SI_NTA_ID} watch id ${id} must stay inside membership`);
     }
-    assert.equal(match.ids.includes("2025M0252"), false);
-    assert.equal(match.ids.includes("2022Y0395"), false);
+    assert.equal(match.ids.includes(OUT_OF_AREA_ID), false);
   });
 
   it("A5 exercises every required watch dimension alone and with geographies", () => {
@@ -331,7 +365,7 @@ describe("land NTA watch matching against retained catalog evidence", () => {
     const filter = { status: "all", stage: "any", geographies: [NTA.SI0201] };
     const clean = landNtaWatchBroadeningFindings({
       filter,
-      deliveredIds: ["2019R0267"],
+      deliveredIds: [SI_TARGET_ID],
       catalogRows,
       placeMembership: membership,
     });
@@ -339,10 +373,10 @@ describe("land NTA watch matching against retained catalog evidence", () => {
 
     const polluted = landNtaWatchBroadeningFindings({
       filter,
-      deliveredIds: ["2019R0267", "2022Y0395"],
+      deliveredIds: [SI_TARGET_ID, OUT_OF_AREA_ID],
       catalogRows,
       placeMembership: membership,
     });
-    assert.ok(polluted.some((line) => line.includes("2022Y0395")));
+    assert.ok(polluted.some((line) => line.includes(OUT_OF_AREA_ID)));
   });
 });

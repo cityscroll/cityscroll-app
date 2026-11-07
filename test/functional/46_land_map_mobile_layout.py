@@ -22,18 +22,30 @@ from playwright.sync_api import Route, sync_playwright
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from land_map_expectations import expected_counts_for_list  # noqa: E402
+from land_map_specimens import find_marker_by_method, find_unmapped_project_id  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 MAP_ROUTE = "/browse/zoning/?view=map"
 FILTERED_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 
-# A multi-lot rezoning: on the map, and emphatically not at an address (LM-07's anchor).
-ANCHOR_SPECIMEN = "2022K0430"
-# The one project genuinely lacking a retained BBL (site/data/land_project_map_points_receipt.json)
-# -- reachable only through the List.
-UNMAPPED_SPECIMEN = "2026X0180"
+# Resolved at runtime from the live render (see resolve_specimens) rather than pinned: which
+# project is a multi-lot anchor or carries no marker at all moves with every data refresh.
+ANCHOR_SPECIMEN = ""
+UNMAPPED_SPECIMEN = ""
 # The registered fixtures, plus the desktop regression width.
 FIXTURES = ((320, 568), (375, 667), (768, 1024), (1440, 900))
+
+
+def resolve_specimens(browser) -> None:
+    global ANCHOR_SPECIMEN, UNMAPPED_SPECIMEN
+    context, page = new_page(browser, 1440, 900)
+    try:
+        page.goto(f"{BASE}{MAP_ROUTE}", wait_until="domcontentloaded", timeout=45_000)
+        wait_for_map(page)
+        ANCHOR_SPECIMEN = find_marker_by_method(page, "multi_bbl_anchor")
+        UNMAPPED_SPECIMEN = find_unmapped_project_id(page)
+    finally:
+        context.close()
 
 
 def install_routes(page) -> None:
@@ -237,6 +249,7 @@ def check_filtered_population_keeps_the_same_model(browser) -> None:
 def main() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
+        resolve_specimens(browser)
         for width, height in FIXTURES:
             check_fixture(browser, width, height)
         check_filtered_population_keeps_the_same_model(browser)

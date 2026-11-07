@@ -38,19 +38,40 @@ function warehouseRow(projectId) {
     || projects.find((row) => row.project_id === projectId);
 }
 
-// 2026R0127 was the prior acquisition (PQ) specimen until a refresh retired
-// it from the live warehouse; this file reads committed site/data directly
-// rather than a frozen fixture, so the specimen is expected to need
-// re-pinning periodically.
-const ACQUISITION = "2022X0150";
-// 2025M0252 was the prior major_concession (MC) specimen; no live warehouse
-// row currently carries that action at all (a zero-population family this
-// refresh, not a bug), so this one test's specimen is a synthetic row built
-// from the documented MC action code rather than a live lookup.
+// This file reads committed site/data directly rather than a frozen fixture,
+// so each specimen below is the first project (sorted by id) whose own
+// current family shape satisfies the test, found with the same production
+// functions the rest of this file exercises, rather than a fixed id that
+// ordinary refresh churn can rotate out at any time.
+function allRows() {
+  return [...projects].sort((a, b) => a.project_id.localeCompare(b.project_id));
+}
+function findRowIdByFamily(predicate) {
+  const row = allRows().find(predicate);
+  if (!row) {
+    throw new Error("no live project currently matches a required land-use-family shape for this test file; it needs a fresh specimen pinned by hand");
+  }
+  return row.project_id;
+}
+
+const ACQUISITION = findRowIdByFamily((row) => {
+  const families = landUseFamilies(row);
+  return families.length === 1 && families[0] === "acquisition";
+});
+// No live warehouse row currently carries the major_concession (MC) action at
+// all (a zero-population family this refresh, not a bug), so this one
+// specimen is a synthetic row built from the documented MC action code
+// rather than a live lookup.
 const MAJOR_CONCESSION_ROW = { project_id: "SYNTHETIC-MC", actions: "MC" };
-const CERTIFICATION = "2023R0329";
-const DISPOSITION = "2022X0393";
-const ZM_ONLY = "2026K0123";
+const CERTIFICATION = findRowIdByFamily((row) => {
+  const families = landUseFamilies(row);
+  return families.length === 1 && families[0] === "certification"
+    && filterLandSnapshot(projects, { status: "all", procedure: "non_ulurp", family: "certification", limit: 500 })
+      .some((item) => item.project_id === row.project_id);
+});
+const DISPOSITION = findRowIdByFamily((row) => landRowMatchesFamily(row, "disposition"));
+const ZM_ONLY = findRowIdByFamily((row) =>
+  String(row.actions || "").trim() === "ZM" && landUseFamilies(row).includes("rezoning"));
 
 test("family facet is a closed vocabulary and default is any", () => {
   assert.equal(DEFAULT_LAND_FAMILY, "any");

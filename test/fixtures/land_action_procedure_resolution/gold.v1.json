@@ -36,11 +36,20 @@
     "unknown-2026Q0184": {
       "project_id": "2026Q0184",
       "replaces": "unknown-2026K0123 (2026K0123 was certified into ULURP with real application numbers during a refresh, so it no longer demonstrates an unresolved/unknown track)",
+      "row": {
+        "project_id": "2026Q0184",
+        "actions": "ZA; EAS",
+        "ulurp_numbers": null,
+        "ulurp_non": "ULURP",
+        "ceqr_number": "27DCP038Q",
+        "row_note": "Frozen: 2026Q0184 is this refresh's unresolved/unknown-track specimen (replacing 2026K0123, which was itself certified into ULURP); pinned here so a later refresh that moves or resolves this project cannot silently drop the only live demonstration of this track."
+      },
       "expect": {
         "procedure_resolution": "unknown",
         "action_count": 2,
         "action_types": ["ZA", "EAS"],
-        "resolved_count": 0
+        "resolved_count": 0,
+        "unresolved_reasons": ["missing_application_id", "unsupported_action_token"]
       }
     }
   },

@@ -14,23 +14,18 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from urllib.parse import quote
 
 from browser_support import launched_chromium
 
 ROOT = Path(__file__).resolve().parents[2]
 MEMBERSHIP_PATH = ROOT / "site" / "data" / "land_place_membership.json"
-# QN0602 is the current specimen NTA: every one of its live ZAP members
-# resolves ULURP/ELURP and Active, so the full membership set survives this
-# preview's default land-procedure and status facets exactly (this journey
-# asserts preview == membership, not just a subset). This was SI0105 until a
-# routine refresh retired that NTA's only member (2026R0127) from the live
-# population; this journey reads committed site/data directly rather than a
-# frozen fixture, so the specimen NTA is expected to need re-pinning
-# periodically.
-WATCH_ROUTE = (
-    "/following?lens=land&filter="
-    "%7B%22geographies%22%3A%5B%22geography%3Anta2020%3AQN0602%22%5D%7D&count=1"
-)
+# The specimen NTA is resolved at runtime (see `resolve_specimen_nta`): which NTA's live ZAP
+# members all resolve ULURP/ELURP and Active -- so the full membership set survives this
+# preview's default facets exactly, letting this journey assert preview == membership rather
+# than just a subset -- is a property of the live, continuously refreshed catalog, not a fixed
+# NTA. This journey reads committed site/data directly rather than a frozen fixture, so the
+# resolver re-measures it on every run instead of needing periodic re-pinning by hand.
 PREVIEW_ID_RE = re.compile(r'data-preview-id="([^"]+)"')
 STATUS_RE = re.compile(r'data-following-preview-status="([^"]+)"')
 PER_USER_MARKERS = (
@@ -74,19 +69,60 @@ def stop_server(process: subprocess.Popen) -> None:
         process.kill()
 
 
-def independent_membership_ids() -> list[str]:
+def candidate_ntas() -> list[str]:
+    """Every NTA the committed membership index names, in a stable order."""
+    payload = json.loads(MEMBERSHIP_PATH.read_text(encoding="utf-8"))
+    return sorted(payload.get("by_geography", {}).get("nta2020", {}).keys())
+
+
+def independent_membership_ids(nta: str) -> list[str]:
     """Observe membership from the committed public index (not from preview HTML)."""
     payload = json.loads(MEMBERSHIP_PATH.read_text(encoding="utf-8"))
-    ids = payload.get("by_geography", {}).get("nta2020", {}).get("QN0602") or []
+    ids = payload.get("by_geography", {}).get("nta2020", {}).get(nta) or []
     return sorted({str(item) for item in ids if item})
 
 
-def emptied_membership_path(tmp: Path) -> Path:
+def watch_route(nta: str) -> str:
+    filter_json = json.dumps({"geographies": [f"geography:nta2020:{nta}"]}, separators=(",", ":"))
+    return f"/following?lens=land&filter={quote(filter_json, safe='')}&count=1"
+
+
+def emptied_membership_path(tmp: Path, nta: str) -> Path:
     payload = json.loads(MEMBERSHIP_PATH.read_text(encoding="utf-8"))
-    payload.setdefault("by_geography", {}).setdefault("nta2020", {})["QN0602"] = []
+    payload.setdefault("by_geography", {}).setdefault("nta2020", {})[nta] = []
     out = tmp / "emptied-land-place-membership.json"
     out.write_text(json.dumps(payload), encoding="utf-8")
     return out
+
+
+def resolve_specimen_nta(base: str, browser) -> str:
+    """The first NTA (sorted) whose live preview equals its full committed membership.
+
+    Every default-facet preview is an exact subset of membership; this picks the one NTA,
+    among the live catalog's current candidates, where that subset happens to be the whole
+    set -- the shape this journey needs to assert preview == membership rather than a subset.
+    """
+    context = browser.new_context(viewport={"width": 1280, "height": 900})
+    context.clear_cookies()
+    page = context.new_page()
+    try:
+        for nta in candidate_ntas():
+            membership_ids = independent_membership_ids(nta)
+            if not membership_ids:
+                continue
+            try:
+                observed = collect_preview(page, base, nta)
+            except Exception:
+                continue
+            if observed["status"] != "complete":
+                continue
+            parity = record_parity(observed["preview_ids"], membership_ids, nta)
+            if parity["parity_equal"]:
+                return nta
+        raise AssertionError(
+            "no currently live NTA has a default-facet preview equal to its full membership")
+    finally:
+        context.close()
 
 
 def install_api_routes(page, base: str) -> None:
@@ -111,9 +147,9 @@ def install_api_routes(page, base: str) -> None:
     page.route(f"{base}/following/personal**", fulfill_personal)
 
 
-def collect_preview(page, base: str) -> dict:
+def collect_preview(page, base: str, nta: str) -> dict:
     install_api_routes(page, base)
-    page.goto(f"{base}{WATCH_ROUTE}", wait_until="networkidle")
+    page.goto(f"{base}{watch_route(nta)}", wait_until="networkidle")
     page.wait_for_selector('[data-session-recognized="false"]', state="attached", timeout=5000)
     # Real stylesheet must load for the acceptance journey.
     hrefs = page.eval_on_selector_all(
@@ -150,40 +186,41 @@ def assert_sign_in_affordance(page) -> None:
     assert page.locator("text=Open a CityScroll email to see your watches").count() >= 1
 
 
-def record_parity(preview_ids: list[str], membership_ids: list[str]) -> dict:
+def record_parity(preview_ids: list[str], membership_ids: list[str], nta: str) -> dict:
     preview = {str(item) for item in preview_ids if item}
     membership = {str(item) for item in membership_ids if item}
     return {
         "preview_project_ids": sorted(preview),
         "membership_project_ids": sorted(membership),
         "preview_project_ids_source": "browser-following-preview-markup",
-        "membership_project_ids_source": "committed-land-place-membership-by_geography.nta2020.QN0602",
+        "membership_project_ids_source": f"committed-land-place-membership-by_geography.nta2020.{nta}",
         "parity_equal": preview == membership and bool(membership),
         "intersection": sorted(preview & membership),
     }
 
 
 def main() -> int:
-    membership_ids = independent_membership_ids()
-    assert membership_ids, "QN0602 membership must stay populated for the signed-out preview journey"
-
     process, base = start_server()
     try:
         with launched_chromium() as browser:
+            nta = resolve_specimen_nta(base, browser)
+            membership_ids = independent_membership_ids(nta)
+            assert membership_ids, f"{nta} membership must stay populated for the signed-out preview journey"
+
             context = browser.new_context(viewport={"width": 1280, "height": 900})
             # Explicitly signed out: no cookies / storage.
             context.clear_cookies()
             page = context.new_page()
-            observed = collect_preview(page, base)
+            observed = collect_preview(page, base, nta)
             assert observed["status"] == "complete", observed
             assert_no_per_user_fields(observed["html"])
             assert_sign_in_affordance(page)
-            parity = record_parity(observed["preview_ids"], membership_ids)
+            parity = record_parity(observed["preview_ids"], membership_ids, nta)
             assert parity["parity_equal"], parity
             assert parity["intersection"], parity
 
             # Positive control: a mutated expectation must fail the parity check.
-            mutated = record_parity(observed["preview_ids"] + ["1999Z9999"], membership_ids)
+            mutated = record_parity(observed["preview_ids"] + ["1999Z9999"], membership_ids, nta)
             assert not mutated["parity_equal"], mutated
 
             context.close()
@@ -191,14 +228,14 @@ def main() -> int:
         stop_server(process)
 
     with tempfile.TemporaryDirectory() as tmp:
-        empty_path = emptied_membership_path(Path(tmp))
+        empty_path = emptied_membership_path(Path(tmp), nta)
         empty_process, empty_base = start_server(membership_path=empty_path)
         try:
             with launched_chromium() as browser:
                 context = browser.new_context(viewport={"width": 1280, "height": 900})
                 context.clear_cookies()
                 page = context.new_page()
-                observed = collect_preview(page, empty_base)
+                observed = collect_preview(page, empty_base, nta)
                 assert observed["status"] == "complete", observed
                 assert observed["preview_ids"] == [], observed
                 assert "No matches now — still watch for new" in observed["html"]
@@ -212,6 +249,7 @@ def main() -> int:
         json.dumps(
             {
                 "ok": True,
+                "nta": nta,
                 "membership_project_ids": membership_ids,
                 "preview_membership_intersection_count": len(membership_ids),
             }

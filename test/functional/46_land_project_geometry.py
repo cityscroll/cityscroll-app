@@ -18,10 +18,14 @@ from playwright.sync_api import Route, sync_playwright
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from land_map_expectations import expected_counts_for_list  # noqa: E402
+from land_map_specimens import find_marker_by_method, find_project_with_parcel_outline  # noqa: E402
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 MAP_ROUTE = "/browse/zoning/?view=map"
-POSITIVE_SPECIMEN = "2025K0284"  # single-BBL exact.
-FALLBACK_SPECIMEN = "2022K0430"  # multi-BBL anchor, ambiguous relation.
+# Resolved at runtime from the live render (see resolve_specimens) rather than pinned: which
+# project is a single-BBL exact point with a retained shape, or a multi-BBL anchor, moves
+# with every data refresh.
+POSITIVE_SPECIMEN = ""  # single-BBL exact, with a retained parcel shape.
+FALLBACK_SPECIMEN = ""  # multi-BBL anchor, ambiguous relation.
 
 
 def install_routes(page) -> None:
@@ -79,8 +83,20 @@ def observe(page) -> dict:
 
 
 def main() -> None:
+    global POSITIVE_SPECIMEN, FALLBACK_SPECIMEN
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
+
+        # Resolve on a throwaway page: finding the positive specimen means clicking through
+        # live candidates, which would otherwise spoil the "no outline before inspection" read.
+        discovery_page = browser.new_page(viewport={"width": 1440, "height": 900})
+        install_routes(discovery_page)
+        discovery_page.goto(f"{BASE}{MAP_ROUTE}", wait_until="domcontentloaded", timeout=45_000)
+        wait_for_map(discovery_page)
+        POSITIVE_SPECIMEN = find_project_with_parcel_outline(discovery_page)
+        FALLBACK_SPECIMEN = find_marker_by_method(discovery_page, "multi_bbl_anchor")
+        discovery_page.close()
+
         page = browser.new_page(viewport={"width": 1440, "height": 900})
         install_routes(page)
         page.goto(f"{BASE}{MAP_ROUTE}", wait_until="domcontentloaded", timeout=45_000)

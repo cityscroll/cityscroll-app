@@ -17,6 +17,23 @@ function spine(events = []) {
   return { schema_version: 1, project_id: "profile-test", events };
 }
 
+/**
+ * The first (by project_id) live default-snapshot project whose own resolved
+ * procedure profile matches a predicate over resolveLandProcedureProfile's
+ * result. Computed fresh from the current snapshot via the same production
+ * resolver this file tests, so these specimens survive a refresh that
+ * rotates the Default Land snapshot's membership instead of needing re-pins.
+ */
+function firstProjectWithResolvedProfile(predicate) {
+  const sorted = [...landDefault.projects].sort((a, b) =>
+    String(a.project_id).localeCompare(String(b.project_id)),
+  );
+  for (const project of sorted) {
+    if (predicate(resolveLandProcedureProfile(project))) return project;
+  }
+  return null;
+}
+
 test("reviewed registry is versioned and every stage has role, effect, window, and citation", () => {
   assert.deepEqual(validateLandProcedureProfileRegistry(LAND_PROCEDURE_PROFILE_REGISTRY), { ok: true, errors: [] });
   assert.equal(LAND_PROCEDURE_PROFILE_REGISTRY.schema, "cityscroll.land_procedure_profiles.v1");
@@ -44,11 +61,11 @@ test("reviewed registry is versioned and every stage has role, effect, window, a
   }
 });
 
-test("real 2023K0357 specimen consumes ordinary profile and conditional Borough Board stage", () => {
-  // 2025K0305 was the prior ulurp_197c specimen until a refresh rotated it
-  // out of the 40-row Default Land snapshot; 2023K0357 is its replacement.
-  const project = landDefault.projects.find((row) => row.project_id === "2023K0357");
-  assert.ok(project, "the census specimen must remain in the default Land artifact");
+test("a real ulurp_197c specimen consumes ordinary profile and conditional Borough Board stage", () => {
+  const project = firstProjectWithResolvedProfile(
+    (resolved) => resolved.status === "resolved" && resolved.profile_id === "ulurp_197c",
+  );
+  assert.ok(project, "the default Land artifact must retain at least one resolved ulurp_197c project");
   const resolved = resolveLandProcedureProfile(project);
   assert.equal(resolved.status, "resolved");
   assert.equal(resolved.profile_id, "ulurp_197c");
@@ -60,7 +77,7 @@ test("real 2023K0357 specimen consumes ordinary profile and conditional Borough 
       title: "Community Board Review",
       detail: "Community Board 11",
       time: { value: "2026-07-02", certainty: "actual" },
-      source: { id: "zap", url: "https://zap.planning.nyc.gov/projects/2023K0357" },
+      source: { id: "zap", url: `https://zap.planning.nyc.gov/projects/${project.project_id}` },
     },
   ]), {
     open_data: project,
@@ -166,11 +183,10 @@ test("milestone-only, mixed-action, and absent-procedure inputs fail closed", ()
   assert.equal(milestoneOnly.profile_id, null);
   assert.equal(Object.hasOwn(milestoneOnly, "observed_event_id"), false);
 
-  // 2026K0123 was the prior mixed_action_set specimen until a refresh moved
-  // it off its EAS-only actions and out of the 40-row Default Land snapshot;
-  // 2024X0217 ("HA; HU") is its replacement.
-  const mixedProject = landDefault.projects.find((row) => row.project_id === "2024X0217");
-  assert.ok(mixedProject);
+  const mixedProject = firstProjectWithResolvedProfile(
+    (resolved) => resolved.status === "unresolved" && resolved.reason === "mixed_action_set",
+  );
+  assert.ok(mixedProject, "the default Land artifact must retain at least one mixed_action_set project");
   const mixed = resolveLandProcedureProfile(mixedProject);
   assert.equal(mixed.status, "unresolved");
   assert.equal(mixed.reason, "mixed_action_set");

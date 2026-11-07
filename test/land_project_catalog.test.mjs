@@ -62,7 +62,7 @@ function fixtureDefaults(projects, generatedAt = "2026-09-09T06:46:42.537Z") {
 }
 
 describe("land_project_catalog", () => {
-  it("A1 baseline catalog has exactly 244 unique IDs matching mergeLandProjects field-for-field", () => {
+  it("A1 baseline catalog has a measured count of unique IDs matching mergeLandProjects field-for-field", () => {
     assert.ok(existsSync(WAREHOUSE_PATH), "warehouse lookup present");
     assert.ok(existsSync(DEFAULTS_PATH), "defaults snapshot present");
     const warehouse = readJson(WAREHOUSE_PATH);

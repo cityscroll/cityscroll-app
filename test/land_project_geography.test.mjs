@@ -64,17 +64,37 @@ function specimenCentroids(projectId) {
   return row.matched_centroids.map((item) => ({ bbl: item.bbl, lat: item.lat, lon: item.lon }));
 }
 
-test("A1 2023Q0351 anchors on a real nearest-mean centroid, not the mean or first row", () => {
-  // 2025K0305 was the prior specimen until a refresh rotated it out of the
-  // 40-row Default Land snapshot this file reads live; this file reads
-  // committed site/data directly rather than a frozen fixture, so the
-  // specimen is expected to need re-pinning periodically.
-  const points = specimenCentroids("2023Q0351");
-  assert.equal(points.length, 24);
+// This file reads committed site/data directly rather than a frozen fixture,
+// so a project id with the shape A1 needs (a genuine multi-BBL anchor whose
+// nearest-mean centroid is neither the mean itself nor the first row) is
+// selected by rule from the live census instead of a fixed id, so a refresh
+// that retires the previous specimen cannot re-break this test.
+function findMultiBblAnchorSpecimen() {
+  const sortedProjectIds = census.projects
+    .map((item) => item.project_id)
+    .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+  for (const projectId of sortedProjectIds) {
+    const points = specimenCentroids(projectId);
+    if (points.length < 2) continue;
+    const expected = nearestRetainedCentroid(uniqueKnownBblCentroids(points));
+    if (!expected) continue;
+    const meanIsACentroid = points.some(
+      (item) => item.lat === expected.mean.lat && item.lon === expected.mean.lon,
+    );
+    if (meanIsACentroid) continue;
+    if (expected.bbl === points[0].bbl) continue;
+    return { projectId, points, expected };
+  }
+  throw new Error("no current census project is a multi-BBL anchor whose nearest centroid differs from both the mean and the first row");
+}
+
+const multiBblAnchorSpecimen = findMultiBblAnchorSpecimen();
+
+test(`A1 ${multiBblAnchorSpecimen.projectId} anchors on a real nearest-mean centroid, not the mean or first row`, () => {
+  const { points, expected } = multiBblAnchorSpecimen;
   const reversed = [...points].reverse();
   const shuffledFirst = [points[0], ...points.slice(1).reverse()];
 
-  const expected = nearestRetainedCentroid(uniqueKnownBblCentroids(points));
   assert.ok(expected);
   const meanIsACentroid = points.some(
     (item) => item.lat === expected.mean.lat && item.lon === expected.mean.lon,
@@ -92,7 +112,7 @@ test("A1 2023Q0351 anchors on a real nearest-mean centroid, not the mean or firs
     assert.equal(result.method, KNOWN_LAND_POINT_METHODS.MULTI_BBL_ANCHOR);
     assert.equal(result.precision, KNOWN_LAND_POINT_PRECISIONS.ANCHOR);
     assert.notEqual(result.precision, KNOWN_LAND_POINT_PRECISIONS.EXACT);
-    assert.equal(result.bblCount, 24);
+    assert.equal(result.bblCount, points.length);
     assert.equal(result.bbl, expected.bbl);
     assert.equal(result.lat, expected.lat);
     assert.equal(result.lon, expected.lon);

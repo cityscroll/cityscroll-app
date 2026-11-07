@@ -86,11 +86,18 @@ function t(key, vars) {
 
 const escape = (value) => String(value ?? "");
 
+// 2025K0284 and 2023Q0450 fall back to frozen specimens (gold.v1.json's
+// "frozen_rows"/"frozen_outcomes" maps) once a refresh rotates them out of
+// the live warehouse, the 40-row Default Land snapshot, or their live
+// outcomes -- the same fallback-when-gone contract already relied on for
+// 2023Q0450 today and for every id in test/land_authority_panel.test.mjs and
+// test/land_authority_summary.test.mjs.
 function warehouseRow(projectId) {
-  return (warehouse.rows || []).find((row) => row.project_id === projectId);
+  return gold.frozen_rows?.[projectId] || (warehouse.rows || []).find((row) => row.project_id === projectId);
 }
 
 function defaultRow(projectId) {
+  if (gold.frozen_rows?.[projectId]) return null;
   return (landDefault.projects || []).find((row) => row.project_id === projectId);
 }
 
@@ -99,9 +106,10 @@ function projectHearings(projectId) {
 }
 
 function outcomeFor(projectId) {
+  const frozen = gold.frozen_outcomes?.[projectId] || {};
   const list = landDefault.outcomes?.by_project?.[projectId] || {};
   const seed = landOutcomesSeed.by_project?.[projectId] || {};
-  return { ...list, ...seed };
+  return { ...frozen, ...list, ...seed };
 }
 
 function summarize(projectId, overrides = {}) {

@@ -23,27 +23,47 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from pathlib import Path
 
 from playwright.sync_api import Route, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from land_map_specimens import find_marker_by_method, find_unmapped_project_ids  # noqa: E402
+
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 
 # Explicit scopes rather than the bare default, so each one names the population it exercises.
+# The two unmapped-only scopes and MAPPED_SPECIMEN are filled in by resolve_specimens() from
+# the live render -- which two projects currently have no published location, and which one
+# is a multi-lot anchor, moves with every data refresh.
 FULL = "status=all&stage=any"
-SCOPES = (
-    ("full", FULL, "The whole filtered population: both sides of the partition are large."),
-    ("combined", f"{FULL}&boro=Queens&family=rezoning", "Borough and family together."),
-    ("community-district", f"{FULL}&cd=M05", "A mixed scope: some results placed, some not."),
-    ("mapped-and-unmapped", f"{FULL}&q=Westshore", "A small scope holding one of each."),
-    ("unmapped-only", f"{FULL}&q=2020K0444", "An exact project scope with no published location."),
-    ("second-unmapped", f"{FULL}&q=2024M0148", "A second exact project scope with no published location."),
-    ("empty", f"{FULL}&q=zzzznotathing", "No project matches."),
-    ("legacy-status", "status=public:In Public Review", "A legacy URL spelling still browsable."),
-)
-# The project the parity fixtures name: a multi-lot rezoning that is on the map.
-MAPPED_SPECIMEN = "2022K0430"
+SCOPES: tuple = ()
+MAPPED_SPECIMEN = ""
+
+
+def build_scopes(unmapped_a: str, unmapped_b: str) -> tuple:
+    return (
+        ("full", FULL, "The whole filtered population: both sides of the partition are large."),
+        ("combined", f"{FULL}&boro=Queens&family=rezoning", "Borough and family together."),
+        ("community-district", f"{FULL}&cd=M05", "A mixed scope: some results placed, some not."),
+        ("mapped-and-unmapped", f"{FULL}&q=Westshore", "A small scope holding one of each."),
+        ("unmapped-only", f"{FULL}&q={unmapped_a}", "An exact project scope with no published location."),
+        ("second-unmapped", f"{FULL}&q={unmapped_b}",
+         "A second exact project scope with no published location."),
+        ("empty", f"{FULL}&q=zzzznotathing", "No project matches."),
+        ("legacy-status", "status=public:In Public Review", "A legacy URL spelling still browsable."),
+    )
+
+
+def resolve_specimens(page) -> None:
+    global SCOPES, MAPPED_SPECIMEN
+    visit(page, FULL, view="map")
+    MAPPED_SPECIMEN = find_marker_by_method(page, "multi_bbl_anchor")
+    unmapped_a, unmapped_b = find_unmapped_project_ids(page, 2)
+    SCOPES = build_scopes(unmapped_a, unmapped_b)
+
 
 READ_STATE = """() => {
   const summary = document.getElementById('land-map-summary');
@@ -302,10 +322,8 @@ def check_empty_map_explains_itself(page) -> None:
 
 
 def check_unmapped_only_points_at_the_list(page) -> None:
-    for name, query in (
-        ("unmapped-only", f"{FULL}&q=2020K0444"),
-        ("second-unmapped", f"{FULL}&q=2024M0148"),
-    ):
+    scoped = {name: query for name, query, _proves in SCOPES if name in ("unmapped-only", "second-unmapped")}
+    for name, query in scoped.items():
         state = visit(page, query, view="map")
         assert state["counts"]["mapped"] == 0, f"{name}: expected nothing on the map"
         assert state["counts"]["total"] > 0, f"{name}: expected results the map cannot draw"
@@ -359,6 +377,7 @@ def main() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = new_page(browser)
+        resolve_specimens(page)
         check_every_scope_partitions(page)
         check_view_switch_changes_only_presentation(page)
         check_switching_runs_no_second_search(page)

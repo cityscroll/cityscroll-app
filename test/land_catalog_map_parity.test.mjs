@@ -30,6 +30,7 @@ import {
 } from "../site/land_project_geometry.mjs";
 import {
   LAND_PROJECT_MAP_POINTS_MAX_BYTES,
+  LAND_PROJECT_MAP_POINT_SPECIMENS,
   assertLandProjectMapPoints,
   landProjectMapPointsFindings,
   materializeLandProjectMapPoints,
@@ -71,15 +72,12 @@ assert.ok(catalogRows.length >= 200);
 assert.ok(warehouseOnlyIds.length > 0, "catalog must include warehouse-only projects");
 
 const NTA = Object.freeze({
-  SI0105: "geography:nta2020:SI0105",
+  // SI0105 lost its only member in a refresh (same loss noted at the A1
+  // positive-control test below); SI0201 is the current Staten Island
+  // replacement with a populated membership.
+  SI0201: "geography:nta2020:SI0201",
   MN0401: "geography:nta2020:MN0401",
   MN0402: "geography:nta2020:MN0402",
-  // BK1301/BK1391 replace the prior 2023M0213/MN0401/MN0402 specimen for the
-  // selection-preservation test below, which needs a currently-mapped
-  // project whose membership spans two NTAs (same re-pinning expectation
-  // noted elsewhere in this file).
-  BK1301: "geography:nta2020:BK1301",
-  BK1391: "geography:nta2020:BK1391",
 });
 
 function oracleLandIds(rows, {
@@ -143,6 +141,22 @@ function rowsForIds(ids) {
   return ids.map((id) => byId.get(id)).filter(Boolean);
 }
 
+// Selected by rule against the live committed place-membership index (a
+// two-NTA project with an uncovered display-anchor BBL, same shape the prior
+// fixed id 2023M0213 demonstrated before a refresh retired it), so a refresh
+// that retires whichever project currently fills the role cannot re-break
+// this file.
+const TWO_NTA_UNCOVERED_SPECIMEN = (() => {
+  const ids = Object.keys(membership.by_project || {}).sort();
+  for (const id of ids) {
+    const entry = membership.by_project[id];
+    if ((entry.layers?.nta2020?.places || []).length === 2 && (entry.layers?.nta2020?.uncovered_bbls || 0) >= 1) {
+      return id;
+    }
+  }
+  throw new Error("no current land_place_membership.json entry is a two-NTA, uncovered-BBL specimen");
+})();
+
 function parityForQuery(query) {
   const oracle = oracleLandIds(catalogRows, query);
   const rows = rowsForIds(oracle.ids);
@@ -178,11 +192,13 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
     ].sort();
     assert.deepEqual(represented, catalogIds);
     assert.equal(built.receipt.counts.universe, catalogIds.length);
-    assert.equal(built.receipt.counts.universe, 243);
+    // The catalog is daily-refreshed resident data: a floor, not a fixed
+    // population pin, matching the file's own catalogRows.length >= 200 check.
+    assert.ok(built.receipt.counts.universe >= 200, `universe ${built.receipt.counts.universe} < 200`);
     assert.equal(
       built.receipt.counts.mapped + built.receipt.counts.source_missing
         + built.receipt.counts.unmapped + built.receipt.counts.rejected,
-      243,
+      built.receipt.counts.universe,
     );
 
     for (const id of defaultIds) {
@@ -200,7 +216,7 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
   it("A1 List IDs equal marker IDs union unmapped IDs for L05-shaped queries", () => {
     const queries = [
       { status: "all", borough: "Manhattan", geographies: [NTA.MN0401] },
-      { status: "all", borough: "Staten Island", geographies: [NTA.SI0105] },
+      { status: "all", borough: "Staten Island", geographies: [NTA.SI0201] },
       { status: "all", geographies: [NTA.MN0401, NTA.MN0402] },
       { status: "active", borough: "Brooklyn" },
       {
@@ -262,28 +278,28 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
     );
   });
 
-  it("A2 uncovered display anchor keeps BK1301/BK1391 and membership does not mint markers", () => {
-    // 2023M0213 (MN0401/MN0402) was the prior specimen until a refresh
-    // retired it from land_place_membership.json entirely; 2024K0444
-    // (BK1301/BK1391) is the current two-NTA, uncovered-BBL replacement.
-    const entry = membership.by_project["2024K0444"];
+  it(`A2 uncovered display anchor keeps its two NTAs and membership does not mint markers`, () => {
+    // Selected by rule above (TWO_NTA_UNCOVERED_SPECIMEN): a two-NTA,
+    // uncovered-BBL project, the same shape the prior fixed id 2023M0213
+    // demonstrated before a refresh retired it from land_place_membership.json.
+    const entry = membership.by_project[TWO_NTA_UNCOVERED_SPECIMEN];
     assert.ok(entry);
-    assert.deepEqual(entry.layers.nta2020.places.slice().sort(), ["BK1301", "BK1391"]);
-    assert.equal(entry.layers.nta2020.uncovered_bbls, 12);
-    assert.ok("2024K0444" in committedPoints.points);
+    assert.equal(entry.layers.nta2020.places.length, 2);
+    assert.ok(entry.layers.nta2020.uncovered_bbls >= 1);
+    assert.ok(TWO_NTA_UNCOVERED_SPECIMEN in committedPoints.points);
 
-    const noPointId = "2026X0180";
+    const noPointId = LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl;
     assert.equal(noPointId in committedPoints.points, false);
     assert.equal(committedPoints.unmapped[noPointId]?.status, "source_missing");
     const memberPlaces = membership.by_project[noPointId]?.layers?.nta2020?.places || [];
     // Place membership, when present, must not fabricate a marker without a point.
     const model = buildLandMapModel({
-      rows: rowsForIds([noPointId, "2024K0444"]),
+      rows: rowsForIds([noPointId, TWO_NTA_UNCOVERED_SPECIMEN]),
       pointLookup: committedPoints,
     });
     assert.equal(model.markers.some((item) => item.projectId === noPointId), false);
     assert.equal(model.unmapped.some((item) => item.projectId === noPointId), true);
-    assert.equal(model.markers.some((item) => item.projectId === "2024K0444"), true);
+    assert.equal(model.markers.some((item) => item.projectId === TWO_NTA_UNCOVERED_SPECIMEN), true);
     void memberPlaces;
 
     const findings = landProjectMapPointsFindings(
@@ -316,8 +332,14 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
     assert.equal(total, committedReceipt.generation.payload_bytes);
     assert.ok(total <= LAND_PROJECT_MAP_POINTS_MAX_BYTES, `measured ${total} > ${LAND_PROJECT_MAP_POINTS_MAX_BYTES}`);
     assert.ok(total <= 65536, `measured ${total} exceeds card ceiling`);
-    assert.equal(Object.prototype.hasOwnProperty.call(committedPoints.points["2025K0284"], "shape"), false);
-    assert.equal(committedPoints.points["2025K0284"].geometry_shard, landProjectGeometryShardKey("2025K0284"));
+    assert.equal(
+      Object.prototype.hasOwnProperty.call(committedPoints.points[LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl], "shape"),
+      false,
+    );
+    assert.equal(
+      committedPoints.points[LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl].geometry_shard,
+      landProjectGeometryShardKey(LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl),
+    );
 
     for (const id of Object.keys(committedPoints.points)) {
       const point = committedPoints.points[id];
@@ -336,26 +358,26 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
   });
 
   it("A3/A4 geometry loads only on inspection and failed loads keep the marker", async () => {
-    const selectedId = "2025K0284";
+    const selectedId = LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl;
     const shardKey = committedPoints.points[selectedId].geometry_shard;
     const shard = readJson(landProjectGeometryShardPath(shardKey));
     const shape = shapeFromGeometryShard(shard, selectedId);
     assert.ok(shape?.rings);
 
     const before = buildLandMapModel({
-      rows: rowsForIds([selectedId, "2023Q0351"]),
+      rows: rowsForIds([selectedId, LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl]),
       pointLookup: committedPoints,
       selectedProjectId: selectedId,
     });
     assert.equal(before.markers.find((item) => item.projectId === selectedId)?.geometry, null);
 
     const after = buildLandMapModel({
-      rows: rowsForIds([selectedId, "2023Q0351"]),
+      rows: rowsForIds([selectedId, LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl]),
       pointLookup: pointLookupWithSelectedShape(committedPoints, selectedId, shape),
       selectedProjectId: selectedId,
     });
     assert.ok(after.markers.find((item) => item.projectId === selectedId)?.geometry?.rings);
-    assert.equal(after.markers.find((item) => item.projectId === "2023Q0351")?.geometry, null);
+    assert.equal(after.markers.find((item) => item.projectId === LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl)?.geometry, null);
 
     const fetches = [];
     const previousFetch = globalThis.fetch;
@@ -418,10 +440,11 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
   });
 
   it("A4 selection is preserved across List-to-Map parity", () => {
-    const selectedId = "2024K0444";
+    const selectedId = TWO_NTA_UNCOVERED_SPECIMEN;
+    const [ntaA, ntaB] = membership.by_project[selectedId].layers.nta2020.places;
     const { model, receipt, violations } = parityForQuery({
       status: "all",
-      geographies: [NTA.BK1301, NTA.BK1391],
+      geographies: [`geography:nta2020:${ntaA}`, `geography:nta2020:${ntaB}`],
     });
     assert.deepEqual(violations, []);
     assert.ok(receipt.canonical_ids.includes(selectedId));

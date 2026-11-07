@@ -63,10 +63,12 @@ const materializerSrc = readFileSync(new URL("../site/land_authority_summary.mjs
 const builderSrc = readFileSync(new URL("../tools/build_land_authority_summary.mjs", import.meta.url), "utf8");
 const viewSrc = readFileSync(new URL("../site/land_authority_summary_view.mjs", import.meta.url), "utf8");
 
-// 2026Q0210, 2025M0252, and 2024M0244 left the live ZAP warehouse entirely
-// during a refresh; their input and outcome data are frozen in gold.v1.json's
-// "frozen_rows"/"frozen_outcomes" maps instead of looked up live, the same
-// pattern used in test/land_action_procedure_resolution.test.mjs.
+// 2026Q0210, 2025M0252, 2024M0244, 2026K0123, and 2025K0305 are frozen
+// specimens; their input and outcome data live in gold.v1.json's
+// "frozen_rows"/"frozen_outcomes" maps instead of being looked up live, the
+// same pattern used in test/land_action_procedure_resolution.test.mjs, so a
+// daily refresh rotating any of them out of the live warehouse cannot break
+// this file.
 function warehouseRow(projectId) {
   return gold.frozen_rows?.[projectId] || (warehouse.rows || []).find((row) => row.project_id === projectId);
 }

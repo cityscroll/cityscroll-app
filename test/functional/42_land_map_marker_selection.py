@@ -20,22 +20,30 @@ from __future__ import annotations
 import json
 import os
 import re
+import sys
 from pathlib import Path
 
 from playwright.sync_api import Route, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from land_map_specimens import find_marker_by_method, find_unmapped_project_id  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 MAP_ROUTE = "/browse/zoning/?view=map"
 QUEENS_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 
-# A multi-lot rezoning: on the map, and emphatically not at an address.
-ANCHOR_SPECIMEN = "2022K0430"
-# The one project genuinely lacking a retained BBL (site/data/land_project_map_points_receipt.json).
-# It has no marker to select and stays in the List.
-UNMAPPED_SPECIMEN = "2026X0180"
+# Resolved at runtime from the live render (see resolve_specimens) rather than pinned: which
+# project is a multi-lot anchor or carries no marker at all moves with every data refresh.
+ANCHOR_SPECIMEN = ""
+UNMAPPED_SPECIMEN = ""
 EXPECTED_TOTAL = 40
+
+
+def resolve_specimens(page) -> None:
+    global ANCHOR_SPECIMEN, UNMAPPED_SPECIMEN
+    ANCHOR_SPECIMEN = find_marker_by_method(page, "multi_bbl_anchor")
+    UNMAPPED_SPECIMEN = find_unmapped_project_id(page)
 
 
 def install_routes(page) -> None:
@@ -437,6 +445,9 @@ def main() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = new_page(browser)
+        page.goto(f"{BASE}{MAP_ROUTE}", wait_until="domcontentloaded", timeout=45_000)
+        wait_for_map(page)
+        resolve_specimens(page)
         state = check_pointer_selection_costs_no_search(page)
         check_summary_is_honest_about_placement(state)
         check_exact_point_is_not_hedged(page)

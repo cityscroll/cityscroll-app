@@ -31,6 +31,7 @@ import { landProjectPath } from "../site/land_project_route.mjs";
 import {
   BROWSE_INSPECTION_SURFACES,
 } from "../site/browse_inspection_contract.mjs";
+import { LAND_PROJECT_MAP_POINT_SPECIMENS } from "../site/land_project_map_points.mjs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const read = (...parts) => readFileSync(join(ROOT, "..", ...parts), "utf8");
@@ -57,20 +58,29 @@ function t(key, values = {}) {
 }
 
 /**
- * FORT HAMILTON MEWS REZONING — the observed selection specimen.
- * This was "200 Kent Avenue Rezoning" (2024K0286) until a refresh rotated it
- * out of the live Default Land snapshot; this project matches
- * LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl in site/land_project_map_points.mjs
- * (single-BBL exact precision), which this file's A2 test also needs.
+ * The observed selection specimen. Named "200 Kent Avenue Rezoning" until a
+ * refresh rotated that project out of the live Default Land snapshot; now
+ * tracks LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl (site/land_project_map_points.mjs)
+ * directly instead of duplicating its own copy of that id, so this file does
+ * not need separate re-pinning the next time that project rotates out —
+ * only the shared constant does. This file's A2 test needs the specimen's
+ * single-BBL exact precision, the same property that constant selects for.
  * RAW_PROCEDURE/RAW_STAGE below are matched against the frozen fixture
  * (test/fixtures/land_selection_readable_authority/kent_authority_summary.json),
  * not this project's own live authority summary, and stay unchanged. The
- * KENT_ID identifier is kept for minimal diff; it no longer names a Kent
+ * KENT_ID identifier is kept for minimal diff; it may no longer name a Kent
  * Avenue project.
  */
-const KENT_ID = "2025K0284";
+const KENT_ID = LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl;
+const KENT_PROJECT_NAME = String(
+  landDefault.projects.find((row) => row.project_id === KENT_ID)?.project_name || "",
+);
 const RAW_PROCEDURE = "ulurp_197c";
 const RAW_STAGE = "ulurp_197c.city_planning_commission_review";
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 function sha256(text) {
   return createHash("sha256").update(String(text)).digest("hex");
@@ -147,7 +157,7 @@ test("A1: selecting Fort Hamilton Mews keeps map context and actions with proced
 
   const html = selectionHTML(row);
   assert.match(html, new RegExp(`id="${LAND_MAP_SELECTION_ID}"`));
-  assert.match(html, /FORT HAMILTON MEWS REZONING/);
+  assert.match(html, new RegExp(escapeRegExp(KENT_PROJECT_NAME)));
   assert.match(html, /data-land-map-authority="1"/);
   assert.doesNotMatch(html, /role="dialog"|aria-modal="true"/);
 
@@ -297,7 +307,7 @@ test("A4: browsing-contract fixture stays a nonmodal selection panel", () => {
 test("A4: failed-detail recovery keeps the last coherent summary and explicit record link", () => {
   const html = selectionHTML(kentRow());
   // A failed later detail fetch must not strip the already-painted selection or its link.
-  assert.match(html, /FORT HAMILTON MEWS REZONING/);
+  assert.match(html, new RegExp(escapeRegExp(KENT_PROJECT_NAME)));
   assert.match(html, /data-land-map-authority="1"/);
   assert.match(html, new RegExp(`data-land-map-detail="${KENT_ID}"`));
   assert.match(html, new RegExp(`href="${landProjectPath(KENT_ID).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
@@ -340,7 +350,7 @@ test("A4: record the applicable journey evidence with revision, route, viewport,
     viewports,
     specimen: {
       project_id: KENT_ID,
-      project_name: "FORT HAMILTON MEWS REZONING",
+      project_name: KENT_PROJECT_NAME,
       procedure_id: row.authority_summary.procedure_id,
       stage_id: row.authority_summary.current_stage?.stage_id || null,
     },

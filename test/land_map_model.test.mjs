@@ -64,6 +64,43 @@ function defaultRows(overrides = {}) {
   return filterLandSnapshot(landDefault.projects, { ...DEFAULT_FILTER, ...overrides });
 }
 
+/**
+ * A keyword drawn from a stage-filtered project's own name, chosen so that
+ * keyword+stage narrows the live corpus to exactly that one project. Computed
+ * fresh from the current snapshot (rows sorted by project_id, words taken in
+ * the order they appear in the name) so this specimen survives data refreshes
+ * without re-pinning.
+ */
+function uniqueKeywordStageSpecimen(stage) {
+  const stageRows = [...defaultRows({ stage })].sort((a, b) =>
+    String(a.project_id).localeCompare(String(b.project_id)),
+  );
+  for (const row of stageRows) {
+    const words = String(row.project_name || "").split(/[^A-Za-z0-9]+/).filter((w) => w.length >= 4);
+    for (const word of words) {
+      const matches = defaultRows({ keyword: word, stage });
+      if (matches.length === 1 && matches[0].project_id === row.project_id) {
+        return { projectId: row.project_id, keyword: word };
+      }
+    }
+  }
+  throw new Error(`no unique keyword+stage specimen found for stage=${stage}`);
+}
+
+/**
+ * The first (by project_id) borough row in the live default corpus with no
+ * retained map point, computed fresh so this specimen survives the next
+ * data refresh instead of needing re-pinning.
+ */
+function firstUnmappedBoroughSpecimen(borough) {
+  const rows = [...defaultRows({ borough })].sort((a, b) =>
+    String(a.project_id).localeCompare(String(b.project_id)),
+  );
+  const row = rows.find((candidate) => !(candidate.project_id in pointArtifact.points));
+  if (!row) throw new Error(`no unmapped ${borough} specimen found in the live corpus`);
+  return row.project_id;
+}
+
 function pointLookupWithExtra(extraId = EXTRA_POINT_ID) {
   return {
     schema: pointArtifact.schema,
@@ -173,11 +210,15 @@ test("A1 default filtered Land rows keep the published population", () => {
 test("A3 borough and keyword-plus-stage fixtures keep List/Map set equality", () => {
   // 2025K0305 was the prior Brooklyn marker specimen until a refresh rotated
   // it out of the 40-row Default Land snapshot; LAND_PROJECT_MAP_POINT_SPECIMENS
-  // .single_bbl (2025K0284, also Brooklyn) is its replacement.
+  // .single_bbl (2025K0284, also Brooklyn) is its replacement. The unmapped
+  // Brooklyn specimen is computed fresh (see firstUnmappedBoroughSpecimen) so
+  // it is not re-pinned to a fixed id that the rotating 40-row Default Land
+  // snapshot could drop next refresh.
   const boroughRows = defaultRows({ borough: "Brooklyn" });
   assert.equal(boroughRows.length < 40, true);
   assert.equal(boroughRows.some((row) => row.project_id === LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl), true);
-  assert.equal(boroughRows.some((row) => row.project_id === "2020K0444"), true);
+  const unmappedBoroughSpecimen = firstUnmappedBoroughSpecimen("Brooklyn");
+  assert.equal(boroughRows.some((row) => row.project_id === unmappedBoroughSpecimen), true);
   const boroughModel = buildLandMapModel({
     rows: boroughRows,
     pointLookup: pointLookupWithExtra(),
@@ -188,19 +229,20 @@ test("A3 borough and keyword-plus-stage fixtures keep List/Map set equality", ()
     true,
   );
   assert.equal(
-    boroughModel.unmapped.some((item) => item.projectId === "2020K0444"),
+    boroughModel.unmapped.some((item) => item.projectId === unmappedBoroughSpecimen),
     true,
   );
 
-  // "Westshore" + pre_certification was the prior unique keyword+stage match
-  // (also 2025K0305); "Shore Parkway" + pre_certification now uniquely
-  // resolves to 2025K0306, a different Brooklyn project with the same
-  // re-pinning expectation as the other live-data specimens in this file.
+  // The keyword+stage specimen is computed from the live corpus (see
+  // uniqueKeywordStageSpecimen) rather than pinned to a fixed project/word
+  // pair, so this assertion survives the next data refresh unattended.
+  const { projectId: keywordStageProjectId, keyword: keywordStageKeyword } =
+    uniqueKeywordStageSpecimen("pre_certification");
   const keywordStageRows = defaultRows({
-    keyword: "Shore Parkway",
+    keyword: keywordStageKeyword,
     stage: "pre_certification",
   });
-  assert.deepEqual(keywordStageRows.map((row) => row.project_id), ["2025K0306"]);
+  assert.deepEqual(keywordStageRows.map((row) => row.project_id), [keywordStageProjectId]);
   const keywordModel = buildLandMapModel({
     rows: keywordStageRows,
     pointLookup: pointLookupWithExtra(),
@@ -208,7 +250,7 @@ test("A3 borough and keyword-plus-stage fixtures keep List/Map set equality", ()
   assertParity(keywordStageRows, keywordModel);
   assert.equal(keywordModel.counts.mapped, 1);
   assert.equal(keywordModel.counts.unmapped, 0);
-  assert.equal(keywordModel.markers[0].projectId, "2025K0306");
+  assert.equal(keywordModel.markers[0].projectId, keywordStageProjectId);
 });
 
 test("empty results stay empty without inventing point-only projects", () => {
@@ -384,7 +426,20 @@ test("A3 every existing Land filter dimension preserves List/Map id equality", (
     })),
     { label: "keyword", opts: { keyword: "Rezoning", status: "all", stage: "any" } },
     { label: "council", opts: { councilDistrict: "33", status: "all", stage: "any" } },
-    { label: "projectIds", opts: { projectIds: ["2025K0305", "2025M0252", EXTRA_POINT_ID], status: "all", stage: "any" } },
+    // Two real ids drawn from the live corpus (sorted, first two) rather than
+    // pinned literals, so this fixture keeps exercising the projectIds filter
+    // dimension instead of silently matching nothing after the next refresh.
+    {
+      label: "projectIds",
+      opts: {
+        projectIds: [
+          ...[...landDefault.projects].map((row) => row.project_id).sort().slice(0, 2),
+          EXTRA_POINT_ID,
+        ],
+        status: "all",
+        stage: "any",
+      },
+    },
     { label: "status:active", opts: { status: "active" } },
     { label: "status:all", opts: { status: "all" } },
     { label: "status:hearings", opts: { status: "hearings", actionRows: ACTION_ROWS, today: "2026-08-31" } },

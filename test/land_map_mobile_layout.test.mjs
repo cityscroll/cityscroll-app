@@ -19,6 +19,7 @@ import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { buildLandMapModel } from "../site/land_map_model.mjs";
+import { LAND_PROJECT_MAP_POINT_SPECIMENS } from "../site/land_project_map_points.mjs";
 import { filterLandSnapshot } from "../site/resident_snapshot_queries.mjs";
 import {
   landMapListHandoff,
@@ -45,16 +46,13 @@ function t(key, values = {}) {
 }
 
 const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40 });
-// 2025K0305 (anchor) and 2025M0252 (unmapped) were the prior specimens until a
-// refresh rotated them out of the 40-row Default Land snapshot; this file
-// reads committed site/data directly rather than a frozen fixture, so these
-// specimens are expected to need re-pinning periodically (same replacements
-// used elsewhere this session, e.g. LAND_PROJECT_MAP_POINT_SPECIMENS in
-// site/land_project_map_points.mjs).
-/** A 24-lot rezoning: on the map, and emphatically not at an address. */
-const ANCHOR_SPECIMEN = "2023Q0351";
+// Shared with every other consumer of LAND_PROJECT_MAP_POINT_SPECIMENS
+// (site/land_project_map_points.mjs) instead of carrying its own copy, so a
+// refresh that rotates these specimens out needs only one re-pin.
+/** A multi-BBL rezoning anchor: on the map, and emphatically not at an address. */
+const ANCHOR_SPECIMEN = LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl;
 /** A project with no published point at all -- reachable only through the List. */
-const UNMAPPED_SPECIMEN = "2026X0180";
+const UNMAPPED_SPECIMEN = LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl;
 
 const rowsFor = (overrides = {}) =>
   filterLandSnapshot(landDefault.projects, { ...DEFAULT_FILTER, ...overrides });
