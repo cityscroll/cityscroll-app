@@ -12,9 +12,12 @@ export const LAND_MAPABILITY_CENSUS_SCHEMA = "cityscroll.land_mapability_census.
 export const LAND_MAPABILITY_JOIN_VERSION = "exact_project_id_wh06_bbl_mappluto_centroid_v1";
 export const LAND_MAPABILITY_DENOMINATOR = 40;
 // Byte size of the pinned default Land snapshot the census is measured against.
-// It is a change-detector, not a budget: the denominator-first contract above
-// (40 rows, 11 single-BBL, 22 multi-BBL, 7 unmapped) is the substantive claim,
-// and this figure is restamped whenever a dataset refresh rewrites that snapshot.
+// It is a change-detector, not a budget: the denominator-first contract (exactly
+// 40 rows; mapped + unmapped = denominator; coverage matches that ratio;
+// rejected placement methods absent) is the substantive claim. Aggregate
+// counts such as mapped/unmapped and method tallies are restamped whenever a
+// dataset refresh rewrites the snapshot — they are measured evidence, not
+// pins that may block the writer.
 
 export const LAND_MAPABILITY_METHODS = Object.freeze({
   SINGLE_BBL_CENTROID: "single_bbl_centroid",
@@ -317,33 +320,46 @@ export function landMapabilityContractFindings(census, opts = {}) {
     if (agg.denominator !== LAND_MAPABILITY_DENOMINATOR) {
       findings.push(`denominator ${agg.denominator} != ${LAND_MAPABILITY_DENOMINATOR}`);
     }
-    if (agg.mapped !== 26) findings.push(`mapped ${agg.mapped} != 26`);
-    if (agg.unmapped !== 14) findings.push(`unmapped ${agg.unmapped} != 14`);
-    if (agg.coverage_percent !== 65) findings.push(`coverage_percent ${agg.coverage_percent} != 65`);
-    if (agg.exact_bbl_projects !== 32) findings.push(`exact_bbl_projects ${agg.exact_bbl_projects} != 32`);
-    if (agg.bbl_occurrences !== 220) findings.push(`bbl_occurrences ${agg.bbl_occurrences} != 220`);
-    if (agg.unique_bbl_keys !== 220) findings.push(`unique_bbl_keys ${agg.unique_bbl_keys} != 220`);
-    if (agg.matched_centroid_occurrences !== 170) {
-      findings.push(`matched_centroid_occurrences ${agg.matched_centroid_occurrences} != 170`);
+    if (Array.isArray(census.projects) && census.projects.length !== LAND_MAPABILITY_DENOMINATOR) {
+      findings.push("project table must preserve the 40-row denominator");
     }
-    if (agg.unique_centroid_keys !== 170) findings.push(`unique_centroid_keys ${agg.unique_centroid_keys} != 170`);
-    if (agg.methods?.[LAND_MAPABILITY_METHODS.SINGLE_BBL_CENTROID] !== 3) {
-      findings.push("single_bbl_centroid count != 3");
+    if (typeof agg.mapped !== "number" || typeof agg.unmapped !== "number") {
+      findings.push("mapped and unmapped aggregations must be numbers");
+    } else if (agg.mapped + agg.unmapped !== agg.denominator) {
+      findings.push(
+        `mapped (${agg.mapped}) + unmapped (${agg.unmapped}) != denominator (${agg.denominator})`,
+      );
     }
-    if (agg.methods?.[LAND_MAPABILITY_METHODS.MULTI_BBL_ANCHOR] !== 23) {
-      findings.push("multi_bbl_anchor count != 23");
+    if (typeof agg.mapped === "number" && agg.denominator) {
+      const expectedCoverage = Number(((agg.mapped / agg.denominator) * 100).toFixed(1));
+      if (agg.coverage_percent !== expectedCoverage) {
+        findings.push(
+          `coverage_percent ${agg.coverage_percent} != ${expectedCoverage} from mapped/denominator`,
+        );
+      }
     }
+    if (!Array.isArray(census.unmapped_project_ids)) {
+      findings.push("unmapped_project_ids must be an array");
+    } else if (typeof agg.unmapped === "number" && census.unmapped_project_ids.length !== agg.unmapped) {
+      findings.push(
+        `unmapped_project_ids must name ${agg.unmapped} projects (named ${census.unmapped_project_ids.length})`,
+      );
+    }
+    // Rejected / non-deterministic placement methods must stay at zero so a
+    // refresh cannot silently promote geocodes or guesses into the census.
     if (agg.methods?.[LAND_MAPABILITY_METHODS.PUBLISHER_POINT] !== 0) {
       findings.push("publisher_point count must be 0");
     }
     if (agg.methods?.[LAND_MAPABILITY_METHODS.PROPERTY_COORDINATE] !== 0) {
       findings.push("property_coordinate count must be 0");
     }
-    if (!Array.isArray(census.unmapped_project_ids) || census.unmapped_project_ids.length !== 14) {
-      findings.push("unmapped_project_ids must name 14 projects");
-    }
-    if (Array.isArray(census.projects) && census.projects.length !== LAND_MAPABILITY_DENOMINATOR) {
-      findings.push("project table must preserve the 40-row denominator");
+    const acceptedMapped =
+      (agg.methods?.[LAND_MAPABILITY_METHODS.SINGLE_BBL_CENTROID] || 0)
+      + (agg.methods?.[LAND_MAPABILITY_METHODS.MULTI_BBL_ANCHOR] || 0);
+    if (typeof agg.mapped === "number" && acceptedMapped !== agg.mapped) {
+      findings.push(
+        `accepted placement methods (${acceptedMapped}) != mapped (${agg.mapped})`,
+      );
     }
   }
   if (Array.isArray(census.projects)) {

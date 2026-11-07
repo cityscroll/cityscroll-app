@@ -137,7 +137,11 @@ test("a failing rebuild step still reaches the summary and pull-request steps, a
     assert.ok(step, `workflow has no step named "${title}"`);
     return step;
   };
-  assert.match(workflow, /timeout-minutes:\s*90/, "job wall must leave room after a ~47m acquisition");
+  assert.match(
+    workflow,
+    /timeout-minutes:\s*120/,
+    "job wall must cover measured acquisition+rebuild+check-wait (up to ~102m)",
+  );
   const rebuild = named("Rebuild the committed read models the refreshed datasets feed");
   assert.match(rebuild, /id:\s*rebuild/);
   assert.match(rebuild, /continue-on-error:\s*true/, "a failed rebuild step must not fail the job or skip the steps after it");
@@ -148,6 +152,17 @@ test("a failing rebuild step still reaches the summary and pull-request steps, a
   for (const title of ["Write the combined first-class refresh run receipt", "Summarise what refreshed", "Open a pull request with the refreshed datasets"]) {
     assert.doesNotMatch(named(title), /^\s*if:/m, `"${title}" must run under the default success() condition, not always()`);
   }
+  const openPr = named("Open a pull request with the refreshed datasets");
+  assert.match(
+    openPr,
+    /FIRST_CLASS_SKIP_QUEUE_WAIT:/,
+    "open-PR must be able to skip the check wait when rebuild already failed",
+  );
+  assert.match(
+    openPr,
+    /steps\.rebuild\.outcome != 'success'/,
+    "skip-queue-wait must key off the rebuild step outcome",
+  );
   const failClosed = named("Fail the run if the rebuild reported a problem");
   assert.match(failClosed, /if:\s*always\(\)/, "the final visibility check must run even if a later step also failed");
   assert.match(failClosed, /steps\.rebuild\.outcome/, "the final step must check the rebuild step's own outcome");
