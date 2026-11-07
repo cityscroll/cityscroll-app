@@ -49607,7 +49607,7 @@
       "href": "/committees/5288/",
       "entity_ref": "committee:5288",
       "relation_state": "published",
-      "detail": "14 exact City Council members",
+      "detail": "19 exact City Council members",
       "institution": "city-council",
       "institution_label": "New York City Council",
       "institution_context": "Elected legislative body",
@@ -49626,7 +49626,7 @@
           "person_name": "Christopher Marte",
           "href": "/officials/7801/",
           "relation_state": "published",
-          "role": "Co-Chair"
+          "role": "Council Member"
         },
         {
           "person_id": "7803",
@@ -49634,7 +49634,7 @@
           "person_name": "Julie Menin",
           "href": "/officials/7803/",
           "relation_state": "published",
-          "role": "Council Member"
+          "role": "The Speaker"
         },
         {
           "person_id": "7804",
@@ -49650,7 +49650,7 @@
           "person_name": "Carmen N. De La Rosa",
           "href": "/officials/7806/",
           "relation_state": "published",
-          "role": "Council Member"
+          "role": "Co-Chair"
         },
         {
           "person_id": "7740",
@@ -49709,7 +49709,7 @@
       "href": "/committees/5289/",
       "entity_ref": "committee:5289",
       "relation_state": "published",
-      "detail": "16 exact City Council members",
+      "detail": "23 exact City Council members",
       "institution": "city-council",
       "institution_label": "New York City Council",
       "institution_context": "Elected legislative body",
@@ -49881,7 +49881,7 @@
       "href": "/committees/5297/",
       "entity_ref": "committee:5297",
       "relation_state": "published",
-      "detail": "2 exact City Council members",
+      "detail": "3 exact City Council members",
       "institution": "city-council",
       "institution_label": "New York City Council",
       "institution_context": "Elected legislative body",
@@ -52427,7 +52427,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 3,
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -53393,7 +53393,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 8,
+          "count": 10,
           "method": "checkbook_nycha_contracts_adapter_v1"
         },
         "vendors": {

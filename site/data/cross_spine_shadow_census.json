@@ -1147,7 +1147,7 @@
       "denominators": {
         "eligible_left_rows": 21,
         "source_rows": 223,
-        "pre_route_pairs": 94
+        "pre_route_pairs": 92
       },
       "by_tier": {
         "public_inferred": 3
@@ -1269,7 +1269,7 @@
         "civilian-complaint-review-board": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 2,
+            "source_rows": 3,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1299,8 +1299,8 @@
         "comptroller": {
           "denominators": {
             "eligible_left_rows": 2,
-            "source_rows": 3,
-            "pre_route_pairs": 6
+            "source_rows": 2,
+            "pre_route_pairs": 4
           },
           "public_inferred": 0,
           "evidence_only": 0,

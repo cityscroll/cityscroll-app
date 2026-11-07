@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.upcoming_council_meetings.v1",
   "schema_version": 1,
-  "generated_at": "2026-11-05T15:11:06.666Z",
+  "generated_at": "2026-11-07T13:54:16.007Z",
   "source": {
     "name": "NYC Council Legistar (authenticated Web API)",
     "dataset": "Events",
@@ -15,40 +15,40 @@
   "discovery": {
     "basis": "shared authenticated Events acquisition of the daily refresh (no additional Events request)",
     "horizon_days": 120,
-    "window_start": "2026-11-05",
-    "window_end": "2027-03-05",
+    "window_start": "2026-11-07",
+    "window_end": "2027-03-07",
     "events_pages": 2,
     "events_page_truncated": false,
     "item_events_max": 60,
     "item_concurrency": 6,
     "agenda_items_per_event_max": 20,
-    "item_events_attempted": 33,
+    "item_events_attempted": 46,
     "item_events_deferred": 0,
     "item_discovery_truncated": false
   },
   "source_health": {
     "status": "healthy",
     "basis": "authenticated-events-acquisition",
-    "observed_at": "2026-11-05T15:11:06.666Z",
-    "events_observed": 377,
-    "last_successful_observation": "2026-11-05T15:11:06.666Z",
-    "upcoming": 33,
-    "standalone": 33,
+    "observed_at": "2026-11-07T13:54:16.007Z",
+    "events_observed": 389,
+    "last_successful_observation": "2026-11-07T13:54:16.007Z",
+    "upcoming": 46,
+    "standalone": 46,
     "exactly_joined": 0,
     "collection_suppressed": 0,
     "truncated": 0
   },
   "counts": {
-    "eligible_events": 33,
-    "meetings": 33,
-    "agenda_items": 82,
-    "agenda_items_observed": 82,
-    "events_with_items": 33,
+    "eligible_events": 46,
+    "meetings": 46,
+    "agenda_items": 121,
+    "agenda_items_observed": 121,
+    "events_with_items": 46,
     "events_no_published_items": 0,
     "events_items_deferred": 0,
     "events_items_unavailable": 0,
     "events_items_truncated": 0,
-    "standalone": 33,
+    "standalone": 46,
     "exactly_joined": 0
   },
   "meetings": [
@@ -104,7 +104,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYlP8=",
         "last_modified_utc": "2026-11-02T15:53:20.353",
         "agenda_last_published_utc": "2026-11-02T15:53:20.2"
@@ -162,7 +162,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOg7rKU=",
         "last_modified_utc": "2026-06-01T17:28:30.67",
         "agenda_last_published_utc": "2026-06-01T17:28:30.657"
@@ -226,10 +226,74 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhY3dQ=",
         "last_modified_utc": "2026-11-05T14:31:16.23",
         "agenda_last_published_utc": "2026-11-05T14:31:16.073"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22857",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22857",
+        "event_guid": "21E404E2-7152-42DF-AEDA-9241D4899902"
+      },
+      "governing_body": {
+        "name": "Committee on Hospitals",
+        "body_id": "5241"
+      },
+      "date": "2026-12-15",
+      "wall_time": "2026-12-15T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22857&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22857_A_Committee_on_Hospitals_26-12-15_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444000",
+            "agenda_number": null,
+            "title": "Oversight - Update on the Maimonides Health System and NYC H+H Merger.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79735",
+              "matter_file": "T2026-2782",
+              "matter_name": "Oversight - Update on the Maimonides Health System and NYC H+H Merger.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 1,
+        "published_items": 1,
+        "search_text": "Oversight - Update on the Maimonides Health System and NYC H+H Merger. | T2026-2782"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZFz0=",
+        "last_modified_utc": "2026-11-06T16:20:45.217",
+        "agenda_last_published_utc": "2026-11-06T16:20:45.087"
       }
     },
     {
@@ -301,7 +365,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYmGY=",
         "last_modified_utc": "2026-11-02T16:56:51.7",
         "agenda_last_published_utc": "2026-11-02T16:56:51.553"
@@ -376,7 +440,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYmKw=",
         "last_modified_utc": "2026-11-02T16:57:34.15",
         "agenda_last_published_utc": "2026-11-02T16:57:34.087"
@@ -440,10 +504,160 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhY3co=",
         "last_modified_utc": "2026-11-05T14:38:55.797",
         "agenda_last_published_utc": "2026-11-05T14:38:55.763"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22855",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22855",
+        "event_guid": "E764EA5E-9679-4124-B67D-609D4F577F80"
+      },
+      "governing_body": {
+        "name": "Committee on Health",
+        "body_id": "14"
+      },
+      "date": "2026-12-11",
+      "wall_time": "2026-12-11T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22855&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22855_A_Committee_on_Health_26-12-11_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443996",
+            "agenda_number": null,
+            "title": "Oversight - The Use of Artificial Intelligence in Public Health and Healthcare.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79752",
+              "matter_file": "T2026-2799",
+              "matter_name": "Oversight - The Use of Artificial Intelligence in Public Health and Healthcare.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443997",
+            "agenda_number": null,
+            "title": "Jointly with the Committee on Hospitals",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 2,
+        "published_items": 2,
+        "search_text": "Oversight - The Use of Artificial Intelligence in Public Health and Healthcare. | T2026-2799 | Jointly with the Committee on Hospitals"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZFZU=",
+        "last_modified_utc": "2026-11-06T15:48:56.497",
+        "agenda_last_published_utc": "2026-11-06T15:48:56.403"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22856",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22856",
+        "event_guid": "E5F0C36F-236B-435B-8159-2F5E79790AE0"
+      },
+      "governing_body": {
+        "name": "Committee on Hospitals",
+        "body_id": "5241"
+      },
+      "date": "2026-12-11",
+      "wall_time": "2026-12-11T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22856&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22856_A_Committee_on_Hospitals_26-12-11_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443998",
+            "agenda_number": null,
+            "title": "Oversight - The Use of Artificial Intelligence in Public Health and Healthcare.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79753",
+              "matter_file": "T2026-2800",
+              "matter_name": "Oversight - The Use of Artificial Intelligence in Public Health and Healthcare.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443999",
+            "agenda_number": null,
+            "title": "Jointly with the Committee on Health",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 2,
+        "published_items": 2,
+        "search_text": "Oversight - The Use of Artificial Intelligence in Public Health and Healthcare. | T2026-2800 | Jointly with the Committee on Health"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZFbY=",
+        "last_modified_utc": "2026-11-06T15:49:32.437",
+        "agenda_last_published_utc": "2026-11-06T15:49:32.42"
       }
     },
     {
@@ -521,10 +735,74 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYqwc=",
         "last_modified_utc": "2026-11-02T20:02:11.367",
         "agenda_last_published_utc": "2026-11-02T20:02:11.223"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22854",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22854",
+        "event_guid": "8DD79BFD-C414-452F-A3A5-90380D788D1F"
+      },
+      "governing_body": {
+        "name": "Committee on Civil and Human Rights",
+        "body_id": "5235"
+      },
+      "date": "2026-12-09",
+      "wall_time": "2026-12-09T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "Council Chambers - City Hall"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22854&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22854_A_Committee_on_Civil_and_Human_Rights_26-12-09_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443990",
+            "agenda_number": null,
+            "title": "Oversight - Citywide Racial Equity Planning.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79624",
+              "matter_file": "T2026-2671",
+              "matter_name": "Oversight - Citywide Racial Equity Planning.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 1,
+        "published_items": 1,
+        "search_text": "Oversight - Citywide Racial Equity Planning. | T2026-2671"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZB60=",
+        "last_modified_utc": "2026-11-05T21:01:25.88",
+        "agenda_last_published_utc": "2026-11-05T21:01:25.837"
       }
     },
     {
@@ -579,7 +857,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYlRY=",
         "last_modified_utc": "2026-11-02T15:54:15.93",
         "agenda_last_published_utc": "2026-11-02T15:54:15.86"
@@ -637,10 +915,160 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOg7rHY=",
         "last_modified_utc": "2026-06-01T17:27:54.433",
         "agenda_last_published_utc": "2026-06-01T17:27:54.357"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22815",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22815",
+        "event_guid": "0DBF9F3E-3D9B-490F-B076-8DFD4382675E"
+      },
+      "governing_body": {
+        "name": "Committee on Contracts",
+        "body_id": "6"
+      },
+      "date": "2026-12-02",
+      "wall_time": "2026-12-02T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22815&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22815_A_Committee_on_Contracts_26-12-02_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443763",
+            "agenda_number": null,
+            "title": "Oversight - Monitoring Compliance with the DOT’s Citibike Contract.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79696",
+              "matter_file": "T2026-2743",
+              "matter_name": "Oversight - Monitoring Compliance with the DOT’s Citibike Contract.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443766",
+            "agenda_number": null,
+            "title": "Jointly with the Committee on Transportation and Infrastructure",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 2,
+        "published_items": 2,
+        "search_text": "Oversight - Monitoring Compliance with the DOT’s Citibike Contract. | T2026-2743 | Jointly with the Committee on Transportation and Infrastructure"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZAn0=",
+        "last_modified_utc": "2026-11-05T20:25:03.89",
+        "agenda_last_published_utc": "2026-11-05T20:25:03.767"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22816",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22816",
+        "event_guid": "B1266872-28EA-4CF4-904D-7419B2BE85EB"
+      },
+      "governing_body": {
+        "name": "Committee on Transportation and Infrastructure",
+        "body_id": "5268"
+      },
+      "date": "2026-12-02",
+      "wall_time": "2026-12-02T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22816&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22816_A_Committee_on_Transportation_and_Infrastructure_26-12-02_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443764",
+            "agenda_number": null,
+            "title": "Oversight - Monitoring Compliance with the DOT’s Citibike Contract.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79697",
+              "matter_file": "T2026-2744",
+              "matter_name": "Oversight - Monitoring Compliance with the DOT’s Citibike Contract.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443765",
+            "agenda_number": null,
+            "title": "Jointly with the Committee on Contracts",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 2,
+        "published_items": 2,
+        "search_text": "Oversight - Monitoring Compliance with the DOT’s Citibike Contract. | T2026-2744 | Jointly with the Committee on Contracts"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZAlA=",
+        "last_modified_utc": "2026-11-05T20:24:33.207",
+        "agenda_last_published_utc": "2026-11-05T20:24:33.143"
       }
     },
     {
@@ -701,7 +1129,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhVT4M=",
         "last_modified_utc": "2026-10-28T15:11:11.837",
         "agenda_last_published_utc": "2026-10-28T15:11:11.667"
@@ -799,7 +1227,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYscs=",
         "last_modified_utc": "2026-11-02T20:59:39.533",
         "agenda_last_published_utc": "2026-11-02T20:59:39.407"
@@ -874,7 +1302,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhUx9A=",
         "last_modified_utc": "2026-10-26T19:52:09.397",
         "agenda_last_published_utc": "2026-10-26T19:52:09.27"
@@ -949,7 +1377,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhUyCw=",
         "last_modified_utc": "2026-10-26T19:53:34.407",
         "agenda_last_published_utc": "2026-10-26T19:53:34.377"
@@ -1024,7 +1452,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhUyHw=",
         "last_modified_utc": "2026-10-26T19:54:51.517",
         "agenda_last_published_utc": "2026-10-26T19:54:51.447"
@@ -1082,7 +1510,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhSDLg=",
         "last_modified_utc": "2026-10-13T21:03:42.353",
         "agenda_last_published_utc": "2026-10-13T21:03:42.263"
@@ -1174,7 +1602,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYyec=",
         "last_modified_utc": "2026-11-04T17:37:55.787",
         "agenda_last_published_utc": "2026-11-04T17:37:55.74"
@@ -1266,7 +1694,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYyeg=",
         "last_modified_utc": "2026-11-04T17:36:27.607",
         "agenda_last_published_utc": "2026-11-04T17:36:27.53"
@@ -1290,7 +1718,7 @@
         "address": "250 Broadway - 8th Floor - Hearing Room 1"
       },
       "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22843&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-      "agenda_status": "Final",
+      "agenda_status": "Deferred",
       "documents": [
         {
           "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22843_A_Committee_on_Hospitals_26-11-23_Committee_Agenda.pdf",
@@ -1330,8 +1758,8 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
-        "row_version": "AAAAAOhY0W8=",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZFbc=",
         "last_modified_utc": "2026-11-04T20:09:13.56",
         "agenda_last_published_utc": "2026-11-04T20:09:13.46"
       }
@@ -1394,10 +1822,344 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhUimI=",
         "last_modified_utc": "2026-10-26T15:28:18.293",
         "agenda_last_published_utc": "2026-10-26T15:28:18.137"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22852",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22852",
+        "event_guid": "659CEF8B-8CF0-455F-B01C-2FE9E71FC7F0"
+      },
+      "governing_body": {
+        "name": "Committee on Oversight and Investigations",
+        "body_id": "5107"
+      },
+      "date": "2026-11-20",
+      "wall_time": "2026-11-20T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22852&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22852_A_Committee_on_Oversight_and_Investigations_26-11-20_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443981",
+            "agenda_number": null,
+            "title": "Oversight – Examining the Availability of Flavored E-Cigarettes Near New York City Schools.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79747",
+              "matter_file": "T2026-2794",
+              "matter_name": "Oversight – Examining the Availability of Flavored E-Cigarettes Near New York City Schools.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443982",
+            "agenda_number": null,
+            "title": "Jointly with the Committee on Consumer and Worker Protection",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443986",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to the department of consumer and worker protection’s authority to seal the premises of electronic cigarette retailers",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79744",
+              "matter_file": "T2026-2791",
+              "matter_name": "The department of consumer and worker protection’s authority to seal the premises of electronic cigarette retailers.",
+              "matter_type": "Introduction",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 3,
+        "published_items": 3,
+        "search_text": "Oversight – Examining the Availability of Flavored E-Cigarettes Near New York City Schools. | T2026-2794 | Jointly with the Committee on Consumer and Worker Protection | A Local Law to amend the administrative code of the city of New York, in relation to the department of consumer and worker protection’s authority to seal the premises of electronic cigarette retailers | The department of consumer and worker protection’s authority to seal the premises of electronic cigarette retailers. | T2026-2791"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZBig=",
+        "last_modified_utc": "2026-11-05T20:44:27.54",
+        "agenda_last_published_utc": "2026-11-05T20:44:27.513"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22853",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22853",
+        "event_guid": "1654E117-A3B0-483A-B8CA-57E5101F5F9A"
+      },
+      "governing_body": {
+        "name": "Committee on Consumer and Worker Protection",
+        "body_id": "5269"
+      },
+      "date": "2026-11-20",
+      "wall_time": "2026-11-20T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22853&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22853_A_Committee_on_Consumer_and_Worker_Protection_26-11-20_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443983",
+            "agenda_number": null,
+            "title": "Oversight – Examining the Availability of Flavored E-Cigarettes Near New York City Schools.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79748",
+              "matter_file": "T2026-2795",
+              "matter_name": "Oversight – Examining the Availability of Flavored E-Cigarettes Near New York City Schools.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443984",
+            "agenda_number": null,
+            "title": "Jointly with the Committee on Oversight and Investigations",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443985",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to the department of consumer and worker protection’s authority to seal the premises of electronic cigarette retailers",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79744",
+              "matter_file": "T2026-2791",
+              "matter_name": "The department of consumer and worker protection’s authority to seal the premises of electronic cigarette retailers.",
+              "matter_type": "Introduction",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 3,
+        "published_items": 3,
+        "search_text": "Oversight – Examining the Availability of Flavored E-Cigarettes Near New York City Schools. | T2026-2795 | Jointly with the Committee on Oversight and Investigations | A Local Law to amend the administrative code of the city of New York, in relation to the department of consumer and worker protection’s authority to seal the premises of electronic cigarette retailers | The department of consumer and worker protection’s authority to seal the premises of electronic cigarette retailers. | T2026-2791"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZBlE=",
+        "last_modified_utc": "2026-11-05T20:45:20.31",
+        "agenda_last_published_utc": "2026-11-05T20:45:20.283"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22858",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22858",
+        "event_guid": "3ECAD4A4-CE34-4949-8C16-24802D642336"
+      },
+      "governing_body": {
+        "name": "Committee on Fire and Emergency Management",
+        "body_id": "5239"
+      },
+      "date": "2026-11-20",
+      "wall_time": "2026-11-20T09:30:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "Council Chambers - City Hall"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22858&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22858_A_Committee_on_Fire_and_Emergency_Management_26-11-20_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444003",
+            "agenda_number": null,
+            "title": "Oversight - Residential Fires and the Dangers of Lithium-Ion Batteries.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79754",
+              "matter_file": "T2026-2801",
+              "matter_name": "Oversight - Residential Fires and the Dangers of Lithium-Ion Batteries.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444004",
+            "agenda_number": null,
+            "title": "Jointly with the Committee on Housing and Buildings",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 2,
+        "published_items": 2,
+        "search_text": "Oversight - Residential Fires and the Dangers of Lithium-Ion Batteries. | T2026-2801 | Jointly with the Committee on Housing and Buildings"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZHrA=",
+        "last_modified_utc": "2026-11-06T18:29:05.373",
+        "agenda_last_published_utc": "2026-11-06T18:29:05.217"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22859",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22859",
+        "event_guid": "9EFD6196-C7C4-45F4-9065-3B4B759CD2A1"
+      },
+      "governing_body": {
+        "name": "Committee on Housing and Buildings",
+        "body_id": "16"
+      },
+      "date": "2026-11-20",
+      "wall_time": "2026-11-20T09:30:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "Council Chambers - City Hall"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22859&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22859_A_Committee_on_Housing_and_Buildings_26-11-20_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444005",
+            "agenda_number": null,
+            "title": "Oversight - Residential Fires and the Dangers of Lithium-Ion Batteries.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79755",
+              "matter_file": "T2026-2802",
+              "matter_name": "Oversight - Residential Fires and the Dangers of Lithium-Ion Batteries.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444006",
+            "agenda_number": null,
+            "title": "Jointly with the Committee on Fire and Emergency Management",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 2,
+        "published_items": 2,
+        "search_text": "Oversight - Residential Fires and the Dangers of Lithium-Ion Batteries. | T2026-2802 | Jointly with the Committee on Fire and Emergency Management"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZHtw=",
+        "last_modified_utc": "2026-11-06T18:29:57.323",
+        "agenda_last_published_utc": "2026-11-06T18:29:57.293"
       }
     },
     {
@@ -1452,7 +2214,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOg7rEc=",
         "last_modified_utc": "2026-06-01T17:26:53.917",
         "agenda_last_published_utc": "2026-06-01T17:26:53.87"
@@ -1533,7 +2295,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhVn+8=",
         "last_modified_utc": "2026-10-30T15:05:48.127",
         "agenda_last_published_utc": "2026-10-30T15:05:48.033"
@@ -1614,7 +2376,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYwak=",
         "last_modified_utc": "2026-11-04T16:40:28.947",
         "agenda_last_published_utc": "2026-11-04T16:40:28.883"
@@ -1678,7 +2440,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYlTc=",
         "last_modified_utc": "2026-11-02T15:55:57.52",
         "agenda_last_published_utc": "2026-11-02T15:55:57.473"
@@ -1957,7 +2719,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhY1So=",
         "last_modified_utc": "2026-11-04T20:33:39.213",
         "agenda_last_published_utc": "2026-11-04T20:33:39.2"
@@ -2236,7 +2998,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhY1V0=",
         "last_modified_utc": "2026-11-04T20:34:07.923",
         "agenda_last_published_utc": "2026-11-04T20:34:07.89"
@@ -2311,7 +3073,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhVhXM=",
         "last_modified_utc": "2026-10-29T18:48:49.15",
         "agenda_last_published_utc": "2026-10-29T18:48:49.007"
@@ -2386,7 +3148,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhVhXQ=",
         "last_modified_utc": "2026-10-29T18:51:58.91",
         "agenda_last_published_utc": "2026-10-29T18:51:58.747"
@@ -2407,7 +3169,7 @@
       "wall_time": "2026-11-13T13:00:00",
       "time_zone": "America/New_York",
       "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+        "address": "250 Broadway - 8th Floor - Hearing Room 1"
       },
       "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22840&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
       "agenda_status": "Final",
@@ -2471,11 +3233,45 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "443964",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to an interactive map of information regarding access to publicly owned swimming pools",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79737",
+              "matter_file": "T2026-2784",
+              "matter_name": "Interactive map of information regarding access to publicly owned swimming pools.",
+              "matter_type": "Introduction",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443989",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to rip current signs at beaches under the jurisdiction of the department of parks and recreation",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79074",
+              "matter_file": "Int 0957-2026",
+              "matter_name": "Rip current signs at beaches under the jurisdiction of the department of parks and recreation.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "observed_items": 3,
-        "published_items": 3,
-        "search_text": "Oversight - The State of Water Safety at the City’s Beaches and Pools. | T2026-2778 | A Local Law to amend the administrative code of the city of New York, in relation to the length of the season and operating hours for city beaches and pools | Length of the season and operating hours for city beaches and pools. | Int 0262-2026 | A Local Law to amend the administrative code of the city of New York, in relation to digital signage at public beaches to provide public safety information about rip currents and other water safety hazards | Digital signage at public beaches to provide public safety information about rip currents and other water safety hazards. | T2026-2714"
+        "observed_items": 5,
+        "published_items": 5,
+        "search_text": "Oversight - The State of Water Safety at the City’s Beaches and Pools. | T2026-2778 | A Local Law to amend the administrative code of the city of New York, in relation to the length of the season and operating hours for city beaches and pools | Length of the season and operating hours for city beaches and pools. | Int 0262-2026 | A Local Law to amend the administrative code of the city of New York, in relation to digital signage at public beaches to provide public safety information about rip currents and other water safety hazards | Digital signage at public beaches to provide public safety information about rip currents and other water safety hazards. | T2026-2714 | A Local Law to amend the administrative code of the city of New York, in relation to an interactive map of information regarding access to publicly owned swimming pools | Interactive map of information regarding access to publicly owned swimming pools. | T2026-2784 | A Local Law to amend the administrative code of the city of New York, in relation to rip current signs at beaches under the jurisdiction of the department of parks and recreation | Rip current signs at beaches under the jurisdiction of the department of parks and recreation. | Int 0957-2026"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -2484,10 +3280,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
-        "row_version": "AAAAAOhYrls=",
-        "last_modified_utc": "2026-11-02T20:26:40.593",
-        "agenda_last_published_utc": "2026-11-02T20:26:40.44"
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZNI0=",
+        "last_modified_utc": "2026-11-06T21:06:05.353",
+        "agenda_last_published_utc": "2026-11-06T21:06:05.253"
       }
     },
     {
@@ -2542,7 +3338,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOg7q+w=",
         "last_modified_utc": "2026-06-01T17:23:34.313",
         "agenda_last_published_utc": "2026-06-01T17:23:34.267"
@@ -2606,10 +3402,236 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhVmYA=",
         "last_modified_utc": "2026-10-30T13:44:57.66",
         "agenda_last_published_utc": "2026-10-30T13:44:57.547"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22848",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22848",
+        "event_guid": "64A0BC7B-2C74-4C81-AE8D-36079DD45CA6"
+      },
+      "governing_body": {
+        "name": "Committee on Transportation and Infrastructure",
+        "body_id": "5268"
+      },
+      "date": "2026-11-12",
+      "wall_time": "2026-11-12T10:30:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22848&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22848_A_Committee_on_Transportation_and_Infrastructure_26-11-12_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443962",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to the time permitted for the installation of covered safety treatments on any portion of a street adjacent to a school",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77741",
+              "matter_file": "Int 0202-2026",
+              "matter_name": "Time permitted for the installation of covered safety treatments on any portion of a street adjacent to a school.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 1,
+        "published_items": 1,
+        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to the time permitted for the installation of covered safety treatments on any portion of a street adjacent to a school | Time permitted for the installation of covered safety treatments on any portion of a street adjacent to a school. | Int 0202-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhY96Q=",
+        "last_modified_utc": "2026-11-05T18:11:28.15",
+        "agenda_last_published_utc": "2026-11-05T18:11:27.863"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22849",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22849",
+        "event_guid": "4C5EBCC2-D27F-4B91-A6BA-85911801D89C"
+      },
+      "governing_body": {
+        "name": "Committee on Veterans",
+        "body_id": "5122"
+      },
+      "date": "2026-11-12",
+      "wall_time": "2026-11-12T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22849&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22849_A_Committee_on_Veterans_26-11-12_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443991",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of housing preservation and development to submit reports on veteran preference in Mitchell-Lama developments",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77127",
+              "matter_file": "Int 0488-2026",
+              "matter_name": "Requiring the department of housing preservation and development to submit reports on veteran preference in Mitchell-Lama developments.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443992",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to establishing an LGBTQ+ liaison within the department of veterans’ services",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78975",
+              "matter_file": "Int 0928-2026",
+              "matter_name": "Establishing an LGBTQ+ liaison within the department of veterans’ services.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443993",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to the alternative exemption for permanently and totally disabled veterans",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79445",
+              "matter_file": "Int 1051-2026",
+              "matter_name": "Alternative exemption for permanently and totally disabled veterans.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 3,
+        "published_items": 3,
+        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of housing preservation and development to submit reports on veteran preference in Mitchell-Lama developments | Requiring the department of housing preservation and development to submit reports on veteran preference in Mitchell-Lama developments. | Int 0488-2026 | A Local Law to amend the administrative code of the city of New York, in relation to establishing an LGBTQ+ liaison within the department of veterans’ services | Establishing an LGBTQ+ liaison within the department of veterans’ services. | Int 0928-2026 | A Local Law to amend the administrative code of the city of New York, in relation to the alternative exemption for permanently and totally disabled veterans | Alternative exemption for permanently and totally disabled veterans. | Int 1051-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhZEPg=",
+        "last_modified_utc": "2026-11-06T14:34:28.82",
+        "agenda_last_published_utc": "2026-11-06T14:34:28.68"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22851",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22851",
+        "event_guid": "C0E7F4F1-4B04-4BB6-8AD1-74D83305EC67"
+      },
+      "governing_body": {
+        "name": "Committee on Cultural Affairs, Libraries and International Relations",
+        "body_id": "5316"
+      },
+      "date": "2026-11-12",
+      "wall_time": "2026-11-12T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22851&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22851_A_Committee_on_Cultural_Affairs%2C_Libraries_and_International_Relations_26-11-12_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "443958",
+            "agenda_number": null,
+            "title": "Resolution designating the fourth week of November as The Shangri-Las Week in the City of New York and celebrating The Shangri-Las’ indelible impact on the music of the 1960s and ever since",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77657",
+              "matter_file": "Res 0163-2026",
+              "matter_name": "Designating the fourth week of November as The Shangri-Las Week.",
+              "matter_type": "Resolution",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 1,
+        "published_items": 1,
+        "search_text": "Resolution designating the fourth week of November as The Shangri-Las Week in the City of New York and celebrating The Shangri-Las’ indelible impact on the music of the 1960s and ever since | Designating the fourth week of November as The Shangri-Las Week. | Res 0163-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhY7zM=",
+        "last_modified_utc": "2026-11-05T16:21:54.913",
+        "agenda_last_published_utc": "2026-11-05T16:21:54.81"
       }
     },
     {
@@ -2642,20 +3664,128 @@
         "status": "items",
         "items": [
           {
-            "agenda_item_id": "441912",
+            "agenda_item_id": "443967",
             "agenda_number": null,
-            "title": "See Land Use Calendar",
+            "title": "Application number C 260234 ZMQ (108-05 68th Road Rezoning) submitted by All My Children Daycare and Nursery School, pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 14a, changing from an R1-2A District to an R7A District, Borough of Queens, Community District 6, Council District 29.",
             "body_text": null,
-            "matter": null,
+            "matter": {
+              "matter_id": "79573",
+              "matter_file": "LU 0148-2026",
+              "matter_name": "Zoning, 108-05 68th Road Rezoning, Queens (C 260234 ZMQ).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443968",
+            "agenda_number": null,
+            "title": "Application number N 260235 ZRQ (108-05 68th Road Rezoning) submitted by All My Children Daycare and Nursery School, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing Area, Borough of Queens, Community District 6, Council District 29.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79574",
+              "matter_file": "LU 0149-2026",
+              "matter_name": "Zoning, 108-05 68th Road Rezoning, Queens (N 260235 ZRQ).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443969",
+            "agenda_number": null,
+            "title": "Application number C 260184 ZMQ (100-12 Queens Boulevard Rezoning) submitted by 100 Queens Blvd Co. LLC, pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 14a: eliminating from within an existing R4B District a C1-2 District; eliminating from within an existing R7-1 District a C1-2 District; changing from an R7-1 District to an R9X District; establishing within an existing R7-1 District a C2-4 District; and establishing within the proposed R9X District a C2-4 District, Borough of Queens, Community District 6, Council District 29.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79575",
+              "matter_file": "LU 0150-2026",
+              "matter_name": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (C 260184 ZMQ).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443970",
+            "agenda_number": null,
+            "title": "Application number N 260185 ZRQ (100-12 Queens Boulevard Rezoning) submitted by 100 Queens Blvd Co. LLC, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing Area, Borough of Queens, Community District 6, Council District 29.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79576",
+              "matter_file": "LU 0151-2026",
+              "matter_name": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (N 260185 ZRQ).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443971",
+            "agenda_number": null,
+            "title": "Application number N 260362 ZRR (South Richmond Designated Open Space Amendment) submitted by NYC Department of City Planning, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending the Open Space provisions of Article X, Chapter 7 (Special South Richmond Development District), Borough of Staten Island, Community District 3, Council District 51.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79577",
+              "matter_file": "LU 0152-2026",
+              "matter_name": "Zoning, South Richmond Designated Open Space Amendment, Staten Island (N 260362 ZRR).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443972",
+            "agenda_number": null,
+            "title": "Application number N 260211 ZRM (Studio 54 Rehabilitation and Text Amendment) submitted by Roundabout Theatre Company, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending the Theater Subdistrict provisions in Article VIII, Chapter 1 (Special Midtown District), including Section 81-744 (Transfer of development rights from listed theaters) and Section 81-745 (Floor area bonus for rehabilitation of existing listed theaters), Borough of Manhattan, Community District 5, Council District 3.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79578",
+              "matter_file": "LU 0153-2026",
+              "matter_name": "Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (N 260211 ZRM).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443973",
+            "agenda_number": null,
+            "title": "Application number C 260212 ZSM (Studio 54 Rehabilitation and Text Amendment) submitted by Roundabout Theatre Company, pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 81-745 (Floor area bonus for rehabilitation of existing listed theaters) to facilitate rehabilitation of Studio 54 Theater, located on 254 West 54th Street (Block 1025, Lots 10 and 58), Borough of Manhattan, Community District 5, Council District 3.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79579",
+              "matter_file": "LU 0154-2026",
+              "matter_name": "Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (C 260212 ZSM).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Laid Over in Committee"
+            },
             "action": {
               "name": null,
               "passed_flag": null
             }
           }
         ],
-        "observed_items": 1,
-        "published_items": 1,
-        "search_text": "See Land Use Calendar"
+        "observed_items": 7,
+        "published_items": 7,
+        "search_text": "Application number C 260234 ZMQ (108-05 68th Road Rezoning) submitted by All My Children Daycare and Nursery School, pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 14a, changing from an R1-2A District to an R7A District, Borough of Queens, Community District 6, Council District 29. | Zoning, 108-05 68th Road Rezoning, Queens (C 260234 ZMQ). | LU 0148-2026 | Application number N 260235 ZRQ (108-05 68th Road Rezoning) submitted by All My Children Daycare and Nursery School, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing Area, Borough of Queens, Community District 6, Council District 29. | Zoning, 108-05 68th Road Rezoning, Queens (N 260235 ZRQ). | LU 0149-2026 | Application number C 260184 ZMQ (100-12 Queens Boulevard Rezoning) submitted by 100 Queens Blvd Co. LLC, pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 14a: eliminating from within an existing R4B District a C1-2 District; eliminating from within an existing R7-1 District a C1-2 District; changing from an R7-1 District to an R9X District; establishing within an existing R7-1 District a C2-4 District; and establishing within the proposed R9X District a C2-4 District, Borough of Queens, Community District 6, Council District 29. | Zoning, 100-12 Queens Boulevard Rezoning, Queens (C 260184 ZMQ). | LU 0150-2026 | Application number N 260185 ZRQ (100-12 Queens Boulevard Rezoning) submitted by 100 Queens Blvd Co. LLC, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing Area, Borough of Queens, Community District 6, Council District 29. | Zoning, 100-12 Queens Boulevard Rezoning, Queens (N 260185 ZRQ). | LU 0151-2026 | Application number N 260362 ZRR (South Richmond Designated Open Space Amendment) submitted by NYC Department of City Planning, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending the Open Space provisions of Article X, Chapter 7 (Special South Richmond Development District), Borough of Staten Island, Community District 3, Council District 51. | Zoning, South Richmond Designated Open Space Amendment, Staten Island (N 260362 ZRR). | LU 0152-2026 | Application number N 260211 ZRM (Studio 54 Rehabilitation and Text Amendment) submitted by Roundabout Theatre Company, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending the Theater Subdistrict provisions in Article VIII, Chapter 1 (Special Midtown District), including Section 81-744 (Transfer of development rights from listed theaters) and Section 81-745 (Floor area bonus for rehabilitation of existing listed theaters), Borough of Manhattan, Community District 5, Council District 3. | Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (N 260211 ZRM). | LU 0153-2026 | Application number C 260212 ZSM (Studio 54 Rehabilitation and Text Amendment) submitted by Roundabout Theatre Company, pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 81-745 (Floor area bonus for rehabilitation of existing listed theaters) to facilitate rehabilitation of Studio 54 Theater, located on 254 West 54th Street (Block 1025, Lots 10 and 58), Borough of Manhattan, Community District 5, Council District 3. | Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (C 260212 ZSM). | LU 0154-2026"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -2664,10 +3794,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
-        "row_version": "AAAAAOhLafo=",
-        "last_modified_utc": "2026-09-11T19:26:04.783",
-        "agenda_last_published_utc": "2026-09-11T19:26:04.753"
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhY/NU=",
+        "last_modified_utc": "2026-11-05T19:31:43.05",
+        "agenda_last_published_utc": "2026-11-05T19:31:42.97"
       }
     },
     {
@@ -2700,20 +3830,128 @@
         "status": "items",
         "items": [
           {
-            "agenda_item_id": "441913",
+            "agenda_item_id": "443974",
             "agenda_number": null,
-            "title": "See Land Use Calendar",
+            "title": "Application number C 260234 ZMQ (108-05 68th Road Rezoning) submitted by All My Children Daycare and Nursery School, pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 14a, changing from an R1-2A District to an R7A District, Borough of Queens, Community District 6, Council District 29.",
             "body_text": null,
-            "matter": null,
+            "matter": {
+              "matter_id": "79573",
+              "matter_file": "LU 0148-2026",
+              "matter_name": "Zoning, 108-05 68th Road Rezoning, Queens (C 260234 ZMQ).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443975",
+            "agenda_number": null,
+            "title": "Application number N 260235 ZRQ (108-05 68th Road Rezoning) submitted by All My Children Daycare and Nursery School, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing Area, Borough of Queens, Community District 6, Council District 29.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79574",
+              "matter_file": "LU 0149-2026",
+              "matter_name": "Zoning, 108-05 68th Road Rezoning, Queens (N 260235 ZRQ).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443976",
+            "agenda_number": null,
+            "title": "Application number C 260184 ZMQ (100-12 Queens Boulevard Rezoning) submitted by 100 Queens Blvd Co. LLC, pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 14a: eliminating from within an existing R4B District a C1-2 District; eliminating from within an existing R7-1 District a C1-2 District; changing from an R7-1 District to an R9X District; establishing within an existing R7-1 District a C2-4 District; and establishing within the proposed R9X District a C2-4 District, Borough of Queens, Community District 6, Council District 29.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79575",
+              "matter_file": "LU 0150-2026",
+              "matter_name": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (C 260184 ZMQ).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443977",
+            "agenda_number": null,
+            "title": "Application number N 260185 ZRQ (100-12 Queens Boulevard Rezoning) submitted by 100 Queens Blvd Co. LLC, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing Area, Borough of Queens, Community District 6, Council District 29.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79576",
+              "matter_file": "LU 0151-2026",
+              "matter_name": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (N 260185 ZRQ).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443978",
+            "agenda_number": null,
+            "title": "Application number N 260362 ZRR (South Richmond Designated Open Space Amendment) submitted by NYC Department of City Planning, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending the Open Space provisions of Article X, Chapter 7 (Special South Richmond Development District), Borough of Staten Island, Community District 3, Council District 51.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79577",
+              "matter_file": "LU 0152-2026",
+              "matter_name": "Zoning, South Richmond Designated Open Space Amendment, Staten Island (N 260362 ZRR).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443979",
+            "agenda_number": null,
+            "title": "Application number N 260211 ZRM (Studio 54 Rehabilitation and Text Amendment) submitted by Roundabout Theatre Company, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending the Theater Subdistrict provisions in Article VIII, Chapter 1 (Special Midtown District), including Section 81-744 (Transfer of development rights from listed theaters) and Section 81-745 (Floor area bonus for rehabilitation of existing listed theaters), Borough of Manhattan, Community District 5, Council District 3.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79578",
+              "matter_file": "LU 0153-2026",
+              "matter_name": "Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (N 260211 ZRM).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "443980",
+            "agenda_number": null,
+            "title": "Application number C 260212 ZSM (Studio 54 Rehabilitation and Text Amendment) submitted by Roundabout Theatre Company, pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 81-745 (Floor area bonus for rehabilitation of existing listed theaters) to facilitate rehabilitation of Studio 54 Theater, located on 254 West 54th Street (Block 1025, Lots 10 and 58), Borough of Manhattan, Community District 5, Council District 3.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79579",
+              "matter_file": "LU 0154-2026",
+              "matter_name": "Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (C 260212 ZSM).",
+              "matter_type": "Land Use Application",
+              "matter_status": "Laid Over in Committee"
+            },
             "action": {
               "name": null,
               "passed_flag": null
             }
           }
         ],
-        "observed_items": 1,
-        "published_items": 1,
-        "search_text": "See Land Use Calendar"
+        "observed_items": 7,
+        "published_items": 7,
+        "search_text": "Application number C 260234 ZMQ (108-05 68th Road Rezoning) submitted by All My Children Daycare and Nursery School, pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 14a, changing from an R1-2A District to an R7A District, Borough of Queens, Community District 6, Council District 29. | Zoning, 108-05 68th Road Rezoning, Queens (C 260234 ZMQ). | LU 0148-2026 | Application number N 260235 ZRQ (108-05 68th Road Rezoning) submitted by All My Children Daycare and Nursery School, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing Area, Borough of Queens, Community District 6, Council District 29. | Zoning, 108-05 68th Road Rezoning, Queens (N 260235 ZRQ). | LU 0149-2026 | Application number C 260184 ZMQ (100-12 Queens Boulevard Rezoning) submitted by 100 Queens Blvd Co. LLC, pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 14a: eliminating from within an existing R4B District a C1-2 District; eliminating from within an existing R7-1 District a C1-2 District; changing from an R7-1 District to an R9X District; establishing within an existing R7-1 District a C2-4 District; and establishing within the proposed R9X District a C2-4 District, Borough of Queens, Community District 6, Council District 29. | Zoning, 100-12 Queens Boulevard Rezoning, Queens (C 260184 ZMQ). | LU 0150-2026 | Application number N 260185 ZRQ (100-12 Queens Boulevard Rezoning) submitted by 100 Queens Blvd Co. LLC, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending APPENDIX F for the purpose of establishing a Mandatory Inclusionary Housing Area, Borough of Queens, Community District 6, Council District 29. | Zoning, 100-12 Queens Boulevard Rezoning, Queens (N 260185 ZRQ). | LU 0151-2026 | Application number N 260362 ZRR (South Richmond Designated Open Space Amendment) submitted by NYC Department of City Planning, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending the Open Space provisions of Article X, Chapter 7 (Special South Richmond Development District), Borough of Staten Island, Community District 3, Council District 51. | Zoning, South Richmond Designated Open Space Amendment, Staten Island (N 260362 ZRR). | LU 0152-2026 | Application number N 260211 ZRM (Studio 54 Rehabilitation and Text Amendment) submitted by Roundabout Theatre Company, pursuant to Section 201 of the New York City Charter, for an amendment of the Zoning Resolution of the City of New York, amending the Theater Subdistrict provisions in Article VIII, Chapter 1 (Special Midtown District), including Section 81-744 (Transfer of development rights from listed theaters) and Section 81-745 (Floor area bonus for rehabilitation of existing listed theaters), Borough of Manhattan, Community District 5, Council District 3. | Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (N 260211 ZRM). | LU 0153-2026 | Application number C 260212 ZSM (Studio 54 Rehabilitation and Text Amendment) submitted by Roundabout Theatre Company, pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 81-745 (Floor area bonus for rehabilitation of existing listed theaters) to facilitate rehabilitation of Studio 54 Theater, located on 254 West 54th Street (Block 1025, Lots 10 and 58), Borough of Manhattan, Community District 5, Council District 3. | Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (C 260212 ZSM). | LU 0154-2026"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -2722,10 +3960,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
-        "row_version": "AAAAAOhLasQ=",
-        "last_modified_utc": "2026-09-11T19:26:46.037",
-        "agenda_last_published_utc": "2026-09-11T19:26:46.007"
+        "observed_at": "2026-11-07T13:54:16.007Z",
+        "row_version": "AAAAAOhY/gE=",
+        "last_modified_utc": "2026-11-05T19:35:37.673",
+        "agenda_last_published_utc": "2026-11-05T19:35:37.533"
       }
     },
     {
@@ -2871,7 +4109,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-05T15:11:06.666Z",
+        "observed_at": "2026-11-07T13:54:16.007Z",
         "row_version": "AAAAAOhYsfo=",
         "last_modified_utc": "2026-11-02T21:02:56.903",
         "agenda_last_published_utc": "2026-11-02T21:02:56.783"
