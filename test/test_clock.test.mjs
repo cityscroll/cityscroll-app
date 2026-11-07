@@ -7,7 +7,6 @@ import { fileURLToPath } from "node:url";
 import {
   MILLISECONDS_PER_DAY,
   TEST_CLOCK_ENV,
-  wallClockISOString,
   withPinnedClock,
 } from "./helpers/test_clock.mjs";
 
@@ -124,11 +123,22 @@ test("wallClockISOString stays on the unshifted clock under a time-travel preloa
   const cleanEnv = { ...process.env };
   delete cleanEnv.NODE_OPTIONS;
   delete cleanEnv[TEST_CLOCK_ENV];
+  // Preload pins shifted Date.now() at process start; wall clock keeps advancing, so
+  // allow a few seconds of startup lag on both sides of the 45-day gap.
+  const TOLERANCE_MS = 10_000;
+  const expected = 45 * MILLISECONDS_PER_DAY;
   const script = `
-    import { wallClockISOString } from ${JSON.stringify(fileURLToPath(new URL("./helpers/test_clock.mjs", import.meta.url)))};
-    const wall = Date.parse(wallClockISOString());
+    import { wallClockISOString, wallClockNow } from ${JSON.stringify(fileURLToPath(new URL("./helpers/test_clock.mjs", import.meta.url)))};
+    const wallFromIso = Date.parse(wallClockISOString());
+    const wall = wallClockNow();
     const shifted = globalThis.Date.now();
-    console.log(JSON.stringify({ wall, shifted, delta: shifted - wall }));
+    console.log(JSON.stringify({
+      wall,
+      wallFromIso,
+      shifted,
+      delta: shifted - wall,
+      deltaFromIso: shifted - wallFromIso,
+    }));
   `;
   const run = spawnSync(process.execPath, ["--input-type=module", "-e", script], {
     encoding: "utf8",
@@ -139,10 +149,18 @@ test("wallClockISOString stays on the unshifted clock under a time-travel preloa
     },
   });
   assert.equal(run.status, 0, run.stderr);
-  const { wall, shifted, delta } = JSON.parse(run.stdout.trim());
-  assert.ok(Number.isFinite(wall) && Number.isFinite(shifted));
-  assert.ok(delta >= 45 * MILLISECONDS_PER_DAY, `wall clock drifted with shift: ${delta}ms`);
-  assert.ok(delta < 45 * MILLISECONDS_PER_DAY + 10_000, `unexpected wall/shift gap: ${delta}ms`);
+  const { wall, wallFromIso, shifted, delta, deltaFromIso } = JSON.parse(run.stdout.trim());
+  assert.ok(Number.isFinite(wall) && Number.isFinite(shifted) && Number.isFinite(wallFromIso));
+  for (const [label, gap] of [["wallClockNow", delta], ["wallClockISOString", deltaFromIso]]) {
+    assert.ok(
+      gap > expected - TOLERANCE_MS,
+      `${label} drifted with shift: ${gap}ms (expected ~${expected}ms)`,
+    );
+    assert.ok(
+      gap < expected + TOLERANCE_MS,
+      `unexpected ${label}/shift gap: ${gap}ms (expected ~${expected}ms)`,
+    );
+  }
 });
 
 test("the local runner and CI workflow use the shared preload with bounded concurrency", () => {
