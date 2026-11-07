@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-11-05T08:00:53.045Z",
+  "generated_at": "2026-11-07T08:00:39.079Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 302,
+  "record_count": 311,
   "present_count": 17,
-  "absent_count": 285,
+  "absent_count": 294,
   "by_notice": {
     "20261006004": {
       "request_id": "20261006004",
@@ -8440,8 +8440,8 @@
         }
       ]
     },
-    "20260430007": {
-      "request_id": "20260430007",
+    "20260422047": {
+      "request_id": "20260422047",
       "snapshot_state": "present",
       "event": {
         "event_id": "22396",
@@ -8516,8 +8516,8 @@
         }
       ]
     },
-    "20260422047": {
-      "request_id": "20260422047",
+    "20260430007": {
+      "request_id": "20260430007",
       "snapshot_state": "present",
       "event": {
         "event_id": "22396",
@@ -8596,6 +8596,10 @@
       "request_id": "20261027004",
       "snapshot_state": "absent"
     },
+    "20261021032": {
+      "request_id": "20261021032",
+      "snapshot_state": "absent"
+    },
     "20261014024": {
       "request_id": "20261014024",
       "snapshot_state": "absent"
@@ -8610,6 +8614,14 @@
     },
     "20261009010": {
       "request_id": "20261009010",
+      "snapshot_state": "absent"
+    },
+    "20261023017": {
+      "request_id": "20261023017",
+      "snapshot_state": "absent"
+    },
+    "20261026022": {
+      "request_id": "20261026022",
       "snapshot_state": "absent"
     },
     "20261009014": {
@@ -8628,12 +8640,16 @@
       "request_id": "20261013024",
       "snapshot_state": "absent"
     },
-    "20261014038": {
-      "request_id": "20261014038",
+    "20261019007": {
+      "request_id": "20261019007",
       "snapshot_state": "absent"
     },
     "20261027024": {
       "request_id": "20261027024",
+      "snapshot_state": "absent"
+    },
+    "20261014038": {
+      "request_id": "20261014038",
       "snapshot_state": "absent"
     },
     "20261007005": {
@@ -8668,8 +8684,24 @@
       "request_id": "20261001007",
       "snapshot_state": "absent"
     },
+    "20261102024": {
+      "request_id": "20261102024",
+      "snapshot_state": "absent"
+    },
+    "20261102029": {
+      "request_id": "20261102029",
+      "snapshot_state": "absent"
+    },
+    "20261029016": {
+      "request_id": "20261029016",
+      "snapshot_state": "absent"
+    },
     "20261026021": {
       "request_id": "20261026021",
+      "snapshot_state": "absent"
+    },
+    "20261027029": {
+      "request_id": "20261027029",
       "snapshot_state": "absent"
     },
     "20261002028": {
@@ -8716,6 +8748,10 @@
       "request_id": "20260924006",
       "snapshot_state": "absent"
     },
+    "20261029019": {
+      "request_id": "20261029019",
+      "snapshot_state": "absent"
+    },
     "20260925024": {
       "request_id": "20260925024",
       "snapshot_state": "absent"
@@ -8728,12 +8764,12 @@
       "request_id": "20261021009",
       "snapshot_state": "absent"
     },
-    "20260924007": {
-      "request_id": "20260924007",
-      "snapshot_state": "absent"
-    },
     "20260929023": {
       "request_id": "20260929023",
+      "snapshot_state": "absent"
+    },
+    "20260924007": {
+      "request_id": "20260924007",
       "snapshot_state": "absent"
     },
     "20260915032": {
@@ -8764,16 +8800,16 @@
       "request_id": "20261021004",
       "snapshot_state": "absent"
     },
-    "20261006022": {
-      "request_id": "20261006022",
+    "20260929021": {
+      "request_id": "20260929021",
       "snapshot_state": "absent"
     },
     "20261014031": {
       "request_id": "20261014031",
       "snapshot_state": "absent"
     },
-    "20260929021": {
-      "request_id": "20260929021",
+    "20261006022": {
+      "request_id": "20261006022",
       "snapshot_state": "absent"
     },
     "20261015027": {
@@ -8804,12 +8840,12 @@
       "request_id": "20260909022",
       "snapshot_state": "absent"
     },
-    "20260923002": {
-      "request_id": "20260923002",
-      "snapshot_state": "absent"
-    },
     "20260918021": {
       "request_id": "20260918021",
+      "snapshot_state": "absent"
+    },
+    "20260923002": {
+      "request_id": "20260923002",
       "snapshot_state": "absent"
     },
     "20261007002": {
@@ -8948,12 +8984,12 @@
       "request_id": "20260909002",
       "snapshot_state": "absent"
     },
-    "20260826006": {
-      "request_id": "20260826006",
-      "snapshot_state": "absent"
-    },
     "20260817025": {
       "request_id": "20260817025",
+      "snapshot_state": "absent"
+    },
+    "20260826006": {
+      "request_id": "20260826006",
       "snapshot_state": "absent"
     },
     "20260911022": {
@@ -8964,16 +9000,16 @@
       "request_id": "20260814012",
       "snapshot_state": "absent"
     },
-    "20260819033": {
-      "request_id": "20260819033",
-      "snapshot_state": "absent"
-    },
     "20260902022": {
       "request_id": "20260902022",
       "snapshot_state": "absent"
     },
     "20260817001": {
       "request_id": "20260817001",
+      "snapshot_state": "absent"
+    },
+    "20260819033": {
+      "request_id": "20260819033",
       "snapshot_state": "absent"
     },
     "20260828012": {
@@ -9000,12 +9036,12 @@
       "request_id": "20260903021",
       "snapshot_state": "absent"
     },
-    "20260818004": {
-      "request_id": "20260818004",
-      "snapshot_state": "absent"
-    },
     "20260910007": {
       "request_id": "20260910007",
+      "snapshot_state": "absent"
+    },
+    "20260818004": {
+      "request_id": "20260818004",
       "snapshot_state": "absent"
     },
     "20260810007": {
@@ -9056,16 +9092,20 @@
       "request_id": "20260819025",
       "snapshot_state": "absent"
     },
-    "20260803009": {
-      "request_id": "20260803009",
-      "snapshot_state": "absent"
-    },
     "20260817015": {
       "request_id": "20260817015",
       "snapshot_state": "absent"
     },
+    "20260803009": {
+      "request_id": "20260803009",
+      "snapshot_state": "absent"
+    },
     "20260901022": {
       "request_id": "20260901022",
+      "snapshot_state": "absent"
+    },
+    "20260826043": {
+      "request_id": "20260826043",
       "snapshot_state": "absent"
     },
     "20260810025": {
@@ -9074,10 +9114,6 @@
     },
     "20260810024": {
       "request_id": "20260810024",
-      "snapshot_state": "absent"
-    },
-    "20260826043": {
-      "request_id": "20260826043",
       "snapshot_state": "absent"
     },
     "20260901021": {
@@ -9100,6 +9136,18 @@
       "request_id": "20260709020",
       "snapshot_state": "absent"
     },
+    "20260810050": {
+      "request_id": "20260810050",
+      "snapshot_state": "absent"
+    },
+    "20260714002": {
+      "request_id": "20260714002",
+      "snapshot_state": "absent"
+    },
+    "20260811001": {
+      "request_id": "20260811001",
+      "snapshot_state": "absent"
+    },
     "20260818027": {
       "request_id": "20260818027",
       "snapshot_state": "absent"
@@ -9114,18 +9162,6 @@
     },
     "20260723022": {
       "request_id": "20260723022",
-      "snapshot_state": "absent"
-    },
-    "20260811001": {
-      "request_id": "20260811001",
-      "snapshot_state": "absent"
-    },
-    "20260714002": {
-      "request_id": "20260714002",
-      "snapshot_state": "absent"
-    },
-    "20260810050": {
-      "request_id": "20260810050",
       "snapshot_state": "absent"
     },
     "20260805006": {
@@ -9356,12 +9392,12 @@
       "request_id": "20260609065",
       "snapshot_state": "absent"
     },
-    "20260522008": {
-      "request_id": "20260522008",
-      "snapshot_state": "absent"
-    },
     "20260610012": {
       "request_id": "20260610012",
+      "snapshot_state": "absent"
+    },
+    "20260522008": {
+      "request_id": "20260522008",
       "snapshot_state": "absent"
     },
     "20260506007": {
@@ -9568,16 +9604,16 @@
       "request_id": "20260518031",
       "snapshot_state": "absent"
     },
+    "20260515001": {
+      "request_id": "20260515001",
+      "snapshot_state": "absent"
+    },
     "20260512013": {
       "request_id": "20260512013",
       "snapshot_state": "absent"
     },
     "20260521019": {
       "request_id": "20260521019",
-      "snapshot_state": "absent"
-    },
-    "20260515001": {
-      "request_id": "20260515001",
       "snapshot_state": "absent"
     },
     "20260512014": {
@@ -9700,16 +9736,16 @@
       "request_id": "20260414033",
       "snapshot_state": "absent"
     },
+    "20260422037": {
+      "request_id": "20260422037",
+      "snapshot_state": "absent"
+    },
     "20260424018": {
       "request_id": "20260424018",
       "snapshot_state": "absent"
     },
     "20260407014": {
       "request_id": "20260407014",
-      "snapshot_state": "absent"
-    },
-    "20260422037": {
-      "request_id": "20260422037",
       "snapshot_state": "absent"
     },
     "20260428004": {

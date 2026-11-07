@@ -100,9 +100,18 @@ fi
 # and closing anything it supersedes. If the checks or queue request fail, the
 # script stops and leaves every predecessor open so the next scheduled run can
 # retry without hiding the last known publication path.
+#
+# FIRST_CLASS_SKIP_QUEUE_WAIT=1 skips that wait when the rebuild already
+# reported a problem: polling checks cannot heal the run, and on a heavy
+# acquisition day the wait was what cancelled the job at the wall-clock limit
+# before the rebuild-problem gate could fire.
 head_sha="$(git rev-parse HEAD)"
-bash "$SCRIPT_DIR/queue_automation_pr_after_checks.sh" "$current_pr" "$head_sha"
-echo "Queued pull request #${current_pr} at ${head_sha}."
+if [ "${FIRST_CLASS_SKIP_QUEUE_WAIT:-}" = "1" ]; then
+  echo "Rebuild reported a problem; opened pull request #${current_pr} at ${head_sha} without waiting to queue it."
+else
+  bash "$SCRIPT_DIR/queue_automation_pr_after_checks.sh" "$current_pr" "$head_sha"
+  echo "Queued pull request #${current_pr} at ${head_sha}."
+fi
 
 # A dated branch is useful evidence for a particular run, but its pull request is
 # not an independent release after a newer run has rebuilt from current main.

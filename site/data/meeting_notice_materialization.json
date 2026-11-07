@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.city_record_meeting_notice_materialization.v1",
-  "generated_at": "2026-11-06T14:57:18.561Z",
-  "as_of": "2026-11-06",
+  "generated_at": "2026-11-07T13:35:50.165Z",
+  "as_of": "2026-11-07",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",
@@ -17,25 +17,8 @@
     "agency_rules_type": "Public Hearings",
     "requires_event_date": true
   },
-  "row_count": 38,
+  "row_count": 37,
   "rows": [
-    {
-      "request_id": "20260929011",
-      "start_date": "2026-10-01T00:00:00.000",
-      "event_date": "2026-11-06T11:00:00.000",
-      "agency_name": "Finance",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "short_title": "Extension of Time to File and Expansion of Processes \u001a Permanent Rule Amendment of Rule Relating to Surcharge on Certain Non-Primary Residences",
-      "street_address_1": "Address Not Listed In The Dropdown",
-      "additional_description_1": "Title: Extension of Time to File and Expansion of Processes – Permanent Rule Amendment of Rule Relating to Surcharge on Certain Non-Primary Residences Agency Rules Section Finance (DOF) Agency Name Legal Affairs Agency Division 11/6/2026 11:00 AM Event Date and Time Accessibility questions: Joan Best; (212) 748-7214; bestj@finance.nyc.gov, by Tuesday, November 3, 2026 11:00 AM Accessibility Archived Status 10/1/2026 Publication Date Public Hearings Notice Type Attachments 1 Extension of Time to File and Expansion of Processes – Permanent Rule Amendment of Rule Relating to Surcharge on Certain Non-Primary Residences",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20260929011&requestStatus=Archived&documentId=44641"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20260929011&requestStatus=Archived&documentId=44641"
-      ]
-    },
     {
       "request_id": "20261006029",
       "start_date": "2026-10-09T00:00:00.000",

@@ -1,14 +1,25 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-11-06T14:57:35.205Z",
+  "generated_at": "2026-11-07T13:35:51.983Z",
   "source_vintages": {
-    "default_open": "2026-11-06T14:57:35.205Z",
+    "default_open": "2026-11-07T13:35:51.983Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-11-04T04:22:02.123Z"
   },
   "count": 378,
   "rows": [
+    {
+      "request_id": "20261027032",
+      "start_date": "2026-11-06T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "SMD_MATERIAL JANITORIAL CLEANING PRODUCTS, FIVE BOROUGHS OF NEW YORK CITY",
+      "pin": "528370",
+      "due_date": "2026-11-20T12:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
     {
       "request_id": "20261021030",
       "start_date": "2026-10-28T00:00:00.000",
@@ -30,6 +41,16 @@
       "pin": "000353",
       "due_date": "2026-11-18T17:00:00.000",
       "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20261014034",
+      "start_date": "2026-10-26T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Bid Extension: Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located Brooklyn Neighborhood (BK08) and (BK09), Brooklyn.",
+      "due_date": "2026-11-20T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20261016012",
@@ -87,15 +108,15 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20261014004",
-      "start_date": "2026-10-19T00:00:00.000",
-      "agency_name": "Economic Development Corporation",
+      "request_id": "20261014021",
+      "start_date": "2026-10-20T00:00:00.000",
+      "agency_name": "Design and Construction",
       "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Mayor's Office of Mass Engagement - SMS Service Provider RFEI",
-      "pin": "11990",
-      "due_date": "2026-11-06T16:00:00.000",
-      "selection_method_description": "Request for Information"
+      "category_description": "Construction Related Services",
+      "short_title": "85027I0001-PV291-QM2, Construction Management - Build Services for Queens Museum Renovation",
+      "pin": "85027I0001",
+      "due_date": "2026-11-20T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
     },
     {
       "request_id": "20261008016",
@@ -139,17 +160,6 @@
       "pin": "523229",
       "due_date": "2026-11-10T14:00:00.000",
       "selection_method_description": "Request for Proposals"
-    },
-    {
-      "request_id": "20261005024",
-      "start_date": "2026-10-14T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "MG-126M Manhattan Street Tree Planting FY27",
-      "pin": "84627B0023",
-      "due_date": "2026-11-06T10:30:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20261006020",
@@ -251,17 +261,6 @@
       "selection_method_description": "Competitive Sealed Proposals"
     },
     {
-      "request_id": "20260928019",
-      "start_date": "2026-10-02T00:00:00.000",
-      "agency_name": "Health and Mental Hygiene",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Request for Proposals for Master Contractors for Agency Survey Work",
-      "pin": "81627P0002",
-      "due_date": "2026-11-06T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
       "request_id": "20260922020",
       "start_date": "2026-09-30T00:00:00.000",
       "agency_name": "Environmental Protection",
@@ -304,17 +303,6 @@
       "pin": "523249",
       "due_date": "2026-11-13T14:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260921021",
-      "start_date": "2026-09-28T00:00:00.000",
-      "agency_name": "Transportation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "84127P0001-TD/CSS for Crocheron Park Pedestrian Bridge Over BCIP, Borough of Queens",
-      "pin": "84127P0001",
-      "due_date": "2026-11-06T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
     },
     {
       "request_id": "20260917021",
@@ -6790,6 +6778,17 @@
         },
         "confidence_tier": "strong"
       }
+    },
+    {
+      "request_id": "20260325037",
+      "start_date": "2026-04-01T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Bid Extension: Requirements Contract for Asbestos Bulk and Air Sampling, Analysis and Project Monitoring",
+      "pin": "B5868040",
+      "due_date": "2026-11-19T16:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260226026",

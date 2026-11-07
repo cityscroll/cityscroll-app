@@ -2,21 +2,21 @@
   "schema_version": 1,
   "version": "pin_family_mismatch_review_v1",
   "title": "PIN-family Checkbook ↔ PASSPort contract-id mismatches",
-  "observed_on": "2026-11-06",
-  "generated_at": "2026-11-06T04:54:33.506Z",
+  "observed_on": "2026-11-07",
+  "generated_at": "2026-11-07T13:35:42.299Z",
   "sources": {
     "crosswalk": "site/data/passport_checkbook_crosswalk.json",
     "spine": "site/data/procurement_spine_sources.json"
   },
   "metrics": {
-    "pin_family_id_mismatches": 145,
-    "auto_related_instrument": 136,
+    "pin_family_id_mismatches": 147,
+    "auto_related_instrument": 138,
     "needs_review": 9,
     "auto_same_contract": 0,
     "by_rule": {
-      "successor_term": 66,
+      "successor_term": 67,
       "later_term_renewal": 12,
-      "fms_document_type_mismatch": 58
+      "fms_document_type_mismatch": 59
     },
     "public_same_contract_rule": "contract_id_exact only; PIN-family id mismatches are not sold as the same contract"
   },
@@ -275,7 +275,7 @@
           "agency": "Department of Education",
           "current_amount": 563610,
           "original_amount": 563610,
-          "spent_amount": 96114.83,
+          "spent_amount": 121752.38,
           "start": "2026-07-01",
           "end": "2028-06-30",
           "registered": "2026-10-13",
@@ -3284,7 +3284,7 @@
           "agency": "Department of Sanitation",
           "current_amount": 450000,
           "original_amount": 450000,
-          "spent_amount": 1872.22,
+          "spent_amount": 12788.02,
           "start": "2026-07-01",
           "end": "2028-06-30",
           "registered": "2026-08-25",
@@ -4034,6 +4034,65 @@
       }
     },
     {
+      "pair_id": "pf:CT185620278803034::CT1-856-20268802559",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "successor_term",
+      "rationale": "Same vendor and same FMS document type, but Checkbook's term starts 1 day(s) after the PASSPort term ends. That is a newly registered successor instrument, not the same contract id.",
+      "evidence": {
+        "pin": "85625U0024001R001",
+        "epin": "85625U0024001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT185620278803034",
+          "subject_ref": "contract:CT185620278803034",
+          "source_record_id": "checkbook:contract:CT185620278803034",
+          "vendor": "SARDER INC",
+          "agency": "Department of Citywide Administrative Services",
+          "current_amount": 250000,
+          "original_amount": 250000,
+          "spent_amount": 0,
+          "start": "2026-07-01",
+          "end": "2027-06-30",
+          "registered": "2026-11-05",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "856",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-856-20268802559",
+          "subject_ref": "contract:CT1-856-20268802559",
+          "source_record_id": "passport:contract:CT1-856-20268802559",
+          "vendor": "SARDER INC",
+          "agency": "DEPARTMENT OF CITYWIDE ADMINISTRATIVE SERVICES",
+          "current_amount": 250000,
+          "award_amount": 250000,
+          "paid_amount": 249598,
+          "start": "2025-07-01",
+          "end": "2026-06-30",
+          "registered": "2025-12-09",
+          "status": "Registered",
+          "title": "102(f) Sardar Learning",
+          "procurement_method": "Subscription",
+          "fms": {
+            "type": "CT1",
+            "agency": "856",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "SARDER",
+          "passport": "SARDER"
+        },
+        "amount_ratio": 1,
+        "term_gap_days": 1
+      }
+    },
+    {
       "pair_id": "pf:CT185820268805642::CT1-858-20248808358",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -4228,7 +4287,7 @@
           "agency": "Department of Information Technology and Telecommunications",
           "current_amount": 96500000,
           "original_amount": 96500000,
-          "spent_amount": 7942369.73,
+          "spent_amount": 8038642.44,
           "start": "2026-07-01",
           "end": "2030-06-30",
           "registered": "2026-09-18",
@@ -4346,7 +4405,7 @@
           "agency": "Department of Consumer & Worker Protection",
           "current_amount": 39000,
           "original_amount": 39000,
-          "spent_amount": 0,
+          "spent_amount": 39000,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-07-31",
@@ -5703,7 +5762,7 @@
           "agency": "Department of Parks and Recreation",
           "current_amount": 640000,
           "original_amount": 640000,
-          "spent_amount": 0,
+          "spent_amount": 120729.83,
           "start": "2026-01-05",
           "end": "2027-07-07",
           "registered": "2025-11-21",
@@ -7220,6 +7279,65 @@
       }
     },
     {
+      "pair_id": "pf:CTA185020277201831::MMA1-850-20228803985",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "fms_document_type_mismatch",
+      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
+      "evidence": {
+        "pin": "85021P0003019",
+        "epin": "85021P0003019",
+        "join_method": "pin_epin_exact",
+        "checkbook": {
+          "contract_id": "CTA185020277201831",
+          "subject_ref": "contract:CTA185020277201831",
+          "source_record_id": "checkbook:contract:CTA185020277201831",
+          "vendor": "LKB Engineering PLLC",
+          "agency": "Department of Design and Construction",
+          "current_amount": 625554.5,
+          "original_amount": 625554.5,
+          "spent_amount": 0,
+          "start": "2026-03-20",
+          "end": "2026-12-31",
+          "registered": "2026-11-05",
+          "status": "registered",
+          "fms": {
+            "type": "CTA1",
+            "agency": "850",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "MMA1-850-20228803985",
+          "subject_ref": "contract:MMA1-850-20228803985",
+          "source_record_id": "passport:contract:MMA1-850-20228803985",
+          "vendor": "LOCKWOOD KESSLER & BARTLETT INC",
+          "agency": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
+          "current_amount": 849327.5,
+          "award_amount": 8000000,
+          "paid_amount": 0,
+          "start": "2021-12-01",
+          "end": "2026-05-29",
+          "registered": "2021-12-01",
+          "status": "Registered",
+          "title": "HWDRCW08, RC Infra. Design Small",
+          "procurement_method": "Competitive Sealed Proposal",
+          "fms": {
+            "type": "MMA1",
+            "agency": "850",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": false,
+        "vendor_stems": {
+          "checkbook": "LKB ENGINEERING",
+          "passport": "LOCKWOOD KESSLER BARTLETT"
+        },
+        "amount_ratio": 0.736529195157345,
+        "term_gap_days": -70
+      }
+    },
+    {
       "pair_id": "pf:CTA185620268840091::MMA1-827-20268802706",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -7945,7 +8063,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 66867092.43,
           "original_amount": 66867092.43,
-          "spent_amount": 1337635.45,
+          "spent_amount": 1463906.66,
           "start": "2026-08-01",
           "end": "2027-07-31",
           "registered": "2026-07-28",

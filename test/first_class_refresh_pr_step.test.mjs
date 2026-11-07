@@ -259,6 +259,11 @@ test("the refresh workflow publishes through the tested script and keeps its lea
   const script = readFileSync(scriptPath, "utf8");
   assert.match(script, /--force-with-lease=/);
   assert.doesNotMatch(script, /git push[^\n]*--force(\s|"|$)/);
+  assert.match(
+    script,
+    /FIRST_CLASS_SKIP_QUEUE_WAIT/,
+    "open-PR script must honor skip-queue-wait when rebuild already failed",
+  );
   // The schedule and the set of datasets the job refreshes are unchanged.
   assert.match(workflow, /cron: "40 6 \* \* \*"/);
   assert.match(workflow, /node tools\/first_class_refresh\.mjs "\$mode"/);
