@@ -27,7 +27,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 20530,
+      "value": 20573,
       "reason": null
     },
     {
@@ -38,7 +38,7 @@
       "vintage_field": "snapshot_date",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 29419,
+      "value": 29518,
       "reason": null
     },
     {
@@ -137,7 +137,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 1180,
+      "value": 1193,
       "reason": null
     },
     {
@@ -245,8 +245,8 @@
       "source_system": "checkbook_contracts",
       "source_contract_id": "checkbook-contracts",
       "registered": true,
-      "served_observations": 9454,
-      "declared_input_rows": 9454,
+      "served_observations": 9495,
+      "declared_input_rows": 9495,
       "specimen": {
         "source_observation_ref": "checkbook_contracts:contract:registered:CT100220261406691:SELECTIVE INSURANCE COMPANY OF AMERICA:prime-vendor:2025-12-05",
         "procurement_id": "procurement:contract:CT100220261406691",
@@ -277,8 +277,8 @@
       "source_system": "city_record",
       "source_contract_id": "city-record",
       "registered": true,
-      "served_observations": 12685,
-      "declared_input_rows": 12989,
+      "served_observations": 12684,
+      "declared_input_rows": 12988,
       "specimen": {
         "source_observation_ref": "city_record:20210621107",
         "procurement_id": "procurement:contract:20211201861",
@@ -451,7 +451,7 @@
             "unit_id": "exams",
             "route": "/browse/exams/",
             "served_records": 227,
-            "evidence_vintage": "2026-11-06T00:00:00.000Z"
+            "evidence_vintage": "2026-11-07T00:00:00.000Z"
           }
         ]
       }
@@ -531,8 +531,8 @@
           {
             "unit_id": "registered-contracts",
             "route": "/browse/contracts/",
-            "served_records": 29419,
-            "evidence_vintage": "2026-11-06T00:00:00.000Z"
+            "served_records": 29518,
+            "evidence_vintage": "2026-11-07T00:00:00.000Z"
           }
         ]
       }
@@ -640,7 +640,7 @@
             "unit_id": "rules",
             "route": "/browse/rules/",
             "served_records": 100,
-            "evidence_vintage": "2026-11-06T15:25:08.093Z"
+            "evidence_vintage": "2026-11-07T14:07:27.877Z"
           },
           {
             "unit_id": "staffing-notices",
@@ -1035,13 +1035,13 @@
             "unit_id": "meeting-outcomes",
             "route": "/browse/meetings/",
             "served_records": 17,
-            "evidence_vintage": "2026-11-05T08:00:53.045Z"
+            "evidence_vintage": "2026-11-07T08:00:39.079Z"
           },
           {
             "unit_id": "committee-memberships",
             "route": "/browse/people/",
-            "served_records": 1180,
-            "evidence_vintage": "2026-11-05T14:58:31.000Z"
+            "served_records": 1193,
+            "evidence_vintage": "2026-11-07T13:31:35.000Z"
           }
         ]
       }

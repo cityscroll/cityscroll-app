@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.shared_meeting_read_model.v1",
   "version": 1,
-  "generated_at": "2026-11-06T14:57:18.561Z",
+  "generated_at": "2026-11-07T13:35:50.165Z",
   "freshness": {
-    "generated_at": "2026-11-06T14:57:18.561Z",
+    "generated_at": "2026-11-07T13:35:50.165Z",
     "checked_at": "2026-11-06T14:46:01.758Z",
     "sources": {
       "city_record": "available",
@@ -18,7 +18,7 @@
       "source_system": "city_record",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-06T14:57:18.561Z",
+      "generated_at": "2026-11-07T13:35:50.165Z",
       "max_age_ms": null,
       "row_count": 120,
       "reason": null,
@@ -1548,30 +1548,30 @@
       "source_system": "nyc_legistar_events",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-05T15:11:06.666Z",
+      "generated_at": "2026-11-07T13:54:16.007Z",
       "max_age_ms": 129600000,
-      "row_count": 33,
+      "row_count": 46,
       "reason": null,
       "coverage": {
-        "eligible_events": 33,
-        "meetings": 33,
-        "agenda_items": 82,
-        "agenda_items_observed": 82,
-        "events_with_items": 33,
+        "eligible_events": 46,
+        "meetings": 46,
+        "agenda_items": 121,
+        "agenda_items_observed": 121,
+        "events_with_items": 46,
         "events_no_published_items": 0,
         "events_items_deferred": 0,
         "events_items_unavailable": 0,
         "events_items_truncated": 0,
-        "standalone": 33,
+        "standalone": 46,
         "exactly_joined": 0,
         "source_health": {
           "status": "healthy",
           "basis": "authenticated-events-acquisition",
-          "observed_at": "2026-11-05T15:11:06.666Z",
-          "events_observed": 377,
-          "last_successful_observation": "2026-11-05T15:11:06.666Z",
-          "upcoming": 33,
-          "standalone": 33,
+          "observed_at": "2026-11-07T13:54:16.007Z",
+          "events_observed": 389,
+          "last_successful_observation": "2026-11-07T13:54:16.007Z",
+          "upcoming": 46,
+          "standalone": 46,
           "exactly_joined": 0,
           "collection_suppressed": 0,
           "truncated": 0
@@ -1606,32 +1606,32 @@
     }
   },
   "counts": {
-    "total": 1076,
+    "total": 1089,
     "city_record": 120,
     "community_board": 769,
     "oath_trial_calendar": 142,
-    "meeting_documents": 4598,
+    "meeting_documents": 4611,
     "attached_meeting_documents": 231,
     "pdc_calendar": 12,
-    "nyc_legistar_events": 33,
-    "collection": 815,
+    "nyc_legistar_events": 46,
+    "collection": 828,
     "suppressed": 261,
     "same_proceeding": 0
   },
   "same_proceeding": [],
   "representation": "sharded",
   "shard_schema": "cityscroll.shared_meeting_read_model_shard.v1",
-  "row_count": 1076,
+  "row_count": 1089,
   "shards": [
     {
       "path": "shared_meeting_read_model/shard-000.json",
-      "bytes": 12554943,
-      "row_count": 1013
+      "bytes": 12565627,
+      "row_count": 1016
     },
     {
       "path": "shared_meeting_read_model/shard-001.json",
-      "bytes": 700341,
-      "row_count": 63
+      "bytes": 821888,
+      "row_count": 73
     }
   ]
 }
