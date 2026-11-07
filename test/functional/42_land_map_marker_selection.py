@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from pathlib import Path
 
 from playwright.sync_api import Route, sync_playwright
@@ -29,11 +30,11 @@ BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 MAP_ROUTE = "/browse/zoning/?view=map"
 QUEENS_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 
-# A 25-lot rezoning: on the map, and emphatically not at an address.
-ANCHOR_SPECIMEN = "2025K0305"
+# A multi-lot rezoning: on the map, and emphatically not at an address.
+ANCHOR_SPECIMEN = "2022K0430"
 # The one project genuinely lacking a retained BBL (site/data/land_project_map_points_receipt.json).
 # It has no marker to select and stays in the List.
-UNMAPPED_SPECIMEN = "2025M0252"
+UNMAPPED_SPECIMEN = "2026X0180"
 EXPECTED_TOTAL = 40
 
 
@@ -174,7 +175,11 @@ def check_summary_is_honest_about_placement(state: dict) -> None:
     assert state["precision"] == "anchor", state["precision"]
     assert state["vintage"], "the selected summary dropped the projection vintage"
     text = state["summary_text"]
-    assert "25" in text, f"a 25-lot anchor does not say 25: {text}"
+    # The specimen's own lot count, not a literal pinned count -- see the marker-join card's
+    # fix for why a specific count is not a property of the live catalog.
+    lot_count = re.search(r"Anchor point for (\d+) lots", text)
+    assert lot_count, f"a multi-lot anchor does not say its lot count: {text}"
+    assert int(lot_count.group(1)) > 1, f"a multi-lot anchor's count does not read as plural: {text}"
     assert "not an exact address" in text, f"an anchor claimed exactness: {text}"
     assert ANCHOR_SPECIMEN in (state["detail_href"] or ""), state["detail_href"]
     assert state["summary_label"], "the selected summary has no accessible name"

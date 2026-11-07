@@ -27,11 +27,11 @@ BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 MAP_ROUTE = "/browse/zoning/?view=map"
 FILTERED_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 
-# A 25-lot rezoning: on the map, and emphatically not at an address (LM-07's anchor).
-ANCHOR_SPECIMEN = "2025K0305"
+# A multi-lot rezoning: on the map, and emphatically not at an address (LM-07's anchor).
+ANCHOR_SPECIMEN = "2022K0430"
 # The one project genuinely lacking a retained BBL (site/data/land_project_map_points_receipt.json)
 # -- reachable only through the List.
-UNMAPPED_SPECIMEN = "2025M0252"
+UNMAPPED_SPECIMEN = "2026X0180"
 # The registered fixtures, plus the desktop regression width.
 FIXTURES = ((320, 568), (375, 667), (768, 1024), (1440, 900))
 
