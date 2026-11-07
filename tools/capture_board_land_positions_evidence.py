@@ -75,6 +75,8 @@ POSITIVE_PROJECT = "2024M0244"
 SIBLING_PROJECT = "2023M0213"
 WAIVER_BOARD = "staten-island-cb-01"
 WAIVER_PROJECT = "2026R0127"
+# Collapsed overflow disclosure for positions beyond the initially visible set.
+OVERFLOW_MORE = 'a.board-land-positions-more[href="#board-land-positions-more"]'
 
 CASES = [
     (POSITIVE_BOARD, "board-land-positions-shared-date",
@@ -292,6 +294,23 @@ def capture_boards(browser, base, rev, vintage, receipts):
         context.close()
 
 
+def reveal_position_if_needed(page, project_id):
+    """Reveal a collapsed overflow row before interacting with it.
+
+    A board's recorded positions only ship inside the initially visible list, or
+    inside a collapsed ".board-land-positions-overflow" (:target disclosure),
+    depending on how many positions the board currently carries. Reveal the
+    overflow section first when the target inspect control is not yet visible,
+    rather than waiting out Playwright's timeout on a hidden control.
+    """
+    target = page.locator(f'{INSPECT}[data-board-land-position-id="{project_id}"]')
+    if target.count() and not target.first.is_visible():
+        overflow_toggle = page.locator(OVERFLOW_MORE)
+        if overflow_toggle.count() and overflow_toggle.first.is_visible():
+            overflow_toggle.first.click()
+    return target
+
+
 def capture_inspect_journey(browser, base, rev, vintage, receipts):
     """Inspect, dismiss, open the full record, Back, and continue."""
     route = f"/community-boards/{POSITIVE_BOARD}/"
@@ -299,7 +318,7 @@ def capture_inspect_journey(browser, base, rev, vintage, receipts):
         context = browser.new_context(viewport={"width": width, "height": height})
         page = context.new_page()
         page.goto(f"{base}{route}", wait_until="load")
-        button = page.locator(f'{INSPECT}[data-board-land-position-id="{POSITIVE_PROJECT}"]')
+        button = reveal_position_if_needed(page, POSITIVE_PROJECT)
         button.scroll_into_view_if_needed()
         scrolled = page.evaluate("() => Math.round(window.scrollY)")
         calendar_before = page.locator('[data-board-proceedings-panel="list"]').count()
@@ -393,7 +412,7 @@ def capture_keyboard(browser, base, rev, vintage, receipts):
     context = browser.new_context(viewport={"width": 1440, "height": 900})
     page = context.new_page()
     page.goto(f"{base}{route}", wait_until="load")
-    button = page.locator(f'{INSPECT}[data-board-land-position-id="{SIBLING_PROJECT}"]')
+    button = reveal_position_if_needed(page, SIBLING_PROJECT)
     button.scroll_into_view_if_needed()
     button.focus()
     observed = {"control_focusable": page.evaluate(

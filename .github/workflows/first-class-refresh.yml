@@ -36,10 +36,14 @@ jobs:
   refresh:
     name: Refresh due first-class datasets
     runs-on: ubuntu-24.04
-    # Acquisition routinely spends ~45–50 minutes; the committed-read-model rebuild
-    # then needs headroom for the remaining builders after skip-if-current. 60 minutes
-    # cancelled mid-rebuild (run 38896493551); 90 leaves room without open-ending the job.
-    timeout-minutes: 90
+    # Measured wall times on recent scheduled runs (2026-11-03..11-06):
+    #   acquisition 21–61 minutes, rebuild 17–23 minutes, open-PR + required-check
+    #   wait 2–18 minutes when it completed. The previous 90-minute ceiling cancelled
+    #   mid check-wait on heavy acquisition days (runs 41851512443, 42234977802) after
+    #   ~72 minutes of real work, before the rebuild-problem gate could finish cleanly.
+    # 120 minutes covers the measured 61 + 23 + 18 path with a small buffer without
+    # open-ending the job.
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
@@ -263,6 +267,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
           REPOSITORY: ${{ github.repository }}
+          # When the rebuild already reported a problem, skip the bounded
+          # required-check wait so the job reaches the rebuild-problem gate
+          # instead of spending the remaining wall clock polling checks that
+          # cannot make this run healthy. The branch and pull request still
+          # publish whatever did succeed.
+          FIRST_CLASS_SKIP_QUEUE_WAIT: ${{ steps.rebuild.outcome != 'success' && '1' || '' }}
         run: bash tools/open_first_class_refresh_pr.sh
 
       # The rebuild step above never aborts partway through and always lets this

@@ -207,6 +207,36 @@ test("dropping unmapped rows is a denominator change and fails the contract", ()
   assert.throws(() => assertLandMapabilityContract(mappedOnly), /denominator/);
 });
 
+test("aggregate drift inside the 40-row denominator restamps rather than failing the writer", () => {
+  // A scheduled refresh that rewrites land_default / WH-06 joins changes how
+  // many of the 40 rows place with retained centroids. The contract must keep
+  // the denominator and reject incoherent or empty populations, while letting
+  // the measured mapped/unmapped tallies advance with the inputs — pinning
+  // yesterday's aggregates blocked the rebuild writer after ordinary refresh.
+  const restamped = structuredClone(committed);
+  const moved = restamped.projects.find((row) => !row.mapped);
+  assert.ok(moved, "committed census needs at least one unmapped row to restamp");
+  moved.mapped = true;
+  moved.method = LAND_MAPABILITY_METHODS.SINGLE_BBL_CENTROID;
+  moved.unmapped_reason = null;
+  moved.point = { lat: 40.7, lon: -74.0 };
+  restamped.unmapped_project_ids = restamped.unmapped_project_ids.filter(
+    (id) => id !== moved.project_id,
+  );
+  restamped.aggregations.mapped = committed.aggregations.mapped + 1;
+  restamped.aggregations.unmapped = committed.aggregations.unmapped - 1;
+  restamped.aggregations.coverage_percent = Number(
+    ((restamped.aggregations.mapped / LAND_MAPABILITY_DENOMINATOR) * 100).toFixed(1),
+  );
+  restamped.aggregations.methods = {
+    ...committed.aggregations.methods,
+    [LAND_MAPABILITY_METHODS.SINGLE_BBL_CENTROID]:
+      committed.aggregations.methods[LAND_MAPABILITY_METHODS.SINGLE_BBL_CENTROID] + 1,
+  };
+  assert.deepEqual(landMapabilityContractFindings(restamped), []);
+  assertLandMapabilityContract(restamped);
+});
+
 test("serialized list byte growth is recorded evidence, not a semantic failure", () => {
   const changedBytes = structuredClone(committed);
   changedBytes.aggregations.list_baseline.bytes += 1;
