@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from pathlib import Path
 import sys
 
@@ -32,9 +33,9 @@ MAP_ROUTE = "/browse/zoning/?view=map"
 QUEENS_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 PROJECTION = "data/land_project_map_points.json"
 
-MAPPED_SPECIMEN = "2025K0305"
+MAPPED_SPECIMEN = "2022K0430"
 # The one visible project genuinely lacking a retained BBL in the generated point projection.
-UNMAPPED_SPECIMEN = "2025M0252"
+UNMAPPED_SPECIMEN = "2026X0180"
 
 
 def install_routes(page) -> None:
@@ -190,7 +191,12 @@ def check_labels_name_method_and_precision(state: dict) -> None:
     specimen = next(link for link in state["links"] if link["id"] == MAPPED_SPECIMEN)
     label = specimen["label"]
     assert label.strip(), "the specimen marker has no accessible name"
-    assert "25" in label, f"a 25-lot anchor does not say 25: {label}"
+    # The specimen's own lot count, not a literal pinned count: which multi-lot anchor is
+    # first in the live catalog (and how many lots it anchors) is a property of the live
+    # catalog, but a multi-lot anchor always naming its (plural) lot count is not.
+    lot_count = re.search(r"Anchor point for (\d+) lots", label)
+    assert lot_count, f"a multi-lot anchor does not say its lot count: {label}"
+    assert int(lot_count.group(1)) > 1, f"a multi-lot anchor's count does not read as plural: {label}"
     assert "not an exact address" in label, f"an anchor claimed exactness: {label}"
 
     # An exact single-lot centroid must not carry the anchor's disclaimer.
