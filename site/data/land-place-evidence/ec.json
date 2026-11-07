@@ -2,8 +2,8 @@
   "schema": "cityscroll.land_place_evidence_shard.v1",
   "key": "ec",
   "association_kind": "published_project_lot",
-  "generation_id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-  "project_count": 2,
+  "generation_id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+  "project_count": 1,
   "projects": {
     "2019K0217": {
       "association_kind": "published_project_lot",
@@ -79,82 +79,6 @@
         "borough": "Brooklyn",
         "community_district": "K11",
         "council_district": "44"
-      }
-    },
-    "2024K0437": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbls": [
-        "3018590024"
-      ],
-      "invalid_bbls": [],
-      "bbls": {
-        "3018590024": {
-          "layers": {
-            "borough": {
-              "status": "matched",
-              "ids": [
-                "3"
-              ]
-            },
-            "community_district": {
-              "status": "matched",
-              "ids": [
-                "K03"
-              ]
-            },
-            "council_district": {
-              "status": "matched",
-              "ids": [
-                "36"
-              ]
-            },
-            "nta2020": {
-              "status": "matched",
-              "ids": [
-                "BK0302"
-              ]
-            },
-            "police_precinct": {
-              "status": "matched",
-              "ids": [
-                "79"
-              ]
-            }
-          }
-        }
-      },
-      "places": {
-        "borough": {
-          "3": [
-            "3018590024"
-          ]
-        },
-        "community_district": {
-          "K03": [
-            "3018590024"
-          ]
-        },
-        "council_district": {
-          "36": [
-            "3018590024"
-          ]
-        },
-        "nta2020": {
-          "BK0302": [
-            "3018590024"
-          ]
-        },
-        "police_precinct": {
-          "79": [
-            "3018590024"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Brooklyn",
-        "community_district": "K03",
-        "council_district": "36"
       }
     }
   }

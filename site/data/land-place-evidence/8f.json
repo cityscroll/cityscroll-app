@@ -2,8 +2,8 @@
   "schema": "cityscroll.land_place_evidence_shard.v1",
   "key": "8f",
   "association_kind": "published_project_lot",
-  "generation_id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-  "project_count": 1,
+  "generation_id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+  "project_count": 2,
   "projects": {
     "2023R0199": {
       "association_kind": "published_project_lot",
@@ -79,6 +79,25 @@
         "borough": "Staten Island",
         "community_district": "R03",
         "council_district": "51"
+      }
+    },
+    "2025X0256": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbls": [],
+      "invalid_bbls": [],
+      "bbls": {},
+      "places": {
+        "borough": {},
+        "community_district": {},
+        "council_district": {},
+        "nta2020": {},
+        "police_precinct": {}
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X01",
+        "council_district": "8"
       }
     }
   }

@@ -44,14 +44,22 @@ import { normalizeGeographyKey, scopeWithGeographies } from "../site/scope_v0.mj
 
 const ROOT = process.cwd();
 
+// Specimens re-pinned after a refresh rotated the prior ones out of the live
+// catalog (fdny was 2026R0127; dewitt/mn0401/mn0402 were 2023M0213/MN0401/
+// MN0402; see similar notes in worker/test/land_nta_watch_parity.test.mjs).
+// fdny/si0105 now point at a Staten Island NTA whose sole live member is a
+// real ULURP, acquisition-family project (2023R0199); dewitt/mn0401/mn0402 now point at a
+// Brooklyn project ("Westshore Rezoning LSGD") that spans two NTAs, since no
+// live Manhattan project currently spans two NTAs — the "mn" key names are
+// kept for minimal diff and no longer mean Manhattan specifically.
 const ANCHORS = Object.freeze({
-  fdny: "2026R0127",
-  dewitt: "2023M0213",
+  fdny: "2023R0199",
+  dewitt: "2024K0444",
   noBbl: "2025M0252",
   citywide: "2022Y0395",
-  si0105: "geography:nta2020:SI0105",
-  mn0401: "geography:nta2020:MN0401",
-  mn0402: "geography:nta2020:MN0402",
+  si0105: "geography:nta2020:SI0305",
+  mn0401: "geography:nta2020:BK1301",
+  mn0402: "geography:nta2020:BK1391",
 });
 
 function readJson(relative) {
@@ -84,7 +92,7 @@ function decodeGeoParams(href) {
 }
 
 describe("near_you_land_handoff", () => {
-  it("A1: SI0105 opens Land with 2026R0127 eligible; either Manhattan NTA keeps 2023M0213 once", () => {
+  it("A1: SI0305 opens Land with 2023R0199 eligible; either multi-NTA project NTA keeps 2024K0444 once", () => {
     const { membership, catalog } = loadShared();
     const rows = catalog.projects;
 
@@ -147,7 +155,7 @@ describe("near_you_land_handoff", () => {
     const continuityRecordHref = nearYouLandRecordHref(ANCHORS.fdny, { scope });
     assert.match(continuityRecordHref, /^\/browse\/zoning\/\?/);
     assert.deepEqual(decodeGeoParams(continuityRecordHref), [ANCHORS.si0105]);
-    assert.match(continuityRecordHref, /#land\/2026R0127/);
+    assert.match(continuityRecordHref, new RegExp(`#land/${ANCHORS.fdny}`));
     assert.match(returnHref, /^\/near-you\/\?/);
     assert.match(returnHref, /lens=land/);
     assert.deepEqual(
@@ -299,19 +307,19 @@ describe("near_you_land_handoff", () => {
     assert.deepEqual(decodeGeoParams(view.browseHref), [ANCHORS.si0105]);
 
     const fdny = (view.results?.records || []).find((row) => row.id === ANCHORS.fdny);
-    assert.ok(fdny, "SI0105 land results must include 2026R0127");
+    assert.ok(fdny, `SI0305 land results must include ${ANCHORS.fdny}`);
     assert.equal(fdny.route, nearYouLandRecordHref(ANCHORS.fdny, { scope: landScope }));
-    assert.match(fdny.route, /geo=geography%3Anta2020%3ASI0105|#land\/2026R0127/);
+    assert.match(fdny.route, new RegExp(`geo=geography%3Anta2020%3ASI0305|#land/${ANCHORS.fdny}`));
     assert.deepEqual(decodeGeoParams(fdny.route), [ANCHORS.si0105]);
     assert.equal(affordanceActionRole({ href: fdny.route }), AFFORDANCE_ACTION_ROLES.navigate);
     assert.equal(affordanceActionRole({ href: view.browseHref }), AFFORDANCE_ACTION_ROLES.navigate);
 
     const body = renderNearYouBody(view);
-    assert.match(body, /href="\/browse\/zoning\/\?[^"]*geo=geography%3Anta2020%3ASI0105/);
+    assert.match(body, /href="\/browse\/zoning\/\?[^"]*geo=geography%3Anta2020%3ASI0305/);
     const deferred = renderNearYouDeferredBody(view);
     // Inspect remains a button; Land results and full-record destinations are real anchors.
     assert.match(deferred, /<button[^>]*class="[^"]*near-record-inspect/);
-    assert.match(deferred, /href="\/browse\/zoning\/\?[^"]*#land\/2026R0127"/);
+    assert.match(deferred, new RegExp(`href="/browse/zoning/\\?[^"]*#land/${ANCHORS.fdny}"`));
     assert.match(body, /<a[^>]*href="\/browse\/zoning\/\?/);
 
     const packet = buildNearYouLandHandoff({

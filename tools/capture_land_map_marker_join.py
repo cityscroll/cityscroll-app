@@ -36,13 +36,20 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "screenshots" / "land-map-marker-join"
 RECEIPT = ROOT / "docs" / "evidence" / "land-map-marker-join.json"
 
-# The card's own specimen scope. Default Map is where the 40/29/11 arithmetic is visible;
-# the borough route is where "a subset of the filtered rows, never of the projection" is.
+# The card's own specimen scope. Default Map is where the mapped/unmapped
+# arithmetic is visible; the borough route is where "a subset of the
+# filtered rows, never of the projection" is. 2025K0305 (mapped) and
+# 2025M0252 (unmapped) were the prior specimens until a refresh rotated both
+# out of the live catalog. 2023Q0177 (mapped, Queens, Active, multi_bbl_anchor)
+# is a direct replacement confirmed by direct observation to render a
+# marker on both the default and Queens-filtered map routes; 2026X0180
+# (unmapped) only needs to stay absent from the map, which holds regardless
+# of borough filter.
 DEFAULT_MAP_ROUTE = "/browse/zoning/?view=map"
 FILTERED_MAP_ROUTE = "/browse/zoning/?boro=Queens&view=map"
 VIEWPORTS = ((390, 844), (1440, 900))
-MAPPED_SPECIMEN = "2025K0305"
-UNMAPPED_SPECIMEN = "2025M0252"
+MAPPED_SPECIMEN = "2023Q0177"
+UNMAPPED_SPECIMEN = "2026X0180"
 
 STATES = (
     ("default-map", DEFAULT_MAP_ROUTE,
@@ -73,10 +80,20 @@ class StaticServer:
         self.server.server_close()
 
 
-def install_routes(page: Page, base_url: str) -> None:
+def install_routes(page: Page, base_url: str, site: Path) -> None:
     """Keep the capture offline. `capabilities/` is served from the repository root rather
     than from `site/`; the remote analytics and open-data origins are not part of what this
-    shows, so they are stubbed or aborted rather than reached."""
+    shows, so they are stubbed or aborted rather than reached.
+
+    `capabilities/*.mjs` imports its site/ dependencies with "../site/..."
+    specifiers, which is correct on disk (capabilities/ and site/ are
+    siblings under the repo root) but wrong once capabilities/ is mounted at
+    this capture's "/capabilities/" URL path with site/ flattened to URL
+    root: the real tools/build_public_site.mjs output resolves this by also
+    publishing those site/ modules a second time under "_site/site/...", so
+    this capture mirrors that same "/site/..." path locally rather than
+    leaving the capability-module graph unable to load.
+    """
     def capability_module(route: Route) -> None:
         name = route.request.url.split("/capabilities/", 1)[1].split("?", 1)[0]
         source = ROOT / "capabilities" / name
@@ -85,7 +102,20 @@ def install_routes(page: Page, base_url: str) -> None:
         else:
             route.fulfill(status=404, body="")
 
+    def site_mirror_module(route: Route) -> None:
+        name = route.request.url.split("/site/", 1)[1].split("?", 1)[0]
+        source = site / name
+        if not source.is_file():
+            route.fulfill(status=404, body="")
+            return
+        content_type = "application/json" if source.suffix == ".json" else "text/javascript"
+        route.fulfill(status=200, content_type=content_type, body=source.read_text("utf-8"))
+
     page.route(f"{base_url.rstrip('/')}/capabilities/*", capability_module)
+    # "**" (not "*") so this also mirrors nested data paths like
+    # "/site/data/legislative_matter_index.json" that the capability-module
+    # graph's own site/ dependencies fetch at runtime, not just top-level .mjs.
+    page.route(f"{base_url.rstrip('/')}/site/**", site_mirror_module)
     page.route(
         "https://data.cityofnewyork.us/**",
         lambda route: route.fulfill(status=200, content_type="application/json", body="[]"),
@@ -162,7 +192,7 @@ def capture_tree(site: Path, phase: str) -> dict:
         for state, route, _demonstrates in STATES:
             for width, height in VIEWPORTS:
                 page = browser.new_page(viewport={"width": width, "height": height})
-                install_routes(page, base_url)
+                install_routes(page, base_url, site)
                 page.goto(f"{base_url.rstrip('/')}{route}", wait_until="domcontentloaded", timeout=45_000)
                 wait_for_map(page)
                 reading = observe(page)

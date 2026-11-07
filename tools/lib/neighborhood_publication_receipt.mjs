@@ -53,7 +53,13 @@ export const NEIGHBORHOOD_PUBLICATION_ANCHORS = Object.freeze({
     expected_role: "venue",
   }),
   worth_street: Object.freeze({
-    meeting_id: "meeting:city_record:20260106034",
+    // City Record retention rolled the original anchor (request 20260106034)
+    // out of the shared read model; request 20260106035 (Board of Correction,
+    // same day) names the identical venue address (125 Worth Street, 2nd
+    // Floor Auditorium, New York, NY, 10013), so the expected BBL/NTA/CD below
+    // -- properties of that physical address, not of either specific meeting
+    // record -- are unchanged.
+    meeting_id: "meeting:city_record:20260106035",
     expected_bbl: "1001680032",
     expected_nta2020: "MN0102",
     expected_community_district: "M01",

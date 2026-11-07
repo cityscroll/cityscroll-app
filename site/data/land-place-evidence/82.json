@@ -2,85 +2,9 @@
   "schema": "cityscroll.land_place_evidence_shard.v1",
   "key": "82",
   "association_kind": "published_project_lot",
-  "generation_id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-  "project_count": 2,
+  "generation_id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+  "project_count": 1,
   "projects": {
-    "2026R0186": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbls": [
-        "5028100080"
-      ],
-      "invalid_bbls": [],
-      "bbls": {
-        "5028100080": {
-          "layers": {
-            "borough": {
-              "status": "matched",
-              "ids": [
-                "5"
-              ]
-            },
-            "community_district": {
-              "status": "matched",
-              "ids": [
-                "R02"
-              ]
-            },
-            "council_district": {
-              "status": "matched",
-              "ids": [
-                "50"
-              ]
-            },
-            "nta2020": {
-              "status": "matched",
-              "ids": [
-                "SI0204"
-              ]
-            },
-            "police_precinct": {
-              "status": "matched",
-              "ids": [
-                "121"
-              ]
-            }
-          }
-        }
-      },
-      "places": {
-        "borough": {
-          "5": [
-            "5028100080"
-          ]
-        },
-        "community_district": {
-          "R02": [
-            "5028100080"
-          ]
-        },
-        "council_district": {
-          "50": [
-            "5028100080"
-          ]
-        },
-        "nta2020": {
-          "SI0204": [
-            "5028100080"
-          ]
-        },
-        "police_precinct": {
-          "121": [
-            "5028100080"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R02",
-        "council_district": "50"
-      }
-    },
     "P2016M0148": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",

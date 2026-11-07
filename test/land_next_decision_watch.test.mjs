@@ -30,15 +30,41 @@ import {
 const requireJson = createRequire(import.meta.url);
 const geography = requireJson("../site/data/community_board_geography_lookup.json");
 const landDefault = requireJson("../site/data/land_default_ulurp.json");
+const landCatalog = requireJson("../site/data/land_project_catalog.json");
 const landOutcomesSeed = requireJson("../site/data/land_outcomes_seed.json");
 const hearings = requireJson("../site/data/land_upcoming_hearings.json");
 const committedPayload = requireJson("../site/data/land_authority_summary.json");
 
-const COUNCIL_SPECIMEN = "2026Q0210"; // eligible: CB12 favorable vote, BP hearing evidence
-const DRAFT_SPECIMEN = "2025K0305"; // ineligible: multi-CD draft-only rows
+// 2026Q0210 and 2025K0305 were the prior specimens until a refresh rotated
+// them out of the live/default-40 population; this file reads committed
+// site/data directly rather than a frozen fixture, so these are expected to
+// need re-pinning periodically.
+//
+// COUNCIL_SPECIMEN needs a project materialized at the city_council_review
+// stage (a decisional role, with an unconditional expected_next_stage to
+// mayoral_review): no project in the current 40-row Default Land snapshot
+// is at that stage right now (the snapshot's own query orders by most recent
+// milestone and none happen to be this far along), so COUNCIL_SPECIMEN is
+// drawn from the full admitted catalog instead via a defaultRow() fallback
+// below — still real, live, committed data, just not restricted to the
+// smaller rotating subset. The city_planning_commission_review stage's own
+// successor to city_council_review is additionally gated on a
+// `council_review` fact that no current code path ever sets, so no CPC-stage
+// project could ever satisfy this regardless of population — a structural,
+// not population, gap worth hardening separately.
+//
+// 2023Q0450 is outside the Default-40 snapshot and so carries no seeded
+// disposition/hearing rows of its own (land_outcomes_seed.json and
+// land_upcoming_hearings.json are scoped to the Default-40); the one test
+// that specifically needs a real Community Board disposition to normalize
+// into an observed outcome uses COUNCIL_OBSERVED_EVENT_SPECIMEN instead.
+const COUNCIL_SPECIMEN = "2023Q0450"; // decisional: real city_council_review stage, unconditional expected successor
+const COUNCIL_OBSERVED_EVENT_SPECIMEN = "2025Q0247"; // CB6 favorable-leaning vote, BP hearing evidence
+const DRAFT_SPECIMEN = "2025K0306"; // ineligible: draft-only CB/BP rows
 
 function defaultRow(projectId) {
-  return (landDefault.projects || []).find((row) => row.project_id === projectId);
+  return (landDefault.projects || []).find((row) => row.project_id === projectId)
+    || (landCatalog.projects || []).find((row) => row.project_id === projectId);
 }
 
 function realDispositions(projectId) {
@@ -125,7 +151,7 @@ test("A1 measureNextDecisionReliability GOes above threshold and STOPs below it,
   assert.equal(actorless.gate.result, "STOP");
 });
 
-test("A1 2026Q0210 is eligible only once corpus-wide reliability clears the bar", () => {
+test("A1 2023Q0450 is eligible only once corpus-wide reliability clears the bar", () => {
   const summary = summarize(COUNCIL_SPECIMEN);
   assert.equal(summary.status, "resolved");
 
@@ -138,7 +164,7 @@ test("A1 2026Q0210 is eligible only once corpus-wide reliability clears the bar"
   assert.equal(aboveBar.reason, null);
 });
 
-test("A1/A2 2025K0305's draft-only Borough Board/CB rows never drive eligibility or a fire — only its own materialized DCP stage does", () => {
+test("A1/A2 2025K0306's draft-only Borough President/CB rows never drive eligibility or a fire — only its own materialized DCP stage does", () => {
   const summary = summarize(DRAFT_SPECIMEN);
   // The current stage is DCP's own administrative certification, not the
   // draft future-stage CB/BP/Borough Board rows — those sit on the
@@ -165,11 +191,17 @@ test("A1/A2 2025K0305's draft-only Borough Board/CB rows never drive eligibility
   });
   assert.equal(result.fired, false);
   assert.equal(result.reason, "no_change");
-  assert.equal(outcomesFor(DRAFT_SPECIMEN, realDispositions(DRAFT_SPECIMEN)).length, 0, "every 2025K0305 disposition is draft-only");
+  assert.equal(outcomesFor(DRAFT_SPECIMEN, realDispositions(DRAFT_SPECIMEN)).length, 0, "every 2025K0306 disposition is draft-only");
 });
 
 test("A1 an unresolved-procedure project shows an explicit ineligible reason on the real Land panel, never a silent absence", () => {
-  const UNRESOLVED_SPECIMEN = "2020M0385";
+  // Selected by a stable rule (first unknown-status summary in the committed
+  // payload) rather than a hardcoded id, since this specimen only needs to
+  // demonstrate the unknown/ineligible shape, not a specific project.
+  const UNRESOLVED_SPECIMEN = Object.keys(committedPayload.summaries).find(
+    (id) => committedPayload.summaries[id].status === "unknown",
+  );
+  assert.ok(UNRESOLVED_SPECIMEN, "the committed payload must retain at least one unresolved-procedure project");
   assert.equal(committedPayload.summaries[UNRESOLVED_SPECIMEN].status, "unknown");
   rememberLandAuthoritySummaries(committedPayload);
   const projection = landAuthorityPanelProjection(committedPayload.summaries[UNRESOLVED_SPECIMEN]);
@@ -189,7 +221,7 @@ test("A2 positive: a changed materialized stage/actor transition fires once", ()
   });
   assert.equal(oldSummary.current_stage.spine_phase_id, "community_board");
 
-  const newSummary = summarize(COUNCIL_SPECIMEN); // real milestone: MM - City Council Review
+  const newSummary = summarize(COUNCIL_SPECIMEN); // real milestone: EAS - City Council Review
   assert.equal(newSummary.current_stage.stage_id, "ulurp_197c.city_council_review");
 
   const oldOutcomes = outcomesFor(COUNCIL_SPECIMEN, realDispositions(COUNCIL_SPECIMEN).filter((row) => row.representing === "Borough President"));
@@ -214,18 +246,22 @@ test("A2 positive: a changed materialized stage/actor transition fires once", ()
   assert.equal(copy.role_kind, "decisional"); // conditional_decision_maker, per the council specimen
 });
 
-test("A2 positive: a new exact observed event (CB12 favorable vote) fires without a stage change", () => {
-  const bpOnly = realDispositions(COUNCIL_SPECIMEN).filter((row) => row.representing === "Borough President");
+test("A2 positive: a new exact observed event (CB6 favorable-leaning vote) fires without a stage change", () => {
+  // Uses COUNCIL_OBSERVED_EVENT_SPECIMEN, not COUNCIL_SPECIMEN: this is the
+  // one assertion in this file that needs a real Community Board disposition
+  // normalizing into an observed outcome, and COUNCIL_SPECIMEN (outside the
+  // Default-40 snapshot) carries no seeded disposition rows of its own.
+  const bpOnly = realDispositions(COUNCIL_OBSERVED_EVENT_SPECIMEN).filter((row) => row.representing === "Borough President");
   const stableMilestone = "Community Board Review";
 
-  const oldSummary = summarize(COUNCIL_SPECIMEN, { milestone: stableMilestone, dispositions: bpOnly });
-  const newSummary = summarize(COUNCIL_SPECIMEN, { milestone: stableMilestone, dispositions: realDispositions(COUNCIL_SPECIMEN) });
+  const oldSummary = summarize(COUNCIL_OBSERVED_EVENT_SPECIMEN, { milestone: stableMilestone, dispositions: bpOnly });
+  const newSummary = summarize(COUNCIL_OBSERVED_EVENT_SPECIMEN, { milestone: stableMilestone, dispositions: realDispositions(COUNCIL_OBSERVED_EVENT_SPECIMEN) });
   assert.equal(oldSummary.current_stage.stage_id, newSummary.current_stage.stage_id);
 
-  const previous = buildNextDecisionSnapshot({ summary: oldSummary, observedOutcomes: outcomesFor(COUNCIL_SPECIMEN, bpOnly) });
-  const newOutcomes = outcomesFor(COUNCIL_SPECIMEN, realDispositions(COUNCIL_SPECIMEN));
-  const cb12 = newOutcomes.find((row) => row.actor_ref === "community-board:queens-cb-12");
-  assert.ok(cb12, "CB12's favorable vote must normalize to an observed outcome");
+  const previous = buildNextDecisionSnapshot({ summary: oldSummary, observedOutcomes: outcomesFor(COUNCIL_OBSERVED_EVENT_SPECIMEN, bpOnly) });
+  const newOutcomes = outcomesFor(COUNCIL_OBSERVED_EVENT_SPECIMEN, realDispositions(COUNCIL_OBSERVED_EVENT_SPECIMEN));
+  const cb6 = newOutcomes.find((row) => row.actor_ref === "community-board:queens-cb-06");
+  assert.ok(cb6, "CB6's favorable-leaning vote must normalize to an observed outcome");
 
   const result = evaluateNextDecisionWatchFiring({
     previous,
@@ -235,7 +271,7 @@ test("A2 positive: a new exact observed event (CB12 favorable vote) fires withou
   });
   assert.equal(result.fired, true);
   assert.equal(result.trigger, NEXT_DECISION_FIRE_TRIGGERS.OBSERVED_EVENT);
-  assert.equal(result.receipt.event_id, cb12.action_key);
+  assert.equal(result.receipt.event_id, cb6.action_key);
   assert.equal(result.receipt.old_stage.stage_id, result.receipt.new_stage.stage_id);
 
   const copy = buildNextDecisionDigestCopy({ fireResult: result, summary: newSummary, observedOutcomes: newOutcomes });
@@ -472,13 +508,13 @@ test("A4 snapshot vintage: the receipt and snapshot carry the summary's own fres
 
 test("A4 the watch key carries project/action id, normalized stage, actor ref, transition version, and event id where applicable", () => {
   const summary = summarize(COUNCIL_SPECIMEN);
-  const key = buildNextDecisionWatchKey({ summary, eventId: "project:2026Q0210:disposition:x" });
-  assert.equal(key.project_id, "2026Q0210");
+  const key = buildNextDecisionWatchKey({ summary, eventId: "project:2023Q0450:disposition:x" });
+  assert.equal(key.project_id, "2023Q0450");
   assert.equal(key.stage_id, "ulurp_197c.city_council_review");
   assert.deepEqual(key.actor_refs, ["agency:id:city-council"]);
   assert.ok(key.transition_version);
-  assert.equal(key.event_id, "project:2026Q0210:disposition:x");
-  assert.ok(key.dedupe_key.includes("2026Q0210"));
+  assert.equal(key.event_id, "project:2023Q0450:disposition:x");
+  assert.ok(key.dedupe_key.includes(COUNCIL_SPECIMEN));
 
   const withoutEvent = buildNextDecisionWatchKey({ summary });
   assert.equal(withoutEvent.event_id, null);

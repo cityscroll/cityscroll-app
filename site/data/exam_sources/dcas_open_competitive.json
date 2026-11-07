@@ -3,11 +3,11 @@
     "id": "dcas-open-competitive",
     "name": "DCAS Open Competitive Exams for Anyone",
     "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-    "verified_at": "2026-11-05",
+    "verified_at": "2026-11-06",
     "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
     "stale_after_days": 35,
     "method": "The published schedule table is read directly and cross-checked against the OASys active-exam listing. Reviewed Notice of Examination prose from the previous snapshot is carried forward only while the exam and its filing window are unchanged.",
-    "fetched_at": "2026-11-05"
+    "fetched_at": "2026-11-06"
   },
   "records": [
     {
@@ -29,6 +29,8 @@
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277001000.pdf",
       "application_start": "2026-11-05",
       "application_end": "2026-11-25",
+      "fee": 82,
+      "test_method": "Education and experience exam",
       "salary_publication": "The notice does not state a minimum annual salary for this title."
     },
     {
@@ -37,7 +39,11 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277009000.pdf",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25"
+      "application_end": "2026-11-25",
+      "fee": 61,
+      "salary_min": 41517,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam"
     },
     {
       "exam_number": "7015",
@@ -45,7 +51,11 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277015000.pdf",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25"
+      "application_end": "2026-11-25",
+      "fee": 61,
+      "salary_min": 43135,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam"
     },
     {
       "exam_number": "7017",
@@ -53,7 +63,11 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277017000.pdf",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25"
+      "application_end": "2026-11-25",
+      "fee": 61,
+      "salary_min": 42288,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test"
     },
     {
       "exam_number": "7030",
@@ -96,15 +110,23 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277040000.pdf",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25"
+      "application_end": "2026-11-25",
+      "fee": 68,
+      "salary_min": 56447,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Multiple-choice test"
     },
     {
       "exam_number": "7050",
       "title": "Metal Work Mechanic",
       "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277050000.pdf",
       "application_start": "2026-11-05",
       "application_end": "2026-11-25",
-      "notice_pending_note": "DCAS's schedule page linked a Notice of Examination PDF at the standard URL pattern (20277050000.pdf) before the file existed; confirmed 404 on 2026-11-05 on two separate checks while every other exam's linked PDF in this snapshot resolved. Treated as not yet published rather than carrying a dead link or an unverified salary claim; re-check when the schedule page republishes a working notice."
+      "fee": 101,
+      "salary_min": 106631,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam"
     },
     {
       "exam_number": "7315",
@@ -124,7 +146,11 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277058000.pdf",
       "application_start": "2026-11-05",
-      "application_end": "2026-11-25"
+      "application_end": "2026-11-25",
+      "fee": 68,
+      "salary_min": 47603,
+      "salary_note": "Current minimum annual salary",
+      "test_method": "Education and experience exam"
     },
     {
       "exam_number": "7324",

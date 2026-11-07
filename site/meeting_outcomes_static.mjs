@@ -229,7 +229,7 @@ export function buildMeetingOutcomesSnapshot(records, { generatedAt = new Date()
   };
 }
 
-export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
+export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId, { lookup } = {}) {
   const record = snapshotOrRecord?.schema === MEETING_OUTCOMES_SNAPSHOT_SCHEMA
     ? snapshotOrRecord.by_notice?.[clean(requestId)]
     : snapshotOrRecord;
@@ -308,7 +308,9 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
   // It is an index over the list below, never a replacement for it: the agenda
   // itself is rendered whole either way, and an agenda the accepted bridge never
   // joined renders no group furniture at all.
-  const projectGroups = renderAgendaProjectGroups(buildAgendaProjectGroups(record.matters));
+  const projectGroups = renderAgendaProjectGroups(
+    buildAgendaProjectGroups(record.matters, lookup !== undefined ? { lookup } : {}),
+  );
   return `<section class="meeting-outcomes-static" data-meeting-outcomes-first-paint="1" data-meeting-outcomes-state="present">
     <div class="chain-h">Decision documents and outcomes</div>
     <div class="note">Matched ${eventLink}${event.date ? ` · ${esc(event.date)}` : ""}</div>

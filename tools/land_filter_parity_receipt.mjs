@@ -54,7 +54,7 @@ const TODAY = "2026-08-31";
  */
 const FIXTURES = [
   ["default-list", "#land?status=all&stage=any", null,
-    "The whole filtered population in List: the 40/33/7 arithmetic."],
+    "The whole filtered population in List: the 40/26/14 arithmetic."],
   ["default-map", "#land?status=all&stage=any&view=map", null,
     "The same population in Map. Only `view` differs, so nothing else may."],
   ["combined-list", "#land?status=all&stage=city_council&boro=Queens&family=rezoning", null,
@@ -63,13 +63,19 @@ const FIXTURES = [
     "The same combined scope in Map."],
   ["regulatory-effect-map", `#land?status=all&stage=any&view=map&facet=${encodeURIComponent(JSON.stringify({ regulatoryEffect: "upzone" }))}`, null,
     "The dimension with no route key of its own, carried in the typed facet blob."],
-  ["mapped-only", "#land?status=all&stage=any&q=Westshore&view=map", null,
+  // "Bud Place" replaced "Westshore" when a refresh rotated the latter's
+  // sole matching project out of the Default Land snapshot.
+  ["mapped-only", "#land?status=all&stage=any&q=Bud%20Place&view=map", null,
     "A scope whose only result is on the map."],
-  ["unmapped-only", "#land?status=all&stage=any&cd=Q07&view=map", null,
+  // M06 (sole member 2025M0399, unmapped) replaced Q07 once a refresh moved
+  // the mapped-only specimen (2023Q0351) into Q07 too.
+  ["unmapped-only", "#land?status=all&stage=any&cd=M06&view=map", null,
     "A scope whose only result has no published location. It stays a result."],
   ["all-unmapped", "#land?status=all&stage=completed&view=map", null,
     "Every result lacks a point. The map has no markers and the search is not empty."],
-  ["mixed", "#land?status=all&stage=any&cd=M05&view=map", null,
+  // K01 (one mapped, one unmapped) replaced M05 once a refresh resolved both
+  // of M05's projects as mapped.
+  ["mixed", "#land?status=all&stage=any&cd=K01&view=map", null,
     "Both sides of the partition are populated."],
   ["empty", "#land?status=all&stage=any&q=zzzznotathing&view=map", null,
     "No matching rows. Both renderings are empty and neither invents one."],
@@ -145,7 +151,7 @@ export function buildParityEvidence() {
       ],
       note: "No clock, network, or randomness. The same tree writes the same bytes.",
     },
-    baseline: { total: 40, mapped: 33, unmapped: 7 },
+    baseline: { total: 40, mapped: 26, unmapped: 14 },
     inventory: {
       query_dimensions: LAND_FILTER_DIMENSIONS.map((dimension) => ({
         id: dimension.id,

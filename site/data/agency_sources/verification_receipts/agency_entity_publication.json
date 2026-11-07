@@ -3,7 +3,7 @@
   "publication_schema": "cityscroll.agency_entity_publication.v1",
   "method": "agency_entity_publication_v1",
   "generated_at": "2026-11-06T04:54:33.506Z",
-  "input_digest": "sha256:2a0b1d80f632e24e63f7520cc08d6e72310f64c197d3eb9a22d582a2034f8c73",
+  "input_digest": "sha256:fbd782a966c5b3db467717fe1f82a7651a14acf381f4dcf218cc4c3106b56518",
   "publication_digest": "sha256:e1d0c241278dee1d4f3e6bcaf4634a5354fa8ef3b90928e8093a50b6a480a8e4",
   "sources": [
     {

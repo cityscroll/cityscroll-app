@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.land_place_generation_manifest.v1",
-  "generation_id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-  "built_at": "2026-11-04T18:48:50.187Z",
+  "generation_id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+  "built_at": "2026-11-06T15:11:20.121Z",
   "input_hashes": {
-    "aggregate": "7b0be77feabd5780db254236deffcf5c8f693803f595b082a4f5855604d96bc7",
+    "aggregate": "0e1436d2f39da81566a9be8b75eb3e079dbbd6b6e356aac81af7e499b405465d",
     "boundary_vintages": {
       "borough": "2026-05-26",
       "community_district": "2026-05-26",
@@ -15,9 +15,9 @@
     "address_index_identity": "4810b3c2b71206ce6bfa4877c08c20b3973ee57109bbcb6eb24dbd5556c9b21f"
   },
   "source_dates": {
-    "catalog_content_id": "fnv1a32:a3b58007:244",
-    "catalog_materialized_at": "2026-11-04T18:48:50.187Z",
-    "catalog_generated_at": "2026-11-04T18:22:03.270Z",
+    "catalog_content_id": "fnv1a32:42579b83:243",
+    "catalog_materialized_at": "2026-11-06T15:11:20.121Z",
+    "catalog_generated_at": "2026-11-06T14:51:26.447Z",
     "bbl_materialized_at": "2026-11-04T21:51:58.033Z",
     "parcel_coordinate_vintage": "pluto_25v4",
     "boundary_vintages": {
@@ -28,20 +28,20 @@
       "police_precinct": "26B"
     }
   },
-  "project_count": 244,
+  "project_count": 243,
   "consumers": {
     "index": {
-      "generation_id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-      "content_sha256": "8ff00c5f668d64ac555957019788e3dd6702f2f2c8f328d7f572886740124126"
+      "generation_id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+      "content_sha256": "596f006c707472044172870b04a02dc6ad55f8ef6db7c882d32e58da50b4f27f"
     },
     "evidence": {
-      "generation_id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-      "content_sha256": "99d6c03fcf988db03acfd3c97c7dc8ff32f406b6b896559fdc912d3291e7918a"
+      "generation_id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+      "content_sha256": "77fdfea39b8797ad9aca609e7087f803ed7f4dc4d09edfb6dd847bfeafd0a221"
     },
     "reverse": {
-      "generation_id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-      "content_sha256": "aba14e86190abf28ae6a452ec81add8387b42258e091ba8e16937ba1ab867e4e"
+      "generation_id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+      "content_sha256": "aea22054a045118496d9fc2975107e4f2355adbe850522fbcd426af66b69c1da"
     }
   },
-  "active_generation": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845"
+  "active_generation": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0"
 }

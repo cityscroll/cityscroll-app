@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "source_id": "oasys-active-exams",
-  "verified_at": "2026-11-05",
-  "verified_at_utc": "2026-11-05T12:13:07.741Z",
+  "verified_at": "2026-11-06",
+  "verified_at_utc": "2026-11-06T15:10:49.517Z",
   "http_status": 200,
   "api_url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
   "summary": {
-    "input_rows": 51,
-    "mapped": 51,
+    "input_rows": 60,
+    "mapped": 60,
     "skipped": 0
   },
   "golden_cases": {

@@ -74,6 +74,12 @@ const NTA = Object.freeze({
   SI0105: "geography:nta2020:SI0105",
   MN0401: "geography:nta2020:MN0401",
   MN0402: "geography:nta2020:MN0402",
+  // BK1301/BK1391 replace the prior 2023M0213/MN0401/MN0402 specimen for the
+  // selection-preservation test below, which needs a currently-mapped
+  // project whose membership spans two NTAs (same re-pinning expectation
+  // noted elsewhere in this file).
+  BK1301: "geography:nta2020:BK1301",
+  BK1391: "geography:nta2020:BK1391",
 });
 
 function oracleLandIds(rows, {
@@ -172,11 +178,11 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
     ].sort();
     assert.deepEqual(represented, catalogIds);
     assert.equal(built.receipt.counts.universe, catalogIds.length);
-    assert.equal(built.receipt.counts.universe, 244);
+    assert.equal(built.receipt.counts.universe, 243);
     assert.equal(
       built.receipt.counts.mapped + built.receipt.counts.source_missing
         + built.receipt.counts.unmapped + built.receipt.counts.rejected,
-      244,
+      243,
     );
 
     for (const id of defaultIds) {
@@ -223,8 +229,11 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
   });
 
   it("A1 positive control: dropping an unmapped id fails the parity checker", () => {
-    const members = membership?.by_geography?.nta2020?.SI0105 || [];
-    assert.ok(members.length >= 1, "SI0105 membership must stay populated for the parity control");
+    // SI0105 was the prior specimen until a refresh retired its only member
+    // from the live population (same re-pinning expectation noted elsewhere
+    // in this PR); SI0201 is the current replacement.
+    const members = membership?.by_geography?.nta2020?.SI0201 || [];
+    assert.ok(members.length >= 1, "SI0201 membership must stay populated for the parity control");
     const mappedId = members.find((id) => id in committedPoints.points) || members[0];
     const unmappedId =
       warehouseOnlyIds.find((id) => id in committedPoints.unmapped)
@@ -253,25 +262,28 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
     );
   });
 
-  it("A2 uncovered display anchor keeps MN0401/MN0402 and membership does not mint markers", () => {
-    const entry = membership.by_project["2023M0213"];
+  it("A2 uncovered display anchor keeps BK1301/BK1391 and membership does not mint markers", () => {
+    // 2023M0213 (MN0401/MN0402) was the prior specimen until a refresh
+    // retired it from land_place_membership.json entirely; 2024K0444
+    // (BK1301/BK1391) is the current two-NTA, uncovered-BBL replacement.
+    const entry = membership.by_project["2024K0444"];
     assert.ok(entry);
-    assert.deepEqual(entry.layers.nta2020.places.slice().sort(), ["MN0401", "MN0402"]);
-    assert.equal(entry.layers.nta2020.uncovered_bbls, 2);
-    assert.ok("2023M0213" in committedPoints.points);
+    assert.deepEqual(entry.layers.nta2020.places.slice().sort(), ["BK1301", "BK1391"]);
+    assert.equal(entry.layers.nta2020.uncovered_bbls, 12);
+    assert.ok("2024K0444" in committedPoints.points);
 
-    const noPointId = "2025M0252";
+    const noPointId = "2026X0180";
     assert.equal(noPointId in committedPoints.points, false);
     assert.equal(committedPoints.unmapped[noPointId]?.status, "source_missing");
     const memberPlaces = membership.by_project[noPointId]?.layers?.nta2020?.places || [];
     // Place membership, when present, must not fabricate a marker without a point.
     const model = buildLandMapModel({
-      rows: rowsForIds([noPointId, "2023M0213"]),
+      rows: rowsForIds([noPointId, "2024K0444"]),
       pointLookup: committedPoints,
     });
     assert.equal(model.markers.some((item) => item.projectId === noPointId), false);
     assert.equal(model.unmapped.some((item) => item.projectId === noPointId), true);
-    assert.equal(model.markers.some((item) => item.projectId === "2023M0213"), true);
+    assert.equal(model.markers.some((item) => item.projectId === "2024K0444"), true);
     void memberPlaces;
 
     const findings = landProjectMapPointsFindings(
@@ -304,8 +316,8 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
     assert.equal(total, committedReceipt.generation.payload_bytes);
     assert.ok(total <= LAND_PROJECT_MAP_POINTS_MAX_BYTES, `measured ${total} > ${LAND_PROJECT_MAP_POINTS_MAX_BYTES}`);
     assert.ok(total <= 65536, `measured ${total} exceeds card ceiling`);
-    assert.equal(Object.prototype.hasOwnProperty.call(committedPoints.points["2026R0127"], "shape"), false);
-    assert.equal(committedPoints.points["2026R0127"].geometry_shard, landProjectGeometryShardKey("2026R0127"));
+    assert.equal(Object.prototype.hasOwnProperty.call(committedPoints.points["2025K0284"], "shape"), false);
+    assert.equal(committedPoints.points["2025K0284"].geometry_shard, landProjectGeometryShardKey("2025K0284"));
 
     for (const id of Object.keys(committedPoints.points)) {
       const point = committedPoints.points[id];
@@ -324,26 +336,26 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
   });
 
   it("A3/A4 geometry loads only on inspection and failed loads keep the marker", async () => {
-    const selectedId = "2026R0127";
+    const selectedId = "2025K0284";
     const shardKey = committedPoints.points[selectedId].geometry_shard;
     const shard = readJson(landProjectGeometryShardPath(shardKey));
     const shape = shapeFromGeometryShard(shard, selectedId);
     assert.ok(shape?.rings);
 
     const before = buildLandMapModel({
-      rows: rowsForIds([selectedId, "2025K0305"]),
+      rows: rowsForIds([selectedId, "2023Q0351"]),
       pointLookup: committedPoints,
       selectedProjectId: selectedId,
     });
     assert.equal(before.markers.find((item) => item.projectId === selectedId)?.geometry, null);
 
     const after = buildLandMapModel({
-      rows: rowsForIds([selectedId, "2025K0305"]),
+      rows: rowsForIds([selectedId, "2023Q0351"]),
       pointLookup: pointLookupWithSelectedShape(committedPoints, selectedId, shape),
       selectedProjectId: selectedId,
     });
     assert.ok(after.markers.find((item) => item.projectId === selectedId)?.geometry?.rings);
-    assert.equal(after.markers.find((item) => item.projectId === "2025K0305")?.geometry, null);
+    assert.equal(after.markers.find((item) => item.projectId === "2023Q0351")?.geometry, null);
 
     const fetches = [];
     const previousFetch = globalThis.fetch;
@@ -406,10 +418,10 @@ describe("land catalog map parity", { concurrency: 1 }, () => {
   });
 
   it("A4 selection is preserved across List-to-Map parity", () => {
-    const selectedId = "2023M0213";
+    const selectedId = "2024K0444";
     const { model, receipt, violations } = parityForQuery({
       status: "all",
-      geographies: [NTA.MN0401, NTA.MN0402],
+      geographies: [NTA.BK1301, NTA.BK1391],
     });
     assert.deepEqual(violations, []);
     assert.ok(receipt.canonical_ids.includes(selectedId));

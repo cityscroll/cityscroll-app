@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-05T12:12:35.714Z",
-  "open_as_of": "2026-11-05",
+  "generated_at": "2026-11-06T14:57:35.205Z",
+  "open_as_of": "2026-11-06",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,67 +10,13 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-05'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-06'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
   },
   "count": 40,
   "notices": [
-    {
-      "request_id": "20260924018",
-      "start_date": "2026-10-02T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "IDIQ General Plumbing Services at Various NYCHA Developments Citywide with Borough Focus (BX, BK, MN, AND QSI)",
-      "due_date": "2026-11-05T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260803033",
-      "start_date": "2026-08-10T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "Bid Extension: 85726B0042-2600031-SKIMMER VESSEL (DEP)",
-      "pin": "85726B0042",
-      "due_date": "2026-11-05T10:30:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260902028",
-      "start_date": "2026-09-10T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Harlem Hospital_Ron Brown Cooling Tower Replacement",
-      "pin": "13202603_Harlem RBP",
-      "due_date": "2026-11-05T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20261013006",
-      "start_date": "2026-10-19T00:00:00.000",
-      "agency_name": "City University",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "Correction: Ancillary Medical Equipment for Hospital Simulation Center",
-      "pin": "BMCC 276627",
-      "due_date": "2026-11-05T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260730026",
-      "start_date": "2026-08-06T00:00:00.000",
-      "agency_name": "Economic Development Corporation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "NYCHA Maritime Career Readiness Program RFEI",
-      "pin": "11780",
-      "due_date": "2026-11-05T16:00:00.000",
-      "selection_method_description": "Request for Information"
-    },
     {
       "request_id": "20261005024",
       "start_date": "2026-10-14T00:00:00.000",
@@ -214,17 +160,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20260826038",
-      "start_date": "2026-09-02T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: 85625P0004-RFP Appraisal of Real Estate",
-      "pin": "85625P0004",
-      "due_date": "2026-11-12T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
       "request_id": "20260105018",
       "start_date": "2026-01-13T00:00:00.000",
       "agency_name": "Education",
@@ -245,6 +180,17 @@
       "pin": "000352",
       "due_date": "2026-11-13T12:00:00.000",
       "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20260921005",
+      "start_date": "2026-09-28T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Bid Extension: SMD_PS_RFP_523249 - Lead Abatement Program Services",
+      "pin": "523249",
+      "due_date": "2026-11-13T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260908026",
@@ -307,7 +253,7 @@
       "agency_name": "New York City Police Pension Fund",
       "type_of_notice_description": "Solicitation",
       "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: Virtual Chief Information Security Officer (vCISO) Services",
+      "short_title": "Correction: Virtual Chief Information Security Officer (vCISO) Services",
       "pin": "26REQ0374",
       "due_date": "2026-11-16T17:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
@@ -318,7 +264,7 @@
       "agency_name": "Information Technology and Telecommunications",
       "type_of_notice_description": "Solicitation",
       "category_description": "Services (other than human services)",
-      "short_title": "Leveraging Ground-Scanning Technology to Build Understanding of Underground Infrastructure in New York City",
+      "short_title": "Correction: Leveraging Ground-Scanning Technology to Build Understanding of Underground Infrastructure in New York City",
       "pin": "85827Y1399",
       "due_date": "2026-11-16T23:45:00.000",
       "selection_method_description": "Request for Information"
@@ -379,17 +325,6 @@
       "selection_method_description": "Request for Proposals"
     },
     {
-      "request_id": "20260821028",
-      "start_date": "2026-08-26T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: CSB 161 ST Elevator Modernization Rebid",
-      "pin": "85626B0010",
-      "due_date": "2026-11-18T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
       "request_id": "20260929029",
       "start_date": "2026-10-07T00:00:00.000",
       "agency_name": "Environmental Protection",
@@ -423,6 +358,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20260625055",
+      "start_date": "2026-07-02T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: Elmhurst Hospital, Entryway Renovation",
+      "pin": "33202207",
+      "due_date": "2026-11-18T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20261009019",
       "start_date": "2026-10-21T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -445,14 +391,70 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20261014034",
-      "start_date": "2026-10-26T00:00:00.000",
+      "request_id": "20261014029",
+      "start_date": "2026-10-21T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "82627P0002-BEPA: GI-PSE 1-3 Design Services Task Order Contract for Green Infrastructure in NYC Parks & City-owned Street Ends",
+      "pin": "82627P0002",
+      "due_date": "2026-11-18T16:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20261022009",
+      "start_date": "2026-10-28T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Request For Proposals For Outside Counsel Services With Respect To Landlord/Tenant Matters",
+      "pin": "000353",
+      "due_date": "2026-11-18T17:00:00.000",
+      "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20260923005",
+      "start_date": "2026-10-13T00:00:00.000",
       "agency_name": "Housing Authority",
       "type_of_notice_description": "Solicitation",
       "category_description": "Construction Related Services",
-      "short_title": "Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located Brooklyn Neighborhood (BK08) and (BK09), Brooklyn.",
-      "due_date": "2026-11-18T14:00:00.000",
+      "short_title": "INDEFINITE DELIVERY INDEFINITE QUANTITY (IDIQ) CONTRACT FOR JOB ORDER CONTRACT (JOC) PLUMBING SERVICES AT VARIOUS NYCHA DEVELOPMENTS AND FACILITIES CITYWIDE WITH BOROUGH OF MANHATTAN NEIGHBORHOOD #9 FOCUS",
+      "pin": "515813-2",
+      "due_date": "2026-11-19T10:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260930001",
+      "start_date": "2026-10-07T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Correction: Upgrade IDF MDF Rooms",
+      "pin": "NCB-02201602-Upgrade",
+      "due_date": "2026-11-19T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261021030",
+      "start_date": "2026-10-28T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "85727B0004-Citywide Moving Services",
+      "pin": "85727B0004",
+      "due_date": "2026-11-19T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260422026",
+      "start_date": "2026-04-29T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Bid Extension: Payroll Managed Services",
+      "pin": "R1861040",
+      "due_date": "2026-11-19T16:00:00.000",
+      "selection_method_description": "Request for Proposals"
     }
   ]
 }

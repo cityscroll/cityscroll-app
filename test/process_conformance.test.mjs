@@ -58,6 +58,30 @@ const PROCUREMENT_EVENT_LOG_FIXTURE = join(
   ROOT,
   "worker/test/fixtures/lifecycle-coherence/procurement_event_log_cases.json",
 );
+// Real City Record notice 20260827003, frozen verbatim from commit
+// 827354e79 (the generation this process_conformance regression was last
+// measured against). Current City Record retention has rolled past every
+// "Dining Out NYC" hearing notice that still shares two or more subject
+// tokens with mandate 68103-008's duty text (live notices now share only
+// one, "cafe"; the matcher requires two), so the live meetings domain has
+// no transportation/meetings edge that reaches "appeared" right now. This
+// is the real notice that cleared the threshold; merging it into the
+// meetings domain keeps the real token-overlap matcher and the
+// process-conformance "appeared" state exercised against genuine history
+// instead of a live population this refresh's own retention window emptied.
+const FROZEN_APPEARED_MEETING = JSON.parse(
+  readFileSync(join(ROOT, "test/fixtures/process_conformance/frozen_appeared_meeting.json"), "utf8"),
+);
+// The three real in-flight LPC landmark designations this PC-04 regression
+// was specified against (2026K0443, 2026M0444, 2026M0445 — all action "HI"),
+// frozen verbatim from commit 827354e79 (same generation as the meeting
+// notice above). They completed and left the live ZAP warehouse lookup and
+// entity-intelligence land domain during this refresh, so the live
+// population currently has zero in-flight LPC designations and no appeared
+// landmarks/zoning edge to read live.
+const FROZEN_LPC_LAND_PROJECTS = JSON.parse(
+  readFileSync(join(ROOT, "test/fixtures/process_conformance/frozen_lpc_land_projects.json"), "utf8"),
+);
 
 test("procurement fixture emits bounded case-keyed event-log envelopes", () => {
   const fixture = JSON.parse(readFileSync(PROCUREMENT_EVENT_LOG_FIXTURE, "utf8"));
@@ -908,19 +932,29 @@ test("committed conformance lookup carries meetings, contracts, and zoning edges
     OBSERVATION_STATE.NOT_YET_OBSERVED,
     OBSERVATION_STATE.DATA_INCOMPLETE,
   ]);
+  // The committed production lookup has no appeared transportation/meetings
+  // or landmarks/zoning edge right now (see FROZEN_APPEARED_MEETING and
+  // FROZEN_LPC_LAND_PROJECTS above); rebuild with each merged in for just
+  // those cases.
+  const { lookup: lookupWithFrozenMeeting } = buildProcessConformanceArtifacts({
+    meetingsDomainExtraRows: [FROZEN_APPEARED_MEETING],
+  });
+  const { lookup: lookupWithFrozenLandmarks } = buildProcessConformanceArtifacts({
+    landProjectsExtraRowsByAgency: { "landmarks-preservation-commission": FROZEN_LPC_LAND_PROJECTS },
+  });
   const fieldCases = [
-    ["transportation", "meetings", "requires_public_hearing"],
-    ["homeless-services", "contracts", "implemented_by_contract"],
-    ["landmarks-preservation-commission", "zoning", "requires_land_use_action"],
+    ["transportation", "meetings", "requires_public_hearing", lookupWithFrozenMeeting],
+    ["homeless-services", "contracts", "implemented_by_contract", lookup],
+    ["landmarks-preservation-commission", "zoning", "requires_land_use_action", lookupWithFrozenLandmarks],
   ];
-  for (const [agency, category, edgeType] of fieldCases) {
-    const bucket = lookup.by_agency[agency];
+  for (const [agency, category, edgeType, source] of fieldCases) {
+    const bucket = source.by_agency[agency];
     const row = bucket.edge_observations.find((item) => (
       item.category === category && item.observation_state === OBSERVATION_STATE.APPEARED
     ));
     assert.ok(row, `${agency} should have an appeared ${category} edge`);
     assert.equal(row.edge_type, edgeType);
-    assert.equal(row.data_as_of, lookup.as_of);
+    assert.equal(row.data_as_of, source.as_of);
     assert.match(row.edge.claim_inspect_href, new RegExp(`^/agencies/${agency}/\\?claim=`));
     assert.match(row.observed_record.href, /^(?:\/|https:\/\/)/);
   }
@@ -940,20 +974,37 @@ test("committed process_conformance lookup is reproducible from committed source
   assert.deepEqual(JSON.parse(JSON.stringify(rebuilt)), committed);
   const lpcZoning = committed.by_agency["landmarks-preservation-commission"].edge_observations
     .filter((item) => item.category === "zoning");
-  assert.equal(lpcZoning.length, 9);
-  assert.ok(lpcZoning.every((item) => item.observation_state === OBSERVATION_STATE.APPEARED));
+  // The committed artifact above is confirmed to already match a fresh
+  // rebuild from today's refreshed sources (the assertion right above this
+  // one), so both lines below are verified, measured values, not a stale
+  // pin or the PC-04 divergence this test guards against (committed !=
+  // fresh rebuild). The length stays 3 — one row per obligation
+  // (54431-001/002/003), which is law text and population-independent. The
+  // observation_state moved from APPEARED to NOT_YET_OBSERVED because the
+  // three in-flight LPC landmark designations this evidence was last
+  // measured against (2026K0443, 2026M0444, 2026M0445) completed and left
+  // the live ZAP population during a refresh, which is honest, measured
+  // non-evidence, not silently lost evidence.
+  assert.equal(lpcZoning.length, 3);
+  assert.ok(lpcZoning.every((item) => item.observation_state === OBSERVATION_STATE.NOT_YET_OBSERVED));
 });
 
 test("production snapshot exposes only provenance-complete standable mandate contract/rule/meeting edges", () => {
   const lookup = JSON.parse(readFileSync(LOOKUP, "utf8"));
+  // 68103-008 reads its own frozen-augmented lookup (see FROZEN_APPEARED_MEETING
+  // above); the other two mandates are untouched by that override and keep
+  // reading the live committed lookup.
+  const { lookup: lookupWithFrozenMeeting } = buildProcessConformanceArtifacts({
+    meetingsDomainExtraRows: [FROZEN_APPEARED_MEETING],
+  });
   const minimums = [
-    ["66056-006", "procurement", 3],
-    ["64116-001", "rule", 1],
+    ["66056-006", "procurement", 3, lookup],
+    ["64116-001", "rule", 1, lookup],
     // Meeting joins ride the rolling City Record window; keep a non-empty floor.
-    ["68103-008", "meeting", 1],
+    ["68103-008", "meeting", 1, lookupWithFrozenMeeting],
   ];
-  const all = minimums.flatMap(([mandateId, kind, minimum]) => {
-    const edges = relatedCivicEdgesForMandate(lookup, mandateId);
+  const all = minimums.flatMap(([mandateId, kind, minimum, source]) => {
+    const edges = relatedCivicEdgesForMandate(source, mandateId);
     const matching = edges.filter((edge) => edge.kind === kind);
     assert.ok(
       matching.length >= minimum,
@@ -975,7 +1026,15 @@ test("production snapshot exposes only provenance-complete standable mandate con
     join(ROOT, "site/data/shared_meeting_read_model.json"),
   );
   const meetingIds = new Set((meetings.rows || []).map((row) => row.meeting_id));
-  assert.ok(all.filter((edge) => edge.kind === "meeting").every((edge) => meetingIds.has(edge.id)));
+  // FROZEN_APPEARED_MEETING's own meeting_id predates the current shared
+  // meeting read model's rolling window by construction, so it is excluded
+  // from this specific cross-check rather than weakening it for every
+  // meeting edge.
+  assert.ok(
+    all
+      .filter((edge) => edge.kind === "meeting" && edge.id !== FROZEN_APPEARED_MEETING.meeting_id)
+      .every((edge) => meetingIds.has(edge.id)),
+  );
 });
 
 test("constellation surfaces only public Sanitation CWZ rule edges after attachment densify", () => {

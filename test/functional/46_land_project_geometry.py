@@ -20,8 +20,8 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from land_map_expectations import expected_counts_for_list  # noqa: E402
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
 MAP_ROUTE = "/browse/zoning/?view=map"
-POSITIVE_SPECIMEN = "2026R0127"  # single-BBL exact.
-FALLBACK_SPECIMEN = "2025K0305"  # multi-BBL anchor, ambiguous relation.
+POSITIVE_SPECIMEN = "2025K0284"  # single-BBL exact.
+FALLBACK_SPECIMEN = "2022K0430"  # multi-BBL anchor, ambiguous relation.
 
 
 def install_routes(page) -> None:

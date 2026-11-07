@@ -2,83 +2,45 @@
   "schema": "cityscroll.land_place_evidence_shard.v1",
   "key": "3f",
   "association_kind": "published_project_lot",
-  "generation_id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-  "project_count": 1,
+  "generation_id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+  "project_count": 2,
   "projects": {
-    "2026R0196": {
+    "2025Q0288": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbls": [
-        "5006180125"
-      ],
+      "bbl_association_state": "absent_from_index",
+      "valid_bbls": [],
       "invalid_bbls": [],
-      "bbls": {
-        "5006180125": {
-          "layers": {
-            "borough": {
-              "status": "matched",
-              "ids": [
-                "5"
-              ]
-            },
-            "community_district": {
-              "status": "matched",
-              "ids": [
-                "R01"
-              ]
-            },
-            "council_district": {
-              "status": "matched",
-              "ids": [
-                "49"
-              ]
-            },
-            "nta2020": {
-              "status": "matched",
-              "ids": [
-                "SI0104"
-              ]
-            },
-            "police_precinct": {
-              "status": "matched",
-              "ids": [
-                "120"
-              ]
-            }
-          }
-        }
-      },
+      "bbls": {},
       "places": {
-        "borough": {
-          "5": [
-            "5006180125"
-          ]
-        },
-        "community_district": {
-          "R01": [
-            "5006180125"
-          ]
-        },
-        "council_district": {
-          "49": [
-            "5006180125"
-          ]
-        },
-        "nta2020": {
-          "SI0104": [
-            "5006180125"
-          ]
-        },
-        "police_precinct": {
-          "120": [
-            "5006180125"
-          ]
-        }
+        "borough": {},
+        "community_district": {},
+        "council_district": {},
+        "nta2020": {},
+        "police_precinct": {}
       },
       "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
+        "borough": "Queens",
+        "community_district": "Q13",
+        "council_district": "23"
+      }
+    },
+    "2026M0454": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbls": [],
+      "invalid_bbls": [],
+      "bbls": {},
+      "places": {
+        "borough": {},
+        "community_district": {},
+        "council_district": {},
+        "nta2020": {},
+        "police_precinct": {}
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M02",
+        "council_district": "3"
       }
     }
   }

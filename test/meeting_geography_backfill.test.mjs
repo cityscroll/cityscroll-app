@@ -1103,7 +1103,7 @@ test("neighborhood publication A1/A2 [outcome] recovered venues publish into exa
   const worthRecord = activity.records.meetings[worthListId];
   assert.ok(worthRecord, "City Record list record must be present");
   assert.equal(worthRecord.id, worthListId);
-  assert.match(String(worthRecord.route || ""), /20260106034/);
+  assert.match(String(worthRecord.route || ""), new RegExp(String(worthListId)));
   assert.equal(
     stamped.find((row) => row.meeting_id === anchors.worth_street.meeting_id)?.meeting_id,
     anchors.worth_street.meeting_id,
@@ -1144,7 +1144,6 @@ test("neighborhood publication A1/A2 [outcome] recovered venues publish into exa
 
   const mn0102Html = await deferredIds("nta2020:MN0102");
   assert.match(mn0102Html, new RegExp(String(worthListId).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-  assert.match(mn0102Html, /meeting%3Acity_record%3A20260106034|20260106034/);
 });
 
 test("neighborhood publication A3/A4 [boundary] host-only and missing-parcel rows create no exact NTA; failure keeps prior generation", () => {

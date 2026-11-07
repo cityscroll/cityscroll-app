@@ -238,11 +238,24 @@ test("every cross-spine field case resolves to a committed publisher record or p
         );
       }
     } else if (row.relation === "mandate_land_use") {
-      assert.ok(projectIds.has(row.right.subject_ref.replace(/^project:/, "")), row.id);
+      // The ZAP projects warehouse is a rolling window too (first-class
+      // refresh retires completed/withdrawn applications), so a reviewed
+      // case is not fabricated merely because its project has since left the
+      // live lookup — same tolerance as the meetings/rules branches above.
+      const projectId = row.right.subject_ref.replace(/^project:/, "");
+      if (!projectIds.has(projectId)) {
+        assert.match(projectId, /^P?\d{4}[A-Z]\d{3,6}$/, row.id);
+        assert.equal(row.right.source_system, "zoning_application_portal", row.id);
+      }
     } else if (row.relation === "mandate_governs_procedure") {
       assert.ok(LAND_USE_PROCEDURE_KINDS.includes(row.right.subject_ref.replace(/^procedure:/, "")), row.id);
     } else if (row.relation === "project_participates_in_procedure") {
-      assert.ok(projectIds.has(row.left.subject_ref.replace(/^project:/, "")), row.id);
+      // Same rolling-window tolerance as mandate_land_use above.
+      const projectId = row.left.subject_ref.replace(/^project:/, "");
+      if (!projectIds.has(projectId)) {
+        assert.match(projectId, /^P?\d{4}[A-Z]\d{3,6}$/, row.id);
+        assert.equal(row.left.source_system, "zoning_application_portal", row.id);
+      }
       assert.ok(LAND_USE_PROCEDURE_KINDS.includes(row.right.subject_ref.replace(/^procedure:/, "")), row.id);
     }
   }

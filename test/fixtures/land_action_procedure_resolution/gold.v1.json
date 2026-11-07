@@ -3,6 +3,13 @@
   "specimens": {
     "mixed-2024M0244": {
       "project_id": "2024M0244",
+      "row": {
+        "project_id": "2024M0244",
+        "actions": "ZS; ZM; ZR; LD; LD",
+        "ulurp_numbers": "C260015ZSM; C260013ZMM; N260014ZRM; 260201LDM; 260202LDM",
+        "ulurp_non": "ULURP",
+        "row_note": "Frozen: 2024M0244 left the live ZAP warehouse during a refresh, so this specimen's input is pinned here instead of looked up live."
+      },
       "expect": {
         "procedure_resolution": "mixed",
         "action_count": 5,
@@ -26,12 +33,13 @@
         "procedure_id": "ulurp_197c"
       }
     },
-    "unknown-2026K0123": {
-      "project_id": "2026K0123",
+    "unknown-2026Q0184": {
+      "project_id": "2026Q0184",
+      "replaces": "unknown-2026K0123 (2026K0123 was certified into ULURP with real application numbers during a refresh, so it no longer demonstrates an unresolved/unknown track)",
       "expect": {
         "procedure_resolution": "unknown",
-        "action_count": 4,
-        "action_types": ["UK", "ZM", "ZR", "EAS"],
+        "action_count": 2,
+        "action_types": ["ZA", "EAS"],
         "resolved_count": 0
       }
     }

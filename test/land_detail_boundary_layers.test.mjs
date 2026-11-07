@@ -51,10 +51,16 @@ import { landDetailPlaceMembershipForProject } from "../site/land_detail_place_l
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const REPO = join(ROOT, "..");
 const EVIDENCE_DIR = join(REPO, "docs", "evidence", "land-detail-boundary-layers");
+// fdny (2026R0127) and dewitt (2023M0213) were the prior specimens until a
+// refresh retired them entirely from the live ZAP catalog (westshore,
+// 2025K0305, stays valid: it only left the 40-row Default Land snapshot, not
+// the full admitted catalog this file's membership lookup reads). 2019M0059
+// (single-NTA MN0401/M04) and 2024K0444 (multi-NTA BK1301+BK1391, uncovered
+// BBL) replace them with the same membership shapes.
 const ANCHORS = Object.freeze({
-  fdny: "2026R0127",
+  fdny: "2019M0059",
   westshore: "2025K0305",
-  dewitt: "2023M0213",
+  dewitt: "2024K0444",
 });
 
 function readJson(relative) {
@@ -250,16 +256,16 @@ describe("A1: FDNY and multi-area outlines from membership ids", () => {
   it("FDNY requests SI0105 and R01 features without inventing membership from geometry", () => {
     const shared = loadShared();
     const membership = membershipFor(ANCHORS.fdny, shared);
-    assert.deepEqual(landDetailBoundaryPlaceIds(membership, "nta"), ["SI0105"]);
-    assert.deepEqual(landDetailBoundaryPlaceIds(membership, "cd"), ["R01"]);
+    assert.deepEqual(landDetailBoundaryPlaceIds(membership, "nta"), ["MN0401"]);
+    assert.deepEqual(landDetailBoundaryPlaceIds(membership, "cd"), ["M04"]);
 
-    const ntaFeatures = selectBoundaryFeatures(shared.nta, ["SI0105"], "nta2020");
-    const cdFeatures = selectBoundaryFeatures(shared.cd, ["R01"], "community_district");
+    const ntaFeatures = selectBoundaryFeatures(shared.nta, ["MN0401"], "nta2020");
+    const cdFeatures = selectBoundaryFeatures(shared.cd, ["M04"], "community_district");
     assert.equal(ntaFeatures.length, 1);
-    assert.equal(ntaFeatures[0].id, "SI0105");
-    assert.match(ntaFeatures[0].properties.label, /Westerleigh-Castleton Corners/);
+    assert.equal(ntaFeatures[0].id, "MN0401");
+    assert.match(ntaFeatures[0].properties.label, /Chelsea-Hudson Yards/);
     assert.equal(cdFeatures.length, 1);
-    assert.equal(cdFeatures[0].id, "R01");
+    assert.equal(cdFeatures[0].id, "M04");
 
     // Positive control: asking for an id that is absent must fail this checker.
     const missing = selectBoundaryFeatures(shared.nta, ["ZZ9999"], "nta2020");
@@ -274,8 +280,8 @@ describe("A1: FDNY and multi-area outlines from membership ids", () => {
     assert.equal(view.schema, LAND_DETAIL_BOUNDARY_LAYERS_SCHEMA);
     const ntaLayer = view.layers.find((layer) => layer.token === "nta");
     const cdLayer = view.layers.find((layer) => layer.token === "cd");
-    assert.deepEqual(ntaLayer.features.map((feature) => feature.id), ["SI0105"]);
-    assert.deepEqual(cdLayer.features.map((feature) => feature.id), ["R01"]);
+    assert.deepEqual(ntaLayer.features.map((feature) => feature.id), ["MN0401"]);
+    assert.deepEqual(cdLayer.features.map((feature) => feature.id), ["M04"]);
     assert.equal(ntaLayer.geometry_fidelity, "simplified");
   });
 
@@ -283,7 +289,7 @@ describe("A1: FDNY and multi-area outlines from membership ids", () => {
     const shared = loadShared();
     for (const [projectId, expectedNta, expectedCd] of [
       [ANCHORS.westshore, ["BK1301", "BK1391"], ["K11", "K13"]],
-      [ANCHORS.dewitt, ["MN0401", "MN0402"], ["M04"]],
+      [ANCHORS.dewitt, ["BK1301", "BK1391"], ["K11", "K13"]],
     ]) {
       const membership = membershipFor(projectId, shared);
       assert.deepEqual(landDetailBoundaryPlaceIds(membership, "nta"), expectedNta);
@@ -322,16 +328,16 @@ describe("A2: toggles do not change query membership; uncovered anchors keep Man
     assert.notDeepEqual(changed.place.boroughs, scopeBefore.place.boroughs);
   });
 
-  it("Dewitt keeps MN0401/MN0402 even though the display anchor BBL is uncovered", () => {
+  it("Dewitt keeps BK1301/BK1391 even though the display anchor BBL is uncovered", () => {
     const shared = loadShared();
     const membership = membershipFor(ANCHORS.dewitt, shared);
     const nta = membership.layers.nta2020;
     assert.equal(nta.uncovered_bbls >= 1, true);
-    assert.deepEqual(nta.places, ["MN0401", "MN0402"]);
+    assert.deepEqual(nta.places, ["BK1301", "BK1391"]);
     const features = selectBoundaryFeatures(shared.nta, nta.places, "nta2020");
-    assert.deepEqual(features.map((feature) => feature.id), ["MN0401", "MN0402"]);
-    assert.match(features[0].properties.label, /Chelsea-Hudson Yards/);
-    assert.match(features[1].properties.label, /Hell'?s Kitchen/);
+    assert.deepEqual(features.map((feature) => feature.id), ["BK1301", "BK1391"]);
+    assert.match(features[0].properties.label, /Gravesend/);
+    assert.match(features[1].properties.label, /Calvert Vaux Park/);
   });
 });
 
@@ -501,9 +507,9 @@ describe("A3: lazy fetch ordering and failed-layer isolation", () => {
     ntaShouldFail = false;
     __resetLandDetailBoundaryCachesForTests();
     await controller.enable("nta");
-    assert.ok(mapLayers.some((layer) => layer.id === "SI0105"));
+    assert.ok(mapLayers.some((layer) => layer.id === "MN0401"));
     assert.deepEqual(controller.getFailures(), []);
-    assert.ok(events.includes("back:SI0105"));
+    assert.ok(events.includes("back:MN0401"));
   });
 });
 

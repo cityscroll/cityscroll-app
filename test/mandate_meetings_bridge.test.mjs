@@ -159,9 +159,45 @@ test("live one-time LPC mandates without explicit end evidence publish no meetin
 });
 
 test("live recurring DOT mandate publishes subject-overlap meetings after enactment", () => {
+  // 68103-008 (ongoing: "Hold a required public hearing on a sidewalk-cafe
+  // petition...") is still live and unaffected — it is law text, not
+  // population data. Rolling City Record retention has moved past every
+  // "Dining Out NYC" hearing notice whose own subject tokens still include
+  // both "sidewalk" and "cafe" (current notices use only "cafe"; matching
+  // requires >=2 shared tokens with the mandate's own duty text, confirmed
+  // by direct computation against the live set), so the live population
+  // currently has zero candidates that clear the match threshold. Notice
+  // 20260827003 (frozen verbatim from commit 827354e79, the generation this
+  // regression was last measured against) is the real notice that did
+  // clear it; it is merged into a frozen meetings domain alongside the
+  // still-live retained rows so this exercises the real matcher rather than
+  // losing its regression case to ordinary City Record retention.
+  const frozenNotice = {
+    request_id: "20260827003",
+    meeting_id: "meeting:city_record:20260827003",
+    agency_name: "Transportation",
+    short_title: "Dining Out NYC Public Hearings",
+    start_date: "2026-09-02T00:00:00.000",
+    event_date: "2026-09-17T11:00:00.000",
+    type_of_notice_description: "Public Hearings",
+    section_name: "Public Hearings and Meetings",
+    source_system: "city_record",
+    meeting_origin: "city_record_notice",
+    source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260827003",
+    matter_subject: {
+      schema: "cityscroll.meeting_matter_stamp.v1",
+      subject_tokens: [
+        "draft", "copy", "revocable", "consent", "agreement", "obtained", "cost", "submitting",
+        "request", "diningoutnyc", "info", "requestcopy", "zoom", "commencing", "17th",
+        "authorizing", "fifth", "pura", "vida", "miami", "modify", "existing", "sidewalk",
+        "cafe", "adjacent", "borough", "manhattan",
+      ],
+      matter_ids: [],
+    },
+  };
   const view = buildMandateMeetingsView("transportation", {
     obligationsLookup: obligations,
-    meetingsDomain: meetings,
+    meetingsDomain: { ...meetings, rows: [...meetings.rows, frozenNotice] },
     crossSpineGate,
   });
   assert.equal(view.status, "matched");

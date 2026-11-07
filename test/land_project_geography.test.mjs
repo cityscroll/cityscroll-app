@@ -64,9 +64,13 @@ function specimenCentroids(projectId) {
   return row.matched_centroids.map((item) => ({ bbl: item.bbl, lat: item.lat, lon: item.lon }));
 }
 
-test("A1 2025K0305 anchors on a real nearest-mean centroid, not the mean or first row", () => {
-  const points = specimenCentroids("2025K0305");
-  assert.equal(points.length, 25);
+test("A1 2023Q0351 anchors on a real nearest-mean centroid, not the mean or first row", () => {
+  // 2025K0305 was the prior specimen until a refresh rotated it out of the
+  // 40-row Default Land snapshot this file reads live; this file reads
+  // committed site/data directly rather than a frozen fixture, so the
+  // specimen is expected to need re-pinning periodically.
+  const points = specimenCentroids("2023Q0351");
+  assert.equal(points.length, 24);
   const reversed = [...points].reverse();
   const shuffledFirst = [points[0], ...points.slice(1).reverse()];
 
@@ -88,7 +92,7 @@ test("A1 2025K0305 anchors on a real nearest-mean centroid, not the mean or firs
     assert.equal(result.method, KNOWN_LAND_POINT_METHODS.MULTI_BBL_ANCHOR);
     assert.equal(result.precision, KNOWN_LAND_POINT_PRECISIONS.ANCHOR);
     assert.notEqual(result.precision, KNOWN_LAND_POINT_PRECISIONS.EXACT);
-    assert.equal(result.bblCount, 25);
+    assert.equal(result.bblCount, 24);
     assert.equal(result.bbl, expected.bbl);
     assert.equal(result.lat, expected.lat);
     assert.equal(result.lon, expected.lon);

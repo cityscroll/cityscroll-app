@@ -1,42 +1,42 @@
 {
   "schema": "cityscroll.geography_located_in_audit.v1",
-  "polygon_memberships": 5790,
-  "unique_geography_pairs": 5790,
-  "public_edges": 6336,
-  "evidence_only_edges": 70,
+  "polygon_memberships": 5883,
+  "unique_geography_pairs": 5883,
+  "public_edges": 6384,
+  "evidence_only_edges": 115,
   "reconciled": true,
   "by_lens": {
     "land": {
-      "polygon_memberships": 785,
-      "unique_geography_pairs": 785,
-      "public_edges": 785,
+      "polygon_memberships": 768,
+      "unique_geography_pairs": 768,
+      "public_edges": 768,
       "evidence_only_edges": 0,
       "reconciled": true,
       "by_method": {
         "publisher_district": {
-          "public": 482,
+          "public": 478,
           "evidence_only": 0,
-          "total": 482
+          "total": 478
         },
         "publisher_council": {
-          "public": 217,
+          "public": 222,
           "evidence_only": 0,
-          "total": 217
+          "total": 222
         },
         "cd_intersects_council": {
-          "public": 84,
+          "public": 65,
           "evidence_only": 0,
-          "total": 84
+          "total": 65
         },
         "structured_bag": {
-          "public": 2,
+          "public": 3,
           "evidence_only": 0,
-          "total": 2
+          "total": 3
         }
       },
       "by_tier": {
-        "strong": 783,
-        "derived": 2,
+        "strong": 765,
+        "derived": 3,
         "weak": 0
       }
     },
@@ -84,31 +84,31 @@
       }
     },
     "meetings": {
-      "polygon_memberships": 4503,
-      "unique_geography_pairs": 4503,
-      "public_edges": 5060,
-      "evidence_only_edges": 59,
+      "polygon_memberships": 4613,
+      "unique_geography_pairs": 4613,
+      "public_edges": 5125,
+      "evidence_only_edges": 104,
       "reconciled": true,
       "by_method": {
         "community_board_ontology": {
-          "public": 1508,
+          "public": 1538,
           "evidence_only": 0,
-          "total": 1508
+          "total": 1538
         },
         "cd_intersects_council": {
-          "public": 2746,
-          "evidence_only": 17,
-          "total": 2763
+          "public": 2794,
+          "evidence_only": 40,
+          "total": 2834
         },
         "parcel_membership": {
-          "public": 651,
+          "public": 648,
           "evidence_only": 0,
-          "total": 651
+          "total": 648
         },
         "matter_body_borough": {
-          "public": 77,
+          "public": 70,
           "evidence_only": 0,
-          "total": 77
+          "total": 70
         },
         "venue_line": {
           "public": 3,
@@ -116,14 +116,9 @@
           "total": 3
         },
         "civic_address_pip": {
-          "public": 60,
-          "evidence_only": 21,
-          "total": 81
-        },
-        "venue_column": {
-          "public": 3,
-          "evidence_only": 0,
-          "total": 3
+          "public": 57,
+          "evidence_only": 30,
+          "total": 87
         },
         "agency_hq": {
           "public": 0,
@@ -135,10 +130,15 @@
           "evidence_only": 0,
           "total": 11
         },
+        "venue_column": {
+          "public": 3,
+          "evidence_only": 0,
+          "total": 3
+        },
         "stamped": {
           "public": 0,
-          "evidence_only": 20,
-          "total": 20
+          "evidence_only": 33,
+          "total": 33
         },
         "classic_affected_area": {
           "public": 1,
@@ -147,9 +147,9 @@
         }
       },
       "by_tier": {
-        "strong": 4994,
-        "derived": 66,
-        "weak": 59
+        "strong": 5062,
+        "derived": 63,
+        "weak": 104
       }
     },
     "money": {
@@ -217,7 +217,7 @@
   },
   "note": "Each polygon membership has at least one routed located_in candidate; distinct record×geography pairs reconcile to membership bags while separate venue and jurisdiction roles may share a pair. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
   "boundary_vintage": "2026-05-26",
-  "built_at": "2026-11-06T05:00:57.776Z",
+  "built_at": "2026-11-06T15:26:51.802Z",
   "subject_counts": {
     "borough": 5,
     "community-district": 59,

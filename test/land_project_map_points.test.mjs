@@ -39,11 +39,11 @@ const builderSrc = readFileSync(new URL("../tools/build_land_project_map_points.
 
 const EXACT_BBL_MISSES = [
   "2020K0444",
-  "2020M0385",
   "2020Q0317",
   "2023M0452",
   "2024M0278",
   "2024Q0135",
+  "P2009K0185",
   "P2009M0029",
   "P2012X0048",
 ];
@@ -211,7 +211,12 @@ test("materializer and builder have no fetch or geocoder dependency", () => {
   }
 });
 
-test("committed projection maps 2026R0127 and anchors 2025K0305 on a retained centroid", () => {
+test("committed projection maps 2025K0284 and anchors 2023Q0351 on a retained centroid", () => {
+  // 2026R0127 (single_bbl) and 2025K0305 (multi_bbl) were the prior specimens
+  // until a refresh retired/rotated them out of the live catalog; this file
+  // reads committed site/data directly rather than a frozen fixture, so the
+  // specimens are expected to need re-pinning periodically (see
+  // LAND_PROJECT_MAP_POINT_SPECIMENS in site/land_project_map_points.mjs).
   const built = buildLandProjectMapPointsFromRepo();
   const census = requireJson("../docs/evidence/land-map-view-census.json");
   const payload = JSON.parse(readFileSync(new URL(`../${PAYLOAD_JSON}`, import.meta.url), "utf8"));
@@ -224,15 +229,15 @@ test("committed projection maps 2026R0127 and anchors 2025K0305 on a retained ce
   assert.equal(single.method, KNOWN_LAND_POINT_METHODS.SINGLE_BBL_CENTROID);
   assert.equal(single.precision, KNOWN_LAND_POINT_PRECISIONS.EXACT);
   assert.equal(single.bbl_count, 1);
-  assert.equal(single.lat, 40.6128941);
-  assert.equal(single.lon, -74.1198445);
+  assert.equal(single.lat, 40.6167845);
+  assert.equal(single.lon, -74.0298206);
 
   const multiRow = census.projects.find((row) => row.project_id === LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl);
   const expected = nearestRetainedCentroid(uniqueKnownBblCentroids(multiRow.matched_centroids));
   const multi = payload.points[LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl];
   assert.equal(multi.method, KNOWN_LAND_POINT_METHODS.MULTI_BBL_ANCHOR);
   assert.equal(multi.precision, KNOWN_LAND_POINT_PRECISIONS.ANCHOR);
-  assert.equal(multi.bbl_count, 25);
+  assert.equal(multi.bbl_count, 24);
   assert.equal(multi.lat, expected.lat);
   assert.equal(multi.lon, expected.lon);
   assert.equal(
@@ -243,13 +248,17 @@ test("committed projection maps 2026R0127 and anchors 2025K0305 on a retained ce
   assert.notEqual(multi.lon, expected.mean.lon);
 });
 
-test("committed receipt keeps 2025M0252 and exact-BBL misses out of the payload", () => {
+test("committed receipt keeps 2026X0180 and exact-BBL misses out of the payload", () => {
+  // 2025M0252 was the prior no_retained_bbl specimen until a refresh rotated
+  // it out of the 40-row Default Land snapshot; 2026X0180 must stay inside
+  // both that snapshot and the full admitted catalog (same re-pinning
+  // expectation as above).
   const payload = JSON.parse(readFileSync(new URL(`../${PAYLOAD_JSON}`, import.meta.url), "utf8"));
   const receipt = JSON.parse(readFileSync(new URL(`../${RECEIPT_JSON}`, import.meta.url), "utf8"));
   assert.equal(LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl in payload.points, false);
   assert.equal(LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl in payload.unmapped, true);
-  assert.equal(receipt.source_missing_project_ids.includes("2025M0252"), true);
-  const missingBbl = receipt.outcomes.find((row) => row.project_id === "2025M0252");
+  assert.equal(receipt.source_missing_project_ids.includes("2026X0180"), true);
+  const missingBbl = receipt.outcomes.find((row) => row.project_id === "2026X0180");
   assert.equal(missingBbl.status, "source_missing");
   assert.equal(missingBbl.reason, "no_retained_bbl");
   assert.deepEqual(receipt.unmapped_exact_bbl_missing_centroid, EXACT_BBL_MISSES);
@@ -278,8 +287,8 @@ test("committed receipt keeps 2025M0252 and exact-BBL misses out of the payload"
     /^\d{4}-\d{2}-\d{2}T/,
   );
   assert.equal(receipt.inputs.land_project_catalog.vintage.content_id.startsWith("fnv1a32:"), true);
-  assert.equal(payload.points["2026R0127"].geometry_shard, "2b");
-  assert.equal(Object.prototype.hasOwnProperty.call(payload.points["2026R0127"], "shape"), false);
+  assert.equal(payload.points["2025K0284"].geometry_shard, "b9");
+  assert.equal(Object.prototype.hasOwnProperty.call(payload.points["2025K0284"], "shape"), false);
 });
 
 test("resident payload stays bounded and does not copy the WH-06 corpus", () => {

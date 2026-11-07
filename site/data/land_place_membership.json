@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_place_membership.v1",
   "association_kind": "published_project_lot",
-  "project_count": 244,
+  "project_count": 243,
   "layers": [
     "borough",
     "community_district",
@@ -144,70 +144,6 @@
         "borough": "Brooklyn",
         "community_district": "K15",
         "council_district": "48"
-      }
-    },
-    "2019K0190": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 15,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "80",
-      "layers": {
-        "borough": {
-          "total_bbls": 15,
-          "matched_bbls": 15,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "3"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 15,
-          "matched_bbls": 15,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "K03"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 15,
-          "matched_bbls": 15,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "33"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 15,
-          "matched_bbls": 15,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "BK0301"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 15,
-          "matched_bbls": 15,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "79"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Brooklyn",
-        "community_district": "K03",
-        "council_district": "33"
       }
     },
     "2019K0217": {
@@ -851,70 +787,6 @@
         "council_district": "50"
       }
     },
-    "2019X0255": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "6b",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "2"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "X09"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "18"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "BX0902"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "43"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Bronx",
-        "community_district": "X09",
-        "council_district": "18"
-      }
-    },
     "2020K0276": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -1425,70 +1297,6 @@
         "borough": "Manhattan",
         "community_district": "M11",
         "council_district": "9"
-      }
-    },
-    "2020M0385": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 2,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "da",
-      "layers": {
-        "borough": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "M05"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "4"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "MN0502"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "18"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Manhattan",
-        "community_district": "M05",
-        "council_district": null
       }
     },
     "2020M0429": {
@@ -2002,7 +1810,7 @@
       "publisher_geography": {
         "borough": "Staten Island",
         "community_district": "R02",
-        "council_district": null
+        "council_district": "50"
       }
     },
     "2020X0410": {
@@ -2709,70 +2517,6 @@
         "council_district": "50"
       }
     },
-    "2021X0247": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "f9",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "2"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "X10"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "13"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "BX0903"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "45"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Bronx",
-        "community_district": "X10",
-        "council_district": "13"
-      }
-    },
     "2022K0121": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -3027,6 +2771,60 @@
         "borough": "Brooklyn",
         "community_district": "K03",
         "council_district": "36"
+      }
+    },
+    "2022K0366": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "1d",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K09",
+        "council_district": "35"
       }
     },
     "2022K0416": {
@@ -3605,70 +3403,6 @@
         "council_district": "24"
       }
     },
-    "2022Q0449": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 14,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "d5",
-      "layers": {
-        "borough": {
-          "total_bbls": 14,
-          "matched_bbls": 14,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "4"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 14,
-          "matched_bbls": 14,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "Q05"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 14,
-          "matched_bbls": 14,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "30"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 14,
-          "matched_bbls": 14,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "QN0502"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 14,
-          "matched_bbls": 14,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "104"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Queens",
-        "community_district": "Q05",
-        "council_district": "30"
-      }
-    },
     "2022R0134": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -3729,7 +3463,7 @@
       },
       "publisher_geography": {
         "borough": "Staten Island",
-        "community_district": "R02",
+        "community_district": null,
         "council_district": null
       }
     },
@@ -4105,70 +3839,6 @@
         "borough": "Brooklyn",
         "community_district": "K04",
         "council_district": "34"
-      }
-    },
-    "2023K0183": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "cf",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "3"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "K13"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "47"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "BK1302"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "60"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Brooklyn",
-        "community_district": "K13",
-        "council_district": "47"
       }
     },
     "2023K0203": {
@@ -4673,70 +4343,6 @@
         "council_district": "47"
       }
     },
-    "2023M0116": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "e7",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "M03"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "MN0302"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "7"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Manhattan",
-        "community_district": "M03",
-        "council_district": "1"
-      }
-    },
     "2023M0117": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -4863,73 +4469,6 @@
         "borough": "Manhattan",
         "community_district": "M03",
         "council_district": "1"
-      }
-    },
-    "2023M0213": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 7,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "49",
-      "layers": {
-        "borough": {
-          "total_bbls": 7,
-          "matched_bbls": 5,
-          "uncovered_bbls": 2,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 7,
-          "matched_bbls": 5,
-          "uncovered_bbls": 2,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "M04"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 7,
-          "matched_bbls": 5,
-          "uncovered_bbls": 2,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "3",
-            "6"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 7,
-          "matched_bbls": 5,
-          "uncovered_bbls": 2,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "MN0401",
-            "MN0402"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 7,
-          "matched_bbls": 5,
-          "uncovered_bbls": 2,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "10",
-            "18"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Manhattan",
-        "community_district": "M04",
-        "council_district": "36"
       }
     },
     "2023M0271": {
@@ -5314,6 +4853,60 @@
         "borough": "Queens",
         "community_district": "Q02",
         "council_district": "26"
+      }
+    },
+    "2023Q0144": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "d4",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q01",
+        "council_district": "22"
       }
     },
     "2023Q0177": {
@@ -6084,6 +5677,60 @@
         "council_district": "51"
       }
     },
+    "2023R0259": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "ce",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Staten Island",
+        "community_district": "R02",
+        "council_district": "50"
+      }
+    },
     "2023R0281": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -6535,7 +6182,7 @@
       "publisher_geography": {
         "borough": "Bronx",
         "community_district": "X09",
-        "council_district": null
+        "council_district": "18"
       }
     },
     "2023X0393": {
@@ -6986,70 +6633,6 @@
         "council_district": "47"
       }
     },
-    "2024K0286": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "ba",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "3"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "K01"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "33"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "BK0102"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "94"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Brooklyn",
-        "community_district": "K01",
-        "council_district": "33"
-      }
-    },
     "2024K0294": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -7178,70 +6761,6 @@
         "council_district": "41"
       }
     },
-    "2024K0358": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 2,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "5e",
-      "layers": {
-        "borough": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "3"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "K01"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "33"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "BK0101"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "94"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Brooklyn",
-        "community_district": "K01",
-        "council_district": "33"
-      }
-    },
     "2024K0369": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -7368,70 +6887,6 @@
         "borough": "Brooklyn",
         "community_district": "K18",
         "council_district": "46"
-      }
-    },
-    "2024K0437": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "ec",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "3"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "K03"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "36"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "BK0302"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "79"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Brooklyn",
-        "community_district": "K03",
-        "council_district": "36"
       }
     },
     "2024K0444": {
@@ -7627,6 +7082,60 @@
         "borough": "Manhattan",
         "community_district": "M05",
         "council_district": "4"
+      }
+    },
+    "2024M0148": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "3b",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M11",
+        "council_district": "9"
       }
     },
     "2024M0193": {
@@ -7885,73 +7394,6 @@
         "council_district": "1"
       }
     },
-    "2024M0244": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 8,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "c2",
-      "layers": {
-        "borough": {
-          "total_bbls": 8,
-          "matched_bbls": 6,
-          "uncovered_bbls": 2,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 8,
-          "matched_bbls": 6,
-          "uncovered_bbls": 2,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "M04"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 8,
-          "matched_bbls": 6,
-          "uncovered_bbls": 2,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "3",
-            "6"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 8,
-          "matched_bbls": 6,
-          "uncovered_bbls": 2,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "MN0401",
-            "MN0402"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 8,
-          "matched_bbls": 6,
-          "uncovered_bbls": 2,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "10",
-            "18"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Manhattan",
-        "community_district": "M04",
-        "council_district": "36"
-      }
-    },
     "2024M0267": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -8134,70 +7576,6 @@
         "council_district": "3"
       }
     },
-    "2024Q0113": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 24,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "c7",
-      "layers": {
-        "borough": {
-          "total_bbls": 24,
-          "matched_bbls": 24,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "4"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 24,
-          "matched_bbls": 24,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "Q04"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 24,
-          "matched_bbls": 24,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "21"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 24,
-          "matched_bbls": 24,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "QN0402"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 24,
-          "matched_bbls": 24,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "110"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Queens",
-        "community_district": "Q04",
-        "council_district": "21"
-      }
-    },
     "2024Q0135": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -8260,70 +7638,6 @@
         "borough": "Queens",
         "community_district": "Q07",
         "council_district": null
-      }
-    },
-    "2024Q0164": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 6,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "49",
-      "layers": {
-        "borough": {
-          "total_bbls": 6,
-          "matched_bbls": 6,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "4"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 6,
-          "matched_bbls": 6,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "Q08"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 6,
-          "matched_bbls": 6,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "24"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 6,
-          "matched_bbls": 6,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "QN0802"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 6,
-          "matched_bbls": 6,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "107"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Queens",
-        "community_district": "Q08",
-        "council_district": "24"
       }
     },
     "2024Q0189": {
@@ -8774,68 +8088,58 @@
         "council_district": "19"
       }
     },
-    "2024R0137": {
+    "2024Q0434": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "48",
+      "evidence_shard": "33",
       "layers": {
         "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "R01"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "49"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "SI0104"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "120"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
+        "borough": "Queens",
+        "community_district": "Q01",
+        "council_district": "22"
       }
     },
     "2024R0289": {
@@ -8898,72 +8202,8 @@
       },
       "publisher_geography": {
         "borough": "Staten Island",
-        "community_district": "R03",
+        "community_district": null,
         "council_district": null
-      }
-    },
-    "2024R0300": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 5,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "80",
-      "layers": {
-        "borough": {
-          "total_bbls": 5,
-          "matched_bbls": 5,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 5,
-          "matched_bbls": 5,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "R01"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 5,
-          "matched_bbls": 5,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "49"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 5,
-          "matched_bbls": 5,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "SI0101"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 5,
-          "matched_bbls": 5,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "120"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
       }
     },
     "2024R0332": {
@@ -9094,70 +8334,6 @@
         "council_district": "51"
       }
     },
-    "2024X0132": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 4,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "39",
-      "layers": {
-        "borough": {
-          "total_bbls": 4,
-          "matched_bbls": 4,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "2"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 4,
-          "matched_bbls": 4,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "X09"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 4,
-          "matched_bbls": 4,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "18"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 4,
-          "matched_bbls": 4,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "BX0903"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 4,
-          "matched_bbls": 4,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "43"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Bronx",
-        "community_district": "X09",
-        "council_district": "18"
-      }
-    },
     "2024X0210": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -9222,6 +8398,114 @@
         "council_district": "17"
       }
     },
+    "2024X0217": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "b5",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X01",
+        "council_district": "17"
+      }
+    },
+    "2024X0309": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "49",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X04",
+        "council_district": "15"
+      }
+    },
     "2025K0150": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -9284,70 +8568,6 @@
         "borough": "Brooklyn",
         "community_district": "K02",
         "council_district": "33"
-      }
-    },
-    "2025K0154": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 3,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "4d",
-      "layers": {
-        "borough": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "3"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "K03"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "36"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "BK0301"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "79"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Brooklyn",
-        "community_district": "K03",
-        "council_district": "36"
       }
     },
     "2025K0226": {
@@ -9542,6 +8762,60 @@
         "council_district": "43"
       }
     },
+    "2025K0234": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "72",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K12",
+        "council_district": "38"
+      }
+    },
     "2025K0250": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -9668,70 +8942,6 @@
         "borough": "Brooklyn",
         "community_district": "K10",
         "council_district": "47"
-      }
-    },
-    "2025K0287": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "00",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "3"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "K01"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "33"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "BK0101"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "94"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Brooklyn",
-        "community_district": "K01",
-        "council_district": "33"
       }
     },
     "2025K0293": {
@@ -9987,6 +9197,60 @@
         "council_district": "384043"
       }
     },
+    "2025K0356": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "79",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K01",
+        "council_district": "34"
+      }
+    },
     "2025K0374": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -10051,68 +9315,112 @@
         "council_district": "43"
       }
     },
-    "2025K0419": {
+    "2025K0417": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 2,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "1d",
+      "evidence_shard": "13",
       "layers": {
         "borough": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "3"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "K02"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "35"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "BK0203"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "88"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
         "borough": "Brooklyn",
-        "community_district": "K02",
-        "council_district": "35"
+        "community_district": "K06",
+        "council_district": "39"
+      }
+    },
+    "2025K0434": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "2c",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K17",
+        "council_district": "45"
       }
     },
     "2025K0470": {
@@ -10307,60 +9615,6 @@
         "council_district": "4"
       }
     },
-    "2025M0252": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "absent_from_index",
-      "valid_bbl_count": 0,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "40",
-      "layers": {
-        "borough": {
-          "total_bbls": 0,
-          "matched_bbls": 0,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": []
-        },
-        "community_district": {
-          "total_bbls": 0,
-          "matched_bbls": 0,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": []
-        },
-        "council_district": {
-          "total_bbls": 0,
-          "matched_bbls": 0,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": []
-        },
-        "nta2020": {
-          "total_bbls": 0,
-          "matched_bbls": 0,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": []
-        },
-        "police_precinct": {
-          "total_bbls": 0,
-          "matched_bbls": 0,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": []
-        }
-      },
-      "publisher_geography": {
-        "borough": "Manhattan",
-        "community_district": "M05",
-        "council_district": "3"
-      }
-    },
     "2025M0265": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -10423,70 +9677,6 @@
         "borough": "Manhattan",
         "community_district": "M08",
         "council_district": "4"
-      }
-    },
-    "2025M0329": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "bd",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "M01"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "MN0102"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Manhattan",
-        "community_district": "M01",
-        "council_district": "1"
       }
     },
     "2025M0332": {
@@ -10745,6 +9935,60 @@
         "council_district": "3"
       }
     },
+    "2025M0399": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "46",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M06",
+        "council_district": "4"
+      }
+    },
     "2025M0441": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -10860,71 +10104,7 @@
       "publisher_geography": {
         "borough": "Manhattan",
         "community_district": "M05",
-        "council_district": null
-      }
-    },
-    "2025M0473": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 5,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "ff",
-      "layers": {
-        "borough": {
-          "total_bbls": 5,
-          "matched_bbls": 5,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 5,
-          "matched_bbls": 5,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "M06"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 5,
-          "matched_bbls": 5,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "4"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 5,
-          "matched_bbls": 5,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "MN0604"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 5,
-          "matched_bbls": 5,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "17"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Manhattan",
-        "community_district": "M06",
-        "council_district": "4"
+        "council_district": "2"
       }
     },
     "2025Q0124": {
@@ -10991,68 +10171,58 @@
         "council_district": "22"
       }
     },
-    "2025Q0142": {
+    "2025Q0144": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "b8",
+      "evidence_shard": "2a",
       "layers": {
         "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "4"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "Q04"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "21"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "QN0402"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "110"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
         "borough": "Queens",
-        "community_district": "Q04",
-        "council_district": "21"
+        "community_district": "Q12",
+        "council_district": "27"
       }
     },
     "2025Q0155": {
@@ -11119,6 +10289,60 @@
         "council_district": "20"
       }
     },
+    "2025Q0230": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "b4",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q07",
+        "council_district": "19"
+      }
+    },
     "2025Q0247": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -11181,6 +10405,60 @@
         "borough": "Queens",
         "community_district": "Q06",
         "council_district": "29"
+      }
+    },
+    "2025Q0288": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "3f",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q13",
+        "council_district": "23"
       }
     },
     "2025Q0304": {
@@ -11314,73 +10592,6 @@
         "council_district": "213025"
       }
     },
-    "2025Q0316": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 25,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "bb",
-      "layers": {
-        "borough": {
-          "total_bbls": 25,
-          "matched_bbls": 25,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "4"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 25,
-          "matched_bbls": 25,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "Q02"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 25,
-          "matched_bbls": 25,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "25",
-            "26"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 25,
-          "matched_bbls": 25,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "QN0201",
-            "QN0202",
-            "QN0203"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 25,
-          "matched_bbls": 25,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "108"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Queens",
-        "community_district": "Q02",
-        "council_district": "2625"
-      }
-    },
     "2025Q0331": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -11509,196 +10720,166 @@
         "council_district": "21"
       }
     },
-    "2025Q0445": {
+    "2025Q0403": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 2,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "3e",
+      "evidence_shard": "c0",
       "layers": {
         "borough": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "4"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "Q07"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "20"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "QN0707"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "109"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
         "borough": "Queens",
         "community_district": "Q07",
-        "council_district": "20"
+        "council_district": "21"
       }
     },
-    "2025R0137": {
+    "2025Q0476": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 3,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "99",
+      "evidence_shard": "6c",
       "layers": {
         "borough": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "R01"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "49"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "SI0101"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "120"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
+        "borough": "Queens",
+        "community_district": "Q01",
+        "council_district": "25"
       }
     },
-    "2025R0140": {
+    "2025Q0494": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "23",
+      "evidence_shard": "a4",
       "layers": {
         "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "R03"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "51"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "SI0305"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "123"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R03",
-        "council_district": "51"
+        "borough": "Queens",
+        "community_district": "Q09",
+        "council_district": "29"
       }
     },
     "2025R0222": {
@@ -11829,134 +11010,6 @@
         "council_district": "50"
       }
     },
-    "2025R0285": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "e1",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "R01"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "49"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "SI0104"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "120"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
-      }
-    },
-    "2025R0309": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 3,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "32",
-      "layers": {
-        "borough": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "R03"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "51"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "SI0304"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 3,
-          "matched_bbls": 3,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "123"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R03",
-        "council_district": "51"
-      }
-    },
     "2025R0312": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -12019,70 +11072,6 @@
         "borough": "Staten Island",
         "community_district": "R02",
         "council_district": "50"
-      }
-    },
-    "2025R0398": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 2,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "f4",
-      "layers": {
-        "borough": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "R01"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "49"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "SI0101"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "120"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
       }
     },
     "2025X0116": {
@@ -12213,6 +11202,168 @@
         "council_district": "13"
       }
     },
+    "2025X0147": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "14",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X11",
+        "council_district": "13"
+      }
+    },
+    "2025X0256": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "8f",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X01",
+        "council_district": "8"
+      }
+    },
+    "2025X0264": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "26",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X09",
+        "council_district": "18"
+      }
+    },
     "2025X0283": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -12278,6 +11429,60 @@
         "council_district": "16"
       }
     },
+    "2025X0296": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "a3",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X06",
+        "council_district": "15"
+      }
+    },
     "2025X0385": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -12339,7 +11544,61 @@
       "publisher_geography": {
         "borough": "Bronx",
         "community_district": "X01",
-        "council_district": "815"
+        "council_district": "8"
+      }
+    },
+    "2025X0462": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "3e",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X08",
+        "council_district": "11"
       }
     },
     "2025Y0279": {
@@ -12394,6 +11653,60 @@
         "borough": "Citywide",
         "community_district": null,
         "council_district": null
+      }
+    },
+    "2026K0117": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "cb",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K02",
+        "council_district": "33"
       }
     },
     "2026K0123": {
@@ -12588,68 +11901,112 @@
         "council_district": "35"
       }
     },
-    "2026K0443": {
+    "2026K0322": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 2,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "a9",
+      "evidence_shard": "21",
       "layers": {
         "borough": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "3"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "K02"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "33"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "BK0202"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 2,
-          "matched_bbls": 2,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "84"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
         "borough": "Brooklyn",
-        "community_district": "K02",
-        "council_district": "33"
+        "community_district": "K12",
+        "council_district": "44"
+      }
+    },
+    "2026M0108": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "7d",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M02",
+        "council_district": "1"
       }
     },
     "2026M0120": {
@@ -12780,6 +12137,60 @@
         "council_district": "4"
       }
     },
+    "2026M0163": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "e6",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M01",
+        "council_district": "1"
+      }
+    },
     "2026M0164": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -12906,6 +12317,60 @@
         "borough": "Manhattan",
         "community_district": "M05",
         "council_district": "4"
+      }
+    },
+    "2026M0208": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "8c",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M03",
+        "council_district": "2"
       }
     },
     "2026M0211": {
@@ -13036,6 +12501,60 @@
         "council_district": "6"
       }
     },
+    "2026M0250": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "09",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M08",
+        "council_district": "4"
+      }
+    },
     "2026M0275": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "present",
@@ -13100,260 +12619,220 @@
         "council_district": "4"
       }
     },
-    "2026M0366": {
+    "2026M0382": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 8,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "bf",
+      "evidence_shard": "7d",
       "layers": {
         "borough": {
-          "total_bbls": 8,
-          "matched_bbls": 8,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 8,
-          "matched_bbls": 8,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "M08"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 8,
-          "matched_bbls": 8,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 8,
-          "matched_bbls": 8,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "MN0801"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 8,
-          "matched_bbls": 8,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "19"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Manhattan",
-        "community_district": "M08",
-        "council_district": "5"
-      }
-    },
-    "2026M0432": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "df",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "M05"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "4"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "MN0502"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "18"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
         "borough": "Manhattan",
         "community_district": "M05",
-        "council_district": "4"
-      }
-    },
-    "2026M0444": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "7e",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "M03"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "MN0302"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "7"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Manhattan",
-        "community_district": "M03",
-        "council_district": "1"
-      }
-    },
-    "2026M0445": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "11",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "1"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "M04"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "3"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "MN0401"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "14"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Manhattan",
-        "community_district": "M04",
         "council_district": "3"
+      }
+    },
+    "2026M0454": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "3f",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M02",
+        "council_district": "3"
+      }
+    },
+    "2026M0455": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "ac",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M07",
+        "council_district": "6"
+      }
+    },
+    "2026M0515": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "cf",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Manhattan",
+        "community_district": "M01",
+        "council_district": "1"
       }
     },
     "2026Q0128": {
@@ -13420,68 +12899,112 @@
         "council_district": "22"
       }
     },
-    "2026Q0210": {
+    "2026Q0184": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 25,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "59",
+      "evidence_shard": "55",
       "layers": {
         "borough": {
-          "total_bbls": 25,
-          "matched_bbls": 25,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "4"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 25,
-          "matched_bbls": 25,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "Q12"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 25,
-          "matched_bbls": 25,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "27"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 25,
-          "matched_bbls": 25,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "QN1201"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 25,
-          "matched_bbls": 25,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "103"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
         "borough": "Queens",
-        "community_district": "Q12",
-        "council_district": "27"
+        "community_district": "Q02",
+        "council_district": "26"
+      }
+    },
+    "2026Q0198": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "18",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q01",
+        "council_district": "22"
       }
     },
     "2026Q0320": {
@@ -13548,196 +13071,112 @@
         "council_district": "29"
       }
     },
-    "2026R0127": {
+    "2026Q0371": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "2b",
+      "evidence_shard": "97",
       "layers": {
         "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "R01"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "49"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "SI0105"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "120"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
+        "borough": "Queens",
+        "community_district": "Q12",
+        "council_district": "28"
       }
     },
-    "2026R0137": {
+    "2026Q0460": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "12",
+      "evidence_shard": "e4",
       "layers": {
         "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "R01"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "49"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "SI0104"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "120"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
-      }
-    },
-    "2026R0142": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "62",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "R02"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "50"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "SI0203"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "122"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R02",
-        "council_district": "50"
+        "borough": "Queens",
+        "community_district": "Q01",
+        "council_district": "22"
       }
     },
     "2026R0145": {
@@ -13804,324 +13243,58 @@
         "council_district": "49"
       }
     },
-    "2026R0166": {
+    "2026R0299": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "f4",
+      "evidence_shard": "b3",
       "layers": {
         "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "R01"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "49"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "SI0102"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "120"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
-      }
-    },
-    "2026R0186": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "82",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "R02"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "50"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "SI0204"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "121"
-          ]
+          "places": []
         }
       },
       "publisher_geography": {
         "borough": "Staten Island",
         "community_district": "R02",
         "council_district": "50"
-      }
-    },
-    "2026R0189": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "3b",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "R02"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "50"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "SI0203"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "122"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": null,
-        "council_district": null
-      }
-    },
-    "2026R0195": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "d2",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "R01"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "49"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "SI0104"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "120"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
-      }
-    },
-    "2026R0196": {
-      "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
-      "invalid_bbl_count": 0,
-      "evidence_shard": "3f",
-      "layers": {
-        "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "5"
-          ]
-        },
-        "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "R01"
-          ]
-        },
-        "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "49"
-          ]
-        },
-        "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "SI0104"
-          ]
-        },
-        "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
-          "uncovered_bbls": 0,
-          "ambiguous_bbls": 0,
-          "unavailable_bbls": 0,
-          "places": [
-            "120"
-          ]
-        }
-      },
-      "publisher_geography": {
-        "borough": "Staten Island",
-        "community_district": "R01",
-        "council_district": "49"
       }
     },
     "2026R0319": {
@@ -14238,72 +13411,224 @@
       },
       "publisher_geography": {
         "borough": "Staten Island",
-        "community_district": "R01",
+        "community_district": null,
         "council_district": null
       }
     },
-    "2026X0274": {
+    "2026R0338": {
       "association_kind": "published_project_lot",
-      "bbl_association_state": "present",
-      "valid_bbl_count": 1,
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "88",
+      "evidence_shard": "fd",
       "layers": {
         "borough": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "2"
-          ]
+          "places": []
         },
         "community_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "X08"
-          ]
+          "places": []
         },
         "council_district": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "11"
-          ]
+          "places": []
         },
         "nta2020": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "BX0803"
-          ]
+          "places": []
         },
         "police_precinct": {
-          "total_bbls": 1,
-          "matched_bbls": 1,
+          "total_bbls": 0,
+          "matched_bbls": 0,
           "uncovered_bbls": 0,
           "ambiguous_bbls": 0,
           "unavailable_bbls": 0,
-          "places": [
-            "50"
-          ]
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Staten Island",
+        "community_district": "R02",
+        "council_district": "50"
+      }
+    },
+    "2026R0368": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "00",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Staten Island",
+        "community_district": "R02",
+        "council_district": "50"
+      }
+    },
+    "2026X0180": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "7e",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
         }
       },
       "publisher_geography": {
         "borough": "Bronx",
-        "community_district": "X08",
-        "council_district": "11"
+        "community_district": "X03",
+        "council_district": "17"
+      }
+    },
+    "2026X0270": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "d4",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Bronx",
+        "community_district": "X03",
+        "council_district": "16"
       }
     },
     "2026X0282": {
@@ -14498,12 +13823,12 @@
         "council_district": null
       }
     },
-    "2026X0464": {
+    "2026X0514": {
       "association_kind": "published_project_lot",
       "bbl_association_state": "absent_from_index",
       "valid_bbl_count": 0,
       "invalid_bbl_count": 0,
-      "evidence_shard": "87",
+      "evidence_shard": "f7",
       "layers": {
         "borough": {
           "total_bbls": 0,
@@ -14548,8 +13873,8 @@
       },
       "publisher_geography": {
         "borough": "Bronx",
-        "community_district": null,
-        "council_district": null
+        "community_district": "X08",
+        "council_district": "11"
       }
     },
     "2026Y0360": {
@@ -14603,6 +13928,168 @@
       "publisher_geography": {
         "borough": "Citywide",
         "community_district": null,
+        "council_district": null
+      }
+    },
+    "2027K0210": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "42",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K02",
+        "council_district": "3335"
+      }
+    },
+    "2027Q0181": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbl_count": 0,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "d3",
+      "layers": {
+        "borough": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 0,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 0,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Queens",
+        "community_district": "Q01",
+        "council_district": "22"
+      }
+    },
+    "P2009K0185": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "present",
+      "valid_bbl_count": 1,
+      "invalid_bbl_count": 0,
+      "evidence_shard": "c7",
+      "layers": {
+        "borough": {
+          "total_bbls": 1,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 1,
+          "places": []
+        },
+        "community_district": {
+          "total_bbls": 1,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 1,
+          "places": []
+        },
+        "council_district": {
+          "total_bbls": 1,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 1,
+          "places": []
+        },
+        "nta2020": {
+          "total_bbls": 1,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 1,
+          "places": []
+        },
+        "police_precinct": {
+          "total_bbls": 1,
+          "matched_bbls": 0,
+          "uncovered_bbls": 0,
+          "ambiguous_bbls": 0,
+          "unavailable_bbls": 1,
+          "places": []
+        }
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K13",
         "council_district": null
       }
     },
@@ -15571,17 +15058,14 @@
         "2020M0325",
         "2020M0375",
         "2020M0383",
-        "2020M0385",
         "2020M0429",
         "2020M0474",
         "2020M0487",
         "2021M0264",
         "2021M0357",
         "2022M0258",
-        "2023M0116",
         "2023M0117",
         "2023M0200",
-        "2023M0213",
         "2023M0271",
         "2023M0309",
         "2023M0316",
@@ -15593,18 +15077,15 @@
         "2024M0194",
         "2024M0223",
         "2024M0243",
-        "2024M0244",
         "2024M0267",
         "2024M0372",
         "2025M0115",
         "2025M0265",
-        "2025M0329",
         "2025M0332",
         "2025M0338",
         "2025M0360",
         "2025M0395",
         "2025M0441",
-        "2025M0473",
         "2026M0120",
         "2026M0136",
         "2026M0164",
@@ -15612,10 +15093,6 @@
         "2026M0211",
         "2026M0247",
         "2026M0275",
-        "2026M0366",
-        "2026M0432",
-        "2026M0444",
-        "2026M0445",
         "P2014M0309",
         "P2015M0247",
         "P2016M0148",
@@ -15623,9 +15100,7 @@
       ],
       "2": [
         "2018X0438",
-        "2019X0255",
         "2020X0410",
-        "2021X0247",
         "2022X0150",
         "2022X0392",
         "2022X0393",
@@ -15634,13 +15109,11 @@
         "2023X0149",
         "2023X0347",
         "2023X0393",
-        "2024X0132",
         "2024X0210",
         "2025X0116",
         "2025X0143",
         "2025X0283",
         "2025X0385",
-        "2026X0274",
         "2026X0282",
         "2026X0354",
         "2026X0362",
@@ -15650,7 +15123,6 @@
       ],
       "3": [
         "2019K0147",
-        "2019K0190",
         "2019K0217",
         "2019K0219",
         "2019K0301",
@@ -15674,7 +15146,6 @@
         "2022K0441",
         "2023K0126",
         "2023K0148",
-        "2023K0183",
         "2023K0231",
         "2023K0248",
         "2023K0276",
@@ -15688,33 +15159,26 @@
         "2024K0233",
         "2024K0240",
         "2024K0274",
-        "2024K0286",
         "2024K0294",
         "2024K0299",
-        "2024K0358",
         "2024K0369",
         "2024K0421",
-        "2024K0437",
         "2024K0444",
         "2025K0150",
-        "2025K0154",
         "2025K0226",
         "2025K0229",
         "2025K0232",
         "2025K0250",
         "2025K0284",
-        "2025K0287",
         "2025K0293",
         "2025K0305",
         "2025K0318",
         "2025K0374",
-        "2025K0419",
         "2025K0470",
         "2025K0497",
         "2026K0123",
         "2026K0129",
         "2026K0233",
-        "2026K0443",
         "P2016K0287"
       ],
       "4": [
@@ -15728,7 +15192,6 @@
         "2022Q0196",
         "2022Q0214",
         "2022Q0248",
-        "2022Q0449",
         "2023Q0125",
         "2023Q0177",
         "2023Q0211",
@@ -15740,9 +15203,7 @@
         "2023Q0424",
         "2023Q0450",
         "2023R0329",
-        "2024Q0113",
         "2024Q0135",
-        "2024Q0164",
         "2024Q0189",
         "2024Q0219",
         "2024Q0292",
@@ -15751,17 +15212,13 @@
         "2024Q0325",
         "2024Q0356",
         "2025Q0124",
-        "2025Q0142",
         "2025Q0155",
         "2025Q0247",
         "2025Q0304",
         "2025Q0314",
-        "2025Q0316",
         "2025Q0331",
         "2025Q0335",
-        "2025Q0445",
         "2026Q0128",
-        "2026Q0210",
         "2026Q0320",
         "P2012Q0076",
         "P2012Q0110",
@@ -15779,28 +15236,13 @@
         "2023R0281",
         "2023R0329",
         "2023R0413",
-        "2024R0137",
         "2024R0289",
-        "2024R0300",
         "2024R0332",
         "2024R0425",
-        "2025R0137",
-        "2025R0140",
         "2025R0222",
         "2025R0277",
-        "2025R0285",
-        "2025R0309",
         "2025R0312",
-        "2025R0398",
-        "2026R0127",
-        "2026R0137",
-        "2026R0142",
         "2026R0145",
-        "2026R0166",
-        "2026R0186",
-        "2026R0189",
-        "2026R0195",
-        "2026R0196",
         "2026R0319",
         "P2012R0043",
         "P2014R0345"
@@ -15814,29 +15256,21 @@
         "2021K0420",
         "2022K0252",
         "2024K0240",
-        "2024K0286",
-        "2024K0358",
-        "2025K0287",
         "2025K0293",
         "2026K0129",
         "P2016K0287"
       ],
       "K02": [
         "2025K0150",
-        "2025K0419",
         "2025K0497",
-        "2026K0233",
-        "2026K0443"
+        "2026K0233"
       ],
       "K03": [
-        "2019K0190",
         "2020K0413",
         "2022K0302",
         "2022K0430",
         "2022K0441",
-        "2024K0294",
-        "2024K0437",
-        "2025K0154"
+        "2024K0294"
       ],
       "K04": [
         "2023K0148",
@@ -15883,7 +15317,6 @@
       "K13": [
         "2021K0261",
         "2023K0126",
-        "2023K0183",
         "2023K0400",
         "2024K0444",
         "2025K0250",
@@ -15913,35 +15346,28 @@
       "M01": [
         "2020M0474",
         "2023M0117",
-        "2025M0329",
         "2026M0120",
         "P2018M0168"
       ],
       "M03": [
-        "2023M0116",
         "2023M0200",
         "2023M0452",
         "2024M0194",
-        "2024M0243",
-        "2026M0444"
+        "2024M0243"
       ],
       "M04": [
         "2019M0059",
         "2019M0107",
         "2020M0325",
         "2020M0375",
-        "2023M0213",
         "2023M0309",
-        "2024M0244",
         "2025M0332",
         "2025M0360",
-        "2026M0445",
         "P2014M0309",
         "P2015M0247",
         "P2016M0148"
       ],
       "M05": [
-        "2020M0385",
         "2020M0429",
         "2023M0271",
         "2024M0120",
@@ -15955,16 +15381,14 @@
         "2026M0206",
         "2026M0211",
         "2026M0247",
-        "2026M0275",
-        "2026M0432"
+        "2026M0275"
       ],
       "M06": [
         "2020M0487",
         "2021M0264",
         "2021M0357",
         "2023M0399",
-        "2024M0104",
-        "2025M0473"
+        "2024M0104"
       ],
       "M07": [
         "2019M0206",
@@ -15974,8 +15398,7 @@
         "2023M0316",
         "2025M0265",
         "2026M0136",
-        "2026M0164",
-        "2026M0366"
+        "2026M0164"
       ],
       "M10": [
         "2024M0223"
@@ -15998,7 +15421,6 @@
         "2023Q0177",
         "2023Q0364",
         "2025Q0304",
-        "2025Q0316",
         "2025Q0331",
         "P2016Q0288"
       ],
@@ -16006,14 +15428,11 @@
         "2021Q0439"
       ],
       "Q04": [
-        "2024Q0113",
-        "2025Q0142",
         "2025Q0314",
         "2025Q0335"
       ],
       "Q05": [
         "2022Q0160",
-        "2022Q0449",
         "2023Q0424",
         "P2012Q0110"
       ],
@@ -16030,14 +15449,12 @@
         "2024Q0135",
         "2024Q0297",
         "2024Q0324",
-        "2025Q0155",
-        "2025Q0445"
+        "2025Q0155"
       ],
       "Q08": [
         "2022Q0248",
         "2023Q0242",
-        "2023Q0303",
-        "2024Q0164"
+        "2023Q0303"
       ],
       "Q10": [
         "2020Q0353",
@@ -16050,8 +15467,7 @@
         "2024Q0356"
       ],
       "Q12": [
-        "2020Q0240",
-        "2026Q0210"
+        "2020Q0240"
       ],
       "Q14": [
         "2020Q0157",
@@ -16061,17 +15477,7 @@
       ],
       "R01": [
         "2023R0413",
-        "2024R0137",
-        "2024R0300",
-        "2025R0137",
-        "2025R0285",
-        "2025R0398",
-        "2026R0127",
-        "2026R0137",
-        "2026R0145",
-        "2026R0166",
-        "2026R0195",
-        "2026R0196"
+        "2026R0145"
       ],
       "R02": [
         "2019R0267",
@@ -16083,9 +15489,6 @@
         "2023R0281",
         "2025R0277",
         "2025R0312",
-        "2026R0142",
-        "2026R0186",
-        "2026R0189",
         "P2012R0043"
       ],
       "R03": [
@@ -16094,9 +15497,7 @@
         "2024R0289",
         "2024R0332",
         "2024R0425",
-        "2025R0140",
         "2025R0222",
-        "2025R0309",
         "2026R0319",
         "P2014R0345"
       ],
@@ -16129,17 +15530,11 @@
         "2025X0283"
       ],
       "X08": [
-        "2026X0274",
         "2026X0282",
         "2026X0354"
       ],
       "X09": [
-        "2019X0255",
-        "2023X0347",
-        "2024X0132"
-      ],
-      "X10": [
-        "2021X0247"
+        "2023X0347"
       ],
       "X11": [
         "2020X0410",
@@ -16153,15 +15548,12 @@
     "council_district": {
       "1": [
         "2020M0474",
-        "2023M0116",
         "2023M0117",
         "2023M0200",
         "2023M0452",
         "2024M0194",
         "2024M0243",
-        "2025M0329",
         "2026M0120",
-        "2026M0444",
         "P2018M0168"
       ],
       "2": [
@@ -16172,23 +15564,19 @@
         "2019M0107",
         "2020M0325",
         "2020M0375",
-        "2023M0213",
         "2023M0271",
         "2023M0309",
         "2024M0193",
-        "2024M0244",
         "2024M0372",
         "2025M0332",
         "2025M0338",
         "2025M0395",
         "2025M0441",
-        "2026M0445",
         "P2014M0309",
         "P2015M0247",
         "P2016M0148"
       ],
       "4": [
-        "2020M0385",
         "2020M0429",
         "2020M0487",
         "2021M0264",
@@ -16198,23 +15586,18 @@
         "2024M0267",
         "2025M0115",
         "2025M0265",
-        "2025M0473",
         "2026M0136",
         "2026M0164",
         "2026M0206",
         "2026M0211",
-        "2026M0275",
-        "2026M0432"
+        "2026M0275"
       ],
       "5": [
-        "2023M0316",
-        "2026M0366"
+        "2023M0316"
       ],
       "6": [
         "2019M0206",
         "2020M0266",
-        "2023M0213",
-        "2024M0244",
         "2025M0360",
         "2026M0247"
       ],
@@ -16233,7 +15616,6 @@
       ],
       "11": [
         "2022X0392",
-        "2026X0274",
         "2026X0282",
         "2026X0354",
         "P2017X0149"
@@ -16243,7 +15625,6 @@
       ],
       "13": [
         "2020X0410",
-        "2021X0247",
         "2025X0143"
       ],
       "14": [
@@ -16266,9 +15647,7 @@
         "2024X0210"
       ],
       "18": [
-        "2019X0255",
-        "2023X0347",
-        "2024X0132"
+        "2023X0347"
       ],
       "19": [
         "2021Q0168",
@@ -16281,14 +15660,11 @@
         "2024Q0189",
         "2024Q0297",
         "2024Q0324",
-        "2025Q0155",
-        "2025Q0445"
+        "2025Q0155"
       ],
       "21": [
         "2021Q0439",
-        "2024Q0113",
         "2024Q0135",
-        "2025Q0142",
         "2025Q0314",
         "2025Q0335"
       ],
@@ -16301,12 +15677,10 @@
       "24": [
         "2022Q0248",
         "2023Q0242",
-        "2023Q0303",
-        "2024Q0164"
+        "2023Q0303"
       ],
       "25": [
-        "2025Q0314",
-        "2025Q0316"
+        "2025Q0314"
       ],
       "26": [
         "2020Q0317",
@@ -16314,13 +15688,11 @@
         "2023Q0177",
         "2023Q0364",
         "2025Q0304",
-        "2025Q0316",
         "2025Q0331",
         "P2016Q0288"
       ],
       "27": [
-        "2020Q0240",
-        "2026Q0210"
+        "2020Q0240"
       ],
       "29": [
         "2023Q0211",
@@ -16330,7 +15702,6 @@
         "2026Q0320"
       ],
       "30": [
-        "2022Q0449",
         "2023Q0424",
         "2025Q0314",
         "P2012Q0110"
@@ -16346,20 +15717,15 @@
         "2024Q0325"
       ],
       "33": [
-        "2019K0190",
         "2019K0219",
         "2020K0444",
         "2021K0187",
         "2022K0430",
         "2024K0240",
-        "2024K0286",
-        "2024K0358",
         "2025K0150",
-        "2025K0287",
         "2025K0293",
         "2025K0497",
-        "2026K0129",
-        "2026K0443"
+        "2026K0129"
       ],
       "34": [
         "2021K0420",
@@ -16371,7 +15737,6 @@
         "P2016K0287"
       ],
       "35": [
-        "2025K0419",
         "2026K0123",
         "2026K0233"
       ],
@@ -16379,9 +15744,7 @@
         "2020K0413",
         "2022K0302",
         "2022K0441",
-        "2024K0294",
-        "2024K0437",
-        "2025K0154"
+        "2024K0294"
       ],
       "37": [
         "2021K0380",
@@ -16435,7 +15798,6 @@
       "47": [
         "2021K0261",
         "2023K0126",
-        "2023K0183",
         "2023K0398",
         "2023K0400",
         "2024K0274",
@@ -16449,17 +15811,7 @@
       ],
       "49": [
         "2023R0413",
-        "2024R0137",
-        "2024R0300",
-        "2025R0137",
-        "2025R0285",
-        "2025R0398",
-        "2026R0127",
-        "2026R0137",
-        "2026R0145",
-        "2026R0166",
-        "2026R0195",
-        "2026R0196"
+        "2026R0145"
       ],
       "50": [
         "2019R0267",
@@ -16470,9 +15822,6 @@
         "2023R0281",
         "2025R0277",
         "2025R0312",
-        "2026R0142",
-        "2026R0186",
-        "2026R0189",
         "P2012R0043"
       ],
       "51": [
@@ -16482,9 +15831,7 @@
         "2024R0289",
         "2024R0332",
         "2024R0425",
-        "2025R0140",
         "2025R0222",
-        "2025R0309",
         "2026R0319",
         "P2014R0345"
       ]
@@ -16493,14 +15840,11 @@
       "BK0101": [
         "2019K0219",
         "2021K0187",
-        "2024K0358",
-        "2025K0287",
         "2026K0129"
       ],
       "BK0102": [
         "2020K0444",
         "2024K0240",
-        "2024K0286",
         "2025K0293"
       ],
       "BK0104": [
@@ -16513,23 +15857,16 @@
       ],
       "BK0202": [
         "2025K0497",
-        "2026K0233",
-        "2026K0443"
-      ],
-      "BK0203": [
-        "2025K0419"
+        "2026K0233"
       ],
       "BK0301": [
-        "2019K0190",
         "2020K0413",
         "2022K0302",
         "2022K0430",
-        "2022K0441",
-        "2025K0154"
+        "2022K0441"
       ],
       "BK0302": [
-        "2024K0294",
-        "2024K0437"
+        "2024K0294"
       ],
       "BK0401": [
         "2023K0148",
@@ -16597,7 +15934,6 @@
       "BK1302": [
         "2021K0261",
         "2023K0126",
-        "2023K0183",
         "2023K0400",
         "2025K0250"
       ],
@@ -16667,17 +16003,11 @@
         "2022X0392"
       ],
       "BX0803": [
-        "2026X0274",
         "2026X0282",
         "2026X0354"
       ],
-      "BX0902": [
-        "2019X0255"
-      ],
       "BX0903": [
-        "2021X0247",
-        "2023X0347",
-        "2024X0132"
+        "2023X0347"
       ],
       "BX1102": [
         "2025X0143"
@@ -16697,35 +16027,27 @@
       ],
       "MN0102": [
         "2020M0474",
-        "2023M0117",
-        "2025M0329"
+        "2023M0117"
       ],
       "MN0301": [
         "2024M0194",
         "2024M0243"
       ],
       "MN0302": [
-        "2023M0116",
         "2023M0200",
-        "2023M0452",
-        "2026M0444"
+        "2023M0452"
       ],
       "MN0401": [
         "2019M0059",
         "2019M0107",
         "2020M0325",
         "2020M0375",
-        "2023M0213",
         "2023M0309",
-        "2024M0244",
-        "2026M0445",
         "P2014M0309",
         "P2015M0247",
         "P2016M0148"
       ],
       "MN0402": [
-        "2023M0213",
-        "2024M0244",
         "2025M0332",
         "2025M0360"
       ],
@@ -16735,7 +16057,6 @@
         "2025M0441"
       ],
       "MN0502": [
-        "2020M0385",
         "2020M0429",
         "2023M0271",
         "2024M0120",
@@ -16746,8 +16067,7 @@
         "2026M0206",
         "2026M0211",
         "2026M0247",
-        "2026M0275",
-        "2026M0432"
+        "2026M0275"
       ],
       "MN0602": [
         "2023M0399"
@@ -16758,16 +16078,14 @@
         "2024M0104"
       ],
       "MN0604": [
-        "2021M0264",
-        "2025M0473"
+        "2021M0264"
       ],
       "MN0701": [
         "2019M0206",
         "2020M0266"
       ],
       "MN0801": [
-        "2023M0316",
-        "2026M0366"
+        "2023M0316"
       ],
       "MN0802": [
         "2025M0265",
@@ -16795,19 +16113,14 @@
       ],
       "QN0201": [
         "2020Q0317",
-        "2023Q0125",
-        "2025Q0316"
+        "2023Q0125"
       ],
       "QN0202": [
         "2023Q0177",
         "2023Q0364",
         "2025Q0304",
-        "2025Q0316",
         "2025Q0331",
         "P2016Q0288"
-      ],
-      "QN0203": [
-        "2025Q0316"
       ],
       "QN0302": [
         "2021Q0439"
@@ -16816,8 +16129,6 @@
         "2025Q0314"
       ],
       "QN0402": [
-        "2024Q0113",
-        "2025Q0142",
         "2025Q0314",
         "2025Q0335"
       ],
@@ -16826,8 +16137,7 @@
         "P2012Q0110"
       ],
       "QN0502": [
-        "2022Q0160",
-        "2022Q0449"
+        "2022Q0160"
       ],
       "QN0602": [
         "2023Q0211",
@@ -16846,15 +16156,13 @@
         "2023Q0328",
         "2023Q0351",
         "2024Q0135",
-        "2024Q0324",
-        "2025Q0445"
+        "2024Q0324"
       ],
       "QN0801": [
         "2023Q0242"
       ],
       "QN0802": [
-        "2023Q0303",
-        "2024Q0164"
+        "2023Q0303"
       ],
       "QN0805": [
         "2022Q0248"
@@ -16872,8 +16180,7 @@
         "2024Q0356"
       ],
       "QN1201": [
-        "2020Q0240",
-        "2026Q0210"
+        "2020Q0240"
       ],
       "QN1205": [
         "2020Q0240"
@@ -16888,27 +16195,9 @@
       "QN1403": [
         "2020Q0157"
       ],
-      "SI0101": [
-        "2024R0300",
-        "2025R0137",
-        "2025R0398"
-      ],
-      "SI0102": [
-        "2026R0166"
-      ],
       "SI0103": [
         "2023R0413",
         "2026R0145"
-      ],
-      "SI0104": [
-        "2024R0137",
-        "2025R0285",
-        "2026R0137",
-        "2026R0195",
-        "2026R0196"
-      ],
-      "SI0105": [
-        "2026R0127"
       ],
       "SI0201": [
         "2019R0267"
@@ -16923,13 +16212,10 @@
         "2023R0111",
         "2023R0281",
         "2025R0277",
-        "2025R0312",
-        "2026R0142",
-        "2026R0189"
+        "2025R0312"
       ],
       "SI0204": [
         "2023R0153",
-        "2026R0186",
         "P2012R0043"
       ],
       "SI0291": [
@@ -16945,20 +16231,17 @@
         "2024R0289",
         "2024R0332",
         "2025R0222",
-        "2025R0309",
         "P2014R0345"
       ],
       "SI0305": [
         "2023R0199",
-        "2024R0425",
-        "2025R0140"
+        "2024R0425"
       ]
     },
     "police_precinct": {
       "1": [
         "2020M0474",
         "2023M0117",
-        "2025M0329",
         "2026M0120",
         "P2018M0168"
       ],
@@ -16968,18 +16251,14 @@
         "2024M0243"
       ],
       "7": [
-        "2023M0116",
-        "2023M0200",
-        "2026M0444"
+        "2023M0200"
       ],
       "10": [
         "2019M0059",
         "2019M0107",
         "2020M0325",
         "2020M0375",
-        "2023M0213",
         "2023M0309",
-        "2024M0244",
         "P2014M0309",
         "P2015M0247",
         "P2016M0148"
@@ -16994,21 +16273,16 @@
         "2023M0271",
         "2025M0395",
         "2025M0441",
-        "2026M0211",
-        "2026M0445"
+        "2026M0211"
       ],
       "17": [
         "2021M0264",
-        "2021M0357",
-        "2025M0473"
+        "2021M0357"
       ],
       "18": [
-        "2020M0385",
         "2020M0429",
-        "2023M0213",
         "2024M0120",
         "2024M0193",
-        "2024M0244",
         "2024M0267",
         "2025M0115",
         "2025M0332",
@@ -17016,15 +16290,13 @@
         "2025M0360",
         "2026M0206",
         "2026M0247",
-        "2026M0275",
-        "2026M0432"
+        "2026M0275"
       ],
       "19": [
         "2023M0316",
         "2025M0265",
         "2026M0136",
-        "2026M0164",
-        "2026M0366"
+        "2026M0164"
       ],
       "20": [
         "2019M0206",
@@ -17052,16 +16324,11 @@
         "2023X0393"
       ],
       "43": [
-        "2019X0255",
-        "2023X0347",
-        "2024X0132"
+        "2023X0347"
       ],
       "44": [
         "P2012X0048",
         "P2018X0328"
-      ],
-      "45": [
-        "2021X0247"
       ],
       "46": [
         "2018X0438",
@@ -17080,7 +16347,6 @@
         "2025X0143"
       ],
       "50": [
-        "2026X0274",
         "2026X0282",
         "2026X0354"
       ],
@@ -17091,7 +16357,6 @@
       "60": [
         "2021K0261",
         "2023K0126",
-        "2023K0183",
         "2023K0400",
         "2024K0444",
         "2025K0250",
@@ -17156,13 +16421,10 @@
         "2023K0276"
       ],
       "79": [
-        "2019K0190",
         "2020K0413",
         "2022K0302",
         "2022K0430",
-        "2022K0441",
-        "2024K0437",
-        "2025K0154"
+        "2022K0441"
       ],
       "81": [
         "2024K0294"
@@ -17175,11 +16437,7 @@
       "84": [
         "2025K0150",
         "2025K0497",
-        "2026K0233",
-        "2026K0443"
-      ],
-      "88": [
-        "2025K0419"
+        "2026K0233"
       ],
       "90": [
         "2021K0420",
@@ -17191,9 +16449,6 @@
         "2020K0444",
         "2021K0187",
         "2022K0252",
-        "2024K0286",
-        "2024K0358",
-        "2025K0287",
         "2026K0129",
         "P2016K0287"
       ],
@@ -17206,12 +16461,10 @@
         "2022Q0196"
       ],
       "103": [
-        "2020Q0240",
-        "2026Q0210"
+        "2020Q0240"
       ],
       "104": [
         "2022Q0160",
-        "2022Q0449",
         "2023Q0424",
         "P2012Q0110"
       ],
@@ -17222,8 +16475,7 @@
       "107": [
         "2022Q0248",
         "2023Q0242",
-        "2023Q0303",
-        "2024Q0164"
+        "2023Q0303"
       ],
       "108": [
         "2020Q0317",
@@ -17231,7 +16483,6 @@
         "2023Q0177",
         "2023Q0364",
         "2025Q0304",
-        "2025Q0316",
         "2025Q0331",
         "P2016Q0288"
       ],
@@ -17240,13 +16491,10 @@
         "2023Q0351",
         "2024Q0297",
         "2024Q0324",
-        "2025Q0155",
-        "2025Q0445"
+        "2025Q0155"
       ],
       "110": [
-        "2024Q0113",
         "2024Q0135",
-        "2025Q0142",
         "2025Q0314",
         "2025Q0335"
       ],
@@ -17277,21 +16525,10 @@
       ],
       "120": [
         "2023R0413",
-        "2024R0137",
-        "2024R0300",
-        "2025R0137",
-        "2025R0285",
-        "2025R0398",
-        "2026R0127",
-        "2026R0137",
-        "2026R0145",
-        "2026R0166",
-        "2026R0195",
-        "2026R0196"
+        "2026R0145"
       ],
       "121": [
         "2023R0153",
-        "2026R0186",
         "P2012R0043"
       ],
       "122": [
@@ -17302,9 +16539,7 @@
         "2023R0111",
         "2023R0281",
         "2025R0277",
-        "2025R0312",
-        "2026R0142",
-        "2026R0189"
+        "2025R0312"
       ],
       "123": [
         "2023R0199",
@@ -17312,9 +16547,7 @@
         "2024R0289",
         "2024R0332",
         "2024R0425",
-        "2025R0140",
         "2025R0222",
-        "2025R0309",
         "2026R0319",
         "P2014R0345"
       ]
@@ -17323,8 +16556,8 @@
   "sources": {
     "catalog": {
       "path": "site/data/land_project_catalog.json",
-      "content_id": "fnv1a32:a3b58007:244",
-      "sha256": "74fed55a3009716ebfd0852ec7ddc4fb57b4df00e84a631a8ab3c93dd73cd7ab"
+      "content_id": "fnv1a32:42579b83:243",
+      "sha256": "2eec4cc7710b3b73de5e626c0d154aeb56bef47e3fb33ce21e71a24148b00d31"
     },
     "bbl_index": {
       "path": "site/data/zap_bbl_warehouse_lookup.json",
@@ -17345,9 +16578,9 @@
     }
   },
   "source_dates": {
-    "catalog_content_id": "fnv1a32:a3b58007:244",
-    "catalog_materialized_at": "2026-11-04T18:48:50.187Z",
-    "catalog_generated_at": "2026-11-04T18:22:03.270Z",
+    "catalog_content_id": "fnv1a32:42579b83:243",
+    "catalog_materialized_at": "2026-11-06T15:11:20.121Z",
+    "catalog_generated_at": "2026-11-06T14:51:26.447Z",
     "bbl_materialized_at": "2026-11-04T21:51:58.033Z",
     "parcel_coordinate_vintage": "pluto_25v4",
     "boundary_vintages": {
@@ -17360,8 +16593,8 @@
   },
   "generation": {
     "derivation": "node tools/build_land_place_membership.mjs",
-    "content_id": "fnv1a32:c7302d18:244",
-    "id": "cb2446f001b057a219a18ca142a63b93128ccb3d03618c299810e98116a90845",
-    "built_at": "2026-11-04T18:48:50.187Z"
+    "content_id": "fnv1a32:74087562:243",
+    "id": "f83c1529e75ec31d2bcefd9ab86a23c53919e8bd2f2e294e971699d749afe5f0",
+    "built_at": "2026-11-06T15:11:20.121Z"
   }
 }

@@ -2,43 +2,57 @@
   "schema": "cityscroll.community_board_district_projects.v1",
   "method": "canonical_board_district_exact_token_join_v1",
   "negative_rule": "Shared geography places a project in a district. It never establishes a board hearing, recommendation, committee assignment or ownership, and it never merges two projects that read alike.",
-  "generated_at": "2026-11-04T18:48:50.187Z",
+  "generated_at": "2026-11-06T15:11:20.121Z",
   "source": {
     "publisher": "NYC Department of City Planning, Zoning Application Portal",
     "dataset_id": "hgx4-8ukb",
     "source_url": "https://data.cityofnewyork.us/d/hgx4-8ukb",
-    "observed_on": "2026-11-04T18:48:50.187Z",
+    "observed_on": "2026-11-06T15:11:20.121Z",
     "boundary_vintage": "2026-05-26"
   },
   "counts": {
     "registry_boards": 59,
-    "boards_with_projects": 54,
-    "boards_without_projects": 5,
-    "districts_with_projects": 54,
-    "retained_projects": 238,
-    "matched_projects": 233,
-    "board_project_rows": 237,
+    "boards_with_projects": 55,
+    "boards_without_projects": 4,
+    "districts_with_projects": 55,
+    "retained_projects": 237,
+    "matched_projects": 231,
+    "board_project_rows": 235,
     "unmatched_district_tokens": 0
   },
   "boards": {
     "bronx-cb-01": {
       "body_id": "bronx-cb-01",
       "district_id": "X01",
-      "project_count": 3,
+      "project_count": 5,
       "projects": [
+        {
+          "project_id": "2024X0217",
+          "project_name": "Melrose Cornerstone B2",
+          "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development",
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-10-09"
+        },
         {
           "project_id": "2022X0393",
           "project_name": "110 East 138th Street/63 Exterior Street",
           "primary_applicant": "east 138th street JV associates LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-24"
+          "status_recorded_on": "2026-10-06"
+        },
+        {
+          "project_id": "2025X0256",
+          "project_name": "27 Bruckner Boulevard Rezoning",
+          "primary_applicant": "Akerman LLP",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-24"
         },
         {
           "project_id": "2025X0385",
           "project_name": "139th Street Demapping",
           "primary_applicant": "Sprague Operating Resources LLC",
           "public_status": "Filed",
-          "status_recorded_on": "2026-06-22"
+          "status_recorded_on": "2026-07-29"
         },
         {
           "project_id": "2026X0362",
@@ -59,21 +73,35 @@
           "project_name": "893-895 East 167th Street Rezoning",
           "primary_applicant": "1130 Tiffany Street LLC",
           "public_status": "Filed",
-          "status_recorded_on": "2026-06-18"
+          "status_recorded_on": "2026-09-11"
         }
       ]
     },
     "bronx-cb-03": {
       "body_id": "bronx-cb-03",
       "district_id": "X03",
-      "project_count": 2,
+      "project_count": 4,
       "projects": [
+        {
+          "project_id": "2026X0180",
+          "project_name": "1701 Boone Avenue Rezoning",
+          "primary_applicant": "Aden Wiener",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-14"
+        },
+        {
+          "project_id": "2026X0270",
+          "project_name": "3400 Park Avenue Rezoning",
+          "primary_applicant": "Azimuth Development Group",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-08"
+        },
         {
           "project_id": "2023X0140",
           "project_name": "Franklin 168 Rezoning",
           "primary_applicant": "Phipps Houses",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-06-04"
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-09-04"
         },
         {
           "project_id": "2023X0393",
@@ -87,8 +115,15 @@
     "bronx-cb-04": {
       "body_id": "bronx-cb-04",
       "district_id": "X04",
-      "project_count": 1,
+      "project_count": 2,
       "projects": [
+        {
+          "project_id": "2024X0309",
+          "project_name": "1625 Webster Avenue Rezoning",
+          "primary_applicant": "Roee Wiczyk",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-21"
+        },
         {
           "project_id": "P2018X0328",
           "project_name": "Grand ConCourse Bridge Rehabilitation",
@@ -108,7 +143,7 @@
           "project_name": "Aqueduct Walk South New Park Entrance",
           "primary_applicant": "DPR - Department of Parks & Recreation NYC",
           "public_status": "Noticed",
-          "status_recorded_on": "2026-05-28"
+          "status_recorded_on": "2026-09-23"
         },
         {
           "project_id": "2018X0438",
@@ -122,21 +157,28 @@
     "bronx-cb-06": {
       "body_id": "bronx-cb-06",
       "district_id": "X06",
-      "project_count": 2,
+      "project_count": 3,
       "projects": [
+        {
+          "project_id": "2023X0146",
+          "project_name": "4506 Park Avenue Rezoning",
+          "primary_applicant": "sarbjit singh",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-18"
+        },
         {
           "project_id": "2023X0149",
           "project_name": "Sojourner Truth - Mapes Rezoning",
           "primary_applicant": "Phipps Houses",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
+          "status_recorded_on": "2026-08-29"
         },
         {
-          "project_id": "2023X0146",
-          "project_name": "4506 Park Avenue Rezoning",
-          "primary_applicant": "sarbjit singh",
-          "public_status": "Noticed",
-          "status_recorded_on": "2025-01-10"
+          "project_id": "2025X0296",
+          "project_name": "Lambert Parcel 3 Non-ULURP Modifications",
+          "primary_applicant": "Boston Tremont Housing Development Fund Corp",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-08-14"
         }
       ]
     },
@@ -146,39 +188,46 @@
       "project_count": 2,
       "projects": [
         {
+          "project_id": "2025X0283",
+          "project_name": "Fordham Landing South Rezoning",
+          "primary_applicant": "DS Fordham Landing 1 LLC",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-02"
+        },
+        {
           "project_id": "2022X0392",
           "project_name": "3210 Webster Avenue Rezoning",
           "primary_applicant": "Fayanne Betan",
           "public_status": "Filed",
-          "status_recorded_on": "2026-05-20"
-        },
-        {
-          "project_id": "2025X0283",
-          "project_name": "Fordham Landing South Rezoning",
-          "primary_applicant": "DS Fordham Landing 1 LLC",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-02-04"
+          "status_recorded_on": "2026-07-10"
         }
       ]
     },
     "bronx-cb-08": {
       "body_id": "bronx-cb-08",
       "district_id": "X08",
-      "project_count": 3,
+      "project_count": 4,
       "projects": [
         {
-          "project_id": "2026X0274",
-          "project_name": "5204 Arlington Avenue - SNAD",
-          "primary_applicant": "Talner Congregation Beth David",
+          "project_id": "2026X0514",
+          "project_name": "740 West 232 Street - SNAD",
+          "primary_applicant": "Joshua Landes",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-06"
+        },
+        {
+          "project_id": "2025X0462",
+          "project_name": "5423 Palisade Avenue - SNAD",
+          "primary_applicant": "SUSAN HACKER JAKUS",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
+          "status_recorded_on": "2026-09-29"
         },
         {
           "project_id": "2026X0282",
           "project_name": "4675 Dodgewood Road - SNAD",
-          "primary_applicant": "Teena Lerner",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-06-18"
+          "primary_applicant": "TRUST OF LARRY LERNER UAD (3/31/04)",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-01"
         },
         {
           "project_id": "2026X0354",
@@ -192,50 +241,36 @@
     "bronx-cb-09": {
       "body_id": "bronx-cb-09",
       "district_id": "X09",
-      "project_count": 3,
+      "project_count": 2,
       "projects": [
-        {
-          "project_id": "2024X0132",
-          "project_name": "1160 Pugsley Avenue Rezoning",
-          "primary_applicant": "Jesus Diaz",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-25"
-        },
         {
           "project_id": "2023X0347",
           "project_name": "Norton Avenue Demapping",
           "primary_applicant": "410 Zeraga Roko 9 LLC",
           "public_status": "Noticed",
-          "status_recorded_on": "2026-06-18"
+          "status_recorded_on": "2026-09-14"
         },
         {
-          "project_id": "2019X0255",
-          "project_name": "255 Soundview Avenue",
-          "primary_applicant": "Clason Point LLC",
-          "public_status": "Filed",
-          "status_recorded_on": null
-        }
-      ]
-    },
-    "bronx-cb-10": {
-      "body_id": "bronx-cb-10",
-      "district_id": "X10",
-      "project_count": 1,
-      "projects": [
-        {
-          "project_id": "2021X0247",
-          "project_name": "815 Hutchinson River Parkway Rezoning",
-          "primary_applicant": "MD Hutch Owner LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-17"
+          "project_id": "2025X0264",
+          "project_name": "945 White Plains Road Rezoning",
+          "primary_applicant": "Akerman LLP",
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-08-12"
         }
       ]
     },
     "bronx-cb-11": {
       "body_id": "bronx-cb-11",
       "district_id": "X11",
-      "project_count": 2,
+      "project_count": 3,
       "projects": [
+        {
+          "project_id": "2025X0147",
+          "project_name": "Montefiore LSCFD Update Mapping Actions",
+          "primary_applicant": "Adam Taubman",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-23"
+        },
         {
           "project_id": "2025X0143",
           "project_name": "Montefiore LSCFD Update",
@@ -276,42 +311,28 @@
     "brooklyn-cb-01": {
       "body_id": "brooklyn-cb-01",
       "district_id": "K01",
-      "project_count": 11,
+      "project_count": 9,
       "projects": [
-        {
-          "project_id": "2024K0358",
-          "project_name": "Monitor Point",
-          "primary_applicant": "GO Quay LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-07-01"
-        },
-        {
-          "project_id": "2025K0287",
-          "project_name": "Monitor Point - 56 Quay Demapping",
-          "primary_applicant": "GO Quay LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-07-01"
-        },
-        {
-          "project_id": "2024K0286",
-          "project_name": "200 Kent Avenue Rezoning",
-          "primary_applicant": "200 Kent I LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
-        },
         {
           "project_id": "2024K0240",
           "project_name": "289 Kent Avenue Rezoning",
           "primary_applicant": "Jeremy Kozin",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-11"
+          "status_recorded_on": "2026-10-06"
         },
         {
           "project_id": "2026K0129",
           "project_name": "2 Noble Street Waterfront Cert",
           "primary_applicant": "Jodi Stein",
           "public_status": "Filed",
-          "status_recorded_on": "2026-05-21"
+          "status_recorded_on": "2026-09-23"
+        },
+        {
+          "project_id": "2025K0356",
+          "project_name": "197 Berry St Parking Authorization",
+          "primary_applicant": "Bensing 250 LLC",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-04"
         },
         {
           "project_id": "2022K0252",
@@ -363,32 +384,25 @@
       "project_count": 6,
       "projects": [
         {
+          "project_id": "2027K0210",
+          "project_name": "Proposed Extension of the Downtown Brooklyn BID",
+          "primary_applicant": "Christine Paglialunga",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-09"
+        },
+        {
           "project_id": "2026K0233",
           "project_name": "240 Nassau Street",
           "primary_applicant": "New York City Education Construction Fund",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-06-26"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-06"
         },
         {
-          "project_id": "2026K0443",
-          "project_name": "Public School 15 Annex (LP-2696)",
-          "primary_applicant": "LPC - NYC Landmarks Preservation Commission",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-06"
-        },
-        {
-          "project_id": "2025K0497",
-          "project_name": "Con Edison Permanent Easement Gateway Microtunnel",
-          "primary_applicant": "DCAS - NYC Department of Citywide Administrative Services",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-05-20"
-        },
-        {
-          "project_id": "2025K0419",
-          "project_name": "95 Rockwell Place - Transit Bonus Authorization",
-          "primary_applicant": "Robert Huberman",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-05-13"
+          "project_id": "2026K0117",
+          "project_name": "55 Flatbush Avenue Ext. Rezoning",
+          "primary_applicant": "Steven Sinacori",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-04"
         },
         {
           "project_id": "2025K0150",
@@ -399,38 +413,31 @@
         },
         {
           "project_id": "2023K0203",
-          "project_name": "1 Water Street (Disposition)",
+          "project_name": "1 Water Street - River Cafe (Disposition)",
           "primary_applicant": "DCAS - Department of Citywide Administrative Services (NYC)",
           "public_status": "Noticed",
           "status_recorded_on": "2024-05-30"
+        },
+        {
+          "project_id": "2025K0497",
+          "project_name": "Con Edison Permanent Easement Gateway Microtunnel",
+          "primary_applicant": "DCAS - NYC Department of Citywide Administrative Services",
+          "public_status": "In Public Review",
+          "status_recorded_on": null
         }
       ]
     },
     "brooklyn-cb-03": {
       "body_id": "brooklyn-cb-03",
       "district_id": "K03",
-      "project_count": 8,
+      "project_count": 5,
       "projects": [
         {
           "project_id": "2022K0430",
           "project_name": "Park Avenue Brooklyn Rezoning",
           "primary_applicant": "Park Avenue Rezoning Partners LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-26"
-        },
-        {
-          "project_id": "2025K0154",
-          "project_name": "1166 Bedford Avenue Rezoning",
-          "primary_applicant": "Khalifah Residences LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-25"
-        },
-        {
-          "project_id": "2019K0190",
-          "project_name": "862-868 Kent Avenue",
-          "primary_applicant": "Wasser Realty",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-17"
+          "status_recorded_on": "2026-10-06"
         },
         {
           "project_id": "2022K0302",
@@ -438,13 +445,6 @@
           "primary_applicant": "Remica Group",
           "public_status": "Filed",
           "status_recorded_on": "2026-04-17"
-        },
-        {
-          "project_id": "2024K0437",
-          "project_name": "476 Marcus Garvey Boulevard FRESH Store",
-          "primary_applicant": "Sumner Partners LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-02-05"
         },
         {
           "project_id": "2024K0294",
@@ -479,21 +479,21 @@
           "project_name": "132 Melrose Street Rezoning",
           "primary_applicant": "Melrose Towers Corp",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-26"
+          "status_recorded_on": "2026-10-06"
         },
         {
           "project_id": "2023K0231",
           "project_name": "150 Noll Street",
           "primary_applicant": "Noll Street Realty USA LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-24"
+          "status_recorded_on": "2026-09-22"
         },
         {
           "project_id": "2023K0148",
           "project_name": "460 Troutman Street",
           "primary_applicant": "Aron's Manufacturing Corporation",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-01-20"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-02"
         }
       ]
     },
@@ -503,25 +503,25 @@
       "project_count": 6,
       "projects": [
         {
+          "project_id": "2024K0233",
+          "project_name": "17-21 Wharton Place Rezoning",
+          "primary_applicant": "CCM Capital Group Corp.",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-02"
+        },
+        {
           "project_id": "2024K0214",
           "project_name": "341-361 Highland Boulevard Rezoning",
           "primary_applicant": "david grunfeld",
           "public_status": "Filed",
-          "status_recorded_on": "2026-07-01"
+          "status_recorded_on": "2026-07-22"
         },
         {
           "project_id": "2025K0226",
           "project_name": "Robert Place Demapping",
-          "primary_applicant": "david grunfeld",
+          "primary_applicant": "Highland Park City LLC",
           "public_status": "Filed",
           "status_recorded_on": "2026-06-22"
-        },
-        {
-          "project_id": "2024K0233",
-          "project_name": "17-21 Wharton Place Rezoning",
-          "primary_applicant": "CCM Capital Group Corp.",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-06-02"
         },
         {
           "project_id": "2021K0376",
@@ -549,8 +549,15 @@
     "brooklyn-cb-06": {
       "body_id": "brooklyn-cb-06",
       "district_id": "K06",
-      "project_count": 2,
+      "project_count": 3,
       "projects": [
+        {
+          "project_id": "2025K0417",
+          "project_name": "GSD - 424 Hoyt Street Rezoning",
+          "primary_applicant": "Ailanthus Hoyt LLC",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-10"
+        },
         {
           "project_id": "2023K0248",
           "project_name": "GSD Waterfront Certification: 459 Smith Street",
@@ -573,22 +580,22 @@
       "project_count": 3,
       "projects": [
         {
-          "project_id": "2023K0368",
-          "project_name": "783 Fourth Avenue Rezoning",
-          "primary_applicant": "Eric Palatnik",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-04-07"
-        },
-        {
           "project_id": "2024K0369",
           "project_name": "364 Coney Island Avenue Rezoning",
           "primary_applicant": "364 Coney Island Avenue LLC",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-02-23"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-26"
+        },
+        {
+          "project_id": "2023K0368",
+          "project_name": "783 Fourth Avenue Rezoning",
+          "primary_applicant": "Eric Palatnik",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-18"
         },
         {
           "project_id": "2025K0318",
-          "project_name": "Brooklyn CD 7 Walk to Park Site Selection",
+          "project_name": "Brooklyn CD 7 Walk to Park Site Selection/Acq.",
           "primary_applicant": "DPR - Department of Parks & Recreation NYC",
           "public_status": "Noticed",
           "status_recorded_on": "2025-10-20"
@@ -598,14 +605,21 @@
     "brooklyn-cb-09": {
       "body_id": "brooklyn-cb-09",
       "district_id": "K09",
-      "project_count": 1,
+      "project_count": 2,
       "projects": [
         {
           "project_id": "2026K0123",
           "project_name": "1550 Bedford Avenue Rezoning",
-          "primary_applicant": "Brian Ezra",
+          "primary_applicant": "Bedford Acquisition LLC",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-18"
+        },
+        {
+          "project_id": "2022K0366",
+          "project_name": "630 Crown Street Rezoning",
+          "primary_applicant": "Preminger Land LLC",
           "public_status": "Filed",
-          "status_recorded_on": "2026-07-02"
+          "status_recorded_on": "2026-08-05"
         }
       ]
     },
@@ -619,14 +633,14 @@
           "project_name": "FORT HAMILTON MEWS REZONING",
           "primary_applicant": "9305 5th Ave LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
+          "status_recorded_on": "2026-10-06"
         },
         {
           "project_id": "2024K0274",
           "project_name": "9818 Fort Hamilton Parkway Rezoning",
           "primary_applicant": "Albi Sawe",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-24"
+          "status_recorded_on": "2026-09-19"
         },
         {
           "project_id": "2025K0229",
@@ -643,11 +657,32 @@
       "project_count": 7,
       "projects": [
         {
+          "project_id": "2025K0306",
+          "project_name": "1900 Shore Parkway Rezoning",
+          "primary_applicant": "Richard Lobel",
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-10-05"
+        },
+        {
           "project_id": "2025K0305",
           "project_name": "Westshore LSGD Mapping Actions",
           "primary_applicant": "Watershore Views LLC",
           "public_status": "Filed",
-          "status_recorded_on": "2026-07-02"
+          "status_recorded_on": "2026-07-31"
+        },
+        {
+          "project_id": "2022K0419",
+          "project_name": "7502 New Utrecht Avenue Rezoning",
+          "primary_applicant": "Great City Plumbing Inc",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-07-27"
+        },
+        {
+          "project_id": "2025K0374",
+          "project_name": "2601 86th Street Rezoning",
+          "primary_applicant": "Jaclyn Scarinci",
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-07-27"
         },
         {
           "project_id": "2022K0121",
@@ -657,32 +692,11 @@
           "status_recorded_on": "2026-05-04"
         },
         {
-          "project_id": "2022K0419",
-          "project_name": "7502 New Utrecht Avenue Rezoning",
-          "primary_applicant": "Great City Plumbing Inc",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-04-20"
-        },
-        {
           "project_id": "2024K0444",
           "project_name": "Westshore Rezoning LSGD",
           "primary_applicant": "Watershore Views LLC",
           "public_status": "Filed",
           "status_recorded_on": "2026-03-18"
-        },
-        {
-          "project_id": "2025K0306",
-          "project_name": "1900 Shore Parkway Rezoning",
-          "primary_applicant": "Richard Lobel",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-02-25"
-        },
-        {
-          "project_id": "2025K0374",
-          "project_name": "2601 86th Street Rezoning",
-          "primary_applicant": "Jaclyn Scarinci",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-01-15"
         },
         {
           "project_id": "2019K0217",
@@ -696,14 +710,28 @@
     "brooklyn-cb-12": {
       "body_id": "brooklyn-cb-12",
       "district_id": "K12",
-      "project_count": 2,
+      "project_count": 4,
       "projects": [
+        {
+          "project_id": "2026K0322",
+          "project_name": "1571 McDonald Avenue Rezoning II",
+          "primary_applicant": "LENNY VAYS",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-05"
+        },
         {
           "project_id": "2025K0232",
           "project_name": "900 60th Street Rezoning",
-          "primary_applicant": "Jay Segal",
+          "primary_applicant": "90060 AMG LLC",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-03"
+        },
+        {
+          "project_id": "2025K0234",
+          "project_name": "4202 Fort Hamilton Parkway FRESH",
+          "primary_applicant": "Fulton Lofts Development LLC Fulton Lofts Development LLC",
           "public_status": "Filed",
-          "status_recorded_on": "2026-05-06"
+          "status_recorded_on": "2026-09-25"
         },
         {
           "project_id": "2022K0171",
@@ -717,21 +745,35 @@
     "brooklyn-cb-13": {
       "body_id": "brooklyn-cb-13",
       "district_id": "K13",
-      "project_count": 7,
+      "project_count": 6,
       "projects": [
+        {
+          "project_id": "2023K0400",
+          "project_name": "Pemmil West 25th Street Rezoning",
+          "primary_applicant": "Pemmil Land Holdings LLC",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-07"
+        },
+        {
+          "project_id": "2021K0261",
+          "project_name": "Phoenix Roller Coaster East Walk Demapping",
+          "primary_applicant": "3025 Realty, Inc.",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-08-19"
+        },
+        {
+          "project_id": "2025K0250",
+          "project_name": "Shorecrest Towers Infill Rezoning",
+          "primary_applicant": "Sergey Rybak",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-08-07"
+        },
         {
           "project_id": "2025K0305",
           "project_name": "Westshore LSGD Mapping Actions",
           "primary_applicant": "Watershore Views LLC",
           "public_status": "Filed",
-          "status_recorded_on": "2026-07-02"
-        },
-        {
-          "project_id": "2023K0183",
-          "project_name": "2950 West 24th St Rezoning",
-          "primary_applicant": "Ocean Towers Partners LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-25"
+          "status_recorded_on": "2026-07-31"
         },
         {
           "project_id": "2024K0444",
@@ -739,27 +781,6 @@
           "primary_applicant": "Watershore Views LLC",
           "public_status": "Filed",
           "status_recorded_on": "2026-03-18"
-        },
-        {
-          "project_id": "2021K0261",
-          "project_name": "Phoenix Roller Coaster East Walk Demapping",
-          "primary_applicant": "3025 Realty, Inc.",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-02-19"
-        },
-        {
-          "project_id": "2025K0250",
-          "project_name": "Shorecrest Towers Infill Rezoning",
-          "primary_applicant": "Sergey Rybak",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-02-13"
-        },
-        {
-          "project_id": "2023K0400",
-          "project_name": "Pemmil West 25th Rezoning",
-          "primary_applicant": "Pemmil Land Holdings LLC",
-          "public_status": "Filed",
-          "status_recorded_on": "2024-10-22"
         },
         {
           "project_id": "2023K0126",
@@ -776,25 +797,25 @@
       "project_count": 4,
       "projects": [
         {
-          "project_id": "2019K0383",
-          "project_name": "East 14th Street and Locust Avenue Rezoning",
-          "primary_applicant": "E 14 Realty Holdings LLC",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-07-01"
-        },
-        {
           "project_id": "2022K0416",
           "project_name": "1584 Flatbush Avenue Rezoning",
-          "primary_applicant": "Sheldon Lobel P.C",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-06-30"
+          "primary_applicant": "Eddie Mizrachi",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-06"
         },
         {
           "project_id": "2020K0276",
           "project_name": "1455 Coney Island Avenue Rezoning",
           "primary_applicant": "Prospect Park Land LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-24"
+          "status_recorded_on": "2026-09-22"
+        },
+        {
+          "project_id": "2019K0383",
+          "project_name": "East 14th Street and Locust Avenue Rezoning",
+          "primary_applicant": "E 14 Realty Holdings LLC",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-02"
         },
         {
           "project_id": "2019K0301",
@@ -813,9 +834,9 @@
         {
           "project_id": "2019K0147",
           "project_name": "2959 Avenue Y Rezoning",
-          "primary_applicant": "Shore Park Jewish Center",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-04-06"
+          "primary_applicant": "Yeshivat Or Hatorah",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-18"
         },
         {
           "project_id": "2023K0398",
@@ -843,8 +864,15 @@
     "brooklyn-cb-17": {
       "body_id": "brooklyn-cb-17",
       "district_id": "K17",
-      "project_count": 1,
+      "project_count": 2,
       "projects": [
+        {
+          "project_id": "2025K0434",
+          "project_name": "2625 Bedford Avenue FRESH Certification",
+          "primary_applicant": "Marty Waisbrod",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-09"
+        },
         {
           "project_id": "2024K0299",
           "project_name": "East 98th Street Rezoning",
@@ -860,39 +888,53 @@
       "project_count": 3,
       "projects": [
         {
-          "project_id": "2024K0421",
-          "project_name": "2233 Flatbush Avenue Rezoning",
-          "primary_applicant": "AYRES 2233 LLC",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-06-25"
-        },
-        {
           "project_id": "2025K0470",
           "project_name": "Mill Basin Plaza Special Permit and WPAA Auths",
           "primary_applicant": "Nicholas Brown",
           "public_status": "Filed",
-          "status_recorded_on": "2026-05-26"
+          "status_recorded_on": "2026-10-05"
         },
         {
           "project_id": "2023K0357",
           "project_name": "East 56th Street Demapping",
           "primary_applicant": "Captain Holdings Corp.",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-03"
+        },
+        {
+          "project_id": "2024K0421",
+          "project_name": "2233 Flatbush Avenue Rezoning",
+          "primary_applicant": "AYRES 2233 LLC",
           "public_status": "Noticed",
-          "status_recorded_on": "2026-01-20"
+          "status_recorded_on": "2026-07-23"
         }
       ]
     },
     "manhattan-cb-01": {
       "body_id": "manhattan-cb-01",
       "district_id": "M01",
-      "project_count": 5,
+      "project_count": 6,
       "projects": [
         {
-          "project_id": "2025M0329",
-          "project_name": "67 Vestry Street Parking Authorization",
-          "primary_applicant": "IRG 67 LLC",
+          "project_id": "2026M0163",
+          "project_name": "427 Washington Street",
+          "primary_applicant": "Alfred Karman",
           "public_status": "Filed",
-          "status_recorded_on": "2026-06-22"
+          "status_recorded_on": "2026-09-21"
+        },
+        {
+          "project_id": "2020M0474",
+          "project_name": "33 Thomas Street",
+          "primary_applicant": "Jon Popin",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-08-14"
+        },
+        {
+          "project_id": "2026M0515",
+          "project_name": "250 Water Street - Renewal",
+          "primary_applicant": "250 Water Street Owner LLC",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-07-29"
         },
         {
           "project_id": "2026M0120",
@@ -909,13 +951,6 @@
           "status_recorded_on": "2026-02-19"
         },
         {
-          "project_id": "2020M0474",
-          "project_name": "33 Thomas Street",
-          "primary_applicant": "Jon Popin",
-          "public_status": "Filed",
-          "status_recorded_on": "2025-12-29"
-        },
-        {
           "project_id": "P2018M0168",
           "project_name": "2 Gold Street Cafe Certification",
           "primary_applicant": "Lisa Orrantia",
@@ -927,8 +962,22 @@
     "manhattan-cb-02": {
       "body_id": "manhattan-cb-02",
       "district_id": "M02",
-      "project_count": 1,
+      "project_count": 3,
       "projects": [
+        {
+          "project_id": "2026M0454",
+          "project_name": "719 Washington Street RD Modification",
+          "primary_applicant": "James Sheehan",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-05"
+        },
+        {
+          "project_id": "2026M0108",
+          "project_name": "156-166 Bowery Rezoning",
+          "primary_applicant": "156-166 Bowery L.P.",
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-09-29"
+        },
         {
           "project_id": "P2009M0029",
           "project_name": "High Line Signage Master Plan",
@@ -941,35 +990,21 @@
     "manhattan-cb-03": {
       "body_id": "manhattan-cb-03",
       "district_id": "M03",
-      "project_count": 5,
+      "project_count": 4,
       "projects": [
-        {
-          "project_id": "2023M0116",
-          "project_name": "St. Augustine's Preservation and Redevelopment",
-          "primary_applicant": "August330Madison Partners LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
-        },
-        {
-          "project_id": "2024M0243",
-          "project_name": "100 East Broadway - Parking Special Permit",
-          "primary_applicant": "Shing Wah Yeung",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-06-29"
-        },
-        {
-          "project_id": "2026M0444",
-          "project_name": "Church of Saint Mary (LP-2694)",
-          "primary_applicant": "LPC - NYC Landmarks Preservation Commission",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-06"
-        },
         {
           "project_id": "2024M0194",
           "project_name": "23-27 Allen Street Hotel Special Permit",
           "primary_applicant": "Javier Martinez",
           "public_status": "Filed",
-          "status_recorded_on": "2026-03-24"
+          "status_recorded_on": "2026-10-09"
+        },
+        {
+          "project_id": "2026M0208",
+          "project_name": "50-64 Third Avenue/St. Mark’s Landmarks Transfer",
+          "primary_applicant": "Ari Zagdanski",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-09"
         },
         {
           "project_id": "2023M0200",
@@ -977,48 +1012,34 @@
           "primary_applicant": "Griffon Q LLC",
           "public_status": "Filed",
           "status_recorded_on": "2026-01-27"
+        },
+        {
+          "project_id": "2024M0243",
+          "project_name": "100 East Broadway - Parking Special Permit",
+          "primary_applicant": "Shing Wah Yeung",
+          "public_status": "Filed",
+          "status_recorded_on": null
         }
       ]
     },
     "manhattan-cb-04": {
       "body_id": "manhattan-cb-04",
       "district_id": "M04",
-      "project_count": 14,
+      "project_count": 11,
       "projects": [
-        {
-          "project_id": "2023M0213",
-          "project_name": "Dewitt Clinton Park North (629 West 54th Street)",
-          "primary_applicant": "760 12th LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-07-01"
-        },
-        {
-          "project_id": "2024M0244",
-          "project_name": "Dewitt Clinton Park North (801 Eleventh Avenue)",
-          "primary_applicant": "801 11th Avenue LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-07-01"
-        },
-        {
-          "project_id": "2026M0445",
-          "project_name": "Lithuanian Alliance Building (LP-2695)",
-          "primary_applicant": "LPC - NYC Landmarks Preservation Commission",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-06"
-        },
         {
           "project_id": "2025M0360",
           "project_name": "515 West 57th Street Rezoning",
           "primary_applicant": "515 West 57th Street Leasehold LLC",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-06-04"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-08-19"
         },
         {
           "project_id": "2025M0332",
-          "project_name": "304 West 49th Street",
+          "project_name": "304 West 49th Street Text Amendment",
           "primary_applicant": "304 West 49th Street Garage LLC",
           "public_status": "Filed",
-          "status_recorded_on": "2026-05-12"
+          "status_recorded_on": "2026-07-06"
         },
         {
           "project_id": "P2016M0148",
@@ -1088,56 +1109,56 @@
     "manhattan-cb-05": {
       "body_id": "manhattan-cb-05",
       "district_id": "M05",
-      "project_count": 17,
+      "project_count": 16,
       "projects": [
         {
-          "project_id": "2025M0338",
-          "project_name": "Imperial Theatre Text Amendment",
-          "primary_applicant": "Imperial Theater LLC",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-07-01"
-        },
-        {
-          "project_id": "2025M0252",
-          "project_name": "Flatiron NoMad Major Concessions",
-          "primary_applicant": "NYC DOT Department of Transportation",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
-        },
-        {
-          "project_id": "2025M0395",
-          "project_name": "Herald Center Signage Text Amendment and SP",
-          "primary_applicant": "Louis Jerome",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-06-26"
-        },
-        {
-          "project_id": "2025M0441",
-          "project_name": "1 Penn Plaza - East Plaza Cafe",
-          "primary_applicant": "Judy Kessler",
+          "project_id": "2026M0275",
+          "project_name": "415 Madison Avenue Special Permits Renewal",
+          "primary_applicant": "415 Madison LLC",
           "public_status": "Filed",
-          "status_recorded_on": "2026-06-24"
-        },
-        {
-          "project_id": "2026M0432",
-          "project_name": "31 West 52nd Street - Fogo de Chao OAC Renewal",
-          "primary_applicant": "Shaneka Lee",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-06-15"
+          "status_recorded_on": "2026-10-09"
         },
         {
           "project_id": "2024M0193",
           "project_name": "Studio 54 Rehabilitation and Text Amendment",
           "primary_applicant": "Christopher N",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-10"
+          "status_recorded_on": "2026-10-08"
+        },
+        {
+          "project_id": "2025M0338",
+          "project_name": "Imperial Theatre Text Amendment",
+          "primary_applicant": "Imperial Theater LLC",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-02"
+        },
+        {
+          "project_id": "2026M0382",
+          "project_name": "1700 Broadway OAC Certification",
+          "primary_applicant": "Carolina Ramos",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-16"
+        },
+        {
+          "project_id": "2025M0395",
+          "project_name": "Herald Center Signage Text Amendment and SP",
+          "primary_applicant": "JEMB Realty",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-15"
         },
         {
           "project_id": "2024M0267",
           "project_name": "625 Madison Avenue",
-          "primary_applicant": "625 Madison Avenue Associates LLC",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-05-21"
+          "primary_applicant": "625 Mad Realty LLC",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-01"
+        },
+        {
+          "project_id": "2025M0441",
+          "project_name": "1 Penn Plaza - East Plaza Cafe",
+          "primary_applicant": "Judy Kessler",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-08-21"
         },
         {
           "project_id": "2026M0247",
@@ -1145,13 +1166,6 @@
           "primary_applicant": "Dan Egers",
           "public_status": "Filed",
           "status_recorded_on": "2026-04-20"
-        },
-        {
-          "project_id": "2026M0275",
-          "project_name": "415 Madison Avenue Special Permits Renewal",
-          "primary_applicant": "415 Madison LLC",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-01-12"
         },
         {
           "project_id": "2024M0372",
@@ -1163,7 +1177,7 @@
         {
           "project_id": "2026M0206",
           "project_name": "41-47 West 57th Street/ 50 West 58th Street",
-          "primary_applicant": "Alexia Landesman",
+          "primary_applicant": "Caroline Harris",
           "public_status": "Filed",
           "status_recorded_on": "2025-10-27"
         },
@@ -1217,11 +1231,18 @@
       "project_count": 6,
       "projects": [
         {
-          "project_id": "2025M0473",
-          "project_name": "1059-1061 Second Avenue - TA Certification",
-          "primary_applicant": "240 East 56th Street Owner LLC",
+          "project_id": "2025M0399",
+          "project_name": "140 East 41st Street POPS",
+          "primary_applicant": "Neil Weisbard",
           "public_status": "Filed",
-          "status_recorded_on": "2026-06-08"
+          "status_recorded_on": "2026-10-09"
+        },
+        {
+          "project_id": "2021M0264",
+          "project_name": "245 East 54th Street Brevard POPS Plaza",
+          "primary_applicant": "Brevard Owners, Inc.",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-08-31"
         },
         {
           "project_id": "2021M0357",
@@ -1229,13 +1250,6 @@
           "primary_applicant": "ASN MURRAY HILL LLC",
           "public_status": "Filed",
           "status_recorded_on": "2026-04-16"
-        },
-        {
-          "project_id": "2021M0264",
-          "project_name": "245 East 54th Street Brevard POPS Plaza",
-          "primary_applicant": "Brevard Owners, Inc.",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-04-03"
         },
         {
           "project_id": "2023M0399",
@@ -1263,8 +1277,15 @@
     "manhattan-cb-07": {
       "body_id": "manhattan-cb-07",
       "district_id": "M07",
-      "project_count": 2,
+      "project_count": 3,
       "projects": [
+        {
+          "project_id": "2026M0455",
+          "project_name": "The Olcott Condominium RD Modification",
+          "primary_applicant": "The Board of Managers of the Olcott Condominium",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-08-31"
+        },
         {
           "project_id": "2020M0266",
           "project_name": "Special Lincoln Square District Extension",
@@ -1287,18 +1308,18 @@
       "project_count": 5,
       "projects": [
         {
+          "project_id": "2026M0250",
+          "project_name": "East 79th St and Lexington Ave Landmarks Transfers",
+          "primary_applicant": "CP 79th Street LLC",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-09"
+        },
+        {
           "project_id": "2026M0164",
           "project_name": "3 East 89th Street Special Permit Renewal",
           "primary_applicant": "3 East 89 Holding LLC",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-07-01"
-        },
-        {
-          "project_id": "2026M0366",
-          "project_name": "301 E 71st Street Transit Easement Certification",
-          "primary_applicant": "301 East 71 Investors LLC",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-06-15"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-04"
         },
         {
           "project_id": "2026M0136",
@@ -1332,29 +1353,36 @@
           "project_id": "2024M0223",
           "project_name": "254 West 124th Street - Ennis Francis LSRD",
           "primary_applicant": "Caroline Harris",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-06-08"
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-09-24"
         }
       ]
     },
     "manhattan-cb-11": {
       "body_id": "manhattan-cb-11",
       "district_id": "M11",
-      "project_count": 5,
+      "project_count": 6,
       "projects": [
+        {
+          "project_id": "2024M0148",
+          "project_name": "22 East 119th Street Rezoning",
+          "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development",
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-10-09"
+        },
         {
           "project_id": "2024M0278",
           "project_name": "National Black Theater Signage",
           "primary_applicant": "2033 National Black Theatre Way LLC",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-06-11"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-06"
         },
         {
           "project_id": "2020M0383",
           "project_name": "58-62 East 125th Street Rezoning",
           "primary_applicant": "abcNY inc.",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-04-20"
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-08-03"
         },
         {
           "project_id": "2022M0258",
@@ -1382,28 +1410,70 @@
     "queens-cb-01": {
       "body_id": "queens-cb-01",
       "district_id": "Q01",
-      "project_count": 4,
+      "project_count": 10,
       "projects": [
         {
-          "project_id": "2026Q0128",
-          "project_name": "Astoria Cove WF Cert and Substantial Compliance",
-          "primary_applicant": "Ron Mandel",
+          "project_id": "2027Q0181",
+          "project_name": "Vernon Boulevard - Broadway Special Permit Renewal",
+          "primary_applicant": "Steven Sinacori",
           "public_status": "Filed",
-          "status_recorded_on": "2026-05-28"
-        },
-        {
-          "project_id": "2025Q0124",
-          "project_name": "Steinway Street and 34th Avenue Rezoning",
-          "primary_applicant": "Frank St. Jacques",
-          "public_status": "Filed",
-          "status_recorded_on": "2025-10-06"
+          "status_recorded_on": "2026-10-09"
         },
         {
           "project_id": "2022Q0214",
           "project_name": "43-02 Ditmars Boulevard Rezoning",
           "primary_applicant": "LaGuardia Center Realty LLC",
           "public_status": "Filed",
-          "status_recorded_on": "2025-04-29"
+          "status_recorded_on": "2026-10-07"
+        },
+        {
+          "project_id": "2026Q0128",
+          "project_name": "Astoria Cove WF Cert and Substantial Compliance",
+          "primary_applicant": "Ron Mandel",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-07"
+        },
+        {
+          "project_id": "2025Q0124",
+          "project_name": "Steinway Street and 34th Avenue Rezoning",
+          "primary_applicant": "Frank St. Jacques",
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-10-06"
+        },
+        {
+          "project_id": "2026Q0460",
+          "project_name": "Halletts North Special Permit Renewal",
+          "primary_applicant": "James Hedden",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-05"
+        },
+        {
+          "project_id": "2026Q0198",
+          "project_name": "34-49 Steinway Street Rezoning",
+          "primary_applicant": "Fayanne Betan",
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-09-28"
+        },
+        {
+          "project_id": "2024Q0434",
+          "project_name": "Vernon Socrates Rezoning and LSGD",
+          "primary_applicant": "Across The River Realty Development LLC",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-23"
+        },
+        {
+          "project_id": "2025Q0476",
+          "project_name": "53-21 Northern Boulevard Rezoning",
+          "primary_applicant": "D & F Woodside, LLC",
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-09-22"
+        },
+        {
+          "project_id": "2023Q0144",
+          "project_name": "28th Avenue Rezoning and Demapping",
+          "primary_applicant": "Mona Choudhri",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-08-31"
         },
         {
           "project_id": "P2017Q0152",
@@ -1420,45 +1490,45 @@
       "project_count": 7,
       "projects": [
         {
-          "project_id": "2025Q0316",
-          "project_name": "Queens CD 2 Walk to Park Site Selection/Acq.",
-          "primary_applicant": "DPR - Department of Parks & Recreation NYC",
+          "project_id": "2023Q0177",
+          "project_name": "50-02 Queens Blvd Rezoning",
+          "primary_applicant": "5002 Woodside Development LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
-        },
-        {
-          "project_id": "2025Q0304",
-          "project_name": "50-01 Queens Boulevard Rezoning",
-          "primary_applicant": "ZDJ QUEENS 50 LLC",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-06-22"
-        },
-        {
-          "project_id": "2025Q0331",
-          "project_name": "44-17 Greenpoint Avenue Rezoning",
-          "primary_applicant": "Jasper Wu",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-22"
+          "status_recorded_on": "2026-10-09"
         },
         {
           "project_id": "2023Q0125",
           "project_name": "21-31 46th Ave Rezoning",
           "primary_applicant": "21-31 Holdings, LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-17"
+          "status_recorded_on": "2026-10-06"
         },
         {
-          "project_id": "2023Q0177",
-          "project_name": "50-02 Queens Blvd Rezoning",
-          "primary_applicant": "5002 Woodside Development LLC",
+          "project_id": "2025Q0304",
+          "project_name": "50-01 Queens Boulevard Rezoning",
+          "primary_applicant": "ZDJ QUEENS 50 LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-11"
+          "status_recorded_on": "2026-09-24"
+        },
+        {
+          "project_id": "2025Q0331",
+          "project_name": "44-17 Greenpoint Avenue Rezoning",
+          "primary_applicant": "Jasper Wu",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-22"
+        },
+        {
+          "project_id": "2026Q0184",
+          "project_name": "43-46 51st Street Zoning Authorization",
+          "primary_applicant": "Ronald Ji",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-07-29"
         },
         {
           "project_id": "2023Q0364",
           "project_name": "31-10 & 31-16 Hunters Point Ave Rezoning",
           "primary_applicant": "31-10 HUNTERS POINT LLC",
-          "public_status": "Filed",
+          "public_status": "Noticed",
           "status_recorded_on": "2026-02-20"
         },
         {
@@ -1478,37 +1548,23 @@
         {
           "project_id": "2021Q0439",
           "project_name": "LGA Marriott Restrictive Declaration Modification",
-          "primary_applicant": "Paul Selver",
+          "primary_applicant": "ASAP LGA East Elmhurst LLC",
           "public_status": "Filed",
-          "status_recorded_on": "2025-03-27"
+          "status_recorded_on": "2026-07-28"
         }
       ]
     },
     "queens-cb-04": {
       "body_id": "queens-cb-04",
       "district_id": "Q04",
-      "project_count": 4,
+      "project_count": 2,
       "projects": [
-        {
-          "project_id": "2025Q0142",
-          "project_name": "47-03 108th Street Rezoning",
-          "primary_applicant": "108 Realty Group Inc.",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
-        },
-        {
-          "project_id": "2024Q0113",
-          "project_name": "50-20 108th Street Rezoning",
-          "primary_applicant": "Federici Builders Corp.",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-10"
-        },
         {
           "project_id": "2025Q0335",
           "project_name": "97-27 57th Avenue FRESH Certification",
           "primary_applicant": "SDWM 57 LLC",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-06-04"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-08-20"
         },
         {
           "project_id": "2025Q0314",
@@ -1522,28 +1578,21 @@
     "queens-cb-05": {
       "body_id": "queens-cb-05",
       "district_id": "Q05",
-      "project_count": 4,
+      "project_count": 3,
       "projects": [
-        {
-          "project_id": "2022Q0449",
-          "project_name": "63-02 Fresh Pond Road Rezoning",
-          "primary_applicant": "63-02 Fresh Pond Realty LLC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-25"
-        },
         {
           "project_id": "2022Q0160",
           "project_name": "10-86 Cypress Avenue Rezoning",
           "primary_applicant": "CYPRESS B.Z.V. CORP.",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-04-01"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-02"
         },
         {
           "project_id": "2023Q0424",
           "project_name": "57th Drive Demapping",
           "primary_applicant": "NYC DOT Department of Transportation",
-          "public_status": "Noticed",
-          "status_recorded_on": "2025-12-04"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-08-19"
         },
         {
           "project_id": "P2012Q0110",
@@ -1564,28 +1613,28 @@
           "project_name": "69-67 108th Street Rezoning",
           "primary_applicant": "108 ST ., LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
+          "status_recorded_on": "2026-10-06"
         },
         {
           "project_id": "2023Q0211",
           "project_name": "Yellowstone Boulevard Rezoning",
           "primary_applicant": "6040 F.P. FOOD LLC",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-06-10"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-26"
         },
         {
           "project_id": "2023Q0450",
           "project_name": "100-12 Queens Boulevard Rezoning",
           "primary_applicant": "100 Queens Blvd Co. LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-10"
+          "status_recorded_on": "2026-09-26"
         },
         {
           "project_id": "2024Q0292",
           "project_name": "108-05 68th Road Rezoning",
           "primary_applicant": "All My Children Daycare and Nursery School",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-05-20"
+          "status_recorded_on": "2026-09-26"
         },
         {
           "project_id": "2026Q0320",
@@ -1599,35 +1648,42 @@
     "queens-cb-07": {
       "body_id": "queens-cb-07",
       "district_id": "Q07",
-      "project_count": 6,
+      "project_count": 7,
       "projects": [
         {
           "project_id": "2024Q0324",
           "project_name": "32-02 Linden Place Rezoning",
-          "primary_applicant": "Richard Lobel",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-06-22"
-        },
-        {
-          "project_id": "2025Q0155",
-          "project_name": "158-06 Northern Boulevard Rezoning",
-          "primary_applicant": "Northern 158 Holding LLC",
+          "primary_applicant": "Vernon 298 LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-17"
+          "status_recorded_on": "2026-10-02"
         },
         {
           "project_id": "2024Q0297",
           "project_name": "135th Street Demapping",
           "primary_applicant": "Cedar Grove Cemetery",
           "public_status": "Filed",
-          "status_recorded_on": "2026-06-12"
+          "status_recorded_on": "2026-09-29"
         },
         {
-          "project_id": "2023Q0351",
-          "project_name": "Bud Place Rezoning",
-          "primary_applicant": "Kingsland Group LLC",
+          "project_id": "2025Q0155",
+          "project_name": "158-06 Northern Boulevard Rezoning",
+          "primary_applicant": "Northern 158 Holding LLC",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-25"
+        },
+        {
+          "project_id": "2025Q0403",
+          "project_name": "Willets Point Non-ULURP Modification",
+          "primary_applicant": "EDC - Economic Development Corporation for NYC",
           "public_status": "Filed",
-          "status_recorded_on": "2026-04-16"
+          "status_recorded_on": "2026-09-18"
+        },
+        {
+          "project_id": "2025Q0230",
+          "project_name": "26-35 123rd Street Rezoning",
+          "primary_applicant": "Steven Sinacori",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-09"
         },
         {
           "project_id": "2023Q0328",
@@ -1637,32 +1693,32 @@
           "status_recorded_on": "2026-04-14"
         },
         {
-          "project_id": "2025Q0445",
-          "project_name": "Flushing Commons RD Modification",
-          "primary_applicant": "Richard Siu",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-02-03"
+          "project_id": "2023Q0351",
+          "project_name": "Bud Place Rezoning",
+          "primary_applicant": "Kingsland Group LLC",
+          "public_status": "Noticed",
+          "status_recorded_on": null
         }
       ]
     },
     "queens-cb-08": {
       "body_id": "queens-cb-08",
       "district_id": "Q08",
-      "project_count": 4,
+      "project_count": 3,
       "projects": [
         {
           "project_id": "2023Q0303",
           "project_name": "165-25 Union Turnpike Rezoning",
           "primary_applicant": "165-25 Union Turnpike LLC",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-06-26"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-02"
         },
         {
-          "project_id": "2024Q0164",
-          "project_name": "164th Street Rezoning",
-          "primary_applicant": "boris Yakubov",
+          "project_id": "2022Q0248",
+          "project_name": "138-23 Queens Boulevard Rezoning",
+          "primary_applicant": "RJ Capital Holdings LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-10"
+          "status_recorded_on": "2026-08-19"
         },
         {
           "project_id": "2023Q0242",
@@ -1670,13 +1726,20 @@
           "primary_applicant": "Touro University",
           "public_status": "Filed",
           "status_recorded_on": "2026-02-23"
-        },
+        }
+      ]
+    },
+    "queens-cb-09": {
+      "body_id": "queens-cb-09",
+      "district_id": "Q09",
+      "project_count": 1,
+      "projects": [
         {
-          "project_id": "2022Q0248",
-          "project_name": "138-23 Queens Boulevard Rezoning",
-          "primary_applicant": "RJ Capital Holdings LLC",
-          "public_status": "Noticed",
-          "status_recorded_on": "2025-09-26"
+          "project_id": "2025Q0494",
+          "project_name": "120-27 84th Avenue Rezoning",
+          "primary_applicant": "Levy Family Real Estate Trust and Levy partners LLC",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-01"
         }
       ]
     },
@@ -1690,7 +1753,7 @@
           "project_name": "135-27 Sapphire Street Rezoning",
           "primary_applicant": "135 Sapphire LLC",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
+          "status_recorded_on": "2026-09-22"
         },
         {
           "project_id": "2020Q0353",
@@ -1707,18 +1770,18 @@
       "project_count": 3,
       "projects": [
         {
+          "project_id": "2024Q0356",
+          "project_name": "45-11 Oceania Street Commercial Overlay",
+          "primary_applicant": "DLC Properties LLC.",
+          "public_status": "Noticed",
+          "status_recorded_on": "2026-09-04"
+        },
+        {
           "project_id": "2024Q0189",
           "project_name": "175-05 Horace Harding Expressway Rezoning",
           "primary_applicant": "Heights Horace Harding LLC",
           "public_status": "Noticed",
           "status_recorded_on": "2026-05-12"
-        },
-        {
-          "project_id": "2024Q0356",
-          "project_name": "45-11 Oceania Street Commercial Overlay",
-          "primary_applicant": "DLC Properties LLC.",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-04-30"
         },
         {
           "project_id": "2021Q0168",
@@ -1732,14 +1795,21 @@
     "queens-cb-12": {
       "body_id": "queens-cb-12",
       "district_id": "Q12",
-      "project_count": 2,
+      "project_count": 3,
       "projects": [
         {
-          "project_id": "2026Q0210",
-          "project_name": "Atlantic Avenue Demapping",
-          "primary_applicant": "New York City Department of City Planning",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-27"
+          "project_id": "2026Q0371",
+          "project_name": "106-03 Sutphin Blvd FRESH Certification",
+          "primary_applicant": "Lin Ye",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-08"
+        },
+        {
+          "project_id": "2025Q0144",
+          "project_name": "92-02 172nd St Rezoning",
+          "primary_applicant": "92-12 172nd Street LLC",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-01"
         },
         {
           "project_id": "2020Q0240",
@@ -1747,6 +1817,20 @@
           "primary_applicant": "108 Dunkirk Street LLC",
           "public_status": "Filed",
           "status_recorded_on": "2020-06-19"
+        }
+      ]
+    },
+    "queens-cb-13": {
+      "body_id": "queens-cb-13",
+      "district_id": "Q13",
+      "project_count": 1,
+      "projects": [
+        {
+          "project_id": "2025Q0288",
+          "project_name": "Replacement of Union Turnpike Bridge",
+          "primary_applicant": "NYC DOT New York City Dept. of Transportation - Bridges",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-02"
         }
       ]
     },
@@ -1759,15 +1843,15 @@
           "project_id": "2024Q0325",
           "project_name": "2-28 Beach 87th Street Rezoning",
           "primary_applicant": "Beach 87th Street Associates, LLC",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-07-02"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-10-02"
         },
         {
           "project_id": "2022Q0196",
           "project_name": "22-79 Mott Ave Rezoning",
           "primary_applicant": "Queens Realty Housing of NY Ltd",
           "public_status": "Noticed",
-          "status_recorded_on": "2026-06-18"
+          "status_recorded_on": "2026-07-16"
         },
         {
           "project_id": "2020Q0157",
@@ -1788,140 +1872,70 @@
     "staten-island-cb-01": {
       "body_id": "staten-island-cb-01",
       "district_id": "R01",
-      "project_count": 13,
+      "project_count": 2,
       "projects": [
-        {
-          "project_id": "2026R0127",
-          "project_name": "FDNY Cont'd Use of WTC Unit 1688 Victory Blvd",
-          "primary_applicant": "FDNY - Fire Department of NYC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-07-03"
-        },
-        {
-          "project_id": "2025R0137",
-          "project_name": "Staten Island Family Court Consolidation",
-          "primary_applicant": "Mayor's Office of Criminal Justice",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
-        },
-        {
-          "project_id": "2025R0285",
-          "project_name": "225 Howard Avenue",
-          "primary_applicant": "Edmond Sukalic",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-18"
-        },
-        {
-          "project_id": "2024R0137",
-          "project_name": "New Goodhue Center - 314 Lafayette Avenue",
-          "primary_applicant": "Children's Aid",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-16"
-        },
-        {
-          "project_id": "2026R0137",
-          "project_name": "St. Peter's Boys High School - Athletic Field",
-          "primary_applicant": "John Fodera",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-16"
-        },
-        {
-          "project_id": "2026R0166",
-          "project_name": "Tompkins Circle (Block 569, Lot 360 to 363)",
-          "primary_applicant": "Westside Guy Realty Corp. .",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-16"
-        },
-        {
-          "project_id": "2026R0195",
-          "project_name": "51 Cedarcliff Road",
-          "primary_applicant": "Westside Guy Realty",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-16"
-        },
-        {
-          "project_id": "2026R0196",
-          "project_name": "23 Cedarcliff Road - Lot: 125",
-          "primary_applicant": "Ed Esposito",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-16"
-        },
-        {
-          "project_id": "2024R0300",
-          "project_name": "198-208 Richmond Terrace",
-          "primary_applicant": "Eric Palatnik",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-10"
-        },
         {
           "project_id": "2023R0413",
           "project_name": "35 Sea Gate Road",
           "primary_applicant": "Dr. Ramin Mostafavi",
           "public_status": "Filed",
-          "status_recorded_on": "2026-05-27"
-        },
-        {
-          "project_id": "2025R0398",
-          "project_name": "108 Scribner Avenue",
-          "primary_applicant": "Edward Fine",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-05-21"
-        },
-        {
-          "project_id": "2026R0327",
-          "project_name": "THAMES AVENUE DEVELOPMENT",
-          "primary_applicant": "WILLIAM FORMICA",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-05-12"
+          "status_recorded_on": "2026-09-10"
         },
         {
           "project_id": "2026R0145",
           "project_name": "54 Shore Acres Road",
           "primary_applicant": "Franklin Deliessche",
           "public_status": "Filed",
-          "status_recorded_on": "2026-04-10"
+          "status_recorded_on": "2026-07-07"
         }
       ]
     },
     "staten-island-cb-02": {
       "body_id": "staten-island-cb-02",
       "district_id": "R02",
-      "project_count": 12,
+      "project_count": 13,
       "projects": [
         {
-          "project_id": "2026R0186",
-          "project_name": "336 Meredith Avenue Fleet Maintenance Facility",
-          "primary_applicant": "DPR - Department of Parks & Recreation NYC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-30"
+          "project_id": "2026R0338",
+          "project_name": "66 Cromwell Circle",
+          "primary_applicant": "John Saia",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-10-08"
         },
         {
-          "project_id": "2023R0111",
-          "project_name": "151 Forest Road",
-          "primary_applicant": "Carol Nucci",
+          "project_id": "2023R0259",
+          "project_name": "101 Circle Road",
+          "primary_applicant": "Rampulla Associates",
           "public_status": "Filed",
-          "status_recorded_on": "2026-06-18"
+          "status_recorded_on": "2026-09-30"
         },
         {
           "project_id": "2025R0312",
           "project_name": "39 The Oval",
           "primary_applicant": "Imer Cami",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-28"
+        },
+        {
+          "project_id": "2026R0299",
+          "project_name": "334 Ocean Terrace",
+          "primary_applicant": "Shady Widdi",
           "public_status": "Filed",
-          "status_recorded_on": "2026-06-18"
+          "status_recorded_on": "2026-09-25"
+        },
+        {
+          "project_id": "2026R0368",
+          "project_name": "75 Westentry Road",
+          "primary_applicant": "Philip Rampulla",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-25"
         },
         {
           "project_id": "2025R0277",
           "project_name": "44 Burton Court",
           "primary_applicant": "ZAKI ALBANNA",
           "public_status": "Filed",
-          "status_recorded_on": "2026-06-11"
-        },
-        {
-          "project_id": "2026R0142",
-          "project_name": "221 Benedict Road",
-          "primary_applicant": "Michael Markowitz",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-02"
+          "status_recorded_on": "2026-08-31"
         },
         {
           "project_id": "2023R0153",
@@ -1940,7 +1954,7 @@
         {
           "project_id": "2020R0264",
           "project_name": "76 Douglas Road",
-          "primary_applicant": "Gvantsa Ramshvili",
+          "primary_applicant": "Souad Elwahwah",
           "public_status": "Filed",
           "status_recorded_on": "2025-04-30"
         },
@@ -1959,9 +1973,9 @@
           "status_recorded_on": null
         },
         {
-          "project_id": "2022R0134",
-          "project_name": "Milford Drive Demapping",
-          "primary_applicant": "SCA - New York City School Construction Authority",
+          "project_id": "2023R0111",
+          "project_name": "151 Forest Road",
+          "primary_applicant": "Michael McGrath",
           "public_status": "Filed",
           "status_recorded_on": null
         },
@@ -1977,49 +1991,35 @@
     "staten-island-cb-03": {
       "body_id": "staten-island-cb-03",
       "district_id": "R03",
-      "project_count": 11,
+      "project_count": 8,
       "projects": [
-        {
-          "project_id": "2025R0222",
-          "project_name": "St. Joseph by the Sea Special Permit",
-          "primary_applicant": "Ronald Fasone",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-06-30"
-        },
-        {
-          "project_id": "2025R0140",
-          "project_name": "4450 Arthur Kill Road",
-          "primary_applicant": "frank mcerlean",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-25"
-        },
-        {
-          "project_id": "2025R0309",
-          "project_name": "Lipsett Avenue - Street End Stabilization",
-          "primary_applicant": "EDC - Economic Development Corporation for NYC",
-          "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-25"
-        },
         {
           "project_id": "2024R0332",
           "project_name": "5801 Amboy Road Commercial Overlay",
           "primary_applicant": "Ed Rice",
-          "public_status": "Noticed",
-          "status_recorded_on": "2026-06-18"
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-29"
+        },
+        {
+          "project_id": "2024R0425",
+          "project_name": "South Shore Industrial Center",
+          "primary_applicant": "NP Staten Island Industrial, LLC",
+          "public_status": "Filed",
+          "status_recorded_on": "2026-09-28"
+        },
+        {
+          "project_id": "2025R0222",
+          "project_name": "St. Joseph by the Sea Ballfield",
+          "primary_applicant": "Ronald Fasone",
+          "public_status": "In Public Review",
+          "status_recorded_on": "2026-09-28"
         },
         {
           "project_id": "2026R0319",
           "project_name": "South Richmond Designated Open Space Amendment",
           "primary_applicant": "DCP - NYC Department of City Planning Staten Island Office",
           "public_status": "In Public Review",
-          "status_recorded_on": "2026-06-05"
-        },
-        {
-          "project_id": "2024R0425",
-          "project_name": "South Shore Industrial Center",
-          "primary_applicant": "David Rickard",
-          "public_status": "Filed",
-          "status_recorded_on": "2026-04-20"
+          "status_recorded_on": "2026-09-26"
         },
         {
           "project_id": "2023R0199",
@@ -2027,13 +2027,6 @@
           "primary_applicant": "NYC DOT New York City Dept. of Transportation - Bridges",
           "public_status": "Noticed",
           "status_recorded_on": "2026-04-15"
-        },
-        {
-          "project_id": "2024R0289",
-          "project_name": "Arbutus Ave Lot 54_SRD DOS",
-          "primary_applicant": "Michael Picciallo",
-          "public_status": "Filed",
-          "status_recorded_on": "2025-07-10"
         },
         {
           "project_id": "2023R0329",

@@ -60,10 +60,14 @@ function t(key, values = {}) {
 }
 
 const DEFAULT_FILTER = Object.freeze({ status: "active", stage: "any", limit: 40 });
-/** A 25-lot rezoning: on the map, and emphatically not at an address. */
-const ANCHOR_SPECIMEN = "2025K0305";
+// 2025K0305 and 2025M0252 were the prior specimens until a refresh rotated
+// them out of the 40-row Default Land snapshot (same replacements used
+// elsewhere this session, e.g. LAND_PROJECT_MAP_POINT_SPECIMENS in
+// site/land_project_map_points.mjs).
+/** A 24-lot rezoning: on the map, and emphatically not at an address. */
+const ANCHOR_SPECIMEN = "2023Q0351";
 /** A project with no published point at all. Reachable through the List, never through a marker. */
-const UNMAPPED_SPECIMEN = "2025M0252";
+const UNMAPPED_SPECIMEN = "2026X0180";
 /** A point the projection knows and no filtered row claims. */
 const POINT_ONLY_ID = "2099Z9999";
 
@@ -150,14 +154,15 @@ test("the selected detail action is the canonical List route and nothing else", 
 });
 
 test("a filtered-out project cannot be selected, and is never resurrected", () => {
-  // Queens holds no Brooklyn specimen. The id is remembered by the caller; the model refuses.
-  const narrowed = modelFor(ANCHOR_SPECIMEN, { borough: "Queens" });
+  // Brooklyn holds no Queens specimen (ANCHOR_SPECIMEN, 2023Q0351, is Queens).
+  // The id is remembered by the caller; the model refuses.
+  const narrowed = modelFor(ANCHOR_SPECIMEN, { borough: "Brooklyn" });
   assert.equal(narrowed.selectedProjectId, null, "a filtered-out project stayed selected");
   assert.equal(narrowed.selectedMarker, null);
   assert.equal(narrowed.markers.filter((marker) => marker.selected).length, 0);
   assert.equal(landMapSelectionHTML(narrowed, { t, sourceVintage: points.schema }), "");
   // And the refusal costs the population nothing.
-  const unselected = modelFor(null, { borough: "Queens" });
+  const unselected = modelFor(null, { borough: "Brooklyn" });
   assert.deepEqual(narrowed.counts, unselected.counts);
   assert.ok(narrowed.counts.total > 0, "the borough filter emptied the result set");
 });
@@ -195,7 +200,7 @@ test("the summary keeps method, precision and source vintage, and calls an ancho
   assert.ok(html.includes('data-land-map-precision="anchor"'));
   assert.ok(html.includes(`data-land-map-source-vintage="${points.schema}"`),
     "the selection dropped the projection vintage it was placed from");
-  assert.ok(html.includes(t("land_map_method_multi_bbl_anchor", { n: 25 })), "the 25-lot anchor lost its count");
+  assert.ok(html.includes(t("land_map_method_multi_bbl_anchor", { n: 24 })), "the 24-lot anchor lost its count");
   assert.ok(html.includes(t("land_map_precision_anchor")));
   assert.ok(/not an exact address/.test(html), "a multi-lot anchor did not disclaim exactness");
 

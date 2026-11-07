@@ -147,22 +147,22 @@ test("A1 default filtered Land rows keep the published population", () => {
   assert.ok(model.counts.mapped >= 1, "default land map must retain at least one mapped row");
   assert.ok(model.counts.unmapped >= 1, "default land map must retain at least one unmapped row");
   assertParity(frozen, model);
-  const marker = model.markers.find((item) => item.projectId === "2025K0305");
+  const marker = model.markers.find((item) => item.projectId === LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl);
   assert.ok(marker);
   assert.equal(marker.method, KNOWN_LAND_POINT_METHODS.MULTI_BBL_ANCHOR);
   assert.equal(marker.precision, KNOWN_LAND_POINT_PRECISIONS.ANCHOR);
   assert.equal(Number.isFinite(marker.lat), true);
   assert.equal(Number.isFinite(marker.lon), true);
   assert.equal(marker.selected, true);
-  const unmapped = model.unmapped.find((item) => item.projectId === "2025M0252");
+  const unmapped = model.unmapped.find((item) => item.projectId === LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl);
   assert.ok(unmapped);
   assert.equal(unmapped.reason, LAND_MAP_UNMAPPED_REASONS.POINT_ABSENT);
-  assert.equal(model.markers.some((item) => item.projectId === "2025M0252"), false);
+  assert.equal(model.markers.some((item) => item.projectId === LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl), false);
   assert.equal(model.markers.some((item) => item.projectId === EXTRA_POINT_ID), false);
   assert.equal(model.unmapped.some((item) => item.projectId === EXTRA_POINT_ID), false);
-  assert.equal(model.selectedProjectId, "2025K0305");
-  assert.equal(model.selectedRow, frozen.find((row) => row.project_id === "2025K0305"));
-  assert.equal(model.selectedMarker.projectId, "2025K0305");
+  assert.equal(model.selectedProjectId, LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl);
+  assert.equal(model.selectedRow, frozen.find((row) => row.project_id === LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl));
+  assert.equal(model.selectedMarker.projectId, LAND_PROJECT_MAP_POINT_SPECIMENS.multi_bbl);
   assert.ok(model.bounds);
   assert.equal(model.bounds.minLat <= model.bounds.maxLat, true);
   assert.equal(model.bounds.minLon <= model.bounds.maxLon, true);
@@ -171,9 +171,12 @@ test("A1 default filtered Land rows keep the published population", () => {
 });
 
 test("A3 borough and keyword-plus-stage fixtures keep List/Map set equality", () => {
+  // 2025K0305 was the prior Brooklyn marker specimen until a refresh rotated
+  // it out of the 40-row Default Land snapshot; LAND_PROJECT_MAP_POINT_SPECIMENS
+  // .single_bbl (2025K0284, also Brooklyn) is its replacement.
   const boroughRows = defaultRows({ borough: "Brooklyn" });
   assert.equal(boroughRows.length < 40, true);
-  assert.equal(boroughRows.some((row) => row.project_id === "2025K0305"), true);
+  assert.equal(boroughRows.some((row) => row.project_id === LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl), true);
   assert.equal(boroughRows.some((row) => row.project_id === "2020K0444"), true);
   const boroughModel = buildLandMapModel({
     rows: boroughRows,
@@ -181,7 +184,7 @@ test("A3 borough and keyword-plus-stage fixtures keep List/Map set equality", ()
   });
   assertParity(boroughRows, boroughModel);
   assert.equal(
-    boroughModel.markers.some((item) => item.projectId === "2025K0305"),
+    boroughModel.markers.some((item) => item.projectId === LAND_PROJECT_MAP_POINT_SPECIMENS.single_bbl),
     true,
   );
   assert.equal(
@@ -189,11 +192,15 @@ test("A3 borough and keyword-plus-stage fixtures keep List/Map set equality", ()
     true,
   );
 
+  // "Westshore" + pre_certification was the prior unique keyword+stage match
+  // (also 2025K0305); "Shore Parkway" + pre_certification now uniquely
+  // resolves to 2025K0306, a different Brooklyn project with the same
+  // re-pinning expectation as the other live-data specimens in this file.
   const keywordStageRows = defaultRows({
-    keyword: "Westshore",
+    keyword: "Shore Parkway",
     stage: "pre_certification",
   });
-  assert.deepEqual(keywordStageRows.map((row) => row.project_id), ["2025K0305"]);
+  assert.deepEqual(keywordStageRows.map((row) => row.project_id), ["2025K0306"]);
   const keywordModel = buildLandMapModel({
     rows: keywordStageRows,
     pointLookup: pointLookupWithExtra(),
@@ -201,7 +208,7 @@ test("A3 borough and keyword-plus-stage fixtures keep List/Map set equality", ()
   assertParity(keywordStageRows, keywordModel);
   assert.equal(keywordModel.counts.mapped, 1);
   assert.equal(keywordModel.counts.unmapped, 0);
-  assert.equal(keywordModel.markers[0].projectId, "2025K0305");
+  assert.equal(keywordModel.markers[0].projectId, "2025K0306");
 });
 
 test("empty results stay empty without inventing point-only projects", () => {
@@ -346,11 +353,11 @@ test("selected row is nullable and never follows a point-only id", () => {
   const unmapped = buildLandMapModel({
     rows,
     pointLookup: pointArtifact,
-    selectedProjectId: "2025M0252",
+    selectedProjectId: LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl,
   });
   assert.equal(unmapped.selectedProjectId, null);
   assert.equal(unmapped.selectedMarker, null);
-  assert.equal(unmapped.selectedRow.project_id, "2025M0252");
+  assert.equal(unmapped.selectedRow.project_id, LAND_PROJECT_MAP_POINT_SPECIMENS.no_retained_bbl);
   assert.equal(unmapped.markers.every((item) => item.selected === false), true);
 });
 

@@ -89,7 +89,16 @@ export function materializeEDesignationDigest({ projects = [], projectLots = [],
       join_precedence: ["exact_ulurp", "exact_ceqr", "exact_bbl_intersection"],
       denominator: { eligible_projects: projects.length, eligible_project_lots: projectLots.reduce((n, r) => n + (r.bbls || []).length, 0) },
       counts: { projects_with_conditions: Object.values(digests).filter((d) => d.conditions.length).length, conditions: Object.values(digests).reduce((n, d) => n + d.conditions.length, 0), rejected: rejected.length },
-      specimens: { positive: digests["2026Q0210"] || null, explicit_non_match: digests["2022M0258"] || null },
+      // The partial-coverage "positive" specimen is picked by rule (the
+      // first partially-matched project in sorted order) rather than a
+      // hardcoded id, since which project is still in the live catalog with
+      // partial E-designation coverage changes with every refresh.
+      // explicit_non_match stays pinned to 2022M0258 ("Timbale"), which this
+      // builder always retains in digests regardless of match outcome.
+      specimens: {
+        positive: Object.keys(digests).sort().map((id) => digests[id]).find((d) => d.coverage === "partial") || null,
+        explicit_non_match: digests["2022M0258"] || null,
+      },
       rejected,
       resident_request_fetches: 0,
       bounded_output: true,

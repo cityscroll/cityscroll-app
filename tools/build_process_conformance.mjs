@@ -56,9 +56,64 @@ function loadSources() {
  * The single source both the CLI writer and the reproducibility test use, so
  * "does a fresh build reproduce the committed lookup" never depends on a
  * manual rebuild step (PC-04).
+ *
+ * `meetingsDomainExtraRows` and `landProjectsExtraRowsByAgency` are additive
+ * and empty by default: both the CLI writer and the committed-artifact
+ * reproducibility test call this with no argument and see no behavior
+ * change. A test that needs to exercise a real edge path after the live
+ * population or retention window has rolled past every qualifying record
+ * passes a frozen, once-real row here instead of writing it into the
+ * committed production sources.
  */
-export function buildProcessConformanceArtifacts() {
+export function buildProcessConformanceArtifacts({
+  meetingsDomainExtraRows = [],
+  landProjectsExtraRowsByAgency = {},
+} = {}) {
   const sources = loadSources();
+  if (meetingsDomainExtraRows.length && sources.meetingsDomain) {
+    sources.meetingsDomain = {
+      ...sources.meetingsDomain,
+      rows: [...sources.meetingsDomain.rows, ...meetingsDomainExtraRows],
+    };
+  }
+  const extraAgencyIds = Object.keys(landProjectsExtraRowsByAgency);
+  if (extraAgencyIds.length && sources.landProjects) {
+    const extraRows = extraAgencyIds.flatMap((id) => landProjectsExtraRowsByAgency[id]);
+    sources.landProjects = { ...sources.landProjects, rows: [...sources.landProjects.rows, ...extraRows] };
+    if (sources.entityIntelligence) {
+      const byRef = { ...(sources.entityIntelligence.by_ref || {}) };
+      for (const agencyId of extraAgencyIds) {
+        const agencyRef = `agency:id:${agencyId}`;
+        const existing = byRef[agencyRef] || { domains: {} };
+        const existingLand = existing.domains?.land?.objects || [];
+        const extraObjects = landProjectsExtraRowsByAgency[agencyId].map((row) => ({
+          subject_ref: `project:${row.project_id}`,
+          domain: "land",
+          object_kind: "project",
+          label: row.project_name,
+          project_id: row.project_id,
+          root_ref: agencyRef,
+          root_kind: "agency",
+          href: `#land?project=${row.project_id}`,
+          provenance: {
+            source_system: "soda",
+            source_record_id: `soda:${row.project_id}`,
+            source_fields: ["primary_applicant"],
+            basis: "land_primary_applicant",
+            input_value: row.primary_applicant,
+          },
+          link_type: "applicant_agency",
+          confidence: "tentative",
+          method: "agency_canonical_v1",
+        }));
+        byRef[agencyRef] = {
+          ...existing,
+          domains: { ...existing.domains, land: { objects: [...existingLand, ...extraObjects] } },
+        };
+      }
+      sources.entityIntelligence = { ...sources.entityIntelligence, by_ref: byRef };
+    }
+  }
   // Stable across rebuilds when inputs are unchanged (deploy --check gate).
   const generatedAt = [
     sources.obligationsLookup?.generated_at,

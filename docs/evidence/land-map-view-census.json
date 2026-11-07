@@ -10,9 +10,9 @@
     "land_default": {
       "path": "site/data/land_default_ulurp.json",
       "count_field": 40,
-      "generated_at": "2026-11-04T18:22:03.270Z",
-      "bytes": 87734,
-      "sha256": "30bd756f405daa1666195ff361a83ebd22a4db04c376b6b192c47cd8c010f80d"
+      "generated_at": "2026-11-06T14:51:26.447Z",
+      "bytes": 70962,
+      "sha256": "b36d5940d69218f7bd8c977c098986cae554b75eef0c964131998c101a9f2147"
     },
     "zap_bbl": {
       "path": "site/data/zap_bbl_warehouse_lookup.json",
@@ -41,58 +41,108 @@
   },
   "aggregations": {
     "denominator": 40,
-    "mapped": 33,
-    "unmapped": 7,
-    "coverage_percent": 82.5,
-    "exact_bbl_projects": 39,
-    "bbl_occurrences": 284,
-    "unique_bbl_keys": 277,
-    "matched_centroid_occurrences": 233,
-    "unique_centroid_keys": 226,
+    "mapped": 26,
+    "unmapped": 14,
+    "coverage_percent": 65,
+    "exact_bbl_projects": 32,
+    "bbl_occurrences": 220,
+    "unique_bbl_keys": 220,
+    "matched_centroid_occurrences": 170,
+    "unique_centroid_keys": 170,
     "methods": {
-      "single_bbl_centroid": 11,
-      "multi_bbl_anchor": 22,
+      "single_bbl_centroid": 3,
+      "multi_bbl_anchor": 23,
       "publisher_point": 0,
       "property_coordinate": 0,
       "geometry_representative_point": 0
     },
     "list_baseline": {
       "rows": 40,
-      "bytes": 87734
+      "bytes": 70962
     }
   },
   "unmapped_project_ids": [
-    "2020M0385",
-    "2020K0444",
-    "2024Q0135",
-    "P2012X0048",
-    "2020Q0317",
     "2023M0452",
-    "2025M0252"
+    "2020Q0317",
+    "P2009K0185",
+    "2020K0444",
+    "P2012X0048",
+    "2024Q0135",
+    "2026X0180",
+    "2025M0399",
+    "2024X0217",
+    "2024M0148",
+    "2026X0270",
+    "2026Q0371",
+    "2026K0322",
+    "2025Q0494"
   ],
   "unmapped_exact_bbl_missing_centroid": [
-    "2020M0385",
-    "2020K0444",
-    "2024Q0135",
-    "P2012X0048",
+    "2023M0452",
     "2020Q0317",
-    "2023M0452"
+    "P2009K0185",
+    "2020K0444",
+    "P2012X0048",
+    "2024Q0135"
   ],
   "unmapped_no_retained_bbl": [
-    "2025M0252"
+    "2026X0180",
+    "2025M0399",
+    "2024X0217",
+    "2024M0148",
+    "2026X0270",
+    "2026Q0371",
+    "2026K0322",
+    "2025Q0494"
   ],
   "projects": [
     {
-      "project_id": "2020M0385",
-      "project_name": "1325 Ave of the Americas-Text Amendment/Cert",
+      "project_id": "2023M0452",
+      "project_name": "Allen Street Mall Demapping",
+      "mapped": false,
+      "method": "unmapped",
+      "unmapped_reason": "exact_bbl_missing_centroid",
+      "exact_bbl_count": 1,
+      "unique_exact_bbl_count": 1,
+      "exact_bbl_keys": [
+        "1004150150"
+      ],
+      "matched_centroid_count": 0,
+      "unique_matched_centroid_count": 0,
+      "matched_centroids": [],
+      "point": null,
+      "point_role": null,
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2020Q0317",
+      "project_name": "23-10 Queens Plaza South",
       "mapped": false,
       "method": "unmapped",
       "unmapped_reason": "exact_bbl_missing_centroid",
       "exact_bbl_count": 2,
       "unique_exact_bbl_count": 2,
       "exact_bbl_keys": [
-        "1010060013",
-        "1010067502"
+        "4004250001",
+        "4004250005"
+      ],
+      "matched_centroid_count": 0,
+      "unique_matched_centroid_count": 0,
+      "matched_centroids": [],
+      "point": null,
+      "point_role": null,
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "P2009K0185",
+      "project_name": "CONEY ISLAND COMPREHENSIVE PLAN",
+      "mapped": false,
+      "method": "unmapped",
+      "unmapped_reason": "exact_bbl_missing_centroid",
+      "exact_bbl_count": 1,
+      "unique_exact_bbl_count": 1,
+      "exact_bbl_keys": [
+        "3070600000"
       ],
       "matched_centroid_count": 0,
       "unique_matched_centroid_count": 0,
@@ -118,6 +168,200 @@
         "3022830038",
         "3022830041",
         "3022830043"
+      ],
+      "matched_centroid_count": 0,
+      "unique_matched_centroid_count": 0,
+      "matched_centroids": [],
+      "point": null,
+      "point_role": null,
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2023Q0351",
+      "project_name": "Bud Place Rezoning",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 24,
+      "unique_exact_bbl_count": 24,
+      "exact_bbl_keys": [
+        "4049660001",
+        "4049660003",
+        "4049660004",
+        "4049660006",
+        "4049660007",
+        "4049680001",
+        "4049680006",
+        "4049680009",
+        "4049680011",
+        "4049680013",
+        "4049680015",
+        "4049680021",
+        "4049680022",
+        "4049680023",
+        "4049680024",
+        "4049680033",
+        "4049680035",
+        "4049690001",
+        "4049690004",
+        "4049690006",
+        "4049690021",
+        "4049690024",
+        "4049690025",
+        "4049690026"
+      ],
+      "matched_centroid_count": 24,
+      "unique_matched_centroid_count": 24,
+      "matched_centroids": [
+        {
+          "bbl": "4049660001",
+          "lat": 40.7618137,
+          "lon": -73.8351187
+        },
+        {
+          "bbl": "4049660003",
+          "lat": 40.7618851,
+          "lon": -73.8350933
+        },
+        {
+          "bbl": "4049660004",
+          "lat": 40.7619372,
+          "lon": -73.8350787
+        },
+        {
+          "bbl": "4049660006",
+          "lat": 40.7619866,
+          "lon": -73.8350605
+        },
+        {
+          "bbl": "4049660007",
+          "lat": 40.762036,
+          "lon": -73.835046
+        },
+        {
+          "bbl": "4049680001",
+          "lat": 40.7613165,
+          "lon": -73.8348167
+        },
+        {
+          "bbl": "4049680006",
+          "lat": 40.7614895,
+          "lon": -73.8348921
+        },
+        {
+          "bbl": "4049680009",
+          "lat": 40.7616237,
+          "lon": -73.8347041
+        },
+        {
+          "bbl": "4049680011",
+          "lat": 40.761739,
+          "lon": -73.8346605
+        },
+        {
+          "bbl": "4049680013",
+          "lat": 40.7618707,
+          "lon": -73.8346782
+        },
+        {
+          "bbl": "4049680015",
+          "lat": 40.7619721,
+          "lon": -73.8345408
+        },
+        {
+          "bbl": "4049680021",
+          "lat": 40.7620925,
+          "lon": -73.8343022
+        },
+        {
+          "bbl": "4049680022",
+          "lat": 40.7620376,
+          "lon": -73.8342843
+        },
+        {
+          "bbl": "4049680023",
+          "lat": 40.761969,
+          "lon": -73.8342628
+        },
+        {
+          "bbl": "4049680024",
+          "lat": 40.7616532,
+          "lon": -73.8341697
+        },
+        {
+          "bbl": "4049680033",
+          "lat": 40.7614476,
+          "lon": -73.8343616
+        },
+        {
+          "bbl": "4049680035",
+          "lat": 40.7614753,
+          "lon": -73.8345131
+        },
+        {
+          "bbl": "4049690001",
+          "lat": 40.7615727,
+          "lon": -73.833596
+        },
+        {
+          "bbl": "4049690004",
+          "lat": 40.7617073,
+          "lon": -73.8336354
+        },
+        {
+          "bbl": "4049690006",
+          "lat": 40.7619955,
+          "lon": -73.8336671
+        },
+        {
+          "bbl": "4049690021",
+          "lat": 40.7619072,
+          "lon": -73.8333208
+        },
+        {
+          "bbl": "4049690024",
+          "lat": 40.7617727,
+          "lon": -73.8332778
+        },
+        {
+          "bbl": "4049690025",
+          "lat": 40.7617067,
+          "lon": -73.8332563
+        },
+        {
+          "bbl": "4049690026",
+          "lat": 40.7616381,
+          "lon": -73.8332385
+        }
+      ],
+      "point": {
+        "bbl": "4049660001",
+        "lat": 40.7618137,
+        "lon": -73.8351187
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "P2012X0048",
+      "project_name": "GRANT PARK MAPPING",
+      "mapped": false,
+      "method": "unmapped",
+      "unmapped_reason": "exact_bbl_missing_centroid",
+      "exact_bbl_count": 11,
+      "unique_exact_bbl_count": 11,
+      "exact_bbl_keys": [
+        "2028160005",
+        "2028160009",
+        "2028160013",
+        "2028160018",
+        "2028160022",
+        "2028160026",
+        "2028160030",
+        "2028160032",
+        "2028160037",
+        "2028160041",
+        "2028300072"
       ],
       "matched_centroid_count": 0,
       "unique_matched_centroid_count": 0,
@@ -169,735 +413,8 @@
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
-      "project_id": "P2012X0048",
-      "project_name": "GRANT PARK MAPPING",
-      "mapped": false,
-      "method": "unmapped",
-      "unmapped_reason": "exact_bbl_missing_centroid",
-      "exact_bbl_count": 11,
-      "unique_exact_bbl_count": 11,
-      "exact_bbl_keys": [
-        "2028160005",
-        "2028160009",
-        "2028160013",
-        "2028160018",
-        "2028160022",
-        "2028160026",
-        "2028160030",
-        "2028160032",
-        "2028160037",
-        "2028160041",
-        "2028300072"
-      ],
-      "matched_centroid_count": 0,
-      "unique_matched_centroid_count": 0,
-      "matched_centroids": [],
-      "point": null,
-      "point_role": null,
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2020Q0317",
-      "project_name": "23-10 Queens Plaza South",
-      "mapped": false,
-      "method": "unmapped",
-      "unmapped_reason": "exact_bbl_missing_centroid",
-      "exact_bbl_count": 2,
-      "unique_exact_bbl_count": 2,
-      "exact_bbl_keys": [
-        "4004250001",
-        "4004250005"
-      ],
-      "matched_centroid_count": 0,
-      "unique_matched_centroid_count": 0,
-      "matched_centroids": [],
-      "point": null,
-      "point_role": null,
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2023M0452",
-      "project_name": "Allen Street Mall Demapping",
-      "mapped": false,
-      "method": "unmapped",
-      "unmapped_reason": "exact_bbl_missing_centroid",
-      "exact_bbl_count": 1,
-      "unique_exact_bbl_count": 1,
-      "exact_bbl_keys": [
-        "1004150150"
-      ],
-      "matched_centroid_count": 0,
-      "unique_matched_centroid_count": 0,
-      "matched_centroids": [],
-      "point": null,
-      "point_role": null,
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2026R0127",
-      "project_name": "FDNY Cont'd Use of WTC Unit 1688 Victory Blvd",
-      "mapped": true,
-      "method": "single_bbl_centroid",
-      "unmapped_reason": null,
-      "exact_bbl_count": 1,
-      "unique_exact_bbl_count": 1,
-      "exact_bbl_keys": [
-        "5007087501"
-      ],
-      "matched_centroid_count": 1,
-      "unique_matched_centroid_count": 1,
-      "matched_centroids": [
-        {
-          "bbl": "5007087501",
-          "lat": 40.6128941,
-          "lon": -74.1198445
-        }
-      ],
-      "point": {
-        "bbl": "5007087501",
-        "lat": 40.6128941,
-        "lon": -74.1198445
-      },
-      "point_role": "single_bbl_centroid",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2025K0305",
-      "project_name": "Westshore LSGD Mapping Actions",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 25,
-      "unique_exact_bbl_count": 25,
-      "exact_bbl_keys": [
-        "3069430163",
-        "3069430242",
-        "3069430427",
-        "3069440002",
-        "3069440004",
-        "3069440007",
-        "3069440009",
-        "3069440010",
-        "3069440080",
-        "3069440083",
-        "3069440085",
-        "3069440160",
-        "3069440185",
-        "3069440287",
-        "3069440290",
-        "3069440325",
-        "3069440327",
-        "3069440330",
-        "3069440333",
-        "3069440440",
-        "3069440451",
-        "3069440453",
-        "3069440456",
-        "3069440458",
-        "3069440466"
-      ],
-      "matched_centroid_count": 25,
-      "unique_matched_centroid_count": 25,
-      "matched_centroids": [
-        {
-          "bbl": "3069430163",
-          "lat": 40.5888929,
-          "lon": -73.9955282
-        },
-        {
-          "bbl": "3069430242",
-          "lat": 40.5880558,
-          "lon": -73.9972961
-        },
-        {
-          "bbl": "3069430427",
-          "lat": 40.5872433,
-          "lon": -73.9991287
-        },
-        {
-          "bbl": "3069440002",
-          "lat": 40.5886431,
-          "lon": -73.9949018
-        },
-        {
-          "bbl": "3069440004",
-          "lat": 40.5885003,
-          "lon": -73.9948118
-        },
-        {
-          "bbl": "3069440007",
-          "lat": 40.5882176,
-          "lon": -73.9950422
-        },
-        {
-          "bbl": "3069440009",
-          "lat": 40.5889449,
-          "lon": -73.993494
-        },
-        {
-          "bbl": "3069440010",
-          "lat": 40.5882341,
-          "lon": -73.994639
-        },
-        {
-          "bbl": "3069440080",
-          "lat": 40.5874573,
-          "lon": -73.9955535
-        },
-        {
-          "bbl": "3069440083",
-          "lat": 40.5883877,
-          "lon": -73.9932024
-        },
-        {
-          "bbl": "3069440085",
-          "lat": 40.5878031,
-          "lon": -73.9940305
-        },
-        {
-          "bbl": "3069440160",
-          "lat": 40.587331,
-          "lon": -73.9940594
-        },
-        {
-          "bbl": "3069440185",
-          "lat": 40.5871636,
-          "lon": -73.9954275
-        },
-        {
-          "bbl": "3069440287",
-          "lat": 40.5872899,
-          "lon": -73.9970189
-        },
-        {
-          "bbl": "3069440290",
-          "lat": 40.5871445,
-          "lon": -73.9969649
-        },
-        {
-          "bbl": "3069440325",
-          "lat": 40.5865159,
-          "lon": -73.9970117
-        },
-        {
-          "bbl": "3069440327",
-          "lat": 40.5869002,
-          "lon": -73.9960072
-        },
-        {
-          "bbl": "3069440330",
-          "lat": 40.5863128,
-          "lon": -73.9969433
-        },
-        {
-          "bbl": "3069440333",
-          "lat": 40.5862853,
-          "lon": -73.9966373
-        },
-        {
-          "bbl": "3069440440",
-          "lat": 40.586181,
-          "lon": -73.9965113
-        },
-        {
-          "bbl": "3069440451",
-          "lat": 40.5871198,
-          "lon": -73.9981602
-        },
-        {
-          "bbl": "3069440453",
-          "lat": 40.5869633,
-          "lon": -73.9981026
-        },
-        {
-          "bbl": "3069440456",
-          "lat": 40.5868124,
-          "lon": -73.9980486
-        },
-        {
-          "bbl": "3069440458",
-          "lat": 40.5866367,
-          "lon": -73.9980054
-        },
-        {
-          "bbl": "3069440466",
-          "lat": 40.5861783,
-          "lon": -73.9978182
-        }
-      ],
-      "point": {
-        "bbl": "3069430163",
-        "lat": 40.5888929,
-        "lon": -73.9955282
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2026K0123",
-      "project_name": "1550 Bedford Avenue Rezoning",
-      "mapped": true,
-      "method": "single_bbl_centroid",
-      "unmapped_reason": null,
-      "exact_bbl_count": 1,
-      "unique_exact_bbl_count": 1,
-      "exact_bbl_keys": [
-        "3012660036"
-      ],
-      "matched_centroid_count": 1,
-      "unique_matched_centroid_count": 1,
-      "matched_centroids": [
-        {
-          "bbl": "3012660036",
-          "lat": 40.6696224,
-          "lon": -73.9557834
-        }
-      ],
-      "point": {
-        "bbl": "3012660036",
-        "lat": 40.6696224,
-        "lon": -73.9557834
-      },
-      "point_role": "single_bbl_centroid",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2024Q0325",
-      "project_name": "2-28 Beach 87th Street Rezoning",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 12,
-      "unique_exact_bbl_count": 12,
-      "exact_bbl_keys": [
-        "4161200005",
-        "4161200006",
-        "4161200010",
-        "4161200012",
-        "4161200014",
-        "4161200016",
-        "4161200065",
-        "4161200068",
-        "4161200069",
-        "4161200070",
-        "4161200071",
-        "4161200072"
-      ],
-      "matched_centroid_count": 12,
-      "unique_matched_centroid_count": 12,
-      "matched_centroids": [
-        {
-          "bbl": "4161200005",
-          "lat": 40.5878827,
-          "lon": -73.8119691
-        },
-        {
-          "bbl": "4161200006",
-          "lat": 40.5880694,
-          "lon": -73.811983
-        },
-        {
-          "bbl": "4161200010",
-          "lat": 40.5882753,
-          "lon": -73.812004
-        },
-        {
-          "bbl": "4161200012",
-          "lat": 40.5884126,
-          "lon": -73.812018
-        },
-        {
-          "bbl": "4161200014",
-          "lat": 40.588558,
-          "lon": -73.8120032
-        },
-        {
-          "bbl": "4161200016",
-          "lat": 40.5888212,
-          "lon": -73.8118261
-        },
-        {
-          "bbl": "4161200065",
-          "lat": 40.5887386,
-          "lon": -73.8116463
-        },
-        {
-          "bbl": "4161200068",
-          "lat": 40.5886398,
-          "lon": -73.8116753
-        },
-        {
-          "bbl": "4161200069",
-          "lat": 40.5885657,
-          "lon": -73.8116612
-        },
-        {
-          "bbl": "4161200070",
-          "lat": 40.5884778,
-          "lon": -73.8116578
-        },
-        {
-          "bbl": "4161200071",
-          "lat": 40.5883955,
-          "lon": -73.8116508
-        },
-        {
-          "bbl": "4161200072",
-          "lat": 40.5881237,
-          "lon": -73.8116228
-        }
-      ],
-      "point": {
-        "bbl": "4161200005",
-        "lat": 40.5878827,
-        "lon": -73.8119691
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2024K0214",
-      "project_name": "341-361 Highland Boulevard Rezoning",
-      "mapped": true,
-      "method": "single_bbl_centroid",
-      "unmapped_reason": null,
-      "exact_bbl_count": 1,
-      "unique_exact_bbl_count": 1,
-      "exact_bbl_keys": [
-        "3038910435"
-      ],
-      "matched_centroid_count": 1,
-      "unique_matched_centroid_count": 1,
-      "matched_centroids": [
-        {
-          "bbl": "3038910435",
-          "lat": 40.6844389,
-          "lon": -73.890357
-        }
-      ],
-      "point": {
-        "bbl": "3038910435",
-        "lat": 40.6844389,
-        "lon": -73.890357
-      },
-      "point_role": "single_bbl_centroid",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2024M0244",
-      "project_name": "Dewitt Clinton Park North (801 Eleventh Avenue)",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 8,
-      "unique_exact_bbl_count": 8,
-      "exact_bbl_keys": [
-        "1006620011",
-        "1006620016",
-        "1006620019",
-        "1011030023",
-        "1011030036",
-        "1011070005",
-        "1011070014",
-        "1011090025"
-      ],
-      "matched_centroid_count": 8,
-      "unique_matched_centroid_count": 8,
-      "matched_centroids": [
-        {
-          "bbl": "1006620011",
-          "lat": 40.7456165,
-          "lon": -74.0102566
-        },
-        {
-          "bbl": "1006620016",
-          "lat": 40.7466513,
-          "lon": -74.0101051
-        },
-        {
-          "bbl": "1006620019",
-          "lat": 40.7478754,
-          "lon": -74.0101161
-        },
-        {
-          "bbl": "1011030023",
-          "lat": 40.7694686,
-          "lon": -73.9929565
-        },
-        {
-          "bbl": "1011030036",
-          "lat": 40.7695015,
-          "lon": -73.9924835
-        },
-        {
-          "bbl": "1011070005",
-          "lat": 40.7622089,
-          "lon": -74.0032922
-        },
-        {
-          "bbl": "1011070014",
-          "lat": 40.763359,
-          "lon": -74.0024547
-        },
-        {
-          "bbl": "1011090025",
-          "lat": 40.7729737,
-          "lon": -73.9954112
-        }
-      ],
-      "point": {
-        "bbl": "1006620011",
-        "lat": 40.7456165,
-        "lon": -74.0102566
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2025M0338",
-      "project_name": "Imperial Theatre Text Amendment",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 6,
-      "unique_exact_bbl_count": 6,
-      "exact_bbl_keys": [
-        "1010170001",
-        "1010170002",
-        "1010170004",
-        "1010170010",
-        "1010170011",
-        "1010170057"
-      ],
-      "matched_centroid_count": 6,
-      "unique_matched_centroid_count": 6,
-      "matched_centroids": [
-        {
-          "bbl": "1010170001",
-          "lat": 40.7592851,
-          "lon": -73.9876911
-        },
-        {
-          "bbl": "1010170002",
-          "lat": 40.759233,
-          "lon": -73.9879979
-        },
-        {
-          "bbl": "1010170004",
-          "lat": 40.7593263,
-          "lon": -73.9879329
-        },
-        {
-          "bbl": "1010170010",
-          "lat": 40.7591176,
-          "lon": -73.9872218
-        },
-        {
-          "bbl": "1010170011",
-          "lat": 40.7588843,
-          "lon": -73.9871425
-        },
-        {
-          "bbl": "1010170057",
-          "lat": 40.7592769,
-          "lon": -73.987312
-        }
-      ],
-      "point": {
-        "bbl": "1010170001",
-        "lat": 40.7592851,
-        "lon": -73.9876911
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2024K0358",
-      "project_name": "Monitor Point",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 2,
-      "unique_exact_bbl_count": 2,
-      "exact_bbl_keys": [
-        "3025900001",
-        "3025900025"
-      ],
-      "matched_centroid_count": 2,
-      "unique_matched_centroid_count": 2,
-      "matched_centroids": [
-        {
-          "bbl": "3025900001",
-          "lat": 40.7258666,
-          "lon": -73.958939
-        },
-        {
-          "bbl": "3025900025",
-          "lat": 40.7259823,
-          "lon": -73.9600213
-        }
-      ],
-      "point": {
-        "bbl": "3025900001",
-        "lat": 40.7258666,
-        "lon": -73.958939
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2023M0213",
-      "project_name": "Dewitt Clinton Park North (629 West 54th Street)",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 7,
-      "unique_exact_bbl_count": 7,
-      "exact_bbl_keys": [
-        "1006620011",
-        "1006620016",
-        "1006620019",
-        "1011020011",
-        "1011070005",
-        "1011070014",
-        "1011090025"
-      ],
-      "matched_centroid_count": 7,
-      "unique_matched_centroid_count": 7,
-      "matched_centroids": [
-        {
-          "bbl": "1006620011",
-          "lat": 40.7456165,
-          "lon": -74.0102566
-        },
-        {
-          "bbl": "1006620016",
-          "lat": 40.7466513,
-          "lon": -74.0101051
-        },
-        {
-          "bbl": "1006620019",
-          "lat": 40.7478754,
-          "lon": -74.0101161
-        },
-        {
-          "bbl": "1011020011",
-          "lat": 40.7693753,
-          "lon": -73.9941948
-        },
-        {
-          "bbl": "1011070005",
-          "lat": 40.7622089,
-          "lon": -74.0032922
-        },
-        {
-          "bbl": "1011070014",
-          "lat": 40.763359,
-          "lon": -74.0024547
-        },
-        {
-          "bbl": "1011090025",
-          "lat": 40.7729737,
-          "lon": -73.9954112
-        }
-      ],
-      "point": {
-        "bbl": "1006620011",
-        "lat": 40.7456165,
-        "lon": -74.0102566
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2019K0383",
-      "project_name": "East 14th Street and Locust Avenue Rezoning",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 6,
-      "unique_exact_bbl_count": 6,
-      "exact_bbl_keys": [
-        "3067320028",
-        "3067320074",
-        "3067320075",
-        "3067330011",
-        "3067330021",
-        "3067330029"
-      ],
-      "matched_centroid_count": 6,
-      "unique_matched_centroid_count": 6,
-      "matched_centroids": [
-        {
-          "bbl": "3067320028",
-          "lat": 40.6187364,
-          "lon": -73.9623621
-        },
-        {
-          "bbl": "3067320074",
-          "lat": 40.6185115,
-          "lon": -73.9626684
-        },
-        {
-          "bbl": "3067320075",
-          "lat": 40.6185774,
-          "lon": -73.9626935
-        },
-        {
-          "bbl": "3067330011",
-          "lat": 40.6196118,
-          "lon": -73.9615691
-        },
-        {
-          "bbl": "3067330021",
-          "lat": 40.6191396,
-          "lon": -73.9614613
-        },
-        {
-          "bbl": "3067330029",
-          "lat": 40.6189229,
-          "lon": -73.9617712
-        }
-      ],
-      "point": {
-        "bbl": "3067320028",
-        "lat": 40.6187364,
-        "lon": -73.9623621
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2025K0287",
-      "project_name": "Monitor Point - 56 Quay Demapping",
-      "mapped": true,
-      "method": "single_bbl_centroid",
-      "unmapped_reason": null,
-      "exact_bbl_count": 1,
-      "unique_exact_bbl_count": 1,
-      "exact_bbl_keys": [
-        "3025900025"
-      ],
-      "matched_centroid_count": 1,
-      "unique_matched_centroid_count": 1,
-      "matched_centroids": [
-        {
-          "bbl": "3025900025",
-          "lat": 40.7259823,
-          "lon": -73.9600213
-        }
-      ],
-      "point": {
-        "bbl": "3025900025",
-        "lat": 40.7259823,
-        "lon": -73.9600213
-      },
-      "point_role": "single_bbl_centroid",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2025M0252",
-      "project_name": "Flatiron NoMad Major Concessions",
+      "project_id": "2026X0180",
+      "project_name": "1701 Boone Avenue Rezoning",
       "mapped": false,
       "method": "unmapped",
       "unmapped_reason": "no_retained_bbl",
@@ -912,301 +429,423 @@
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
-      "project_id": "2024K0286",
-      "project_name": "200 Kent Avenue Rezoning",
-      "mapped": true,
-      "method": "single_bbl_centroid",
-      "unmapped_reason": null,
-      "exact_bbl_count": 1,
-      "unique_exact_bbl_count": 1,
-      "exact_bbl_keys": [
-        "3023560001"
-      ],
-      "matched_centroid_count": 1,
-      "unique_matched_centroid_count": 1,
-      "matched_centroids": [
-        {
-          "bbl": "3023560001",
-          "lat": 40.7179526,
-          "lon": -73.9646761
-        }
-      ],
-      "point": {
-        "bbl": "3023560001",
-        "lat": 40.7179526,
-        "lon": -73.9646761
-      },
-      "point_role": "single_bbl_centroid",
+      "project_id": "2025M0399",
+      "project_name": "140 East 41st Street POPS",
+      "mapped": false,
+      "method": "unmapped",
+      "unmapped_reason": "no_retained_bbl",
+      "exact_bbl_count": 0,
+      "unique_exact_bbl_count": 0,
+      "exact_bbl_keys": [],
+      "matched_centroid_count": 0,
+      "unique_matched_centroid_count": 0,
+      "matched_centroids": [],
+      "point": null,
+      "point_role": null,
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
-      "project_id": "2023M0116",
-      "project_name": "St. Augustine's Preservation and Redevelopment",
-      "mapped": true,
-      "method": "single_bbl_centroid",
-      "unmapped_reason": null,
-      "exact_bbl_count": 1,
-      "unique_exact_bbl_count": 1,
-      "exact_bbl_keys": [
-        "1002670019"
-      ],
-      "matched_centroid_count": 1,
-      "unique_matched_centroid_count": 1,
-      "matched_centroids": [
-        {
-          "bbl": "1002670019",
-          "lat": 40.713653,
-          "lon": -73.9831256
-        }
-      ],
-      "point": {
-        "bbl": "1002670019",
-        "lat": 40.713653,
-        "lon": -73.9831256
-      },
-      "point_role": "single_bbl_centroid",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2024Q0219",
-      "project_name": "135-27 Sapphire Street Rezoning",
+      "project_id": "2024M0194",
+      "project_name": "23-27 Allen Street Hotel Special Permit",
       "mapped": true,
       "method": "multi_bbl_anchor",
       "unmapped_reason": null,
-      "exact_bbl_count": 12,
-      "unique_exact_bbl_count": 12,
+      "exact_bbl_count": 3,
+      "unique_exact_bbl_count": 3,
       "exact_bbl_keys": [
-        "4113840015",
-        "4113840024",
-        "4113840028",
-        "4113840029",
-        "4113840032",
-        "4113840034",
-        "4113840037",
-        "4113840038",
-        "4113840039",
-        "4113840040",
-        "4113840042",
-        "4113840045"
+        "1003000024",
+        "1003000025",
+        "1003000026"
       ],
-      "matched_centroid_count": 12,
-      "unique_matched_centroid_count": 12,
+      "matched_centroid_count": 3,
+      "unique_matched_centroid_count": 3,
       "matched_centroids": [
         {
-          "bbl": "4113840015",
-          "lat": 40.6694807,
-          "lon": -73.8562188
+          "bbl": "1003000024",
+          "lat": 40.7157702,
+          "lon": -73.9925762
         },
         {
-          "bbl": "4113840024",
-          "lat": 40.6688191,
-          "lon": -73.8561085
+          "bbl": "1003000025",
+          "lat": 40.7157044,
+          "lon": -73.9926122
         },
         {
-          "bbl": "4113840028",
-          "lat": 40.6689208,
-          "lon": -73.8562453
-        },
-        {
-          "bbl": "4113840029",
-          "lat": 40.6688798,
-          "lon": -73.8564184
-        },
-        {
-          "bbl": "4113840032",
-          "lat": 40.6688526,
-          "lon": -73.8566023
-        },
-        {
-          "bbl": "4113840034",
-          "lat": 40.6688336,
-          "lon": -73.8567429
-        },
-        {
-          "bbl": "4113840037",
-          "lat": 40.6690364,
-          "lon": -73.8564973
-        },
-        {
-          "bbl": "4113840038",
-          "lat": 40.669094,
-          "lon": -73.85649
-        },
-        {
-          "bbl": "4113840039",
-          "lat": 40.6691489,
-          "lon": -73.8565007
-        },
-        {
-          "bbl": "4113840040",
-          "lat": 40.6692148,
-          "lon": -73.8565186
-        },
-        {
-          "bbl": "4113840042",
-          "lat": 40.6693219,
-          "lon": -73.8565436
-        },
-        {
-          "bbl": "4113840045",
-          "lat": 40.669418,
-          "lon": -73.8565902
+          "bbl": "1003000026",
+          "lat": 40.7156412,
+          "lon": -73.9926447
         }
       ],
       "point": {
-        "bbl": "4113840015",
-        "lat": 40.6694807,
-        "lon": -73.8562188
+        "bbl": "1003000024",
+        "lat": 40.7157702,
+        "lon": -73.9925762
       },
       "point_role": "existence_proof",
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
-      "project_id": "2026R0186",
-      "project_name": "336 Meredith Avenue Fleet Maintenance Facility",
-      "mapped": true,
-      "method": "single_bbl_centroid",
-      "unmapped_reason": null,
-      "exact_bbl_count": 1,
-      "unique_exact_bbl_count": 1,
-      "exact_bbl_keys": [
-        "5028100080"
-      ],
-      "matched_centroid_count": 1,
-      "unique_matched_centroid_count": 1,
-      "matched_centroids": [
-        {
-          "bbl": "5028100080",
-          "lat": 40.6005122,
-          "lon": -74.1958808
-        }
-      ],
-      "point": {
-        "bbl": "5028100080",
-        "lat": 40.6005122,
-        "lon": -74.1958808
-      },
-      "point_role": "single_bbl_centroid",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2025K0284",
-      "project_name": "FORT HAMILTON MEWS REZONING",
-      "mapped": true,
-      "method": "single_bbl_centroid",
-      "unmapped_reason": null,
-      "exact_bbl_count": 1,
-      "unique_exact_bbl_count": 1,
-      "exact_bbl_keys": [
-        "3061090001"
-      ],
-      "matched_centroid_count": 1,
-      "unique_matched_centroid_count": 1,
-      "matched_centroids": [
-        {
-          "bbl": "3061090001",
-          "lat": 40.6167845,
-          "lon": -74.0298206
-        }
-      ],
-      "point": {
-        "bbl": "3061090001",
-        "lat": 40.6167845,
-        "lon": -74.0298206
-      },
-      "point_role": "single_bbl_centroid",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2023X0149",
-      "project_name": "Sojourner Truth - Mapes Rezoning",
+      "project_id": "2023Q0177",
+      "project_name": "50-02 Queens Blvd Rezoning",
       "mapped": true,
       "method": "multi_bbl_anchor",
       "unmapped_reason": null,
-      "exact_bbl_count": 12,
-      "unique_exact_bbl_count": 12,
+      "exact_bbl_count": 5,
+      "unique_exact_bbl_count": 5,
       "exact_bbl_keys": [
-        "2031110049",
-        "2031110055",
-        "2031110059",
-        "2031110065",
-        "2031110069",
-        "2031110071",
-        "2031110076",
-        "2031110079",
-        "2031110082",
-        "2031110085",
-        "2031190037",
-        "2031190044"
+        "4022830001",
+        "4022830012",
+        "4022830022",
+        "4022830036",
+        "4022830043"
       ],
-      "matched_centroid_count": 12,
-      "unique_matched_centroid_count": 12,
+      "matched_centroid_count": 5,
+      "unique_matched_centroid_count": 5,
       "matched_centroids": [
         {
-          "bbl": "2031110049",
-          "lat": 40.8481482,
-          "lon": -73.8838919
+          "bbl": "4022830001",
+          "lat": 40.7411118,
+          "lon": -73.91516
         },
         {
-          "bbl": "2031110055",
-          "lat": 40.8483896,
-          "lon": -73.8837288
+          "bbl": "4022830012",
+          "lat": 40.7416469,
+          "lon": -73.915015
         },
         {
-          "bbl": "2031110059",
-          "lat": 40.8482246,
-          "lon": -73.8834761
+          "bbl": "4022830022",
+          "lat": 40.7421793,
+          "lon": -73.9148735
         },
         {
-          "bbl": "2031110065",
-          "lat": 40.847964,
-          "lon": -73.8835741
+          "bbl": "4022830036",
+          "lat": 40.7420336,
+          "lon": -73.9145814
         },
         {
-          "bbl": "2031110069",
-          "lat": 40.8477335,
-          "lon": -73.8836071
-        },
-        {
-          "bbl": "2031110071",
-          "lat": 40.8475607,
-          "lon": -73.8837014
-        },
-        {
-          "bbl": "2031110076",
-          "lat": 40.8473714,
-          "lon": -73.8838246
-        },
-        {
-          "bbl": "2031110079",
-          "lat": 40.8472151,
-          "lon": -73.8839405
-        },
-        {
-          "bbl": "2031110082",
-          "lat": 40.8470339,
-          "lon": -73.8839589
-        },
-        {
-          "bbl": "2031110085",
-          "lat": 40.8471439,
-          "lon": -73.8841864
-        },
-        {
-          "bbl": "2031190037",
-          "lat": 40.8466624,
-          "lon": -73.8829584
-        },
-        {
-          "bbl": "2031190044",
-          "lat": 40.8467143,
-          "lon": -73.882745
+          "bbl": "4022830043",
+          "lat": 40.7422116,
+          "lon": -73.9140796
         }
       ],
       "point": {
-        "bbl": "2031110049",
-        "lat": 40.8481482,
-        "lon": -73.8838919
+        "bbl": "4022830001",
+        "lat": 40.7411118,
+        "lon": -73.91516
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2024X0217",
+      "project_name": "Melrose Cornerstone B2",
+      "mapped": false,
+      "method": "unmapped",
+      "unmapped_reason": "no_retained_bbl",
+      "exact_bbl_count": 0,
+      "unique_exact_bbl_count": 0,
+      "exact_bbl_keys": [],
+      "matched_centroid_count": 0,
+      "unique_matched_centroid_count": 0,
+      "matched_centroids": [],
+      "point": null,
+      "point_role": null,
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2024M0148",
+      "project_name": "22 East 119th Street Rezoning",
+      "mapped": false,
+      "method": "unmapped",
+      "unmapped_reason": "no_retained_bbl",
+      "exact_bbl_count": 0,
+      "unique_exact_bbl_count": 0,
+      "exact_bbl_keys": [],
+      "matched_centroid_count": 0,
+      "unique_matched_centroid_count": 0,
+      "matched_centroids": [],
+      "point": null,
+      "point_role": null,
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2026X0270",
+      "project_name": "3400 Park Avenue Rezoning",
+      "mapped": false,
+      "method": "unmapped",
+      "unmapped_reason": "no_retained_bbl",
+      "exact_bbl_count": 0,
+      "unique_exact_bbl_count": 0,
+      "exact_bbl_keys": [],
+      "matched_centroid_count": 0,
+      "unique_matched_centroid_count": 0,
+      "matched_centroids": [],
+      "point": null,
+      "point_role": null,
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2024M0193",
+      "project_name": "Studio 54 Rehabilitation and Text Amendment",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 3,
+      "unique_exact_bbl_count": 3,
+      "exact_bbl_keys": [
+        "1010250010",
+        "1010250058",
+        "1010257502"
+      ],
+      "matched_centroid_count": 3,
+      "unique_matched_centroid_count": 3,
+      "matched_centroids": [
+        {
+          "bbl": "1010250010",
+          "lat": 40.7640331,
+          "lon": -73.9838564
+        },
+        {
+          "bbl": "1010250058",
+          "lat": 40.7643185,
+          "lon": -73.9838022
+        },
+        {
+          "bbl": "1010257502",
+          "lat": 40.7643323,
+          "lon": -73.9841668
+        }
+      ],
+      "point": {
+        "bbl": "1010250010",
+        "lat": 40.7640331,
+        "lon": -73.9838564
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2026Q0371",
+      "project_name": "106-03 Sutphin Blvd FRESH Certification",
+      "mapped": false,
+      "method": "unmapped",
+      "unmapped_reason": "no_retained_bbl",
+      "exact_bbl_count": 0,
+      "unique_exact_bbl_count": 0,
+      "exact_bbl_keys": [],
+      "matched_centroid_count": 0,
+      "unique_matched_centroid_count": 0,
+      "matched_centroids": [],
+      "point": null,
+      "point_role": null,
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2022Q0214",
+      "project_name": "43-02 Ditmars Boulevard Rezoning",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 14,
+      "unique_exact_bbl_count": 14,
+      "exact_bbl_keys": [
+        "4007820001",
+        "4007820037",
+        "4007820038",
+        "4007820039",
+        "4007820040",
+        "4007820041",
+        "4007820042",
+        "4007820043",
+        "4007820044",
+        "4007820045",
+        "4007820046",
+        "4007820137",
+        "4007820139",
+        "4007820140"
+      ],
+      "matched_centroid_count": 14,
+      "unique_matched_centroid_count": 14,
+      "matched_centroids": [
+        {
+          "bbl": "4007820001",
+          "lat": 40.7704446,
+          "lon": -73.9043207
+        },
+        {
+          "bbl": "4007820037",
+          "lat": 40.7695069,
+          "lon": -73.9055206
+        },
+        {
+          "bbl": "4007820038",
+          "lat": 40.7695262,
+          "lon": -73.9056253
+        },
+        {
+          "bbl": "4007820039",
+          "lat": 40.7695538,
+          "lon": -73.9057913
+        },
+        {
+          "bbl": "4007820040",
+          "lat": 40.7696552,
+          "lon": -73.9056684
+        },
+        {
+          "bbl": "4007820041",
+          "lat": 40.76971,
+          "lon": -73.9054734
+        },
+        {
+          "bbl": "4007820042",
+          "lat": 40.7697621,
+          "lon": -73.9054083
+        },
+        {
+          "bbl": "4007820043",
+          "lat": 40.7698114,
+          "lon": -73.9053469
+        },
+        {
+          "bbl": "4007820044",
+          "lat": 40.7698635,
+          "lon": -73.9052855
+        },
+        {
+          "bbl": "4007820045",
+          "lat": 40.7699129,
+          "lon": -73.9052276
+        },
+        {
+          "bbl": "4007820046",
+          "lat": 40.7699622,
+          "lon": -73.9051662
+        },
+        {
+          "bbl": "4007820137",
+          "lat": 40.7696276,
+          "lon": -73.9055024
+        },
+        {
+          "bbl": "4007820139",
+          "lat": 40.7696031,
+          "lon": -73.9057299
+        },
+        {
+          "bbl": "4007820140",
+          "lat": 40.7697073,
+          "lon": -73.9056034
+        }
+      ],
+      "point": {
+        "bbl": "4007820001",
+        "lat": 40.7704446,
+        "lon": -73.9043207
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2023K0400",
+      "project_name": "Pemmil West 25th Street Rezoning",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 4,
+      "unique_exact_bbl_count": 4,
+      "exact_bbl_keys": [
+        "3070140001",
+        "3070140002",
+        "3070140003",
+        "3070140007"
+      ],
+      "matched_centroid_count": 4,
+      "unique_matched_centroid_count": 4,
+      "matched_centroids": [
+        {
+          "bbl": "3070140001",
+          "lat": 40.577757,
+          "lon": -73.9921343
+        },
+        {
+          "bbl": "3070140002",
+          "lat": 40.5771257,
+          "lon": -73.99185
+        },
+        {
+          "bbl": "3070140003",
+          "lat": 40.5765164,
+          "lon": -73.9918969
+        },
+        {
+          "bbl": "3070140007",
+          "lat": 40.5778997,
+          "lon": -73.9918391
+        }
+      ],
+      "point": {
+        "bbl": "3070140001",
+        "lat": 40.577757,
+        "lon": -73.9921343
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2026Q0128",
+      "project_name": "Astoria Cove WF Cert and Substantial Compliance",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 6,
+      "unique_exact_bbl_count": 6,
+      "exact_bbl_keys": [
+        "4009060001",
+        "4009060005",
+        "4009070001",
+        "4009070008",
+        "4009080012",
+        "4009090035"
+      ],
+      "matched_centroid_count": 6,
+      "unique_matched_centroid_count": 6,
+      "matched_centroids": [
+        {
+          "bbl": "4009060001",
+          "lat": 40.7757992,
+          "lon": -73.9306737
+        },
+        {
+          "bbl": "4009060005",
+          "lat": 40.7762026,
+          "lon": -73.9304602
+        },
+        {
+          "bbl": "4009070001",
+          "lat": 40.776461,
+          "lon": -73.9311785
+        },
+        {
+          "bbl": "4009070008",
+          "lat": 40.7768456,
+          "lon": -73.9317305
+        },
+        {
+          "bbl": "4009080012",
+          "lat": 40.775171,
+          "lon": -73.931122
+        },
+        {
+          "bbl": "4009090035",
+          "lat": 40.7754485,
+          "lon": -73.9315767
+        }
+      ],
+      "point": {
+        "bbl": "4009060001",
+        "lat": 40.7757992,
+        "lon": -73.9306737
       },
       "point_role": "existence_proof",
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
@@ -1270,31 +909,231 @@
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
-      "project_id": "2025Q0142",
-      "project_name": "47-03 108th Street Rezoning",
+      "project_id": "2026K0233",
+      "project_name": "240 Nassau Street",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 2,
+      "unique_exact_bbl_count": 2,
+      "exact_bbl_keys": [
+        "3001100025",
+        "3001110001"
+      ],
+      "matched_centroid_count": 2,
+      "unique_matched_centroid_count": 2,
+      "matched_centroids": [
+        {
+          "bbl": "3001100025",
+          "lat": 40.6980489,
+          "lon": -73.9819394
+        },
+        {
+          "bbl": "3001110001",
+          "lat": 40.6978511,
+          "lon": -73.9811208
+        }
+      ],
+      "point": {
+        "bbl": "3001100025",
+        "lat": 40.6980489,
+        "lon": -73.9819394
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2023Q0125",
+      "project_name": "21-31 46th Ave Rezoning",
       "mapped": true,
       "method": "single_bbl_centroid",
       "unmapped_reason": null,
       "exact_bbl_count": 1,
       "unique_exact_bbl_count": 1,
       "exact_bbl_keys": [
-        "4020030001"
+        "4000760011"
       ],
       "matched_centroid_count": 1,
       "unique_matched_centroid_count": 1,
       "matched_centroids": [
         {
-          "bbl": "4020030001",
-          "lat": 40.7463368,
-          "lon": -73.8561684
+          "bbl": "4000760011",
+          "lat": 40.7459505,
+          "lon": -73.9467862
         }
       ],
       "point": {
-        "bbl": "4020030001",
-        "lat": 40.7463368,
-        "lon": -73.8561684
+        "bbl": "4000760011",
+        "lat": 40.7459505,
+        "lon": -73.9467862
       },
       "point_role": "single_bbl_centroid",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2022X0393",
+      "project_name": "110 East 138th Street/63 Exterior Street",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 3,
+      "unique_exact_bbl_count": 3,
+      "exact_bbl_keys": [
+        "2023230028",
+        "2023230029",
+        "2023230043"
+      ],
+      "matched_centroid_count": 3,
+      "unique_matched_centroid_count": 3,
+      "matched_centroids": [
+        {
+          "bbl": "2023230028",
+          "lat": 40.8126921,
+          "lon": -73.9321706
+        },
+        {
+          "bbl": "2023230029",
+          "lat": 40.8133057,
+          "lon": -73.9319144
+        },
+        {
+          "bbl": "2023230043",
+          "lat": 40.8135702,
+          "lon": -73.9319638
+        }
+      ],
+      "point": {
+        "bbl": "2023230028",
+        "lat": 40.8126921,
+        "lon": -73.9321706
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2024K0196",
+      "project_name": "132 Melrose Street Rezoning",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 5,
+      "unique_exact_bbl_count": 5,
+      "exact_bbl_keys": [
+        "3031620019",
+        "3031620020",
+        "3031620021",
+        "3031620022",
+        "3031620023"
+      ],
+      "matched_centroid_count": 5,
+      "unique_matched_centroid_count": 5,
+      "matched_centroids": [
+        {
+          "bbl": "3031620019",
+          "lat": 40.6993701,
+          "lon": -73.9328413
+        },
+        {
+          "bbl": "3031620020",
+          "lat": 40.6994058,
+          "lon": -73.9327583
+        },
+        {
+          "bbl": "3031620021",
+          "lat": 40.6994304,
+          "lon": -73.9326861
+        },
+        {
+          "bbl": "3031620022",
+          "lat": 40.6994578,
+          "lon": -73.9326284
+        },
+        {
+          "bbl": "3031620023",
+          "lat": 40.6994907,
+          "lon": -73.9325599
+        }
+      ],
+      "point": {
+        "bbl": "3031620019",
+        "lat": 40.6993701,
+        "lon": -73.9328413
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2025K0284",
+      "project_name": "FORT HAMILTON MEWS REZONING",
+      "mapped": true,
+      "method": "single_bbl_centroid",
+      "unmapped_reason": null,
+      "exact_bbl_count": 1,
+      "unique_exact_bbl_count": 1,
+      "exact_bbl_keys": [
+        "3061090001"
+      ],
+      "matched_centroid_count": 1,
+      "unique_matched_centroid_count": 1,
+      "matched_centroids": [
+        {
+          "bbl": "3061090001",
+          "lat": 40.6167845,
+          "lon": -74.0298206
+        }
+      ],
+      "point": {
+        "bbl": "3061090001",
+        "lat": 40.6167845,
+        "lon": -74.0298206
+      },
+      "point_role": "single_bbl_centroid",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2025Q0124",
+      "project_name": "Steinway Street and 34th Avenue Rezoning",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 4,
+      "unique_exact_bbl_count": 4,
+      "exact_bbl_keys": [
+        "4006720013",
+        "4006720018",
+        "4006720019",
+        "4006720025"
+      ],
+      "matched_centroid_count": 4,
+      "unique_matched_centroid_count": 4,
+      "matched_centroids": [
+        {
+          "bbl": "4006720013",
+          "lat": 40.7563031,
+          "lon": -73.9217316
+        },
+        {
+          "bbl": "4006720018",
+          "lat": 40.7564898,
+          "lon": -73.9217819
+        },
+        {
+          "bbl": "4006720019",
+          "lat": 40.7565776,
+          "lon": -73.9217096
+        },
+        {
+          "bbl": "4006720025",
+          "lat": 40.7566515,
+          "lon": -73.9214208
+        }
+      ],
+      "point": {
+        "bbl": "4006720013",
+        "lat": 40.7563031,
+        "lon": -73.9217316
+      },
+      "point_role": "existence_proof",
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
@@ -1329,452 +1168,6 @@
         "lon": -73.8442875
       },
       "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2025R0222",
-      "project_name": "St. Joseph by the Sea Special Permit",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 2,
-      "unique_exact_bbl_count": 2,
-      "exact_bbl_keys": [
-        "5064750001",
-        "5064750040"
-      ],
-      "matched_centroid_count": 2,
-      "unique_matched_centroid_count": 2,
-      "matched_centroids": [
-        {
-          "bbl": "5064750001",
-          "lat": 40.5255405,
-          "lon": -74.1771867
-        },
-        {
-          "bbl": "5064750040",
-          "lat": 40.5238953,
-          "lon": -74.176096
-        }
-      ],
-      "point": {
-        "bbl": "5064750001",
-        "lat": 40.5255405,
-        "lon": -74.1771867
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2025R0137",
-      "project_name": "Staten Island Family Court Consolidation",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 3,
-      "unique_exact_bbl_count": 3,
-      "exact_bbl_keys": [
-        "5000090009",
-        "5000090017",
-        "5000090022"
-      ],
-      "matched_centroid_count": 3,
-      "unique_matched_centroid_count": 3,
-      "matched_centroids": [
-        {
-          "bbl": "5000090009",
-          "lat": 40.6448026,
-          "lon": -74.0780547
-        },
-        {
-          "bbl": "5000090017",
-          "lat": 40.6452034,
-          "lon": -74.078012
-        },
-        {
-          "bbl": "5000090022",
-          "lat": 40.6450388,
-          "lon": -74.0777884
-        }
-      ],
-      "point": {
-        "bbl": "5000090009",
-        "lat": 40.6448026,
-        "lon": -74.0780547
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2025Q0316",
-      "project_name": "Queens CD 2 Walk to Park Site Selection/Acq.",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 25,
-      "unique_exact_bbl_count": 25,
-      "exact_bbl_keys": [
-        "4000280012",
-        "4000280015",
-        "4000280018",
-        "4000280121",
-        "4000490035",
-        "4001530013",
-        "4001950021",
-        "4002750011",
-        "4002750035",
-        "4002750080",
-        "4002760035",
-        "4003010001",
-        "4003010005",
-        "4003010026",
-        "4003060019",
-        "4003110030",
-        "4004280001",
-        "4004430014",
-        "4011790001",
-        "4011790007",
-        "4011800027",
-        "4011810001",
-        "4011810009",
-        "4011810011",
-        "4011810012"
-      ],
-      "matched_centroid_count": 25,
-      "unique_matched_centroid_count": 25,
-      "matched_centroids": [
-        {
-          "bbl": "4000280012",
-          "lat": 40.7459455,
-          "lon": -73.9543541
-        },
-        {
-          "bbl": "4000280015",
-          "lat": 40.7459703,
-          "lon": -73.9544913
-        },
-        {
-          "bbl": "4000280018",
-          "lat": 40.7460418,
-          "lon": -73.9548557
-        },
-        {
-          "bbl": "4000280121",
-          "lat": 40.7462475,
-          "lon": -73.9544369
-        },
-        {
-          "bbl": "4000490035",
-          "lat": 40.7470448,
-          "lon": -73.9509573
-        },
-        {
-          "bbl": "4001530013",
-          "lat": 40.7420694,
-          "lon": -73.9186015
-        },
-        {
-          "bbl": "4001950021",
-          "lat": 40.7434495,
-          "lon": -73.9259473
-        },
-        {
-          "bbl": "4002750011",
-          "lat": 40.7452745,
-          "lon": -73.9345453
-        },
-        {
-          "bbl": "4002750035",
-          "lat": 40.7453223,
-          "lon": -73.9367214
-        },
-        {
-          "bbl": "4002750080",
-          "lat": 40.7456972,
-          "lon": -73.9345702
-        },
-        {
-          "bbl": "4002760035",
-          "lat": 40.7459602,
-          "lon": -73.933729
-        },
-        {
-          "bbl": "4003010001",
-          "lat": 40.7365942,
-          "lon": -73.936939
-        },
-        {
-          "bbl": "4003010005",
-          "lat": 40.7368879,
-          "lon": -73.9369748
-        },
-        {
-          "bbl": "4003010026",
-          "lat": 40.7367284,
-          "lon": -73.9365708
-        },
-        {
-          "bbl": "4003060019",
-          "lat": 40.7371278,
-          "lon": -73.9341203
-        },
-        {
-          "bbl": "4003110030",
-          "lat": 40.7342774,
-          "lon": -73.9366995
-        },
-        {
-          "bbl": "4004280001",
-          "lat": 40.7497667,
-          "lon": -73.9430621
-        },
-        {
-          "bbl": "4004430014",
-          "lat": 40.7506799,
-          "lon": -73.9473166
-        },
-        {
-          "bbl": "4011790001",
-          "lat": 40.7530989,
-          "lon": -73.9056594
-        },
-        {
-          "bbl": "4011790007",
-          "lat": 40.753052,
-          "lon": -73.9053202
-        },
-        {
-          "bbl": "4011800027",
-          "lat": 40.7533283,
-          "lon": -73.9042189
-        },
-        {
-          "bbl": "4011810001",
-          "lat": 40.7521229,
-          "lon": -73.9036757
-        },
-        {
-          "bbl": "4011810009",
-          "lat": 40.752233,
-          "lon": -73.9040798
-        },
-        {
-          "bbl": "4011810011",
-          "lat": 40.7522989,
-          "lon": -73.9040905
-        },
-        {
-          "bbl": "4011810012",
-          "lat": 40.7523675,
-          "lon": -73.9040579
-        }
-      ],
-      "point": {
-        "bbl": "4000280012",
-        "lat": 40.7459455,
-        "lon": -73.9543541
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2026Q0210",
-      "project_name": "Atlantic Avenue Demapping",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 25,
-      "unique_exact_bbl_count": 25,
-      "exact_bbl_keys": [
-        "4100010001",
-        "4100020001",
-        "4100020005",
-        "4100020010",
-        "4100020013",
-        "4100020015",
-        "4100020017",
-        "4100020020",
-        "4100020021",
-        "4100020022",
-        "4100020023",
-        "4100020024",
-        "4100020025",
-        "4100020122",
-        "4100040025",
-        "4100040026",
-        "4100040028",
-        "4100040029",
-        "4100040030",
-        "4100040032",
-        "4100040037",
-        "4100040039",
-        "4100040041",
-        "4100040042",
-        "4100040044"
-      ],
-      "matched_centroid_count": 25,
-      "unique_matched_centroid_count": 25,
-      "matched_centroids": [
-        {
-          "bbl": "4100010001",
-          "lat": 40.6986302,
-          "lon": -73.8041122
-        },
-        {
-          "bbl": "4100020001",
-          "lat": 40.6987992,
-          "lon": -73.8034517
-        },
-        {
-          "bbl": "4100020005",
-          "lat": 40.699337,
-          "lon": -73.803342
-        },
-        {
-          "bbl": "4100020010",
-          "lat": 40.6992599,
-          "lon": -73.8031907
-        },
-        {
-          "bbl": "4100020013",
-          "lat": 40.6991254,
-          "lon": -73.8031803
-        },
-        {
-          "bbl": "4100020015",
-          "lat": 40.6990045,
-          "lon": -73.8031085
-        },
-        {
-          "bbl": "4100020017",
-          "lat": 40.6988836,
-          "lon": -73.8030404
-        },
-        {
-          "bbl": "4100020020",
-          "lat": 40.6987847,
-          "lon": -73.8029938
-        },
-        {
-          "bbl": "4100020021",
-          "lat": 40.698727,
-          "lon": -73.8029651
-        },
-        {
-          "bbl": "4100020022",
-          "lat": 40.6986748,
-          "lon": -73.80294
-        },
-        {
-          "bbl": "4100020023",
-          "lat": 40.6985649,
-          "lon": -73.8028898
-        },
-        {
-          "bbl": "4100020024",
-          "lat": 40.6985128,
-          "lon": -73.8028647
-        },
-        {
-          "bbl": "4100020025",
-          "lat": 40.6984578,
-          "lon": -73.8028397
-        },
-        {
-          "bbl": "4100020122",
-          "lat": 40.6986199,
-          "lon": -73.8029149
-        },
-        {
-          "bbl": "4100040025",
-          "lat": 40.6966332,
-          "lon": -73.8114424
-        },
-        {
-          "bbl": "4100040026",
-          "lat": 40.6966522,
-          "lon": -73.8112945
-        },
-        {
-          "bbl": "4100040028",
-          "lat": 40.696674,
-          "lon": -73.8111791
-        },
-        {
-          "bbl": "4100040029",
-          "lat": 40.6967013,
-          "lon": -73.811096
-        },
-        {
-          "bbl": "4100040030",
-          "lat": 40.6967395,
-          "lon": -73.8109769
-        },
-        {
-          "bbl": "4100040032",
-          "lat": 40.6968051,
-          "lon": -73.8107712
-        },
-        {
-          "bbl": "4100040037",
-          "lat": 40.696591,
-          "lon": -73.8108259
-        },
-        {
-          "bbl": "4100040039",
-          "lat": 40.6965086,
-          "lon": -73.810772
-        },
-        {
-          "bbl": "4100040041",
-          "lat": 40.6964234,
-          "lon": -73.8107182
-        },
-        {
-          "bbl": "4100040042",
-          "lat": 40.6963328,
-          "lon": -73.8106715
-        },
-        {
-          "bbl": "4100040044",
-          "lat": 40.6962448,
-          "lon": -73.8106033
-        }
-      ],
-      "point": {
-        "bbl": "4100010001",
-        "lat": 40.6986302,
-        "lon": -73.8041122
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2025M0395",
-      "project_name": "Herald Center Signage Text Amendment and SP",
-      "mapped": true,
-      "method": "single_bbl_centroid",
-      "unmapped_reason": null,
-      "exact_bbl_count": 1,
-      "unique_exact_bbl_count": 1,
-      "exact_bbl_keys": [
-        "1008097502"
-      ],
-      "matched_centroid_count": 1,
-      "unique_matched_centroid_count": 1,
-      "matched_centroids": [
-        {
-          "bbl": "1008097502",
-          "lat": 40.7495688,
-          "lon": -73.9884219
-        }
-      ],
-      "point": {
-        "bbl": "1008097502",
-        "lat": 40.7495688,
-        "lon": -73.9884219
-      },
-      "point_role": "single_bbl_centroid",
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
@@ -1940,439 +1333,639 @@
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
-      "project_id": "2026K0233",
-      "project_name": "240 Nassau Street",
+      "project_id": "2024K0240",
+      "project_name": "289 Kent Avenue Rezoning",
       "mapped": true,
       "method": "multi_bbl_anchor",
       "unmapped_reason": null,
-      "exact_bbl_count": 2,
-      "unique_exact_bbl_count": 2,
+      "exact_bbl_count": 7,
+      "unique_exact_bbl_count": 7,
       "exact_bbl_keys": [
-        "3001100025",
-        "3001110001"
+        "3024030001",
+        "3024030015",
+        "3024030031",
+        "3024030033",
+        "3024030037",
+        "3024030041",
+        "3024037501"
       ],
-      "matched_centroid_count": 2,
-      "unique_matched_centroid_count": 2,
+      "matched_centroid_count": 7,
+      "unique_matched_centroid_count": 7,
       "matched_centroids": [
         {
-          "bbl": "3001100025",
-          "lat": 40.6980489,
-          "lon": -73.9819394
+          "bbl": "3024030001",
+          "lat": 40.7150135,
+          "lon": -73.9662432
         },
         {
-          "bbl": "3001110001",
-          "lat": 40.6978511,
-          "lon": -73.9811208
+          "bbl": "3024030015",
+          "lat": 40.7151396,
+          "lon": -73.9658211
+        },
+        {
+          "bbl": "3024030031",
+          "lat": 40.7145823,
+          "lon": -73.965338
+        },
+        {
+          "bbl": "3024030033",
+          "lat": 40.714467,
+          "lon": -73.9652226
+        },
+        {
+          "bbl": "3024030037",
+          "lat": 40.7147196,
+          "lon": -73.9656337
+        },
+        {
+          "bbl": "3024030041",
+          "lat": 40.714791,
+          "lon": -73.9658934
+        },
+        {
+          "bbl": "3024037501",
+          "lat": 40.7149528,
+          "lon": -73.9653054
         }
       ],
       "point": {
-        "bbl": "3001100025",
-        "lat": 40.6980489,
-        "lon": -73.9819394
+        "bbl": "3024030001",
+        "lat": 40.7150135,
+        "lon": -73.9662432
       },
       "point_role": "existence_proof",
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
-      "project_id": "2024K0196",
-      "project_name": "132 Melrose Street Rezoning",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 5,
-      "unique_exact_bbl_count": 5,
-      "exact_bbl_keys": [
-        "3031620019",
-        "3031620020",
-        "3031620021",
-        "3031620022",
-        "3031620023"
-      ],
-      "matched_centroid_count": 5,
-      "unique_matched_centroid_count": 5,
-      "matched_centroids": [
-        {
-          "bbl": "3031620019",
-          "lat": 40.6993701,
-          "lon": -73.9328413
-        },
-        {
-          "bbl": "3031620020",
-          "lat": 40.6994058,
-          "lon": -73.9327583
-        },
-        {
-          "bbl": "3031620021",
-          "lat": 40.6994304,
-          "lon": -73.9326861
-        },
-        {
-          "bbl": "3031620022",
-          "lat": 40.6994578,
-          "lon": -73.9326284
-        },
-        {
-          "bbl": "3031620023",
-          "lat": 40.6994907,
-          "lon": -73.9325599
-        }
-      ],
-      "point": {
-        "bbl": "3031620019",
-        "lat": 40.6993701,
-        "lon": -73.9328413
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2023Q0303",
-      "project_name": "165-25 Union Turnpike Rezoning",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 11,
-      "unique_exact_bbl_count": 11,
-      "exact_bbl_keys": [
-        "4069730017",
-        "4069730018",
-        "4069730019",
-        "4069730021",
-        "4069730023",
-        "4069730025",
-        "4069730027",
-        "4069730029",
-        "4069730031",
-        "4069730032",
-        "4069730033"
-      ],
-      "matched_centroid_count": 11,
-      "unique_matched_centroid_count": 11,
-      "matched_centroids": [
-        {
-          "bbl": "4069730017",
-          "lat": 40.7227453,
-          "lon": -73.8022699
-        },
-        {
-          "bbl": "4069730018",
-          "lat": 40.722608,
-          "lon": -73.8022415
-        },
-        {
-          "bbl": "4069730019",
-          "lat": 40.7224735,
-          "lon": -73.8022202
-        },
-        {
-          "bbl": "4069730021",
-          "lat": 40.7225781,
-          "lon": -73.8024003
-        },
-        {
-          "bbl": "4069730023",
-          "lat": 40.7225481,
-          "lon": -73.8025375
-        },
-        {
-          "bbl": "4069730025",
-          "lat": 40.7225154,
-          "lon": -73.8026783
-        },
-        {
-          "bbl": "4069730027",
-          "lat": 40.722318,
-          "lon": -73.8027871
-        },
-        {
-          "bbl": "4069730029",
-          "lat": 40.7222881,
-          "lon": -73.8029279
-        },
-        {
-          "bbl": "4069730031",
-          "lat": 40.7222361,
-          "lon": -73.8030255
-        },
-        {
-          "bbl": "4069730032",
-          "lat": 40.7222691,
-          "lon": -73.8031011
-        },
-        {
-          "bbl": "4069730033",
-          "lat": 40.7222172,
-          "lon": -73.8032131
-        }
-      ],
-      "point": {
-        "bbl": "4069730017",
-        "lat": 40.7227453,
-        "lon": -73.8022699
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2025K0154",
-      "project_name": "1166 Bedford Avenue Rezoning",
+      "project_id": "2025K0306",
+      "project_name": "1900 Shore Parkway Rezoning",
       "mapped": true,
       "method": "multi_bbl_anchor",
       "unmapped_reason": null,
       "exact_bbl_count": 3,
       "unique_exact_bbl_count": 3,
       "exact_bbl_keys": [
-        "3019900029",
-        "3019900030",
-        "3019900040"
+        "3069430163",
+        "3069430242",
+        "3069430427"
       ],
       "matched_centroid_count": 3,
       "unique_matched_centroid_count": 3,
       "matched_centroids": [
         {
-          "bbl": "3019900029",
-          "lat": 40.684032,
-          "lon": -73.9545191
+          "bbl": "3069430163",
+          "lat": 40.5888929,
+          "lon": -73.9955282
         },
         {
-          "bbl": "3019900030",
-          "lat": 40.6839111,
-          "lon": -73.9543101
+          "bbl": "3069430242",
+          "lat": 40.5880558,
+          "lon": -73.9972961
         },
         {
-          "bbl": "3019900040",
-          "lat": 40.683752,
-          "lon": -73.9544616
+          "bbl": "3069430427",
+          "lat": 40.5872433,
+          "lon": -73.9991287
         }
       ],
       "point": {
-        "bbl": "3019900029",
-        "lat": 40.684032,
-        "lon": -73.9545191
+        "bbl": "3069430163",
+        "lat": 40.5888929,
+        "lon": -73.9955282
       },
       "point_role": "existence_proof",
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     },
     {
-      "project_id": "2024K0421",
-      "project_name": "2233 Flatbush Avenue Rezoning",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 11,
-      "unique_exact_bbl_count": 11,
-      "exact_bbl_keys": [
-        "3084870001",
-        "3084870007",
-        "3084870016",
-        "3084870017",
-        "3084870019",
-        "3084870020",
-        "3084870021",
-        "3084870022",
-        "3084870023",
-        "3084870024",
-        "3084870026"
-      ],
-      "matched_centroid_count": 11,
-      "unique_matched_centroid_count": 11,
-      "matched_centroids": [
-        {
-          "bbl": "3084870001",
-          "lat": 40.6155393,
-          "lon": -73.9286754
-        },
-        {
-          "bbl": "3084870007",
-          "lat": 40.6158633,
-          "lon": -73.9289632
-        },
-        {
-          "bbl": "3084870016",
-          "lat": 40.616105,
-          "lon": -73.9291863
-        },
-        {
-          "bbl": "3084870017",
-          "lat": 40.6161791,
-          "lon": -73.9291934
-        },
-        {
-          "bbl": "3084870019",
-          "lat": 40.6162505,
-          "lon": -73.9292005
-        },
-        {
-          "bbl": "3084870020",
-          "lat": 40.6163164,
-          "lon": -73.9292076
-        },
-        {
-          "bbl": "3084870021",
-          "lat": 40.6162229,
-          "lon": -73.9289664
-        },
-        {
-          "bbl": "3084870022",
-          "lat": 40.6162256,
-          "lon": -73.9288836
-        },
-        {
-          "bbl": "3084870023",
-          "lat": 40.616231,
-          "lon": -73.9288043
-        },
-        {
-          "bbl": "3084870024",
-          "lat": 40.6162365,
-          "lon": -73.9287035
-        },
-        {
-          "bbl": "3084870026",
-          "lat": 40.6159977,
-          "lon": -73.9287397
-        }
-      ],
-      "point": {
-        "bbl": "3084870001",
-        "lat": 40.6155393,
-        "lon": -73.9286754
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2022Q0449",
-      "project_name": "63-02 Fresh Pond Road Rezoning",
-      "mapped": true,
-      "method": "multi_bbl_anchor",
-      "unmapped_reason": null,
-      "exact_bbl_count": 14,
-      "unique_exact_bbl_count": 14,
-      "exact_bbl_keys": [
-        "4035210037",
-        "4035210045",
-        "4035210046",
-        "4035210047",
-        "4035210049",
-        "4035220019",
-        "4035220020",
-        "4035220023",
-        "4035220026",
-        "4035220027",
-        "4035220028",
-        "4035220029",
-        "4035220030",
-        "4035220031"
-      ],
-      "matched_centroid_count": 14,
-      "unique_matched_centroid_count": 14,
-      "matched_centroids": [
-        {
-          "bbl": "4035210037",
-          "lat": 40.7123571,
-          "lon": -73.9007609
-        },
-        {
-          "bbl": "4035210045",
-          "lat": 40.7121045,
-          "lon": -73.9006278
-        },
-        {
-          "bbl": "4035210046",
-          "lat": 40.7120413,
-          "lon": -73.9005954
-        },
-        {
-          "bbl": "4035210047",
-          "lat": 40.7119782,
-          "lon": -73.9005631
-        },
-        {
-          "bbl": "4035210049",
-          "lat": 40.711915,
-          "lon": -73.9005307
-        },
-        {
-          "bbl": "4035220019",
-          "lat": 40.7115364,
-          "lon": -73.9006827
-        },
-        {
-          "bbl": "4035220020",
-          "lat": 40.7116297,
-          "lon": -73.9006249
-        },
-        {
-          "bbl": "4035220023",
-          "lat": 40.7116899,
-          "lon": -73.900412
-        },
-        {
-          "bbl": "4035220026",
-          "lat": 40.7115828,
-          "lon": -73.9004085
-        },
-        {
-          "bbl": "4035220027",
-          "lat": 40.7115169,
-          "lon": -73.9003762
-        },
-        {
-          "bbl": "4035220028",
-          "lat": 40.7114674,
-          "lon": -73.9003005
-        },
-        {
-          "bbl": "4035220029",
-          "lat": 40.7114015,
-          "lon": -73.9002681
-        },
-        {
-          "bbl": "4035220030",
-          "lat": 40.7113384,
-          "lon": -73.9002358
-        },
-        {
-          "bbl": "4035220031",
-          "lat": 40.7112752,
-          "lon": -73.9002034
-        }
-      ],
-      "point": {
-        "bbl": "4035210037",
-        "lat": 40.7123571,
-        "lon": -73.9007609
-      },
-      "point_role": "existence_proof",
-      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
-    },
-    {
-      "project_id": "2023K0183",
-      "project_name": "2950 West 24th St Rezoning",
+      "project_id": "2025K0470",
+      "project_name": "Mill Basin Plaza Special Permit and WPAA Auths",
       "mapped": true,
       "method": "single_bbl_centroid",
       "unmapped_reason": null,
       "exact_bbl_count": 1,
       "unique_exact_bbl_count": 1,
       "exact_bbl_keys": [
-        "3070550013"
+        "3084700143"
       ],
       "matched_centroid_count": 1,
       "unique_matched_centroid_count": 1,
       "matched_centroids": [
         {
-          "bbl": "3070550013",
-          "lat": 40.5745977,
-          "lon": -73.9914328
+          "bbl": "3084700143",
+          "lat": 40.612361,
+          "lon": -73.9167031
         }
       ],
       "point": {
-        "bbl": "3070550013",
-        "lat": 40.5745977,
-        "lon": -73.9914328
+        "bbl": "3084700143",
+        "lat": 40.612361,
+        "lon": -73.9167031
       },
       "point_role": "single_bbl_centroid",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2026K0322",
+      "project_name": "1571 McDonald Avenue Rezoning II",
+      "mapped": false,
+      "method": "unmapped",
+      "unmapped_reason": "no_retained_bbl",
+      "exact_bbl_count": 0,
+      "unique_exact_bbl_count": 0,
+      "exact_bbl_keys": [],
+      "matched_centroid_count": 0,
+      "unique_matched_centroid_count": 0,
+      "matched_centroids": [],
+      "point": null,
+      "point_role": null,
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2023K0357",
+      "project_name": "East 56th Street Demapping",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 12,
+      "unique_exact_bbl_count": 12,
+      "exact_bbl_keys": [
+        "3079320181",
+        "3079320183",
+        "3079320197",
+        "3079320199",
+        "3079320201",
+        "3079320203",
+        "3079320206",
+        "3079320207",
+        "3079320208",
+        "3079320210",
+        "3079320212",
+        "3079490204"
+      ],
+      "matched_centroid_count": 12,
+      "unique_matched_centroid_count": 12,
+      "matched_centroids": [
+        {
+          "bbl": "3079320181",
+          "lat": 40.6401615,
+          "lon": -73.9223975
+        },
+        {
+          "bbl": "3079320183",
+          "lat": 40.6398845,
+          "lon": -73.9227761
+        },
+        {
+          "bbl": "3079320197",
+          "lat": 40.6394153,
+          "lon": -73.9229532
+        },
+        {
+          "bbl": "3079320199",
+          "lat": 40.6393082,
+          "lon": -73.9229426
+        },
+        {
+          "bbl": "3079320201",
+          "lat": 40.6391847,
+          "lon": -73.9229283
+        },
+        {
+          "bbl": "3079320203",
+          "lat": 40.6393602,
+          "lon": -73.9227227
+        },
+        {
+          "bbl": "3079320206",
+          "lat": 40.6394672,
+          "lon": -73.9226685
+        },
+        {
+          "bbl": "3079320207",
+          "lat": 40.6395221,
+          "lon": -73.9225856
+        },
+        {
+          "bbl": "3079320208",
+          "lat": 40.6395824,
+          "lon": -73.9224918
+        },
+        {
+          "bbl": "3079320210",
+          "lat": 40.6396482,
+          "lon": -73.9223909
+        },
+        {
+          "bbl": "3079320212",
+          "lat": 40.6397332,
+          "lon": -73.9222575
+        },
+        {
+          "bbl": "3079490204",
+          "lat": 40.6391521,
+          "lon": -73.9235445
+        }
+      ],
+      "point": {
+        "bbl": "3079320181",
+        "lat": 40.6401615,
+        "lon": -73.9223975
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2025K0232",
+      "project_name": "900 60th Street Rezoning",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 5,
+      "unique_exact_bbl_count": 5,
+      "exact_bbl_keys": [
+        "3057150001",
+        "3057150002",
+        "3057150003",
+        "3057150004",
+        "3057150006"
+      ],
+      "matched_centroid_count": 5,
+      "unique_matched_centroid_count": 5,
+      "matched_centroids": [
+        {
+          "bbl": "3057150001",
+          "lat": 40.6335176,
+          "lon": -74.0076237
+        },
+        {
+          "bbl": "3057150002",
+          "lat": 40.6335615,
+          "lon": -74.0075768
+        },
+        {
+          "bbl": "3057150003",
+          "lat": 40.6336027,
+          "lon": -74.0075336
+        },
+        {
+          "bbl": "3057150004",
+          "lat": 40.6336658,
+          "lon": -74.0074651
+        },
+        {
+          "bbl": "3057150006",
+          "lat": 40.6337536,
+          "lon": -74.0071913
+        }
+      ],
+      "point": {
+        "bbl": "3057150001",
+        "lat": 40.6335176,
+        "lon": -74.0076237
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2025M0338",
+      "project_name": "Imperial Theatre Text Amendment",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 6,
+      "unique_exact_bbl_count": 6,
+      "exact_bbl_keys": [
+        "1010170001",
+        "1010170002",
+        "1010170004",
+        "1010170010",
+        "1010170011",
+        "1010170057"
+      ],
+      "matched_centroid_count": 6,
+      "unique_matched_centroid_count": 6,
+      "matched_centroids": [
+        {
+          "bbl": "1010170001",
+          "lat": 40.7592851,
+          "lon": -73.9876911
+        },
+        {
+          "bbl": "1010170002",
+          "lat": 40.759233,
+          "lon": -73.9879979
+        },
+        {
+          "bbl": "1010170004",
+          "lat": 40.7593263,
+          "lon": -73.9879329
+        },
+        {
+          "bbl": "1010170010",
+          "lat": 40.7591176,
+          "lon": -73.9872218
+        },
+        {
+          "bbl": "1010170011",
+          "lat": 40.7588843,
+          "lon": -73.9871425
+        },
+        {
+          "bbl": "1010170057",
+          "lat": 40.7592769,
+          "lon": -73.987312
+        }
+      ],
+      "point": {
+        "bbl": "1010170001",
+        "lat": 40.7592851,
+        "lon": -73.9876911
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2025X0283",
+      "project_name": "Fordham Landing South Rezoning",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 3,
+      "unique_exact_bbl_count": 3,
+      "exact_bbl_keys": [
+        "2032310001",
+        "2032310264",
+        "2032310265"
+      ],
+      "matched_centroid_count": 3,
+      "unique_matched_centroid_count": 3,
+      "matched_centroids": [
+        {
+          "bbl": "2032310001",
+          "lat": 40.8627695,
+          "lon": -73.9121415
+        },
+        {
+          "bbl": "2032310264",
+          "lat": 40.8617913,
+          "lon": -73.9143047
+        },
+        {
+          "bbl": "2032310265",
+          "lat": 40.8610015,
+          "lon": -73.9152059
+        }
+      ],
+      "point": {
+        "bbl": "2032310001",
+        "lat": 40.8627695,
+        "lon": -73.9121415
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2024Q0325",
+      "project_name": "2-28 Beach 87th Street Rezoning",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 12,
+      "unique_exact_bbl_count": 12,
+      "exact_bbl_keys": [
+        "4161200005",
+        "4161200006",
+        "4161200010",
+        "4161200012",
+        "4161200014",
+        "4161200016",
+        "4161200065",
+        "4161200068",
+        "4161200069",
+        "4161200070",
+        "4161200071",
+        "4161200072"
+      ],
+      "matched_centroid_count": 12,
+      "unique_matched_centroid_count": 12,
+      "matched_centroids": [
+        {
+          "bbl": "4161200005",
+          "lat": 40.5878827,
+          "lon": -73.8119691
+        },
+        {
+          "bbl": "4161200006",
+          "lat": 40.5880694,
+          "lon": -73.811983
+        },
+        {
+          "bbl": "4161200010",
+          "lat": 40.5882753,
+          "lon": -73.812004
+        },
+        {
+          "bbl": "4161200012",
+          "lat": 40.5884126,
+          "lon": -73.812018
+        },
+        {
+          "bbl": "4161200014",
+          "lat": 40.588558,
+          "lon": -73.8120032
+        },
+        {
+          "bbl": "4161200016",
+          "lat": 40.5888212,
+          "lon": -73.8118261
+        },
+        {
+          "bbl": "4161200065",
+          "lat": 40.5887386,
+          "lon": -73.8116463
+        },
+        {
+          "bbl": "4161200068",
+          "lat": 40.5886398,
+          "lon": -73.8116753
+        },
+        {
+          "bbl": "4161200069",
+          "lat": 40.5885657,
+          "lon": -73.8116612
+        },
+        {
+          "bbl": "4161200070",
+          "lat": 40.5884778,
+          "lon": -73.8116578
+        },
+        {
+          "bbl": "4161200071",
+          "lat": 40.5883955,
+          "lon": -73.8116508
+        },
+        {
+          "bbl": "4161200072",
+          "lat": 40.5881237,
+          "lon": -73.8116228
+        }
+      ],
+      "point": {
+        "bbl": "4161200005",
+        "lat": 40.5878827,
+        "lon": -73.8119691
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2024Q0324",
+      "project_name": "32-02 Linden Place Rezoning",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 7,
+      "unique_exact_bbl_count": 7,
+      "exact_bbl_keys": [
+        "4049500040",
+        "4049500042",
+        "4049500043",
+        "4049500046",
+        "4049500047",
+        "4049500048",
+        "4049500070"
+      ],
+      "matched_centroid_count": 7,
+      "unique_matched_centroid_count": 7,
+      "matched_centroids": [
+        {
+          "bbl": "4049500040",
+          "lat": 40.7668189,
+          "lon": -73.8323771
+        },
+        {
+          "bbl": "4049500042",
+          "lat": 40.7669013,
+          "lon": -73.8324094
+        },
+        {
+          "bbl": "4049500043",
+          "lat": 40.7670249,
+          "lon": -73.8324596
+        },
+        {
+          "bbl": "4049500046",
+          "lat": 40.7671348,
+          "lon": -73.8325027
+        },
+        {
+          "bbl": "4049500047",
+          "lat": 40.7671952,
+          "lon": -73.8325278
+        },
+        {
+          "bbl": "4049500048",
+          "lat": 40.7672771,
+          "lon": -73.8322099
+        },
+        {
+          "bbl": "4049500070",
+          "lat": 40.7668402,
+          "lon": -73.8318969
+        }
+      ],
+      "point": {
+        "bbl": "4049500040",
+        "lat": 40.7668189,
+        "lon": -73.8323771
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2022Q0160",
+      "project_name": "10-86 Cypress Avenue Rezoning",
+      "mapped": true,
+      "method": "multi_bbl_anchor",
+      "unmapped_reason": null,
+      "exact_bbl_count": 8,
+      "unique_exact_bbl_count": 8,
+      "exact_bbl_keys": [
+        "4035550058",
+        "4035550060",
+        "4035550066",
+        "4035560048",
+        "4035560049",
+        "4035560051",
+        "4035560053",
+        "4035560054"
+      ],
+      "matched_centroid_count": 8,
+      "unique_matched_centroid_count": 8,
+      "matched_centroids": [
+        {
+          "bbl": "4035550058",
+          "lat": 40.6963384,
+          "lon": -73.9004025
+        },
+        {
+          "bbl": "4035550060",
+          "lat": 40.6962065,
+          "lon": -73.9002512
+        },
+        {
+          "bbl": "4035550066",
+          "lat": 40.6960749,
+          "lon": -73.9003956
+        },
+        {
+          "bbl": "4035560048",
+          "lat": 40.6959812,
+          "lon": -73.8999775
+        },
+        {
+          "bbl": "4035560049",
+          "lat": 40.6959372,
+          "lon": -73.8998946
+        },
+        {
+          "bbl": "4035560051",
+          "lat": 40.6958685,
+          "lon": -73.899837
+        },
+        {
+          "bbl": "4035560053",
+          "lat": 40.6958163,
+          "lon": -73.8997794
+        },
+        {
+          "bbl": "4035560054",
+          "lat": 40.6957669,
+          "lon": -73.8997181
+        }
+      ],
+      "point": {
+        "bbl": "4035550058",
+        "lat": 40.6963384,
+        "lon": -73.9004025
+      },
+      "point_role": "existence_proof",
+      "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
+    },
+    {
+      "project_id": "2025Q0494",
+      "project_name": "120-27 84th Avenue Rezoning",
+      "mapped": false,
+      "method": "unmapped",
+      "unmapped_reason": "no_retained_bbl",
+      "exact_bbl_count": 0,
+      "unique_exact_bbl_count": 0,
+      "exact_bbl_keys": [],
+      "matched_centroid_count": 0,
+      "unique_matched_centroid_count": 0,
+      "matched_centroids": [],
+      "point": null,
+      "point_role": null,
       "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1"
     }
   ],

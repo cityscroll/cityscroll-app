@@ -1,7 +1,7 @@
 {
   "gate": {
     "current_zap_behavior_changed": false,
-    "rationale": "195 exact project joins were established and 180 add milestone history beyond the retained ZAP environmental milestone/date; only bounded joined facts are retained.",
+    "rationale": "158 exact project joins were established and 147 add milestone history beyond the retained ZAP environmental milestone/date; only bounded joined facts are retained.",
     "resident_ingestion_committed": false,
     "result": "GO",
     "thresholds": {
@@ -998,8 +998,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-06-25T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 4
       },
       "zap_project_id": "2024M0278"
@@ -1826,66 +1826,6 @@
       "zap_project_id": "2019K0301"
     },
     {
-      "ceqr_key": "21DCP149X",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2021-03-30T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-7t64.vkfa-xnd5"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Bronx",
-        "lead_agency": "Department of City Planning",
-        "project_name": "Hakimi Residence - 4675 Dodgewood Road - SNAD  Project Name  4/19/2021  System Target Certification Date  ---  Hakimi Residence - 4675 Dodgewood Rd - SNAD",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-y4e2.qvbf-cjt3",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/15519-21DCP149X",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2026X0282"
-    },
-    {
       "ceqr_key": "21DCP164M",
       "join": {
         "ceqr_source_field": "ceqr",
@@ -2434,8 +2374,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-04-07T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2019K0383"
@@ -2650,79 +2590,6 @@
         "incremental_milestone_rows": 8
       },
       "zap_project_id": "2020M0429"
-    },
-    {
-      "ceqr_key": "22DCP163X",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2022-04-05T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-f7vf_twh7~9yrn"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2022-06-01T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-9n2a.v2gu_f8tx"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Bronx",
-        "lead_agency": "Department of City Planning",
-        "project_name": "255 Soundview Avenue",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-paz3~56dm-r347",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/15033-22DCP163X",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 2
-      },
-      "zap_project_id": "2019X0255"
     },
     {
       "ceqr_key": "22HPD059M",
@@ -3989,8 +3856,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-06-17T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2022K0302"
@@ -4063,7 +3930,7 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-04-16T00:00:00.000",
+        "environmental_milestone_date": "2026-08-10T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2023K0148"
@@ -4495,8 +4362,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-06-05T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2020Q0353"
@@ -4568,8 +4435,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2024-03-01T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2020M0474"
@@ -5154,352 +5021,11 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EIS - DEIS Notice of Completion Issued",
-        "environmental_milestone_date": "2026-03-16T00:00:00.000",
+        "environmental_milestone": "EIS - Prepare and Review FEIS",
+        "environmental_milestone_date": "2026-08-17T00:00:00.000",
         "incremental_milestone_rows": 14
       },
       "zap_project_id": "2022K0430"
-    },
-    {
-      "ceqr_key": "24DCP132Q",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-07-11T00:00:00.000",
-            "milestone_name": "Scoping Meeting",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-bmg5-jivh~68ew"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-06-11T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-z39p~ei8y.wua8"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-06-11T00:00:00.000",
-            "milestone_name": "Positive Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-g8w4.pzuf_ad8r"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-06-11T00:00:00.000",
-            "milestone_name": "Notice of Scoping Meeting",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-d753.wdic-nt5j"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-06-11T00:00:00.000",
-            "milestone_name": "Draft Scope of Work",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-ykwk~fsb4-si7e"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-07-22T00:00:00.000",
-            "milestone_name": "Scope Comment Period End",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-zwsa-9pd9-cbmn"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-06-11T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-auaa~pjy9~wm3z"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-05-09T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-6hcw-3u8r_bgsr"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-03-14T00:00:00.000",
-            "milestone_name": "Final Scope of Work",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-snh8_dwfz~gfh4"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-03-14T00:00:00.000",
-            "milestone_name": "DEIS & Notice of Completion",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-hkdg.8xb6_hx7f"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-07-14T00:00:00.000",
-            "milestone_name": "DEIS Comment Period End",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-k4wx-i6g6~3j7r"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-06-18T00:00:00.000",
-            "milestone_name": "Notice of Public Hearing",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-hmbg_fc48.cb5s"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-07-02T00:00:00.000",
-            "milestone_name": "Public Hearing on DEIS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-pq8m-hc36_7r8e"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-08-01T00:00:00.000",
-            "milestone_name": "FEIS & Notice of Completion",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-k4yd~3iiz.z7hf"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-10-17T00:00:00.000",
-            "milestone_name": "Technical Memorandum",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-bn2j.quqw_j2uv"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Queens",
-        "lead_agency": "Department of City Planning",
-        "project_name": "Jamaica Neighborhood Plan",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-ac2n~zhpa-kyxj",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/16842-24DCP132Q",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 15
-      },
-      "zap_project_id": "2026Q0210"
-    },
-    {
-      "ceqr_key": "24DCP134K",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-05-14T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-2rn8~4ahx_hqxk"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-08-19T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-7yra.ua8x~gim3"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-15T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-gvnk-nrvj.4kub"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-15T00:00:00.000",
-            "milestone_name": "Negative Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-gagh-k2s8.2r8g"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Brooklyn",
-        "lead_agency": "Department of City Planning",
-        "project_name": "2950 West 24th Street Rezoning",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-ypda-hn2n_x3h5",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/16536-24DCP134K",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-01-12T00:00:00.000",
-        "incremental_milestone_rows": 4
-      },
-      "zap_project_id": "2023K0183"
     },
     {
       "ceqr_key": "24DCP135M",
@@ -5633,105 +5159,6 @@
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2024M0372"
-    },
-    {
-      "ceqr_key": "24DCP144K",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-06-20T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-rmrk~gvzx.avz5"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2024-08-05T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-v3xt_dfj2-djym"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-02-26T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-zrph-znen-fwwq"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-03-02T00:00:00.000",
-            "milestone_name": "Negative Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-bwfx_jrq6_q4b3"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Brooklyn",
-        "lead_agency": "Department of City Planning",
-        "project_name": "862-868 Kent Avenue",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-79db_yj6z-sku3",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/14388-24DCP144K",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2025-12-29T00:00:00.000",
-        "incremental_milestone_rows": 4
-      },
-      "zap_project_id": "2019K0190"
     },
     {
       "ceqr_key": "25DCP005Q",
@@ -5873,8 +5300,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-04-22T00:00:00.000",
+        "environmental_milestone": "EAS - Review Filed EAS",
+        "environmental_milestone_date": "2026-08-31T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2023K0368"
@@ -6183,8 +5610,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-06-04T00:00:00.000",
+        "environmental_milestone": "EAS - Review Filed EAS",
+        "environmental_milestone_date": "2026-09-03T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2023K0357"
@@ -6347,105 +5774,6 @@
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2023M0200"
-    },
-    {
-      "ceqr_key": "25DCP053Q",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-01-16T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-ayiv-gxkr~fw7w"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-11-28T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-wny7~c38w-y22w"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-05T00:00:00.000",
-            "milestone_name": "Negative Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-yy7m~wjzt.vqe6"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-02T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-was9~rf4i~gk28"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Queens",
-        "lead_agency": "Department of City Planning",
-        "project_name": "164th Street Rezoning",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-adkm~45ak~rcdj",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/16872-25DCP053Q",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2025-12-30T00:00:00.000",
-        "incremental_milestone_rows": 4
-      },
-      "zap_project_id": "2024Q0164"
     },
     {
       "ceqr_key": "25DCP057M",
@@ -6751,178 +6079,6 @@
       "zap_project_id": "2025Y0279"
     },
     {
-      "ceqr_key": "25DCP082Q",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-06-03T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-uccb_rjjr.5tk3"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-12-15T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-syda.jm3p-cgsh"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-15T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-j53h_k4fk.6e76"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-21T00:00:00.000",
-            "milestone_name": "Negative Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-byr5~dxhj~jfn8"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Queens",
-        "lead_agency": "Department of City Planning",
-        "project_name": "50-20 108th Street Rezoning",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-g37p~tj7i_4jth",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/16890-25DCP082Q",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-01-08T00:00:00.000",
-        "incremental_milestone_rows": 4
-      },
-      "zap_project_id": "2024Q0113"
-    },
-    {
-      "ceqr_key": "25DCP085X",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-06-10T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-8kia_akb6.nc6r"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-16T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-7z4z.2urq-hkmh"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Bronx",
-        "lead_agency": "Department of City Planning",
-        "project_name": "1160 Pugsley Avenue Rezoning",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-szdt-idzh~zg3x",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17085-25DCP085X",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Draft EAS",
-        "environmental_milestone_date": "2025-04-17T00:00:00.000",
-        "incremental_milestone_rows": 2
-      },
-      "zap_project_id": "2024X0132"
-    },
-    {
       "ceqr_key": "25DCP087M",
       "join": {
         "ceqr_source_field": "ceqr",
@@ -6967,52 +6123,6 @@
         "incremental_milestone_rows": 0
       },
       "zap_project_id": "2025M0464"
-    },
-    {
-      "ceqr_key": "25FDO001R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "NYC Fire Department",
-        "project_name": "1688 Victory Boulevard",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-xupv_qunu_kvp5",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17456-25FDO001R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 0
-      },
-      "zap_project_id": "2026R0127"
     },
     {
       "ceqr_key": "25HPD040X",
@@ -7391,8 +6501,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-05-08T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2024K0233"
@@ -7525,7 +6635,7 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-06-26T00:00:00.000",
+        "environmental_milestone_date": "2026-10-02T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2023Q0328"
@@ -7654,151 +6764,6 @@
         "incremental_milestone_rows": 6
       },
       "zap_project_id": "2024K0444"
-    },
-    {
-      "ceqr_key": "26DCP016X",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-08-20T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-3fs8~rs46_zfyr"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-02-26T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-mxm2.b6m9-8b52"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-03-02T00:00:00.000",
-            "milestone_name": "Negative Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-3fpp-7j2c~qjhk"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-09-24T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-msmm-tquv_6gfz"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Bronx",
-        "lead_agency": "Department of City Planning",
-        "project_name": "815 Hutchinson River Parkway Rezoning",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-yw3h_q8yd_hyk3",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/15467-26DCP016X",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-02-25T00:00:00.000",
-        "incremental_milestone_rows": 4
-      },
-      "zap_project_id": "2021X0247"
-    },
-    {
-      "ceqr_key": "26DCP020K",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Brooklyn",
-        "lead_agency": "Department of City Planning",
-        "project_name": "476 Marcus Garvey Boulevard FRESH Store",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-vyu9.znvc~93eq",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17730-26DCP020K",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 0
-      },
-      "zap_project_id": "2024K0437"
     },
     {
       "ceqr_key": "26DCP023X",
@@ -8104,105 +7069,6 @@
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2023X0347"
-    },
-    {
-      "ceqr_key": "26DCP032M",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-09-25T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-rjiv~mhyk.k4eb"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-10-01T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-5afc~m7g4.fvw3"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-03-30T00:00:00.000",
-            "milestone_name": "Negative Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-bgra-fffy_4c8y"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-03-30T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-t54g~fvy6_thjh"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Manhattan",
-        "lead_agency": "Department of City Planning",
-        "project_name": "St. Augustine's Preservation and Redevelopment",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-e9iu~52gb.gtky",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/16360-26DCP032M",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-01-26T00:00:00.000",
-        "incremental_milestone_rows": 4
-      },
-      "zap_project_id": "2023M0116"
     },
     {
       "ceqr_key": "26DCP033M",
@@ -8621,71 +7487,11 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-04-30T00:00:00.000",
+        "environmental_milestone": "EAS - Prepare Filed EAS",
+        "environmental_milestone_date": "2026-09-25T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2024X0210"
-    },
-    {
-      "ceqr_key": "26DCP043R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-06-22T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-g3k6~uze4_ws6y"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "108 Scribner Avenue",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-m8i2-vqj2.eg58",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17807-26DCP043R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2025R0398"
     },
     {
       "ceqr_key": "26DCP044R",
@@ -8936,105 +7742,6 @@
         "incremental_milestone_rows": 4
       },
       "zap_project_id": "2024K0240"
-    },
-    {
-      "ceqr_key": "26DCP047K",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-10-23T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-sidt_dzwd~pvay"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-02-26T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-tjrj~7esj-sphx"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-11-28T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-sdeb.6y6z_cmv4"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-03-02T00:00:00.000",
-            "milestone_name": "Negative Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-f9jy~r5wt-ph7x"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Brooklyn",
-        "lead_agency": "Department of City Planning",
-        "project_name": "200 Kent Avenue Rezoning",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-xwt7_xqhm~6xpq",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17580-26DCP047K",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-02-26T00:00:00.000",
-        "incremental_milestone_rows": 4
-      },
-      "zap_project_id": "2024K0286"
     },
     {
       "ceqr_key": "26DCP048K",
@@ -9288,8 +7995,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-05-28T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2024K0369"
@@ -9361,8 +8068,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-03-25T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2022K0171"
@@ -9606,8 +8313,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-05-14T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2020M0383"
@@ -9684,79 +8391,6 @@
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2022K0416"
-    },
-    {
-      "ceqr_key": "26DCP061R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-11-14T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-ftbc_nv4h~zyfj"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-12-15T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-rt5d-kizd.w7im"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "198-208 Richmond Terrace",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-vyc5_q8ai-bqvp",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17158-26DCP061R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Draft EAS",
-        "environmental_milestone_date": "2025-05-12T00:00:00.000",
-        "incremental_milestone_rows": 2
-      },
-      "zap_project_id": "2024R0300"
     },
     {
       "ceqr_key": "26DCP063R",
@@ -10018,7 +8652,7 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-03-27T00:00:00.000",
+        "environmental_milestone_date": "2026-09-16T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2025M0115"
@@ -10175,79 +8809,6 @@
       "zap_project_id": "2024K0215"
     },
     {
-      "ceqr_key": "26DCP071R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-12-12T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-6xqd~d6kd.3em4"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-02-03T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-3dgj-d87c_big7"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "4450 Arthur Kill Road",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-8wis~28yh_4dci",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17489-26DCP071R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 2
-      },
-      "zap_project_id": "2025R0140"
-    },
-    {
       "ceqr_key": "26DCP072Q",
       "join": {
         "ceqr_source_field": "ceqr",
@@ -10302,7 +8863,7 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2025-12-22T00:00:00.000",
+        "environmental_milestone_date": "2026-09-16T00:00:00.000",
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2024Q0297"
@@ -10379,79 +8940,6 @@
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2024R0332"
-    },
-    {
-      "ceqr_key": "26DCP074Q",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2025-12-22T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-qt7u.4a2n.ey9y"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-15T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-bxqe-z83k~tqm9"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Queens",
-        "lead_agency": "Department of City Planning",
-        "project_name": "63-02 Fresh Pond Road Rezoning",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-4rnf.8mai_shpd",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/16438-26DCP074Q",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Draft EAS",
-        "environmental_milestone_date": "2025-09-29T00:00:00.000",
-        "incremental_milestone_rows": 2
-      },
-      "zap_project_id": "2022Q0449"
     },
     {
       "ceqr_key": "26DCP075Q",
@@ -10771,225 +9259,6 @@
       "zap_project_id": "2024K0294"
     },
     {
-      "ceqr_key": "26DCP082K",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-12T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-3sd9_eufw_7kai"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-15T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-9jt2.7c52.qf7j"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Brooklyn",
-        "lead_agency": "Department of City Planning",
-        "project_name": "1166 Bedford Avenue Rezoning",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-q8fy-69xk.z9vu",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17578-26DCP082K",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Draft EAS",
-        "environmental_milestone_date": "2025-11-12T00:00:00.000",
-        "incremental_milestone_rows": 2
-      },
-      "zap_project_id": "2025K0154"
-    },
-    {
-      "ceqr_key": "26DCP083X",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-03-16T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-8uci-nurv_m2x6"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-06-08T00:00:00.000",
-            "milestone_name": "Begin Additional Review",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-mcb8.53np-km6a"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-05-22T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-5rdr-z56u-3vvb"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Bronx",
-        "lead_agency": "Department of City Planning",
-        "project_name": "5204 Arlington Avenue - SNAD",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-at7s-uvdz~s6hm",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17911-26DCP083X",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 3
-      },
-      "zap_project_id": "2026X0274"
-    },
-    {
-      "ceqr_key": "26DCP084Q",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-02-03T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-y6vr_ib9r_rhfg"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Queens",
-        "lead_agency": "Department of City Planning",
-        "project_name": "Flushing Commons RD Modification",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-aiez_qfmr.2mnq",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17912-26DCP084Q",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2025Q0445"
-    },
-    {
       "ceqr_key": "26DCP085Q",
       "join": {
         "ceqr_source_field": "ceqr",
@@ -11061,112 +9330,6 @@
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2024Q0292"
-    },
-    {
-      "ceqr_key": "26DCP086R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "221 Benedict Road",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-uuyk_g6ga.nrmn",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17913-26DCP086R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 0
-      },
-      "zap_project_id": "2026R0142"
-    },
-    {
-      "ceqr_key": "26DCP087R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-03-16T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-7jng_32mi_5y2p"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "35 Douglas Court Renewal",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-nvzf_yffp~guug",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17914-26DCP087R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2026R0189"
     },
     {
       "ceqr_key": "26DCP088X",
@@ -11282,243 +9445,11 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-05-05T00:00:00.000",
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2023X0146"
-    },
-    {
-      "ceqr_key": "26DCP091Q",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-26T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-pjd2_ek7u.j82g"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-29T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-z9ce~672s.qzg8"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Queens",
-        "lead_agency": "Department of City Planning",
-        "project_name": "47-03 108th Street Rezoning",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-z7i2.ui24_8e2s",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17405-26DCP091Q",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Draft EAS",
-        "environmental_milestone_date": "2025-10-09T00:00:00.000",
-        "incremental_milestone_rows": 2
-      },
-      "zap_project_id": "2025Q0142"
-    },
-    {
-      "ceqr_key": "26DCP092R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-30T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-ufui~5pba~gm3r"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-06-01T00:00:00.000",
-            "milestone_name": "Negative Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-2jhv_gzn4.w5pz"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-04-13T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-8i6z.derj.hmcz"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-06-01T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-rbt3~h5fn_nncn"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "New Goodhue Center - 314 Lafayette Avenue",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-ik2i_mfmp-y5cs",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17582-26DCP092R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-05-28T00:00:00.000",
-        "incremental_milestone_rows": 4
-      },
-      "zap_project_id": "2024R0137"
-    },
-    {
-      "ceqr_key": "26DCP093R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-03-16T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-k5yp~7ya8-c27n"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "225 Howard Avenue",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-kzv5~hitd~iune",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17925-26DCP093R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
         "environmental_milestone": null,
         "environmental_milestone_date": null,
         "incremental_milestone_rows": 1
       },
-      "zap_project_id": "2025R0285"
+      "zap_project_id": "2023X0146"
     },
     {
       "ceqr_key": "26DCP094K",
@@ -11725,8 +9656,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-06-25T00:00:00.000",
+        "environmental_milestone": "EAS - Review Filed EAS",
+        "environmental_milestone_date": "2026-08-20T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2024M0194"
@@ -11858,170 +9789,11 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-03-26T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2025M0332"
-    },
-    {
-      "ceqr_key": "26DCP103K",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-02-17T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-nwcu.ndrx-5jy8"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-03-05T00:00:00.000",
-            "milestone_name": "Lead Agency Letter",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-4eje~h4id.fji8"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-04-13T00:00:00.000",
-            "milestone_name": "Negative Declaration",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-ef7k.8xpn.89cq"
-          },
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-04-13T00:00:00.000",
-            "milestone_name": "EAS",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-vjyu-tgp7_3zeh"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Brooklyn",
-        "lead_agency": "Department of City Planning",
-        "project_name": "95 Rockwell Place - Transit Bonus Authorization",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-628a-7z5k.e58r",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17674-26DCP103K",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-03-27T00:00:00.000",
-        "incremental_milestone_rows": 4
-      },
-      "zap_project_id": "2025K0419"
-    },
-    {
-      "ceqr_key": "26DCP104X",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-02-17T00:00:00.000",
-            "milestone_name": "Create CEQR Number",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-gbdx_hhpd~68kt"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Bronx",
-        "lead_agency": "Department of City Planning",
-        "project_name": "Montefiore LSCFD Update",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-xbi3_yqk5_n67z",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17851-26DCP104X",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-02-24T00:00:00.000",
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2025X0143"
     },
     {
       "ceqr_key": "26DCP106Q",
@@ -12077,8 +9849,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Draft EAS",
-        "environmental_milestone_date": "2026-04-01T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2024Q0325"
@@ -12138,7 +9910,7 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-06-08T00:00:00.000",
+        "environmental_milestone_date": "2026-09-25T00:00:00.000",
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2023Q0364"
@@ -12322,8 +10094,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-05-05T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2025Q0124"
@@ -12561,66 +10333,6 @@
       "zap_project_id": "2023X0149"
     },
     {
-      "ceqr_key": "26DCP114R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-05-20T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-9i5k~6xrb_4w6d"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "47 Tompkins Circle",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-xxj8-gbhy.25gt",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17972-26DCP114R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2026R0166"
-    },
-    {
       "ceqr_key": "26DCP116M",
       "join": {
         "ceqr_source_field": "ceqr",
@@ -12773,8 +10485,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-05-21T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2025K0374"
@@ -12893,8 +10605,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-04-30T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2022K0419"
@@ -12966,8 +10678,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-05-14T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2025K0232"
@@ -13026,8 +10738,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-07-02T00:00:00.000",
+        "environmental_milestone": "EAS - Review Filed EAS",
+        "environmental_milestone_date": "2026-09-15T00:00:00.000",
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2022Q0214"
@@ -13086,8 +10798,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-05-08T00:00:00.000",
+        "environmental_milestone": "EIS - Prepare and Review DEIS",
+        "environmental_milestone_date": "2026-07-06T00:00:00.000",
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2024K0299"
@@ -13211,66 +10923,6 @@
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2026M0247"
-    },
-    {
-      "ceqr_key": "26DCP126M",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-04-24T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-55qw.xwnt.hepw"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Manhattan",
-        "lead_agency": "Department of City Planning",
-        "project_name": "301 E 71st Street Transit Easement Certification",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-8u2b~nwbv~mien",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/18020-26DCP126M",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2026M0366"
     },
     {
       "ceqr_key": "26DCP127M",
@@ -13432,126 +11084,6 @@
       "zap_project_id": "2024K0421"
     },
     {
-      "ceqr_key": "26DCP129R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-05-20T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-yxw9~5dc8.fzs9"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "23 Cedarcliff Road - Lot 125",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-42q2~65mm_zryc",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/18025-26DCP129R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2026R0196"
-    },
-    {
-      "ceqr_key": "26DCP130R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-04-24T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-6ikx-avw8-akqa"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "St. Peters Boys High School - Athletic Field",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-pvhj~rv8r~pm6r",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/18026-26DCP130R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2026R0137"
-    },
-    {
       "ceqr_key": "26DCP131R",
       "join": {
         "ceqr_source_field": "ceqr",
@@ -13664,71 +11196,11 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-05-28T00:00:00.000",
+        "environmental_milestone": "EAS - Review Filed EAS",
+        "environmental_milestone_date": "2026-08-24T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2025K0229"
-    },
-    {
-      "ceqr_key": "26DCP133M",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-04-24T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-jg2n~v38u.uvgn"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Manhattan",
-        "lead_agency": "Department of City Planning",
-        "project_name": "67 Vestry Street Parking Authorization",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-x9sv~9u3d.y5tu",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/18037-26DCP133M",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2025M0329"
     },
     {
       "ceqr_key": "26DCP134K",
@@ -13785,7 +11257,7 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-06-08T00:00:00.000",
+        "environmental_milestone_date": "2026-09-02T00:00:00.000",
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2025K0306"
@@ -13844,8 +11316,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-04-20T00:00:00.000",
+        "environmental_milestone": null,
+        "environmental_milestone_date": null,
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2022Q0160"
@@ -13904,71 +11376,11 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Prepare Draft EAS",
-        "environmental_milestone_date": "2025-02-27T00:00:00.000",
+        "environmental_milestone": "EAS - Review Draft EAS",
+        "environmental_milestone_date": "2026-09-28T00:00:00.000",
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2023Q0351"
-    },
-    {
-      "ceqr_key": "26DCP137R",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-05-20T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-dsvg-nnn6-cfxh"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Staten Island",
-        "lead_agency": "Department of City Planning",
-        "project_name": "51 Cedarcliff Road",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-q739.8a2j.vk9z",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/18039-26DCP137R",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2026R0195"
     },
     {
       "ceqr_key": "26DCP139X",
@@ -14158,7 +11570,7 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Prepare Filed EAS",
-        "environmental_milestone_date": "2026-06-09T00:00:00.000",
+        "environmental_milestone_date": "2026-08-11T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2024Q0189"
@@ -14596,70 +12008,10 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-05-21T00:00:00.000",
+        "environmental_milestone_date": "2026-09-08T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2025K0470"
-    },
-    {
-      "ceqr_key": "26DCP149M",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-07-08T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-r8r7.hvrw.i9kw"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Manhattan",
-        "lead_agency": "Department of City Planning",
-        "project_name": "31 West 52nd Street - Fogo de Chao OAC Renewal",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-z4qa.gn4d-2wkc",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/18070-26DCP149M",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2026M0432"
     },
     {
       "ceqr_key": "26DCP150K",
@@ -14715,8 +12067,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-05-29T00:00:00.000",
+        "environmental_milestone": "EAS - Prepare Filed EAS",
+        "environmental_milestone_date": "2026-08-27T00:00:00.000",
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2024K0214"
@@ -14888,66 +12240,6 @@
       "zap_project_id": "2025Q0335"
     },
     {
-      "ceqr_key": "26DCP154M",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-07-08T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-g4z3~a3g9.ei2r"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Manhattan",
-        "lead_agency": "Department of City Planning",
-        "project_name": "1059-1061 Second Avenue - TA Certification",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-pcvz.jact-n449",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/18093-26DCP154M",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2025M0473"
-    },
-    {
       "ceqr_key": "26DCP155M",
       "join": {
         "ceqr_source_field": "ceqr",
@@ -15074,8 +12366,8 @@
       },
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
-        "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-06-16T00:00:00.000",
+        "environmental_milestone": "EAS - Prepare Filed EAS",
+        "environmental_milestone_date": "2026-09-15T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2022K0252"
@@ -15135,7 +12427,7 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-06-16T00:00:00.000",
+        "environmental_milestone_date": "2026-08-24T00:00:00.000",
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2024M0267"
@@ -15208,7 +12500,7 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-06-25T00:00:00.000",
+        "environmental_milestone_date": "2026-08-06T00:00:00.000",
         "incremental_milestone_rows": 2
       },
       "zap_project_id": "2025X0385"
@@ -15272,66 +12564,6 @@
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2023R0111"
-    },
-    {
-      "ceqr_key": "26DOT012M",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [
-          {
-            "exact_duplicate": false,
-            "extends_zap_milestone": true,
-            "milestone_date": "2026-01-15T00:00:00.000",
-            "milestone_name": "Type II Memo",
-            "source_fields": [
-              "ceqr",
-              "project_name",
-              "milestone_name",
-              "milestone_date"
-            ],
-            "source_record_id": "row-35mn~utmj~bbhq"
-          }
-        ],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Manhattan",
-        "lead_agency": "Department of Transportation",
-        "project_name": "Flatiron NoMad Major Concession",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-56sb~s2p4.2xps",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/17890-26DOT012M",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 1
-      },
-      "zap_project_id": "2025M0252"
     },
     {
       "ceqr_key": "26ECF001K",
@@ -15526,7 +12758,7 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Review Filed EAS",
-        "environmental_milestone_date": "2026-07-02T00:00:00.000",
+        "environmental_milestone_date": "2026-09-17T00:00:00.000",
         "incremental_milestone_rows": 1
       },
       "zap_project_id": "2025M0338"
@@ -15572,56 +12804,10 @@
       "schema": "cityscroll.ceqr_project_milestone_join.v1",
       "zap_comparison": {
         "environmental_milestone": "EAS - Prepare Draft EAS",
-        "environmental_milestone_date": "2025-10-17T00:00:00.000",
+        "environmental_milestone_date": "2026-09-10T00:00:00.000",
         "incremental_milestone_rows": 0
       },
       "zap_project_id": "2023M0316"
-    },
-    {
-      "ceqr_key": "78DCP040X",
-      "join": {
-        "ceqr_source_field": "ceqr",
-        "method": "normalized_ceqr_key_equality",
-        "normalization_version": "ceqr_key_trim_upper_v1",
-        "zap_source_field": "ceqr_number"
-      },
-      "materialized_at": "2026-08-31T13:51:17.569Z",
-      "milestones": {
-        "rows": [],
-        "source_dataset_id": "8fj8-3sgg",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "milestone_name",
-          "milestone_date"
-        ],
-        "source_url": "https://data.cityofnewyork.us/d/8fj8-3sgg",
-        "source_vintage": "2026-08-28T14:05:23.000Z"
-      },
-      "project": {
-        "borough": "Bronx",
-        "lead_agency": "Department of City Planning",
-        "project_name": "Franklin 168 Rezoning",
-        "source_dataset_id": "gezn-7mgk",
-        "source_fields": [
-          "ceqr",
-          "project_name",
-          "project_description",
-          "borough",
-          "lead_agency",
-          "url"
-        ],
-        "source_record_id": "row-fsrh~9s2e-4dhk",
-        "source_url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/16817-78DCP040X",
-        "source_vintage": "2026-08-28T14:05:04.000Z"
-      },
-      "schema": "cityscroll.ceqr_project_milestone_join.v1",
-      "zap_comparison": {
-        "environmental_milestone": null,
-        "environmental_milestone_date": null,
-        "incremental_milestone_rows": 0
-      },
-      "zap_project_id": "2023X0140"
     }
   ],
   "materialized_at": "2026-08-31T13:51:17.569Z",
@@ -15643,16 +12829,16 @@
     "version": "ceqr_key_trim_upper_v1"
   },
   "reconciliation": {
-    "exact_match_rate": 0.942029,
-    "exact_project_matches": 195,
-    "incremental_project_rate": 0.923077,
-    "joined_milestone_rows": 497,
-    "joined_projects_with_milestones": 180,
-    "joined_projects_without_milestones": 15,
+    "exact_match_rate": 0.745283,
+    "exact_project_matches": 158,
+    "incremental_project_rate": 0.93038,
+    "joined_milestone_rows": 414,
+    "joined_projects_with_milestones": 147,
+    "joined_projects_without_milestones": 11,
     "milestone_exact_duplicate_rows": 5,
     "milestone_rows_missing_dates": 0,
-    "milestone_rows_with_dates": 497,
-    "projects_with_incremental_milestones": 180,
+    "milestone_rows_with_dates": 414,
+    "projects_with_incremental_milestones": 147,
     "revision_conflicted_keys": [],
     "rows_per_key": {
       "03DCP069M": 1,
@@ -15859,15 +13045,57 @@
       "77DCP623X",
       "77DCP268K",
       "77DCP880K",
-      "77DCP918Q",
+      "27DCP012Q",
       "77DCP910K",
+      "27DCP026K",
       "77DCP974Y",
       "77DCP907K",
-      "78DCP119Q",
-      "78DCP197M",
-      "26DAS001R",
-      "78DCP250K",
-      "26SCA005Q"
+      "77DCP711Q",
+      "27DCP035R",
+      "27DCP028X",
+      "25HPD071M",
+      "27DCP016Q",
+      "27DCP034Q",
+      "27DCP033X",
+      "27DCP032K",
+      "27DCP015K",
+      "27DCP027K",
+      "27DCP041K",
+      "26DCP138M",
+      "77DCP862Q",
+      "27DCP030Q",
+      "25DOT001Q",
+      "27DCP025Q",
+      "27DCP004Q",
+      "27DCP021X",
+      "27DCP018X",
+      "26HPD033X",
+      "16HPD001X",
+      "27DCP008X",
+      "27DCP031K",
+      "27DCP017K",
+      "27DCP024K",
+      "27DCP019M",
+      "27DCP002M",
+      "27DCP043M",
+      "27DCP045M",
+      "27DCP007M",
+      "27DCP037M",
+      "27DCP022M",
+      "27DCP005M",
+      "27DCP038Q",
+      "27DCP023Q",
+      "26SCA005Q",
+      "27DCP009Q",
+      "27DCP029R",
+      "27DCP040R",
+      "27DCP013R",
+      "27DCP020X",
+      "27DCP042X",
+      "27DCP010X",
+      "27DCP036X",
+      "27SBS001K",
+      "27DCP044Q"
     ]
   },
   "retained_source_inspection": {
@@ -16009,36 +13237,29 @@
   "zap_eligibility": {
     "ambiguous_keys": [
       {
-        "key": "25DCP049M",
+        "key": "26DCP104X",
         "zap_project_ids": [
-          "2023M0213",
-          "2024M0244"
-        ]
-      },
-      {
-        "key": "25DCP068K",
-        "zap_project_ids": [
-          "2024K0358",
-          "2025K0287"
+          "2025X0143",
+          "2025X0147"
         ]
       }
     ],
     "eas_action_rows_without_ceqr": 0,
-    "eligible_unique_keys": 207,
-    "rows_with_valid_ceqr_key": 211,
+    "eligible_unique_keys": 212,
+    "rows_with_valid_ceqr_key": 214,
     "specimens": {
       "eas_never_supplies_key": true,
       "no_retained_ceqr": null,
       "project_2026K0123": {
-        "actions": "UK; ZM; ZR; EAS",
+        "actions": "ZM; ZR",
         "exact_ceqr_project_join": false,
         "inferred_from_eas": false,
         "key_basis": "exact_retained_zap_ceqr_number",
-        "retained_ceqr_key": "78DCP250K",
-        "ulurp_numbers": null
+        "retained_ceqr_key": "27DCP017K",
+        "ulurp_numbers": "260409ZMK; N260410ZRK"
       }
     },
-    "total_rows": 238,
-    "unique_ceqr_keys": 209
+    "total_rows": 237,
+    "unique_ceqr_keys": 213
   }
 }

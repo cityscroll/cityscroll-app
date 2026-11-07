@@ -26,10 +26,16 @@ export const LAND_PROJECT_MAP_POINTS_JOIN_VERSION = "exact_project_id_wh06_bbl_m
 export const LAND_PROJECT_MAP_POINTS_RESOLVER_VERSION = KNOWN_LAND_PROJECT_GEOGRAPHY_SCHEMA;
 export const LAND_PROJECT_MAP_POINTS_MAX_BYTES = 64 * 1024;
 
+// Re-pinned periodically as these demonstrative projects leave the live
+// catalog through ordinary lifecycle completion. single_bbl was 2026R0127;
+// multi_bbl was 2025K0305; no_retained_bbl was 2025M0252. All three must
+// stay inside the 40-row Default Land snapshot (site/data/land_default_ulurp.json)
+// as well as the full admitted catalog, since both scopes consume this
+// constant.
 export const LAND_PROJECT_MAP_POINT_SPECIMENS = Object.freeze({
-  single_bbl: "2026R0127",
-  multi_bbl: "2025K0305",
-  no_retained_bbl: "2025M0252",
+  single_bbl: "2025K0284",
+  multi_bbl: "2023Q0351",
+  no_retained_bbl: "2026X0180",
 });
 
 export const LAND_PROJECT_MAP_POINT_OUTCOMES = Object.freeze({

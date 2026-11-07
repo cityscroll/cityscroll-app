@@ -629,8 +629,15 @@ export function resolvePlaceNavigationSelection({
 }
 
 /**
- * Simulate the SI0105 → FDNY detail → board 1 → Back journey.
+ * Simulate a Bronx NTA → Land detail → board → Back journey.
  * Back restores the Land continuity URL and history sidecar scroll/focus.
+ * The fixed geo/projectId/boardId below are a synthetic demonstration, not a
+ * live lookup; they are re-pinned periodically as the named project leaves
+ * the live catalog through ordinary lifecycle completion. This was
+ * SI0105/2026R0127/staten-island-cb-01 until a refresh retired that NTA's
+ * only member; BX0903/2023X0347 is exclusive to one NTA, non-rezoning, and
+ * Active (matching every consumer's filter defaults across both
+ * place_navigation test files). The function name is kept for minimal diff.
  */
 export function placeNavigationSi0105BoardJourney({
   landFilter = null,
@@ -639,9 +646,9 @@ export function placeNavigationSi0105BoardJourney({
   scrollY = 480,
   focus = "land-detail-place-links",
 } = {}) {
-  const geo = "geography:nta2020:SI0105";
-  const projectId = "2026R0127";
-  const boardId = "staten-island-cb-01";
+  const geo = "geography:nta2020:BX0903";
+  const projectId = "2023X0347";
+  const boardId = "bronx-cb-09";
   const filter = landFilter || landFilterStateFromRouteParams(new URLSearchParams([
     ["status", "all"],
     ["stage", "any"],

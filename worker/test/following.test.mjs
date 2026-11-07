@@ -486,10 +486,17 @@ test("anonymous Land geography Following preview uses public place membership", 
   const membershipDoc = JSON.parse(
     readFileSync(new URL("../../site/data/land_place_membership.json", import.meta.url), "utf8"),
   );
-  const members = membershipDoc?.by_geography?.nta2020?.SI0105 || [];
-  assert.ok(members.length >= 1, "SI0105 membership must stay populated for the preview invariant");
+  // SI0304 is the current specimen: its 2024R0332 member resolves ULURP and
+  // Active, which this preview (no explicit status facet) needs to survive
+  // both the default land-procedure and default status filters. This was
+  // SI0105 until a routine refresh retired that NTA's only member
+  // (2026R0127) from the live population; this file reads committed
+  // site/data directly rather than a frozen fixture, so the specimen is
+  // expected to need re-pinning periodically.
+  const members = membershipDoc?.by_geography?.nta2020?.SI0304 || [];
+  assert.ok(members.length >= 1, "SI0304 membership must stay populated for the preview invariant");
   const filter = encodeURIComponent(JSON.stringify({
-    geographies: ["geography:nta2020:SI0105"],
+    geographies: ["geography:nta2020:SI0304"],
   }));
   const response = await handleFollowing(new Request(
     `https://cityscroll.org/following?lens=land&filter=${filter}&count=1`,
@@ -505,7 +512,7 @@ test("anonymous Land geography Following preview uses public place membership", 
   const previewIds = [...html.matchAll(/data-preview-id="([^"]+)"/g)].map((m) => m[1]);
   assert.ok(previewIds.length >= 1, "populated membership must yield at least one preview id");
   for (const id of previewIds) {
-    assert.ok(members.includes(id), `preview id ${id} must stay inside SI0105 membership`);
+    assert.ok(members.includes(id), `preview id ${id} must stay inside SI0304 membership`);
   }
   assert.match(html, /data-session-recognized="false"/);
   assert.match(html, /data-following-subscribe-form/);
@@ -518,9 +525,9 @@ test("anonymous Land geography Following preview uses public place membership", 
 
 test("anonymous Land geography Following preview shows the empty state when membership is emptied", async () => {
   const membership = JSON.parse(readFileSync(new URL("../../site/data/land_place_membership.json", import.meta.url), "utf8"));
-  membership.by_geography.nta2020.SI0105 = [];
+  membership.by_geography.nta2020.SI0304 = [];
   const filter = encodeURIComponent(JSON.stringify({
-    geographies: ["geography:nta2020:SI0105"],
+    geographies: ["geography:nta2020:SI0304"],
   }));
   const response = await handleFollowing(new Request(
     `https://cityscroll.org/following?lens=land&filter=${filter}&count=1`,

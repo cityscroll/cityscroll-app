@@ -144,11 +144,11 @@
       "project_participates_in_procedure"
     ],
     "provisional_cross_spine_candidates": {
-      "public_inferred": 14,
+      "public_inferred": 4,
       "evidence_only": 68,
       "evidence_only_by_relation": {
-        "mandate_meeting": 64,
-        "mandate_land_use": 4
+        "mandate_meeting": 60,
+        "mandate_land_use": 8
       },
       "source": "site/data/cross_spine_shadow_census.json"
     }

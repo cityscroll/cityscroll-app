@@ -32,16 +32,26 @@ import { renderMeetingOutcomesFirstPaint } from "../site/meeting_outcomes_static
 
 const read = (path) => JSON.parse(readFileSync(new URL(`../${path}`, import.meta.url), "utf8"));
 
-const RECEIPT = read("warehouse/receipts/proof/council_land_bridge_latest.json");
-const LOOKUP = read("site/data/council_land_matter_links.json");
 const SNAPSHOT = read("site/data/meeting_outcomes_snapshot.json");
 
 // The hearing this feature was specified against, named by the publisher's own
 // identifiers: a City Record notice request id and the Council event it is
-// joined to.
+// joined to. The agenda itself (site/data/meeting_outcomes_snapshot.json) is
+// untouched by first-class refreshes, but the Council land-matter bridge that
+// joins its eleven matters to projects is refreshed, and a later refresh
+// resolved every one of those eleven matters' applications to completion, so
+// the live bridge no longer joins any of them. LOOKUP is frozen at the
+// generation that still joined this specific hearing
+// (test/fixtures/existing_connections_agenda/gold.v1.json, captured from the
+// committed site/data/council_land_matter_links.json as of commit
+// 827354e79) rather than read live, so this file keeps demonstrating real,
+// once-measured Council history instead of failing on a stale pin or losing
+// the demonstration entirely. Every number below is re-derived from that
+// frozen generation, never guessed.
 const NOTICE_ID = "20260512045";
 const EVENT_ID = "22390";
 const EVENT_DATE = "2026-05-27";
+const LOOKUP = read("test/fixtures/existing_connections_agenda/gold.v1.json");
 
 // The source-backed cases. Each is a publisher identity, so a failure says which
 // record moved rather than which number changed.
@@ -54,14 +64,14 @@ const RESEMBLING_TITLE_MATTER = "78875";
 const RECORD = SNAPSHOT.by_notice?.[NOTICE_ID];
 
 /**
- * The grouping the committed bridge receipt implies for this agenda, derived
+ * The grouping the frozen bridge generation implies for this agenda, derived
  * independently of the module under test: walk the agenda in its own order and
- * ask the receipt which project, if any, each matter was joined to.
+ * ask the frozen lookup which project, if any, each matter was joined to.
  */
 function expectedGroupsFromReceipt(agendaMatters) {
   const projectByMatter = new Map();
-  for (const edge of RECEIPT.materialized_edges) {
-    projectByMatter.set(edge.council_depth.matter.matter_id, edge.project_id);
+  for (const [matterId, entry] of Object.entries(LOOKUP.matters)) {
+    if (entry.project_id) projectByMatter.set(matterId, entry.project_id);
   }
   const order = [];
   const members = new Map();
@@ -91,7 +101,16 @@ test("the retained agenda under test is the one the connection was specified aga
 
 test("every agenda matter is grouped exactly as the committed bridge receipt joined it", () => {
   const expected = expectedGroupsFromReceipt(RECORD.matters);
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
+  if (expected.order.length === 0) {
+    // Defensive: buildAgendaProjectGroups documents "returns null when this
+    // agenda has no joined matter at all". LOOKUP is frozen at a generation
+    // that does join this agenda (see the LOOKUP comment above), so this
+    // branch is not expected to run; it stays in place as a direct check of
+    // that documented contract rather than assuming it.
+    assert.equal(view, null);
+    return;
+  }
   assert.equal(view.schema, AGENDA_PROJECT_GROUPS_SCHEMA);
   assert.deepEqual(view.groups.map((group) => group.project_id), expected.order);
   for (const group of view.groups) {
@@ -110,7 +129,7 @@ test("every agenda matter is grouped exactly as the committed bridge receipt joi
 });
 
 test("the agenda's own count is preserved: linked plus unlinked is every retained matter", () => {
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   const distinctAgendaMatters = new Set(RECORD.matters.map((matter) => matter.matter_id));
   assert.equal(view.agenda_matter_count, distinctAgendaMatters.size);
   assert.equal(view.linked_matter_count + view.unlinked_matter_count, view.agenda_matter_count);
@@ -118,7 +137,7 @@ test("the agenda's own count is preserved: linked plus unlinked is every retaine
 
 test("each named case groups its own agenda matters under its own project", () => {
   const expected = expectedGroupsFromReceipt(RECORD.matters);
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   const byProject = new Map(view.groups.map((group) => [group.project_id, group]));
   for (const projectId of [
     MONITOR_POINT,
@@ -137,7 +156,7 @@ test("each named case groups its own agenda matters under its own project", () =
 });
 
 test("the grouping key is the shared application number, and it travels with every row", () => {
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   for (const group of view.groups) {
     for (const matter of group.matters) {
       assert.equal(matter.join_value, LOOKUP.matters[matter.matter_id].join_value);
@@ -154,18 +173,18 @@ test("negative control: a matter whose title names the same development but shar
   assert.match(onAgenda.title, /Monitor Point/);
   assert.equal(LOOKUP.matters[RESEMBLING_TITLE_MATTER], undefined);
 
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   const grouped = view.groups.flatMap((group) => group.matters.map((matter) => matter.matter_id));
   assert.ok(!grouped.includes(RESEMBLING_TITLE_MATTER));
   assert.ok(view.unlinked_matter_count >= 1);
 
   // It is still an agenda item, and the rendered agenda still lists it.
-  const html = renderMeetingOutcomesFirstPaint(SNAPSHOT, NOTICE_ID);
+  const html = renderMeetingOutcomesFirstPaint(SNAPSHOT, NOTICE_ID, { lookup: LOOKUP });
   assert.ok(html.includes(`data-matter-id="${RESEMBLING_TITLE_MATTER}"`));
 });
 
 test("negative control: two applications whose titles differ only by street address stay two projects", () => {
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   const first = view.groups.find((group) => group.project_id === DEWITT_CLINTON_ELEVENTH_AVENUE);
   const second = view.groups.find((group) => group.project_id === DEWITT_CLINTON_WEST_54TH);
   assert.ok(first && second);
@@ -181,7 +200,7 @@ test("negative control: two applications whose titles differ only by street addr
 });
 
 test("nothing here becomes a project decision, and the bridge's negative rule travels with the view", () => {
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   assert.equal(view.is_decision, false);
   for (const group of view.groups) {
     assert.equal(group.is_decision, false);
@@ -195,21 +214,21 @@ test("nothing here becomes a project decision, and the bridge's negative rule tr
 });
 
 test("shared agenda presence is never described as a shared position", () => {
-  const html = renderAgendaProjectGroups(buildAgendaProjectGroups(RECORD.matters));
+  const html = renderAgendaProjectGroups(buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP }));
   assert.match(html, /not a shared position/);
   assert.match(html, /step in the review, not a decision on the project/);
   assert.match(html, /never by a likeness between their titles/);
 });
 
 test("no named participant reaches the agenda index", () => {
-  const html = renderAgendaProjectGroups(buildAgendaProjectGroups(RECORD.matters));
+  const html = renderAgendaProjectGroups(buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP }));
   assert.ok(!html.includes("data-official-id"));
   assert.ok(!html.includes("meeting-roll-call"));
   assert.ok(!/\/officials\//.test(html));
 });
 
 test("every connection is a native link the browser owns, and inspection never navigates", () => {
-  const html = renderAgendaProjectGroups(buildAgendaProjectGroups(RECORD.matters));
+  const html = renderAgendaProjectGroups(buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP }));
   const links = [...html.matchAll(/<a\b[^>]*>/g)].map((match) => match[0]);
   assert.ok(links.length > 0);
   for (const link of links) {
@@ -226,7 +245,7 @@ test("every connection is a native link the browser owns, and inspection never n
 
 test("a matter is only offered a local route the published generation actually carries", () => {
   const published = read("site/data/legislative_matter_index.json").matters;
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   for (const group of view.groups) {
     for (const matter of group.matters) {
       if (matter.availability === "local_history") {
@@ -241,7 +260,7 @@ test("a matter is only offered a local route the published generation actually c
 });
 
 test("an unpublished matter is still grouped, and named without a local route", () => {
-  const view = buildAgendaProjectGroups(RECORD.matters, { published: new Set() });
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP, published: new Set() });
   const matters = view.groups.flatMap((group) => group.matters);
   assert.ok(matters.length > 0);
   for (const matter of matters) {
@@ -256,7 +275,7 @@ test("an unpublished matter is still grouped, and named without a local route", 
 });
 
 test("the served notice keeps every original agenda item, in the order the source record gives it", () => {
-  const html = renderMeetingOutcomesFirstPaint(SNAPSHOT, NOTICE_ID);
+  const html = renderMeetingOutcomesFirstPaint(SNAPSHOT, NOTICE_ID, { lookup: LOOKUP });
   const agendaStart = html.indexOf('<ol class="meeting-agenda">');
   assert.ok(agendaStart > 0, "the original agenda list is missing from the served notice");
   const agenda = html.slice(agendaStart);
@@ -266,7 +285,7 @@ test("the served notice keeps every original agenda item, in the order the sourc
 });
 
 test("the index sits above the agenda it indexes and replaces nothing", () => {
-  const html = renderMeetingOutcomesFirstPaint(SNAPSHOT, NOTICE_ID);
+  const html = renderMeetingOutcomesFirstPaint(SNAPSHOT, NOTICE_ID, { lookup: LOOKUP });
   const index = html.indexOf('data-agenda-project-groups="1"');
   const agenda = html.indexOf('<ol class="meeting-agenda">');
   assert.ok(index > 0 && agenda > index);
@@ -274,8 +293,8 @@ test("the index sits above the agenda it indexes and replaces nothing", () => {
 });
 
 test("the served notice reports the same figures the view derived", () => {
-  const view = buildAgendaProjectGroups(RECORD.matters);
-  const html = renderMeetingOutcomesFirstPaint(SNAPSHOT, NOTICE_ID);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
+  const html = renderMeetingOutcomesFirstPaint(SNAPSHOT, NOTICE_ID, { lookup: LOOKUP });
   assert.ok(html.includes(`data-agenda-project-group-count="${view.group_count}"`));
   assert.ok(html.includes(`data-agenda-linked-matters="${view.linked_matter_count}"`));
   assert.ok(html.includes(`data-agenda-matters="${view.agenda_matter_count}"`));
@@ -285,7 +304,7 @@ test("the served notice reports the same figures the view derived", () => {
 test("an agenda with no accepted project join renders no group furniture at all", () => {
   const unjoined = RECORD.matters.filter((matter) => !LOOKUP.matters[matter.matter_id]);
   assert.ok(unjoined.length > 0, "this agenda has no unjoined matter to build the empty case from");
-  assert.equal(buildAgendaProjectGroups(unjoined), null);
+  assert.equal(buildAgendaProjectGroups(unjoined, { lookup: LOOKUP }), null);
   assert.equal(renderAgendaProjectGroups(null), "");
   assert.equal(renderAgendaProjectGroups(buildAgendaProjectGroups([])), "");
 });
@@ -294,26 +313,26 @@ test("a missing connection lookup leaves the agenda exactly as it was", () => {
   const empty = { schema: LOOKUP.schema, matters: {}, projects: {}, relation: LOOKUP.relation };
   assert.equal(buildAgendaProjectGroups(RECORD.matters, { lookup: empty }), null);
 
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   assert.ok(view, "the committed lookup should still group this agenda");
 });
 
 test("an unjoined matter is reported as a state, never as a zero", () => {
   const joined = RECORD.matters.filter((matter) => LOOKUP.matters[matter.matter_id]);
-  const complete = buildAgendaProjectGroups(joined);
+  const complete = buildAgendaProjectGroups(joined, { lookup: LOOKUP });
   assert.equal(complete.unlinked_matter_count, 0);
   const html = renderAgendaProjectGroups(complete);
   assert.ok(!html.includes("agenda-project-unlinked"));
   assert.ok(!/\b0 matters\b/.test(html));
 
-  const withGap = renderAgendaProjectGroups(buildAgendaProjectGroups(RECORD.matters));
+  const withGap = renderAgendaProjectGroups(buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP }));
   assert.match(withGap, /class="note agenda-project-unlinked"/);
 });
 
 test("procedural agenda rows are neither counted as matters nor invented into a group", () => {
   const withProcedural = [{ title: "Roll call" }, ...RECORD.matters, { matter_id: "" }];
-  const view = buildAgendaProjectGroups(withProcedural);
-  const baseline = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(withProcedural, { lookup: LOOKUP });
+  const baseline = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   assert.equal(view.agenda_matter_count, baseline.agenda_matter_count);
   assert.equal(view.unlinked_matter_count, baseline.unlinked_matter_count);
   assert.deepEqual(
@@ -324,8 +343,8 @@ test("procedural agenda rows are neither counted as matters nor invented into a 
 
 test("a matter recorded twice on one agenda is counted once", () => {
   const doubled = [...RECORD.matters, RECORD.matters[0]];
-  const view = buildAgendaProjectGroups(doubled);
-  const baseline = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(doubled, { lookup: LOOKUP });
+  const baseline = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   assert.equal(view.agenda_matter_count, baseline.agenda_matter_count);
   assert.equal(view.linked_matter_count, baseline.linked_matter_count);
   assert.deepEqual(
@@ -345,8 +364,8 @@ test("both agenda surfaces read one builder, so they cannot assign a matter to t
     matter_url: matter.matter_url,
     actions: matter.actions,
   }));
-  const fromStatic = buildAgendaProjectGroups(RECORD.matters);
-  const fromClient = buildAgendaProjectGroups(clientShaped);
+  const fromStatic = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
+  const fromClient = buildAgendaProjectGroups(clientShaped, { lookup: LOOKUP });
   assert.deepEqual(
     fromClient.groups.map((group) => [group.project_id, group.matters.map((matter) => matter.matter_id)]),
     fromStatic.groups.map((group) => [group.project_id, group.matters.map((matter) => matter.matter_id)]),
@@ -356,7 +375,7 @@ test("both agenda surfaces read one builder, so they cannot assign a matter to t
 });
 
 test("a surface's own labels are used without changing which project a matter belongs to", () => {
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   const translated = renderAgendaProjectGroups(view, {
     labels: {
       heading: "Proyectos de uso del suelo en este orden del día",
@@ -439,6 +458,6 @@ test("the remembered reading position is bounded, and unusable storage is simply
 });
 
 test("the view carries the materialization it was derived from", () => {
-  const view = buildAgendaProjectGroups(RECORD.matters);
+  const view = buildAgendaProjectGroups(RECORD.matters, { lookup: LOOKUP });
   assert.equal(view.generated_at, LOOKUP.generated_at);
 });

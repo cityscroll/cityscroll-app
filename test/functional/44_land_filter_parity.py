@@ -38,12 +38,12 @@ SCOPES = (
     ("community-district", f"{FULL}&cd=M05", "A mixed scope: some results placed, some not."),
     ("mapped-and-unmapped", f"{FULL}&q=Westshore", "A small scope holding one of each."),
     ("unmapped-only", f"{FULL}&q=2020K0444", "An exact project scope with no published location."),
-    ("second-unmapped", f"{FULL}&q=2020M0385", "A second exact project scope with no published location."),
+    ("second-unmapped", f"{FULL}&q=2024M0148", "A second exact project scope with no published location."),
     ("empty", f"{FULL}&q=zzzznotathing", "No project matches."),
     ("legacy-status", "status=public:In Public Review", "A legacy URL spelling still browsable."),
 )
-# The project the parity fixtures name: a 25-lot rezoning that is on the map.
-MAPPED_SPECIMEN = "2025K0305"
+# The project the parity fixtures name: a multi-lot rezoning that is on the map.
+MAPPED_SPECIMEN = "2022K0430"
 
 READ_STATE = """() => {
   const summary = document.getElementById('land-map-summary');
@@ -304,7 +304,7 @@ def check_empty_map_explains_itself(page) -> None:
 def check_unmapped_only_points_at_the_list(page) -> None:
     for name, query in (
         ("unmapped-only", f"{FULL}&q=2020K0444"),
-        ("second-unmapped", f"{FULL}&q=2020M0385"),
+        ("second-unmapped", f"{FULL}&q=2024M0148"),
     ):
         state = visit(page, query, view="map")
         assert state["counts"]["mapped"] == 0, f"{name}: expected nothing on the map"

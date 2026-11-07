@@ -48,8 +48,12 @@ const catalog = readJson("site/data/land_project_catalog.json");
 const membership = readJson("site/data/land_place_membership.json");
 const catalogRows = landProjectRowsFromPayload(catalog);
 
+// SI0201 (sole live member 2019R0267, ULURP) replaces the prior SI0105
+// specimen (2026R0127) after a refresh retired that NTA's only member; this
+// file reads committed site/data directly, so the specimen NTA is expected
+// to need re-pinning periodically.
 const NTA = Object.freeze({
-  SI0105: "geography:nta2020:SI0105",
+  SI0201: "geography:nta2020:SI0201",
   MN0401: "geography:nta2020:MN0401",
 });
 
@@ -82,14 +86,14 @@ describe("land NTA watch scope aliases and roundtrip", () => {
       boro: "Staten Island",
       q: "Victory",
       future: "hearing",
-      geo: [NTA.SI0105],
+      geo: [NTA.SI0201],
       stage: "public_review",
       filingEvidence: "required",
     });
     assert.equal(normalized.borough, "Staten Island");
     assert.equal(normalized.keyword, "Victory");
     assert.equal(normalized.futureAction, "hearing");
-    assert.deepEqual(normalized.geographies, [NTA.SI0105]);
+    assert.deepEqual(normalized.geographies, [NTA.SI0201]);
     assert.equal(normalized.stage, "public_review");
     assert.equal(normalized.filingEvidence, "required");
 
@@ -97,7 +101,7 @@ describe("land NTA watch scope aliases and roundtrip", () => {
     assert.equal(wire.boro, "Staten Island");
     assert.deepEqual(wire.keywords, ["victory"]);
     assert.equal(wire.futureAction, "hearing");
-    assert.deepEqual(wire.geographies, [NTA.SI0105]);
+    assert.deepEqual(wire.geographies, [NTA.SI0201]);
     assert.equal("borough" in wire, false);
     assert.equal("keyword" in wire, false);
     assert.equal("limit" in wire, false);
@@ -106,13 +110,13 @@ describe("land NTA watch scope aliases and roundtrip", () => {
 
   it("A4 round-trips Land semantic scope through geography watch helpers", () => {
     const state = landFilterStateFromRouteParams(
-      `#land?status=all&stage=public_review&boro=Staten Island&geo=${encodeURIComponent(NTA.SI0105)}`,
+      `#land?status=all&stage=public_review&boro=Staten Island&geo=${encodeURIComponent(NTA.SI0201)}`,
     );
     const semantic = landSemanticScopeFromState(state);
     const wire = landWatchWireFilterFromSemantic(semantic);
     const prepared = prepareWatchFilter("land", wire);
     assert.equal(prepared.ok, true);
-    assert.deepEqual(prepared.filter.geographies, [NTA.SI0105]);
+    assert.deepEqual(prepared.filter.geographies, [NTA.SI0201]);
     assert.equal(prepared.filter.boro, "Staten Island");
     assert.equal(prepared.filter.stage, "public_review");
     assert.equal(prepared.filter.status, "all");
@@ -122,28 +126,28 @@ describe("land NTA watch scope aliases and roundtrip", () => {
       prepared.filter.geographies,
     );
     const watch = watchFromGeographyScope(scope, { lens: "land" });
-    assert.deepEqual(watch.filter.geographies, [NTA.SI0105]);
+    assert.deepEqual(watch.filter.geographies, [NTA.SI0201]);
     const restored = scopeFromGeographyWatch(watch);
-    assert.deepEqual(restored.place.geographies, [NTA.SI0105]);
+    assert.deepEqual(restored.place.geographies, [NTA.SI0201]);
 
     const back = landSemanticScopeFromWatchFilter(prepared.filter);
     assert.equal(back.stage, "public_review");
     assert.equal(back.borough, "Staten Island");
-    assert.deepEqual(back.geographies, [NTA.SI0105]);
+    assert.deepEqual(back.geographies, [NTA.SI0201]);
   });
 
   it("A4 refuses address/projectIds narrowing with an explicit correction instead of dropping it", () => {
     const refused = prepareLandNtaWatchFilter({
-      geographies: [NTA.SI0105],
-      projectIds: ["2026R0127"],
+      geographies: [NTA.SI0201],
+      projectIds: ["2019R0267"],
     });
     assert.equal(refused.ok, false);
     assert.equal(refused.reason, "land-address-narrowing-present");
     assert.equal(refused.correction, "clear_address_narrowing");
 
     const viaPrepare = prepareWatchFilter("land", {
-      geographies: [NTA.SI0105],
-      projectIds: ["2026R0127"],
+      geographies: [NTA.SI0201],
+      projectIds: ["2019R0267"],
     });
     assert.equal(viaPrepare.ok, false);
     assert.equal(viaPrepare.reason, "land-address-narrowing-present");
@@ -166,7 +170,7 @@ describe("land NTA watch scope aliases and roundtrip", () => {
 
   it("A4 never persists a display limit as a membership filter field", () => {
     const prepared = prepareLandNtaWatchFilter({
-      geographies: [NTA.SI0105],
+      geographies: [NTA.SI0201],
       limit: 40,
       stage: "any",
       status: "all",
@@ -179,10 +183,10 @@ describe("land NTA watch scope aliases and roundtrip", () => {
 });
 
 describe("land NTA watch matching against retained catalog evidence", () => {
-  it("A1/A5 SI0105 geography-only matching equals browse pre-limit IDs and stays inside membership", () => {
-    const filter = { status: "all", stage: "any", geographies: [NTA.SI0105] };
+  it("A1/A5 SI0201 geography-only matching equals browse pre-limit IDs and stays inside membership", () => {
+    const filter = { status: "all", stage: "any", geographies: [NTA.SI0201] };
     const browseState = landFilterStateFromRouteParams(
-      `#land?status=all&stage=any&geo=${encodeURIComponent(NTA.SI0105)}`,
+      `#land?status=all&stage=any&geo=${encodeURIComponent(NTA.SI0201)}`,
     );
     const browseQuery = landSnapshotQueryFromState(browseState, {
       today: TODAY,
@@ -200,11 +204,11 @@ describe("land NTA watch matching against retained catalog evidence", () => {
     });
     assert.equal(match.status, "ready");
     assert.deepEqual([...match.ids], browseIds);
-    const members = membership?.by_geography?.nta2020?.SI0105 || [];
-    assert.ok(members.length >= 1, "SI0105 membership must stay populated");
-    assert.ok(match.ids.length >= 1, "SI0105 watch match must stay non-empty while membership is populated");
+    const members = membership?.by_geography?.nta2020?.SI0201 || [];
+    assert.ok(members.length >= 1, "SI0201 membership must stay populated");
+    assert.ok(match.ids.length >= 1, "SI0201 watch match must stay non-empty while membership is populated");
     for (const id of match.ids) {
-      assert.ok(members.includes(id), `SI0105 watch id ${id} must stay inside membership`);
+      assert.ok(members.includes(id), `SI0201 watch id ${id} must stay inside membership`);
     }
     assert.equal(match.ids.includes("2025M0252"), false);
     assert.equal(match.ids.includes("2022Y0395"), false);
@@ -324,10 +328,10 @@ describe("land NTA watch matching against retained catalog evidence", () => {
   });
 
   it("A2/A3 positive control: broadening detector reports an injected out-of-area id", () => {
-    const filter = { status: "all", stage: "any", geographies: [NTA.SI0105] };
+    const filter = { status: "all", stage: "any", geographies: [NTA.SI0201] };
     const clean = landNtaWatchBroadeningFindings({
       filter,
-      deliveredIds: ["2026R0127"],
+      deliveredIds: ["2019R0267"],
       catalogRows,
       placeMembership: membership,
     });
@@ -335,7 +339,7 @@ describe("land NTA watch matching against retained catalog evidence", () => {
 
     const polluted = landNtaWatchBroadeningFindings({
       filter,
-      deliveredIds: ["2026R0127", "2022Y0395"],
+      deliveredIds: ["2019R0267", "2022Y0395"],
       catalogRows,
       placeMembership: membership,
     });

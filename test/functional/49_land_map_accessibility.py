@@ -7,10 +7,11 @@ that every control survives a narrow viewport. This file proves the four things 
 cards did not need to and LM-11's own acceptance asks for directly:
 
   A1/A2  The card's specimen walkthrough, driven by real sequential Tab traversal rather
-         than a locator jump straight to the target: from the Map/List switch, through the
-         selected `2025K0305` marker, its summary, and the canonical detail link, back to
-         the List fallback -- and the unmapped `2026K0123` project through that same List,
-         which is the "complete textual index" the card allows in place of a second one.
+         than a locator jump straight to the target: from the Map/List switch, through a
+         selected multi-lot anchor marker, its summary, and the canonical detail link, back
+         to the List fallback -- and an unmapped project (chosen at runtime, see
+         `find_unmapped_specimen`) through that same List, which is the "complete textual
+         index" the card allows in place of a second one.
   A3/A4  `prefers-reduced-motion: reduce` does not change what the walkthrough reaches, and
          the CSS rule that is supposed to flatten this feature's own loading animation
          actually applies to the class name `map_runtime.mjs` renders.
@@ -41,12 +42,12 @@ LIST_ROUTE = "/browse/zoning/"
 PROJECTION = "data/land_project_map_points.json"
 AXE = str(ROOT / "test" / "functional" / "assets" / "axe.min.js")
 
-# The same 25-lot anchor LM-06/LM-07 established: on the map, and emphatically not at an
+# The same multi-lot anchor LM-06/LM-07 established: on the map, and emphatically not at an
 # address. The unmapped specimen is derived at runtime (see `find_unmapped_specimen`)
 # rather than pinned to one id: which rows the committed projection leaves unplaced shifts
 # as the projection's own source vintage advances, and this proof is about an unmapped
 # project reaching List through its complete textual index, not about which project that is.
-ANCHOR_SPECIMEN = "2025K0305"
+ANCHOR_SPECIMEN = "2022K0430"
 EXPECTED_TOTAL = 40
 
 # Bounded so a real regression (the marker dropping out of the tab order entirely) fails
