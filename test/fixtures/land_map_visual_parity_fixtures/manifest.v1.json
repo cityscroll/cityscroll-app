@@ -3,11 +3,11 @@
   "card": "cityscroll-engineering/land-map-visual-parity-fixtures",
   "join": "exact_project_id",
   "anchor_specimen": {
-    "project_id": "2025K0305",
+    "project_id": "2022K0430",
     "why": "a multi-BBL rezoning: on the map, and never labeled an exact address"
   },
   "exact_precision_specimen": {
-    "project_id": "2026R0127",
+    "project_id": "2025K0284",
     "why": "an exact single-BBL centroid, contrasted against the anchor's lower precision"
   },
   "unmapped_specimen": {
@@ -39,7 +39,7 @@
         "has_mapped": true,
         "has_unmapped": true,
         "list_map_partition": true,
-        "contains_ids": ["2025K0305", "2026R0127"],
+        "contains_ids": ["2022K0430", "2025K0284"],
         "marker_methods_labeled": true,
         "contains_precisions": ["exact", "anchor"],
         "axe": true
@@ -67,9 +67,9 @@
       "map_route": "/browse/zoning/?view=map",
       "viewports": ["narrow", "wide"],
       "dependency_scenario": "healthy",
-      "select_project_id": "2025K0305",
+      "select_project_id": "2022K0430",
       "expects": {
-        "selected_id": "2025K0305",
+        "selected_id": "2022K0430",
         "selected_method": "multi_bbl_anchor",
         "selected_precision": "anchor",
         "list_map_partition": true,
@@ -93,8 +93,8 @@
     {
       "id": "filtered-single-result",
       "title": "A single-result filter shows the same one project in List and Map",
-      "list_route": "/browse/zoning/?status=all&stage=any&cd=K09",
-      "map_route": "/browse/zoning/?status=all&stage=any&cd=K09&view=map",
+      "list_route": "/browse/zoning/?status=all&stage=any&cd=M01",
+      "map_route": "/browse/zoning/?status=all&stage=any&cd=M01&view=map",
       "viewports": ["narrow", "wide"],
       "dependency_scenario": "healthy",
       "expects": {
@@ -126,11 +126,11 @@
       "map_route": "/browse/zoning/?view=map",
       "viewports": ["mobile", "narrow", "wide"],
       "dependency_scenario": "healthy",
-      "select_project_id": "2025K0305",
+      "select_project_id": "2022K0430",
       "expects": {
         "list_map_partition": true,
         "panel_no_overflow": true,
-        "selected_id": "2025K0305",
+        "selected_id": "2022K0430",
         "axe": true
       }
     },
