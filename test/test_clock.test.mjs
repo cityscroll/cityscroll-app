@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import {
   MILLISECONDS_PER_DAY,
   TEST_CLOCK_ENV,
+  wallClockISOString,
   withPinnedClock,
 } from "./helpers/test_clock.mjs";
 
@@ -117,6 +118,31 @@ test("the preload shifts the process clock by the requested whole number of days
   const delta = shifted - baseline;
   assert.ok(delta >= 45 * MILLISECONDS_PER_DAY, `clock shifted by only ${delta}ms`);
   assert.ok(delta < 45 * MILLISECONDS_PER_DAY + 10_000, `clock shifted by too much: ${delta}ms`);
+});
+
+test("wallClockISOString stays on the unshifted clock under a time-travel preload", () => {
+  const cleanEnv = { ...process.env };
+  delete cleanEnv.NODE_OPTIONS;
+  delete cleanEnv[TEST_CLOCK_ENV];
+  const script = `
+    import { wallClockISOString } from ${JSON.stringify(fileURLToPath(new URL("./helpers/test_clock.mjs", import.meta.url)))};
+    const wall = Date.parse(wallClockISOString());
+    const shifted = globalThis.Date.now();
+    console.log(JSON.stringify({ wall, shifted, delta: shifted - wall }));
+  `;
+  const run = spawnSync(process.execPath, ["--input-type=module", "-e", script], {
+    encoding: "utf8",
+    env: {
+      ...cleanEnv,
+      [TEST_CLOCK_ENV]: "45",
+      NODE_OPTIONS: `--import=${PRELOAD}`,
+    },
+  });
+  assert.equal(run.status, 0, run.stderr);
+  const { wall, shifted, delta } = JSON.parse(run.stdout.trim());
+  assert.ok(Number.isFinite(wall) && Number.isFinite(shifted));
+  assert.ok(delta >= 45 * MILLISECONDS_PER_DAY, `wall clock drifted with shift: ${delta}ms`);
+  assert.ok(delta < 45 * MILLISECONDS_PER_DAY + 10_000, `unexpected wall/shift gap: ${delta}ms`);
 });
 
 test("the local runner and CI workflow use the shared preload with bounded concurrency", () => {

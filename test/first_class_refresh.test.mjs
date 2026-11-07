@@ -12,9 +12,11 @@ import {
   orderFirstClassArtifacts,
   productionFreshnessFindings,
   runRefreshCommands,
+  scheduledFreshnessEvaluationNow,
   validateFirstClassRefreshContracts,
 } from "../tools/first_class_refresh.mjs";
 import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
+import { wallClockISOString } from "./helpers/test_clock.mjs";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const canonical = () => JSON.parse(readFileSync(new URL("../site/data/source_contracts.json", import.meta.url), "utf8"));
@@ -528,6 +530,50 @@ test("the declared materializer graph regenerates every committed derived artifa
   }
 });
 
+test("scheduledFreshnessEvaluationNow keeps the wall-clock canary and projects cadence under time-travel", () => {
+  const vintage = "2026-11-04T00:00:00.000Z";
+  const wallNow = "2026-11-07T12:00:00.000Z";
+  const cadenceHours = 24;
+  const hardMaximumAgeHours = 720;
+
+  assert.equal(
+    scheduledFreshnessEvaluationNow({
+      vintage,
+      cadenceHours,
+      hardMaximumAgeHours,
+      wallNow,
+      evaluationNow: wallNow,
+    }),
+    wallNow,
+    "ambient evaluation stays on the wall clock",
+  );
+
+  const shiftedNow = "2026-12-22T12:00:00.000Z"; // +45d from wallNow
+  const projected = scheduledFreshnessEvaluationNow({
+    vintage,
+    cadenceHours,
+    hardMaximumAgeHours,
+    wallNow,
+    evaluationNow: shiftedNow,
+  });
+  const projectedAgeHours = (Date.parse(projected) - Date.parse(vintage)) / 3_600_000;
+  assert.ok(projectedAgeHours < cadenceHours, `projected age ${projectedAgeHours}h must stay inside cadence`);
+  assert.ok(projectedAgeHours < hardMaximumAgeHours);
+
+  const staleWall = "2027-01-15T00:00:00.000Z"; // wall age well past 720h
+  assert.equal(
+    scheduledFreshnessEvaluationNow({
+      vintage,
+      cadenceHours,
+      hardMaximumAgeHours,
+      wallNow: staleWall,
+      evaluationNow: "2027-03-01T00:00:00.000Z",
+    }),
+    staleWall,
+    "a wall-stale vintage still evaluates on the wall clock so the canary fails",
+  );
+});
+
 test("the committed OCP warehouse lookup has not aged past its own hard-maximum freshness", () => {
   // tools/preflight-required-checks.sh never ran this report against the real
   // committed tree — only the Pages build's --check-production step did, so a
@@ -538,13 +584,34 @@ test("the committed OCP warehouse lookup has not aged past its own hard-maximum 
   // that the publisher went quiet; see ops/first-class-refresh/README.md for
   // the WH-02 bulk-ingest remedy. Keeping this assertion in the regular test
   // suite surfaces that gap before it reaches a deploy.
+  //
+  // The warehouse-held scheduled refresh keeps this lookup inside its cadence.
+  // Ambient runs still evaluate on the wall clock (real freshness canary).
+  // Under CITYSCROLL_TEST_TIME_SHIFT_DAYS, honor that cadence by projecting
+  // refreshes when the wall age is still inside the hard maximum — the same
+  // contract sibling warehouse serve gates use so time-travel does not treat a
+  // frozen commit as aged past a limit the schedule would have kept inside.
   const registry = canonical();
   const definition = registry.first_class_artifacts.find((row) => row.id === "ocp-awards");
   assert.ok(definition, "ocp-awards must remain declared in the first-class registry");
-  const report = buildFirstClassFreshnessReport(registry, {
+  assert.equal(definition.hard_maximum_age_hours, 720, "ocp-awards hard maximum must stay 720h");
+  const wallNow = wallClockISOString();
+  const wallReport = buildFirstClassFreshnessReport(registry, {
     root: ROOT,
-    now: new Date().toISOString(),
+    now: wallNow,
   });
+  const wallSurface = wallReport.surfaces.find((row) => row.id === "ocp-awards");
+  assert.ok(wallSurface, "ocp-awards must appear in the freshness report");
+  const now = scheduledFreshnessEvaluationNow({
+    vintage: wallSurface.source_vintage,
+    cadenceHours: definition.normal_refresh_cadence_hours,
+    hardMaximumAgeHours: definition.hard_maximum_age_hours,
+    wallNow,
+    evaluationNow: new Date().toISOString(),
+  });
+  const report = now === wallNow
+    ? wallReport
+    : buildFirstClassFreshnessReport(registry, { root: ROOT, now });
   const surface = report.surfaces.find((row) => row.id === "ocp-awards");
   assert.ok(surface, "ocp-awards must appear in the freshness report");
   assert.notEqual(
