@@ -93,8 +93,8 @@
     {
       "id": "filtered-single-result",
       "title": "A single-result filter shows the same one project in List and Map",
-      "list_route": "/browse/zoning/?status=all&stage=any&cd=M01",
-      "map_route": "/browse/zoning/?status=all&stage=any&cd=M01&view=map",
+      "list_route": "/browse/zoning/?status=all&stage=any&cd=K06",
+      "map_route": "/browse/zoning/?status=all&stage=any&cd=K06&view=map",
       "viewports": ["narrow", "wide"],
       "dependency_scenario": "healthy",
       "expects": {

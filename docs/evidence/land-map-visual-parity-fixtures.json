@@ -4,7 +4,7 @@
   "manifest": "test/fixtures/land_map_visual_parity_fixtures/manifest.v1.json",
   "browser_mode": "headless chromium (playwright), remote hosts blocked",
   "provenance": {
-    "app_commit": "cf7cf81326c49f03061c4c0e6d63b483a050c703",
+    "app_commit": "bcbac8ca2b4b72f6a1aeffbc13f97edcdd364822",
     "default_snapshot_schema": 1,
     "default_snapshot_count": 40,
     "point_projection_schema": "cityscroll.land_project_map_points.v1",
@@ -868,29 +868,25 @@
       "readings": {
         "narrow": {
           "state": {
-            "url": "/browse/zoning/?cd=M01&stage=any&view=map",
+            "url": "/browse/zoning/?cd=K06&stage=any&view=map",
             "map_state": "ready",
             "failure_kind": null,
             "boundary_state": "ready",
             "boundary_evidence_present": true,
             "counts": {
               "total": 1,
-              "mapped": 1,
-              "unmapped": 0
+              "mapped": 0,
+              "unmapped": 1
             },
-            "unmapped_note": "",
-            "summary_text": "1 of 1 projects are on the map.",
+            "unmapped_note": "1 have no published location, so they stay in the list only.",
+            "summary_text": "0 of 1 projects are on the map.",
             "list_empty": false,
             "list_rows": 1,
             "list_ids": [
-              "2020M0474"
+              "2025K0417"
             ],
-            "marker_ids": [
-              "2020M0474"
-            ],
-            "marker_precisions": [
-              "anchor"
-            ],
+            "marker_ids": [],
+            "marker_precisions": [],
             "marker_labels_all_present": true,
             "selected": null,
             "selected_method": null,
@@ -908,29 +904,25 @@
         },
         "wide": {
           "state": {
-            "url": "/browse/zoning/?cd=M01&stage=any&view=map",
+            "url": "/browse/zoning/?cd=K06&stage=any&view=map",
             "map_state": "ready",
             "failure_kind": null,
             "boundary_state": "ready",
             "boundary_evidence_present": true,
             "counts": {
               "total": 1,
-              "mapped": 1,
-              "unmapped": 0
+              "mapped": 0,
+              "unmapped": 1
             },
-            "unmapped_note": "",
-            "summary_text": "1 of 1 projects are on the map.",
+            "unmapped_note": "1 have no published location, so they stay in the list only.",
+            "summary_text": "0 of 1 projects are on the map.",
             "list_empty": false,
             "list_rows": 1,
             "list_ids": [
-              "2020M0474"
+              "2025K0417"
             ],
-            "marker_ids": [
-              "2020M0474"
-            ],
-            "marker_precisions": [
-              "anchor"
-            ],
+            "marker_ids": [],
+            "marker_precisions": [],
             "marker_labels_all_present": true,
             "selected": null,
             "selected_method": null,
@@ -950,23 +942,23 @@
       "files": [
         {
           "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-list-narrow.png",
-          "bytes": 27224,
-          "sha256": "87cb8adcfe424f2f884db015f503eec755bb8d13b42215a98ab0300c226b2a70"
+          "bytes": 28004,
+          "sha256": "b646995ef4b779c26f3a400a6ea530f41922b54f63523109f495d7bcd9a51af3"
         },
         {
           "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-map-narrow.png",
-          "bytes": 75155,
-          "sha256": "e03f91ec10b9efbb3c964f902add42927a67f5f0cb2c9cf1ea142b8327e460d4"
+          "bytes": 86239,
+          "sha256": "02388c9f281c11e3d67ce6813f1be316527c6dd35bab2c6ec43f65fedb6371b7"
         },
         {
           "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-list-wide.png",
-          "bytes": 49620,
-          "sha256": "1c451bd80ba4193f10575fdcba7df3a489bd6a6cb60f56b3650f66e76cec02c5"
+          "bytes": 44666,
+          "sha256": "537a16a8824ab633694be1d884b12608a4b5a01641acad3453e72e936f920a7e"
         },
         {
           "path": ".artifacts/land-map-visual-parity-fixtures/screenshots/filtered-single-result-map-wide.png",
-          "bytes": 161592,
-          "sha256": "8ae8849d0e3d92b4036391dc2d1b69e8196b4896b3ac777f0d2bb46164fa9844"
+          "bytes": 108956,
+          "sha256": "1abcae678ccb57e1c12d8f5c413ec68872c0cc95d14c550508debbb903a4b778"
         }
       ]
     },
