@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-06T14:51:26.447Z",
+  "generated_at": "2026-11-08T14:14:11.560Z",
   "source": {
     "name": "Zoning Application Portal projects (Open Data)",
     "dataset": "hgx4-8ukb",
@@ -1195,9 +1195,9 @@
       "name": "CityScroll ZAP outcomes daily read model",
       "endpoint": "https://api.cityscroll.org/zap-outcomes"
     },
-    "present_count": 27,
+    "present_count": 28,
     "absent_count": 0,
-    "missing_count": 13,
+    "missing_count": 12,
     "by_project": {
       "2023M0452": {
         "project_id": "2023M0452",
@@ -1225,15 +1225,25 @@
           "reason": null
         },
         "filled": true,
-        "generated_at": "2026-09-27T13:13:07.594Z",
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-11-08T08:01:03.479Z"
+        },
+        "generated_at": "2026-11-08T08:01:03.479Z",
         "open_data": {
           "project_id": "2023Q0351",
-          "public_status": "Filed",
-          "current_milestone": "ZM - Review Filed Land Use Application",
-          "current_milestone_date": "2026-04-16T00:00:00.000",
+          "public_status": "Noticed",
+          "current_milestone": null,
+          "current_milestone_date": null,
+          "noticed_date": "2026-09-25T00:00:00.000",
           "actions": "ZM; ZR",
-          "ulurp_numbers": null,
+          "ulurp_numbers": "260331ZMQ; N260332ZRQ",
           "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-11-08T08:00:57.992Z"
+          },
           "lookup_path": "warehouse"
         },
         "snapshot_state": "present"
@@ -1349,7 +1359,36 @@
       },
       "2024M0148": {
         "project_id": "2024M0148",
-        "snapshot_state": "unavailable"
+        "public_status": "In Public Review",
+        "portal_url": "https://zap.planning.nyc.gov/projects/2024M0148",
+        "join": {
+          "matched": true,
+          "method": "exact_project_id",
+          "reason": null
+        },
+        "filled": true,
+        "stage_observation": {
+          "source_system": "zap_project_api",
+          "observed_at": "2026-11-08T08:01:20.060Z"
+        },
+        "generated_at": "2026-11-08T08:01:20.060Z",
+        "open_data": {
+          "project_id": "2024M0148",
+          "public_status": "Noticed",
+          "current_milestone": "ZM - Review Filed Land Use Application",
+          "current_milestone_date": "2026-10-09T00:00:00.000",
+          "noticed_date": "2026-09-04T00:00:00.000",
+          "actions": "ZM; HA; ZR",
+          "ulurp_numbers": null,
+          "ulurp_non": "ULURP",
+          "source_observation": {
+            "source_system": "zap_projects_open_data",
+            "observation_status": "observed",
+            "observed_at": "2026-11-08T08:00:57.992Z"
+          },
+          "lookup_path": "warehouse"
+        },
+        "snapshot_state": "present"
       },
       "2026X0270": {
         "project_id": "2026X0270",

@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.geography_located_in_audit.v1",
-  "polygon_memberships": 5892,
-  "unique_geography_pairs": 5892,
-  "public_edges": 6425,
+  "polygon_memberships": 5918,
+  "unique_geography_pairs": 5918,
+  "public_edges": 6451,
   "evidence_only_edges": 115,
   "reconciled": true,
   "by_lens": {
@@ -84,21 +84,21 @@
       }
     },
     "meetings": {
-      "polygon_memberships": 4622,
-      "unique_geography_pairs": 4622,
-      "public_edges": 5166,
+      "polygon_memberships": 4648,
+      "unique_geography_pairs": 4648,
+      "public_edges": 5192,
       "evidence_only_edges": 104,
       "reconciled": true,
       "by_method": {
         "community_board_ontology": {
-          "public": 1538,
+          "public": 1548,
           "evidence_only": 0,
-          "total": 1538
+          "total": 1548
         },
         "cd_intersects_council": {
-          "public": 2794,
+          "public": 2810,
           "evidence_only": 40,
-          "total": 2834
+          "total": 2850
         },
         "parcel_membership": {
           "public": 684,
@@ -147,7 +147,7 @@
         }
       },
       "by_tier": {
-        "strong": 5104,
+        "strong": 5130,
         "derived": 62,
         "weak": 104
       }
@@ -217,7 +217,7 @@
   },
   "note": "Each polygon membership has at least one routed located_in candidate; distinct record×geography pairs reconcile to membership bags while separate venue and jurisdiction roles may share a pair. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
   "boundary_vintage": "2026-05-26",
-  "built_at": "2026-11-07T14:09:15.945Z",
+  "built_at": "2026-11-08T14:51:02.740Z",
   "subject_counts": {
     "borough": 5,
     "community-district": 59,

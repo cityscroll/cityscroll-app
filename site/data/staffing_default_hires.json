@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-06T15:10:25.659Z",
+  "generated_at": "2026-11-08T14:34:16.090Z",
   "source": {
     "name": "City Record Online — Changes in Personnel (APPOINTED)",
     "dataset": "dg92-zbpx",
@@ -16,6 +16,160 @@
   },
   "count": 80,
   "notices": [
+    {
+      "request_id": "999660",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "OFFICE OF THE MAYOR",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 0527A; Reason For Change: APPOINTED; Salary: 169000.00; Employee Name: YIM,HAEYA J."
+    },
+    {
+      "request_id": "999649",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "OFFICE OF THE MAYOR",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 0527A; Reason For Change: APPOINTED; Salary: 160000.00; Employee Name: ROGHANIAN,ELAINE  ."
+    },
+    {
+      "request_id": "999643",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "OFFICE OF THE ACTUARY",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 10209; Reason For Change: APPOINTED; Salary: 17.75; Employee Name: AHMED,NABIHAH B."
+    },
+    {
+      "request_id": "999638",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "BOARD OF ELECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 94367; Reason For Change: APPOINTED; Salary: 22.85; Employee Name: LONDON,JAROD  ."
+    },
+    {
+      "request_id": "999636",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "BOROUGH PRESIDENT-BRONX",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 55000.00; Employee Name: SORIANO PEREZ,ERIC J."
+    },
+    {
+      "request_id": "999633",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "CAMPAIGN FINANCE BOARD",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 0660A; Reason For Change: APPOINTED; Salary: 70000.00; Employee Name: KARIM,SHAMIN A."
+    },
+    {
+      "request_id": "999628",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "BOARD OF ELECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 94367; Reason For Change: APPOINTED; Salary: 22.85; Employee Name: RAMIREZ,JAVIER A."
+    },
+    {
+      "request_id": "999626",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "BOROUGH PRESIDENT-STATEN IS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 10237; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: BENTIVEGNA,GIULIANA R."
+    },
+    {
+      "request_id": "999624",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "BOARD OF ELECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 94367; Reason For Change: APPOINTED; Salary: 22.85; Employee Name: SCOTT,WILLIE  ."
+    },
+    {
+      "request_id": "999621",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "OFFICE OF THE ACTUARY",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 10209; Reason For Change: APPOINTED; Salary: 17.50; Employee Name: WU,WAN XIAN  ."
+    },
+    {
+      "request_id": "999609",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "BOARD OF ELECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 94367; Reason For Change: APPOINTED; Salary: 22.85; Employee Name: RANDAZZO,CATERINA  ."
+    },
+    {
+      "request_id": "999604",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "BOROUGH PRESIDENT-BRONX",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 60000.00; Employee Name: SIMS,ACHANTE D."
+    },
+    {
+      "request_id": "999597",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "BOARD OF ELECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 94367; Reason For Change: APPOINTED; Salary: 22.85; Employee Name: BARRILE,JOHN L."
+    },
+    {
+      "request_id": "999593",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "BOROUGH PRESIDENT-BRONX",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 80000.00; Employee Name: TUITT,SHANISE  ."
+    },
+    {
+      "request_id": "999591",
+      "start_date": "2026-08-28T00:00:00.000",
+      "agency_name": "NYC EMPLOYEES RETIREMENT SYS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 40493; Reason For Change: APPOINTED; Salary: 55102.00; Employee Name: ROBINSON,RAVEN E."
+    },
+    {
+      "request_id": "999639",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "DISTRICT ATTORNEY KINGS COUNTY",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 75000.00; Employee Name: PARVANKIN,CHRISTOP L."
+    },
+    {
+      "request_id": "999629",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "DISTRICT ATTORNEY QNS COUNTY",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/02/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 70000.00; Employee Name: ALVAREZ,ORFA C."
+    },
+    {
+      "request_id": "999618",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "DISTRICT ATTORNEY QNS COUNTY",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/02/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 77750.00; Employee Name: JEAN,DIEUSITA  ."
+    },
+    {
+      "request_id": "999616",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "DISTRICT ATTORNEY KINGS COUNTY",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 53442.00; Employee Name: SMITH,SKYLAR S."
+    },
+    {
+      "request_id": "999608",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "DISTRICT ATTORNEY QNS COUNTY",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 30831; Reason For Change: APPOINTED; Salary: 74437.00; Employee Name: BOONCOME,SANRIT  ."
+    },
+    {
+      "request_id": "999600",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "DISTRICT ATTORNEY KINGS COUNTY",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 08/02/2026; Provisional Status: Yes; Title Code: 30114; Reason For Change: APPOINTED; Salary: 97500.00; Employee Name: STEINBAUM,MAX D."
+    },
+    {
+      "request_id": "999592",
+      "start_date": "2026-08-14T00:00:00.000",
+      "agency_name": "DISTRICT ATTORNEY KINGS COUNTY",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 63809.00; Employee Name: SCHNEIER,GABRIEL  ."
+    },
     {
       "request_id": "999587",
       "start_date": "2026-08-14T00:00:00.000",
@@ -421,160 +575,6 @@
       "agency_name": "DEPARTMENT OF FINANCE",
       "short_title": "APPOINTED",
       "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 40523; Reason For Change: APPOINTED; Salary: 60710.00; Employee Name: LEE,SUNG S."
-    },
-    {
-      "request_id": "999494",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF FINANCE",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 40523; Reason For Change: APPOINTED; Salary: 60710.00; Employee Name: LIN,FAN  ."
-    },
-    {
-      "request_id": "999493",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: GARCIA,KENNY  ."
-    },
-    {
-      "request_id": "999492",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF FINANCE",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 40523; Reason For Change: APPOINTED; Salary: 60710.00; Employee Name: JEAN FRANCOIS,FREUDSON  ."
-    },
-    {
-      "request_id": "999491",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF FINANCE",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 40523; Reason For Change: APPOINTED; Salary: 60710.00; Employee Name: FALBY,LISA  ."
-    },
-    {
-      "request_id": "999490",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF FINANCE",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 40523; Reason For Change: APPOINTED; Salary: 60710.00; Employee Name: TESFAY,ELSA M."
-    },
-    {
-      "request_id": "999487",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF FINANCE",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 40523; Reason For Change: APPOINTED; Salary: 60710.00; Employee Name: CUTLER,XAVIER D."
-    },
-    {
-      "request_id": "999484",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: GIOVE,ANDREW R."
-    },
-    {
-      "request_id": "999483",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: BASILE,ANTHONY S."
-    },
-    {
-      "request_id": "999481",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF FINANCE",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 40523; Reason For Change: APPOINTED; Salary: 60710.00; Employee Name: KAPLII,HANNA  ."
-    },
-    {
-      "request_id": "999480",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF FINANCE",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 40523; Reason For Change: APPOINTED; Salary: 60710.00; Employee Name: GEORGE,ERIC C."
-    },
-    {
-      "request_id": "999479",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: BUCCO,CHRISTOP  ."
-    },
-    {
-      "request_id": "999478",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: JONES,MATTHEW  ."
-    },
-    {
-      "request_id": "999476",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: CRAIGMAN,JABARI  ."
-    },
-    {
-      "request_id": "999475",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF FINANCE",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 06/28/2026; Provisional Status: Yes; Title Code: 10251; Reason For Change: APPOINTED; Salary: 48631.00; Employee Name: MYERS,TEREZA  ."
-    },
-    {
-      "request_id": "999472",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: REEBE,JAMES R."
-    },
-    {
-      "request_id": "999471",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: MCKENZIE,DEVON A."
-    },
-    {
-      "request_id": "999470",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: MERRICK,SCOTT J."
-    },
-    {
-      "request_id": "999469",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF FINANCE",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 40523; Reason For Change: APPOINTED; Salary: 60710.00; Employee Name: HARRIS,LALIH L."
-    },
-    {
-      "request_id": "999468",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: FITZGIBBON,LIAM G."
-    },
-    {
-      "request_id": "999467",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: PASTORELLI,ANTHONY  ."
-    },
-    {
-      "request_id": "999466",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 91001; Reason For Change: APPOINTED; Salary: 62335.00; Employee Name: MARRACCINO,MARTIN A."
-    },
-    {
-      "request_id": "999465",
-      "start_date": "2026-08-14T00:00:00.000",
-      "agency_name": "DEPARTMENT OF SANITATION",
-      "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 70112; Reason For Change: APPOINTED; Salary: 47752.00; Employee Name: FLAHERTY,COLIN F."
     }
   ]
 }

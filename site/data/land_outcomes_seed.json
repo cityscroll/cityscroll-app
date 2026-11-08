@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_outcomes_seed.v1",
-  "generated_at": "2026-11-06T14:51:26.447Z",
-  "count": 27,
+  "generated_at": "2026-11-08T14:14:11.560Z",
+  "count": 28,
   "by_project": {
     "2023Q0351": {
       "project_id": "2023Q0351",
@@ -25,6 +25,8 @@
             "id": "zap-milestone:849e9e95-cec8-ed11-b597-001dd806a702",
             "kind": "zap_milestone",
             "title": "Land Use Application Filed",
+            "source_title": "Prepare Filed Land Use Application",
+            "source_title_field": "milestonename",
             "detail": "Completed",
             "status": "Completed",
             "outcome": null,
@@ -38,12 +40,15 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:a79e9e95-cec8-ed11-b597-001dd806a702",
             "kind": "zap_milestone",
             "title": "Land Use Fee Paid",
+            "source_title": "Prepare Filed Land Use Fee Payment",
+            "source_title_field": "milestonename",
             "detail": "Completed",
             "status": "Completed",
             "outcome": null,
@@ -57,12 +62,15 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:b29e9e95-cec8-ed11-b597-001dd806a702",
             "kind": "zap_milestone",
             "title": "Land Use Application Filed",
+            "source_title": "Review Filed Land Use Application",
+            "source_title_field": "milestonename",
             "detail": "Completed",
             "status": "Completed",
             "outcome": null,
@@ -76,12 +84,15 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:a6dbd10c-8475-f111-ab0d-001dd8070e6e",
             "kind": "zap_milestone",
             "title": "Land Use Application Filed",
+            "source_title": "Prepare Filed Land Use Application",
+            "source_title_field": "milestonename",
             "detail": "Completed",
             "status": "Completed",
             "outcome": null,
@@ -95,31 +106,15 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
-          },
-          {
-            "id": "zap-milestone:eddbd10c-8475-f111-ab0d-001dd8070e6e",
-            "kind": "zap_milestone",
-            "title": "Land Use Application Filed",
-            "detail": "In Progress",
-            "status": "In Progress",
-            "outcome": null,
-            "time": {
-              "value": "2026-09-17",
-              "precision": "day",
-              "basis": "actual_start",
-              "certainty": "actual"
             },
-            "source": {
-              "id": "zap-project-api",
-              "label": "Zoning Application Portal",
-              "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            "source_observation": null
           },
           {
             "id": "zap-milestone:879af87f-8efd-ee11-a1ff-001dd8306c80",
             "kind": "zap_milestone",
             "title": "Review Session - Pre-Hearing Review / Post Referral",
+            "source_title": "Review Session - Pre-Hearing Review / Post Referral",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
@@ -133,12 +128,15 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:bf9af87f-8efd-ee11-a1ff-001dd8306c80",
             "kind": "zap_milestone",
             "title": "Post Hearing Follow-Up / Future Votes",
+            "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
@@ -152,12 +150,15 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:b39af87f-8efd-ee11-a1ff-001dd8306c80",
             "kind": "zap_milestone",
             "title": "City Planning Commission Review",
+            "source_title": "CPC Public Meeting - Public Hearing",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
@@ -171,12 +172,37 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:eddbd10c-8475-f111-ab0d-001dd8070e6e",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Review Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-09-29",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:5068fa85-8efd-ee11-a1ff-001dd8306c80",
             "kind": "zap_milestone",
             "title": "City Planning Commission Vote",
+            "source_title": "CPC Public Meeting - Vote",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
@@ -190,36 +216,20 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
-          },
-          {
-            "id": "zap-milestone:2699f87f-8efd-ee11-a1ff-001dd8306c80",
-            "kind": "zap_milestone",
-            "title": "Application Reviewed at City Planning Commission Review Session",
-            "detail": "Not Started",
-            "status": "Not Started",
-            "outcome": null,
-            "time": {
-              "value": "2026-10-26",
-              "precision": "day",
-              "basis": "review_meeting",
-              "certainty": "actual"
             },
-            "source": {
-              "id": "zap-project-api",
-              "label": "Zoning Application Portal",
-              "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            "source_observation": null
           },
           {
             "id": "zap-milestone:89f1fd79-8efd-ee11-a1ff-001dd8306c80",
             "kind": "zap_milestone",
             "title": "Environmental Assessment Statement Filed",
+            "source_title": "Prepare Filed EAS",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
             "time": {
-              "value": "2026-11-25",
+              "value": "2026-11-30",
               "precision": "day",
               "basis": "planned_completion",
               "certainty": "planned"
@@ -228,12 +238,15 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:39f1fd79-8efd-ee11-a1ff-001dd8306c80",
             "kind": "zap_milestone",
             "title": "CEQR Fee Paid",
+            "source_title": "Prepare CEQR Fee Payment",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
@@ -247,17 +260,46 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
+            },
+            "source_observation": {
+              "source_system": "zap_project_api",
+              "observation_status": "retained",
+              "observed_at": null
             }
+          },
+          {
+            "id": "zap-milestone:2699f87f-8efd-ee11-a1ff-001dd8306c80",
+            "kind": "zap_milestone",
+            "title": "Application Reviewed at City Planning Commission Review Session",
+            "source_title": "Review Session - Certified / Referred",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2027-01-18",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:cff1fd79-8efd-ee11-a1ff-001dd8306c80",
             "kind": "zap_milestone",
             "title": "Environmental Assessment Statement Filed",
+            "source_title": "Review Filed EAS",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
             "time": {
-              "value": "2027-01-31",
+              "value": "2027-01-30",
               "precision": "day",
               "basis": "planned_completion",
               "certainty": "planned"
@@ -266,17 +308,20 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:5099f87f-8efd-ee11-a1ff-001dd8306c80",
             "kind": "zap_milestone",
             "title": "Community Board Review",
+            "source_title": "Community Board Referral",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
             "time": {
-              "value": "2027-02-08",
+              "value": "2027-05-05",
               "precision": "day",
               "basis": "planned_completion",
               "certainty": "planned"
@@ -285,69 +330,15 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
-          },
-          {
-            "id": "zap-milestone:aa99f87f-8efd-ee11-a1ff-001dd8306c80",
-            "kind": "zap_milestone",
-            "title": "Borough President Review",
-            "detail": "Not Started",
-            "status": "Not Started",
-            "outcome": null,
-            "time": {
-              "value": "2027-03-12",
-              "precision": "day",
-              "basis": "planned_completion",
-              "certainty": "planned"
             },
-            "source": {
-              "id": "zap-project-api",
-              "label": "Zoning Application Portal",
-              "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
-          },
-          {
-            "id": "zap-milestone:d499f87f-8efd-ee11-a1ff-001dd8306c80",
-            "kind": "zap_milestone",
-            "title": "Borough Board Review",
-            "detail": "Not Started",
-            "status": "Not Started",
-            "outcome": null,
-            "time": {
-              "value": "2027-03-12",
-              "precision": "day",
-              "basis": "planned_completion",
-              "certainty": "planned"
-            },
-            "source": {
-              "id": "zap-project-api",
-              "label": "Zoning Application Portal",
-              "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
-          },
-          {
-            "id": "zap-milestone:7b68fa85-8efd-ee11-a1ff-001dd8306c80",
-            "kind": "zap_milestone",
-            "title": "City Council Review",
-            "detail": "Not Started",
-            "status": "Not Started",
-            "outcome": null,
-            "time": {
-              "value": "2027-05-24",
-              "precision": "day",
-              "basis": "planned_completion",
-              "certainty": "planned"
-            },
-            "source": {
-              "id": "zap-project-api",
-              "label": "Zoning Application Portal",
-              "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            "source_observation": null
           },
           {
             "id": "zap-milestone:335e5375-cbb7-f111-aaac-001dd803dca7",
             "kind": "zap_milestone",
             "title": "Request for Appeals Board Review",
+            "source_title": "Request for Appeals Board Review",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
@@ -361,12 +352,59 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:aa99f87f-8efd-ee11-a1ff-001dd8306c80",
+            "kind": "zap_milestone",
+            "title": "Borough President Review",
+            "source_title": "Borough President Referral",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2027-06-07",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:d499f87f-8efd-ee11-a1ff-001dd8306c80",
+            "kind": "zap_milestone",
+            "title": "Borough Board Review",
+            "source_title": "Borough Board Referral",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2027-06-07",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:d2e2ddd6-cbb7-f111-aaac-001dd803dca7",
             "kind": "zap_milestone",
             "title": "Appeals Board Review",
+            "source_title": "Appeals Board Review",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
@@ -380,17 +418,20 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
           },
           {
             "id": "zap-milestone:b468fa85-8efd-ee11-a1ff-001dd8306c80",
             "kind": "zap_milestone",
             "title": "Approval Letter Sent to Responsible Agency",
+            "source_title": "Final Letter Sent",
+            "source_title_field": "milestonename",
             "detail": "Not Started",
             "status": "Not Started",
             "outcome": null,
             "time": {
-              "value": "2027-06-18",
+              "value": "2027-06-26",
               "precision": "day",
               "basis": "planned_completion",
               "certainty": "planned"
@@ -399,7 +440,30 @@
               "id": "zap-project-api",
               "label": "Zoning Application Portal",
               "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
-            }
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:7b68fa85-8efd-ee11-a1ff-001dd8306c80",
+            "kind": "zap_milestone",
+            "title": "City Council Review",
+            "source_title": "City Council Review",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2027-08-19",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2023Q0351"
+            },
+            "source_observation": null
           }
         ],
         "gaps": [
@@ -407,15 +471,17 @@
             "slot": "city_record_notices",
             "class": "source_unavailable",
             "taxonomy": false,
-            "source": "City Record Online"
+            "source": "City Record Online",
+            "retained": false,
+            "observed": false
           }
         ],
         "lag": {
           "open_data_vs_portal": {
-            "status": "behind",
-            "days": 153,
-            "open_data_date": "2026-04-16",
-            "portal_date": "2026-09-16"
+            "status": "unknown",
+            "days": null,
+            "open_data_date": null,
+            "portal_date": "2026-09-29"
           }
         }
       },
@@ -489,23 +555,6 @@
           }
         },
         {
-          "id": "eddbd10c-8475-f111-ab0d-001dd8070e6e",
-          "title": "Land Use Application Filed",
-          "source_title": "Review Filed Land Use Application",
-          "source_title_field": "milestonename",
-          "review_meeting_at": null,
-          "description": null,
-          "status": "In Progress",
-          "outcome": null,
-          "sequence": 29,
-          "time": {
-            "value": "2026-09-17",
-            "precision": "day",
-            "basis": "actual_start",
-            "certainty": "actual"
-          }
-        },
-        {
           "id": "879af87f-8efd-ee11-a1ff-001dd8306c80",
           "title": "Review Session - Pre-Hearing Review / Post Referral",
           "source_title": "Review Session - Pre-Hearing Review / Post Referral",
@@ -557,6 +606,23 @@
           }
         },
         {
+          "id": "eddbd10c-8475-f111-ab0d-001dd8070e6e",
+          "title": "Land Use Application Filed",
+          "source_title": "Review Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 29,
+          "time": {
+            "value": "2026-09-29",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
           "id": "5068fa85-8efd-ee11-a1ff-001dd8306c80",
           "title": "City Planning Commission Vote",
           "source_title": "CPC Public Meeting - Vote",
@@ -574,23 +640,6 @@
           }
         },
         {
-          "id": "2699f87f-8efd-ee11-a1ff-001dd8306c80",
-          "title": "Application Reviewed at City Planning Commission Review Session",
-          "source_title": "Review Session - Certified / Referred",
-          "source_title_field": "milestonename",
-          "review_meeting_at": "2026-10-26T04:00:00.000Z",
-          "description": "A \"Review Session\" milestone signifies that the application has been sent to the City Planning Commission (CPC) and is ready for review. The \"Review\" milestone represents the period of time (up to 60 days) that the CPC reviews the application before their vote.",
-          "status": "Not Started",
-          "outcome": null,
-          "sequence": 46,
-          "time": {
-            "value": "2026-10-26",
-            "precision": "day",
-            "basis": "review_meeting",
-            "certainty": "actual"
-          }
-        },
-        {
           "id": "89f1fd79-8efd-ee11-a1ff-001dd8306c80",
           "title": "Environmental Assessment Statement Filed",
           "source_title": "Prepare Filed EAS",
@@ -601,27 +650,27 @@
           "outcome": null,
           "sequence": 34,
           "time": {
-            "value": "2026-11-25",
+            "value": "2026-11-30",
             "precision": "day",
             "basis": "planned_completion",
             "certainty": "planned"
           }
         },
         {
-          "id": "39f1fd79-8efd-ee11-a1ff-001dd8306c80",
-          "title": "CEQR Fee Paid",
-          "source_title": "Prepare CEQR Fee Payment",
+          "id": "2699f87f-8efd-ee11-a1ff-001dd8306c80",
+          "title": "Application Reviewed at City Planning Commission Review Session",
+          "source_title": "Review Session - Certified / Referred",
           "source_title_field": "milestonename",
-          "review_meeting_at": null,
-          "description": null,
+          "review_meeting_at": "2027-01-18T05:00:00.000Z",
+          "description": "A \"Review Session\" milestone signifies that the application has been sent to the City Planning Commission (CPC) and is ready for review. The \"Review\" milestone represents the period of time (up to 60 days) that the CPC reviews the application before their vote.",
           "status": "Not Started",
           "outcome": null,
-          "sequence": 36,
+          "sequence": 46,
           "time": {
-            "value": "2026-12-01",
+            "value": "2027-01-18",
             "precision": "day",
-            "basis": "planned_completion",
-            "certainty": "planned"
+            "basis": "review_meeting",
+            "certainty": "actual"
           }
         },
         {
@@ -635,7 +684,7 @@
           "outcome": null,
           "sequence": 37,
           "time": {
-            "value": "2027-01-31",
+            "value": "2027-01-30",
             "precision": "day",
             "basis": "planned_completion",
             "certainty": "planned"
@@ -652,58 +701,7 @@
           "outcome": null,
           "sequence": 48,
           "time": {
-            "value": "2027-02-08",
-            "precision": "day",
-            "basis": "planned_completion",
-            "certainty": "planned"
-          }
-        },
-        {
-          "id": "aa99f87f-8efd-ee11-a1ff-001dd8306c80",
-          "title": "Borough President Review",
-          "source_title": "Borough President Referral",
-          "source_title_field": "milestonename",
-          "review_meeting_at": null,
-          "description": "The Borough President has 30 days after the Community Board issues a recommendation to review the application and issue a recommendation.",
-          "status": "Not Started",
-          "outcome": null,
-          "sequence": 49,
-          "time": {
-            "value": "2027-03-12",
-            "precision": "day",
-            "basis": "planned_completion",
-            "certainty": "planned"
-          }
-        },
-        {
-          "id": "d499f87f-8efd-ee11-a1ff-001dd8306c80",
-          "title": "Borough Board Review",
-          "source_title": "Borough Board Referral",
-          "source_title_field": "milestonename",
-          "review_meeting_at": null,
-          "description": "The Borough Board has 30 days concurrent with the Borough President’s review period to review the application and issue a recommendation.",
-          "status": "Not Started",
-          "outcome": null,
-          "sequence": 50,
-          "time": {
-            "value": "2027-03-12",
-            "precision": "day",
-            "basis": "planned_completion",
-            "certainty": "planned"
-          }
-        },
-        {
-          "id": "7b68fa85-8efd-ee11-a1ff-001dd8306c80",
-          "title": "City Council Review",
-          "source_title": "City Council Review",
-          "source_title_field": "milestonename",
-          "review_meeting_at": null,
-          "description": "The City Council has 50 days from receiving the City Planning Commission report to call up the application, hold a hearing and vote on the application.",
-          "status": "Not Started",
-          "outcome": null,
-          "sequence": 58,
-          "time": {
-            "value": "2027-05-24",
+            "value": "2027-05-05",
             "precision": "day",
             "basis": "planned_completion",
             "certainty": "planned"
@@ -721,6 +719,40 @@
           "sequence": 64,
           "time": {
             "value": "2027-05-31",
+            "precision": "day",
+            "basis": "planned_completion",
+            "certainty": "planned"
+          }
+        },
+        {
+          "id": "aa99f87f-8efd-ee11-a1ff-001dd8306c80",
+          "title": "Borough President Review",
+          "source_title": "Borough President Referral",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The Borough President has 30 days after the Community Board issues a recommendation to review the application and issue a recommendation.",
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 49,
+          "time": {
+            "value": "2027-06-07",
+            "precision": "day",
+            "basis": "planned_completion",
+            "certainty": "planned"
+          }
+        },
+        {
+          "id": "d499f87f-8efd-ee11-a1ff-001dd8306c80",
+          "title": "Borough Board Review",
+          "source_title": "Borough Board Referral",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The Borough Board has 30 days concurrent with the Borough President’s review period to review the application and issue a recommendation.",
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 50,
+          "time": {
+            "value": "2027-06-07",
             "precision": "day",
             "basis": "planned_completion",
             "certainty": "planned"
@@ -754,10 +786,49 @@
           "outcome": null,
           "sequence": 60,
           "time": {
-            "value": "2027-06-18",
+            "value": "2027-06-26",
             "precision": "day",
             "basis": "planned_completion",
             "certainty": "planned"
+          }
+        },
+        {
+          "id": "7b68fa85-8efd-ee11-a1ff-001dd8306c80",
+          "title": "City Council Review",
+          "source_title": "City Council Review",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The City Council has 50 days from receiving the City Planning Commission report to call up the application, hold a hearing and vote on the application.",
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 58,
+          "time": {
+            "value": "2027-08-19",
+            "precision": "day",
+            "basis": "planned_completion",
+            "certainty": "planned"
+          }
+        },
+        {
+          "id": "39f1fd79-8efd-ee11-a1ff-001dd8306c80",
+          "title": "CEQR Fee Paid",
+          "source_title": "Prepare CEQR Fee Payment",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 36,
+          "time": {
+            "value": "2026-12-01",
+            "precision": "day",
+            "basis": "planned_completion",
+            "certainty": "planned"
+          },
+          "source_observation": {
+            "source_system": "zap_project_api",
+            "observation_status": "retained",
+            "observed_at": null
           }
         }
       ],
@@ -771,7 +842,47 @@
         "certified_date": null,
         "phases": [],
         "disposition": null,
-        "generated_at": "2026-09-27T13:13:07.594Z"
+        "generated_at": "2026-11-08T08:01:03.479Z"
+      },
+      "source_observations": {
+        "zap_api": {
+          "source_system": "zap_project_api",
+          "acquisition_status": "ok",
+          "observation_status": "observed_and_retained",
+          "observed_at": "2026-11-08T08:01:03.479Z",
+          "retained_observed_at": null
+        },
+        "open_data": {
+          "source_system": "zap_projects_open_data",
+          "acquisition_status": "ok",
+          "observation_status": "observed",
+          "observed_at": "2026-11-08T08:00:57.992Z",
+          "attempted_at": "2026-11-08T08:01:03.479Z"
+        },
+        "city_record": {
+          "source_system": "city_record",
+          "acquisition_status": "unavailable",
+          "observation_status": "unavailable",
+          "observed_at": "2026-09-27T13:13:07.594Z",
+          "retained_observed_at": null,
+          "attempted_at": "2026-11-08T08:01:03.479Z",
+          "observed_count": 0,
+          "retained_count": 0
+        },
+        "bbl": {
+          "source_system": "zap_bbl_open_data",
+          "acquisition_status": "ok",
+          "observation_status": "observed",
+          "observed_at": "2026-11-04T21:51:58.033Z",
+          "attempted_at": "2026-11-08T08:01:03.479Z"
+        },
+        "dob": {
+          "source_system": "dob_now",
+          "acquisition_status": "unavailable",
+          "observation_status": "unavailable",
+          "observed_at": null,
+          "attempted_at": "2026-11-08T08:01:03.479Z"
+        }
       },
       "actions": [
         {
@@ -5445,6 +5556,875 @@
         }
       ],
       "n_documents": 91
+    },
+    "2024M0148": {
+      "project_id": "2024M0148",
+      "spine": {
+        "schema_version": 1,
+        "project_id": "2024M0148",
+        "join": {
+          "zap": {
+            "matched": true,
+            "method": "exact_project_id",
+            "reason": null
+          },
+          "city_record": {
+            "matched": false,
+            "method": "exact_ulurp_token",
+            "count": 0
+          }
+        },
+        "events": [
+          {
+            "id": "zap-milestone:991a9289-305e-ee11-be6e-001dd804eb39",
+            "kind": "zap_milestone",
+            "title": "Application Reviewed at City Planning Commission Review Session",
+            "source_title": "Review Session - Certified / Referred",
+            "source_title_field": "milestonename",
+            "detail": "Certified",
+            "status": "Completed",
+            "outcome": "Certified",
+            "time": {
+              "value": "2026-10-26",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:e5c2d817-305e-ee11-be6e-001dd804eb39",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Review Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-10-29",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:c4c2d817-305e-ee11-be6e-001dd804eb39",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "source_title": "Prepare Filed Land Use Application",
+            "source_title_field": "milestonename",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-11-05",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:881b9289-305e-ee11-be6e-001dd804eb39",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Review",
+            "source_title": "CPC Public Meeting - Public Hearing",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-12-12",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:aa1b9289-305e-ee11-be6e-001dd804eb39",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Vote",
+            "source_title": "CPC Public Meeting - Vote",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-12-12",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:921b9289-305e-ee11-be6e-001dd804eb39",
+            "kind": "zap_milestone",
+            "title": "Post Hearing Follow-Up / Future Votes",
+            "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-12-14",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:761b9289-305e-ee11-be6e-001dd804eb39",
+            "kind": "zap_milestone",
+            "title": "Review Session - Pre-Hearing Review / Post Referral",
+            "source_title": "Review Session - Pre-Hearing Review / Post Referral",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-12-26",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:c81a9289-305e-ee11-be6e-001dd804eb39",
+            "kind": "zap_milestone",
+            "title": "Community Board Review",
+            "source_title": "Community Board Referral",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2027-01-13",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:ff1a9289-305e-ee11-be6e-001dd804eb39",
+            "kind": "zap_milestone",
+            "title": "Borough President Review",
+            "source_title": "Borough President Referral",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2027-02-17",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:bf1b9289-305e-ee11-be6e-001dd804eb39",
+            "kind": "zap_milestone",
+            "title": "City Council Review",
+            "source_title": "City Council Review",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2027-05-05",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:9f718e40-5d9d-f111-8077-001dd803dca7",
+            "kind": "zap_milestone",
+            "title": "Request for Appeals Board Review",
+            "source_title": "Request for Appeals Board Review",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2027-05-11",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          },
+          {
+            "id": "zap-milestone:a9399b5e-5d9d-f111-8077-001dd803dca7",
+            "kind": "zap_milestone",
+            "title": "Appeals Board Review",
+            "source_title": "Appeals Board Review",
+            "source_title_field": "milestonename",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2027-05-20",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2024M0148"
+            },
+            "source_observation": null
+          }
+        ],
+        "gaps": [
+          {
+            "slot": "city_record_notices",
+            "class": "source_unavailable",
+            "taxonomy": false,
+            "source": "City Record Online",
+            "retained": false,
+            "observed": false
+          }
+        ],
+        "lag": {
+          "open_data_vs_portal": {
+            "status": "behind",
+            "days": 27,
+            "open_data_date": "2026-10-09",
+            "portal_date": "2026-11-05"
+          }
+        }
+      },
+      "milestones": [
+        {
+          "id": "991a9289-305e-ee11-be6e-001dd804eb39",
+          "title": "Application Reviewed at City Planning Commission Review Session",
+          "source_title": "Review Session - Certified / Referred",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-10-26T04:00:00.000Z",
+          "description": "A \"Review Session\" milestone signifies that the application has been sent to the City Planning Commission (CPC) and is ready for review. The \"Review\" milestone represents the period of time (up to 60 days) that the CPC reviews the application before their vote.",
+          "status": "Completed",
+          "outcome": "Certified",
+          "sequence": 46,
+          "time": {
+            "value": "2026-10-26",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "e5c2d817-305e-ee11-be6e-001dd804eb39",
+          "title": "Land Use Application Filed",
+          "source_title": "Review Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 29,
+          "time": {
+            "value": "2026-10-29",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "c4c2d817-305e-ee11-be6e-001dd804eb39",
+          "title": "Land Use Application Filed",
+          "source_title": "Prepare Filed Land Use Application",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": null,
+          "status": "Completed",
+          "outcome": null,
+          "sequence": 26,
+          "time": {
+            "value": "2026-11-05",
+            "precision": "day",
+            "basis": "actual_end",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "881b9289-305e-ee11-be6e-001dd804eb39",
+          "title": "City Planning Commission Review",
+          "source_title": "CPC Public Meeting - Public Hearing",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-12-12T05:00:00.000Z",
+          "description": "The City Planning Commission has 60 days after the Borough President issues a recommendation to hold a hearing and vote on an application.",
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 54,
+          "time": {
+            "value": "2026-12-12",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "aa1b9289-305e-ee11-be6e-001dd804eb39",
+          "title": "City Planning Commission Vote",
+          "source_title": "CPC Public Meeting - Vote",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-12-12T05:00:00.000Z",
+          "description": null,
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 57,
+          "time": {
+            "value": "2026-12-12",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "921b9289-305e-ee11-be6e-001dd804eb39",
+          "title": "Post Hearing Follow-Up / Future Votes",
+          "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-12-14T05:00:00.000Z",
+          "description": null,
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 56,
+          "time": {
+            "value": "2026-12-14",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "761b9289-305e-ee11-be6e-001dd804eb39",
+          "title": "Review Session - Pre-Hearing Review / Post Referral",
+          "source_title": "Review Session - Pre-Hearing Review / Post Referral",
+          "source_title_field": "milestonename",
+          "review_meeting_at": "2026-12-26T05:00:00.000Z",
+          "description": null,
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 53,
+          "time": {
+            "value": "2026-12-26",
+            "precision": "day",
+            "basis": "review_meeting",
+            "certainty": "actual"
+          }
+        },
+        {
+          "id": "c81a9289-305e-ee11-be6e-001dd804eb39",
+          "title": "Community Board Review",
+          "source_title": "Community Board Referral",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The Community Board has 60 days from the time of referral (nine days after certification) to hold a hearing and issue a recommendation.",
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 48,
+          "time": {
+            "value": "2027-01-13",
+            "precision": "day",
+            "basis": "planned_completion",
+            "certainty": "planned"
+          }
+        },
+        {
+          "id": "ff1a9289-305e-ee11-be6e-001dd804eb39",
+          "title": "Borough President Review",
+          "source_title": "Borough President Referral",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The Borough President has 30 days after the Community Board issues a recommendation to review the application and issue a recommendation.",
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 49,
+          "time": {
+            "value": "2027-02-17",
+            "precision": "day",
+            "basis": "planned_completion",
+            "certainty": "planned"
+          }
+        },
+        {
+          "id": "bf1b9289-305e-ee11-be6e-001dd804eb39",
+          "title": "City Council Review",
+          "source_title": "City Council Review",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The City Council has 50 days from receiving the City Planning Commission report to call up the application, hold a hearing and vote on the application.",
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 58,
+          "time": {
+            "value": "2027-05-05",
+            "precision": "day",
+            "basis": "planned_completion",
+            "certainty": "planned"
+          }
+        },
+        {
+          "id": "9f718e40-5d9d-f111-8077-001dd803dca7",
+          "title": "Request for Appeals Board Review",
+          "source_title": "Request for Appeals Board Review",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The Applicant and the Affordable Housing Appeals Board have five days to review the City Council’s decision and request a call up or appeal.",
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 64,
+          "time": {
+            "value": "2027-05-11",
+            "precision": "day",
+            "basis": "planned_completion",
+            "certainty": "planned"
+          }
+        },
+        {
+          "id": "a9399b5e-5d9d-f111-8077-001dd803dca7",
+          "title": "Appeals Board Review",
+          "source_title": "Appeals Board Review",
+          "source_title_field": "milestonename",
+          "review_meeting_at": null,
+          "description": "The Affordable Housing Appeals Board has 15 days after the call up or appeal to restore the City Planning Commission action, partially restore the City Planning Commission action, or sustain the City Council action.",
+          "status": "Not Started",
+          "outcome": null,
+          "sequence": 65,
+          "time": {
+            "value": "2027-05-20",
+            "precision": "day",
+            "basis": "planned_completion",
+            "certainty": "planned"
+          }
+        }
+      ],
+      "statutory_clock": {
+        "schema_version": 1,
+        "statute_ref": "NYC Charter §197-c",
+        "model_name": "ulurp_statutory_clock",
+        "model_version": "1.0.0",
+        "status": "open",
+        "reason": null,
+        "certified_date": "2026-10-26",
+        "total_days": 205,
+        "phases": [
+          {
+            "phase_id": "community_board",
+            "short": "CB",
+            "label_key": "land_phase_community_board",
+            "days": 60,
+            "cumulative_days": 60,
+            "model_stage": "community_board",
+            "outer_bound_due_date": "2026-12-25",
+            "due_date": "2026-12-25",
+            "statute_ref": "NYC Charter §197-c",
+            "start_date": "2026-10-26",
+            "start_basis": "certification_date",
+            "deadline_basis": "phase_window",
+            "deadline_certainty": "statutory",
+            "status": "open",
+            "completed_at": null,
+            "evidence_id": null
+          },
+          {
+            "phase_id": "borough_president",
+            "short": "BP",
+            "label_key": "land_phase_borough_president",
+            "days": 30,
+            "cumulative_days": 90,
+            "model_stage": "borough_president",
+            "outer_bound_due_date": "2027-01-24",
+            "due_date": null,
+            "statute_ref": "NYC Charter §197-c",
+            "start_date": null,
+            "start_basis": null,
+            "deadline_basis": null,
+            "deadline_certainty": "insufficient",
+            "status": "open",
+            "completed_at": null,
+            "evidence_id": null
+          },
+          {
+            "phase_id": "cpc",
+            "short": "CPC",
+            "label_key": "land_phase_cpc",
+            "days": 60,
+            "cumulative_days": 150,
+            "model_stage": "cpc",
+            "outer_bound_due_date": "2027-03-25",
+            "due_date": null,
+            "statute_ref": "NYC Charter §197-c",
+            "start_date": null,
+            "start_basis": null,
+            "deadline_basis": null,
+            "deadline_certainty": "insufficient",
+            "status": "open",
+            "completed_at": null,
+            "evidence_id": null
+          },
+          {
+            "phase_id": "city_council",
+            "short": "Council",
+            "label_key": "land_phase_city_council",
+            "days": 50,
+            "cumulative_days": 200,
+            "model_stage": "city_council",
+            "outer_bound_due_date": "2027-05-14",
+            "due_date": null,
+            "statute_ref": "NYC Charter §197-c",
+            "start_date": null,
+            "start_basis": null,
+            "deadline_basis": null,
+            "deadline_certainty": "insufficient",
+            "status": "open",
+            "completed_at": null,
+            "evidence_id": null
+          },
+          {
+            "phase_id": "mayoral_appeals",
+            "short": "Mayor",
+            "label_key": "land_phase_mayoral_appeals",
+            "days": 5,
+            "cumulative_days": 205,
+            "model_stage": "mayoral_appeals",
+            "outer_bound_due_date": "2027-05-19",
+            "due_date": null,
+            "statute_ref": "NYC Charter §197-c",
+            "start_date": null,
+            "start_basis": null,
+            "deadline_basis": null,
+            "deadline_certainty": "insufficient",
+            "status": "open",
+            "completed_at": null,
+            "evidence_id": null
+          }
+        ],
+        "disposition": {
+          "phase_id": "disposition",
+          "predicted_event_kind": "land.zap_disposition",
+          "due_date": "2027-05-19",
+          "cumulative_days": 205,
+          "statute_ref": "NYC Charter §197-c",
+          "status": "open",
+          "completed_at": null,
+          "evidence_id": null
+        },
+        "evidence_event_ids": [
+          "zap-certified-referred:2024M0148:2026-10-26",
+          "zap-milestone:991a9289-305e-ee11-be6e-001dd804eb39"
+        ],
+        "generated_at": "2026-11-08T08:01:20.060Z"
+      },
+      "source_observations": {
+        "zap_api": {
+          "source_system": "zap_project_api",
+          "acquisition_status": "ok",
+          "observation_status": "observed",
+          "observed_at": "2026-11-08T08:01:20.060Z"
+        },
+        "open_data": {
+          "source_system": "zap_projects_open_data",
+          "acquisition_status": "ok",
+          "observation_status": "observed",
+          "observed_at": "2026-11-08T08:00:57.992Z",
+          "attempted_at": "2026-11-08T08:01:20.060Z"
+        },
+        "city_record": {
+          "source_system": "city_record",
+          "acquisition_status": "unavailable",
+          "observation_status": "unavailable",
+          "observed_at": null,
+          "retained_observed_at": null,
+          "attempted_at": "2026-11-08T08:01:20.060Z",
+          "observed_count": 0,
+          "retained_count": 0
+        },
+        "bbl": {
+          "source_system": "zap_bbl_open_data",
+          "acquisition_status": "unavailable",
+          "observation_status": "unavailable",
+          "observed_at": null,
+          "attempted_at": "2026-11-08T08:01:20.060Z"
+        },
+        "dob": {
+          "source_system": "dob_now",
+          "acquisition_status": "not_requested",
+          "observation_status": "not_requested",
+          "observed_at": null,
+          "attempted_at": null
+        }
+      },
+      "actions": [
+        {
+          "id": "c21bde11-305e-ee11-be6e-001dd804eb39",
+          "action": "ZM",
+          "ulurp_number": "C270170ZMM",
+          "status": "Certified",
+          "approved": true,
+          "cc_resolution": null,
+          "sharepoint_url": null
+        },
+        {
+          "id": "414d9083-305e-ee11-be6e-001dd804eb39",
+          "action": "HA",
+          "ulurp_number": "C270171HAM",
+          "status": "Certified",
+          "approved": true,
+          "cc_resolution": null,
+          "sharepoint_url": null
+        },
+        {
+          "id": "767e65b3-305e-ee11-be6e-001dd804eb39",
+          "action": "ZR",
+          "ulurp_number": "N270172ZRM",
+          "status": "Referred",
+          "approved": false,
+          "cc_resolution": null,
+          "sharepoint_url": null
+        }
+      ],
+      "approved_actions": [
+        {
+          "id": "c21bde11-305e-ee11-be6e-001dd804eb39",
+          "action": "ZM",
+          "ulurp_number": "C270170ZMM",
+          "status": "Certified",
+          "approved": true,
+          "cc_resolution": null,
+          "sharepoint_url": null
+        },
+        {
+          "id": "414d9083-305e-ee11-be6e-001dd804eb39",
+          "action": "HA",
+          "ulurp_number": "C270171HAM",
+          "status": "Certified",
+          "approved": true,
+          "cc_resolution": null,
+          "sharepoint_url": null
+        }
+      ],
+      "dispositions": [
+        {
+          "id": "44ab6596-4ad9-f111-a05c-001dd80822c1",
+          "name": "2024M0148_ZM_MN CB11",
+          "status": "Draft",
+          "representing": "Community Board",
+          "vote_date": null,
+          "hearing_date": null,
+          "hearing_at": null,
+          "hearing_location": null,
+          "vote_location": null,
+          "community_board": null,
+          "board_id": "manhattan-cb-11",
+          "borough_president": null,
+          "borough_board": null,
+          "votes_for": null,
+          "votes_against": null,
+          "votes_abstain": null,
+          "n_documents": 0,
+          "action_codes": [
+            "HA",
+            "ZM",
+            "ZR"
+          ],
+          "source_ids": [
+            "44ab6596-4ad9-f111-a05c-001dd80822c1",
+            "4aab6596-4ad9-f111-a05c-001dd80822c1",
+            "50ab6596-4ad9-f111-a05c-001dd80822c1"
+          ],
+          "n_source_rows": 3
+        },
+        {
+          "id": "57ab6596-4ad9-f111-a05c-001dd80822c1",
+          "name": "2024M0148_ZM_MN BP",
+          "status": "Draft",
+          "representing": "Borough President",
+          "vote_date": null,
+          "hearing_date": null,
+          "hearing_at": null,
+          "hearing_location": null,
+          "vote_location": null,
+          "community_board": null,
+          "board_id": null,
+          "borough_president": null,
+          "borough_board": null,
+          "votes_for": null,
+          "votes_against": null,
+          "votes_abstain": null,
+          "n_documents": 0,
+          "action_codes": [
+            "HA",
+            "ZM",
+            "ZR"
+          ],
+          "source_ids": [
+            "57ab6596-4ad9-f111-a05c-001dd80822c1",
+            "8b155f9c-4ad9-f111-a05c-001dd80822c1",
+            "91155f9c-4ad9-f111-a05c-001dd80822c1"
+          ],
+          "n_source_rows": 3
+        }
+      ],
+      "documents": [
+        {
+          "kind": "package",
+          "id": "01QY2C5KJFHIVM6GLCXJA2Y2ZZDL7XOGRA",
+          "group_id": "b741f79b-a5a7-f111-b8de-001dd800e224",
+          "group_name": "2024M0148_Filed LU Package_1",
+          "name": "01_22-East-119th-Street-Rezoning_LR3-Project-Description_FLUAv1_final.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KJFHIVM6GLCXJA2Y2ZZDL7XOGRA",
+          "time_created": "2026-10-08T19:46:27Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KLOUGBQDAPLXVGKSKEFKKUBM5Q5",
+          "group_id": "b741f79b-a5a7-f111-b8de-001dd800e224",
+          "group_name": "2024M0148_Filed LU Package_1",
+          "name": "02_22-East-119th-Street-Rezoning_Zoning-Map_FLUAv1_final.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KLOUGBQDAPLXVGKSKEFKKUBM5Q5",
+          "time_created": "2026-10-08T19:46:30Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KIVX5CP65RAOVA2HNXWLWOWVVK7",
+          "group_id": "b741f79b-a5a7-f111-b8de-001dd800e224",
+          "group_name": "2024M0148_Filed LU Package_1",
+          "name": "03_22-East-119th-Street-Rezoning_Tax-Map_FLUAv1_final.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KIVX5CP65RAOVA2HNXWLWOWVVK7",
+          "time_created": "2026-10-08T19:46:32Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KJ4RNV5LUOT4VBI2RMVCVTNBAAY",
+          "group_id": "b741f79b-a5a7-f111-b8de-001dd800e224",
+          "group_name": "2024M0148_Filed LU Package_1",
+          "name": "04_22-East-119th-Street---Photographs_FLUAv1_final.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KJ4RNV5LUOT4VBI2RMVCVTNBAAY",
+          "time_created": "2026-10-08T19:46:12Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KLH3FJVGV466JHZWAPO4EQU3SBP",
+          "group_id": "b741f79b-a5a7-f111-b8de-001dd800e224",
+          "group_name": "2024M0148_Filed LU Package_1",
+          "name": "05_22-East-119th-Street-Rezoning_Area-Map_FLUAv1_final.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KLH3FJVGV466JHZWAPO4EQU3SBP",
+          "time_created": "2026-10-08T19:46:16Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KN6D7ZJM3QGNVHZD7YJF5UHDWJJ",
+          "group_id": "b741f79b-a5a7-f111-b8de-001dd800e224",
+          "group_name": "2024M0148_Filed LU Package_1",
+          "name": "06_22-East-119th-Street-Rezoning_Zoning-Change-Map_FLUAv1_final.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KN6D7ZJM3QGNVHZD7YJF5UHDWJJ",
+          "time_created": "2026-10-08T19:46:21Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KJLIOGTIIRU6FGYA6HBD7VBZWUI",
+          "group_id": "b741f79b-a5a7-f111-b8de-001dd800e224",
+          "group_name": "2024M0148_Filed LU Package_1",
+          "name": "07_22-East-119th-Street-Rezoning_Zoning-Comparison-Table_FLUAv1_final.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KJLIOGTIIRU6FGYA6HBD7VBZWUI",
+          "time_created": "2026-10-08T19:46:23Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KIPRJYJUNFDMVB3SH5QI32RABNI",
+          "group_id": "b741f79b-a5a7-f111-b8de-001dd800e224",
+          "group_name": "2024M0148_Filed LU Package_1",
+          "name": "08d.-VOA-22-East-119th-Street_Rendering-Both-Buildings_FLUAv1_final.jpg",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KIPRJYJUNFDMVB3SH5QI32RABNI",
+          "time_created": "2026-10-08T19:46:24Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KLECN3M57U2DVBIRCGXLJFXJEE4",
+          "group_id": "b741f79b-a5a7-f111-b8de-001dd800e224",
+          "group_name": "2024M0148_Filed LU Package_1",
+          "name": "09_22-East-119th-Street-Rezoning_UDAAP-Project-Summary_FLUAv1_final.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KLECN3M57U2DVBIRCGXLJFXJEE4",
+          "time_created": "2026-10-08T19:46:26Z"
+        },
+        {
+          "kind": "package",
+          "id": "01QY2C5KICIHOCWHCCSFE3YGEFLEZ2CDZS",
+          "group_id": "b741f79b-a5a7-f111-b8de-001dd800e224",
+          "group_name": "2024M0148_Filed LU Package_1",
+          "name": "11_dcp-signature-form_AP_FLUAv1_final.pdf",
+          "url": "https://zap-api-production.herokuapp.com/document/package/01QY2C5KICIHOCWHCCSFE3YGEFLEZ2CDZS",
+          "time_created": "2026-10-09T17:30:46Z"
+        }
+      ],
+      "n_documents": 43
     },
     "2024M0193": {
       "project_id": "2024M0193",

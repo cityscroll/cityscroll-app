@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "version": "property_cross_domain_v1",
-  "generated_at": "2026-11-05T12:12:57.163Z",
+  "generated_at": "2026-11-08T14:34:15.692Z",
   "property_observation_count": 133,
   "by_bbl": {
     "1000730008": {
@@ -10178,20 +10178,6 @@
           "href": "#notice/20140206104"
         },
         {
-          "request_id": "20140128114",
-          "subject_ref": "notice:20140128114",
-          "label": "property disposition",
-          "when": "2014-03-12T01:00:00.000",
-          "date_basis": "City Record event/start date",
-          "agency_name": "Housing Preservation and Development",
-          "disposition_stage": "hearing",
-          "source": "City Record Online",
-          "relation": "sits_on_parcel",
-          "confidence": "strong",
-          "method": "exact_bbl_v1",
-          "href": "#notice/20140128114"
-        },
-        {
           "request_id": "20140128115",
           "subject_ref": "notice:20140128115",
           "label": "Property Disposition",
@@ -10204,6 +10190,20 @@
           "confidence": "strong",
           "method": "exact_bbl_v1",
           "href": "#notice/20140128115"
+        },
+        {
+          "request_id": "20140128114",
+          "subject_ref": "notice:20140128114",
+          "label": "property disposition",
+          "when": "2014-03-12T01:00:00.000",
+          "date_basis": "City Record event/start date",
+          "agency_name": "Housing Preservation and Development",
+          "disposition_stage": "hearing",
+          "source": "City Record Online",
+          "relation": "sits_on_parcel",
+          "confidence": "strong",
+          "method": "exact_bbl_v1",
+          "href": "#notice/20140128114"
         }
       ],
       "land_projects": [
@@ -15450,6 +15450,234 @@
     },
     {
       "type": "parcel_links_project",
+      "from": "notice:20170515104",
+      "to": "project:P2012M0292",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "1003540001",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2012M0292:1003540001",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2012M0292",
+        "input_value": "1003540001",
+        "join_key": "bbl",
+        "join_value": "1003540001",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:1003540001",
+        "property_request_id": "20170515104"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P2012M0292",
+      "to": "bbl:1003540001",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2012M0292:1003540001",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2012M0292",
+        "input_value": "1003540001",
+        "join_key": "bbl",
+        "join_value": "1003540001",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
+      "from": "notice:20170512109",
+      "to": "project:P2017M0068",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "1016350001",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2017M0068:1016350001",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2017M0068",
+        "input_value": "1016350001",
+        "join_key": "bbl",
+        "join_value": "1016350001",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:1016350001",
+        "property_request_id": "20170512109"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P2017M0068",
+      "to": "bbl:1016350001",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2017M0068:1016350001",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2017M0068",
+        "input_value": "1016350001",
+        "join_key": "bbl",
+        "join_value": "1016350001",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
+      "from": "notice:20170512106",
+      "to": "project:P1993M0350",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "1000940025",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P1993M0350:1000940025",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P1993M0350",
+        "input_value": "1000940025",
+        "join_key": "bbl",
+        "join_value": "1000940025",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:1000940025",
+        "property_request_id": "20170512106"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P1993M0350",
+      "to": "bbl:1000940025",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P1993M0350:1000940025",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P1993M0350",
+        "input_value": "1000940025",
+        "join_key": "bbl",
+        "join_value": "1000940025",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
+      "from": "notice:20170512106",
+      "to": "project:P1996M0130",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "1000940025",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P1996M0130:1000940025",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P1996M0130",
+        "input_value": "1000940025",
+        "join_key": "bbl",
+        "join_value": "1000940025",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:1000940025",
+        "property_request_id": "20170512106"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P1996M0130",
+      "to": "bbl:1000940025",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P1996M0130:1000940025",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P1996M0130",
+        "input_value": "1000940025",
+        "join_key": "bbl",
+        "join_value": "1000940025",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
       "from": "notice:20170516111",
       "to": "project:P2016K0185",
       "domain": "property",
@@ -16476,63 +16704,6 @@
     },
     {
       "type": "parcel_links_project",
-      "from": "notice:20170515104",
-      "to": "project:P2012M0292",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "1003540001",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2012M0292:1003540001",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2012M0292",
-        "input_value": "1003540001",
-        "join_key": "bbl",
-        "join_value": "1003540001",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:1003540001",
-        "property_request_id": "20170515104"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P2012M0292",
-      "to": "bbl:1003540001",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2012M0292:1003540001",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2012M0292",
-        "input_value": "1003540001",
-        "join_key": "bbl",
-        "join_value": "1003540001",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
       "from": "notice:20170512102",
       "to": "project:P2016K0273",
       "domain": "property",
@@ -16581,177 +16752,6 @@
         "input_value": "3036390035",
         "join_key": "bbl",
         "join_value": "3036390035",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20170512106",
-      "to": "project:P1993M0350",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "1000940025",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P1993M0350:1000940025",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P1993M0350",
-        "input_value": "1000940025",
-        "join_key": "bbl",
-        "join_value": "1000940025",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:1000940025",
-        "property_request_id": "20170512106"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P1993M0350",
-      "to": "bbl:1000940025",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P1993M0350:1000940025",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P1993M0350",
-        "input_value": "1000940025",
-        "join_key": "bbl",
-        "join_value": "1000940025",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20170512106",
-      "to": "project:P1996M0130",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "1000940025",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P1996M0130:1000940025",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P1996M0130",
-        "input_value": "1000940025",
-        "join_key": "bbl",
-        "join_value": "1000940025",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:1000940025",
-        "property_request_id": "20170512106"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P1996M0130",
-      "to": "bbl:1000940025",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P1996M0130:1000940025",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P1996M0130",
-        "input_value": "1000940025",
-        "join_key": "bbl",
-        "join_value": "1000940025",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20170512109",
-      "to": "project:P2017M0068",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "1016350001",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2017M0068:1016350001",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2017M0068",
-        "input_value": "1016350001",
-        "join_key": "bbl",
-        "join_value": "1016350001",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:1016350001",
-        "property_request_id": "20170512109"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P2017M0068",
-      "to": "bbl:1016350001",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2017M0068:1016350001",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2017M0068",
-        "input_value": "1016350001",
-        "join_key": "bbl",
-        "join_value": "1016350001",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -20124,6 +20124,63 @@
     },
     {
       "type": "parcel_links_project",
+      "from": "notice:20160429108",
+      "to": "project:P1991K0101",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "3040650022",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P1991K0101:3040650022",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P1991K0101",
+        "input_value": "3040650022",
+        "join_key": "bbl",
+        "join_value": "3040650022",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:3040650022",
+        "property_request_id": "20160429108"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P1991K0101",
+      "to": "bbl:3040650022",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P1991K0101:3040650022",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P1991K0101",
+        "input_value": "3040650022",
+        "join_key": "bbl",
+        "join_value": "3040650022",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
       "from": "notice:20160429109",
       "to": "project:P2017K0240",
       "domain": "property",
@@ -20229,63 +20286,6 @@
         "input_value": "3015560008",
         "join_key": "bbl",
         "join_value": "3015560008",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20160429108",
-      "to": "project:P1991K0101",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3040650022",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P1991K0101:3040650022",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P1991K0101",
-        "input_value": "3040650022",
-        "join_key": "bbl",
-        "join_value": "3040650022",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:3040650022",
-        "property_request_id": "20160429108"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P1991K0101",
-      "to": "bbl:3040650022",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P1991K0101:3040650022",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P1991K0101",
-        "input_value": "3040650022",
-        "join_key": "bbl",
-        "join_value": "3040650022",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -21663,63 +21663,6 @@
     },
     {
       "type": "parcel_links_project",
-      "from": "notice:20150814106",
-      "to": "project:P2004K0080",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3003890028",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2004K0080:3003890028",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2004K0080",
-        "input_value": "3003890028",
-        "join_key": "bbl",
-        "join_value": "3003890028",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:3003890028",
-        "property_request_id": "20150814106"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P2004K0080",
-      "to": "bbl:3003890028",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2004K0080:3003890028",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2004K0080",
-        "input_value": "3003890028",
-        "join_key": "bbl",
-        "join_value": "3003890028",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
       "from": "notice:20150814110",
       "to": "project:P2014M0451",
       "domain": "property",
@@ -21768,6 +21711,63 @@
         "input_value": "1003470071",
         "join_key": "bbl",
         "join_value": "1003470071",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
+      "from": "notice:20150814106",
+      "to": "project:P2004K0080",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "3003890028",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2004K0080:3003890028",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2004K0080",
+        "input_value": "3003890028",
+        "join_key": "bbl",
+        "join_value": "3003890028",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:3003890028",
+        "property_request_id": "20150814106"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P2004K0080",
+      "to": "bbl:3003890028",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2004K0080:3003890028",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2004K0080",
+        "input_value": "3003890028",
+        "join_key": "bbl",
+        "join_value": "3003890028",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -22746,6 +22746,63 @@
     },
     {
       "type": "parcel_links_project",
+      "from": "notice:20150416111",
+      "to": "project:P2014M0451",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "1003520001",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2014M0451:1003520001",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2014M0451",
+        "input_value": "1003520001",
+        "join_key": "bbl",
+        "join_value": "1003520001",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:1003520001",
+        "property_request_id": "20150416111"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P2014M0451",
+      "to": "bbl:1003520001",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2014M0451:1003520001",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2014M0451",
+        "input_value": "1003520001",
+        "join_key": "bbl",
+        "join_value": "1003520001",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
       "from": "notice:20150416112",
       "to": "project:2019M0197",
       "domain": "property",
@@ -22851,63 +22908,6 @@
         "input_value": "1003467501",
         "join_key": "bbl",
         "join_value": "1003467501",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20150416111",
-      "to": "project:P2014M0451",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "1003520001",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2014M0451:1003520001",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2014M0451",
-        "input_value": "1003520001",
-        "join_key": "bbl",
-        "join_value": "1003520001",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:1003520001",
-        "property_request_id": "20150416111"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P2014M0451",
-      "to": "bbl:1003520001",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2014M0451:1003520001",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2014M0451",
-        "input_value": "1003520001",
-        "join_key": "bbl",
-        "join_value": "1003520001",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -28389,6 +28389,348 @@
     },
     {
       "type": "parcel_links_project",
+      "from": "notice:20140128115",
+      "to": "project:P1992K0274",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "3052950004",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P1992K0274:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P1992K0274",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:3052950004",
+        "property_request_id": "20140128115"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P1992K0274",
+      "to": "bbl:3052950004",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P1992K0274:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P1992K0274",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
+      "from": "notice:20140128115",
+      "to": "project:P2000K0076",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "3052950004",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2000K0076:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2000K0076",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:3052950004",
+        "property_request_id": "20140128115"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P2000K0076",
+      "to": "bbl:3052950004",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2000K0076:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2000K0076",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
+      "from": "notice:20140128115",
+      "to": "project:P2001K0116",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "3052950004",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2001K0116:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2001K0116",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:3052950004",
+        "property_request_id": "20140128115"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P2001K0116",
+      "to": "bbl:3052950004",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2001K0116:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2001K0116",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
+      "from": "notice:20140128114",
+      "to": "project:P1992K0274",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "3052950004",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P1992K0274:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P1992K0274",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:3052950004",
+        "property_request_id": "20140128114"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P1992K0274",
+      "to": "bbl:3052950004",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P1992K0274:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P1992K0274",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
+      "from": "notice:20140128114",
+      "to": "project:P2000K0076",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "3052950004",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2000K0076:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2000K0076",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:3052950004",
+        "property_request_id": "20140128114"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P2000K0076",
+      "to": "bbl:3052950004",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2000K0076:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2000K0076",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
+      "from": "notice:20140128114",
+      "to": "project:P2001K0116",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "3052950004",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2001K0116:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2001K0116",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key",
+        "via_parcel": "bbl:3052950004",
+        "property_request_id": "20140128114"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "project:P2001K0116",
+      "to": "bbl:3052950004",
+      "domain": "land",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "zap-bbl",
+        "source_record_id": "zap-bbl:P2001K0116:3052950004",
+        "source_fields": [
+          "bbl",
+          "project_id"
+        ],
+        "basis": "exact_bbl",
+        "source_url": "https://zap.planning.nyc.gov/projects/P2001K0116",
+        "input_value": "3052950004",
+        "join_key": "bbl",
+        "join_value": "3052950004",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "property_cross_domain_v1"
+    },
+    {
+      "type": "parcel_links_project",
       "from": "notice:20140128113",
       "to": "project:P2014K0044",
       "domain": "property",
@@ -28437,348 +28779,6 @@
         "input_value": "3014470001",
         "join_key": "bbl",
         "join_value": "3014470001",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20140128114",
-      "to": "project:P1992K0274",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3052950004",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P1992K0274:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P1992K0274",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:3052950004",
-        "property_request_id": "20140128114"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P1992K0274",
-      "to": "bbl:3052950004",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P1992K0274:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P1992K0274",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20140128114",
-      "to": "project:P2000K0076",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3052950004",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2000K0076:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2000K0076",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:3052950004",
-        "property_request_id": "20140128114"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P2000K0076",
-      "to": "bbl:3052950004",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2000K0076:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2000K0076",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20140128114",
-      "to": "project:P2001K0116",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3052950004",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2001K0116:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2001K0116",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:3052950004",
-        "property_request_id": "20140128114"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P2001K0116",
-      "to": "bbl:3052950004",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2001K0116:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2001K0116",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20140128115",
-      "to": "project:P1992K0274",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3052950004",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P1992K0274:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P1992K0274",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:3052950004",
-        "property_request_id": "20140128115"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P1992K0274",
-      "to": "bbl:3052950004",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P1992K0274:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P1992K0274",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20140128115",
-      "to": "project:P2000K0076",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3052950004",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2000K0076:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2000K0076",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:3052950004",
-        "property_request_id": "20140128115"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P2000K0076",
-      "to": "bbl:3052950004",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2000K0076:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2000K0076",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20140128115",
-      "to": "project:P2001K0116",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3052950004",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2001K0116:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2001K0116",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
-        "match": "exact",
-        "tier": "deterministic_exact_key",
-        "via_parcel": "bbl:3052950004",
-        "property_request_id": "20140128115"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:P2001K0116",
-      "to": "bbl:3052950004",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:P2001K0116:3052950004",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/P2001K0116",
-        "input_value": "3052950004",
-        "join_key": "bbl",
-        "join_value": "3052950004",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -30894,80 +30894,6 @@
     },
     {
       "type": "published_by_agency",
-      "from": "notice:20180416101",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20180416101",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2018-05-23T01:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20180416101",
-      "to": "bbl:1020950029",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20180416101",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2018-05-23T01:00:00.000",
-        "input_value": "1020950029",
-        "join_key": "bbl",
-        "join_value": "1020950029",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20180416101",
-      "to": "bbl:1020970020",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20180416101",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2018-05-23T01:00:00.000",
-        "input_value": "1020970020",
-        "join_key": "bbl",
-        "join_value": "1020970020",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
       "from": "notice:20180413111",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
@@ -31033,6 +30959,80 @@
         "input_value": "1003990024",
         "join_key": "bbl",
         "join_value": "1003990024",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20180416101",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20180416101",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2018-05-23T01:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20180416101",
+      "to": "bbl:1020950029",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20180416101",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2018-05-23T01:00:00.000",
+        "input_value": "1020950029",
+        "join_key": "bbl",
+        "join_value": "1020950029",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20180416101",
+      "to": "bbl:1020970020",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20180416101",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2018-05-23T01:00:00.000",
+        "input_value": "1020970020",
+        "join_key": "bbl",
+        "join_value": "1020970020",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -32099,80 +32099,6 @@
     },
     {
       "type": "published_by_agency",
-      "from": "notice:20171005106",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20171005106",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2017-11-15T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20171005106",
-      "to": "bbl:4158530040",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20171005106",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2017-11-15T10:00:00.000",
-        "input_value": "4158530040",
-        "join_key": "bbl",
-        "join_value": "4158530040",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20171005106",
-      "to": "bbl:4159050001",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20171005106",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2017-11-15T10:00:00.000",
-        "input_value": "4159050001",
-        "join_key": "bbl",
-        "join_value": "4159050001",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
       "from": "notice:20171006101",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
@@ -32247,6 +32173,80 @@
     },
     {
       "type": "published_by_agency",
+      "from": "notice:20171005106",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20171005106",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2017-11-15T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20171005106",
+      "to": "bbl:4158530040",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20171005106",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2017-11-15T10:00:00.000",
+        "input_value": "4158530040",
+        "join_key": "bbl",
+        "join_value": "4158530040",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20171005106",
+      "to": "bbl:4159050001",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20171005106",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2017-11-15T10:00:00.000",
+        "input_value": "4159050001",
+        "join_key": "bbl",
+        "join_value": "4159050001",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
       "from": "notice:20170901115",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
@@ -32368,6 +32368,53 @@
     },
     {
       "type": "published_by_agency",
+      "from": "notice:20170807103",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170807103",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2017-09-13T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20170807103",
+      "to": "bbl:4104110006",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170807103",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2017-09-13T10:00:00.000",
+        "input_value": "4104110006",
+        "join_key": "bbl",
+        "join_value": "4104110006",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
       "from": "notice:20170807104",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
@@ -32433,53 +32480,6 @@
         "input_value": "4119760045",
         "join_key": "bbl",
         "join_value": "4119760045",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20170807103",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170807103",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2017-09-13T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20170807103",
-      "to": "bbl:4104110006",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170807103",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2017-09-13T10:00:00.000",
-        "input_value": "4104110006",
-        "join_key": "bbl",
-        "join_value": "4104110006",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -32837,6 +32837,201 @@
         "input_value": "3007987501",
         "join_key": "bbl",
         "join_value": "3007987501",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20170515104",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170515104",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20170515104",
+      "to": "bbl:1003540001",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170515104",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "1003540001",
+        "join_key": "bbl",
+        "join_value": "1003540001",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20170515104",
+      "to": "bbl:1003547502",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170515104",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "1003547502",
+        "join_key": "bbl",
+        "join_value": "1003547502",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20170512109",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170512109",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20170512109",
+      "to": "bbl:1016350001",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170512109",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "1016350001",
+        "join_key": "bbl",
+        "join_value": "1016350001",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20170512109",
+      "to": "bbl:1016357501",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170512109",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "1016357501",
+        "join_key": "bbl",
+        "join_value": "1016357501",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20170512106",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170512106",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20170512106",
+      "to": "bbl:1000940025",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170512106",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "1000940025",
+        "join_key": "bbl",
+        "join_value": "1000940025",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -33298,7 +33493,7 @@
     },
     {
       "type": "published_by_agency",
-      "from": "notice:20170515104",
+      "from": "notice:20170512101",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
       "confidence": "strong",
@@ -33306,7 +33501,7 @@
       "method_version": "1",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20170515104",
+        "source_record_id": "city_record:20170512101",
         "source_fields": [
           "agency_name"
         ],
@@ -33318,51 +33513,24 @@
     },
     {
       "type": "sits_on_parcel",
-      "from": "notice:20170515104",
-      "to": "bbl:1003540001",
+      "from": "notice:20170512101",
+      "to": "bbl:1019540055",
       "domain": "property",
       "confidence": "strong",
       "method": "exact_bbl_v1",
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20170515104",
+        "source_record_id": "city_record:20170512101",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
         "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "1003540001",
+        "input_value": "1019540055",
         "join_key": "bbl",
-        "join_value": "1003540001",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20170515104",
-      "to": "bbl:1003547502",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170515104",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "1003547502",
-        "join_key": "bbl",
-        "join_value": "1003547502",
+        "join_value": "1019540055",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -33464,174 +33632,6 @@
         "input_value": "3042930001",
         "join_key": "bbl",
         "join_value": "3042930001",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20170512106",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170512106",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20170512106",
-      "to": "bbl:1000940025",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170512106",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "1000940025",
-        "join_key": "bbl",
-        "join_value": "1000940025",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20170512101",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170512101",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20170512101",
-      "to": "bbl:1019540055",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170512101",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "1019540055",
-        "join_key": "bbl",
-        "join_value": "1019540055",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20170512109",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170512109",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20170512109",
-      "to": "bbl:1016350001",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170512109",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "1016350001",
-        "join_key": "bbl",
-        "join_value": "1016350001",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20170512109",
-      "to": "bbl:1016357501",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170512109",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "1016357501",
-        "join_key": "bbl",
-        "join_value": "1016357501",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -34766,6 +34766,80 @@
     },
     {
       "type": "published_by_agency",
+      "from": "notice:20161115104",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20161115104",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2016-12-21T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20161115104",
+      "to": "bbl:3038670008",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20161115104",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2016-12-21T10:00:00.000",
+        "input_value": "3038670008",
+        "join_key": "bbl",
+        "join_value": "3038670008",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20161115104",
+      "to": "bbl:3038670009",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20161115104",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2016-12-21T10:00:00.000",
+        "input_value": "3038670009",
+        "join_key": "bbl",
+        "join_value": "3038670009",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
       "from": "notice:20161115105",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
@@ -34966,80 +35040,6 @@
         "input_value": "3042950072",
         "join_key": "bbl",
         "join_value": "3042950072",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20161115104",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20161115104",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2016-12-21T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20161115104",
-      "to": "bbl:3038670008",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20161115104",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2016-12-21T10:00:00.000",
-        "input_value": "3038670008",
-        "join_key": "bbl",
-        "join_value": "3038670008",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20161115104",
-      "to": "bbl:3038670009",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20161115104",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2016-12-21T10:00:00.000",
-        "input_value": "3038670009",
-        "join_key": "bbl",
-        "join_value": "3038670009",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -36963,6 +36963,80 @@
     },
     {
       "type": "published_by_agency",
+      "from": "notice:20160502102",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20160502102",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20160502102",
+      "to": "bbl:3037990045",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20160502102",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "3037990045",
+        "join_key": "bbl",
+        "join_value": "3037990045",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20160502102",
+      "to": "bbl:3037997501",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20160502102",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "3037997501",
+        "join_key": "bbl",
+        "join_value": "3037997501",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
       "from": "notice:20160429106",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
@@ -37163,154 +37237,6 @@
         "input_value": "3018520009",
         "join_key": "bbl",
         "join_value": "3018520009",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20160502102",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20160502102",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2016-06-08T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20160502102",
-      "to": "bbl:3037990045",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20160502102",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2016-06-08T10:00:00.000",
-        "input_value": "3037990045",
-        "join_key": "bbl",
-        "join_value": "3037990045",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20160502102",
-      "to": "bbl:3037997501",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20160502102",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2016-06-08T10:00:00.000",
-        "input_value": "3037997501",
-        "join_key": "bbl",
-        "join_value": "3037997501",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20160429109",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20160429109",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2016-06-08T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20160429109",
-      "to": "bbl:3015560007",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20160429109",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2016-06-08T10:00:00.000",
-        "input_value": "3015560007",
-        "join_key": "bbl",
-        "join_value": "3015560007",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20160429109",
-      "to": "bbl:3015560008",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20160429109",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2016-06-08T10:00:00.000",
-        "input_value": "3015560008",
-        "join_key": "bbl",
-        "join_value": "3015560008",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -37637,7 +37563,7 @@
     },
     {
       "type": "published_by_agency",
-      "from": "notice:20160428104",
+      "from": "notice:20160429109",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
       "confidence": "strong",
@@ -37645,36 +37571,36 @@
       "method_version": "1",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20160428104",
+        "source_record_id": "city_record:20160429109",
         "source_fields": [
           "agency_name"
         ],
         "basis": "property_agency_name",
-        "observed_at": "2016-06-08T01:00:00.000",
+        "observed_at": "2016-06-08T10:00:00.000",
         "input_value": "Housing Preservation and Development"
       },
       "layer": "cross_domain_object_link_v2"
     },
     {
       "type": "sits_on_parcel",
-      "from": "notice:20160428104",
-      "to": "bbl:3038000001",
+      "from": "notice:20160429109",
+      "to": "bbl:3015560007",
       "domain": "property",
       "confidence": "strong",
       "method": "exact_bbl_v1",
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20160428104",
+        "source_record_id": "city_record:20160429109",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
-        "observed_at": "2016-06-08T01:00:00.000",
-        "input_value": "3038000001",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "3015560007",
         "join_key": "bbl",
-        "join_value": "3038000001",
+        "join_value": "3015560007",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -37684,78 +37610,24 @@
     },
     {
       "type": "sits_on_parcel",
-      "from": "notice:20160428104",
-      "to": "bbl:3038170020",
+      "from": "notice:20160429109",
+      "to": "bbl:3015560008",
       "domain": "property",
       "confidence": "strong",
       "method": "exact_bbl_v1",
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20160428104",
+        "source_record_id": "city_record:20160429109",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
-        "observed_at": "2016-06-08T01:00:00.000",
-        "input_value": "3038170020",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "3015560008",
         "join_key": "bbl",
-        "join_value": "3038170020",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20160428104",
-      "to": "bbl:3038180122",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20160428104",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2016-06-08T01:00:00.000",
-        "input_value": "3038180122",
-        "join_key": "bbl",
-        "join_value": "3038180122",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20160428104",
-      "to": "bbl:3038187501",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20160428104",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2016-06-08T01:00:00.000",
-        "input_value": "3038187501",
-        "join_key": "bbl",
-        "join_value": "3038187501",
+        "join_value": "3015560008",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -37765,7 +37637,7 @@
     },
     {
       "type": "published_by_agency",
-      "from": "notice:20160427101",
+      "from": "notice:20160428104",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
       "confidence": "strong",
@@ -37773,19 +37645,19 @@
       "method_version": "1",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20160427101",
+        "source_record_id": "city_record:20160428104",
         "source_fields": [
           "agency_name"
         ],
         "basis": "property_agency_name",
-        "observed_at": "2016-06-08T10:00:00.000",
+        "observed_at": "2016-06-08T01:00:00.000",
         "input_value": "Housing Preservation and Development"
       },
       "layer": "cross_domain_object_link_v2"
     },
     {
       "type": "sits_on_parcel",
-      "from": "notice:20160427101",
+      "from": "notice:20160428104",
       "to": "bbl:3038000001",
       "domain": "property",
       "confidence": "strong",
@@ -37793,13 +37665,13 @@
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20160427101",
+        "source_record_id": "city_record:20160428104",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
-        "observed_at": "2016-06-08T10:00:00.000",
+        "observed_at": "2016-06-08T01:00:00.000",
         "input_value": "3038000001",
         "join_key": "bbl",
         "join_value": "3038000001",
@@ -37812,7 +37684,7 @@
     },
     {
       "type": "sits_on_parcel",
-      "from": "notice:20160427101",
+      "from": "notice:20160428104",
       "to": "bbl:3038170020",
       "domain": "property",
       "confidence": "strong",
@@ -37820,13 +37692,13 @@
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20160427101",
+        "source_record_id": "city_record:20160428104",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
-        "observed_at": "2016-06-08T10:00:00.000",
+        "observed_at": "2016-06-08T01:00:00.000",
         "input_value": "3038170020",
         "join_key": "bbl",
         "join_value": "3038170020",
@@ -37839,7 +37711,7 @@
     },
     {
       "type": "sits_on_parcel",
-      "from": "notice:20160427101",
+      "from": "notice:20160428104",
       "to": "bbl:3038180122",
       "domain": "property",
       "confidence": "strong",
@@ -37847,13 +37719,13 @@
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20160427101",
+        "source_record_id": "city_record:20160428104",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
-        "observed_at": "2016-06-08T10:00:00.000",
+        "observed_at": "2016-06-08T01:00:00.000",
         "input_value": "3038180122",
         "join_key": "bbl",
         "join_value": "3038180122",
@@ -37866,7 +37738,7 @@
     },
     {
       "type": "sits_on_parcel",
-      "from": "notice:20160427101",
+      "from": "notice:20160428104",
       "to": "bbl:3038187501",
       "domain": "property",
       "confidence": "strong",
@@ -37874,13 +37746,13 @@
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20160427101",
+        "source_record_id": "city_record:20160428104",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
-        "observed_at": "2016-06-08T10:00:00.000",
+        "observed_at": "2016-06-08T01:00:00.000",
         "input_value": "3038187501",
         "join_key": "bbl",
         "join_value": "3038187501",
@@ -38032,6 +37904,134 @@
         "input_value": "4050377507",
         "join_key": "bbl",
         "join_value": "4050377507",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20160427101",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20160427101",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20160427101",
+      "to": "bbl:3038000001",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20160427101",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "3038000001",
+        "join_key": "bbl",
+        "join_value": "3038000001",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20160427101",
+      "to": "bbl:3038170020",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20160427101",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "3038170020",
+        "join_key": "bbl",
+        "join_value": "3038170020",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20160427101",
+      "to": "bbl:3038180122",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20160427101",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "3038180122",
+        "join_key": "bbl",
+        "join_value": "3038180122",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20160427101",
+      "to": "bbl:3038187501",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20160427101",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "3038187501",
+        "join_key": "bbl",
+        "join_value": "3038187501",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -38796,6 +38796,80 @@
     },
     {
       "type": "published_by_agency",
+      "from": "notice:20150814110",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150814110",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2015-09-21T01:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20150814110",
+      "to": "bbl:1003470071",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150814110",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2015-09-21T01:00:00.000",
+        "input_value": "1003470071",
+        "join_key": "bbl",
+        "join_value": "1003470071",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20150814110",
+      "to": "bbl:1003477501",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150814110",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2015-09-21T01:00:00.000",
+        "input_value": "1003477501",
+        "join_key": "bbl",
+        "join_value": "1003477501",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
       "from": "notice:20150814106",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
@@ -38897,127 +38971,6 @@
     },
     {
       "type": "published_by_agency",
-      "from": "notice:20150814110",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150814110",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2015-09-21T01:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20150814110",
-      "to": "bbl:1003470071",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150814110",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2015-09-21T01:00:00.000",
-        "input_value": "1003470071",
-        "join_key": "bbl",
-        "join_value": "1003470071",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20150814110",
-      "to": "bbl:1003477501",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150814110",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2015-09-21T01:00:00.000",
-        "input_value": "1003477501",
-        "join_key": "bbl",
-        "join_value": "1003477501",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20150731102",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150731102",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2015-09-09T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20150731102",
-      "to": "bbl:4159050001",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150731102",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2015-09-09T10:00:00.000",
-        "input_value": "4159050001",
-        "join_key": "bbl",
-        "join_value": "4159050001",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
       "from": "notice:20150804106",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
@@ -39083,6 +39036,53 @@
         "input_value": "1004097502",
         "join_key": "bbl",
         "join_value": "1004097502",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20150731102",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150731102",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2015-09-09T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20150731102",
+      "to": "bbl:4159050001",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150731102",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2015-09-09T10:00:00.000",
+        "input_value": "4159050001",
+        "join_key": "bbl",
+        "join_value": "4159050001",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -39596,80 +39596,6 @@
     },
     {
       "type": "published_by_agency",
-      "from": "notice:20150421105",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150421105",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2015-06-10T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20150421105",
-      "to": "bbl:2029930031",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150421105",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2015-06-10T10:00:00.000",
-        "input_value": "2029930031",
-        "join_key": "bbl",
-        "join_value": "2029930031",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20150421105",
-      "to": "bbl:2030140045",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150421105",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2015-06-10T10:00:00.000",
-        "input_value": "2030140045",
-        "join_key": "bbl",
-        "join_value": "2030140045",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
       "from": "notice:20150424107",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
@@ -39735,6 +39661,80 @@
         "input_value": "1017170023",
         "join_key": "bbl",
         "join_value": "1017170023",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20150421105",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150421105",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2015-06-10T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20150421105",
+      "to": "bbl:2029930031",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150421105",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2015-06-10T10:00:00.000",
+        "input_value": "2029930031",
+        "join_key": "bbl",
+        "join_value": "2029930031",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20150421105",
+      "to": "bbl:2030140045",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150421105",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2015-06-10T10:00:00.000",
+        "input_value": "2030140045",
+        "join_key": "bbl",
+        "join_value": "2030140045",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -39946,53 +39946,6 @@
     },
     {
       "type": "published_by_agency",
-      "from": "notice:20150416112",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150416112",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2015-05-27T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20150416112",
-      "to": "bbl:1003467501",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150416112",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2015-05-27T10:00:00.000",
-        "input_value": "1003467501",
-        "join_key": "bbl",
-        "join_value": "1003467501",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
       "from": "notice:20150416111",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
@@ -40058,6 +40011,53 @@
         "input_value": "1003527501",
         "join_key": "bbl",
         "join_value": "1003527501",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20150416112",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150416112",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2015-05-27T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20150416112",
+      "to": "bbl:1003467501",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150416112",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2015-05-27T10:00:00.000",
+        "input_value": "1003467501",
+        "join_key": "bbl",
+        "join_value": "1003467501",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -42625,7 +42625,7 @@
     },
     {
       "type": "published_by_agency",
-      "from": "notice:20140128113",
+      "from": "notice:20140128115",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
       "confidence": "strong",
@@ -42633,7 +42633,7 @@
       "method_version": "1",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20140128113",
+        "source_record_id": "city_record:20140128115",
         "source_fields": [
           "agency_name"
         ],
@@ -42645,24 +42645,24 @@
     },
     {
       "type": "sits_on_parcel",
-      "from": "notice:20140128113",
-      "to": "bbl:3014470001",
+      "from": "notice:20140128115",
+      "to": "bbl:3052950004",
       "domain": "property",
       "confidence": "strong",
       "method": "exact_bbl_v1",
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20140128113",
+        "source_record_id": "city_record:20140128115",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
         "observed_at": "2014-03-12T01:00:00.000",
-        "input_value": "3014470001",
+        "input_value": "3052950004",
         "join_key": "bbl",
-        "join_value": "3014470001",
+        "join_value": "3052950004",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -42671,45 +42671,25 @@
       "layer": "cross_domain_object_link_v2"
     },
     {
-      "type": "published_by_agency",
-      "from": "notice:20140128110",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20140128110",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2014-03-12T01:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
       "type": "sits_on_parcel",
-      "from": "notice:20140128110",
-      "to": "bbl:3053000114",
+      "from": "notice:20140128115",
+      "to": "bbl:3052950110",
       "domain": "property",
       "confidence": "strong",
       "method": "exact_bbl_v1",
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20140128110",
+        "source_record_id": "city_record:20140128115",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
         "observed_at": "2014-03-12T01:00:00.000",
-        "input_value": "3053000114",
+        "input_value": "3052950110",
         "join_key": "bbl",
-        "join_value": "3053000114",
+        "join_value": "3052950110",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -42793,7 +42773,7 @@
     },
     {
       "type": "published_by_agency",
-      "from": "notice:20140128115",
+      "from": "notice:20140128110",
       "to": "agency:id:housing-preservation-and-development",
       "domain": "property",
       "confidence": "strong",
@@ -42801,7 +42781,7 @@
       "method_version": "1",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20140128115",
+        "source_record_id": "city_record:20140128110",
         "source_fields": [
           "agency_name"
         ],
@@ -42813,24 +42793,24 @@
     },
     {
       "type": "sits_on_parcel",
-      "from": "notice:20140128115",
-      "to": "bbl:3052950004",
+      "from": "notice:20140128110",
+      "to": "bbl:3053000114",
       "domain": "property",
       "confidence": "strong",
       "method": "exact_bbl_v1",
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20140128115",
+        "source_record_id": "city_record:20140128110",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
         "observed_at": "2014-03-12T01:00:00.000",
-        "input_value": "3052950004",
+        "input_value": "3053000114",
         "join_key": "bbl",
-        "join_value": "3052950004",
+        "join_value": "3053000114",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -42839,25 +42819,45 @@
       "layer": "cross_domain_object_link_v2"
     },
     {
+      "type": "published_by_agency",
+      "from": "notice:20140128113",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20140128113",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2014-03-12T01:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
       "type": "sits_on_parcel",
-      "from": "notice:20140128115",
-      "to": "bbl:3052950110",
+      "from": "notice:20140128113",
+      "to": "bbl:3014470001",
       "domain": "property",
       "confidence": "strong",
       "method": "exact_bbl_v1",
       "method_version": "1.0.0",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20140128115",
+        "source_record_id": "city_record:20140128113",
         "source_fields": [
           "property_location.bbls",
           "tax_lots"
         ],
         "basis": "exact_bbl",
         "observed_at": "2014-03-12T01:00:00.000",
-        "input_value": "3052950110",
+        "input_value": "3014470001",
         "join_key": "bbl",
-        "join_value": "3052950110",
+        "join_value": "3014470001",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -42905,6 +42905,53 @@
         "input_value": "1013300015",
         "join_key": "bbl",
         "join_value": "1013300015",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20131112111",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20131112111",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2013-11-19T00:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20131112111",
+      "to": "bbl:4034050011",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20131112111",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2013-11-19T00:00:00.000",
+        "input_value": "4034050011",
+        "join_key": "bbl",
+        "join_value": "4034050011",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -42979,127 +43026,6 @@
         "input_value": "1009337501",
         "join_key": "bbl",
         "join_value": "1009337501",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20131112111",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20131112111",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2013-11-19T00:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20131112111",
-      "to": "bbl:4034050011",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20131112111",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2013-11-19T00:00:00.000",
-        "input_value": "4034050011",
-        "join_key": "bbl",
-        "join_value": "4034050011",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20131018115",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20131018115",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2013-11-25T00:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20131018115",
-      "to": "bbl:1019110061",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20131018115",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2013-11-25T00:00:00.000",
-        "input_value": "1019110061",
-        "join_key": "bbl",
-        "join_value": "1019110061",
-        "match": "exact",
-        "tier": "deterministic_exact_key"
-      },
-      "tier": "deterministic_exact_key",
-      "tier_version": "1",
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20131018115",
-      "to": "bbl:1019110062",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20131018115",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2013-11-25T00:00:00.000",
-        "input_value": "1019110062",
-        "join_key": "bbl",
-        "join_value": "1019110062",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -43201,6 +43127,80 @@
         "input_value": "3021077501",
         "join_key": "bbl",
         "join_value": "3021077501",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20131018115",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20131018115",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2013-11-25T00:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20131018115",
+      "to": "bbl:1019110061",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20131018115",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2013-11-25T00:00:00.000",
+        "input_value": "1019110061",
+        "join_key": "bbl",
+        "join_value": "1019110061",
+        "match": "exact",
+        "tier": "deterministic_exact_key"
+      },
+      "tier": "deterministic_exact_key",
+      "tier_version": "1",
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20131018115",
+      "to": "bbl:1019110062",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20131018115",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2013-11-25T00:00:00.000",
+        "input_value": "1019110062",
+        "join_key": "bbl",
+        "join_value": "1019110062",
         "match": "exact",
         "tier": "deterministic_exact_key"
       },
@@ -43893,35 +43893,6 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20180416101",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Disposition",
-      "when": "2018-05-23T01:00:00.000",
-      "request_id": "20180416101",
-      "bbls": [
-        "1020950029",
-        "1020970020"
-      ],
-      "primary_bbl": "1020950029",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20180416101",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20180416101",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2018-05-23T01:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
       "subject_ref": "notice:20180413111",
       "domain": "property",
       "object_kind": "disposition",
@@ -43944,6 +43915,35 @@
         ],
         "basis": "property_agency_name",
         "observed_at": "2018-05-23T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
+      "subject_ref": "notice:20180416101",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Disposition",
+      "when": "2018-05-23T01:00:00.000",
+      "request_id": "20180416101",
+      "bbls": [
+        "1020950029",
+        "1020970020"
+      ],
+      "primary_bbl": "1020950029",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20180416101",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20180416101",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2018-05-23T01:00:00.000",
         "input_value": "Housing Preservation and Development"
       },
       "link_type": "published_by_agency",
@@ -44279,35 +44279,6 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20171005106",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Disposition",
-      "when": "2017-11-15T10:00:00.000",
-      "request_id": "20171005106",
-      "bbls": [
-        "4158530040",
-        "4159050001"
-      ],
-      "primary_bbl": "4158530040",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20171005106",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20171005106",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2017-11-15T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
       "subject_ref": "notice:20171006101",
       "domain": "property",
       "object_kind": "disposition",
@@ -44325,6 +44296,35 @@
       "provenance": {
         "source_system": "city_record",
         "source_record_id": "city_record:20171006101",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2017-11-15T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
+      "subject_ref": "notice:20171005106",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Disposition",
+      "when": "2017-11-15T10:00:00.000",
+      "request_id": "20171005106",
+      "bbls": [
+        "4158530040",
+        "4159050001"
+      ],
+      "primary_bbl": "4158530040",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20171005106",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20171005106",
         "source_fields": [
           "agency_name"
         ],
@@ -44394,6 +44394,34 @@
       "method": "agency_canonical_v1"
     },
     {
+      "subject_ref": "notice:20170807103",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Disposition",
+      "when": "2017-09-13T10:00:00.000",
+      "request_id": "20170807103",
+      "bbls": [
+        "4104110006"
+      ],
+      "primary_bbl": "4104110006",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20170807103",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170807103",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2017-09-13T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
       "subject_ref": "notice:20170807104",
       "domain": "property",
       "object_kind": "disposition",
@@ -44411,34 +44439,6 @@
       "provenance": {
         "source_system": "city_record",
         "source_record_id": "city_record:20170807104",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2017-09-13T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20170807103",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Disposition",
-      "when": "2017-09-13T10:00:00.000",
-      "request_id": "20170807103",
-      "bbls": [
-        "4104110006"
-      ],
-      "primary_bbl": "4104110006",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20170807103",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170807103",
         "source_fields": [
           "agency_name"
         ],
@@ -44543,6 +44543,92 @@
       "method": "agency_canonical_v1"
     },
     {
+      "subject_ref": "notice:20170515104",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Essex Crossing Site 5",
+      "when": "2017-06-21T10:00:00.000",
+      "request_id": "20170515104",
+      "bbls": [
+        "1003540001",
+        "1003547502"
+      ],
+      "primary_bbl": "1003540001",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20170515104",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170515104",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
+      "subject_ref": "notice:20170512109",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Disposition",
+      "when": "2017-06-21T10:00:00.000",
+      "request_id": "20170512109",
+      "bbls": [
+        "1016350001",
+        "1016357501"
+      ],
+      "primary_bbl": "1016350001",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20170512109",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170512109",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
+      "subject_ref": "notice:20170512106",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Disposition",
+      "when": "2017-06-21T10:00:00.000",
+      "request_id": "20170512106",
+      "bbls": [
+        "1000940025"
+      ],
+      "primary_bbl": "1000940025",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20170512106",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20170512106",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2017-06-21T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
       "subject_ref": "notice:20170516111",
       "domain": "property",
       "object_kind": "disposition",
@@ -44586,23 +44672,22 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20170515104",
+      "subject_ref": "notice:20170512101",
       "domain": "property",
       "object_kind": "disposition",
-      "label": "Essex Crossing Site 5",
+      "label": "Disposition",
       "when": "2017-06-21T10:00:00.000",
-      "request_id": "20170515104",
+      "request_id": "20170512101",
       "bbls": [
-        "1003540001",
-        "1003547502"
+        "1019540055"
       ],
-      "primary_bbl": "1003540001",
+      "primary_bbl": "1019540055",
       "root_ref": "agency:id:housing-preservation-and-development",
       "root_kind": "agency",
-      "href": "#notice/20170515104",
+      "href": "#notice/20170512101",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20170515104",
+        "source_record_id": "city_record:20170512101",
         "source_fields": [
           "agency_name"
         ],
@@ -44638,91 +44723,6 @@
         ],
         "basis": "property_agency_name",
         "observed_at": "2017-05-24T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20170512106",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Disposition",
-      "when": "2017-06-21T10:00:00.000",
-      "request_id": "20170512106",
-      "bbls": [
-        "1000940025"
-      ],
-      "primary_bbl": "1000940025",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20170512106",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170512106",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20170512101",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Disposition",
-      "when": "2017-06-21T10:00:00.000",
-      "request_id": "20170512101",
-      "bbls": [
-        "1019540055"
-      ],
-      "primary_bbl": "1019540055",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20170512101",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170512101",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2017-06-21T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20170512109",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Disposition",
-      "when": "2017-06-21T10:00:00.000",
-      "request_id": "20170512109",
-      "bbls": [
-        "1016350001",
-        "1016357501"
-      ],
-      "primary_bbl": "1016350001",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20170512109",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20170512109",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2017-06-21T10:00:00.000",
         "input_value": "Housing Preservation and Development"
       },
       "link_type": "published_by_agency",
@@ -45008,6 +45008,35 @@
       "method": "agency_canonical_v1"
     },
     {
+      "subject_ref": "notice:20161115104",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Disposition",
+      "when": "2016-12-21T10:00:00.000",
+      "request_id": "20161115104",
+      "bbls": [
+        "3038670008",
+        "3038670009"
+      ],
+      "primary_bbl": "3038670008",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20161115104",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20161115104",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2016-12-21T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
       "subject_ref": "notice:20161115105",
       "domain": "property",
       "object_kind": "disposition",
@@ -45030,35 +45059,6 @@
       "provenance": {
         "source_system": "city_record",
         "source_record_id": "city_record:20161115105",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2016-12-21T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20161115104",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Disposition",
-      "when": "2016-12-21T10:00:00.000",
-      "request_id": "20161115104",
-      "bbls": [
-        "3038670008",
-        "3038670009"
-      ],
-      "primary_bbl": "3038670008",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20161115104",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20161115104",
         "source_fields": [
           "agency_name"
         ],
@@ -45457,40 +45457,6 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20160429106",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Amended Van/Buren/Greene",
-      "when": "2016-06-08T10:00:00.000",
-      "request_id": "20160429106",
-      "bbls": [
-        "3016410068",
-        "3017910017",
-        "3017910018",
-        "3017910019",
-        "3018140015",
-        "3018520008",
-        "3018520009"
-      ],
-      "primary_bbl": "3016410068",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20160429106",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20160429106",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2016-06-08T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
       "subject_ref": "notice:20160502102",
       "domain": "property",
       "object_kind": "disposition",
@@ -45520,23 +45486,28 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20160429109",
+      "subject_ref": "notice:20160429106",
       "domain": "property",
       "object_kind": "disposition",
-      "label": "Rochester Suydam Phase 1",
+      "label": "Amended Van/Buren/Greene",
       "when": "2016-06-08T10:00:00.000",
-      "request_id": "20160429109",
+      "request_id": "20160429106",
       "bbls": [
-        "3015560007",
-        "3015560008"
+        "3016410068",
+        "3017910017",
+        "3017910018",
+        "3017910019",
+        "3018140015",
+        "3018520008",
+        "3018520009"
       ],
-      "primary_bbl": "3015560007",
+      "primary_bbl": "3016410068",
       "root_ref": "agency:id:housing-preservation-and-development",
       "root_kind": "agency",
-      "href": "#notice/20160429109",
+      "href": "#notice/20160429106",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20160429109",
+        "source_record_id": "city_record:20160429106",
         "source_fields": [
           "agency_name"
         ],
@@ -45587,6 +45558,35 @@
       "method": "agency_canonical_v1"
     },
     {
+      "subject_ref": "notice:20160429109",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Rochester Suydam Phase 1",
+      "when": "2016-06-08T10:00:00.000",
+      "request_id": "20160429109",
+      "bbls": [
+        "3015560007",
+        "3015560008"
+      ],
+      "primary_bbl": "3015560007",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20160429109",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20160429109",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2016-06-08T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
       "subject_ref": "notice:20160428104",
       "domain": "property",
       "object_kind": "disposition",
@@ -45611,37 +45611,6 @@
         ],
         "basis": "property_agency_name",
         "observed_at": "2016-06-08T01:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20160427101",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "THIRD AMENDED URBAN RENEWAL EAST NEW YORK",
-      "when": "2016-06-08T10:00:00.000",
-      "request_id": "20160427101",
-      "bbls": [
-        "3038000001",
-        "3038170020",
-        "3038180122",
-        "3038187501"
-      ],
-      "primary_bbl": "3038000001",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20160427101",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20160427101",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2016-06-08T10:00:00.000",
         "input_value": "Housing Preservation and Development"
       },
       "link_type": "published_by_agency",
@@ -45700,6 +45669,37 @@
         ],
         "basis": "property_agency_name",
         "observed_at": "2016-06-08T01:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
+      "subject_ref": "notice:20160427101",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "THIRD AMENDED URBAN RENEWAL EAST NEW YORK",
+      "when": "2016-06-08T10:00:00.000",
+      "request_id": "20160427101",
+      "bbls": [
+        "3038000001",
+        "3038170020",
+        "3038180122",
+        "3038187501"
+      ],
+      "primary_bbl": "3038000001",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20160427101",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20160427101",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2016-06-08T10:00:00.000",
         "input_value": "Housing Preservation and Development"
       },
       "link_type": "published_by_agency",
@@ -45840,6 +45840,35 @@
       "method": "agency_canonical_v1"
     },
     {
+      "subject_ref": "notice:20150814110",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Dispositions",
+      "when": "2015-09-21T01:00:00.000",
+      "request_id": "20150814110",
+      "bbls": [
+        "1003470071",
+        "1003477501"
+      ],
+      "primary_bbl": "1003470071",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20150814110",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150814110",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2015-09-21T01:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
       "subject_ref": "notice:20150814106",
       "domain": "property",
       "object_kind": "disposition",
@@ -45870,28 +45899,28 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20150814110",
+      "subject_ref": "notice:20150804106",
       "domain": "property",
       "object_kind": "disposition",
-      "label": "Dispositions",
-      "when": "2015-09-21T01:00:00.000",
-      "request_id": "20150814110",
+      "label": "Essex Site 1",
+      "when": "2015-09-09T10:00:00.000",
+      "request_id": "20150804106",
       "bbls": [
-        "1003470071",
-        "1003477501"
+        "1004090056",
+        "1004097502"
       ],
-      "primary_bbl": "1003470071",
+      "primary_bbl": "1004090056",
       "root_ref": "agency:id:housing-preservation-and-development",
       "root_kind": "agency",
-      "href": "#notice/20150814110",
+      "href": "#notice/20150804106",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20150814110",
+        "source_record_id": "city_record:20150804106",
         "source_fields": [
           "agency_name"
         ],
         "basis": "property_agency_name",
-        "observed_at": "2015-09-21T01:00:00.000",
+        "observed_at": "2015-09-09T10:00:00.000",
         "input_value": "Housing Preservation and Development"
       },
       "link_type": "published_by_agency",
@@ -45915,35 +45944,6 @@
       "provenance": {
         "source_system": "city_record",
         "source_record_id": "city_record:20150731102",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2015-09-09T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20150804106",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Essex Site 1",
-      "when": "2015-09-09T10:00:00.000",
-      "request_id": "20150804106",
-      "bbls": [
-        "1004090056",
-        "1004097502"
-      ],
-      "primary_bbl": "1004090056",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20150804106",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150804106",
         "source_fields": [
           "agency_name"
         ],
@@ -46211,35 +46211,6 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20150421105",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Compass Residence 2A",
-      "when": "2015-06-10T10:00:00.000",
-      "request_id": "20150421105",
-      "bbls": [
-        "2029930031",
-        "2030140045"
-      ],
-      "primary_bbl": "2029930031",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20150421105",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150421105",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2015-06-10T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
       "subject_ref": "notice:20150424107",
       "domain": "property",
       "object_kind": "disposition",
@@ -46257,6 +46228,35 @@
       "provenance": {
         "source_system": "city_record",
         "source_record_id": "city_record:20150424107",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2015-06-10T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
+      "subject_ref": "notice:20150421105",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Compass Residence 2A",
+      "when": "2015-06-10T10:00:00.000",
+      "request_id": "20150421105",
+      "bbls": [
+        "2029930031",
+        "2030140045"
+      ],
+      "primary_bbl": "2029930031",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20150421105",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150421105",
         "source_fields": [
           "agency_name"
         ],
@@ -46329,34 +46329,6 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20150416112",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "disposition",
-      "when": "2015-05-27T10:00:00.000",
-      "request_id": "20150416112",
-      "bbls": [
-        "1003467501"
-      ],
-      "primary_bbl": "1003467501",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20150416112",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150416112",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2015-05-27T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
       "subject_ref": "notice:20150416111",
       "domain": "property",
       "object_kind": "disposition",
@@ -46374,6 +46346,34 @@
       "provenance": {
         "source_system": "city_record",
         "source_record_id": "city_record:20150416111",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2015-05-27T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
+      "subject_ref": "notice:20150416112",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "disposition",
+      "when": "2015-05-27T10:00:00.000",
+      "request_id": "20150416112",
+      "bbls": [
+        "1003467501"
+      ],
+      "primary_bbl": "1003467501",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20150416112",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150416112",
         "source_fields": [
           "agency_name"
         ],
@@ -47216,50 +47216,23 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20140128113",
+      "subject_ref": "notice:20140128115",
       "domain": "property",
       "object_kind": "disposition",
-      "label": "PROPERTY DISPOSITION",
+      "label": "Property Disposition",
       "when": "2014-03-12T01:00:00.000",
-      "request_id": "20140128113",
+      "request_id": "20140128115",
       "bbls": [
-        "3014470001"
+        "3052950004",
+        "3052950110"
       ],
-      "primary_bbl": "3014470001",
+      "primary_bbl": "3052950004",
       "root_ref": "agency:id:housing-preservation-and-development",
       "root_kind": "agency",
-      "href": "#notice/20140128113",
+      "href": "#notice/20140128115",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20140128113",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2014-03-12T01:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20140128110",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "PROPERTY DISPOSITION",
-      "when": "2014-03-12T01:00:00.000",
-      "request_id": "20140128110",
-      "bbls": [
-        "3053000114"
-      ],
-      "primary_bbl": "3053000114",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20140128110",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20140128110",
+        "source_record_id": "city_record:20140128115",
         "source_fields": [
           "agency_name"
         ],
@@ -47301,23 +47274,50 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20140128115",
+      "subject_ref": "notice:20140128110",
       "domain": "property",
       "object_kind": "disposition",
-      "label": "Property Disposition",
+      "label": "PROPERTY DISPOSITION",
       "when": "2014-03-12T01:00:00.000",
-      "request_id": "20140128115",
+      "request_id": "20140128110",
       "bbls": [
-        "3052950004",
-        "3052950110"
+        "3053000114"
       ],
-      "primary_bbl": "3052950004",
+      "primary_bbl": "3053000114",
       "root_ref": "agency:id:housing-preservation-and-development",
       "root_kind": "agency",
-      "href": "#notice/20140128115",
+      "href": "#notice/20140128110",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20140128115",
+        "source_record_id": "city_record:20140128110",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2014-03-12T01:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
+      "subject_ref": "notice:20140128113",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "PROPERTY DISPOSITION",
+      "when": "2014-03-12T01:00:00.000",
+      "request_id": "20140128113",
+      "bbls": [
+        "3014470001"
+      ],
+      "primary_bbl": "3014470001",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20140128113",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20140128113",
         "source_fields": [
           "agency_name"
         ],
@@ -47358,6 +47358,34 @@
       "method": "agency_canonical_v1"
     },
     {
+      "subject_ref": "notice:20131112111",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Proposed an amendment to the terms of sale of the following City-owned property.",
+      "when": "2013-11-19T00:00:00.000",
+      "request_id": "20131112111",
+      "bbls": [
+        "4034050011"
+      ],
+      "primary_bbl": "4034050011",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20131112111",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20131112111",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2013-11-19T00:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
       "subject_ref": "notice:20131113101",
       "domain": "property",
       "object_kind": "disposition",
@@ -47387,27 +47415,29 @@
       "method": "agency_canonical_v1"
     },
     {
-      "subject_ref": "notice:20131112111",
+      "subject_ref": "notice:20131017107",
       "domain": "property",
       "object_kind": "disposition",
-      "label": "Proposed an amendment to the terms of sale of the following City-owned property.",
-      "when": "2013-11-19T00:00:00.000",
-      "request_id": "20131112111",
+      "label": "PROPERTY DISPOSITIONS",
+      "when": "2013-11-25T00:00:00.000",
+      "request_id": "20131017107",
       "bbls": [
-        "4034050011"
+        "3021070015",
+        "3021070024",
+        "3021077501"
       ],
-      "primary_bbl": "4034050011",
+      "primary_bbl": "3021070015",
       "root_ref": "agency:id:housing-preservation-and-development",
       "root_kind": "agency",
-      "href": "#notice/20131112111",
+      "href": "#notice/20131017107",
       "provenance": {
         "source_system": "city_record",
-        "source_record_id": "city_record:20131112111",
+        "source_record_id": "city_record:20131017107",
         "source_fields": [
           "agency_name"
         ],
         "basis": "property_agency_name",
-        "observed_at": "2013-11-19T00:00:00.000",
+        "observed_at": "2013-11-25T00:00:00.000",
         "input_value": "Housing Preservation and Development"
       },
       "link_type": "published_by_agency",
@@ -47432,36 +47462,6 @@
       "provenance": {
         "source_system": "city_record",
         "source_record_id": "city_record:20131018115",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2013-11-25T00:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20131017107",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "PROPERTY DISPOSITIONS",
-      "when": "2013-11-25T00:00:00.000",
-      "request_id": "20131017107",
-      "bbls": [
-        "3021070015",
-        "3021070024",
-        "3021077501"
-      ],
-      "primary_bbl": "3021070015",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20131017107",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20131017107",
         "source_fields": [
           "agency_name"
         ],
@@ -47609,7 +47609,7 @@
       "path": "site/data/property_domain_observations.json",
       "bbl_count": 319,
       "property_count": 133,
-      "source_generated_at": "2026-11-02T13:52:36.000Z"
+      "source_generated_at": "2026-11-08T13:33:32.000Z"
     }
   },
   "demos": {
