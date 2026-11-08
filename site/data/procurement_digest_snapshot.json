@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_digest_snapshot.v1",
-  "generated_at": "2026-11-07T13:35:42.299Z",
-  "row_count": 7889,
+  "generated_at": "2026-11-08T14:07:52.584Z",
+  "row_count": 7909,
   "rows": [
     {
       "procurement_id": "procurement:contract:8000000863",
@@ -3045,6 +3045,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT101520261418181:JP MORGAN CHASE BANK NA:prime-vendor:2026-07-24",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT101520261418181"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT101520270000018",
+      "digest_id": "procurement:contract:CT101520270000018",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT101520270000018",
+      "short_title": "Second Renewal Investment Grade Credit - IMA (Loop)",
+      "agency_name": "Office of the Comptroller",
+      "vendor_name": "Loop Capital Asset Management TCH LLC",
+      "contract_amount": 471347,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT101520270000018",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT101520270000018:checkbook_contracts:contract:registered:CT101520270000018:LOOP CAPITAL ASSET MANAGEMENT TCH LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT101520270000018:LOOP CAPITAL ASSET MANAGEMENT TCH LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT101520270000018:LOOP CAPITAL ASSET MANAGEMENT TCH LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT101520270000018"
         }
       ],
       "type_of_notice_description": null
@@ -7961,41 +7996,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT104020263035397",
-      "digest_id": "procurement:contract:CT104020263035397",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263035397",
-      "short_title": "3 BIDS-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "LEVERIDGE CONSULTING SERVICES LLC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263035397",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263035397:checkbook_contracts:contract:registered:CT104020263035397:LEVERIDGE CONSULTING SERVICES LLC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263035397:LEVERIDGE CONSULTING SERVICES LLC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263035397:LEVERIDGE CONSULTING SERVICES LLC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263035397"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263036636",
       "digest_id": "procurement:contract:CT104020263036636",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263036636",
@@ -8201,41 +8201,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020263038286:JENNIFER TEMPS, INC.:prime-vendor:2025-10-24",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263038286"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263038742",
-      "digest_id": "procurement:contract:CT104020263038742",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263038742",
-      "short_title": "3 BIDS-SERVICES-EAGBK2526",
-      "agency_name": "Department of Education",
-      "vendor_name": "HAMILTON HOOPS LLC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263038742",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263038742:checkbook_contracts:contract:registered:CT104020263038742:HAMILTON HOOPS LLC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263038742:HAMILTON HOOPS LLC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263038742:HAMILTON HOOPS LLC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263038742"
         }
       ],
       "type_of_notice_description": null
@@ -8871,146 +8836,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT104020263044125",
-      "digest_id": "procurement:contract:CT104020263044125",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263044125",
-      "short_title": "NEGOTIATED SERVICES-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "SOUND BUSINESS, INC.",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263044125",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263044125:checkbook_contracts:contract:registered:CT104020263044125:SOUND BUSINESS, INC.:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263044125:SOUND BUSINESS, INC.:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263044125:SOUND BUSINESS, INC.:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263044125"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263044342",
-      "digest_id": "procurement:contract:CT104020263044342",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263044342",
-      "short_title": "MWBE-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "Create to Connect LLC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263044342",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263044342:checkbook_contracts:contract:registered:CT104020263044342:CREATE TO CONNECT LLC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263044342:CREATE TO CONNECT LLC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263044342:CREATE TO CONNECT LLC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263044342"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263044392",
-      "digest_id": "procurement:contract:CT104020263044392",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263044392",
-      "short_title": "NEGOTIATED SERVICES-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "HIRE CAUSE INC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263044392",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263044392:checkbook_contracts:contract:registered:CT104020263044392:HIRE CAUSE INC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263044392:HIRE CAUSE INC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263044392:HIRE CAUSE INC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263044392"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263044398",
-      "digest_id": "procurement:contract:CT104020263044398",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263044398",
-      "short_title": "NEGOTIATED SERVICES-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "ALL THE WORLD COLLECTIVE LLC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263044398",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263044398:checkbook_contracts:contract:registered:CT104020263044398:ALL THE WORLD COLLECTIVE LLC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263044398:ALL THE WORLD COLLECTIVE LLC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263044398:ALL THE WORLD COLLECTIVE LLC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263044398"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263044500",
       "digest_id": "procurement:contract:CT104020263044500",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263044500",
@@ -9251,76 +9076,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020263045196:HIRE CAUSE INC:prime-vendor:2025-11-14",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263045196"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263045424",
-      "digest_id": "procurement:contract:CT104020263045424",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263045424",
-      "short_title": "MWBE-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "IQEQ Law PLLC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263045424",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263045424:checkbook_contracts:contract:registered:CT104020263045424:IQEQ LAW PLLC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263045424:IQEQ LAW PLLC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263045424:IQEQ LAW PLLC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263045424"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263045486",
-      "digest_id": "procurement:contract:CT104020263045486",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263045486",
-      "short_title": "MWBE-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "O & M VENTURE CAPITAL CORPORATION",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263045486",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263045486:checkbook_contracts:contract:registered:CT104020263045486:O & M VENTURE CAPITAL CORPORATION:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263045486:O & M VENTURE CAPITAL CORPORATION:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263045486:O & M VENTURE CAPITAL CORPORATION:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263045486"
         }
       ],
       "type_of_notice_description": null
@@ -9606,41 +9361,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT104020263046108",
-      "digest_id": "procurement:contract:CT104020263046108",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046108",
-      "short_title": "3 BIDS-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "SIMPLY ED",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263046108",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263046108:checkbook_contracts:contract:registered:CT104020263046108:SIMPLY ED:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263046108:SIMPLY ED:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263046108:SIMPLY ED:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263046108"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263046187",
       "digest_id": "procurement:contract:CT104020263046187",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046187",
@@ -9671,41 +9391,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020263046187:NEW YORK JUNIOR TENNIS LEAGUE INC:prime-vendor:2025-11-10",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263046187"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263046301",
-      "digest_id": "procurement:contract:CT104020263046301",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046301",
-      "short_title": "3 BIDS-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "ANYTHING AMUSING INC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263046301",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263046301:checkbook_contracts:contract:registered:CT104020263046301:ANYTHING AMUSING INC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263046301:ANYTHING AMUSING INC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263046301:ANYTHING AMUSING INC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263046301"
         }
       ],
       "type_of_notice_description": null
@@ -9886,41 +9571,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT104020263046658",
-      "digest_id": "procurement:contract:CT104020263046658",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046658",
-      "short_title": "MWBE-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "ELEVATED YOUTH INC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263046658",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263046658:checkbook_contracts:contract:registered:CT104020263046658:ELEVATED YOUTH INC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263046658:ELEVATED YOUTH INC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263046658:ELEVATED YOUTH INC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263046658"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263046664",
       "digest_id": "procurement:contract:CT104020263046664",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046664",
@@ -10061,41 +9711,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT104020263046820",
-      "digest_id": "procurement:contract:CT104020263046820",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046820",
-      "short_title": "NEGOTIATED SERVICES-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "NEW VISIONS CHARTER SCHOOLS",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263046820",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263046820:checkbook_contracts:contract:registered:CT104020263046820:NEW VISIONS CHARTER SCHOOLS:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263046820:NEW VISIONS CHARTER SCHOOLS:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263046820:NEW VISIONS CHARTER SCHOOLS:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263046820"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263046839",
       "digest_id": "procurement:contract:CT104020263046839",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046839",
@@ -10201,41 +9816,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT104020263046974",
-      "digest_id": "procurement:contract:CT104020263046974",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046974",
-      "short_title": "MWBE-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "CWK NETWORK, INC.",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263046974",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263046974:checkbook_contracts:contract:registered:CT104020263046974:CWK NETWORK, INC.:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263046974:CWK NETWORK, INC.:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263046974:CWK NETWORK, INC.:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263046974"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263046996",
       "digest_id": "procurement:contract:CT104020263046996",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046996",
@@ -10266,111 +9846,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020263046996:SOLVED CONSULTANCY LLC:prime-vendor:2025-11-25",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263046996"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263047003",
-      "digest_id": "procurement:contract:CT104020263047003",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263047003",
-      "short_title": "SOLE VENDOR-COMMODITIES",
-      "agency_name": "Department of Education",
-      "vendor_name": "STRATEGIC EDUCATION RESEARCH PARTNERSHIP INSTITUTE",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263047003",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263047003:checkbook_contracts:contract:registered:CT104020263047003:STRATEGIC EDUCATION RESEARCH PARTNERSHIP INSTITUTE:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263047003:STRATEGIC EDUCATION RESEARCH PARTNERSHIP INSTITUTE:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263047003:STRATEGIC EDUCATION RESEARCH PARTNERSHIP INSTITUTE:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263047003"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263047012",
-      "digest_id": "procurement:contract:CT104020263047012",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263047012",
-      "short_title": "SOLE VENDOR-COMMODITIES",
-      "agency_name": "Department of Education",
-      "vendor_name": "LEGO BRAND RETAIL INC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263047012",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263047012:checkbook_contracts:contract:registered:CT104020263047012:LEGO BRAND RETAIL INC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263047012:LEGO BRAND RETAIL INC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263047012:LEGO BRAND RETAIL INC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263047012"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263047163",
-      "digest_id": "procurement:contract:CT104020263047163",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263047163",
-      "short_title": "3 BIDS-SERVICES-25 26 FY",
-      "agency_name": "Department of Education",
-      "vendor_name": "Toolkit Tutors Inc",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263047163",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263047163:checkbook_contracts:contract:registered:CT104020263047163:TOOLKIT TUTORS INC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263047163:TOOLKIT TUTORS INC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263047163:TOOLKIT TUTORS INC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263047163"
         }
       ],
       "type_of_notice_description": null
@@ -10516,76 +9991,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT104020263047284",
-      "digest_id": "procurement:contract:CT104020263047284",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263047284",
-      "short_title": "MWBE-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "NEXT LEVELED CONSULTING LLC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263047284",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263047284:checkbook_contracts:contract:registered:CT104020263047284:NEXT LEVELED CONSULTING LLC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263047284:NEXT LEVELED CONSULTING LLC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263047284:NEXT LEVELED CONSULTING LLC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263047284"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263047292",
-      "digest_id": "procurement:contract:CT104020263047292",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263047292",
-      "short_title": "MWBE-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "EQUITY AND COMMUNITY LLC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263047292",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263047292:checkbook_contracts:contract:registered:CT104020263047292:EQUITY AND COMMUNITY LLC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263047292:EQUITY AND COMMUNITY LLC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263047292:EQUITY AND COMMUNITY LLC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263047292"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263047494",
       "digest_id": "procurement:contract:CT104020263047494",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263047494",
@@ -10616,41 +10021,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020263047494:BAY RIDGE WINDOW SHADE CORP AMERICAN WINDOW FASHIONS:prime-vendor:2025-11-10",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263047494"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263047524",
-      "digest_id": "procurement:contract:CT104020263047524",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263047524",
-      "short_title": "3 BIDS-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "Toolkit Tutors Inc",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263047524",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263047524:checkbook_contracts:contract:registered:CT104020263047524:TOOLKIT TUTORS INC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263047524:TOOLKIT TUTORS INC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263047524:TOOLKIT TUTORS INC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263047524"
         }
       ],
       "type_of_notice_description": null
@@ -10896,41 +10266,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020263047803:ARTS IN BLUE:prime-vendor:2025-11-12",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263047803"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263047820",
-      "digest_id": "procurement:contract:CT104020263047820",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263047820",
-      "short_title": "MWBE-SERVICES",
-      "agency_name": "Department of Education",
-      "vendor_name": "RONALD DRAPER ART LLC",
-      "contract_amount": 25000,
-      "start_date": "2025-11-07",
-      "pin": null,
-      "contract_id": "CT104020263047820",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT104020263047820:checkbook_contracts:contract:registered:CT104020263047820:RONALD DRAPER ART LLC:prime-vendor:2025-11-07:registered",
-          "state": "registered",
-          "effective_at": "2025-11-07",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020263047820:RONALD DRAPER ART LLC:prime-vendor:2025-11-07",
-          "source_receipt_ref": "materialized:contract:registered:CT104020263047820:RONALD DRAPER ART LLC:prime-vendor:2025-11-07",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020263047820"
         }
       ],
       "type_of_notice_description": null
@@ -87306,6 +86641,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020273009032",
+      "digest_id": "procurement:contract:CT104020273009032",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273009032",
+      "short_title": "MWBE-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "FORESIGHT ADVISORY AND CONSULTING INCORPORATED",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273009032",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273009032:checkbook_contracts:contract:registered:CT104020273009032:FORESIGHT ADVISORY AND CONSULTING INCORPORATED:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273009032:FORESIGHT ADVISORY AND CONSULTING INCORPORATED:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273009032:FORESIGHT ADVISORY AND CONSULTING INCORPORATED:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273009032"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273009125",
       "digest_id": "procurement:contract:CT104020273009125",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273009125",
@@ -94341,6 +93711,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020273018000",
+      "digest_id": "procurement:contract:CT104020273018000",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273018000",
+      "short_title": "3 BIDS-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "YOUNG KINGS & QUEENS CHESS CLUB",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273018000",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273018000:checkbook_contracts:contract:registered:CT104020273018000:YOUNG KINGS & QUEENS CHESS CLUB:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273018000:YOUNG KINGS & QUEENS CHESS CLUB:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273018000:YOUNG KINGS & QUEENS CHESS CLUB:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273018000"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273018059",
       "digest_id": "procurement:contract:CT104020273018059",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273018059",
@@ -95841,6 +95246,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020273020153:GENERATION READY INC:prime-vendor:2026-09-29",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273020153"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273020240",
+      "digest_id": "procurement:contract:CT104020273020240",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273020240",
+      "short_title": "3 BIDS-SERVICES-1",
+      "agency_name": "Department of Education",
+      "vendor_name": "DIRECTIONS FOR OUR YOUTH INC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273020240",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273020240:checkbook_contracts:contract:registered:CT104020273020240:DIRECTIONS FOR OUR YOUTH INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273020240:DIRECTIONS FOR OUR YOUTH INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273020240:DIRECTIONS FOR OUR YOUTH INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273020240"
         }
       ],
       "type_of_notice_description": null
@@ -104631,6 +104071,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020273032423",
+      "digest_id": "procurement:contract:CT104020273032423",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273032423",
+      "short_title": "MWBE-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "ROAR CONSULTING LLC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273032423",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273032423:checkbook_contracts:contract:registered:CT104020273032423:ROAR CONSULTING LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273032423:ROAR CONSULTING LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273032423:ROAR CONSULTING LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273032423"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273032466",
       "digest_id": "procurement:contract:CT104020273032466",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273032466",
@@ -110161,6 +109636,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020273042672",
+      "digest_id": "procurement:contract:CT104020273042672",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273042672",
+      "short_title": "MWBE-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "FORESIGHT ADVISORY AND CONSULTING INCORPORATED",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273042672",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273042672:checkbook_contracts:contract:registered:CT104020273042672:FORESIGHT ADVISORY AND CONSULTING INCORPORATED:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273042672:FORESIGHT ADVISORY AND CONSULTING INCORPORATED:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273042672:FORESIGHT ADVISORY AND CONSULTING INCORPORATED:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273042672"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273042693",
       "digest_id": "procurement:contract:CT104020273042693",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273042693",
@@ -110406,6 +109916,111 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020273043447",
+      "digest_id": "procurement:contract:CT104020273043447",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273043447",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "True Vision Strategies LLC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273043447",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273043447:checkbook_contracts:contract:registered:CT104020273043447:TRUE VISION STRATEGIES LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273043447:TRUE VISION STRATEGIES LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273043447:TRUE VISION STRATEGIES LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273043447"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273043469",
+      "digest_id": "procurement:contract:CT104020273043469",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273043469",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "STUDIO IN A SCHOOL ASSOCIATION INC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273043469",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273043469:checkbook_contracts:contract:registered:CT104020273043469:STUDIO IN A SCHOOL ASSOCIATION INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273043469:STUDIO IN A SCHOOL ASSOCIATION INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273043469:STUDIO IN A SCHOOL ASSOCIATION INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273043469"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273043842",
+      "digest_id": "procurement:contract:CT104020273043842",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273043842",
+      "short_title": "MWBE-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "UNDERRATED EVOLUTION LLC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273043842",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273043842:checkbook_contracts:contract:registered:CT104020273043842:UNDERRATED EVOLUTION LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273043842:UNDERRATED EVOLUTION LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273043842:UNDERRATED EVOLUTION LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273043842"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273043872",
       "digest_id": "procurement:contract:CT104020273043872",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273043872",
@@ -110436,6 +110051,76 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020273043872:ASCEND LEARNING FOR ALL LLC:prime-vendor:2026-11-05",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273043872"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273043904",
+      "digest_id": "procurement:contract:CT104020273043904",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273043904",
+      "short_title": "3 BIDS-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "IDEAL INSTRUCTION LLC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273043904",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273043904:checkbook_contracts:contract:registered:CT104020273043904:IDEAL INSTRUCTION LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273043904:IDEAL INSTRUCTION LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273043904:IDEAL INSTRUCTION LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273043904"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273043977",
+      "digest_id": "procurement:contract:CT104020273043977",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273043977",
+      "short_title": "3 BIDS-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "ZAKI THE BARBER INC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273043977",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273043977:checkbook_contracts:contract:registered:CT104020273043977:ZAKI THE BARBER INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273043977:ZAKI THE BARBER INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273043977:ZAKI THE BARBER INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273043977"
         }
       ],
       "type_of_notice_description": null
@@ -110476,6 +110161,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020273044267",
+      "digest_id": "procurement:contract:CT104020273044267",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273044267",
+      "short_title": "MWBE-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "URBAN STREAM MEDIA LLC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273044267",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273044267:checkbook_contracts:contract:registered:CT104020273044267:URBAN STREAM MEDIA LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273044267:URBAN STREAM MEDIA LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273044267:URBAN STREAM MEDIA LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273044267"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273044360",
       "digest_id": "procurement:contract:CT104020273044360",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273044360",
@@ -110506,6 +110226,251 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020273044360:SMARTSTART EDUCATION, LLC:prime-vendor:2026-11-05",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273044360"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273044361",
+      "digest_id": "procurement:contract:CT104020273044361",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273044361",
+      "short_title": "3 BIDS-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "NATURES CLASSROOM OF MASSACHUSETTS INC .",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273044361",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273044361:checkbook_contracts:contract:registered:CT104020273044361:NATURES CLASSROOM OF MASSACHUSETTS INC .:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273044361:NATURES CLASSROOM OF MASSACHUSETTS INC .:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273044361:NATURES CLASSROOM OF MASSACHUSETTS INC .:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273044361"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273044427",
+      "digest_id": "procurement:contract:CT104020273044427",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273044427",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "FUND FOR THE CITY OF NEW YORK, INC.",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273044427",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273044427:checkbook_contracts:contract:registered:CT104020273044427:FUND FOR THE CITY OF NEW YORK, INC.:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273044427:FUND FOR THE CITY OF NEW YORK, INC.:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273044427:FUND FOR THE CITY OF NEW YORK, INC.:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273044427"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273044611",
+      "digest_id": "procurement:contract:CT104020273044611",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273044611",
+      "short_title": "MWBE-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "ENRICHEDNYC LLC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273044611",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273044611:checkbook_contracts:contract:registered:CT104020273044611:ENRICHEDNYC LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273044611:ENRICHEDNYC LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273044611:ENRICHEDNYC LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273044611"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273044651",
+      "digest_id": "procurement:contract:CT104020273044651",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273044651",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "HARLEM GROWN, INC.",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273044651",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273044651:checkbook_contracts:contract:registered:CT104020273044651:HARLEM GROWN, INC.:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273044651:HARLEM GROWN, INC.:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273044651:HARLEM GROWN, INC.:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273044651"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273044655",
+      "digest_id": "procurement:contract:CT104020273044655",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273044655",
+      "short_title": "3 BIDS-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "YOUNG VOICES BIG SOUNDS INC.",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273044655",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273044655:checkbook_contracts:contract:registered:CT104020273044655:YOUNG VOICES BIG SOUNDS INC.:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273044655:YOUNG VOICES BIG SOUNDS INC.:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273044655:YOUNG VOICES BIG SOUNDS INC.:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273044655"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273044679",
+      "digest_id": "procurement:contract:CT104020273044679",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273044679",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "LEAVE IT BETTER FOUNDATION INC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273044679",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273044679:checkbook_contracts:contract:registered:CT104020273044679:LEAVE IT BETTER FOUNDATION INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273044679:LEAVE IT BETTER FOUNDATION INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273044679:LEAVE IT BETTER FOUNDATION INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273044679"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020273045410",
+      "digest_id": "procurement:contract:CT104020273045410",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273045410",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "MINDFULNESS & SOCIAL EMOTIONAL WELLNESS CONSULTING LLC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020273045410",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273045410:checkbook_contracts:contract:registered:CT104020273045410:MINDFULNESS & SOCIAL EMOTIONAL WELLNESS CONSULTING LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273045410:MINDFULNESS & SOCIAL EMOTIONAL WELLNESS CONSULTING LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273045410:MINDFULNESS & SOCIAL EMOTIONAL WELLNESS CONSULTING LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273045410"
         }
       ],
       "type_of_notice_description": null
@@ -140296,6 +140261,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279760129",
+      "digest_id": "procurement:contract:CT104020279760129",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760129",
+      "short_title": "UPK-BTF",
+      "agency_name": "Department of Education",
+      "vendor_name": "INNER FORCE TOTS INC",
+      "contract_amount": 2370880,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279760129",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279760129:checkbook_contracts:contract:registered:CT104020279760129:INNER FORCE TOTS INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279760129:INNER FORCE TOTS INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279760129:INNER FORCE TOTS INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279760129"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279760140",
       "digest_id": "procurement:contract:CT104020279760140",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279760140",
@@ -146981,6 +146981,76 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279761370",
+      "digest_id": "procurement:contract:CT104020279761370",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761370",
+      "short_title": "UPK-BTF",
+      "agency_name": "Department of Education",
+      "vendor_name": "NYSARC INC NEW YORK CITY CHAPTER",
+      "contract_amount": 1442460,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279761370",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279761370:checkbook_contracts:contract:registered:CT104020279761370:NYSARC INC NEW YORK CITY CHAPTER:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279761370:NYSARC INC NEW YORK CITY CHAPTER:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279761370:NYSARC INC NEW YORK CITY CHAPTER:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761370"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279761371",
+      "digest_id": "procurement:contract:CT104020279761371",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761371",
+      "short_title": "UPK-BTF",
+      "agency_name": "Department of Education",
+      "vendor_name": "Hylan Day Care 2 Inc",
+      "contract_amount": 1301204,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279761371",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279761371:checkbook_contracts:contract:registered:CT104020279761371:HYLAN DAY CARE 2 INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279761371:HYLAN DAY CARE 2 INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279761371:HYLAN DAY CARE 2 INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761371"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279761385",
       "digest_id": "procurement:contract:CT104020279761385",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761385",
@@ -147436,6 +147506,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279761478",
+      "digest_id": "procurement:contract:CT104020279761478",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761478",
+      "short_title": "UPK-CIN",
+      "agency_name": "Department of Education",
+      "vendor_name": "CHILDRENS CENTER AT SUNY BROOKLYN INC",
+      "contract_amount": 928816,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279761478",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279761478:checkbook_contracts:contract:registered:CT104020279761478:CHILDRENS CENTER AT SUNY BROOKLYN INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279761478:CHILDRENS CENTER AT SUNY BROOKLYN INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279761478:CHILDRENS CENTER AT SUNY BROOKLYN INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761478"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279761490",
       "digest_id": "procurement:contract:CT104020279761490",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761490",
@@ -147576,6 +147681,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279761536",
+      "digest_id": "procurement:contract:CT104020279761536",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761536",
+      "short_title": "UPK-BTF",
+      "agency_name": "Department of Education",
+      "vendor_name": "CARDINAL MCCLOSKEY SCHOOL & HOME FOR CHILDREN",
+      "contract_amount": 961416,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279761536",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279761536:checkbook_contracts:contract:registered:CT104020279761536:CARDINAL MCCLOSKEY SCHOOL & HOME FOR CHILDREN:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279761536:CARDINAL MCCLOSKEY SCHOOL & HOME FOR CHILDREN:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279761536:CARDINAL MCCLOSKEY SCHOOL & HOME FOR CHILDREN:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761536"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279761537",
       "digest_id": "procurement:contract:CT104020279761537",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761537",
@@ -147676,6 +147816,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020279761551:CHABAD OF NORTHEASTERN QUEENS INC:prime-vendor:2026-10-29",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761551"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279761565",
+      "digest_id": "procurement:contract:CT104020279761565",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761565",
+      "short_title": "UPK-BTF",
+      "agency_name": "Department of Education",
+      "vendor_name": "TLC SPIRIT LLC",
+      "contract_amount": 833136,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279761565",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279761565:checkbook_contracts:contract:registered:CT104020279761565:TLC SPIRIT LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279761565:TLC SPIRIT LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279761565:TLC SPIRIT LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761565"
         }
       ],
       "type_of_notice_description": null
@@ -147821,6 +147996,76 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279761612",
+      "digest_id": "procurement:contract:CT104020279761612",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761612",
+      "short_title": "UPK-CIN",
+      "agency_name": "Department of Education",
+      "vendor_name": "YMCA OF GREATER NEW YORK",
+      "contract_amount": 1762644,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279761612",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279761612:checkbook_contracts:contract:registered:CT104020279761612:YMCA OF GREATER NEW YORK:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279761612:YMCA OF GREATER NEW YORK:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279761612:YMCA OF GREATER NEW YORK:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761612"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279761625",
+      "digest_id": "procurement:contract:CT104020279761625",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761625",
+      "short_title": "UPK-BTF",
+      "agency_name": "Department of Education",
+      "vendor_name": "LIL COOKIES TOO DAYCARE INC",
+      "contract_amount": 1584972,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279761625",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279761625:checkbook_contracts:contract:registered:CT104020279761625:LIL COOKIES TOO DAYCARE INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279761625:LIL COOKIES TOO DAYCARE INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279761625:LIL COOKIES TOO DAYCARE INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761625"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279761686",
       "digest_id": "procurement:contract:CT104020279761686",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761686",
@@ -147956,6 +148201,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020279761730:LITTLE LIGHT PRE-K INC:prime-vendor:2026-11-05",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761730"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279761731",
+      "digest_id": "procurement:contract:CT104020279761731",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761731",
+      "short_title": "UPK-BTF",
+      "agency_name": "Department of Education",
+      "vendor_name": "JEWISH INSTITUTE OF QUEENS",
+      "contract_amount": 4016232,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279761731",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279761731:checkbook_contracts:contract:registered:CT104020279761731:JEWISH INSTITUTE OF QUEENS:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279761731:JEWISH INSTITUTE OF QUEENS:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279761731:JEWISH INSTITUTE OF QUEENS:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761731"
         }
       ],
       "type_of_notice_description": null
@@ -148136,6 +148416,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020279761805",
+      "digest_id": "procurement:contract:CT104020279761805",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761805",
+      "short_title": "UPK- BTF",
+      "agency_name": "Department of Education",
+      "vendor_name": "CORTELYOU EARLY CHILDHOOD CENTER INC.",
+      "contract_amount": 2292794,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279761805",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279761805:checkbook_contracts:contract:registered:CT104020279761805:CORTELYOU EARLY CHILDHOOD CENTER INC.:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279761805:CORTELYOU EARLY CHILDHOOD CENTER INC.:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279761805:CORTELYOU EARLY CHILDHOOD CENTER INC.:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761805"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020279761820",
       "digest_id": "procurement:contract:CT104020279761820",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761820",
@@ -148201,6 +148516,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT104020279761835:YOUNG RISERS LLC:prime-vendor:2026-11-02",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761835"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020279761970",
+      "digest_id": "procurement:contract:CT104020279761970",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020279761970",
+      "short_title": "UPK",
+      "agency_name": "Department of Education",
+      "vendor_name": "GIFTED AND TALENTED EARLY DEVELOPERS LLC",
+      "contract_amount": 1394404,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT104020279761970",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020279761970:checkbook_contracts:contract:registered:CT104020279761970:GIFTED AND TALENTED EARLY DEVELOPERS LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020279761970:GIFTED AND TALENTED EARLY DEVELOPERS LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT104020279761970:GIFTED AND TALENTED EARLY DEVELOPERS LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020279761970"
         }
       ],
       "type_of_notice_description": null
@@ -157866,6 +158216,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT105620271404801",
+      "digest_id": "procurement:contract:CT105620271404801",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105620271404801",
+      "short_title": "SMALL ARMS AMMUNITION DESTRUCTION FOR NYPD-PCD_QMS#0881",
+      "agency_name": "Police Department",
+      "vendor_name": "TIMBERLINE ENVIRONMENTAL SERVICES INC",
+      "contract_amount": 56700,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT105620271404801",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT105620271404801:checkbook_contracts:contract:registered:CT105620271404801:TIMBERLINE ENVIRONMENTAL SERVICES INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT105620271404801:TIMBERLINE ENVIRONMENTAL SERVICES INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT105620271404801:TIMBERLINE ENVIRONMENTAL SERVICES INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT105620271404801"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT105620271404891",
       "digest_id": "procurement:contract:CT105620271404891",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105620271404891",
@@ -157896,6 +158281,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT105620271404891:VISIONARYZ INC:prime-vendor:2026-10-22",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT105620271404891"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT105620271404906",
+      "digest_id": "procurement:contract:CT105620271404906",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105620271404906",
+      "short_title": "X-10 Kit & Attachments, QMS 1129",
+      "agency_name": "Police Department",
+      "vendor_name": "EASTERN HORIZON CORP",
+      "contract_amount": 63670,
+      "start_date": "2026-11-06",
+      "pin": "27505D0016",
+      "contract_id": "CT105620271404906",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT105620271404906:checkbook_contracts:contract:registered:CT105620271404906:EASTERN HORIZON CORP:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT105620271404906:EASTERN HORIZON CORP:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT105620271404906:EASTERN HORIZON CORP:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT105620271404906"
         }
       ],
       "type_of_notice_description": null
@@ -158001,6 +158421,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT105620271405583:EPAUL DYNAMICS INC:prime-vendor:2026-11-05",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT105620271405583"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT105620271405611",
+      "digest_id": "procurement:contract:CT105620271405611",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105620271405611",
+      "short_title": "QUALTRAX RENEWAL, QMS 1101",
+      "agency_name": "Police Department",
+      "vendor_name": "COMPULINK TECHNOLOGIES INC",
+      "contract_amount": 56568.34,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT105620271405611",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT105620271405611:checkbook_contracts:contract:registered:CT105620271405611:COMPULINK TECHNOLOGIES INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT105620271405611:COMPULINK TECHNOLOGIES INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT105620271405611:COMPULINK TECHNOLOGIES INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT105620271405611"
         }
       ],
       "type_of_notice_description": null
@@ -162150,12 +162605,12 @@
       "procurement_id": "procurement:contract:CT107120278800549",
       "digest_id": "procurement:contract:CT107120278800549",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT107120278800549",
-      "short_title": "FY27- Renewal w/ Allowance FWC Southern Blvd X 2026-48 Units",
+      "short_title": "Bronx Family Adding Annexes at FWC Southern X 2026-216 units",
       "agency_name": "Department of Homeless Services",
       "vendor_name": "BRONX FAMILY NETWORK INC",
       "contract_amount": 20819262,
       "start_date": "2026-06-12",
-      "pin": "07122P8015KXLR001",
+      "pin": "07122P8015KXLA002",
       "contract_id": "CT107120278800549",
       "procurement_stages": [
         "registered"
@@ -165262,6 +165717,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT107220278802695",
+      "digest_id": "procurement:contract:CT107220278802695",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT107220278802695",
+      "short_title": "On-Call Mechanical",
+      "agency_name": "Department of Correction",
+      "vendor_name": "Apex Building Solutions LLC",
+      "contract_amount": 1273600,
+      "start_date": "2026-11-06",
+      "pin": "07227W0006001",
+      "contract_id": "CT107220278802695",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT107220278802695:checkbook_contracts:contract:registered:CT107220278802695:APEX BUILDING SOLUTIONS LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT107220278802695:APEX BUILDING SOLUTIONS LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT107220278802695:APEX BUILDING SOLUTIONS LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107220278802695"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT107220278803207",
       "digest_id": "procurement:contract:CT107220278803207",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT107220278803207",
@@ -167847,6 +168337,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT110220270001202:S & B COMPUTER & OFFICE PRODUCTS INC:prime-vendor:2026-10-29",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT110220270001202"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT110220270001203",
+      "digest_id": "procurement:contract:CT110220270001203",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT110220270001203",
+      "short_title": "OVERFLOW SUPPLIES NOT AVAILABLE ON S & B FOR CM AND CENTRAL",
+      "agency_name": "City Council",
+      "vendor_name": "WB MASON CO INC",
+      "contract_amount": 95000,
+      "start_date": "2026-11-06",
+      "pin": "10220270003787",
+      "contract_id": "CT110220270001203",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT110220270001203:checkbook_contracts:contract:registered:CT110220270001203:WB MASON CO INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT110220270001203:WB MASON CO INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT110220270001203:WB MASON CO INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT110220270001203"
         }
       ],
       "type_of_notice_description": null
@@ -172087,6 +172612,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT112820278800646",
+      "digest_id": "procurement:contract:CT112820278800646",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT112820278800646",
+      "short_title": "FY27 Increase funds for Youth Justice Initiatives",
+      "agency_name": "OFFICE OF CRIMINAL JUSTICE",
+      "vendor_name": "NEW YORK FOUNDLING",
+      "contract_amount": 1658618,
+      "start_date": "2026-06-10",
+      "pin": "12826N0012008A001",
+      "contract_id": "CT112820278800646",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT112820278800646:checkbook_contracts:contract:registered:CT112820278800646:NEW YORK FOUNDLING:prime-vendor:2026-06-10:registered",
+          "state": "registered",
+          "effective_at": "2026-06-10",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT112820278800646:NEW YORK FOUNDLING:prime-vendor:2026-06-10",
+          "source_receipt_ref": "materialized:contract:registered:CT112820278800646:NEW YORK FOUNDLING:prime-vendor:2026-06-10",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT112820278800646"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT112820278800745",
       "digest_id": "procurement:contract:CT112820278800745",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT112820278800745",
@@ -172892,6 +173452,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT122620278803405",
+      "digest_id": "procurement:contract:CT122620278803405",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT122620278803405",
+      "short_title": "Unarmed Security Guards",
+      "agency_name": "Commission on Human Rights",
+      "vendor_name": "VISION SECURITY CORPORATION",
+      "contract_amount": 57275.77,
+      "start_date": "2026-11-06",
+      "pin": "22627W0001001",
+      "contract_id": "CT122620278803405",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT122620278803405:checkbook_contracts:contract:registered:CT122620278803405:VISION SECURITY CORPORATION:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT122620278803405:VISION SECURITY CORPORATION:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT122620278803405:VISION SECURITY CORPORATION:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT122620278803405"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT126020228803703",
       "digest_id": "procurement:contract:CT126020228803703",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT126020228803703",
@@ -173027,41 +173622,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT126020268803772:COMMONPOINT NY INC:prime-vendor:2026-05-20",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT126020268803772"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT126020268804097",
-      "digest_id": "procurement:contract:CT126020268804097",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT126020268804097",
-      "short_title": "*",
-      "agency_name": "Department of Youth and Community Development",
-      "vendor_name": "ANA RIVERA",
-      "contract_amount": 30000,
-      "start_date": "2025-12-12",
-      "pin": "26026W0005001",
-      "contract_id": "CT126020268804097",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT126020268804097:checkbook_contracts:contract:registered:CT126020268804097:ANA RIVERA:prime-vendor:2025-12-12:registered",
-          "state": "registered",
-          "effective_at": "2025-12-12",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT126020268804097:ANA RIVERA:prime-vendor:2025-12-12",
-          "source_receipt_ref": "materialized:contract:registered:CT126020268804097:ANA RIVERA:prime-vendor:2025-12-12",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT126020268804097"
         }
       ],
       "type_of_notice_description": null
@@ -174007,6 +174567,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT126020271405656:ACE AMERICAN INSURANCE CO.:prime-vendor:2026-11-05",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT126020271405656"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT126020271405746",
+      "digest_id": "procurement:contract:CT126020271405746",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT126020271405746",
+      "short_title": "Central Insurance Program",
+      "agency_name": "Department of Youth and Community Development",
+      "vendor_name": "ESIS INC",
+      "contract_amount": 12931,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT126020271405746",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT126020271405746:checkbook_contracts:contract:registered:CT126020271405746:ESIS INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT126020271405746:ESIS INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT126020271405746:ESIS INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT126020271405746"
         }
       ],
       "type_of_notice_description": null
@@ -178877,6 +179472,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT180120271402926",
+      "digest_id": "procurement:contract:CT180120271402926",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT180120271402926",
+      "short_title": "Cleaning Services for 2 Lafayette NYC Jobs",
+      "agency_name": "Department of Small Business Services",
+      "vendor_name": "APPLE MAINTENANCE & SERVICES INC",
+      "contract_amount": 30360,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT180120271402926",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT180120271402926:checkbook_contracts:contract:registered:CT180120271402926:APPLE MAINTENANCE & SERVICES INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT180120271402926:APPLE MAINTENANCE & SERVICES INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT180120271402926:APPLE MAINTENANCE & SERVICES INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT180120271402926"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT180620261400196",
       "digest_id": "procurement:contract:CT180620261400196",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT180620261400196",
@@ -178907,76 +179537,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT180620261400196:GTM CONTRACTING INC:prime-vendor:2025-11-12",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT180620261400196"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT180620261402446",
-      "digest_id": "procurement:contract:CT180620261402446",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT180620261402446",
-      "short_title": "EQ00398 - BRICK AND LINTEL WORK - 108-20 48 AVE, QN",
-      "agency_name": "Housing Preservation and Development",
-      "vendor_name": "MARK CONTRACTING NY INC",
-      "contract_amount": 33150,
-      "start_date": "2025-10-16",
-      "pin": "8062026EQ00398",
-      "contract_id": "CT180620261402446",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT180620261402446:checkbook_contracts:contract:registered:CT180620261402446:MARK CONTRACTING NY INC:prime-vendor:2025-10-16:registered",
-          "state": "registered",
-          "effective_at": "2025-10-16",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT180620261402446:MARK CONTRACTING NY INC:prime-vendor:2025-10-16",
-          "source_receipt_ref": "materialized:contract:registered:CT180620261402446:MARK CONTRACTING NY INC:prime-vendor:2025-10-16",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT180620261402446"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT180620261402447",
-      "digest_id": "procurement:contract:CT180620261402447",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT180620261402447",
-      "short_title": "KQ00147 - DUST SAMPLE - PRIMARY MN & BX _ BK,QN,SI",
-      "agency_name": "Housing Preservation and Development",
-      "vendor_name": "Atlas Environmental Lab, Corp",
-      "contract_amount": 100000,
-      "start_date": "2025-11-03",
-      "pin": "8062026KQ00147",
-      "contract_id": "CT180620261402447",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT180620261402447:checkbook_contracts:contract:registered:CT180620261402447:ATLAS ENVIRONMENTAL LAB, CORP:prime-vendor:2025-11-03:registered",
-          "state": "registered",
-          "effective_at": "2025-11-03",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT180620261402447:ATLAS ENVIRONMENTAL LAB, CORP:prime-vendor:2025-11-03",
-          "source_receipt_ref": "materialized:contract:registered:CT180620261402447:ATLAS ENVIRONMENTAL LAB, CORP:prime-vendor:2025-11-03",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT180620261402447"
         }
       ],
       "type_of_notice_description": null
@@ -181672,41 +182232,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT181620261408311:M&E ENERGY CORP.:prime-vendor:2025-12-11",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT181620261408311"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620261408312",
-      "digest_id": "procurement:contract:CT181620261408312",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620261408312",
-      "short_title": "New Resin Ribbons and Labels",
-      "agency_name": "Department of Health and Mental Hygiene",
-      "vendor_name": "BARCODES LLC",
-      "contract_amount": 16214.76,
-      "start_date": "2025-12-11",
-      "pin": null,
-      "contract_id": "CT181620261408312",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT181620261408312:checkbook_contracts:contract:registered:CT181620261408312:BARCODES LLC:prime-vendor:2025-12-11:registered",
-          "state": "registered",
-          "effective_at": "2025-12-11",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT181620261408312:BARCODES LLC:prime-vendor:2025-12-11",
-          "source_receipt_ref": "materialized:contract:registered:CT181620261408312:BARCODES LLC:prime-vendor:2025-12-11",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT181620261408312"
         }
       ],
       "type_of_notice_description": null
@@ -197882,6 +198407,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT181620278800565",
+      "digest_id": "procurement:contract:CT181620278800565",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278800565",
+      "short_title": "Speciation & drug resistance testing for all samples",
+      "agency_name": "Department of Health and Mental Hygiene",
+      "vendor_name": "HEALTH RESEARCH INC",
+      "contract_amount": 73071.3,
+      "start_date": "2026-11-06",
+      "pin": "81626S0012001",
+      "contract_id": "CT181620278800565",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT181620278800565:checkbook_contracts:contract:registered:CT181620278800565:HEALTH RESEARCH INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT181620278800565:HEALTH RESEARCH INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT181620278800565:HEALTH RESEARCH INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT181620278800565"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT181620278800567",
       "digest_id": "procurement:contract:CT181620278800567",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620278800567",
@@ -199557,6 +200117,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT181920271405806:ZOLL MEDICAL CORPORATION:prime-vendor:2026-10-19",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT181920271405806"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT181920271405929",
+      "digest_id": "procurement:contract:CT181920271405929",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181920271405929",
+      "short_title": "3D DENTAL PANORAMIC X-RAY SYSTEM PJ#14202602",
+      "agency_name": "Health and Hospitals Corporation",
+      "vendor_name": "PATTERSON DENTAL SUPPLY INC",
+      "contract_amount": 121190,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "CT181920271405929",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT181920271405929:checkbook_contracts:contract:registered:CT181920271405929:PATTERSON DENTAL SUPPLY INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT181920271405929:PATTERSON DENTAL SUPPLY INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT181920271405929:PATTERSON DENTAL SUPPLY INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT181920271405929"
         }
       ],
       "type_of_notice_description": null
@@ -206312,76 +206907,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT184620268803401:AAH CONSTRUCTION CORP:prime-vendor:2025-11-17",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620268803401"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803667",
-      "digest_id": "procurement:contract:CT184620268803667",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803667",
-      "short_title": "CITT - Hubbell Cables and IT Supplies",
-      "agency_name": "Department of Parks and Recreation",
-      "vendor_name": "WISE COMPONENTS INC",
-      "contract_amount": 9928.55,
-      "start_date": "2025-11-06",
-      "pin": "84626C0319001",
-      "contract_id": "CT184620268803667",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT184620268803667:checkbook_contracts:contract:registered:CT184620268803667:WISE COMPONENTS INC:prime-vendor:2025-11-06:registered",
-          "state": "registered",
-          "effective_at": "2025-11-06",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620268803667:WISE COMPONENTS INC:prime-vendor:2025-11-06",
-          "source_receipt_ref": "materialized:contract:registered:CT184620268803667:WISE COMPONENTS INC:prime-vendor:2025-11-06",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620268803667"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803670",
-      "digest_id": "procurement:contract:CT184620268803670",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803670",
-      "short_title": "UPPEP-Protective Helmets for Mounted Unit Enforcement Patrol",
-      "agency_name": "Department of Parks and Recreation",
-      "vendor_name": "SUPER SEER CORPORATION",
-      "contract_amount": 2653.8,
-      "start_date": "2025-11-06",
-      "pin": "84626C0312001",
-      "contract_id": "CT184620268803670",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT184620268803670:checkbook_contracts:contract:registered:CT184620268803670:SUPER SEER CORPORATION:prime-vendor:2025-11-06:registered",
-          "state": "registered",
-          "effective_at": "2025-11-06",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620268803670:SUPER SEER CORPORATION:prime-vendor:2025-11-06",
-          "source_receipt_ref": "materialized:contract:registered:CT184620268803670:SUPER SEER CORPORATION:prime-vendor:2025-11-06",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620268803670"
         }
       ],
       "type_of_notice_description": null
@@ -234317,6 +234842,111 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT184620278803716",
+      "digest_id": "procurement:contract:CT184620278803716",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803716",
+      "short_title": "CREC-Supplies for Afterschool Programs",
+      "agency_name": "Department of Parks and Recreation",
+      "vendor_name": "S&S WORLDWIDE INC",
+      "contract_amount": 4808.54,
+      "start_date": "2026-11-06",
+      "pin": "84627C0266001",
+      "contract_id": "CT184620278803716",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT184620278803716:checkbook_contracts:contract:registered:CT184620278803716:S&S WORLDWIDE INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620278803716:S&S WORLDWIDE INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT184620278803716:S&S WORLDWIDE INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620278803716"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803723",
+      "digest_id": "procurement:contract:CT184620278803723",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803723",
+      "short_title": "BKOPS-Mobi Mats",
+      "agency_name": "Department of Parks and Recreation",
+      "vendor_name": "DESCHAMPS MAT SYSTEMS INC",
+      "contract_amount": 18262.5,
+      "start_date": "2026-11-06",
+      "pin": "84627C0274001",
+      "contract_id": "CT184620278803723",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT184620278803723:checkbook_contracts:contract:registered:CT184620278803723:DESCHAMPS MAT SYSTEMS INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620278803723:DESCHAMPS MAT SYSTEMS INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT184620278803723:DESCHAMPS MAT SYSTEMS INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620278803723"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803725",
+      "digest_id": "procurement:contract:CT184620278803725",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803725",
+      "short_title": "MNREC-Circulator Boiler Pump at Asser Levy",
+      "agency_name": "Department of Parks and Recreation",
+      "vendor_name": "DEALERS INDUSTRIAL EQUIPMENT LLC",
+      "contract_amount": 14138,
+      "start_date": "2026-11-06",
+      "pin": "84627C0282001",
+      "contract_id": "CT184620278803725",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT184620278803725:checkbook_contracts:contract:registered:CT184620278803725:DEALERS INDUSTRIAL EQUIPMENT LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620278803725:DEALERS INDUSTRIAL EQUIPMENT LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT184620278803725:DEALERS INDUSTRIAL EQUIPMENT LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620278803725"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT185020228802305",
       "digest_id": "procurement:contract:CT185020228802305",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185020228802305",
@@ -237782,41 +238412,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT185620265400241:CONSOLIDATED EDISON COMPANY OF NEW YORK INC:prime-vendor:2026-04-02",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT185620265400241"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT185620265400256",
-      "digest_id": "procurement:contract:CT185620265400256",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT185620265400256",
-      "short_title": "Registering a new Lease",
-      "agency_name": "Department of Citywide Administrative Services",
-      "vendor_name": "IPG LIC 49TH AVE UPPER FLOOR UNIT PROPERTY OWNER LLC",
-      "contract_amount": 459015440.96,
-      "start_date": "2026-04-21",
-      "pin": null,
-      "contract_id": "CT185620265400256",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT185620265400256:checkbook_contracts:contract:registered:CT185620265400256:IPG LIC 49TH AVE UPPER FLOOR UNIT PROPERTY OWNER LLC:prime-vendor:2026-04-21:registered",
-          "state": "registered",
-          "effective_at": "2026-04-21",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT185620265400256:IPG LIC 49TH AVE UPPER FLOOR UNIT PROPERTY OWNER LLC:prime-vendor:2026-04-21",
-          "source_receipt_ref": "materialized:contract:registered:CT185620265400256:IPG LIC 49TH AVE UPPER FLOOR UNIT PROPERTY OWNER LLC:prime-vendor:2026-04-21",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT185620265400256"
         }
       ],
       "type_of_notice_description": null
@@ -246275,6 +246870,41 @@
           "source_receipt_ref": "materialized:contract:registered:CTA107120278803319:UNIVERSAL PROTECTION SERVICE LLC:prime-vendor:2026-11-02",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CTA107120278803319"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CTA107120278803320",
+      "digest_id": "procurement:contract:CTA107120278803320",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACTA107120278803320",
+      "short_title": "Security Guard and Related Services - Brooklyn and SI",
+      "agency_name": "Department of Homeless Services",
+      "vendor_name": "ARON SECURITY INC",
+      "contract_amount": 105512010,
+      "start_date": "2026-11-06",
+      "pin": "07126Z0005001",
+      "contract_id": "CTA107120278803320",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CTA107120278803320:checkbook_contracts:contract:registered:CTA107120278803320:ARON SECURITY INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CTA107120278803320:ARON SECURITY INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CTA107120278803320:ARON SECURITY INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CTA107120278803320"
         }
       ],
       "type_of_notice_description": null
@@ -263815,41 +264445,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CTA185620258840256",
-      "digest_id": "procurement:contract:CTA185620258840256",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACTA185620258840256",
-      "short_title": "E24-DCAS1",
-      "agency_name": "Department of Citywide Administrative Services",
-      "vendor_name": "NEW YORK POWER AUTHORITY",
-      "contract_amount": 51399980.43,
-      "start_date": "2025-05-28",
-      "pin": "85621T0001001",
-      "contract_id": "CTA185620258840256",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CTA185620258840256:checkbook_contracts:contract:registered:CTA185620258840256:NEW YORK POWER AUTHORITY:prime-vendor:2025-05-28:registered",
-          "state": "registered",
-          "effective_at": "2025-05-28",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CTA185620258840256:NEW YORK POWER AUTHORITY:prime-vendor:2025-05-28",
-          "source_receipt_ref": "materialized:contract:registered:CTA185620258840256:NEW YORK POWER AUTHORITY:prime-vendor:2025-05-28",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CTA185620258840256"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CTA185620268804564",
       "digest_id": "procurement:contract:CTA185620268804564",
       "canonical_href": "/procurements/procurement%3Acontract%3ACTA185620268804564",
@@ -270185,6 +270780,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:MA104020279776265",
+      "digest_id": "procurement:contract:MA104020279776265",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA104020279776265",
+      "short_title": "Related and supplemental services.",
+      "agency_name": "Department of Education",
+      "vendor_name": "THE PERFECT PLAYGROUND OT PT & SLP PLLC",
+      "contract_amount": 55448958,
+      "start_date": "2026-11-06",
+      "pin": null,
+      "contract_id": "MA104020279776265",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:MA104020279776265:checkbook_contracts:contract:registered:MA104020279776265:THE PERFECT PLAYGROUND OT PT & SLP PLLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:MA104020279776265:THE PERFECT PLAYGROUND OT PT & SLP PLLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:MA104020279776265:THE PERFECT PLAYGROUND OT PT & SLP PLLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=MA104020279776265"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:MA104020279776267",
       "digest_id": "procurement:contract:MA104020279776267",
       "canonical_href": "/procurements/procurement%3Acontract%3AMA104020279776267",
@@ -271055,6 +271685,76 @@
           "source_receipt_ref": "materialized:contract:registered:MA185720278803089:DOBBS MALVESE EQUIPMENT LLC:prime-vendor:2026-11-05",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=MA185720278803089"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720278803108",
+      "digest_id": "procurement:contract:MA185720278803108",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720278803108",
+      "short_title": "PROCURE FOR THE CITY OF NEW YORK WOOD CHIPPERS FOR DEPARTMEN",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "Dobbs Malvese Equipment LLC",
+      "contract_amount": 2813669,
+      "start_date": "2026-11-06",
+      "pin": "85727X0040002",
+      "contract_id": "MA185720278803108",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:MA185720278803108:checkbook_contracts:contract:registered:MA185720278803108:DOBBS MALVESE EQUIPMENT LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:MA185720278803108:DOBBS MALVESE EQUIPMENT LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:MA185720278803108:DOBBS MALVESE EQUIPMENT LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=MA185720278803108"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720278803165",
+      "digest_id": "procurement:contract:MA185720278803165",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720278803165",
+      "short_title": "To procure Beach Tractors for the City of New York.",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "Dobbs Malvese Equipment LLC",
+      "contract_amount": 2703380,
+      "start_date": "2026-11-06",
+      "pin": "85727X0040001",
+      "contract_id": "MA185720278803165",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:MA185720278803165:checkbook_contracts:contract:registered:MA185720278803165:DOBBS MALVESE EQUIPMENT LLC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:MA185720278803165:DOBBS MALVESE EQUIPMENT LLC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:MA185720278803165:DOBBS MALVESE EQUIPMENT LLC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=MA185720278803165"
         }
       ],
       "type_of_notice_description": null

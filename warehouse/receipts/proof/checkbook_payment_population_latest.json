@@ -21,7 +21,7 @@
   "source": {
     "publisher": "Office of the New York City Comptroller",
     "acquisition_mode": "live-publisher",
-    "pulled_at": "2026-11-06T14:36:19.121Z",
+    "pulled_at": "2026-11-08T13:51:27.113Z",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
     "type_of_data": "Spending",
@@ -33,21 +33,21 @@
     "page_size": 20000,
     "pages": 90,
     "count_drift_policy": "fail without publishing",
-    "page_manifest_sha256": "ca37f027565168593ee52ec9e15210bf209492cbb6ba8eaee21427ad4a5122d1"
+    "page_manifest_sha256": "67e59f46ab3f373ef38290a456e6b40aedaf670e5632b19551df046044ce613e"
   },
   "population": {
-    "publisher_record_count": 1785079,
-    "source_xml_rows": 1785079,
-    "normalized_rows": 1785079,
-    "unique_transaction_ids": 1635388,
-    "duplicate_transaction_rows": 149691,
-    "reversal_rows": 1699,
+    "publisher_record_count": 1785209,
+    "source_xml_rows": 1785209,
+    "normalized_rows": 1785209,
+    "unique_transaction_ids": 1635478,
+    "duplicate_transaction_rows": 149731,
+    "reversal_rows": 1703,
     "null_amount_rows": 0,
     "agency_grouping": [
       {
         "agency": "Department of Education",
-        "transaction_count": 1211778,
-        "net_check_amount": 13250600278.6
+        "transaction_count": 1211779,
+        "net_check_amount": 13250597878.6
       },
       {
         "agency": "Pension Contributions",
@@ -91,8 +91,8 @@
       },
       {
         "agency": "Department of Environmental Protection",
-        "transaction_count": 56703,
-        "net_check_amount": 1014622023.79
+        "transaction_count": 56831,
+        "net_check_amount": 1016500237.35
       },
       {
         "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -171,8 +171,8 @@
       },
       {
         "agency": "Department of Correction",
-        "transaction_count": 17062,
-        "net_check_amount": 139178218.04
+        "transaction_count": 17063,
+        "net_check_amount": 139167338.04
       },
       {
         "agency": "Law Department",
@@ -703,17 +703,17 @@
     "by_fiscal_year": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1785079,
-        "source_xml_rows": 1785079,
-        "normalized_rows": 1785079,
-        "source_net_check_amount": 52383621620.92,
-        "normalized_net_check_amount": 52383621620.92,
-        "reversal_rows": 1699,
+        "source_record_count": 1785209,
+        "source_xml_rows": 1785209,
+        "normalized_rows": 1785209,
+        "source_net_check_amount": 52385486554.48,
+        "normalized_net_check_amount": 52385486554.48,
+        "reversal_rows": 1703,
         "agency_grouping": [
           {
             "agency": "Department of Education",
-            "transaction_count": 1211778,
-            "net_check_amount": 13250600278.6
+            "transaction_count": 1211779,
+            "net_check_amount": 13250597878.6
           },
           {
             "agency": "Pension Contributions",
@@ -757,8 +757,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 56703,
-            "net_check_amount": 1014622023.79
+            "transaction_count": 56831,
+            "net_check_amount": 1016500237.35
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -837,8 +837,8 @@
           },
           {
             "agency": "Department of Correction",
-            "transaction_count": 17062,
-            "net_check_amount": 139178218.04
+            "transaction_count": 17063,
+            "net_check_amount": 139167338.04
           },
           {
             "agency": "Law Department",
@@ -1375,17 +1375,17 @@
     "partitions": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1785079,
-        "source_xml_rows": 1785079,
-        "normalized_rows": 1785079,
-        "source_net_check_amount": 52383621620.92,
-        "normalized_net_check_amount": 52383621620.92,
-        "reversal_rows": 1699,
+        "source_record_count": 1785209,
+        "source_xml_rows": 1785209,
+        "normalized_rows": 1785209,
+        "source_net_check_amount": 52385486554.48,
+        "normalized_net_check_amount": 52385486554.48,
+        "reversal_rows": 1703,
         "agency_grouping": [
           {
             "agency": "Department of Education",
-            "transaction_count": 1211778,
-            "net_check_amount": 13250600278.6
+            "transaction_count": 1211779,
+            "net_check_amount": 13250597878.6
           },
           {
             "agency": "Pension Contributions",
@@ -1429,8 +1429,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 56703,
-            "net_check_amount": 1014622023.79
+            "transaction_count": 56831,
+            "net_check_amount": 1016500237.35
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -1509,8 +1509,8 @@
           },
           {
             "agency": "Department of Correction",
-            "transaction_count": 17062,
-            "net_check_amount": 139178218.04
+            "transaction_count": 17063,
+            "net_check_amount": 139167338.04
           },
           {
             "agency": "Law Department",
@@ -2042,17 +2042,17 @@
         "reconciled": true
       }
     ],
-    "source_xml_rows": 1785079,
-    "normalized_rows": 1785079,
-    "source_net_check_amount": 52383621620.92,
-    "normalized_net_check_amount": 52383621620.92,
+    "source_xml_rows": 1785209,
+    "normalized_rows": 1785209,
+    "source_net_check_amount": 52385486554.48,
+    "normalized_net_check_amount": 52385486554.48,
     "reconciled": true
   },
   "conversion": {
     "csv": {
       "path": "warehouse/raw/checkbook-payment-population/payments.csv",
-      "row_count": 1785079,
-      "sha256": "0525dc5d2e9f963d1a982a77b7d515aaf15c89f37542799889e1815e8672b182"
+      "row_count": 1785209,
+      "sha256": "c97167c096f43410cf7671e037cd2bebce97661b94143e27bc6910607355bbba"
     },
     "receipt": "warehouse/receipts/proof/checkbook_payment_population_conversion_latest.json",
     "next_step": "warehouse/scripts/convert_checkbook_payment_population.py --csv <payments.csv> --parquet <payments.parquet> --source-receipt warehouse/receipts/proof/checkbook_payment_population_latest.json",
@@ -2081,7 +2081,7 @@
     ]
   },
   "checksums": {
-    "normalized_csv_sha256": "0525dc5d2e9f963d1a982a77b7d515aaf15c89f37542799889e1815e8672b182"
+    "normalized_csv_sha256": "c97167c096f43410cf7671e037cd2bebce97661b94143e27bc6910607355bbba"
   },
   "coverage_statement": "This receipt covers only the declared fiscal-year contract-spending partitions. It must not be used to infer payment coverage for other fiscal years or spending categories."
 }

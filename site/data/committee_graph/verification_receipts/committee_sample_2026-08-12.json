@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.committee_gate_receipt.v1",
-  "observed_at": "2026-11-07T13:31:35Z",
+  "observed_at": "2026-11-08T13:51:19Z",
   "sample_plan": {
     "requested": 30,
     "current_term": 20,
@@ -80,7 +80,7 @@
   },
   "sample_acquisition": {
     "complete": true,
-    "retrieved_at": "2026-11-07T13:31:35Z",
+    "retrieved_at": "2026-11-08T13:51:19Z",
     "request_errors": []
   }
 }

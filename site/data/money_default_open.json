@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-07T13:35:51.983Z",
-  "open_as_of": "2026-11-07",
+  "generated_at": "2026-11-08T14:20:41.043Z",
+  "open_as_of": "2026-11-08",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,7 +10,7 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-07'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-08'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
@@ -26,17 +26,6 @@
       "short_title": "Correction: EPIN 85726B0065 - BID 2600039 - Printed Election Supplies",
       "pin": "85726B0065",
       "due_date": "2026-11-09T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20261008016",
-      "start_date": "2026-10-16T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "Bid Extension: SMD_MATERIAL JANITORIAL DEODORIZER, VARIOUS DEVELOPMENTS IN ALL FIVE BOROUGHS",
-      "pin": "528369,1",
-      "due_date": "2026-11-09T12:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -237,6 +226,17 @@
       "selection_method_description": "Competitive Sealed Bids/Pre-Qualified List"
     },
     {
+      "request_id": "20261008016",
+      "start_date": "2026-10-16T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Bid Extension: SMD_MATERIAL JANITORIAL DEODORIZER, VARIOUS DEVELOPMENTS IN ALL FIVE BOROUGHS",
+      "pin": "528369,1",
+      "due_date": "2026-11-17T12:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260923006",
       "start_date": "2026-09-29T00:00:00.000",
       "agency_name": "Housing Authority",
@@ -402,17 +402,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20260325037",
-      "start_date": "2026-04-01T00:00:00.000",
-      "agency_name": "Education",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Bid Extension: Requirements Contract for Asbestos Bulk and Air Sampling, Analysis and Project Monitoring",
-      "pin": "B5868040",
-      "due_date": "2026-11-19T16:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
       "request_id": "20260422026",
       "start_date": "2026-04-29T00:00:00.000",
       "agency_name": "Education",
@@ -453,6 +442,17 @@
       "category_description": "Construction Related Services",
       "short_title": "Bid Extension: Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located Brooklyn Neighborhood (BK08) and (BK09), Brooklyn.",
       "due_date": "2026-11-20T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261026019",
+      "start_date": "2026-10-30T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "HWCB27KR: REPLACEMENT OF CONCRETE, STEEL FACED AND GRANITE CURBS AND RELATED SIDEWALK AND ROADWAY RESTORATION",
+      "pin": "85027B0026",
+      "due_date": "2026-11-23T14:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     }
   ]

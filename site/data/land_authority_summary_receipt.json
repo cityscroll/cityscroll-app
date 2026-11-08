@@ -1,15 +1,16 @@
 {
   "schema": "cityscroll.land_authority_summary_receipt.v1",
   "join_version": "ldp06_authority_summary_v1",
-  "generated_at": "2026-11-06T14:51:26.447Z",
+  "generated_at": "2026-11-08T14:14:11.560Z",
   "counts": {
     "universe": 40,
-    "resolved": 16,
-    "unknown": 24
+    "resolved": 17,
+    "unknown": 23
   },
   "resolved_project_ids": [
     "2024Q0135",
     "2024M0194",
+    "2024M0148",
     "2022Q0214",
     "2023K0400",
     "2026K0233",
@@ -36,7 +37,6 @@
     "2025M0399",
     "2023Q0177",
     "2024X0217",
-    "2024M0148",
     "2026X0270",
     "2024M0193",
     "2026Q0371",
@@ -162,11 +162,11 @@
     },
     {
       "project_id": "2024M0148",
-      "status": "unknown",
-      "reason": "unresolved_procedure",
-      "procedure_resolution": "unknown",
-      "current_stage_id": null,
-      "observed_status": "no_observation",
+      "status": "resolved",
+      "reason": null,
+      "procedure_resolution": "uniform",
+      "current_stage_id": "ulurp_197c.community_board_review",
+      "observed_status": "draft_only",
       "published_next_status": "published"
     },
     {
@@ -418,17 +418,17 @@
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-11-06T14:51:26.447Z"
+        "generated_at": "2026-11-08T14:14:11.560Z"
       },
-      "sha256": "b36d5940d69218f7bd8c977c098986cae554b75eef0c964131998c101a9f2147"
+      "sha256": "f8d8eb39d9455867b5877c385417f93966e8cc152f687fa97ce3d12e5228d7e7"
     },
     "land_outcomes_seed": {
       "path": "site/data/land_outcomes_seed.json",
-      "count": 27,
+      "count": 28,
       "vintage": {
-        "generated_at": "2026-11-06T14:51:26.447Z"
+        "generated_at": "2026-11-08T14:14:11.560Z"
       },
-      "sha256": "f10fb7b3191de3fe36a39549bf6b7cffda48458cf1b7f3a8db10a998b19de237"
+      "sha256": "56512f70b2362d75b704158eb55ed1ae7e7741aed9603f9add598d09ac47a35d"
     },
     "geography": {
       "path": "site/data/community_board_geography_lookup.json",
@@ -441,9 +441,9 @@
       "path": "site/data/land_upcoming_hearings.json",
       "count": 161,
       "vintage": {
-        "generated_at": "2026-11-06T14:57:16.974Z"
+        "generated_at": "2026-11-08T14:20:29.352Z"
       },
-      "sha256": "df41ce35fece3669ad56566b4e0a0d147aff4ade523ae01ca5b4902358a7d329"
+      "sha256": "9856607767327c381740d7bc4cd526f29c7e0c7684d94b36c270ac504271431a"
     },
     "join_keys": [
       "project_id"
@@ -452,7 +452,7 @@
   "generation": {
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
-    "payload_bytes": 86764,
-    "payload_sha256": "3a77b83d18daadcae9fe04adb5517c2ab757dbb4a88eaf8e18fc74bc3fad9bd4"
+    "payload_bytes": 87276,
+    "payload_sha256": "f0f6dca0092fe90602d30407acb559413bd0aff5ad339fc9c6ce8d0ec9812f4e"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-06T14:57:16.974Z",
+  "generated_at": "2026-11-08T14:20:29.352Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,7 +9,7 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-11-06",
+    "today": "2026-11-08",
     "projects_listed": 234,
     "projects_fetched": 234,
     "projects_failed": 0,
