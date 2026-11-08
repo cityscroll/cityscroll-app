@@ -43,8 +43,10 @@ import subprocess
 import tempfile
 import time
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from playwright.sync_api import Page, sync_playwright
+if TYPE_CHECKING:
+    from playwright.sync_api import Page
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / "docs" / "evidence" / "official-committee-co-service"
@@ -67,6 +69,8 @@ PREFERRED_ABSENT = "7803"
 DESKTOP = {"name": "desktop", "width": 1440, "height": 900}
 NARROW = {"name": "narrow", "width": 390, "height": 844}
 SETTLE_MS = 1200
+# Collapsed disclosure for colleagues beyond the initially visible set.
+COSERVICE_MORE = "details.official-coservice-more"
 
 
 class FixtureSelectionError(RuntimeError):
@@ -354,6 +358,11 @@ def entry(capture_id, route, viewport, revision, blob, vintage, assertion, holds
 
 
 def capture(base: str, documents: dict, selection: dict) -> list[dict]:
+    # Playwright stays a run-path import so --self-test (and any other
+    # browserless validator) can exercise fixture selection on a Python that
+    # has not installed the browser stack.
+    from playwright.sync_api import sync_playwright
+
     revision = repository_revision()
     blob = source_blob()
     vintage = data_vintage()
@@ -467,6 +476,49 @@ def capture(base: str, documents: dict, selection: dict) -> list[dict]:
     return captures
 
 
+def reveal_colleague_if_needed(page: Page, colleague_id: str):
+    """Reveal a colleague buried in the collapsed co-service disclosure.
+
+    The profile only ships the first few colleagues in the initially visible
+    list; the rest live inside a closed ``details.official-coservice-more``.
+    A preferred colleague can still qualify after a refresh while landing past
+    that visible window, where Tab cannot reach the link and Enter then
+    activates whatever else currently has focus. Open the disclosure first
+    when the target link exists but is not yet visible.
+    """
+    selector = (
+        f'.official-coservice-colleague[data-coservice-official-id="{colleague_id}"] '
+        '.official-coservice-official-link'
+    )
+    target = page.locator(selector)
+    if target.count() == 0:
+        raise RuntimeError(
+            f"co-service colleague link for official {colleague_id} is not in the "
+            "rendered section; the selection no longer matches the served page"
+        )
+    if not target.first.is_visible():
+        disclosure = page.locator(COSERVICE_MORE)
+        if disclosure.count() == 0:
+            raise RuntimeError(
+                f"co-service colleague link for official {colleague_id} is present "
+                "but hidden, and no details.official-coservice-more disclosure exists "
+                "to reveal it"
+            )
+        # Native <details> opens via the summary; click the summary so the
+        # closed disclosure expands before keyboard focus tries to enter it.
+        summary = disclosure.first.locator("summary")
+        if summary.count() and summary.first.is_visible():
+            summary.first.click()
+        else:
+            disclosure.first.evaluate("node => { node.open = true; }")
+        if not target.first.is_visible():
+            raise RuntimeError(
+                f"co-service colleague link for official {colleague_id} stayed "
+                "hidden after opening details.official-coservice-more"
+            )
+    return target
+
+
 def keyboard_walk(page: Page, base: str, documents: dict, selection: dict) -> dict:
     """Reach the colleague link with Tab, then walk the chain and come back."""
     subject = selection["subject"]
@@ -475,6 +527,7 @@ def keyboard_walk(page: Page, base: str, documents: dict, selection: dict) -> di
     expected_shared = selection["shared_committees"]
     selector = f'.official-coservice-colleague[data-coservice-official-id="{colleague_id}"] '\
                '.official-coservice-official-link'
+    reveal_colleague_if_needed(page, colleague_id)
     page.locator(selector).scroll_into_view_if_needed()
     page.evaluate("() => (document.activeElement || document.body).blur()")
     page.locator("body").click(position={"x": 4, "y": 4})
@@ -487,6 +540,12 @@ def keyboard_walk(page: Page, base: str, documents: dict, selection: dict) -> di
         ):
             reached = True
             break
+    if not reached:
+        raise RuntimeError(
+            f"Tab never reached the co-service colleague link for official "
+            f"{colleague_id} after revealing any collapsed disclosure; refusing "
+            "to press Enter on an unrelated control"
+        )
     focus_visible = page.evaluate(
         "sel => { const el = document.querySelector(sel);"
         " return Boolean(el && el.matches(':focus-visible')); }", selector)

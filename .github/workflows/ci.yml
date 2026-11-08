@@ -472,6 +472,12 @@ jobs:
       - name: Committee shared-membership walk window regression proof
         if: matrix.family == 'static-standards'
         run: python3 test/functional/capture_committee_shared_members_walk_test.py
+      - name: Board land-position overflow and fixture routing regression proof
+        if: matrix.family == 'static-standards'
+        run: python3 test/functional/capture_board_land_positions_overflow_test.py
+      - name: Official co-service details disclosure regression proof
+        if: matrix.family == 'static-standards'
+        run: python3 test/functional/capture_official_colleagues_details_test.py
       - name: Land visual-parity receipt regression proof
         if: matrix.family == 'static-standards'
         run: python3 test/functional/land_map_visual_parity_receipt_test.py

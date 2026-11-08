@@ -45,6 +45,9 @@ const landPositions = read(
 /** The board whose record carries two applications on one date and one tally. */
 const POSITIVE_BOARD = "manhattan-cb-04";
 
+/** The board whose record includes a waiver of recommendation and a null tally. */
+const WAIVER_BOARD = "staten-island-cb-01";
+
 /** The first published board this source records no position for. */
 const EMPTY_BOARD = sourceRegistry.sources
   .filter((row) => row.body_type === "community_board")
@@ -87,6 +90,21 @@ function main() {
     });
   }
 
+  const waiver = join(OUT, "board-waiver.html");
+  if (!landPositions.boards[WAIVER_BOARD]) {
+    throw new Error(
+      `frozen land-positions fixture is missing waiver board ${WAIVER_BOARD}`,
+    );
+  }
+  writeFileSync(waiver, render(WAIVER_BOARD, {}, { lang: "en" }));
+  fixtures.push({
+    id: "board-waiver",
+    lang: "en",
+    body_id: WAIVER_BOARD,
+    route: `/community-boards/${WAIVER_BOARD}/`,
+    file: relative(ROOT, waiver),
+  });
+
   const empty = join(OUT, "board-no-recorded-position.html");
   writeFileSync(empty, render(EMPTY_BOARD, {}, { lang: "en" }));
   fixtures.push({
@@ -121,6 +139,7 @@ function main() {
     },
     counts: landPositions.counts,
     positive_board: POSITIVE_BOARD,
+    waiver_board: WAIVER_BOARD,
     empty_board: EMPTY_BOARD,
     fixtures,
   };
