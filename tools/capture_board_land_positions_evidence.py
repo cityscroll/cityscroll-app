@@ -49,7 +49,6 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / ".artifacts" / "board-land-positions"
 FIXTURES = OUT / "fixtures"
-SITE = ROOT / "_site"
 RECEIPT = ROOT / "docs" / "evidence" / "board-land-positions" / "manifest.json"
 AXE = ROOT / "test" / "functional" / "assets" / "axe.min.js"
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
@@ -78,23 +77,19 @@ WAIVER_PROJECT = "2026R0127"
 # Collapsed overflow disclosure for positions beyond the initially visible set.
 OVERFLOW_MORE = 'a.board-land-positions-more[href="#board-land-positions-more"]'
 
+# Shape-specific cases read the frozen acceptance fixture pages, never the
+# ambient live refresh lookup: shared-date and waiver populations rotate out of
+# the live index under ordinary publisher churn, which is exactly why the
+# fixture renderer exists.
 CASES = [
-    (POSITIVE_BOARD, "board-land-positions-shared-date",
+    (POSITIVE_BOARD, "board-language-en", "board-land-positions-shared-date",
      "Two applications this board recorded on one date with one identical tally render as two "
      "rows with two project destinations and two source records, and the copy states that they "
      "are two applications rather than two meetings."),
-    (WAIVER_BOARD, "board-land-positions-waiver",
+    (WAIVER_BOARD, "board-waiver", "board-land-positions-waiver",
      "A waiver of recommendation keeps its own published label and its absent tally, and the copy "
      "says it is neither support nor opposition."),
 ]
-
-
-class SiteHandler(SimpleHTTPRequestHandler):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=str(SITE), **kwargs)
-
-    def log_message(self, format, *args):  # noqa: A003
-        return
 
 
 class RepoHandler(SimpleHTTPRequestHandler):
@@ -235,13 +230,22 @@ def section_observation(page) -> dict:
     }
 
 
-def capture_boards(browser, base, rev, vintage, receipts):
-    for body_id, case, assertion in CASES:
+def fixture_url(base: str, manifest: dict, fixture_id: str) -> str:
+    """Resolve a rendered fixture file URL from the fixture manifest."""
+    for fixture in manifest["fixtures"]:
+        if fixture["id"] == fixture_id:
+            return f"{base.rstrip('/')}/{fixture['file']}"
+    raise RuntimeError(f"board land-position fixture {fixture_id!r} is missing from the manifest")
+
+
+def capture_boards(browser, base, manifest, rev, vintage, receipts):
+    for body_id, fixture_id, case, assertion in CASES:
         route = f"/community-boards/{body_id}/"
+        page_url = fixture_url(base, manifest, fixture_id)
         for width, height in VIEWPORTS:
             context = browser.new_context(viewport={"width": width, "height": height})
             page = context.new_page()
-            page.goto(f"{base}{route}", wait_until="load")
+            page.goto(page_url, wait_until="load")
             observed = section_observation(page)
             observed["links"] = page.evaluate(LINK_PROBE, FULL_RECORD_LINK)
             observed["inspect_controls"] = page.evaluate(BUTTON_PROBE, INSPECT)
@@ -272,7 +276,7 @@ def capture_boards(browser, base, rev, vintage, receipts):
         context = browser.new_context(viewport={"width": 1440, "height": 900},
                                       java_script_enabled=False)
         page = context.new_page()
-        page.goto(f"{base}{route}", wait_until="load")
+        page.goto(page_url, wait_until="load")
         observed = section_observation(page)
         observed["links"] = page.evaluate(LINK_PROBE, STATIC_PROJECT_LINK)
         observed["inspect_controls"] = page.evaluate(BUTTON_PROBE, INSPECT) \
@@ -301,23 +305,37 @@ def reveal_position_if_needed(page, project_id):
     inside a collapsed ".board-land-positions-overflow" (:target disclosure),
     depending on how many positions the board currently carries. Reveal the
     overflow section first when the target inspect control is not yet visible,
-    rather than waiting out Playwright's timeout on a hidden control.
+    rather than waiting out Playwright's timeout on a hidden control. When the
+    control is absent entirely, fail with that fact instead of letting
+    scroll_into_view_if_needed time out on an empty locator.
     """
     target = page.locator(f'{INSPECT}[data-board-land-position-id="{project_id}"]')
-    if target.count() and not target.first.is_visible():
+    if target.count() == 0:
+        raise RuntimeError(
+            f"inspect control for project {project_id} is not on the served board page; "
+            "the capture must read the frozen acceptance fixture that still carries that "
+            "shape, not a live refresh index that has rotated it out"
+        )
+    if not target.first.is_visible():
         overflow_toggle = page.locator(OVERFLOW_MORE)
         if overflow_toggle.count() and overflow_toggle.first.is_visible():
             overflow_toggle.first.click()
+        if not target.first.is_visible():
+            raise RuntimeError(
+                f"inspect control for project {project_id} stayed hidden after revealing "
+                "the board-land-positions overflow disclosure"
+            )
     return target
 
 
-def capture_inspect_journey(browser, base, rev, vintage, receipts):
+def capture_inspect_journey(browser, base, manifest, rev, vintage, receipts):
     """Inspect, dismiss, open the full record, Back, and continue."""
     route = f"/community-boards/{POSITIVE_BOARD}/"
+    page_url = fixture_url(base, manifest, "board-language-en")
     for width, height in VIEWPORTS:
         context = browser.new_context(viewport={"width": width, "height": height})
         page = context.new_page()
-        page.goto(f"{base}{route}", wait_until="load")
+        page.goto(page_url, wait_until="load")
         button = reveal_position_if_needed(page, POSITIVE_PROJECT)
         button.scroll_into_view_if_needed()
         scrolled = page.evaluate("() => Math.round(window.scrollY)")
@@ -406,12 +424,13 @@ def capture_inspect_journey(browser, base, rev, vintage, receipts):
         context.close()
 
 
-def capture_keyboard(browser, base, rev, vintage, receipts):
+def capture_keyboard(browser, base, manifest, rev, vintage, receipts):
     """The whole affordance driven by the keyboard alone."""
     route = f"/community-boards/{POSITIVE_BOARD}/"
+    page_url = fixture_url(base, manifest, "board-language-en")
     context = browser.new_context(viewport={"width": 1440, "height": 900})
     page = context.new_page()
-    page.goto(f"{base}{route}", wait_until="load")
+    page.goto(page_url, wait_until="load")
     button = reveal_position_if_needed(page, SIBLING_PROJECT)
     button.scroll_into_view_if_needed()
     button.focus()
@@ -458,7 +477,11 @@ def capture_keyboard(browser, base, rev, vintage, receipts):
 
 
 def capture_fixtures(browser, base, manifest, rev, vintage, receipts):
+    # The waiver English page is already read by capture_boards; this loop covers
+    # language variants plus the empty and unavailable negatives.
     for fixture in manifest["fixtures"]:
+        if fixture["id"] == "board-waiver":
+            continue
         context = browser.new_context(viewport={"width": 1440, "height": 900})
         page = context.new_page()
         page.goto(f"{base}/{fixture['file']}", wait_until="load")
@@ -508,9 +531,6 @@ def capture_fixtures(browser, base, manifest, rev, vintage, receipts):
 
 
 def main() -> int:
-    if not SITE.exists():
-        print("run tools/prepare_functional_site.sh first", file=sys.stderr)
-        return 1
     if not (FIXTURES / "manifest.json").exists():
         print("run node tools/render_board_land_position_fixtures.mjs first", file=sys.stderr)
         return 1
@@ -519,20 +539,23 @@ def main() -> int:
     rev = revision()
     vintage = manifest["data_vintage"]
 
-    site_server, site_port = serve(SiteHandler)
+    # Shape-specific board captures and the inspect/keyboard journeys read the
+    # frozen fixture pages from the repository server. The ambient live site is
+    # no longer consulted for those shapes: a scheduled refresh rotates the live
+    # index past the pinned shared-date and waiver boards, which is the exact
+    # failure mode that hung scroll_into_view_if_needed on an empty locator.
     repo_server, repo_port = serve(RepoHandler)
     receipts: list[dict] = []
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
-            base = f"http://127.0.0.1:{site_port}"
-            capture_boards(browser, base, rev, vintage, receipts)
-            capture_inspect_journey(browser, base, rev, vintage, receipts)
-            capture_keyboard(browser, base, rev, vintage, receipts)
-            capture_fixtures(browser, f"http://127.0.0.1:{repo_port}", manifest, rev, vintage, receipts)
+            fixture_base = f"http://127.0.0.1:{repo_port}"
+            capture_boards(browser, fixture_base, manifest, rev, vintage, receipts)
+            capture_inspect_journey(browser, fixture_base, manifest, rev, vintage, receipts)
+            capture_keyboard(browser, fixture_base, manifest, rev, vintage, receipts)
+            capture_fixtures(browser, fixture_base, manifest, rev, vintage, receipts)
             browser.close()
     finally:
-        site_server.shutdown()
         repo_server.shutdown()
 
     receipt = {

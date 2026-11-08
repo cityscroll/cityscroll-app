@@ -385,6 +385,8 @@ family_static_standards() {
   run_and_fail python3 test/functional/land_map_visual_parity_receipt_test.py
   run_and_fail python3 test/functional/detail_panel_fixture_test.py
   run_and_fail python3 test/functional/capture_committee_shared_members_walk_test.py
+  run_and_fail python3 test/functional/capture_board_land_positions_overflow_test.py
+  run_and_fail python3 test/functional/capture_official_colleagues_details_test.py
 
   run_banner "Unit tests (site + worker)" "Generated-source and read-model check gates" \
     "node tools/generate_source_docs.mjs --check"

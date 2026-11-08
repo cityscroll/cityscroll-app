@@ -11,6 +11,12 @@ refresh rebuild step on 2026-11-06 (cityscroll/cityscroll-app run 42234977802).
 reveal_position_if_needed must click the overflow "more" control first when the
 target inspect button is present but hidden, then return the same locator the
 journey already scrolls and clicks.
+
+A second failure mode (scheduled refresh run 42486717259) is the inspect
+control missing entirely when the journey was pointed at a live refresh index
+that had rotated the pinned board out. The helper must raise that absence
+immediately instead of letting scroll_into_view_if_needed time out on an empty
+locator, and the journey must load the frozen acceptance fixture page.
 """
 
 from __future__ import annotations
@@ -33,6 +39,7 @@ from capture_board_land_positions_evidence import (  # noqa: E402
     INSPECT,
     OVERFLOW_MORE,
     POSITIVE_PROJECT,
+    fixture_url,
     reveal_position_if_needed,
 )
 
@@ -72,6 +79,13 @@ class RevealOverflowTest(unittest.TestCase):
     def test_clicks_overflow_more_when_target_is_hidden(self):
         target = FakeLocator(count=1, visible=False)
         more = FakeLocator(count=1, visible=True)
+        original_click = more.click
+
+        def reveal_target():
+            original_click()
+            target._visible = True
+
+        more.click = reveal_target
         page = FakePage({
             f'{INSPECT}[data-board-land-position-id="{POSITIVE_PROJECT}"]': target,
             OVERFLOW_MORE: more,
@@ -81,6 +95,7 @@ class RevealOverflowTest(unittest.TestCase):
 
         self.assertIs(returned, target)
         self.assertEqual(more.clicks, 1)
+        self.assertTrue(target.is_visible())
         self.assertEqual(
             page.locator_calls,
             [
@@ -105,6 +120,40 @@ class RevealOverflowTest(unittest.TestCase):
             page.locator_calls,
             [f'{INSPECT}[data-board-land-position-id="{POSITIVE_PROJECT}"]'],
         )
+
+    def test_raises_when_inspect_control_is_absent(self):
+        target = FakeLocator(count=0, visible=False)
+        page = FakePage({
+            f'{INSPECT}[data-board-land-position-id="{POSITIVE_PROJECT}"]': target,
+        })
+
+        with self.assertRaisesRegex(RuntimeError, "is not on the served board page"):
+            reveal_position_if_needed(page, POSITIVE_PROJECT)
+
+    def test_fixture_url_resolves_positive_board_page(self):
+        manifest = {
+            "fixtures": [
+                {
+                    "id": "board-language-en",
+                    "file": ".artifacts/board-land-positions/fixtures/board-language-en.html",
+                },
+                {
+                    "id": "board-waiver",
+                    "file": ".artifacts/board-land-positions/fixtures/board-waiver.html",
+                },
+            ]
+        }
+
+        self.assertEqual(
+            fixture_url("http://127.0.0.1:9", manifest, "board-language-en"),
+            "http://127.0.0.1:9/.artifacts/board-land-positions/fixtures/board-language-en.html",
+        )
+        self.assertEqual(
+            fixture_url("http://127.0.0.1:9/", manifest, "board-waiver"),
+            "http://127.0.0.1:9/.artifacts/board-land-positions/fixtures/board-waiver.html",
+        )
+        with self.assertRaisesRegex(RuntimeError, "missing from the manifest"):
+            fixture_url("http://127.0.0.1:9", manifest, "board-missing")
 
 
 if __name__ == "__main__":
