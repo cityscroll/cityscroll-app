@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "delivery_tier": "inline-at-build",
+  "generated_at": "2026-11-09T17:18:21.245Z",
+  "metadata": {
+    "source_vintage": "2026-11-08T14:20:41.043Z",
+    "fetched_at": "2026-11-09T17:18:21.245Z",
+    "stale": true,
+    "fallback_reason": "live fetch exhausted after 3 attempts: HTTP 503"
+  },
+  "source": {
+    "name": "City Record Online",
+    "dataset": "dg92-zbpx",
+    "url": "https://data.cityofnewyork.us/d/dg92-zbpx"
+  },
+  "agencies": [
+    "Administration for Children's Services",
+    "Aging",
+    "City Planning"
+  ]
+}

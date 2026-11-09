@@ -233,6 +233,8 @@ export function runRebuildSequence(registry, root, env) {
 }
 
 export function writeRebuildReceipt(root, results, options = {}) {
+  const verificationRows = options.verification || null;
+  const stranded = options.stranded || [];
   const receipt = {
     schema: REBUILD_RECEIPT_SCHEMA,
     generated_at: options.now || new Date().toISOString(),
@@ -242,14 +244,39 @@ export function writeRebuildReceipt(root, results, options = {}) {
     skipped: results.filter((row) => row.status === "skipped").length,
     steps: results,
   };
+  if (stranded.length) receipt.stranded = stranded;
+  if (verificationRows) {
+    receipt.verification = {
+      total_families: verificationRows.length,
+      succeeded: verificationRows.filter((row) => row.status === "succeeded").length,
+      failed: verificationRows.filter((row) => row.status !== "succeeded").length,
+      families: verificationRows,
+    };
+  }
   const output = join(root, options.receiptPath || REBUILD_RECEIPT_PATH);
   mkdirSync(dirname(output), { recursive: true });
   writeFileSync(output, `${JSON.stringify(receipt, null, 2)}\n`);
   return receipt;
 }
 
+/**
+ * Exit status the rebuild entrypoint must use for a given receipt. A red exit
+ * without a matching receipt field is how a run can look like "45 succeeded,
+ * 0 failed" while the workflow still treats the rebuild step as a failure.
+ */
+export function rebuildProcessExitCode(receipt) {
+  if (!receipt) return 0;
+  if ((receipt.stranded || []).length) return 1;
+  if (receipt.failed > 0 || receipt.skipped > 0) return 1;
+  if ((receipt.verification?.failed || 0) > 0) return 1;
+  return 0;
+}
+
 function runSequence(registry, root, env) {
   const { results, stranded } = runRebuildSequence(registry, root, env);
+  // Write the receipt before any exit so a stranded-path failure still names
+  // its cause the same way a per-step failure does.
+  const receipt = writeRebuildReceipt(root, results, { stranded });
   if (stranded.length) {
     console.error("the rebuild wrote files outside the paths the refresh commits:");
     for (const file of stranded) console.error(`  ${file}`);
@@ -258,9 +285,8 @@ function runSequence(registry, root, env) {
         "or make the builder write inside a path already listed there. Left as it is, the refresh " +
         "would publish the input and discard the read model derived from it.",
     );
-    process.exit(1);
+    process.exitCode = 1;
   }
-  const receipt = writeRebuildReceipt(root, results);
   const problems = results.filter((row) => row.status !== "succeeded");
   if (problems.length) {
     const summary = problems.map((row) => `${row.id} (${row.status}${row.blocked_by ? `: blocked by ${row.blocked_by}` : ""})`).join(", ");
@@ -269,7 +295,7 @@ function runSequence(registry, root, env) {
         "Every other step still ran, and the datasets it rebuilt are still eligible for publication; " +
         `see ${REBUILD_RECEIPT_PATH} for the complete accounting.`,
     );
-  } else {
+  } else if (!stranded.length) {
     console.log(`rebuilt ${registry.rebuild_sequence.length} committed read-model steps`);
   }
   return receipt;
@@ -281,15 +307,22 @@ export function verificationCommands(registry, root = ROOT) {
     : { family: entry.family, cwd: root, args: ["--test", ...readdirSync(join(root, entry.directory)).filter((file) => file.endsWith(entry.pattern)).sort().map((file) => `${entry.directory}/${file}`)] });
 }
 
-function verifyFreshnessTests(registry, root, env) {
-  const failed = [];
+export function verifyFreshnessTests(registry, root, env) {
+  const results = [];
   for (const { family, cwd, args } of verificationCommands(registry, root)) {
     console.log(`Verifying ${family} freshness gates before publication`);
     const result = spawnSync(process.execPath, args, { cwd, stdio: "inherit", env: { ...env, CS10_SKIP_LIVE_CANARY: "true" } });
-    if (result.error) throw result.error;
-    if (result.status !== 0) failed.push(family);
+    if (result.error) {
+      results.push({ family, status: "failed", reason: result.error.message });
+      continue;
+    }
+    if (result.status !== 0) {
+      results.push({ family, status: "failed", exit_code: result.status });
+      continue;
+    }
+    results.push({ family, status: "succeeded" });
   }
-  if (failed.length) throw new Error(`${failed.join(", ")} gates failed; refreshed data must not be published`);
+  return results;
 }
 
 function main(argv) {
@@ -319,19 +352,21 @@ function main(argv) {
   let receipt = null;
   if (!argv.includes("--verify-only")) receipt = runSequence(registry, ROOT, env);
   if (!argv.includes("--rebuild-only")) {
-    try {
-      verifyFreshnessTests(registry, ROOT, env);
-    } catch (error) {
-      // A failed verification is reported, not thrown: the receipt above already
-      // named which rebuild steps did not succeed, and the caller (the scheduled
-      // workflow) still needs to reach its own publication step so whatever did
-      // rebuild cleanly is not held hostage by whatever did not. The run's exit
-      // code below still marks it unhealthy.
-      console.error(error.message);
-      process.exitCode = 1;
+    const verification = verifyFreshnessTests(registry, ROOT, env);
+    // Re-write the receipt so a verification-only failure is named beside the
+    // per-step accounting. Without this, exit status 1 with failed=0 looks like
+    // a mysterious rebuild red while every rebuild step actually succeeded.
+    receipt = writeRebuildReceipt(ROOT, receipt?.steps || [], {
+      now: receipt?.generated_at,
+      stranded: receipt?.stranded || [],
+      verification,
+    });
+    const failedFamilies = verification.filter((row) => row.status !== "succeeded").map((row) => row.family);
+    if (failedFamilies.length) {
+      console.error(`${failedFamilies.join(", ")} gates failed; refreshed data must not be published`);
     }
   }
-  if (receipt && (receipt.failed > 0 || receipt.skipped > 0)) process.exitCode = 1;
+  if (rebuildProcessExitCode(receipt) !== 0) process.exitCode = 1;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
