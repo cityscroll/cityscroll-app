@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "title": "Population-backed procurement spine observations for entity intelligence",
-  "observed_on": "2026-11-08",
-  "generated_at": "2026-11-08T14:07:52.584Z",
+  "observed_on": "2026-11-09",
+  "generated_at": "2026-11-09T21:24:05.881Z",
   "receipts": {
     "passport_join": "site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json",
     "source_coverage": "entity_resolution/source_coverage.json",
@@ -54,48 +54,48 @@
       "coverage_status": "measured",
       "population_backed": true,
       "source_url": "https://www.checkbooknyc.com/api",
-      "pulled_at": "2026-11-08T14:07:52.584Z",
+      "pulled_at": "2026-11-09T21:24:05.881Z",
       "population": {
-        "api_transaction_rows": 40318,
-        "normalized_unique_contracts": 29580,
+        "api_transaction_rows": 40319,
+        "normalized_unique_contracts": 29581,
         "fiscal_years": [
           2025,
           2026,
           2027
         ],
-        "sha256": "127ab088263a919a6de44390a7735b0fad4e2155bbbe8bae171dd5c119e05c14"
+        "sha256": "8187f1978d3388e2ed7fb39b3f8ec7957b48ba1dffc3b1a611c974eb5eae12b4"
       },
       "overlap": {
-        "checkbook_contracts": 29580,
+        "checkbook_contracts": 29581,
         "exact_overlap_buckets": {
           "passport_and_city_record": 3847,
           "passport_only": 1847,
           "city_record_only": 1358,
-          "new_unique": 22528
+          "new_unique": 22529
         },
         "passport": {
           "matched_contracts": 5694,
           "by_contract_id": 5562,
           "by_pin_epin": 4974,
-          "rate": 0.1924949290060852,
+          "rate": 0.1924884216219871,
           "denominator": "normalized Checkbook contracts in the collected fiscal-year window"
         },
         "city_record": {
           "matched_checkbook_contracts": 5205,
-          "checkbook_rate": 0.17596348884381338,
+          "checkbook_rate": 0.17595754031303878,
           "matched_modern_awards": 5152,
           "modern_awards_with_pin": 5966,
           "modern_award_rate": 0.8635601743211532,
           "denominator": "City Record Recent Contract Awards since 2025-01-01 with an exact PIN"
         },
-        "new_unique_contract_ids": 22528,
+        "new_unique_contract_ids": 22529,
         "acceptance_rule": "normalized exact contract_id or exact PIN/EPIN only; names are not join keys"
       },
       "section_denominator": {
         "status": "measured",
         "denominator": "normalized unique Checkbook contracts in the collected fiscal-year population",
-        "rows": 29580,
-        "source_population": 40318
+        "rows": 29581,
+        "source_population": 40319
       },
       "modern_awards": {
         "joined": 5152,
@@ -255346,6 +255346,61 @@
     ],
     "checkbook_contracts": [
       {
+        "prime_contract_id": "CT104020273043522",
+        "contract_id": "CT104020273043522",
+        "prime_vendor": "ENRICHEDNYC LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Women (Non-Minority)",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-07",
+        "start_date": "2026-11-07",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-07"
+          ],
+          "registration_date_observations": [
+            "2026-11-07"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "NEGOTIATED SERVICES-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-07",
+        "end": "2027-06-30",
+        "registered": "2026-11-07",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
         "prime_contract_id": "CT101520270000018",
         "contract_id": "CT101520270000018",
         "prime_vendor": "Loop Capital Asset Management TCH LLC",
@@ -257711,6 +257766,61 @@
         "selection_bucket": "new_unique"
       },
       {
+        "prime_contract_id": "CT184620278803728",
+        "contract_id": "CT184620278803728",
+        "prime_vendor": "PLAYSITES PLUS SURFACES INC",
+        "agency": "Department of Parks and Recreation",
+        "pin": "84627C0285001",
+        "award_method": "SMALL PURCHASE - UNDER $5,000",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-06",
+        "start_date": "2026-11-09",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-09"
+          ],
+          "registration_date_observations": [
+            "2026-11-06"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "MNOPS-Supplies to Make Playground Repairs",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 7335,
+        "original": 7335,
+        "spent": 0,
+        "start": "2026-11-09",
+        "end": "2026-12-29",
+        "registered": "2026-11-06",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
         "prime_contract_id": "CTA107120278803320",
         "contract_id": "CTA107120278803320",
         "prime_vendor": "ARON SECURITY INC",
@@ -259361,6 +259471,61 @@
         "selection_bucket": "new_unique"
       },
       {
+        "prime_contract_id": "CT105720278803557",
+        "contract_id": "CT105720278803557",
+        "prime_vendor": "WINGGLEE LLC",
+        "agency": "Fire Department",
+        "pin": "05727W0020001",
+        "award_method": "M/WBE SMALL PURCHASE",
+        "mwbe_category": "Asian American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-05",
+        "start_date": "2026-11-09",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-09"
+          ],
+          "registration_date_observations": [
+            "2026-11-05"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "Portable Multi-Gas Detector and Various Gas Detector Parts",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 108294,
+        "original": 108294,
+        "spent": 0,
+        "start": "2026-11-09",
+        "end": "2027-06-30",
+        "registered": "2026-11-05",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
         "prime_contract_id": "CT107220271404577",
         "contract_id": "CT107220271404577",
         "prime_vendor": "NEW YORK UNIVERSITY",
@@ -259742,6 +259907,61 @@
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT182620278803700",
+        "contract_id": "CT182620278803700",
+        "prime_vendor": "PORTLAND WILLIAMS LLC",
+        "agency": "Department of Environmental Protection",
+        "pin": "82627W0017001",
+        "award_method": "M/WBE SMALL PURCHASE",
+        "mwbe_category": "Black American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-05",
+        "start_date": "2026-11-09",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-09"
+          ],
+          "registration_date_observations": [
+            "2026-11-05"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "BWT Wet Cell Batteries 7030479X",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 38310,
+        "original": 38310,
+        "spent": 0,
+        "start": "2026-11-09",
+        "end": "2027-06-30",
+        "registered": "2026-11-05",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
         },
         "selection_bucket": "new_unique"
       },
@@ -261286,6 +261506,61 @@
         "selection_bucket": "new_unique"
       },
       {
+        "prime_contract_id": "CT105720278803611",
+        "contract_id": "CT105720278803611",
+        "prime_vendor": "WINGGLEE LLC",
+        "agency": "Fire Department",
+        "pin": "05727W0024001",
+        "award_method": "M/WBE SMALL PURCHASE",
+        "mwbe_category": "Asian American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-04",
+        "start_date": "2026-11-09",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-09"
+          ],
+          "registration_date_observations": [
+            "2026-11-04"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "Purchase of BANCE Motorized Rail Cart",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 62250,
+        "original": 62250,
+        "spent": 0,
+        "start": "2026-11-09",
+        "end": "2027-06-30",
+        "registered": "2026-11-04",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
         "prime_contract_id": "CT107120278803198",
         "contract_id": "CT107120278803198",
         "prime_vendor": "WASTE CONNECTIONS OF NEW YORK INC",
@@ -261540,6 +261815,61 @@
         "spent": 0,
         "start": "2026-11-02",
         "end": "2031-11-01",
+        "registered": "2026-11-04",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT184120278803671",
+        "contract_id": "CT184120278803671",
+        "prime_vendor": "Dependable Office Supplies, Inc.",
+        "agency": "Department of Transportation",
+        "pin": "84127W0013001",
+        "award_method": "M/WBE SMALL PURCHASE",
+        "mwbe_category": "Asian American",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-11-04",
+        "start_date": "2026-11-09",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-09"
+          ],
+          "registration_date_observations": [
+            "2026-11-04"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "Maintenance, Repairs, & Supplies for Sign Mfg. Equipment",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 500000,
+        "original": 500000,
+        "spent": 0,
+        "start": "2026-11-09",
+        "end": "2029-11-08",
         "registered": "2026-11-04",
         "received": null,
         "source_fiscal_years": [
@@ -311891,6 +312221,61 @@
           "pin": "exact"
         },
         "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT185020278802873",
+        "contract_id": "CT185020278802873",
+        "prime_vendor": "NATIONAL WATER MAIN CLEANING CO",
+        "agency": "Department of Design and Construction",
+        "pin": "85026B0012001",
+        "award_method": "COMPETITIVE SEALED BIDDING",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-10-07",
+        "start_date": "2026-11-09",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-09"
+          ],
+          "registration_date_observations": [
+            "2026-10-07"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Construction Services",
+        "purpose": "Cleaning and Televising of Sewers by DDC",
+        "document_code": "CT1",
+        "contract_type": "CONSTRUCTION",
+        "contract_version": "2",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 5267776,
+        "original": 5267776,
+        "spent": 0,
+        "start": "2026-11-09",
+        "end": "2028-05-06",
+        "registered": "2026-10-07",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "city_record_only"
       },
       {
         "prime_contract_id": "CT185620278802409",
@@ -366989,7 +367374,7 @@
         "status": "registered",
         "current": 2315520,
         "original": 2315520,
-        "spent": 498699.6,
+        "spent": 627778.66,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-16",
@@ -535495,7 +535880,7 @@
         "status": "registered",
         "current": 25115793,
         "original": 25115793,
-        "spent": 1252363.07,
+        "spent": 1384767.55,
         "start": "2026-07-01",
         "end": "2035-06-30",
         "registered": "2026-06-10",
@@ -546795,7 +547180,7 @@
         "status": "registered",
         "current": 19185165,
         "original": 19185165,
-        "spent": 1055364.1,
+        "spent": 1090958.1,
         "start": "2026-07-01",
         "end": "2035-06-30",
         "registered": "2026-06-05",
@@ -551262,7 +551647,7 @@
         "status": "registered",
         "current": 29480430,
         "original": 29480430,
-        "spent": 3103093.73,
+        "spent": 3332946.57,
         "start": "2026-07-01",
         "end": "2030-06-30",
         "registered": "2026-06-03",
@@ -551482,7 +551867,7 @@
         "status": "registered",
         "current": 21511474,
         "original": 21511474,
-        "spent": 956066,
+        "spent": 1115386.18,
         "start": "2026-07-01",
         "end": "2035-06-30",
         "registered": "2026-06-03",
@@ -636179,61 +636564,6 @@
         "spent": 6092.26,
         "start": "2026-04-08",
         "end": "2026-06-30",
-        "registered": "2026-04-08",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT185620268805661",
-        "contract_id": "CT185620268805661",
-        "prime_vendor": "CBRE INC",
-        "agency": "Department of Citywide Administrative Services",
-        "pin": "85626N0006001",
-        "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2026-04-08",
-        "start_date": "2025-11-08",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-08"
-          ],
-          "registration_date_observations": [
-            "2026-04-08"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Professional Services",
-        "purpose": "NAE Tenant Rep #3",
-        "document_code": "CT1",
-        "contract_type": "CONSULTANT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 1,
-        "original": 1,
-        "spent": 0,
-        "start": "2025-11-08",
-        "end": "2026-11-07",
         "registered": "2026-04-08",
         "received": null,
         "source_fiscal_years": [
@@ -756322,7 +756652,7 @@
         "status": "registered",
         "current": 14109375,
         "original": 14109375,
-        "spent": 593898.24,
+        "spent": 627083,
         "start": "2026-03-01",
         "end": "2041-02-28",
         "registered": "2026-01-20",
@@ -837298,12 +837628,12 @@
     "checkbook_contracts": {
       "graph_cap": null,
       "graph_source": "rows.checkbook_contracts",
-      "graph_rows": 10563,
+      "graph_rows": 10569,
       "selected_buckets": {
         "passport_and_city_record": 1679,
         "passport_only": 83,
-        "city_record_only": 1049,
-        "new_unique": 7752
+        "city_record_only": 1050,
+        "new_unique": 7757
       },
       "strategy": "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap",
       "receipt": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"

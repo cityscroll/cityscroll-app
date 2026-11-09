@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.legislative_matter_lookup.v1",
-  "generated_at": "2026-11-08T08:00:47.273Z",
+  "generated_at": "2026-11-09T08:01:12.734Z",
   "source": {
     "system": "legistar",
     "input_artifact": "site/data/meeting_outcomes_snapshot.json",
@@ -266,7 +266,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -527,7 +527,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -788,189 +788,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
-          }
-        }
-      ]
-    },
-    "78758": {
-      "matter_id": "78758",
-      "matter_ref": "legistar:nyc:matter:78758",
-      "publisher_tenant": "nyc",
-      "matter_file": "LU 0064-2026",
-      "title": "Landmarks, 351 Powers Avenue, Bronx (G 260001 XAX).",
-      "matter_type": null,
-      "matter_status": null,
-      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78758",
-      "label_revisions": [],
-      "appearances": [
-        {
-          "request_id": "20260422047",
-          "notice_references": [
-            {
-              "request_id": "20260422047",
-              "notice_href": "/notices/20260422047/",
-              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
-            },
-            {
-              "request_id": "20260430007",
-              "notice_href": "/notices/20260430007/",
-              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
-            }
-          ],
-          "event": {
-            "event_id": "22396",
-            "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
-            "date": "2026-05-13",
-            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "body_id": null,
-            "documents": [
-              {
-                "name": "Agenda",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22396_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-05-13_Committee_Agenda.pdf"
-              },
-              {
-                "name": "Minutes",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22396_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-05-13_Meeting_Minutes.pdf"
-              }
-            ]
-          },
-          "committee": {
-            "label": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
-            "body_id": null,
-            "join_state": "unresolved_no_explicit_body_id"
-          },
-          "matter_id": "78758",
-          "matter_ref": "legistar:nyc:matter:78758",
-          "matter_file": "LU 0064-2026",
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "outcome": "Laid Over by Subcommittee",
-          "matter_type": null,
-          "matter_status": null,
-          "votes": null,
-          "item_actions": [
-            {
-              "event_item_id": "437839",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "event_item_id": "438053",
-              "action": "Laid Over by Subcommittee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            }
-          ],
-          "source_receipt": {
-            "source_system": "legistar",
-            "request_id": "20260422047",
-            "request_ids": [
-              "20260422047",
-              "20260430007"
-            ],
-            "event_id": "22396",
-            "event_item_ids": [
-              "437839",
-              "438053"
-            ],
-            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
-          }
-        }
-      ]
-    },
-    "78759": {
-      "matter_id": "78759",
-      "matter_ref": "legistar:nyc:matter:78759",
-      "publisher_tenant": "nyc",
-      "matter_file": "LU 0065-2026",
-      "title": "Landmarks, 351 Powers Avenue, Bronx (HPD 260001 PPX).",
-      "matter_type": null,
-      "matter_status": null,
-      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78759",
-      "label_revisions": [],
-      "appearances": [
-        {
-          "request_id": "20260422047",
-          "notice_references": [
-            {
-              "request_id": "20260422047",
-              "notice_href": "/notices/20260422047/",
-              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
-            },
-            {
-              "request_id": "20260430007",
-              "notice_href": "/notices/20260430007/",
-              "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
-            }
-          ],
-          "event": {
-            "event_id": "22396",
-            "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
-            "date": "2026-05-13",
-            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "body_id": null,
-            "documents": [
-              {
-                "name": "Agenda",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22396_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-05-13_Committee_Agenda.pdf"
-              },
-              {
-                "name": "Minutes",
-                "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22396_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-05-13_Meeting_Minutes.pdf"
-              }
-            ]
-          },
-          "committee": {
-            "label": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
-            "body_id": null,
-            "join_state": "unresolved_no_explicit_body_id"
-          },
-          "matter_id": "78759",
-          "matter_ref": "legistar:nyc:matter:78759",
-          "matter_file": "LU 0065-2026",
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "outcome": "Laid Over by Subcommittee",
-          "matter_type": null,
-          "matter_status": null,
-          "votes": null,
-          "item_actions": [
-            {
-              "event_item_id": "437840",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "event_item_id": "438054",
-              "action": "Laid Over by Subcommittee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            }
-          ],
-          "source_receipt": {
-            "source_system": "legistar",
-            "request_id": "20260422047",
-            "request_ids": [
-              "20260422047",
-              "20260430007"
-            ],
-            "event_id": "22396",
-            "event_item_ids": [
-              "437840",
-              "438054"
-            ],
-            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -1231,7 +1049,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -1316,7 +1134,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -1401,7 +1219,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -1486,7 +1304,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -1571,7 +1389,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -1656,7 +1474,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -1741,7 +1559,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -1826,7 +1644,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -1911,7 +1729,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -1996,7 +1814,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -2081,7 +1899,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -2166,7 +1984,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -2251,7 +2069,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -2471,7 +2289,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -2556,7 +2374,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -2776,7 +2594,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -2861,7 +2679,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -3081,7 +2899,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -3166,7 +2984,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -3251,7 +3069,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -3336,7 +3154,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -3421,7 +3239,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -3506,7 +3324,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -3591,7 +3409,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -3676,7 +3494,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -3761,7 +3579,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -3846,7 +3664,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -3931,7 +3749,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -4016,7 +3834,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -4101,7 +3919,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -4186,7 +4004,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -4271,7 +4089,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -4356,7 +4174,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -4441,7 +4259,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -4526,7 +4344,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -4746,7 +4564,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -4831,7 +4649,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -5051,7 +4869,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -5284,7 +5102,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -5369,7 +5187,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -5454,7 +5272,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22509&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -5539,7 +5357,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -5795,7 +5613,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -5880,7 +5698,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -6136,7 +5954,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -6221,7 +6039,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -6477,7 +6295,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -6562,7 +6380,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -6818,7 +6636,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -6903,7 +6721,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -7159,7 +6977,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -7244,7 +7062,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -7492,7 +7310,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -7577,7 +7395,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -7825,7 +7643,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -7910,7 +7728,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -8158,7 +7976,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -8243,7 +8061,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -8315,7 +8133,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -8379,7 +8197,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -8464,7 +8282,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -8536,7 +8354,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -8600,7 +8418,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -8685,7 +8503,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -8933,7 +8751,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -9018,7 +8836,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22528&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -9266,7 +9084,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -9351,7 +9169,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -9415,7 +9233,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -9500,7 +9318,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -9564,7 +9382,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -9649,7 +9467,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22619&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -9734,7 +9552,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22619&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -9819,7 +9637,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -10059,7 +9877,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -10144,7 +9962,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -10384,7 +10202,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -10469,7 +10287,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -10709,7 +10527,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -10794,7 +10612,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -11034,7 +10852,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -11119,7 +10937,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -11367,7 +11185,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -11452,7 +11270,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -11700,7 +11518,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -11785,7 +11603,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -11857,7 +11675,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -11942,7 +11760,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -12014,7 +11832,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -12099,7 +11917,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -12171,7 +11989,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -12256,7 +12074,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22617&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -12328,7 +12146,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -12413,7 +12231,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22729&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -12477,7 +12295,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -12562,7 +12380,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -12802,7 +12620,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -12887,7 +12705,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -13127,7 +12945,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -13212,7 +13030,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -13452,7 +13270,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -13537,7 +13355,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22613&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         },
         {
@@ -13777,7 +13595,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -13862,7 +13680,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -13947,7 +13765,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -14032,7 +13850,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -14117,7 +13935,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -14202,7 +14020,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22615&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -14287,7 +14105,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]
@@ -14372,7 +14190,7 @@
             ],
             "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22701&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
             "input_artifact": "site/data/meeting_outcomes_snapshot.json",
-            "snapshot_generated_at": "2026-11-08T08:00:47.273Z"
+            "snapshot_generated_at": "2026-11-09T08:01:12.734Z"
           }
         }
       ]

@@ -1,18 +1,18 @@
 {
   "schema": "cityscroll.first_class_refresh_run_history.v1",
-  "generated_at": "2026-11-08T15:18:30.605Z",
+  "generated_at": "2026-11-09T22:10:57.132Z",
   "run": {
-    "run_id": "github-actions:42486717259:1",
-    "github_run_id": 42486717259,
-    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/42486717259",
-    "trigger": "schedule",
-    "started_at": "2026-11-08T13:51:09Z",
-    "finished_at": "2026-11-08T15:18:30.605Z",
-    "code_revision": "fb5715f845e1a835a2247b3e0ed19ee080b36d81"
+    "run_id": "github-actions:42700043196:1",
+    "github_run_id": 42700043196,
+    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/42700043196",
+    "trigger": "workflow_dispatch",
+    "started_at": "2026-11-09T21:13:44Z",
+    "finished_at": "2026-11-09T22:10:57.132Z",
+    "code_revision": "384f59ca9b0eb33979540e5e4ac0a14000bf58de"
   },
   "total": 42,
-  "due_count": 30,
-  "published_count": 25,
+  "due_count": 34,
+  "published_count": 29,
   "datasets": [
     {
       "id": "agency-constellation",
@@ -188,11 +188,11 @@
     {
       "id": "meetings-domain",
       "public_artifact_path": "site/data/meetings_domain_observations.json",
-      "due": false,
-      "acquisition_status": "not_due",
-      "builder_status": "not_due",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
       "rebuild_status": "succeeded",
-      "published": false
+      "published": true
     },
     {
       "id": "contracts-open",
@@ -323,20 +323,20 @@
     {
       "id": "rules-domain",
       "public_artifact_path": "site/data/rules_domain_observations.json",
-      "due": false,
-      "acquisition_status": "not_due",
-      "builder_status": "not_due",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "not_applicable",
       "rebuild_status": "succeeded",
-      "published": false
+      "published": true
     },
     {
       "id": "rules-semantic-lane",
       "public_artifact_path": "site/data/rules_semantic_lane.json",
-      "due": false,
-      "acquisition_status": "not_due",
-      "builder_status": "not_due",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
       "rebuild_status": "succeeded",
-      "published": false
+      "published": true
     },
     {
       "id": "shared-meetings",
@@ -368,11 +368,11 @@
     {
       "id": "upcoming-council-meetings",
       "public_artifact_path": "site/data/upcoming_council_meetings.json",
-      "due": false,
-      "acquisition_status": "not_due",
-      "builder_status": "not_due",
+      "due": true,
+      "acquisition_status": "succeeded",
+      "builder_status": "succeeded",
       "rebuild_status": "succeeded",
-      "published": false
+      "published": true
     },
     {
       "id": "zap-bbl",
@@ -394,6 +394,33 @@
     }
   ],
   "prior_runs": [
+    {
+      "run_id": "github-actions:42658457109:1",
+      "trigger": "schedule",
+      "started_at": "2026-11-09T18:03:59Z",
+      "finished_at": "2026-11-09T19:18:47.263Z",
+      "due_count": 35,
+      "published_count": 30,
+      "receipt_sha256": "sha256:756879e203c10d1a9009447a583035e1873728586c116f40e6de949c65dde39a"
+    },
+    {
+      "run_id": "github-actions:42657676887:1",
+      "trigger": "workflow_dispatch",
+      "started_at": "2026-11-09T16:46:29Z",
+      "finished_at": "2026-11-09T17:58:35.458Z",
+      "due_count": 34,
+      "published_count": 27,
+      "receipt_sha256": "sha256:88c604b4925e1d94c9fb09b7eda6e6defa39da4f4925d6cd02d10f41694d33ed"
+    },
+    {
+      "run_id": "github-actions:42486717259:1",
+      "trigger": "schedule",
+      "started_at": "2026-11-08T13:51:09Z",
+      "finished_at": "2026-11-08T15:18:30.605Z",
+      "due_count": 30,
+      "published_count": 25,
+      "receipt_sha256": "sha256:acb177193e76bbf6f7e3d81e8924fc52c18689edba3b0e7919a35a801b3f9ebf"
+    },
     {
       "run_id": "github-actions:42377147444:1",
       "trigger": "schedule",

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.upcoming_council_meetings.v1",
   "schema_version": 1,
-  "generated_at": "2026-11-07T13:54:16.007Z",
+  "generated_at": "2026-11-09T21:46:24.939Z",
   "source": {
     "name": "NYC Council Legistar (authenticated Web API)",
     "dataset": "Events",
@@ -15,8 +15,8 @@
   "discovery": {
     "basis": "shared authenticated Events acquisition of the daily refresh (no additional Events request)",
     "horizon_days": 120,
-    "window_start": "2026-11-07",
-    "window_end": "2027-03-07",
+    "window_start": "2026-11-09",
+    "window_end": "2027-03-09",
     "events_pages": 2,
     "events_page_truncated": false,
     "item_events_max": 60,
@@ -29,9 +29,9 @@
   "source_health": {
     "status": "healthy",
     "basis": "authenticated-events-acquisition",
-    "observed_at": "2026-11-07T13:54:16.007Z",
-    "events_observed": 389,
-    "last_successful_observation": "2026-11-07T13:54:16.007Z",
+    "observed_at": "2026-11-09T21:46:24.939Z",
+    "events_observed": 379,
+    "last_successful_observation": "2026-11-09T21:46:24.939Z",
     "upcoming": 46,
     "standalone": 46,
     "exactly_joined": 0,
@@ -41,8 +41,8 @@
   "counts": {
     "eligible_events": 46,
     "meetings": 46,
-    "agenda_items": 121,
-    "agenda_items_observed": 121,
+    "agenda_items": 128,
+    "agenda_items_observed": 128,
     "events_with_items": 46,
     "events_no_published_items": 0,
     "events_items_deferred": 0,
@@ -104,7 +104,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhYlP8=",
         "last_modified_utc": "2026-11-02T15:53:20.353",
         "agenda_last_published_utc": "2026-11-02T15:53:20.2"
@@ -162,7 +162,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOg7rKU=",
         "last_modified_utc": "2026-06-01T17:28:30.67",
         "agenda_last_published_utc": "2026-06-01T17:28:30.657"
@@ -226,7 +226,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhY3dQ=",
         "last_modified_utc": "2026-11-05T14:31:16.23",
         "agenda_last_published_utc": "2026-11-05T14:31:16.073"
@@ -290,7 +290,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZFz0=",
         "last_modified_utc": "2026-11-06T16:20:45.217",
         "agenda_last_published_utc": "2026-11-06T16:20:45.087"
@@ -365,7 +365,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhYmGY=",
         "last_modified_utc": "2026-11-02T16:56:51.7",
         "agenda_last_published_utc": "2026-11-02T16:56:51.553"
@@ -440,7 +440,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhYmKw=",
         "last_modified_utc": "2026-11-02T16:57:34.15",
         "agenda_last_published_utc": "2026-11-02T16:57:34.087"
@@ -504,7 +504,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhY3co=",
         "last_modified_utc": "2026-11-05T14:38:55.797",
         "agenda_last_published_utc": "2026-11-05T14:38:55.763"
@@ -579,7 +579,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZFZU=",
         "last_modified_utc": "2026-11-06T15:48:56.497",
         "agenda_last_published_utc": "2026-11-06T15:48:56.403"
@@ -654,7 +654,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZFbY=",
         "last_modified_utc": "2026-11-06T15:49:32.437",
         "agenda_last_published_utc": "2026-11-06T15:49:32.42"
@@ -735,7 +735,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhYqwc=",
         "last_modified_utc": "2026-11-02T20:02:11.367",
         "agenda_last_published_utc": "2026-11-02T20:02:11.223"
@@ -799,7 +799,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZB60=",
         "last_modified_utc": "2026-11-05T21:01:25.88",
         "agenda_last_published_utc": "2026-11-05T21:01:25.837"
@@ -857,7 +857,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhYlRY=",
         "last_modified_utc": "2026-11-02T15:54:15.93",
         "agenda_last_published_utc": "2026-11-02T15:54:15.86"
@@ -915,7 +915,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOg7rHY=",
         "last_modified_utc": "2026-06-01T17:27:54.433",
         "agenda_last_published_utc": "2026-06-01T17:27:54.357"
@@ -990,7 +990,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZAn0=",
         "last_modified_utc": "2026-11-05T20:25:03.89",
         "agenda_last_published_utc": "2026-11-05T20:25:03.767"
@@ -1065,7 +1065,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZAlA=",
         "last_modified_utc": "2026-11-05T20:24:33.207",
         "agenda_last_published_utc": "2026-11-05T20:24:33.143"
@@ -1129,7 +1129,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhVT4M=",
         "last_modified_utc": "2026-10-28T15:11:11.837",
         "agenda_last_published_utc": "2026-10-28T15:11:11.667"
@@ -1227,7 +1227,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhYscs=",
         "last_modified_utc": "2026-11-02T20:59:39.533",
         "agenda_last_published_utc": "2026-11-02T20:59:39.407"
@@ -1302,7 +1302,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhUx9A=",
         "last_modified_utc": "2026-10-26T19:52:09.397",
         "agenda_last_published_utc": "2026-10-26T19:52:09.27"
@@ -1377,7 +1377,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhUyCw=",
         "last_modified_utc": "2026-10-26T19:53:34.407",
         "agenda_last_published_utc": "2026-10-26T19:53:34.377"
@@ -1452,7 +1452,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhUyHw=",
         "last_modified_utc": "2026-10-26T19:54:51.517",
         "agenda_last_published_utc": "2026-10-26T19:54:51.447"
@@ -1510,7 +1510,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhSDLg=",
         "last_modified_utc": "2026-10-13T21:03:42.353",
         "agenda_last_published_utc": "2026-10-13T21:03:42.263"
@@ -1602,7 +1602,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhYyec=",
         "last_modified_utc": "2026-11-04T17:37:55.787",
         "agenda_last_published_utc": "2026-11-04T17:37:55.74"
@@ -1694,7 +1694,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhYyeg=",
         "last_modified_utc": "2026-11-04T17:36:27.607",
         "agenda_last_published_utc": "2026-11-04T17:36:27.53"
@@ -1758,7 +1758,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZFbc=",
         "last_modified_utc": "2026-11-04T20:09:13.56",
         "agenda_last_published_utc": "2026-11-04T20:09:13.46"
@@ -1809,11 +1809,79 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "444111",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring agency training and the publication of implementation plans concerning immigration enforcement and cooperation with non-local law enforcement agencies",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78351",
+              "matter_file": "Int 0739-2026",
+              "matter_name": "Requiring agency training and the publication of implementation plans concerning immigration enforcement and cooperation with non-local law enforcement agencies.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444112",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to limiting the circumstances in which a person may be detained by the police department on a civil immigration detainer",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77142",
+              "matter_file": "Int 1077-2026",
+              "matter_name": "Limiting the circumstances in which a person may be detained by the police department on a civil immigration detainer.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444113",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to limiting communication between the department of correction and federal immigration authorities",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77143",
+              "matter_file": "Int 1078-2026",
+              "matter_name": "Limiting communication between the department of correction and federal immigration authorities.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444114",
+            "agenda_number": null,
+            "title": "Resolution calling on the New York State Legislature to pass, and the Governor to sign, A.2689/S.4538, in relation to enacting the building up immigrant legal defense or BUILD Act",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79497",
+              "matter_file": "T2026-2544",
+              "matter_name": "The BUILD Act (A.2689/S.4538).",
+              "matter_type": "Resolution",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "observed_items": 1,
-        "published_items": 1,
-        "search_text": "Oversight - Examining the Current State of Immigration Enforcement Activity in New York City. | T2026-2724"
+        "observed_items": 5,
+        "published_items": 5,
+        "search_text": "Oversight - Examining the Current State of Immigration Enforcement Activity in New York City. | T2026-2724 | A Local Law to amend the administrative code of the city of New York, in relation to requiring agency training and the publication of implementation plans concerning immigration enforcement and cooperation with non-local law enforcement agencies | Requiring agency training and the publication of implementation plans concerning immigration enforcement and cooperation with non-local law enforcement agencies. | Int 0739-2026 | A Local Law to amend the administrative code of the city of New York, in relation to limiting the circumstances in which a person may be detained by the police department on a civil immigration detainer | Limiting the circumstances in which a person may be detained by the police department on a civil immigration detainer. | Int 1077-2026 | A Local Law to amend the administrative code of the city of New York, in relation to limiting communication between the department of correction and federal immigration authorities | Limiting communication between the department of correction and federal immigration authorities. | Int 1078-2026 | Resolution calling on the New York State Legislature to pass, and the Governor to sign, A.2689/S.4538, in relation to enacting the building up immigrant legal defense or BUILD Act | The BUILD Act (A.2689/S.4538). | T2026-2544"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -1822,10 +1890,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
-        "row_version": "AAAAAOhUimI=",
-        "last_modified_utc": "2026-10-26T15:28:18.293",
-        "agenda_last_published_utc": "2026-10-26T15:28:18.137"
+        "observed_at": "2026-11-09T21:46:24.939Z",
+        "row_version": "AAAAAOhZUcQ=",
+        "last_modified_utc": "2026-11-09T15:48:44.633",
+        "agenda_last_published_utc": "2026-11-09T15:48:44.593"
       }
     },
     {
@@ -1914,7 +1982,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZBig=",
         "last_modified_utc": "2026-11-05T20:44:27.54",
         "agenda_last_published_utc": "2026-11-05T20:44:27.513"
@@ -2006,7 +2074,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZBlE=",
         "last_modified_utc": "2026-11-05T20:45:20.31",
         "agenda_last_published_utc": "2026-11-05T20:45:20.283"
@@ -2081,7 +2149,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZHrA=",
         "last_modified_utc": "2026-11-06T18:29:05.373",
         "agenda_last_published_utc": "2026-11-06T18:29:05.217"
@@ -2156,7 +2224,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZHtw=",
         "last_modified_utc": "2026-11-06T18:29:57.323",
         "agenda_last_published_utc": "2026-11-06T18:29:57.293"
@@ -2214,7 +2282,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOg7rEc=",
         "last_modified_utc": "2026-06-01T17:26:53.917",
         "agenda_last_published_utc": "2026-06-01T17:26:53.87"
@@ -2295,7 +2363,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhVn+8=",
         "last_modified_utc": "2026-10-30T15:05:48.127",
         "agenda_last_published_utc": "2026-10-30T15:05:48.033"
@@ -2376,7 +2444,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhYwak=",
         "last_modified_utc": "2026-11-04T16:40:28.947",
         "agenda_last_published_utc": "2026-11-04T16:40:28.883"
@@ -2440,7 +2508,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhYlTc=",
         "last_modified_utc": "2026-11-02T15:55:57.52",
         "agenda_last_published_utc": "2026-11-02T15:55:57.473"
@@ -2719,7 +2787,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhY1So=",
         "last_modified_utc": "2026-11-04T20:33:39.213",
         "agenda_last_published_utc": "2026-11-04T20:33:39.2"
@@ -2998,7 +3066,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhY1V0=",
         "last_modified_utc": "2026-11-04T20:34:07.923",
         "agenda_last_published_utc": "2026-11-04T20:34:07.89"
@@ -3073,7 +3141,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhVhXM=",
         "last_modified_utc": "2026-10-29T18:48:49.15",
         "agenda_last_published_utc": "2026-10-29T18:48:49.007"
@@ -3148,7 +3216,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhVhXQ=",
         "last_modified_utc": "2026-10-29T18:51:58.91",
         "agenda_last_published_utc": "2026-10-29T18:51:58.747"
@@ -3280,7 +3348,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZNI0=",
         "last_modified_utc": "2026-11-06T21:06:05.353",
         "agenda_last_published_utc": "2026-11-06T21:06:05.253"
@@ -3338,7 +3406,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOg7q+w=",
         "last_modified_utc": "2026-06-01T17:23:34.313",
         "agenda_last_published_utc": "2026-06-01T17:23:34.267"
@@ -3374,15 +3442,66 @@
         "status": "items",
         "items": [
           {
-            "agenda_item_id": "443851",
+            "agenda_item_id": "444130",
             "agenda_number": null,
-            "title": "AGENDA TO BE ANNOUNCED",
+            "title": "Resolution to determine a 0.3 percent increase of the current base proportion of any class of real property over the adjusted base proportion of the immediately preceding year for purposes of determining the current base proportion for Fiscal 2027",
             "body_text": null,
             "matter": {
-              "matter_id": "76954",
-              "matter_file": "T2026-0003",
-              "matter_name": "AGENDA TO BE ANNOUNCED",
-              "matter_type": "N/A",
+              "matter_id": "79765",
+              "matter_file": "T2026-2812",
+              "matter_name": "Determine a 0.3 percent increase of the current base proportion of any class of real property over the adjusted base proportion of the immediately preceding year for purposes of determining the current base proportion for Fiscal 2027.",
+              "matter_type": "Resolution",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444131",
+            "agenda_number": null,
+            "title": "Resolution to amend and restate the resolution computing and certifying base percentage, current percentage, and current base proportion of each class of real property for Fiscal 2027 to the State Board of Real Property Tax Services pursuant to Section 1803-a of the Real Property Tax Law",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79766",
+              "matter_file": "T2026-2813",
+              "matter_name": "Amend the resolution computing and certifying base percentage, current percentage, and current base proportion of each class of real property for Fiscal 2027 to the State Board of Real Property Tax Services pursuant to Section 1803-a of the Real Property.",
+              "matter_type": "Resolution",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444132",
+            "agenda_number": null,
+            "title": "Resolution to amend and restate the resolution computing and certifying adjusted base proportion of each class of real property for Fiscal 2027 to the State Board of Real Property Tax Services pursuant to Section 1803-a of the Real Property Tax Law",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79767",
+              "matter_file": "T2026-2814",
+              "matter_name": "Amend and restate the resolution computing and certifying adjusted base proportion of each class of real property for Fiscal 2027 to the State Board of Real Property Tax Services pursuant to Section 1803-a of the Real Property Tax Law.",
+              "matter_type": "Resolution",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444133",
+            "agenda_number": null,
+            "title": "Resolution amending and restating the resolution to provide the amounts necessary for the support of the government of the City of New York and the counties therein and for the payment of indebtedness thereof, for the Fiscal Year beginning on July 1, 2026 and ending on June 30, 2027, by the levy of taxes on the real property in the City of New York, in accordance with the provisions of the constitution of the State of New York, the Real Property Law and the Charter of the City of New York. The amounts necessary for the support of the government of the City of New York and the counties therein and for the payment of indebtedness thereof, for the fiscal year beginning on July 1, 2026 and ending on June 20, 2027, by the levy of taxes on the real property in the City of New York, in accordance with the provisions of the constitution of the State of New York, the Real Property Tax Law and the Charter of the City of New York.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79768",
+              "matter_file": "T2026-2815",
+              "matter_name": "Amending the resolution to provide the amounts necessary for the support of the government of the City of New York and the counties therein and for the payment of indebtedness thereof, for the Fiscal Year from July 1, 2026 through June 30, 2026.",
+              "matter_type": "Resolution",
               "matter_status": "Introduced"
             },
             "action": {
@@ -3391,9 +3510,9 @@
             }
           }
         ],
-        "observed_items": 1,
-        "published_items": 1,
-        "search_text": "AGENDA TO BE ANNOUNCED | T2026-0003"
+        "observed_items": 4,
+        "published_items": 4,
+        "search_text": "Resolution to determine a 0.3 percent increase of the current base proportion of any class of real property over the adjusted base proportion of the immediately preceding year for purposes of determining the current base proportion for Fiscal 2027 | Determine a 0.3 percent increase of the current base proportion of any class of real property over the adjusted base proportion of the immediately preceding year for purposes of determining the current base proportion for Fiscal 2027. | T2026-2812 | Resolution to amend and restate the resolution computing and certifying base percentage, current percentage, and current base proportion of each class of real property for Fiscal 2027 to the State Board of Real Property Tax Services pursuant to Section 1803-a of the Real Property Tax Law | Amend the resolution computing and certifying base percentage, current percentage, and current base proportion of each class of real property for Fiscal 2027 to the State Board of Real Property Tax Services pursuant to Section 1803-a of the Real Property. | T2026-2813 | Resolution to amend and restate the resolution computing and certifying adjusted base proportion of each class of real property for Fiscal 2027 to the State Board of Real Property Tax Services pursuant to Section 1803-a of the Real Property Tax Law | Amend and restate the resolution computing and certifying adjusted base proportion of each class of real property for Fiscal 2027 to the State Board of Real Property Tax Services pursuant to Section 1803-a of the Real Property Tax Law. | T2026-2814 | Resolution amending and restating the resolution to provide the amounts necessary for the support of the government of the City of New York and the counties therein and for the payment of indebtedness thereof, for the Fiscal Year beginning on July 1, 2026 and ending on June 30, 2027, by the levy of taxes on the real property in the City of New York, in accordance with the provisions of the constitution of the State of New York, the Real Property Law and the Charter of the City of New York. The amounts necessary for the support of the government of the City of New York and the counties therein and for the payment of indebtedness thereof, for the fiscal year beginning on July 1, 2026 and ending on June 20, 2027, by the levy of taxes on the real property in the City of New York, in accordance with the provisions of the constitution of the State of New York, the Real Property Tax Law and the Charter of the City of New York. | Amending the resolution to provide the amounts necessary for the support of the government of the City of New York and the counties therein and for the payment of indebtedness thereof, for the Fiscal Year from July 1, 2026 through June 30, 2026. | T2026-2815"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -3402,10 +3521,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
-        "row_version": "AAAAAOhVmYA=",
-        "last_modified_utc": "2026-10-30T13:44:57.66",
-        "agenda_last_published_utc": "2026-10-30T13:44:57.547"
+        "observed_at": "2026-11-09T21:46:24.939Z",
+        "row_version": "AAAAAOhZd5U=",
+        "last_modified_utc": "2026-11-09T19:41:04.35",
+        "agenda_last_published_utc": "2026-11-09T19:41:04.227"
       }
     },
     {
@@ -3466,7 +3585,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhY96Q=",
         "last_modified_utc": "2026-11-05T18:11:28.15",
         "agenda_last_published_utc": "2026-11-05T18:11:27.863"
@@ -3564,7 +3683,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhZEPg=",
         "last_modified_utc": "2026-11-06T14:34:28.82",
         "agenda_last_published_utc": "2026-11-06T14:34:28.68"
@@ -3628,7 +3747,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhY7zM=",
         "last_modified_utc": "2026-11-05T16:21:54.913",
         "agenda_last_published_utc": "2026-11-05T16:21:54.81"
@@ -3673,7 +3792,7 @@
               "matter_file": "LU 0148-2026",
               "matter_name": "Zoning, 108-05 68th Road Rezoning, Queens (C 260234 ZMQ).",
               "matter_type": "Land Use Application",
-              "matter_status": "Committee"
+              "matter_status": "Laid Over in Committee"
             },
             "action": {
               "name": null,
@@ -3690,7 +3809,7 @@
               "matter_file": "LU 0149-2026",
               "matter_name": "Zoning, 108-05 68th Road Rezoning, Queens (N 260235 ZRQ).",
               "matter_type": "Land Use Application",
-              "matter_status": "Committee"
+              "matter_status": "Laid Over in Committee"
             },
             "action": {
               "name": null,
@@ -3707,7 +3826,7 @@
               "matter_file": "LU 0150-2026",
               "matter_name": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (C 260184 ZMQ).",
               "matter_type": "Land Use Application",
-              "matter_status": "Committee"
+              "matter_status": "Laid Over in Committee"
             },
             "action": {
               "name": null,
@@ -3724,7 +3843,7 @@
               "matter_file": "LU 0151-2026",
               "matter_name": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (N 260185 ZRQ).",
               "matter_type": "Land Use Application",
-              "matter_status": "Committee"
+              "matter_status": "Laid Over in Committee"
             },
             "action": {
               "name": null,
@@ -3741,7 +3860,7 @@
               "matter_file": "LU 0152-2026",
               "matter_name": "Zoning, South Richmond Designated Open Space Amendment, Staten Island (N 260362 ZRR).",
               "matter_type": "Land Use Application",
-              "matter_status": "Committee"
+              "matter_status": "Laid Over in Committee"
             },
             "action": {
               "name": null,
@@ -3794,7 +3913,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhY/NU=",
         "last_modified_utc": "2026-11-05T19:31:43.05",
         "agenda_last_published_utc": "2026-11-05T19:31:42.97"
@@ -3839,7 +3958,7 @@
               "matter_file": "LU 0148-2026",
               "matter_name": "Zoning, 108-05 68th Road Rezoning, Queens (C 260234 ZMQ).",
               "matter_type": "Land Use Application",
-              "matter_status": "Committee"
+              "matter_status": "Laid Over in Committee"
             },
             "action": {
               "name": null,
@@ -3856,7 +3975,7 @@
               "matter_file": "LU 0149-2026",
               "matter_name": "Zoning, 108-05 68th Road Rezoning, Queens (N 260235 ZRQ).",
               "matter_type": "Land Use Application",
-              "matter_status": "Committee"
+              "matter_status": "Laid Over in Committee"
             },
             "action": {
               "name": null,
@@ -3873,7 +3992,7 @@
               "matter_file": "LU 0150-2026",
               "matter_name": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (C 260184 ZMQ).",
               "matter_type": "Land Use Application",
-              "matter_status": "Committee"
+              "matter_status": "Laid Over in Committee"
             },
             "action": {
               "name": null,
@@ -3890,7 +4009,7 @@
               "matter_file": "LU 0151-2026",
               "matter_name": "Zoning, 100-12 Queens Boulevard Rezoning, Queens (N 260185 ZRQ).",
               "matter_type": "Land Use Application",
-              "matter_status": "Committee"
+              "matter_status": "Laid Over in Committee"
             },
             "action": {
               "name": null,
@@ -3907,7 +4026,7 @@
               "matter_file": "LU 0152-2026",
               "matter_name": "Zoning, South Richmond Designated Open Space Amendment, Staten Island (N 260362 ZRR).",
               "matter_type": "Land Use Application",
-              "matter_status": "Committee"
+              "matter_status": "Laid Over in Committee"
             },
             "action": {
               "name": null,
@@ -3960,7 +4079,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
+        "observed_at": "2026-11-09T21:46:24.939Z",
         "row_version": "AAAAAOhY/gE=",
         "last_modified_utc": "2026-11-05T19:35:37.673",
         "agenda_last_published_utc": "2026-11-05T19:35:37.533"
@@ -4083,14 +4202,14 @@
           {
             "agenda_item_id": "443924",
             "agenda_number": null,
-            "title": "Martha King, Council candidate for appointment to the New York City Board of Corrections, pursuant to Section 626 of the Charter.",
+            "title": "Martha King, Council candidate for appointment to the New York City Board of Corrections, pursuant to Section 626 of the New York City Charter.",
             "body_text": null,
             "matter": {
               "matter_id": "79592",
               "matter_file": "T2026-2639",
               "matter_name": "Martha King, Board of Corrections.",
               "matter_type": "Communication",
-              "matter_status": "Committee"
+              "matter_status": "Introduced"
             },
             "action": {
               "name": null,
@@ -4100,7 +4219,7 @@
         ],
         "observed_items": 6,
         "published_items": 6,
-        "search_text": "Communication from the Mayor – Submitting the name Anthony Crowell to the Council for its advice and consent regarding his reappointment as a member of the City Planning Commission, pursuant to Section 31 of the City Charter. | Anthony Crowell, City Planning Commission. | M 0093-2026 | Communication from the Mayor – Submitting the name Kenneth Knuckles to the Council for its advice and consent regarding his reappointment as a member and Vice-Chair of the City Planning Commission, pursuant to Section 31 of the City Charter. | Kenneth Knuckles, City Planning Commission | M 0094-2026 | Communication from the Mayor – Submitting the name Julie Stein to the Council for its advice and consent regarding her appointment as a member of the City Planning Commission, pursuant to Section 31 of the City Charter. | Julie Stein, City Planning Commission. | M 0095-2026 | Communication from the Mayor – Submitting the name Margaret Anadu to the Council for its advice and consent regarding her appointment as a member of the City Planning Commission, pursuant to Section 31 of the City Charter. | Margaret Anadu, City Planning Commission. | M 0096-2026 | Communication from the Mayor – Submitting the name Meenakshi Srinivasan to the Council for its advice and consent regarding her appointment as a member of the City Planning Commission, pursuant to Section 31 of the City Charter. | Meenakshi Srinivasan, City Planning Commission. | M 0097-2026 | Martha King, Council candidate for appointment to the New York City Board of Corrections, pursuant to Section 626 of the Charter. | Martha King, Board of Corrections. | T2026-2639"
+        "search_text": "Communication from the Mayor – Submitting the name Anthony Crowell to the Council for its advice and consent regarding his reappointment as a member of the City Planning Commission, pursuant to Section 31 of the City Charter. | Anthony Crowell, City Planning Commission. | M 0093-2026 | Communication from the Mayor – Submitting the name Kenneth Knuckles to the Council for its advice and consent regarding his reappointment as a member and Vice-Chair of the City Planning Commission, pursuant to Section 31 of the City Charter. | Kenneth Knuckles, City Planning Commission | M 0094-2026 | Communication from the Mayor – Submitting the name Julie Stein to the Council for its advice and consent regarding her appointment as a member of the City Planning Commission, pursuant to Section 31 of the City Charter. | Julie Stein, City Planning Commission. | M 0095-2026 | Communication from the Mayor – Submitting the name Margaret Anadu to the Council for its advice and consent regarding her appointment as a member of the City Planning Commission, pursuant to Section 31 of the City Charter. | Margaret Anadu, City Planning Commission. | M 0096-2026 | Communication from the Mayor – Submitting the name Meenakshi Srinivasan to the Council for its advice and consent regarding her appointment as a member of the City Planning Commission, pursuant to Section 31 of the City Charter. | Meenakshi Srinivasan, City Planning Commission. | M 0097-2026 | Martha King, Council candidate for appointment to the New York City Board of Corrections, pursuant to Section 626 of the New York City Charter. | Martha King, Board of Corrections. | T2026-2639"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -4109,9 +4228,9 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-07T13:54:16.007Z",
-        "row_version": "AAAAAOhYsfo=",
-        "last_modified_utc": "2026-11-02T21:02:56.903",
+        "observed_at": "2026-11-09T21:46:24.939Z",
+        "row_version": "AAAAAOhZblE=",
+        "last_modified_utc": "2026-11-09T18:38:51.75",
         "agenda_last_published_utc": "2026-11-02T21:02:56.783"
       }
     }

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-11-08T14:20:41.043Z",
+  "generated_at": "2026-11-09T21:37:48.219Z",
   "source_vintages": {
-    "default_open": "2026-11-08T14:20:41.043Z",
+    "default_open": "2026-11-09T21:37:48.219Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-11-04T04:22:02.123Z"
   },

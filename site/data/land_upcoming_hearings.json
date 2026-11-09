@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-08T14:20:29.352Z",
+  "generated_at": "2026-11-09T21:37:42.088Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,24 +9,24 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-11-08",
+    "today": "2026-11-09",
     "projects_listed": 234,
     "projects_fetched": 234,
     "projects_failed": 0,
     "unavailable_project_ids": [],
-    "hearings_extracted": 379,
-    "disposition_hearings_extracted": 67,
+    "hearings_extracted": 380,
+    "disposition_hearings_extracted": 68,
     "milestone_hearings_extracted": 312,
     "disposition_upcoming_count": 1,
-    "milestone_upcoming_count": 160,
-    "incremental_milestone_count": 160,
+    "milestone_upcoming_count": 161,
+    "incremental_milestone_count": 161,
     "accepted_milestone_classes": {
       "cpc_pre_hearing_review_session": 85,
-      "cpc_public_hearing": 75
+      "cpc_public_hearing": 76
     },
     "published_meeting_dates_evaluated": 823,
     "hearing_shaped_candidates_reviewed": 799,
-    "upcoming_count": 161,
+    "upcoming_count": 162,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -1016,46 +1016,6 @@
       "community_district": "Q08",
       "cc_district": "24",
       "milestone_id": "85f1d0c9-83f6-ed11-a7c6-001dd806a1fd",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-11-30",
-      "hearing_at": "2026-11-30T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-11-30T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2023K0148",
-      "project_name": "460 Troutman Street",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2023K0148",
-      "borough": "Brooklyn",
-      "community_district": "K04",
-      "cc_district": "34",
-      "milestone_id": "ef55d029-1f70-ed11-9562-001dd806a702",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
@@ -3528,6 +3488,46 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
+      "project_id": "2024K0233",
+      "project_name": "17-21 Wharton Place Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2024K0233",
+      "borough": "Brooklyn",
+      "community_district": "K05",
+      "cc_district": "37",
+      "milestone_id": "37616540-6932-ef11-840a-001dd8306c80",
+      "milestone_title": "City Planning Commission Review",
+      "milestone_source_title": "CPC Public Meeting - Public Hearing",
+      "event_class": "cpc_public_hearing",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-12-12",
+      "hearing_at": "2026-12-12T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-12-12T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "CPC Public Meeting - Public Hearing"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_public_hearing"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
       "project_id": "2024K0294",
       "project_name": "Fulton Park Redevelopment",
       "public_status": "Filed",
@@ -4856,6 +4856,46 @@
       "community_district": "X07",
       "cc_district": "11",
       "milestone_id": "45cb3580-cb1e-ef11-9f89-001dd830760a",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-12-14",
+      "hearing_at": "2026-12-14T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-12-14T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2023K0148",
+      "project_name": "460 Troutman Street",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2023K0148",
+      "borough": "Brooklyn",
+      "community_district": "K04",
+      "cc_district": "34",
+      "milestone_id": "ef55d029-1f70-ed11-9562-001dd806a702",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",

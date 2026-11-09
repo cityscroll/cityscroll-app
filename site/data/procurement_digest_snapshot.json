@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_digest_snapshot.v1",
-  "generated_at": "2026-11-08T14:07:52.584Z",
-  "row_count": 7909,
+  "generated_at": "2026-11-09T21:24:05.881Z",
+  "row_count": 7914,
   "rows": [
     {
       "procurement_id": "procurement:contract:8000000863",
@@ -109986,6 +109986,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT104020273043522",
+      "digest_id": "procurement:contract:CT104020273043522",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273043522",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "agency_name": "Department of Education",
+      "vendor_name": "ENRICHEDNYC LLC",
+      "contract_amount": 25000,
+      "start_date": "2026-11-07",
+      "pin": null,
+      "contract_id": "CT104020273043522",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT104020273043522:checkbook_contracts:contract:registered:CT104020273043522:ENRICHEDNYC LLC:prime-vendor:2026-11-07:registered",
+          "state": "registered",
+          "effective_at": "2026-11-07",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT104020273043522:ENRICHEDNYC LLC:prime-vendor:2026-11-07",
+          "source_receipt_ref": "materialized:contract:registered:CT104020273043522:ENRICHEDNYC LLC:prime-vendor:2026-11-07",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT104020273043522"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273043842",
       "digest_id": "procurement:contract:CT104020273043842",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273043842",
@@ -159452,6 +159487,76 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT105720278803557",
+      "digest_id": "procurement:contract:CT105720278803557",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105720278803557",
+      "short_title": "Portable Multi-Gas Detector and Various Gas Detector Parts",
+      "agency_name": "Fire Department",
+      "vendor_name": "WINGGLEE LLC",
+      "contract_amount": 108294,
+      "start_date": "2026-11-05",
+      "pin": "05727W0020001",
+      "contract_id": "CT105720278803557",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT105720278803557:checkbook_contracts:contract:registered:CT105720278803557:WINGGLEE LLC:prime-vendor:2026-11-05:registered",
+          "state": "registered",
+          "effective_at": "2026-11-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT105720278803557:WINGGLEE LLC:prime-vendor:2026-11-05",
+          "source_receipt_ref": "materialized:contract:registered:CT105720278803557:WINGGLEE LLC:prime-vendor:2026-11-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT105720278803557"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT105720278803611",
+      "digest_id": "procurement:contract:CT105720278803611",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105720278803611",
+      "short_title": "Purchase of BANCE Motorized Rail Cart",
+      "agency_name": "Fire Department",
+      "vendor_name": "WINGGLEE LLC",
+      "contract_amount": 62250,
+      "start_date": "2026-11-04",
+      "pin": "05727W0024001",
+      "contract_id": "CT105720278803611",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT105720278803611:checkbook_contracts:contract:registered:CT105720278803611:WINGGLEE LLC:prime-vendor:2026-11-04:registered",
+          "state": "registered",
+          "effective_at": "2026-11-04",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT105720278803611:WINGGLEE LLC:prime-vendor:2026-11-04",
+          "source_receipt_ref": "materialized:contract:registered:CT105720278803611:WINGGLEE LLC:prime-vendor:2026-11-04",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT105720278803611"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT106820218801917",
       "digest_id": "procurement:contract:CT106820218801917",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT106820218801917",
@@ -203202,6 +203307,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT182620278803700",
+      "digest_id": "procurement:contract:CT182620278803700",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT182620278803700",
+      "short_title": "BWT Wet Cell Batteries 7030479X",
+      "agency_name": "Department of Environmental Protection",
+      "vendor_name": "PORTLAND WILLIAMS LLC",
+      "contract_amount": 38310,
+      "start_date": "2026-11-05",
+      "pin": "82627W0017001",
+      "contract_id": "CT182620278803700",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT182620278803700:checkbook_contracts:contract:registered:CT182620278803700:PORTLAND WILLIAMS LLC:prime-vendor:2026-11-05:registered",
+          "state": "registered",
+          "effective_at": "2026-11-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT182620278803700:PORTLAND WILLIAMS LLC:prime-vendor:2026-11-05",
+          "source_receipt_ref": "materialized:contract:registered:CT182620278803700:PORTLAND WILLIAMS LLC:prime-vendor:2026-11-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT182620278803700"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT182720261407924",
       "digest_id": "procurement:contract:CT182720261407924",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT182720261407924",
@@ -204912,6 +205052,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT184120278803604:RANGAM CONSULTANTS INC:prime-vendor:2026-10-29",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184120278803604"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT184120278803671",
+      "digest_id": "procurement:contract:CT184120278803671",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184120278803671",
+      "short_title": "Maintenance, Repairs, & Supplies for Sign Mfg. Equipment",
+      "agency_name": "Department of Transportation",
+      "vendor_name": "Dependable Office Supplies, Inc.",
+      "contract_amount": 500000,
+      "start_date": "2026-11-04",
+      "pin": "84127W0013001",
+      "contract_id": "CT184120278803671",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT184120278803671:checkbook_contracts:contract:registered:CT184120278803671:DEPENDABLE OFFICE SUPPLIES, INC.:prime-vendor:2026-11-04:registered",
+          "state": "registered",
+          "effective_at": "2026-11-04",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT184120278803671:DEPENDABLE OFFICE SUPPLIES, INC.:prime-vendor:2026-11-04",
+          "source_receipt_ref": "materialized:contract:registered:CT184120278803671:DEPENDABLE OFFICE SUPPLIES, INC.:prime-vendor:2026-11-04",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184120278803671"
         }
       ],
       "type_of_notice_description": null
@@ -234947,6 +235122,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT184620278803728",
+      "digest_id": "procurement:contract:CT184620278803728",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803728",
+      "short_title": "MNOPS-Supplies to Make Playground Repairs",
+      "agency_name": "Department of Parks and Recreation",
+      "vendor_name": "PLAYSITES PLUS SURFACES INC",
+      "contract_amount": 7335,
+      "start_date": "2026-11-06",
+      "pin": "84627C0285001",
+      "contract_id": "CT184620278803728",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT184620278803728:checkbook_contracts:contract:registered:CT184620278803728:PLAYSITES PLUS SURFACES INC:prime-vendor:2026-11-06:registered",
+          "state": "registered",
+          "effective_at": "2026-11-06",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620278803728:PLAYSITES PLUS SURFACES INC:prime-vendor:2026-11-06",
+          "source_receipt_ref": "materialized:contract:registered:CT184620278803728:PLAYSITES PLUS SURFACES INC:prime-vendor:2026-11-06",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620278803728"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT185020228802305",
       "digest_id": "procurement:contract:CT185020228802305",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185020228802305",
@@ -239042,41 +239252,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT185620268805629:SHI INTERNATIONAL CORP:prime-vendor:2026-03-04",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT185620268805629"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT185620268805661",
-      "digest_id": "procurement:contract:CT185620268805661",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT185620268805661",
-      "short_title": "NAE Tenant Rep #3",
-      "agency_name": "Department of Citywide Administrative Services",
-      "vendor_name": "CBRE INC",
-      "contract_amount": 1,
-      "start_date": "2026-04-08",
-      "pin": "85626N0006001",
-      "contract_id": "CT185620268805661",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT185620268805661:checkbook_contracts:contract:registered:CT185620268805661:CBRE INC:prime-vendor:2026-04-08:registered",
-          "state": "registered",
-          "effective_at": "2026-04-08",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT185620268805661:CBRE INC:prime-vendor:2026-04-08",
-          "source_receipt_ref": "materialized:contract:registered:CT185620268805661:CBRE INC:prime-vendor:2026-04-08",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT185620268805661"
         }
       ],
       "type_of_notice_description": null

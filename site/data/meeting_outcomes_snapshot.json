@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-11-08T08:00:47.273Z",
+  "generated_at": "2026-11-09T08:01:12.734Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 310,
-  "present_count": 17,
-  "absent_count": 293,
+  "record_count": 306,
+  "present_count": 15,
+  "absent_count": 291,
   "by_notice": {
     "20261006004": {
       "request_id": "20261006004",
@@ -8440,158 +8440,6 @@
         }
       ]
     },
-    "20260422047": {
-      "request_id": "20260422047",
-      "snapshot_state": "present",
-      "event": {
-        "event_id": "22396",
-        "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
-        "date": "2026-05-13",
-        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-        "documents": [
-          {
-            "name": "Agenda",
-            "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22396_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-05-13_Committee_Agenda.pdf"
-          },
-          {
-            "name": "Minutes",
-            "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22396_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-05-13_Meeting_Minutes.pdf"
-          }
-        ]
-      },
-      "matters": [
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "item_actions": [
-            {
-              "agenda_item_id": "437839",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "agenda_item_id": "438053",
-              "action": "Laid Over by Subcommittee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            }
-          ],
-          "matter_id": "78758",
-          "matter_file": "LU 0064-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78758",
-          "title": "Landmarks, 351 Powers Avenue, Bronx (G 260001 XAX).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "item_actions": [
-            {
-              "agenda_item_id": "437840",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "agenda_item_id": "438054",
-              "action": "Laid Over by Subcommittee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            }
-          ],
-          "matter_id": "78759",
-          "matter_file": "LU 0065-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78759",
-          "title": "Landmarks, 351 Powers Avenue, Bronx (HPD 260001 PPX).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        }
-      ]
-    },
-    "20260430007": {
-      "request_id": "20260430007",
-      "snapshot_state": "present",
-      "event": {
-        "event_id": "22396",
-        "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
-        "date": "2026-05-13",
-        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22396&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-        "documents": [
-          {
-            "name": "Agenda",
-            "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22396_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-05-13_Committee_Agenda.pdf"
-          },
-          {
-            "name": "Minutes",
-            "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22396_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-05-13_Meeting_Minutes.pdf"
-          }
-        ]
-      },
-      "matters": [
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "item_actions": [
-            {
-              "agenda_item_id": "437839",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "agenda_item_id": "438053",
-              "action": "Laid Over by Subcommittee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            }
-          ],
-          "matter_id": "78758",
-          "matter_file": "LU 0064-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78758",
-          "title": "Landmarks, 351 Powers Avenue, Bronx (G 260001 XAX).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Laid Over by Subcommittee"
-          ],
-          "documents": [],
-          "item_actions": [
-            {
-              "agenda_item_id": "437840",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "agenda_item_id": "438054",
-              "action": "Laid Over by Subcommittee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            }
-          ],
-          "matter_id": "78759",
-          "matter_file": "LU 0065-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78759",
-          "title": "Landmarks, 351 Powers Avenue, Bronx (HPD 260001 PPX).",
-          "outcome": "Laid Over by Subcommittee",
-          "votes": null
-        }
-      ]
-    },
     "20261027004": {
       "request_id": "20261027004",
       "snapshot_state": "absent"
@@ -9736,6 +9584,14 @@
       "request_id": "20260414033",
       "snapshot_state": "absent"
     },
+    "20260422047": {
+      "request_id": "20260422047",
+      "snapshot_state": "absent"
+    },
+    "20260430007": {
+      "request_id": "20260430007",
+      "snapshot_state": "absent"
+    },
     "20260422037": {
       "request_id": "20260422037",
       "snapshot_state": "absent"
@@ -9746,22 +9602,6 @@
     },
     "20260407014": {
       "request_id": "20260407014",
-      "snapshot_state": "absent"
-    },
-    "20260428004": {
-      "request_id": "20260428004",
-      "snapshot_state": "absent"
-    },
-    "20260505041": {
-      "request_id": "20260505041",
-      "snapshot_state": "absent"
-    },
-    "20260106031": {
-      "request_id": "20260106031",
-      "snapshot_state": "absent"
-    },
-    "20260421001": {
-      "request_id": "20260421001",
       "snapshot_state": "absent"
     }
   }

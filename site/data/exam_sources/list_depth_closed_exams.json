@@ -10,7 +10,7 @@
       "https://data.cityofnewyork.us/d/4ptz-hmtc",
       "https://data.cityofnewyork.us/d/vx8i-nprf"
     ],
-    "fetched_at": "2026-11-08",
+    "fetched_at": "2026-11-09",
     "refresh_cadence": "Rebuild when annual schedule or active-list aggregates refresh; closed exams keep list-size depth after they leave the current FY snapshot.",
     "stale_after_days": 95,
     "role": "Supplements the current FY annual snapshot so list_aggregate joins land on real closed exams (open 7xxx series has 0% list presence)."

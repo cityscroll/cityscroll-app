@@ -16,7 +16,7 @@
     "mandate_meeting": {
       "totals": {
         "public_inferred": 0,
-        "evidence_only": 60
+        "evidence_only": 61
       },
       "denominators": {
         "eligible_left_rows": 19,
@@ -24,11 +24,11 @@
         "pre_route_pairs": 2280
       },
       "by_tier": {
-        "evidence_only": 60
+        "evidence_only": 61
       },
       "by_reason": {
-        "matter_body_subject": 60,
-        "temporal": 42
+        "matter_body_subject": 61,
+        "temporal": 44
       },
       "by_agency": {
         "administration-for-childrens-services": {
@@ -326,10 +326,10 @@
             "pre_route_pairs": 120
           },
           "public_inferred": 0,
-          "evidence_only": 11,
+          "evidence_only": 13,
           "reason_counts": {
-            "matter_body_subject": 11,
-            "temporal": 11
+            "matter_body_subject": 13,
+            "temporal": 13
           }
         },
         "human-resources-administration": {
@@ -562,9 +562,9 @@
             "pre_route_pairs": 120
           },
           "public_inferred": 0,
-          "evidence_only": 14,
+          "evidence_only": 13,
           "reason_counts": {
-            "matter_body_subject": 14
+            "matter_body_subject": 13
           }
         },
         "youth-and-community-development": {
@@ -579,7 +579,7 @@
         }
       },
       "by_source_system": {
-        "city_record": 60
+        "city_record": 61
       }
     },
     "mandate_land_use": {

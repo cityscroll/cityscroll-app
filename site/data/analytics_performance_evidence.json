@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_performance_evidence.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "public_performance_evidence_coverage",
-  "generated_at": "2026-11-08T14:07:52.584Z",
-  "snapshot_date": "2026-11-08",
+  "generated_at": "2026-11-09T21:24:05.881Z",
+  "snapshot_date": "2026-11-09",
   "population_definition": "Registered contracts joined to accepted public performance-evidence passages; no located passage remains explicitly unresolved.",
   "source_coverage": [
     {
@@ -46,6 +46,18 @@
   "absence_scope": "No located evidence means no qualifying passage was found in the declared CityScroll public sources. It does not establish that evidence does not exist, that a vendor failed, or that a service outcome occurred.",
   "coordination_boundary": "Consumes accepted PASSPort evidence rows when supplied; does not duplicate PASSPort acquisition or infer evidence from financial connectivity.",
   "rows": [
+    {
+      "prime_contract_id": "CT104020273043522",
+      "agency": "Department of Education",
+      "prime_vendor": "ENRICHEDNYC LLC",
+      "registration_fiscal_year": 2027,
+      "contract_amount_band": "Under $100,000",
+      "current_registered_amount": 25000,
+      "evidence_state": "no-located-evidence",
+      "evidence_items": [],
+      "unresolved": true,
+      "financial_fact": "registered_contract"
+    },
     {
       "prime_contract_id": "CT101520270000018",
       "agency": "Office of the Comptroller",

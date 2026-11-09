@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.legislative_matter_index.v1",
-  "generated_at": "2026-11-08T08:00:47.273Z",
+  "generated_at": "2026-11-09T08:01:12.734Z",
   "source": {
     "system": "legistar",
     "input_artifact": "site/data/meeting_outcomes_snapshot.json",
@@ -24,18 +24,6 @@
       "matter_id": "78682",
       "matter_ref": "legistar:nyc:matter:78682",
       "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78682",
-      "appearance_count": 1
-    },
-    "78758": {
-      "matter_id": "78758",
-      "matter_ref": "legistar:nyc:matter:78758",
-      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78758",
-      "appearance_count": 1
-    },
-    "78759": {
-      "matter_id": "78759",
-      "matter_ref": "legistar:nyc:matter:78759",
-      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78759",
       "appearance_count": 1
     },
     "78760": {

@@ -5,14 +5,14 @@
     "dataset_id": "vx8i-nprf",
     "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
     "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-    "fetched_at": "2026-11-08",
+    "fetched_at": "2026-11-09",
     "refresh_cadence": "Daily",
     "stale_after_days": 3,
     "privacy": "Per-applicant rows and names are never retained. Only exam-level counts and list dates from group-by."
   },
   "summary": {
-    "distinct_exams": 882,
-    "total_list_rows_sum": 408386,
+    "distinct_exams": 877,
+    "total_list_rows_sum": 406942,
     "latest_established": "2026-11-04"
   },
   "records": [
@@ -201,22 +201,6 @@
       "title_count": 1
     },
     {
-      "exam_number": "1133",
-      "exam_no_raw": "1133",
-      "list_count": 760,
-      "established_date": "2022-11-09",
-      "extension_date": null,
-      "title_count": 1
-    },
-    {
-      "exam_number": "1134",
-      "exam_no_raw": "1134",
-      "list_count": 601,
-      "established_date": "2022-11-09",
-      "extension_date": null,
-      "title_count": 1
-    },
-    {
       "exam_number": "1143",
       "exam_no_raw": "1143",
       "list_count": 177,
@@ -321,14 +305,6 @@
       "title_count": 1
     },
     {
-      "exam_number": "1513",
-      "exam_no_raw": "1513",
-      "list_count": 23,
-      "established_date": "2022-11-09",
-      "extension_date": null,
-      "title_count": 1
-    },
-    {
       "exam_number": "1544",
       "exam_no_raw": "1544",
       "list_count": 72,
@@ -357,14 +333,6 @@
       "exam_no_raw": "1601",
       "list_count": 342,
       "established_date": "2023-02-22",
-      "extension_date": null,
-      "title_count": 1
-    },
-    {
-      "exam_number": "1602",
-      "exam_no_raw": "1602",
-      "list_count": 46,
-      "established_date": "2022-11-09",
       "extension_date": null,
       "title_count": 1
     },
@@ -973,14 +941,6 @@
       "exam_no_raw": "2540",
       "list_count": 9,
       "established_date": "2023-01-04",
-      "extension_date": null,
-      "title_count": 1
-    },
-    {
-      "exam_number": "2541",
-      "exam_no_raw": "2541",
-      "list_count": 14,
-      "established_date": "2022-11-09",
       "extension_date": null,
       "title_count": 1
     },

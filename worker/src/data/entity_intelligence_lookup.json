@@ -3,14 +3,14 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-11-08T14:49:43.458Z",
+  "generated_at": "2026-11-09T21:57:35.642Z",
   "observation_count": 3467,
   "entity_count": 200,
   "multi_domain_count": 33,
   "selection": {
     "strategy": "multi_domain_then_mandate_agency_reserve_then_richness_fill",
     "cap": 200,
-    "candidate_count": 1662,
+    "candidate_count": 1658,
     "reason_counts": {
       "multi_domain": 33,
       "mandate_agency_reserve": 18,
@@ -844,6 +844,72 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "notice:20261104007",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "Spring Creek Phase 5 B",
+              "when": "2026-12-09T10:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20261104007",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#notice/20261104007",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20261104007",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-12-09T10:00:00.000",
+                "input_value": "Housing Preservation and Development"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20261106003",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "Spring Creek Phase 5A",
+              "when": "2026-12-09T10:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20261106003",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#notice/20261106003",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20261106003",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-12-09T10:00:00.000",
+                "input_value": "Housing Preservation and Development"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "notice:20261013025",
               "domain": "meetings",
               "object_kind": "hearing",
@@ -969,72 +1035,6 @@
                 ],
                 "basis": "meetings_agency_name",
                 "observed_at": "2026-11-18T11:00:00.000",
-                "input_value": "Housing Preservation and Development"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20261013024",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "1700 Park Ave",
-              "when": "2026-11-18T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20261013024",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:housing-preservation-and-development",
-              "root_kind": "agency",
-              "href": "#notice/20261013024",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20261013024",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-11-18T11:00:00.000",
-                "input_value": "Housing Preservation and Development"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20261008024",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "511 West 171",
-              "when": "2026-11-10T10:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20261008024",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:housing-preservation-and-development",
-              "root_kind": "agency",
-              "href": "#notice/20261008024",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20261008024",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-11-10T10:00:00.000",
                 "input_value": "Housing Preservation and Development"
               },
               "link_type": "hosts_meeting",
@@ -11701,6 +11701,46 @@
           "layer": "cross_domain_object_link_v2"
         },
         {
+          "type": "hosts_meeting",
+          "from": "notice:20261104007",
+          "to": "agency:id:housing-preservation-and-development",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20261104007",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-12-09T10:00:00.000",
+            "input_value": "Housing Preservation and Development"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20261106003",
+          "to": "agency:id:housing-preservation-and-development",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20261106003",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-12-09T10:00:00.000",
+            "input_value": "Housing Preservation and Development"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "applicant_agency",
           "from": "project:2022M0258",
           "to": "agency:id:housing-preservation-and-development",
@@ -12119,7 +12159,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 2,
         "total_linked_objects": 26,
-        "link_count": 327,
+        "link_count": 329,
         "join_key_link_count": 104,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.7142857142857143
@@ -12144,6 +12184,39 @@
           "gap_class": null,
           "note": null,
           "objects": [
+            {
+              "subject_ref": "contract:CT184120278803671",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "Dependable Office Supplies, Inc.",
+              "when": "2026-11-09",
+              "amount": null,
+              "public_status": null,
+              "pin": "84127W0013001",
+              "contract_id": "CT184120278803671",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:transportation",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:84127W0013001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-09",
+                "input_value": "Department of Transportation"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
             {
               "subject_ref": "contract:CT184120278803604",
               "domain": "money",
@@ -12303,39 +12376,6 @@
                 ],
                 "basis": "money_agency_name",
                 "observed_at": "2021-06-10",
-                "input_value": "Transportation"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20210222115",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "NETWORKING PRODUCTS AND SERVICES",
-              "when": "2021-03-01",
-              "amount": 84774.46,
-              "public_status": null,
-              "pin": "84121W0387001",
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20210222115",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:transportation",
-              "root_kind": "agency",
-              "href": "#notice/20210222115",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:20210222115",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2021-03-01",
                 "input_value": "Transportation"
               },
               "link_type": "published_by_agency",
@@ -15775,6 +15815,78 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT184120278803671",
+          "to": "agency:id:transportation",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84127W0013001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-09",
+            "input_value": "Department of Transportation",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84127W0013001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-09",
+            "input_value": "Department of Transportation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT184120278803671",
+          "to": "pin:84127W0013001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84127W0013001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "84127W0013001",
+            "join_key": "pin",
+            "join_value": "84127W0013001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84127W0013001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "84127W0013001",
+            "join_key": "pin",
+            "join_value": "84127W0013001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CTA184120277201997",
           "to": "agency:id:transportation",
           "method": "agency_canonical_v1",
@@ -17113,26 +17225,6 @@
         },
         {
           "type": "hosts_meeting",
-          "from": "notice:20260826006",
-          "to": "agency:id:transportation",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260826006",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-09-24T11:00:00.000",
-            "input_value": "Transportation"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
           "from": "notice:20260827017",
           "to": "agency:id:transportation",
           "domain": "meetings",
@@ -17454,7 +17546,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 61,
+        "deterministic": 62,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -17466,8 +17558,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 3,
         "total_linked_objects": 19,
-        "link_count": 136,
-        "join_key_link_count": 61,
+        "link_count": 137,
+        "join_key_link_count": 62,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.5714285714285714
       }
@@ -17491,6 +17583,39 @@
           "gap_class": null,
           "note": null,
           "objects": [
+            {
+              "subject_ref": "contract:CT184620278803728",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "PLAYSITES PLUS SURFACES INC",
+              "when": "2026-11-09",
+              "amount": null,
+              "public_status": null,
+              "pin": "84627C0285001",
+              "contract_id": "CT184620278803728",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:parks-and-recreation",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:84627C0285001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-09",
+                "input_value": "Department of Parks and Recreation"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
             {
               "subject_ref": "contract:CT184620278803716",
               "domain": "money",
@@ -17650,39 +17775,6 @@
                 ],
                 "basis": "money_agency_name",
                 "observed_at": "2026-11-06",
-                "input_value": "Department of Parks and Recreation"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT184620278803710",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "GRIFFIN GREENHOUSE SUPPLIES",
-              "when": "2026-11-05",
-              "amount": null,
-              "public_status": null,
-              "pin": "84627C0299001",
-              "contract_id": "CT184620278803710",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:parks-and-recreation",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:84627C0299001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-11-05",
                 "input_value": "Department of Parks and Recreation"
               },
               "link_type": "published_by_agency",
@@ -22853,6 +22945,78 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT184620278803728",
+          "to": "agency:id:parks-and-recreation",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0285001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-09",
+            "input_value": "Department of Parks and Recreation",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0285001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-09",
+            "input_value": "Department of Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT184620278803728",
+          "to": "pin:84627C0285001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0285001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "84627C0285001",
+            "join_key": "pin",
+            "join_value": "84627C0285001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0285001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "84627C0285001",
+            "join_key": "pin",
+            "join_value": "84627C0285001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CTA184620278802884",
           "to": "agency:id:parks-and-recreation",
           "method": "agency_canonical_v1",
@@ -25096,7 +25260,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 98,
+        "deterministic": 99,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -25108,8 +25272,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 3,
         "total_linked_objects": 16,
-        "link_count": 197,
-        "join_key_link_count": 98,
+        "link_count": 199,
+        "join_key_link_count": 99,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.5714285714285714
       }
@@ -49714,10 +49878,10 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "notice:20260810007",
+              "subject_ref": "notice:20260811002",
               "domain": "rules",
               "object_kind": "rule",
-              "label": "DCWP NOH Rules Relating to Amendment of Debt Collectors Rule Effective Date",
+              "label": "DCWP NOA Self-Storage Facilities and Storage Warehouses",
               "when": "2026-08-18T00:00:00.000",
               "amount": null,
               "public_status": null,
@@ -49725,16 +49889,16 @@
               "contract_id": null,
               "document_id": null,
               "project_id": null,
-              "request_id": "20260810007",
+              "request_id": "20260811002",
               "event_id": null,
               "ulurp_numbers": null,
               "bbls": null,
               "root_ref": "agency:id:consumer-and-worker-protection",
               "root_kind": "agency",
-              "href": "#notice/20260810007",
+              "href": "#notice/20260811002",
               "provenance": {
                 "source_system": "city_record",
-                "source_record_id": "city_record:20260810007",
+                "source_record_id": "city_record:20260811002",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -75122,6 +75286,39 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "contract:CT182620278803700",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "PORTLAND WILLIAMS LLC",
+              "when": "2026-11-09",
+              "amount": null,
+              "public_status": null,
+              "pin": "82627W0017001",
+              "contract_id": "CT182620278803700",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:environmental-protection",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:82627W0017001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-09",
+                "input_value": "Department of Environmental Protection"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "contract:CT182620278803543",
               "domain": "money",
               "object_kind": "contract",
@@ -75280,39 +75477,6 @@
                 ],
                 "basis": "money_agency_name",
                 "observed_at": "2026-09-21",
-                "input_value": "Department of Environmental Protection"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT182620278803170",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "NEW YORK WATER ENVIRONMENT ASSOC.",
-              "when": "2026-09-10",
-              "amount": null,
-              "public_status": null,
-              "pin": "82627U0008001",
-              "contract_id": "CT182620278803170",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:environmental-protection",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:82627U0008001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-09-10",
                 "input_value": "Department of Environmental Protection"
               },
               "link_type": "published_by_agency",
@@ -79300,6 +79464,78 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT182620278803700",
+          "to": "agency:id:environmental-protection",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:82627W0017001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-09",
+            "input_value": "Department of Environmental Protection",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:82627W0017001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-09",
+            "input_value": "Department of Environmental Protection"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT182620278803700",
+          "to": "pin:82627W0017001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:82627W0017001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "82627W0017001",
+            "join_key": "pin",
+            "join_value": "82627W0017001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:82627W0017001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "82627W0017001",
+            "join_key": "pin",
+            "join_value": "82627W0017001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:MMA1-826-20248801473",
           "to": "agency:id:environmental-protection",
           "method": "agency_canonical_v1",
@@ -81419,7 +81655,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 86,
+        "deterministic": 87,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -81431,8 +81667,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 4,
         "total_linked_objects": 8,
-        "link_count": 163,
-        "join_key_link_count": 86,
+        "link_count": 165,
+        "join_key_link_count": 87,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.42857142857142855
       }
@@ -100918,6 +101154,72 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "contract:CT105720278803557",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "WINGGLEE LLC",
+              "when": "2026-11-09",
+              "amount": null,
+              "public_status": null,
+              "pin": "05727W0020001",
+              "contract_id": "CT105720278803557",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:fire-department",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:05727W0020001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-09",
+                "input_value": "Fire Department"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "contract:CT105720278803611",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "WINGGLEE LLC",
+              "when": "2026-11-09",
+              "amount": null,
+              "public_status": null,
+              "pin": "05727W0024001",
+              "contract_id": "CT105720278803611",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:fire-department",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:05727W0024001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-09",
+                "input_value": "Fire Department"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "contract:CT105720278803528",
               "domain": "money",
               "object_kind": "contract",
@@ -101043,72 +101345,6 @@
                 ],
                 "basis": "money_agency_name",
                 "observed_at": "2026-06-30",
-                "input_value": "Fire Department"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20211026112",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "057200000974 - ArcFM Solution Software",
-              "when": "2021-11-01",
-              "amount": 692062,
-              "public_status": null,
-              "pin": "05721S0005001",
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20211026112",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:fire-department",
-              "root_kind": "agency",
-              "href": "#notice/20211026112",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:20211026112",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2021-11-01",
-                "input_value": "Fire Department"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20210915118",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "Temporary Personnel Services for Various Titles Renewal #1",
-              "when": "2021-09-21",
-              "amount": 12619947.08,
-              "public_status": null,
-              "pin": "05719B8203KXLR001",
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20210915118",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:fire-department",
-              "root_kind": "agency",
-              "href": "#notice/20210915118",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:20210915118",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2021-09-21",
                 "input_value": "Fire Department"
               },
               "link_type": "published_by_agency",
@@ -104582,6 +104818,150 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT105720278803557",
+          "to": "agency:id:fire-department",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0020001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-09",
+            "input_value": "Fire Department",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0020001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-09",
+            "input_value": "Fire Department"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT105720278803557",
+          "to": "pin:05727W0020001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0020001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "05727W0020001",
+            "join_key": "pin",
+            "join_value": "05727W0020001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0020001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "05727W0020001",
+            "join_key": "pin",
+            "join_value": "05727W0020001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT105720278803611",
+          "to": "agency:id:fire-department",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0024001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-09",
+            "input_value": "Fire Department",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0024001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-09",
+            "input_value": "Fire Department"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT105720278803611",
+          "to": "pin:05727W0024001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0024001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "05727W0024001",
+            "join_key": "pin",
+            "join_value": "05727W0024001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0024001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "05727W0024001",
+            "join_key": "pin",
+            "join_value": "05727W0024001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CTA105720278803100",
           "to": "agency:id:fire-department",
           "method": "agency_canonical_v1",
@@ -105737,7 +106117,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 66,
+        "deterministic": 68,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -105749,8 +106129,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 5,
         "total_linked_objects": 7,
-        "link_count": 124,
-        "join_key_link_count": 66,
+        "link_count": 128,
+        "join_key_link_count": 68,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.2857142857142857
       }
@@ -141237,6 +141617,39 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "contract:CT104020273043522",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "ENRICHEDNYC LLC",
+              "when": "2026-11-07",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT104020273043522",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:education",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:ct:CT104020273043522",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-07",
+                "input_value": "Department of Education"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "contract:CT104020273009032",
               "domain": "money",
               "object_kind": "contract",
@@ -141390,39 +141803,6 @@
               "provenance": {
                 "source_system": "checkbook-contracts",
                 "source_record_id": "checkbook-contracts:ct:CT104020273042672",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-11-06",
-                "input_value": "Department of Education"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT104020273043447",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "True Vision Strategies LLC",
-              "when": "2026-11-06",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020273043447",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:education",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273043447",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -149251,6 +149631,38 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT104020273043522",
+          "to": "agency:id:education",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273043522",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-07",
+            "input_value": "Department of Education",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273043522",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-07",
+            "input_value": "Department of Education"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT104020273043842",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -150435,38 +150847,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020279761025",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761025",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761025",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020279761041",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -150755,38 +151135,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020279761191",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761191",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761191",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020279761193",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -150840,38 +151188,6 @@
           "provenance": {
             "source_system": "checkbook-contracts",
             "source_record_id": "checkbook-contracts:ct:CT104020279761194",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020279761205",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761205",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761205",
             "source_fields": [
               "agency_name"
             ],
@@ -151032,102 +151348,6 @@
           "provenance": {
             "source_system": "checkbook-contracts",
             "source_record_id": "checkbook-contracts:ct:CT104020279761222",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020279761251",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761251",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761251",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020279761265",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761265",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761265",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020279761280",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761280",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761280",
             "source_fields": [
               "agency_name"
             ],
@@ -154656,7 +154876,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 6,
-        "link_count": 400,
+        "link_count": 395,
         "join_key_link_count": 45,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
@@ -187040,6 +187260,39 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "notice:20260819013",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "BOARD MEETINGS",
+              "when": "2026-11-09T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260819013",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:board-meetings",
+              "root_kind": "agency",
+              "href": "#notice/20260819013",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260819013",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-11-09T00:00:00.000",
+                "input_value": "Board Meetings"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "notice:20260819012",
               "domain": "meetings",
               "object_kind": "hearing",
@@ -187198,39 +187451,6 @@
                 ],
                 "basis": "meetings_agency_name",
                 "observed_at": "2026-09-28T00:00:00.000",
-                "input_value": "Board Meetings"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260701029",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "BOARD MEETINGS",
-              "when": "2026-09-21T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260701029",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:board-meetings",
-              "root_kind": "agency",
-              "href": "#notice/20260701029",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260701029",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-09-21T00:00:00.000",
                 "input_value": "Board Meetings"
               },
               "link_type": "hosts_meeting",
@@ -187395,6 +187615,26 @@
             "input_value": "Board Meetings"
           },
           "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260819013",
+          "to": "agency:id:board-meetings",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260819013",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-11-09T00:00:00.000",
+            "input_value": "Board Meetings"
+          },
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "shadow_edges": [],
@@ -187411,7 +187651,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 6,
-        "link_count": 7,
+        "link_count": 8,
         "join_key_link_count": 0,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
@@ -188170,26 +188410,6 @@
         },
         {
           "type": "hosts_meeting",
-          "from": "notice:20260901021",
-          "to": "agency:id:community-boards",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260901021",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-09-09T18:30:00.000",
-            "input_value": "Community Boards"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
           "from": "notice:20260908027",
           "to": "agency:id:community-boards",
           "domain": "meetings",
@@ -188813,7 +189033,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 6,
-        "link_count": 29,
+        "link_count": 28,
         "join_key_link_count": 12,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
@@ -261517,6 +261737,39 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "contract:CT182620278803700",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "PORTLAND WILLIAMS LLC",
+              "when": "2026-11-09",
+              "amount": null,
+              "public_status": null,
+              "pin": "82627W0017001",
+              "contract_id": "CT182620278803700",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:PORTLAND%20WILLIAMS",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:82627W0017001",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2026-11-09",
+                "input_value": "PORTLAND WILLIAMS LLC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
               "subject_ref": "contract:CT182620278803696",
               "domain": "money",
               "object_kind": "contract",
@@ -261675,39 +261928,6 @@
                 ],
                 "basis": "money_vendor_name",
                 "observed_at": "06/01/2022",
-                "input_value": "PORTLAND WILLIAMS LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT1-858-20218801420",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "PORTLAND WILLIAMS LLC",
-              "when": "03/21/2021",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT1-858-20218801420",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:PORTLAND%20WILLIAMS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "passport-public-contracts",
-                "source_record_id": "passport-public-contracts:ct:CT1-858-20218801420",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "03/21/2021",
                 "input_value": "PORTLAND WILLIAMS LLC"
               },
               "link_type": "named_vendor",
@@ -262051,6 +262271,78 @@
         },
         {
           "type": "named_vendor",
+          "from": "contract:CT182620278803700",
+          "to": "vendor:stem:PORTLAND%20WILLIAMS",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:82627W0017001",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-11-09",
+            "input_value": "PORTLAND WILLIAMS LLC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:82627W0017001",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-11-09",
+            "input_value": "PORTLAND WILLIAMS LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT182620278803700",
+          "to": "pin:82627W0017001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:82627W0017001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "82627W0017001",
+            "join_key": "pin",
+            "join_value": "82627W0017001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:82627W0017001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-09",
+            "input_value": "82627W0017001",
+            "join_key": "pin",
+            "join_value": "82627W0017001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "named_vendor",
           "from": "contract:MA1-857-20228807329",
           "to": "vendor:stem:PORTLAND%20WILLIAMS",
           "method": "vendor_stem_v1",
@@ -262360,7 +262652,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 9,
+        "deterministic": 10,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -262372,8 +262664,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 6,
-        "link_count": 16,
-        "join_key_link_count": 9,
+        "link_count": 18,
+        "join_key_link_count": 10,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
       }
@@ -288982,6 +289274,417 @@
         "coverage_rate": 0.14285714285714285
       }
     },
+    "vendor:stem:ENRICHEDNYC": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:ENRICHEDNYC",
+        "id": "stem:ENRICHEDNYC",
+        "stem": "ENRICHEDNYC",
+        "display_name": "ENRICHEDNYC LLC"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "contract:CT104020273043522",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "ENRICHEDNYC LLC",
+              "when": "2026-11-07",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT104020273043522",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:ENRICHEDNYC",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:ct:CT104020273043522",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2026-11-07",
+                "input_value": "ENRICHEDNYC LLC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT104020273044611",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "ENRICHEDNYC LLC",
+              "when": "2026-11-06",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT104020273044611",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:ENRICHEDNYC",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:ct:CT104020273044611",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2026-11-06",
+                "input_value": "ENRICHEDNYC LLC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT104020273039816",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "ENRICHEDNYC LLC",
+              "when": "2026-11-03",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT104020273039816",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:ENRICHEDNYC",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:ct:CT104020273039816",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2026-11-03",
+                "input_value": "ENRICHEDNYC LLC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT104020273039427",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "ENRICHEDNYC LLC",
+              "when": "2026-10-30",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT104020273039427",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:ENRICHEDNYC",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:ct:CT104020273039427",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2026-10-30",
+                "input_value": "ENRICHEDNYC LLC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT104020273033299",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "ENRICHEDNYC LLC",
+              "when": "2026-10-21",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT104020273033299",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:ENRICHEDNYC",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:ct:CT104020273033299",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2026-10-21",
+                "input_value": "ENRICHEDNYC LLC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 5
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "named_vendor",
+          "from": "contract:CT104020273033299",
+          "to": "vendor:stem:ENRICHEDNYC",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273033299",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-10-21",
+            "input_value": "ENRICHEDNYC LLC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273033299",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-10-21",
+            "input_value": "ENRICHEDNYC LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT104020273039427",
+          "to": "vendor:stem:ENRICHEDNYC",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273039427",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-10-30",
+            "input_value": "ENRICHEDNYC LLC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273039427",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-10-30",
+            "input_value": "ENRICHEDNYC LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT104020273039816",
+          "to": "vendor:stem:ENRICHEDNYC",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273039816",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-11-03",
+            "input_value": "ENRICHEDNYC LLC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273039816",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-11-03",
+            "input_value": "ENRICHEDNYC LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT104020273043522",
+          "to": "vendor:stem:ENRICHEDNYC",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273043522",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-11-07",
+            "input_value": "ENRICHEDNYC LLC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273043522",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-11-07",
+            "input_value": "ENRICHEDNYC LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT104020273044611",
+          "to": "vendor:stem:ENRICHEDNYC",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273044611",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-11-06",
+            "input_value": "ENRICHEDNYC LLC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:ct:CT104020273044611",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-11-06",
+            "input_value": "ENRICHEDNYC LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "shadow_edges": [],
+      "edge_routing": {
+        "deterministic": 0,
+        "public_inferred": 0,
+        "evidence_only": 0,
+        "no_edge": 0
+      },
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 5,
+        "link_count": 5,
+        "join_key_link_count": 0,
+        "cross_spine_shadow_count": 0,
+        "coverage_rate": 0.14285714285714285
+      }
+    },
     "vendor:stem:FUND%20FOR%20THE%20CITY": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -305981,352 +306684,6 @@
         "coverage_rate": 0.14285714285714285
       }
     },
-    "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-        "id": "stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-        "stem": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX",
-        "display_name": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX"
-      },
-      "domains": {
-        "money": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "contract:CT104020279761208",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX",
-              "when": "2026-07-01",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020279761208",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020279761208",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-07-01",
-                "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT104020279761207",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX",
-              "when": "2026-07-01",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020279761207",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020279761207",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-07-01",
-                "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT104020279761341",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX",
-              "when": "2026-07-01",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020279761341",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020279761341",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-07-01",
-                "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT104020279761205",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX",
-              "when": "2026-07-01",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020279761205",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020279761205",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-07-01",
-                "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 4
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020279761205",
-          "to": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761205",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-07-01",
-            "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761205",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-07-01",
-            "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020279761207",
-          "to": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761207",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-07-01",
-            "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761207",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-07-01",
-            "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020279761208",
-          "to": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761208",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-07-01",
-            "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761208",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-07-01",
-            "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020279761341",
-          "to": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761341",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-07-01",
-            "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761341",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-07-01",
-            "input_value": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 0,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 4,
-        "link_count": 4,
-        "join_key_link_count": 0,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.14285714285714285
-      }
-    },
     "vendor:stem:CAYUGA%20HOME%20FOR%20CHILDREN": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -309129,352 +309486,6 @@
         "total_linked_objects": 4,
         "link_count": 10,
         "join_key_link_count": 6,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.14285714285714285
-      }
-    },
-    "vendor:stem:ENRICHEDNYC": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:ENRICHEDNYC",
-        "id": "stem:ENRICHEDNYC",
-        "stem": "ENRICHEDNYC",
-        "display_name": "ENRICHEDNYC LLC"
-      },
-      "domains": {
-        "money": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "contract:CT104020273044611",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "ENRICHEDNYC LLC",
-              "when": "2026-11-06",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020273044611",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:ENRICHEDNYC",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273044611",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-11-06",
-                "input_value": "ENRICHEDNYC LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT104020273039816",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "ENRICHEDNYC LLC",
-              "when": "2026-11-03",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020273039816",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:ENRICHEDNYC",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273039816",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-11-03",
-                "input_value": "ENRICHEDNYC LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT104020273039427",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "ENRICHEDNYC LLC",
-              "when": "2026-10-30",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020273039427",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:ENRICHEDNYC",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273039427",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-10-30",
-                "input_value": "ENRICHEDNYC LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT104020273033299",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "ENRICHEDNYC LLC",
-              "when": "2026-10-21",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT104020273033299",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:ENRICHEDNYC",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:ct:CT104020273033299",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-10-21",
-                "input_value": "ENRICHEDNYC LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 4
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020273033299",
-          "to": "vendor:stem:ENRICHEDNYC",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273033299",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-10-21",
-            "input_value": "ENRICHEDNYC LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273033299",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-10-21",
-            "input_value": "ENRICHEDNYC LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020273039427",
-          "to": "vendor:stem:ENRICHEDNYC",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273039427",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-10-30",
-            "input_value": "ENRICHEDNYC LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273039427",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-10-30",
-            "input_value": "ENRICHEDNYC LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020273039816",
-          "to": "vendor:stem:ENRICHEDNYC",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273039816",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-11-03",
-            "input_value": "ENRICHEDNYC LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273039816",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-11-03",
-            "input_value": "ENRICHEDNYC LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT104020273044611",
-          "to": "vendor:stem:ENRICHEDNYC",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273044611",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-11-06",
-            "input_value": "ENRICHEDNYC LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020273044611",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-11-06",
-            "input_value": "ENRICHEDNYC LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 0,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 4,
-        "link_count": 4,
-        "join_key_link_count": 0,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
       }
@@ -325478,6 +325489,407 @@
         "coverage_rate": 0.14285714285714285
       }
     },
+    "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+        "id": "stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+        "stem": "67TH PRECINCT CLERGY COUNCIL",
+        "display_name": "67th Precinct Clergy Council Inc"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "contract:CT1-128-20278800625",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "67th Precinct Clergy Council Inc",
+              "when": "07/01/2026",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT1-128-20278800625",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:CT1-128-20278800625",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "07/01/2026",
+                "input_value": "67th Precinct Clergy Council Inc"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT1-002-20248805852",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "67th Precinct Clergy Council Inc",
+              "when": "07/01/2023",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT1-002-20248805852",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:CT1-002-20248805852",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "07/01/2023",
+                "input_value": "67th Precinct Clergy Council Inc"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT1-002-20238803681",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "67th Precinct Clergy Council Inc",
+              "when": "07/01/2022",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT1-002-20238803681",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:CT1-002-20238803681",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "07/01/2022",
+                "input_value": "67th Precinct Clergy Council Inc"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 3
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "named_vendor",
+          "from": "contract:CT1-002-20238803681",
+          "to": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20238803681",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2022",
+            "input_value": "67th Precinct Clergy Council Inc",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20238803681",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2022",
+            "input_value": "67th Precinct Clergy Council Inc"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT1-002-20238803681",
+          "to": "pin:00222N0049001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20238803681",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2022",
+            "input_value": "00222N0049001",
+            "join_key": "epin",
+            "join_value": "00222N0049001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20238803681",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2022",
+            "input_value": "00222N0049001",
+            "join_key": "epin",
+            "join_value": "00222N0049001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT1-002-20248805852",
+          "to": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20248805852",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2023",
+            "input_value": "67th Precinct Clergy Council Inc",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20248805852",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2023",
+            "input_value": "67th Precinct Clergy Council Inc"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT1-002-20248805852",
+          "to": "pin:00224N0003001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20248805852",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2023",
+            "input_value": "00224N0003001",
+            "join_key": "epin",
+            "join_value": "00224N0003001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-002-20248805852",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2023",
+            "input_value": "00224N0003001",
+            "join_key": "epin",
+            "join_value": "00224N0003001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT1-128-20278800625",
+          "to": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-128-20278800625",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2026",
+            "input_value": "67th Precinct Clergy Council Inc",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-128-20278800625",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/01/2026",
+            "input_value": "67th Precinct Clergy Council Inc"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT1-128-20278800625",
+          "to": "pin:12826N0003001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-128-20278800625",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2026",
+            "input_value": "12826N0003001",
+            "join_key": "epin",
+            "join_value": "12826N0003001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-128-20278800625",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/01/2026",
+            "input_value": "12826N0003001",
+            "join_key": "epin",
+            "join_value": "12826N0003001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        }
+      ],
+      "shadow_edges": [],
+      "edge_routing": {
+        "deterministic": 3,
+        "public_inferred": 0,
+        "evidence_only": 0,
+        "no_edge": 0
+      },
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 3,
+        "link_count": 6,
+        "join_key_link_count": 3,
+        "cross_spine_shadow_count": 0,
+        "coverage_rate": 0.14285714285714285
+      }
+    },
     "agency:id:mta-construction-and-development": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -326653,6 +327065,11 @@
         "entity_ref": "agency:id:office-of-criminal-justice-002",
         "relation": "published_by_agency",
         "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+        "relation": "named_vendor",
+        "confidence": "strong"
       }
     ],
     "contract:CT1-002-20238804371": [
@@ -327038,6 +327455,11 @@
       {
         "entity_ref": "agency:id:office-of-criminal-justice-128",
         "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -331602,6 +332024,11 @@
       {
         "entity_ref": "agency:id:office-of-criminal-justice-128",
         "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -339726,6 +340153,18 @@
         "confidence": "strong"
       }
     ],
+    "contract:CT104020273043522": [
+      {
+        "entity_ref": "agency:id:education",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:ENRICHEDNYC",
+        "relation": "named_vendor",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT104020273043842": [
       {
         "entity_ref": "agency:id:education",
@@ -340000,13 +340439,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020279761025": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020279761041": [
       {
         "entity_ref": "agency:id:education",
@@ -340070,13 +340502,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020279761191": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020279761193": [
       {
         "entity_ref": "agency:id:education",
@@ -340091,27 +340516,10 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020279761205": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-        "relation": "named_vendor",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020279761207": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -340119,11 +340527,6 @@
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -340142,27 +340545,6 @@
       }
     ],
     "contract:CT104020279761222": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020279761251": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020279761265": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020279761280": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -340215,11 +340597,6 @@
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -340721,6 +341098,20 @@
       }
     ],
     "contract:CT105720278803528": [
+      {
+        "entity_ref": "agency:id:fire-department",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT105720278803557": [
+      {
+        "entity_ref": "agency:id:fire-department",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT105720278803611": [
       {
         "entity_ref": "agency:id:fire-department",
         "relation": "published_by_agency",
@@ -341266,6 +341657,18 @@
         "confidence": "strong"
       }
     ],
+    "contract:CT182620278803700": [
+      {
+        "entity_ref": "agency:id:environmental-protection",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:PORTLAND%20WILLIAMS",
+        "relation": "named_vendor",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT182720278803148": [
       {
         "entity_ref": "agency:id:sanitation",
@@ -341302,6 +341705,13 @@
       }
     ],
     "contract:CT184120278803604": [
+      {
+        "entity_ref": "agency:id:transportation",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT184120278803671": [
       {
         "entity_ref": "agency:id:transportation",
         "relation": "published_by_agency",
@@ -341527,6 +341937,13 @@
       }
     ],
     "contract:CT184620278803725": [
+      {
+        "entity_ref": "agency:id:parks-and-recreation",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT184620278803728": [
       {
         "entity_ref": "agency:id:parks-and-recreation",
         "relation": "published_by_agency",
@@ -349690,17 +350107,17 @@
         "confidence": "strong"
       }
     ],
+    "notice:20260819013": [
+      {
+        "entity_ref": "agency:id:board-meetings",
+        "relation": "hosts_meeting",
+        "confidence": "strong"
+      }
+    ],
     "notice:20260826001": [
       {
         "entity_ref": "agency:id:buildings",
         "relation": "issued_rule",
-        "confidence": "strong"
-      }
-    ],
-    "notice:20260826006": [
-      {
-        "entity_ref": "agency:id:transportation",
-        "relation": "hosts_meeting",
         "confidence": "strong"
       }
     ],
@@ -349728,13 +350145,6 @@
     "notice:20260828012": [
       {
         "entity_ref": "agency:id:board-of-education-retirement-system",
-        "relation": "hosts_meeting",
-        "confidence": "strong"
-      }
-    ],
-    "notice:20260901021": [
-      {
-        "entity_ref": "agency:id:community-boards",
         "relation": "hosts_meeting",
         "confidence": "strong"
       }
@@ -350554,6 +350964,20 @@
         "confidence": "strong"
       }
     ],
+    "notice:20261104007": [
+      {
+        "entity_ref": "agency:id:housing-preservation-and-development",
+        "relation": "hosts_meeting",
+        "confidence": "strong"
+      }
+    ],
+    "notice:20261106003": [
+      {
+        "entity_ref": "agency:id:housing-preservation-and-development",
+        "relation": "hosts_meeting",
+        "confidence": "strong"
+      }
+    ],
     "project:2020K0413": [
       {
         "entity_ref": "vendor:stem:BEDFORD%20STUYVESANT%20RESTORATION",
@@ -350948,12 +351372,12 @@
       "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
       "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",
       "procurement_spine": "site/data/procurement_spine_sources.json",
-      "procurement_spine_observed_on": "2026-11-08"
+      "procurement_spine_observed_on": "2026-11-09"
     }
   },
   "procurement_spine": {
     "schema_version": 1,
-    "observed_on": "2026-11-08",
+    "observed_on": "2026-11-09",
     "coverage": {
       "passport_contracts": {
         "source_system": "passport-public-contracts",
@@ -350999,48 +351423,48 @@
         "coverage_status": "measured",
         "population_backed": true,
         "source_url": "https://www.checkbooknyc.com/api",
-        "pulled_at": "2026-11-08T14:07:52.584Z",
+        "pulled_at": "2026-11-09T21:24:05.881Z",
         "population": {
-          "api_transaction_rows": 40318,
-          "normalized_unique_contracts": 29580,
+          "api_transaction_rows": 40319,
+          "normalized_unique_contracts": 29581,
           "fiscal_years": [
             2025,
             2026,
             2027
           ],
-          "sha256": "127ab088263a919a6de44390a7735b0fad4e2155bbbe8bae171dd5c119e05c14"
+          "sha256": "8187f1978d3388e2ed7fb39b3f8ec7957b48ba1dffc3b1a611c974eb5eae12b4"
         },
         "overlap": {
-          "checkbook_contracts": 29580,
+          "checkbook_contracts": 29581,
           "exact_overlap_buckets": {
             "passport_and_city_record": 3847,
             "passport_only": 1847,
             "city_record_only": 1358,
-            "new_unique": 22528
+            "new_unique": 22529
           },
           "passport": {
             "matched_contracts": 5694,
             "by_contract_id": 5562,
             "by_pin_epin": 4974,
-            "rate": 0.1924949290060852,
+            "rate": 0.1924884216219871,
             "denominator": "normalized Checkbook contracts in the collected fiscal-year window"
           },
           "city_record": {
             "matched_checkbook_contracts": 5205,
-            "checkbook_rate": 0.17596348884381338,
+            "checkbook_rate": 0.17595754031303878,
             "matched_modern_awards": 5152,
             "modern_awards_with_pin": 5966,
             "modern_award_rate": 0.8635601743211532,
             "denominator": "City Record Recent Contract Awards since 2025-01-01 with an exact PIN"
           },
-          "new_unique_contract_ids": 22528,
+          "new_unique_contract_ids": 22529,
           "acceptance_rule": "normalized exact contract_id or exact PIN/EPIN only; names are not join keys"
         },
         "section_denominator": {
           "status": "measured",
           "denominator": "normalized unique Checkbook contracts in the collected fiscal-year population",
-          "rows": 29580,
-          "source_population": 40318
+          "rows": 29581,
+          "source_population": 40319
         },
         "modern_awards": {
           "joined": 5152,
@@ -351096,7 +351520,7 @@
     },
     "row_counts": {
       "passport_contracts": 12795,
-      "checkbook_contracts": 10563,
+      "checkbook_contracts": 10569,
       "checkbook_spending": 31,
       "passport_contracts_materialization": 2,
       "checkbook_nycha_contracts": 1
@@ -351158,8 +351582,8 @@
         "strategy": "population-backed census (rows.passport_contracts) capped for entity-intelligence; compatibility examples included first, then agency-stratified round-robin within the remaining cap"
       },
       "checkbook_contracts": {
-        "population_rows": 29580,
-        "committed_slice_rows": 10563,
+        "population_rows": 29581,
+        "committed_slice_rows": 10569,
         "selected_rows": 500,
         "cap": 500,
         "strategy": "population-measured Checkbook slice capped for entity intelligence; one row per exact prime_contract_id; Contracts_NYCHA rows reserve slots in the shared Checkbook budget"
@@ -352232,6 +352656,14 @@
       "coverage_rate": 0.14285714285714285
     },
     {
+      "ref": "vendor:stem:ENRICHEDNYC",
+      "kind": "vendor",
+      "display_name": "ENRICHEDNYC LLC",
+      "domains_matched": 1,
+      "total_linked_objects": 5,
+      "coverage_rate": 0.14285714285714285
+    },
+    {
       "ref": "vendor:stem:FUND%20FOR%20THE%20CITY",
       "kind": "vendor",
       "display_name": "FUND FOR THE CITY OF NEW YORK, INC.",
@@ -352456,14 +352888,6 @@
       "coverage_rate": 0.14285714285714285
     },
     {
-      "ref": "vendor:stem:CATHOLIC%20SCHOOL%20REGION%20OF%20NORTHEAST-EAST%20BRONX",
-      "kind": "vendor",
-      "display_name": "CATHOLIC SCHOOL REGION OF NORTHEAST-EAST BRONX",
-      "domains_matched": 1,
-      "total_linked_objects": 4,
-      "coverage_rate": 0.14285714285714285
-    },
-    {
       "ref": "vendor:stem:CAYUGA%20HOME%20FOR%20CHILDREN",
       "kind": "vendor",
       "display_name": "CAYUGA HOME FOR CHILDREN INC",
@@ -352499,14 +352923,6 @@
       "ref": "vendor:stem:COMMUNITY%20ACCESS",
       "kind": "vendor",
       "display_name": "COMMUNITY ACCESS INC",
-      "domains_matched": 1,
-      "total_linked_objects": 4,
-      "coverage_rate": 0.14285714285714285
-    },
-    {
-      "ref": "vendor:stem:ENRICHEDNYC",
-      "kind": "vendor",
-      "display_name": "ENRICHEDNYC LLC",
       "domains_matched": 1,
       "total_linked_objects": 4,
       "coverage_rate": 0.14285714285714285
@@ -352747,6 +353163,14 @@
       "ref": "agency:id:teachers-retirement-system",
       "kind": "agency",
       "display_name": "Teachers' Retirement System",
+      "domains_matched": 1,
+      "total_linked_objects": 3,
+      "coverage_rate": 0.14285714285714285
+    },
+    {
+      "ref": "vendor:stem:67TH%20PRECINCT%20CLERGY%20COUNCIL",
+      "kind": "vendor",
+      "display_name": "67th Precinct Clergy Council Inc",
       "domains_matched": 1,
       "total_linked_objects": 3,
       "coverage_rate": 0.14285714285714285
