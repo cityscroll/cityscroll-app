@@ -14,9 +14,11 @@ import {
   REPAIR_PLAYBOOKS,
   STARTED_STALL_BACKOFF_MS,
   STARTED_STALL_REBUILD_GRACE_MS,
+  STARTED_STALL_REBUILD_PROGRESS_MS,
   STARTED_STALL_VERIFY_MS,
   UPSTREAM_BACKOFF_MS,
   acquisitionCommand,
+  digestShadowRebuildIsProgressing,
   repairPlaybookRegistry,
   selectRepairPlaybook,
 } from "../tools/repair_playbooks.mjs";
@@ -66,6 +68,7 @@ function stubContext(overrides = {}) {
     verified: 0,
     evaluated: 0,
     digestReads: 0,
+    digestRebuildReads: 0,
     digestEnqueues: 0,
   };
   const context = {
@@ -129,15 +132,34 @@ function stubContext(overrides = {}) {
   };
   if ("digestShadow" in overrides) {
     context.digestShadow = overrides.digestShadow;
-  } else if (overrides.digestStatus || overrides.digestEnqueue) {
+  } else if (overrides.digestStatus || overrides.digestEnqueue || overrides.digestRebuildStatus) {
     const statuses = Array.isArray(overrides.digestStatus)
       ? overrides.digestStatus
       : [overrides.digestStatus].filter(Boolean);
+    const rebuildStatuses = Array.isArray(overrides.digestRebuildStatus)
+      ? overrides.digestRebuildStatus
+      : [overrides.digestRebuildStatus].filter((row) => row !== undefined);
     context.digestShadow = {
       async readStatus() {
         calls.digestReads += 1;
         if (!statuses.length) return { summary: {} };
         return statuses[Math.min(calls.digestReads - 1, statuses.length - 1)];
+      },
+      async readRebuildStatus(options = {}) {
+        calls.digestRebuildReads += 1;
+        if (typeof overrides.digestRebuildStatus === "function") {
+          return overrides.digestRebuildStatus(options);
+        }
+        if (overrides.digestRebuildStatus instanceof Error) throw overrides.digestRebuildStatus;
+        if (!rebuildStatuses.length) {
+          return {
+            error: "rebuild-run-not-found",
+            run_id: options.runId || null,
+            status: null,
+            complete: false,
+          };
+        }
+        return rebuildStatuses[Math.min(calls.digestRebuildReads - 1, rebuildStatuses.length - 1)];
       },
       async enqueueRebuild(options = {}) {
         calls.digestEnqueues += 1;
@@ -535,7 +557,8 @@ test("a rebuild already queued within grace defers without a second enqueue", as
 
 test("a rebuild still STARTED past grace enqueues one recovery attempt", async () => {
   // Post-grace observation (the 10:25 slot): the first rebuild_queued stamp is
-  // older than STARTED_STALL_REBUILD_GRACE_MS, so this cycle may enqueue once.
+  // older than STARTED_STALL_REBUILD_GRACE_MS, and the rebuild run itself is
+  // idle, so this cycle may enqueue once.
   const progressAt = new Date(NOW.getTime() - STARTED_STALL_REBUILD_GRACE_MS - 60_000).toISOString();
   const context = stubContext({
     signature: "monitor:digest-shadow-monitor:digest-shadow-started-stall",
@@ -561,13 +584,134 @@ test("a rebuild still STARTED past grace enqueues one recovery attempt", async (
         },
       },
     ],
+    digestRebuildStatus: {
+      run_id: "digest-shadow-rebuild:stale",
+      status: "queued",
+      complete: false,
+      completed_count: 0,
+      total_count: 624,
+      created_at: progressAt,
+      updated_at: progressAt,
+    },
     digestEnqueue: { run_id: "digest-shadow-rebuild:recovery", status: "queued" },
   });
   const result = await playbook("digest-shadow-started-stall").run(context);
   assert.equal(result.outcome, "deferred");
   assert.match(result.summary, /enqueued checkpointed rebuild/);
   assert.equal(context.calls.digestEnqueues, 1);
+  assert.equal(context.calls.digestRebuildReads, 1);
   assert.deepEqual(context.calls.slept, [STARTED_STALL_BACKOFF_MS, STARTED_STALL_VERIFY_MS]);
+});
+
+test("a progressing rebuild past day-row grace defers without a duplicate enqueue", async () => {
+  // 2026-11-09 shape: day progress_at stayed at the 10:00 queue stamp while the
+  // rebuild run kept advancing completed_count / updated_at. Past grace must
+  // consult that run and wait instead of enqueueing a second full rebuild.
+  const queueStamp = new Date(NOW.getTime() - STARTED_STALL_REBUILD_GRACE_MS - 15 * 60_000).toISOString();
+  const recentProgress = new Date(NOW.getTime() - 90_000).toISOString();
+  const rebuildRunId = "digest-shadow-rebuild:2026-11-09T10:00:14.810Z:ecbaf73f-d683-4b08-ad56-e5ac20d52809";
+  const context = stubContext({
+    signature: "monitor:digest-shadow-monitor:digest-shadow-started-stall",
+    monitor: "digest-shadow-monitor",
+    subject: null,
+    digestStatus: {
+      summary: {
+        status: "STARTED",
+        run_day: "2026-11-09",
+        phase: "rebuild_queued",
+        rebuild_run_id: rebuildRunId,
+        progress_at: queueStamp,
+        ran_at: queueStamp,
+      },
+    },
+    digestRebuildStatus: {
+      run_id: rebuildRunId,
+      status: "running",
+      complete: false,
+      completed_count: 303,
+      total_count: 624,
+      failed_count: 0,
+      created_at: queueStamp,
+      updated_at: recentProgress,
+    },
+  });
+  const result = await playbook("digest-shadow-started-stall").run(context);
+  assert.equal(result.outcome, "deferred");
+  assert.match(result.summary, /already in progress/);
+  assert.equal(result.verification?.detail, "rebuild in progress");
+  assert.equal(context.calls.digestEnqueues, 0);
+  assert.equal(context.calls.digestRebuildReads, 1);
+  assert.deepEqual(context.calls.slept, []);
+});
+
+test("a stuck running rebuild past progress window enqueues one recovery attempt", async () => {
+  const queueStamp = new Date(NOW.getTime() - STARTED_STALL_REBUILD_GRACE_MS - 60_000).toISOString();
+  const staleProgress = new Date(NOW.getTime() - STARTED_STALL_REBUILD_PROGRESS_MS - 60_000).toISOString();
+  const context = stubContext({
+    signature: "monitor:digest-shadow-monitor:digest-shadow-started-stall",
+    monitor: "digest-shadow-monitor",
+    subject: null,
+    digestStatus: [
+      {
+        summary: {
+          status: "STARTED",
+          run_day: "2026-11-09",
+          phase: "rebuild_queued",
+          rebuild_run_id: "digest-shadow-rebuild:stuck",
+          progress_at: queueStamp,
+        },
+      },
+      {
+        summary: {
+          status: "STARTED",
+          run_day: "2026-11-09",
+          phase: "rebuild_queued",
+          rebuild_run_id: "digest-shadow-rebuild:recovery",
+          progress_at: NOW.toISOString(),
+        },
+      },
+    ],
+    digestRebuildStatus: {
+      run_id: "digest-shadow-rebuild:stuck",
+      status: "running",
+      complete: false,
+      completed_count: 13,
+      total_count: 624,
+      created_at: queueStamp,
+      updated_at: staleProgress,
+    },
+    digestEnqueue: { run_id: "digest-shadow-rebuild:recovery", status: "queued" },
+  });
+  const result = await playbook("digest-shadow-started-stall").run(context);
+  assert.equal(result.outcome, "deferred");
+  assert.match(result.summary, /enqueued checkpointed rebuild/);
+  assert.equal(context.calls.digestEnqueues, 1);
+  assert.equal(context.calls.digestRebuildReads, 1);
+});
+
+test("digestShadowRebuildIsProgressing requires a recent running or queued stamp", () => {
+  assert.equal(digestShadowRebuildIsProgressing({
+    status: "running",
+    complete: false,
+    updated_at: new Date(NOW.getTime() - 60_000).toISOString(),
+  }, NOW), true);
+  assert.equal(digestShadowRebuildIsProgressing({
+    status: "running",
+    complete: false,
+    updated_at: new Date(NOW.getTime() - STARTED_STALL_REBUILD_PROGRESS_MS - 1).toISOString(),
+  }, NOW), false);
+  assert.equal(digestShadowRebuildIsProgressing({
+    status: "queued",
+    complete: false,
+    created_at: new Date(NOW.getTime() - STARTED_STALL_REBUILD_PROGRESS_MS - 1).toISOString(),
+    updated_at: new Date(NOW.getTime() - STARTED_STALL_REBUILD_PROGRESS_MS - 1).toISOString(),
+  }, NOW), false);
+  assert.equal(digestShadowRebuildIsProgressing({ error: "rebuild-run-not-found" }, NOW), false);
+  assert.equal(digestShadowRebuildIsProgressing({
+    status: "complete",
+    complete: true,
+    updated_at: NOW.toISOString(),
+  }, NOW), false);
 });
 
 test("a STARTED stall without a rebuild API is judgment", async () => {

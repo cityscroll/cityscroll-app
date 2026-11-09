@@ -155,6 +155,23 @@ function createDigestShadowRepairApi({ fetchImpl = globalThis.fetch } = {}) {
       try { body = await response.json(); } catch { body = {}; }
       return { http_status: response.status, summary: body.summary || (body.status ? body : {}), body };
     },
+    async readRebuildStatus({ runId } = {}) {
+      const key = digestShadowAdminKey();
+      if (!key) throw new Error("digest shadow admin credential missing");
+      if (!runId) throw new Error("digest shadow rebuild run id required");
+      const url = new URL(baseUrl);
+      url.searchParams.set("run_id", runId);
+      const response = await fetchImpl(url, { headers: { Authorization: `Bearer ${key}` } });
+      let body = {};
+      try { body = await response.json(); } catch { body = {}; }
+      if (response.status === 404) {
+        return { http_status: 404, error: body.error || "rebuild-run-not-found", ...body };
+      }
+      if (!response.ok) {
+        throw new Error(body.detail || body.error || `digest shadow rebuild status HTTP ${response.status}`);
+      }
+      return { http_status: response.status, ...body };
+    },
     async enqueueRebuild({ day = null } = {}) {
       const key = digestShadowAdminKey();
       if (!key) throw new Error("digest shadow admin credential missing");
