@@ -2,6 +2,7 @@ import {
   buildFollowingDefaultWatchReceipt,
   setFollowingDefaultWatchReceipt,
 } from "./following_default_watch_receipt.mjs";
+import { signupTurnstileToken } from "./signup_turnstile.mjs";
 
 // The disclosed weekly-Contracts default inside the Contracts intro. The card ships in
 // the shared index.html shell, so this enhancement has to attach whether the reader
@@ -14,8 +15,8 @@ const API_ORIGINS = Object.freeze([
   window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev",
 ]);
 
-async function subscribeHomeDefault(email, lang) {
-  const body = JSON.stringify({ email, no_topic: true, source: "contracts-intro", lang });
+async function subscribeHomeDefault(email, lang, turnstileToken) {
+  const body = JSON.stringify({ email, no_topic: true, source: "contracts-intro", lang, turnstileToken });
   let lastError;
   for (const origin of API_ORIGINS) {
     try {
@@ -41,6 +42,8 @@ const HOME_CTA_ERROR_KEYS = Object.freeze({
   "channel-unsupported": "channel_unsupported",
   "not-configured": "not_configured",
   "send-failed": "send_failed",
+  "bot-check": "generic_error",
+  "bot-check-unavailable": "generic_error",
 });
 
 function homeCtaErrorMessage(reason) {
@@ -78,7 +81,8 @@ export function initHomeDefaultSubscription() {
     const lang = window.LANG || "en";
     if (langField) langField.value = lang;
     try {
-      const result = await subscribeHomeDefault(email, lang);
+      const turnstileToken = await signupTurnstileToken(form);
+      const result = await subscribeHomeDefault(email, lang, turnstileToken);
       if (result?.ok) {
         const receipt = buildFollowingDefaultWatchReceipt({ watch: result.watch, created: result.created });
         if (receipt?.ok) {

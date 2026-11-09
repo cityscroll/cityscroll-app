@@ -14,7 +14,8 @@ import assert from "node:assert/strict";
 import { signToken } from "optin-token";
 import { handleConfirm } from "../src/confirm.mjs";
 import { handleUnsubscribe } from "../src/unsubscribe.mjs";
-import { handleSubscribe } from "../src/subscribe.mjs";
+import { handleSubscribe as realHandleSubscribe } from "../src/subscribe.mjs";
+const handleSubscribe = (req, env) => realHandleSubscribe(req, env, { verifyTurnstile: async () => ({ ok: true }) });
 
 const SECRET = "test-secret-0123456789abcdef0123456789abcdef";
 

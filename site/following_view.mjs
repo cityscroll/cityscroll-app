@@ -1322,6 +1322,7 @@ function subscribeHtml(view) {
       </p>
       <p data-following-submit-status role="status" aria-live="polite"></p>
     </form>
+    <noscript><p class="following-note">Enable JavaScript to complete the signup security check.</p></noscript>
   </section>`;
 }
 

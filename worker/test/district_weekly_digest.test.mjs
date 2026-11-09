@@ -5,7 +5,8 @@ import { sanitize } from "../src/lib/filter.mjs";
 import { compileSub } from "../src/lib/compile.mjs";
 import { describeFilter } from "../src/lib/confirm_email.mjs";
 import { subDigestDecision, subDigestHtml } from "../src/alerts.mjs";
-import { handleSubscribe } from "../src/subscribe.mjs";
+import { handleSubscribe as realHandleSubscribe } from "../src/subscribe.mjs";
+const handleSubscribe = (req, env) => realHandleSubscribe(req, env, { verifyTurnstile: async () => ({ ok: true }) });
 import { dedupeFreshByContent } from "../src/lib/digest.mjs";
 
 class MockKV {

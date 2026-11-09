@@ -2,7 +2,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { handleSubscribe } from "../src/subscribe.mjs";
+import { handleSubscribe as realHandleSubscribe } from "../src/subscribe.mjs";
+const handleSubscribe = (req, env) => realHandleSubscribe(req, env, { verifyTurnstile: async () => ({ ok: true }) });
 
 class MockKV {
   constructor() { this.store = new Map(); }

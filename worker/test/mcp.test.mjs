@@ -358,14 +358,14 @@ test("per-IP daily ceiling returns a JSON-RPC error with 429", async () => {
   assert.equal(third.status, 429);
 });
 
-test("create_watch without secrets fails closed as a tool error", async () => {
+test("anonymous create_watch is unavailable before any signup work", async () => {
   const env = { SUBS: new MockKV(), NL_METER: new MockKV() };
   const res = await (await handleMcp(post({
     jsonrpc: "2.0", id: 9, method: "tools/call",
     params: { name: "create_watch", arguments: { email: "a@b.co", lens: "money", request: "big awards" } },
   }), env)).json();
   assert.equal(res.result.isError, true);
-  assert.match(res.result.content[0].text, /isn't configured/);
+  assert.match(res.result.content[0].text, /Unknown tool/);
 });
 
 test("preview_watch admits a structured filter without a model call and rejects unsupported rich input", async () => {
@@ -477,12 +477,10 @@ test("an ungranted call is refused by identity, not by its arguments", async () 
     params: { name: "create_watch", arguments: { lens: "money", request: "big awards" } },
   }, headers);
 
-  // The SAME payload, two identities. Anonymous reaches the tool and gets the tool's
-  // own error; the profile never reaches it. That is what proves the refusal comes from
-  // the grant rather than from argument validation.
+  // The SAME payload is refused before argument validation for both identities.
   const anonymous = await (await handleMcp(call({}), env)).json();
   assert.equal(anonymous.result.isError, true);
-  assert.match(anonymous.result.content[0].text, /isn't configured/);
+  assert.match(anonymous.result.content[0].text, /Unknown tool/);
 
   const named = await (await handleMcp(call({ authorization: `Bearer ${PROFILE_SECRET}` }), env)).json();
   assert.equal(named.result.isError, true);

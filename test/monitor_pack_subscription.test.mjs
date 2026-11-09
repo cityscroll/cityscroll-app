@@ -10,6 +10,8 @@ import { buildMonitorPackView, renderComposedObjectDocument } from "../site/comp
 import { handleMonitorPackSubscribe } from "../worker/src/monitor_packs.mjs";
 import { buildSubscription, subscriptionKey } from "../worker/src/lib/subscriptions.mjs";
 
+const verified = { verifyTurnstile: async () => ({ ok: true }) };
+
 function kv() {
   const values = new Map();
   return {
@@ -108,12 +110,12 @@ test("one pack action creates all children and replay is idempotent", async () =
     const request = () => new Request("https://api.cityscroll.org/subscribe-pack", {
       method: "POST", headers: { origin: "https://cityscroll.org", "content-type": "application/json" }, body: JSON.stringify(body),
     });
-    const first = await handleMonitorPackSubscribe(request(), env(store));
+    const first = await handleMonitorPackSubscribe(request(), env(store), verified);
     const firstBody = await first.json();
     assert.equal(first.status, 200, JSON.stringify(firstBody));
     assert.equal(firstBody.created, 2);
     assert.deepEqual(firstBody.missing_children, []);
-    const second = await handleMonitorPackSubscribe(request(), env(store));
+    const second = await handleMonitorPackSubscribe(request(), env(store), verified);
     const secondBody = await second.json();
     assert.equal(second.status, 200);
     assert.equal(secondBody.created, 0);
@@ -154,12 +156,12 @@ test("partial failure records progress and retry creates only the missing child"
     const request = () => new Request("https://api.cityscroll.org/subscribe-pack", {
       method: "POST", headers: { origin: "https://cityscroll.org", "content-type": "application/json" }, body: JSON.stringify(body),
     });
-    const failed = await handleMonitorPackSubscribe(request(), env(store));
+    const failed = await handleMonitorPackSubscribe(request(), env(store), verified);
     const failedBody = await failed.json();
     assert.equal(failed.status, 502);
     assert.deepEqual(failedBody.missing_children, [1]);
     store.failSecondChild = false;
-    const retried = await handleMonitorPackSubscribe(request(), env(store));
+    const retried = await handleMonitorPackSubscribe(request(), env(store), verified);
     const retriedBody = await retried.json();
     assert.equal(retried.status, 200);
     assert.equal(retriedBody.created, 1);

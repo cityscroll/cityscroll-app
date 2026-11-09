@@ -11,7 +11,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 
-import { handleSubscribe } from "../src/subscribe.mjs";
+import { handleSubscribe as realHandleSubscribe } from "../src/subscribe.mjs";
+const handleSubscribe = (req, env) => realHandleSubscribe(req, env, { verifyTurnstile: async () => ({ ok: true }) });
 import { processOneSub } from "../src/alerts.mjs";
 import {
   recipientHash,

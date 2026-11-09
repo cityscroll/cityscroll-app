@@ -4,7 +4,8 @@ import test from "node:test";
 import { readFileSync } from "node:fs";
 
 import { handleFollowing } from "../src/following.mjs";
-import { handleSubscribe } from "../src/subscribe.mjs";
+import { handleSubscribe as realHandleSubscribe } from "../src/subscribe.mjs";
+const handleSubscribe = (req, env) => realHandleSubscribe(req, env, { verifyTurnstile: async () => ({ ok: true }) });
 import { handlePrefs } from "../src/prefs.mjs";
 import { subDigestHtml } from "../src/alerts.mjs";
 import { signToken } from "optin-token";
