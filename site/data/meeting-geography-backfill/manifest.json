@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.meeting_geography_backfill_manifest.v1",
   "generation": "refresh-1869a013bdea",
-  "built_at": "2026-11-08T16:48:11.611Z",
+  "built_at": "2026-11-09T20:08:19.401Z",
   "counts": {
     "input_rows": 1094,
     "processed_rows": 1094,
