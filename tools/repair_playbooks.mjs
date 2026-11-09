@@ -51,6 +51,8 @@ export const UPSTREAM_BACKOFF_MS = 60 * 1000;
 export const STARTED_STALL_BACKOFF_MS = 60 * 1000;
 export const STARTED_STALL_VERIFY_MS = 30 * 1000;
 export const STARTED_STALL_REBUILD_GRACE_MS = 12 * 60 * 1000;
+/** How recent a rebuild-run `updated_at` must be to count as still progressing. */
+export const STARTED_STALL_REBUILD_PROGRESS_MS = STARTED_STALL_REBUILD_GRACE_MS;
 
 export const REPAIR_OUTCOMES = Object.freeze(["repaired", "judgment", "failed", "deferred"]);
 
@@ -233,8 +235,31 @@ async function digestShadowUpstream(context) {
 }
 
 /**
+ * True when an existing rebuild run is still making progress, so a second
+ * unscoped recovery enqueue would duplicate work. Day-row `progress_at` alone
+ * is not enough: it is stamped at queue/ownership time and does not advance as
+ * rebuild items complete.
+ */
+export function digestShadowRebuildIsProgressing(rebuild, now = new Date(), {
+  progressMs = STARTED_STALL_REBUILD_PROGRESS_MS,
+} = {}) {
+  if (!rebuild || typeof rebuild !== "object" || Array.isArray(rebuild)) return false;
+  if (rebuild.error === "rebuild-run-not-found") return false;
+  const status = String(rebuild.status || "").trim().toLowerCase();
+  if (status !== "running" && status !== "queued") return false;
+  if (rebuild.complete === true) return false;
+  const stamp = Date.parse(rebuild.updated_at || rebuild.created_at || "");
+  if (!Number.isFinite(stamp)) return false;
+  const ageMs = new Date(now).getTime() - stamp;
+  if (ageMs < 0 || ageMs > progressMs) return false;
+  return true;
+}
+
+/**
  * STARTED-not-finalized past the monitor deadline: enqueue the same checkpointed
  * rebuild path that completed 2026-10-12. Idempotent POST; no subscriber mail.
+ * When a rebuild is already queued, consult that run's own progress before
+ * enqueueing a duplicate recovery.
  */
 async function digestShadowStartedStall(context) {
   if (startedStallKillSwitchOn()) {
@@ -269,6 +294,30 @@ async function digestShadowStartedStall(context) {
       ok: false,
       detail: "rebuild already queued",
     });
+  }
+
+  // Past day-row grace: the queue stamp may be old while the rebuild run itself
+  // is still progressing. Prefer that run's status over a duplicate enqueue.
+  if (
+    summary.phase === "rebuild_queued"
+    && summary.rebuild_run_id
+    && typeof api.readRebuildStatus === "function"
+  ) {
+    try {
+      const rebuild = await api.readRebuildStatus({
+        runId: summary.rebuild_run_id,
+        now: context.now,
+      });
+      if (digestShadowRebuildIsProgressing(rebuild, context.now)) {
+        return outcome("deferred", `a checkpointed rebuild is already in progress (${summary.rebuild_run_id}); waiting for it to finalize`, {
+          ok: false,
+          detail: "rebuild in progress",
+          rebuild_run_id: summary.rebuild_run_id,
+        });
+      }
+    } catch {
+      // Status probe failed; keep recovery available by falling through to enqueue.
+    }
   }
 
   await context.sleep(STARTED_STALL_BACKOFF_MS);
@@ -428,7 +477,7 @@ export const REPAIR_PLAYBOOKS = Object.freeze([
     remedy: "wait a bounded backoff, then POST an idempotent unscoped checkpointed rebuild for that day",
     verification: "the rehearsal leaves STARTED, or a rebuild_run_id is recorded for the next observation",
     judgment_when: "no digest-shadow rebuild API is wired for this cycle",
-    deferred_when: "a rebuild is already queued within grace, the kill switch is on, or the enqueue is waiting to finalize",
+    deferred_when: "a rebuild is already queued within grace, a rebuild run is still progressing, the kill switch is on, or the enqueue is waiting to finalize",
     run: digestShadowStartedStall,
   }),
   Object.freeze({
