@@ -4,6 +4,42 @@
   "shard_id": "001",
   "rows": [
     {
+      "prime_contract_id": "CT181620261403766",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "EMPIRE ELECTRONICS INC",
+      "pin": null,
+      "registration_date": "2025-09-11",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Goods",
+      "contract_purpose": "{3} ACL Analytics subscriptions & limited access to",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 72,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 8698.5,
+      "original_registered_amount": 8698.5,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-11"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
       "prime_contract_id": "CT181620261403768",
       "agency": "Department of Health and Mental Hygiene",
       "prime_vendor": "Party Source Pro & Tent Supplies Inc",

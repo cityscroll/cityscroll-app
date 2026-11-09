@@ -140633,6 +140633,38 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
+      "procurement_id": "procurement:contract:CT104020273043522",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273043522",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT104020273043522:ENRICHEDNYC LLC:prime-vendor:2026-11-07"
+      ],
+      "start_date": "2026-11-07",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "NEGOTIATED SERVICES-SERVICES",
+      "pin": null,
+      "contract_id": "CT104020273043522",
+      "contract_amount": 25000,
+      "vendor_name": "ENRICHEDNYC LLC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - WRITTEN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · ENRICHEDNYC LLC · $25,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_5_plus_10"
+    },
+    {
       "procurement_id": "procurement:contract:CT104020273043842",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020273043842",
       "procurement_stages": [
@@ -207721,6 +207753,70 @@
         "registered"
       ],
       "additional_description_1": "Fire Department · DRUBRIDGE LLC · $42,450",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT105720278803557",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105720278803557",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT105720278803557:WINGGLEE LLC:prime-vendor:2026-11-05"
+      ],
+      "start_date": "2026-11-09",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Fire Department",
+      "short_title": "Portable Multi-Gas Detector and Various Gas Detector Parts",
+      "pin": "05727W0020001",
+      "contract_id": "CT105720278803557",
+      "contract_amount": 108294,
+      "vendor_name": "WINGGLEE LLC",
+      "official_url": null,
+      "selection_method_description": "M/WBE SMALL PURCHASE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Fire Department · WINGGLEE LLC · $108,294",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT105720278803611",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105720278803611",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT105720278803611:WINGGLEE LLC:prime-vendor:2026-11-04"
+      ],
+      "start_date": "2026-11-09",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Fire Department",
+      "short_title": "Purchase of BANCE Motorized Rail Cart",
+      "pin": "05727W0024001",
+      "contract_id": "CT105720278803611",
+      "contract_amount": 62250,
+      "vendor_name": "WINGGLEE LLC",
+      "official_url": null,
+      "selection_method_description": "M/WBE SMALL PURCHASE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Fire Department · WINGGLEE LLC · $62,250",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -516685,98 +516781,6 @@
           "contact_name": null,
           "start_date": "2024-07-29",
           "href": "/notices/20240723108"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800185",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800185",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240613112",
-        "passport_public_contracts:contract:81624N0013001:5154491"
-      ],
-      "request_id": "20240613112",
-      "start_date": "2024-07-01",
-      "end_date": "2024-12-31",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA 6 Month Extension",
-      "pin": "81624N0013001",
-      "contract_id": "CT181620258800185",
-      "contract_amount": 903684,
-      "vendor_name": "Aids Center of Queens County Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Aids Center of Queens County Inc. · $903,684",
-      "notice_evidence": [
-        {
-          "request_id": "20240613112",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA 6 Month Extension",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-20",
-          "href": "/notices/20240613112"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800186",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800186",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240606107",
-        "passport_public_contracts:contract:81624M0015006:5184536"
-      ],
-      "request_id": "20240606107",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Supportive Housing",
-      "pin": "81624M0015006",
-      "contract_id": "CT181620258800186",
-      "contract_amount": 4637093,
-      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
-      "official_url": null,
-      "selection_method_description": "Required Method",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $4,637,093",
-      "notice_evidence": [
-        {
-          "request_id": "20240606107",
-          "type_of_notice_description": "Award",
-          "short_title": "Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-12",
-          "href": "/notices/20240606107"
         }
       ],
       "source_system": "shared_procurement_read_model",

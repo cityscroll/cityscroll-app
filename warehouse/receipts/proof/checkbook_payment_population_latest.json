@@ -21,7 +21,7 @@
   "source": {
     "publisher": "Office of the New York City Comptroller",
     "acquisition_mode": "live-publisher",
-    "pulled_at": "2026-11-08T13:51:27.113Z",
+    "pulled_at": "2026-11-09T21:14:00.178Z",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
     "type_of_data": "Spending",
@@ -33,7 +33,7 @@
     "page_size": 20000,
     "pages": 90,
     "count_drift_policy": "fail without publishing",
-    "page_manifest_sha256": "67e59f46ab3f373ef38290a456e6b40aedaf670e5632b19551df046044ce613e"
+    "page_manifest_sha256": "c83bf85747674a625160e738d89cb2b23f6f281fa7a5967ac7147af6b485eb3a"
   },
   "population": {
     "publisher_record_count": 1785209,

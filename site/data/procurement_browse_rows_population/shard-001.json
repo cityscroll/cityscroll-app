@@ -4,6 +4,98 @@
   "shard_id": "001",
   "rows": [
     {
+      "procurement_id": "procurement:contract:CT181620258800185",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800185",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240613112",
+        "passport_public_contracts:contract:81624N0013001:5154491"
+      ],
+      "request_id": "20240613112",
+      "start_date": "2024-07-01",
+      "end_date": "2024-12-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA 6 Month Extension",
+      "pin": "81624N0013001",
+      "contract_id": "CT181620258800185",
+      "contract_amount": 903684,
+      "vendor_name": "Aids Center of Queens County Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Aids Center of Queens County Inc. · $903,684",
+      "notice_evidence": [
+        {
+          "request_id": "20240613112",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA 6 Month Extension",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-20",
+          "href": "/notices/20240613112"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800186",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800186",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240606107",
+        "passport_public_contracts:contract:81624M0015006:5184536"
+      ],
+      "request_id": "20240606107",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Supportive Housing",
+      "pin": "81624M0015006",
+      "contract_id": "CT181620258800186",
+      "contract_amount": 4637093,
+      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
+      "official_url": null,
+      "selection_method_description": "Required Method",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $4,637,093",
+      "notice_evidence": [
+        {
+          "request_id": "20240606107",
+          "type_of_notice_description": "Award",
+          "short_title": "Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-12",
+          "href": "/notices/20240606107"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT181620258800196",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800196",
       "procurement_stages": [
@@ -72743,6 +72835,38 @@
       "method_family": "mwbe_small_purchase"
     },
     {
+      "procurement_id": "procurement:contract:CT182620278803700",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT182620278803700",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT182620278803700:PORTLAND WILLIAMS LLC:prime-vendor:2026-11-05"
+      ],
+      "start_date": "2026-11-09",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Environmental Protection",
+      "short_title": "BWT Wet Cell Batteries 7030479X",
+      "pin": "82627W0017001",
+      "contract_id": "CT182620278803700",
+      "contract_amount": 38310,
+      "vendor_name": "PORTLAND WILLIAMS LLC",
+      "official_url": null,
+      "selection_method_description": "M/WBE SMALL PURCHASE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Environmental Protection · PORTLAND WILLIAMS LLC · $38,310",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
       "procurement_id": "procurement:contract:CT182720218800045",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT182720218800045",
       "procurement_stages": [
@@ -116639,6 +116763,38 @@
         "registered"
       ],
       "additional_description_1": "Department of Transportation · RANGAM CONSULTANTS INC · $383,460",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184120278803671",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184120278803671",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184120278803671:DEPENDABLE OFFICE SUPPLIES, INC.:prime-vendor:2026-11-04"
+      ],
+      "start_date": "2026-11-09",
+      "end_date": "2029-11-08",
+      "agency_id": null,
+      "agency_name": "Department of Transportation",
+      "short_title": "Maintenance, Repairs, & Supplies for Sign Mfg. Equipment",
+      "pin": "84127W0013001",
+      "contract_id": "CT184120278803671",
+      "contract_amount": 500000,
+      "vendor_name": "Dependable Office Supplies, Inc.",
+      "official_url": null,
+      "selection_method_description": "M/WBE SMALL PURCHASE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Transportation · Dependable Office Supplies, Inc. · $500,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -165851,6 +166007,38 @@
       "method_family": "ordinary_micropurchase"
     },
     {
+      "procurement_id": "procurement:contract:CT184620278803728",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803728",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803728:PLAYSITES PLUS SURFACES INC:prime-vendor:2026-11-06"
+      ],
+      "start_date": "2026-11-09",
+      "end_date": "2026-12-29",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "MNOPS-Supplies to Make Playground Repairs",
+      "pin": "84627C0285001",
+      "contract_id": "CT184620278803728",
+      "contract_amount": 7335,
+      "vendor_name": "PLAYSITES PLUS SURFACES INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · PLAYSITES PLUS SURFACES INC · $7,335",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
       "procurement_id": "procurement:contract:CT185020228800785",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185020228800785",
       "procurement_stages": [
@@ -202897,37 +203085,6 @@
         "checkbook_contracts"
       ],
       "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT185620268805661",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT185620268805661",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT185620268805661:CBRE INC:prime-vendor:2026-04-08"
-      ],
-      "start_date": "2025-11-08",
-      "end_date": "2026-11-07",
-      "agency_id": null,
-      "agency_name": "Department of Citywide Administrative Services",
-      "short_title": "NAE Tenant Rep #3",
-      "pin": "85626N0006001",
-      "contract_id": "CT185620268805661",
-      "contract_amount": 1,
-      "vendor_name": "CBRE INC",
-      "official_url": null,
-      "selection_method_description": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Citywide Administrative Services · CBRE INC · $1",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ]
     },
     {
       "procurement_id": "procurement:contract:CT185620268805895",

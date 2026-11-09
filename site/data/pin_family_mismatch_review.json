@@ -2,8 +2,8 @@
   "schema_version": 1,
   "version": "pin_family_mismatch_review_v1",
   "title": "PIN-family Checkbook ↔ PASSPort contract-id mismatches",
-  "observed_on": "2026-11-08",
-  "generated_at": "2026-11-08T14:07:52.584Z",
+  "observed_on": "2026-11-09",
+  "generated_at": "2026-11-09T21:24:05.881Z",
   "sources": {
     "crosswalk": "site/data/passport_checkbook_crosswalk.json",
     "spine": "site/data/procurement_spine_sources.json"

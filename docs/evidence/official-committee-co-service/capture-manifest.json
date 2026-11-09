@@ -21,7 +21,7 @@
       ],
       "ended_committee": "3",
       "absent": "7264",
-      "snapshot_day": "2026-11-05"
+      "snapshot_day": "2026-11-09"
     }
   },
   "captures": [
@@ -35,29 +35,59 @@
         "height": 900
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "827354e799b9d078908021bddd5c93248320e724",
+      "repository_revision": "384f59ca9b0eb33979540e5e4ac0a14000bf58de",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
         "site/committee_memberships.mjs": "2f43223dea7415f4fda7bc1d097fd10564807882"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-11-05T14:58:31Z",
-        "committee_graph_as_of": "2026-11-05",
-        "person_hub_generated_at": "2026-11-06T14:57:39.161Z"
+        "committee_graph_generated_at": "2026-11-09T21:13:55Z",
+        "committee_graph_as_of": "2026-11-09",
+        "person_hub_generated_at": "2026-11-09T21:38:01.746Z"
       },
-      "assertion": "The profile names the other member with the committees and dates both were listed on 2026-11-05; a committee whose service ended before 2026-11-05 appears in this member's membership history and never as service together on that day.",
+      "assertion": "The profile names the other member with the committees and dates both were listed on 2026-11-09; a committee whose service ended before 2026-11-09 appears in this member's membership history and never as service together on that day.",
       "assertion_holds": true,
       "observed": {
         "state": "matched",
-        "as_of": "2026-11-05",
+        "as_of": "2026-11-09",
         "colleague_count": 24,
         "represented_officials": 25,
         "heading": "SERVES ALONGSIDE",
-        "summary": "24 other represented officials sat on City Council committees with this member on 2026-11-05.",
-        "basis": "Drawn from the City Council office records published here, dated 2026-11-05. Other members can serve on these committees without a record in this set.",
+        "summary": "24 other represented officials sat on City Council committees with this member on 2026-11-09.",
+        "basis": "Drawn from the City Council office records published here, dated 2026-11-09. Other members can serve on these committees without a record in this set.",
         "rendered_colleagues": 24,
         "colleagues": [
+          {
+            "official_id": "7804",
+            "name": "\nShaun Abreu",
+            "shared_committees": 4,
+            "committee_ids": [
+              "5224",
+              "11",
+              "5268",
+              "5288"
+            ],
+            "overlaps": [
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-15",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-15",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ]
+            ],
+            "shared_caucuses": 2
+          },
           {
             "official_id": "7825",
             "name": "\nAlexa Avilés",
@@ -78,6 +108,31 @@
               ],
               [
                 "2026-01-15",
+                "2029-12-31"
+              ]
+            ],
+            "shared_caucuses": 2
+          },
+          {
+            "official_id": "7806",
+            "name": "\nCarmen N. De La Rosa",
+            "shared_committees": 3,
+            "committee_ids": [
+              "5224",
+              "14",
+              "5288"
+            ],
+            "overlaps": [
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ],
+              [
+                "2026-05-15",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-01",
                 "2029-12-31"
               ]
             ],
@@ -210,7 +265,7 @@
           },
           {
             "official_id": "7808",
-            "name": "\nPierina Ana Sanchez",
+            "name": "",
             "shared_committees": 3,
             "committee_ids": [
               "5224",
@@ -235,7 +290,7 @@
           },
           {
             "official_id": "7824",
-            "name": "\nSandy Nurse",
+            "name": "",
             "shared_committees": 3,
             "committee_ids": [
               "5224",
@@ -284,51 +339,6 @@
             "shared_caucuses": 2
           },
           {
-            "official_id": "7804",
-            "name": "",
-            "shared_committees": 3,
-            "committee_ids": [
-              "5224",
-              "11",
-              "5268"
-            ],
-            "overlaps": [
-              [
-                "2026-01-01",
-                "2029-12-31"
-              ],
-              [
-                "2026-01-15",
-                "2029-12-31"
-              ],
-              [
-                "2026-01-15",
-                "2029-12-31"
-              ]
-            ],
-            "shared_caucuses": 2
-          },
-          {
-            "official_id": "7806",
-            "name": "",
-            "shared_committees": 2,
-            "committee_ids": [
-              "5224",
-              "14"
-            ],
-            "overlaps": [
-              [
-                "2026-01-01",
-                "2029-12-31"
-              ],
-              [
-                "2026-05-15",
-                "2029-12-31"
-              ]
-            ],
-            "shared_caucuses": 2
-          },
-          {
             "official_id": "7799",
             "name": "",
             "shared_committees": 2,
@@ -367,6 +377,46 @@
               ]
             ],
             "shared_caucuses": 2
+          },
+          {
+            "official_id": "5259",
+            "name": "",
+            "shared_committees": 2,
+            "committee_ids": [
+              "5224",
+              "5288"
+            ],
+            "overlaps": [
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ]
+            ],
+            "shared_caucuses": 2
+          },
+          {
+            "official_id": "7803",
+            "name": "",
+            "shared_committees": 2,
+            "committee_ids": [
+              "5224",
+              "5288"
+            ],
+            "overlaps": [
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ]
+            ],
+            "shared_caucuses": 0
           },
           {
             "official_id": "7832",
@@ -479,36 +529,6 @@
             "shared_caucuses": 3
           },
           {
-            "official_id": "5259",
-            "name": "",
-            "shared_committees": 1,
-            "committee_ids": [
-              "5224"
-            ],
-            "overlaps": [
-              [
-                "2026-01-01",
-                "2029-12-31"
-              ]
-            ],
-            "shared_caucuses": 2
-          },
-          {
-            "official_id": "7803",
-            "name": "",
-            "shared_committees": 1,
-            "committee_ids": [
-              "5224"
-            ],
-            "overlaps": [
-              [
-                "2026-01-01",
-                "2029-12-31"
-              ]
-            ],
-            "shared_caucuses": 0
-          },
-          {
             "official_id": "7794",
             "name": "",
             "shared_committees": 1,
@@ -555,7 +575,7 @@
           }
         ],
         "disclosed": 16,
-        "committee_link_count": 87,
+        "committee_link_count": 91,
         "official_link_count": 24,
         "off_route_link_count": 0,
         "membership_section_committee_ids": [
@@ -584,10 +604,10 @@
           "9"
         ],
         "render_scope": "outerHTML of [data-official-coservice]",
-        "render_sha256": "8e004c2fd59fa37cdf27ec1d644cec29f51c5cc86e3df2972daa92c381544955",
+        "render_sha256": "1ad89273f77a30de982d0796c4d226ac11a3f75e48e24c63837290457cf73068",
         "positive_example": {
           "official_id": "7824",
-          "name": "\nSandy Nurse",
+          "name": "",
           "shared_committees": 3,
           "committee_ids": [
             "5224",
@@ -623,7 +643,7 @@
         "ended_in_membership_history": true,
         "ended_in_co_service": false
       },
-      "render_sha256": "8e004c2fd59fa37cdf27ec1d644cec29f51c5cc86e3df2972daa92c381544955",
+      "render_sha256": "1ad89273f77a30de982d0796c4d226ac11a3f75e48e24c63837290457cf73068",
       "render_scope": "outerHTML of [data-official-coservice]",
       "file": null
     },
@@ -637,16 +657,16 @@
         "height": 900
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "827354e799b9d078908021bddd5c93248320e724",
+      "repository_revision": "384f59ca9b0eb33979540e5e4ac0a14000bf58de",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
         "site/committee_memberships.mjs": "2f43223dea7415f4fda7bc1d097fd10564807882"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-11-05T14:58:31Z",
-        "committee_graph_as_of": "2026-11-05",
-        "person_hub_generated_at": "2026-11-06T14:57:39.161Z"
+        "committee_graph_generated_at": "2026-11-09T21:13:55Z",
+        "committee_graph_as_of": "2026-11-09",
+        "person_hub_generated_at": "2026-11-09T21:38:01.746Z"
       },
       "assertion": "Tab reaches the colleague link, Enter opens their profile, the reciprocal section names this member, the shared committee record lists both, and Back returns to the profile the walk started from.",
       "assertion_holds": true,
@@ -662,10 +682,10 @@
             "5309"
           ]
         },
-        "tab_presses_to_colleague_link": 91,
+        "tab_presses_to_colleague_link": 106,
         "colleague_link_reached_by_keyboard": true,
         "colleague_link_focus_visible": true,
-        "colleague_url": "http://127.0.0.1:36009/officials/7824/",
+        "colleague_url": "http://127.0.0.1:36875/officials/7824/",
         "reciprocal_row": {
           "official_id": "7801",
           "name": "\nChristopher Marte",
@@ -691,7 +711,7 @@
           ],
           "shared_caucuses": 3
         },
-        "committee_url": "http://127.0.0.1:36009/committees/5106/",
+        "committee_url": "http://127.0.0.1:36875/committees/5106/",
         "committee_title": "Committee on Parks and Recreation",
         "committee_member_ids": [
           "5259",
@@ -704,6 +724,7 @@
           "7794",
           "7796",
           "7799",
+          "7801",
           "7801",
           "7801",
           "7801",
@@ -729,6 +750,8 @@
           "7812",
           "7812",
           "7812",
+          "7812",
+          "7814",
           "7814",
           "7814",
           "7814",
@@ -745,13 +768,13 @@
           "7824",
           "7824"
         ],
-        "committee_render_sha256": "0208e6448684d678c633ff073c998bc8bf2d5b6d9f8e98084e9751b3de29ace6",
-        "back_url": "http://127.0.0.1:36009/officials/7824/",
-        "start_url": "http://127.0.0.1:36009/officials/7801/",
+        "committee_render_sha256": "b0ac37133cb365cf99ba92d093d08a5a9b0096f878d2da3229e8c335aa8550b5",
+        "back_url": "http://127.0.0.1:36875/officials/7824/",
+        "start_url": "http://127.0.0.1:36875/officials/7801/",
         "render_scope": "outerHTML of [data-official-coservice] after the walk returns",
-        "render_sha256": "8e004c2fd59fa37cdf27ec1d644cec29f51c5cc86e3df2972daa92c381544955"
+        "render_sha256": "1ad89273f77a30de982d0796c4d226ac11a3f75e48e24c63837290457cf73068"
       },
-      "render_sha256": "8e004c2fd59fa37cdf27ec1d644cec29f51c5cc86e3df2972daa92c381544955",
+      "render_sha256": "1ad89273f77a30de982d0796c4d226ac11a3f75e48e24c63837290457cf73068",
       "render_scope": "outerHTML of [data-official-coservice] after the walk returns",
       "file": null
     },
@@ -765,29 +788,59 @@
         "height": 844
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "827354e799b9d078908021bddd5c93248320e724",
+      "repository_revision": "384f59ca9b0eb33979540e5e4ac0a14000bf58de",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
         "site/committee_memberships.mjs": "2f43223dea7415f4fda7bc1d097fd10564807882"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-11-05T14:58:31Z",
-        "committee_graph_as_of": "2026-11-05",
-        "person_hub_generated_at": "2026-11-06T14:57:39.161Z"
+        "committee_graph_generated_at": "2026-11-09T21:13:55Z",
+        "committee_graph_as_of": "2026-11-09",
+        "person_hub_generated_at": "2026-11-09T21:38:01.746Z"
       },
       "assertion": "At a touch viewport the section renders the same markup as the desktop capture and the document does not scroll sideways.",
       "assertion_holds": true,
       "observed": {
         "state": "matched",
-        "as_of": "2026-11-05",
+        "as_of": "2026-11-09",
         "colleague_count": 24,
         "represented_officials": 25,
         "heading": "SERVES ALONGSIDE",
-        "summary": "24 other represented officials sat on City Council committees with this member on 2026-11-05.",
-        "basis": "Drawn from the City Council office records published here, dated 2026-11-05. Other members can serve on these committees without a record in this set.",
+        "summary": "24 other represented officials sat on City Council committees with this member on 2026-11-09.",
+        "basis": "Drawn from the City Council office records published here, dated 2026-11-09. Other members can serve on these committees without a record in this set.",
         "rendered_colleagues": 24,
         "colleagues": [
+          {
+            "official_id": "7804",
+            "name": "\nShaun Abreu",
+            "shared_committees": 4,
+            "committee_ids": [
+              "5224",
+              "11",
+              "5268",
+              "5288"
+            ],
+            "overlaps": [
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-15",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-15",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ]
+            ],
+            "shared_caucuses": 2
+          },
           {
             "official_id": "7825",
             "name": "\nAlexa Avilés",
@@ -808,6 +861,31 @@
               ],
               [
                 "2026-01-15",
+                "2029-12-31"
+              ]
+            ],
+            "shared_caucuses": 2
+          },
+          {
+            "official_id": "7806",
+            "name": "\nCarmen N. De La Rosa",
+            "shared_committees": 3,
+            "committee_ids": [
+              "5224",
+              "14",
+              "5288"
+            ],
+            "overlaps": [
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ],
+              [
+                "2026-05-15",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-01",
                 "2029-12-31"
               ]
             ],
@@ -940,7 +1018,7 @@
           },
           {
             "official_id": "7808",
-            "name": "\nPierina Ana Sanchez",
+            "name": "",
             "shared_committees": 3,
             "committee_ids": [
               "5224",
@@ -965,7 +1043,7 @@
           },
           {
             "official_id": "7824",
-            "name": "\nSandy Nurse",
+            "name": "",
             "shared_committees": 3,
             "committee_ids": [
               "5224",
@@ -1014,51 +1092,6 @@
             "shared_caucuses": 2
           },
           {
-            "official_id": "7804",
-            "name": "",
-            "shared_committees": 3,
-            "committee_ids": [
-              "5224",
-              "11",
-              "5268"
-            ],
-            "overlaps": [
-              [
-                "2026-01-01",
-                "2029-12-31"
-              ],
-              [
-                "2026-01-15",
-                "2029-12-31"
-              ],
-              [
-                "2026-01-15",
-                "2029-12-31"
-              ]
-            ],
-            "shared_caucuses": 2
-          },
-          {
-            "official_id": "7806",
-            "name": "",
-            "shared_committees": 2,
-            "committee_ids": [
-              "5224",
-              "14"
-            ],
-            "overlaps": [
-              [
-                "2026-01-01",
-                "2029-12-31"
-              ],
-              [
-                "2026-05-15",
-                "2029-12-31"
-              ]
-            ],
-            "shared_caucuses": 2
-          },
-          {
             "official_id": "7799",
             "name": "",
             "shared_committees": 2,
@@ -1097,6 +1130,46 @@
               ]
             ],
             "shared_caucuses": 2
+          },
+          {
+            "official_id": "5259",
+            "name": "",
+            "shared_committees": 2,
+            "committee_ids": [
+              "5224",
+              "5288"
+            ],
+            "overlaps": [
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ]
+            ],
+            "shared_caucuses": 2
+          },
+          {
+            "official_id": "7803",
+            "name": "",
+            "shared_committees": 2,
+            "committee_ids": [
+              "5224",
+              "5288"
+            ],
+            "overlaps": [
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ],
+              [
+                "2026-01-01",
+                "2029-12-31"
+              ]
+            ],
+            "shared_caucuses": 0
           },
           {
             "official_id": "7832",
@@ -1209,36 +1282,6 @@
             "shared_caucuses": 3
           },
           {
-            "official_id": "5259",
-            "name": "",
-            "shared_committees": 1,
-            "committee_ids": [
-              "5224"
-            ],
-            "overlaps": [
-              [
-                "2026-01-01",
-                "2029-12-31"
-              ]
-            ],
-            "shared_caucuses": 2
-          },
-          {
-            "official_id": "7803",
-            "name": "",
-            "shared_committees": 1,
-            "committee_ids": [
-              "5224"
-            ],
-            "overlaps": [
-              [
-                "2026-01-01",
-                "2029-12-31"
-              ]
-            ],
-            "shared_caucuses": 0
-          },
-          {
             "official_id": "7794",
             "name": "",
             "shared_committees": 1,
@@ -1285,7 +1328,7 @@
           }
         ],
         "disclosed": 16,
-        "committee_link_count": 87,
+        "committee_link_count": 91,
         "official_link_count": 24,
         "off_route_link_count": 0,
         "membership_section_committee_ids": [
@@ -1314,12 +1357,12 @@
           "9"
         ],
         "render_scope": "outerHTML of [data-official-coservice]",
-        "render_sha256": "8e004c2fd59fa37cdf27ec1d644cec29f51c5cc86e3df2972daa92c381544955",
+        "render_sha256": "1ad89273f77a30de982d0796c4d226ac11a3f75e48e24c63837290457cf73068",
         "document_scroll_width": 390,
         "document_client_width": 390,
         "horizontal_overflow": false
       },
-      "render_sha256": "8e004c2fd59fa37cdf27ec1d644cec29f51c5cc86e3df2972daa92c381544955",
+      "render_sha256": "1ad89273f77a30de982d0796c4d226ac11a3f75e48e24c63837290457cf73068",
       "render_scope": "outerHTML of [data-official-coservice]",
       "file": null
     },
@@ -1333,16 +1376,16 @@
         "height": 900
       },
       "served_by": "repository static build (_site) via tools/local_site_server.py",
-      "repository_revision": "827354e799b9d078908021bddd5c93248320e724",
+      "repository_revision": "384f59ca9b0eb33979540e5e4ac0a14000bf58de",
       "source_blob": {
         "site/committee_coservice.mjs": "d541d353333741cb66773928a4afcb2a73f75e5c",
         "site/app/entities.mjs": "ebfdec13a6ba72ef02e57fcad8b8eaa8e922aa96",
         "site/committee_memberships.mjs": "2f43223dea7415f4fda7bc1d097fd10564807882"
       },
       "data_vintage": {
-        "committee_graph_generated_at": "2026-11-05T14:58:31Z",
-        "committee_graph_as_of": "2026-11-05",
-        "person_hub_generated_at": "2026-11-06T14:57:39.161Z"
+        "committee_graph_generated_at": "2026-11-09T21:13:55Z",
+        "committee_graph_as_of": "2026-11-09",
+        "person_hub_generated_at": "2026-11-09T21:38:01.746Z"
       },
       "assertion": "A profile with no supported co-service row renders no section at all rather than an empty one, and the rest of the profile is unaffected.",
       "assertion_holds": true,
