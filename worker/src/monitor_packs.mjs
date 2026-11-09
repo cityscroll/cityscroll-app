@@ -12,6 +12,7 @@ export async function handleMonitorPackSubscribe(req, env, { verifyTurnstile = v
   const origin = req.headers.get("origin") || "";
   const cors = corsHeaders(origin, env);
   if (!isAllowedRequestOrigin(origin, env)) return json({ ok: false, reason: "origin" }, 403, cors);
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "POST") return json({ ok: false, reason: "method" }, 405, cors);
   if (!env.TOKEN_SECRET || !env.RESEND_API_KEY || !env.SUBS) return json({ ok: false, reason: "not-configured" }, 503, cors);
 
