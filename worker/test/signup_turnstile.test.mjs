@@ -46,12 +46,12 @@ test("siteverify requires success, signup action, and an approved production hos
 });
 
 test("both browser enrollment routes reject a missing proof before storage or mail", async () => {
-  let writes = 0;
+  const writes = [];
   const env = {
     TOKEN_SECRET: "test-token-secret",
     RESEND_API_KEY: "test-resend-key",
     TURNSTILE_SECRET: "test-turnstile-secret",
-    SUBS: { async get() { return null; }, async put(key) { if (key.startsWith("sub:") || key.startsWith("monitor-pack:")) writes += 1; } },
+    SUBS: { async get() { return null; }, async put(key) { writes.push(key); } },
   };
   const single = await handleSubscribe(new Request("https://api.cityscroll.org/subscribe", {
     method: "POST",
@@ -71,7 +71,7 @@ test("both browser enrollment routes reject a missing proof before storage or ma
   }), env);
   assert.equal(pack.status, 403);
   assert.equal((await pack.json()).reason, "bot-check");
-  assert.equal(writes, 0);
+  assert.deepEqual(writes, [], "unverified requests must not consume rate limits or write enrollment state");
 });
 
 test("the public Following document permits the managed challenge assets", async () => {

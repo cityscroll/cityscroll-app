@@ -61,6 +61,7 @@ const sessionStorage = {
   clear() { this.values.clear(); },
 };
 let assigned = "";
+let proofNumber = 0;
 
 globalThis.document = {
   body: { dataset: {} },
@@ -72,7 +73,7 @@ globalThis.document = {
 form.appendChild = () => {};
 globalThis.turnstile = {
   render(_holder, options) { this.callback = options.callback; return "test-widget"; },
-  execute() { this.callback("test-signup-proof"); },
+  execute() { this.callback(`test-signup-proof-${++proofNumber}`); },
   remove() {},
 };
 globalThis.window = {
@@ -106,6 +107,7 @@ function jsonResponse(body, status = 200) {
 
 async function submit(value = "reader@example.com") {
   calls.length = 0;
+  proofNumber = 0;
   message.textContent = "";
   email.value = value;
   email.removeAttribute("aria-invalid");
@@ -143,7 +145,7 @@ test("a valid address posts exactly the disclosed homepage-default intent", asyn
     no_topic: true,
     source: "contracts-intro",
     lang: "es",
-    turnstileToken: "test-signup-proof",
+    turnstileToken: "test-signup-proof-1",
   });
   assert.equal(langField.value, "es", "the hidden form field stays in sync with the posted language");
 });
@@ -230,6 +232,10 @@ test("an unreachable primary origin falls back to the second origin", async () =
   assert.deepEqual(requests.map((request) => request.url), [
     `${API_ORIGIN}/subscribe`,
     `${FALLBACK_ORIGIN}/subscribe`,
+  ]);
+  assert.deepEqual(requests.map((request) => JSON.parse(request.options.body).turnstileToken), [
+    "test-signup-proof-1",
+    "test-signup-proof-2",
   ]);
   assert.equal(message.textContent, "subscribed_now welcome_sent_to");
 });

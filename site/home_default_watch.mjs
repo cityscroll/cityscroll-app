@@ -15,15 +15,15 @@ const API_ORIGINS = Object.freeze([
   window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev",
 ]);
 
-async function subscribeHomeDefault(email, lang, turnstileToken) {
-  const body = JSON.stringify({ email, no_topic: true, source: "contracts-intro", lang, turnstileToken });
+async function subscribeHomeDefault(email, lang, getTurnstileToken) {
   let lastError;
   for (const origin of API_ORIGINS) {
+    const turnstileToken = await getTurnstileToken();
     try {
       const response = await fetch(`${origin.replace(/\/$/, "")}/subscribe`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body,
+        body: JSON.stringify({ email, no_topic: true, source: "contracts-intro", lang, turnstileToken }),
       });
       return await response.json().catch(() => ({}));
     } catch (error) {
@@ -81,8 +81,7 @@ export function initHomeDefaultSubscription() {
     const lang = window.LANG || "en";
     if (langField) langField.value = lang;
     try {
-      const turnstileToken = await signupTurnstileToken(form);
-      const result = await subscribeHomeDefault(email, lang, turnstileToken);
+      const result = await subscribeHomeDefault(email, lang, () => signupTurnstileToken(form));
       if (result?.ok) {
         const receipt = buildFollowingDefaultWatchReceipt({ watch: result.watch, created: result.created });
         if (receipt?.ok) {

@@ -86,10 +86,10 @@ export async function handleSubscribe(req, env, { verifyTurnstile = verifySignup
   if (!topicless && !lens) return reply(req, { ok: false, reason: "bad-lens" }, 400, cors);
   if ((body.channel || "email") !== "email") return reply(req, { ok: false, reason: "channel-unsupported" }, 400, cors);
 
-  const ip = req.headers.get("CF-Connecting-IP") || "";
-  if (await overLimit(env, ip, email)) return reply(req, { ok: false, reason: "rate-limited" }, 429, cors);
   const proof = await verifyTurnstile(req, env, body);
   if (!proof.ok) return reply(req, { ok: false, reason: proof.reason }, proof.status, cors);
+  const ip = req.headers.get("CF-Connecting-IP") || "";
+  if (await overLimit(env, ip, email)) return reply(req, { ok: false, reason: "rate-limited" }, 429, cors);
 
   const lang = typeof body.lang === "string" ? body.lang : "en";
   if (!topicless) {
