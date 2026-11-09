@@ -244,6 +244,18 @@ test("workerFetch: both bases down → rejects (callers show their own error)", 
   const { workerFetch } = makeWorkerFetch(async () => { throw new TypeError("down"); });
   await assert.rejects(() => workerFetch("/inv", {}));
 });
+test("workerFetch: uncertain /subscribe transport never replays the request", async () => {
+  const calls = [];
+  const { workerFetch } = makeWorkerFetch(async (url) => {
+    calls.push(url);
+    throw new TypeError("response lost after upload");
+  });
+  await assert.rejects(() => workerFetch("/subscribe", {
+    method: "POST",
+    body: JSON.stringify({ turnstileToken: "single-use-proof" }),
+  }));
+  assert.deepEqual(calls, ["https://api.example/subscribe"]);
+});
 test("workerFetch: incomplete 200 → semantic failover and remembers complete base", async () => {
   const calls = [];
   const { workerFetch } = makeWorkerFetch(async (url) => {
