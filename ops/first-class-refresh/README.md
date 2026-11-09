@@ -206,8 +206,13 @@ positions, source-health observations, and their downstream documents and receip
 still owns its generated families and their cold-build checks. Browser capture
 builders run against the built site; their manifests contain fresh measured
 read-back evidence rather than manually updated dates. Worker dependencies must
-be installed from the lockfile, and Python Playwright, Chromium and PDF text
-extraction must be available before running the sequence.
+be installed from the lockfile, the root `npm ci` lockfile (pinned Acorn for the
+engine/app boundary inventory) and `tools/source_verification_requirements.txt`
+must be installed for the site-node publication gate, and Python Playwright,
+Chromium and PDF text extraction must be available before running the sequence.
+A verification failure is rewritten into
+`.artifacts/first-class-rebuild-receipt.json` beside the per-step accounting so
+the rebuild step's exit status and the receipt always name the same cause.
 
 The institution census refresh recounts measured artifact fingerprints and DOE
 populations. Its publisher source review remains frozen: the run summary explicitly

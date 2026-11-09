@@ -14,9 +14,11 @@ import {
   registryBuilders,
   registryDrift,
   describeDrift,
+  rebuildProcessExitCode,
   runRebuildSequence,
   unpublishedRebuildOutputs,
   workflowGateBuilders,
+  writeRebuildReceipt,
   verificationCommands,
 } from "../ops/first-class-refresh/rebuild-committed-read-models.mjs";
 import { meetingPublicationFindings, missingAttachmentProof, unboundRollCalls } from "../ops/first-class-refresh/guard-publication.mjs";
@@ -242,7 +244,70 @@ test("every site and Worker CI freshness test runs before refresh publication, i
   assert.deepEqual(worker.args, ["--test"]);
   const runner = readFileSync(path.join(REPO_ROOT, "ops/first-class-refresh/rebuild-committed-read-models.mjs"), "utf8");
   assert.match(runner, /verifyFreshnessTests\(registry, ROOT, env\)/);
+  assert.match(runner, /writeRebuildReceipt\([\s\S]*verification/);
   assert.doesNotMatch(readFileSync(WORKFLOW, "utf8"), /--rebuild-only/);
+});
+
+test("the refresh workflow installs the same site verification dependencies CI site-node needs", () => {
+  const refresh = readFileSync(WORKFLOW, "utf8");
+  assert.match(refresh, /npm ci --ignore-scripts --no-audit --no-fund/);
+  assert.match(refresh, /tools\/source_verification_requirements\.txt/);
+  assert.match(refresh, /Install site verification dependencies/);
+});
+
+test("a verification-only failure is named in the rebuild receipt and keeps the rebuild step red", () => {
+  // Regression for the 2026-11-09 refresh: every rebuild step succeeded and the
+  // receipt reported failed=0, but post-rebuild site-node verification failed
+  // and set exit status 1 without rewriting the receipt. The workflow then
+  // failed the run for "rebuild reported a problem" with no named cause.
+  const root = mkdtempSync(path.join(tmpdir(), "first-class-rebuild-verification-"));
+  try {
+    const steps = [
+      { id: "root", tool: "tool.mjs", status: "succeeded" },
+      { id: "leaf", tool: "tool.mjs", status: "succeeded" },
+    ];
+    const receipt = writeRebuildReceipt(root, steps, {
+      now: "2026-11-09T17:40:47.782Z",
+      verification: [
+        { family: "site-node", status: "failed", exit_code: 1 },
+        { family: "worker", status: "succeeded" },
+      ],
+    });
+    assert.equal(receipt.failed, 0);
+    assert.equal(receipt.succeeded, 2);
+    assert.equal(receipt.verification.failed, 1);
+    assert.equal(receipt.verification.succeeded, 1);
+    assert.deepEqual(
+      receipt.verification.families.map((row) => ({ family: row.family, status: row.status })),
+      [
+        { family: "site-node", status: "failed" },
+        { family: "worker", status: "succeeded" },
+      ],
+    );
+    assert.equal(rebuildProcessExitCode(receipt), 1);
+
+    const healthy = writeRebuildReceipt(root, steps, {
+      now: "2026-11-09T17:40:47.782Z",
+      verification: [
+        { family: "site-node", status: "succeeded" },
+        { family: "worker", status: "succeeded" },
+      ],
+    });
+    assert.equal(rebuildProcessExitCode(healthy), 0);
+
+    const stranded = writeRebuildReceipt(root, steps, {
+      now: "2026-11-09T17:40:47.782Z",
+      stranded: ["docs/unexpected.json"],
+      verification: [
+        { family: "site-node", status: "succeeded" },
+        { family: "worker", status: "succeeded" },
+      ],
+    });
+    assert.deepEqual(stranded.stranded, ["docs/unexpected.json"]);
+    assert.equal(rebuildProcessExitCode(stranded), 1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("the rebuild's dependency order includes all required predecessors", () => {

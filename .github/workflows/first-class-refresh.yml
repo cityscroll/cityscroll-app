@@ -55,6 +55,17 @@ jobs:
         with:
           node-version: 22
 
+      # The rebuild entrypoint finishes by running the complete site-node and
+      # Worker CI test families as a publication gate. Site-node needs the root
+      # lockfile (pinned Acorn for the engine/app boundary inventory) and the
+      # source-verification Python pins; Worker deps are installed next. Mirror
+      # the site-node family install from .github/workflows/ci.yml so a refresh
+      # does not fail 100+ boundary tests for a missing parser while every
+      # rebuild step itself succeeded.
+      - name: Install site verification dependencies
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          python3 -m pip install --requirement tools/source_verification_requirements.txt
       - name: Install pinned Worker dependencies
         run: tools/install_worker_dependencies.sh
       - uses: ./.github/actions/setup-playwright
@@ -223,6 +234,24 @@ jobs:
               }
             } else {
               console.log(`\nAll ${rebuild.total_steps} rebuild steps succeeded.\n`);
+            }
+            // Post-rebuild site-node/worker verification is part of the same
+            // rebuild step exit status. Name it here when every rebuild step
+            // succeeded but the publication gate still failed.
+            const verificationProblems = (rebuild.verification?.families || []).filter((row) => row.status !== "succeeded");
+            if (verificationProblems.length) {
+              console.log(`\n### Rebuild verification families that did not succeed (${verificationProblems.length})\n`);
+              console.log(`| family | status | detail |\n| --- | --- | --- |`);
+              for (const row of verificationProblems) {
+                const detail = row.reason || (row.exit_code != null ? `exit ${row.exit_code}` : "");
+                console.log(`| ${row.family} | ${row.status} | ${detail} |`);
+              }
+            } else if (rebuild.verification) {
+              console.log(`\nAll ${rebuild.verification.total_families} rebuild verification families succeeded.\n`);
+            }
+            if ((rebuild.stranded || []).length) {
+              console.log(`\n### Rebuild wrote paths outside published_paths (${rebuild.stranded.length})\n`);
+              for (const file of rebuild.stranded) console.log(`- \`${file}\``);
             }
           } else {
             console.log("\n### Rebuild did not run to completion; no rebuild receipt was written\n");

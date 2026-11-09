@@ -3,7 +3,8 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Run: node --test test/batch_precompute_snapshots.test.mjs worker/test/property.test.mjs
 
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
@@ -256,31 +257,69 @@ test("fetchJson retries a network failure with bounded backoff before succeeding
 test("fetchMoneyAgencies falls back to the committed agency snapshot after permanent failure", async () => {
   const now = new Date("2026-09-21T12:00:00Z");
   const logs = [];
+  // Hermetic snapshot: generated_at can advance on a rematerialized fallback
+  // write while metadata.source_vintage keeps the prior publisher vintage. The
+  // live refresh hit this shape after City Record 503s; comparing source_vintage
+  // to generated_at then failed even though fallback behaved correctly.
+  const snapshotPath = join(FIXTURE, "money_procurement_agencies_fallback.json");
+  const committed = JSON.parse(readFileSync(snapshotPath, "utf8"));
+  const sourceVintage = committed.metadata.source_vintage;
+  assert.notEqual(sourceVintage, committed.generated_at);
   const rows = await fetchMoneyAgencies(async () => {
     throw Object.assign(new TypeError("fetch failed"), {
       cause: { code: "UND_ERR_CONNECT_TIMEOUT", message: "Connect Timeout Error" },
     });
   }, {
     now,
+    snapshotPath,
     retry: { maxAttempts: 2, initialDelayMs: 0, maxDelayMs: 0, jitterRatio: 0 },
     sleep: async () => {},
     log: (line) => logs.push(line),
     random: () => 0,
   });
-  const committed = JSON.parse(readFileSync(join(ROOT, "site/data/money_procurement_agencies.json"), "utf8"));
   assert.deepEqual(rows.map((row) => row.agency_name), committed.agencies);
   assert.equal(rows.acquisition.fetched_at, now.toISOString());
-  assert.equal(rows.acquisition.source_vintage, committed.generated_at);
+  assert.equal(rows.acquisition.source_vintage, sourceVintage);
   assert.match(rows.acquisition.fallback_reason, /exhausted after 2 attempts/);
   assert.ok(logs.some((line) => line.includes("money agencies fallback")));
 
   const snapshot = buildMoneyAgenciesSnapshot(rows, { now, acquisition: rows.acquisition });
   assert.deepEqual(snapshot.metadata, {
-    source_vintage: committed.generated_at,
+    source_vintage: sourceVintage,
     fetched_at: now.toISOString(),
     stale: true,
     fallback_reason: rows.acquisition.fallback_reason,
   });
+});
+
+test("fetchMoneyAgencies fallback prefers metadata.source_vintage over a newer generated_at", async () => {
+  const root = mkdtempSync(join(tmpdir(), "money-agencies-fallback-"));
+  try {
+    const snapshotPath = join(root, "money_procurement_agencies.json");
+    const sourceVintage = "2026-11-08T14:20:41.043Z";
+    const rematerializedAt = "2026-11-09T17:18:21.245Z";
+    writeFileSync(snapshotPath, `${JSON.stringify({
+      generated_at: rematerializedAt,
+      metadata: { source_vintage: sourceVintage, fetched_at: rematerializedAt, stale: true, fallback_reason: "prior" },
+      agencies: ["Aging", "City Planning"],
+    }, null, 2)}\n`);
+    const now = new Date("2026-11-09T18:00:00Z");
+    const rows = await fetchMoneyAgencies(async () => {
+      throw new TypeError("fetch failed");
+    }, {
+      now,
+      snapshotPath,
+      retry: { maxAttempts: 1, initialDelayMs: 0, maxDelayMs: 0, jitterRatio: 0 },
+      sleep: async () => {},
+      log: () => {},
+      random: () => 0,
+    });
+    assert.equal(rows.acquisition.source_vintage, sourceVintage);
+    assert.equal(rows.acquisition.fetched_at, now.toISOString());
+    assert.notEqual(rows.acquisition.source_vintage, rematerializedAt);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("fetchMoneyAgencies remains fatal when no committed snapshot exists", async () => {

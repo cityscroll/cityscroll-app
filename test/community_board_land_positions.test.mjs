@@ -890,7 +890,9 @@ test("the captured pages prove the no-scripting fallback and the native affordan
 test("the captured journey preserves scope, scroll and the list through inspect and Back", () => {
   const journeys = CAPTURE.captures.filter((capture) => capture.case === "board-position-inspect-journey");
   assert.equal(journeys.length, 2);
-  for (const { observed, viewport } of journeys) {
+  const boardReturn = `/community-boards/${MANHATTAN_CB4}/`;
+  const fixtureReturn = "/.artifacts/board-land-positions/fixtures/board-language-en.html";
+  for (const { observed, viewport, route } of journeys) {
     const at = `${viewport.width}x${viewport.height}`;
     assert.equal(observed.dialog_open, true, at);
     assert.equal(observed.dialog_labelled_by, "board-land-position-inspect-title", at);
@@ -910,7 +912,14 @@ test("the captured journey preserves scope, scroll and the list through inspect 
     assert.equal(observed.dialog_open_href, `/browse/zoning/#land/${DEWITT_ELEVENTH}`, at);
     assert.equal(observed.left_for_path, "/browse/zoning/", at);
     assert.equal(observed.left_for_hash, `land/${DEWITT_ELEVENTH}`, at);
-    assert.equal(observed.returned_path, `/community-boards/${MANHATTAN_CB4}/`, at);
+    // Captures run against rendered fixtures so a live refresh cannot remove the
+    // pinned board mid-journey. Back returns to that fixture path; the receipt's
+    // `route` still names the logical board URL the fixture stands in for.
+    assert.equal(route, boardReturn, at);
+    assert.ok(
+      observed.returned_path === boardReturn || observed.returned_path === fixtureReturn,
+      `${at}: returned_path=${observed.returned_path}`,
+    );
     assert.equal(observed.scroll_restored, true, at);
     assert.equal(observed.list_undisturbed, true, at);
     assert.equal(observed.calendar_undisturbed, true, at);
