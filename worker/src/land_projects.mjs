@@ -1,21 +1,55 @@
 // HTTP adapters and the explicit provider for the public Land project
-// capabilities. The provider reads only precomputed, committed data: the
-// bounded ZAP projects warehouse materialization (WH-05), the committed
-// default-ULURP floor, and the precomputed zap-outcomes KV cache. It never
-// calls the ZAP API or Socrata at request time, and it never limits browse
-// to the interface-only active-status lookup that the resident Land list
-// prewarms for itself (`land:zap-lookup:v1` / GET /zap-projects-lookup).
+// capabilities. Presentation and mixed-module helpers are injected through
+// attachLandProjectsPresentation so this engine-partitioned module does not
+// reverse-import site/ or mixed Worker modules. The provider reads only
+// precomputed, committed data: the bounded ZAP projects warehouse
+// materialization (WH-05), the committed default-ULURP floor, and the
+// precomputed zap-outcomes KV cache. It never calls the ZAP API or Socrata at
+// request time, and it never limits browse to the interface-only active-status
+// lookup that the resident Land list prewarms for itself
+// (`land:zap-lookup:v1` / GET /zap-projects-lookup).
 
-import { resolveLandActionProcedures } from "../../site/land_action_procedure_resolution.mjs";
-import { buildLandDecisionPathView, publicLandDecisionPathView } from "../../site/land_decision_path.mjs";
-import { landProjectUrl } from "../../site/land_project_route.mjs";
-import { filterLandSnapshot } from "../../site/resident_snapshot_queries.mjs";
 import { getZapWarehouseIndex } from "./lib/zap_warehouse_lookup.mjs";
-import { loadZapProjectsLookup } from "./lib/zap_projects_lookup_kv.mjs";
 import { resolveWarehouseRouteScopedLookup } from "./lib/warehouse_route_scoped_shards.mjs";
 import landDefaultUlurp from "../../site/data/land_default_ulurp.json" with { type: "json" };
-import { readZapOutcomeRecord, outcomeCacheIsFresh } from "./zap_outcomes.mjs";
 import landExpeditedCorpus from "./data/land_expedited_corpus.json" with { type: "json" };
+
+// Presentation and mixed-module dependencies are attached by the Worker
+// composition root (and by tests) so this engine-partitioned module does not
+// statically import across the engine/application boundary.
+let presentation = null;
+
+export function attachLandProjectsPresentation(deps) {
+  if (!deps || typeof deps !== "object") {
+    throw new Error("attachLandProjectsPresentation requires a dependency object");
+  }
+  const required = [
+    "resolveLandActionProcedures",
+    "buildLandDecisionPathView",
+    "publicLandDecisionPathView",
+    "landProjectUrl",
+    "filterLandSnapshot",
+    "loadZapProjectsLookup",
+    "readZapOutcomeRecord",
+    "outcomeCacheIsFresh",
+  ];
+  for (const key of required) {
+    if (typeof deps[key] !== "function") {
+      throw new Error(`attachLandProjectsPresentation missing function: ${key}`);
+    }
+  }
+  presentation = Object.freeze({ ...deps });
+}
+
+function landPresentation() {
+  if (!presentation) {
+    throw new Error(
+      "Land projects presentation is not attached; the Worker composition root must call attachLandProjectsPresentation before serving Land routes",
+    );
+  }
+  return presentation;
+}
+
 import {
   LAND_PROJECT_AVAILABILITY,
   LAND_PROJECT_GET_CAPABILITY_REFERENCE,
@@ -121,7 +155,7 @@ export async function completeLandProjectPopulation(env) {
     const id = clean(row?.project_id);
     if (id && !byId.has(id)) byId.set(id, row);
   }
-  const activeLookup = await loadZapProjectsLookup(env);
+  const activeLookup = await landPresentation().loadZapProjectsLookup(env);
   for (const row of Array.isArray(activeLookup?.record?.rows) ? activeLookup.record.rows : []) {
     const id = clean(row?.project_id);
     if (!id) continue;
@@ -199,8 +233,8 @@ function collectConflicts(landActions) {
  * explicitly rather than guessed from shape.
  */
 export function projectLandProject(record, { richness = "open_data_only", populationAsOf = null, nowMs = Date.now() } = {}) {
-  const resolved = resolveLandActionProcedures(record);
-  const decisionPath = publicLandDecisionPathView(buildLandDecisionPathView(record, { generatedAt: populationAsOf }));
+  const resolved = landPresentation().resolveLandActionProcedures(record);
+  const decisionPath = landPresentation().publicLandDecisionPathView(landPresentation().buildLandDecisionPathView(record, { generatedAt: populationAsOf }));
   const projectId = resolved.project_id || clean(record?.project_id);
   const openData = record?.open_data && typeof record.open_data === "object" ? record.open_data : record || {};
   const isExact = richness === "exact";
@@ -219,7 +253,7 @@ export function projectLandProject(record, { richness = "open_data_only", popula
     schema: "cityscroll.capability.land_project.v1",
     project_id: projectId,
     canonical_id: `land:project:${projectId}`,
-    deep_link: landProjectUrl(projectId),
+    deep_link: landPresentation().landProjectUrl(projectId),
     project_name: openData.project_name || null,
     statuses: {
       public_status: openData.public_status || null,
@@ -277,7 +311,7 @@ export function projectLandProject(record, { richness = "open_data_only", popula
       as_of: isExact ? (record.generated_at || populationAsOf || "unknown") : (populationAsOf || "unknown"),
       generated_at: isExact ? (record.generated_at || null) : null,
       population_as_of: populationAsOf,
-      stale: isExact ? !outcomeCacheIsFresh(record, nowMs) : null,
+      stale: isExact ? !landPresentation().outcomeCacheIsFresh(record, nowMs) : null,
     },
   };
 }
@@ -290,7 +324,7 @@ export function workerLandProjectGet(env, { nowMs = Date.now() } = {}) {
       try {
         const projectId = input.projectId.trim();
         const injectedExact = env?.LAND_PROJECT_RECORDS?.[projectId];
-        const cachedExact = injectedExact || await readZapOutcomeRecord(env, projectId);
+        const cachedExact = injectedExact || await landPresentation().readZapOutcomeRecord(env, projectId);
         if (cachedExact && cachedExact.project_id) {
           return {
             capability_reference: LAND_PROJECT_GET_CAPABILITY_REFERENCE,
@@ -381,7 +415,7 @@ export function workerLandProjectsBrowse(env, { nowMs = Date.now() } = {}) {
         if (input.cursor && !cursorId) throw new Error("invalid cursor");
 
         const filterRows = historical ? population.flatRows : population.rows;
-        const filtered = filterLandSnapshot(filterRows, {
+        const filtered = landPresentation().filterLandSnapshot(filterRows, {
           // Never active-only: an explicit status stays honored, but the
           // unfiltered default is every publisher-observed status, not the
           // resident list's own active-only default. See the negative rule:

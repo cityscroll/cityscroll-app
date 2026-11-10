@@ -2,6 +2,7 @@
 //
 //   node --test worker/test/warehouse_route_scoped_shards.test.mjs
 
+import "../../test/helpers/attach_land_projects_presentation.mjs";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
