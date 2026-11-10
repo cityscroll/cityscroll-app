@@ -23,6 +23,23 @@ import {
   evaluateMeetingAvailabilityRows,
 } from "../capabilities/meeting_availability.mjs";
 
+// Document helpers used to live in the classic-script shared scope. Keep them
+// local so this ESM module stays callable from Following and feed-actions.
+function escUiHtml(value) {
+  return String(value ?? "").replace(/[<>&"']/g, (char) => ({
+    "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
+  }[char]));
+}
+
+function todayISO() {
+  const pinned = globalThis.CROL_PINNED_TODAY;
+  const day = typeof pinned === "string" && /^\d{4}-\d{2}-\d{2}$/.test(pinned)
+    ? pinned
+    // determinism-lint: allow clock civic day for availability evaluation; pin above is harness-only.
+    : new Date().toISOString().slice(0, 10);
+  return `${day}T00:00:00`;
+}
+
 export function syncMeetingAvailabilityControls() {
   const field = document.querySelector("[data-meetings-availability]");
   if (!field) return;
