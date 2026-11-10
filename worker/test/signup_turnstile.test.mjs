@@ -75,6 +75,28 @@ test("both browser enrollment routes reject a missing proof before storage or ma
   assert.deepEqual(writes, [], "unverified requests must not consume rate limits or write enrollment state");
 });
 
+test("a no-JavaScript form gets a clear security-check response without storage", async () => {
+  const writes = [];
+  const response = await handleSubscribe(new Request("https://api.cityscroll.org/subscribe", {
+    method: "POST",
+    headers: {
+      origin: "https://cityscroll.org",
+      accept: "text/html",
+      "content-type": "application/x-www-form-urlencoded",
+    },
+    body: "email=reader%40example.com&no_topic=true&source=contracts-intro",
+  }), {
+    TOKEN_SECRET: "test-token-secret",
+    RESEND_API_KEY: "test-resend-key",
+    TURNSTILE_SECRET: "test-turnstile-secret",
+    SUBS: { async get() { return null; }, async put(key) { writes.push(key); } },
+  });
+  assert.equal(response.status, 403);
+  assert.match(response.headers.get("content-type"), /text\/html/);
+  assert.match(await response.text(), /Enable JavaScript and submit the form again/);
+  assert.deepEqual(writes, []);
+});
+
 test("pack route permits preflight and rejects an unverified POST before storage", async () => {
   const writes = [];
   const env = {

@@ -81,11 +81,6 @@ test("Contracts intro CTA discloses the exact weekly default before asking for a
   assert.match(index, /sessionShowBanner[\s\S]*homeCtaManage/);
 });
 
-test("signup form explains the JavaScript security check", () => {
-  assert.match(index, /<noscript><p class="home-cta-msg">Enable JavaScript to complete the signup security check\.<\/p><\/noscript>/);
-  assert.match(index, /action="https:\/\/api\.cityscroll\.org\/subscribe"/);
-});
-
 test("about feedback form has no Turnstile and exposes public feedback inbox", () => {
   const about = readFileSync(join(ROOT, "site/about.html"), "utf8");
   assert.doesNotMatch(about, /class="cf-turnstile"/);
