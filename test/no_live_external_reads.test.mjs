@@ -29,6 +29,20 @@ test("static gate rejects publisher fetches but not official navigation links", 
   assert.match(findings[0].call_signature, /^fetch\(SODA\)$/);
 });
 
+test("dynamic owned URLs do not crash the scan or hide static publisher fetches", () => {
+  const sources = new Map([["/repo/site/app/example.mjs", [
+    "const OWNED = `https://${host}`;",
+    "const EXTERNAL = \"https://data.cityofnewyork.us/resource/example.json\";",
+    "fetch(OWNED);",
+    "fetch(`https://${host}/local`);",
+    "fetch(EXTERNAL);",
+  ].join("\n")]]);
+  const findings = analyzeResidentSources(sources, policy);
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].origin, "data.cityofnewyork.us");
+  assert.equal(findings[0].call_signature, "fetch(EXTERNAL)");
+});
+
 test("static gate rejects unclassified first-party read routes", () => {
   const sources = new Map([["/repo/site/app/example.mjs", `
     workerFetch("/rules", {}, 1000);
