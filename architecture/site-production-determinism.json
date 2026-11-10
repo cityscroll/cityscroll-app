@@ -549,6 +549,7 @@
     "site/person_constellation.mjs",
     "site/person_hub.mjs",
     "site/person_votes.mjs",
+    "site/phase_state_kernel.mjs",
     "site/pin_sibling_grouping.mjs",
     "site/pivot_destination_compatibility.mjs",
     "site/place_context.mjs",

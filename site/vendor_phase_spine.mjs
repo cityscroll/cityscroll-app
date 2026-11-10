@@ -19,6 +19,8 @@
  * “join coming” note on every row.
  */
 
+import { phaseStates } from "./phase_state_kernel.mjs";
+
 export const VENDOR_PHASE_SPINE_SCHEMA_VERSION = 1;
 
 /**
@@ -307,15 +309,17 @@ export function buildVendorPhaseView(rows, opts = {}) {
   }
   if (!currentPhaseId) currentPhaseId = "award";
   const curIdx = VENDOR_PROCUREMENT_PHASES.indexOf(currentPhaseId);
-
-  function phaseState(id) {
-    if (id === currentPhaseId) return "current";
-    const idx = VENDOR_PROCUREMENT_PHASES.indexOf(id);
-    const has = (byPhase[id] || []).length > 0;
-    if (idx < curIdx) return "passed";
-    if (has && idx > curIdx) return "passed";
-    return "future";
-  }
+  const materialPhaseIds = VENDOR_PROCUREMENT_PHASES.filter(
+    (id) => (byPhase[id] || []).length > 0,
+  );
+  const phaseStateById = Object.fromEntries(
+    phaseStates({
+      order: VENDOR_PROCUREMENT_PHASES,
+      current: currentPhaseId,
+      material: materialPhaseIds,
+      rule: "material-passes",
+    }).map((row) => [row.id, row.state]),
+  );
 
   const noticeMilestones = milestones.filter((m) => m.kind === "notice" && m.request_id);
   let latestNotice = null;
@@ -333,7 +337,7 @@ export function buildVendorPhaseView(rows, opts = {}) {
   const duplicateCheckbookLinks = countDuplicateSourceLinks(checkbookCandidates);
 
   const phases = VENDOR_PROCUREMENT_PHASES.map((id) => {
-    const state = phaseState(id);
+    const state = phaseStateById[id];
     const all = byPhase[id] || [];
     // Future empty: no panel body. Current/passed: show material. Substance stays behind
     // disclosure in the HTML layer; the view still carries the rows.
