@@ -599,6 +599,7 @@ site/land_project_decision_relations.mjs
 site/land_project_geography.mjs
 site/land_project_map_points.mjs
 site/land_project_route.mjs
+site/land_projects_attach.mjs
 site/land_record_links.mjs
 site/land_regulatory_effect.mjs
 site/land_review_regimes.mjs
@@ -1179,6 +1180,7 @@ test/graph_edge_provenance.test.mjs
 test/hash_routes.test.mjs
 test/hearing_logistics.test.mjs
 test/hearing_widening.test.mjs
+test/helpers/attach_land_projects_presentation.mjs
 test/helpers/mandate_subject.mjs
 test/helpers/near_you_local_escape_fixture.mjs
 test/helpers/near_you_place_suggestions_fixture.mjs
