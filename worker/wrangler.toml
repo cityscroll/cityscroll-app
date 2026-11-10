@@ -17,9 +17,9 @@ routes = [
   { pattern = "cityscroll.org/following*", zone_name = "cityscroll.org" },
   { pattern = "cityscroll.org/prefs*", zone_name = "cityscroll.org" },
 ]
-# Adding routes implicitly DISABLES workers.dev unless this is explicit — keep the alias alive
-# so older cached pages and any in-flight confirm links (24h TTL) don't break.
-workers_dev = true
+# Keep the unprotected workers.dev hostname closed. Public API traffic uses the
+# custom domains above, where the signup hold and other zone rules apply.
+workers_dev = false
 
 # Daily alerts digest at 13:00 UTC (09:00 ET) plus a delivery-free rehearsal at
 # 10:00 UTC (06:00 ET). Morning 08:00 UTC acquires Council calendar events
