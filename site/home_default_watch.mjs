@@ -52,10 +52,9 @@ function homeCtaErrorMessage(reason) {
 }
 
 /**
- * Progressive enhancement for the disclosed weekly-Contracts default: the form works as a
- * plain POST to /subscribe without JS (see the no-JS branch of worker/src/subscribe.mjs's
- * reply()); here we intercept submit to enroll via the ordinary /subscribe transaction and
- * report status inline instead of navigating away.
+ * Browser signup for the disclosed weekly-Contracts default requires JavaScript so each request
+ * can obtain a managed Turnstile proof. We intercept submit to enroll via the ordinary /subscribe
+ * transaction and report status inline instead of navigating away.
  */
 export function initHomeDefaultSubscription() {
   const form = document.getElementById("homeCtaForm");

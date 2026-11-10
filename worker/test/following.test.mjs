@@ -293,7 +293,7 @@ test("the recognized-session island shows a concise watch summary and management
   assert.doesNotMatch(html, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 });
 
-test("a no-JavaScript form subscribes immediately and reaches management from the welcome", async () => {
+test("a form-encoded subscribe request reaches management from the welcome", async () => {
   const originalFetch = globalThis.fetch;
   let welcomeEmail = null;
   globalThis.fetch = async (url, options = {}) => {
