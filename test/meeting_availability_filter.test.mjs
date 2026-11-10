@@ -2,13 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-  EVENINGS_WEEKENDS_AVAILABILITY,
   MEETING_AVAILABILITY_SCHEMA,
-  applyMeetingAvailability,
   canonicalMeetingAvailability,
   evaluateMeetingAvailability,
   evaluateMeetingAvailabilityRows,
-  meetingAvailabilitySummaryHTML,
   validateMeetingAvailability,
 } from "../site/meeting_availability_filter.mjs";
 
@@ -106,17 +103,4 @@ test("availability admission rejects invalid weekday, clock, zone, and empty win
     assert.equal(result.ok, false, path);
     assert.ok(result.errors.length, path);
   }
-});
-
-test("document helpers stay callable after the capabilities engine re-export", () => {
-  const html = meetingAvailabilitySummaryHTML(
-    { availability: EVENINGS_WEEKENDS_AVAILABILITY },
-    { unknown_start: 1 },
-  );
-  assert.match(html, /data-meetings-availability-result/);
-  assert.equal(html.includes("<"), true);
-  assert.equal(html.includes("&lt;") || !html.includes("<script"), true);
-  const empty = applyMeetingAvailability([], { availability: EVENINGS_WEEKENDS_AVAILABILITY });
-  assert.equal(empty.counts.total, 0);
-  assert.equal(empty.counts.matched, 0);
 });

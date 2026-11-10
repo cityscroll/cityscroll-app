@@ -23,6 +23,20 @@ from playwright.sync_api import sync_playwright
 ROOT = pathlib.Path(__file__).parents[2]
 SITE = ROOT / "site"
 PUBLIC_SITE = ROOT / "_site" if (ROOT / "_site" / "index.html").is_file() else SITE
+# Engine/site dual copies share const names. Classic flatten keeps one shared
+# scope, so capabilities/ helpers redirect to their site copy (see
+# test/engine_site_helper_parity.test.mjs).
+CAPABILITIES_SITE_DUAL_COPIES = {
+    (ROOT / "capabilities" / "meeting_availability.mjs").resolve(): (SITE / "meeting_availability_filter.mjs").resolve(),
+    (ROOT / "capabilities" / "meetings_attendance.mjs").resolve(): (SITE / "meetings_attendance.mjs").resolve(),
+    (ROOT / "capabilities" / "meeting_process_profile.mjs").resolve(): (SITE / "meeting_process_profile.mjs").resolve(),
+    (ROOT / "capabilities" / "analytical_projection.mjs").resolve(): (SITE / "analytical_projection.mjs").resolve(),
+    (ROOT / "capabilities" / "contracts_analysis_projection.mjs").resolve(): (SITE / "contracts_analysis_projection.mjs").resolve(),
+    (ROOT / "capabilities" / "procurement_identity_key.mjs").resolve(): (SITE / "procurement_identity_key.mjs").resolve(),
+    (ROOT / "capabilities" / "procurement_canonical_href.mjs").resolve(): (SITE / "procurement_route.mjs").resolve(),
+    (ROOT / "capabilities" / "procurement_detail_index.mjs").resolve(): (SITE / "procurement_detail_index.mjs").resolve(),
+    (ROOT / "capabilities" / "procurement_browse_capability_read.mjs").resolve(): (SITE / "procurement_browse_capability_index.mjs").resolve(),
+}
 
 import sys
 
@@ -143,6 +157,11 @@ def flatten_helper(
     """Inline a pure helper's local named-import graph for the pre-split fixture."""
     if flattened is None:
         flattened = set()
+    path = path.resolve()
+    site_dual = CAPABILITIES_SITE_DUAL_COPIES.get(path)
+    if site_dual is not None:
+        # Prefer the browser site copy so const names appear once in the classic script.
+        return flatten_helper(site_dual, stack, flattened, scoped=scoped)
     assert path not in stack, f"circular inline helper import: {path.name}"
     if path in flattened:
         return ""
