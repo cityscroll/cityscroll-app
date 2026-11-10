@@ -11,6 +11,8 @@
  * Presentation (HTML) lives in site/index.html lifecycleTimelineHTML.
  */
 
+import { phaseStates } from "./phase_state_kernel.mjs";
+
 export const PROCUREMENT_PHASE_SPINE_SCHEMA_VERSION = 1;
 
 /**
@@ -364,24 +366,25 @@ export function buildProcurementPhaseView(data, opts = {}) {
   if (!currentPhaseId) currentPhaseId = "solicitation";
 
   const curIdx = phaseIds.indexOf(currentPhaseId);
-
-  function phaseState(id) {
-    if (id === currentPhaseId) return "current";
-    const idx = phaseIds.indexOf(id);
-    const milestones = byPhase[id] || [];
-    const hasMaterial = milestones.some(
+  const materialPhaseIds = phaseIds.filter((id) =>
+    (byPhase[id] || []).some(
       (m) =>
         m.public_status === "matched" ||
         m.public_status === "passed" ||
         m.public_status === "ambiguous",
-    );
-    if (idx < curIdx) return "passed";
-    if (hasMaterial && idx > curIdx) return "passed"; // data quirk: material after current
-    return "future";
-  }
+    ),
+  );
+  const phaseStateById = Object.fromEntries(
+    phaseStates({
+      order: phaseIds,
+      current: currentPhaseId,
+      material: materialPhaseIds,
+      rule: "material-passes",
+    }).map((row) => [row.id, row.state]),
+  );
 
   const phases = phaseIds.map((id) => {
-    const state = phaseState(id);
+    const state = phaseStateById[id];
     const all = byPhase[id] || [];
     // History/current: keep material + passed notes. Future: only matched/ambiguous
     // (rare out-of-order data) — pure unmatched empties are stepper chips only, never

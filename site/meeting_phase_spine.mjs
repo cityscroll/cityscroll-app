@@ -18,6 +18,8 @@
  * collapseMeetingAgenda — this module only shapes one matter's spine.
  */
 
+import { phaseStates } from "./phase_state_kernel.mjs";
+
 export const MEETING_PHASE_SPINE_SCHEMA_VERSION = 1;
 
 /** Ordered presentation phases for one Council matter. */
@@ -454,15 +456,17 @@ export function buildMeetingMatterPhaseView(spine, opts = {}) {
   const currentPhaseId =
     lastMaterialIdx >= 0 ? MEETING_MATTER_PHASES[lastMaterialIdx] : "agenda";
 
-  function phaseState(id) {
-    if (id === currentPhaseId) return "current";
-    const idx = MEETING_MATTER_PHASES.indexOf(id);
-    const cur = MEETING_MATTER_PHASES.indexOf(currentPhaseId);
-    const list = byPhase[id] || [];
-    const material = list.some((s) => stageIsMaterial(s, actionStage));
-    if (material || idx < cur) return "passed";
-    return "future";
-  }
+  const materialPhaseIds = MEETING_MATTER_PHASES.filter((id) =>
+    (byPhase[id] || []).some((s) => stageIsMaterial(s, actionStage)),
+  );
+  const phaseStateById = Object.fromEntries(
+    phaseStates({
+      order: MEETING_MATTER_PHASES,
+      current: currentPhaseId,
+      material: materialPhaseIds,
+      rule: "material-passes",
+    }).map((row) => [row.id, row.state]),
+  );
 
   function phaseMatched(id) {
     const list = byPhase[id] || [];
@@ -470,7 +474,7 @@ export function buildMeetingMatterPhaseView(spine, opts = {}) {
   }
 
   const phases = MEETING_MATTER_PHASES.map((id) => {
-    const state = phaseState(id);
+    const state = phaseStateById[id];
     const stages = (byPhase[id] || []).slice().sort((a, b) => {
       const oa = STAGE_ORDER[a.kind] ?? 99;
       const ob = STAGE_ORDER[b.kind] ?? 99;

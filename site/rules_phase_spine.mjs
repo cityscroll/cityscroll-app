@@ -23,6 +23,8 @@
  * Presentation (HTML) lives in site/index.html ruleEventSpineHTML.
  */
 
+import { phaseStates } from "./phase_state_kernel.mjs";
+
 export const RULES_PHASE_SPINE_SCHEMA_VERSION = 1;
 
 /** Ordered rulemaking phases. */
@@ -808,22 +810,20 @@ export function buildRulesPhaseView(rec, opts = {}) {
     }
   }
 
-  function phaseState(id) {
-    if (id === currentPhaseId) return "current";
-    const idx = RULES_PHASES.indexOf(id);
-    const cur = RULES_PHASES.indexOf(currentPhaseId);
-    const list = byPhase[id] || [];
-    if (list.some(eventIsMaterial)) {
-      if (idx < cur) return "passed";
-      // Material after current (data quirk) still counts as passed for history.
-      return "passed";
-    }
-    if (idx < cur) return "passed";
-    return "future";
-  }
+  const materialPhaseIds = RULES_PHASES.filter((id) =>
+    (byPhase[id] || []).some(eventIsMaterial),
+  );
+  const phaseStateById = Object.fromEntries(
+    phaseStates({
+      order: RULES_PHASES,
+      current: currentPhaseId,
+      material: materialPhaseIds,
+      rule: "material-passes",
+    }).map((row) => [row.id, row.state]),
+  );
 
   const phases = RULES_PHASES.map((id) => {
-    const state = phaseState(id);
+    const state = phaseStateById[id];
     const all = (byPhase[id] || []).slice().sort((a, b) => {
       const oa = EVENT_ORDER[a.event_type] ?? 99;
       const ob = EVENT_ORDER[b.event_type] ?? 99;
