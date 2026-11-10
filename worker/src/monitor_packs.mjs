@@ -4,13 +4,15 @@
 import { LENSES, prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
 import { buildSubscription, isValidEmail, subscriptionKey } from "./lib/subscriptions.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
+import { verifySignupTurnstile } from "./lib/signup_turnstile.mjs";
 
 const MAX_CHILDREN = 20;
 
-export async function handleMonitorPackSubscribe(req, env) {
+export async function handleMonitorPackSubscribe(req, env, { verifyTurnstile = verifySignupTurnstile } = {}) {
   const origin = req.headers.get("origin") || "";
   const cors = corsHeaders(origin, env);
   if (!isAllowedRequestOrigin(origin, env)) return json({ ok: false, reason: "origin" }, 403, cors);
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "POST") return json({ ok: false, reason: "method" }, 405, cors);
   if (!env.TOKEN_SECRET || !env.RESEND_API_KEY || !env.SUBS) return json({ ok: false, reason: "not-configured" }, 503, cors);
 
@@ -46,6 +48,9 @@ export async function handleMonitorPackSubscribe(req, env) {
   }
   const duplicate = new Set(validated.map((child) => JSON.stringify({ lens: child.lens, filter: child.filter })));
   if (duplicate.size !== validated.length) return json({ ok: false, reason: "duplicate-child" }, 400, cors);
+
+  const proof = await verifyTurnstile(req, env, body);
+  if (!proof.ok) return json({ ok: false, reason: proof.reason }, proof.status, cors);
 
   const receiptKey = await packReceiptKey({ email, packId, children: validated });
   let receipt = await readReceipt(env.SUBS, receiptKey);

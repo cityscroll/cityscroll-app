@@ -2,6 +2,7 @@
 
 import { nearYouUrlFromScope, scopeFromLensState } from "./scope_v0.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
+import { signupTurnstileToken } from "./signup_turnstile.mjs";
 import { normalizeWatchTemplateRegistry, packAttentionCopy } from "./watch_templates.mjs";
 import {
   gateNodePageRender,
@@ -163,7 +164,9 @@ function actionMarkup(view, watchHref) {
         <input type="hidden" name="children" value="${esc(JSON.stringify(children))}">
         <label>Email address <input type="email" name="email" required autocomplete="email"></label>
         <button type="submit" class="civic-object-action">Watch this pack</button>
+        <p data-pack-subscribe-status role="status" aria-live="polite"></p>
       </form>
+      <noscript><p class="muted node-muted">Enable JavaScript to complete the signup security check.</p></noscript>
       <p class="muted node-muted">Each named watch keeps its own lens and scope. If delivery fails partway through, retry creates only the missing watches.</p>
       ${renderNodeActions([
         { kind: "button", label: "Copy link", attrs: { "data-object-copy": true }, className: "civic-object-action" },
@@ -387,6 +390,34 @@ function exportRows(payload) {
 
 if (typeof window !== "undefined") {
   const root = document.querySelector("[data-civic-object-kind]");
+  const packForm = root?.querySelector("[data-monitor-pack-subscribe-form]");
+  packForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!packForm.reportValidity()) return;
+    const button = packForm.querySelector('button[type="submit"]');
+    const status = packForm.querySelector("[data-pack-subscribe-status]");
+    button.disabled = true;
+    status.textContent = "Checking and creating watches…";
+    try {
+      const body = Object.fromEntries(new FormData(packForm).entries());
+      body.children = JSON.parse(body.children);
+      body.turnstileToken = await signupTurnstileToken(packForm);
+      const response = await fetch(packForm.action, {
+        method: "POST",
+        headers: { "content-type": "application/json", accept: "application/json" },
+        body: JSON.stringify(body),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.ok) throw new Error("subscribe-pack");
+      status.textContent = result.created
+        ? `${result.created} watches created. Check your email for the welcome message.`
+        : "These watches are already active.";
+    } catch {
+      status.textContent = "Could not create the pack. Please retry.";
+    } finally {
+      button.disabled = false;
+    }
+  });
   const payload = JSON.parse(document.getElementById("civic-object-payload")?.textContent || "null");
   const canonical = document.querySelector('link[rel="canonical"]')?.href || location.href;
   root?.querySelector("[data-object-copy]")?.addEventListener("click", async (event) => {

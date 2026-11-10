@@ -3640,7 +3640,7 @@
       "name": "create_watch",
       "operation_class": "mutation",
       "authority_class": null,
-      "description": "Create a standing email watch. The watch starts immediately; the welcome email states its scope and includes manage and unsubscribe links. Pass a structured filter to keep alternatives, phrases, and exclusions; plain English remains optional.",
+      "description": "Standing email watch creation is temporarily suspended for anonymous MCP callers while comparable signup protection is unavailable. Named machine-client profiles may call this tool only when explicitly granted. The compatibility name and input schema remain published; when granted, the watch starts immediately and its welcome email includes manage and unsubscribe links.",
       "schema_reference": "mcp.create_watch.pilot@1",
       "capability_reference": null,
       "input_schema": {

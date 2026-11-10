@@ -2271,6 +2271,7 @@ worker/src/lib/search_usage.mjs
 worker/src/lib/search_usage_daily.mjs
 worker/src/lib/secret_compare.mjs
 worker/src/lib/session.mjs
+worker/src/lib/signup_turnstile.mjs
 worker/src/lib/solicitation_coverage.mjs
 worker/src/lib/solicitation_procurement_method.mjs
 worker/src/lib/source_acquisition_receipt.mjs

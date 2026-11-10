@@ -86,6 +86,7 @@ def install_routes(page: Page) -> None:
             )
             return
         if path == "/subscribe" and route.request.method == "POST":
+            assert route.request.post_data_json["turnstileToken"] == "fixture-proof"
             route.fulfill(
                 status=200,
                 headers={"Content-Type": "application/json"},
@@ -95,6 +96,17 @@ def install_routes(page: Page) -> None:
         route.fulfill(status=404, body="{}")
 
     page.route("https://api.cityscroll.org/**", api)
+    page.route(
+        "https://challenges.cloudflare.com/turnstile/v0/api.js**",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/javascript",
+            body=(
+                "window.turnstile={render(_holder,options){this.options=options;return 1},"
+                "execute(){this.options.callback('fixture-proof')},remove(){}};"
+            ),
+        ),
+    )
     page.route("https://data.cityofnewyork.us/**", lambda route: route.abort())
 
 

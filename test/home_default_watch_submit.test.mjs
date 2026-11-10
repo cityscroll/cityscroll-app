@@ -1,7 +1,7 @@
 // Behavioural cover for the disclosed homepage default watch (site/home_default_watch.mjs).
 //
-// The homepage box works without JavaScript as a plain form POST; this module is the
-// progressive enhancement over it, attached by site/app/main.mjs on every index.html
+// The homepage box uses this module to obtain a signup security proof, attached by
+// site/app/main.mjs on every index.html
 // route (static home and hash landings alike). What matters to a reader is what the enhanced submit
 // actually sends and what it then says, so these tests load the real module against a
 // minimal DOM, run its submit handler, and assert the posted request and the resulting
@@ -61,12 +61,20 @@ const sessionStorage = {
   clear() { this.values.clear(); },
 };
 let assigned = "";
+let proofNumber = 0;
 
 globalThis.document = {
   body: { dataset: {} },
+  createElement() { return { className: "", setAttribute() {}, remove() {} }; },
   getElementById(id) { return elements.get(id) || null; },
   querySelectorAll() { return []; },
   querySelector() { return null; },
+};
+form.appendChild = () => {};
+globalThis.turnstile = {
+  render(_holder, options) { this.callback = options.callback; return "test-widget"; },
+  execute() { this.callback(`test-signup-proof-${++proofNumber}`); },
+  remove() {},
 };
 globalThis.window = {
   LANG: "es",
@@ -99,6 +107,7 @@ function jsonResponse(body, status = 200) {
 
 async function submit(value = "reader@example.com") {
   calls.length = 0;
+  proofNumber = 0;
   message.textContent = "";
   email.value = value;
   email.removeAttribute("aria-invalid");
@@ -136,8 +145,9 @@ test("a valid address posts exactly the disclosed homepage-default intent", asyn
     no_topic: true,
     source: "contracts-intro",
     lang: "es",
+    turnstileToken: "test-signup-proof-1",
   });
-  assert.equal(langField.value, "es", "the no-JS form fields stay in sync with the posted language");
+  assert.equal(langField.value, "es", "the hidden form field stays in sync with the posted language");
 });
 
 test("a newly stored watch reports enrollment and clears the field", async () => {
@@ -222,6 +232,10 @@ test("an unreachable primary origin falls back to the second origin", async () =
   assert.deepEqual(requests.map((request) => request.url), [
     `${API_ORIGIN}/subscribe`,
     `${FALLBACK_ORIGIN}/subscribe`,
+  ]);
+  assert.deepEqual(requests.map((request) => JSON.parse(request.options.body).turnstileToken), [
+    "test-signup-proof-1",
+    "test-signup-proof-2",
   ]);
   assert.equal(message.textContent, "subscribed_now welcome_sent_to");
 });

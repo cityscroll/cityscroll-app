@@ -1,4 +1,5 @@
 import { installFilterChipNavigation } from "../affordance_grammar.mjs";
+import { signupTurnstileToken } from "../signup_turnstile.mjs";
 import {
   buildFollowingGraphContext,
   composeWatchRuleSentence,
@@ -753,6 +754,7 @@ function wireSubscribe() {
     try {
       const body = Object.fromEntries(new FormData(form).entries());
       body.filter = JSON.parse(body.filter || "{}");
+      if (new URL(form.action).pathname === "/subscribe") body.turnstileToken = await signupTurnstileToken(form);
       const response = await fetch(form.action, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },

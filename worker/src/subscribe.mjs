@@ -7,7 +7,7 @@
 // reader previews a scope on Following.
 //
 // FAIL CLOSED: returns 503 until TOKEN_SECRET + RESEND_API_KEY + SUBS are configured.
-// Rate limits are the primary bot friction on this no-CAPTCHA path and run before any write/send.
+// Turnstile and rate limits run before any write or email send.
 
 import { prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
 import {
@@ -36,6 +36,7 @@ import { emitUsageEvent } from "./lib/analytics.mjs";
 import { prefsLink } from "./prefs.mjs";
 import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
 import { suppressionForRecipient } from "./lib/recipient_suppression.mjs";
+import { verifySignupTurnstile } from "./lib/signup_turnstile.mjs";
 import {
   claimWelcomeDelivery,
   completeWelcomeDelivery,
@@ -50,7 +51,7 @@ const UNSUBSCRIBE_TTL_SECONDS = 60 * 24 * 3600;
 const MAX_SUB_PER_IP_DAY = 20;
 const MAX_SUB_PER_ADDR_DAY = 5;
 
-export async function handleSubscribe(req, env) {
+export async function handleSubscribe(req, env, { verifyTurnstile = verifySignupTurnstile } = {}) {
   const origin = req.headers.get("origin") || "";
   const cors = corsHeaders(origin, env);
   if (!isAllowedRequestOrigin(origin, env)) {
@@ -85,6 +86,8 @@ export async function handleSubscribe(req, env) {
   if (!topicless && !lens) return reply(req, { ok: false, reason: "bad-lens" }, 400, cors);
   if ((body.channel || "email") !== "email") return reply(req, { ok: false, reason: "channel-unsupported" }, 400, cors);
 
+  const proof = await verifyTurnstile(req, env, body);
+  if (!proof.ok) return reply(req, { ok: false, reason: proof.reason }, proof.status, cors);
   const ip = req.headers.get("CF-Connecting-IP") || "";
   if (await overLimit(env, ip, email)) return reply(req, { ok: false, reason: "rate-limited" }, 429, cors);
 
@@ -322,6 +325,8 @@ function reply(req, obj, status, cors) {
     "unsupported-scope": ["Check the saved scope", "That Administrative Code provision cannot be followed exactly. Return to the provision page and try again."],
     "channel-unsupported": ["Email only", "CityScroll currently sends watches by email."],
     "rate-limited": ["Try again tomorrow", "Too many signup requests were made for this address or network."],
+    "bot-check": ["Security check needed", "Enable JavaScript and submit the form again so we can verify this signup."],
+    "bot-check-unavailable": ["Security check unavailable", "We couldn't complete the signup security check. Please try again shortly."],
     "send-failed": obj.subscribed
       ? ["You're subscribed", "Your subscription is active, but the welcome email could not be sent. Try again to receive a manage link."]
       : ["Welcome not sent", "The welcome email could not be sent. Please try again shortly."],

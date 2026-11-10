@@ -196,8 +196,8 @@ binding = "ALERT_STATE"
 id = "451ce64e616b49b6837682e75cb07756"
 
 # Confirmed subscriptions + per-IP/per-address rate-limit counters for /subscribe.
-# /subscribe FAILS CLOSED (503) until TOKEN_SECRET + RESEND_API_KEY are also set.
-# Turnstile is not required on this path; per-IP/per-address rate limits are the bot-friction gate.
+# /subscribe FAILS CLOSED (503) until TOKEN_SECRET + RESEND_API_KEY + TURNSTILE_SECRET are set.
+# A fresh server-verified Turnstile proof and per-IP/per-address rate limits protect enrollment.
 [[kv_namespaces]]
 binding = "SUBS"
 id = "a7addee904774e7c90f9be447f927b20"
