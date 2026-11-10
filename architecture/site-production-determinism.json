@@ -487,6 +487,7 @@
     "site/money_watch_min_remaining_days.mjs",
     "site/money-freshness.mjs",
     "site/mwbe_goal_surface.mjs",
+    "site/navigation_controller.mjs",
     "site/near_you_broader_districts.mjs",
     "site/near_you_explanation_path.mjs",
     "site/near_you_land_handoff.mjs",

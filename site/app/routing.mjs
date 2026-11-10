@@ -44,6 +44,7 @@ import {
   focusOfficialProfileSection,
   officialProfileSectionRoute,
 } from "../official_profile_navigation.mjs";
+import { createNavigator } from "../navigation_controller.mjs";
 import {
   noticeContextReady,
   noticeContextTimingMark,
@@ -144,7 +145,10 @@ const landLink = id => {
   const path=landProjectPath(id);
   return path?currentLanguageURL(location.origin+path):"";
 };
-let hashLock = false;
+// Router-owned: true only inside applyHash's synchronous apply region. Staffing and
+// similar callers suppress URL writes through routeNavigator.suppressUrlWrites() instead.
+let applying = false;
+const routeNavigator = createNavigator();
 // Land presentation state. `landView` selects which renderer paints the already filtered
 // Land result set; it is a sibling of the Land filter keys, never one of them. Scope v0
 // drops it for the Land surface, so it can never reach a Land facet or a saved watch.
@@ -525,8 +529,11 @@ function setLandView(view){
   }
   return applyLandPresentation();
 }
+function routeUrlWritesBlocked(){
+  return applying || routeNavigator.urlWritesSuppressed() || routeNavigator.isApplying();
+}
 function updateHash(){ // filter changes rewrite the current entry
-  if(hashLock) return;
+  if(routeUrlWritesBlocked()) return;
   const h = serializeState();
   if(!location.hash && !documentRouteRaw() && h === "#money") return; // don't decorate a fresh default load
   const url=routeUrlForHash(h);
@@ -540,7 +547,7 @@ function updateHash(){ // filter changes rewrite the current entry
   if(h.startsWith("#land")) applyLandPresentation(h);
 }
 function pushHash(){ // tab changes create a history entry (back returns to the prior tab)
-  if(hashLock) return;
+  if(routeUrlWritesBlocked()) return;
   const h = serializeState();
   const url=routeUrlForHash(h);
   if(`${location.pathname}${location.search}${location.hash}` !== url){
@@ -1085,7 +1092,7 @@ function applyHash(){
   const paneTab=ownedSurface?.surfaceId||tab;
   if(tab === "notice" || tab === "entity" || tab === "task" || !document.getElementById("tab-"+paneTab)) return false;
   const q = new URLSearchParams(qi < 0 ? "" : raw.slice(qi+1));
-  hashLock = true;
+  applying = true;
   try{
     if(tab === "money"){
       // Reset first: a shared hash must produce the same filter from any prior in-page state.
@@ -1334,7 +1341,7 @@ function applyHash(){
     } else {
       showTab(tab);
     }
-  } finally { hashLock = false; }
+  } finally { applying = false; }
   globalThis.renderSearchLensHandoff?.(tab);
   syncNearYouLinks("#"+raw);
   return true;
@@ -1423,7 +1430,13 @@ globalThis.syncNearYouLinks = syncNearYouLinks;
 globalThis.watchChipsFor = watchChipsFor;
 Object.defineProperty(globalThis, "activeHistoryRouteScroll", { configurable: true, get: () => activeHistoryRouteScroll, set: value => { activeHistoryRouteScroll = value; } });
 Object.defineProperty(globalThis, "focusedItemRouteHash", { configurable: true, get: () => focusedItemRouteHash, set: value => { focusedItemRouteHash = value; } });
-Object.defineProperty(globalThis, "hashLock", { configurable: true, get: () => hashLock, set: value => { hashLock = value; } });
+// Read-only for the one feed-actions reader: true while applying a route or while URL
+// writes are suppressed. Assignment is no longer supported.
+Object.defineProperty(globalThis, "hashLock", {
+  configurable: true,
+  get: () => applying || routeNavigator.urlWritesSuppressed() || routeNavigator.isApplying(),
+});
+globalThis.routeNavigator = routeNavigator;
 Object.defineProperty(globalThis, "pendingHistoryRouteScroll", { configurable: true, get: () => pendingHistoryRouteScroll, set: value => { pendingHistoryRouteScroll = value; } });
 Object.defineProperty(globalThis, "pendingItemRouteContext", { configurable: true, get: () => pendingItemRouteContext, set: value => { pendingItemRouteContext = value; } });
 Object.defineProperty(globalThis, "pendingNoticeFocus", { configurable: true, get: () => pendingNoticeFocus, set: value => { pendingNoticeFocus = value; } });
