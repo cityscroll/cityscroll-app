@@ -1,8 +1,8 @@
 # cityscroll-worker
 
 The server boundary for **[CityScroll](https://cityscroll.org)** — a single **Cloudflare Worker**
-at `https://api.cityscroll.org` (custom domain; `cityscroll-worker.crol-worker.workers.dev`
-remains an alias). Everything that needs a held secret, a CORS shim, a schedule, D1/KV state, or a
+at `https://api.cityscroll.org` (custom domain; the `workers.dev` alias and Version/Preview URLs are disabled).
+Everything that needs a held secret, a CORS shim, a schedule, D1/KV state, or a
 server-rendered document lives here or in the Pages edge handler described below.
 
 Cloudflare Pages remains the origin for the canonical `cityscroll.org` / `www.cityscroll.org`
@@ -415,7 +415,7 @@ npm test                  # node --test — 323 unit tests, no network
 npm run dev               # wrangler dev → http://localhost:8787; analytics drops by default
 npx wrangler deploy       # deploy (free); cron + KV bindings come from wrangler.toml
 CROL_WORKER_URL=https://api.cityscroll.org npm run test:live   # live e2e over every public route
-#   (defaults to the workers.dev alias — doubling as a regression check that the alias stays up)
+#   (defaults to the canonical custom domain when CROL_WORKER_URL is unset)
 ```
 
 Secrets (set outside the repository via Wrangler): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`,

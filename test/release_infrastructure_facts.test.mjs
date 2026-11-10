@@ -129,6 +129,19 @@ CONFIRM_BASE = "https://api.cityscroll.org"
   assert.deepEqual(Object.keys(parsed.vars), ["CONFIRM_BASE"]);
 });
 
+test("top-level Worker URL exposure controls are typed", () => {
+  const parsed = parseWranglerConfig(`
+name = "example-worker"
+workers_dev = false
+preview_urls = false
+
+[vars]
+CONFIRM_BASE = "https://api.example.test"
+`);
+  assert.equal(parsed.settings.workers_dev, false);
+  assert.equal(parsed.settings.preview_urls, false);
+});
+
 test("the committed configuration deploys the Worker on a main push and keeps a manual trigger", () => {
   const facts = buildReleaseInfrastructureFacts({ rootDir: ROOT });
   const worker = facts.pipelines["cloudflare-worker"];
@@ -148,6 +161,10 @@ test("the committed configuration declares three cron triggers and no active R2 
   assert.equal(vault.active, false);
   assert.equal(facts.vars.SOURCE_VAULT_ENABLED, "false");
   assert.equal(facts.bindings.filter((binding) => binding.active && binding.section === "r2_buckets").length, 0);
+  assert.deepEqual(facts.worker_url_exposure, {
+    workers_dev: false,
+    preview_urls: false,
+  });
 });
 
 test("the native Workers Builds connection is not asserted as verified", () => {

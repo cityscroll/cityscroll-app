@@ -53,7 +53,7 @@ saw.
 |---|---|
 | **Before** | Correct but unsourced in `worker/README.md`; absent from the `docs/architecture.md` system map. |
 | **After** | Named in all three documents with the declaring file. |
-| **Runtime owner** | `worker/wrangler.toml` `routes`: the API host and its compatibility alias as custom domains, plus zone routes `cityscroll.org/near-you*`, `cityscroll.org/following*`, `cityscroll.org/prefs*`. `workers_dev = true` keeps the `workers.dev` alias. |
+| **Runtime owner** | `worker/wrangler.toml` `routes`: the API host and its compatibility alias as custom domains, plus zone routes `cityscroll.org/near-you*`, `cityscroll.org/following*`, `cityscroll.org/prefs*`. `workers_dev = false` closes the account-subdomain alias and `preview_urls = false` closes Version and Preview URLs, keeping public traffic on zone-protected custom domains. |
 
 ### C3 — "The site works fully without the worker"
 

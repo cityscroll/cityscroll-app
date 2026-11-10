@@ -35,7 +35,7 @@ summary: >-
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
   The source-vault custody seam is designed but not bound: its R2 declaration is
   commented out and its flag is off, so no source document is retained.
-updated: 2026-09-06
+updated: 2026-11-09
 sources:
   - README.md
   - site/index.html
@@ -112,7 +112,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: 595fad1b4566d6eee49943039cdc30cdeb4e37babbf51d35f62b18b11c34ec0e
+sources_hash: 4c3dc932a1b8f390b9790f1161dacccd03145ee3b04fdf41b7592ed8d8aefae7
 ---
 
 # CityScroll — architecture
@@ -193,7 +193,8 @@ Browser (site/index.html: inline CSS + static markup)
         │  secret / server-side routes only
         ▼
   api.cityscroll.org  (Cloudflare Worker "cityscroll-worker" — worker/ in this repo;
-                      api.crol-list.org and workers.dev aliases kept alive for in-flight confirm links)
+                      the retired product domain remains a custom-domain compatibility alias;
+                      workers.dev and Version/Preview URLs are disabled so zone protections cannot be bypassed)
         ├──  /nl                plain-English → lens filters (Claude Haiku, NL_METER-capped)
         ├──  /search            ranked public notice search over the D1 FTS5 mirror
         ├──  /mcp               MCP for AI assistants; inventories generated at site/data/mcp_tool_catalog.json and site/data/api_capability_catalog.json
@@ -282,7 +283,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 ## Serving & deploy
 
 - The public tree under `site/` is built and deployed to Cloudflare Pages through the provider-neutral build contract in `docs/release/cloudflare-native-builds.json`. The canonical public site is `cityscroll.org`; every page's canonical and Open Graph URL points there. The Pages release derives one cache stamp from `site/i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
-- Worker deployed via `wrangler deploy` from `worker/` to two custom domains: `api.cityscroll.org` and a compatibility alias on the retired product domain (already dual-homed; this is not a pending rename). Both hostnames are spelled out in the `routes` table of `worker/wrangler.toml` and in the system map above. That retired domain also carries a GitHub Pages CNAME to `jimdc.github.io`, which is not a Worker route. workers.dev is retained for compatibility. Bounded zone routes serve the site root `/` (Near You shell as the default entry), `/near-you*`, `/following*`, and `/prefs*` on canonical `cityscroll.org`; API-host versions of the `/near-you` reader document permanently redirect to the canonical host. `.github/workflows/deploy-worker.yml` deploys the Worker automatically on every `main` push that matches its path filter, and keeps `workflow_dispatch` for a re-run without a new commit; a native Workers Builds connection is declared in the JSON contract but is unverified from this repository. The release triggers, the three cron schedules and the configured binding inventory are owned by [`docs/release/cloudflare-native-builds.md`](release/cloudflare-native-builds.md) rather than restated here. The 13:00 UTC advisory chain also refreshes the payroll title mart into `ALERT_STATE`. The versioned D1 shadow-hold lease gates only redlined `affected_digest_ids` from 12:45–14:00 UTC and fails open when no digest-specific scope exists. D1 schema is versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
+- Worker deployed via `wrangler deploy` from `worker/` to two custom domains: `api.cityscroll.org` and a compatibility alias on the retired product domain (already dual-homed; this is not a pending rename). Both hostnames are spelled out in the `routes` table of `worker/wrangler.toml` and in the system map above. That retired domain also carries a GitHub Pages CNAME to `jimdc.github.io`, which is not a Worker route. The account-subdomain alias and Version/Preview URLs are disabled so public requests stay on custom domains covered by zone security rules. Bounded zone routes serve the site root `/` (Near You shell as the default entry), `/near-you*`, `/following*`, and `/prefs*` on canonical `cityscroll.org`; API-host versions of the `/near-you` reader document permanently redirect to the canonical host. `.github/workflows/deploy-worker.yml` deploys the Worker automatically on every `main` push that matches its path filter, and keeps `workflow_dispatch` for a re-run without a new commit; a native Workers Builds connection is declared in the JSON contract but is unverified from this repository. The release triggers, the three cron schedules and the configured binding inventory are owned by [`docs/release/cloudflare-native-builds.md`](release/cloudflare-native-builds.md) rather than restated here. The 13:00 UTC advisory chain also refreshes the payroll title mart into `ALERT_STATE`. The versioned D1 shadow-hold lease gates only redlined `affected_digest_ids` from 12:45–14:00 UTC and fails open when no digest-specific scope exists. D1 schema is versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` are the canonical site hosts served by Cloudflare Pages, with bounded Worker routes layered where needed. The mirror retains `crol-list.org` as a compatibility origin; if it redirects back to CityScroll, the stamped `cityscroll.pages.dev` artifact is the full-site failover, while raw repository content is used only for `/docs/*` and `/README.md`.
 - Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query. The mirror's independent redirect-loop failover keeps the canonical site available if an origin fetch is redirected back at the Worker. Fragments remain client-side and are retained by conforming browsers.
 - New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs and Atom entry identifiers retain their legacy namespaces so clients do not create duplicates. Outbound alerts use `alerts@cityscroll.org`; Reply-To keeps the still-routable legacy digest address declared in [Worker configuration](../worker/wrangler.toml). Public feedback notifies `feedback@cityscroll.org` (`FEEDBACK_TO`). Subscribe-by-email was retired on 2026-09-08; residual routing deliveries are recorded without parsing or enrollment.

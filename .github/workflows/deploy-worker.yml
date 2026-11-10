@@ -265,7 +265,7 @@ jobs:
             node tools/cloudflare_deployment_binding.mjs acquire \
               --provider-status "$state_dir/provider-status.json" \
               --provider-versions "$state_dir/provider-versions.json" \
-              --health-url https://cityscroll-worker.crol-worker.workers.dev/health \
+              --health-url https://api.cityscroll.org/health \
               --worker-name cityscroll-worker \
               --expected-revision "$GITHUB_SHA" \
               --out "$state_dir/retry-deployment.json"
@@ -274,7 +274,7 @@ jobs:
             node tools/cloudflare_deployment_binding.mjs acquire-split \
               --provider-status "$state_dir/provider-status.json" \
               --provider-versions "$state_dir/provider-versions.json" \
-              --health-url https://cityscroll-worker.crol-worker.workers.dev/health \
+              --health-url https://api.cityscroll.org/health \
               --worker-name cityscroll-worker \
               --baseline-revision "$baseline_revision" \
               --expected-revision "$GITHUB_SHA" \
@@ -798,7 +798,7 @@ jobs:
             node tools/cloudflare_deployment_binding.mjs acquire \
               --provider-status "$state_dir/provider-status.json" \
               --provider-versions "$state_dir/provider-versions.json" \
-              --health-url https://cityscroll-worker.crol-worker.workers.dev/health \
+              --health-url https://api.cityscroll.org/health \
               --worker-name cityscroll-worker \
               --expected-revision "$GITHUB_SHA" \
               --out "$state_dir/retry-deployment.json"

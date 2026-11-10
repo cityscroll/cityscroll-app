@@ -3,13 +3,12 @@
 //
 //   CROL_WORKER_URL=https://api.cityscroll.org npm run test:live
 //
-// Defaults to the workers.dev alias so the suite also proves the alias stays alive
-// (regression for the 2026-07-02 workers_dev=false incident).
+// Defaults to the canonical custom domain, where the zone's security rules apply.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-const BASE = (process.env.CROL_WORKER_URL || "https://cityscroll-worker.crol-worker.workers.dev").replace(/\/+$/, "");
+const BASE = (process.env.CROL_WORKER_URL || "https://api.cityscroll.org").replace(/\/+$/, "");
 const ORIGIN = { Origin: "https://cityscroll.org" };
 const json = (body) => ({ method: "POST", headers: { "Content-Type": "application/json", ...ORIGIN }, body: JSON.stringify(body) });
 
