@@ -15,7 +15,7 @@ import { scanActionsLogForBillAccountLeaks } from "./lib/worker_cost_actions_log
 import { acquireSplitDeploymentBindings } from "./cloudflare_deployment_binding.mjs";
 
 const WORKER_DIRECTORY = join(dirname(fileURLToPath(import.meta.url)), "..", "worker");
-const PRODUCTION_HEALTH_URL = "https://cityscroll-worker.crol-worker.workers.dev/health";
+const PRODUCTION_HEALTH_URL = "https://api.cityscroll.org/health";
 const WORKER_NAME = "cityscroll-worker";
 
 /**

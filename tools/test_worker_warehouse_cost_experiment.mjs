@@ -286,6 +286,7 @@ test("warehouse command acquires provider status and version-targeted health its
       return [name, path];
     }));
     const invocations = [];
+    const healthRequests = [];
     const result = await runWorkerCostControl([
       "warehouse-evaluate",
       "--baseline", paths.baseline,
@@ -309,7 +310,8 @@ test("warehouse command acquires provider status and version-targeted health its
           },
         ];
       },
-      fetchImpl: async (_url, init) => {
+      fetchImpl: async (url, init) => {
+        healthRequests.push(url);
         const override = init.headers["Cloudflare-Workers-Version-Overrides"];
         const revision = override.includes(baseline.provider_deployment.receipt.cloudflare_version.id)
           ? baseline.deployed_revision
@@ -324,6 +326,10 @@ test("warehouse command acquires provider status and version-targeted health its
     assert.deepEqual(invocations, [
       ["deployments", "status", "--json"],
       ["versions", "list", "--json"],
+    ]);
+    assert.deepEqual(healthRequests, [
+      "https://api.cityscroll.org/health",
+      "https://api.cityscroll.org/health",
     ]);
     await assert.rejects(() => runWorkerCostControl([
       "warehouse-evaluate", "--baseline", paths.baseline, "--candidate", paths.candidate,
