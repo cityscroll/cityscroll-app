@@ -681,11 +681,17 @@ document.addEventListener("click",rememberItemRouteContext);
 window.addEventListener("popstate",event=>prepareHistoryRouteScroll(event.state));
 window.addEventListener("hashchange", async ()=>{
   const targetHash=location.hash;
+  const nav=globalThis.routeNavigator;
+  const navId=nav?.begin?.(targetHash);
   await globalThis.CrolRouteModules?.ensureForHash(targetHash);
-  if(location.hash!==targetHash) return;
+  // Latest-wins: a newer begin during the await supersedes this navigation.
+  if(navId!=null && !nav.advance(navId)) return;
   commitPendingItemRouteContext();
-  if(!hashLock && !applyHash()) showTab("money");
+  if(navId!=null && !nav.advance(navId)) return;
+  if(!applyHash()) showTab("money");
+  if(navId!=null) nav.advance(navId);
   restoreHistoryRouteScroll();
+  if(navId!=null) nav.advance(navId);
 }); // empty/unknown hash (e.g. Back to the first entry) → default view
 // Publish alert bindings before the first hash route.
 globalThis.prefillAlertFromLink = prefillAlertFromLink;

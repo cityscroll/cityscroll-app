@@ -157,8 +157,9 @@ async function applyPeopleDefault(){
   const title = await defaultRoleTitle();
   if(!title || $("#pkw").value.trim()) return; // no live data, or the user started typing while we waited
   $("#pkw").value = title;
-  hashLock = true; // an auto-picked example should not decorate a fresh Staffing load
-  try{ await pSearch(); } finally { hashLock = false; }
+  // Suppress URL writes only: a Back press or hash link during this await must still apply.
+  const releaseUrlWrites = globalThis.routeNavigator?.suppressUrlWrites?.();
+  try{ await pSearch(); } finally { releaseUrlWrites?.(); }
 }
 
 // Committed examples are the role-search read model.
