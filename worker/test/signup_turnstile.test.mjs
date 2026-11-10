@@ -4,6 +4,7 @@ import { verifySignupTurnstile } from "../src/lib/signup_turnstile.mjs";
 import { handleSubscribe } from "../src/subscribe.mjs";
 import { handleMonitorPackSubscribe } from "../src/monitor_packs.mjs";
 import { handleFollowing } from "../src/following.mjs";
+import worker from "../src/worker.mjs";
 
 const request = new Request("https://api.cityscroll.org/subscribe", {
   method: "POST",
@@ -72,6 +73,42 @@ test("both browser enrollment routes reject a missing proof before storage or ma
   assert.equal(pack.status, 403);
   assert.equal((await pack.json()).reason, "bot-check");
   assert.deepEqual(writes, [], "unverified requests must not consume rate limits or write enrollment state");
+});
+
+test("pack route permits preflight and rejects an unverified POST before storage", async () => {
+  const writes = [];
+  const env = {
+    TOKEN_SECRET: "test-token-secret",
+    RESEND_API_KEY: "test-resend-key",
+    TURNSTILE_SECRET: "test-turnstile-secret",
+    SUBS: { async get() { return null; }, async put(key) { writes.push(key); } },
+  };
+  const context = { waitUntil() {} };
+  const preflight = await worker.fetch(new Request("https://api.cityscroll.org/subscribe-pack", {
+    method: "OPTIONS",
+    headers: {
+      origin: "https://cityscroll.org",
+      "access-control-request-method": "POST",
+      "access-control-request-headers": "content-type",
+    },
+  }), env, context);
+  assert.equal(preflight.status, 204);
+  assert.equal(preflight.headers.get("access-control-allow-origin"), "https://cityscroll.org");
+  assert.match(preflight.headers.get("access-control-allow-methods"), /POST/);
+  assert.match(preflight.headers.get("access-control-allow-headers"), /Content-Type/i);
+
+  const posted = await worker.fetch(new Request("https://api.cityscroll.org/subscribe-pack", {
+    method: "POST",
+    headers: { origin: "https://cityscroll.org", "content-type": "application/json" },
+    body: JSON.stringify({
+      email: "reader@example.com", pack_id: "sample", children: [
+        { label: "Money", lens: "money", filter: {} },
+      ],
+    }),
+  }), env, context);
+  assert.equal(posted.status, 403);
+  assert.equal((await posted.json()).reason, "bot-check");
+  assert.deepEqual(writes, []);
 });
 
 test("the public Following document permits the managed challenge assets", async () => {

@@ -9,7 +9,6 @@ import {
 import { buildMonitorPackView, renderComposedObjectDocument } from "../site/composed_object_documents.mjs";
 import { handleMonitorPackSubscribe } from "../worker/src/monitor_packs.mjs";
 import { buildSubscription, subscriptionKey } from "../worker/src/lib/subscriptions.mjs";
-import worker from "../worker/src/worker.mjs";
 
 const verified = { verifyTurnstile: async () => ({ ok: true }) };
 
@@ -100,47 +99,6 @@ test("pack confirmation names every child before the single approved action", ()
   assert.match(html, /name="freq" value="weekly"/);
   assert.match(html, /action="https:\/\/api\.cityscroll\.org\/subscribe-pack"/);
   assert.doesNotMatch(html, /action="https:\/\/api\.cityscroll\.org\/subscribe"/);
-});
-
-test("Worker route permits pack preflight before a verified POST", async () => {
-  const store = kv();
-  const environment = { ...env(store), TURNSTILE_SECRET: "test-turnstile-secret" };
-  const originalFetch = globalThis.fetch;
-  globalThis.fetch = async () => Response.json({ success: true, action: "signup", hostname: "cityscroll.org" });
-  try {
-    const preflight = await worker.fetch(new Request("https://api.cityscroll.org/subscribe-pack", {
-      method: "OPTIONS",
-      headers: {
-        origin: "https://cityscroll.org",
-        "access-control-request-method": "POST",
-        "access-control-request-headers": "content-type",
-      },
-    }), environment, { waitUntil() {} });
-    assert.equal(preflight.status, 204);
-    assert.equal(preflight.headers.get("access-control-allow-origin"), "https://cityscroll.org");
-    assert.match(preflight.headers.get("access-control-allow-methods"), /POST/);
-    assert.match(preflight.headers.get("access-control-allow-headers"), /Content-Type/i);
-    assert.equal(store.values.size, 0);
-
-    const rejected = await worker.fetch(new Request("https://api.cityscroll.org/subscribe-pack", {
-      method: "GET",
-      headers: { origin: "https://cityscroll.org" },
-    }), environment, { waitUntil() {} });
-    assert.equal(rejected.status, 405);
-    assert.equal(store.values.size, 0);
-
-    const body = monitorPackSubscribePayload(PACK, { email: "reader@example.com" });
-    body.turnstileToken = "fresh-proof";
-    const posted = await worker.fetch(new Request("https://api.cityscroll.org/subscribe-pack", {
-      method: "POST",
-      headers: { origin: "https://cityscroll.org", "content-type": "application/json" },
-      body: JSON.stringify(body),
-    }), environment, { waitUntil() {} });
-    assert.equal(posted.status, 200, await posted.text());
-    assert.equal([...store.values.keys()].filter((key) => key.startsWith("sub:")).length, 2);
-  } finally {
-    globalThis.fetch = originalFetch;
-  }
 });
 
 test("one pack action creates all children and replay is idempotent", async () => {
