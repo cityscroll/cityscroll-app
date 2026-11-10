@@ -573,9 +573,11 @@
     "release_alignment": {
       "state": "stale",
       "changed_inputs": [
+        "capabilities/meeting_availability.mjs",
         "site/analytics_surface_taxonomy.mjs",
         "site/beta-flags.json",
-        "site/i18n.js"
+        "site/i18n.js",
+        "site/meeting_availability_filter.mjs"
       ]
     }
   },
@@ -588,11 +590,11 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
-      "local_capture_sha256": "d767d08987ecb78570006a417247c5c655e1c9ee5c5e1659a46aa519d0042446"
+      "local_capture_sha256": "69e6abc6ab126eb05683f91fe30817a112587d0f6e66c3e6ec76ca1fc4605349"
     },
     {
       "case": "franklin-avenue-desktop-keyboard",
@@ -602,11 +604,11 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
-      "local_capture_sha256": "d9404786c9a2feae57a24327cd2985b8b5f5270e2b61eae8bb8b6244d22c46d4"
+      "local_capture_sha256": "adca806a6cd622c8d9052bd37d09743010702364393152fb9fcfbbcc84421363"
     },
     {
       "case": "kingsbridge-armory-desktop-keyboard",
@@ -616,11 +618,11 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
-      "local_capture_sha256": "94cef96bc3eeaa4c1465d2d0184f493d327679e51db87fa8d99e1360082e9efc"
+      "local_capture_sha256": "815d310789a8e10039c85970cb36679ebee21ac26bfed440406061b1095a9602"
     },
     {
       "case": "sixth-avenue-desktop-keyboard",
@@ -630,11 +632,11 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
-      "local_capture_sha256": "7888aa50ee615085f2d0c3c034c6313238d90fc7d2dc39ca8d49f62de6e9a589"
+      "local_capture_sha256": "c37eac5b5e507fa9d164fc0b2187723bd4c6fe3d851c14d0549380de7d8eebef"
     },
     {
       "case": "thirty-first-avenue-desktop-keyboard",
@@ -644,11 +646,11 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
-      "local_capture_sha256": "f3d7fc3e0b1b05997a5a8ce1724bc7c49e9a63ab8bf717436bbb1b1946675968"
+      "local_capture_sha256": "5f0ab0760cd5135565dae969d71c1283c9dadf3827e7c25b12d386f5ee4df5e5"
     },
     {
       "case": "lighthouse-point-desktop-keyboard",
@@ -658,11 +660,11 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
-      "local_capture_sha256": "aa20f89296943771aefea3aaae30a5cbd72519a83bf9a2a225ce8a66ea5168d8"
+      "local_capture_sha256": "7cbfea3739dc65bc5a5d96efc704ea8fe33ea29b90cf20b992aee69dfa5e2517"
     },
     {
       "case": "coyle-narrow-touch",
@@ -672,11 +674,11 @@
         "width": 390,
         "height": 844
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "b4b6104fc98ac1046b6d3ad179266f8a546458bdd20467acce766441a1213248",
-      "local_capture_sha256": "4baeb73767ce2f705c3268a35d344271dd05e99cec330169b79719406923c04f"
+      "local_capture_sha256": "a67f35ca08a4436c6184a5cb3ec0d1addac29839dd06b219f57e35241ed24904"
     },
     {
       "case": "franklin-avenue-narrow-touch",
@@ -686,11 +688,11 @@
         "width": 390,
         "height": 844
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "f95a845f29828f840c880ff9dd1276672bcabc3c30363df6398949dcfbaf8c8e",
-      "local_capture_sha256": "a64fc3bc95c7433fe2b8d88f12b1302447c747adc503eca5f0b7a1a78960cbaf"
+      "local_capture_sha256": "96ac5f41bdd1e48c31b93406f81dbdbf9e8ff9c641004281511f5b00b535d787"
     },
     {
       "case": "kingsbridge-armory-narrow-touch",
@@ -700,11 +702,11 @@
         "width": 390,
         "height": 844
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "6e92e7e4439ff27fc562d130ec29f8f23e7ba50afd949b49aefb51b023d21eee",
-      "local_capture_sha256": "6ccde5e5d84fa66383cea25a7383f5a8c53d171b5db4024cf98ad33ee6e918c7"
+      "local_capture_sha256": "2e7b7f8a782cbbab8eb2b4b1122b06815bfab204273ae5405b9317d79ead9caf"
     },
     {
       "case": "sixth-avenue-narrow-touch",
@@ -714,11 +716,11 @@
         "width": 390,
         "height": 844
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a5135465d20eeb8cd045f5c77b6aec15f893d31459fedb8da688cf5ac4ff374b",
-      "local_capture_sha256": "54da1416cedc757f9489d204b8a18c7e19b3761a17b2325ca04b6c0a8e5c55ae"
+      "local_capture_sha256": "0791a5ad7d12c5f219cb78d340c818033402c1a17c7181101c28b52d9a026925"
     },
     {
       "case": "thirty-first-avenue-narrow-touch",
@@ -728,11 +730,11 @@
         "width": 390,
         "height": 844
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "a4408d522f345dd5629bebb7f7ed7678b505f37b0e1371768245056de76a8c6f",
-      "local_capture_sha256": "96a99a4ec009c24982032c4289bc7159bb39b4be4c3443741c863c5c1c6caf97"
+      "local_capture_sha256": "495f5e194ad74c2ffef44b182b787efc1f94a65ddf4f68cff0f1bf3fc16e1342"
     },
     {
       "case": "lighthouse-point-narrow-touch",
@@ -742,11 +744,11 @@
         "width": 390,
         "height": 844
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium measured set scope, inspect, dismiss, open, Back, and continue behavior with the exact query retained.",
       "sha256": "ed4e1f0b13ab69428a75e8cacc7398654c254bd3dd8068509ecf55b36097bf6b",
-      "local_capture_sha256": "480d7f030c727486186a5a3b476de44a04b31768b2db0884071447dc5b7792f7"
+      "local_capture_sha256": "6b98a06575f94f2577f6633f904bf90cffc547d561cc39a6003acc1a22021204"
     },
     {
       "case": "coyle-no-javascript",
@@ -756,7 +758,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -769,7 +771,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -782,7 +784,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -795,7 +797,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -808,7 +810,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -821,7 +823,7 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Chromium with scripting disabled retains the exact query and ordinary official-source navigation.",
       "sha256": "b1fdd455497d76048976e02ff3f820ab778dc626624bdda32e4585f26b9d4e55"
@@ -834,11 +836,11 @@
         "width": 1440,
         "height": 900
       },
-      "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+      "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
       "data_vintage": "relations, roles, and temporal states generated 2026-09-26T00:00:00.000Z",
       "assertion": "Injected materialization failure preserves the exact query and exposes retry plus an official source without claiming a successful empty result.",
       "sha256": "4e2a5d2f38b2cf574599bd62d52568ecef19d74bbc4362d0f8c4e46810d359b2",
-      "local_capture_sha256": "ca615b6b21ba23410ccfa76dcbfca542c186d1d4f421c33b3522e35cacb179e6"
+      "local_capture_sha256": "01a7e8b101cdf995ca8b08faf434ba2590ca5ab9c0c46d70f6f49212e16c6be6"
     }
   ],
   "measurement_provenance": {
@@ -1175,11 +1177,15 @@
     ]
   },
   "hermetic_measurement_provenance": {
-    "revision": "242765c3863c3374ee1253d419958c9bf25b11dd",
+    "revision": "f6bcd9067a9cfc7d3f3d83f1b7c41270261b61ec",
     "inputs": [
       {
         "path": "capabilities/federated_search.mjs",
         "sha256": "500d6e108a4204122e478add955968afb972ab392702d4d3812bb44221f687d2"
+      },
+      {
+        "path": "capabilities/meeting_availability.mjs",
+        "sha256": "eaad7d700296cc83b0e2c81de0e3d701b427f95314e5f05eb37b3be7f7ddb18a"
       },
       {
         "path": "capabilities/search_activity.mjs",
@@ -1331,7 +1337,7 @@
       },
       {
         "path": "site/meeting_availability_filter.mjs",
-        "sha256": "39c832261598f686dbe5eee0f133cef09ba4b1f549748797b8831d89bb4dd712"
+        "sha256": "bc139ba490b99655f680d8f1df67a6fba8c372e380dad738c7462ed764df0dd6"
       },
       {
         "path": "site/nl_deeplink.js",
