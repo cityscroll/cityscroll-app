@@ -2,12 +2,12 @@
   "schema": "cityscroll.analytics_registered_contracts_population_receipt.v1",
   "status": "complete",
   "projection_contract": "cityscroll.analytical_projection.v1",
-  "snapshot_date": "2026-11-09",
-  "generated_at": "2026-11-09T21:24:05.881Z",
+  "snapshot_date": "2026-11-10",
+  "generated_at": "2026-11-10T15:17:39.651Z",
   "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
   "source": {
     "source_tag": "checkbook-contracts",
-    "observed_at": "2026-11-09T21:24:05.881Z",
+    "observed_at": "2026-11-10T15:17:39.651Z",
     "observation_basis": "acquisition receipt pulled_at",
     "normalized_unique_contracts": 29581,
     "source_fiscal_years": [
@@ -19,11 +19,11 @@
   },
   "source_receipt": {
     "schema": "cityscroll.checkbook_contracts_population_receipt.v1",
-    "pulled_at": "2026-11-09T21:24:05.881Z",
+    "pulled_at": "2026-11-10T15:17:39.651Z",
     "checksums": {
-      "page_manifest_sha256": "06a1a80adf1f0de4beb0bbbfb2382e509022f4ac49134330e11dcd4503235013",
+      "page_manifest_sha256": "c4e3a9dc3d9bf77a2f3c501169771ca04c96786318d440c1baed0cb0b7f49286",
       "normalized_contracts_sha256": "8187f1978d3388e2ed7fb39b3f8ec7957b48ba1dffc3b1a611c974eb5eae12b4",
-      "committed_graph_slice_sha256": "5ad4166e06d6d5d02e7f3d32ad3db22392dce9e87be810d2350d6dbde5ffe74a"
+      "committed_graph_slice_sha256": "cf4256d594b46e17c29dacce9c628dc995f6715e2cfd319eab57ccc1d0d9ee77"
     },
     "population": {
       "api_transaction_rows": 40319,

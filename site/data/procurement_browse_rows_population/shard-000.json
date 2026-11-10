@@ -207761,6 +207761,38 @@
       "method_family": "mwbe_small_purchase"
     },
     {
+      "procurement_id": "procurement:contract:CT105720278803547",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105720278803547",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT105720278803547:FINESSE CREATIONS INC:prime-vendor:2026-11-05"
+      ],
+      "start_date": "2026-11-10",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Fire Department",
+      "short_title": "Purchase of EXO2 Descender W/AM'D Carabiner",
+      "pin": "05727W0021001",
+      "contract_id": "CT105720278803547",
+      "contract_amount": 191664,
+      "vendor_name": "FINESSE CREATIONS INC",
+      "official_url": null,
+      "selection_method_description": "M/WBE SMALL PURCHASE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Fire Department · FINESSE CREATIONS INC · $191,664",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
       "procurement_id": "procurement:contract:CT105720278803557",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105720278803557",
       "procurement_stages": [
@@ -516735,52 +516767,6 @@
           "contact_name": null,
           "start_date": "2024-06-20",
           "href": "/notices/20240613113"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800177",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800177",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240723108",
-        "passport_public_contracts:contract:81619B8197KXLR001:5079121"
-      ],
-      "request_id": "20240723108",
-      "start_date": "2024-07-01",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Data Entry and Service of Secondary Notice of Violations on MOBILE FOOD VENDING UNITS",
-      "pin": "81619B8197KXLR001",
-      "contract_id": "CT181620258800177",
-      "contract_amount": 82500,
-      "vendor_name": "FEDCAP REHABILITATION SERVICES INC",
-      "official_url": null,
-      "selection_method_description": "Renewal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · FEDCAP REHABILITATION SERVICES INC · $166,000",
-      "notice_evidence": [
-        {
-          "request_id": "20240723108",
-          "type_of_notice_description": "Award",
-          "short_title": "Data Entry and Service of Secondary Notice of Violations on MOBILE FOOD VENDING UNITS",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-07-29",
-          "href": "/notices/20240723108"
         }
       ],
       "source_system": "shared_procurement_read_model",

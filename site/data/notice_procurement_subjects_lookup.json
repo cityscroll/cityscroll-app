@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.notice_procurement_subjects.v1",
   "version": 1,
-  "generated_at": "2026-11-09T21:24:05.881Z",
+  "generated_at": "2026-11-10T15:17:39.651Z",
   "method": "compatibility.city_record_notice_hrefs",
-  "source_model_fingerprint": "c384ba3e2c5734b0041e8c309981b1e80647442ea76e16c2664f6b36f1ee95b9",
+  "source_model_fingerprint": "6d7347cdb407d8380f85542113c940395643f3703d85c1824a42c1ddf589d069",
   "counts": {
     "notices": 12944,
     "subject_links": 12944

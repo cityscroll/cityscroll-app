@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-11-09T08:01:12.734Z",
+  "generated_at": "2026-11-10T08:00:54.972Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 306,
+  "record_count": 299,
   "present_count": 15,
-  "absent_count": 291,
+  "absent_count": 284,
   "by_notice": {
     "20261006004": {
       "request_id": "20261006004",
@@ -8440,6 +8440,14 @@
         }
       ]
     },
+    "20261106003": {
+      "request_id": "20261106003",
+      "snapshot_state": "absent"
+    },
+    "20261104007": {
+      "request_id": "20261104007",
+      "snapshot_state": "absent"
+    },
     "20261027004": {
       "request_id": "20261027004",
       "snapshot_state": "absent"
@@ -9566,42 +9574,6 @@
     },
     "20260414006": {
       "request_id": "20260414006",
-      "snapshot_state": "absent"
-    },
-    "20260505044": {
-      "request_id": "20260505044",
-      "snapshot_state": "absent"
-    },
-    "20260413025": {
-      "request_id": "20260413025",
-      "snapshot_state": "absent"
-    },
-    "20260414036": {
-      "request_id": "20260414036",
-      "snapshot_state": "absent"
-    },
-    "20260414033": {
-      "request_id": "20260414033",
-      "snapshot_state": "absent"
-    },
-    "20260422047": {
-      "request_id": "20260422047",
-      "snapshot_state": "absent"
-    },
-    "20260430007": {
-      "request_id": "20260430007",
-      "snapshot_state": "absent"
-    },
-    "20260422037": {
-      "request_id": "20260422037",
-      "snapshot_state": "absent"
-    },
-    "20260424018": {
-      "request_id": "20260424018",
-      "snapshot_state": "absent"
-    },
-    "20260407014": {
-      "request_id": "20260407014",
       "snapshot_state": "absent"
     }
   }

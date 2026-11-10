@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.analytics_registered_contracts.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
-  "generated_at": "2026-11-09T21:24:05.881Z",
-  "snapshot_date": "2026-11-09",
+  "generated_at": "2026-11-10T15:17:39.651Z",
+  "snapshot_date": "2026-11-10",
   "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
   "dimensions": [
     "agency",
@@ -56,7 +56,7 @@
   },
   "source_population": {
     "source_tag": "checkbook-contracts",
-    "observed_at": "2026-11-09T21:24:05.881Z",
+    "observed_at": "2026-11-10T15:17:39.651Z",
     "observation_basis": "acquisition receipt pulled_at",
     "normalized_unique_contracts": 29581,
     "source_fiscal_years": [
