@@ -25,8 +25,7 @@ const AFFORDANCE_OWNED_HOSTS = new Set([
   "www.crol-list.org",
   "api.crol-list.org",
 ]);
-export const CITYSCROLL_COMPATIBILITY_API_ORIGIN = `https://${[...AFFORDANCE_OWNED_HOSTS]
-  .find((host) => host.startsWith("api.") && host !== "api.cityscroll.org")}`;
+export const CITYSCROLL_COMPATIBILITY_API_ORIGIN = "https://api.crol-list.org";
 const AFFORDANCE_NAVIGATION_ONLY_ACTION_KINDS = new Set([
   "calendar",
   "copy",
