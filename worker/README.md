@@ -138,7 +138,8 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/nl` | POST | Claude Haiku decodes English → lens filters | `ANTHROPIC_API_KEY`; degrades to `{degraded:true}` |
 | `/checkbook` | POST | CORS proxy to checkbooknyc.com/api | none |
 | `/feed.xml` `/feed.json` `/feed.ics` | GET | **Any saved search as a standing feed** — Atom / JSON Feed 1.1 / subscribable calendar. Params: `lens=money\|land\|property\|rules\|meetings`, `q=`, `agency=`, `min=`. Same `compileSub()` queries the cron replays; entry links land on `cityscroll.org/#notice/<id>` permalinks; edge-cached 15 min; no paid key on the path. Standing-feed calendar UIDs retain the historical product namespace so existing subscribers do not receive duplicate events (see `docs/calendar-contract.md`) | none |
-| `/subscribe` | POST | Single-opt-in signup (per-IP/per-address rate limits; no CAPTCHA on this path); stores the watch immediately and sends a substantive welcome with signed manage and one-click unsubscribe links. Normally requires a previewed lens; the only topicless shape accepted is the disclosed homepage default (`no_topic:true` + `source:"top-of-site"`), which stores or refreshes the one citywide weekly Contracts watch, answers with `created` plus a safe watch projection, and renders an HTML confirmation for form-encoded (no-JS) posts. Any other topicless request is refused `400 bad-intent` | fails closed 503 until `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` |
+| `/subscribe` | POST | Single-opt-in signup with per-IP/per-address rate limits; stores the watch immediately and sends a substantive welcome with signed manage and one-click unsubscribe links. The Worker verifies a managed Turnstile proof before rate-limit mutation, enrollment, or mail, so browser signup requires JavaScript. Normally requires a previewed lens; the only topicless shape accepted is the disclosed homepage default (`no_topic:true` + `source:"contracts-intro"`), which stores or refreshes the one citywide weekly Contracts watch, answers with `created` plus a safe watch projection, and retains form-encoded parsing and HTML responses as protocol compatibility. Any other topicless request is refused `400 bad-intent` | fails closed 503 until `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` + `TURNSTILE_SECRET` |
+| `/subscribe-pack` | POST/OPTIONS | Creates a reviewed monitor pack of at most 20 validated children in one single-opt-in action. Browser signup requires JavaScript, and the Worker verifies a managed Turnstile proof before receipt creation, enrollment, or mail. An exact-payload progress receipt makes retries skip completed children; `OPTIONS` serves the origin-allowlisted CORS preflight without enrollment side effects | fails closed 503 until `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` + `TURNSTILE_SECRET` |
 | `/confirm` | GET | Compatibility path for signed links already in flight; existing immediate enrollments are an idempotent success | `TOKEN_SECRET` + `SUBS` |
 | `/unsubscribe` | GET/POST | Removes one watch (`{k}`) or all watches for an email (`{all:1,e}`); POST = RFC 8058 one-click | `TOKEN_SECRET` + `SUBS` |
 | `/prefs` | GET/POST | **Preference center** — magic-link list/edit/pause/delete watches for one email; changes take effect next daily cron (~9am ET) | `TOKEN_SECRET` + `SUBS` |
@@ -327,9 +328,13 @@ managed separately from the public website hostnames.
 `{degraded:true}` on every failure path — worst case a few tens of cents/day by
 construction. Alert sending is bounded by `MAX_PER_RUN=25` and `MAX_SENDS_PER_DAY=50`
 (under Resend's free 100/day) via the [`sendcap`](https://github.com/jimdc/sendcap) spend
-guard; capped watches **defer** to the next run rather than dropping notices. Subscribe/feedback
-use per-IP/per-address daily rate limits (no CAPTCHA on either path) and fail closed when unconfigured. Feeds
-hold no key and are edge-cached.
+guard; capped watches **defer** to the next run rather than dropping notices. `/subscribe` requires
+a server-verified managed Turnstile proof in addition to per-IP/per-address daily rate limits.
+`/subscribe-pack` requires the same proof, caps each pack at 20 validated children, and persists an
+exact-payload progress receipt so retries skip completed children. Both routes fail closed when the
+proof service or required bindings are unavailable.
+`/feedback` remains rate-limited without Turnstile. Subscribe-by-email is retired; residual inbound
+deliveries are receipt-only and never enroll a watch. Feeds hold no key and are edge-cached.
 
 ## Storage — Cloudflare KV + D1 + Analytics Engine (no R2)
 

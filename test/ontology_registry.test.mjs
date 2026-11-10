@@ -6,14 +6,14 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   loadOntologyRegistry,
-  checkOntologyRegistrySync,
-  collectLiveInventory,
   ONTOLOGY_REGISTRY_SCHEMA,
   idsWithStatus,
   GROUNDING_STATES,
   summarizeGrounding,
   validateRegistryGrounding,
 } from "../ontology/index.mjs";
+import { checkOntologyRegistrySync } from "../ontology/sync.mjs";
+import { collectLiveInventory } from "../ontology/live_inventory.mjs";
 import {
   PUBLIC_GRAPH_EDGE_TYPES,
   PUBLIC_GRAPH_NODE_TYPES,

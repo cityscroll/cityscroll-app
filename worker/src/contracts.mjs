@@ -4,7 +4,6 @@
 
 import { loadAnalyticalProjectionDocument } from "../../site/analytical_projection_shards.mjs";
 import {
-  buildProcurementBrowseCapabilityIndex,
   composeProcurementBrowseCapabilityContract,
   loadProcurementBrowseCapabilityDetails,
   loadProcurementBrowseCapabilityFilterTier,
@@ -12,7 +11,7 @@ import {
   procurementBrowseCapabilityEnvelope,
   PROCUREMENT_BROWSE_CAPABILITY_INDEX_PATH,
   PROCUREMENT_BROWSE_CAPABILITY_INDEX_SCHEMA,
-} from "../../site/procurement_browse_capability_index.mjs";
+} from "../../capabilities/procurement_browse_capability_read.mjs";
 import {
   ANALYTICAL_MEASURES,
   ANALYTICAL_PROJECTION_URL,
@@ -20,11 +19,11 @@ import {
   cityRecordCoverage,
   filterAnalyticalContracts,
   groupAnalyticalContracts,
-} from "../../site/analytical_projection.mjs";
+} from "../../capabilities/analytical_projection.mjs";
 import { ANALYTICAL_PROJECTION_SCHEMA, REGISTERED_CONTRACT_PROJECTION } from "../../site/analytical_projection_contract.mjs";
 import { researchResponseBytes, RESEARCH_STRUCTURED_MAX_BYTES, fitResearchBrowsePage } from "../../capabilities/research_response_limits.mjs";
-import { analyzeContractsProjection, registeredGroupRows, registeredContractReference } from "../../site/contracts_analysis_projection.mjs";
-import { procurementDetailIndex } from "../../site/procurement_detail_index.mjs";
+import { analyzeContractsProjection, registeredGroupRows, registeredContractReference } from "../../capabilities/contracts_analysis_projection.mjs";
+import { procurementDetailIndex } from "../../capabilities/procurement_detail_index.mjs";
 import {
   CONTRACT_GET_CAPABILITY_REFERENCE,
   CONTRACT_GET_LIMITS,
@@ -153,7 +152,14 @@ async function readBrowseCapabilityIndex(env) {
   const injectedModel = env?.PROCUREMENT_READ_MODEL
     || (env?.schema === "cityscroll.shared_procurement_read_model.v1" ? env : null);
   if (injectedModel && typeof injectedModel === "object") {
-    const index = buildProcurementBrowseCapabilityIndex(injectedModel);
+    // Building the browse index from a raw shared read model depends on
+    // presentation search producers. Tests that inject a raw model pass the
+    // builder explicitly; production loads the published index shards instead.
+    const buildIndex = env?.buildProcurementBrowseCapabilityIndex;
+    if (typeof buildIndex !== "function") {
+      throw new Error("Contracts browse index builder is required when injecting a raw read model");
+    }
+    const index = buildIndex(injectedModel);
     return { manifest: index, entries: index.entries };
   }
   const tier = await loadProcurementBrowseCapabilityFilterTier(

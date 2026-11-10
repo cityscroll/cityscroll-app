@@ -42,6 +42,7 @@ async function workerFetch(path, opts, timeoutMs, acceptResponse){
     catch(_error){ return false; }
   };
   if(needsCreds) return attempt(API);
+  if(path === "/subscribe") return attempt(apiBase);
   const firstBase=apiBase;
   const other=firstBase===API?API_FALLBACK:API;
   try{

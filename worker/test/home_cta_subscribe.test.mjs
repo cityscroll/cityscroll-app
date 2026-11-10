@@ -2,7 +2,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { handleSubscribe } from "../src/subscribe.mjs";
+import { handleSubscribe as realHandleSubscribe } from "../src/subscribe.mjs";
+const handleSubscribe = (req, env) => realHandleSubscribe(req, env, { verifyTurnstile: async () => ({ ok: true }) });
 
 class MockKV {
   constructor() { this.store = new Map(); }
@@ -58,9 +59,8 @@ function submit(environment, body, sent) {
   return post(environment, { body: JSON.stringify(body), contentType: "application/json" }, sent);
 }
 
-// The homepage box is a real <form method="post" action=".../subscribe">, so with JavaScript
-// off the browser sends the fields url-encoded and renders whatever HTML comes back. That
-// navigation is the only confirmation a no-JS reader ever sees.
+// Exercise the form-encoded parser and HTML response contract. Browser signup obtains its
+// Turnstile proof through JavaScript before sending the request.
 function submitForm(environment, fields, sent) {
   return post(environment, {
     body: new URLSearchParams(fields).toString(),
@@ -137,7 +137,7 @@ test("the exact disclosed Contracts-default intent creates one weekly Contracts 
   assert.equal(sent.length, 1);
 });
 
-test("the no-JavaScript form post confirms the weekly Contracts subscription in HTML", async () => {
+test("a form-encoded homepage request confirms the weekly Contracts subscription in HTML", async () => {
   const environment = configured();
   const sent = [];
   const response = await submitForm(environment, {
@@ -158,14 +158,14 @@ test("the no-JavaScript form post confirms the weekly Contracts subscription in 
   assert.doesNotMatch(html, /token/i);
 
   const subKeys = [...environment.SUBS.store.keys()].filter((key) => key.startsWith("sub:"));
-  assert.equal(subKeys.length, 1, "the no-JS path stores exactly one default watch");
+  assert.equal(subKeys.length, 1, "the form-encoded path stores exactly one default watch");
   const record = JSON.parse(await environment.SUBS.get(subKeys[0]));
   assert.equal(record.lens, "money");
   assert.equal(record.freq, "weekly");
   assert.equal(sent.length, 1);
 });
 
-test("the no-JavaScript path still rejects a topicless post from another source", async () => {
+test("the form-encoded path rejects a topicless post from another source", async () => {
   const environment = configured();
   const sent = [];
   const response = await submitForm(environment, {
@@ -181,7 +181,7 @@ test("the no-JavaScript path still rejects a topicless post from another source"
   assert.equal(sent.length, 0);
 });
 
-test("a no-JavaScript reader whose welcome email fails is told the subscription is still active", async () => {
+test("a form-encoded request whose welcome email fails reports the active subscription", async () => {
   const environment = configured();
   const realFetch = globalThis.fetch;
   globalThis.fetch = async (url) => {

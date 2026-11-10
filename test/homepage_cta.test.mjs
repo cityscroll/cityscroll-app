@@ -81,15 +81,6 @@ test("Contracts intro CTA discloses the exact weekly default before asking for a
   assert.match(index, /sessionShowBanner[\s\S]*homeCtaManage/);
 });
 
-test("signup surfaces have no Turnstile widget or client token gate", () => {
-  // Homepage CTA + Alerts post to /subscribe without a CAPTCHA.
-  assert.doesNotMatch(index, /class="cf-turnstile"/);
-  assert.doesNotMatch(index, /challenges\.cloudflare\.com\/turnstile/);
-  assert.doesNotMatch(index, /turnstileToken/);
-  assert.doesNotMatch(index, /complete_human_check/);
-  assert.match(index, /workerFetch\("\/subscribe"/);
-});
-
 test("about feedback form has no Turnstile and exposes public feedback inbox", () => {
   const about = readFileSync(join(ROOT, "site/about.html"), "utf8");
   assert.doesNotMatch(about, /class="cf-turnstile"/);

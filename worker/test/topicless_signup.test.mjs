@@ -4,7 +4,8 @@ import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { signToken } from "optin-token";
 
-import { handleSubscribe } from "../src/subscribe.mjs";
+import { handleSubscribe as realHandleSubscribe } from "../src/subscribe.mjs";
+const handleSubscribe = (req, env) => realHandleSubscribe(req, env, { verifyTurnstile: async () => ({ ok: true }) });
 import { handleConfirm } from "../src/confirm.mjs";
 import { handlePrefs } from "../src/prefs.mjs";
 import { handleAdminSubs } from "../src/admin.mjs";

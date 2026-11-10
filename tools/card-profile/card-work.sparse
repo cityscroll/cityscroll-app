@@ -609,6 +609,8 @@
 /site/land_project_geometry.mjs
 /site/land_project_map_points.mjs
 /site/land_project_route.mjs
+/site/land_projects_attach.mjs
+/site/land_projects_presentation.mjs
 /site/land_record_links.mjs
 /site/land_regulatory_effect.mjs
 /site/land_review_regimes.mjs
@@ -929,6 +931,7 @@
 /site/shared_meeting_read_model.mjs
 /site/shared_meeting_read_model_shards.mjs
 /site/shared_procurement_read_model.mjs
+/site/signup_turnstile.mjs
 /site/site.webmanifest
 /site/site_lifecycle_artifacts.mjs
 /site/site_lifecycle_context.mjs

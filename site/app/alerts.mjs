@@ -1,4 +1,5 @@
 import { landProjectDisplayTitle } from "../display_title.mjs";
+import { signupTurnstileToken } from "../signup_turnstile.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import {
   communityBoardIdFromSelection,
@@ -1015,8 +1016,9 @@ async function aSubscribeTemplatePack(email, freq, lang){
   let ok=0, fail=0;
   for(const body of payloads){
     try{
+      body.turnstileToken=await signupTurnstileToken(msg);
       const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-        email:body.email, lens:body.lens, filter:body.filter, freq:body.freq, lang:body.lang,
+        email:body.email, lens:body.lens, filter:body.filter, freq:body.freq, lang:body.lang, turnstileToken:body.turnstileToken,
       })});
       const j=await r.json().catch(()=>({}));
       if(j.ok) ok+=1; else fail+=1;
@@ -1065,7 +1067,8 @@ async function aSubscribe(){
   msg.innerHTML='<span class="loading"></span> ' + t("subscribing_now");
   const {lens,filter}=aLensFilter();
   try{
-    const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,lang:window.LANG||"en"})});
+    const turnstileToken=await signupTurnstileToken(msg);
+    const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,lang:window.LANG||"en",turnstileToken})});
     const j=await r.json().catch(()=>({}));
     if(j.ok){ msg.innerHTML="<b>" + t("subscribed_now") + "</b> " + t("welcome_sent_to",{email:email.replace(/[<>&]/g," ")}); }
     else { msg.innerHTML="⚠️ "+subscribeErrorWhy(j.reason); }

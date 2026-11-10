@@ -9,7 +9,7 @@ import { boundResearchToolResult } from "../../capabilities/research_response_li
 //   retrieve_cited_passages      — typed source passages only (no model call, cheap)
 //   get_contract / browse_contracts — canonical Contracts objects from the shared read model
 //   preview_watch                — plain English → lens filter → live results (LLM, metered)
-//   create_watch                 — plain English → immediate watch + welcome email (LLM, metered)
+//   create_watch                 — named clients only during the browser signup abuse hold
 // No list/delete tools: watch management stays behind the emailed unsubscribe links,
 // so knowing an address never reveals or controls its subscriptions (privacy first).
 //
@@ -21,7 +21,8 @@ import { boundResearchToolResult } from "../../capabilities/research_response_li
 // on top of that: a profile credential resolves to a stable profile id whose exact
 // allowlist filters BOTH tools/list and tools/call, and whose quota meters by profile id
 // instead of connecting address. Anonymous callers and the endpoint-wide MCP_BEARER_TOKEN
-// are unchanged — they keep the full inventory and the per-address meter.
+// keep the full inventory for protocol compatibility, but anonymous create_watch calls
+// are suspended until a comparable proof gate exists for machine clients.
 
 import { noticeSearchTerms, workerD1NoticeSearch } from "./lib/notices.mjs";
 import {
@@ -800,7 +801,9 @@ export async function handleMcp(req, env, { federatedProvider = null } = {}) {
         // The refusal is deliberately indistinguishable from an unknown tool: a distinct
         // "not granted" message would be a discovery oracle for the withheld inventory,
         // which is exactly the authority leak the filtered listing exists to close.
-        if (!profileAllowsTool(profile, name)) {
+        // Preserve discovery and frozen MCP receipts while suspending the anonymous
+        // enrollment side effect. A named profile still needs its explicit grant.
+        if (!profileAllowsTool(profile, name) || (!profile && name === "create_watch")) {
           // Registered-but-ungranted tools stay not_granted; never-registered names are
           // unknown_tool. The caller-facing body stays identical either way.
           const errorClass = TOOL_CAPABILITY_REFERENCES.has(name) || MCP_TOOL_BINDINGS.some((b) => b.name === name)

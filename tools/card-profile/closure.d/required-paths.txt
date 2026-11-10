@@ -97,9 +97,11 @@ artifacts/capability-spine/cloudflare-os-proof.json
 artifacts/capability-spine/code-mode.json
 artifacts/capability-spine/entity-relationships.json
 artifacts/capability-spine/remote-mcp.json
+capabilities/analytical_projection.mjs
 capabilities/cited_passages.mjs
 capabilities/contracts.mjs
 capabilities/contracts_analysis.mjs
+capabilities/contracts_analysis_projection.mjs
 capabilities/entity_dossier.mjs
 capabilities/entity_relationships.mjs
 capabilities/federated_search.mjs
@@ -108,11 +110,14 @@ capabilities/land_projects.mjs
 capabilities/machine_client_profile.mjs
 capabilities/mcp_tool_declarations.mjs
 capabilities/mcp_usage_observation.mjs
+capabilities/meeting_availability.mjs
 capabilities/meetings.mjs
 capabilities/notice_get.mjs
 capabilities/notice_search.mjs
 capabilities/people_organizations.mjs
 capabilities/people_organizations_provider.mjs
+capabilities/procurement_browse_capability_read.mjs
+capabilities/procurement_detail_index.mjs
 capabilities/registry.mjs
 capabilities/research_response_limits.mjs
 capabilities/search_activity.mjs
@@ -577,7 +582,6 @@ site/land_affected_review_body.mjs
 site/land_authority_summary.mjs
 site/land_authority_summary_view.mjs
 site/land_catalog_generation.mjs
-site/land_decision_path.mjs
 site/land_detail_coherence.mjs
 site/land_filing_evidence_facet.mjs
 site/land_filter_parity.mjs
@@ -595,6 +599,7 @@ site/land_project_decision_relations.mjs
 site/land_project_geography.mjs
 site/land_project_map_points.mjs
 site/land_project_route.mjs
+site/land_projects_attach.mjs
 site/land_record_links.mjs
 site/land_regulatory_effect.mjs
 site/land_review_regimes.mjs
@@ -627,7 +632,6 @@ site/map_exploration.mjs
 site/matter_coverage_recovery.mjs
 site/matter_phase_spine.mjs
 site/matter_publication_generation.mjs
-site/meeting_availability_filter.mjs
 site/meeting_capability_projection.mjs
 site/meeting_delivery_identity.mjs
 site/meeting_document.mjs
@@ -699,7 +703,6 @@ site/procurement_browse_capability_index.mjs
 site/procurement_browse_query.mjs
 site/procurement_coverage_labels.mjs
 site/procurement_deadline_projection.mjs
-site/procurement_detail_index.mjs
 site/procurement_digest_compile.mjs
 site/procurement_document.mjs
 site/procurement_event_log.mjs
@@ -1177,6 +1180,7 @@ test/graph_edge_provenance.test.mjs
 test/hash_routes.test.mjs
 test/hearing_logistics.test.mjs
 test/hearing_widening.test.mjs
+test/helpers/attach_land_projects_presentation.mjs
 test/helpers/mandate_subject.mjs
 test/helpers/near_you_local_escape_fixture.mjs
 test/helpers/near_you_place_suggestions_fixture.mjs
@@ -2271,6 +2275,7 @@ worker/src/lib/search_usage.mjs
 worker/src/lib/search_usage_daily.mjs
 worker/src/lib/secret_compare.mjs
 worker/src/lib/session.mjs
+worker/src/lib/signup_turnstile.mjs
 worker/src/lib/solicitation_coverage.mjs
 worker/src/lib/solicitation_procurement_method.mjs
 worker/src/lib/source_acquisition_receipt.mjs

@@ -16,7 +16,7 @@ import {
   landProjectCatalogRows,
   rowsForCompiledQuery,
 } from "./lib/compile.mjs";
-import { evaluateMeetingAvailabilityRows } from "../../site/meeting_availability_filter.mjs";
+import { evaluateMeetingAvailabilityRows } from "../../capabilities/meeting_availability.mjs";
 import { feedItems } from "./lib/feed.mjs";
 import { prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
 import {
@@ -134,7 +134,7 @@ function publicHeaders() {
   return {
     "Content-Type": "text/html; charset=utf-8",
     "Cache-Control": "public, max-age=120, s-maxage=300, stale-while-revalidate=3600",
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cityscroll.org; style-src 'self' https://cityscroll.org https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.cityscroll.org; base-uri 'none'; frame-ancestors 'none'",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cityscroll.org https://challenges.cloudflare.com; style-src 'self' https://cityscroll.org https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.cityscroll.org https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; base-uri 'none'; frame-ancestors 'none'",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Content-Type-Options": "nosniff",
     "Access-Control-Allow-Origin": SITE_ORIGIN,

@@ -1,3 +1,4 @@
+import "./helpers/attach_land_projects_presentation.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {

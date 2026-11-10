@@ -1,3 +1,4 @@
+import "./helpers/attach_land_projects_presentation.mjs";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -339,14 +340,22 @@ test("A12 the capability provider composes the same resident Land route and read
   // A structural guard, not a UI regression suite: it proves this capability
   // reuses (rather than forks) the exact modules Land list/map/watch/detail
   // already depend on, so a UI regression is caught by those existing suites.
-  const workerSource = readFileSync(new URL("../worker/src/land_projects.mjs", import.meta.url), "utf8");
+  // Presentation imports are attached from site/land_projects_presentation.mjs
+  // rather than statically reverse-imported by the engine-partitioned adapter.
+  const presentationSource = readFileSync(new URL("../site/land_projects_presentation.mjs", import.meta.url), "utf8");
   for (const specifier of [
-    "../../site/land_action_procedure_resolution.mjs",
-    "../../site/land_project_route.mjs",
-    "../../site/resident_snapshot_queries.mjs",
+    "./land_action_procedure_resolution.mjs",
+    "./land_project_route.mjs",
+    "./resident_snapshot_queries.mjs",
   ]) {
-    assert.ok(workerSource.includes(specifier), `expected land_projects.mjs to import ${specifier}`);
+    assert.ok(presentationSource.includes(specifier), `expected land_projects_presentation.mjs to import ${specifier}`);
   }
+  const workerSource = readFileSync(new URL("../worker/src/land_projects.mjs", import.meta.url), "utf8");
+  assert.match(workerSource, /attachLandProjectsPresentation/);
+  assert.doesNotMatch(
+    workerSource,
+    /from\s+["']\.\.\/\.\.\/site\/(?:land_action_procedure_resolution|land_project_route|resident_snapshot_queries)/,
+  );
   assert.equal(landProjectUrl("2024Q0356"), "https://cityscroll.org/browse/zoning/#land/2024Q0356");
 });
 

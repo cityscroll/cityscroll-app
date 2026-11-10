@@ -756,7 +756,7 @@ const MCP_REGISTERED_AND_PILOT_TOOLS = [
   },
   {
     name: "create_watch",
-    description: "Create a standing email watch. The watch starts immediately; the welcome email states its scope and includes manage and unsubscribe links. Pass a structured filter to keep alternatives, phrases, and exclusions; plain English remains optional.",
+    description: "Standing email watch creation is temporarily suspended for anonymous MCP callers while comparable signup protection is unavailable. Named machine-client profiles may call this tool only when explicitly granted. The compatibility name and input schema remain published; when granted, the watch starts immediately and its welcome email includes manage and unsubscribe links.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {

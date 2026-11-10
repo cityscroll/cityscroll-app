@@ -123,6 +123,7 @@ import { handleSearch } from "./search.mjs";
 import { handleSemanticCandidates } from "./semantic_candidates.mjs";
 import { handleCitedPassages } from "./cited_retrieval.mjs";
 import { handleContract, handleContractsAnalysis, handleContractsBrowse } from "./contracts.mjs";
+import "../../site/land_projects_attach.mjs";
 import { handleLandDecisionPath, handleLandProject, handleLandProjectsBrowse } from "./land_projects.mjs";
 import { startMorningZapOutcomes, withWorkerAcquisitionReceipt } from "./lib/worker_acquisition_runtime.mjs";
 import {

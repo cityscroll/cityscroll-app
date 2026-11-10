@@ -3,6 +3,7 @@ import {
   setFollowingDefaultWatchReceipt,
 } from "./following_default_watch_receipt.mjs";
 import { CITYSCROLL_COMPATIBILITY_API_ORIGIN } from "./affordance_grammar.mjs";
+import { signupTurnstileToken } from "./signup_turnstile.mjs";
 
 // The disclosed weekly-Contracts default inside the Contracts intro. The card ships in
 // the shared index.html shell, so this enhancement has to attach whether the reader
@@ -15,15 +16,15 @@ const API_ORIGINS = Object.freeze([
   window.CROL_API_FALLBACK_ORIGIN || CITYSCROLL_COMPATIBILITY_API_ORIGIN,
 ]);
 
-async function subscribeHomeDefault(email, lang) {
-  const body = JSON.stringify({ email, no_topic: true, source: "contracts-intro", lang });
+async function subscribeHomeDefault(email, lang, getTurnstileToken) {
   let lastError;
   for (const origin of API_ORIGINS) {
+    const turnstileToken = await getTurnstileToken();
     try {
       const response = await fetch(`${origin.replace(/\/$/, "")}/subscribe`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body,
+        body: JSON.stringify({ email, no_topic: true, source: "contracts-intro", lang, turnstileToken }),
       });
       return await response.json().catch(() => ({}));
     } catch (error) {
@@ -42,6 +43,8 @@ const HOME_CTA_ERROR_KEYS = Object.freeze({
   "channel-unsupported": "channel_unsupported",
   "not-configured": "not_configured",
   "send-failed": "send_failed",
+  "bot-check": "generic_error",
+  "bot-check-unavailable": "generic_error",
 });
 
 function homeCtaErrorMessage(reason) {
@@ -50,10 +53,9 @@ function homeCtaErrorMessage(reason) {
 }
 
 /**
- * Progressive enhancement for the disclosed weekly-Contracts default: the form works as a
- * plain POST to /subscribe without JS (see the no-JS branch of worker/src/subscribe.mjs's
- * reply()); here we intercept submit to enroll via the ordinary /subscribe transaction and
- * report status inline instead of navigating away.
+ * Browser signup for the disclosed weekly-Contracts default requires JavaScript so each request
+ * can obtain a managed Turnstile proof. We intercept submit to enroll via the ordinary /subscribe
+ * transaction and report status inline instead of navigating away.
  */
 export function initHomeDefaultSubscription() {
   const form = document.getElementById("homeCtaForm");
@@ -79,7 +81,7 @@ export function initHomeDefaultSubscription() {
     const lang = window.LANG || "en";
     if (langField) langField.value = lang;
     try {
-      const result = await subscribeHomeDefault(email, lang);
+      const result = await subscribeHomeDefault(email, lang, () => signupTurnstileToken(form));
       if (result?.ok) {
         const receipt = buildFollowingDefaultWatchReceipt({ watch: result.watch, created: result.created });
         if (receipt?.ok) {

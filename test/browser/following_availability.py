@@ -11,7 +11,7 @@ import threading
 from datetime import date, timedelta
 from pathlib import Path
 from typing import TYPE_CHECKING
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
@@ -51,6 +51,16 @@ def render_document(query: str) -> str:
 
 
 class FollowingFixtureHandler(QuietHandler):
+    def translate_path(self, path: str) -> str:
+        # Site modules re-export the meeting-availability engine from
+        # capabilities/, which in turn imports site/calendar_occurrence.mjs.
+        # Serve both repository prefixes the same way production places them
+        # beside the site root (see site_lifecycle_journey / near-you capture).
+        relative = unquote(urlsplit(path).path).lstrip("/")
+        if relative.startswith(("capabilities/", "site/")):
+            return str(ROOT / relative)
+        return str(ROOT / "site" / relative)
+
     def do_GET(self) -> None:
         path, _, query = self.path.partition("?")
         if path.rstrip("/") == "/following":
@@ -86,6 +96,7 @@ def install_routes(page: Page) -> None:
             )
             return
         if path == "/subscribe" and route.request.method == "POST":
+            assert route.request.post_data_json["turnstileToken"] == "fixture-proof"
             route.fulfill(
                 status=200,
                 headers={"Content-Type": "application/json"},
@@ -95,6 +106,17 @@ def install_routes(page: Page) -> None:
         route.fulfill(status=404, body="{}")
 
     page.route("https://api.cityscroll.org/**", api)
+    page.route(
+        "https://challenges.cloudflare.com/turnstile/v0/api.js**",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/javascript",
+            body=(
+                "window.turnstile={render(_holder,options){this.options=options;return 1},"
+                "execute(){this.options.callback('fixture-proof')},remove(){}};"
+            ),
+        ),
+    )
     page.route("https://data.cityofnewyork.us/**", lambda route: route.abort())
 
 
