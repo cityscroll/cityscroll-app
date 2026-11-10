@@ -70,7 +70,7 @@ import {
   toDayLogEntry,
   mergeDayLogEntry,
 } from "./lib/digest_ops.mjs";
-import { tally, verdictOf } from "./lib/watch_verdict.mjs";
+import { normalizeTally, tally, verdictOf } from "./lib/watch_verdict.mjs";
 import {
   groupSubsByEmail,
   shouldRollup,
@@ -498,7 +498,7 @@ async function recordQueueJobOutcome(env, day, jobResult) {
       else if (!jobResult.sent && !jobResult.skipped) t.skipped_other = (Number(t.skipped_other) || 0) + 1;
     }
     const verdicts = base.verdicts && typeof base.verdicts === "object"
-      ? { off: 0, blocked: 0, held: 0, quiet: 0, delivered: 0, failed: 0, ...base.verdicts }
+      ? normalizeTally(base.verdicts)
       : tally([]);
     const verdict = verdictOf(jobResult);
     if (verdict) verdicts[verdict.class] = (Number(verdicts[verdict.class]) || 0) + 1;
