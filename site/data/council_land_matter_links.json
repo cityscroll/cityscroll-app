@@ -992,11 +992,11 @@
   "schema": "cityscroll.council_land_matter_links.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 291,
+      "absent_count": 284,
       "present_count": 15,
-      "record_count": 306
+      "record_count": 299
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-11-09T08:01:12.734Z",
+    "meeting_outcomes_snapshot_generated_at": "2026-11-10T08:00:54.972Z",
     "zap_projects_warehouse_lookup_materialized_at": "2026-11-09T21:47:09.965Z"
   }
 }

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.rules_semantic_lane.v1",
   "artifact_version": 1,
-  "rules_snapshot_observed_at": "2026-11-09T21:57:24.958Z",
+  "rules_snapshot_observed_at": "2026-11-10T15:44:22.290Z",
   "corpus_observed_on": "2026-08-04",
   "authorization": {
     "runtime_semantic_retrieval": false,

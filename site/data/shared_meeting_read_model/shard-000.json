@@ -49308,7 +49308,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261104007",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -49349,10 +49349,18 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261104007",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20261104007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "same_proceeding": null,
@@ -49481,7 +49489,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261106003",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -49522,10 +49530,18 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261106003",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20261106003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "same_proceeding": null,
@@ -54101,7 +54117,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261027004",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -54139,7 +54155,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261027004",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -60681,7 +60697,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021032",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -60717,7 +60733,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021032",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -61648,7 +61664,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014024",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -61684,7 +61700,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014024",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -65125,7 +65141,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013025",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -65167,7 +65183,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013025",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -65281,7 +65297,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014002",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -65323,7 +65339,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014002",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -68694,7 +68710,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009010",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -68732,7 +68748,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009010",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -70648,7 +70664,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261023017",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -70684,7 +70700,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261023017",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -71275,7 +71291,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261026022",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -71315,7 +71331,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261026022",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -71431,7 +71447,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009014",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -71469,7 +71485,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009014",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -71587,7 +71603,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261015024",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -71627,7 +71643,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261015024",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -78156,7 +78172,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013022",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -78196,7 +78212,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013022",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -78301,7 +78317,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013024",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -78341,7 +78357,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013024",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -78457,7 +78473,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014038",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -78495,7 +78511,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014038",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -78600,7 +78616,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261019007",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -78638,7 +78654,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261019007",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -78759,7 +78775,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261027024",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -78797,7 +78813,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261027024",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -83711,7 +83727,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261007005",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -83747,7 +83763,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261007005",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -83874,6 +83890,146 @@
           "parser": "oath_trial_calendar_acquisition.v1"
         }
       },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-09T21:24:12.359Z"
+      }
+    },
+    {
+      "request_id": "20260106036",
+      "start_date": "2026-11-10T00:00:00.000",
+      "event_date": "2026-11-17T13:00:00.000",
+      "agency_name": "Board of Correction",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Board of Correction Public Meeting",
+      "street_address_1": "125 Worth Street",
+      "street_address_2": "2nd Floor Auditorium",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10013",
+      "additional_description_1": "<p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-family:' calibri',sans-serif'=''>The New York City Board of Correction will hold a public meeting on Tuesday, November 17, 2026 at 1:00pm. The meeting with be held in the auditorium located on the 2nd floor of 125 Worth Street. The Board will discuss issues impacting the New York City jail system.</span></span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-family:' calibri',sans-serif'=''>More information is available on the Board's website at https://www.nyc.gov/site/boc/meetings/2026-meetings.page</span></span></span><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>                       </span></span></p><ul>\t<li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Wheelchair Access.</span></strong><span style='font-family:' calibri',sans-serif'=''> The venue has an accessible entrance on Lafayette Street and elevators. There are accessible bathrooms on the first floor of the building. </span></span></span></li>\t<li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Assistive Listening Systems (ALS)</span></strong><span style='font-family:' calibri',sans-serif'=''>. ALS is not currently in place at the 125 Worth Street Second Floor Auditorium.</span></span></span></li>\t<li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Communication Access Realtime Translation (CART).</span></strong><span style='font-family:' calibri',sans-serif'=''> CART is not currently available.</span></span></span><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>        </span></span></li>\t<li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Sign Language Interpretation. </span></strong><span style='font-family:' calibri',sans-serif'=''>If you require language interpretation, or sign language interpretation to participate in the meeting, please email boc@boc.nyc.gov or call 212-669-7900 at least a week before the Board meeting to allow sufficient time to determine if accommodations can be arranged. </span></span></span></li></ul><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-family:' calibri',sans-serif'=''>To request any other accommodations, please email boc@boc.nyc.gov or call 212-669-7900 at least 48 hours before the meeting. </span></span></span></p>",
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:city_record:20260106036",
+      "source_keys": [
+        {
+          "source_system": "city_record",
+          "key_type": "request_id",
+          "value": "20260106036"
+        }
+      ],
+      "publisher_identifier": "20260106036",
+      "title": "Board of Correction Public Meeting",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-11-17T13:00:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106036",
+        "observed_at": null,
+        "raw_date": "2026-11-17",
+        "raw_time": "13:00:00",
+        "status": "resolved"
+      },
+      "meeting_family": "descriptive_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "mode": "in-person",
+        "building": "",
+        "address": "125 Worth Street, 2nd Floor Auditorium, New York, NY, 10013",
+        "borough": null,
+        "neighborhood": null
+      },
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [
+          "boc@boc.nyc.gov"
+        ],
+        "phones": [
+          "212-669-7900"
+        ],
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106036"
+      },
+      "committee": null,
+      "agency": "Board of Correction",
+      "board_name": null,
+      "description": "The New York City Board of Correction will hold a public meeting on Tuesday, November 17, 2026 at 1:00pm. The meeting with be held in the auditorium located on the 2nd floor of 125 Worth Street. The Board will discuss issues impacting the New York City jail system. More information is available on the Board's website at https://www.nyc.gov/site/boc/meetings/2026-meetings.page Wheelchair Access. The venue has an accessible entrance on Lafayette Street and elevators. There are accessible bathrooms on the first floor of the building. Assistive Listening Systems (ALS) . ALS is not currently in place at the 125 Worth Street Second Floor Auditorium. Communication Access Realtime Translation (CART). CART is not currently available. Sign Language Interpretation. If you require language interpretation, or sign language interpretation to participate in the meeting, please email boc@boc.nyc.gov or call 212-669-7900 at least a week before the Board meeting to allow sufficient time to determine if accommodations can be arranged. To request any other accommodations, please email boc@boc.nyc.gov or call 212-669-7900 at least 48 hours before the meeting.",
+      "search_text": "Board of Correction Public Meeting 125 Worth Street, 2nd Floor Auditorium, New York, NY, 10013 Board of Correction Board of Correction Public Meeting The New York City Board of Correction will hold a public meeting on Tuesday, November 17, 2026 at 1:00pm. The meeting with be held in the auditorium located on the 2nd floor of 125 Worth Street. The Board will discuss issues impacting the New York City jail system. More information is available on the Board's website at https://www.nyc.gov/site/boc/meetings/2026-meetings.page Wheelchair Access. The venue has an accessible entrance on Lafayette Street and elevators. There are accessible bathrooms on the first floor of the building. Assistive Listening Systems (ALS) . ALS is not currently in place at the 125 Worth Street Second Floor Auditorium. Communication Access Realtime Translation (CART). CART is not currently available. Sign Language Interpretation. If you require language interpretation, or sign language interpretation to participate in the meeting, please email boc@boc.nyc.gov or call 212-669-7900 at least a week before the Board meeting to allow sufficient time to determine if accommodations can be arranged. To request any other accommodations, please email boc@boc.nyc.gov or call 212-669-7900 at least 48 hours before the meeting. Meeting Public Hearings and Meetings <p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-family:' calibri',sans-serif'=''>The New York City Board of Correction will hold a public meeting on Tuesday, November 17, 2026 at 1:00pm. The meeting with be held in the auditorium located on the 2nd floor of 125 Worth Street. The Board will discuss issues impacting the New York City jail system.</span></span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-family:' calibri',sans-serif'=''>More information is available on the Board's website at https://www.nyc.gov/site/boc/meetings/2026-meetings.page</span></span></span><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'> </span></span></p><ul> <li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Wheelchair Access.</span></strong><span style='font-family:' calibri',sans-serif'=''> The venue has an accessible entrance on Lafayette Street and elevators. There are accessible bathrooms on the first floor of the building. </span></span></span></li> <li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Assistive Listening Systems (ALS)</span></strong><span style='font-family:' calibri',sans-serif'=''>. ALS is not currently in place at the 125 Worth Street Second Floor Auditorium.</span></span></span></li> <li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Communication Access Realtime Translation (CART).</span></strong><span style='font-family:' calibri',sans-serif'=''> CART is not currently available.</span></span></span><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'> </span></span></li> <li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Sign Language Interpretation. </span></strong><span style='font-family:' calibri',sans-serif'=''>If you require language interpretation, or sign language interpretation to participate in the meeting, please email boc@boc.nyc.gov or call 212-669-7900 at least a week before the Board meeting to allow sufficient time to determine if accommodations can be arranged. </span></span></span></li></ul><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-family:' calibri',sans-serif'=''>To request any other accommodations, please email boc@boc.nyc.gov or call 212-669-7900 at least 48 hours before the meeting. </span></span></span></p> 125 Worth Street 2nd Floor Auditorium New York NY 10013 Board of Correction 125 Worth Street, 2nd Floor Auditorium, New York, NY, 10013",
+      "affected_area": {
+        "scope": "unlocated",
+        "boroughs": [],
+        "neighborhoods": [],
+        "community_districts": [],
+        "community_boards": [],
+        "addresses": [],
+        "street_ranges": [],
+        "tax_lots": [],
+        "project_names": [],
+        "application_numbers": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106036",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_receipt": {
+        "schema": "cityscroll.meeting_source_receipt.v1",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106036",
+        "observed_at": "2026-11-10T15:18:07.399Z",
+        "status": "ok",
+        "fetch_status": "snapshot",
+        "reason": null
+      },
+      "join_status": "not_applicable",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": null
+      },
+      "compatibility": {
+        "legacy_notice_href": "/notices/20260106036",
+        "legacy_fragment_href": "#notice/20260106036",
+        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106036"
+      },
+      "source_record_id": "20260106036",
+      "board_id": null,
+      "source_section": "Public Hearings and Meetings",
+      "notice_type": "Meeting",
+      "published_at": "2026-11-10T00:00:00.000",
+      "decides": "Board of Correction Public Meeting",
+      "affects": [],
+      "meeting_access": {
+        "mode": "in-person",
+        "in_person_location": "125 Worth Street, 2nd Floor Auditorium, New York, NY, 10013",
+        "remote_join_url": null,
+        "dial_in": [
+          "212-669-7900"
+        ],
+        "passcode": null
+      },
+      "source_record": {
+        "source_system": "city_record",
+        "identifier": "20260106036",
+        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106036",
+        "receipt": {
+          "schema": "cityscroll.meeting_source_receipt.v1",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106036",
+          "observed_at": "2026-11-10T15:18:07.399Z",
+          "status": "ok",
+          "fetch_status": "snapshot",
+          "reason": null
+        }
+      },
+      "same_proceeding": null,
+      "collection_visibility": "visible",
+      "collection_role": "representative",
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -85173,7 +85329,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261008005",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -85211,7 +85367,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261008005",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -85550,7 +85706,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922022",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -85586,7 +85742,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922022",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -86253,7 +86409,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261023010",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -86289,7 +86445,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261023010",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -90111,7 +90267,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261008001",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -90149,7 +90305,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261008001",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -97865,7 +98021,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261019006",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -97905,7 +98061,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261019006",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -98808,7 +98964,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013021",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -98848,7 +99004,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013021",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -107326,7 +107482,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261001007",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -107362,7 +107518,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261001007",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -107511,7 +107667,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261029016",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -107549,7 +107705,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261029016",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -107654,7 +107810,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261102024",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -107690,7 +107846,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261102024",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -107795,7 +107951,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261102029",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -107833,7 +107989,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261102029",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -107940,7 +108096,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261026021",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -107978,7 +108134,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261026021",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -108085,7 +108241,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261027029",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -108121,7 +108277,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261027029",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -109279,7 +109435,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261002028",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -109315,7 +109471,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261002028",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -109431,7 +109587,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261008024",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -109473,7 +109629,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261008024",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -109587,7 +109743,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261019018",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -109629,7 +109785,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261019018",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -109743,7 +109899,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021010",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -109785,7 +109941,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021010",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -109899,7 +110055,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021015",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -109935,7 +110091,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021015",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -110411,12 +110567,12 @@
       "city": "New York",
       "state": "NY",
       "zip_code": "10007",
-      "additional_description_1": "Title: November 10, 2026, Public Hearing Agenda CR Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name Preservation Agency Division 253 Broadway New York, NY 10007 Event Location 11/10/2026 9:00 AM Event Date and Time Current Status 10/26/2026 - 11/9/2026 Publication Date Public Hearings Notice Type Attachments 1 November 10, 2026, Public Hearing Agenda CR",
+      "additional_description_1": "Title: November 10, 2026, Public Hearing Agenda CR Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name Preservation Agency Division 253 Broadway New York, NY 10007 Event Location 11/10/2026 9:00 AM Event Date and Time Archived Status 10/26/2026 - 11/9/2026 Publication Date Public Hearings Notice Type Attachments 1 November 10, 2026, Public Hearing Agenda CR",
       "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261020005&requestStatus=Current&documentId=44785"
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261020005&requestStatus=Archived&documentId=44785"
       ],
       "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261020005&requestStatus=Current&documentId=44785"
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261020005&requestStatus=Archived&documentId=44785"
       ],
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
@@ -110460,7 +110616,7 @@
         "links": [
           {
             "label": "Participation link",
-            "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261020005&requestStatus=Current&documentId=44785"
+            "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261020005&requestStatus=Archived&documentId=44785"
           }
         ],
         "remote_join_url": null,
@@ -110471,8 +110627,8 @@
       "committee": null,
       "agency": "Landmarks Preservation Commission",
       "board_name": null,
-      "description": "Title: November 10, 2026, Public Hearing Agenda CR Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name Preservation Agency Division 253 Broadway New York, NY 10007 Event Location 11/10/2026 9:00 AM Event Date and Time Current Status 10/26/2026 - 11/9/2026 Publication Date Public Hearings Notice Type Attachments 1 November 10, 2026, Public Hearing Agenda CR",
-      "search_text": "November 10, 2026, Public Hearing Agenda CR 253 Broadway, 2nd Floor, New York, NY, 10007 Landmarks Preservation Commission November 10, 2026, Public Hearing Agenda CR Title: November 10, 2026, Public Hearing Agenda CR Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name Preservation Agency Division 253 Broadway New York, NY 10007 Event Location 11/10/2026 9:00 AM Event Date and Time Current Status 10/26/2026 - 11/9/2026 Publication Date Public Hearings Notice Type Attachments 1 November 10, 2026, Public Hearing Agenda CR Public Hearings Public Hearings and Meetings 253 Broadway 2nd Floor New York NY 10007 Landmarks Preservation Commission 253 Broadway, 2nd Floor, New York, NY, 10007",
+      "description": "Title: November 10, 2026, Public Hearing Agenda CR Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name Preservation Agency Division 253 Broadway New York, NY 10007 Event Location 11/10/2026 9:00 AM Event Date and Time Archived Status 10/26/2026 - 11/9/2026 Publication Date Public Hearings Notice Type Attachments 1 November 10, 2026, Public Hearing Agenda CR",
+      "search_text": "November 10, 2026, Public Hearing Agenda CR 253 Broadway, 2nd Floor, New York, NY, 10007 Landmarks Preservation Commission November 10, 2026, Public Hearing Agenda CR Title: November 10, 2026, Public Hearing Agenda CR Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name Preservation Agency Division 253 Broadway New York, NY 10007 Event Location 11/10/2026 9:00 AM Event Date and Time Archived Status 10/26/2026 - 11/9/2026 Publication Date Public Hearings Notice Type Attachments 1 November 10, 2026, Public Hearing Agenda CR Public Hearings Public Hearings and Meetings 253 Broadway 2nd Floor New York NY 10007 Landmarks Preservation Commission 253 Broadway, 2nd Floor, New York, NY, 10007",
       "affected_area": {
         "scope": "unlocated",
         "boroughs": [],
@@ -110492,7 +110648,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261020005",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -110528,7 +110684,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261020005",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -116171,21 +116327,67 @@
     },
     {
       "request_id": "20261014023",
+      "meeting_id": "meeting:city_record:20261014023",
+      "agency_name": "Parks and Recreation",
+      "short_title": "Notice of Joint Public Hearing: 11/9/2026; for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan (Solicitation # M89-AS-2025)",
       "start_date": "2026-10-23T00:00:00.000",
       "event_date": "2026-11-09T14:30:00.000",
-      "agency_name": "Parks and Recreation",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "short_title": "Notice of Joint Public Hearing: 11/9/2026; for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan (Solicitation # M89-AS-2025)",
       "street_address_1": "255 Greenwich Street",
       "street_address_2": "8th Floor",
       "city": "New York",
       "state": "NY",
       "zip_code": "10007",
-      "additional_description_1": "<p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee and The Department of Parks & Recreation (\u001aParks\u001a) to be held on 11/9/2026, at 255 Greenwich Street, 8<sup>th</sup> Floor, in Manhattan  commencing at 2:30 p.m.  relative to:</span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>INTENT TO AWARD as a concession a Permit Agreement (\u001aPermit\u001a) to Urban Space Holdings, Inc. (\u001aPermitee\u001a) for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan, NY 10011 (Solicitation # M89-AS-2025)</span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>The Permit will provide for a five (5) year term with no options to renew.</span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>Compensation to the City will be as follows: </span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>Annually, Permitee shall pay the City the greater of the following: a minimum annual guaranteed fee (based on the schedule below) or 50% of gross receipts</span>. <span style='font-size:12.0pt'>The City will also receive 50% of Gross Receipts generated from the Parks merchandise booth.</span></span></span></p><table cellspacing='0' class='Table' style='border-collapse:collapse; border:none; width:622px'>\t<tbody>\t\t<tr>\t\t\t<td style='border-bottom:2px solid black; border-left:2px solid black; border-right:2px solid black; border-top:2px solid black; height:47px; width:89px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>Operating Year</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:2px solid black; height:47px; width:150px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>Minimum Annual Guaranteed Fee</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:2px solid black; height:47px; width:126px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>Gross Receipts Percentage</span></span></span></p>\t\t\t</td>\t\t\t<td rowspan='6' style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:2px solid black; height:47px; width:257px'>\t\t\t<p style='text-align:center'> </p>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>PLUS 50% of Gross Receipts generated from the Parks merchandise booth</span></span></span></p>\t\t\t<p style='text-align:center'> </p>\t\t\t</td>\t\t</tr>\t\t<tr>\t\t\t<td style='border-bottom:2px solid black; border-left:2px solid black; border-right:2px solid black; border-top:none; height:20px; width:89px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>1</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:150px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>$1,900,000</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:126px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>50% </span></span></span></p>\t\t\t</td>\t\t</tr>\t\t<tr>\t\t\t<td style='border-bottom:2px solid black; border-left:2px solid black; border-right:2px solid black; border-top:none; height:20px; width:89px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>2</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:150px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>$1,928,500</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:126px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>50% </span></span></span></p>\t\t\t</td>\t\t</tr>\t\t<tr>\t\t\t<td style='border-bottom:2px solid black; border-left:2px solid black; border-right:2px solid black; border-top:none; height:20px; width:89px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>3</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:150px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>$1,957,428</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:126px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>50% </span></span></span></p>\t\t\t</td>\t\t</tr>\t\t<tr>\t\t\t<td style='border-bottom:2px solid black; border-left:2px solid black; border-right:2px solid black; border-top:none; height:20px; width:89px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>4</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:150px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>$1,986,789</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:126px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>50% </span></span></span></p>\t\t\t</td>\t\t</tr>\t\t<tr>\t\t\t<td style='border-bottom:2px solid black; border-left:2px solid black; border-right:2px solid black; border-top:none; height:20px; width:89px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>5</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:150px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>$2,016,591</span></span></span></p>\t\t\t</td>\t\t\t<td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:126px'>\t\t\t<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>50% </span></span></span></p>\t\t\t</td>\t\t</tr>\t</tbody></table><p> </p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'><span style='color:black'>Written testimony may be submitted in advance of the hearing electronically to </span>fcrc@mocs.nyc.gov<span style='color:black'>. All written testimony can be submitted up until the close of the public hearing and will be distributed to the FCRC after the hearing.</span></span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>A draft copy of the agreement may be obtained at no cost by any (or all) of the<br>following ways:</span></span></span></p><ol>\t<li><span style='font-size:12pt'>Submit a written request to Angel Williams at Angel.Williams@parks.nyc.gov from 10/23/2026 through 11/9/2026.</span></li>\t<li><span style='font-size:12pt'>Submit a written request by mail to NYC Parks at The Arsenal, Central Park 830 Fifth Avenue, Room 407 New York, NY 10065 . Written requests must be received by 11/9/2026. For mail-in requests, please include your name, return address, and M89-AS.</span></li>\t<li><span style='font-size:12pt'>Download from Parks\u001a website at https://www.nycgovparks.org/opportunities/business from 10/23/2026 through 11/9/2026.</span></li></ol><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>The agenda and related documentation for the hearing will be posted on the MOCS website at https://www.nyc.gov/site/mocs/opportunities/franchises-concessions.page</span> </span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>For further information on accessibility or to make a request for accommodations, such as sign language interpretation services, please contact the Mayor\u001as Office of Contract Services (MOCS) via e-mail at DisabilityAffairs@mocs.nyc.gov or via phone at (212) 298-0800. Any person requiring reasonable accommodation for the public hearing should contact MOCS at least five (5) business days in advance of the hearing to ensure availability.</span></span></span></p>",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014023",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "permitee",
+          "installation",
+          "operation",
+          "management",
+          "outdoor",
+          "holiday",
+          "gift",
+          "market",
+          "union",
+          "square",
+          "park",
+          "manhattan",
+          "solicitation",
+          "permit",
+          "provide",
+          "five",
+          "year",
+          "term",
+          "options",
+          "renew"
+        ],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter",
+          "evidence": [
+            "Notice of Joint Public Hearing: 11/9/2026; for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan (Sol"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
+      },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20261014023",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -116221,46 +116423,17 @@
         "borough": null,
         "neighborhood": null
       },
-      "participation": {
-        "links": [],
-        "remote_join_url": null,
-        "emails": [
-          "fcrc@mocs.nyc.gov",
-          "Angel.Williams@parks.nyc.gov",
-          "DisabilityAffairs@mocs.nyc.gov"
-        ],
-        "phones": [
-          "(212) 298-0800"
-        ],
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014023"
-      },
+      "participation": null,
       "committee": null,
       "agency": "Parks and Recreation",
       "board_name": null,
-      "description": "NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee and The Department of Parks & Recreation ( Parks ) to be held on 11/9/2026, at 255 Greenwich Street, 8 th Floor, in Manhattan commencing at 2:30 p.m. relative to: INTENT TO AWARD as a concession a Permit Agreement ( Permit ) to Urban Space Holdings, Inc. ( Permitee ) for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan, NY 10011 (Solicitation # M89-AS-2025) The Permit will provide for a five (5) year term with no options to renew. Compensation to the City will be as follows: Annually, Permitee shall pay the City the greater of the following: a minimum annual guaranteed fee (based on the schedule below) or 50% of gross receipts . The City will also receive 50% of Gross Receipts generated from the Parks merchandise booth. Operating Year Minimum Annual Guaranteed Fee Gross Receipts Percentage PLUS 50% of Gross Receipts generated from the Parks merchandise booth 1 $1,900,000 50% 2 $1,928,500 50% 3 $1,957,428 50% 4 $1,986,789 50% 5 $2,016,591 50% Written testimony may be submitted in advance of the hearing electronically to fcrc@mocs.nyc.gov . All",
-      "search_text": "Notice of Joint Public Hearing: 11/9/2026; for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan (Solicitation # M89-AS-2025) 255 Greenwich Street, 8th Floor, New York, NY, 10007 Parks and Recreation Notice of Joint Public Hearing: 11/9/2026; for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan (Solicitation # M89-AS-2025) NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee and The Department of Parks & Recreation ( Parks ) to be held on 11/9/2026, at 255 Greenwich Street, 8 th Floor, in Manhattan commencing at 2:30 p.m. relative to: INTENT TO AWARD as a concession a Permit Agreement ( Permit ) to Urban Space Holdings, Inc. ( Permitee ) for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan, NY 10011 (Solicitation # M89-AS-2025) The Permit will provide for a five (5) year term with no options to renew. Compensation to the City will be as follows: Annually, Permitee shall pay the City the greater of the following: a minimum annual guaranteed fee (based on the schedule below) or 50% of gross receipts . The City will also receive 50% of Gross Receipts generated from the Parks merchandise booth. Operating Year Minimum Annual Guaranteed Fee Gross Receipts Percentage PLUS 50% of Gross Receipts generated from the Parks merchandise booth 1 $1,900,000 50% 2 $1,928,500 50% 3 $1,957,428 50% 4 $1,986,789 50% 5 $2,016,591 50% Written testimony may be submitted in advance of the hearing electronically to fcrc@mocs.nyc.gov . All Public Hearings Public Hearings and Meetings <p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee and The Department of Parks & Recreation (\u001aParks\u001a) to be held on 11/9/2026, at 255 Greenwich Street, 8<sup>th</sup> Floor, in Manhattan commencing at 2:30 p.m. relative to:</span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>INTENT TO AWARD as a concession a Permit Agreement (\u001aPermit\u001a) to Urban Space Holdings, Inc. (\u001aPermitee\u001a) for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan, NY 10011 (Solicitation # M89-AS-2025)</span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>The Permit will provide for a five (5) year term with no options to renew.</span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>Compensation to the City will be as follows: </span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>Annually, Permitee shall pay the City the greater of the following: a minimum annual guaranteed fee (based on the schedule below) or 50% of gross receipts</span>. <span style='font-size:12.0pt'>The City will also receive 50% of Gross Receipts generated from the Parks merchandise booth.</span></span></span></p><table cellspacing='0' class='Table' style='border-collapse:collapse; border:none; width:622px'> <tbody> <tr> <td style='border-bottom:2px solid black; border-left:2px solid black; border-right:2px solid black; border-top:2px solid black; height:47px; width:89px'> <p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>Operating Year</span></span></span></p> </td> <td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:2px solid black; height:47px; width:150px'> <p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>Minimum Annual Guaranteed Fee</span></span></span></p> </td> <td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:2px solid black; height:47px; width:126px'> <p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>Gross Receipts Percentage</span></span></span></p> </td> <td rowspan='6' style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:2px solid black; height:47px; width:257px'> <p style='text-align:center'> </p> <p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>PLUS 50% of Gross Receipts generated from the Parks merchandise booth</span></span></span></p> <p style='text-align:center'> </p> </td> </tr> <tr> <td style='border-bottom:2px solid black; border-left:2px solid black; border-right:2px solid black; border-top:none; height:20px; width:89px'> <p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>1</span></span></span></p> </td> <td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:150px'> <p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>$1,900,000</span></span></span></p> </td> <td style='border-bottom:2px solid black; border-left:none; border-right:2px solid black; border-top:none; height:20px; width:126px'> <p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:12.0pt'>50% </span></span></span></p> </td> </tr> <tr> <td style='border-bottom:2px solid black; border-left:2px solid black; border-right:2px solid black; border-top:none; height:20px; width:89px'> <p style='text-align:center'><span style='font-size:11pt",
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "neighborhoods": [],
-        "community_districts": [],
-        "community_boards": [],
-        "addresses": [],
-        "street_ranges": [],
-        "tax_lots": [],
-        "project_names": [],
-        "application_numbers": []
-      },
+      "description": null,
+      "search_text": "Notice of Joint Public Hearing: 11/9/2026; for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan (Solicitation # M89-AS-2025) 255 Greenwich Street, 8th Floor, New York, NY, 10007 Parks and Recreation Notice of Joint Public Hearing: 11/9/2026; for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan (Solicitation # M89-AS-2025) Public Hearings Public Hearings and Meetings 255 Greenwich Street 8th Floor New York NY 10007 Parks and Recreation 255 Greenwich Street, 8th Floor, New York, NY, 10007 Manhattan",
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014023",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014023",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -116277,22 +116450,6 @@
       },
       "source_record_id": "20261014023",
       "board_id": null,
-      "source_section": "Public Hearings and Meetings",
-      "notice_type": "Public Hearings",
-      "published_at": "2026-10-23T00:00:00.000",
-      "decides": "Notice of Joint Public Hearing: 11/9/2026; for the Installation, Operation and Management of an Outdoor Holiday Gift Market at Union Square Park, Manhattan (Solicitation # M89-AS-2025)",
-      "affects": [
-        "audience_businesses"
-      ],
-      "meeting_access": {
-        "mode": "in-person",
-        "in_person_location": "255 Greenwich Street, 8th Floor, New York, NY, 10007",
-        "remote_join_url": null,
-        "dial_in": [
-          "(212) 298-0800"
-        ],
-        "passcode": null
-      },
       "source_record": {
         "source_system": "city_record",
         "identifier": "20261014023",
@@ -116300,7 +116457,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014023",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -117425,22 +117582,28 @@
     },
     {
       "request_id": "20261006029",
+      "meeting_id": "meeting:city_record:20261006029",
+      "agency_name": "Transportation",
+      "short_title": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program",
       "start_date": "2026-10-09T00:00:00.000",
       "event_date": "2026-11-09T10:00:00.000",
-      "agency_name": "Transportation",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "short_title": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program",
-      "additional_description_1": "Title: Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program Agency Rules Section Transportation (DOT) Agency Name Legal Affairs Agency Division 11/9/2026 10:00 AM Event Date and Time Accessibility questions: rules@dot.nyc.gov, by Monday, November 2, 2026 5:00 PM Accessibility Archived Status 10/9/2026 Publication Date Public Hearings Notice Type Attachments 1 Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261006029&requestStatus=Archived&documentId=44708"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261006029&requestStatus=Archived&documentId=44708"
-      ],
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006029",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "body_place_omitted",
+        "virtual_only": false
+      },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20261006029",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -117469,52 +117632,18 @@
       "speaking_rights": "unknown",
       "observer_access": null,
       "access_steps": [],
-      "venue": {
-        "mode": "not-stated",
-        "building": "",
-        "address": null,
-        "borough": null,
-        "neighborhood": null
-      },
-      "participation": {
-        "links": [
-          {
-            "label": "Participation link",
-            "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261006029&requestStatus=Archived&documentId=44708"
-          }
-        ],
-        "remote_join_url": null,
-        "emails": [
-          "rules@dot.nyc.gov"
-        ],
-        "phones": [],
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006029"
-      },
+      "venue": null,
+      "participation": null,
       "committee": null,
       "agency": "Transportation",
       "board_name": null,
-      "description": "Title: Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program Agency Rules Section Transportation (DOT) Agency Name Legal Affairs Agency Division 11/9/2026 10:00 AM Event Date and Time Accessibility questions: rules@dot.nyc.gov, by Monday, November 2, 2026 5:00 PM Accessibility Archived Status 10/9/2026 Publication Date Public Hearings Notice Type Attachments 1 Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program",
-      "search_text": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program Transportation Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program Title: Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program Agency Rules Section Transportation (DOT) Agency Name Legal Affairs Agency Division 11/9/2026 10:00 AM Event Date and Time Accessibility questions: rules@dot.nyc.gov, by Monday, November 2, 2026 5:00 PM Accessibility Archived Status 10/9/2026 Publication Date Public Hearings Notice Type Attachments 1 Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program Public Hearings Agency Rules Transportation",
-      "affected_area": {
-        "scope": "unlocated",
-        "boroughs": [],
-        "neighborhoods": [],
-        "community_districts": [],
-        "community_boards": [],
-        "addresses": [],
-        "street_ranges": [],
-        "tax_lots": [],
-        "project_names": [],
-        "application_numbers": []
-      },
+      "description": null,
+      "search_text": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program Transportation Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program Public Hearings Agency Rules Transportation",
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006029",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006029",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -117531,18 +117660,6 @@
       },
       "source_record_id": "20261006029",
       "board_id": null,
-      "source_section": "Agency Rules",
-      "notice_type": "Public Hearings",
-      "published_at": "2026-10-09T00:00:00.000",
-      "decides": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program",
-      "affects": [],
-      "meeting_access": {
-        "mode": "unknown",
-        "in_person_location": null,
-        "remote_join_url": null,
-        "dial_in": [],
-        "passcode": null
-      },
       "source_record": {
         "source_system": "city_record",
         "identifier": "20261006029",
@@ -117550,7 +117667,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006029",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -117575,21 +117692,106 @@
     },
     {
       "request_id": "20261009013",
+      "meeting_id": "meeting:city_record:20261009013",
+      "agency_name": "Board of Standards and Appeals",
+      "short_title": "Board of Standards and Appeals Public Hearing Notice",
       "start_date": "2026-10-19T00:00:00.000",
       "event_date": "2026-11-09T10:00:00.000",
-      "agency_name": "Board of Standards and Appeals",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "short_title": "Board of Standards and Appeals Public Hearing Notice",
       "street_address_1": "22 Reade Street",
       "street_address_2": "Spector Hall",
       "city": "New York",
       "state": "NY",
       "zip_code": "10007",
-      "additional_description_1": "<p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>November 9<sup>th</sup>, 2026, and November 10<sup>th</sup>, 2026, 10:00 A.M. and 2:00 P.M.</span></span></strong></span></span></p><p> </p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>      <strong>NOTICE IS HEREBY GIVEN</strong> of teleconference public hearings, Monday November 9<sup>th</sup>, 2026, at 10:00 A.M. and 2:00 P.M., and Tuesday November 10<sup>th</sup>, 2026, at 10:00 A.M. and 2:00 P.M., to be streamed live through the Board\u001as website (www.nyc.gov/bsa), with remote public participation and in-person portion, on the following matters:</span></span></span></span></p><p> </p><p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SPECIAL ORDER CALENDAR</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>85-99-BZVI</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Walter T. Gorman, P.E., P.C., for Juana J. Scanlon, owner.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application September 10, 2026 \u001a Extension of Time to Obtain a Certificate of Occupancy of a previously approved Variance (§72-21) permitting, the operation of an automotive service station which expired on June 8, 2026; Waiver of the Board\u001as Rule.  R6 zoning district.         </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a 1106 Metcalf Avenue, Block 3747, Lot 88, Borough of Bronx.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #9BX</span></span></strong></span></span></p><p style='text-align:justify'> </p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>2016-4353-AIV</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Davidoff Hutcher & Citron LLP, for T Squared Group LLC, owner.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application September 26, 2026 \u001a  Extension of Time to Complete Construction of a previous approval to construction a four-story, three family residential building partially within the bed of a mapped street, pursuant to Article 3 of General City Law §35 which expired on August 7, 2027.  R6B zoning district.         </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a  84-75 57th Road, Block 2882, Lot 21, Borough of Queens.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #4Q</span></span></strong></span></span></p><p style='text-align:justify'> </p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>2020-67-AII</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Rothkrug Rothkrug & Spector, for Joseph Perotto, owner.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application September 29, 2026\u001a  Extension of Time to Obtain of Occupancy of a previously approved of a waiver of the General City Law (\u001aGCL\u001a) §35, to allow the proposed development of a property within the mapped but unbuilt portion of a street; Waiver of the applicable height and setback regulations pursuant to 72-01 (g) which expires on October 17, 2026   R3X Special Richmond Special Purpose District.          </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a  1 Ballard Avenue, Block 6046, Lot 3, Borough of Staten Island.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #3SI</span></span></strong></span></span></p><p style='text-align:justify'> </p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>2022-23-BZII</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Gerald J. Caliendo, RA, AIA, for KKS Group LLC/Edward Kowlessar, owners.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application August 12, 2026 \u001a Amendment of a previously approved Variance (§72-21) permitting the construction of a two-story, with cellar, two-family detached residence.  R3-2 zoning district.         </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a 1520 East 56th Street, Block 7900, Lot 53, Borough of Brooklyn.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #18BK</span></span></strong></span></span></p><p style='text-align:justify'> </p><p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>ZONING CALENDAR</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>2026-30-BZ</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Eric Palatnik, P.C., for Toy Chen, owner.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application July 30, 2026 \u001a Special Permit 73-66 to allow for the development which exceed the height regulations around airports, contrary to §61-20. C4-2 zoning district.          </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a 133-34 36th Road, Block 4970, Lot 20, Borough of Queens.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #7Q</span></span></strong></span></span></p><p style='text-align:right'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><em><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>Shampa Chanda, Chair/Commissioner</span></span></em></strong></span></span></p>",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009013",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "extension",
+          "obtain",
+          "certificate",
+          "occupancy",
+          "previously",
+          "approved",
+          "variance",
+          "permitting",
+          "operation",
+          "automotive",
+          "service",
+          "station",
+          "which",
+          "expired",
+          "waiver",
+          "rule",
+          "zoning",
+          "district",
+          "complete",
+          "construction",
+          "previous",
+          "approval",
+          "four",
+          "story",
+          "three",
+          "family",
+          "residential",
+          "building",
+          "partially",
+          "mapped",
+          "street",
+          "article"
+        ],
+        "matter_ids": [
+          "bsa:2022-23-BZII",
+          "bsa:2026-30-BZ"
+        ]
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx",
+          "Brooklyn",
+          "Queens",
+          "Staten Island"
+        ],
+        "community_boards": [
+          "Community Board 9, Bronx",
+          "Community Board 4, Queens",
+          "Community Board 3, Staten Island",
+          "Community Board 18, Brooklyn",
+          "Community Board 7, Queens"
+        ],
+        "neighborhoods": [
+          "bed of a mapped street",
+          "mapped but unbuilt portion of a street"
+        ],
+        "addresses": [
+          "1106 Metcalf Avenue",
+          "84-75 57th Road",
+          "1 Ballard Avenue",
+          "2 zoning district. PREMISES AFFECTED 1520 East 56th Street"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough",
+            "community_board"
+          ],
+          "confidence": 0.9,
+          "role": "matter",
+          "evidence": [
+            "Borough of Bronx",
+            "Borough of Queens",
+            "Borough of Staten Island",
+            "Borough of Brooklyn"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
+      },
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:city_record:20261009013",
       "source_keys": [
         {
           "source_system": "city_record",
@@ -117619,90 +117821,23 @@
       "observer_access": null,
       "access_steps": [],
       "venue": {
-        "mode": "hybrid",
+        "mode": "in-person",
         "building": "",
         "address": "22 Reade Street, Spector Hall, New York, NY, 10007",
         "borough": null,
         "neighborhood": null
       },
-      "participation": {
-        "links": [],
-        "remote_join_url": null,
-        "emails": [],
-        "phones": [],
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009013"
-      },
+      "participation": null,
       "committee": null,
       "agency": "Board of Standards and Appeals",
       "board_name": null,
-      "description": "November 9 th , 2026, and November 10 th , 2026, 10:00 A.M. and 2:00 P.M. NOTICE IS HEREBY GIVEN of teleconference public hearings, Monday November 9 th , 2026, at 10:00 A.M. and 2:00 P.M., and Tuesday November 10 th , 2026, at 10:00 A.M. and 2:00 P.M., to be streamed live through the Board s website (www.nyc.gov/bsa), with remote public participation and in-person portion, on the following matters: SPECIAL ORDER CALENDAR 85-99-BZVI APPLICANT Walter T. Gorman, P.E., P.C., for Juana J. Scanlon, owner. SUBJECT Application September 10, 2026 Extension of Time to Obtain a Certificate of Occupancy of a previously approved Variance (§72-21) permitting, the operation of an automotive service station which expired on June 8, 2026; Waiver of the Board s Rule. R6 zoning district. PREMISES AFFECTED 1106 Metcalf Avenue, Block 3747, Lot 88, Borough of Bronx. COMMUNITY BOARD #9BX 2016-4353-AIV APPLICANT Davidoff Hutcher & Citron LLP, for T Squared Group LLC, owner. SUBJECT Application September 26, 2026 Extension of Time to Complete Construction of a previous approval to construction a four-story, three family residential building partially within the bed of a mapped street, pursuant to Article",
-      "search_text": "Board of Standards and Appeals Public Hearing Notice 22 Reade Street, Spector Hall, New York, NY, 10007 Board of Standards and Appeals Board of Standards and Appeals Public Hearing Notice November 9 th , 2026, and November 10 th , 2026, 10:00 A.M. and 2:00 P.M. NOTICE IS HEREBY GIVEN of teleconference public hearings, Monday November 9 th , 2026, at 10:00 A.M. and 2:00 P.M., and Tuesday November 10 th , 2026, at 10:00 A.M. and 2:00 P.M., to be streamed live through the Board s website (www.nyc.gov/bsa), with remote public participation and in-person portion, on the following matters: SPECIAL ORDER CALENDAR 85-99-BZVI APPLICANT Walter T. Gorman, P.E., P.C., for Juana J. Scanlon, owner. SUBJECT Application September 10, 2026 Extension of Time to Obtain a Certificate of Occupancy of a previously approved Variance (§72-21) permitting, the operation of an automotive service station which expired on June 8, 2026; Waiver of the Board s Rule. R6 zoning district. PREMISES AFFECTED 1106 Metcalf Avenue, Block 3747, Lot 88, Borough of Bronx. COMMUNITY BOARD #9BX 2016-4353-AIV APPLICANT Davidoff Hutcher & Citron LLP, for T Squared Group LLC, owner. SUBJECT Application September 26, 2026 Extension of Time to Complete Construction of a previous approval to construction a four-story, three family residential building partially within the bed of a mapped street, pursuant to Article Public Hearings Public Hearings and Meetings <p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>November 9<sup>th</sup>, 2026, and November 10<sup>th</sup>, 2026, 10:00 A.M. and 2:00 P.M.</span></span></strong></span></span></p><p> </p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''> <strong>NOTICE IS HEREBY GIVEN</strong> of teleconference public hearings, Monday November 9<sup>th</sup>, 2026, at 10:00 A.M. and 2:00 P.M., and Tuesday November 10<sup>th</sup>, 2026, at 10:00 A.M. and 2:00 P.M., to be streamed live through the Board\u001as website (www.nyc.gov/bsa), with remote public participation and in-person portion, on the following matters:</span></span></span></span></p><p> </p><p style='text-align:center'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SPECIAL ORDER CALENDAR</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>85-99-BZVI</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Walter T. Gorman, P.E., P.C., for Juana J. Scanlon, owner.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application September 10, 2026 \u001a Extension of Time to Obtain a Certificate of Occupancy of a previously approved Variance (§72-21) permitting, the operation of an automotive service station which expired on June 8, 2026; Waiver of the Board\u001as Rule. R6 zoning district. </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a 1106 Metcalf Avenue, Block 3747, Lot 88, Borough of Bronx.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #9BX</span></span></strong></span></span></p><p style='text-align:justify'> </p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>2016-4353-AIV</span></span></strong></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>APPLICANT \u001a Davidoff Hutcher & Citron LLP, for T Squared Group LLC, owner.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>SUBJECT \u001a Application September 26, 2026 \u001a Extension of Time to Complete Construction of a previous approval to construction a four-story, three family residential building partially within the bed of a mapped street, pursuant to Article 3 of General City Law §35 which expired on August 7, 2027. R6B zoning district. </span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>PREMISES AFFECTED \u001a 84-75 57th Road, Block 2882, Lot 21, Borough of Queens.</span></span></span></span></p><p style='text-align:justify'><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'><span style='font-family:' times='' new='' roman',serif'=''>COMMUNITY BOARD #4Q</span></span></strong></span></span></p><p style='text-align:justify'> </p><p style='text-align:jus",
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Bronx",
-          "Brooklyn",
-          "Queens",
-          "Staten Island"
-        ],
-        "neighborhoods": [
-          "bed of a mapped street",
-          "mapped but unbuilt portion of a street"
-        ],
-        "community_districts": [],
-        "community_boards": [
-          "Community Board 9, Bronx",
-          "Community Board 4, Queens",
-          "Community Board 3, Staten Island",
-          "Community Board 18, Brooklyn",
-          "Community Board 7, Queens"
-        ],
-        "addresses": [
-          {
-            "label": "1106 Metcalf Avenue"
-          },
-          {
-            "label": "84-75 57th Road"
-          },
-          {
-            "label": "1 Ballard Avenue"
-          },
-          {
-            "label": "2 zoning district. PREMISES AFFECTED 1520 East 56th Street"
-          },
-          {
-            "label": "2 zoning district. PREMISES AFFECTED 133-34 36th Road"
-          }
-        ],
-        "street_ranges": [],
-        "tax_lots": [
-          {
-            "label": "Block 3747, Lot 88"
-          },
-          {
-            "label": "Block 2882, Lot 21"
-          },
-          {
-            "label": "Block 6046, Lot 3"
-          },
-          {
-            "label": "Block 7900, Lot 53"
-          },
-          {
-            "label": "Block 4970, Lot 20"
-          }
-        ],
-        "project_names": [],
-        "application_numbers": []
-      },
+      "description": null,
+      "search_text": "Board of Standards and Appeals Public Hearing Notice 22 Reade Street, Spector Hall, New York, NY, 10007 Board of Standards and Appeals Board of Standards and Appeals Public Hearing Notice Public Hearings Public Hearings and Meetings 22 Reade Street Spector Hall New York NY 10007 Board of Standards and Appeals 22 Reade Street, Spector Hall, New York, NY, 10007 Bronx Brooklyn Queens Staten Island",
       "meeting_documents": [],
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009013",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009013",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -117719,20 +117854,6 @@
       },
       "source_record_id": "20261009013",
       "board_id": null,
-      "source_section": "Public Hearings and Meetings",
-      "notice_type": "Public Hearings",
-      "published_at": "2026-10-19T00:00:00.000",
-      "decides": "Board of Standards and Appeals Public Hearing Notice",
-      "affects": [
-        "audience_land_use"
-      ],
-      "meeting_access": {
-        "mode": "hybrid",
-        "in_person_location": "22 Reade Street, Spector Hall, New York, NY, 10007",
-        "remote_join_url": null,
-        "dial_in": [],
-        "passcode": null
-      },
       "source_record": {
         "source_system": "city_record",
         "identifier": "20261009013",
@@ -117740,7 +117861,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009013",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -125105,7 +125226,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929011",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -125129,7 +125250,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929011",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -127515,7 +127636,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924006",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -127539,7 +127660,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924006",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -127871,7 +127992,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261029019",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -127895,7 +128016,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261029019",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -133128,7 +133249,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260925024",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -133152,7 +133273,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260925024",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -133253,7 +133374,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923020",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -133277,7 +133398,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923020",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -141888,7 +142009,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021009",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -141912,7 +142033,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021009",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -142438,7 +142559,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924007",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -142462,7 +142583,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924007",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -142548,7 +142669,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929023",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -142572,7 +142693,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929023",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -144492,7 +144613,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260915032",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -144516,7 +144637,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260915032",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -144602,7 +144723,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260921011",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -144626,7 +144747,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260921011",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -144769,7 +144890,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261020023",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -144793,7 +144914,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261020023",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -144875,7 +144996,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260916036",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -144899,7 +145020,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260916036",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -145037,7 +145158,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929022",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -145061,7 +145182,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929022",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -146412,7 +146533,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261016004",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -146436,7 +146557,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261016004",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -146564,7 +146685,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021004",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -146588,7 +146709,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021004",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -146735,7 +146856,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929021",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -146759,7 +146880,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929021",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -146872,7 +146993,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006022",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -146896,7 +147017,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006022",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -147009,7 +147130,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014031",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -147033,7 +147154,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014031",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -150553,7 +150674,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261015027",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -150577,7 +150698,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261015027",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -150693,7 +150814,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261020021",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -150717,7 +150838,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261020021",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -150832,7 +150953,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922017",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -150856,7 +150977,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922017",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -154895,7 +155016,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260915002",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -154919,7 +155040,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260915002",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -157517,7 +157638,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014026",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -157541,7 +157662,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014026",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -157656,7 +157777,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260917001",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -157680,7 +157801,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260917001",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -157795,7 +157916,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260909022",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -157819,7 +157940,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260909022",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -157962,7 +158083,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260918021",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -157986,7 +158107,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260918021",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -158124,7 +158245,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923002",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -158148,7 +158269,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923002",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -161441,7 +161562,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261007002",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -161465,7 +161586,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261007002",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -161578,7 +161699,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922032",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -161602,7 +161723,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922032",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -166441,7 +166562,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006004",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -166465,7 +166586,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006004",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -167429,7 +167550,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013004",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -167453,7 +167574,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013004",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -167555,7 +167676,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260921022",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -167579,7 +167700,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260921022",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -167759,7 +167880,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013035",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -167783,7 +167904,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013035",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -167896,7 +168017,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929002",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -167920,7 +168041,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929002",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -171016,7 +171137,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923032",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -171040,7 +171161,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260923032",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -171126,7 +171247,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260911005",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -171150,7 +171271,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260911005",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -171316,7 +171437,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260921008",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -171340,7 +171461,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260921008",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -178177,7 +178298,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260925019",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -178201,7 +178322,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260925019",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -178344,7 +178465,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827020",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -178368,7 +178489,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827020",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -178508,7 +178629,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260915022",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -178532,7 +178653,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260915022",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -178676,7 +178797,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260916024",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -178700,7 +178821,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260916024",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -178886,7 +179007,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261008019",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -178910,7 +179031,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261008019",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -183003,7 +183124,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261001008",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -183027,7 +183148,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261001008",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -183168,7 +183289,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261005013",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -183192,7 +183313,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261005013",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -183306,7 +183427,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261007003",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -183330,7 +183451,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261007003",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -183488,7 +183609,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924023",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -183512,7 +183633,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924023",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -183634,7 +183755,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106035",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -183658,7 +183779,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106035",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -183795,7 +183916,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827021",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -183819,7 +183940,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827021",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -187998,7 +188119,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260910005",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -188022,7 +188143,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260910005",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -195454,7 +195575,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260908023",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -195478,7 +195599,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260908023",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -199617,7 +199738,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922003",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -199641,7 +199762,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922003",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -204264,7 +204385,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922023",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -204288,7 +204409,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922023",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -205848,7 +205969,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260915030",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -205872,7 +205993,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260915030",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -209757,7 +209878,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260904019",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -209781,7 +209902,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260904019",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -214860,7 +214981,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260902002",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -214884,7 +215005,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260902002",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -218084,7 +218205,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922018",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -218108,7 +218229,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922018",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -218221,7 +218342,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827017",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -218245,7 +218366,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827017",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -218358,7 +218479,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260902031",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -218382,7 +218503,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260902031",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -219658,7 +219779,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260909002",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -219682,7 +219803,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260909002",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -223306,7 +223427,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260911022",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -223330,7 +223451,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260911022",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -225459,132 +225580,6 @@
       }
     },
     {
-      "request_id": "20260817001",
-      "meeting_id": "meeting:city_record:20260817001",
-      "agency_name": "Housing Authority",
-      "short_title": "New York City Housing Authority Board Meeting",
-      "start_date": "2026-09-10T00:00:00.000",
-      "event_date": "2026-09-23T10:00:00.000",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260817001",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "90 Church Street"
-        ],
-        "derivation": {
-          "methods": [
-            "venue_line"
-          ],
-          "confidence": 0.7,
-          "role": "venue",
-          "evidence": [
-            "90 Church Street"
-          ]
-        },
-        "confidence_tier": "derived",
-        "source": "venue"
-      },
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "source_keys": [
-        {
-          "source_system": "city_record",
-          "key_type": "request_id",
-          "value": "20260817001"
-        }
-      ],
-      "publisher_identifier": "20260817001",
-      "title": "New York City Housing Authority Board Meeting",
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-09-23T10:00:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260817001",
-        "observed_at": null,
-        "raw_date": "2026-09-23",
-        "raw_time": "10:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "descriptive_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "participation": null,
-      "committee": null,
-      "agency": "Housing Authority",
-      "board_name": null,
-      "description": null,
-      "search_text": "New York City Housing Authority Board Meeting Housing Authority New York City Housing Authority Board Meeting Meeting Public Hearings and Meetings Housing Authority Manhattan",
-      "meeting_documents": [],
-      "source_receipt": {
-        "schema": "cityscroll.meeting_source_receipt.v1",
-        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260817001",
-        "observed_at": "2026-11-09T21:37:44.392Z",
-        "status": "ok",
-        "fetch_status": "snapshot",
-        "reason": null
-      },
-      "join_status": "not_applicable",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": null
-      },
-      "compatibility": {
-        "legacy_notice_href": "/notices/20260817001",
-        "legacy_fragment_href": "#notice/20260817001",
-        "publisher_href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260817001"
-      },
-      "source_record_id": "20260817001",
-      "board_id": null,
-      "source_record": {
-        "source_system": "city_record",
-        "identifier": "20260817001",
-        "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260817001",
-        "receipt": {
-          "schema": "cityscroll.meeting_source_receipt.v1",
-          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260817001",
-          "observed_at": "2026-11-09T21:37:44.392Z",
-          "status": "ok",
-          "fetch_status": "snapshot",
-          "reason": null
-        }
-      },
-      "meeting_outcome": {
-        "request_id": "20260817001",
-        "snapshot_state": "absent",
-        "join": {
-          "matched": false,
-          "method": "exact_date_body_tokens"
-        }
-      },
-      "same_proceeding": null,
-      "collection_visibility": "visible",
-      "collection_role": "representative",
-      "minutes_freshness": {
-        "status": "not_published",
-        "latest_date": null,
-        "checked_at": "2026-11-09T21:24:12.359Z"
-      }
-    },
-    {
       "request_id": "20260902022",
       "meeting_id": "meeting:city_record:20260902022",
       "agency_name": "Citywide Administrative Services",
@@ -225710,7 +225705,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260902022",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -225734,7 +225729,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260902022",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -225847,7 +225842,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260909019",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -225871,7 +225866,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260909019",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -228877,7 +228872,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260911033",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -228901,7 +228896,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260911033",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -229061,7 +229056,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260828012",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -229085,7 +229080,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260828012",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -229175,7 +229170,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260911001",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -229199,7 +229194,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260911001",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -229362,7 +229357,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260915035",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -229386,7 +229381,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260915035",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -234210,7 +234205,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723027",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -234234,7 +234229,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723027",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -234349,7 +234344,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260903021",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -234373,7 +234368,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260903021",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -234488,7 +234483,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260910007",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -234512,7 +234507,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260910007",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -234625,7 +234620,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260910024",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -234649,7 +234644,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260910024",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -237732,7 +237727,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260908027",
-        "observed_at": "2026-11-09T21:37:44.392Z",
+        "observed_at": "2026-11-10T15:18:07.399Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -237756,7 +237751,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260908027",
-          "observed_at": "2026-11-09T21:37:44.392Z",
+          "observed_at": "2026-11-10T15:18:07.399Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -265158,6 +265153,578 @@
           "content_sha256": "2705a3b4790cbbdbd25788085c8be3827ff2b29e321222a769a3f19c4cbc3741"
         },
         "board_id": "manhattan-cb-11",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-09T21:24:12.359Z"
+      }
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:recyDJwpvAED4vBih",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "recyDJwpvAED4vBih"
+        }
+      ],
+      "publisher_identifier": "recyDJwpvAED4vBih",
+      "title": "Public Safety & Transportation",
+      "event_date": "2026-09-02",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": null,
+        "timezone": "America/New_York",
+        "precision": "date_only",
+        "basis": "publisher_field",
+        "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/recyDJwpvAED4vBih",
+        "observed_at": "2026-11-09T21:24:12.359Z",
+        "raw_date": "2026-09-02",
+        "raw_time": null,
+        "status": "date_only"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": "via Video Conference, 7 East 116th Street, New York, NY 10029",
+        "address": "via Video Conference, 7 East 116th Street, New York, NY 10029",
+        "mode": "not-stated",
+        "components": null,
+        "attendance_conflict": true
+      },
+      "participation": {
+        "links": [
+          {
+            "label": "Register to attend",
+            "url": "https://zoom.us/webinar/register/WN_wLw6QshmRFqtuKKNyXI5hQ"
+          }
+        ],
+        "remote_join_url": "https://zoom.us/webinar/register/WN_wLw6QshmRFqtuKKNyXI5hQ",
+        "emails": [],
+        "phones": [],
+        "source_url": null
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Manhattan Community Board 11",
+      "description": null,
+      "search_text": "Public Safety & Transportation via Video Conference, 7 East 116th Street, New York, NY 10029 via Video Conference, 7 East 116th Street, New York, NY 10029 Public Safety & Transportation Board meeting Community Board Meetings Manhattan Community Board 11 via Video Conference, 7 East 116th Street, New York, NY 10029 Manhattan M11",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "community_boards": [
+          "manhattan-cb-11"
+        ],
+        "community_districts": [
+          "M11"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/recyDJwpvAED4vBih",
+      "source_system": "community_board",
+      "meeting_origin": "community_board_source_observed",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.cb11m.org/calendar/",
+        "observed_at": "2026-11-09T21:24:12.359Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 131421,
+        "parser": "airtable_v1",
+        "reason": null,
+        "content_sha256": "2705a3b4790cbbdbd25788085c8be3827ff2b29e321222a769a3f19c4cbc3741"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:manhattan-cb-11"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://airtable.com/shrEZxc5vi8McZNFb/recyDJwpvAED4vBih"
+      },
+      "request_id": null,
+      "source_record_id": "recyDJwpvAED4vBih",
+      "board_id": "manhattan-cb-11",
+      "record_kind": "event",
+      "record_id": "recyDJwpvAED4vBih",
+      "record_url": "https://airtable.com/shrEZxc5vi8McZNFb/recyDJwpvAED4vBih",
+      "date": "2026-09-02",
+      "start_at": null,
+      "end_at": null,
+      "category": null,
+      "format": "airtable",
+      "publisher_identifiers": [
+        "recyDJwpvAED4vBih"
+      ],
+      "source_entry_evidence": null,
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://www.cb11m.org/calendar/",
+        "observed_at": "2026-11-09T21:24:12.359Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html; charset=UTF-8",
+        "content_length": 131421,
+        "parser": "airtable_v1",
+        "reason": null,
+        "content_sha256": "2705a3b4790cbbdbd25788085c8be3827ff2b29e321222a769a3f19c4cbc3741"
+      },
+      "short_title": "Public Safety & Transportation",
+      "start_date": "2026-11-09T21:24:12.359Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "Board meeting",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "manhattan-cb-11",
+        "meeting_date": "2026-09-02",
+        "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/recyDJwpvAED4vBih",
+        "source_record_id": "recyDJwpvAED4vBih",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/recyDJwpvAED4vBih",
+          "source_record_id": "recyDJwpvAED4vBih",
+          "source_index_url": "https://www.cb11m.org/calendar/",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.cb11m.org/calendar/",
+            "observed_at": "2026-11-09T21:24:12.359Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 131421,
+            "parser": "airtable_v1",
+            "reason": null,
+            "content_sha256": "2705a3b4790cbbdbd25788085c8be3827ff2b29e321222a769a3f19c4cbc3741"
+          },
+          "adapter": "airtable_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/recyDJwpvAED4vBih",
+        "source_record_id": "recyDJwpvAED4vBih",
+        "source_index_url": "https://www.cb11m.org/calendar/",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.cb11m.org/calendar/",
+          "observed_at": "2026-11-09T21:24:12.359Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html; charset=UTF-8",
+          "content_length": 131421,
+          "parser": "airtable_v1",
+          "reason": null,
+          "content_sha256": "2705a3b4790cbbdbd25788085c8be3827ff2b29e321222a769a3f19c4cbc3741"
+        },
+        "adapter": "airtable_v1"
+      },
+      "entity_refs_all": [
+        "community-board:manhattan-cb-11",
+        "meeting:community_board:recyDJwpvAED4vBih"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:manhattan-cb-11",
+          "to": "meeting:community_board:recyDJwpvAED4vBih",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:recyDJwpvAED4vBih",
+          "target_name": "Public Safety & Transportation",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3ArecyDJwpvAED4vBih",
+          "href": "/meetings/meeting%3Acommunity_board%3ArecyDJwpvAED4vBih",
+          "board_href": "/community-boards/manhattan-cb-11/",
+          "institution_refs": {
+            "board_ref": "community-board:manhattan-cb-11"
+          },
+          "source_url": "https://www.cb11m.org/calendar/",
+          "source_record_id": "recyDJwpvAED4vBih",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://www.cb11m.org/calendar/",
+            "observed_at": "2026-11-09T21:24:12.359Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/html; charset=UTF-8",
+            "content_length": 131421,
+            "parser": "airtable_v1",
+            "reason": null,
+            "content_sha256": "2705a3b4790cbbdbd25788085c8be3827ff2b29e321222a769a3f19c4cbc3741"
+          },
+          "source_entry_evidence": null,
+          "provenance": {
+            "source_url": "https://www.cb11m.org/calendar/",
+            "source_record_id": "recyDJwpvAED4vBih",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://www.cb11m.org/calendar/",
+              "observed_at": "2026-11-09T21:24:12.359Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/html; charset=UTF-8",
+              "content_length": 131421,
+              "parser": "airtable_v1",
+              "reason": null,
+              "content_sha256": "2705a3b4790cbbdbd25788085c8be3827ff2b29e321222a769a3f19c4cbc3741"
+            },
+            "format": "airtable"
+          },
+          "join": {
+            "matched": true,
+            "method": "exact_board_date_publisher_identifier",
+            "board_id": "manhattan-cb-11",
+            "event_date": "2026-09-02",
+            "publisher_identifier": "RECYDJWPVAED4VBIH",
+            "evidence": [
+              "exact_board_identity",
+              "exact_date",
+              "publisher_identifier"
+            ]
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_publisher_identifier",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "verified_source_join"
+          ],
+          "publication_basis": null
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "recyDJwpvAED4vBih",
+        "url": "https://airtable.com/shrEZxc5vi8McZNFb/recyDJwpvAED4vBih",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://www.cb11m.org/calendar/",
+          "observed_at": "2026-11-09T21:24:12.359Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/html; charset=UTF-8",
+          "content_length": 131421,
+          "parser": "airtable_v1",
+          "reason": null,
+          "content_sha256": "2705a3b4790cbbdbd25788085c8be3827ff2b29e321222a769a3f19c4cbc3741"
+        },
+        "board_id": "manhattan-cb-11",
+        "role": "upcoming_meetings"
+      },
+      "minutes_freshness": {
+        "status": "not_published",
+        "latest_date": null,
+        "checked_at": "2026-11-09T21:24:12.359Z"
+      }
+    },
+    {
+      "object_type": "meeting",
+      "schema": "cityscroll.meeting_object.v1",
+      "meeting_id": "meeting:community_board:63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+      "source_keys": [
+        {
+          "source_system": "community_board",
+          "key_type": "publisher_event_id",
+          "value": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01"
+        }
+      ],
+      "publisher_identifier": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+      "title": "Full Board Meeting",
+      "event_date": "2026-09-01T18:30:00-04:00",
+      "event_end": null,
+      "schedule": {
+        "schema": "cityscroll.meeting_schedule.v1",
+        "starts_at": "2026-09-01T18:30:00-04:00",
+        "timezone": "America/New_York",
+        "precision": "exact_time",
+        "basis": "publisher_field",
+        "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+        "observed_at": "2026-11-09T21:24:12.359Z",
+        "raw_date": "2026-09-01",
+        "raw_time": "18:30:00",
+        "status": "resolved"
+      },
+      "meeting_family": "community_board_meeting_v0",
+      "activity": null,
+      "attendance_mode": null,
+      "speaking_rights": "unknown",
+      "observer_access": null,
+      "access_steps": [],
+      "venue": {
+        "name": null,
+        "address": "10 Lincoln Center Plaza, New York, NY 10023, USA",
+        "mode": "not-stated",
+        "components": null,
+        "attendance_conflict": true
+      },
+      "participation": {
+        "links": [],
+        "remote_join_url": null,
+        "emails": [],
+        "phones": [],
+        "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics"
+      },
+      "committee": null,
+      "agency": null,
+      "board_name": "Manhattan Community Board 7",
+      "description": "Location: Location: Lincoln Center Sidewalk Studio, 10 Lincoln Center Plaza (Broadway) Meeting Link: https://www.zoomgov.com/j/1602697055?pwd=uMZW6m56GbShPK1JqXFbQZIh1cFtgi.1 To view the most up-to-date agenda, please click here . To stay up to date and view committee meeting livestreams and recordings, which serve as the official minutes, please visit our YouTube channel @ManhattanCB7 .",
+      "search_text": "Full Board Meeting Location: Location: Lincoln Center Sidewalk Studio, 10 Lincoln Center Plaza (Broadway) Meeting Link: https://www.zoomgov.com/j/1602697055?pwd=uMZW6m56GbShPK1JqXFbQZIh1cFtgi.1 To view the most up-to-date agenda, please click here . To stay up to date and view committee meeting livestreams and recordings, which serve as the official minutes, please visit our YouTube channel @ManhattanCB7 . 10 Lincoln Center Plaza, New York, NY 10023, USA Full Board Meeting Location: Location: Lincoln Center Sidewalk Studio, 10 Lincoln Center Plaza (Broadway) Meeting Link: https://www.zoomgov.com/j/1602697055?pwd=uMZW6m56GbShPK1JqXFbQZIh1cFtgi.1 To view the most up-to-date agenda, please click here . To stay up to date and view committee meeting livestreams and recordings, which serve as the official minutes, please visit our YouTube channel @ManhattanCB7 . Board meeting Community Board Meetings Manhattan Community Board 7 10 Lincoln Center Plaza, New York, NY 10023, USA Manhattan M07",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "community_boards": [
+          "manhattan-cb-07"
+        ],
+        "community_districts": [
+          "M07"
+        ],
+        "neighborhoods": [],
+        "addresses": []
+      },
+      "meeting_documents": [],
+      "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+      "source_system": "community_board",
+      "meeting_origin": "community_board_source_observed",
+      "source_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+        "observed_at": "2026-11-09T21:24:12.359Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/calendar; charset=utf-8",
+        "content_length": 461475,
+        "parser": "google_calendar_v1",
+        "reason": null,
+        "content_sha256": "7e48f431c3f9c084841eaa5a9c92f5afb2af2246c41bc0f5298c1fac49643c66"
+      },
+      "join_status": "unknown",
+      "institution_refs": {
+        "agency_ref": null,
+        "board_ref": "community-board:manhattan-cb-07"
+      },
+      "compatibility": {
+        "legacy_notice_href": null,
+        "legacy_fragment_href": null,
+        "publisher_href": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics"
+      },
+      "request_id": null,
+      "source_record_id": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+      "board_id": "manhattan-cb-07",
+      "record_kind": "event",
+      "record_id": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+      "record_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+      "date": "2026-09-01",
+      "start_at": "2026-09-01T18:30:00-04:00",
+      "end_at": null,
+      "category": null,
+      "format": "ics",
+      "publisher_identifiers": [
+        "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+        "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com"
+      ],
+      "source_entry_evidence": null,
+      "source_role": "upcoming_meetings",
+      "observed_receipt": {
+        "schema": "cityscroll.community_board_source_receipt.v1",
+        "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+        "observed_at": "2026-11-09T21:24:12.359Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/calendar; charset=utf-8",
+        "content_length": 461475,
+        "parser": "google_calendar_v1",
+        "reason": null,
+        "content_sha256": "7e48f431c3f9c084841eaa5a9c92f5afb2af2246c41bc0f5298c1fac49643c66"
+      },
+      "short_title": "Full Board Meeting",
+      "start_date": "2026-11-09T21:24:12.359Z",
+      "collection_visibility": "visible",
+      "timing_status": "past",
+      "type_of_notice_description": "Board meeting",
+      "section_name": "Community Board Meetings",
+      "meeting_join": {
+        "schema": "cityscroll.community_board_source_join.v1",
+        "status": "unknown",
+        "official": false,
+        "reason": "no_city_record_notice",
+        "board_id": "manhattan-cb-07",
+        "meeting_date": "2026-09-01",
+        "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+        "source_record_id": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+        "join": {
+          "matched": false,
+          "method": "exact_board_date_publisher_identifier",
+          "reason": "no_city_record_notice"
+        },
+        "provenance": {
+          "schema": "cityscroll.community_board_meeting_provenance.v1",
+          "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+          "source_record_id": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+          "source_index_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+          "observed_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+            "observed_at": "2026-11-09T21:24:12.359Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/calendar; charset=utf-8",
+            "content_length": 461475,
+            "parser": "google_calendar_v1",
+            "reason": null,
+            "content_sha256": "7e48f431c3f9c084841eaa5a9c92f5afb2af2246c41bc0f5298c1fac49643c66"
+          },
+          "adapter": "google_calendar_v1"
+        }
+      },
+      "source_provenance": {
+        "schema": "cityscroll.community_board_meeting_provenance.v1",
+        "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+        "source_record_id": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+        "source_index_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+        "observed_receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+          "observed_at": "2026-11-09T21:24:12.359Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/calendar; charset=utf-8",
+          "content_length": 461475,
+          "parser": "google_calendar_v1",
+          "reason": null,
+          "content_sha256": "7e48f431c3f9c084841eaa5a9c92f5afb2af2246c41bc0f5298c1fac49643c66"
+        },
+        "adapter": "google_calendar_v1"
+      },
+      "entity_refs_all": [
+        "community-board:manhattan-cb-07",
+        "meeting:community_board:63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01"
+      ],
+      "institution_edges": [
+        {
+          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
+          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
+          "edge_type": "hosts_meeting",
+          "relation": "hosts_meeting",
+          "status": "promoted",
+          "promoted": true,
+          "reason": null,
+          "from": "community-board:manhattan-cb-07",
+          "to": "meeting:community_board:63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+          "target_kind": "meeting",
+          "target_id": "meeting:community_board:63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+          "target_name": "Full Board Meeting",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3A63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000%40google.com%3A%3A2026-09-01",
+          "href": "/meetings/meeting%3Acommunity_board%3A63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000%40google.com%3A%3A2026-09-01",
+          "board_href": "/community-boards/manhattan-cb-07/",
+          "institution_refs": {
+            "board_ref": "community-board:manhattan-cb-07"
+          },
+          "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+          "source_record_id": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+          "source_receipt": {
+            "schema": "cityscroll.community_board_source_receipt.v1",
+            "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+            "observed_at": "2026-11-09T21:24:12.359Z",
+            "status": "ok",
+            "fetch_status": "200",
+            "content_type": "text/calendar; charset=utf-8",
+            "content_length": 461475,
+            "parser": "google_calendar_v1",
+            "reason": null,
+            "content_sha256": "7e48f431c3f9c084841eaa5a9c92f5afb2af2246c41bc0f5298c1fac49643c66"
+          },
+          "source_entry_evidence": null,
+          "provenance": {
+            "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+            "source_record_id": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+            "observed_receipt": {
+              "schema": "cityscroll.community_board_source_receipt.v1",
+              "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+              "observed_at": "2026-11-09T21:24:12.359Z",
+              "status": "ok",
+              "fetch_status": "200",
+              "content_type": "text/calendar; charset=utf-8",
+              "content_length": 461475,
+              "parser": "google_calendar_v1",
+              "reason": null,
+              "content_sha256": "7e48f431c3f9c084841eaa5a9c92f5afb2af2246c41bc0f5298c1fac49643c66"
+            },
+            "format": "ics"
+          },
+          "join": {
+            "matched": true,
+            "method": "exact_board_date_publisher_identifier",
+            "board_id": "manhattan-cb-07",
+            "event_date": "2026-09-01",
+            "publisher_identifier": "63OPNSM7N7F5D8RPK76MFTNPFA_R20260602T223000@GOOGLE.COM::2026-09-01",
+            "evidence": [
+              "exact_board_identity",
+              "exact_date",
+              "publisher_identifier"
+            ]
+          },
+          "evidence": [
+            "exact_board_identity",
+            "exact_publisher_identifier",
+            "exact_meeting_date",
+            "retained_source_url",
+            "observed_receipt",
+            "verified_source_join"
+          ],
+          "publication_basis": null
+        }
+      ],
+      "source_record": {
+        "source_system": "community_board",
+        "identifier": "63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01",
+        "url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+        "receipt": {
+          "schema": "cityscroll.community_board_source_receipt.v1",
+          "source_url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+          "observed_at": "2026-11-09T21:24:12.359Z",
+          "status": "ok",
+          "fetch_status": "200",
+          "content_type": "text/calendar; charset=utf-8",
+          "content_length": 461475,
+          "parser": "google_calendar_v1",
+          "reason": null,
+          "content_sha256": "7e48f431c3f9c084841eaa5a9c92f5afb2af2246c41bc0f5298c1fac49643c66"
+        },
+        "board_id": "manhattan-cb-07",
         "role": "upcoming_meetings"
       },
       "minutes_freshness": {

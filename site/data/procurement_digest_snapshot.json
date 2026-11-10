@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_digest_snapshot.v1",
-  "generated_at": "2026-11-09T21:24:05.881Z",
-  "row_count": 7914,
+  "generated_at": "2026-11-10T15:17:39.651Z",
+  "row_count": 7917,
   "rows": [
     {
       "procurement_id": "procurement:contract:8000000863",
@@ -159487,6 +159487,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT105720278803547",
+      "digest_id": "procurement:contract:CT105720278803547",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105720278803547",
+      "short_title": "Purchase of EXO2 Descender W/AM'D Carabiner",
+      "agency_name": "Fire Department",
+      "vendor_name": "FINESSE CREATIONS INC",
+      "contract_amount": 191664,
+      "start_date": "2026-11-05",
+      "pin": "05727W0021001",
+      "contract_id": "CT105720278803547",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT105720278803547:checkbook_contracts:contract:registered:CT105720278803547:FINESSE CREATIONS INC:prime-vendor:2026-11-05:registered",
+          "state": "registered",
+          "effective_at": "2026-11-05",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT105720278803547:FINESSE CREATIONS INC:prime-vendor:2026-11-05",
+          "source_receipt_ref": "materialized:contract:registered:CT105720278803547:FINESSE CREATIONS INC:prime-vendor:2026-11-05",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT105720278803547"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT105720278803557",
       "digest_id": "procurement:contract:CT105720278803557",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105720278803557",
@@ -234807,6 +234842,41 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT184620278803660",
+      "digest_id": "procurement:contract:CT184620278803660",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803660",
+      "short_title": "QNOPS-Various Flowering Bulbs For Fall Planting",
+      "agency_name": "Department of Parks and Recreation",
+      "vendor_name": "SCHIPPER & COMPANY USA INC",
+      "contract_amount": 1483.5,
+      "start_date": "2026-10-30",
+      "pin": "84627C0284001",
+      "contract_id": "CT184620278803660",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT184620278803660:checkbook_contracts:contract:registered:CT184620278803660:SCHIPPER & COMPANY USA INC:prime-vendor:2026-10-30:registered",
+          "state": "registered",
+          "effective_at": "2026-10-30",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620278803660:SCHIPPER & COMPANY USA INC:prime-vendor:2026-10-30",
+          "source_receipt_ref": "materialized:contract:registered:CT184620278803660:SCHIPPER & COMPANY USA INC:prime-vendor:2026-10-30",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620278803660"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT184620278803665",
       "digest_id": "procurement:contract:CT184620278803665",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803665",
@@ -238132,6 +238202,41 @@
           "source_receipt_ref": "materialized:contract:registered:CT185020278801885:HUNTER ROBERTS ZDJ 70 MULBERRY ST A JOINT VENTURE:prime-vendor:2026-09-11",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT185020278801885"
+        }
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT185020278801898",
+      "digest_id": "procurement:contract:CT185020278801898",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185020278801898",
+      "short_title": "PWDN80PIT, purchase of initial outfitting equipment",
+      "agency_name": "Department of Design and Construction",
+      "vendor_name": "GRAND STREET SETTLEMENT INC",
+      "contract_amount": 496945,
+      "start_date": "2026-08-25",
+      "pin": "85027L0001001",
+      "contract_id": "CT185020278801898",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "process_states": [
+        "registered"
+      ],
+      "process_events": [
+        {
+          "event_id": "procurement:contract:CT185020278801898:checkbook_contracts:contract:registered:CT185020278801898:GRAND STREET SETTLEMENT INC:prime-vendor:2026-08-25:registered",
+          "state": "registered",
+          "effective_at": "2026-08-25",
+          "source_system": "checkbook_contracts",
+          "source_observation_ref": "checkbook_contracts:contract:registered:CT185020278801898:GRAND STREET SETTLEMENT INC:prime-vendor:2026-08-25",
+          "source_receipt_ref": "materialized:contract:registered:CT185020278801898:GRAND STREET SETTLEMENT INC:prime-vendor:2026-08-25",
+          "publisher_state": "registered",
+          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT185020278801898"
         }
       ],
       "type_of_notice_description": null

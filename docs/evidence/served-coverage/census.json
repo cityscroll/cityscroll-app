@@ -27,7 +27,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 20598,
+      "value": 20601,
       "reason": null
     },
     {
@@ -245,8 +245,8 @@
       "source_system": "checkbook_contracts",
       "source_contract_id": "checkbook-contracts",
       "registered": true,
-      "served_observations": 9519,
-      "declared_input_rows": 9519,
+      "served_observations": 9522,
+      "declared_input_rows": 9522,
       "specimen": {
         "source_observation_ref": "checkbook_contracts:contract:registered:CT100220261406691:SELECTIVE INSURANCE COMPANY OF AMERICA:prime-vendor:2025-12-05",
         "procurement_id": "procurement:contract:CT100220261406691",
@@ -451,7 +451,7 @@
             "unit_id": "exams",
             "route": "/browse/exams/",
             "served_records": 227,
-            "evidence_vintage": "2026-11-09T00:00:00.000Z"
+            "evidence_vintage": "2026-11-10T00:00:00.000Z"
           }
         ]
       }
@@ -532,7 +532,7 @@
             "unit_id": "registered-contracts",
             "route": "/browse/contracts/",
             "served_records": 29581,
-            "evidence_vintage": "2026-11-09T00:00:00.000Z"
+            "evidence_vintage": "2026-11-10T00:00:00.000Z"
           }
         ]
       }
@@ -634,13 +634,13 @@
             "unit_id": "properties",
             "route": "/browse/property/",
             "served_records": 133,
-            "evidence_vintage": "2026-11-09T13:37:02.000Z"
+            "evidence_vintage": "2026-11-10T13:35:17.000Z"
           },
           {
             "unit_id": "rules",
             "route": "/browse/rules/",
             "served_records": 100,
-            "evidence_vintage": "2026-11-09T21:57:24.958Z"
+            "evidence_vintage": "2026-11-10T15:44:22.290Z"
           },
           {
             "unit_id": "staffing-notices",
@@ -1035,7 +1035,7 @@
             "unit_id": "meeting-outcomes",
             "route": "/browse/meetings/",
             "served_records": 15,
-            "evidence_vintage": "2026-11-09T08:01:12.734Z"
+            "evidence_vintage": "2026-11-10T08:00:54.972Z"
           },
           {
             "unit_id": "committee-memberships",

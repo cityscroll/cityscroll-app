@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.shared_procurement_read_model.v1",
   "version": 1,
-  "generated_at": "2026-11-09T21:24:05.881Z",
+  "generated_at": "2026-11-10T15:17:39.651Z",
   "freshness": {
-    "generated_at": "2026-11-09T21:24:05.881Z",
-    "checked_at": "2026-11-09T21:24:05.881Z",
+    "generated_at": "2026-11-10T15:17:39.651Z",
+    "checked_at": "2026-11-10T15:17:39.651Z",
     "sources": {
       "passport_public_contracts": "available",
       "passport_public_rfx": "available",
@@ -24,7 +24,7 @@
       "source_system": "passport_public_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
+      "generated_at": "2026-11-10T15:17:39.651Z",
       "row_count": 12795,
       "reason": null
     },
@@ -32,7 +32,7 @@
       "source_system": "passport_public_rfx",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
+      "generated_at": "2026-11-10T15:17:39.651Z",
       "row_count": 0,
       "reason": null
     },
@@ -40,15 +40,15 @@
       "source_system": "checkbook_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
-      "row_count": 9519,
+      "generated_at": "2026-11-10T15:17:39.651Z",
+      "row_count": 9522,
       "reason": null
     },
     "checkbook_nycha_contracts": {
       "source_system": "checkbook_nycha_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
+      "generated_at": "2026-11-10T15:17:39.651Z",
       "row_count": 1,
       "reason": null
     },
@@ -56,7 +56,7 @@
       "source_system": "checkbook_spending",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
+      "generated_at": "2026-11-10T15:17:39.651Z",
       "row_count": 0,
       "reason": null
     },
@@ -64,7 +64,7 @@
       "source_system": "nys_contract_reporter",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
+      "generated_at": "2026-11-10T15:17:39.651Z",
       "row_count": 1,
       "reason": null
     },
@@ -72,7 +72,7 @@
       "source_system": "mta_current_opportunities",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
+      "generated_at": "2026-11-10T15:17:39.651Z",
       "row_count": 1,
       "reason": null
     },
@@ -80,7 +80,7 @@
       "source_system": "mta_bid_results",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
+      "generated_at": "2026-11-10T15:17:39.651Z",
       "row_count": 1,
       "reason": null
     },
@@ -88,7 +88,7 @@
       "source_system": "mta_annual_contracts",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
+      "generated_at": "2026-11-10T15:17:39.651Z",
       "row_count": 1,
       "reason": null
     },
@@ -96,7 +96,7 @@
       "source_system": "mta_cd_awards",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
+      "generated_at": "2026-11-10T15:17:39.651Z",
       "row_count": 1,
       "reason": null
     },
@@ -104,15 +104,15 @@
       "source_system": "city_record",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-09T21:24:05.881Z",
+      "generated_at": "2026-11-10T15:17:39.651Z",
       "row_count": 12988,
       "reason": null
     }
   },
   "identity_gate": {
     "schema": "cityscroll.procurement_identity_audit.v1",
-    "selected_source_rows": 22320,
-    "stable_source_id_rows": 22320,
+    "selected_source_rows": 22323,
+    "stable_source_id_rows": 22323,
     "stable_source_id_rate": 1,
     "minimum_stable_source_id_rate": 0.95,
     "accepted_exact_joins": 1698,
@@ -37269,6 +37269,14 @@
     {
       "schema": "cityscroll.procurement_identity_edge.v1",
       "status": "accepted",
+      "source_observation_ref": "checkbook_contracts:contract:registered:CT105720278803547:FINESSE CREATIONS INC:prime-vendor:2026-11-05",
+      "procurement_id": "procurement:contract:CT105720278803547",
+      "basis": "exact_contract_id",
+      "matched_value": "CT105720278803547"
+    },
+    {
+      "schema": "cityscroll.procurement_identity_edge.v1",
+      "status": "accepted",
       "source_observation_ref": "checkbook_contracts:contract:registered:CT105720278803557:WINGGLEE LLC:prime-vendor:2026-11-05",
       "procurement_id": "procurement:contract:CT105720278803557",
       "basis": "exact_contract_id",
@@ -64405,6 +64413,14 @@
     {
       "schema": "cityscroll.procurement_identity_edge.v1",
       "status": "accepted",
+      "source_observation_ref": "checkbook_contracts:contract:registered:CT184620278803660:SCHIPPER & COMPANY USA INC:prime-vendor:2026-10-30",
+      "procurement_id": "procurement:contract:CT184620278803660",
+      "basis": "exact_contract_id",
+      "matched_value": "CT184620278803660"
+    },
+    {
+      "schema": "cityscroll.procurement_identity_edge.v1",
+      "status": "accepted",
       "source_observation_ref": "checkbook_contracts:contract:registered:CT184620278803665:DISCOUNT PLAYGROUND SUPPLY:prime-vendor:2026-11-02",
       "procurement_id": "procurement:contract:CT184620278803665",
       "basis": "exact_contract_id",
@@ -65569,6 +65585,14 @@
       "procurement_id": "procurement:contract:CT185020278801885",
       "basis": "exact_contract_id",
       "matched_value": "CT185020278801885"
+    },
+    {
+      "schema": "cityscroll.procurement_identity_edge.v1",
+      "status": "accepted",
+      "source_observation_ref": "checkbook_contracts:contract:registered:CT185020278801898:GRAND STREET SETTLEMENT INC:prime-vendor:2026-08-25",
+      "procurement_id": "procurement:contract:CT185020278801898",
+      "basis": "exact_contract_id",
+      "matched_value": "CT185020278801898"
     },
     {
       "schema": "cityscroll.procurement_identity_edge.v1",
@@ -193968,37 +193992,37 @@
     }
   ],
   "counts": {
-    "total": 20598,
-    "source_observations": 35308,
-    "identity_edges": 22320,
+    "total": 20601,
+    "source_observations": 35311,
+    "identity_edges": 22323,
     "cross_source_identity_joins": 1698,
     "lifecycle_rows": 0,
-    "procurement_source_lookup_receipts": 20598
+    "procurement_source_lookup_receipts": 20601
   },
   "publication": {
     "policy": "crol_notice_award_publication_v1",
     "lookback_days": 365,
     "amount_min_exclusive": 0,
     "amount_max_exclusive": 10000000000,
-    "as_of": "2026-11-09",
-    "floor": "2025-11-09",
+    "as_of": "2026-11-10",
+    "floor": "2025-11-10",
     "row_cap": null,
     "coverage": "City Record Award window (valid amount, last 365 days); not a citywide inventory",
-    "selected_rows": 35308,
+    "selected_rows": 35311,
     "census_rows": {
       "passport_contracts": 12795,
-      "checkbook_contracts": 10569,
+      "checkbook_contracts": 10572,
       "checkbook_nycha_contracts": 1
     }
   },
   "coherence_receipt": {
     "schema": "cityscroll.procurement_index_coherence.v1",
-    "source_model_fingerprint": "c384ba3e2c5734b0041e8c309981b1e80647442ea76e16c2664f6b36f1ee95b9",
-    "generated_at": "2026-11-09T21:24:05.881Z",
-    "selected_row_count": 35308,
+    "source_model_fingerprint": "6d7347cdb407d8380f85542113c940395643f3703d85c1824a42c1ddf589d069",
+    "generated_at": "2026-11-10T15:17:39.651Z",
+    "selected_row_count": 35311,
     "artifact_hashes": {
-      "shared_procurement_read_model": "1b82625b854b4c468844945f75a9c214f04834999962a51ce0cd2d6f97c983ed",
-      "keyword_search_procurements": "3e1a392e0cf2ad5896a68414791014ad966052431d1b90a8369e691f33da08e6"
+      "shared_procurement_read_model": "07dcbaf3778f9f54d91b22a728abf471668afe53894ed8ab218cbc9fa9958176",
+      "keyword_search_procurements": "99c09eb8f12d763078fcc59124c1b2b6e4fc0708b8782934ac3cb890fb2686fc"
     }
   },
   "representation": "sharded",
@@ -194024,9 +194048,9 @@
     },
     {
       "path": "shared_procurement_read_model/shard-003.json",
-      "bytes": 18839329,
-      "row_count": 1155,
-      "observation_count": 2421
+      "bytes": 18849035,
+      "row_count": 1156,
+      "observation_count": 2422
     },
     {
       "path": "shared_procurement_read_model/shard-004.json",
@@ -194072,15 +194096,15 @@
     },
     {
       "path": "shared_procurement_read_model/shard-011.json",
-      "bytes": 18854905,
+      "bytes": 18853410,
       "row_count": 1531,
-      "observation_count": 2308
+      "observation_count": 2307
     },
     {
       "path": "shared_procurement_read_model/shard-012.json",
-      "bytes": 18818434,
-      "row_count": 1238,
-      "observation_count": 2447
+      "bytes": 18839556,
+      "row_count": 1240,
+      "observation_count": 2450
     },
     {
       "path": "shared_procurement_read_model/shard-013.json",
@@ -200019,6 +200043,7 @@
     "procurement:contract:CT105720278803234": "shared_procurement_read_model/shard-003.json",
     "procurement:contract:CT105720278803483": "shared_procurement_read_model/shard-003.json",
     "procurement:contract:CT105720278803528": "shared_procurement_read_model/shard-003.json",
+    "procurement:contract:CT105720278803547": "shared_procurement_read_model/shard-003.json",
     "procurement:contract:CT105720278803557": "shared_procurement_read_model/shard-003.json",
     "procurement:contract:CT105720278803611": "shared_procurement_read_model/shard-003.json",
     "procurement:contract:CT106320228803862": "shared_procurement_read_model/shard-003.json",
@@ -210869,6 +210894,7 @@
     "procurement:contract:CT184620278803648": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT184620278803651": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT184620278803653": "shared_procurement_read_model/shard-011.json",
+    "procurement:contract:CT184620278803660": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT184620278803665": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT184620278803668": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT184620278803675": "shared_procurement_read_model/shard-011.json",
@@ -211114,7 +211140,7 @@
     "procurement:contract:CT185020258802024": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT185020258802133": "shared_procurement_read_model/shard-011.json",
     "procurement:contract:CT185020258802205": "shared_procurement_read_model/shard-011.json",
-    "procurement:contract:CT185020258802578": "shared_procurement_read_model/shard-011.json",
+    "procurement:contract:CT185020258802578": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020258802995": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020258803082": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020258803146": "shared_procurement_read_model/shard-012.json",
@@ -211313,6 +211339,7 @@
     "procurement:contract:CT185020278801805": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020278801809": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020278801885": "shared_procurement_read_model/shard-012.json",
+    "procurement:contract:CT185020278801898": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020278801922": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020278801944": "shared_procurement_read_model/shard-012.json",
     "procurement:contract:CT185020278801950": "shared_procurement_read_model/shard-012.json",
@@ -214700,7 +214727,7 @@
     "path": "data/notice_procurement_subjects_lookup.json",
     "notice_count": 12944,
     "subject_link_count": 12944,
-    "source_model_fingerprint": "c384ba3e2c5734b0041e8c309981b1e80647442ea76e16c2664f6b36f1ee95b9"
+    "source_model_fingerprint": "6d7347cdb407d8380f85542113c940395643f3703d85c1824a42c1ddf589d069"
   },
   "observation_order": [
     "checkbook_contracts:contract:registered:CT100220261406691:SELECTIVE INSURANCE COMPANY OF AMERICA:prime-vendor:2025-12-05",
@@ -219346,6 +219373,7 @@
     "checkbook_contracts:contract:registered:CT105720278803234:VERATHON, INC.:prime-vendor:2026-10-27",
     "checkbook_contracts:contract:registered:CT105720278803483:WATS INTERNATIONAL INC:prime-vendor:2026-10-27",
     "checkbook_contracts:contract:registered:CT105720278803528:DRUBRIDGE LLC:prime-vendor:2026-11-05",
+    "checkbook_contracts:contract:registered:CT105720278803547:FINESSE CREATIONS INC:prime-vendor:2026-11-05",
     "checkbook_contracts:contract:registered:CT105720278803557:WINGGLEE LLC:prime-vendor:2026-11-05",
     "checkbook_contracts:contract:registered:CT105720278803611:WINGGLEE LLC:prime-vendor:2026-11-04",
     "checkbook_contracts:contract:registered:CT106820261407232:COMPULINK TECHNOLOGIES INC:prime-vendor:2025-12-02",
@@ -222738,6 +222766,7 @@
     "checkbook_contracts:contract:registered:CT184620278803648:DERIVE TECHNOLOGIES LLC:prime-vendor:2026-10-30",
     "checkbook_contracts:contract:registered:CT184620278803651:INDUSTRIAL U.S.A., INC:prime-vendor:2026-10-30",
     "checkbook_contracts:contract:registered:CT184620278803653:FORESTRY SUPPLIERS INC:prime-vendor:2026-10-30",
+    "checkbook_contracts:contract:registered:CT184620278803660:SCHIPPER & COMPANY USA INC:prime-vendor:2026-10-30",
     "checkbook_contracts:contract:registered:CT184620278803665:DISCOUNT PLAYGROUND SUPPLY:prime-vendor:2026-11-02",
     "checkbook_contracts:contract:registered:CT184620278803668:SHERADEN LIGHTING & ELECTRICAL PRODUCTS CORP:prime-vendor:2026-11-02",
     "checkbook_contracts:contract:registered:CT184620278803675:TRUEBOUNCE, INC.:prime-vendor:2026-11-02",
@@ -222884,6 +222913,7 @@
     "checkbook_contracts:contract:registered:CT185020278801805:OHEL CHILDREN'S HOME AND FAMILY SERVICES INC.:prime-vendor:2026-08-29",
     "checkbook_contracts:contract:registered:CT185020278801809:RICHMOND MEDICAL CENTER:prime-vendor:2026-08-06",
     "checkbook_contracts:contract:registered:CT185020278801885:HUNTER ROBERTS ZDJ 70 MULBERRY ST A JOINT VENTURE:prime-vendor:2026-09-11",
+    "checkbook_contracts:contract:registered:CT185020278801898:GRAND STREET SETTLEMENT INC:prime-vendor:2026-08-25",
     "checkbook_contracts:contract:registered:CT185020278801922:HATZOLOH INCORPORATED:prime-vendor:2026-08-20",
     "checkbook_contracts:contract:registered:CT185020278801944:CITY HARVEST INC:prime-vendor:2026-08-31",
     "checkbook_contracts:contract:registered:CT185020278801950:CITY HARVEST INC:prime-vendor:2026-09-03",

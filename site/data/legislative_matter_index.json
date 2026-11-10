@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.legislative_matter_index.v1",
-  "generated_at": "2026-11-09T08:01:12.734Z",
+  "generated_at": "2026-11-10T08:00:54.972Z",
   "source": {
     "system": "legistar",
     "input_artifact": "site/data/meeting_outcomes_snapshot.json",

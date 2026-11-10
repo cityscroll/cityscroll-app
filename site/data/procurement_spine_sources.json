@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "title": "Population-backed procurement spine observations for entity intelligence",
-  "observed_on": "2026-11-09",
-  "generated_at": "2026-11-09T21:24:05.881Z",
+  "observed_on": "2026-11-10",
+  "generated_at": "2026-11-10T15:17:39.651Z",
   "receipts": {
     "passport_join": "site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json",
     "source_coverage": "entity_resolution/source_coverage.json",
@@ -54,7 +54,7 @@
       "coverage_status": "measured",
       "population_backed": true,
       "source_url": "https://www.checkbooknyc.com/api",
-      "pulled_at": "2026-11-09T21:24:05.881Z",
+      "pulled_at": "2026-11-10T15:17:39.651Z",
       "population": {
         "api_transaction_rows": 40319,
         "normalized_unique_contracts": 29581,
@@ -259471,6 +259471,61 @@
         "selection_bucket": "new_unique"
       },
       {
+        "prime_contract_id": "CT105720278803547",
+        "contract_id": "CT105720278803547",
+        "prime_vendor": "FINESSE CREATIONS INC",
+        "agency": "Fire Department",
+        "pin": "05727W0021001",
+        "award_method": "M/WBE SMALL PURCHASE",
+        "mwbe_category": "Women (Non-Minority)",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-05",
+        "start_date": "2026-11-10",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-10"
+          ],
+          "registration_date_observations": [
+            "2026-11-05"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "Purchase of EXO2 Descender W/AM'D Carabiner",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 191664,
+        "original": 191664,
+        "spent": 0,
+        "start": "2026-11-10",
+        "end": "2027-06-30",
+        "registered": "2026-11-05",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
         "prime_contract_id": "CT105720278803557",
         "contract_id": "CT105720278803557",
         "prime_vendor": "WINGGLEE LLC",
@@ -267646,6 +267701,61 @@
         "spent": 0,
         "start": "2026-11-05",
         "end": "2026-12-21",
+        "registered": "2026-10-30",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT184620278803660",
+        "contract_id": "CT184620278803660",
+        "prime_vendor": "SCHIPPER & COMPANY USA INC",
+        "agency": "Department of Parks and Recreation",
+        "pin": "84627C0284001",
+        "award_method": "SMALL PURCHASE - UNDER $5,000",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-10-30",
+        "start_date": "2026-11-10",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-10"
+          ],
+          "registration_date_observations": [
+            "2026-10-30"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "QNOPS-Various Flowering Bulbs For Fall Planting",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 1483.5,
+        "original": 1483.5,
+        "spent": 0,
+        "start": "2026-11-10",
+        "end": "2026-12-31",
         "registered": "2026-10-30",
         "received": null,
         "source_fiscal_years": [
@@ -415024,6 +415134,61 @@
         "spent": 3900,
         "start": "2026-08-25",
         "end": "2026-10-06",
+        "registered": "2026-08-25",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT185020278801898",
+        "contract_id": "CT185020278801898",
+        "prime_vendor": "GRAND STREET SETTLEMENT INC",
+        "agency": "Department of Design and Construction",
+        "pin": "85027L0001001",
+        "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-08-25",
+        "start_date": "2026-11-10",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-10"
+          ],
+          "registration_date_observations": [
+            "2026-08-25"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "PWDN80PIT, purchase of initial outfitting equipment",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 496945,
+        "original": 496945,
+        "spent": 0,
+        "start": "2026-11-10",
+        "end": "2031-11-08",
         "registered": "2026-08-25",
         "received": null,
         "source_fiscal_years": [
@@ -837628,12 +837793,12 @@
     "checkbook_contracts": {
       "graph_cap": null,
       "graph_source": "rows.checkbook_contracts",
-      "graph_rows": 10569,
+      "graph_rows": 10572,
       "selected_buckets": {
         "passport_and_city_record": 1679,
         "passport_only": 83,
         "city_record_only": 1050,
-        "new_unique": 7757
+        "new_unique": 7760
       },
       "strategy": "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap",
       "receipt": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"

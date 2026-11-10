@@ -3,14 +3,14 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-11-09T21:57:35.642Z",
+  "generated_at": "2026-11-10T15:44:40.086Z",
   "observation_count": 3467,
   "entity_count": 200,
   "multi_domain_count": 33,
   "selection": {
     "strategy": "multi_domain_then_mandate_agency_reserve_then_richness_fill",
     "cap": 200,
-    "candidate_count": 1658,
+    "candidate_count": 1657,
     "reason_counts": {
       "multi_domain": 33,
       "mandate_agency_reserve": 18,
@@ -844,39 +844,6 @@
           "note": null,
           "objects": [
             {
-              "subject_ref": "notice:20261104007",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "Spring Creek Phase 5 B",
-              "when": "2026-12-09T10:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20261104007",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:housing-preservation-and-development",
-              "root_kind": "agency",
-              "href": "#notice/20261104007",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20261104007",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-12-09T10:00:00.000",
-                "input_value": "Housing Preservation and Development"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
               "subject_ref": "notice:20261106003",
               "domain": "meetings",
               "object_kind": "hearing",
@@ -898,6 +865,39 @@
               "provenance": {
                 "source_system": "city_record",
                 "source_record_id": "city_record:20261106003",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-12-09T10:00:00.000",
+                "input_value": "Housing Preservation and Development"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20261104007",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "Spring Creek Phase 5 B",
+              "when": "2026-12-09T10:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20261104007",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#notice/20261104007",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20261104007",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -17584,6 +17584,39 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "contract:CT184620278803660",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "SCHIPPER & COMPANY USA INC",
+              "when": "2026-11-10",
+              "amount": null,
+              "public_status": null,
+              "pin": "84627C0284001",
+              "contract_id": "CT184620278803660",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:parks-and-recreation",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:84627C0284001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-10",
+                "input_value": "Department of Parks and Recreation"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "contract:CT184620278803728",
               "domain": "money",
               "object_kind": "contract",
@@ -17737,39 +17770,6 @@
               "provenance": {
                 "source_system": "checkbook-contracts",
                 "source_record_id": "checkbook-contracts:ct:CT184620271406196",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-11-06",
-                "input_value": "Department of Parks and Recreation"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CT184620278803675",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "TrueBounce, Inc.",
-              "when": "2026-11-06",
-              "amount": null,
-              "public_status": null,
-              "pin": "84627C0286001",
-              "contract_id": "CT184620278803675",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:parks-and-recreation",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:84627C0286001",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -22297,6 +22297,78 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT184620278803660",
+          "to": "agency:id:parks-and-recreation",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0284001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-10",
+            "input_value": "Department of Parks and Recreation",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0284001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-10",
+            "input_value": "Department of Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT184620278803660",
+          "to": "pin:84627C0284001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0284001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-10",
+            "input_value": "84627C0284001",
+            "join_key": "pin",
+            "join_value": "84627C0284001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:84627C0284001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-10",
+            "input_value": "84627C0284001",
+            "join_key": "pin",
+            "join_value": "84627C0284001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT184620278803665",
           "to": "agency:id:parks-and-recreation",
           "method": "agency_canonical_v1",
@@ -25260,7 +25332,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 99,
+        "deterministic": 100,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -25272,8 +25344,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 3,
         "total_linked_objects": 16,
-        "link_count": 199,
-        "join_key_link_count": 99,
+        "link_count": 201,
+        "join_key_link_count": 100,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.5714285714285714
       }
@@ -37999,6 +38071,39 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "notice:20261102022",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "FINAL RULE - AMENDMENTS TO RULES RELATING TO THE ENERGY CONSERVATION CODE",
+              "when": "2026-11-10T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20261102022",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:buildings",
+              "root_kind": "agency",
+              "href": "#notice/20261102022",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20261102022",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-11-10T00:00:00.000",
+                "input_value": "Buildings"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "notice:20261023011",
               "domain": "rules",
               "object_kind": "rule",
@@ -38157,39 +38262,6 @@
                 ],
                 "basis": "rules_agency_name",
                 "observed_at": "2026-09-01T00:00:00.000",
-                "input_value": "Buildings"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260814012",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "Proposed Rule - Amendment of Rules regarding Fees for Electrical Permits and Licensing and Compensation of Registered Design Professionals",
-              "when": "2026-08-21T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260814012",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:buildings",
-              "root_kind": "agency",
-              "href": "#notice/20260814012",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260814012",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-08-21T00:00:00.000",
                 "input_value": "Buildings"
               },
               "link_type": "issued_rule",
@@ -42804,6 +42876,26 @@
             "input_value": "Buildings"
           },
           "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20261102022",
+          "to": "agency:id:buildings",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20261102022",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-11-10T00:00:00.000",
+            "input_value": "Buildings"
+          },
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "shadow_edges": [],
@@ -42820,7 +42912,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 4,
         "total_linked_objects": 14,
-        "link_count": 129,
+        "link_count": 130,
         "join_key_link_count": 62,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.42857142857142855
@@ -49878,10 +49970,10 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "notice:20260811002",
+              "subject_ref": "notice:20260810007",
               "domain": "rules",
               "object_kind": "rule",
-              "label": "DCWP NOA Self-Storage Facilities and Storage Warehouses",
+              "label": "DCWP NOH Rules Relating to Amendment of Debt Collectors Rule Effective Date",
               "when": "2026-08-18T00:00:00.000",
               "amount": null,
               "public_status": null,
@@ -49889,16 +49981,16 @@
               "contract_id": null,
               "document_id": null,
               "project_id": null,
-              "request_id": "20260811002",
+              "request_id": "20260810007",
               "event_id": null,
               "ulurp_numbers": null,
               "bbls": null,
               "root_ref": "agency:id:consumer-and-worker-protection",
               "root_kind": "agency",
-              "href": "#notice/20260811002",
+              "href": "#notice/20260810007",
               "provenance": {
                 "source_system": "city_record",
-                "source_record_id": "city_record:20260811002",
+                "source_record_id": "city_record:20260810007",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -57868,26 +57960,6 @@
         },
         {
           "type": "issued_rule",
-          "from": "notice:20260506027",
-          "to": "agency:id:finance",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260506027",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-05-14T00:00:00.000",
-            "input_value": "Finance"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
           "from": "notice:20260519043",
           "to": "agency:id:finance",
           "domain": "rules",
@@ -58061,7 +58133,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 4,
         "total_linked_objects": 13,
-        "link_count": 112,
+        "link_count": 111,
         "join_key_link_count": 53,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.42857142857142855
@@ -82880,39 +82952,6 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "notice:20261021010",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "FOR LEASE - 31 - 00 47th Avenue",
-              "when": "2026-11-10T10:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20261021010",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:citywide-administrative-services",
-              "root_kind": "agency",
-              "href": "#notice/20261021010",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20261021010",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-11-10T10:00:00.000",
-                "input_value": "Citywide Administrative Services"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
               "subject_ref": "notice:20261019018",
               "domain": "meetings",
               "object_kind": "hearing",
@@ -82934,6 +82973,39 @@
               "provenance": {
                 "source_system": "city_record",
                 "source_record_id": "city_record:20261019018",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-11-10T10:00:00.000",
+                "input_value": "Citywide Administrative Services"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20261021010",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "FOR LEASE - 31 - 00 47th Avenue",
+              "when": "2026-11-10T10:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20261021010",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:citywide-administrative-services",
+              "root_kind": "agency",
+              "href": "#notice/20261021010",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20261021010",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -101154,6 +101226,39 @@
           "note": null,
           "objects": [
             {
+              "subject_ref": "contract:CT105720278803547",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "FINESSE CREATIONS INC",
+              "when": "2026-11-10",
+              "amount": null,
+              "public_status": null,
+              "pin": "05727W0021001",
+              "contract_id": "CT105720278803547",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:fire-department",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:05727W0021001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-11-10",
+                "input_value": "Fire Department"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
               "subject_ref": "contract:CT105720278803557",
               "domain": "money",
               "object_kind": "contract",
@@ -101312,39 +101417,6 @@
                 ],
                 "basis": "money_agency_name",
                 "observed_at": "2026-09-01",
-                "input_value": "Fire Department"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "contract:CTA105720278803100",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "DEFASH GLOBAL RESOURCES INC",
-              "when": "2026-06-30",
-              "amount": null,
-              "public_status": null,
-              "pin": "05727Z0007001",
-              "contract_id": "CTA105720278803100",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:fire-department",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:05727Z0007001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-06-30",
                 "input_value": "Fire Department"
               },
               "link_type": "published_by_agency",
@@ -104818,6 +104890,78 @@
         },
         {
           "type": "published_by_agency",
+          "from": "contract:CT105720278803547",
+          "to": "agency:id:fire-department",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0021001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-10",
+            "input_value": "Fire Department",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0021001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-11-10",
+            "input_value": "Fire Department"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT105720278803547",
+          "to": "pin:05727W0021001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0021001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-10",
+            "input_value": "05727W0021001",
+            "join_key": "pin",
+            "join_value": "05727W0021001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0021001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-10",
+            "input_value": "05727W0021001",
+            "join_key": "pin",
+            "join_value": "05727W0021001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "published_by_agency",
           "from": "contract:CT105720278803557",
           "to": "agency:id:fire-department",
           "method": "agency_canonical_v1",
@@ -106117,7 +106261,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 68,
+        "deterministic": 69,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -106129,8 +106273,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 5,
         "total_linked_objects": 7,
-        "link_count": 128,
-        "join_key_link_count": 68,
+        "link_count": 130,
+        "join_key_link_count": 69,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.2857142857142857
       }
@@ -119093,353 +119237,6 @@
         "coverage_rate": 0.2857142857142857
       }
     },
-    "agency:id:housing-authority": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:housing-authority",
-        "id": "id:housing-authority",
-        "canonical_id": "housing-authority",
-        "canonical_name": "Housing Authority",
-        "display_name": "Housing Authority"
-      },
-      "domains": {
-        "money": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "contract:BA2335819",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "VITAL PLUMBING INC",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "19056829",
-              "contract_id": "BA2335819",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:housing-authority",
-              "root_kind": "agency",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook_nycha_contracts",
-                "source_record_id": "BA2335819:Agreement",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "input_value": "New York City Housing Authority"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 1
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20261019007",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "New York City Housing Authority Board Meeting",
-              "when": "2026-11-18T10:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20261019007",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:housing-authority",
-              "root_kind": "agency",
-              "href": "#notice/20261019007",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20261019007",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-11-18T10:00:00.000",
-                "input_value": "Housing Authority"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260921022",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "New York City Housing Authority Board Meeting",
-              "when": "2026-10-20T10:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260921022",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:housing-authority",
-              "root_kind": "agency",
-              "href": "#notice/20260921022",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260921022",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-10-20T10:00:00.000",
-                "input_value": "Housing Authority"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260817001",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "New York City Housing Authority Board Meeting",
-              "when": "2026-09-23T10:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260817001",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:housing-authority",
-              "root_kind": "agency",
-              "href": "#notice/20260817001",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260817001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-09-23T10:00:00.000",
-                "input_value": "Housing Authority"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 3
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "published_by_agency",
-          "from": "contract:BA2335819",
-          "to": "agency:id:housing-authority",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook_nycha_contracts",
-            "source_record_id": "BA2335819:Agreement",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "New York City Housing Authority",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook_nycha_contracts",
-            "source_record_id": "BA2335819:Agreement",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "New York City Housing Authority"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:BA2335819",
-          "to": "pin:19056829",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook_nycha_contracts",
-            "source_record_id": "BA2335819:Agreement",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "19056829",
-            "join_key": "pin",
-            "join_value": "19056829",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook_nycha_contracts",
-            "source_record_id": "BA2335819:Agreement",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "19056829",
-            "join_key": "pin",
-            "join_value": "19056829",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260817001",
-          "to": "agency:id:housing-authority",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260817001",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-09-23T10:00:00.000",
-            "input_value": "Housing Authority"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260921022",
-          "to": "agency:id:housing-authority",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260921022",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-10-20T10:00:00.000",
-            "input_value": "Housing Authority"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20261019007",
-          "to": "agency:id:housing-authority",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20261019007",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-11-18T10:00:00.000",
-            "input_value": "Housing Authority"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 1,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 2,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
-        "total_linked_objects": 4,
-        "link_count": 5,
-        "join_key_link_count": 1,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.2857142857142857
-      }
-    },
     "vendor:stem:SPRAGUE%20OPERATING%20RESOURCES": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -119895,6 +119692,253 @@
         "coverage_rate": 0.2857142857142857
       }
     },
+    "agency:id:board-of-correction": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:board-of-correction",
+        "id": "id:board-of-correction",
+        "canonical_id": "board-of-correction",
+        "canonical_name": "Board of Correction",
+        "display_name": "Board of Correction"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260708018",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES",
+              "when": "2026-07-15T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260708018",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:board-of-correction",
+              "root_kind": "agency",
+              "href": "#notice/20260708018",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260708018",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-07-15T00:00:00.000",
+                "input_value": "Board of Correction"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 1
+        },
+        "meetings": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260106036",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "Board of Correction Public Meeting",
+              "when": "2026-11-17T13:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260106036",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:board-of-correction",
+              "root_kind": "agency",
+              "href": "#notice/20260106036",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260106036",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-11-17T13:00:00.000",
+                "input_value": "Board of Correction"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260106035",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "Board of Correction Public Meeting",
+              "when": "2026-10-14T13:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260106035",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:board-of-correction",
+              "root_kind": "agency",
+              "href": "#notice/20260106035",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260106035",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-10-14T13:00:00.000",
+                "input_value": "Board of Correction"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 2
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260106035",
+          "to": "agency:id:board-of-correction",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260106035",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-10-14T13:00:00.000",
+            "input_value": "Board of Correction"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260106036",
+          "to": "agency:id:board-of-correction",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260106036",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-11-17T13:00:00.000",
+            "input_value": "Board of Correction"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260708018",
+          "to": "agency:id:board-of-correction",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260708018",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-07-15T00:00:00.000",
+            "input_value": "Board of Correction"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "shadow_edges": [],
+      "edge_routing": {
+        "deterministic": 0,
+        "public_inferred": 0,
+        "evidence_only": 0,
+        "no_edge": 0
+      },
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 2,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
+        "total_linked_objects": 3,
+        "link_count": 3,
+        "join_key_link_count": 0,
+        "cross_spine_shadow_count": 0,
+        "coverage_rate": 0.2857142857142857
+      }
+    },
     "agency:id:business-integrity-commission": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -120242,6 +120286,300 @@
         "total_linked_objects": 3,
         "link_count": 5,
         "join_key_link_count": 2,
+        "cross_spine_shadow_count": 0,
+        "coverage_rate": 0.2857142857142857
+      }
+    },
+    "agency:id:housing-authority": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:housing-authority",
+        "id": "id:housing-authority",
+        "canonical_id": "housing-authority",
+        "canonical_name": "Housing Authority",
+        "display_name": "Housing Authority"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "contract:BA2335819",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "VITAL PLUMBING INC",
+              "when": null,
+              "amount": null,
+              "public_status": null,
+              "pin": "19056829",
+              "contract_id": "BA2335819",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:housing-authority",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook_nycha_contracts",
+                "source_record_id": "BA2335819:Agreement",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "input_value": "New York City Housing Authority"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 1
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20261019007",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "New York City Housing Authority Board Meeting",
+              "when": "2026-11-18T10:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20261019007",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:housing-authority",
+              "root_kind": "agency",
+              "href": "#notice/20261019007",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20261019007",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-11-18T10:00:00.000",
+                "input_value": "Housing Authority"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260921022",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "New York City Housing Authority Board Meeting",
+              "when": "2026-10-20T10:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260921022",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:housing-authority",
+              "root_kind": "agency",
+              "href": "#notice/20260921022",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260921022",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-10-20T10:00:00.000",
+                "input_value": "Housing Authority"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 2
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "published_by_agency",
+          "from": "contract:BA2335819",
+          "to": "agency:id:housing-authority",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook_nycha_contracts",
+            "source_record_id": "BA2335819:Agreement",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "New York City Housing Authority",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook_nycha_contracts",
+            "source_record_id": "BA2335819:Agreement",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "New York City Housing Authority"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:BA2335819",
+          "to": "pin:19056829",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook_nycha_contracts",
+            "source_record_id": "BA2335819:Agreement",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "19056829",
+            "join_key": "pin",
+            "join_value": "19056829",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook_nycha_contracts",
+            "source_record_id": "BA2335819:Agreement",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "19056829",
+            "join_key": "pin",
+            "join_value": "19056829",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260921022",
+          "to": "agency:id:housing-authority",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260921022",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-10-20T10:00:00.000",
+            "input_value": "Housing Authority"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20261019007",
+          "to": "agency:id:housing-authority",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20261019007",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-11-18T10:00:00.000",
+            "input_value": "Housing Authority"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "shadow_edges": [],
+      "edge_routing": {
+        "deterministic": 1,
+        "public_inferred": 0,
+        "evidence_only": 0,
+        "no_edge": 0
+      },
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 2,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
+        "total_linked_objects": 3,
+        "link_count": 4,
+        "join_key_link_count": 1,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.2857142857142857
       }
@@ -120733,200 +121071,6 @@
         "total_linked_objects": 3,
         "link_count": 10,
         "join_key_link_count": 7,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.2857142857142857
-      }
-    },
-    "agency:id:board-of-correction": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:board-of-correction",
-        "id": "id:board-of-correction",
-        "canonical_id": "board-of-correction",
-        "canonical_name": "Board of Correction",
-        "display_name": "Board of Correction"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260708018",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES",
-              "when": "2026-07-15T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260708018",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:board-of-correction",
-              "root_kind": "agency",
-              "href": "#notice/20260708018",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260708018",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-07-15T00:00:00.000",
-                "input_value": "Board of Correction"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 1
-        },
-        "meetings": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260106035",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "Board of Correction Public Meeting",
-              "when": "2026-10-14T13:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260106035",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:board-of-correction",
-              "root_kind": "agency",
-              "href": "#notice/20260106035",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260106035",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-10-14T13:00:00.000",
-                "input_value": "Board of Correction"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 1
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260106035",
-          "to": "agency:id:board-of-correction",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260106035",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-10-14T13:00:00.000",
-            "input_value": "Board of Correction"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260708018",
-          "to": "agency:id:board-of-correction",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260708018",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-07-15T00:00:00.000",
-            "input_value": "Board of Correction"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 0,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 2,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
-        "total_linked_objects": 2,
-        "link_count": 2,
-        "join_key_link_count": 0,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.2857142857142857
       }
@@ -150335,38 +150479,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT104020279760410",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279760410",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279760410",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT104020279760610",
           "to": "agency:id:education",
           "method": "agency_canonical_v1",
@@ -150804,38 +150916,6 @@
           "provenance": {
             "source_system": "checkbook-contracts",
             "source_record_id": "checkbook-contracts:ct:CT104020279761011",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "contract:CT104020279761012",
-          "to": "agency:id:education",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761012",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-01",
-            "input_value": "Department of Education",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:ct:CT104020279761012",
             "source_fields": [
               "agency_name"
             ],
@@ -154876,7 +154956,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 6,
-        "link_count": 395,
+        "link_count": 393,
         "join_key_link_count": 45,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
@@ -188110,39 +188190,6 @@
           "note": null,
           "objects": [
             {
-              "subject_ref": "notice:20261102024",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "FY'28 STATEMENT OF DISTRICT NEEDS CAPITAL AND EXPENSE BUDGET REQUESTS PRIORITIES",
-              "when": "2026-11-10T18:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20261102024",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:community-boards",
-              "root_kind": "agency",
-              "href": "#notice/20261102024",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20261102024",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-11-10T18:00:00.000",
-                "input_value": "Community Boards"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
               "subject_ref": "notice:20261102029",
               "domain": "meetings",
               "object_kind": "hearing",
@@ -188164,6 +188211,39 @@
               "provenance": {
                 "source_system": "city_record",
                 "source_record_id": "city_record:20261102029",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-11-10T18:00:00.000",
+                "input_value": "Community Boards"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20261102024",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "FY'28 STATEMENT OF DISTRICT NEEDS CAPITAL AND EXPENSE BUDGET REQUESTS PRIORITIES",
+              "when": "2026-11-10T18:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20261102024",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:community-boards",
+              "root_kind": "agency",
+              "href": "#notice/20261102024",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20261102024",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -289685,6 +289765,709 @@
         "coverage_rate": 0.14285714285714285
       }
     },
+    "vendor:stem:FINESSE%20CREATIONS": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:FINESSE%20CREATIONS",
+        "id": "stem:FINESSE%20CREATIONS",
+        "stem": "FINESSE CREATIONS",
+        "display_name": "FINESSE CREATIONS INC"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "contract:CT105720278803547",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "FINESSE CREATIONS INC",
+              "when": "2026-11-10",
+              "amount": null,
+              "public_status": null,
+              "pin": "05727W0021001",
+              "contract_id": "CT105720278803547",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FINESSE%20CREATIONS",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:05727W0021001",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2026-11-10",
+                "input_value": "FINESSE CREATIONS INC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "notice:20210714122",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "GRP: K.E.W. PRESSURE WASHER",
+              "when": "2021-07-28",
+              "amount": 615000,
+              "public_status": null,
+              "pin": "85721B0021001",
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20210714122",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FINESSE%20CREATIONS",
+              "root_kind": "vendor",
+              "href": "#notice/20210714122",
+              "provenance": {
+                "source_system": "warehouse",
+                "source_record_id": "warehouse:20210714122",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2021-07-28",
+                "input_value": "Finesse Creations Inc,"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "notice:20210311113",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "Red Advisory Flags, Aluminum Poles and Red Pennant Flags",
+              "when": "2021-03-18",
+              "amount": 62890,
+              "public_status": null,
+              "pin": "84621W0019001",
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20210311113",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FINESSE%20CREATIONS",
+              "root_kind": "vendor",
+              "href": "#notice/20210311113",
+              "provenance": {
+                "source_system": "warehouse",
+                "source_record_id": "warehouse:20210311113",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2021-03-18",
+                "input_value": "Finesse Creations, Inc."
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:MA1-857-20220000046",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "FINESSE CREATIONS INC",
+              "when": "07/15/2021",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "MA1-857-20220000046",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FINESSE%20CREATIONS",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "07/15/2021",
+                "input_value": "FINESSE CREATIONS INC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT1-846-20218801410",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "FINESSE CREATIONS INC",
+              "when": "03/12/2021",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT1-846-20218801410",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FINESSE%20CREATIONS",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "03/12/2021",
+                "input_value": "FINESSE CREATIONS INC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 5
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "named_vendor",
+          "from": "contract:CT1-846-20218801410",
+          "to": "vendor:stem:FINESSE%20CREATIONS",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "03/12/2021",
+            "input_value": "FINESSE CREATIONS INC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "03/12/2021",
+            "input_value": "FINESSE CREATIONS INC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT1-846-20218801410",
+          "to": "pin:84621W0019001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "03/12/2021",
+            "input_value": "84621W0019001",
+            "join_key": "epin",
+            "join_value": "84621W0019001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "03/12/2021",
+            "input_value": "84621W0019001",
+            "join_key": "epin",
+            "join_value": "84621W0019001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT105720278803547",
+          "to": "vendor:stem:FINESSE%20CREATIONS",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0021001",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-11-10",
+            "input_value": "FINESSE CREATIONS INC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0021001",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-11-10",
+            "input_value": "FINESSE CREATIONS INC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT105720278803547",
+          "to": "pin:05727W0021001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0021001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-10",
+            "input_value": "05727W0021001",
+            "join_key": "pin",
+            "join_value": "05727W0021001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:05727W0021001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-11-10",
+            "input_value": "05727W0021001",
+            "join_key": "pin",
+            "join_value": "05727W0021001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:MA1-857-20220000046",
+          "to": "vendor:stem:FINESSE%20CREATIONS",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/15/2021",
+            "input_value": "FINESSE CREATIONS INC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "07/15/2021",
+            "input_value": "FINESSE CREATIONS INC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:MA1-857-20220000046",
+          "to": "pin:85721B0021001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/15/2021",
+            "input_value": "85721B0021001",
+            "join_key": "epin",
+            "join_value": "85721B0021001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "07/15/2021",
+            "input_value": "85721B0021001",
+            "join_key": "epin",
+            "join_value": "85721B0021001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "notice:20210311113",
+          "to": "vendor:stem:FINESSE%20CREATIONS",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210311113",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2021-03-18",
+            "input_value": "Finesse Creations, Inc.",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210311113",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2021-03-18",
+            "input_value": "Finesse Creations, Inc."
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20210311113",
+          "to": "contract:CT1-846-20218801410",
+          "method": "passport_contract_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
+            "source_fields": [
+              "epin",
+              "pin"
+            ],
+            "basis": "procurement_pin_exact",
+            "observed_at": "03/12/2021",
+            "input_value": "84621W0019001",
+            "related_source_system": "warehouse",
+            "related_source_record_id": "warehouse:20210311113",
+            "join_key": "pin_epin",
+            "join_value": "84621W0019001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
+            "source_fields": [
+              "epin",
+              "pin"
+            ],
+            "basis": "procurement_pin_exact",
+            "observed_at": "03/12/2021",
+            "input_value": "84621W0019001",
+            "related_source_system": "warehouse",
+            "related_source_record_id": "warehouse:20210311113",
+            "join_key": "pin_epin",
+            "join_value": "84621W0019001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20210311113",
+          "to": "pin:84621W0019001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210311113",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2021-03-18",
+            "input_value": "84621W0019001",
+            "join_key": "pin",
+            "join_value": "84621W0019001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210311113",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2021-03-18",
+            "input_value": "84621W0019001",
+            "join_key": "pin",
+            "join_value": "84621W0019001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "notice:20210714122",
+          "to": "vendor:stem:FINESSE%20CREATIONS",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210714122",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2021-07-28",
+            "input_value": "Finesse Creations Inc,",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210714122",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2021-07-28",
+            "input_value": "Finesse Creations Inc,"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20210714122",
+          "to": "contract:MA1-857-20220000046",
+          "method": "passport_contract_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
+            "source_fields": [
+              "epin",
+              "pin"
+            ],
+            "basis": "procurement_pin_exact",
+            "observed_at": "07/15/2021",
+            "input_value": "85721B0021001",
+            "related_source_system": "warehouse",
+            "related_source_record_id": "warehouse:20210714122",
+            "join_key": "pin_epin",
+            "join_value": "85721B0021001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
+            "source_fields": [
+              "epin",
+              "pin"
+            ],
+            "basis": "procurement_pin_exact",
+            "observed_at": "07/15/2021",
+            "input_value": "85721B0021001",
+            "related_source_system": "warehouse",
+            "related_source_record_id": "warehouse:20210714122",
+            "join_key": "pin_epin",
+            "join_value": "85721B0021001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20210714122",
+          "to": "pin:85721B0021001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210714122",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2021-07-28",
+            "input_value": "85721B0021001",
+            "join_key": "pin",
+            "join_value": "85721B0021001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20210714122",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2021-07-28",
+            "input_value": "85721B0021001",
+            "join_key": "pin",
+            "join_value": "85721B0021001",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        }
+      ],
+      "shadow_edges": [],
+      "edge_routing": {
+        "deterministic": 7,
+        "public_inferred": 0,
+        "evidence_only": 0,
+        "no_edge": 0
+      },
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 5,
+        "link_count": 12,
+        "join_key_link_count": 7,
+        "cross_spine_shadow_count": 0,
+        "coverage_rate": 0.14285714285714285
+      }
+    },
     "vendor:stem:FUND%20FOR%20THE%20CITY": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -310038,604 +310821,6 @@
         "total_linked_objects": 4,
         "link_count": 9,
         "join_key_link_count": 5,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.14285714285714285
-      }
-    },
-    "vendor:stem:FINESSE%20CREATIONS": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:FINESSE%20CREATIONS",
-        "id": "stem:FINESSE%20CREATIONS",
-        "stem": "FINESSE CREATIONS",
-        "display_name": "FINESSE CREATIONS INC"
-      },
-      "domains": {
-        "money": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20210714122",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "GRP: K.E.W. PRESSURE WASHER",
-              "when": "2021-07-28",
-              "amount": 615000,
-              "public_status": null,
-              "pin": "85721B0021001",
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20210714122",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:FINESSE%20CREATIONS",
-              "root_kind": "vendor",
-              "href": "#notice/20210714122",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:20210714122",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2021-07-28",
-                "input_value": "Finesse Creations Inc,"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "notice:20210311113",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "Red Advisory Flags, Aluminum Poles and Red Pennant Flags",
-              "when": "2021-03-18",
-              "amount": 62890,
-              "public_status": null,
-              "pin": "84621W0019001",
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20210311113",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:FINESSE%20CREATIONS",
-              "root_kind": "vendor",
-              "href": "#notice/20210311113",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:20210311113",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2021-03-18",
-                "input_value": "Finesse Creations, Inc."
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:MA1-857-20220000046",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "FINESSE CREATIONS INC",
-              "when": "07/15/2021",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "MA1-857-20220000046",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:FINESSE%20CREATIONS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "passport-public-contracts",
-                "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "07/15/2021",
-                "input_value": "FINESSE CREATIONS INC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT1-846-20218801410",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "FINESSE CREATIONS INC",
-              "when": "03/12/2021",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT1-846-20218801410",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:FINESSE%20CREATIONS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "passport-public-contracts",
-                "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "03/12/2021",
-                "input_value": "FINESSE CREATIONS INC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 4
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "named_vendor",
-          "from": "contract:CT1-846-20218801410",
-          "to": "vendor:stem:FINESSE%20CREATIONS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "03/12/2021",
-            "input_value": "FINESSE CREATIONS INC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "03/12/2021",
-            "input_value": "FINESSE CREATIONS INC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT1-846-20218801410",
-          "to": "pin:84621W0019001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "03/12/2021",
-            "input_value": "84621W0019001",
-            "join_key": "epin",
-            "join_value": "84621W0019001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "03/12/2021",
-            "input_value": "84621W0019001",
-            "join_key": "epin",
-            "join_value": "84621W0019001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:MA1-857-20220000046",
-          "to": "vendor:stem:FINESSE%20CREATIONS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "07/15/2021",
-            "input_value": "FINESSE CREATIONS INC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "07/15/2021",
-            "input_value": "FINESSE CREATIONS INC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:MA1-857-20220000046",
-          "to": "pin:85721B0021001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "07/15/2021",
-            "input_value": "85721B0021001",
-            "join_key": "epin",
-            "join_value": "85721B0021001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "07/15/2021",
-            "input_value": "85721B0021001",
-            "join_key": "epin",
-            "join_value": "85721B0021001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "notice:20210311113",
-          "to": "vendor:stem:FINESSE%20CREATIONS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210311113",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2021-03-18",
-            "input_value": "Finesse Creations, Inc.",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210311113",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2021-03-18",
-            "input_value": "Finesse Creations, Inc."
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "references_contract",
-          "from": "notice:20210311113",
-          "to": "contract:CT1-846-20218801410",
-          "method": "passport_contract_join_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
-            "source_fields": [
-              "epin",
-              "pin"
-            ],
-            "basis": "procurement_pin_exact",
-            "observed_at": "03/12/2021",
-            "input_value": "84621W0019001",
-            "related_source_system": "warehouse",
-            "related_source_record_id": "warehouse:20210311113",
-            "join_key": "pin_epin",
-            "join_value": "84621W0019001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-846-20218801410",
-            "source_fields": [
-              "epin",
-              "pin"
-            ],
-            "basis": "procurement_pin_exact",
-            "observed_at": "03/12/2021",
-            "input_value": "84621W0019001",
-            "related_source_system": "warehouse",
-            "related_source_record_id": "warehouse:20210311113",
-            "join_key": "pin_epin",
-            "join_value": "84621W0019001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "notice:20210311113",
-          "to": "pin:84621W0019001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210311113",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2021-03-18",
-            "input_value": "84621W0019001",
-            "join_key": "pin",
-            "join_value": "84621W0019001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210311113",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2021-03-18",
-            "input_value": "84621W0019001",
-            "join_key": "pin",
-            "join_value": "84621W0019001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "notice:20210714122",
-          "to": "vendor:stem:FINESSE%20CREATIONS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210714122",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2021-07-28",
-            "input_value": "Finesse Creations Inc,",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210714122",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2021-07-28",
-            "input_value": "Finesse Creations Inc,"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "references_contract",
-          "from": "notice:20210714122",
-          "to": "contract:MA1-857-20220000046",
-          "method": "passport_contract_join_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
-            "source_fields": [
-              "epin",
-              "pin"
-            ],
-            "basis": "procurement_pin_exact",
-            "observed_at": "07/15/2021",
-            "input_value": "85721B0021001",
-            "related_source_system": "warehouse",
-            "related_source_record_id": "warehouse:20210714122",
-            "join_key": "pin_epin",
-            "join_value": "85721B0021001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:MA1-857-20220000046",
-            "source_fields": [
-              "epin",
-              "pin"
-            ],
-            "basis": "procurement_pin_exact",
-            "observed_at": "07/15/2021",
-            "input_value": "85721B0021001",
-            "related_source_system": "warehouse",
-            "related_source_record_id": "warehouse:20210714122",
-            "join_key": "pin_epin",
-            "join_value": "85721B0021001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "notice:20210714122",
-          "to": "pin:85721B0021001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210714122",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2021-07-28",
-            "input_value": "85721B0021001",
-            "join_key": "pin",
-            "join_value": "85721B0021001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210714122",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2021-07-28",
-            "input_value": "85721B0021001",
-            "join_key": "pin",
-            "join_value": "85721B0021001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 6,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 4,
-        "link_count": 10,
-        "join_key_link_count": 6,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
       }
@@ -340327,13 +340512,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT104020279760410": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT104020279760610": [
       {
         "entity_ref": "agency:id:education",
@@ -340426,13 +340604,6 @@
       }
     ],
     "contract:CT104020279761011": [
-      {
-        "entity_ref": "agency:id:education",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
-    "contract:CT104020279761012": [
       {
         "entity_ref": "agency:id:education",
         "relation": "published_by_agency",
@@ -341101,6 +341272,18 @@
       {
         "entity_ref": "agency:id:fire-department",
         "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT105720278803547": [
+      {
+        "entity_ref": "agency:id:fire-department",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:FINESSE%20CREATIONS",
+        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -341874,6 +342057,13 @@
       }
     ],
     "contract:CT184620278803653": [
+      {
+        "entity_ref": "agency:id:parks-and-recreation",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT184620278803660": [
       {
         "entity_ref": "agency:id:parks-and-recreation",
         "relation": "published_by_agency",
@@ -349568,10 +349758,10 @@
         "confidence": "strong"
       }
     ],
-    "notice:20260506027": [
+    "notice:20260106036": [
       {
-        "entity_ref": "agency:id:finance",
-        "relation": "issued_rule",
+        "entity_ref": "agency:id:board-of-correction",
+        "relation": "hosts_meeting",
         "confidence": "strong"
       }
     ],
@@ -350069,13 +350259,6 @@
       {
         "entity_ref": "agency:id:buildings",
         "relation": "issued_rule",
-        "confidence": "strong"
-      }
-    ],
-    "notice:20260817001": [
-      {
-        "entity_ref": "agency:id:housing-authority",
-        "relation": "hosts_meeting",
         "confidence": "strong"
       }
     ],
@@ -350950,6 +351133,13 @@
         "confidence": "strong"
       }
     ],
+    "notice:20261102022": [
+      {
+        "entity_ref": "agency:id:buildings",
+        "relation": "issued_rule",
+        "confidence": "strong"
+      }
+    ],
     "notice:20261102024": [
       {
         "entity_ref": "agency:id:community-boards",
@@ -351372,12 +351562,12 @@
       "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
       "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",
       "procurement_spine": "site/data/procurement_spine_sources.json",
-      "procurement_spine_observed_on": "2026-11-09"
+      "procurement_spine_observed_on": "2026-11-10"
     }
   },
   "procurement_spine": {
     "schema_version": 1,
-    "observed_on": "2026-11-09",
+    "observed_on": "2026-11-10",
     "coverage": {
       "passport_contracts": {
         "source_system": "passport-public-contracts",
@@ -351423,7 +351613,7 @@
         "coverage_status": "measured",
         "population_backed": true,
         "source_url": "https://www.checkbooknyc.com/api",
-        "pulled_at": "2026-11-09T21:24:05.881Z",
+        "pulled_at": "2026-11-10T15:17:39.651Z",
         "population": {
           "api_transaction_rows": 40319,
           "normalized_unique_contracts": 29581,
@@ -351520,7 +351710,7 @@
     },
     "row_counts": {
       "passport_contracts": 12795,
-      "checkbook_contracts": 10569,
+      "checkbook_contracts": 10572,
       "checkbook_spending": 31,
       "passport_contracts_materialization": 2,
       "checkbook_nycha_contracts": 1
@@ -351583,7 +351773,7 @@
       },
       "checkbook_contracts": {
         "population_rows": 29581,
-        "committed_slice_rows": 10569,
+        "committed_slice_rows": 10572,
         "selected_rows": 500,
         "cap": 500,
         "strategy": "population-measured Checkbook slice capped for entity intelligence; one row per exact prime_contract_id; Contracts_NYCHA rows reserve slots in the shared Checkbook budget"
@@ -351816,19 +352006,19 @@
       "coverage_rate": 0.2857142857142857
     },
     {
-      "ref": "agency:id:housing-authority",
-      "kind": "agency",
-      "display_name": "Housing Authority",
-      "domains_matched": 2,
-      "total_linked_objects": 4,
-      "coverage_rate": 0.2857142857142857
-    },
-    {
       "ref": "vendor:stem:SPRAGUE%20OPERATING%20RESOURCES",
       "kind": "vendor",
       "display_name": "SPRAGUE OPERATING RESOURCES LLC",
       "domains_matched": 2,
       "total_linked_objects": 4,
+      "coverage_rate": 0.2857142857142857
+    },
+    {
+      "ref": "agency:id:board-of-correction",
+      "kind": "agency",
+      "display_name": "Board of Correction",
+      "domains_matched": 2,
+      "total_linked_objects": 3,
       "coverage_rate": 0.2857142857142857
     },
     {
@@ -351840,19 +352030,19 @@
       "coverage_rate": 0.2857142857142857
     },
     {
-      "ref": "vendor:stem:BEDFORD%20STUYVESANT%20RESTORATION",
-      "kind": "vendor",
-      "display_name": "BEDFORD STUYVESANT RESTORATION CORP",
+      "ref": "agency:id:housing-authority",
+      "kind": "agency",
+      "display_name": "Housing Authority",
       "domains_matched": 2,
       "total_linked_objects": 3,
       "coverage_rate": 0.2857142857142857
     },
     {
-      "ref": "agency:id:board-of-correction",
-      "kind": "agency",
-      "display_name": "Board of Correction",
+      "ref": "vendor:stem:BEDFORD%20STUYVESANT%20RESTORATION",
+      "kind": "vendor",
+      "display_name": "BEDFORD STUYVESANT RESTORATION CORP",
       "domains_matched": 2,
-      "total_linked_objects": 2,
+      "total_linked_objects": 3,
       "coverage_rate": 0.2857142857142857
     },
     {
@@ -352664,6 +352854,14 @@
       "coverage_rate": 0.14285714285714285
     },
     {
+      "ref": "vendor:stem:FINESSE%20CREATIONS",
+      "kind": "vendor",
+      "display_name": "FINESSE CREATIONS INC",
+      "domains_matched": 1,
+      "total_linked_objects": 5,
+      "coverage_rate": 0.14285714285714285
+    },
+    {
       "ref": "vendor:stem:FUND%20FOR%20THE%20CITY",
       "kind": "vendor",
       "display_name": "FUND FOR THE CITY OF NEW YORK, INC.",
@@ -352931,14 +353129,6 @@
       "ref": "vendor:stem:EXODUS%20TRANSITIONAL%20COMMUNITY",
       "kind": "vendor",
       "display_name": "EXODUS TRANSITIONAL COMMUNITY INC",
-      "domains_matched": 1,
-      "total_linked_objects": 4,
-      "coverage_rate": 0.14285714285714285
-    },
-    {
-      "ref": "vendor:stem:FINESSE%20CREATIONS",
-      "kind": "vendor",
-      "display_name": "FINESSE CREATIONS INC",
       "domains_matched": 1,
       "total_linked_objects": 4,
       "coverage_rate": 0.14285714285714285

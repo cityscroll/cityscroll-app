@@ -53,28 +53,28 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-11-09T21:24:05.881Z",
+    "generated_at": "2026-11-10T15:17:39.651Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "d63de496a72196b226697ff0ece2b2a12c2abfd71885212b587698648672c92f",
-        "row_count": 20598
+        "sha256": "c6c672255a41335ee57a53bfb9c38b094c1f7d58ce23abaa88bd263e1ba99451",
+        "row_count": 20601
       },
       "spine_sources": {
         "path": "site/data/procurement_spine_sources.json",
-        "sha256": "2b0b1acbbae87139a11af9b57f1193529f970427276e268d41430a554421749d",
+        "sha256": "32d8bbf1ebd6c7554ca33a138ce8cf4dc44c98c9ef2e925f51274c27546579dc",
         "passport_contract_rows": 12795
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "c2af70cbd2aba7bcafbd0b7205e616dd96e405b937c781b6ae5dc77ff15684f8",
-        "object_count": 20598
+        "sha256": "b52d8c8bcea06a3590ebdbb02f8a4b427f1818f448f8759ad8b65581ae07ea76",
+        "object_count": 20601
       }
     },
     "served_source_counts": {
       "city_record": 12684,
       "passport_public_contracts": 12771,
-      "checkbook_contracts": 9519
+      "checkbook_contracts": 9522
     },
     "interpretation": "Counts are the committed CityScroll snapshot, not a claim that any source is a complete citywide inventory."
   },
@@ -499,7 +499,7 @@
     "review_note": "Re-reviewed after the DOE canonical row count moved from 3856 to 4412 on the 2026-10-09 Checkbook/OCP browse rematerialization. Counts by source before -> after: city_record 436 -> 433, passport_public_contracts 438 -> 438, checkbook_contracts 3418 -> 3974. New combination keys: none. No DOE row is left without a recognised source family. The added rows are served Checkbook/PASSPort/City Record records rather than a newly discovered distinct DOE corpus, so the finding is unchanged in substance: no distinct public DOE corpus is demonstrated missing, and no production card is proposed.",
     "served_measurement": {
       "artifact": "site/data/procurement_browse_rows.json",
-      "generated_at": "2026-11-09T21:24:05.881Z"
+      "generated_at": "2026-11-10T15:17:39.651Z"
     }
   },
   "production_cards": [],
