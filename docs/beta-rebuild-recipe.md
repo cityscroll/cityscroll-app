@@ -33,7 +33,8 @@ R2, Analytics Engine, Queue, cron, or secret configuration:
 routes = [
   { pattern = "api-beta.cityscroll.org", custom_domain = true },
 ]
-workers_dev = true
+workers_dev = false
+preview_urls = false
 
 [env.beta.vars]
 DEPLOYMENT_CHANNEL = "beta"
@@ -47,6 +48,9 @@ removed stanza. Production `[vars]` stay unchanged.
 
 Worker CORS must accept review origins only when `DEPLOYMENT_CHANNEL` is
 `beta`. Production must keep rejecting those origins.
+
+Keep the review Worker reachable only through its custom domain. Do not enable
+the account-subdomain alias or Version/Preview URLs.
 
 ## Pages project and DNS
 

@@ -558,7 +558,7 @@ const worker = {
     if (pathname === "/rules") return handleRules(request, env, ctx);
     if (pathname === "/source-vault/fetch" || pathname.startsWith("/source-vault/")) return handleSourceVault(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);
-    // API and workers.dev hosts keep `/near-you` (canonical redirect) but never
+    // API custom-domain hosts keep `/near-you` (canonical redirect) but never
     // claim the host root as the resident shell — that default entry is only on
     // cityscroll.org via the site-host branch above.
     if (

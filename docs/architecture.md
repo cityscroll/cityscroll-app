@@ -112,7 +112,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: 3860f3810aed2bdbf5b511edd6bee3fc08ad157b542b499cc14fbf9ceaa3f456
+sources_hash: 4c3dc932a1b8f390b9790f1161dacccd03145ee3b04fdf41b7592ed8d8aefae7
 ---
 
 # CityScroll — architecture

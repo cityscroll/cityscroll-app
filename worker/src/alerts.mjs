@@ -3093,7 +3093,7 @@ async function isMirrorFresh(db, todayISO) {
 // A one-click unsubscribe URL: a long-lived signed token carrying the sub's KV key.
 async function unsubLink(env, subKey) {
   if (!env.TOKEN_SECRET) return "mailto:alerts@cityscroll.org?subject=unsubscribe";
-  const base = env.CONFIRM_BASE || "https://api.cityscroll.org"; // branded custom domain (workers.dev stays an alias)
+  const base = env.CONFIRM_BASE || "https://api.cityscroll.org"; // branded custom domain covered by zone protections
   const token = await signToken(env.TOKEN_SECRET, { k: subKey }, { ttlSeconds: 60 * 24 * 3600 });
   return `${base}/unsubscribe?token=${encodeURIComponent(token)}`;
 }
