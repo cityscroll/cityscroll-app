@@ -582,7 +582,6 @@ site/land_affected_review_body.mjs
 site/land_authority_summary.mjs
 site/land_authority_summary_view.mjs
 site/land_catalog_generation.mjs
-site/land_decision_path.mjs
 site/land_detail_coherence.mjs
 site/land_filing_evidence_facet.mjs
 site/land_filter_parity.mjs
@@ -600,6 +599,7 @@ site/land_project_decision_relations.mjs
 site/land_project_geography.mjs
 site/land_project_map_points.mjs
 site/land_project_route.mjs
+site/land_projects_attach.mjs
 site/land_record_links.mjs
 site/land_regulatory_effect.mjs
 site/land_review_regimes.mjs
@@ -1180,6 +1180,7 @@ test/graph_edge_provenance.test.mjs
 test/hash_routes.test.mjs
 test/hearing_logistics.test.mjs
 test/hearing_widening.test.mjs
+test/helpers/attach_land_projects_presentation.mjs
 test/helpers/mandate_subject.mjs
 test/helpers/near_you_local_escape_fixture.mjs
 test/helpers/near_you_place_suggestions_fixture.mjs

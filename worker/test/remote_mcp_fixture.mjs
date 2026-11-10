@@ -1,3 +1,4 @@
+import "../../test/helpers/attach_land_projects_presentation.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";

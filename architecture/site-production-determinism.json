@@ -407,6 +407,8 @@
     "site/land_project_geometry.mjs",
     "site/land_project_map_points.mjs",
     "site/land_project_route.mjs",
+    "site/land_projects_attach.mjs",
+    "site/land_projects_presentation.mjs",
     "site/land_record_links.mjs",
     "site/land_regulatory_effect.mjs",
     "site/land_review_regimes.mjs",
