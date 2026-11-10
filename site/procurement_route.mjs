@@ -1,5 +1,5 @@
-// Canonical procurement navigation without importing object construction.
-export function procurementCanonicalHref(recordOrId) {
-  const id = typeof recordOrId === "object" ? recordOrId?.procurement_id : recordOrId;
-  return id ? `/procurements/${encodeURIComponent(String(id))}` : null;
-}
+/**
+ * Re-export the engine-owned procurement canonical href helper.
+ */
+
+export { procurementCanonicalHref } from "../capabilities/procurement_canonical_href.mjs";

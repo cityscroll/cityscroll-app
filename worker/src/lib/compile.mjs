@@ -56,7 +56,7 @@ import { collapseMeetingDeliveryRows } from "../../../site/meeting_delivery_iden
 import {
   evaluateMeetingAvailabilityRows,
   validateMeetingAvailability,
-} from "../../../site/meeting_availability_filter.mjs";
+} from "../../../capabilities/meeting_availability.mjs";
 export { vendorStem };
 
 const EMPTY_PROCUREMENT_DIGEST = Object.freeze({ rows: Object.freeze([]) });

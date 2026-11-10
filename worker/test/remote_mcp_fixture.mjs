@@ -27,6 +27,7 @@ import { workerContractsAnalysis, workerProcurementContracts } from "../src/cont
 import { workerPeopleOrganizations } from "../src/people_organizations.mjs";
 import { workerMeetingGet, workerMeetingsBrowse } from "../src/hearings.mjs";
 import { workerLandProjects } from "../src/land_projects.mjs";
+import { buildProcurementBrowseCapabilityIndex } from "../../site/procurement_browse_capability_index.mjs";
 
 export const CAPABILITY_TOOL_CASES = Object.freeze([
   Object.freeze({
@@ -295,6 +296,7 @@ export function createRemoteMcpFixtureEnv() {
       NL_METER: new MockKV(),
       ALERT_STATE: alertState,
       PROCUREMENT_READ_MODEL: procurementModel,
+      buildProcurementBrowseCapabilityIndex,
       ANALYTICAL_PROJECTION: {
         schema: "cityscroll.analytical_projection.v1",
         generated_at: "2026-08-18T20:00:00Z",

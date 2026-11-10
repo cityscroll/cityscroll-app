@@ -16,7 +16,7 @@ import {
   landProjectCatalogRows,
   rowsForCompiledQuery,
 } from "./lib/compile.mjs";
-import { evaluateMeetingAvailabilityRows } from "../../site/meeting_availability_filter.mjs";
+import { evaluateMeetingAvailabilityRows } from "../../capabilities/meeting_availability.mjs";
 import { feedItems } from "./lib/feed.mjs";
 import { prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
 import {

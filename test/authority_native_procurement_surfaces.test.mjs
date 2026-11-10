@@ -24,6 +24,7 @@ import {
   workerProcurementContracts,
 } from "../worker/src/contracts.mjs";
 import edgeWorker from "../site/pages_edge.mjs";
+import { buildProcurementBrowseCapabilityIndex } from "../site/procurement_browse_capability_index.mjs";
 
 const nativeFixtures = JSON.parse(readFileSync(
   new URL("../warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", import.meta.url),
@@ -217,7 +218,7 @@ test("A6/A7 Follow and digest compile the canonical procurement identity", () =>
 });
 
 test("A8/A9 HTTP API and MCP match website identity, receipt, and population", async () => {
-  const env = { PROCUREMENT_READ_MODEL: model };
+  const env = { PROCUREMENT_READ_MODEL: model, buildProcurementBrowseCapabilityIndex };
   const provider = workerProcurementContracts(env);
   const ids = FIXTURES.map((fixture) => fixture.id).sort();
   const present = (values) => values.filter((id) => ids.includes(id)).sort();
