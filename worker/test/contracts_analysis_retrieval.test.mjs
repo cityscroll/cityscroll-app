@@ -16,6 +16,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 import { buildSharedProcurementReadModel } from "../../site/shared_procurement_read_model.mjs";
+import { buildProcurementBrowseCapabilityIndex } from "../../site/procurement_browse_capability_index.mjs";
 import { executeContractGet } from "../../capabilities/contracts.mjs";
 import { executeContractsAnalysis } from "../../capabilities/contracts_analysis.mjs";
 import {
@@ -68,7 +69,7 @@ const projection = {
   ],
 };
 
-const env = { ANALYTICAL_PROJECTION: projection, PROCUREMENT_READ_MODEL: readModel };
+const env = { ANALYTICAL_PROJECTION: projection, PROCUREMENT_READ_MODEL: readModel, buildProcurementBrowseCapabilityIndex };
 const input = { groupBy: "agency", measure: "current", agency: "Agency A", limit: 10 };
 
 /**

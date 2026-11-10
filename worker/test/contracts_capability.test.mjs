@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import { buildSharedProcurementReadModel } from "../../site/shared_procurement_read_model.mjs";
+import { buildProcurementBrowseCapabilityIndex } from "../../site/procurement_browse_capability_index.mjs";
 import {
   CONTRACT_GET_CAPABILITY,
   CONTRACT_GET_CAPABILITY_REFERENCE,
@@ -62,7 +63,7 @@ const model = buildSharedProcurementReadModel({
   generatedAt: "2026-08-18T20:00:00Z",
   now: "2026-08-18T20:01:00Z",
 });
-const env = { PROCUREMENT_READ_MODEL: model };
+const env = { PROCUREMENT_READ_MODEL: model, buildProcurementBrowseCapabilityIndex };
 const firstId = "procurement:contract:CTONE";
 
 class MockKV {

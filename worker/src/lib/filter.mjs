@@ -13,7 +13,7 @@ import { KNOWN_PROCUREMENT_PROCESS_STATES } from "../../../site/procurement_proc
 import {
   admitMeetingAvailability,
   canonicalMeetingAvailability,
-} from "../../../site/meeting_availability_filter.mjs";
+} from "../../../capabilities/meeting_availability.mjs";
 import {
   TEXT_QUERY_STRUCTURED_SCOPE_FIELDS,
   textQueryAdmissionSupported,

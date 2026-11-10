@@ -1,5 +1,5 @@
-import { evaluateMeetingAvailabilityRows } from "../site/meeting_availability_filter.mjs";
-import { attendanceModeForRecord, MEETINGS_ATTENDANCE_MODES } from "../site/meetings_attendance.mjs";
+import { evaluateMeetingAvailabilityRows } from "./meeting_availability.mjs";
+import { attendanceModeForRecord, MEETINGS_ATTENDANCE_MODES } from "./meetings_attendance.mjs";
 import { scheduleHasExactTime } from "../site/meeting_temporal_evidence.mjs";
 
 // Transport-neutral contract for one source-qualified meeting from the
