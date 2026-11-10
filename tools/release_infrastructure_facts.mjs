@@ -77,6 +77,7 @@ function scalar(text) {
 export function parseWranglerConfig(text) {
   const crons = [];
   const vars = {};
+  const settings = {};
   const bindings = [];
   let section = null;
   let sectionCommented = false;
@@ -124,6 +125,14 @@ export function parseWranglerConfig(text) {
     }
     const field = scalar(declaration);
     if (!field) continue;
+    if (section === null && !commented) {
+      settings[field.key] = field.value === "true"
+        ? true
+        : field.value === "false"
+          ? false
+          : field.value;
+      continue;
+    }
     if (section === "vars" && !commented) {
       vars[field.key] = field.value;
       continue;
@@ -139,7 +148,7 @@ export function parseWranglerConfig(text) {
   }
   flushPending();
 
-  return { crons, vars, bindings };
+  return { crons, vars, settings, bindings };
 }
 
 /**
@@ -264,6 +273,10 @@ export function buildReleaseInfrastructureFacts({ rootDir = ROOT } = {}) {
     crons: wrangler.crons,
     bindings,
     vars: wrangler.vars,
+    worker_url_exposure: {
+      workers_dev: wrangler.settings.workers_dev ?? null,
+      preview_urls: wrangler.settings.preview_urls ?? null,
+    },
     contract,
     externally_observed: {
       // Nothing in this repository can read a provider dashboard. Every setting
@@ -320,6 +333,12 @@ export function verifyReleaseInfrastructureDocumentation({ rootDir = ROOT } = {}
   }
   if (facts.contract.worker?.native_builds_connection !== "unverified") {
     findings.push(`${RELEASE_CONTRACT} must record the native Workers Builds connection as unverified until a receipt proves it`);
+  }
+  if (facts.worker_url_exposure.workers_dev !== false) {
+    findings.push(`${WRANGLER_CONFIG} must disable the public workers.dev alias`);
+  }
+  if (facts.worker_url_exposure.preview_urls !== false) {
+    findings.push(`${WRANGLER_CONFIG} must disable workers.dev Version and Preview URLs`);
   }
   const retiredClaims = /manual,? non-required fallback|Workers Builds (?:remains|is) the canonical|manual-only (?:fallback|workflow|classification)/i;
   if (retiredClaims.test(reference)) {

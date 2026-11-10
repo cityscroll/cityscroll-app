@@ -12,7 +12,7 @@ curl --header 'User-Agent: CityScrollDiagnostics/1.0 (+https://cityscroll.org)' 
   'https://api.cityscroll.org/zap-outcomes?id=2026K0233'
 ```
 
-The configured alternate host is `cityscroll-worker.crol-worker.workers.dev`.
+The configured alternate host is `api.crol-list.org`.
 Neither public read requires an admin credential. A Cloudflare `1010` response
 is a [client-signature rejection](https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1010/), distinct from CORS or an application-level
 missing record. Correlate its Ray ID with owner-side security events before

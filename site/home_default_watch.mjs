@@ -11,7 +11,7 @@ import {
 // fallback.
 const API_ORIGINS = Object.freeze([
   window.CROL_API_ORIGIN || "https://api.cityscroll.org",
-  window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev",
+  window.CROL_API_FALLBACK_ORIGIN || "https://api.crol-list.org",
 ]);
 
 async function subscribeHomeDefault(email, lang) {

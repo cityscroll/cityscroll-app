@@ -1,7 +1,7 @@
 # cityscroll-worker
 
 The server boundary for **[CityScroll](https://cityscroll.org)** — a single **Cloudflare Worker**
-at `https://api.cityscroll.org` (custom domain; the `workers.dev` alias is disabled).
+at `https://api.cityscroll.org` (custom domain; the `workers.dev` alias and Version/Preview URLs are disabled).
 Everything that needs a held secret, a CORS shim, a schedule, D1/KV state, or a
 server-rendered document lives here or in the Pages edge handler described below.
 

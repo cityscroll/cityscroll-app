@@ -15,7 +15,7 @@ import assert from "node:assert/strict";
 import { DEFAULT_WATCH_HANDOFF_STORAGE_KEY } from "../site/following_default_watch_receipt.mjs";
 
 const API_ORIGIN = "https://api.test";
-const FALLBACK_ORIGIN = "https://fallback.test";
+const FALLBACK_ORIGIN = "https://api.crol-list.org";
 
 function fakeElement(id = "") {
   return {
@@ -71,7 +71,6 @@ globalThis.document = {
 globalThis.window = {
   LANG: "es",
   CROL_API_ORIGIN: API_ORIGIN,
-  CROL_API_FALLBACK_ORIGIN: FALLBACK_ORIGIN,
   addEventListener() {},
   t: (key, values = {}) => Object.entries(values)
     .reduce((copy, [name, value]) => copy.replaceAll(`{${name}}`, String(value)), key),

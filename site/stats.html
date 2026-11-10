@@ -342,7 +342,7 @@
   // what the response publishes and never derives a figure of its own: a period the
   // measurement cannot establish is drawn as "not published", never as a zero.
   const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
-  const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev";
+  const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://api.crol-list.org";
   async function workerFetch(path, opts) {
     try { return await fetch(API + path, opts); }
     catch (e) { return fetch(API_FALLBACK + path, opts); }
