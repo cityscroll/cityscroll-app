@@ -14,8 +14,21 @@ import {
   reviewedFollowingLens,
 } from "./following_preview_handoff.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
+import {
+  HOME_EMAIL_ENTRY_EXPLAIN,
+  HOME_EMAIL_ENTRY_LABEL,
+  HOME_FOLLOWING_ONBOARDING_HREF,
+  isHomeFollowingOnboardingHref,
+  renderHomeEmailEntryHtml,
+} from "./home_email_entry_render.mjs";
 
-export const HOME_FOLLOWING_ONBOARDING_HREF = "/following/?onboarding=1";
+export {
+  HOME_EMAIL_ENTRY_EXPLAIN,
+  HOME_EMAIL_ENTRY_LABEL,
+  HOME_FOLLOWING_ONBOARDING_HREF,
+  isHomeFollowingOnboardingHref,
+  renderHomeEmailEntryHtml,
+};
 
 const CONTEXT_FILTER_KEYS = Object.freeze([
   "keywords", "q", "agency", "borough", "boro", "neighborhood",
@@ -102,14 +115,4 @@ export function homeFollowingEntryHref(context = {}, options = {}) {
   if (!href || href === "/following/" || href === "/following") return HOME_FOLLOWING_ONBOARDING_HREF;
   if (/[?&]email=/i.test(href)) return HOME_FOLLOWING_ONBOARDING_HREF;
   return href;
-}
-
-export function isHomeFollowingOnboardingHref(href) {
-  try {
-    const url = new URL(String(href || ""), "https://cityscroll.org");
-    if (!/^\/following\/?$/.test(url.pathname)) return false;
-    return url.searchParams.get("onboarding") === "1";
-  } catch {
-    return false;
-  }
 }

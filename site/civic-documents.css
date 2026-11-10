@@ -4030,6 +4030,47 @@ select {
 .near-geo-primary-controls .near-surface-switch {
   margin: 0;
 }
+.near-home-email-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  margin: 0 0 var(--space-2);
+  max-width: 42rem;
+  font: 400 0.9rem/1.35 var(--font-body);
+  color: var(--color-text);
+}
+.near-home-email-entry-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-action);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-action);
+  font: 650 0.9rem/1.2 var(--font-interface);
+  text-decoration: none;
+}
+.near-home-email-entry-link:hover,
+.near-home-email-entry-link:focus-visible {
+  background: var(--color-action);
+  color: var(--color-surface);
+}
+.near-home-email-entry-explain {
+  flex: 1 1 12rem;
+  color: var(--color-text-soft);
+}
+@media (max-width: 480px) {
+  .near-home-email-entry {
+    margin-bottom: var(--space-1);
+    font-size: 0.82rem;
+    line-height: 1.3;
+  }
+  .near-home-email-entry-link {
+    padding-inline: var(--space-2);
+  }
+}
 [data-geography-shell][data-near-surface="map"] > .near-surface-switch {
   margin-block: var(--space-1);
 }
