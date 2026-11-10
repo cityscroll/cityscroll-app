@@ -2305,6 +2305,7 @@ worker/src/lib/watch_query_revision.mjs
 worker/src/lib/watch_seen_membership.mjs
 worker/src/lib/watch_text_query_meetings.mjs
 worker/src/lib/watch_text_query_procurement.mjs
+worker/src/lib/watch_verdict.mjs
 worker/src/lib/watchlog.mjs
 worker/src/lib/welcome_outbox.mjs
 worker/src/lib/worker_acquisition_runtime.mjs
