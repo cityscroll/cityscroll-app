@@ -227,6 +227,11 @@ export const DAYLOG_ENTRY_FIELDS = Object.freeze([
   { name: "forecasts", type: "number", description: "Forecast cards attached to the email." },
   { name: "sections", type: "array|undefined", description: "Rollup nested section summaries." },
   { name: "sendUnits", type: "number", description: "Send-cap units (rollup = 1)." },
+  {
+    name: "verdict",
+    type: "object|undefined",
+    description: "Named outcome { class, reason } from watch_verdict; absent on entries written before the field existed.",
+  },
 ]);
 
 /** Daylog envelope fields. */
