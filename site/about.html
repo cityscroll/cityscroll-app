@@ -184,8 +184,9 @@
 
 <script type="module">
 import { feedbackValidationError, feedbackPayload } from "./contextual_ux_feedback_prompt.mjs";
+import { CITYSCROLL_COMPATIBILITY_API_ORIGIN } from "./affordance_grammar.mjs";
 const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
-const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://api.crol-list.org"; // stale-DNS fallback
+const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || CITYSCROLL_COMPATIBILITY_API_ORIGIN; // stale-DNS fallback
 async function workerFetch(path, opts){
   try{ return await fetch(API+path, opts); }
   catch(e){ return fetch(API_FALLBACK+path, opts); }

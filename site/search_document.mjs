@@ -10,6 +10,7 @@ import {
 } from "./semantic_topic_search.mjs";
 import { renderUniversalSearchCoverageHtml } from "./universal_search_coverage_receipt.mjs";
 import { renderFamilyNav } from "./search_family_nav.mjs";
+import { CITYSCROLL_COMPATIBILITY_API_ORIGIN } from "./affordance_grammar.mjs";
 import {
   buildSearchLensHandoffHref,
   searchDestinationForResult,
@@ -50,7 +51,7 @@ const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
 const SEARCH_RETURN_STATE_KEY = "cityscroll.search_return_state.v1";
 const SEARCH_API_ORIGIN = "https://api.cityscroll.org";
-const SEARCH_API_FALLBACK_ORIGIN = "https://api.crol-list.org";
+const SEARCH_API_FALLBACK_ORIGIN = CITYSCROLL_COMPATIBILITY_API_ORIGIN;
 const LANES = Object.freeze([
   "contracts",
   "people-organizations",

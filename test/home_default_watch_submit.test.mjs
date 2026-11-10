@@ -12,10 +12,11 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
+import { CITYSCROLL_COMPATIBILITY_API_ORIGIN } from "../site/affordance_grammar.mjs";
 import { DEFAULT_WATCH_HANDOFF_STORAGE_KEY } from "../site/following_default_watch_receipt.mjs";
 
 const API_ORIGIN = "https://api.test";
-const FALLBACK_ORIGIN = "https://api.crol-list.org";
+const FALLBACK_ORIGIN = CITYSCROLL_COMPATIBILITY_API_ORIGIN;
 
 function fakeElement(id = "") {
   return {

@@ -193,7 +193,7 @@ Browser (site/index.html: inline CSS + static markup)
         │  secret / server-side routes only
         ▼
   api.cityscroll.org  (Cloudflare Worker "cityscroll-worker" — worker/ in this repo;
-                      api.crol-list.org remains a custom-domain compatibility alias;
+                      the retired product domain remains a custom-domain compatibility alias;
                       workers.dev and Version/Preview URLs are disabled so zone protections cannot be bypassed)
         ├──  /nl                plain-English → lens filters (Claude Haiku, NL_METER-capped)
         ├──  /search            ranked public notice search over the D1 FTS5 mirror

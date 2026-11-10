@@ -204,7 +204,8 @@
 </main>
 <footer class="foot"><p data-i18n-html="stats_foot_html">Raw JSON: <a href="https://api.cityscroll.org/stats">api.cityscroll.org/stats</a> (cached ~15 min) · <a href="about.html">About</a> · <a href="index.html">Home</a></p></footer>
 </div>
-<script>
+<script type="module">
+  import { CITYSCROLL_COMPATIBILITY_API_ORIGIN } from "./affordance_grammar.mjs";
 (() => {
   const msg = document.getElementById("msg");
   const coverage = document.getElementById("coverage");
@@ -342,7 +343,7 @@
   // what the response publishes and never derives a figure of its own: a period the
   // measurement cannot establish is drawn as "not published", never as a zero.
   const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
-  const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://api.crol-list.org";
+  const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || CITYSCROLL_COMPATIBILITY_API_ORIGIN;
   async function workerFetch(path, opts) {
     try { return await fetch(API + path, opts); }
     catch (e) { return fetch(API_FALLBACK + path, opts); }

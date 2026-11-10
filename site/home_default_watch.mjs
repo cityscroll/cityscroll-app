@@ -2,6 +2,7 @@ import {
   buildFollowingDefaultWatchReceipt,
   setFollowingDefaultWatchReceipt,
 } from "./following_default_watch_receipt.mjs";
+import { CITYSCROLL_COMPATIBILITY_API_ORIGIN } from "./affordance_grammar.mjs";
 
 // The disclosed weekly-Contracts default inside the Contracts intro. The card ships in
 // the shared index.html shell, so this enhancement has to attach whether the reader
@@ -11,7 +12,7 @@ import {
 // fallback.
 const API_ORIGINS = Object.freeze([
   window.CROL_API_ORIGIN || "https://api.cityscroll.org",
-  window.CROL_API_FALLBACK_ORIGIN || "https://api.crol-list.org",
+  window.CROL_API_FALLBACK_ORIGIN || CITYSCROLL_COMPATIBILITY_API_ORIGIN,
 ]);
 
 async function subscribeHomeDefault(email, lang) {
