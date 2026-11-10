@@ -83,6 +83,9 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
     "create_watch",
     "list_capability_gaps",
   ]);
+  const createWatch = list.result.tools.find(({ name }) => name === "create_watch");
+  assert.match(createWatch.description, /temporarily suspended for anonymous MCP callers/i);
+  assert.match(createWatch.description, /only when explicitly granted/i);
   const cited = list.result.tools.find(({ name }) => name === "retrieve_cited_passages");
   assert.equal(cited.outputSchema.properties.schema.const, "cityscroll.semantic_retrieval.cited_passage_response.v1");
   const search = list.result.tools.find(({ name }) => name === "search_notices");
