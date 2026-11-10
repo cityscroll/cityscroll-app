@@ -21,6 +21,7 @@ import {
   geographyNavigationFilterParams,
 } from "./geography_navigation_state.mjs";
 import { normalizeSearchText } from "./neighborhood_search.mjs";
+import { renderHomeEmailEntryHtml } from "./home_email_entry_render.mjs";
 
 export const RESIDENT_GEOGRAPHY_SHELL_SCHEMA = "cityscroll.resident_geography_shell.v1";
 
@@ -606,6 +607,7 @@ export function renderGeographyShellEntry({
   watchHref = null,
   shareHref = null,
   followDiscoveryHtml = "",
+  emailUpdatesHtml = "",
   siteBase = "",
   categoryLabel = GEOGRAPHY_SHELL_DEFAULT_CATEGORY_LABEL,
 } = {}) {
@@ -630,7 +632,9 @@ export function renderGeographyShellEntry({
     : "";
   // Local records and the one-shot location action stay outside the secondary
   // disclosure so the primary ways to enter a local scope remain immediately
-  // available. Citywide collection links and secondary controls stay in the
+  // available. The email-updates handoff also stays outside so a person can
+  // reach Following onboarding above the fold without opening "More ways to
+  // choose". Citywide collection links and secondary controls stay in the
   // disclosure so the map remains visible on a narrow screen. Nested
   // details/summaries are avoided here: focusing a parent summary can reveal an
   // inner summary under the enhanced map canvas and fail the
@@ -647,6 +651,7 @@ export function renderGeographyShellEntry({
           <button type="button" class="js-only near-location-action" data-use-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
         </div>
       </div>
+      ${emailUpdatesHtml || renderHomeEmailEntryHtml()}
       <p class="near-map-status" data-map-status aria-live="polite"></p>
       <details class="near-entry-secondary">
         <summary>More ways to choose</summary>

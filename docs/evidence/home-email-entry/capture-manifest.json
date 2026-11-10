@@ -1,0 +1,128 @@
+{
+  "schema": "cityscroll.render_capture_manifest.v1",
+  "feature": "home-email-entry",
+  "public_alias": "c8f4cfa1b7a8d",
+  "capture_mode": "headless-playwright-local-after-production-before",
+  "base": "https://cityscroll.org/",
+  "condition": "Before rows are read-only production observations. After rows render the local Near You homepage with the email-updates handoff. Image binaries stay ignored under task scratch.",
+  "repository_revision": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+  "grounded_at": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+  "revision": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+  "revision_format": "git rev-parse HEAD for after; production artifact tip noted in before metrics",
+  "data_vintage": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+  "image_binaries_committed": false,
+  "image_policy": "Screenshots may exist under the local task scratch directory; only this manifest is committed.",
+  "surface": "Homepage Get email updates entry into Following",
+  "verifier": "node --test test/home_email_entry.test.mjs",
+  "captured_at": "2026-11-10T19:09:35Z",
+  "local_image_dir_ignored": "home-email-entry-screenshots (local ignored dir under task scratch)",
+  "route": "/",
+  "entry_content_hash": "a7f1100402d8f882ef922d10d60f918a7972a56abaab54b9f700be59bcb02637",
+  "content_hash": "a7f1100402d8f882ef922d10d60f918a7972a56abaab54b9f700be59bcb02637",
+  "exact_links": [
+    "/",
+    "/following/?onboarding=1"
+  ],
+  "captures": [
+    {
+      "name": "before-desktop",
+      "phase": "before",
+      "route": "/",
+      "url": "https://cityscroll.org/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+      "data_vintage": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+      "assertion": "Production homepage lacks the Get email updates entry above the fold",
+      "sha256": "c24fe0c13996f91ea90163e1e3c9f47d8eb978d4c5a9eba315b154787fb51de8",
+      "content_hash": null,
+      "metrics": {
+        "present": false,
+        "in_viewport": false,
+        "label": null,
+        "href": null
+      },
+      "file": null,
+      "screenshot_url": null,
+      "local_image_ignored": "before-desktop.png"
+    },
+    {
+      "name": "before-phone",
+      "phase": "before",
+      "route": "/",
+      "url": "https://cityscroll.org/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+      "data_vintage": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+      "assertion": "Production homepage lacks the Get email updates entry above the fold",
+      "sha256": "1cb9c7faea0684206ea606583852b0ebd94786369f96b9237e684d9757e1732e",
+      "content_hash": null,
+      "metrics": {
+        "present": false,
+        "in_viewport": false,
+        "label": null,
+        "href": null
+      },
+      "file": null,
+      "screenshot_url": null,
+      "local_image_ignored": "before-phone.png"
+    },
+    {
+      "name": "after-desktop",
+      "phase": "after",
+      "route": "/",
+      "url": "http://127.0.0.1:59112/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+      "data_vintage": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+      "assertion": "Get email updates is visible above the fold and opens Following onboarding",
+      "sha256": "e4402f71e8253eae337b5174cdbedadfd3183e4e52ecdbf136bd24c3d7b181a4",
+      "content_hash": "a7f1100402d8f882ef922d10d60f918a7972a56abaab54b9f700be59bcb02637",
+      "metrics": {
+        "present": true,
+        "in_viewport": true,
+        "label": "Get email updates",
+        "href": "/following/?onboarding=1",
+        "min_height_px": 44,
+        "top_px": 371
+      },
+      "file": null,
+      "screenshot_url": null,
+      "local_image_ignored": "after-desktop.png"
+    },
+    {
+      "name": "after-phone",
+      "phase": "after",
+      "route": "/",
+      "url": "http://127.0.0.1:59112/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+      "data_vintage": "479209068fc4c5812dd0bd8204c89d4ff35d7578",
+      "assertion": "Get email updates is visible above the fold and opens Following onboarding",
+      "sha256": "5d018500f1a073ce1d99a0fd40589db2818fcaade3d636b66ac72c5b7a29a371",
+      "content_hash": "a7f1100402d8f882ef922d10d60f918a7972a56abaab54b9f700be59bcb02637",
+      "metrics": {
+        "present": true,
+        "in_viewport": true,
+        "label": "Get email updates",
+        "href": "/following/?onboarding=1",
+        "min_height_px": 44,
+        "top_px": 436
+      },
+      "file": null,
+      "screenshot_url": null,
+      "local_image_ignored": "after-phone.png"
+    }
+  ]
+}

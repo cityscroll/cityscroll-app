@@ -335,6 +335,7 @@
     "site/hearing_logistics.mjs",
     "site/historical_project_context.mjs",
     "site/home_default_watch.mjs",
+    "site/home_email_entry_render.mjs",
     "site/home_entry.mjs",
     "site/home_following_entry.mjs",
     "site/home_local_entry.mjs",

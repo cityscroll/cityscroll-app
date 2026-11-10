@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/home-following-entry",
   "status": "implemented",
-  "fingerprint": "home-following-entry.v1",
-  "updated_at": "2026-08-30T00:00:00.000Z",
+  "fingerprint": "home-following-entry.v3",
+  "updated_at": "2026-11-10T00:00:00.000Z",
   "projections": [
     {
       "id": "home-following-entry",
@@ -12,6 +12,22 @@
     {
       "id": "homepage-following-cta",
       "path": "site/index.html"
+    },
+    {
+      "id": "home-email-updates-evidence",
+      "path": "docs/evidence/home-email-entry/capture-manifest.json"
+    },
+    {
+      "id": "home-email-updates-test",
+      "path": "test/home_email_entry.test.mjs"
+    },
+    {
+      "id": "home-email-updates-capture",
+      "path": "tools/capture_home_email_entry.py"
+    },
+    {
+      "id": "home-email-entry-render",
+      "path": "site/home_email_entry_render.mjs"
     }
   ]
 }
