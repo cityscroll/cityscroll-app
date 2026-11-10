@@ -13,6 +13,8 @@ import { dirname, join } from "node:path";
 import { civicDayISO, daysUntilDue } from "../site/closing_this_week.mjs";
 
 const src = SITE_SOURCE;
+const FIXTURE_NOW_MS = Date.parse("2026-11-09T12:00:00.000Z");
+const fixtureCivicDayISO = () => civicDayISO(FIXTURE_NOW_MS);
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");
@@ -89,7 +91,7 @@ const propEnv = new Function(
   "daysUntilDue",
   extractFn("cleanText") + extractFn("daysLeft") + extractFn("classifyAsset") + extractFn("propStage") + extractFn("dollarBadge")
   + "return { classifyAsset, propStage, dollarBadge };"
-)(realT, civicDayISO, daysUntilDue);
+)(realT, fixtureCivicDayISO, daysUntilDue);
 
 test("classifyAsset: distinctive vocabularies route to persona categories", () => {
   const c = (title, desc="") => propEnv.classifyAsset({ short_title: title, additional_description_1: desc });
@@ -101,8 +103,8 @@ test("classifyAsset: distinctive vocabularies route to persona categories", () =
   assert.equal(c("Something unclassifiable", "no keywords at all"), "other");
 });
 test("propStage: lifecycle derivation", () => {
-  const soon = new Date(Date.now() + 5 * 86400000).toISOString();
-  const far = new Date(Date.now() + 90 * 86400000).toISOString();
+  const soon = new Date(FIXTURE_NOW_MS + 5 * 86400000).toISOString();
+  const far = new Date(FIXTURE_NOW_MS + 90 * 86400000).toISOString();
   assert.equal(propEnv.propStage({ event_date: soon }), "soon");
   assert.equal(propEnv.propStage({ event_date: far }), "upcoming");
   // Fixed historical source date is always past (no wall-clock dependency).
@@ -132,8 +134,8 @@ const tagEnv = new Function(
   _spellConst + "\n" +
   extractFn("_spellNum") + extractFn("daysLeft") + extractConst("ROLLING_DUE_YEAR") + extractFn("isRollingDeadline") + extractFn("deadlineTag") + extractFn("eventTag") +
   "return { deadlineTag, eventTag };"
-)(civicDayISO, daysUntilDue);
-const inDays = (n) => new Date(Date.now() + n * 86400000 + 3600000).toISOString();
+)(fixtureCivicDayISO, daysUntilDue);
+const inDays = (n) => new Date(FIXTURE_NOW_MS + n * 86400000 + 3600000).toISOString();
 
 test("deadlineTag: closed / hot / soon / open ramp", () => {
   assert.match(tagEnv.deadlineTag(inDays(-2)), /closed/);
@@ -419,8 +421,8 @@ const ruleChipEnv = new Function(
   extractConst("RULE_STAGE_CFG") +
   extractFn("ruleDisplayStage") + extractFn("ruleDateLabel") + extractFn("ruleStageChip") + extractFn("ruleCommentAction") +
   "return { ruleStageChip, ruleCommentAction, ruleDisplayStage };"
-)(civicDayISO, daysUntilDue);
-const ruleInDays = (n) => new Date(Date.now() + n * 86400000 + 3600000).toISOString();
+)(fixtureCivicDayISO, daysUntilDue);
+const ruleInDays = (n) => new Date(FIXTURE_NOW_MS + n * 86400000 + 3600000).toISOString();
 const nr = (o) => Object.assign({ url: "https://rules.example/rule" }, o);
 
 test("ruleStageChip: comment-open uses the urgency ladder and links the comment page", () => {
