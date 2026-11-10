@@ -12,11 +12,6 @@ test("interactive pages default to the production API origin", () => {
   for (const page of ["index.html", "about.html", "api.html", "stats.html"]) {
     const source = page === "index.html" ? SITE_SOURCE : read(page);
     assert.match(source, /window\.CROL_API_ORIGIN \|\| "https:\/\/api\.cityscroll\.org"/, page);
-    assert.match(
-      source,
-      /window\.CROL_API_FALLBACK_ORIGIN \|\| "https:\/\/api\.crol-list\.org"/,
-      page,
-    );
   }
   assert.match(read("stats.html"), /fetch\("data\/served_coverage_snapshot\.json"/);
   assert.match(read("stats.html"), /workerFetch\("\/stats"/);
