@@ -230,7 +230,7 @@ export const DAYLOG_ENTRY_FIELDS = Object.freeze([
   {
     name: "verdict",
     type: "object|undefined",
-    description: "Named outcome { class, reason } from watch_verdict; absent on entries written before the field existed.",
+    description: "Named outcome { class, reason } from watch_verdict (classes: off, blocked, held, idle, delivered, failed); absent on entries written before the field existed. A stored class quiet reads as idle.",
   },
 ]);
 

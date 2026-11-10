@@ -11,6 +11,9 @@ import {
   verdictOf,
   subscriberLine,
   tally,
+  deskCauseOf,
+  normalizeVerdict,
+  normalizeTally,
 } from "../src/lib/watch_verdict.mjs";
 import { toDayLogEntry } from "../src/lib/digest_ops.mjs";
 
@@ -48,57 +51,106 @@ const BAGS = [
   { id: "NEG-queue-placeholder", bag: { mode: "queue", enqueued: 40 } },
   { id: "NEG-error-beats-sent", bag: { error: "partial", sent: true, action: "match" } },
   { id: "NEG-empty-bag", bag: {} },
+  { id: "none-no-matches", bag: { action: "none", new: 0, found: 0 } },
+  { id: "none-zero-match-flag", bag: { action: "none", new: 0, zeroMatch: true } },
+  { id: "none-found-unknown", bag: { action: "none", new: 0 } },
+  { id: "none-already-seen", bag: { action: "none", new: 0, found: 7 } },
+  { id: "catch-up-sent", bag: { sent: true, action: "catch_up", new: 5 } },
+  { id: "NEG-sent-and-capped", bag: { sent: true, capped: true, action: "match", new: 2 } },
+  { id: "NEG-sent-and-rehearsal", bag: { sent: true, dryRun: true, action: "match", new: 2 } },
 ];
 
 const EXPECTED = {
-  "sent-match": { class: "delivered", reason: "match", subscriber_line: "Delivered" },
-  "sent-heartbeat": { class: "delivered", reason: "heartbeat", subscriber_line: "Delivered" },
-  "sent-weekly-empty": { class: "delivered", reason: "weekly-empty", subscriber_line: "Delivered" },
-  "quiet-none": { class: "quiet", reason: "nothing-new", subscriber_line: "Nothing new" },
-  "weekly-not-due": { class: "quiet", reason: "not-due", subscriber_line: "Not due yet" },
-  "rollup-empty": { class: "quiet", reason: "nothing-new", subscriber_line: "Nothing new" },
-  "capped": { class: "held", reason: "send-cap", subscriber_line: "Waiting" },
-  "dry-run": { class: "held", reason: "rehearsal", subscriber_line: "Waiting" },
-  "shadow-hold": { class: "held", reason: "safety-hold", subscriber_line: "Waiting" },
-  "text-query-unavailable": { class: "held", reason: "source-unavailable", subscriber_line: "Waiting" },
-  "text-query-incomplete": { class: "held", reason: "source-incomplete", subscriber_line: "Waiting" },
-  "land-artifact-unavailable": { class: "held", reason: "source-unavailable", subscriber_line: "Waiting" },
-  "award-lookup-failed": { class: "held", reason: "source-unavailable", subscriber_line: "Waiting" },
-  "unsupported-scope": { class: "blocked", reason: "unsupported-scope", subscriber_line: "Can't run yet" },
-  "feature-gated": { class: "blocked", reason: "not-live-yet", subscriber_line: "Can't run yet" },
-  "unknown-lens": { class: "blocked", reason: "unsupported-lens", subscriber_line: "Can't run yet" },
-  "malformed-award": { class: "blocked", reason: "malformed-watch", subscriber_line: "Can't run yet" },
-  "suppressed-and-capped": { class: "blocked", reason: "recipient-unreachable", subscriber_line: "Can't reach this address" },
-  "paused": { class: "off", reason: "paused", subscriber_line: "Paused" },
-  "all-paused": { class: "off", reason: "paused", subscriber_line: "Paused" },
-  "developer-test": { class: "off", reason: "test-account", subscriber_line: null },
-  "gone": { class: "off", reason: "ended", subscriber_line: null },
-  "deleted": { class: "off", reason: "ended", subscriber_line: null },
-  "error": { class: "failed", reason: "error", subscriber_line: "Something went wrong" },
-  "bad-job": { class: "failed", reason: "bad-job", subscriber_line: "Something went wrong" },
-  "NEG-unknown-skip": { class: "failed", reason: "unclassified", subscriber_line: "Something went wrong" },
-  "NEG-wanted-no-outcome": { class: "failed", reason: "send-wanted-no-outcome", subscriber_line: "Something went wrong" },
+  "sent-match": { class: "delivered", reason: "match", subscriber_line: "Delivered", desk_cause: "sent" },
+  "sent-heartbeat": { class: "delivered", reason: "heartbeat", subscriber_line: "Delivered", desk_cause: "sent" },
+  "sent-weekly-empty": { class: "delivered", reason: "weekly-empty", subscriber_line: "Delivered", desk_cause: "sent" },
+  "quiet-none": { class: "idle", reason: "already-seen", subscriber_line: "Nothing new", desk_cause: "already_seen" },
+  "weekly-not-due": { class: "idle", reason: "not-due", subscriber_line: "Not due yet", desk_cause: "skipped" },
+  "rollup-empty": { class: "idle", reason: "empty-section", subscriber_line: "Nothing new", desk_cause: "skipped" },
+  "capped": { class: "held", reason: "send-cap", subscriber_line: "Waiting", desk_cause: "capped" },
+  "dry-run": { class: "held", reason: "rehearsal", subscriber_line: "Waiting", desk_cause: "dry_run" },
+  "shadow-hold": { class: "held", reason: "safety-hold", subscriber_line: "Waiting", desk_cause: "skipped" },
+  "text-query-unavailable": { class: "held", reason: "source-unavailable", subscriber_line: "Waiting", desk_cause: "skipped" },
+  "text-query-incomplete": { class: "held", reason: "source-incomplete", subscriber_line: "Waiting", desk_cause: "skipped" },
+  "land-artifact-unavailable": { class: "held", reason: "source-unavailable", subscriber_line: "Waiting", desk_cause: "skipped" },
+  "award-lookup-failed": { class: "held", reason: "source-unavailable", subscriber_line: "Waiting", desk_cause: "skipped" },
+  "unsupported-scope": { class: "blocked", reason: "unsupported-scope", subscriber_line: "Can't run yet", desk_cause: "skipped" },
+  "feature-gated": { class: "blocked", reason: "not-live-yet", subscriber_line: "Can't run yet", desk_cause: "skipped" },
+  "unknown-lens": { class: "blocked", reason: "unsupported-lens", subscriber_line: "Can't run yet", desk_cause: "skipped" },
+  "malformed-award": { class: "blocked", reason: "malformed-watch", subscriber_line: "Can't run yet", desk_cause: "skipped" },
+  "suppressed-and-capped": { class: "blocked", reason: "recipient-unreachable", subscriber_line: "Can't reach this address", desk_cause: "skipped" },
+  "paused": { class: "off", reason: "paused", subscriber_line: "Paused", desk_cause: "skipped" },
+  "all-paused": { class: "off", reason: "paused", subscriber_line: "Paused", desk_cause: "skipped" },
+  "developer-test": { class: "off", reason: "test-account", subscriber_line: null, desk_cause: "skipped" },
+  "gone": { class: "off", reason: "ended", subscriber_line: null, desk_cause: "unsub" },
+  "deleted": { class: "off", reason: "ended", subscriber_line: null, desk_cause: "unsub" },
+  "error": { class: "failed", reason: "error", subscriber_line: "Something went wrong", desk_cause: "error" },
+  "bad-job": { class: "failed", reason: "bad-job", subscriber_line: "Something went wrong", desk_cause: "skipped" },
+  "NEG-unknown-skip": { class: "failed", reason: "unclassified-skip", subscriber_line: "Something went wrong", desk_cause: "skipped" },
+  "NEG-wanted-no-outcome": { class: "failed", reason: "send-wanted-no-outcome", subscriber_line: "Something went wrong", desk_cause: "other" },
   "NEG-queue-placeholder": null,
-  "NEG-error-beats-sent": { class: "failed", reason: "error", subscriber_line: "Something went wrong" },
-  "NEG-empty-bag": { class: "failed", reason: "unclassified", subscriber_line: "Something went wrong" },
+  "NEG-error-beats-sent": { class: "failed", reason: "error", subscriber_line: "Something went wrong", desk_cause: "error" },
+  "NEG-empty-bag": { class: "failed", reason: "unclassified", subscriber_line: "Something went wrong", desk_cause: "other" },
+  "none-no-matches": { class: "idle", reason: "no-matches", subscriber_line: "Nothing new", desk_cause: "quiet" },
+  "none-zero-match-flag": { class: "idle", reason: "no-matches", subscriber_line: "Nothing new", desk_cause: "quiet" },
+  "none-found-unknown": { class: "idle", reason: "nothing-new", subscriber_line: "Nothing new", desk_cause: "quiet" },
+  "none-already-seen": { class: "idle", reason: "already-seen", subscriber_line: "Nothing new", desk_cause: "already_seen" },
+  "catch-up-sent": { class: "delivered", reason: "catch_up", subscriber_line: "Delivered", desk_cause: "sent" },
+  "NEG-sent-and-capped": { class: "held", reason: "send-cap", subscriber_line: "Waiting", desk_cause: "capped" },
+  "NEG-sent-and-rehearsal": { class: "held", reason: "rehearsal", subscriber_line: "Waiting", desk_cause: "dry_run" },
 };
 
-const EXPECTED_TALLY = { off: 5, blocked: 5, held: 7, quiet: 3, delivered: 3, failed: 6 };
+const EXPECTED_TALLY = { off: 5, blocked: 5, held: 9, idle: 7, delivered: 4, failed: 6 };
+
+/** Historical receipts/day-log entries may still carry the prior idle class name. */
+const STORED_V1 = {
+  verdicts: [
+    {
+      stored: { class: "quiet", reason: "nothing-new" },
+      read_as: { class: "idle", reason: "nothing-new" },
+      desk_cause: "quiet",
+    },
+    {
+      stored: { class: "quiet", reason: "not-due" },
+      read_as: { class: "idle", reason: "not-due" },
+      desk_cause: "skipped",
+    },
+    {
+      stored: { class: "held", reason: "send-cap" },
+      read_as: { class: "held", reason: "send-cap" },
+      desk_cause: "capped",
+    },
+  ],
+  tally: {
+    stored: { off: 1, blocked: 0, held: 2, quiet: 3, delivered: 4, failed: 0 },
+    read_as: { off: 1, blocked: 0, held: 2, idle: 3, delivered: 4, failed: 0 },
+  },
+  mixed_tally: {
+    stored: { off: 0, blocked: 0, held: 0, quiet: 2, idle: 5, delivered: 1, failed: 0 },
+    read_as: { off: 0, blocked: 0, held: 0, idle: 7, delivered: 1, failed: 0 },
+  },
+};
 
 /** Same total used by summarizeDigestRun. */
 function inlineReceiptVerdicts(results) {
   return tally(results.map((r) => verdictOf(r)));
 }
 
-/** Same per-job accumulation used by recordQueueJobOutcome. */
+/** Same per-job accumulation used by recordQueueJobOutcome (normalize stored tallies first). */
 function queueReceiptVerdicts(results) {
-  const out = tally([]);
+  const out = normalizeTally({});
   for (const r of results) {
     const v = verdictOf(r);
     if (v) out[v.class] += 1;
   }
   return out;
 }
+
+test("verdict vocabulary: idle replaces quiet as a written class", () => {
+  assert.equal(VERDICT.IDLE, "idle");
+  assert.equal(Object.hasOwn(VERDICT, "QUIET"), false);
+  assert.ok(!Object.values(VERDICT).includes("quiet"));
+});
 
 for (const { id, bag } of BAGS) {
   test(`verdictOf: ${id}`, () => {
@@ -109,7 +161,12 @@ for (const { id, bag } of BAGS) {
       return;
     }
     assert.deepEqual(
-      { class: got.class, reason: got.reason, subscriber_line: subscriberLine(got) },
+      {
+        class: got.class,
+        reason: got.reason,
+        subscriber_line: subscriberLine(got),
+        desk_cause: deskCauseOf(got),
+      },
       want,
     );
   });
@@ -118,8 +175,9 @@ for (const { id, bag } of BAGS) {
 test("tally: count by class with no other bucket", () => {
   assert.deepEqual(tally(BAGS.map((b) => verdictOf(b.bag))), EXPECTED_TALLY);
   const sum = Object.values(EXPECTED_TALLY).reduce((a, b) => a + b, 0);
-  // Queue placeholder contributes no verdict; 29 of 30 bags tally.
+  // Queue placeholder contributes no verdict; 36 of 37 bags tally.
   assert.equal(sum, BAGS.length - 1);
+  assert.equal(Object.hasOwn(EXPECTED_TALLY, "quiet"), false);
 });
 
 test("toDayLogEntry: attaches verdict beside action; preserves existing fields", () => {
@@ -142,19 +200,19 @@ test("toDayLogEntry: attaches verdict beside action; preserves existing fields",
   assert.equal(entry.action, "none");
   assert.equal(entry.zeroMatch, true);
   assert.equal(entry.sent, false);
-  assert.deepEqual(entry.verdict, { class: VERDICT.QUIET, reason: "nothing-new" });
+  assert.deepEqual(entry.verdict, { class: VERDICT.IDLE, reason: "no-matches" });
 });
 
 test("toDayLogEntry: skipped reason carries named verdict; queue placeholder stays null", () => {
   const skipped = toDayLogEntry({ sub: "sub:a", skipped: "weekly", sent: false }, { day: "2026-07-30" });
   assert.equal(skipped.action, "skipped:weekly");
-  assert.deepEqual(skipped.verdict, { class: VERDICT.QUIET, reason: "not-due" });
+  assert.deepEqual(skipped.verdict, { class: VERDICT.IDLE, reason: "not-due" });
   assert.equal(toDayLogEntry({ mode: "queue", enqueued: 4 }), null);
 });
 
-test("toDayLogEntry: absence of verdict on a prior-shaped entry is unknown, never quiet", () => {
-  // Entries written before this change have no verdict field. Readers must not
-  // treat missing as quiet.
+test("toDayLogEntry: absence of verdict on a prior-shaped entry is unknown, never idle", () => {
+  // Entries written before the named-verdict field have no verdict. Readers must not
+  // treat missing as idle.
   const prior = {
     day: "2026-07-29",
     kind: "subscription",
@@ -163,7 +221,7 @@ test("toDayLogEntry: absence of verdict on a prior-shaped entry is unknown, neve
     sent: false,
   };
   assert.equal(Object.hasOwn(prior, "verdict"), false);
-  assert.notEqual(prior.verdict?.class, VERDICT.QUIET);
+  assert.notEqual(prior.verdict?.class, VERDICT.IDLE);
 });
 
 test("receipt verdicts: inline and queue accumulation agree; counts sum to per-watch results", () => {
@@ -179,13 +237,14 @@ test("receipt verdicts: inline and queue accumulation agree; counts sum to per-w
 
 test("alerts.mjs wires verdicts on summarizeDigestRun and recordQueueJobOutcome", () => {
   assert.match(ALERTS_SRC, /from\s+["']\.\/lib\/watch_verdict\.mjs["']/);
+  assert.match(ALERTS_SRC, /normalizeTally/);
   assert.match(
     ALERTS_SRC,
     /function summarizeDigestRun[\s\S]*?verdicts:\s*tally\(results\.map\(\(r\)\s*=>\s*verdictOf\(r\)\)\)/,
   );
   assert.match(
     ALERTS_SRC,
-    /async function recordQueueJobOutcome[\s\S]*?const verdict = verdictOf\(jobResult\);[\s\S]*?base\.verdicts = verdicts;/,
+    /async function recordQueueJobOutcome[\s\S]*?normalizeTally\(base\.verdicts\)[\s\S]*?const verdict = verdictOf\(jobResult\);[\s\S]*?base\.verdicts = verdicts;/,
   );
 });
 
@@ -208,7 +267,7 @@ test("fitness: every skipped: literal in alerts.mjs has a verdict", () => {
     const v = classifySkip(sample);
     assert.notDeepEqual(
       v,
-      { class: VERDICT.FAILED, reason: "unclassified" },
+      { class: VERDICT.FAILED, reason: "unclassified-skip" },
       `skipped:${reason} has no table row`,
     );
   }
@@ -219,9 +278,22 @@ test("fitness: every skipped: literal in alerts.mjs has a verdict", () => {
   }
 });
 
-test("fitness: a brand-new skipped literal without a table row is unclassified", () => {
+test("fitness: a brand-new skipped literal without a table row is unclassified-skip", () => {
   assert.deepEqual(classifySkip("brand-new-reason"), {
     class: VERDICT.FAILED,
-    reason: "unclassified",
+    reason: "unclassified-skip",
   });
+});
+
+test("stored under prior class name: read as idle, never rewritten", () => {
+  for (const c of STORED_V1.verdicts) {
+    const before = structuredClone(c.stored);
+    assert.deepEqual(normalizeVerdict(c.stored), c.read_as);
+    assert.equal(deskCauseOf(c.stored), c.desk_cause);
+    assert.equal(subscriberLine(normalizeVerdict(c.stored)), subscriberLine(c.read_as));
+    assert.deepEqual(c.stored, before, "the stored value is not mutated");
+  }
+  assert.deepEqual(normalizeTally(STORED_V1.tally.stored), STORED_V1.tally.read_as);
+  assert.deepEqual(normalizeTally(STORED_V1.mixed_tally.stored), STORED_V1.mixed_tally.read_as);
+  assert.equal(normalizeVerdict(null), null);
 });
