@@ -9,7 +9,6 @@ import {
   serializeReportTarget,
 } from "./report_target.mjs";
 import { landRegulatoryEffectForRow } from "./land_regulatory_effect.mjs";
-import { CITYSCROLL_COMPATIBILITY_API_ORIGIN } from "./affordance_grammar.mjs";
 
 export const REPORT_CATEGORIES = Object.freeze([
   { value: "information_wrong", label: "Information is wrong" },
@@ -44,7 +43,7 @@ const INTERPRETATION_REPORT_CATEGORIES = Object.freeze(new Set([
 
 const DEFAULT_FALLBACK_HREF = "/about.html#feedback";
 const API_ORIGIN = () => globalThis.CROL_API_ORIGIN || "https://api.cityscroll.org";
-const API_FALLBACK_ORIGIN = () => globalThis.CROL_API_FALLBACK_ORIGIN || CITYSCROLL_COMPATIBILITY_API_ORIGIN;
+const API_FALLBACK_ORIGIN = () => globalThis.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev";
 
 function reportClean(value, max = 500) {
   const result = String(value ?? "")

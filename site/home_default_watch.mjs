@@ -2,7 +2,6 @@ import {
   buildFollowingDefaultWatchReceipt,
   setFollowingDefaultWatchReceipt,
 } from "./following_default_watch_receipt.mjs";
-import { CITYSCROLL_COMPATIBILITY_API_ORIGIN } from "./affordance_grammar.mjs";
 import { signupTurnstileToken } from "./signup_turnstile.mjs";
 
 // The disclosed weekly-Contracts default inside the Contracts intro. The card ships in
@@ -13,7 +12,7 @@ import { signupTurnstileToken } from "./signup_turnstile.mjs";
 // fallback.
 const API_ORIGINS = Object.freeze([
   window.CROL_API_ORIGIN || "https://api.cityscroll.org",
-  window.CROL_API_FALLBACK_ORIGIN || CITYSCROLL_COMPATIBILITY_API_ORIGIN,
+  window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev",
 ]);
 
 async function subscribeHomeDefault(email, lang, getTurnstileToken) {

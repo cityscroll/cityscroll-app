@@ -86,14 +86,7 @@ function topLevelConstants(sources) {
   const constants = new Map();
   const assignment = /\bconst\s+([A-Z][A-Z0-9_]*)\s*=\s*["'`](https?:\/\/[^"'`]+)["'`]/g;
   for (const source of sources.values()) {
-    for (const match of source.matchAll(assignment)) {
-      try {
-        const url = new URL(match[2]);
-        if (url.hostname) constants.set(match[1], match[2]);
-      } catch {
-        // An interpolated URL is not a static origin the scanner can classify.
-      }
-    }
+    for (const match of source.matchAll(assignment)) constants.set(match[1], match[2]);
   }
   return constants;
 }
@@ -165,12 +158,8 @@ function externalOriginForCall({ name, body, first, constants, aliases, external
   if (name === "soda") return "data.cityofnewyork.us";
   const directUrls = body.match(/https?:\/\/[^\s"'`)}]+/g) || [];
   for (const raw of directUrls) {
-    try {
-      const hostname = new URL(raw).hostname.toLowerCase();
-      if (externalOrigins.has(hostname)) return hostname;
-    } catch {
-      // Dynamic URL fragments cannot be classified as static external origins.
-    }
+    const hostname = new URL(raw).hostname.toLowerCase();
+    if (externalOrigins.has(hostname)) return hostname;
   }
   const identifiers = new Set([
     ...String(first).matchAll(/\b[A-Z][A-Z0-9_]*\b/g),

@@ -1,7 +1,6 @@
 import { cityRecordRequestUrl } from "../city_record_id.mjs";
 import { civicDayISO, daysUntilDue } from "../closing_this_week.mjs";
 import {
-  CITYSCROLL_COMPATIBILITY_API_ORIGIN,
   externalActionLink as renderExternalActionLink,
   installObjectCardCopyLinks,
 } from "../affordance_grammar.mjs";
@@ -18,7 +17,7 @@ const PAYFY = "2025";
 // Worker-backed features fall back to static behavior when the API is unavailable.
 const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
 // Only non-account reads may fail over; session and pin calls stay on the shared-cookie API host.
-const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || CITYSCROLL_COMPATIBILITY_API_ORIGIN;
+const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev";
 let apiBase = API;
 async function workerFetch(path, opts, timeoutMs, acceptResponse){
   const needsCreds = path === "/session" || path === "/session/logout" || path === "/pins"
