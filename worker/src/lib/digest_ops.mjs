@@ -9,6 +9,7 @@ import {
 } from "./subscriptions.mjs";
 import { describeFilter } from "./confirm_email.mjs";
 import { toRollupDayLogEntry } from "./rollup.mjs";
+import { verdictOf } from "./watch_verdict.mjs";
 
 /** KV key for the durable per-day send log (ALERT_STATE). */
 export function digestDayLogKey(day) {
@@ -50,6 +51,7 @@ export function toDayLogEntry(result = {}, { day = null } = {}) {
   // Explicit kind from rollup / callers wins; else config vs single subscription.
   const kind = result.kind
     || (result.watch ? "config_watch" : "subscription");
+  const verdict = verdictOf(result);
   return {
     day: day || result.day || null,
     kind,
@@ -72,6 +74,7 @@ export function toDayLogEntry(result = {}, { day = null } = {}) {
     // Account rollup: nested section summaries (optional).
     sections: Array.isArray(result.sections) ? result.sections : undefined,
     sendUnits: result.sendUnits != null ? Number(result.sendUnits) : (result.sent || result.dryRun ? 1 : 0),
+    ...(verdict ? { verdict } : {}),
   };
 }
 

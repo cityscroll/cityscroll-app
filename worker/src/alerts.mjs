@@ -70,6 +70,7 @@ import {
   toDayLogEntry,
   mergeDayLogEntry,
 } from "./lib/digest_ops.mjs";
+import { tally, verdictOf } from "./lib/watch_verdict.mjs";
 import {
   groupSubsByEmail,
   shouldRollup,
@@ -313,6 +314,7 @@ export function summarizeDigestRun({ ranAt, day, live, mode, sentThisRun, sentTo
     enqueued: tallies.enqueued,
     skipped_reason,
     tallies,
+    verdicts: tally(results.map((r) => verdictOf(r))),
   };
 }
 
@@ -478,6 +480,7 @@ async function recordQueueJobOutcome(env, day, jobResult) {
           skipped_weekly: 0, skipped_quiet: 0, skipped_other: 0, enqueued: 0,
           jobs_done: 0,
         },
+        verdicts: tally([]),
       };
     }
     const t = base.tallies || (base.tallies = {});
@@ -494,6 +497,12 @@ async function recordQueueJobOutcome(env, day, jobResult) {
       else if (jobResult.action === "none") t.skipped_quiet = (Number(t.skipped_quiet) || 0) + 1;
       else if (!jobResult.sent && !jobResult.skipped) t.skipped_other = (Number(t.skipped_other) || 0) + 1;
     }
+    const verdicts = base.verdicts && typeof base.verdicts === "object"
+      ? { off: 0, blocked: 0, held: 0, quiet: 0, delivered: 0, failed: 0, ...base.verdicts }
+      : tally([]);
+    const verdict = verdictOf(jobResult);
+    if (verdict) verdicts[verdict.class] = (Number(verdicts[verdict.class]) || 0) + 1;
+    base.verdicts = verdicts;
     base.matched = Number(t.matched) || 0;
     base.sent = Number(t.sent) || 0;
     base.sentToday = await getSendCount(env, day);
