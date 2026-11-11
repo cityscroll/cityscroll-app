@@ -42,7 +42,7 @@ export const SNAPSHOT_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
 export const CENSUS_SCHEMA = "cityscroll.served_coverage_census.v1";
 
 /** The registry size this census was reviewed against. A change is reported, never absorbed. */
-export const REVIEWED_REGISTRY_SIZE = 67;
+export const REVIEWED_REGISTRY_SIZE = 68;
 
 export { SERVED_UNITS, DECLARED_DISPOSITIONS };
 
@@ -270,6 +270,7 @@ const DECLARED_DISPOSITIONS = Object.freeze({
   "dcas-vehicle-auction-list": ["unresolved", "Serves the property open-now surface, but its rows are deliberately excluded from parcel chains and map counts and no first-class served-population artifact declares it, so no served count is established."],
   "dcp-nta2020-boundaries": ["context_only", "Neighborhood boundaries support the resident Near You map, place selection, and exact record scopes; a reference boundary is not an independent served civic record."],
   "dcp-police-precinct-boundaries": ["not_served", "Backstage ingestion and point-resolution canaries only; the registry states no resident-facing scope or filter is enabled."],
+  "dycd-program-sites": ["context_only", "Program-site offerings shown as agency evidence context; agencies and procurement records are each counted once as their own record units."],
   "dob-certificate-of-occupancy": ["context_only", "Certificate evidence inside the observed parcel biography; properties are counted once as their own record unit."],
   "dob-now-job-filings": ["context_only", "Current demolition-filing verification against an already served record; no independent served record population."],
   "dof-tax-lien-sale-lists": ["context_only", "Per-parcel lien progression and cycle rates shown on property surfaces; properties are counted once as their own record unit."],
