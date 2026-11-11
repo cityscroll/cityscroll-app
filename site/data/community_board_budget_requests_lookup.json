@@ -1,0 +1,3947 @@
+{
+  "schema": "cityscroll.community_board_budget_requests_lookup.v1",
+  "generated_at": "2026-10-17T01:53:34.458Z",
+  "board_count": 59,
+  "source": {
+    "publisher": "New York City Office of Management and Budget",
+    "name": "Register of Community Board Budget Requests",
+    "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+    "dataset_id": "vn4m-mk4t",
+    "as_of": "2026-10-17"
+  },
+  "publication_selection": {
+    "as_of": "2026-10-17",
+    "servable": [
+      "20260512",
+      "20260630"
+    ]
+  },
+  "publications": [
+    {
+      "publication": "20260512",
+      "publication_date": "2026-05-12",
+      "dataset_id": "vn4m-mk4t",
+      "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+      "retained_fixture": "warehouse/fixtures/community-board-budget-register/publication-20260512.jsonl",
+      "retained_fixture_sha256": "5cfea27c4599faaf3b8669520f22c9652b6c39475706c1d7b1069aa80ae00302",
+      "published_row_count": 3809,
+      "retained_rows": 3809
+    },
+    {
+      "publication": "20260630",
+      "publication_date": "2026-06-30",
+      "dataset_id": "vn4m-mk4t",
+      "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+      "retained_fixture": "warehouse/fixtures/community-board-budget-register/publication-20260630.jsonl",
+      "retained_fixture_sha256": "9358d40d6a85086649990165c7344cde10e3acc558f116b194828bb00c6249d4",
+      "published_row_count": 3809,
+      "retained_rows": 3809
+    },
+    {
+      "publication": "20270217",
+      "publication_date": "2027-02-17",
+      "dataset_id": "vn4m-mk4t",
+      "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
+      "retained_fixture": "warehouse/fixtures/community-board-budget-register/publication-20270217.jsonl",
+      "retained_fixture_sha256": "02d46bc3f7582d9ae71ba44909789ef69a58116dd0d300f9415b09cd277f73c2",
+      "published_row_count": 3809,
+      "retained_rows": 3809
+    }
+  ],
+  "by_board": {
+    "bronx-cb-01": {
+      "board_id": "bronx-cb-01",
+      "state": "available",
+      "request_count": 22,
+      "agency_count": 8,
+      "changed_answer_count": 1,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "101202701C",
+          "anchor": "budget-request-101202701c",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "101202701E",
+          "anchor": "budget-request-101202701e",
+          "title": "Other programs to address public health issues requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "href": "/agencies/health-and-mental-hygiene/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "101202702C",
+          "anchor": "budget-request-101202702c",
+          "title": "Enhance park safety through design interventions, e.g. better lighting",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Police Department",
+            "agency_id": "police-department",
+            "href": "/agencies/police-department/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-02": {
+      "board_id": "bronx-cb-02",
+      "state": "available",
+      "request_count": 25,
+      "agency_count": 15,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "102202701C",
+          "anchor": "budget-request-102202701c",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "102202701E",
+          "anchor": "budget-request-102202701e",
+          "title": "Clean catch basins",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "102202702C",
+          "anchor": "budget-request-102202702c",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-03": {
+      "board_id": "bronx-cb-03",
+      "state": "available",
+      "request_count": 51,
+      "agency_count": 14,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "103202701C",
+          "anchor": "budget-request-103202701c",
+          "title": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "103202701E",
+          "anchor": "budget-request-103202701e",
+          "title": "Other senior center program requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "103202702C",
+          "anchor": "budget-request-103202702c",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-04": {
+      "board_id": "bronx-cb-04",
+      "state": "available",
+      "request_count": 77,
+      "agency_count": 18,
+      "changed_answer_count": 5,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "104202701C",
+          "anchor": "budget-request-104202701c",
+          "title": "Renovate, upgrade or provide new community board facilities and equipment",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "href": "/agencies/citywide-administrative-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "104202701CS",
+          "anchor": "budget-request-104202701cs",
+          "title": "Other capital budget request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "104202701E",
+          "anchor": "budget-request-104202701e",
+          "title": "Other request for services for the homeless",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-05": {
+      "board_id": "bronx-cb-05",
+      "state": "available",
+      "request_count": 60,
+      "agency_count": 17,
+      "changed_answer_count": 5,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "105202701C",
+          "anchor": "budget-request-105202701c",
+          "title": "Other capital budget request for DCAS",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "href": "/agencies/citywide-administrative-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "105202701E",
+          "anchor": "budget-request-105202701e",
+          "title": "Enhance educational and recreational programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "105202702C",
+          "anchor": "budget-request-105202702c",
+          "title": "Other programs to address public health issues requests",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "href": "/agencies/health-and-mental-hygiene/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-06": {
+      "board_id": "bronx-cb-06",
+      "state": "available",
+      "request_count": 45,
+      "agency_count": 17,
+      "changed_answer_count": 6,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "106202701C",
+          "anchor": "budget-request-106202701c",
+          "title": "Other cultural facilities and resources requests",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "href": "/agencies/cultural-affairs/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "106202701E",
+          "anchor": "budget-request-106202701e",
+          "title": "Other expense request for CUNY",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "City University of New York",
+            "agency_id": "city-university",
+            "href": "/agencies/city-university/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "106202702C",
+          "anchor": "budget-request-106202702c",
+          "title": "Renovate or upgrade an existing cultural facility",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "href": "/agencies/cultural-affairs/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-07": {
+      "board_id": "bronx-cb-07",
+      "state": "available",
+      "request_count": 70,
+      "agency_count": 20,
+      "changed_answer_count": 7,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "107202701C",
+          "anchor": "budget-request-107202701c",
+          "title": "Renovate, upgrade or provide new community board facilities and equipment",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "href": "/agencies/citywide-administrative-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "107202701E",
+          "anchor": "budget-request-107202701e",
+          "title": "Expand street outreach",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "107202702C",
+          "anchor": "budget-request-107202702c",
+          "title": "Other capital budget request for DOHMH",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "href": "/agencies/health-and-mental-hygiene/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-08": {
+      "board_id": "bronx-cb-08",
+      "state": "available",
+      "request_count": 59,
+      "agency_count": 16,
+      "changed_answer_count": 5,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "108202701C",
+          "anchor": "budget-request-108202701c",
+          "title": "Other capital budget request for DFTA",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "108202701CS",
+          "anchor": "budget-request-108202701cs",
+          "title": "Renovate or upgrade an existing cultural facility",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "href": "/agencies/cultural-affairs/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "108202701E",
+          "anchor": "budget-request-108202701e",
+          "title": "Increase transportation services capacity",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-09": {
+      "board_id": "bronx-cb-09",
+      "state": "available",
+      "request_count": 110,
+      "agency_count": 16,
+      "changed_answer_count": 6,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "109202701C",
+          "anchor": "budget-request-109202701c",
+          "title": "Other capital budget request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "109202701E",
+          "anchor": "budget-request-109202701e",
+          "title": "Allocate funds for outreach services to homebound older adults and for programs that allow the elderly to age in place",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "109202702C",
+          "anchor": "budget-request-109202702c",
+          "title": "Other programs to address public health issues requests",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "href": "/agencies/health-and-mental-hygiene/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-10": {
+      "board_id": "bronx-cb-10",
+      "state": "available",
+      "request_count": 75,
+      "agency_count": 16,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "110202701C",
+          "anchor": "budget-request-110202701c",
+          "title": "Upgrade existing facilities for the homeless",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "110202701CS",
+          "anchor": "budget-request-110202701cs",
+          "title": "Other capital budget request for NYCTA",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Transit Authority",
+            "agency_id": "n-y-c-transit-authority",
+            "href": "/agencies/n-y-c-transit-authority/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "110202701E",
+          "anchor": "budget-request-110202701e",
+          "title": "Other senior center program requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-11": {
+      "board_id": "bronx-cb-11",
+      "state": "available",
+      "request_count": 21,
+      "agency_count": 10,
+      "changed_answer_count": 0,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "111202701C",
+          "anchor": "budget-request-111202701c",
+          "title": "Other capital budget request for DEP",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "111202701E",
+          "anchor": "budget-request-111202701e",
+          "title": "Other programs to address public health issues requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Health and Mental Hygiene",
+            "agency_id": "health-and-mental-hygiene",
+            "href": "/agencies/health-and-mental-hygiene/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "111202702C",
+          "anchor": "budget-request-111202702c",
+          "title": "Other requests for park, building, or access improvements",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "href": "/agencies/transportation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "bronx-cb-12": {
+      "board_id": "bronx-cb-12",
+      "state": "available",
+      "request_count": 11,
+      "agency_count": 8,
+      "changed_answer_count": 0,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "112202701C",
+          "anchor": "budget-request-112202701c",
+          "title": "Renovate, upgrade or provide new community board facilities and equipment",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "href": "/agencies/citywide-administrative-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "112202701E",
+          "anchor": "budget-request-112202701e",
+          "title": "Enhance park safety through more security staff (police or parks enforcement)",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "112202702C",
+          "anchor": "budget-request-112202702c",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-01": {
+      "board_id": "brooklyn-cb-01",
+      "state": "available",
+      "request_count": 82,
+      "agency_count": 19,
+      "changed_answer_count": 4,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "201202701C",
+          "anchor": "budget-request-201202701c",
+          "title": "Other capital budget request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "201202701CS",
+          "anchor": "budget-request-201202701cs",
+          "title": "Other requests for park, building, or access improvements",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "201202701E",
+          "anchor": "budget-request-201202701e",
+          "title": "Extend library hours or expand and enhance library programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-02": {
+      "board_id": "brooklyn-cb-02",
+      "state": "available",
+      "request_count": 61,
+      "agency_count": 17,
+      "changed_answer_count": 1,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "202202701C",
+          "anchor": "budget-request-202202701c",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "202202701E",
+          "anchor": "budget-request-202202701e",
+          "title": "Extend library hours or expand and enhance library programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "202202702C",
+          "anchor": "budget-request-202202702c",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-03": {
+      "board_id": "brooklyn-cb-03",
+      "state": "available",
+      "request_count": 89,
+      "agency_count": 17,
+      "changed_answer_count": 14,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "203202701C",
+          "anchor": "budget-request-203202701c",
+          "title": "Provide more or better equipment to a library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "203202701CS",
+          "anchor": "budget-request-203202701cs",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "203202701E",
+          "anchor": "budget-request-203202701e",
+          "title": "Extend library hours or expand and enhance library programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-04": {
+      "board_id": "brooklyn-cb-04",
+      "state": "available",
+      "request_count": 38,
+      "agency_count": 17,
+      "changed_answer_count": 5,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "204202701C",
+          "anchor": "budget-request-204202701c",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "204202701CS",
+          "anchor": "budget-request-204202701cs",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "204202701E",
+          "anchor": "budget-request-204202701e",
+          "title": "Expand street outreach",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-05": {
+      "board_id": "brooklyn-cb-05",
+      "state": "available",
+      "request_count": 42,
+      "agency_count": 18,
+      "changed_answer_count": 5,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "205202701C",
+          "anchor": "budget-request-205202701c",
+          "title": "Other capital request",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Dept of Information Technology & Telecommunication",
+            "agency_id": "information-technology-and-telecommunications",
+            "href": "/agencies/information-technology-and-telecommunications/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "205202701E",
+          "anchor": "budget-request-205202701e",
+          "title": "Extend library hours or expand and enhance library programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "205202702C",
+          "anchor": "budget-request-205202702c",
+          "title": "Other capital budget request for DPR",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-06": {
+      "board_id": "brooklyn-cb-06",
+      "state": "available",
+      "request_count": 59,
+      "agency_count": 19,
+      "changed_answer_count": 6,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "206202701C",
+          "anchor": "budget-request-206202701c",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "206202701CS",
+          "anchor": "budget-request-206202701cs",
+          "title": "Other capital budget request for DEP",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "206202701E",
+          "anchor": "budget-request-206202701e",
+          "title": "Funding for a new senior center program",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-07": {
+      "board_id": "brooklyn-cb-07",
+      "state": "available",
+      "request_count": 64,
+      "agency_count": 16,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "207202701C",
+          "anchor": "budget-request-207202701c",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "207202701E",
+          "anchor": "budget-request-207202701e",
+          "title": "Provide, expand, or enhance primary prevention services to strengthen families",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "207202702C",
+          "anchor": "budget-request-207202702c",
+          "title": "Renovate, upgrade or provide new community board facilities and equipment",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "href": "/agencies/citywide-administrative-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-08": {
+      "board_id": "brooklyn-cb-08",
+      "state": "available",
+      "request_count": 86,
+      "agency_count": 21,
+      "changed_answer_count": 5,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "208202701C",
+          "anchor": "budget-request-208202701c",
+          "title": "Renovate, upgrade or provide new community board facilities and equipment",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "href": "/agencies/citywide-administrative-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "208202701CS",
+          "anchor": "budget-request-208202701cs",
+          "title": "Renovate or upgrade an existing cultural facility",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "href": "/agencies/cultural-affairs/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "208202701E",
+          "anchor": "budget-request-208202701e",
+          "title": "Provide, expand, or enhance housing assistance for youth that are leaving foster care",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-09": {
+      "board_id": "brooklyn-cb-09",
+      "state": "available",
+      "request_count": 133,
+      "agency_count": 24,
+      "changed_answer_count": 14,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "209202701C",
+          "anchor": "budget-request-209202701c",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "209202701CS",
+          "anchor": "budget-request-209202701cs",
+          "title": "Renovate or upgrade an existing health care facility",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Health and Hospitals Corporation",
+            "agency_id": "nyc-health-hospitals",
+            "href": "/agencies/nyc-health-hospitals/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "209202701E",
+          "anchor": "budget-request-209202701e",
+          "title": "Expand street outreach",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-10": {
+      "board_id": "brooklyn-cb-10",
+      "state": "available",
+      "request_count": 63,
+      "agency_count": 12,
+      "changed_answer_count": 4,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "210202701C",
+          "anchor": "budget-request-210202701c",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "210202701CS",
+          "anchor": "budget-request-210202701cs",
+          "title": "Other capital budget request for DEP",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "210202701E",
+          "anchor": "budget-request-210202701e",
+          "title": "Extend library hours or expand and enhance library programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-11": {
+      "board_id": "brooklyn-cb-11",
+      "state": "available",
+      "request_count": 65,
+      "agency_count": 11,
+      "changed_answer_count": 10,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "211202701C",
+          "anchor": "budget-request-211202701c",
+          "title": "Other capital budget request for DEP",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "211202701CS",
+          "anchor": "budget-request-211202701cs",
+          "title": "Other capital budget request for DEP",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "211202701E",
+          "anchor": "budget-request-211202701e",
+          "title": "Other zoning and land use requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of City Planning",
+            "agency_id": "city-planning",
+            "href": "/agencies/city-planning/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-12": {
+      "board_id": "brooklyn-cb-12",
+      "state": "available",
+      "request_count": 42,
+      "agency_count": 14,
+      "changed_answer_count": 7,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "212202701C",
+          "anchor": "budget-request-212202701c",
+          "title": "New equipment for maintenance",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "212202701E",
+          "anchor": "budget-request-212202701e",
+          "title": "Extend library hours or expand and enhance library programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "212202702C",
+          "anchor": "budget-request-212202702c",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-13": {
+      "board_id": "brooklyn-cb-13",
+      "state": "available",
+      "request_count": 115,
+      "agency_count": 21,
+      "changed_answer_count": 12,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "213202701C",
+          "anchor": "budget-request-213202701c",
+          "title": "Renovate or upgrade a senior center",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "213202701CS",
+          "anchor": "budget-request-213202701cs",
+          "title": "Renovate, upgrade or provide new community board facilities and equipment",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "href": "/agencies/citywide-administrative-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "213202701E",
+          "anchor": "budget-request-213202701e",
+          "title": "Provide, expand, or enhance housing assistance for youth that are leaving foster care",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-14": {
+      "board_id": "brooklyn-cb-14",
+      "state": "available",
+      "request_count": 59,
+      "agency_count": 22,
+      "changed_answer_count": 8,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "214202701C",
+          "anchor": "budget-request-214202701c",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "214202701CS",
+          "anchor": "budget-request-214202701cs",
+          "title": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "214202701E",
+          "anchor": "budget-request-214202701e",
+          "title": "Other foster care and child welfare requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-15": {
+      "board_id": "brooklyn-cb-15",
+      "state": "available",
+      "request_count": 54,
+      "agency_count": 12,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "215202701C",
+          "anchor": "budget-request-215202701c",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "215202701CS",
+          "anchor": "budget-request-215202701cs",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "215202701E",
+          "anchor": "budget-request-215202701e",
+          "title": "Extend library hours or expand and enhance library programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-16": {
+      "board_id": "brooklyn-cb-16",
+      "state": "available",
+      "request_count": 81,
+      "agency_count": 17,
+      "changed_answer_count": 4,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "216202701C",
+          "anchor": "budget-request-216202701c",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "216202701CS",
+          "anchor": "budget-request-216202701cs",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "216202701E",
+          "anchor": "budget-request-216202701e",
+          "title": "Other expense budget request for ACS",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-17": {
+      "board_id": "brooklyn-cb-17",
+      "state": "available",
+      "request_count": 75,
+      "agency_count": 18,
+      "changed_answer_count": 5,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "217202701C",
+          "anchor": "budget-request-217202701c",
+          "title": "Renovate or upgrade a senior center",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "217202701E",
+          "anchor": "budget-request-217202701e",
+          "title": "Expand street outreach",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "217202702C",
+          "anchor": "budget-request-217202702c",
+          "title": "Other capital budget request for DFTA",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "brooklyn-cb-18": {
+      "board_id": "brooklyn-cb-18",
+      "state": "available",
+      "request_count": 56,
+      "agency_count": 11,
+      "changed_answer_count": 2,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "218202701C",
+          "anchor": "budget-request-218202701c",
+          "title": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "218202701CS",
+          "anchor": "budget-request-218202701cs",
+          "title": "Reconstruct streets",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "href": "/agencies/transportation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "218202701E",
+          "anchor": "budget-request-218202701e",
+          "title": "Extend library hours or expand and enhance library programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Brooklyn Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-01": {
+      "board_id": "manhattan-cb-01",
+      "state": "available",
+      "request_count": 78,
+      "agency_count": 18,
+      "changed_answer_count": 11,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "301202701C",
+          "anchor": "budget-request-301202701c",
+          "title": "Other capital budget request for DEP",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "301202701CS",
+          "anchor": "budget-request-301202701cs",
+          "title": "Improve traffic and pedestrian safety, including traffic calming",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "href": "/agencies/transportation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "301202701E",
+          "anchor": "budget-request-301202701e",
+          "title": "Other request for services for the homeless",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-02": {
+      "board_id": "manhattan-cb-02",
+      "state": "available",
+      "request_count": 79,
+      "agency_count": 17,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "302202701C",
+          "anchor": "budget-request-302202701c",
+          "title": "Other capital budget request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "302202701CS",
+          "anchor": "budget-request-302202701cs",
+          "title": "Create a new, or renovate or upgrade an existing public library",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "New York Public Library",
+            "agency_id": null,
+            "href": null,
+            "binding": "unbound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "302202701E",
+          "anchor": "budget-request-302202701e",
+          "title": "Other senior center program requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-03": {
+      "board_id": "manhattan-cb-03",
+      "state": "available",
+      "request_count": 49,
+      "agency_count": 10,
+      "changed_answer_count": 0,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "303202701C",
+          "anchor": "budget-request-303202701c",
+          "title": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "303202701E",
+          "anchor": "budget-request-303202701e",
+          "title": "Other foster care and child welfare requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "303202702C",
+          "anchor": "budget-request-303202702c",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-04": {
+      "board_id": "manhattan-cb-04",
+      "state": "available",
+      "request_count": 99,
+      "agency_count": 24,
+      "changed_answer_count": 5,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "304202701C",
+          "anchor": "budget-request-304202701c",
+          "title": "Other capital budget request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "304202701CS",
+          "anchor": "budget-request-304202701cs",
+          "title": "Evaluate a public location or property for green infrastructure, e.g. rain gardens, stormwater greenstreets, green playgrounds",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "304202701E",
+          "anchor": "budget-request-304202701e",
+          "title": "Expand street outreach",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-05": {
+      "board_id": "manhattan-cb-05",
+      "state": "available",
+      "request_count": 113,
+      "agency_count": 26,
+      "changed_answer_count": 4,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "305202701C",
+          "anchor": "budget-request-305202701c",
+          "title": "Provide new homeless shelters or SROs",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "305202701CS",
+          "anchor": "budget-request-305202701cs",
+          "title": "Improve access to a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "305202701E",
+          "anchor": "budget-request-305202701e",
+          "title": "Provide, expand, or enhance primary prevention services to strengthen families",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-06": {
+      "board_id": "manhattan-cb-06",
+      "state": "available",
+      "request_count": 36,
+      "agency_count": 15,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "306202701C",
+          "anchor": "budget-request-306202701c",
+          "title": "Renovate or upgrade a senior center",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "306202701CS",
+          "anchor": "budget-request-306202701cs",
+          "title": "Reconstruct or upgrade a building in a park",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "306202701E",
+          "anchor": "budget-request-306202701e",
+          "title": "Other request for services for the homeless",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-07": {
+      "board_id": "manhattan-cb-07",
+      "state": "available",
+      "request_count": 34,
+      "agency_count": 13,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "307202701C",
+          "anchor": "budget-request-307202701c",
+          "title": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "307202701E",
+          "anchor": "budget-request-307202701e",
+          "title": "Expand street outreach",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "307202702C",
+          "anchor": "budget-request-307202702c",
+          "title": "New equipment for maintenance",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-08": {
+      "board_id": "manhattan-cb-08",
+      "state": "available",
+      "request_count": 67,
+      "agency_count": 19,
+      "changed_answer_count": 2,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "308202701C",
+          "anchor": "budget-request-308202701c",
+          "title": "Other facilities for homeless requests",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "308202701CS",
+          "anchor": "budget-request-308202701cs",
+          "title": "Reconstruct or upgrade a building in a park",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "308202701E",
+          "anchor": "budget-request-308202701e",
+          "title": "Provide, expand, or enhance primary prevention services to strengthen families",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-09": {
+      "board_id": "manhattan-cb-09",
+      "state": "available",
+      "request_count": 134,
+      "agency_count": 23,
+      "changed_answer_count": 13,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "309202701C",
+          "anchor": "budget-request-309202701c",
+          "title": "Other capital budget request for DHS",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "309202701CS",
+          "anchor": "budget-request-309202701cs",
+          "title": "Other capital request",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "309202701E",
+          "anchor": "budget-request-309202701e",
+          "title": "Other expense budget request for ACS",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-10": {
+      "board_id": "manhattan-cb-10",
+      "state": "available",
+      "request_count": 46,
+      "agency_count": 17,
+      "changed_answer_count": 1,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "310202701C",
+          "anchor": "budget-request-310202701c",
+          "title": "Other capital budget request for DOB",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "href": "/agencies/buildings/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "310202701E",
+          "anchor": "budget-request-310202701e",
+          "title": "Other request for services for the homeless",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "310202702C",
+          "anchor": "budget-request-310202702c",
+          "title": "Other cultural facilities and resources requests",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "href": "/agencies/cultural-affairs/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-11": {
+      "board_id": "manhattan-cb-11",
+      "state": "available",
+      "request_count": 80,
+      "agency_count": 18,
+      "changed_answer_count": 10,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "311202701C",
+          "anchor": "budget-request-311202701c",
+          "title": "Renovate or upgrade an existing cultural facility",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "href": "/agencies/cultural-affairs/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "311202701E",
+          "anchor": "budget-request-311202701e",
+          "title": "Allocate funds for outreach services to homebound older adults and for programs that allow the elderly to age in place",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "311202702C",
+          "anchor": "budget-request-311202702c",
+          "title": "Other capital budget request for DEP",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "manhattan-cb-12": {
+      "board_id": "manhattan-cb-12",
+      "state": "available",
+      "request_count": 86,
+      "agency_count": 15,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "312202701C",
+          "anchor": "budget-request-312202701c",
+          "title": "Renovate or upgrade a senior center",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "312202701E",
+          "anchor": "budget-request-312202701e",
+          "title": "Enhance home care services",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "312202702C",
+          "anchor": "budget-request-312202702c",
+          "title": "Other capital budget request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-01": {
+      "board_id": "queens-cb-01",
+      "state": "available",
+      "request_count": 75,
+      "agency_count": 17,
+      "changed_answer_count": 6,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "401202701C",
+          "anchor": "budget-request-401202701c",
+          "title": "Provide new homeless shelters or SROs",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "401202701CS",
+          "anchor": "budget-request-401202701cs",
+          "title": "Other capital budget request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "401202701E",
+          "anchor": "budget-request-401202701e",
+          "title": "Improve safety at homeless shelters",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-02": {
+      "board_id": "queens-cb-02",
+      "state": "available",
+      "request_count": 65,
+      "agency_count": 19,
+      "changed_answer_count": 9,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "402202701C",
+          "anchor": "budget-request-402202701c",
+          "title": "Renovate or upgrade a senior center",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "402202701CS",
+          "anchor": "budget-request-402202701cs",
+          "title": "Provide a new or expanded park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "402202701E",
+          "anchor": "budget-request-402202701e",
+          "title": "Other expense budget request for DOB",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Buildings",
+            "agency_id": "buildings",
+            "href": "/agencies/buildings/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-03": {
+      "board_id": "queens-cb-03",
+      "state": "available",
+      "request_count": 110,
+      "agency_count": 23,
+      "changed_answer_count": 17,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "403202701C",
+          "anchor": "budget-request-403202701c",
+          "title": "Other cultural facilities and resources requests",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Cultural Affairs",
+            "agency_id": "cultural-affairs",
+            "href": "/agencies/cultural-affairs/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "403202701CS",
+          "anchor": "budget-request-403202701cs",
+          "title": "Other capital budget request for DEP",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "403202701E",
+          "anchor": "budget-request-403202701e",
+          "title": "Enhance NORC programs and health services",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-04": {
+      "board_id": "queens-cb-04",
+      "state": "available",
+      "request_count": 108,
+      "agency_count": 23,
+      "changed_answer_count": 9,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "404202701C",
+          "anchor": "budget-request-404202701c",
+          "title": "Other capital budget request for DHS",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "404202701CS",
+          "anchor": "budget-request-404202701cs",
+          "title": "Evaluate a public location or property for green infrastructure, e.g. rain gardens, stormwater greenstreets, green playgrounds",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "404202701E",
+          "anchor": "budget-request-404202701e",
+          "title": "Provide, expand, or enhance primary prevention services to strengthen families",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-05": {
+      "board_id": "queens-cb-05",
+      "state": "available",
+      "request_count": 56,
+      "agency_count": 17,
+      "changed_answer_count": 9,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "405202701C",
+          "anchor": "budget-request-405202701c",
+          "title": "Other capital budget request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "405202701CS",
+          "anchor": "budget-request-405202701cs",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "405202701E",
+          "anchor": "budget-request-405202701e",
+          "title": "Other foster care and child welfare requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-06": {
+      "board_id": "queens-cb-06",
+      "state": "available",
+      "request_count": 60,
+      "agency_count": 17,
+      "changed_answer_count": 6,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "406202701C",
+          "anchor": "budget-request-406202701c",
+          "title": "Renovate or upgrade a senior center",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "406202701E",
+          "anchor": "budget-request-406202701e",
+          "title": "Expand street outreach",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "406202702C",
+          "anchor": "budget-request-406202702c",
+          "title": "Other capital request for DCP",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of City Planning",
+            "agency_id": "city-planning",
+            "href": "/agencies/city-planning/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-07": {
+      "board_id": "queens-cb-07",
+      "state": "available",
+      "request_count": 58,
+      "agency_count": 15,
+      "changed_answer_count": 4,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "407202701C",
+          "anchor": "budget-request-407202701c",
+          "title": "Renovate or upgrade a senior center",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "407202701CS",
+          "anchor": "budget-request-407202701cs",
+          "title": "Invest in infrastructure that will support growth in commercial business districts",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Economic Development Corporation",
+            "agency_id": "economic-development-corporation",
+            "href": "/agencies/economic-development-corporation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "407202701E",
+          "anchor": "budget-request-407202701e",
+          "title": "Other senior center program requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-08": {
+      "board_id": "queens-cb-08",
+      "state": "available",
+      "request_count": 74,
+      "agency_count": 15,
+      "changed_answer_count": 0,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "408202701C",
+          "anchor": "budget-request-408202701c",
+          "title": "Upgrade existing facilities for the homeless",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "408202701CS",
+          "anchor": "budget-request-408202701cs",
+          "title": "Reconstruct or upgrade a building in a park",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "408202701E",
+          "anchor": "budget-request-408202701e",
+          "title": "Other senior center program requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-09": {
+      "board_id": "queens-cb-09",
+      "state": "available",
+      "request_count": 51,
+      "agency_count": 13,
+      "changed_answer_count": 0,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "409202701C",
+          "anchor": "budget-request-409202701c",
+          "title": "Other capital request",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "href": "/agencies/citywide-administrative-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "409202701CS",
+          "anchor": "budget-request-409202701cs",
+          "title": "Other requests for park, building, or access improvements",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "409202701E",
+          "anchor": "budget-request-409202701e",
+          "title": "Enhance educational and recreational programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-10": {
+      "board_id": "queens-cb-10",
+      "state": "available",
+      "request_count": 78,
+      "agency_count": 15,
+      "changed_answer_count": 0,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "410202701C",
+          "anchor": "budget-request-410202701c",
+          "title": "Renovate or upgrade a senior center",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "410202701CS",
+          "anchor": "budget-request-410202701cs",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "410202701E",
+          "anchor": "budget-request-410202701e",
+          "title": "Improve safety at homeless shelters",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Homeless Services",
+            "agency_id": "homeless-services",
+            "href": "/agencies/homeless-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-11": {
+      "board_id": "queens-cb-11",
+      "state": "available",
+      "request_count": 48,
+      "agency_count": 13,
+      "changed_answer_count": 1,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "411202701C",
+          "anchor": "budget-request-411202701c",
+          "title": "Other capital budget request for DEP",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "411202701CS",
+          "anchor": "budget-request-411202701cs",
+          "title": "Other requests for park, building, or access improvements",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "411202701E",
+          "anchor": "budget-request-411202701e",
+          "title": "Funding for a new senior center program",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-12": {
+      "board_id": "queens-cb-12",
+      "state": "available",
+      "request_count": 57,
+      "agency_count": 9,
+      "changed_answer_count": 10,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "412202701C",
+          "anchor": "budget-request-412202701c",
+          "title": "Other capital budget request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "412202701CS",
+          "anchor": "budget-request-412202701cs",
+          "title": "Other capital budget request for DPR",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "412202701E",
+          "anchor": "budget-request-412202701e",
+          "title": "Other park maintenance and safety requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-13": {
+      "board_id": "queens-cb-13",
+      "state": "available",
+      "request_count": 30,
+      "agency_count": 8,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "413202701C",
+          "anchor": "budget-request-413202701c",
+          "title": "Renovate or upgrade a senior center",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "413202701CS",
+          "anchor": "budget-request-413202701cs",
+          "title": "Reconstruct or upgrade a park or amenity (i.e. playground, outdoor athletic field)",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "413202701E",
+          "anchor": "budget-request-413202701e",
+          "title": "Enhance educational and recreational programs",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "queens-cb-14": {
+      "board_id": "queens-cb-14",
+      "state": "available",
+      "request_count": 80,
+      "agency_count": 12,
+      "changed_answer_count": 2,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "414202701C",
+          "anchor": "budget-request-414202701c",
+          "title": "Other capital budget request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "414202701CS",
+          "anchor": "budget-request-414202701cs",
+          "title": "Move a planned capital project into the budget for the next fiscal year",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "414202701E",
+          "anchor": "budget-request-414202701e",
+          "title": "Other educational programs requests",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "staten-island-cb-01": {
+      "board_id": "staten-island-cb-01",
+      "state": "available",
+      "request_count": 44,
+      "agency_count": 16,
+      "changed_answer_count": 3,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "501202701C",
+          "anchor": "budget-request-501202701c",
+          "title": "Other capital budget request for DCAS",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Citywide Administrative Services",
+            "agency_id": "citywide-administrative-services",
+            "href": "/agencies/citywide-administrative-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "501202701CS",
+          "anchor": "budget-request-501202701cs",
+          "title": "Repair or provide new street lights",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "href": "/agencies/transportation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "501202701E",
+          "anchor": "budget-request-501202701e",
+          "title": "Provide, expand, or enhance preventive services and community based alternatives for youth",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Administration for Children's Services",
+            "agency_id": "administration-for-childrens-services",
+            "href": "/agencies/administration-for-childrens-services/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "staten-island-cb-02": {
+      "board_id": "staten-island-cb-02",
+      "state": "available",
+      "request_count": 15,
+      "agency_count": 6,
+      "changed_answer_count": 0,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "502202701C",
+          "anchor": "budget-request-502202701c",
+          "title": "Other capital request for DPR",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Parks and Recreation",
+            "agency_id": "parks-and-recreation",
+            "href": "/agencies/parks-and-recreation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "502202701CS",
+          "anchor": "budget-request-502202701cs",
+          "title": "Move a planned capital project into the budget for the next fiscal year",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "502202701E",
+          "anchor": "budget-request-502202701e",
+          "title": "Other expense request for DOE",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department of Education",
+            "agency_id": "education",
+            "href": "/agencies/education/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    },
+    "staten-island-cb-03": {
+      "board_id": "staten-island-cb-03",
+      "state": "available",
+      "request_count": 9,
+      "agency_count": 6,
+      "changed_answer_count": 0,
+      "fiscal_years": [
+        2027
+      ],
+      "requests": [
+        {
+          "tracking_code": "503202701C",
+          "anchor": "budget-request-503202701c",
+          "title": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+          "fiscal_year": 2027,
+          "request_class": "capital",
+          "agency": {
+            "source_label": "Department of Environmental Protection",
+            "agency_id": "environmental-protection",
+            "href": "/agencies/environmental-protection/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "503202701CS",
+          "anchor": "budget-request-503202701cs",
+          "title": "Reconstruct streets",
+          "fiscal_year": 2027,
+          "request_class": "continued-support",
+          "agency": {
+            "source_label": "Department of Transportation",
+            "agency_id": "transportation",
+            "href": "/agencies/transportation/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        },
+        {
+          "tracking_code": "503202701E",
+          "anchor": "budget-request-503202701e",
+          "title": "Allocate funds for outreach services to homebound older adults and for programs that allow the elderly to age in place",
+          "fiscal_year": 2027,
+          "request_class": "expense",
+          "agency": {
+            "source_label": "Department for the Aging",
+            "agency_id": "aging",
+            "href": "/agencies/aging/",
+            "binding": "bound"
+          },
+          "latest_answer": {
+            "publication": "20260630",
+            "publication_date": "2026-06-30",
+            "answered": true
+          }
+        }
+      ]
+    }
+  }
+}

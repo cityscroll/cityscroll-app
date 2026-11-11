@@ -1,0 +1,99 @@
+{
+  "schema": "cityscroll.near_you_board_budget_requests_evidence_manifest.v1",
+  "revision": "c34e47d69805f5fa82da5b36f73d665d67e01ad5",
+  "data_vintage": "2026-10-17T01:53:34.458Z",
+  "capture_mode": "headless-rendered-fixture",
+  "image_binaries_committed": false,
+  "local_image_dir_ignored": "task-scratch capture directory",
+  "assertions": {
+    "before_has_placeholder": true,
+    "after_has_placeholder": false,
+    "after_has_records": true
+  },
+  "captures": [
+    {
+      "phase": "before",
+      "route": "/near-you/?geo=nta2020%3ABK1503&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1503",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c34e47d69805f5fa82da5b36f73d665d67e01ad5",
+      "data_vintage": "2026-10-17T01:53:34.458Z",
+      "assertion": "Before: the selected-place overview shows an empty District priorities card linking to meetings.",
+      "sha256": "28fa6404128b18d2338791209e56b7223f67d2503e3c8f902fdedf143a82fd2c",
+      "html_sha256": "ea0b2d753ce7313659b2b2aae053d26d3084308f2540be10a1e7f83846d03148",
+      "file": null
+    },
+    {
+      "phase": "before",
+      "route": "/near-you/?geo=nta2020%3ABK1503&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1503",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c34e47d69805f5fa82da5b36f73d665d67e01ad5",
+      "data_vintage": "2026-10-17T01:53:34.458Z",
+      "assertion": "Before at 390px: the empty District priorities card with no sourced requests.",
+      "sha256": "4156e0631390216065c9d8dc05c542eedd24e788a5b8de3c83204a18a7406fb3",
+      "html_sha256": "ea0b2d753ce7313659b2b2aae053d26d3084308f2540be10a1e7f83846d03148",
+      "file": null
+    },
+    {
+      "phase": "after",
+      "route": "/near-you/?geo=nta2020%3ABK1503&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1503",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c34e47d69805f5fa82da5b36f73d665d67e01ad5",
+      "data_vintage": "2026-10-17T01:53:34.458Z",
+      "assertion": "After: the overview previews real board budget requests with publication dates, distinct agency answer context, and the board's budget-request destination.",
+      "sha256": "4f30ee404516e877225fd81759a4f7307c1f9bbb104dd3a0a82301e46f1f92bf",
+      "html_sha256": "cc205a46a8e5fbee539f0c310a26d381ef6ea128437201445f40d627ca9aad49",
+      "file": null
+    },
+    {
+      "phase": "after",
+      "route": "/near-you/?geo=nta2020%3ABK1503&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1503",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c34e47d69805f5fa82da5b36f73d665d67e01ad5",
+      "data_vintage": "2026-10-17T01:53:34.458Z",
+      "assertion": "After at 390px: request wording, answer context, official source links, and board record destinations remain available.",
+      "sha256": "d86f9152f714f9b2e97c33ea43fa5945ef9c4ec0c1c0208b18994ee5c49e56a8",
+      "html_sha256": "cc205a46a8e5fbee539f0c310a26d381ef6ea128437201445f40d627ca9aad49",
+      "file": null
+    },
+    {
+      "phase": "after",
+      "route": "/near-you/?cd=Q04",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "c34e47d69805f5fa82da5b36f73d665d67e01ad5",
+      "data_vintage": "2026-10-17T01:53:34.458Z",
+      "assertion": "Independent Queens community-district overview uses the same covering-board projection.",
+      "sha256": "98d7b1b00f637a3e22d4208ca303ee6eb76a671b76afa81ed1406d170543967c",
+      "html_sha256": "5701f3eb6685d1185b96b97685fbea4ea5c31f5cb4a92e115dc9d89643a80479",
+      "file": null
+    },
+    {
+      "phase": "after",
+      "route": "/near-you/?cd=Q04",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "c34e47d69805f5fa82da5b36f73d665d67e01ad5",
+      "data_vintage": "2026-10-17T01:53:34.458Z",
+      "assertion": "Independent Queens community-district overview at 390px keeps the same projection.",
+      "sha256": "bbb77157bc9ac2fcf6a6aa428dd40649c172fc6339c200c8e32fea156f660c70",
+      "html_sha256": "5701f3eb6685d1185b96b97685fbea4ea5c31f5cb4a92e115dc9d89643a80479",
+      "file": null
+    }
+  ]
+}

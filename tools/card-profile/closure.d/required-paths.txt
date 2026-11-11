@@ -415,6 +415,7 @@ site/community-board-scorecard.mjs
 site/community_board_activity.mjs
 site/community_board_adopted_budget.mjs
 site/community_board_agenda_recommendation.mjs
+site/community_board_budget_requests.mjs
 site/community_board_bylaws.mjs
 site/community_board_committees.mjs
 site/community_board_constellation.mjs
@@ -469,6 +470,7 @@ site/data/agency_constellation_lookup.json
 site/data/agency_obligations_lookup.json
 site/data/committee_graph_lookup.json
 site/data/community_board_activity_lookup.json
+site/data/community_board_budget_requests_lookup.json
 site/data/community_board_geography_lookup.json
 site/data/community_board_meeting_index.json
 site/data/community_board_meeting_index/shard-000.json

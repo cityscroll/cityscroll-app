@@ -19,6 +19,7 @@ import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
 import { consultationMaterializationRecords } from "../site/consultation_documents.mjs";
 import { mergeConsultationActivity } from "../site/consultation_place_time.mjs";
 import { activityFromBoardActivityLookup } from "../site/community_board_activity.mjs";
+import { boardBudgetRequestsViewFromLookup } from "../site/community_board_budget_requests.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -94,6 +95,13 @@ function buildDocuments() {
       return null;
     }
   })();
+  const boardBudgetRequestsLookup = (() => {
+    try {
+      return json(join(SITE, "data/community_board_budget_requests_lookup.json"));
+    } catch {
+      return null;
+    }
+  })();
   return commonScopes().map((scope) => {
     const publicPath = commonNearYouPath(scope);
     const urlForScope = (next) => commonNearYouPath(next)
@@ -117,6 +125,14 @@ function buildDocuments() {
         ? (boardActivity?.entries?.length ? "ready" : "absent")
         : "error")
       : undefined;
+    const boardBudgetRequests = coveringBoardId && boardBudgetRequestsLookup
+      ? boardBudgetRequestsViewFromLookup(boardBudgetRequestsLookup, coveringBoardId)
+      : null;
+    const boardBudgetRequestsState = !scope?.facets?.domains?.length && coveringBoardId
+      ? (boardBudgetRequestsLookup
+        ? (boardBudgetRequests?.state === "available" && boardBudgetRequests.request_count ? "ready" : "absent")
+        : "error")
+      : undefined;
     const view = buildNearYouViewModel(scope, activity, boundaries, {
       canonicalBase: CANONICAL_BASE,
       urlForScope,
@@ -125,6 +141,7 @@ function buildDocuments() {
       navigationLayerType: "nta2020",
       geographyLabelIndex,
       ...(boardActivityState ? { boardActivityState, boardActivity } : {}),
+      ...(boardBudgetRequestsState ? { boardBudgetRequestsState, boardBudgetRequests } : {}),
     });
     const deferredParts = renderNearYouDeferredParts(view);
     return {

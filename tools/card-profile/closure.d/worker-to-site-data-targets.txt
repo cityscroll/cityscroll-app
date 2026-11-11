@@ -4,6 +4,7 @@
 # deduplicate, and the next regeneration restores this canonical order.
 site/data/action_link_health.json
 site/data/community_board_activity_lookup.json
+site/data/community_board_budget_requests_lookup.json
 site/data/community_board_resolution_pilot.json
 site/data/comparative_story_signals.json
 site/data/council_land_matter_links.json

@@ -17,6 +17,7 @@ import { consultationMaterializationRecords } from "../../site/consultation_docu
 import { mergeConsultationActivity } from "../../site/consultation_place_time.mjs";
 import { loadBroaderDistrictActivity, loadNearYouActivity, RouteReadModelUnavailable } from "./lib/route_read_model_kv.mjs";
 import { activityFromBoardActivityLookup } from "../../site/community_board_activity.mjs";
+import { boardBudgetRequestsViewFromLookup } from "../../site/community_board_budget_requests.mjs";
 
 function activityWithConsultations(activity) {
   if (!activity) return activity;
@@ -32,6 +33,17 @@ async function loadBoardActivityLookup() {
     }).then((mod) => mod.default || mod).catch(() => null);
   }
   return boardActivityLookupPromise;
+}
+
+let boardBudgetRequestsLookupPromise = null;
+
+async function loadBoardBudgetRequestsLookup() {
+  if (!boardBudgetRequestsLookupPromise) {
+    boardBudgetRequestsLookupPromise = import("../../site/data/community_board_budget_requests_lookup.json", {
+      with: { type: "json" },
+    }).then((mod) => mod.default || mod).catch(() => null);
+  }
+  return boardBudgetRequestsLookupPromise;
 }
 
 function coveringCommunityDistrictId(scope, broaderDistricts) {
@@ -51,11 +63,15 @@ function coveringBoardIdFromGeography(communityDistrictId, geography) {
   return board?.properties?.body_id ? String(board.properties.body_id) : null;
 }
 
+function coveringBoardForOverview(scope, broaderDistricts, geography) {
+  const communityDistrictId = coveringCommunityDistrictId(scope, broaderDistricts);
+  return { communityDistrictId, boardId: coveringBoardIdFromGeography(communityDistrictId, geography) };
+}
+
 async function boardActivityOptionsForOverview(scope, broaderDistricts, geography) {
   // Overview-only enrichment: lensed result lists keep their prior shape.
   if (scope?.facets?.domains?.length) return {};
-  const communityDistrictId = coveringCommunityDistrictId(scope, broaderDistricts);
-  const boardId = coveringBoardIdFromGeography(communityDistrictId, geography);
+  const { boardId } = coveringBoardForOverview(scope, broaderDistricts, geography);
   if (!boardId) return { boardActivityState: "absent", boardActivity: null };
   try {
     const lookup = await loadBoardActivityLookup();
@@ -67,6 +83,28 @@ async function boardActivityOptionsForOverview(scope, broaderDistricts, geograph
     return { boardActivityState: "ready", boardActivity: activity };
   } catch {
     return { boardActivityState: "error", boardActivity: null };
+  }
+}
+
+/**
+ * Overview-only budget-request enrichment over the same covering-board
+ * relation. A failed lookup read is an error state the section omits; it never
+ * becomes a resident-facing "no requests".
+ */
+async function boardBudgetRequestsOptionsForOverview(scope, broaderDistricts, geography) {
+  if (scope?.facets?.domains?.length) return {};
+  const { boardId } = coveringBoardForOverview(scope, broaderDistricts, geography);
+  if (!boardId) return { boardBudgetRequestsState: "absent", boardBudgetRequests: null };
+  try {
+    const lookup = await loadBoardBudgetRequestsLookup();
+    if (!lookup) return { boardBudgetRequestsState: "error", boardBudgetRequests: null };
+    const view = boardBudgetRequestsViewFromLookup(lookup, boardId);
+    if (!view || view.state !== "available" || !view.request_count) {
+      return { boardBudgetRequestsState: "absent", boardBudgetRequests: view };
+    }
+    return { boardBudgetRequestsState: "ready", boardBudgetRequests: view };
+  } catch {
+    return { boardBudgetRequestsState: "error", boardBudgetRequests: null };
   }
 }
 
@@ -250,6 +288,11 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
     broaderDistricts,
     geographyForBoard,
   );
+  const boardBudgetRequestsOptions = await boardBudgetRequestsOptionsForOverview(
+    scope,
+    broaderDistricts,
+    geographyForBoard,
+  );
   const view = buildNearYouViewModel(scope, requestedLoaded ? loadedActivity : null, boundaries, {
     canonicalBase: CANONICAL_BASE,
     siteBase: SITE_BASE,
@@ -259,6 +302,7 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
     broaderDistricts,
     communityGeography: geographyForBoard,
     ...boardActivityOptions,
+    ...boardBudgetRequestsOptions,
     ...nearYouGeographyOwnerOptions(url),
   });
   const deferredParts = deferred ? renderNearYouDeferredParts(view) : null;

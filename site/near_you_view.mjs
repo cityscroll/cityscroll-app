@@ -50,6 +50,7 @@ import {
 } from "./near_you_broader_districts.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { buildNearYouBoardActivityOverviewSection } from "./community_board_activity.mjs";
+import { buildNearYouBoardBudgetRequestsOverviewSection } from "./community_board_budget_requests.mjs";
 import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 import { renderWalkEntry, walkEntryHref, walkEntryPlaceLabel } from "./walk_entry.mjs";
 import { meetingOriginLabel } from "./meeting_origin.mjs";
@@ -915,6 +916,16 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       : null,
     preferNonBudget: options.preferNonBudgetBoardActivity !== false,
   });
+  // The budget section shares the covering-board relation with board activity
+  // and reads the canonical register through the same projection; without a
+  // servable register the optional card is omitted, never an empty placeholder.
+  const boardBudgetRequestsSection = buildNearYouBoardBudgetRequestsOverviewSection({
+    coveringBoardId,
+    boardHref: coveringBoardPresentation.boardHref,
+    boardLabel: coveringBoardPresentation.boardLabel,
+    view: options.boardBudgetRequests || null,
+    readState: options.boardBudgetRequestsState,
+  });
   const overview = {
     state: isOverview ? dataState : "not_requested",
     sections: [
@@ -943,7 +954,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
         emptyCoverage: "No district projects are published in this digest.",
         measurable: overviewLensMeasurable("land"),
       }),
-      { key: "district-priorities", title: "District priorities", count: null, records: [], coverage: "District priorities are not published in this digest.", lens: "meetings" },
+      boardBudgetRequestsSection,
       overviewCountedSection({
         key: "consultations",
         title: "Consultations",
@@ -1387,6 +1398,7 @@ function recordCard(record, { now = null, inspect = true } = {}) {
       <span>${esc(dateLabel(record.date))}</span>
     </div>
     ${meetingSource}
+    ${record.response_note ? `<p class="near-record-response" data-near-you-record-response="1">${esc(record.response_note)}</p>` : ""}
     <div class="near-record-basis" data-appearance-reason="1"><strong>${esc(placement)}</strong></div>
     ${venueAddress ? `<div class="near-record-venue" data-venue-address="1">${esc(venueAddress)}</div>` : ""}
     ${timing}
