@@ -7,10 +7,25 @@
 import { communityBoardDecisionHref } from "./community_board_resolution_pilot.mjs";
 
 export const COMMUNITY_BOARD_ACTIVITY_SCHEMA = "cityscroll.community_board_activity.v1";
+export const COMMUNITY_BOARD_ACTIVITY_LOOKUP_SCHEMA = "cityscroll.community_board_activity_lookup.v1";
 export const COMMUNITY_BOARD_ACTIVITY_LIMIT = 24;
+export const NEAR_YOU_BOARD_ACTIVITY_PREVIEW_LIMIT = 3;
 export const COMMUNITY_BOARD_ACTIVITY_TYPES = Object.freeze([
   "meeting", "decision", "resolution", "land_position", "budget_request",
   "agency_response_change", "document_publication",
+]);
+export const COMMUNITY_BOARD_ACTIVITY_TYPE_LABELS = Object.freeze({
+  meeting: "Board meeting",
+  decision: "Board decision",
+  resolution: "Board resolution",
+  land_position: "Land position",
+  budget_request: "Budget request",
+  agency_response_change: "Agency response",
+  document_publication: "Board document",
+});
+export const BUDGET_RELATED_ACTIVITY_TYPES = Object.freeze([
+  "budget_request",
+  "agency_response_change",
 ]);
 
 const DAY = /^\d{4}-\d{2}-\d{2}$/;
@@ -113,4 +128,164 @@ export function renderCommunityBoardActivitySection(activity) {
   if (!activity || activity.schema !== COMMUNITY_BOARD_ACTIVITY_SCHEMA) return "";
   const items = activity.entries.map((entry) => `<li class="board-activity-entry" data-action-type="${clean(entry.action_type, 60)}"><a href="${entry.canonical_href}">${clean(entry.title, 500)}</a> <time datetime="${entry.effective_date}">${entry.effective_date}</time><details><summary>Sources</summary><a href="${entry.source_url}">Official source</a><span> Observed through ${entry.observed_through}</span></details></li>`).join("");
   return `<section id="board-activity" class="node-card civic-object-section board-activity" data-community-board-activity="${activity.entries.length}"><h2>Board activity</h2><p class="muted">Typed records published by this board, ordered by date. A request is not funding or completion; a district project is not board action.</p>${items ? `<ol class="board-activity-list">${items}</ol>` : "<p>No board action is recorded in the retained sources for this board.</p>"}</section>`;
+}
+
+export function isServableBoardActivity(activity) {
+  return Boolean(
+    activity
+    && (activity.schema === COMMUNITY_BOARD_ACTIVITY_SCHEMA || Array.isArray(activity.entries))
+    && Array.isArray(activity.entries)
+    && activity.entries.length > 0,
+  );
+}
+
+export function communityBoardActivityTypeLabel(actionType, title = "") {
+  if (actionType === "agency_response_change") return COMMUNITY_BOARD_ACTIVITY_TYPE_LABELS.agency_response_change;
+  if (actionType === "resolution") return COMMUNITY_BOARD_ACTIVITY_TYPE_LABELS.resolution;
+  if (actionType === "decision" && /^Resolution\b/i.test(String(title || ""))) {
+    return COMMUNITY_BOARD_ACTIVITY_TYPE_LABELS.resolution;
+  }
+  return COMMUNITY_BOARD_ACTIVITY_TYPE_LABELS[actionType]
+    || clean(actionType, 60).replaceAll("_", " ")
+    || "Board record";
+}
+
+const FEATURED_NEAR_YOU_ACTIVITY_TYPES = Object.freeze([
+  "resolution",
+  "decision",
+  "agency_response_change",
+  "land_position",
+  "document_publication",
+]);
+
+export function selectNearYouBoardActivityEntries(activity, {
+  limit = NEAR_YOU_BOARD_ACTIVITY_PREVIEW_LIMIT,
+  preferNonBudget = true,
+} = {}) {
+  const entries = Array.isArray(activity?.entries) ? activity.entries : [];
+  if (!entries.length) return [];
+  const size = Number.isInteger(limit) && limit >= 0 ? limit : NEAR_YOU_BOARD_ACTIVITY_PREVIEW_LIMIT;
+  const nonBudget = entries.filter((entry) => !BUDGET_RELATED_ACTIVITY_TYPES.includes(entry.action_type));
+  const pool = preferNonBudget && nonBudget.length ? nonBudget : entries;
+  // Keep dated order, but surface typed actions ahead of recurring meetings so
+  // the bounded overview preview is not only calendar rows.
+  const featured = pool.filter((entry) => FEATURED_NEAR_YOU_ACTIVITY_TYPES.includes(entry.action_type));
+  const rest = pool.filter((entry) => !FEATURED_NEAR_YOU_ACTIVITY_TYPES.includes(entry.action_type));
+  return [...featured, ...rest].slice(0, size);
+}
+
+export function projectNearYouBoardActivityRecords(activity, {
+  boardLabel = null,
+  limit = NEAR_YOU_BOARD_ACTIVITY_PREVIEW_LIMIT,
+  preferNonBudget = true,
+} = {}) {
+  const scopeLabel = boardLabel
+    ? `${boardLabel} · full community district`
+    : "Full community district covered by this board";
+  return selectNearYouBoardActivityEntries(activity, { limit, preferNonBudget }).map((entry) => {
+    const typeLabel = communityBoardActivityTypeLabel(entry.action_type, entry.title);
+    return {
+      id: entry.id,
+      title: entry.title,
+      date: entry.effective_date,
+      agency: boardLabel || "Community Board",
+      type: typeLabel,
+      action_type: entry.action_type,
+      basis: scopeLabel,
+      route: entry.canonical_href,
+      source_url: entry.source_url,
+      observed_through: entry.observed_through,
+      board_id: entry.board_id,
+      geography_scope: "community_district",
+      geography_evidence: {
+        label: boardLabel || "Community Board district",
+        basis: scopeLabel,
+        location_role: "affected_area",
+        method: "covering_board_register",
+        tier: "derived",
+        resident_label: scopeLabel,
+      },
+    };
+  });
+}
+
+/**
+ * Near You overview section for typed covering-board activity.
+ *
+ * Returns null to omit the optional card. A failed board-activity read never
+ * becomes a verified empty or "no activity" claim. When readState is omitted,
+ * callers may still pass legacyCoverage to preserve the prior board-link note.
+ */
+export function buildNearYouBoardActivityOverviewSection({
+  coveringBoardId = null,
+  boardHref = null,
+  boardLabel = null,
+  activity = null,
+  readState = undefined,
+  legacyCoverage = null,
+  preferNonBudget = true,
+  limit = NEAR_YOU_BOARD_ACTIVITY_PREVIEW_LIMIT,
+} = {}) {
+  const key = "board-activity";
+  const title = "Board activity";
+  const lens = "meetings";
+  const normalizedHref = href(boardHref);
+  const destinationHref = normalizedHref
+    ? `${normalizedHref.replace(/\/?$/, "/")}#board-activity`
+    : null;
+
+  if (readState === "error") return null;
+
+  if (readState === "ready" || readState === "absent") {
+    if (!isServableBoardActivity(activity)) return null;
+    const records = projectNearYouBoardActivityRecords(activity, {
+      boardLabel,
+      preferNonBudget,
+      limit,
+    });
+    if (!records.length) return null;
+    return {
+      key,
+      title,
+      lens,
+      count: Number.isInteger(activity.total_count) ? activity.total_count : records.length,
+      records,
+      coverage: "These records cover the full Community Board district, which is wider than one neighborhood.",
+      destinationHref,
+      destinationLabel: "Open board activity",
+    };
+  }
+
+  if (!coveringBoardId && !normalizedHref) return null;
+  if (!legacyCoverage) return null;
+  return {
+    key,
+    title,
+    lens,
+    count: null,
+    records: [],
+    coverage: legacyCoverage,
+    destinationHref: normalizedHref,
+    destinationLabel: normalizedHref ? "Open board page" : null,
+  };
+}
+
+export function activityFromBoardActivityLookup(lookup, boardId) {
+  const id = clean(boardId, 100).toLowerCase();
+  if (!BOARD.test(id) || !lookup || typeof lookup !== "object") return null;
+  const row = lookup.by_board?.[id] || lookup.boards?.[id] || null;
+  if (!row) return null;
+  const entries = Array.isArray(row.entries) ? row.entries : [];
+  return {
+    schema: COMMUNITY_BOARD_ACTIVITY_SCHEMA,
+    board_id: id,
+    entries,
+    total_count: Number.isInteger(row.total_count) ? row.total_count : entries.length,
+    limit: Number.isInteger(row.limit) ? row.limit : COMMUNITY_BOARD_ACTIVITY_LIMIT,
+    coverage: row.coverage || {
+      state: entries.length ? "records_present" : "no_action_recorded",
+      observed_through: null,
+      source_url: null,
+    },
+  };
 }

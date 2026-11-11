@@ -988,7 +988,7 @@ const DISCOVERY_RECOVERY_CASES = [
   "missing-coverage",
   "detail-failure",
 ];
-const FROZEN_ACTIVITY_BLOB = "5deaa202fe578e09b58380d43755419dbb85ec60";
+const FROZEN_ACTIVITY_BLOB = "559cb7204c3d3484df792cd42def54ec7af36b1e";
 
 function runCapture(args, env = process.env) {
   return spawnSync("python3", [CAPTURE_TOOL, ...args], { cwd: ROOT, encoding: "utf8", env });

@@ -102,11 +102,23 @@ RECOVERY_CASES = (
 
 # Frozen offline controls: the published district-activity snapshot these
 # journeys were specified against, served by blob id with a pinned clock.
+# Blob 559cb720… is derived from 5deaa202… by swapping only the citywide
+# meeting meeting:nyc_legistar_events:22568 -> meeting:nyc_legistar_events:22854
+# because 22568 left the shared meeting read model. It is a derived snapshot,
+# not one observed live. The committed fixture under
+# test/fixtures/discovery-recovery-activity/ keeps those bytes reachable for
+# shallow checkouts that still serve by blob id via git cat-file.
 FROZEN_CLOCK = "2026-09-28T16:00:00.000Z"
 FROZEN_ACTIVITY = {
     "path": "site/data/district_activity.json",
     "revision": "d886b385d647f4534df985f5922749a9414fab26",
-    "blob": "5deaa202fe578e09b58380d43755419dbb85ec60",
+    "blob": "559cb7204c3d3484df792cd42def54ec7af36b1e",
+    "derived_from_blob": "5deaa202fe578e09b58380d43755419dbb85ec60",
+    "derivation": (
+        "single citywide meeting swap meeting:nyc_legistar_events:22568 -> "
+        "meeting:nyc_legistar_events:22854 because 22568 left the shared meeting "
+        "read model; derived snapshot, not observed live"
+    ),
 }
 FROZEN_GENERATION = f"capture-{FROZEN_ACTIVITY['blob'][:12]}"
 SEPT23_ID = (

@@ -422,6 +422,7 @@
 /site/data/agency_constellation_lookup.json
 /site/data/agency_obligations_lookup.json
 /site/data/committee_graph_lookup.json
+/site/data/community_board_activity_lookup.json
 /site/data/community_board_geography_lookup.json
 /site/data/community_board_meeting_index.json
 /site/data/community_board_meeting_index/

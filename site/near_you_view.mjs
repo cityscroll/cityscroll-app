@@ -49,6 +49,7 @@ import {
   renderNearYouBroaderDistrictsHtml,
 } from "./near_you_broader_districts.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import { buildNearYouBoardActivityOverviewSection } from "./community_board_activity.mjs";
 import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 import { renderWalkEntry, walkEntryHref, walkEntryPlaceLabel } from "./walk_entry.mjs";
 import { meetingOriginLabel } from "./meeting_origin.mjs";
@@ -894,6 +895,26 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     };
   };
   const recentMeasurable = recentLensNames.some((name) => overviewLensMeasurable(name));
+  const coveringBoardPresentation = (() => {
+    const community = first(scope.place.community_districts) || coveringCommunityDistrict;
+    return community
+      ? boardPresentationForCommunityDistrict(community, options.communityGeography || {})
+      : { boardLabel: null, boardRef: null, boardHref: null };
+  })();
+  const coveringBoardId = coveringBoardPresentation.boardRef
+    ? String(coveringBoardPresentation.boardRef).replace(/^community-board:/, "")
+    : null;
+  const boardActivitySection = buildNearYouBoardActivityOverviewSection({
+    coveringBoardId,
+    boardHref: coveringBoardPresentation.boardHref,
+    boardLabel: coveringBoardPresentation.boardLabel,
+    activity: options.boardActivity || null,
+    readState: options.boardActivityState,
+    legacyCoverage: options.boardActivityState == null
+      ? viewBoardCoverage(scope, options.communityGeography || {}, { coveringCommunityDistrict })
+      : null,
+    preferNonBudget: options.preferNonBudgetBoardActivity !== false,
+  });
   const overview = {
     state: isOverview ? dataState : "not_requested",
     sections: [
@@ -913,7 +934,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
         emptyCoverage: "No recent changes are recorded for this district in the retained sources.",
         measurable: recentMeasurable,
       }),
-      { key: "board-activity", title: "Board activity", count: null, records: [], coverage: viewBoardCoverage(scope, options.communityGeography || {}, { coveringCommunityDistrict }), lens: "meetings" },
+      boardActivitySection,
       overviewCountedSection({
         key: "projects",
         title: "Projects",
@@ -931,7 +952,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
         emptyCoverage: "No consultations are recorded for this district in the retained sources.",
         measurable: overviewLensMeasurable("consultations"),
       }),
-    ],
+    ].filter(Boolean),
   };
   const localFollowBundle = isOverview && scope.place.community_districts.length
     ? buildLocalDistrictFollowBundle({
@@ -1623,11 +1644,14 @@ function renderNearYouOverview(view) {
   const sections = view.overview.sections.map((section) => {
     const records = section.records.length ? recordList(section.records, undefined, { now: view.now }) : "";
     const count = knownCount(section.count) == null ? "" : ` <span class="near-overview-count">${section.count}</span>`;
-    const destination = section.key === "board-activity" && view.placePresentation.boardHref
-      ? view.placePresentation.boardHref
-      : lensScopeHref(section.lens);
-    return `<section class="near-overview-section" id="near-overview-${esc(section.key)}" aria-labelledby="near-overview-${esc(section.key)}-heading">
-      <div class="near-section-heading"><h2 id="near-overview-${esc(section.key)}-heading">${esc(section.title)}${count}</h2><a href="${esc(destination)}">Open ${esc(section.lens === "meetings" ? "meetings" : LENS_LABELS[section.lens] || section.lens)}</a></div>
+    const destination = section.destinationHref
+      || (section.key === "board-activity" && view.placePresentation.boardHref
+        ? `${String(view.placePresentation.boardHref).replace(/\/?$/, "/")}#board-activity`
+        : lensScopeHref(section.lens));
+    const openLabel = section.destinationLabel
+      || `Open ${section.lens === "meetings" ? "meetings" : LENS_LABELS[section.lens] || section.lens}`;
+    return `<section class="near-overview-section" id="near-overview-${esc(section.key)}" aria-labelledby="near-overview-${esc(section.key)}-heading"${section.key === "board-activity" ? ` data-near-board-activity="${section.records.length ? "records" : "coverage"}"` : ""}>
+      <div class="near-section-heading"><h2 id="near-overview-${esc(section.key)}-heading">${esc(section.title)}${count}</h2><a href="${esc(destination)}">${esc(openLabel)}</a></div>
       ${records}${section.coverage ? `<p class="near-coverage" role="note">${esc(section.coverage)}</p>` : ""}
     </section>`;
   }).join("");

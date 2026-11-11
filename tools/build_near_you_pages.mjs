@@ -18,6 +18,7 @@ import {
 import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
 import { consultationMaterializationRecords } from "../site/consultation_documents.mjs";
 import { mergeConsultationActivity } from "../site/consultation_place_time.mjs";
+import { activityFromBoardActivityLookup } from "../site/community_board_activity.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -86,10 +87,36 @@ function buildDocuments() {
         [String(feature.id), feature.label],
       ]),
   );
+  const boardActivityLookup = (() => {
+    try {
+      return json(join(SITE, "data/community_board_activity_lookup.json"));
+    } catch {
+      return null;
+    }
+  })();
   return commonScopes().map((scope) => {
     const publicPath = commonNearYouPath(scope);
     const urlForScope = (next) => commonNearYouPath(next)
       || nearYouUrlFromScope(next, { base: CANONICAL_BASE });
+    const communityDistrict = Array.isArray(scope?.place?.community_districts)
+      ? scope.place.community_districts[0]
+      : null;
+    const coveringEdge = communityDistrict
+      ? (communityGeography.public_edges || []).find((edge) => edge?.type === "covers"
+        && edge.to === `community-district:${communityDistrict}`)
+      : null;
+    const coveringBoard = coveringEdge
+      ? (communityGeography.nodes || []).find((node) => node?.id === coveringEdge.from)
+      : null;
+    const coveringBoardId = coveringBoard?.properties?.body_id || null;
+    const boardActivity = coveringBoardId && boardActivityLookup
+      ? activityFromBoardActivityLookup(boardActivityLookup, coveringBoardId)
+      : null;
+    const boardActivityState = !scope?.facets?.domains?.length && coveringBoardId
+      ? (boardActivityLookup
+        ? (boardActivity?.entries?.length ? "ready" : "absent")
+        : "error")
+      : undefined;
     const view = buildNearYouViewModel(scope, activity, boundaries, {
       canonicalBase: CANONICAL_BASE,
       urlForScope,
@@ -97,6 +124,7 @@ function buildDocuments() {
       navigationLayerDoc,
       navigationLayerType: "nta2020",
       geographyLabelIndex,
+      ...(boardActivityState ? { boardActivityState, boardActivity } : {}),
     });
     const deferredParts = renderNearYouDeferredParts(view);
     return {
