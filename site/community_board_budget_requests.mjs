@@ -1590,4 +1590,231 @@ export function renderAgencyBudgetRequestsSection(view, options = {}) {
   });
 }
 
+/**
+ * The bounded Near You overview projection of one board's requests.
+ *
+ * The overview is a preview standing on a selected place, not a second reading
+ * of the register: it keeps the same request identity, the same servable-only
+ * publication rule and the same request/answer boundary the board page holds,
+ * and hands every whole record to that page rather than restating it.
+ */
+
+export const COMMUNITY_BOARD_BUDGET_REQUESTS_LOOKUP_SCHEMA = "cityscroll.community_board_budget_requests_lookup.v1";
+export const NEAR_YOU_BOARD_BUDGET_REQUESTS_PREVIEW_LIMIT = 3;
+
+/** A site path, or null: the destination must be a page this site publishes. */
+function budgetRequestSitePath(value) {
+  const path = budgetRequestClean(value, 2000);
+  return path.startsWith("/") && !path.startsWith("//") ? path : null;
+}
+
+/** The answer rows a view exposes, from either reading (board view or lookup). */
+function nearYouBudgetRequestRows(view) {
+  if (!view || view.schema !== COMMUNITY_BOARD_BUDGET_REQUESTS_VIEW_SCHEMA) return [];
+  if (Array.isArray(view.groups)) {
+    return view.groups.flatMap((group) => (Array.isArray(group?.requests) ? group.requests : []));
+  }
+  if (Array.isArray(view.requests)) return view.requests;
+  return [];
+}
+
+/**
+ * Whether the publication shown carries a written answer. A lookup row states
+ * it as a boolean; a full view row carries the publisher's own text, and an
+ * empty text is no answer.
+ */
+function nearYouBudgetAnswered(answer) {
+  if (!answer) return false;
+  if (typeof answer.answered === "boolean") return answer.answered;
+  return answer.response != null && budgetRequestClean(answer.response, 1) !== "";
+}
+
+/**
+ * The bounded preview, in an order the register actually supports.
+ *
+ * The board's own priority numbers rank requests inside one agency, so
+ * borrowing them here would present an agency rank as a district-wide order the
+ * publisher does not hold. Publication date, then tracking code, is stable and
+ * claims nothing.
+ */
+export function selectNearYouBoardBudgetRequestRows(view, { limit = NEAR_YOU_BOARD_BUDGET_REQUESTS_PREVIEW_LIMIT } = {}) {
+  const size = Number.isInteger(limit) && limit >= 0 ? limit : NEAR_YOU_BOARD_BUDGET_REQUESTS_PREVIEW_LIMIT;
+  return nearYouBudgetRequestRows(view)
+    .slice()
+    .sort((left, right) => String(right.latest_answer?.publication_date || "").localeCompare(String(left.latest_answer?.publication_date || ""))
+      || String(left.tracking_code || "").localeCompare(String(right.tracking_code || "")))
+    .slice(0, size);
+}
+
+/** One request as a Near You record: request wording, dated publication, answer context, source. */
+export function projectNearYouBoardBudgetRequestRecords(view, {
+  boardLabel = null,
+  boardHref = null,
+  limit = NEAR_YOU_BOARD_BUDGET_REQUESTS_PREVIEW_LIMIT,
+} = {}) {
+  const board = budgetRequestClean(view?.body_id, 80);
+  if (!BUDGET_REQUEST_BODY_ID.test(board)) return [];
+  const scopeLabel = boardLabel
+    ? `${boardLabel} · full community district`
+    : "Full community district covered by this board";
+  return selectNearYouBoardBudgetRequestRows(view, { limit }).map((row) => {
+    const code = budgetRequestClean(row.tracking_code, 20).toUpperCase();
+    if (!BUDGET_REQUEST_TRACKING_CODE.test(code)) return null;
+    const answer = row.latest_answer || null;
+    const answered = nearYouBudgetAnswered(answer);
+    const base = budgetRequestSitePath(boardHref) || communityBoardPageHref(board) || "/community-boards/";
+    const anchor = budgetRequestClean(row.anchor, 120)
+      || `budget-request-${code.toLowerCase()}`;
+    return {
+      id: `budget-request:${board}:${code}`,
+      title: budgetRequestClean(row.title, 300) || code,
+      agency: budgetRequestClean(row.agency?.source_label, 200) || null,
+      type: "Budget request",
+      date: budgetRequestIsoDay(answer?.publication_date),
+      // The answer is the agency's own published fact for this request. It is
+      // named as an answer and dated, never folded into the request or read as
+      // funding, a commitment or delivery.
+      response_note: answered && answer?.publication_date
+        ? `Agency answer published ${budgetRequestFormatDay(answer.publication_date, "en")}`
+        : "No written agency answer in the retained publications",
+      basis: scopeLabel,
+      route: `${base.replace(/\/?$/, "/")}#${anchor}`,
+      source_url: budgetRequestClean(view.source?.source_url, 400) || null,
+      observed_through: budgetRequestIsoDay(view.source?.as_of),
+      board_id: board,
+      fiscal_year: Number.isInteger(row.fiscal_year) ? row.fiscal_year : null,
+      geography_scope: "community_district",
+      geography_evidence: {
+        label: boardLabel || "Community Board district",
+        basis: scopeLabel,
+        location_role: "affected_area",
+        method: "covering_board_register",
+        tier: "derived",
+        resident_label: scopeLabel,
+      },
+    };
+  }).filter(Boolean);
+}
+
+/**
+ * Near You overview section for the covering board's budget requests.
+ *
+ * Returns null to omit the optional card: a board with no servable register,
+ * a register that holds nothing for it, and a register that could not be read
+ * are three different states, and none of them is a resident-facing claim that
+ * the district asked for nothing. A failed read stays a failure in the view
+ * (and in the lookup row it came from) for operator diagnosis; it is never
+ * projected as "no requests".
+ */
+export function buildNearYouBoardBudgetRequestsOverviewSection({
+  coveringBoardId = null,
+  boardHref = null,
+  boardLabel = null,
+  view = null,
+  readState = undefined,
+  limit = NEAR_YOU_BOARD_BUDGET_REQUESTS_PREVIEW_LIMIT,
+} = {}) {
+  const key = "board-budget-requests";
+  const title = "Board budget requests";
+  const lens = "meetings";
+  const normalizedHref = budgetRequestSitePath(boardHref) || (coveringBoardId ? communityBoardPageHref(coveringBoardId) : null);
+  const destinationHref = normalizedHref
+    ? `${normalizedHref.replace(/\/?$/, "/")}#${COMMUNITY_BOARD_BUDGET_REQUESTS_ANCHOR}`
+    : null;
+
+  if (readState === "error") return null;
+  if (readState === "ready" || readState === "absent") {
+    if (!view || view.state !== BUDGET_REQUEST_STATES.AVAILABLE) return null;
+    const records = projectNearYouBoardBudgetRequestRecords(view, {
+      boardLabel,
+      boardHref: normalizedHref,
+      limit,
+    });
+    if (!records.length) return null;
+    return {
+      key,
+      title,
+      lens,
+      count: Number.isInteger(view.request_count) ? view.request_count : records.length,
+      records,
+      coverage: "These requests cover the full Community Board district, which is wider than one neighborhood. A request is what the board asked for; a dated answer is the agency’s published response, not funding or completion.",
+      destinationHref,
+      destinationLabel: "Open board budget requests",
+    };
+  }
+  // No register read was offered at all: the optional card is omitted rather
+  // than replaced with a placeholder, because an empty "district priorities"
+  // card states a coverage fact nothing here measured.
+  return null;
+}
+
+/**
+ * The retained reading for one board out of the Near You lookup.
+ *
+ * The lookup is a bounded projection of the register built at refresh time, so
+ * the Worker never reads the register documents on a resident request. It
+ * keeps each board's own state — including a retained failure — so a diagnosis
+ * can still tell "not in the register" from "could not be read".
+ */
+export function boardBudgetRequestsViewFromLookup(lookup, boardId) {
+  const board = budgetRequestClean(boardId, 80);
+  if (!BUDGET_REQUEST_BODY_ID.test(board) || !lookup || typeof lookup !== "object") return null;
+  const row = lookup.by_board?.[board] || lookup.boards?.[board] || null;
+  if (!row) return null;
+  const publications = (Array.isArray(lookup.publication_selection?.servable) ? lookup.publication_selection.servable : [])
+    .map((value) => budgetRequestClean(value, 20))
+    .map((publication) => (Array.isArray(lookup.publications)
+      ? lookup.publications.find((entry) => budgetRequestClean(entry?.publication, 20) === publication)
+      : null))
+    .filter(Boolean)
+    .map((entry) => Object.freeze({
+      publication: budgetRequestClean(entry.publication, 20),
+      publication_date: budgetRequestIsoDay(entry.publication_date),
+    }));
+  return Object.freeze({
+    schema: COMMUNITY_BOARD_BUDGET_REQUESTS_VIEW_SCHEMA,
+    body_id: board,
+    state: row.state === BUDGET_REQUEST_STATES.AVAILABLE
+      || row.state === BUDGET_REQUEST_STATES.NONE_RECORDED
+      || row.state === BUDGET_REQUEST_STATES.UNAVAILABLE
+      ? row.state
+      : BUDGET_REQUEST_STATES.UNAVAILABLE,
+    request_count: Number.isInteger(row.request_count) ? row.request_count : 0,
+    agency_count: Number.isInteger(row.agency_count) ? row.agency_count : 0,
+    changed_answer_count: Number.isInteger(row.changed_answer_count) ? row.changed_answer_count : 0,
+    fiscal_years: Object.freeze((Array.isArray(row.fiscal_years) ? row.fiscal_years : []).filter(Number.isInteger)),
+    publications: Object.freeze(publications),
+    source: Object.freeze({
+      publisher: budgetRequestClean(lookup.source?.publisher, 200) || null,
+      name: budgetRequestClean(lookup.source?.name, 200) || null,
+      source_url: budgetRequestClean(lookup.source?.source_url, 400) || null,
+      dataset_id: budgetRequestClean(lookup.source?.dataset_id, 40) || null,
+      as_of: budgetRequestIsoDay(lookup.source?.as_of),
+    }),
+    ...(row.state === BUDGET_REQUEST_STATES.UNAVAILABLE
+      ? { unavailable_reason: budgetRequestClean(row.unavailable_reason || lookup.unavailable_reason, 300) || "budget register read failed" }
+      : {}),
+    requests: Object.freeze((Array.isArray(row.requests) ? row.requests : []).map((request) => Object.freeze({
+      tracking_code: budgetRequestClean(request?.tracking_code, 20).toUpperCase(),
+      anchor: budgetRequestClean(request?.anchor, 120) || null,
+      title: budgetRequestClean(request?.title, 300) || null,
+      fiscal_year: Number.isInteger(request?.fiscal_year) ? request.fiscal_year : null,
+      request_class: budgetRequestClean(request?.request_class, 40) || null,
+      agency: Object.freeze({
+        source_label: budgetRequestClean(request?.agency?.source_label, 200) || null,
+        agency_id: budgetRequestClean(request?.agency?.agency_id, 80) || null,
+        href: budgetRequestSitePath(request?.agency?.href),
+        binding: request?.agency?.binding === "bound" ? "bound" : "unbound",
+      }),
+      latest_answer: request?.latest_answer
+        ? Object.freeze({
+          publication: budgetRequestClean(request.latest_answer.publication, 20),
+          publication_date: budgetRequestIsoDay(request.latest_answer.publication_date),
+          answered: request.latest_answer.answered === true,
+        })
+        : null,
+    }))),
+  });
+}
+
 export { BUDGET_REQUEST_STRINGS };

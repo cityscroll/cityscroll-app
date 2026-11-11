@@ -45,13 +45,16 @@ test("district overview gives bounded resident sections and readable place label
     communityGeography: geography,
   });
   assert.equal(view.isOverview, true);
+  // Without a servable budget register read the optional budget card is
+  // omitted; no empty district-priorities placeholder remains.
   assert.deepEqual(view.overview.sections.map((section) => section.title), [
-    "Upcoming", "Recent changes", "Board activity", "Projects", "District priorities", "Consultations",
+    "Upcoming", "Recent changes", "Board activity", "Projects", "Consultations",
   ]);
   const html = renderNearYouDocument(view);
-  for (const heading of ["Upcoming", "Recent changes", "Board activity", "Projects", "District priorities", "Consultations"]) {
+  for (const heading of ["Upcoming", "Recent changes", "Board activity", "Projects", "Consultations"]) {
     assert.match(html, new RegExp(`>${heading}`));
   }
+  assert.doesNotMatch(html, /District priorities/);
   assert.match(html, /Queens Community District 4/);
   assert.match(html, /Queens Community Board 4/);
   assert.match(html, /City Council District 26/);
