@@ -18,6 +18,9 @@ import {
   recipientHash,
   reconcileRecipientSuppressions,
   suppressionForRecipient,
+  fetchProviderSuppressionPages,
+  providerSuppressionAuthority,
+  runProviderSuppressionReconcile,
 } from "../src/lib/recipient_suppression.mjs";
 import {
   claimWelcomeDelivery,
@@ -514,4 +517,109 @@ test("repeated enrollment after acceptance sends nothing through any repeat", as
     }
     assert.equal(provider.calls.length, 1, "repeats create no duplicate delivery");
   } finally { provider.restore(); }
+});
+
+// ---- production reconcile path (provider fetch + operator runner) ------------
+
+function resendListResponse(rows, { has_more = false } = {}) {
+  return new Response(JSON.stringify({ object: "list", has_more, data: rows }), {
+    status: 200,
+    headers: { "content-type": "application/json" },
+  });
+}
+
+test("fetchProviderSuppressionPages pages the Resend export and maps origin to reason", async () => {
+  const calls = [];
+  const fetchImpl = async (url) => {
+    const href = String(url);
+    calls.push(href);
+    if (href.includes("after=page1-last")) {
+      return resendListResponse([
+        { id: "b", email: "two@example.com", origin: "bounce", created_at: "2026-02-02T00:00:00Z" },
+      ], { has_more: false });
+    }
+    return resendListResponse([
+      { id: "page1-last", email: "one@example.com", origin: "complaint", created_at: "2026-02-01T00:00:00Z" },
+    ], { has_more: true });
+  };
+  const pages = [];
+  for await (const page of fetchProviderSuppressionPages(
+    { RESEND_API_KEY: "rk_test" },
+    { fetchImpl, now: new Date("2026-02-10T00:00:00Z") },
+  )) {
+    pages.push(page);
+  }
+  assert.equal(pages.length, 2);
+  assert.deepEqual(pages[0].entries, [{
+    email: "one@example.com",
+    reason: "complaint",
+    suppressed_at: "2026-02-01T00:00:00Z",
+  }]);
+  assert.deepEqual(pages[1].entries, [{
+    email: "two@example.com",
+    reason: "bounce",
+    suppressed_at: "2026-02-02T00:00:00Z",
+  }]);
+  assert.equal(calls.length, 2);
+  assert.match(calls[0], /limit=100/);
+  assert.match(calls[1], /after=page1-last/);
+});
+
+test("runProviderSuppressionReconcile dry-run then apply is idempotent", async () => {
+  const { DB, sqlite } = d1();
+  const rows = [
+    { id: "1", email: "a@example.com", origin: "manual", created_at: "2026-02-01T00:00:00Z" },
+    { id: "2", email: "b@example.com", origin: "bounce", created_at: "2026-02-02T00:00:00Z" },
+  ];
+  const fetchImpl = async () => resendListResponse(rows, { has_more: false });
+  const environment = { RESEND_API_KEY: "rk_test", DB };
+  const now = new Date("2026-02-10T12:00:00Z");
+  const dryBody = await runProviderSuppressionReconcile(environment, {
+    mode: "dry-run",
+    authority: "2026-02-10T12:00:00Z",
+    fetchImpl,
+    now,
+  });
+  assert.equal(dryBody.mode, "dry-run");
+  assert.equal(dryBody.status, "ok");
+  assert.equal(dryBody.fetched, 2);
+  assert.equal(dryBody.added, 2);
+  assert.equal(dryBody.applied, false);
+  assert.equal(sqlite.prepare("SELECT COUNT(*) AS n FROM recipient_suppressions").get().n, 0,
+    "dry-run must not write");
+
+  const applyBody = await runProviderSuppressionReconcile(environment, {
+    mode: "apply",
+    authority: "2026-02-10T12:00:00Z",
+    fetchImpl,
+    now,
+  });
+  assert.equal(applyBody.mode, "apply");
+  assert.equal(applyBody.applied, true);
+  assert.equal(applyBody.added, 2);
+  assert.equal(sqlite.prepare("SELECT COUNT(*) AS n FROM recipient_suppressions WHERE lifted_at IS NULL").get().n, 2);
+
+  const replayBody = await runProviderSuppressionReconcile(environment, {
+    mode: "apply",
+    authority: "2026-02-10T12:00:00Z",
+    fetchImpl,
+    now,
+  });
+  assert.equal(replayBody.idempotent_replay, true);
+  assert.equal(replayBody.unchanged, 2);
+  assert.equal(replayBody.added, 0);
+});
+
+test("runProviderSuppressionReconcile reports missing Resend configuration", async () => {
+  const { DB } = d1();
+  const receipt = await runProviderSuppressionReconcile({ DB }, { mode: "dry-run" });
+  assert.equal(receipt.status, "resend-not-configured");
+  assert.equal(receipt.applied, false);
+});
+
+test("providerSuppressionAuthority strips milliseconds", () => {
+  assert.equal(
+    providerSuppressionAuthority(new Date("2026-02-10T12:34:56.789Z")),
+    "2026-02-10T12:34:56Z",
+  );
 });
