@@ -10,7 +10,16 @@ export const DOC_PATH = fileURLToPath(new URL("../docs/data-sources.md", import.
 export const SHAPE_FIXTURE_PATH = fileURLToPath(new URL("../test/fixtures/source_contracts/source-shapes.json", import.meta.url));
 
 const ALLOWED_STATUS = new Set(["live", "build-time", "manual", "disabled"]);
-const ALLOWED_KIND = new Set(["socrata", "checkbook", "arcgis", "geosearch", "html", "mocs-disabled", "rss"]);
+export const ALLOWED_KIND = new Set([
+  "socrata",
+  "checkbook",
+  "arcgis",
+  "geosearch",
+  "html",
+  "mocs-disabled",
+  "rss",
+  "xlsx",
+]);
 const ALLOWED_DELIVERY_TIERS = new Set(["inline-at-build", "edge-materialized", "live-only"]);
 const ALLOWED_CONTRACT_CLASS = new Set(["ingest", "pointer"]);
 const ALLOWED_LANDING_PROBE = new Set(["require", "skip", "bot_blocked", "tolerate_bot_block"]);
@@ -290,8 +299,16 @@ export function validateSourceContracts(registry) {
         }
       }
     }
-    if (["checkbook", "arcgis", "geosearch", "rss"].includes(contract.kind) && !contract.endpoint) {
+    if (["checkbook", "arcgis", "geosearch", "rss", "xlsx"].includes(contract.kind) && !contract.endpoint) {
       errors.push(`${label}: missing endpoint`);
+    }
+    if (contract.kind === "xlsx") {
+      if (!Array.isArray(contract.required_fields) || contract.required_fields.length === 0) {
+        errors.push(`${label}: required_fields must be non-empty`);
+      }
+      if (!/\.xlsx(?:$|\?)/i.test(contract.endpoint || "")) {
+        errors.push(`${label}: xlsx endpoint must point at an .xlsx workbook`);
+      }
     }
     if (contract.status === "disabled" && !contract.gap) errors.push(`${label}: disabled sources need a specific gap`);
     if (contract.contract_class && !ALLOWED_CONTRACT_CLASS.has(contract.contract_class)) {
@@ -339,7 +356,7 @@ export function validateSourceContracts(registry) {
   return errors;
 }
 
-function contractIdentifier(contract) {
+export function contractIdentifier(contract) {
   if (contract.kind === "socrata") return contract.dataset_id;
   if (contract.kind === "checkbook") return contract.data_type;
   if (contract.kind === "arcgis") {
@@ -351,6 +368,9 @@ function contractIdentifier(contract) {
   }
   if (contract.kind === "mocs-disabled") return contract.legacy_dataset_ids.join("|");
   if (contract.kind === "rss") return new URL(contract.endpoint).pathname.replace(/^\/+/, "").replace(/\/+$/, "");
+  if (contract.kind === "xlsx") {
+    return new URL(contract.endpoint).pathname.replace(/^\/+/, "");
+  }
   return "";
 }
 
@@ -413,6 +433,16 @@ export function validateSourceContractFixtures(registry, fixtures) {
       errors.push(`${contract.id}: fixture does not record an HTML publication`);
     } else if (contract.kind === "rss" && fixture.response_type !== "application/rss+xml") {
       errors.push(`${contract.id}: fixture does not record an RSS feed`);
+    } else if (contract.kind === "xlsx") {
+      if (
+        fixture.response_type
+        !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ) {
+        errors.push(`${contract.id}: fixture does not record an XLSX workbook`);
+      }
+      if (!Array.isArray(fixture.headers) || fixture.headers.length === 0) {
+        errors.push(`${contract.id}: xlsx fixture needs numeric/header shape headers`);
+      }
     } else if (contract.kind === "mocs-disabled") {
       if (
         fixture.configured_asset_type !== "href"

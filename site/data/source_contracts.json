@@ -4538,6 +4538,98 @@
         "backstage_detail": "receipts-and-errors",
         "relationship_coverage": "separate"
       }
+    },
+    {
+      "id": "procurement-codes-naics-2022",
+      "name": "North American Industry Classification System 2022 structure",
+      "owner": "US Census Bureau",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "xlsx",
+      "landing_page": "https://www.census.gov/naics/",
+      "endpoint": "https://www.census.gov/naics/2022NAICS/2022_NAICS_Structure.xlsx",
+      "required_fields": [
+        "code",
+        "label",
+        "level",
+        "parents"
+      ],
+      "publisher_cadence": "Edition replacement when Census publishes a new NAICS structure",
+      "product_freshness": "A weekly check compares the official workbook digest; the published catalog keeps the retained edition until a replacement digest validates.",
+      "used_for": "Complete industry-code lookup, hierarchy, and validation for procurement matching.",
+      "code_references": [
+        {
+          "path": "tools/build_procurement_code_catalog.py",
+          "contains": "build_naics"
+        },
+        {
+          "path": "site/procurement_code_catalog.mjs",
+          "contains": "NAICS_CATALOG_SCHEMA"
+        },
+        {
+          "path": "test/procurement_code_catalog.test.mjs",
+          "contains": "NAICS"
+        }
+      ],
+      "delivery_tier": "inline-at-build",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 30,
+        "clock_basis": "checked_acquired",
+        "acquisition_cadence_days": 7,
+        "serving_max_age_days": 90,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
+    },
+    {
+      "id": "procurement-codes-nyc-commodity-directory",
+      "name": "NYC commodity classification directory",
+      "owner": "NYC Mayor's Office of Contract Services",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "xlsx",
+      "landing_page": "https://www.nyc.gov/site/mocs/resources-reports/learning-to-use-passport.page",
+      "endpoint": "https://www.nyc.gov/assets/mocs/downloads/PASSPort/learning-to-use-passport/NYCCommodityClassificationDirectory.xlsx",
+      "required_fields": [
+        "code",
+        "status"
+      ],
+      "publisher_cadence": "Publisher directory replacement without a declared catalog edition",
+      "product_freshness": "A weekly check compares the official workbook digest; public status rows keep the retained digest identity until a replacement validates.",
+      "used_for": "Exact numeric commodity-code status lookup for procurement matching.",
+      "code_references": [
+        {
+          "path": "tools/build_procurement_code_catalog.py",
+          "contains": "build_nyc"
+        },
+        {
+          "path": "site/procurement_code_catalog.mjs",
+          "contains": "lookupNyc"
+        },
+        {
+          "path": "test/procurement_code_catalog.test.mjs",
+          "contains": "NYC"
+        }
+      ],
+      "delivery_tier": "inline-at-build",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 30,
+        "clock_basis": "checked_acquired",
+        "acquisition_cadence_days": 7,
+        "serving_max_age_days": 90,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
     }
   ],
   "first_class_artifacts": [
@@ -6239,6 +6331,106 @@
       "resident_stale_behavior": "Do not present agency evidence capabilities as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show agency evidence as unavailable. Never invent a zero-capability agency from missing data.",
       "production_evidence_field": "first_class.procurement_evidence_capabilities"
+    },
+    {
+      "id": "procurement-codes-naics-2022",
+      "source_contract_id": "procurement-codes-naics-2022",
+      "public_artifact_path": "site/data/procurement_codes/naics-2022.json",
+      "primary_routes": [
+        "/procurement/"
+      ],
+      "acquisition_command": [
+        "node",
+        "tools/acquire_first_class_calendar.mjs",
+        "procurement-codes-naics-2022",
+        ".artifacts/first-class-inputs/procurement-codes/naics-2022.xlsx",
+        ".artifacts/first-class-inputs/procurement-codes/naics-2022.receipt.json"
+      ],
+      "captured_input_path": ".artifacts/first-class-inputs/procurement-codes/naics-2022.xlsx",
+      "capture_receipt_path": ".artifacts/first-class-inputs/procurement-codes/naics-2022.receipt.json",
+      "hosted_refresh_required": false,
+      "owning_builder": "tools/build_procurement_code_catalog.py",
+      "builder_command": [
+        "python3",
+        "tools/build_procurement_code_catalog.py",
+        "--source",
+        "naics-2022",
+        "--input",
+        ".artifacts/first-class-inputs/procurement-codes/naics-2022.xlsx",
+        "--receipt",
+        ".artifacts/first-class-inputs/procurement-codes/naics-2022.receipt.json",
+        "--output",
+        "site/data/procurement_codes/naics-2022.json"
+      ],
+      "dependent_materializers": [
+        "tools/build_procurement_code_manifest.mjs"
+      ],
+      "normal_refresh_cadence_hours": 168,
+      "cadence_justification": "These are classification editions, not daily opportunities. Weekly checks detect source replacement; edition and content digest remain distinct.",
+      "warning_age_hours": 336,
+      "hard_maximum_age_hours": 720,
+      "production_freshness_gate": "report_only",
+      "vintage_fields": [
+        "checked_at",
+        "source_receipt.observed_at"
+      ],
+      "population_fields": [
+        "records"
+      ],
+      "last_known_good_behavior": "Keep exact prior artifact and vintage; record failed check; never restamp old data as newly acquired.",
+      "resident_stale_behavior": "About codes states last checked date and stale status; retained current-edition selections remain usable.",
+      "resident_unavailable_behavior": "Retain manual code entry and official dictionary link; no fabricated classifications.",
+      "production_evidence_field": "first_class.procurement_codes_naics_2022"
+    },
+    {
+      "id": "procurement-codes-nyc-commodity-directory",
+      "source_contract_id": "procurement-codes-nyc-commodity-directory",
+      "public_artifact_path": "site/data/procurement_codes/nyc-commodity-status.json",
+      "primary_routes": [
+        "/procurement/"
+      ],
+      "acquisition_command": [
+        "node",
+        "tools/acquire_first_class_calendar.mjs",
+        "procurement-codes-nyc-commodity-directory",
+        ".artifacts/first-class-inputs/procurement-codes/nyc-commodity-directory.xlsx",
+        ".artifacts/first-class-inputs/procurement-codes/nyc-commodity-directory.receipt.json"
+      ],
+      "captured_input_path": ".artifacts/first-class-inputs/procurement-codes/nyc-commodity-directory.xlsx",
+      "capture_receipt_path": ".artifacts/first-class-inputs/procurement-codes/nyc-commodity-directory.receipt.json",
+      "hosted_refresh_required": false,
+      "owning_builder": "tools/build_procurement_code_catalog.py",
+      "builder_command": [
+        "python3",
+        "tools/build_procurement_code_catalog.py",
+        "--source",
+        "nyc-commodity-directory",
+        "--input",
+        ".artifacts/first-class-inputs/procurement-codes/nyc-commodity-directory.xlsx",
+        "--receipt",
+        ".artifacts/first-class-inputs/procurement-codes/nyc-commodity-directory.receipt.json",
+        "--output",
+        "site/data/procurement_codes/nyc-commodity-status.json"
+      ],
+      "dependent_materializers": [
+        "tools/build_procurement_code_manifest.mjs"
+      ],
+      "normal_refresh_cadence_hours": 168,
+      "cadence_justification": "These are classification editions, not daily opportunities. Weekly checks detect source replacement; edition and content digest remain distinct.",
+      "warning_age_hours": 336,
+      "hard_maximum_age_hours": 720,
+      "production_freshness_gate": "report_only",
+      "vintage_fields": [
+        "checked_at",
+        "source_receipt.observed_at"
+      ],
+      "population_fields": [
+        "records"
+      ],
+      "last_known_good_behavior": "Keep exact prior artifact and vintage; record failed check; never restamp old data as newly acquired.",
+      "resident_stale_behavior": "About codes states last checked date and stale status; retained current-edition selections remain usable.",
+      "resident_unavailable_behavior": "Retain manual code entry and official dictionary link; no fabricated classifications.",
+      "production_evidence_field": "first_class.procurement_codes_nyc_commodity_directory"
     }
   ]
 }

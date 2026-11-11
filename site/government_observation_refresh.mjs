@@ -11,6 +11,7 @@ import { join } from "node:path";
 
 export const GOVERNMENT_REFRESH_SCHEMA = "cityscroll.government_observation_refresh.v1";
 export const GOVERNMENT_RECEIPT_SCHEMA = "cityscroll.government_scheduled_receipt.v1";
+export const CODE_CATALOG_SOURCE_RECEIPT_SCHEMA = "cityscroll.code_catalog_source_receipt.v1";
 export const GOVERNMENT_REFRESH_BOUNDS = Object.freeze({
   maxRequests: 100,
   maxResponseBytes: 5 * 1024 * 1024,
@@ -19,6 +20,15 @@ export const GOVERNMENT_REFRESH_BOUNDS = Object.freeze({
   maxRedirects: 3,
   retries: 2,
   minOriginIntervalMs: 2_000,
+});
+
+const XLSX_ACCEPT = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/octet-stream";
+const CODE_CATALOG_BOUNDS = Object.freeze({
+  maxResponseBytes: 5 * 1024 * 1024,
+  timeoutMs: 20_000,
+  maxRedirects: 3,
+  retries: 2,
+  maxUnpackedBytes: 50 * 1024 * 1024,
 });
 
 const SOURCE_DEFINITIONS = Object.freeze([
@@ -44,6 +54,30 @@ const SOURCE_DEFINITIONS = Object.freeze([
     cadenceHours: 24,
     cursor: true,
   },
+  {
+    id: "procurement-codes-naics-2022",
+    env: "CITYSCROLL_PROCUREMENT_CODES_NAICS_2022_REFRESH",
+    url: "https://www.census.gov/naics/2022NAICS/2022_NAICS_Structure.xlsx",
+    publicUrl: "https://www.census.gov/naics/",
+    accept: XLSX_ACCEPT,
+    cadenceHours: 168,
+    cursor: false,
+    receiptSchema: CODE_CATALOG_SOURCE_RECEIPT_SCHEMA,
+    bounds: CODE_CATALOG_BOUNDS,
+    kind: "xlsx",
+  },
+  {
+    id: "procurement-codes-nyc-commodity-directory",
+    env: "CITYSCROLL_PROCUREMENT_CODES_NYC_COMMODITY_DIRECTORY_REFRESH",
+    url: "https://www.nyc.gov/assets/mocs/downloads/PASSPort/learning-to-use-passport/NYCCommodityClassificationDirectory.xlsx",
+    publicUrl: "https://www.nyc.gov/site/mocs/resources-reports/learning-to-use-passport.page",
+    accept: XLSX_ACCEPT,
+    cadenceHours: 168,
+    cursor: false,
+    receiptSchema: CODE_CATALOG_SOURCE_RECEIPT_SCHEMA,
+    bounds: CODE_CATALOG_BOUNDS,
+    kind: "xlsx",
+  },
 ]);
 
 export const GOVERNMENT_SOURCE_DEFINITIONS = SOURCE_DEFINITIONS;
@@ -68,9 +102,67 @@ function responseHeader(response, name) {
 async function readBounded(response, maxBytes) {
   const declared = Number(responseHeader(response, "content-length"));
   if (Number.isFinite(declared) && declared > maxBytes) throw new Error("response exceeds byte bound");
-  const bytes = new Uint8Array(await response.arrayBuffer());
-  if (bytes.byteLength > maxBytes) throw new Error("response exceeds byte bound");
+  if (typeof response.arrayBuffer === "function" && !response.body?.getReader) {
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    if (bytes.byteLength > maxBytes) throw new Error("response exceeds byte bound");
+    return bytes;
+  }
+  if (!response.body?.getReader) {
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    if (bytes.byteLength > maxBytes) throw new Error("response exceeds byte bound");
+    return bytes;
+  }
+  const reader = response.body.getReader();
+  const chunks = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      try { await reader.cancel(); } catch { /* ignore cancel errors */ }
+      throw new Error("response exceeds byte bound");
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
   return bytes;
+}
+
+function defaultAccept(source) {
+  if (source.accept) return source.accept;
+  if (source.id === "oath-trial-calendar") return "text/csv";
+  return "text/html, application/json";
+}
+
+function mergeBounds(source, options = {}) {
+  return {
+    ...GOVERNMENT_REFRESH_BOUNDS,
+    ...(source.bounds || {}),
+    ...(options.bounds || {}),
+  };
+}
+
+async function fetchWithBoundedRedirects(fetchImpl, url, init, maxRedirects) {
+  let currentUrl = url;
+  let redirects = 0;
+  while (true) {
+    const response = await fetchImpl(currentUrl, { ...init, redirect: "manual" });
+    if ([301, 302, 303, 307, 308].includes(response.status)) {
+      const location = responseHeader(response, "location");
+      if (!location) throw new Error("redirect missing location");
+      redirects += 1;
+      if (redirects > maxRedirects) throw new Error("redirect count exceeds bound");
+      currentUrl = new URL(location, currentUrl).toString();
+      continue;
+    }
+    return { response, finalUrl: currentUrl, redirects };
+  }
 }
 
 function defaultParser(bytes, source) {
@@ -99,12 +191,16 @@ function failureMaterialization(previous, reason) {
 }
 
 async function fetchSource(source, options) {
-  const bounds = { ...GOVERNMENT_REFRESH_BOUNDS, ...(options.bounds || {}) };
+  const bounds = mergeBounds(source, options);
   const fetchImpl = options.fetchImpl || globalThis.fetch;
   const previous = options.previous || null;
-  const headers = { Accept: source.id === "oath-trial-calendar" ? "text/csv" : "text/html, application/json" };
-  if (previous?.receipt?.etag) headers["If-None-Match"] = previous.receipt.etag;
-  if (previous?.receipt?.lastModified) headers["If-Modified-Since"] = previous.receipt.lastModified;
+  const headers = { Accept: defaultAccept(source) };
+  if (!options.skipConditional) {
+    if (previous?.receipt?.etag) headers["If-None-Match"] = previous.receipt.etag;
+    if (previous?.receipt?.lastModified || previous?.receipt?.last_modified) {
+      headers["If-Modified-Since"] = previous.receipt.lastModified || previous.receipt.last_modified;
+    }
+  }
   let lastError = null;
   for (let attempt = 0; attempt <= bounds.retries; attempt += 1) {
     try {
@@ -112,8 +208,25 @@ async function fetchSource(source, options) {
         options.requestBudget.requests += 1;
         if (options.requestBudget.requests > bounds.maxRequests) throw new Error("request count exceeds run bound");
       }
-      const response = await fetchImpl(source.url, { headers, redirect: "follow", signal: AbortSignal.timeout(bounds.timeoutMs) });
-      if (response.status === 304 && previous?.materialization) return { kind: "not-modified", response, bytes: new Uint8Array() };
+      const useManualRedirects = source.kind === "xlsx" || options.boundedRedirects === true;
+      let response;
+      if (useManualRedirects) {
+        ({ response } = await fetchWithBoundedRedirects(
+          fetchImpl,
+          source.url,
+          { headers, signal: AbortSignal.timeout(bounds.timeoutMs) },
+          bounds.maxRedirects,
+        ));
+      } else {
+        response = await fetchImpl(source.url, {
+          headers,
+          redirect: "follow",
+          signal: AbortSignal.timeout(bounds.timeoutMs),
+        });
+      }
+      if (response.status === 304) {
+        return { kind: "not-modified", response, bytes: new Uint8Array() };
+      }
       const bytes = await readBounded(response, bounds.maxResponseBytes);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       return { kind: "fetched", response, bytes };
@@ -125,10 +238,22 @@ async function fetchSource(source, options) {
   throw lastError || new Error("request failed");
 }
 
+function priorCaptureBytes(previous) {
+  if (!previous) return null;
+  if (previous.bytes instanceof Uint8Array) return previous.bytes;
+  if (Buffer.isBuffer?.(previous.bytes)) return new Uint8Array(previous.bytes);
+  if (previous.bytes instanceof ArrayBuffer) return new Uint8Array(previous.bytes);
+  return null;
+}
+
 /**
  * Capture publisher bytes for an owning builder without parsing or publishing
  * them. The caller writes the returned bytes to ignored scratch space; only a
  * builder that accepts the captured shape may replace the committed artifact.
+ *
+ * A 304 succeeds only when matching retained bytes are supplied and their
+ * digest still matches the prior receipt. checked_at advances; acquired_at and
+ * the content digest stay put.
  */
 export async function captureGovernmentSourceBytes(sourceId, options = {}) {
   const source = SOURCE_DEFINITIONS.find((item) => item.id === sourceId);
@@ -138,26 +263,71 @@ export async function captureGovernmentSourceBytes(sourceId, options = {}) {
   if (disabled(source, options.env || process.env, options.root || ".")) {
     throw new Error(`${sourceId} acquisition is disabled`);
   }
-  const result = await fetchSource(source, options);
+  const previous = options.previous || null;
+  const retainedBytes = priorCaptureBytes(previous);
+  const receiptSchema = source.receiptSchema || "cityscroll.meeting_source_receipt.v1";
+  const makeReceipt = ({ bytes, response, fetchStatus, sourceHash, acquiredAt, checkedAt }) => ({
+    schema: receiptSchema,
+    source_id: source.id,
+    source_url: source.publicUrl || source.url,
+    capture_url: source.url,
+    observed_at: checkedAt,
+    acquired_at: acquiredAt,
+    checked_at: checkedAt,
+    source_revision: sourceHash,
+    status: "ok",
+    fetch_status: fetchStatus,
+    bytes: bytes.byteLength,
+    etag: responseHeader(response, "etag") || previous?.receipt?.etag || null,
+    last_modified:
+      responseHeader(response, "last-modified")
+      || previous?.receipt?.last_modified
+      || previous?.receipt?.lastModified
+      || null,
+  });
+
+  let result = await fetchSource(source, options);
+  if (result.kind === "not-modified") {
+    if (retainedBytes && retainedBytes.byteLength > 0) {
+      const sourceHash = sha256(retainedBytes);
+      if (previous?.receipt?.source_revision && previous.receipt.source_revision !== sourceHash) {
+        throw new Error(`${sourceId} retained bytes do not match prior source revision`);
+      }
+      return {
+        bytes: retainedBytes,
+        receipt: makeReceipt({
+          bytes: retainedBytes,
+          response: result.response,
+          fetchStatus: "not_modified",
+          sourceHash,
+          acquiredAt: previous?.receipt?.acquired_at || previous?.receipt?.observed_at || observedAt,
+          checkedAt: observedAt,
+        }),
+      };
+    }
+    // Hosted runners without prior bytes must fetch unconditionally.
+    result = await fetchSource(source, { ...options, previous: null, skipConditional: true });
+  }
   if (result.kind !== "fetched" || result.bytes.byteLength === 0) {
     throw new Error(`${sourceId} capture returned no bytes`);
+  }
+  if (source.kind === "xlsx") {
+    const signature = String.fromCharCode(result.bytes[0], result.bytes[1], result.bytes[2], result.bytes[3]);
+    if (signature !== "PK\u0003\u0004" && signature !== "PK\u0005\u0006" && signature !== "PK\u0007\u0008") {
+      throw new Error(`${sourceId} capture is not a ZIP/XLSX payload`);
+    }
   }
   const sourceHash = sha256(result.bytes);
   return {
     bytes: result.bytes,
-    receipt: {
-      schema: "cityscroll.meeting_source_receipt.v1",
-      source_id: source.id,
-      source_url: source.publicUrl || source.url,
-      capture_url: source.url,
-      observed_at: observedAt,
-      source_revision: sourceHash,
-      status: "ok",
-      fetch_status: "snapshot",
-      bytes: result.bytes.byteLength,
-      etag: responseHeader(result.response, "etag"),
-      last_modified: responseHeader(result.response, "last-modified"),
-    },
+    receipt: makeReceipt({
+      bytes: result.bytes,
+      response: result.response,
+      fetchStatus: "snapshot",
+      sourceHash,
+      acquiredAt: observedAt,
+      checkedAt: observedAt,
+    }),
   };
 }
 
@@ -177,6 +347,9 @@ export async function refreshGovernmentSource(source, options = {}) {
   try {
     const result = await fetchSource(source, options);
     if (result.kind === "not-modified") {
+      if (!previous?.materialization) {
+        throw new Error("not-modified response without retained materialization");
+      }
       return { status: "succeeded", materialization: previous.materialization, receipt: { ...baseReceipt, status: "succeeded", not_modified: true, source_hash: previous.receipt.source_hash, extraction_receipt: previous.receipt.extraction_receipt, materialization_hash: previous.receipt.materialization_hash, last_good_preserved: false } };
     }
     const sourceHash = sha256(result.bytes);
