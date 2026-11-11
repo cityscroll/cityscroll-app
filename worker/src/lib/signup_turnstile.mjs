@@ -17,8 +17,29 @@ const TURNSTILE_TESTING_SECRETS = new Set([
   TURNSTILE_TESTING_SPENT_SECRET,
 ]);
 
+const PRODUCTION_API_HOSTS = new Set([
+  "api.cityscroll.org",
+]);
+
 export function isDocumentedTurnstileTestingSecret(secret) {
   return typeof secret === "string" && TURNSTILE_TESTING_SECRETS.has(secret);
+}
+
+/**
+ * Production surface for signup Turnstile: prefer the existing
+ * ANALYTICS_ENVIRONMENT marker; when unset, treat known production API hosts
+ * as production so a mis-set testing secret still fails closed.
+ */
+export function isProductionTurnstileSurface(req, env = {}) {
+  if (env?.ANALYTICS_ENVIRONMENT === "production") return true;
+  if (env?.ANALYTICS_ENVIRONMENT && env.ANALYTICS_ENVIRONMENT !== "production") {
+    return false;
+  }
+  try {
+    return PRODUCTION_API_HOSTS.has(new URL(req.url).hostname);
+  } catch {
+    return true;
+  }
 }
 
 function approvedHostname(hostname) {
@@ -37,6 +58,18 @@ export async function verifySignupTurnstile(req, env, body) {
   if (typeof token !== "string" || !token || token.length > 2048) {
     return { ok: false, reason: "bot-check", status: 403 };
   }
+
+  // Misconfigured production: a documented testing secret must never accept.
+  if (
+    isDocumentedTurnstileTestingSecret(env.TURNSTILE_SECRET)
+    && isProductionTurnstileSurface(req, env)
+  ) {
+    console.error(
+      "signup_turnstile: documented Cloudflare testing secret is configured on a production surface; failing closed",
+    );
+    return { ok: false, reason: "bot-check", status: 403 };
+  }
+
   const params = new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: token });
   const ip = req.headers.get("CF-Connecting-IP");
   if (ip) params.set("remoteip", ip);
@@ -51,7 +84,8 @@ export async function verifySignupTurnstile(req, env, body) {
     const result = await response.json();
     if (result.success === true) {
       // Documented testing secrets omit action/cdata and always report hostname
-      // example.com. Accept success alone only for those exact secrets.
+      // example.com. Accept success alone only for those exact secrets on a
+      // non-production surface (guarded above).
       if (isDocumentedTurnstileTestingSecret(env.TURNSTILE_SECRET)) {
         return { ok: true };
       }
