@@ -23,6 +23,7 @@ import {
   readSessionCookies,
   safeNextUrl,
 } from "./lib/session.mjs";
+import { AccountStore, isCommonSessionToken } from "./lib/account.mjs";
 
 const CORS_OPTS = {
   methods: "GET, POST, OPTIONS",
@@ -174,11 +175,25 @@ async function tryExchange(req, env, token) {
   return { cookie: sessionCookieHeader(cookieTok), email: res.payload.e };
 }
 
-/** Resolve the subscriber email from the session cookie, or null. */
+/**
+ * Resolve the subscriber email from the session cookie, or null.
+ *
+ * A v3 common-account session (DB-backed, opaque, revocable) is resolved for civic
+ * reads from the engine identity store when the account flow is enabled; it is never
+ * verified as a signed pins token. Legacy signed pins tokens keep their existing
+ * fallback unchanged, so this extension is additive and inert while the flag is off.
+ */
 export async function emailFromRequest(req, env) {
-  if (!env.TOKEN_SECRET) return null;
   const candidates = readSessionCookies(req.headers.get("cookie") || "") || [];
   for (const raw of candidates) {
+    if (isCommonSessionToken(raw)) {
+      if (env.CITYSCROLL_ACCOUNTS_ENABLED === "true" && env.DB?.prepare) {
+        const email = await new AccountStore(env.DB).resolveCivicEmail(raw, Math.floor(Date.now() / 1000));
+        if (email) return email;
+      }
+      continue; // an opaque v3 token is never a signed pins token
+    }
+    if (!env.TOKEN_SECRET) continue;
     const res = await verifyToken(env.TOKEN_SECRET, raw);
     if (res.valid && isPinsSessionPayload(res.payload)) return res.payload.e;
   }
