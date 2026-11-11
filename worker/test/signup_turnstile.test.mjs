@@ -1,6 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { verifySignupTurnstile } from "../src/lib/signup_turnstile.mjs";
+import {
+  verifySignupTurnstile,
+  isDocumentedTurnstileTestingSecret,
+  isProductionTurnstileSurface,
+  TURNSTILE_TESTING_PASS_SECRET,
+  TURNSTILE_TESTING_FAIL_SECRET,
+} from "../src/lib/signup_turnstile.mjs";
 import { handleSubscribe } from "../src/subscribe.mjs";
 import { handleMonitorPackSubscribe } from "../src/monitor_packs.mjs";
 import { handleFollowing } from "../src/following.mjs";
@@ -43,6 +49,109 @@ test("siteverify requires success, signup action, and an approved production hos
     assert.equal(calls, 5);
   } finally {
     globalThis.fetch = original;
+  }
+});
+
+test("documented Turnstile testing secrets accept Cloudflare's dummy siteverify shape", async () => {
+  assert.equal(isDocumentedTurnstileTestingSecret(TURNSTILE_TESTING_PASS_SECRET), true);
+  assert.equal(isDocumentedTurnstileTestingSecret("production-looking-secret"), false);
+  const original = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls += 1;
+    return Response.json({
+      success: true,
+      hostname: "example.com",
+      // Cloudflare test secrets omit action/cdata per their testing docs.
+    });
+  };
+  try {
+    // Non-production marker required: production API hosts fail closed for testing secrets.
+    assert.deepEqual(
+      await verifySignupTurnstile(request, {
+        TURNSTILE_SECRET: TURNSTILE_TESTING_PASS_SECRET,
+        ANALYTICS_ENVIRONMENT: "preview",
+      }, {
+        turnstileToken: "XXXX.DUMMY.TOKEN.XXXX",
+      }),
+      { ok: true },
+    );
+    assert.equal(calls, 1);
+    // A production secret still requires action + approved hostname even on success.
+    assert.equal(
+      (await verifySignupTurnstile(request, {
+        TURNSTILE_SECRET: "real-production-secret",
+        ANALYTICS_ENVIRONMENT: "preview",
+      }, {
+        turnstileToken: "XXXX.DUMMY.TOKEN.XXXX",
+      })).status,
+      403,
+    );
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("documented Turnstile always-fail testing secret stays rejected", async () => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async () => Response.json({
+    success: false,
+    "error-codes": ["invalid-input-response"],
+  });
+  try {
+    assert.equal(
+      (await verifySignupTurnstile(request, {
+        TURNSTILE_SECRET: TURNSTILE_TESTING_FAIL_SECRET,
+        ANALYTICS_ENVIRONMENT: "preview",
+      }, {
+        turnstileToken: "XXXX.DUMMY.TOKEN.XXXX",
+      })).status,
+      403,
+    );
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("a documented Turnstile testing secret fails closed on a production surface", async () => {
+  assert.equal(isProductionTurnstileSurface(request, { ANALYTICS_ENVIRONMENT: "production" }), true);
+  assert.equal(isProductionTurnstileSurface(request, { ANALYTICS_ENVIRONMENT: "preview" }), false);
+  assert.equal(isProductionTurnstileSurface(request, {}), true, "api.cityscroll.org fallback");
+  assert.equal(
+    isProductionTurnstileSurface(new Request("http://localhost:8787/subscribe"), {}),
+    false,
+  );
+
+  const original = globalThis.fetch;
+  let calls = 0;
+  const logs = [];
+  const originalError = console.error;
+  console.error = (...args) => { logs.push(args.map(String).join(" ")); };
+  globalThis.fetch = async () => {
+    calls += 1;
+    return Response.json({ success: true, hostname: "example.com" });
+  };
+  try {
+    const byMarker = await verifySignupTurnstile(request, {
+      TURNSTILE_SECRET: TURNSTILE_TESTING_PASS_SECRET,
+      ANALYTICS_ENVIRONMENT: "production",
+    }, { turnstileToken: "XXXX.DUMMY.TOKEN.XXXX" });
+    assert.equal(byMarker.ok, false);
+    assert.equal(byMarker.status, 403);
+    assert.equal(byMarker.reason, "bot-check");
+    assert.equal(calls, 0, "must not call siteverify when production+testing-secret");
+    assert.match(logs.join("\n"), /testing secret.*production|production surface/i);
+
+    logs.length = 0;
+    const byHost = await verifySignupTurnstile(request, {
+      TURNSTILE_SECRET: TURNSTILE_TESTING_PASS_SECRET,
+    }, { turnstileToken: "XXXX.DUMMY.TOKEN.XXXX" });
+    assert.equal(byHost.status, 403);
+    assert.equal(calls, 0);
+    assert.match(logs.join("\n"), /failing closed/i);
+  } finally {
+    globalThis.fetch = original;
+    console.error = originalError;
   }
 });
 
