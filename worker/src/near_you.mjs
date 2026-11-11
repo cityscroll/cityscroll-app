@@ -16,10 +16,58 @@ import {
 import { consultationMaterializationRecords } from "../../site/consultation_documents.mjs";
 import { mergeConsultationActivity } from "../../site/consultation_place_time.mjs";
 import { loadBroaderDistrictActivity, loadNearYouActivity, RouteReadModelUnavailable } from "./lib/route_read_model_kv.mjs";
+import { activityFromBoardActivityLookup } from "../../site/community_board_activity.mjs";
 
 function activityWithConsultations(activity) {
   if (!activity) return activity;
   return mergeConsultationActivity(activity, consultationMaterializationRecords());
+}
+
+let boardActivityLookupPromise = null;
+
+async function loadBoardActivityLookup() {
+  if (!boardActivityLookupPromise) {
+    boardActivityLookupPromise = import("../../site/data/community_board_activity_lookup.json", {
+      with: { type: "json" },
+    }).then((mod) => mod.default || mod).catch(() => null);
+  }
+  return boardActivityLookupPromise;
+}
+
+function coveringCommunityDistrictId(scope, broaderDistricts) {
+  const selected = Array.isArray(scope?.place?.community_districts)
+    ? scope.place.community_districts[0]
+    : null;
+  if (selected) return String(selected);
+  const relation = Array.isArray(broaderDistricts?.relations) ? broaderDistricts.relations[0] : null;
+  return relation?.id ? String(relation.id) : null;
+}
+
+function coveringBoardIdFromGeography(communityDistrictId, geography) {
+  if (!communityDistrictId) return null;
+  const edge = (geography?.public_edges || []).find((candidate) => candidate?.type === "covers"
+    && candidate.to === `community-district:${communityDistrictId}`);
+  const board = (geography?.nodes || []).find((candidate) => candidate?.id === edge?.from);
+  return board?.properties?.body_id ? String(board.properties.body_id) : null;
+}
+
+async function boardActivityOptionsForOverview(scope, broaderDistricts, geography) {
+  // Overview-only enrichment: lensed result lists keep their prior shape.
+  if (scope?.facets?.domains?.length) return {};
+  const communityDistrictId = coveringCommunityDistrictId(scope, broaderDistricts);
+  const boardId = coveringBoardIdFromGeography(communityDistrictId, geography);
+  if (!boardId) return { boardActivityState: "absent", boardActivity: null };
+  try {
+    const lookup = await loadBoardActivityLookup();
+    if (!lookup) return { boardActivityState: "error", boardActivity: null };
+    const activity = activityFromBoardActivityLookup(lookup, boardId);
+    if (!activity || !activity.entries?.length) {
+      return { boardActivityState: "absent", boardActivity: activity };
+    }
+    return { boardActivityState: "ready", boardActivity: activity };
+  } catch {
+    return { boardActivityState: "error", boardActivity: null };
+  }
 }
 
 function labelIndexFromLayerDoc(layerDoc) {
@@ -194,6 +242,14 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
   }
   const loadedActivity = activityWithConsultations(routeReadModel.activity);
   const recoveryHref = `${CANONICAL_BASE}${url.search}`;
+  const geographyForBoard = routeReadModel.communityGeography?.public_edges?.length
+    ? routeReadModel.communityGeography
+    : communityGeography;
+  const boardActivityOptions = await boardActivityOptionsForOverview(
+    scope,
+    broaderDistricts,
+    geographyForBoard,
+  );
   const view = buildNearYouViewModel(scope, requestedLoaded ? loadedActivity : null, boundaries, {
     canonicalBase: CANONICAL_BASE,
     siteBase: SITE_BASE,
@@ -201,9 +257,8 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
     sections: routeReadModel.sections,
     sectionActivity: loadedActivity,
     broaderDistricts,
-    communityGeography: routeReadModel.communityGeography?.public_edges?.length
-      ? routeReadModel.communityGeography
-      : communityGeography,
+    communityGeography: geographyForBoard,
+    ...boardActivityOptions,
     ...nearYouGeographyOwnerOptions(url),
   });
   const deferredParts = deferred ? renderNearYouDeferredParts(view) : null;

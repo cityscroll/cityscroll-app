@@ -1,0 +1,99 @@
+{
+  "schema": "cityscroll.near_you_board_activity_evidence_manifest.v1",
+  "revision": "308de389cf1c8bd648d7ddbc7c5b80521e4d74f1",
+  "data_vintage": "2026-11-09T21:24:12.359Z",
+  "capture_mode": "headless-playwright-rendered-fixture",
+  "image_binaries_committed": false,
+  "local_image_dir_ignored": "task-scratch capture directory",
+  "assertions": {
+    "before_has_records": false,
+    "after_has_records": true,
+    "before_has_warning": true
+  },
+  "captures": [
+    {
+      "phase": "before",
+      "route": "/near-you/?geo=nta2020%3ABK1503&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1503",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "308de389cf1c8bd648d7ddbc7c5b80521e4d74f1",
+      "data_vintage": "2026-11-09T21:24:12.359Z",
+      "assertion": "Before: selected-place overview shows only the generic covering-board warning and board link.",
+      "sha256": "6b5661cba5770520b45e440bf771c935393cc9869afb59edd3b3f376c7d4445d",
+      "html_sha256": "d693b8db823968b268a552a7c0d2b5a8cdb3276b057e307783c299d8fe7a84e5",
+      "file": null
+    },
+    {
+      "phase": "before",
+      "route": "/near-you/?geo=nta2020%3ABK1503&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1503",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "308de389cf1c8bd648d7ddbc7c5b80521e4d74f1",
+      "data_vintage": "2026-11-09T21:24:12.359Z",
+      "assertion": "Before at 390px: generic covering-board warning remains; no typed board records.",
+      "sha256": "1f80359588284de935321fbd393fc2c66614aa73f1ad4009fe4ff8294464bb70",
+      "html_sha256": "d693b8db823968b268a552a7c0d2b5a8cdb3276b057e307783c299d8fe7a84e5",
+      "file": null
+    },
+    {
+      "phase": "after",
+      "route": "/near-you/?geo=nta2020%3ABK1503&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1503",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "308de389cf1c8bd648d7ddbc7c5b80521e4d74f1",
+      "data_vintage": "2026-11-09T21:24:12.359Z",
+      "assertion": "After: overview previews typed covering-board records with district-wide scope and Open board activity destination.",
+      "sha256": "62114914df97f721e28634cd7c473b12a3f78b8778663d0a19e5ff2ea20c72ce",
+      "html_sha256": "a918fd514b7ae4c7433e9ca1f752e87646bb0f1a5375d075c8a761dbce5e4565",
+      "file": null
+    },
+    {
+      "phase": "after",
+      "route": "/near-you/?geo=nta2020%3ABK1503&surface=map&drawer=open&focus=geography%3Anta2020%3ABK1503",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "308de389cf1c8bd648d7ddbc7c5b80521e4d74f1",
+      "data_vintage": "2026-11-09T21:24:12.359Z",
+      "assertion": "After at 390px: typed covering-board records, source links, and board activity destination remain available.",
+      "sha256": "57e4c171cb4e0d0cc69b83fe7cd0e14c873b071ffcb7bc28fa935483a6d20f13",
+      "html_sha256": "a918fd514b7ae4c7433e9ca1f752e87646bb0f1a5375d075c8a761dbce5e4565",
+      "file": null
+    },
+    {
+      "phase": "after",
+      "route": "/near-you/?cd=Q04",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "revision": "308de389cf1c8bd648d7ddbc7c5b80521e4d74f1",
+      "data_vintage": "2026-11-09T21:24:12.359Z",
+      "assertion": "Independent Queens community-district overview uses the same covering-board projection.",
+      "sha256": "39adb84b4cafdef8990dcd8d9b28e2798dcb52646c76634d1d24926f67288169",
+      "html_sha256": "10cf15ac873fd1bb5e435ad4d709caa6af6d195eae544442a18dc819c221f400",
+      "file": null
+    },
+    {
+      "phase": "after",
+      "route": "/near-you/?cd=Q04",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "revision": "308de389cf1c8bd648d7ddbc7c5b80521e4d74f1",
+      "data_vintage": "2026-11-09T21:24:12.359Z",
+      "assertion": "Independent Queens community-district overview at 390px keeps typed covering-board records.",
+      "sha256": "a173994ccca707515a9fa55b6e2802d0544dbfbc5981d26a4b9669c8599c66ac",
+      "html_sha256": "10cf15ac873fd1bb5e435ad4d709caa6af6d195eae544442a18dc819c221f400",
+      "file": null
+    }
+  ]
+}
