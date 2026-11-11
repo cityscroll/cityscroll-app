@@ -2174,7 +2174,7 @@
       },
       {
         "path": "tools/discovery_recovery_journey.py",
-        "sha256": "d660513686f3371754a662493c5727c052535ecf84d61b8006046a9a729bfdaa"
+        "sha256": "4586f96483196f6439bb002f213aab728e51e599d2aeae4f5fb9893b90a88adb"
       }
     ],
     "recapture_command": "python3 tools/capture_default_local_home_journey.py --scenario discovery-recovery",
