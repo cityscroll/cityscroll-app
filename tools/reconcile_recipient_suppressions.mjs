@@ -5,13 +5,14 @@
  * recipient_suppressions authority (worker/migrations/0036), with an
  * idempotent dry-run/apply receipt.
  *
- * This tool never contacts the provider: the suppression export is produced
- * out of band and passed in as a fixture file. Apply mode writes only to the
- * local/provisioned sqlite database named by --db.
+ * Apply mode writes only to the local/provisioned sqlite database named by
+ * --db. Production D1 apply uses POST /admin/recipient-suppressions/reconcile
+ * on the Worker.
  *
  * Usage:
  *   node tools/reconcile_recipient_suppressions.mjs --input export.json --db path.sqlite
  *   node tools/reconcile_recipient_suppressions.mjs --input export.json --db path.sqlite --apply
+ *   RESEND_API_KEY=… node tools/reconcile_recipient_suppressions.mjs --from-provider --db path.sqlite
  *
  * Fixture format:
  *   { "authority": "<provider snapshot token or ISO timestamp>",
@@ -26,16 +27,20 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { DatabaseSync } from "node:sqlite";
 
-import { reconcileRecipientSuppressions } from "../worker/src/lib/recipient_suppression.mjs";
+import {
+  reconcileRecipientSuppressions,
+  runProviderSuppressionReconcile,
+} from "../worker/src/lib/recipient_suppression.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const MIGRATION = path.join(ROOT, "worker", "migrations", "0036_recipient_delivery_trust.sql");
 
 function parseArgs(argv) {
-  const args = { apply: false };
+  const args = { apply: false, fromProvider: false };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--apply") args.apply = true;
+    else if (arg === "--from-provider") args.fromProvider = true;
     else if (arg === "--input") args.input = argv[++i];
     else if (arg === "--db") args.db = argv[++i];
     else if (arg === "--help" || arg === "-h") args.help = true;
@@ -72,19 +77,32 @@ async function* fixturePages(fixture) {
   }
 }
 
+function usage() {
+  console.log("usage: reconcile_recipient_suppressions.mjs (--input export.json | --from-provider) --db path.sqlite [--apply]");
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  if (args.help || !args.input || !args.db) {
-    console.log("usage: reconcile_recipient_suppressions.mjs --input export.json --db path.sqlite [--apply]");
+  if (args.help || !args.db || (!args.input && !args.fromProvider) || (args.input && args.fromProvider)) {
+    usage();
     process.exit(args.help ? 0 : 2);
   }
-  const fixture = JSON.parse(readFileSync(args.input, "utf8"));
   const sqlite = new DatabaseSync(args.db);
   sqlite.exec(readFileSync(MIGRATION, "utf8"));
-  const receipt = await reconcileRecipientSuppressions(d1FromSqlite(sqlite), fixturePages(fixture), {
-    mode: args.apply ? "apply" : "dry-run",
-    authority: fixture.authority,
-  });
+  const db = d1FromSqlite(sqlite);
+  let receipt;
+  if (args.fromProvider) {
+    receipt = await runProviderSuppressionReconcile(
+      { DB: db, RESEND_API_KEY: process.env.RESEND_API_KEY },
+      { mode: args.apply ? "apply" : "dry-run" },
+    );
+  } else {
+    const fixture = JSON.parse(readFileSync(args.input, "utf8"));
+    receipt = await reconcileRecipientSuppressions(db, fixturePages(fixture), {
+      mode: args.apply ? "apply" : "dry-run",
+      authority: fixture.authority,
+    });
+  }
   console.log(JSON.stringify(receipt, null, 2));
   sqlite.close();
   if (receipt.status !== "ok") process.exit(1);

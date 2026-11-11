@@ -235,3 +235,93 @@ export async function reconcileRecipientSuppressions(db, providerPages, {
   receipt.applied = true;
   return receipt;
 }
+
+const RESEND_SUPPRESSIONS_URL = "https://api.resend.com/suppressions";
+const RESEND_PAGE_LIMIT = 100;
+
+/**
+ * Page the provider's current suppression export for reconciliation.
+ * Yields `{ entries: [...] }` pages. Never logs addresses.
+ * `origin` is the provider's suppression cause (manual / bounce / complaint).
+ */
+export async function* fetchProviderSuppressionPages(env, {
+  fetchImpl = globalThis.fetch,
+  now = new Date(),
+} = {}) {
+  if (!env?.RESEND_API_KEY) throw new Error("resend-not-configured");
+  let after = null;
+  for (;;) {
+    const url = new URL(RESEND_SUPPRESSIONS_URL);
+    url.searchParams.set("limit", String(RESEND_PAGE_LIMIT));
+    if (after) url.searchParams.set("after", after);
+    const response = await fetchImpl(url, {
+      headers: {
+        authorization: `Bearer ${env.RESEND_API_KEY}`,
+        accept: "application/json",
+      },
+      signal: AbortSignal.timeout(30000),
+    });
+    if (!response.ok) {
+      throw new Error(`provider-suppressions-http-${response.status}`);
+    }
+    const body = await response.json();
+    const rows = Array.isArray(body?.data) ? body.data : [];
+    const entries = rows.map((row) => ({
+      email: row?.email,
+      reason: row?.origin || row?.reason || "provider-suppressed",
+      suppressed_at: row?.created_at || now.toISOString(),
+    }));
+    yield { entries };
+    if (!body?.has_more || rows.length === 0) return;
+    const lastId = rows[rows.length - 1]?.id;
+    if (!lastId || lastId === after) {
+      throw new Error("provider-suppressions-pagination-stuck");
+    }
+    after = lastId;
+  }
+}
+
+/** ISO authority token for a live provider pull (monotonic wall clock). */
+export function providerSuppressionAuthority(now = new Date()) {
+  return new Date(now).toISOString().replace(/\.\d{3}Z$/, "Z");
+}
+
+/**
+ * Operator-facing reconcile: pull the provider export, then dry-run or apply.
+ * Returns the count-only receipt. Throws only for fetch/config failures that
+ * happen before reconciliation starts; those become status "provider-error"
+ * when the admin handler catches them.
+ */
+export async function runProviderSuppressionReconcile(env, {
+  mode = "dry-run",
+  authority = null,
+  fetchImpl = globalThis.fetch,
+  now = new Date(),
+} = {}) {
+  if (!env?.DB?.prepare) {
+    return {
+      schema: "cityscroll.recipient-suppression-reconciliation.v1",
+      mode: mode === "apply" ? "apply" : "dry-run",
+      authority: authority || null,
+      status: "db-unavailable",
+      applied: false,
+      at: new Date(now).toISOString(),
+    };
+  }
+  if (!env.RESEND_API_KEY) {
+    return {
+      schema: "cityscroll.recipient-suppression-reconciliation.v1",
+      mode: mode === "apply" ? "apply" : "dry-run",
+      authority: authority || null,
+      status: "resend-not-configured",
+      applied: false,
+      at: new Date(now).toISOString(),
+    };
+  }
+  const resolvedAuthority = authority || providerSuppressionAuthority(now);
+  return reconcileRecipientSuppressions(
+    env.DB,
+    fetchProviderSuppressionPages(env, { fetchImpl, now }),
+    { mode: mode === "apply" ? "apply" : "dry-run", authority: resolvedAuthority, now },
+  );
+}

@@ -48,6 +48,7 @@ import {
   handleAdminSchedulerHeartbeat,
   handleAdminOpsHealth,
   handleAdminMailWatchdog,
+  handleAdminRecipientSuppressionsReconcile,
 } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
@@ -577,6 +578,7 @@ const worker = {
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
     if (pathname === "/api") return Response.redirect("https://cityscroll.org/api.html", 302);
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);
+    if (pathname === "/admin/recipient-suppressions/reconcile") return handleAdminRecipientSuppressionsReconcile(request, env);
     if (pathname === "/admin/watch-seen-membership") return handleAdminWatchSeenMembership(request, env);
     if (pathname === "/admin/watch-log") return handleAdminWatchLog(request, env);
     if (pathname === "/admin/watch-log/enrich") return handleAdminWatchLogEnrich(request, env);

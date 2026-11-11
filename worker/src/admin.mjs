@@ -17,6 +17,10 @@ import {
   SIGNUP_LIFECYCLE,
   ensureSubscriptionIdentity,
 } from "./lib/subscriptions.mjs";
+import {
+  providerSuppressionAuthority,
+  runProviderSuppressionReconcile,
+} from "./lib/recipient_suppression.mjs";
 import { RECOVERY_EXPLANATION, recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
 import {
   WATCHLOG_LATEST_KEY,
@@ -2235,4 +2239,57 @@ export async function handleAdminCouncilDiscoveryHealth(req, env) {
     sharedModel: shared?.read_model || shared,
     now: new Date(),
   }), 200);
+}
+
+/**
+ * POST /admin/recipient-suppressions/reconcile?key=…
+ *
+ * Pull the provider's complete current suppression export and fold it into the
+ * D1 recipient_suppressions authority. Body: `{ "mode": "dry-run" | "apply" }`.
+ * Default mode is dry-run. Receipts carry counts only — never addresses.
+ * FAIL CLOSED: 404 until ADMIN_KEY; 503 without DB or RESEND_API_KEY.
+ */
+export async function handleAdminRecipientSuppressionsReconcile(req, env, {
+  fetchImpl = globalThis.fetch,
+  now = new Date(),
+} = {}) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
+  if (!env.DB) return json({ error: "no-store" }, 503);
+  if (!env.RESEND_API_KEY) return json({ error: "resend-not-configured" }, 503);
+
+  let body = {};
+  try {
+    const text = await req.text();
+    if (text) body = JSON.parse(text);
+  } catch {
+    return json({ error: "invalid-json" }, 400);
+  }
+  const mode = body?.mode === "apply" ? "apply" : "dry-run";
+  const authority = typeof body?.authority === "string" && body.authority
+    ? body.authority
+    : providerSuppressionAuthority(now);
+
+  let receipt;
+  try {
+    receipt = await runProviderSuppressionReconcile(env, { mode, authority, fetchImpl, now });
+  } catch (error) {
+    return json({
+      schema: "cityscroll.recipient-suppression-reconciliation.v1",
+      mode,
+      authority,
+      status: "provider-error",
+      error: String(error?.message || error).slice(0, 200),
+      applied: false,
+    }, 502);
+  }
+  if (receipt.status === "resend-not-configured") return json({ error: "resend-not-configured" }, 503);
+  if (receipt.status === "db-unavailable") return json({ error: "no-store" }, 503);
+
+  const status = receipt.status === "ok" ? 200
+    : receipt.status === "provider-error" || receipt.status === "db-apply-failed" || receipt.status === "db-read-failed"
+      ? 502
+      : 409;
+  return json(receipt, status);
 }
