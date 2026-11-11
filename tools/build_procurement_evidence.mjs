@@ -128,7 +128,7 @@ export function buildAll() {
     families,
     agencies: Object.fromEntries(Object.keys(agencyInputs).sort().map(a => [a, { manifest: `/data/procurement_evidence/${a}/manifest.json` }])),
   };
-  outputs.set('capabilities', Buffer.from(JSON.stringify(m.canonical ? m.canonical(capabilities) : capabilities, null, 1) + '\n'));
+  outputs.set('capabilities', m.bytes(capabilities));
 
   const manifests = new Map();
   for (const [agency, familyInputs] of Object.entries(agencyInputs)) {
@@ -223,9 +223,17 @@ function main() {
     if (rel.endsWith('manifest.json')) writeFileSync(join(OUT_DIR, rel), bodyBytes);
   }
   // Prune generations that are neither current nor the retained previous one.
+  // Version directories are content-addressed hashes under each agency; the
+  // current hash comes from the manifest body, never from the manifest path.
   const currentVersions = new Map();
-  for (const [rel] of outputs) {
-    if (rel.endsWith('manifest.json')) currentVersions.set(rel.split('/')[0], rel.split('/')[1]);
+  for (const [rel, bodyBytes] of outputs) {
+    if (!rel.endsWith('manifest.json')) continue;
+    const agency = rel.split('/')[0];
+    const manifest = JSON.parse(bodyBytes.toString('utf8'));
+    if (typeof manifest.version !== 'string' || !/^[0-9a-f]{64}$/.test(manifest.version)) {
+      throw Error(`manifest for ${agency} lacks a content-addressed version`);
+    }
+    currentVersions.set(agency, manifest.version);
   }
   for (const agency of readdirSync(OUT_DIR)) {
     const agencyDir = join(OUT_DIR, agency);

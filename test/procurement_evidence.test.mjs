@@ -1,7 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import * as m from '../site/procurement_evidence.mjs';
+
+const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 
 const read=n=>JSON.parse(readFileSync(new URL('../warehouse/fixtures/procurement-evidence/'+n,import.meta.url)));
 const nycha=read('nycha-contract-agreement.json'), cb=read('queens-cb12-budget-register.json'), capital=read('ddc-capital-project.json');
@@ -58,3 +63,30 @@ test('off-host page pointer, wrong version, changed bytes and oversized response
 test('source error is unavailable outcome not zero population',async()=>{await assert.rejects(()=>m.readEvidencePage(fetchFixture(manifest,null,503).f,{agency,family}),/503/);const man=structuredClone(manifest);man.families.signals={state:'unavailable'};const r=await m.readEvidencePage(fetchFixture(man).f,{agency,family});assert.equal(r.rows,null);assert.equal('total' in r,false);});
 test('CB monthly acquisition follows source cadence not daily publication check budget',()=>{assert.equal(m.freshness(initial,{now:'2026-11-10T02:00:00Z',sourceCheckAt:'2026-10-17T01:53:34Z',maxCheckHours:5040}).state,'current');});
 test('wrong agency row is refused even with a valid body hash',async()=>{const bad={...page.body,rows:[{id:'wrong',agency_id:'education'}]};const man=structuredClone(manifest);man.families.signals.pages[0].sha256=m.digest(bad);await assert.rejects(()=>m.readEvidencePage(fetchFixture(man,m.bytes(bad)).f,{agency,family}),/integrity/);});
+
+test('committed evidence pages survive the builder and match --check', () => {
+  const capabilities = JSON.parse(readFileSync(join(ROOT, 'site/data/procurement_evidence_capabilities.json'), 'utf8'));
+  assert.equal(capabilities.schema, 'cityscroll.procurement_evidence_capabilities.v1');
+  assert.ok(capabilities.agencies['environmental-protection']);
+  assert.ok(capabilities.agencies['youth-and-community-development']);
+  for (const [agencyId, entry] of Object.entries(capabilities.agencies)) {
+    const manifestPath = join(ROOT, 'site', entry.manifest.replace(/^\//, ''));
+    assert.ok(existsSync(manifestPath), `missing manifest for ${agencyId}`);
+    const agencyManifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+    assert.equal(agencyManifest.schema, 'cityscroll.procurement_evidence_manifest.v1');
+    assert.equal(agencyManifest.agency_id, agencyId);
+    assert.match(agencyManifest.version, /^[0-9a-f]{64}$/);
+    for (const [family, familyEntry] of Object.entries(agencyManifest.families)) {
+      for (const pointer of familyEntry.pages || []) {
+        const pagePath = join(ROOT, 'site', pointer.path.replace(/^\//, ''));
+        assert.ok(existsSync(pagePath), `missing page ${pointer.path}`);
+        const body = readFileSync(pagePath);
+        assert.equal(m.digest(JSON.parse(body.toString('utf8'))), pointer.sha256);
+        const parsed = JSON.parse(body.toString('utf8'));
+        assert.ok(parsed.rows.every(row => row.agency_id === agencyId), `agency binding failed for ${family}`);
+      }
+    }
+  }
+  const out = execFileSync('node', ['tools/build_procurement_evidence.mjs', '--check'], { encoding: 'utf8', cwd: ROOT });
+  assert.match(out, /"status":"ok"/);
+});
