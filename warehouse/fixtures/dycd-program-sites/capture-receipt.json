@@ -1,0 +1,19 @@
+{
+  "url": "https://data.cityofnewyork.us/resource/ebkm-iyma.json?%24where=date%3D2026+and+borough%3D%27Queens%27&%24order=provider%2Cprogram_type%2Cprogram_site_name%2Cstreet_address&%24limit=5000",
+  "captured_at": "2026-11-11T01:40:22.368510+00:00",
+  "sha256": "6a495766c92f45814b7145e8b7bcdbea7ef52ceadf1856de3fde6b0856030398",
+  "bytes": 389026,
+  "rows": 483,
+  "source": "ebkm-iyma",
+  "source_rows_updated_at": 1790257979,
+  "count_check": {
+    "url": "https://data.cityofnewyork.us/resource/ebkm-iyma.json?%24select=count%28%2A%29&%24where=date%3D2026+and+borough%3D%27Queens%27",
+    "response": [
+      {
+        "count": "483"
+      }
+    ],
+    "checked_at": "2026-11-11T01:44:03.451980+00:00"
+  },
+  "complete": true
+}

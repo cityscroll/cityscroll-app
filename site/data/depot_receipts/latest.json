@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "kind": "depot_rederive",
-  "observed_on": "2026-11-10",
+  "observed_on": "2026-11-11",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 69,
+  "sources_count": 70,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -1184,5 +1184,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "2654803d7c52d7a1871f5adc84d1685b9a6e52de4d442c3b686f691d1f9f4573"
+  "registry_sha256": "b61d6a6a7418e1204f3b449a319b4ada1d6c346165cfa1a5f0fff5ce4fbf3a5d"
 }

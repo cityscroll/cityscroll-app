@@ -1325,7 +1325,7 @@
         "declared_cadence_days": 365,
         "observed_metadata_lag_days": 427,
         "margin_days": 73,
-        "evidence": "The retained revision history (site/data/exam_sources/annual_schedule_history.json, fetched 2026-08-05; 2,901 raw rows reduced to 1,271 distinct exams) preserves six distinct publisher data_current_as_of vintages — 2023-01-04, 2024-03-06, 2024-06-30, 2025-08-06, 2026-02-04, and 2026-07-22 — giving measured intervals of 427, 116, 402, 182, and 168 days between publisher updates. Two intervals (the 427-day gap between the FY2023 and FY2024 edition posts and the 402-day gap from FY2024's last revision to the FY2026 post) exceed one year and the prior 400-day bound, so a limit below 427 days re-flags the publisher's normal edition cadence as drift: the live contract check recorded exactly that finding daily from 2026-10-25 through 2026-11-03 (publisher data_current_as_of 2026-07-22 read 95 to 104 days old against the then-95-day quarterly allowance; rowsUpdatedAt 2026-07-22T18:57:52Z agrees with the edition stamp). The retained snapshot (site/data/staffing_exams.json sources_retrieved_as_of 2026-10-22) is at or after the publisher clock, so the retained copy already holds everything the publisher has published. Socrata exposes only the current revision and the dataset retains only the editions still present in it, so republication intervals earlier than 2023-01-04 are unavailable rather than inferred. Daily acquisition still picks up any revision the day it posts, and open application windows are driven by the daily-verified open-competitive source.",
+        "evidence": "The retained revision history (site/data/exam_sources/annual_schedule_history.json, fetched 2026-08-05; 2,901 raw rows reduced to 1,271 distinct exams) preserves six distinct publisher data_current_as_of vintages \u2014 2023-01-04, 2024-03-06, 2024-06-30, 2025-08-06, 2026-02-04, and 2026-07-22 \u2014 giving measured intervals of 427, 116, 402, 182, and 168 days between publisher updates. Two intervals (the 427-day gap between the FY2023 and FY2024 edition posts and the 402-day gap from FY2024's last revision to the FY2026 post) exceed one year and the prior 400-day bound, so a limit below 427 days re-flags the publisher's normal edition cadence as drift: the live contract check recorded exactly that finding daily from 2026-10-25 through 2026-11-03 (publisher data_current_as_of 2026-07-22 read 95 to 104 days old against the then-95-day quarterly allowance; rowsUpdatedAt 2026-07-22T18:57:52Z agrees with the edition stamp). The retained snapshot (site/data/staffing_exams.json sources_retrieved_as_of 2026-10-22) is at or after the publisher clock, so the retained copy already holds everything the publisher has published. Socrata exposes only the current revision and the dataset retains only the editions still present in it, so republication intervals earlier than 2023-01-04 are unavailable rather than inferred. Daily acquisition still picks up any revision the day it posts, and open application windows are driven by the daily-verified open-competitive source.",
         "derivation": "427-day longest observed republication interval + 73-day margin = 500-day limit, an annual-edition bound that covers every observed interval between publisher updates (the 427-day and 402-day gaps both exceed the prior 400-day bound); the declared monthly and quarterly change claims do not hold between editions"
       },
       "publisher_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims; retained revision history measures 116-427 days between publisher updates, with two gaps beyond one year (427 and 402 days)",
@@ -1526,7 +1526,7 @@
         "declared_cadence_days": 31,
         "observed_metadata_lag_days": 169,
         "margin_days": 196,
-        "evidence": "Socrata metadata declares monthly updates, but the declared cadence does not describe observed behavior: rowsUpdatedAt for m79g-k9r4 has held at 2026-05-18T20:26:30Z from the 2026-08-06 contract measurement (metadata version dated 2026-03-31, a 48-day lag to the row-write stamp) through the scheduled contract-check findings on 2026-09-16 (120 days) and 2026-09-22 (126 days), and still read 2026-05-18 when re-measured on 2026-11-03 — a 169-day publisher-quiet period. Mandatory Inclusionary Housing designations complete through ULURP adoptions, so republication is event-driven and multi-month quiet periods are the publisher's real behavior. The retained snapshot (site/data/mih_project_lookup.json observed_at 2026-08-05) is at or after the publisher clock, so the retained copy already holds everything the publisher has published. Socrata's anonymous revision endpoint exposes only the current revision, so no historical revision intervals are represented as measured facts.",
+        "evidence": "Socrata metadata declares monthly updates, but the declared cadence does not describe observed behavior: rowsUpdatedAt for m79g-k9r4 has held at 2026-05-18T20:26:30Z from the 2026-08-06 contract measurement (metadata version dated 2026-03-31, a 48-day lag to the row-write stamp) through the scheduled contract-check findings on 2026-09-16 (120 days) and 2026-09-22 (126 days), and still read 2026-05-18 when re-measured on 2026-11-03 \u2014 a 169-day publisher-quiet period. Mandatory Inclusionary Housing designations complete through ULURP adoptions, so republication is event-driven and multi-month quiet periods are the publisher's real behavior. The retained snapshot (site/data/mih_project_lookup.json observed_at 2026-08-05) is at or after the publisher clock, so the retained copy already holds everything the publisher has published. Socrata's anonymous revision endpoint exposes only the current revision, so no historical revision intervals are represented as measured facts.",
         "derivation": "169-day observed publisher-quiet period + 196-day margin = 365-day limit, an annual review bound for this event-driven source; the declared monthly cadence does not hold"
       },
       "publisher_cadence": "Monthly (Open Data metadata; 31-day working cadence); observed republication is event-driven, with a 169-day publisher-quiet period measured from 2026-05-18 to 2026-11-03",
@@ -4086,7 +4086,7 @@
         "declared_cadence_days": 7,
         "observed_metadata_lag_days": 77,
         "margin_days": 43,
-        "evidence": "Socrata metadata declares weekly updates, but retained evidence shows event-driven republication: the 2026-08-04 acquisition (warehouse/receipts/proof/dcas_vehicle_auctions_latest.json; site/data/dcas_vehicle_auctions.json vintage.source_updated_at) recorded rowsUpdatedAt 2026-07-22T13:41:16Z, and the next observed publisher move was rowsUpdatedAt 2026-10-07T14:37:04Z at the 2026-10-29 scheduled contract check — a measured 77-day interval between auction batches. Re-measured on 2026-11-03 the publisher clock still read 2026-10-07 (27 days). DCAS posts the list when a new auction batch is scheduled, so multi-week quiet periods between batches are the publisher's real behavior.",
+        "evidence": "Socrata metadata declares weekly updates, but retained evidence shows event-driven republication: the 2026-08-04 acquisition (warehouse/receipts/proof/dcas_vehicle_auctions_latest.json; site/data/dcas_vehicle_auctions.json vintage.source_updated_at) recorded rowsUpdatedAt 2026-07-22T13:41:16Z, and the next observed publisher move was rowsUpdatedAt 2026-10-07T14:37:04Z at the 2026-10-29 scheduled contract check \u2014 a measured 77-day interval between auction batches. Re-measured on 2026-11-03 the publisher clock still read 2026-10-07 (27 days). DCAS posts the list when a new auction batch is scheduled, so multi-week quiet periods between batches are the publisher's real behavior.",
         "derivation": "77-day observed republication interval + 43-day margin = 120-day limit; the declared weekly cadence does not hold between auction batches"
       },
       "publisher_cadence": "Weekly (Open Data metadata); observed republication is event-driven, with a measured 77-day interval between the 2026-07-22 and 2026-10-07 auction batches",
@@ -4461,6 +4461,77 @@
         "clock_basis": "checked_acquired",
         "serving_max_age_days": 240,
         "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
+    },
+    {
+      "id": "dycd-program-sites",
+      "name": "DYCD Program Sites",
+      "owner": "New York City Department of Youth and Community Development",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "ebkm-iyma",
+      "landing_page": "https://data.cityofnewyork.us/d/ebkm-iyma",
+      "required_fields": [
+        "date",
+        "program_area",
+        "program_type",
+        "provider",
+        "program_site_name",
+        "borough",
+        "street_address",
+        "communitydistrict",
+        "contract",
+        "portfolioid"
+      ],
+      "max_stale_days": 400,
+      "publisher_cadence": "Annual fiscal-year publication of program-site offerings",
+      "product_freshness": "Weekly metadata check against the publisher; retrieve the selected latest fiscal-year Queens subset only when the publisher version changes. A count or metadata mismatch during capture leaves the last accepted complete capture in place.",
+      "used_for": "Published DYCD program-site offerings with facility-site community-district membership for agency evidence. Membership is publisher-explicit community district only; never vendor address, service catchment, unmet demand, or an inferred contract join.",
+      "code_references": [
+        {
+          "path": "warehouse/scripts/dycd_program_sites.py",
+          "contains": "ebkm-iyma"
+        },
+        {
+          "path": "warehouse/lib/dycd_program_sites.py",
+          "contains": "program_map"
+        },
+        {
+          "path": "tools/build_agency_program_sites.py",
+          "contains": "agency_program_sites"
+        },
+        {
+          "path": "site/data/agency_program_sites.json",
+          "contains": "dycd-program-sites"
+        }
+      ],
+      "delivery_tier": "edge-materialized",
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/agency_program_sites.json",
+        "materialized_at": "2026-11-11T01:40:22.368510Z",
+        "row_count": 480
+      },
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 400,
+        "clock_basis": "checked_acquired",
+        "serving_max_age_days": 400,
+        "serve_contract_id": null,
+        "retained_vintage": {
+          "artifact_path": "site/data/agency_program_sites.json",
+          "vintage_fields": [
+            "checked_at",
+            "publisher_updated_at"
+          ]
+        }
       },
       "health_policy": {
         "public_visibility": "public",
@@ -6052,6 +6123,122 @@
       "resident_stale_behavior": "Keep retained consultation records reachable but do not present deadline-driven Now actions from stale observations.",
       "resident_unavailable_behavior": "Show retained consultation records with source recovery; never turn an unavailable refresh into no consultations.",
       "production_evidence_field": "first_class.public_consultations"
+    },
+    {
+      "id": "agency-program-sites",
+      "public_artifact_path": "site/data/agency_program_sites.json",
+      "primary_routes": [
+        "/browse/"
+      ],
+      "source_contract_id": "dycd-program-sites",
+      "acquisition_command": [
+        "python3",
+        "warehouse/scripts/dycd_program_sites.py",
+        "--fiscal-year",
+        "2026",
+        "--dest",
+        ".artifacts/dycd-program-sites/fy2026-queens"
+      ],
+      "owning_builder": "tools/build_agency_program_sites.py",
+      "builder_command": [
+        "python3",
+        "tools/build_agency_program_sites.py"
+      ],
+      "dependent_materializers": [
+        "tools/build_procurement_evidence.mjs",
+        "tools/build_source_health_observations.mjs"
+      ],
+      "normal_refresh_cadence_hours": 168,
+      "cadence_justification": "The publisher refreshes this annual fiscal-year population infrequently; a weekly metadata check sees a new version when the publisher republishes, and capture runs only then.",
+      "warning_age_hours": 2160,
+      "hard_maximum_age_hours": 9600,
+      "vintage_fields": [
+        "checked_at",
+        "generated_at"
+      ],
+      "population_fields": [
+        "counts.mapped_queens",
+        "counts.raw_rows"
+      ],
+      "last_known_good_behavior": "Retain the last complete fiscal-year Queens capture and disclose that the program-site map is behind.",
+      "resident_stale_behavior": "Stop describing the retained fiscal-year capture as the current operating map once it passes its hard age; keep showing each site with its fiscal year and source date.",
+      "resident_unavailable_behavior": "Show program-site membership as unavailable. Never report that an agency has zero program sites from missing data.",
+      "production_evidence_field": "first_class.agency_program_sites"
+    },
+    {
+      "id": "agency-procurement-history",
+      "public_artifact_path": "site/data/agency_procurement_history.json",
+      "primary_routes": [
+        "/browse/",
+        "/browse/contracts/"
+      ],
+      "source_contract_id": "checkbook-contracts",
+      "acquisition_command": [
+        "node",
+        "warehouse/scripts/checkbook_contracts.mjs",
+        "--refresh",
+        "--publish"
+      ],
+      "owning_builder": "tools/build_agency_procurement_history.mjs",
+      "builder_command": [
+        "node",
+        "tools/build_agency_procurement_history.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_procurement_evidence.mjs",
+        "tools/build_source_health_observations.mjs"
+      ],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 720,
+      "hard_maximum_age_hours": 1080,
+      "vintage_fields": [
+        "generated_at"
+      ],
+      "population_fields": [
+        "registered_contracts.count"
+      ],
+      "last_known_good_behavior": "Retain the last verified agency purchasing-history projection within its hard age and label dated or stale families explicitly.",
+      "resident_stale_behavior": "Do not present registered-contract medians as current after the hard maximum age or when Checkbook standing is stale.",
+      "resident_unavailable_behavior": "Show each unavailable family as null. Never translate a missing City Record or Checkbook population into a zero median.",
+      "production_evidence_field": "first_class.agency_procurement_history"
+    },
+    {
+      "id": "procurement-evidence-capabilities",
+      "public_artifact_path": "site/data/procurement_evidence_capabilities.json",
+      "primary_routes": [
+        "/browse/"
+      ],
+      "source_contract_id": "dycd-program-sites",
+      "acquisition_command": [
+        "python3",
+        "warehouse/scripts/dycd_program_sites.py",
+        "--fiscal-year",
+        "2026",
+        "--dest",
+        ".artifacts/dycd-program-sites/fy2026-queens"
+      ],
+      "owning_builder": "tools/build_procurement_evidence.mjs",
+      "builder_command": [
+        "node",
+        "tools/build_procurement_evidence.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_source_health_observations.mjs"
+      ],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 720,
+      "hard_maximum_age_hours": 1080,
+      "vintage_fields": [
+        "as_of"
+      ],
+      "population_fields": [
+        "families",
+        "agencies"
+      ],
+      "last_known_good_behavior": "Retain the last verified capability index and per-agency manifests within hard age; keep each family state explicit.",
+      "resident_stale_behavior": "Do not present agency evidence capabilities as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Show agency evidence as unavailable. Never invent a zero-capability agency from missing data.",
+      "production_evidence_field": "first_class.procurement_evidence_capabilities"
     }
   ]
 }

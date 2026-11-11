@@ -7,21 +7,42 @@
       "kind": "html",
       "identifier": "trial-calendar.page",
       "response_type": "text/html",
-      "fields": ["index", "date", "start", "type", "source_url", "source_receipt"]
+      "fields": [
+        "index",
+        "date",
+        "start",
+        "type",
+        "source_url",
+        "source_receipt"
+      ]
     },
     {
       "id": "public-consultations",
       "kind": "html",
       "identifier": "",
       "response_type": "text/html",
-      "fields": ["id", "title", "organizer", "purpose", "geography", "deadline", "channels", "sources", "observed_at"]
+      "fields": [
+        "id",
+        "title",
+        "organizer",
+        "purpose",
+        "geography",
+        "deadline",
+        "channels",
+        "sources",
+        "observed_at"
+      ]
     },
     {
       "id": "pdc-calendar",
       "kind": "html",
       "identifier": "meetings.page",
       "response_type": "text/html",
-      "fields": ["meeting_date", "source_url", "source_receipt"]
+      "fields": [
+        "meeting_date",
+        "source_url",
+        "source_receipt"
+      ]
     },
     {
       "id": "ibo-fiscal-history",
@@ -35,7 +56,15 @@
       "kind": "html",
       "identifier": "0-0-0-1",
       "response_type": "text/html",
-      "fields": ["section", "heading", "text", "hierarchy", "source_ref", "observed_at", "content_hash"]
+      "fields": [
+        "section",
+        "heading",
+        "text",
+        "hierarchy",
+        "source_ref",
+        "observed_at",
+        "content_hash"
+      ]
     },
     {
       "id": "mandatory-inclusionary-housing",
@@ -144,21 +173,42 @@
       "kind": "html",
       "identifier": "Search",
       "response_type": "text/html",
-      "fields": ["cr_number", "agency", "title", "issue_date", "due_date", "category", "ad_type", "location"]
+      "fields": [
+        "cr_number",
+        "agency",
+        "title",
+        "issue_date",
+        "due_date",
+        "category",
+        "ad_type",
+        "location"
+      ]
     },
     {
       "id": "mta-current-opportunities",
       "kind": "html",
       "identifier": "current-opportunities",
       "response_type": "text/html",
-      "fields": ["solicitation_number", "event_number", "agency", "title", "opening_date"]
+      "fields": [
+        "solicitation_number",
+        "event_number",
+        "agency",
+        "title",
+        "opening_date"
+      ]
     },
     {
       "id": "mta-bid-results",
       "kind": "html",
       "identifier": "bid-results",
       "response_type": "text/html",
-      "fields": ["auc_id", "auc_name", "opening_date", "bidder", "bid_amount"]
+      "fields": [
+        "auc_id",
+        "auc_name",
+        "opening_date",
+        "bidder",
+        "bid_amount"
+      ]
     },
     {
       "id": "checkbook-contracts",
@@ -205,8 +255,8 @@
     {
       "id": "checkbook-nycha-contracts",
       "kind": "checkbook",
-    "identifier": "Contracts_NYCHA",
-    "source_system": "checkbook_nycha_contracts",
+      "identifier": "Contracts_NYCHA",
+      "source_system": "checkbook_nycha_contracts",
       "response_type": "xml-recordset",
       "fields": [
         "contract_id",
@@ -505,14 +555,20 @@
       "kind": "html",
       "identifier": "neighborhood-tabulation",
       "response_type": "text/html",
-      "fields": ["NTA2020", "NTAName", "NTAType"]
+      "fields": [
+        "NTA2020",
+        "NTAName",
+        "NTAType"
+      ]
     },
     {
       "id": "dcp-police-precinct-boundaries",
       "kind": "html",
       "identifier": "police-precincts",
       "response_type": "text/html",
-      "fields": ["Precinct"]
+      "fields": [
+        "Precinct"
+      ]
     },
     {
       "id": "dsny-district-boundaries",
@@ -520,7 +576,12 @@
       "identifier": "i6mn-amj2",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["district", "districtcode", "objectid", "multipolygon"]
+      "fields": [
+        "district",
+        "districtcode",
+        "objectid",
+        "multipolygon"
+      ]
     },
     {
       "id": "business-improvement-district-boundaries",
@@ -528,7 +589,12 @@
       "identifier": "7jdm-inj8",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["the_geom", "objectid_2", "f_all_bids", "f_all_bi_2"]
+      "fields": [
+        "the_geom",
+        "objectid_2",
+        "f_all_bids",
+        "f_all_bi_2"
+      ]
     },
     {
       "id": "dob-now-job-filings",
@@ -948,6 +1014,25 @@
         "explanation",
         "response",
         "responsible_agency"
+      ]
+    },
+    {
+      "id": "dycd-program-sites",
+      "kind": "socrata",
+      "identifier": "ebkm-iyma",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "date",
+        "program_area",
+        "program_type",
+        "provider",
+        "program_site_name",
+        "borough",
+        "street_address",
+        "communitydistrict",
+        "contract",
+        "portfolioid"
       ]
     }
   ]

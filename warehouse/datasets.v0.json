@@ -347,6 +347,32 @@
         "provenance"
       ],
       "notes": "Host-side, checkpointed document collector. Publisher index pages get one polite attempt; direct official documents remain hash-addressed and unmatched notice rows remain unmatched."
+    },
+    "dycd-program-sites": {
+      "id": "dycd-program-sites",
+      "source_contract_id": "dycd-program-sites",
+      "name": "DYCD Program Sites",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "ebkm-iyma",
+      "table_name": "dycd_program_sites",
+      "bulk_class": "BATCHABLE",
+      "default_limit": 50,
+      "wh02_full_export": false,
+      "soda_order": "provider ASC, program_type ASC, program_site_name ASC, street_address ASC",
+      "required_fields": [
+        "date",
+        "program_area",
+        "program_type",
+        "provider",
+        "program_site_name",
+        "borough",
+        "street_address",
+        "communitydistrict",
+        "contract",
+        "portfolioid"
+      ],
+      "notes": "Annual fiscal-year program-site offerings. Engine capture is the latest published FY Queens subset with count and metadata guards; citywide publisher totals are context only."
     }
   }
 }

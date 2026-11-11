@@ -530,6 +530,7 @@
     guide_text_d56f9637f2ded084: "Las 62 fuentes públicas detrás de estos registros, según la frecuencia con la que cambia cada una",
     guide_text_419cfd637c426254: "Las 63 fuentes públicas detrás de estos registros, según la frecuencia con la que cambia cada una",
     guide_text_6f86073a0d433ddd: "Las 64 fuentes públicas detrás de estos registros, según la frecuencia con la que cambia cada una",
+    guide_text_9ee0cdba0954ba6d: "Las 65 fuentes públicas detrás de estos registros, según la frecuencia con la que cambia cada una",
     guide_text_804d092455f8f8d9: "A medida que suceden los hechos",
     guide_text_cbb5a736940c6071: "El editor actualiza la fuente al presentarse los registros; por eso lo que ve sigue de cerca a la ciudad.",
     guide_text_1816d56c3c707b5d: "Según el calendario del editor",

@@ -1,0 +1,16 @@
+{
+ "checked_at": "2026-11-11T01:40:22.368510+00:00",
+ "counts": {
+  "distinct_program_sites": 482,
+  "duplicate_observations": 1,
+  "excluded_queens": 2,
+  "mapped_queens": 480,
+  "raw_rows": 483
+ },
+ "fiscal_year": 2026,
+ "manifest_sha256": "45d90eabce884a7136366ecc945509c0f2dc94c78eb0cfd454be3db35107cd27",
+ "publisher_updated_at": "2026-09-24T13:52:59+00:00",
+ "shard_count": 14,
+ "source_sha256": "6a495766c92f45814b7145e8b7bcdbea7ef52ceadf1856de3fde6b0856030398",
+ "source_url": "https://data.cityofnewyork.us/resource/ebkm-iyma.json?%24where=date%3D2026+and+borough%3D%27Queens%27&%24order=provider%2Cprogram_type%2Cprogram_site_name%2Cstreet_address&%24limit=5000"
+}
