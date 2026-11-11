@@ -85,6 +85,14 @@ test("A1 [outcome] production homepage chrome exposes Get email updates above th
   assert.match(CSS_SOURCE, /\.near-home-email-entry\s*\{/);
   assert.equal(HOME_EMAIL_ENTRY_LABEL, "Get email updates");
   assert.match(HOME_EMAIL_ENTRY_EXPLAIN, /does not enroll you/);
+  // Keep the handoff in the primary controls row so the phone first-fold map
+  // stays at or above the live smoke's 150px visible-height floor.
+  assert.match(
+    entry,
+    /near-geo-primary-controls[\s\S]*data-home-email-entry[\s\S]*<\/div>/,
+  );
+  assert.match(CSS_SOURCE, /@media \(max-width:\s*480px\)\s*\{[\s\S]*\.near-home-email-entry-explain\s*\{[\s\S]*clip:\s*rect\(0,\s*0,\s*0,\s*0\)/);
+  assert.match(CSS_SOURCE, /\.near-geo-primary-controls\s+\.near-home-email-entry\s*\{/);
 
   // The unselected Near You shell owns this handoff so near_you_view.mjs can
   // stay out of discovery-recovery measured inputs.
@@ -255,9 +263,18 @@ test("A4 [verification] focused source, no-JS href, capture manifest, and conten
   for (const row of manifest.captures) {
     assert.match(String(row.route || ""), /^\/|^https:\/\/cityscroll\.org\/?$/);
     assert.ok(row.viewport?.width === 1440 || row.viewport?.width === 390, row.name);
-    assert.match(String(row.assertion || ""), /Get email updates|email updates|above the fold|absent/i);
+    assert.match(
+      String(row.assertion || ""),
+      /Get email updates|email updates|above the fold|visible-height|smoke floor|primary controls/i,
+    );
     assert.match(String(row.sha256 || ""), /^[0-9a-f]{64}$/);
     assert.equal(row.file, null);
   }
+  const afterPhone = manifest.captures.find((row) => row.name === "after-phone");
+  assert.ok(afterPhone, "after-phone capture row required");
+  assert.ok(
+    Number(afterPhone.metrics?.map_visible_height_px) >= 150,
+    `after-phone map visible height must meet smoke floor: ${JSON.stringify(afterPhone.metrics)}`,
+  );
   assert.ok(manifest.content_hash || manifest.entry_content_hash || manifest.captures.some((row) => row.content_hash));
 });
