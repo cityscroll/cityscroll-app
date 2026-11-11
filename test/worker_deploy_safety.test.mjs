@@ -24,6 +24,7 @@ test("Worker routes retain API domains and claim only canonical dynamic-document
   assert.match(routeBlock, /pattern = "cityscroll\.org\/near-you\*"/);
   assert.match(routeBlock, /pattern = "cityscroll\.org\/following\*"/);
   assert.match(routeBlock, /pattern = "cityscroll\.org\/prefs\*"/);
+  assert.match(routeBlock, /pattern = "cityscroll\.org\/account\*"/);
   assert.doesNotMatch(routeBlock, /pattern = "cityscroll\.org"\s*,\s*custom_domain/);
   assert.doesNotMatch(routeBlock, /pattern = "www\.cityscroll\.org"/);
 });

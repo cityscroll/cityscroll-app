@@ -16,6 +16,7 @@ routes = [
   { pattern = "cityscroll.org/near-you*", zone_name = "cityscroll.org" },
   { pattern = "cityscroll.org/following*", zone_name = "cityscroll.org" },
   { pattern = "cityscroll.org/prefs*", zone_name = "cityscroll.org" },
+  { pattern = "cityscroll.org/account*", zone_name = "cityscroll.org" },
 ]
 # Keep every unprotected workers.dev surface closed. Public API traffic uses
 # the custom domains above, where zone security rules can apply.
@@ -109,11 +110,12 @@ SOURCE_VAULT_ENABLED = "false"
 # returns the existing lexical /search response unchanged.
 SEMANTIC_CANDIDATES_ENABLED = "true"
 # Common CityScroll account (one email sign-in shared by the civic site and the
-# procurement product). Default OFF: every /account route 404s and the civic session
-# reader ignores v3 tokens until an operator enables it. Production enablement stays
-# gated on the signup-protection work landing first; migrations and the v3-compatible
-# session reader deploy additively ahead of any public sign-in.
-CITYSCROLL_ACCOUNTS_ENABLED = "false"
+# procurement product). When "false" every /account route 404s and the civic session
+# reader ignores v3 tokens. Enablement was gated on the signup-protection work landing
+# first; that prerequisite is now in place, so the shared account surface is enabled.
+# The sign-in shell and confirmation page are engine-served at cityscroll.org/account*
+# (see the apex route above); the session API stays on api.cityscroll.org/account/v1/*.
+CITYSCROLL_ACCOUNTS_ENABLED = "true"
 # Deploy identity for GET /health. Empty in-repo so local `wrangler dev` stays
 # unstamped; every ship path overrides these with wrangler `--var` (not the
 # GitHub Action bulk `vars:` input, which would clobber secrets of the same name).
