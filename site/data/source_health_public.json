@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-11-10T15:17:39.651Z",
+  "generated_at": "2026-11-11T01:40:22.368Z",
   "available": true,
-  "source_count": 64,
+  "source_count": 65,
   "sources": [
     {
       "source_id": "abo-local-authorities",
@@ -1515,6 +1515,57 @@
         },
         "publisher_vintage": null,
         "retrieved_at": "2026-11-03T19:29:08.996Z",
+        "expected_lag_tolerance_days": 400,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
+      "source_id": "dycd-program-sites",
+      "name": "DYCD Program Sites",
+      "publisher": "New York City Department of Youth and Community Development",
+      "official_url": "https://data.cityofnewyork.us/d/ebkm-iyma",
+      "expected_cadence": "Annual fiscal-year publication of program-site offerings",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": "2026-11-11T01:40:22.368Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
         "expected_lag_tolerance_days": 400,
         "current_lag": {
           "value": null,

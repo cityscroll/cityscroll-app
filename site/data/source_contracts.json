@@ -6169,7 +6169,8 @@
       "id": "agency-procurement-history",
       "public_artifact_path": "site/data/agency_procurement_history.json",
       "primary_routes": [
-        "/browse/"
+        "/browse/",
+        "/browse/contracts/"
       ],
       "source_contract_id": "checkbook-contracts",
       "acquisition_command": [
