@@ -1,0 +1,1790 @@
+{
+ "schema": "cityscroll.procurement_legal_register.v1",
+ "version": "2026-11-11.1",
+ "description": "Cited, dated register of what CityScroll believes about NYC procurement law. Numbers for PPB 3-08 bands live only in ontology/registry.v0.json procurement_policy_registry; entries point there with realized_by.",
+ "baseline": {
+  "repository": "cityscroll-app",
+  "revision": "919ddc5a4438cecf3b5e66632e1746c0138ae064"
+ },
+ "sources": {
+  "root": "test/fixtures/procurement_legal_register/sources",
+  "publisher": "BetaNYC nyc-charter-laws-rules (public mirror of official NYC Charter, Administrative Code and Rules)",
+  "publisher_url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+  "retrieved_on": "2026-11-11",
+  "currency_statement": "Administrative Code current through Local Law 2026/163, enacted November 7, 2026; rules effective November 8, 2026 (as stated by the mirror)",
+  "review": "source text captured by an agent; not reviewed by a legal practitioner",
+  "files": {
+   "admin-code-6-129.md": {
+    "sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "bytes": 73230
+   },
+   "charter-311.md": {
+    "sha256": "4238fa2dbd67c1a2a7a56b89462ff7c1567d518b61520f7da086752c4477ca31",
+    "bytes": 9704
+   },
+   "ppb-1-01.md": {
+    "sha256": "1c13368321b3ab905def81747ef0f718ad2eac1bc7a7ea0790811cc1e6d64b8c",
+    "bytes": 31644
+   },
+   "ppb-1-02.md": {
+    "sha256": "0746509aaa802445edae54261e0e146ac99392b6cea72a63f9b6e58f56d2a33c",
+    "bytes": 8614
+   },
+   "ppb-3-04.md": {
+    "sha256": "93f400fb5838a781a1d8a8d5bee06b259852103b11e34db938d705cbbbf48b21",
+    "bytes": 9533
+   },
+   "ppb-3-08.md": {
+    "sha256": "58178d4bd1eacdeab3a98165ea2c1fa7c02e614780189e6076206dae2fca0a7f",
+    "bytes": 7060
+   },
+   "ppb-3-16.md": {
+    "sha256": "67857309be79efeb3649ca8704991687fcd579b4840c3055416023a01b3fc36f",
+    "bytes": 31108
+   }
+  }
+ },
+ "known_divergences": [
+  {
+   "id": "kd.mwbe_small_purchase_ceiling_dates",
+   "kind": "effective_date",
+   "entry_ids": [
+    "nyc.charter.311.i.1.mwbe_small_purchase_ceiling.from_2022_10_06",
+    "nyc.charter.311.i.1.mwbe_small_purchase_ceiling.from_2023_12_08"
+   ],
+   "statement": "The policy registry applies the $1,500,000 M/WBE band from 2023-06-03. This register records the Charter ceiling as $1,000,000 until 2023-12-08 (secondary sources: 2023-12-08 or 2023-12-19), so between 2023-06-03 and 2023-12-07 the registry band exceeds the recorded Charter ceiling.",
+   "resolution": "open: needs the chaptered text of 2023 N.Y. Laws ch. 719 and a practitioner review; registry.v0.json is unchanged in this slice."
+  },
+  {
+   "id": "kd.ppb_3_08_effective_dates",
+   "kind": "effective_date",
+   "entry_ids": [
+    "nyc.ppb.3-08.a.small_purchase_limit",
+    "nyc.ppb.3-08.c.1.i.small_purchase_public_notice_not_required",
+    "nyc.ppb.3-08.c.1.ii.micropurchase_limits",
+    "nyc.ppb.3-08.c.1.iv.mwbe_small_purchase_excludes_human_services",
+    "nyc.ppb.3-08.d.2.i.mwbe_small_purchase_award_notice"
+   ],
+   "statement": "The policy registry dates every 3-08 family from 2023-06-03. The retained text lists amendments eff. 6/3/2023, 9/22/2024 and 9/26/2025 without showing which provisions changed, so the register asserts the current text only from 2025-09-26 and answers unknown before then.",
+   "resolution": "open: needs the 2023-2025 City Record rule notices."
+  },
+  {
+   "id": "kd.coverage_labels_missing_category",
+   "kind": "consumer_semantics",
+   "entry_ids": [
+    "app.coverage_labels.missing_category_matches_any_band"
+   ],
+   "statement": "site/procurement_coverage_labels.mjs treats a missing category as matching any band; the register yields unknown for a missing fact.",
+   "resolution": "consumer slice"
+  },
+  {
+   "id": "kd.city_record_coverage_boundary",
+   "kind": "consumer_semantics",
+   "entry_ids": [
+    "app.analytical_projection.city_record_coverage_threshold",
+    "nyc.ppb.3-08.a.small_purchase_limit"
+   ],
+   "statement": "The coverage threshold includes amount == 100000, but 3-08(a) makes a procurement of not more than $100,000 a small purchase.",
+   "resolution": "consumer slice"
+  },
+  {
+   "id": "kd.policy_registry_category_vocabulary",
+   "kind": "vocabulary",
+   "entry_ids": [
+    "nyc.ppb.3-08.c.1.ii.micropurchase_limits",
+    "nyc.ppb.3-08.c.1.iv.mwbe_small_purchase_excludes_human_services"
+   ],
+   "statement": "The policy registry keys bands by goods_and_non_construction_services or construction and excludes human_services by category name, while the register facts use goods, standard_services, professional_services, construction and human_services. A consumer must translate; human services is a non-construction service for micropurchase bands but is excluded from the M/WBE method.",
+   "resolution": "consumer slice; no translation is asserted here"
+  }
+ ],
+ "entries": [
+  {
+   "id": "nyc.admin_code.6-129.c.21.human_services_definition",
+   "record_version": 1,
+   "statement": "Admin Code 6-129 defines human services as services provided to third parties, including social, health, legal, employment, vocational, educational and recreation programs.",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(c)(21)",
+    "quote": "(21) \"Human services\" means services provided to third parties, including social services such as day care, foster care, home care, homeless assistance, housing and shelter assistance, preventive services, youth services, and senior centers; health or medical services including those provided by health maintenance organizations; legal services; employment assistance services, vocational and educational programs; and recreation programs.",
+    "quote_sha256": "cfcdf160cbcd38047ea46525c6cdde390dccf04193184a75225759212d7a0e1a",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "effect": {
+    "defines_term": "human_services"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "worker/src/lib/filter.mjs",
+    "worker/src/lib/award_registration_dwell.mjs"
+   ],
+   "notes": "Definition only; mapping publisher category labels onto it is a separate vocabulary_mapping entry."
+  },
+  {
+   "id": "nyc.admin_code.6-129.c.23.industry_classifications",
+   "record_version": 1,
+   "statement": "For 6-129 purposes the industry classifications are construction, professional services, standard services and goods; a procurement in one of those categories takes that classification.",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(c)(23)",
+    "quote": "(23) \"Industry classification\" means one of the following classifications: (a) construction; (b) professional services; (c) standard services; and (d) goods.",
+    "quote_sha256": "1ce6c102f60f5020cba1caa95dec75e6e667967ba50ca6d1b4a44408ed824a4c",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_category": [
+     "construction",
+     "professional_services",
+     "standard_services",
+     "goods"
+    ]
+   },
+   "effect": {
+    "section_6_129_industry_classification": "same_as_procurement_category"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "Human services is not among the four classifications; see 6-129(c)(32)."
+  },
+  {
+   "id": "nyc.admin_code.6-129.c.32.standard_services_excludes_human_services",
+   "record_version": 1,
+   "statement": "Standard services exclude professional services and human services, so a human services procurement has no 6-129 industry classification.",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(c)(32)",
+    "quote": "(32) \"Standard services\" means services other than professional services and human services.",
+    "quote_sha256": "5bb0841a875de22872c284d7382a407b8486813e7126ca62191a6c46d600216d",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_category": [
+     "human_services"
+    ]
+   },
+   "effect": {
+    "section_6_129_industry_classification": "none"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "worker/src/lib/filter.mjs",
+    "site/buyer_history_pursuit_comparison.mjs"
+   ],
+   "notes": "'none' is derived from (c)(23) listing four classifications and (c)(32) excluding human services from standard services."
+  },
+  {
+   "id": "nyc.admin_code.6-129.q.1.federal_or_state_funding_precludes_requirements",
+   "record_version": 1,
+   "statement": "Contracts whose federal or state funding requirements preclude the city from imposing 6-129 participation requirements are exempt.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(q)(1)",
+    "quote": "(1) those subject to federal or state funding requirements which preclude the city from imposing the requirements of this subdivision;",
+    "quote_sha256": "1e3ba89d7e9b125034d8ab925cd2879fa031fe62ca8d4e1106cac9fda6e266e1",
+    "context_quote": "q. Applicability. Agencies shall not be required to apply participation requirements to the following types of contracts:",
+    "context_quote_sha256": "ef402d16932f72a070f984dc18cdcf046fdee7e38c316357abf3f29dc9e04c4d",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "funding_constraint": [
+     "federal_or_state_precludes_goals"
+    ]
+   },
+   "effect": {
+    "mwbe_participation_requirement": "not_applicable"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "The text says agencies 'shall not be required to apply' participation requirements; the register records this as not_applicable for product purposes and does not model agency discretion to apply them anyway."
+  },
+  {
+   "id": "nyc.admin_code.6-129.q.2.own_federal_or_state_participation_requirements",
+   "record_version": 1,
+   "statement": "Contracts subject to federal or state law participation requirements (MBE, WBE, DBE or EBE) are exempt from 6-129 participation requirements.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(q)(2)",
+    "quote": "(2) those subject to federal or state law participation requirements for MBEs, WBEs, disadvantaged business enterprises, and/or EBEs;",
+    "quote_sha256": "f7b2832ec01f0b3af995ad17631271b6ee2a6e2230759f796daa51d95386242e",
+    "context_quote": "q. Applicability. Agencies shall not be required to apply participation requirements to the following types of contracts:",
+    "context_quote_sha256": "ef402d16932f72a070f984dc18cdcf046fdee7e38c316357abf3f29dc9e04c4d",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "funding_constraint": [
+     "own_federal_state_mbe_requirements"
+    ]
+   },
+   "effect": {
+    "mwbe_participation_requirement": "not_applicable"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "The text says agencies 'shall not be required to apply' participation requirements; the register records this as not_applicable for product purposes and does not model agency discretion to apply them anyway."
+  },
+  {
+   "id": "nyc.admin_code.6-129.q.3.contracts_between_agencies",
+   "record_version": 1,
+   "statement": "Contracts between agencies are exempt from 6-129 participation requirements.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(q)(3)",
+    "quote": "(3) contracts between agencies;",
+    "quote_sha256": "5c22286a8bf8be9e3794574125f5559699599504a600ececc783ab1b7a5434b9",
+    "context_quote": "q. Applicability. Agencies shall not be required to apply participation requirements to the following types of contracts:",
+    "context_quote_sha256": "ef402d16932f72a070f984dc18cdcf046fdee7e38c316357abf3f29dc9e04c4d",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "unmodelled_conditions": [
+    "counterparty_is_city_agency"
+   ],
+   "effect": {
+    "mwbe_participation_requirement": "not_applicable"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "The text says agencies 'shall not be required to apply' participation requirements; the register records this as not_applicable for product purposes and does not model agency discretion to apply them anyway. 'Agencies' are not mapped to procurement_basis=intergovernmental, which describes other governments; the condition stays unmodelled."
+  },
+  {
+   "id": "nyc.admin_code.6-129.q.4.intergovernmental_and_schedule_procurements",
+   "record_version": 1,
+   "statement": "Procurements made through GSA, another federal agency, NYS OGS, another state agency or any other governmental agency are exempt from 6-129 participation requirements.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(q)(4)",
+    "quote": "(4) procurements made through the United States general services administration or another federal agency, or through the New York state office of general services or another state agency, or any other governmental agency.",
+    "quote_sha256": "6b22f1056d2eac315f91cfa8ba17af69c1bbb66e2122e7a298e495b398e313f7",
+    "context_quote": "q. Applicability. Agencies shall not be required to apply participation requirements to the following types of contracts:",
+    "context_quote_sha256": "ef402d16932f72a070f984dc18cdcf046fdee7e38c316357abf3f29dc9e04c4d",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_basis": [
+     "intergovernmental",
+     "government_schedule"
+    ]
+   },
+   "effect": {
+    "mwbe_participation_requirement": "not_applicable"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "The text says agencies 'shall not be required to apply' participation requirements; the register records this as not_applicable for product purposes and does not model agency discretion to apply them anyway. The closed procurement_basis values intergovernmental and government_schedule are both read as procurements made through another governmental agency."
+  },
+  {
+   "id": "nyc.admin_code.6-129.q.5.emergency_procurements",
+   "record_version": 1,
+   "statement": "Emergency procurements under Charter 315 are exempt from 6-129 participation requirements.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(q)(5)",
+    "quote": "(5) emergency procurements pursuant to section three hundred fifteen of the charter;",
+    "quote_sha256": "046c245720cefdd88bd7226d3cce093b3dded30c0fcd63a5c7796d9f181b6d7b",
+    "context_quote": "q. Applicability. Agencies shall not be required to apply participation requirements to the following types of contracts:",
+    "context_quote_sha256": "ef402d16932f72a070f984dc18cdcf046fdee7e38c316357abf3f29dc9e04c4d",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_basis": [
+     "emergency"
+    ]
+   },
+   "effect": {
+    "mwbe_participation_requirement": "not_applicable"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "The text says agencies 'shall not be required to apply' participation requirements; the register records this as not_applicable for product purposes and does not model agency discretion to apply them anyway."
+  },
+  {
+   "id": "nyc.admin_code.6-129.q.6.sole_source_procurements",
+   "record_version": 1,
+   "statement": "Sole source procurements under Charter 321 are exempt from 6-129 participation requirements.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(q)(6)",
+    "quote": "(6) sole source procurements pursuant to section three hundred twenty-one of the charter;",
+    "quote_sha256": "8eb7575df21a809d6eb55ef1bb796422d655f089bf82d7ab6601366049e00a56",
+    "context_quote": "q. Applicability. Agencies shall not be required to apply participation requirements to the following types of contracts:",
+    "context_quote_sha256": "ef402d16932f72a070f984dc18cdcf046fdee7e38c316357abf3f29dc9e04c4d",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_basis": [
+     "sole_source"
+    ]
+   },
+   "effect": {
+    "mwbe_participation_requirement": "not_applicable"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "The text says agencies 'shall not be required to apply' participation requirements; the register records this as not_applicable for product purposes and does not model agency discretion to apply them anyway."
+  },
+  {
+   "id": "nyc.admin_code.6-129.q.7.human_services_contracts",
+   "record_version": 1,
+   "statement": "Contracts for human services are exempt from 6-129 participation requirements.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(q)(7)",
+    "quote": "(7) contracts for human services;",
+    "quote_sha256": "ddaf62b99fc9ee627954ba15efa85f5657e2c929738bd56267092b5e0a8abed5",
+    "context_quote": "q. Applicability. Agencies shall not be required to apply participation requirements to the following types of contracts:",
+    "context_quote_sha256": "ef402d16932f72a070f984dc18cdcf046fdee7e38c316357abf3f29dc9e04c4d",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_category": [
+     "human_services"
+    ]
+   },
+   "effect": {
+    "mwbe_participation_requirement": "not_applicable"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "The text says agencies 'shall not be required to apply' participation requirements; the register records this as not_applicable for product purposes and does not model agency discretion to apply them anyway."
+  },
+  {
+   "id": "nyc.admin_code.6-129.q.8.not_for_profit_awardees",
+   "record_version": 1,
+   "statement": "Contracts awarded to not-for-profit organizations are exempt from 6-129 participation requirements, whatever the category.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(q)(8)",
+    "quote": "(8) contracts awarded to not-for-profit organizations; and",
+    "quote_sha256": "0677bcb28758d1d5df2272dd12484807e8952184acc20370b77adf4ee123b646",
+    "context_quote": "q. Applicability. Agencies shall not be required to apply participation requirements to the following types of contracts:",
+    "context_quote_sha256": "ef402d16932f72a070f984dc18cdcf046fdee7e38c316357abf3f29dc9e04c4d",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "awardee_legal_form": [
+     "not_for_profit"
+    ]
+   },
+   "effect": {
+    "mwbe_participation_requirement": "not_applicable"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "The text says agencies 'shall not be required to apply' participation requirements; the register records this as not_applicable for product purposes and does not model agency discretion to apply them anyway."
+  },
+  {
+   "id": "nyc.admin_code.6-129.q.9.director_determined_portions",
+   "record_version": 1,
+   "statement": "Portions of a contract the director determines have no available MBE, WBE or EBE firms after an extensive agency search are exempt.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(q)(9)",
+    "quote": "(9) portions of a contract that the director determines should be exempt because, after an extensive search conducted by the contracting agency, it appears that there are not MBE, WBE or EBE firms available to perform the work.",
+    "quote_sha256": "9147d615342aea76db294cf6685c4acea8e5e98bed060f09016314ea38103d5d",
+    "context_quote": "q. Applicability. Agencies shall not be required to apply participation requirements to the following types of contracts:",
+    "context_quote_sha256": "ef402d16932f72a070f984dc18cdcf046fdee7e38c316357abf3f29dc9e04c4d",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "unmodelled_conditions": [
+    "director_portion_exemption_determination"
+   ],
+   "effect": {
+    "mwbe_participation_requirement": "not_applicable"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "The text says agencies 'shall not be required to apply' participation requirements; the register records this as not_applicable for product purposes and does not model agency discretion to apply them anyway. Applies to portions of a contract, not necessarily the whole contract."
+  },
+  {
+   "id": "nyc.admin_code.6-129.h.2.a.outreach_includes_emergency_and_sole_source",
+   "record_version": 1,
+   "statement": "Agencies must conduct M/WBE and EBE outreach for all facets of procurement, including negotiated acquisition, emergency and sole source contracts, even where participation requirements are exempt.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "admin_code",
+    "section": "6-129(h)(2)(a)",
+    "quote": "(a) Agencies shall engage in outreach activities to encourage MBEs, WBEs and EBEs to compete for all facets of their procurement activities, including contracts awarded by negotiated acquisition, emergency and sole source contracts, and each agency shall seek to utilize MBEs, WBEs and/or EBEs for all types of goods, services and construction they procure.",
+    "quote_sha256": "d9210a571ead24a1f149431451d2f9d52deda8002c5dc863b93089e587f674d6",
+    "source_file": "admin-code-6-129.md",
+    "source_sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "effect": {
+    "agency_mwbe_outreach_duty": "applies"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2022-09-26",
+   "effective_from_basis": "in force in text current through Local Law 163 of 2026; original enactment date not established. The retained section history lists its last amendment as L.L. 2022/061, eff. 9/26/2022, which is used as in_force_as_of.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/sub_outreach.mjs",
+    "worker/src/lib/award_prime_goal.mjs"
+   ],
+   "notes": "Agency duty, not a vendor obligation. Emergency and sole source are named explicitly, so a (q)(5) or (q)(6) exemption does not remove this duty."
+  },
+  {
+   "id": "nyc.charter.311.i.1.mwbe_small_purchase_ceiling.from_2022_10_06",
+   "record_version": 1,
+   "statement": "Charter 311(i)(1) let the PPB authorize M/WBE purchases without formal competition up to $1,000,000.",
+   "kind": "threshold",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "charter",
+    "section": "311(i)(1)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "mwbe_small_purchase_max_usd": 1000000
+   },
+   "effective_from": "2022-10-06",
+   "effective_to": "2023-12-08",
+   "in_force_as_of": "2022-10-06",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "ontology/registry.v0.json",
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": "Predecessor text not retained. Amount and dates come from secondary sources: raised to $1M in October 2022 (the retained 311 history lists 2022 N.Y. Laws ch. 569, eff. 10/6/2022) and replaced by $1.5M by 2023 N.Y. Laws ch. 719, which secondary sources date 2023-12-08 or 2023-12-19. See known divergence kd.mwbe_small_purchase_ceiling_dates."
+  },
+  {
+   "id": "nyc.charter.311.i.1.mwbe_small_purchase_ceiling.from_2023_12_08",
+   "record_version": 1,
+   "statement": "Charter 311(i)(1) lets the PPB authorize agencies to buy goods, services and construction from certified M/WBEs without a formal competitive process up to $1,500,000.",
+   "kind": "threshold",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "charter",
+    "section": "311(i)(1)",
+    "quote": "1. agencies may make procurements of goods, services and construction for amounts not exceeding one million five hundred thousand dollars from businesses certified as minority or women-owned business enterprises pursuant to section thirteen hundred four of the charter without a formal competitive process.",
+    "quote_sha256": "69c92d6de410a25b0b6237be58b4b15cb959d7b1039cdd6d80c1b5ae7c85c508",
+    "context_quote": "i. In addition to other rules authorized by this section, the board may provide by rule that:",
+    "context_quote_sha256": "a66c04884cf7ef3aaef207e6f28bfb1556a68cf5c3faf1005bdf12724e9d5a87",
+    "source_file": "charter-311.md",
+    "source_sha256": "4238fa2dbd67c1a2a7a56b89462ff7c1567d518b61520f7da086752c4477ca31",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "effect": {
+    "mwbe_small_purchase_max_usd": 1500000
+   },
+   "corresponds_to": {
+    "registry": "procurement_policy_registry",
+    "family": "mwbe_small_purchase",
+    "field": [
+     "applicability",
+     "maximum_authorized_amount"
+    ]
+   },
+   "effective_from": "2023-12-08",
+   "effective_to": null,
+   "in_force_as_of": "2025-03-09",
+   "effective_from_basis": "The quote is source-checked. effective_from follows the retained history entry 'Am. 2023 N.Y. Laws Ch. 719, 12/8/2023, eff. 12/8/2023'; attributing the $1.5M amount to ch. 719 relies on secondary sources, one of which gives 2023-12-19. in_force_as_of is the last listed amendment (L.L. 2024/107, eff. 3/9/2025).",
+   "recorded_at": "2026-11-11",
+   "supersedes": "nyc.charter.311.i.1.mwbe_small_purchase_ceiling.from_2022_10_06@1",
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "ontology/registry.v0.json",
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": "Charter authorization for the PPB rule, not the rule itself; PPB 3-08(c)(1)(iv) adopts it by reference. The policy registry copies this amount as mwbe_small_purchase.applicability.maximum_authorized_amount; the validator checks equality and the effective-date divergence."
+  },
+  {
+   "id": "nyc.ppb.1-01.client_services_alias_human_services",
+   "record_version": 1,
+   "statement": "The PPB rules define client services and say they are sometimes referred to as human services.",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 1-01 (Client Services)",
+    "quote": "Client services are sometimes referred to as \"human services\" and government agencies whose primary missions involve the award and administration of such contracts, or provision of the same or similar services by agency employees, are sometimes referred to as \"human services agencies.\"",
+    "quote_sha256": "a4a253d70a050d138a2453e663455cdb7e3fa75c83d2988b7e6a676012358e29",
+    "source_file": "ppb-1-01.md",
+    "source_sha256": "1c13368321b3ab905def81747ef0f718ad2eac1bc7a7ea0790811cc1e6d64b8c",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "effect": {
+    "term_alias": "client_services_is_human_services"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-01-11",
+   "effective_from_basis": "current text in force since the last listed amendment (eff. 1/11/2026); the date this provision took its current form is not established.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "worker/src/lib/filter.mjs",
+    "worker/src/lib/award_registration_dwell.mjs",
+    "site/app/procurement-phase.mjs"
+   ],
+   "notes": "Supports treating the City Record label 'Human Services/Client Services' as procurement_category human_services; the PPB and Admin Code definitions are worded differently."
+  },
+  {
+   "id": "nyc.ppb.1-01.time_in_calendar_days",
+   "record_version": 1,
+   "statement": "Unless a PPB rule says otherwise, time in the PPB rules is counted in calendar days.",
+   "kind": "timeline",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 1-01 (Time)",
+    "quote": "Time. Unless otherwise stated in these Rules, time shall be designated in calendar days.",
+    "quote_sha256": "47da9cf80b2b93c20ee3a2024f5ef8b91524c7b7516c658f7a0ef1a067115d30",
+    "source_file": "ppb-1-01.md",
+    "source_sha256": "1c13368321b3ab905def81747ef0f718ad2eac1bc7a7ea0790811cc1e6d64b8c",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "effect": {
+    "default_time_unit": "calendar_days"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-01-11",
+   "effective_from_basis": "current text in force since the last listed amendment (eff. 1/11/2026); the date this provision took its current form is not established.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs"
+   ],
+   "notes": ""
+  },
+  {
+   "id": "nyc.ppb.1-02.e.discretionary_and_line_item_awards",
+   "record_version": 1,
+   "statement": "PPB source selection requirements do not apply to awards from line item appropriations or discretionary funds to community-based not-for-profit or other public service organizations identified by elected officials other than the Mayor and Comptroller.",
+   "kind": "program_scope",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 1-02(e)",
+    "quote": "(e) Procurements funded by line item appropriations or discretionary funds. The source selection requirements of these Rules shall not apply to contract awards made from line item appropriations and/or discretionary funds to community-based not-for-profit organizations or other public service organizations identified by elected City officials other than the Mayor and the Comptroller.",
+    "quote_sha256": "7dc8e88d2fee6a51ac50048284229a3301b90bf0b86a8f8d3eab636c8f4bbdaa",
+    "source_file": "ppb-1-02.md",
+    "source_sha256": "0746509aaa802445edae54261e0e146ac99392b6cea72a63f9b6e58f56d2a33c",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "unmodelled_conditions": [
+    "line_item_or_discretionary_funding",
+    "recipient_identified_by_elected_official_other_than_mayor_or_comptroller"
+   ],
+   "effect": {
+    "ppb_source_selection_requirements": "not_applicable"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2023-07-23",
+   "effective_from_basis": "current text in force since the last listed amendment (eff. 7/23/2023); the date this provision took its current form is not established.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [],
+   "notes": "All other PPB provisions still apply. The closed facts vocabulary has no funding-source fact, so evaluation is unknown until it is extended."
+  },
+  {
+   "id": "nyc.ppb.3-08.a.small_purchase_limit",
+   "record_version": 1,
+   "statement": "Small purchases are procurements of not more than $100,000, or M/WBE purchases under 3-08(c)(1)(iv) up to the Charter 311(i)(1) maximum.",
+   "kind": "threshold",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-08(a)",
+    "quote": "(a) Definition. Small purchases are those procurements in value of not more than $100,000 or those procurements made, pursuant to subparagraph (c)(1)(iv) below, in value of not more than the maximum amount authorized pursuant to paragraph (1) of subdivision (i) of section 311 of the Charter.",
+    "quote_sha256": "070c58597807725df1109f80f2eec9aa9bb527e80d9ec3845dd0782e5da17030",
+    "source_file": "ppb-3-08.md",
+    "source_sha256": "58178d4bd1eacdeab3a98165ea2c1fa7c02e614780189e6076206dae2fca0a7f",
+    "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "effect": {
+    "small_purchase_limit_usd": {
+     "registry_field": [
+      "applicability",
+      "amount_bands",
+      {
+       "procurement_category": "goods_and_non_construction_services"
+      },
+      "maximum"
+     ]
+    }
+   },
+   "realized_by": {
+    "registry": "procurement_policy_registry",
+    "family": "ordinary_5_plus_10"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2025-09-26",
+   "effective_from_basis": "current text in force since the last listed amendment (City Record 8/27/2025, eff. 9/26/2025); the retained history lists amendments eff. 6/3/2023, 9/22/2024 and 9/26/2025 without establishing when this provision took its current form.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "ontology/registry.v0.json",
+    "site/procurement_coverage_labels.mjs",
+    "capabilities/analytical_projection.mjs"
+   ],
+   "notes": "The number is read from the policy registry (ordinary_5_plus_10 upper bound, inclusive)."
+  },
+  {
+   "id": "nyc.ppb.3-08.c.1.i.small_purchase_public_notice_not_required",
+   "record_version": 1,
+   "statement": "Public notice of solicitation and award and several other formalities are not required for small purchases.",
+   "kind": "method_definition",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-08(c)(1)(i)",
+    "quote": "(i) Public notice of solicitation and award, written decision to procure technical, consultant, or personal services, presolicitation review report, Recommendation for Award, vendor protests, written notice to the low bidder or offeror of non-responsiveness, VENDEX questionnaires (unless the total aggregate value of purchases, franchises, and concessions awarded to that vendor including this one during the immediately preceding twelve-month period equals or exceeds $250,000) and public notice and comment (unless the award is valued over $100,000) shall not be required for small purchases awarded, pursuant to this section.",
+    "quote_sha256": "35b5f55f065902ac3f9ed04dfc069dd59fbbf95945b74ed019e2c44cc76a6043",
+    "source_file": "ppb-3-08.md",
+    "source_sha256": "58178d4bd1eacdeab3a98165ea2c1fa7c02e614780189e6076206dae2fca0a7f",
+    "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "method_family": [
+     "ordinary_micropurchase",
+     "ordinary_5_plus_10",
+     "mwbe_small_purchase"
+    ]
+   },
+   "effect": {
+    "public_solicitation_notice": "not_required"
+   },
+   "realized_by": [
+    {
+     "registry": "procurement_policy_registry",
+     "family": "ordinary_micropurchase",
+     "stage": "solicitation"
+    },
+    {
+     "registry": "procurement_policy_registry",
+     "family": "ordinary_5_plus_10",
+     "stage": "solicitation"
+    },
+    {
+     "registry": "procurement_policy_registry",
+     "family": "mwbe_small_purchase",
+     "stage": "solicitation"
+    }
+   ],
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2025-09-26",
+   "effective_from_basis": "current text in force since the last listed amendment (City Record 8/27/2025, eff. 9/26/2025); the retained history lists amendments eff. 6/3/2023, 9/22/2024 and 9/26/2025 without establishing when this provision took its current form.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "ontology/registry.v0.json",
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": "The same subparagraph requires notice of award for (c)(1)(iv) purchases under (d)(2); see the 3-08(d)(2)(i) entry. The $250,000 VENDEX and $100,000 hearing figures are quoted, not modelled."
+  },
+  {
+   "id": "nyc.ppb.3-08.c.1.ii.micropurchase_limits",
+   "record_version": 1,
+   "statement": "Micropurchases are goods and non-construction services of $20,000 or less and construction of $35,000 or less; no competition is required.",
+   "kind": "threshold",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-08(c)(1)(ii)",
+    "quote": "(ii) Micropurchases. For procurements of goods and all services except construction the value of which is $20,000 or less, and for procurements of construction the value of which is $35,000 or less, no competition is required except that in making purchases below this limit, Contracting Officers must ensure that the noncompetitive price is reasonable and that purchases are distributed appropriately among responsible vendors, including M/WBE vendors.",
+    "quote_sha256": "1d26ec3f24b0d5a4970dcb96a805751b62553ebe8b3dde1bbdfee33e5879bbe0",
+    "source_file": "ppb-3-08.md",
+    "source_sha256": "58178d4bd1eacdeab3a98165ea2c1fa7c02e614780189e6076206dae2fca0a7f",
+    "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "effect": {
+    "micropurchase_max_usd_goods_and_services": {
+     "registry_field": [
+      "applicability",
+      "amount_bands",
+      {
+       "procurement_category": "goods_and_non_construction_services"
+      },
+      "maximum"
+     ]
+    },
+    "micropurchase_max_usd_construction": {
+     "registry_field": [
+      "applicability",
+      "amount_bands",
+      {
+       "procurement_category": "construction"
+      },
+      "maximum"
+     ]
+    }
+   },
+   "realized_by": {
+    "registry": "procurement_policy_registry",
+    "family": "ordinary_micropurchase"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2025-09-26",
+   "effective_from_basis": "current text in force since the last listed amendment (City Record 8/27/2025, eff. 9/26/2025); the retained history lists amendments eff. 6/3/2023, 9/22/2024 and 9/26/2025 without establishing when this provision took its current form.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "ontology/registry.v0.json",
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": ""
+  },
+  {
+   "id": "nyc.ppb.3-08.c.1.iv.mwbe_small_purchase_excludes_human_services",
+   "record_version": 1,
+   "statement": "Agencies may not use the M/WBE small purchase method for human services.",
+   "kind": "eligibility",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-08(c)(1)(iv)",
+    "quote": "Additionally, agencies shall not make purchases pursuant to this subparagraph for human services.",
+    "quote_sha256": "6e120f80fa489472dadfe9bcdce0a64275961fa38aaac6dc821a4495ad5fb4ee",
+    "source_file": "ppb-3-08.md",
+    "source_sha256": "58178d4bd1eacdeab3a98165ea2c1fa7c02e614780189e6076206dae2fca0a7f",
+    "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_category": [
+     "human_services"
+    ]
+   },
+   "effect": {
+    "mwbe_small_purchase_method_available": "no"
+   },
+   "realized_by": {
+    "registry": "procurement_policy_registry",
+    "family": "mwbe_small_purchase"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2025-09-26",
+   "effective_from_basis": "current text in force since the last listed amendment (City Record 8/27/2025, eff. 9/26/2025); the retained history lists amendments eff. 6/3/2023, 9/22/2024 and 9/26/2025 without establishing when this provision took its current form.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "ontology/registry.v0.json",
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": "Realized in the registry as mwbe_small_purchase.applicability.excluded_categories = [human_services]."
+  },
+  {
+   "id": "nyc.ppb.3-08.d.2.i.mwbe_small_purchase_award_notice",
+   "record_version": 1,
+   "statement": "Notice of award for M/WBE small purchases must be published once in the City Record within fifteen days after contract registration.",
+   "kind": "timeline",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-08(d)(2)(i)",
+    "quote": "(i) Frequency. Notice of award for procurements made pursuant to subparagraph (c)(1)(iv) shall be published once in the City Record within fifteen days after registration of the contract.",
+    "quote_sha256": "7ac9f8b9ed96bd6c6cad74ccf576cd6d10989d65ef718f6f866e9cd6b8ecfb46",
+    "source_file": "ppb-3-08.md",
+    "source_sha256": "58178d4bd1eacdeab3a98165ea2c1fa7c02e614780189e6076206dae2fca0a7f",
+    "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "method_family": [
+     "mwbe_small_purchase"
+    ]
+   },
+   "effect": {
+    "award_notice_deadline_days_after_registration": {
+     "registry_field": [
+      "deadline",
+      "days"
+     ]
+    }
+   },
+   "realized_by": {
+    "registry": "procurement_policy_registry",
+    "family": "mwbe_small_purchase",
+    "stage": "award"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2025-09-26",
+   "effective_from_basis": "current text in force since the last listed amendment (City Record 8/27/2025, eff. 9/26/2025); the retained history lists amendments eff. 6/3/2023, 9/22/2024 and 9/26/2025 without establishing when this provision took its current form.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "ontology/registry.v0.json",
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": ""
+  },
+  {
+   "id": "nyc.ppb.3-16.a.client_services_through_hhs_accelerator",
+   "record_version": 1,
+   "statement": "Client services contracts must be procured through HHS Accelerator prequalification unless the HHS Accelerator Director, with CCPO approval, authorizes another method.",
+   "kind": "method_definition",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-16(a)(1)",
+    "quote": "(1) Client services contracts must be procured through HHS Accelerator unless the HHS Accelerator Director authorizes, with the approval of the CCPO, the use of a different procurement method.",
+    "quote_sha256": "9626cb4d2079517b246e7ed45b6812f0697484ed1a0df586ec8599cd96c1fb2d",
+    "source_file": "ppb-3-16.md",
+    "source_sha256": "67857309be79efeb3649ca8704991687fcd579b4840c3055416023a01b3fc36f",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_category": [
+     "human_services"
+    ]
+   },
+   "effect": {
+    "default_procurement_channel": "hhs_accelerator_prequalified_solicitation"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2024-01-14",
+   "effective_from_basis": "current text in force since the last listed amendment (eff. 1/14/2024); the date this provision took its current form is not established.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "worker/src/lib/award_registration_dwell.mjs",
+    "site/app/procurement-phase.mjs"
+   ],
+   "notes": "The same paragraph says the Director's authorization is not required for procurements under 1-02(d), 1-02(e), 3-04(b)(2)(iii), 3-05, 3-06, 3-08, 3-09 and 3-13; those exceptions are not modelled."
+  },
+  {
+   "id": "app.solicitation_method.response_floor.default_competitive_20_calendar_days",
+   "record_version": 1,
+   "statement": "Competitive procurement solicitations have a minimum advertising/response period of 20 calendar days.",
+   "kind": "timeline",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "unidentified PPB competitive sealed bid/proposal advertising rule (cited in code only as 'PPB')",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {
+    "procurement_basis": [
+     "competitive"
+    ]
+   },
+   "effect": {
+    "minimum_response_calendar_days": 20
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "worker/src/lib/solicitation_procurement_method.mjs",
+    "worker/src/lib/notice_facts.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "site/procurement_pursuit_snapshot.mjs"
+   ],
+   "notes": "deriveResponseFloor() returns 20 calendar days for any Procurement-section solicitation without other markers. The governing PPB text is not retained in this packet."
+  },
+  {
+   "id": "app.solicitation_method.response_floor.section_6_129_27_calendar_days",
+   "record_version": 1,
+   "statement": "Solicitations with 6-129 participation goals have a minimum advertising/response period of 27 calendar days.",
+   "kind": "timeline",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "unidentified PPB rule (code cites 'Admin. Code 6-129 participation goals - PPB competitive advertising minimum')",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "unmodelled_conditions": [
+    "section_6_129_goals_cited"
+   ],
+   "effect": {
+    "minimum_response_calendar_days": 27
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "worker/src/lib/solicitation_procurement_method.mjs",
+    "worker/src/lib/notice_facts.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "site/procurement_pursuit_snapshot.mjs"
+   ],
+   "notes": "Neither the retained 6-129 text nor the retained PPB sections state a 27-day period. Needs a source check."
+  },
+  {
+   "id": "app.solicitation_method.response_floor.accelerated_3_business_days",
+   "record_version": 1,
+   "statement": "Accelerated procurements have a minimum response period of 3 business days under PPB 3-07.",
+   "kind": "timeline",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-07 (not retained)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "unmodelled_conditions": [
+    "accelerated_procurement_cited"
+   ],
+   "effect": {
+    "minimum_response_business_days": 3
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "worker/src/lib/solicitation_procurement_method.mjs",
+    "worker/src/lib/notice_facts.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "site/procurement_pursuit_snapshot.mjs"
+   ],
+   "notes": "Business-day unit departs from the PPB 1-01 calendar-day default; 3-07 text is not retained in this packet."
+  },
+  {
+   "id": "app.solicitation_method.section_6_129_goal_detection",
+   "record_version": 1,
+   "statement": "A solicitation carries 6-129 participation goals only when its text cites 6-129 explicitly or says it is subject to participation goals; goal percentages are read only from explicit phrases.",
+   "kind": "heuristic",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "engine detection rule",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "detection_rule": "explicit_section_6_129_citation"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "worker/src/lib/notice_facts.mjs",
+    "site/app/procurement-phase.mjs",
+    "site/app/money-list.mjs"
+   ],
+   "notes": "Detection does not consult the 6-129(q) exemptions, so it can neither confirm nor rule out goals on an unmarked notice."
+  },
+  {
+   "id": "app.solicitation_method.mwbe_ncsp_section_attribution",
+   "record_version": 1,
+   "statement": "An M/WBE Noncompetitive Small Purchase marker is attributed to PPB 3-08 whenever the notice text contains '3-08' or the token 'PPB', or the publisher selection method names the method.",
+   "kind": "heuristic",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "engine detection rule",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "detection_rule": "ppb_token_implies_section_3_08"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_goal_surface.mjs"
+   ],
+   "notes": ""
+  },
+  {
+   "id": "app.coverage_labels.duplicate_amount_bands",
+   "record_version": 1,
+   "statement": "The coverage-label module keeps its own copy of the 3-08 amount bands ($20,000/$35,000/$100,000/$1,500,000) and the 2023-06-03 effective date.",
+   "kind": "threshold",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-08 (duplicated in consumer)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "consumer_duplicates_registry": "amount_bands_and_effective_from"
+   },
+   "realized_by": [
+    {
+     "registry": "procurement_policy_registry",
+     "family": "ordinary_micropurchase"
+    },
+    {
+     "registry": "procurement_policy_registry",
+     "family": "ordinary_5_plus_10"
+    },
+    {
+     "registry": "procurement_policy_registry",
+     "family": "mwbe_small_purchase"
+    }
+   ],
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": "AMOUNT_BANDS and POLICY_EFFECTIVE_FROM duplicate the policy registry. The next slice should read the registry instead."
+  },
+  {
+   "id": "app.coverage_labels.missing_category_matches_any_band",
+   "record_version": 1,
+   "statement": "When procurement category is missing, the coverage-label module treats a record as matching a 3-08 family if the amount fits the band of any category.",
+   "kind": "heuristic",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "engine evaluation rule",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "detection_rule": "any_category_band_when_category_missing"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": "Contradicts the register's three-valued rule (a missing fact yields unknown). See kd.coverage_labels_missing_category."
+  },
+  {
+   "id": "app.coverage_labels.publisher_method_label_mapping",
+   "record_version": 1,
+   "statement": "Exact normalised publisher method labels map to 3-08 method families, including the legacy label 'SMALL PURCHASE UNDER $5000' to ordinary_micropurchase.",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "publisher label table",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "detection_rule": "exact_normalized_publisher_label"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": "Labels: MICROPURCHASE, SMALL PURCHASE UNDER $5000, SMALL PURCHASE WRITTEN, MWBE NON COMPETITIVE SMALL PURCHASE, M WBE SMALL PURCHASE, M WBE SMALL PURCHASE RENEWALS. A $5,000 label reflects an older limit; mapping it to the current family is a reading of publisher history, not of law."
+  },
+  {
+   "id": "app.coverage_labels.targeted_small_purchase_copy",
+   "record_version": 1,
+   "statement": "Reader copy states that an ordinary small purchase is 'Targeted small-purchase - no public solicitation required'.",
+   "kind": "explanatory_copy",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-08(c)(1)(i) (paraphrased in copy)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {
+    "method_family": [
+     "ordinary_micropurchase",
+     "ordinary_5_plus_10"
+    ]
+   },
+   "effect": {
+    "copy_claim": "no_public_solicitation_required"
+   },
+   "realized_by": [
+    {
+     "registry": "procurement_policy_registry",
+     "family": "ordinary_micropurchase",
+     "stage": "solicitation"
+    },
+    {
+     "registry": "procurement_policy_registry",
+     "family": "ordinary_5_plus_10",
+     "stage": "solicitation"
+    }
+   ],
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": ""
+  },
+  {
+   "id": "app.coverage_labels.mwbe_award_notice_not_yet_found_copy",
+   "record_version": 1,
+   "statement": "Reader copy 'M/WBE award notice not yet found' presumes an M/WBE small purchase award notice is required in the City Record.",
+   "kind": "explanatory_copy",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-08(d)(2) (paraphrased in copy)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {
+    "method_family": [
+     "mwbe_small_purchase"
+    ]
+   },
+   "effect": {
+    "copy_claim": "mwbe_award_notice_expected"
+   },
+   "realized_by": {
+    "registry": "procurement_policy_registry",
+    "family": "mwbe_small_purchase",
+    "stage": "award"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": ""
+  },
+  {
+   "id": "app.award_prime_goal.subcontract_window_candidate",
+   "record_version": 1,
+   "statement": "Any eligible award or registration notice with a resolved prime vendor is a candidate 'possible subcontract window', without checking 6-129(q) exemptions.",
+   "kind": "heuristic",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "engine join rule",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "subcontract_window": "candidate_for_any_award_with_resolved_prime"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "worker/src/lib/award_prime_goal.mjs",
+    "site/sub_outreach.mjs",
+    "site/mwbe_goal_surface.mjs"
+   ],
+   "notes": "Human services and not-for-profit awards are exempt from participation requirements under 6-129(q)(7)-(8), so a subcontract-goal framing may not apply to them."
+  },
+  {
+   "id": "app.award_prime_goal.subcontract_goal_not_published",
+   "record_version": 1,
+   "statement": "Joinable public feeds do not publish M/WBE subcontract goal percentages next to awards; Checkbook publishes the prime M/WBE category and whether sub-vendors exist.",
+   "kind": "explanatory_copy",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "agency_guidance",
+    "section": "NYC Comptroller contract reports (cited by URL in code)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "copy_claim": "subcontract_goal_not_published"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "worker/src/lib/award_prime_goal.mjs",
+    "site/mwbe_goal_surface.mjs"
+   ],
+   "notes": "A claim about publication practice, not law; recorded because reader copy depends on it."
+  },
+  {
+   "id": "app.city_record.category_vocabulary",
+   "record_version": 1,
+   "statement": "City Record procurement categories map to legal categories: 'Human Services/Client Services' is human services; 'Services (other than human services)' is standard or professional services.",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "publisher category vocabulary",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "publisher_category_label": "Human Services/Client Services"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "worker/src/lib/filter.mjs",
+    "worker/src/nl.mjs",
+    "worker/src/lib/award_registration_dwell.mjs",
+    "site/buyer_history_pursuit_comparison.mjs",
+    "site/app/procurement-phase.mjs"
+   ],
+   "notes": "'Services (other than human services)' cannot be split into standard versus professional services from the label alone; it stays ambiguous."
+  },
+  {
+   "id": "app.analytical_projection.city_record_coverage_threshold",
+   "record_version": 1,
+   "statement": "City Record award-notice coverage is measured by default for contracts of $100,000 or more.",
+   "kind": "threshold",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-08(a) and (c)(1)(i) (implied)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "city_record_coverage_min_usd": {
+     "registry_field": [
+      "applicability",
+      "amount_bands",
+      {
+       "procurement_category": "goods_and_non_construction_services"
+      },
+      "maximum"
+     ]
+    }
+   },
+   "realized_by": {
+    "registry": "procurement_policy_registry",
+    "family": "ordinary_5_plus_10"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "capabilities/analytical_projection.mjs",
+    "site/analytical_projection.mjs",
+    "site/city_record_coverage_view.mjs"
+   ],
+   "notes": "Code filters amount >= 100000, which includes an exactly-$100,000 small purchase that needs no public notice. See kd.city_record_coverage_boundary."
+  }
+ ]
+}
