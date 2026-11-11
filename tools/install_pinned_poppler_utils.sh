@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 # Installs the pinned poppler-utils package (pdftotext) used by first-class
 # calendar extraction, tolerating a transient package-mirror DNS outage on
-# GitHub-hosted runners. Retries apt with bounded backoff; if the default
-# Azure mirror cannot be resolved, falls back to archive.ubuntu.com /
-# security.ubuntu.com and retries again. Fails loudly if every attempt fails.
+# GitHub-hosted runners. apt-get update can exit 0 even when the default
+# Azure mirror can't be resolved (it just warns and keeps whatever index it
+# already has), so the real failure often only shows up later at install
+# time. This checks both steps' output for the mirror-DNS failure signature
+# and, if seen, rewrites apt's sources (including the mirror+file
+# apt-mirrors.txt list) to archive.ubuntu.com / security.ubuntu.com before
+# retrying. Fails loudly if every attempt is exhausted.
 set -euo pipefail
 
 . /etc/os-release
@@ -15,6 +19,9 @@ case "${VERSION_CODENAME:-}" in
     exit 1
     ;;
 esac
+
+mirror_failure_pattern='azure\.(archive|security)\.ubuntu\.com|Temporary failure resolving'
+mirror_fallback_applied=0
 
 retry() {
   local attempt
@@ -29,6 +36,10 @@ retry() {
 }
 
 fall_back_to_default_mirrors() {
+  if [ "$mirror_fallback_applied" -eq 1 ]; then
+    return 0
+  fi
+  mirror_fallback_applied=1
   echo "Default apt mirror unreachable; switching to archive.ubuntu.com / security.ubuntu.com" >&2
   local rewrite='s#https?://azure\.archive\.ubuntu\.com/ubuntu#http://archive.ubuntu.com/ubuntu#g; s#https?://azure\.security\.ubuntu\.com/ubuntu#http://security.ubuntu.com/ubuntu#g'
   local path
@@ -40,29 +51,38 @@ fall_back_to_default_mirrors() {
 }
 
 update_log="$(mktemp)"
-trap 'rm -f "$update_log"' EXIT
+install_log="$(mktemp)"
+trap 'rm -f "$update_log" "$install_log"' EXIT
 
 set +e
-retry sudo apt-get update 2>&1 | tee "$update_log"
+sudo apt-get update 2>&1 | tee "$update_log"
 update_status="${PIPESTATUS[0]}"
 set -e
 
-if [ "$update_status" -ne 0 ]; then
-  if grep -qiE 'azure\.(archive|security)\.ubuntu\.com|Temporary failure resolving' "$update_log"; then
+if [ "$update_status" -ne 0 ] || grep -qiE "$mirror_failure_pattern" "$update_log"; then
+  if grep -qiE "$mirror_failure_pattern" "$update_log"; then
     fall_back_to_default_mirrors
-    if ! retry sudo apt-get update; then
-      echo "apt-get update failed against both the default and archive.ubuntu.com mirrors" >&2
-      exit 1
-    fi
-  else
-    echo "apt-get update failed for a reason other than mirror DNS resolution" >&2
+  fi
+  if ! retry sudo apt-get update; then
+    echo "apt-get update failed after retries" >&2
     exit 1
   fi
 fi
 
-if ! retry sudo apt-get install -y "$pkg"; then
-  echo "apt-get install -y $pkg failed after retries" >&2
-  exit 1
+set +e
+sudo apt-get install -y "$pkg" 2>&1 | tee "$install_log"
+install_status="${PIPESTATUS[0]}"
+set -e
+
+if [ "$install_status" -ne 0 ]; then
+  if [ "$mirror_fallback_applied" -eq 0 ] && grep -qiE "$mirror_failure_pattern" "$install_log"; then
+    fall_back_to_default_mirrors
+    retry sudo apt-get update
+  fi
+  if ! retry sudo apt-get install -y "$pkg"; then
+    echo "apt-get install -y $pkg failed after retries" >&2
+    exit 1
+  fi
 fi
 
 command -v pdftotext >/dev/null
