@@ -4033,12 +4033,16 @@ select {
 .near-home-email-entry {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-1) var(--space-2);
-  margin: 0 0 var(--space-2);
+  margin: 0;
   max-width: 42rem;
   font: 400 0.9rem/1.35 var(--font-body);
   color: var(--color-text);
+}
+.near-geo-primary-controls .near-home-email-entry {
+  flex: 1 1 12rem;
+  min-width: 0;
 }
 .near-home-email-entry-link {
   display: inline-flex;
@@ -4063,12 +4067,24 @@ select {
 }
 @media (max-width: 480px) {
   .near-home-email-entry {
-    margin-bottom: var(--space-1);
     font-size: 0.82rem;
     line-height: 1.3;
   }
   .near-home-email-entry-link {
     padding-inline: var(--space-2);
+  }
+  /* Honesty copy stays available to assistive tech; hide the wrapped paragraph
+     visually so the first-fold map keeps ≥150px visible height at 390×844. */
+  .near-home-email-entry-explain {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 }
 [data-geography-shell][data-near-surface="map"] > .near-surface-switch {
@@ -4731,15 +4747,22 @@ select {
   [data-geography-shell] .near-geo-entry .near-geo-search input {
     flex-basis: 0;
   }
+  /* Keep the email handoff on the Map / Local records row at phone width so a
+     second 44px strip does not push the map under the 150px visible floor. */
   [data-geography-shell] .near-geo-primary-controls {
     flex-wrap: nowrap;
   }
   [data-geography-shell] .near-geo-primary-controls .near-surface-switch {
     flex: 1 1 auto;
     flex-wrap: nowrap;
+    min-width: 0;
   }
   [data-geography-shell] .near-geo-primary-controls .near-geo-actions {
     flex: 0 1 auto;
+  }
+  [data-geography-shell] .near-geo-primary-controls .near-home-email-entry {
+    flex: 0 1 auto;
+    min-width: 0;
   }
   [data-geography-shell] .near-geo-primary-controls .near-geo-actions button {
     width: auto;

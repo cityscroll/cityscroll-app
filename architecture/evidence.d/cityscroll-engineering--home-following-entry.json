@@ -2,7 +2,7 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/home-following-entry",
   "status": "implemented",
-  "fingerprint": "home-following-entry.v3",
+  "fingerprint": "home-following-entry.v4",
   "updated_at": "2026-11-10T00:00:00.000Z",
   "projections": [
     {

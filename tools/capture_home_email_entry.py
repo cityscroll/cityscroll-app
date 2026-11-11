@@ -3,10 +3,13 @@
 
 Public alias: c8f4cfa1b7a8d
 
-Before rows read the live production homepage (read-only). After rows render
-the local Near You shell with the Get email updates handoff. Screenshot
-binaries stay under the task scratch directory; only the manifest is
-committed. Use --check to validate an existing manifest without recapturing.
+Before rows read the live production homepage (read-only), including the
+phone-viewport map visible-height regression when the email handoff sat on its
+own multi-line strip. After rows use the local Near You capture server with the
+compact primary-controls handoff and require the live smoke's ≥150px map
+visible-height floor at 390×844. Screenshot binaries stay under the task
+scratch directory; only the manifest is committed. Use --check to validate an
+existing manifest without recapturing.
 """
 
 from __future__ import annotations
@@ -39,6 +42,8 @@ DESKTOP = (1440, 900)
 PHONE = (390, 844)
 EMAIL_SELECTOR = "[data-home-email-entry-link]"
 EMAIL_LABEL = "Get email updates"
+MAP_VISIBLE_FLOOR_PX = 150
+MAP_READY_SELECTOR = '[data-near-geography-map-state="ready"]'
 
 
 def utc_now() -> str:
@@ -134,8 +139,17 @@ def measure_entry(page) -> dict:
     return page.evaluate(
         """(selector) => {
           const link = document.querySelector(selector);
+          const entry = document.querySelector('[data-home-email-entry]');
+          const primary = document.querySelector('.near-geo-primary-controls');
           if (!link) {
-            return { present: false, in_viewport: false, label: null, href: null };
+            return {
+              present: false,
+              in_viewport: false,
+              label: null,
+              href: null,
+              in_primary_controls: false,
+              map_visible_height_px: null,
+            };
           }
           const rect = link.getBoundingClientRect();
           const style = window.getComputedStyle(link);
@@ -146,6 +160,13 @@ def measure_entry(page) -> dict:
             rect.left < window.innerWidth &&
             style.visibility !== "hidden" &&
             style.display !== "none";
+          const canvas = document.querySelector('.maplibregl-canvas');
+          let map_visible_height_px = null;
+          if (canvas) {
+            const box = canvas.getBoundingClientRect();
+            map_visible_height_px =
+              Math.min(box.y + box.height, window.innerHeight) - Math.max(box.y, 0);
+          }
           return {
             present: true,
             in_viewport: inViewport,
@@ -153,10 +174,29 @@ def measure_entry(page) -> dict:
             href: link.getAttribute("href"),
             min_height_px: Math.round(rect.height),
             top_px: Math.round(rect.top),
+            in_primary_controls: !!(primary && entry && primary.contains(entry)),
+            map_visible_height_px,
           };
         }""",
         EMAIL_SELECTOR,
     )
+
+
+def serve_near_you_capture() -> tuple[subprocess.Popen, str]:
+    proc = subprocess.Popen(
+        ["node", "tools/serve_near_you_capture.mjs"],
+        cwd=ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+    )
+    assert proc.stdout is not None
+    line = proc.stdout.readline().strip()
+    if not line.startswith("http://"):
+        rest = proc.stdout.read() if proc.stdout else ""
+        proc.kill()
+        raise RuntimeError(f"near-you capture server failed to start: {line}\n{rest}")
+    return proc, line.rstrip("/") + "/"
 
 
 def capture_row(
@@ -169,12 +209,16 @@ def capture_row(
     expect_present: bool,
     revision: str,
     entry_content_hash: str | None,
+    require_map_floor: bool = False,
 ) -> dict:
     width, height = viewport
     context = browser.new_context(viewport={"width": width, "height": height})
     page = context.new_page()
     page.goto(url, wait_until="domcontentloaded", timeout=60_000)
-    page.wait_for_timeout(250)
+    try:
+        page.wait_for_selector(MAP_READY_SELECTOR, timeout=120_000)
+    except Exception:
+        page.wait_for_timeout(250)
     metrics = measure_entry(page)
     if expect_present:
         assert metrics["present"], f"{name}: missing Get email updates control"
@@ -182,8 +226,19 @@ def capture_row(
         assert metrics["label"] == EMAIL_LABEL, metrics
         assert metrics["href"] == "/following/?onboarding=1", metrics
         assert metrics["min_height_px"] >= 40, metrics
+        if phase == "after":
+            assert metrics.get("in_primary_controls") is True, metrics
     else:
         assert not metrics["present"], f"{name}: unexpected email entry on before surface"
+
+    map_visible = metrics.get("map_visible_height_px")
+    if require_map_floor:
+        assert map_visible is not None, f"{name}: map canvas missing for visible-height check"
+        assert map_visible >= MAP_VISIBLE_FLOOR_PX, {
+            "visible_height": map_visible,
+            "floor": MAP_VISIBLE_FLOOR_PX,
+            "viewport": [width, height],
+        }
 
     SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
     image_path = SCREENSHOT_DIR / f"{name}.png"
@@ -191,11 +246,22 @@ def capture_row(
     digest = sha256_bytes(image_path.read_bytes())
     context.close()
 
-    assertion = (
-        "Get email updates is visible above the fold and opens Following onboarding"
-        if expect_present
-        else "Production homepage lacks the Get email updates entry above the fold"
-    )
+    if phase == "after":
+        assertion = (
+            "Get email updates stays in primary controls above the fold; "
+            f"map visible height meets the {MAP_VISIBLE_FLOOR_PX}px smoke floor"
+            if require_map_floor
+            else "Get email updates is visible above the fold and opens Following onboarding"
+        )
+    elif expect_present and width == PHONE[0] and map_visible is not None and map_visible < MAP_VISIBLE_FLOOR_PX:
+        assertion = (
+            "Production phone viewport still shows Get email updates but leaves the "
+            f"Near You map under the {MAP_VISIBLE_FLOOR_PX}px visible-height smoke floor"
+        )
+    elif expect_present:
+        assertion = "Production homepage shows Get email updates above the fold"
+    else:
+        assertion = "Production homepage lacks the Get email updates entry above the fold"
     return {
         "name": name,
         "phase": phase,
@@ -222,9 +288,10 @@ def build_manifest(rows: list[dict], *, revision: str, entry_content_hash: str) 
         "capture_mode": "headless-playwright-local-after-production-before",
         "base": PRODUCTION_BASE,
         "condition": (
-            "Before rows are read-only production observations. After rows render the "
-            "local Near You homepage with the email-updates handoff. Image binaries "
-            "stay ignored under task scratch."
+            "Before rows are read-only production observations of the tall email "
+            "handoff. After rows use the local Near You capture server with the "
+            "compact primary-controls handoff and record map visible height against "
+            "the live smoke floor. Image binaries stay ignored under task scratch."
         ),
         "repository_revision": revision,
         "grounded_at": revision,
@@ -262,7 +329,17 @@ def validate_manifest(path: Path) -> None:
     for row in manifest["captures"]:
         assert re.fullmatch(r"[0-9a-f]{64}", row["sha256"])
         assert row["file"] is None
-        assert "Get email updates" in row["assertion"] or "email updates" in row["assertion"].lower()
+        assertion = row["assertion"].lower()
+        assert (
+            "get email updates" in assertion
+            or "email updates" in assertion
+            or "visible-height" in assertion
+            or "smoke floor" in assertion
+        ), row["assertion"]
+    after_phone = next((row for row in manifest["captures"] if row.get("name") == "after-phone"), None)
+    assert after_phone is not None, "after-phone capture required"
+    map_visible = after_phone.get("metrics", {}).get("map_visible_height_px")
+    assert map_visible is not None and map_visible >= MAP_VISIBLE_FLOOR_PX, after_phone.get("metrics")
     assert re.fullmatch(r"[0-9a-f]{64}", manifest.get("entry_content_hash") or "")
     print(f"capture-home-email-entry: ok {path}")
 
@@ -288,9 +365,16 @@ def main(argv: list[str] | None = None) -> int:
     assert EMAIL_LABEL in entry_html and "data-home-email-entry-link" in entry_html, (
         "local render is missing the homepage email entry"
     )
+    assert "near-geo-primary-controls" in local_html and local_html.find(
+        "near-geo-primary-controls"
+    ) < local_html.find("data-home-email-entry"), (
+        "email entry must render inside primary controls"
+    )
     entry_content_hash = sha256_text(entry_html)
 
-    server, local_base = serve_local(local_html)
+    # Static HTML proves markup; the Near You capture server proves map geometry.
+    static_server, _static_base = serve_local(local_html)
+    capture_proc, local_base = serve_near_you_capture()
     rows: list[dict] = []
     try:
         with launched_chromium() as browser:
@@ -308,6 +392,7 @@ def main(argv: list[str] | None = None) -> int:
                             expect_present=production_has_entry,
                             revision=revision,
                             entry_content_hash=None,
+                            require_map_floor=False,
                         )
                     )
             for label, viewport in (("desktop", DESKTOP), ("phone", PHONE)):
@@ -321,11 +406,17 @@ def main(argv: list[str] | None = None) -> int:
                         expect_present=True,
                         revision=revision,
                         entry_content_hash=entry_content_hash,
+                        require_map_floor=True,
                     )
                 )
     finally:
-        server.shutdown()
-        server.server_close()
+        static_server.shutdown()
+        static_server.server_close()
+        capture_proc.terminate()
+        try:
+            capture_proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            capture_proc.kill()
 
     manifest = build_manifest(rows, revision=revision, entry_content_hash=entry_content_hash)
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")

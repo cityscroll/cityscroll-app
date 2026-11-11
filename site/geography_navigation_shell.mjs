@@ -632,13 +632,13 @@ export function renderGeographyShellEntry({
     : "";
   // Local records and the one-shot location action stay outside the secondary
   // disclosure so the primary ways to enter a local scope remain immediately
-  // available. The email-updates handoff also stays outside so a person can
-  // reach Following onboarding above the fold without opening "More ways to
-  // choose". Citywide collection links and secondary controls stay in the
-  // disclosure so the map remains visible on a narrow screen. Nested
-  // details/summaries are avoided here: focusing a parent summary can reveal an
-  // inner summary under the enhanced map canvas and fail the
-  // focus-not-obscured gate.
+  // available. The email-updates handoff sits in that same primary-controls row
+  // so a person can reach Following onboarding above the fold without opening
+  // "More ways to choose", while the phone viewport keeps the map's first-fold
+  // visible height. Citywide collection links and secondary controls stay in
+  // the disclosure. Nested details/summaries are avoided here: focusing a
+  // parent summary can reveal an inner summary under the enhanced map canvas
+  // and fail the focus-not-obscured gate.
   return `<section class="near-geo-entry" aria-labelledby="near-geo-heading" data-geography-entry>
       <h1 id="near-geo-heading">${esc(GEOGRAPHY_SHELL_HEADING)}</h1>
       ${geographyShellSearchFormHtml({ action: shareHref || canonicalBase, value: searchValue, category })}
@@ -647,11 +647,11 @@ export function renderGeographyShellEntry({
           <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? " is-active" : ""}" href="${esc(mapHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_MAP}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_MAP ? ' aria-current="true"' : ""}>Map</a>
           <a class="near-surface-link${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? " is-active" : ""}" href="${esc(browseHref)}" data-near-surface="${GEOGRAPHY_NAVIGATION_SURFACE_RECORDS}"${surface === GEOGRAPHY_NAVIGATION_SURFACE_RECORDS ? ' aria-current="true"' : ""}>${esc(GEOGRAPHY_SHELL_LOCAL_RECORDS_LABEL)}</a>
         </nav>
+        ${emailUpdatesHtml || renderHomeEmailEntryHtml()}
         <div class="near-place-actions near-geo-actions">
           <button type="button" class="js-only near-location-action" data-use-location hidden>${esc(GEOGRAPHY_SHELL_USE_LOCATION_LABEL)}</button>
         </div>
       </div>
-      ${emailUpdatesHtml || renderHomeEmailEntryHtml()}
       <p class="near-map-status" data-map-status aria-live="polite"></p>
       <details class="near-entry-secondary">
         <summary>More ways to choose</summary>
