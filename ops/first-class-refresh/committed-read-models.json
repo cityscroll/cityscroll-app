@@ -288,6 +288,19 @@
       ]
     },
     {
+      "id": "procurement-evidence",
+      "command": [
+        "tools/build_procurement_evidence.mjs"
+      ],
+      "covers": [
+        "tools/build_procurement_evidence.mjs"
+      ],
+      "after": [
+        "derived-json-build-boundary"
+      ],
+      "note": "Rebuilds the per-agency procurement evidence projection from accepted source families after the derived JSON boundary settles those inputs, and before source-health observations read the resulting capabilities. Unchanged semantic inputs preserve content-addressed page hashes; failed families retain the prior nonempty generation."
+    },
+    {
       "id": "source-health-observations",
       "command": [
         "tools/build_source_health_observations.mjs"
@@ -296,7 +309,8 @@
         "tools/build_source_health_observations.mjs"
       ],
       "after": [
-        "derived-json-build-boundary"
+        "derived-json-build-boundary",
+        "procurement-evidence"
       ]
     },
     {
@@ -740,6 +754,7 @@
     "tools/build_process_conformance.mjs",
     "tools/build_procurement_code_manifest.mjs",
     "tools/build_procurement_crosswalk.mjs",
+    "tools/build_procurement_evidence.mjs",
     "tools/build_property_disposition_cohort.mjs",
     "tools/build_property_resident_snapshot.mjs",
     "tools/build_public_site.mjs",
