@@ -806,6 +806,7 @@
     guide_text_7e3d52faa6b99ae9: "Checkbook NYC，市审计长的支出网站",
     guide_text_9044f2c0f4a88307: "打开完成的两步路径",
         guide_text_9d6194195e73dee7: "这些记录背后的66个公共来源，按各自变化频率分类",
+        guide_text_3fbb8c75fe8cc71f: "这些记录背后的67个公共来源，按各自变化频率分类",
     guide_text_30dfc11c63559ad9: "用 AI 提问",
 // END GUIDE TRANSLATIONS
     guide_text_c78eb973e4f540e5: "英文原文：Step 1 — Choose an observation experience",

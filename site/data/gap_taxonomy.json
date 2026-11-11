@@ -4,12 +4,12 @@
   "doctrine": {
     "class_a": {
       "id": "not_yet_ingested",
-      "register": "Not yet shown here \u2014 this lives in <source>.",
+      "register": "Not yet shown here — this lives in <source>.",
       "meaning": "A public source publishes this field. The empty slot is this product's incomplete join or missing adapter, not a city publication failure."
     },
     "class_b": {
       "id": "not_published",
-      "register": "The city does not publish this \u2014 it would appear in <where> if released.",
+      "register": "The city does not publish this — it would appear in <where> if released.",
       "meaning": "No public, joinable release of this field is known. Name the logical home when one exists."
     },
     "non_gap": {
@@ -57,7 +57,7 @@
           "id": "nyc-open-data-public-dataset-requests",
           "title": "NYC Open Data Technical Standards Manual",
           "url": "https://www.nyc.gov/assets/doitt/downloads/pdf/nyc_open_data_tsm.pdf",
-          "section": "6.1\u20136.2, Open Data Help Desk and Public Dataset Requests",
+          "section": "6.1–6.2, Open Data Help Desk and Public Dataset Requests",
           "date": "2023-05-12",
           "note": "The Help Desk accepts new-dataset requests and routes them to the responsible agency."
         },
@@ -134,7 +134,7 @@
           "id": "nyc-open-data-public-dataset-requests",
           "title": "NYC Open Data Technical Standards Manual",
           "url": "https://www.nyc.gov/assets/doitt/downloads/pdf/nyc_open_data_tsm.pdf",
-          "section": "6.1\u20136.2, Open Data Help Desk and Public Dataset Requests",
+          "section": "6.1–6.2, Open Data Help Desk and Public Dataset Requests",
           "date": "2023-05-12",
           "note": "The Help Desk accepts new-dataset requests and routes them to the responsible agency."
         },
@@ -194,7 +194,7 @@
     },
     {
       "id": "abo-local-development-corporations",
-      "name": "NYS Authorities Budget Office \u2014 local development corporations",
+      "name": "NYS Authorities Budget Office — local development corporations",
       "source_contract_id": "abo-local-development-corporations",
       "status": "landed",
       "join_keys": [],
@@ -216,7 +216,7 @@
     },
     {
       "id": "abo-state-authorities",
-      "name": "NYS Authorities Budget Office \u2014 state authorities",
+      "name": "NYS Authorities Budget Office — state authorities",
       "source_contract_id": "abo-state-authorities",
       "status": "landed",
       "join_keys": [],
@@ -252,7 +252,7 @@
           "metric": "closed_exams_list_presence",
           "observed_on": "2026-07-30",
           "universe": null,
-          "strategy": "exact exam_number \u2194 exam_no (zero-pad variants). Aggregates only via group-by.",
+          "strategy": "exact exam_number ↔ exam_no (zero-pad variants). Aggregates only via group-by.",
           "verdict": "Closed-exam overlap 44.54% meets >=30%. Ship build-time post-list aggregates; never ship per-applicant rows.",
           "source": "source_contracts.join_measurement"
         }
@@ -407,7 +407,7 @@
           "metric": "modern_d1_temporal_exact",
           "observed_on": "2026-08-01",
           "universe": null,
-          "strategy": "exact_pin_temporal \u2014 Agreement.pin equals notice.pin and (approved_date || start_date) > notice.start_date. PIN-reuse without temporal rejected.",
+          "strategy": "exact_pin_temporal — Agreement.pin equals notice.pin and (approved_date || start_date) > notice.start_date. PIN-reuse without temporal rejected.",
           "verdict": "Below usefulness threshold (~30%) for the modern solicitation-to-award cross-source join (0% temporal exact-PIN join). Keep the source-native Contracts_NYCHA contract surface separate and do not claim dense exact NYCHA award matches.",
           "source": "source_contracts.join_measurement"
         }
@@ -434,7 +434,7 @@
           "metric": "contracts_with_payments",
           "observed_on": "2026-08-11",
           "universe": "Stratified 50-contract kill sample from the population-backed Checkbook Contracts graph (80% spent>0 / 20% spent=0)",
-          "strategy": "Contracts graph seed \u2192 Spending by exact contract_id (PIN rejected on Spending domain); optional residual pin_prefix_of_epin only when exact id fails",
+          "strategy": "Contracts graph seed → Spending by exact contract_id (PIN rejected on Spending domain); optional residual pin_prefix_of_epin only when exact id fails",
           "verdict": "Ship payment retention. Usefulness 44% and precision 100% clear the 30%/95% gates; Follow-the-Dollars reads retained rows by contract_id.",
           "source": "source_contracts.join_measurement"
         }
@@ -1131,7 +1131,7 @@
       "join_coverage": {
         "predicted": {
           "grade": "high-risk",
-          "note": "Pre-landing estimate: EPIN\u2194PIN strictness unknown; weak prefix joins risk false matches."
+          "note": "Pre-landing estimate: EPIN↔PIN strictness unknown; weak prefix joins risk false matches."
         },
         "realized": {
           "rate": 0.74,
@@ -1187,6 +1187,26 @@
       "join_keys": [],
       "join_coverage": {},
       "landing_page": "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "procurement-codes-naics-2022",
+      "name": "North American Industry Classification System 2022 structure",
+      "source_contract_id": "procurement-codes-naics-2022",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.census.gov/naics/",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "procurement-codes-nyc-commodity-directory",
+      "name": "NYC commodity classification directory",
+      "source_contract_id": "procurement-codes-nyc-commodity-directory",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/site/mocs/resources-reports/learning-to-use-passport.page",
       "delivery_tier": "inline-at-build"
     },
     {
@@ -1282,7 +1302,7 @@
     },
     {
       "id": "zap-api-outcomes",
-      "name": "Zoning Application Portal \u2014 project outcomes (Planning Labs API)",
+      "name": "Zoning Application Portal — project outcomes (Planning Labs API)",
       "source_contract_id": "zap-api-outcomes",
       "status": "landed",
       "join_keys": [
@@ -1308,7 +1328,7 @@
     },
     {
       "id": "zap-bbl",
-      "name": "Zoning Application Portal \u2014 tax lots",
+      "name": "Zoning Application Portal — tax lots",
       "source_contract_id": "zap-bbl",
       "status": "landed",
       "join_keys": [
@@ -1321,7 +1341,7 @@
     },
     {
       "id": "zap-projects",
-      "name": "Zoning Application Portal \u2014 projects",
+      "name": "Zoning Application Portal — projects",
       "source_contract_id": "zap-projects",
       "status": "landed",
       "join_keys": [
@@ -1515,7 +1535,7 @@
       "status": "materialized",
       "lineage": {
         "code": "worker/src/lib/legistar_join.mjs",
-        "strategy": "exact_date_body_tokens (EventBodyName + EventDate); nested EventItems \u2192 Votes/Attachments under LEGISTAR_API_TOKEN",
+        "strategy": "exact_date_body_tokens (EventBodyName + EventDate); nested EventItems → Votes/Attachments under LEGISTAR_API_TOKEN",
         "measurement_contract": "nyc-council-legistar",
         "measurement_rate_key": "modern_notices_strict"
       },
@@ -1567,7 +1587,7 @@
       "status": "materialized",
       "lineage": {
         "code": "worker/src/zap_outcomes.mjs",
-        "strategy": "exact_bbl tax lots \u2192 DOB NOW filings side-car on land outcomes",
+        "strategy": "exact_bbl tax lots → DOB NOW filings side-car on land outcomes",
         "measurement_contract": "zap-api-outcomes",
         "measurement_rate_key": "complete_sample_dob_any_filing"
       },
@@ -1616,7 +1636,7 @@
       "status": "materialized",
       "lineage": {
         "code": "worker/src/lib/zap_outcomes.mjs",
-        "strategy": "exact_project_id Open Data \u2192 ZAP API project detail (documents, dispositions, actions)",
+        "strategy": "exact_project_id Open Data → ZAP API project detail (documents, dispositions, actions)",
         "measurement_contract": "zap-api-outcomes",
         "measurement_rate_key": "ulurp_complete_useful_outcome"
       },
@@ -1676,7 +1696,7 @@
         "procurement-ocp-recent-awards"
       ],
       "score": 5,
-      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured \u2014 candidate only. Transitive path already exists via City Record PIN."
+      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured — candidate only. Transitive path already exists via City Record PIN."
     },
     {
       "id": "checkbook-contracts-x-passport-public-rfx-via-PIN",
@@ -1717,7 +1737,7 @@
         "procurement-ocp-recent-awards"
       ],
       "score": 5,
-      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured \u2014 candidate only. Transitive path already exists via City Record PIN."
+      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured — candidate only. Transitive path already exists via City Record PIN."
     },
     {
       "id": "checkbook-nycha-contracts-x-passport-public-rfx-via-PIN",
@@ -1758,7 +1778,7 @@
         "procurement-ocp-recent-awards"
       ],
       "score": 5,
-      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured \u2014 candidate only. Transitive path already exists via City Record PIN."
+      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured — candidate only. Transitive path already exists via City Record PIN."
     },
     {
       "id": "checkbook-spending-x-passport-public-rfx-via-PIN",
@@ -3192,7 +3212,7 @@
   "gaps": [
     {
       "id": "city-record-attachment-export-cliff",
-      "surface": "notice detail \u00b7 attachment metadata",
+      "surface": "notice detail · attachment metadata",
       "i18n_key": "notice_attachment_chip_one",
       "class": "not_yet_ingested",
       "disposition": "landed",
@@ -3212,7 +3232,7 @@
     },
     {
       "id": "procurement-pending-unmatched",
-      "surface": "contract lifecycle \u00b7 pending stage",
+      "surface": "contract lifecycle · pending stage",
       "i18n_key": "lifecycle_unmatched_pending_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
@@ -3245,7 +3265,7 @@
     },
     {
       "id": "procurement-registered-unmatched",
-      "surface": "contract lifecycle \u00b7 registered stage",
+      "surface": "contract lifecycle · registered stage",
       "class": "not_yet_ingested",
       "disposition": "landed",
       "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/141",
@@ -3277,7 +3297,7 @@
     },
     {
       "id": "procurement-payment-unmatched",
-      "surface": "contract lifecycle \u00b7 payment stage",
+      "surface": "contract lifecycle · payment stage",
       "i18n_key": "lifecycle_unmatched_payment_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
@@ -3299,7 +3319,7 @@
     },
     {
       "id": "procurement-no-pin",
-      "surface": "contract lifecycle \u00b7 provenance when PIN missing",
+      "surface": "contract lifecycle · provenance when PIN missing",
       "class": "not_published",
       "disposition": "publication_blocked",
       "would_appear_in": "Checkbook NYC registrations and payments (joined by PIN) if the notice published a Procurement ID",
@@ -3308,11 +3328,11 @@
     },
     {
       "id": "procurement-solicitation-documents",
-      "surface": "contract lifecycle \u00b7 tender / package documents",
+      "surface": "contract lifecycle · tender / package documents",
       "class": "not_published",
       "disposition": "measured_stop",
       "notices_affected_estimate": "~1,550 Solicitation notices since 2025-01-01 with empty modern document feeds.",
-      "evidence": "Measured 2026-07-30: PASSPort Public rfxData.js has no document URL columns; RFx document-URL join 0/50 on open Solicitation+PIN kill sample (EPIN join 19/50 = 38%) and 0/1470 on all modern Solicitation+PIN. OCP 3khw-qi8f document_links 0/1550 and City Record dg92-zbpx Solicitation document_links 0/1550 for start_date \u2265 2025-01-01. Historical GetFile attachments exist on pre-2025 rows. Below ~30% usefulness for package-doc materialization \u2014 class (b) pointer at City Record GetFile. Receipt: site/data/passport_sources/verification_receipts/passport_rfx_documents_2026-07-30.json.",
+      "evidence": "Measured 2026-07-30: PASSPort Public rfxData.js has no document URL columns; RFx document-URL join 0/50 on open Solicitation+PIN kill sample (EPIN join 19/50 = 38%) and 0/1470 on all modern Solicitation+PIN. OCP 3khw-qi8f document_links 0/1550 and City Record dg92-zbpx Solicitation document_links 0/1550 for start_date ≥ 2025-01-01. Historical GetFile attachments exist on pre-2025 rows. Below ~30% usefulness for package-doc materialization — class (b) pointer at City Record GetFile. Receipt: site/data/passport_sources/verification_receipts/passport_rfx_documents_2026-07-30.json.",
       "would_appear_in": "City Record Online file attachments (GetFile on a856-cityrecord.nyc.gov) if the notice published package documents",
       "class_change": {
         "from": "not_yet_ingested",
@@ -3323,7 +3343,7 @@
     },
     {
       "id": "procurement-bid-counts",
-      "surface": "OCDS tender/numberOfTenderers \u00b7 contestability package",
+      "surface": "OCDS tender/numberOfTenderers · contestability package",
       "i18n_key": null,
       "class": "not_yet_ingested",
       "disposition": "measured_stop",
@@ -3339,7 +3359,7 @@
         ]
       },
       "notices_affected_estimate": "Competitive sealed bids with historical tabulations; incomplete for modern PASSPort-only solicitations.",
-      "evidence": "Dataset 9k82-ys7w verified live (57,704 rows, 945 bid_numbers, openings 2016-01-05..2021-03-24, no PIN column). Strict PIN\u2194bid_number join measured 2026-07-30: 0% of Procurement notices with PIN since 2025-01-01; 9.07% of 2016-2021 overlap notices; 66.9% within historical 857* DCAS PIN subset. Below ~30% usefulness threshold \u2014 source contracted as disabled without edge materialization (see bid-tabulations-historical join_measurement)."
+      "evidence": "Dataset 9k82-ys7w verified live (57,704 rows, 945 bid_numbers, openings 2016-01-05..2021-03-24, no PIN column). Strict PIN↔bid_number join measured 2026-07-30: 0% of Procurement notices with PIN since 2025-01-01; 9.07% of 2016-2021 overlap notices; 66.9% within historical 857* DCAS PIN subset. Below ~30% usefulness threshold — source contracted as disabled without edge materialization (see bid-tabulations-historical join_measurement)."
     },
     {
       "id": "procurement-ocp-recent-awards",
@@ -3368,23 +3388,23 @@
       "i18n_key": null,
       "class": "not_published",
       "disposition": "measured_stop",
-      "would_appear_in": "the Capital Projects open dataset (n7gv-k5yt) if released with a PIN/EPIN that joins to the notice \u2014 https://data.cityofnewyork.us/d/n7gv-k5yt \u2014 or agency budget justifications / MOCS procurement plans if released as stable machine data",
+      "would_appear_in": "the Capital Projects open dataset (n7gv-k5yt) if released with a PIN/EPIN that joins to the notice — https://data.cityofnewyork.us/d/n7gv-k5yt — or agency budget justifications / MOCS procurement plans if released as stable machine data",
       "notices_affected_estimate": "All procurement processes in the OCDS gap table.",
-      "evidence": "Wave-4 OCDS gap table marks planning/budget and planning/rationale as not_published. Capital Projects n7gv-k5yt (3,320 rows; managing_agency, client_agency, budget_forecast, current_phase, project_name) has no PIN/EPIN. Measured 2026-07-30 agency+name fuzzy join on 100 modern Procurement notices: 0% unique substring, 1% unique token Jaccard \u2014 below ~30%. Pointer upgrade only; no edge materialization. Receipt: site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json. The MOCS collector framework is staged, but no production plan rows are enabled."
+      "evidence": "Wave-4 OCDS gap table marks planning/budget and planning/rationale as not_published. Capital Projects n7gv-k5yt (3,320 rows; managing_agency, client_agency, budget_forecast, current_phase, project_name) has no PIN/EPIN. Measured 2026-07-30 agency+name fuzzy join on 100 modern Procurement notices: 0% unique substring, 1% unique token Jaccard — below ~30%. Pointer upgrade only; no edge materialization. Receipt: site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json. The MOCS collector framework is staged, but no production plan rows are enabled."
     },
     {
       "id": "procurement-subcontract-goal-percent",
-      "surface": "award notice \u00b7 prime-win sub-outreach (data wishlist only)",
+      "surface": "award notice · prime-win sub-outreach (data wishlist only)",
       "i18n_key": null,
       "class": "not_published",
       "disposition": "publication_blocked",
-      "would_appear_in": "agency or Comptroller subcontract-utilization / M/WBE goal reports if released as a joinable public feed keyed by PIN or contract id \u2014 https://comptroller.nyc.gov/reports/nyc-contracts/",
+      "would_appear_in": "agency or Comptroller subcontract-utilization / M/WBE goal reports if released as a joinable public feed keyed by PIN or contract id — https://comptroller.nyc.gov/reports/nyc-contracts/",
       "notices_affected_estimate": "All award and registration-bearing procurement notices; public feeds publish prime M/WBE category and whether sub-vendors exist, not goal percent remaining.",
-      "evidence": "Comptroller reporting repeatedly flags missing joinable subcontractor participation and goal data. Checkbook Contracts publishes prime_vendor_mwbe_category and contract_includes_sub_vendors, not goal percent. award_prime_goal payload (cityscroll.award_prime_goal.v1) stamps subcontract_goal.status=not_published with goal_percent=null. Product rule (2026-08-04): notice cards must not render class-(b) apology copy for this slot \u2014 the wishlist inventory is the only public expression of the reporting gap."
+      "evidence": "Comptroller reporting repeatedly flags missing joinable subcontractor participation and goal data. Checkbook Contracts publishes prime_vendor_mwbe_category and contract_includes_sub_vendors, not goal percent. award_prime_goal payload (cityscroll.award_prime_goal.v1) stamps subcontract_goal.status=not_published with goal_percent=null. Product rule (2026-08-04): notice cards must not render class-(b) apology copy for this slot — the wishlist inventory is the only public expression of the reporting gap."
     },
     {
       "id": "subsidy-stage-unmatched",
-      "surface": "subsidy lifecycle \u00b7 per-stage empty slot",
+      "surface": "subsidy lifecycle · per-stage empty slot",
       "class": "not_yet_ingested",
       "disposition": "open",
       "public_source": {
@@ -3400,11 +3420,11 @@
         ]
       },
       "notices_affected_estimate": "IDA/Build NYC/EDC-eligible City Record notices without a linked stage document.",
-      "evidence": "RC-2 accepted corpus attaches board_decision date+outcome on 5/5 projects; application/closing/compliance remain source-null (0/5) in the minutes sample (receipt site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json). Empty later stages are incomplete source extraction or not yet published \u2014 not a silent withhold when the board minute exists."
+      "evidence": "RC-2 accepted corpus attaches board_decision date+outcome on 5/5 projects; application/closing/compliance remain source-null (0/5) in the minutes sample (receipt site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json). Empty later stages are incomplete source extraction or not yet published — not a silent withhold when the board minute exists."
     },
     {
       "id": "subsidy-outcome-absent",
-      "surface": "subsidy lifecycle \u00b7 stage outcome",
+      "surface": "subsidy lifecycle · stage outcome",
       "class": "not_yet_ingested",
       "disposition": "open",
       "public_source": {
@@ -3424,7 +3444,7 @@
     },
     {
       "id": "subsidy-project-unmatched",
-      "surface": "subsidy lifecycle \u00b7 no project join",
+      "surface": "subsidy lifecycle · no project join",
       "class": "not_yet_ingested",
       "disposition": "open",
       "public_source": {
@@ -3440,11 +3460,11 @@
         ]
       },
       "notices_affected_estimate": "IDA-related City Record notices without a receipt-backed project match.",
-      "evidence": "RC-2 host-side collector + warehouse feed landed. Fixed kill sample joined 5/12 (41.67%) by unique name+address+date with 0 false positives (receipt site/data/nycedc_sources/verification_receipts/nycedc_project_documents_2026-08-04.json). Receipt-backed panel ships for matched notices; residual unmatched hearings stay unmatched without inventing a project. Class (a) residual \u2014 not a city withhold of project documents that exist on EDC."
+      "evidence": "RC-2 host-side collector + warehouse feed landed. Fixed kill sample joined 5/12 (41.67%) by unique name+address+date with 0 false positives (receipt site/data/nycedc_sources/verification_receipts/nycedc_project_documents_2026-08-04.json). Receipt-backed panel ships for matched notices; residual unmatched hearings stay unmatched without inventing a project. Class (a) residual — not a city withhold of project documents that exist on EDC."
     },
     {
       "id": "subsidy-field-company-place-money",
-      "surface": "subsidy lifecycle \u00b7 company / place / money fields",
+      "surface": "subsidy lifecycle · company / place / money fields",
       "i18n_keys": [],
       "class": "not_yet_ingested",
       "disposition": "open",
@@ -3461,11 +3481,11 @@
         ]
       },
       "notices_affected_estimate": "Matched projects with sparse public money fields; hearing-only notices without a labeled cost.",
-      "evidence": "On the accepted RC-2 corpus, company and address fill 5/5; any money field fills 3/5 (requested benefit 2/5, estimated public cost 3/5, project_cost 0/5 in the live minutes materialization). Product shows positive facts only and omits empty slots \u2014 no class-(b) mask. Receipt: site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json."
+      "evidence": "On the accepted RC-2 corpus, company and address fill 5/5; any money field fills 3/5 (requested benefit 2/5, estimated public cost 3/5, project_cost 0/5 in the live minutes materialization). Product shows positive facts only and omits empty slots — no class-(b) mask. Receipt: site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json."
     },
     {
       "id": "subsidy-field-city-record-hearing-feed",
-      "surface": "subsidy lifecycle \u00b7 company / place / money when only City Record hearing is joined",
+      "surface": "subsidy lifecycle · company / place / money when only City Record hearing is joined",
       "i18n_keys": [
         "subsidy_company_not_yet_ingested_html",
         "subsidy_place_not_yet_ingested_html",
@@ -3487,11 +3507,11 @@
         ]
       },
       "notices_affected_estimate": "IDA/Build NYC City Record hearing notices when the structured Build NYC feed is unreachable or empty.",
-      "evidence": "EDC financial-documents host returns Cloudflare 403 to automated edge fetch, so structured project rows are not ingested. City Record hearing bodies often publish Total Project Cost / Total Development Cost \u2014 those are parsed into the subsidy money cost fields. Remaining structured fields use class (a) not_yet_ingested copy, not class (b) withheld. Durable EDC-feed ingestion is a separate follow-up."
+      "evidence": "EDC financial-documents host returns Cloudflare 403 to automated edge fetch, so structured project rows are not ingested. City Record hearing bodies often publish Total Project Cost / Total Development Cost — those are parsed into the subsidy money cost fields. Remaining structured fields use class (a) not_yet_ingested copy, not class (b) withheld. Durable EDC-feed ingestion is a separate follow-up."
     },
     {
       "id": "meeting-outcomes-unmatched",
-      "surface": "Council meeting outcomes \u00b7 no event join",
+      "surface": "Council meeting outcomes · no event join",
       "i18n_key": "meeting_outcomes_unmatched_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
@@ -3506,12 +3526,12 @@
           "committee/body name in notice title"
         ]
       },
-      "notices_affected_estimate": "City Council Public Hearings only for this class-(a) slot. Modern Council notice \u2192 Legistar event join is 100% (59/59) in the authenticated materialization window. Non-Council public hearings are not a missing Legistar ingest \u2014 they use the not_published register (see meeting-community-board-votes).",
+      "notices_affected_estimate": "City Council Public Hearings only for this class-(a) slot. Modern Council notice → Legistar event join is 100% (59/59) in the authenticated materialization window. Non-Council public hearings are not a missing Legistar ingest — they use the not_published register (see meeting-community-board-votes).",
       "evidence": "Authenticated edge materialization is live for Council. Modern strict event join 100% (59/59). Measured non-Council hearings: 40/40 unmatched on meeting outcomes with no joinable citywide vote feed (community board catalog datasets are rosters, not votes). Non-Council empty slots reclassified to not_published copy pointing at borough president websites and community board minutes pages."
     },
     {
       "id": "meeting-votes-absent",
-      "surface": "Council meeting outcomes \u00b7 matter without roll-call detail",
+      "surface": "Council meeting outcomes · matter without roll-call detail",
       "i18n_key": "meeting_outcomes_no_votes_html",
       "class": "not_yet_ingested",
       "disposition": "timing",
@@ -3530,7 +3550,7 @@
     },
     {
       "id": "meeting-matters-absent",
-      "surface": "Council meeting outcomes \u00b7 event without agenda matters",
+      "surface": "Council meeting outcomes · event without agenda matters",
       "i18n_key": "meeting_outcomes_no_matters_html",
       "class": "not_yet_ingested",
       "disposition": "timing",
@@ -3549,7 +3569,7 @@
     },
     {
       "id": "meeting-community-board-votes",
-      "surface": "non-Council hearings \u00b7 votes",
+      "surface": "non-Council hearings · votes",
       "i18n_key": "meeting_outcomes_non_council_not_published_html",
       "class": "not_published",
       "disposition": "publication_blocked",
@@ -3559,7 +3579,7 @@
     },
     {
       "id": "rules-event-spine-unmatched",
-      "surface": "Agency Rules notice detail \u00b7 lifecycle event slots without an NYC Rules join",
+      "surface": "Agency Rules notice detail · lifecycle event slots without an NYC Rules join",
       "class": "not_yet_ingested",
       "disposition": "landed",
       "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/252",
@@ -3579,7 +3599,7 @@
     },
     {
       "id": "rules-event-date-unpublished",
-      "surface": "Agency Rules notice detail \u00b7 missing hearing, comment, adoption, or effective date on a joined rule",
+      "surface": "Agency Rules notice detail · missing hearing, comment, adoption, or effective date on a joined rule",
       "class": "not_published",
       "disposition": "publication_blocked",
       "would_appear_in": "the official NYC Rules rule page and RSS fields if the agency releases that lifecycle date",
@@ -3588,7 +3608,7 @@
     },
     {
       "id": "exam-outcome-aggregate",
-      "surface": "staffing exam cards \u00b7 post-cycle outcomes",
+      "surface": "staffing exam cards · post-cycle outcomes",
       "i18n_key": "career_outcomes_not_yet_ingested_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
@@ -3603,8 +3623,8 @@
           "exam_no"
         ]
       },
-      "notices_affected_estimate": "Closed exams with list presence get list-size depth via list_depth_closed_exams.json + civil_service_list_aggregates.json; full hire/certification counts still depend on the annual outcomes publication. Open current-FY exams without a list row use class-(a) not-yet-ingested copy \u2014 never class-(b) city-withhold for aggregates.",
-      "evidence": "Source contract dcas-annual-exam-outcomes is build-time live for full post-cycle counts. Civil Service List closed-exam exam_no overlap measured 2026-07-30 at 44.54% (494/1,109) \u2014 above ~30%; open-exam overlap 0%. Build joins privacy-safe list aggregates (list_count, established_date) onto exam cards as post-list depth when annual outcomes are absent, including closed FY exams retained in list_depth_closed_exams.json after the current-year annual snapshot rolls forward. Empty aggregate slots use career_outcomes_not_yet_ingested_html. Per-applicant rows never ship. Receipt: site/data/exam_sources/verification_receipts/civil_service_list_closed_exams_2026-07-30.json."
+      "notices_affected_estimate": "Closed exams with list presence get list-size depth via list_depth_closed_exams.json + civil_service_list_aggregates.json; full hire/certification counts still depend on the annual outcomes publication. Open current-FY exams without a list row use class-(a) not-yet-ingested copy — never class-(b) city-withhold for aggregates.",
+      "evidence": "Source contract dcas-annual-exam-outcomes is build-time live for full post-cycle counts. Civil Service List closed-exam exam_no overlap measured 2026-07-30 at 44.54% (494/1,109) — above ~30%; open-exam overlap 0%. Build joins privacy-safe list aggregates (list_count, established_date) onto exam cards as post-list depth when annual outcomes are absent, including closed FY exams retained in list_depth_closed_exams.json after the current-year annual snapshot rolls forward. Empty aggregate slots use career_outcomes_not_yet_ingested_html. Per-applicant rows never ship. Receipt: site/data/exam_sources/verification_receipts/civil_service_list_closed_exams_2026-07-30.json."
     },
     {
       "id": "exam-outcome-individual",
@@ -3618,7 +3638,7 @@
     },
     {
       "id": "exam-salary-fee-not-published",
-      "surface": "staffing exam card \u00b7 fee or salary null",
+      "surface": "staffing exam card · fee or salary null",
       "i18n_key": "career_fee_salary_not_yet_ingested_html",
       "class": "not_yet_ingested",
       "disposition": "landed",
@@ -3634,7 +3654,7 @@
       },
       "would_appear_in": "the Notice of Examination PDF / open-competitive schedule when DCAS publishes the amount for that exam",
       "notices_affected_estimate": "Schedule-only exams in the annual Open Data table without a joined open-competitive NOE (measured ~143/151 on 2026-08-01). Open-competitive NOE path is 8/8 fee+salary when present.",
-      "evidence": "Annual schedule 4ptz-hmtc has no fee/salary columns. Open-competitive + NOE snapshot publishes fee and salary_min for every linked NOE (8/8). Null fee/salary is missing NOE join or NOE not yet posted for upcoming windows \u2014 not a city withhold. UI uses career_fee_salary_not_yet_ingested_html (class a) unless a linked NOE omits the field (class b career_not_published).",
+      "evidence": "Annual schedule 4ptz-hmtc has no fee/salary columns. Open-competitive + NOE snapshot publishes fee and salary_min for every linked NOE (8/8). Null fee/salary is missing NOE join or NOE not yet posted for upcoming windows — not a city withhold. UI uses career_fee_salary_not_yet_ingested_html (class a) unless a linked NOE omits the field (class b career_not_published).",
       "class_change": {
         "from": "not_published",
         "to": "not_yet_ingested",
@@ -3644,7 +3664,7 @@
     },
     {
       "id": "external-awards-agency-absent",
-      "surface": "agency awards empty state \u00b7 verified absent",
+      "surface": "agency awards empty state · verified absent",
       "i18n_key": "agency_awards_none_open_data_html",
       "class": "not_published",
       "disposition": "publication_blocked",
@@ -3686,7 +3706,7 @@
     },
     {
       "id": "dcas-nonfleet-surplus-listings",
-      "surface": "Property commercial watch \u00b7 non-fleet surplus goods",
+      "surface": "Property commercial watch · non-fleet surplus goods",
       "i18n_key": null,
       "class": "not_published",
       "disposition": "publication_blocked",
@@ -3696,7 +3716,7 @@
     },
     {
       "id": "land-outcome-detail",
-      "surface": "land / ZAP \u00b7 final decision documents beyond status",
+      "surface": "land / ZAP · final decision documents beyond status",
       "class": "not_yet_ingested",
       "disposition": "landed",
       "closure_receipt": "https://github.com/cityscroll/cityscroll-app/pull/188",
@@ -3729,7 +3749,7 @@
     },
     {
       "id": "money-location-residual",
-      "surface": "Money map \u00b7 place-of-performance coverage",
+      "surface": "Money map · place-of-performance coverage",
       "i18n_key": null,
       "class": "not_published",
       "disposition": "publication_blocked",
@@ -3740,7 +3760,7 @@
     },
     {
       "id": "meetings-location-residual",
-      "surface": "Meetings map \u00b7 unresolved matter or venue geography",
+      "surface": "Meetings map · unresolved matter or venue geography",
       "i18n_key": null,
       "class": "not_yet_ingested",
       "disposition": "measured_stop",
@@ -3761,7 +3781,7 @@
     },
     {
       "id": "property-parcel-key-residual",
-      "surface": "Property \u00b7 parcel-linked notice context",
+      "surface": "Property · parcel-linked notice context",
       "i18n_key": null,
       "class": "not_yet_ingested",
       "disposition": "open",
@@ -3807,16 +3827,16 @@
     "PASSPort Public contracts and rfx pages returned HTTP 200.",
     "City Record type counts since 2025-01-01: Award ~5173, Solicitation ~1550, Public Hearings ~1679, Intent to Award ~703.",
     "EDC document portal may block unattended fetch (403); product already treats it as HTML source.",
-    "Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN\u2194bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization.",
+    "Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN↔bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization.",
     "Doing Business Search Entities 72mk-a8z7 join recon (2026-07-30): vendor_stem join 70.42% notice-level / 61.62% distinct vendors on modern awards; above ~30% usefulness; source contract live edge-materialized onto vendor profiles.",
-    "PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published \u2192 City Record GetFile. No RFx package-doc edge materialization.",
-    "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join \u22641% \u2192 class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% \u2192 ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers.",
+    "PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. No RFx package-doc edge materialization.",
+    "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers.",
     "ABO residual join (2026-08-04): 1/50 labeled matches (2%), 50% fuzzy precision, five false positives, and four ambiguous groups; no notice-level edge materialization below the 30% usefulness and 95% precision gates.",
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
     "observed_on": "2026-11-11",
-    "source_contracts_fingerprint": "01cbd41888d628124764f720863501567a2d778a612f43892da0f2142c997b11",
+    "source_contracts_fingerprint": "bb94f1a6d6c24f0ab9b1307bdfa4f4176987590d46c26e0ce9469c5b27e63ea2",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 91,
     "class_changes": 0,

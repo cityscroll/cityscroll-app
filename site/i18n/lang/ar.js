@@ -808,6 +808,7 @@
     guide_text_7e3d52faa6b99ae9: "Checkbook NYC، موقع مراقب حسابات المدينة للإنفاق",
     guide_text_9044f2c0f4a88307: "افتح المسار المكتمل من خطوتين",
         guide_text_9d6194195e73dee7: "المصادر العامة الـ66 وراء هذه السجلات، بحسب وتيرة تغير كل منها",
+        guide_text_3fbb8c75fe8cc71f: "المصادر العامة الـ67 وراء هذه السجلات، بحسب وتيرة تغير كل منها",
     guide_text_30dfc11c63559ad9: "اسأل بالذكاء الاصطناعي",
 // END GUIDE TRANSLATIONS
     guide_text_c78eb973e4f540e5: "English source: Step 1 — Choose an observation experience",

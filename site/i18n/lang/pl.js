@@ -814,6 +814,7 @@
     guide_text_7e3d52faa6b99ae9: "Checkbook NYC, witryna miejskiego kontrolera o wydatkach",
     guide_text_9044f2c0f4a88307: "Otwórz gotową dwuetapową ścieżkę",
         guide_text_9d6194195e73dee7: "66 publicznych źródeł tych dokumentów według częstotliwości zmian",
+        guide_text_3fbb8c75fe8cc71f: "67 publicznych źródeł tych dokumentów według częstotliwości zmian",
     guide_text_30dfc11c63559ad9: "Zapytaj AI",
 // END GUIDE TRANSLATIONS
     guide_text_c78eb973e4f540e5: "English source: Step 1 — Choose an observation experience",

@@ -45,7 +45,7 @@ carries `units_are_not_summed` so a consumer of the JSON is told so too.
 
 ## Registry census
 
-The source-contract registry held **69** contracts at the inspected revision. Registry size is a
+The source-contract registry held **70** contracts at the inspected revision. Registry size is a
 count of contracts on file, not of coverage, and the census keeps the two apart:
 
 | Disposition | Contracts | Meaning |

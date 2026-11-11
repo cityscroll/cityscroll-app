@@ -808,6 +808,7 @@
     guide_text_7e3d52faa6b99ae9: "Checkbook NYC، شہر کے کمپٹرولر کی خرچ کی سائٹ",
     guide_text_9044f2c0f4a88307: "مکمل دو قدمی راستہ کھولیں",
         guide_text_9d6194195e73dee7: "ان ریکارڈ کے پیچھے 66 عوامی ماخذ، ہر ایک کے بدلنے کی رفتار کے لحاظ سے",
+        guide_text_3fbb8c75fe8cc71f: "ان ریکارڈ کے پیچھے 67 عوامی ماخذ، ہر ایک کے بدلنے کی رفتار کے لحاظ سے",
     guide_text_30dfc11c63559ad9: "AI سے پوچھیں",
 // END GUIDE TRANSLATIONS
     guide_text_c78eb973e4f540e5: "English source: Step 1 — Choose an observation experience",
