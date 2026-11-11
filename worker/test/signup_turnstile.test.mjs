@@ -1,6 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { verifySignupTurnstile } from "../src/lib/signup_turnstile.mjs";
+import {
+  verifySignupTurnstile,
+  isDocumentedTurnstileTestingSecret,
+  TURNSTILE_TESTING_PASS_SECRET,
+  TURNSTILE_TESTING_FAIL_SECRET,
+} from "../src/lib/signup_turnstile.mjs";
 import { handleSubscribe } from "../src/subscribe.mjs";
 import { handleMonitorPackSubscribe } from "../src/monitor_packs.mjs";
 import { handleFollowing } from "../src/following.mjs";
@@ -41,6 +46,52 @@ test("siteverify requires success, signup action, and an approved production hos
       assert.equal((await verifySignupTurnstile(request, env, { turnstileToken: "fresh-token" })).status, 403);
     }
     assert.equal(calls, 5);
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("documented Turnstile testing secrets accept Cloudflare's dummy siteverify shape", async () => {
+  assert.equal(isDocumentedTurnstileTestingSecret(TURNSTILE_TESTING_PASS_SECRET), true);
+  assert.equal(isDocumentedTurnstileTestingSecret("production-looking-secret"), false);
+  const original = globalThis.fetch;
+  globalThis.fetch = async () => Response.json({
+    success: true,
+    hostname: "example.com",
+    // Cloudflare test secrets omit action/cdata per their testing docs.
+  });
+  try {
+    assert.deepEqual(
+      await verifySignupTurnstile(request, { TURNSTILE_SECRET: TURNSTILE_TESTING_PASS_SECRET }, {
+        turnstileToken: "XXXX.DUMMY.TOKEN.XXXX",
+      }),
+      { ok: true },
+    );
+    // A production secret still requires action + approved hostname even on success.
+    assert.equal(
+      (await verifySignupTurnstile(request, { TURNSTILE_SECRET: "real-production-secret" }, {
+        turnstileToken: "XXXX.DUMMY.TOKEN.XXXX",
+      })).status,
+      403,
+    );
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("documented Turnstile always-fail testing secret stays rejected", async () => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async () => Response.json({
+    success: false,
+    "error-codes": ["invalid-input-response"],
+  });
+  try {
+    assert.equal(
+      (await verifySignupTurnstile(request, { TURNSTILE_SECRET: TURNSTILE_TESTING_FAIL_SECRET }, {
+        turnstileToken: "XXXX.DUMMY.TOKEN.XXXX",
+      })).status,
+      403,
+    );
   } finally {
     globalThis.fetch = original;
   }
