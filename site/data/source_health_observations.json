@@ -7249,6 +7249,204 @@
           }
         }
       }
+    },
+    {
+      "source_id": "procurement-codes-naics-2022",
+      "contract_fingerprint": "75b9e59332c45f9a0af02616f1ff774e349966d437da789dcedc6bd5dd4e47d6",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [],
+      "freshness_watchdog": {
+        "status": "STALE",
+        "reason_codes": [
+          "monitor-missing",
+          "acquisition-missing"
+        ],
+        "source_contract_id": "procurement-codes-naics-2022",
+        "observed_at": "2026-11-10T15:17:39.651Z",
+        "scheduler_heartbeat": {
+          "observed_at": null,
+          "status": "monitor-missing",
+          "run_id": null,
+          "age_days": null,
+          "expected_slots": 2
+        },
+        "acquisition": {
+          "observed_at": null,
+          "cadence_days": 7,
+          "age_days": null
+        },
+        "receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "procurement-codes-naics-2022",
+            "observed_at": "2026-11-10T15:17:39.651Z",
+            "status": "failed",
+            "run_id": "missing:procurement-codes-naics-2022:2026-11-10T15-17",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "event_kind": "scheduler-heartbeat",
+            "state": "monitor-missing"
+          },
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "procurement-codes-naics-2022",
+            "observed_at": "2026-11-10T15:17:39.651Z",
+            "status": "held",
+            "run_id": "missing:procurement-codes-naics-2022:2026-11-10T15-17",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "event_kind": "acquisition-cadence",
+            "state": "acquisition-missing"
+          }
+        ]
+      },
+      "operator": {
+        "clocks": {
+          "checked": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "scheduler_heartbeat": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "procurement-codes-nyc-commodity-directory",
+      "contract_fingerprint": "9ef9d869054f95b8108851bae82ffdad5c3e3fc39de96673df694f311263f229",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [],
+      "freshness_watchdog": {
+        "status": "STALE",
+        "reason_codes": [
+          "monitor-missing",
+          "acquisition-missing"
+        ],
+        "source_contract_id": "procurement-codes-nyc-commodity-directory",
+        "observed_at": "2026-11-10T15:17:39.651Z",
+        "scheduler_heartbeat": {
+          "observed_at": null,
+          "status": "monitor-missing",
+          "run_id": null,
+          "age_days": null,
+          "expected_slots": 2
+        },
+        "acquisition": {
+          "observed_at": null,
+          "cadence_days": 7,
+          "age_days": null
+        },
+        "receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "procurement-codes-nyc-commodity-directory",
+            "observed_at": "2026-11-10T15:17:39.651Z",
+            "status": "failed",
+            "run_id": "missing:procurement-codes-nyc-commodity-directory:2026-11-10T15-17",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "event_kind": "scheduler-heartbeat",
+            "state": "monitor-missing"
+          },
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "procurement-codes-nyc-commodity-directory",
+            "observed_at": "2026-11-10T15:17:39.651Z",
+            "status": "held",
+            "run_id": "missing:procurement-codes-nyc-commodity-directory:2026-11-10T15-17",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "event_kind": "acquisition-cadence",
+            "state": "acquisition-missing"
+          }
+        ]
+      },
+      "operator": {
+        "clocks": {
+          "checked": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "scheduler_heartbeat": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      }
     }
   ]
 }

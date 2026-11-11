@@ -45,17 +45,17 @@ carries `units_are_not_summed` so a consumer of the JSON is told so too.
 
 ## Registry census
 
-The source-contract registry held **63** contracts at the inspected revision. Registry size is a
+The source-contract registry held **69** contracts at the inspected revision. Registry size is a
 count of contracts on file, not of coverage, and the census keeps the two apart:
 
 | Disposition | Contracts | Meaning |
 | --- | --- | --- |
-| `publicly_represented` | 18 | At least one record from this source is counted in a served population. |
-| `context_only` | 28 | Enriches a population counted elsewhere; counting it separately would restate the same records. |
-| `not_served` | 8 | No served records: disabled, backstage-only, or observed with no rows. |
-| `unresolved` | 9 | Reaches readers, but no first-class served-population artifact declares it, so no count is established. |
+| `publicly_represented` | 19 | At least one record from this source is counted in a served population. |
+| `context_only` | 32 | Enriches a population counted elsewhere; counting it separately would restate the same records. |
+| `not_served` | 7 | No served records: disabled, backstage-only, or observed with no rows. |
+| `unresolved` | 11 | Reaches readers, but no first-class served-population artifact declares it, so no count is established. |
 
-`served_sources_represented` is the 18, not the 63. A registry change is reported rather than
+`served_sources_represented` is the 19, not the 69. A registry change is reported rather than
 absorbed: the builder records the reviewed size against the observed size, and a contract with
 neither a derived nor a reviewed disposition fails the build instead of defaulting to a
 flattering answer.

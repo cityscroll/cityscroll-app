@@ -2,8 +2,8 @@
   "schema": "cityscroll.served_coverage_census.v1",
   "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
   "registry": {
-    "reviewed_registry_size": 68,
-    "observed_registry_size": 68,
+    "reviewed_registry_size": 70,
+    "observed_registry_size": 70,
     "changed": false
   },
   "disposition_vocabulary": [
@@ -14,7 +14,7 @@
   ],
   "disposition_counts": {
     "publicly_represented": 19,
-    "context_only": 31,
+    "context_only": 33,
     "not_served": 7,
     "unresolved": 11
   },
@@ -390,7 +390,7 @@
   "sources": [
     {
       "source_id": "abo-local-authorities",
-      "name": "NYS Authorities Budget Office — local authorities",
+      "name": "NYS Authorities Budget Office \u2014 local authorities",
       "disposition": "context_only",
       "reason": "Authority-scoped award context on mapped authority profiles; the awards themselves are counted in the procurement population, so a separate count would restate the same records.",
       "evidence": {
@@ -403,7 +403,7 @@
     },
     {
       "source_id": "abo-local-development-corporations",
-      "name": "NYS Authorities Budget Office — local development corporations",
+      "name": "NYS Authorities Budget Office \u2014 local development corporations",
       "disposition": "context_only",
       "reason": "Authority-scoped award context on mapped local-development-corporation profiles; no independent served record population.",
       "evidence": {
@@ -416,7 +416,7 @@
     },
     {
       "source_id": "abo-state-authorities",
-      "name": "NYS Authorities Budget Office — state authorities",
+      "name": "NYS Authorities Budget Office \u2014 state authorities",
       "disposition": "context_only",
       "reason": "Authority-scoped award context on mapped state-authority profiles; no independent served record population.",
       "evidence": {
@@ -436,7 +436,7 @@
         "registry": {
           "status": "live",
           "delivery_tier": "live-only",
-          "used_for": "Competitive-list checks, active-list totals, and post-list aggregate depth on exam cards (list_count and established dates only — never per-applicant rows)."
+          "used_for": "Competitive-list checks, active-list totals, and post-list aggregate depth on exam cards (list_count and established dates only \u2014 never per-applicant rows)."
         }
       }
     },
@@ -504,7 +504,7 @@
         "registry": {
           "status": "manual",
           "delivery_tier": "inline-at-build",
-          "used_for": "Committed cityscroll.procurement_planning.v1 capital budget, spend, FMS identifier, project description, phase, and schedule rows. Capital→notice/PASSPort bridges remain below usefulness (no PIN/EPIN); MOCS plan→PASSPort prefix edges ship separately."
+          "used_for": "Committed cityscroll.procurement_planning.v1 capital budget, spend, FMS identifier, project description, phase, and schedule rows. Capital\u2192notice/PASSPort bridges remain below usefulness (no PIN/EPIN); MOCS plan\u2192PASSPort prefix edges ship separately."
         }
       }
     },
@@ -517,7 +517,7 @@
         "registry": {
           "status": "live",
           "delivery_tier": "edge-materialized",
-          "used_for": "Donor → official recipient influence edges on official profiles via person hub name keys (exact unique person-name join on modern City Council officecd=5 sample; partial coverage)."
+          "used_for": "Donor \u2192 official recipient influence edges on official profiles via person hub name keys (exact unique person-name join on modern City Council officecd=5 sample; partial coverage)."
         }
       }
     },
@@ -580,7 +580,7 @@
         "registry": {
           "status": "live",
           "delivery_tier": "edge-materialized",
-          "used_for": "Org → Lobbyist → Official influence edges on official profiles via person hub name keys (exact unique person-name join; no fuzzy public edges)."
+          "used_for": "Org \u2192 Lobbyist \u2192 Official influence edges on official profiles via person hub name keys (exact unique person-name join; no fuzzy public edges)."
         }
       }
     },
@@ -923,7 +923,7 @@
         "registry": {
           "status": "build-time",
           "delivery_tier": "inline-at-build",
-          "used_for": "Official attribution for tax-lot map context, retained BBL→centroid pins for Land, a bounded BBL→parcel-polygon lookup for the optional Land project-geometry field, and reusable citywide parcel coordinates (deterministic 256-way BBL shards) for address-entry geography and record location joins."
+          "used_for": "Official attribution for tax-lot map context, retained BBL\u2192centroid pins for Land, a bounded BBL\u2192parcel-polygon lookup for the optional Land project-geometry field, and reusable citywide parcel coordinates (deterministic 256-way BBL shards) for address-entry geography and record location joins."
         }
       }
     },
@@ -936,7 +936,7 @@
         "registry": {
           "status": "manual",
           "delivery_tier": "inline-at-build",
-          "used_for": "Committed cityscroll.procurement_planning.v1 source rows. Identifier-bearing plan→PASSPort prefix join re-measured 2026-08-11 clears usefulness and precision; receipt-backed bridge edges feed the Money planning phase. Capital paths remain stopped."
+          "used_for": "Committed cityscroll.procurement_planning.v1 source rows. Identifier-bearing plan\u2192PASSPort prefix join re-measured 2026-08-11 clears usefulness and precision; receipt-backed bridge edges feed the Money planning phase. Capital paths remain stopped."
         }
       }
     },
@@ -949,7 +949,7 @@
         "registry": {
           "status": "manual",
           "delivery_tier": "inline-at-build",
-          "used_for": "Committed cityscroll.procurement_planning.v1 source rows. Identifier-bearing plan→PASSPort prefix join re-measured 2026-08-11 clears usefulness and precision; receipt-backed bridge edges feed the Money planning phase. Capital paths remain stopped."
+          "used_for": "Committed cityscroll.procurement_planning.v1 source rows. Identifier-bearing plan\u2192PASSPort prefix join re-measured 2026-08-11 clears usefulness and precision; receipt-backed bridge edges feed the Money planning phase. Capital paths remain stopped."
         }
       }
     },
@@ -1320,7 +1320,7 @@
     },
     {
       "source_id": "zap-api-outcomes",
-      "name": "Zoning Application Portal — project outcomes (Planning Labs API)",
+      "name": "Zoning Application Portal \u2014 project outcomes (Planning Labs API)",
       "disposition": "publicly_represented",
       "reason": "Declared source of a counted served population.",
       "evidence": {
@@ -1336,7 +1336,7 @@
     },
     {
       "source_id": "zap-bbl",
-      "name": "Zoning Application Portal — tax lots",
+      "name": "Zoning Application Portal \u2014 tax lots",
       "disposition": "context_only",
       "reason": "Tax-lot joins from land-use projects to parcels; projects and properties are each counted once as their own record unit.",
       "evidence": {
@@ -1349,7 +1349,7 @@
     },
     {
       "source_id": "zap-projects",
-      "name": "Zoning Application Portal — projects",
+      "name": "Zoning Application Portal \u2014 projects",
       "disposition": "publicly_represented",
       "reason": "Declared source of a counted served population.",
       "evidence": {
@@ -1361,6 +1361,32 @@
             "evidence_vintage": "2026-11-09T21:47:09.965Z"
           }
         ]
+      }
+    },
+    {
+      "source_id": "procurement-codes-naics-2022",
+      "name": "North American Industry Classification System 2022 structure",
+      "disposition": "context_only",
+      "reason": "Complete industry-code hierarchy for procurement matching; a classification catalog is not a served record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Complete industry-code lookup, hierarchy, and validation for procurement matching."
+        }
+      }
+    },
+    {
+      "source_id": "procurement-codes-nyc-commodity-directory",
+      "name": "NYC commodity classification directory",
+      "disposition": "context_only",
+      "reason": "Exact numeric commodity-code status for procurement matching; a classification catalog is not a served record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Exact numeric commodity-code status lookup for procurement matching."
+        }
       }
     }
   ]

@@ -6,7 +6,7 @@
   "sources": [
     {
       "source_id": "abo-local-authorities",
-      "name": "NYS Authorities Budget Office — local authorities",
+      "name": "NYS Authorities Budget Office \u2014 local authorities",
       "publisher": "NYS Authorities Budget Office",
       "official_url": "https://data.ny.gov/d/8w5p-k45m",
       "expected_cadence": "Publisher cadence not stated in dataset metadata",
@@ -57,7 +57,7 @@
     },
     {
       "source_id": "abo-local-development-corporations",
-      "name": "NYS Authorities Budget Office — local development corporations",
+      "name": "NYS Authorities Budget Office \u2014 local development corporations",
       "publisher": "NYS Authorities Budget Office",
       "official_url": "https://data.ny.gov/d/d84c-dk28",
       "expected_cadence": "Publisher cadence not stated in dataset metadata",
@@ -108,7 +108,7 @@
     },
     {
       "source_id": "abo-state-authorities",
-      "name": "NYS Authorities Budget Office — state authorities",
+      "name": "NYS Authorities Budget Office \u2014 state authorities",
       "publisher": "NYS Authorities Budget Office",
       "official_url": "https://data.ny.gov/d/ehig-g5x3",
       "expected_cadence": "Publisher cadence not stated in dataset metadata",
@@ -3164,7 +3164,7 @@
     },
     {
       "source_id": "zap-api-outcomes",
-      "name": "Zoning Application Portal — project outcomes (Planning Labs API)",
+      "name": "Zoning Application Portal \u2014 project outcomes (Planning Labs API)",
       "publisher": "NYC Department of City Planning",
       "official_url": "https://zap.planning.nyc.gov/",
       "expected_cadence": "Live CRM-backed API used by the public ZAP portal; Open Data project table lags the portal by about a month",
@@ -3215,7 +3215,7 @@
     },
     {
       "source_id": "zap-bbl",
-      "name": "Zoning Application Portal — tax lots",
+      "name": "Zoning Application Portal \u2014 tax lots",
       "publisher": "NYC Department of City Planning",
       "official_url": "https://data.cityofnewyork.us/d/2iga-a6mk",
       "expected_cadence": "Periodic project updates",
@@ -3264,7 +3264,7 @@
     },
     {
       "source_id": "zap-projects",
-      "name": "Zoning Application Portal — projects",
+      "name": "Zoning Application Portal \u2014 projects",
       "publisher": "NYC Department of City Planning",
       "official_url": "https://data.cityofnewyork.us/d/hgx4-8ukb",
       "expected_cadence": "Periodic project updates",
@@ -3303,6 +3303,108 @@
         "publisher_vintage": null,
         "retrieved_at": "2026-10-05T17:34:45.000Z",
         "expected_lag_tolerance_days": 120,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
+      "source_id": "procurement-codes-naics-2022",
+      "name": "North American Industry Classification System 2022 structure",
+      "publisher": "US Census Bureau",
+      "official_url": "https://www.census.gov/naics/",
+      "expected_cadence": "Edition replacement when Census publishes a new NAICS structure",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 30,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
+      "source_id": "procurement-codes-nyc-commodity-directory",
+      "name": "NYC commodity classification directory",
+      "publisher": "NYC Mayor's Office of Contract Services",
+      "official_url": "https://www.nyc.gov/site/mocs/resources-reports/learning-to-use-passport.page",
+      "expected_cadence": "Publisher directory replacement without a declared catalog edition",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 30,
         "current_lag": {
           "value": null,
           "unit": null
