@@ -37,6 +37,7 @@ import { prefsLink } from "./prefs.mjs";
 import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
 import { suppressionForRecipient } from "./lib/recipient_suppression.mjs";
 import { verifySignupTurnstile } from "./lib/signup_turnstile.mjs";
+import { sendTransactionalEmail } from "./lib/transactional_mail.mjs";
 import {
   claimWelcomeDelivery,
   completeWelcomeDelivery,
@@ -256,40 +257,16 @@ async function deliverWelcomeOnce(env, email, template) {
 }
 
 export async function sendWelcome(env, to, template, { idempotencyKey = null } = {}) {
-  const from = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
-  const headers = { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` };
-  if (idempotencyKey) headers["Idempotency-Key"] = idempotencyKey;
-  let r;
-  try {
-    r = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        from,
-        to,
-        subject: welcomeSubject(template.lang),
-        html: welcomeEmailHtml(template),
-        headers: {
-          "List-Unsubscribe": `<${template.unsubscribeUrl}>`,
-          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-        },
-      }),
-    });
-  } catch (error) {
-    error.deliveryStatus = "indeterminate";
-    throw error;
-  }
-  if (!r.ok) {
-    const error = new Error(`Resend ${r.status}: ${await r.text()}`);
-    error.deliveryStatus = r.status === 408 || r.status === 409 || r.status >= 500 ? "indeterminate" : "rejected";
-    throw error;
-  }
-  try {
-    return await r.json();
-  } catch (error) {
-    error.deliveryStatus = "indeterminate";
-    throw error;
-  }
+  return sendTransactionalEmail(env, {
+    to,
+    subject: welcomeSubject(template.lang),
+    html: welcomeEmailHtml(template),
+    idempotencyKey,
+    headers: {
+      "List-Unsubscribe": `<${template.unsubscribeUrl}>`,
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+    },
+  });
 }
 
 async function unsubscribeLink(env, subKey) {

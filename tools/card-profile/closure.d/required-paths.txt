@@ -2023,6 +2023,7 @@ worker/migrations/0029_matter_watch_baseline.sql
 worker/migrations/0030_digest_outbox_query_revision.sql
 worker/migrations/0033_ops_emergency_outbox.sql
 worker/migrations/0036_recipient_delivery_trust.sql
+worker/migrations/0037_cityscroll_accounts.sql
 worker/ops-contract.v1.json
 worker/scripts/analytics-dev-token.mjs
 worker/scripts/backfill-history.mjs
@@ -2033,6 +2034,8 @@ worker/scripts/civic-time-diff.mjs
 worker/scripts/lifecycle-coherence-scorecard.mjs
 worker/scripts/prediction-calibration-scorecard.mjs
 worker/scripts/temporal-completeness-scorecard.mjs
+worker/src/account-page.mjs
+worker/src/account.mjs
 worker/src/admin.mjs
 worker/src/admin_performance.mjs
 worker/src/agencies.mjs
@@ -2112,6 +2115,7 @@ worker/src/inv.mjs
 worker/src/land_projects.mjs
 worker/src/land_upcoming_hearings.mjs
 worker/src/lib/abo_awards_join.mjs
+worker/src/lib/account.mjs
 worker/src/lib/action_log.mjs
 worker/src/lib/action_registry.mjs
 worker/src/lib/agencies.mjs
@@ -2293,6 +2297,7 @@ worker/src/lib/subsidy_project_lookup.mjs
 worker/src/lib/suggestions.mjs
 worker/src/lib/tax_lien_sale_model.mjs
 worker/src/lib/tax_lien_sale_prediction.mjs
+worker/src/lib/transactional_mail.mjs
 worker/src/lib/translate_invariants.mjs
 worker/src/lib/translate_notice.mjs
 worker/src/lib/ulurp_recommendation_rows_source_records.mjs

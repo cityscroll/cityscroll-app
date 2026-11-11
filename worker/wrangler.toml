@@ -108,6 +108,12 @@ SOURCE_VAULT_ENABLED = "false"
 # One-switch rollback for the typed candidate endpoint. When false, the route
 # returns the existing lexical /search response unchanged.
 SEMANTIC_CANDIDATES_ENABLED = "true"
+# Common CityScroll account (one email sign-in shared by the civic site and the
+# procurement product). Default OFF: every /account route 404s and the civic session
+# reader ignores v3 tokens until an operator enables it. Production enablement stays
+# gated on the signup-protection work landing first; migrations and the v3-compatible
+# session reader deploy additively ahead of any public sign-in.
+CITYSCROLL_ACCOUNTS_ENABLED = "false"
 # Deploy identity for GET /health. Empty in-repo so local `wrangler dev` stays
 # unstamped; every ship path overrides these with wrangler `--var` (not the
 # GitHub Action bulk `vars:` input, which would clobber secrets of the same name).

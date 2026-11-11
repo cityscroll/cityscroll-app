@@ -14,6 +14,8 @@ import { handleConfirm } from "./confirm.mjs";
 import { handleUnsubscribe } from "./unsubscribe.mjs";
 import { handlePrefs } from "./prefs.mjs";
 import { handleSession } from "./session.mjs";
+import { handleAccount } from "./account.mjs";
+import { handleAccountPage } from "./account-page.mjs";
 import { handlePins } from "./pins.mjs";
 import { handleFeedback } from "./feedback.mjs";
 import {
@@ -530,6 +532,11 @@ const worker = {
     if (pathname === "/unsubscribe") return handleUnsubscribe(request, env);
     if (pathname === "/prefs") return handlePrefs(request, env);
     if (pathname === "/session" || pathname === "/session/logout") return handleSession(request, env, pathname);
+    // Common CityScroll account (default off; every route 404s until enabled).
+    if (pathname === "/account" || pathname === "/account/" || pathname === "/account/confirm") {
+      return handleAccountPage(request, env, pathname);
+    }
+    if (pathname.startsWith("/account/v1/")) return handleAccount(request, env, pathname);
     if (pathname === "/pins") return handlePins(request, env);
     if (pathname === "/feedback") return handleFeedback(request, env);
     if (pathname === "/feed.xml" || pathname === "/feed.json" || pathname === "/feed.ics") return handleFeed(request, env, ctx);
