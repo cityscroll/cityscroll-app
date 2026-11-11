@@ -1,0 +1,89 @@
+{
+  "schema": "cityscroll.procurement_project_history.v1",
+  "source_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+  "source_contract_id": "capital-projects-dashboard",
+  "scope": "Whole-project budgets, recorded project spending and project forecasts published by the capital projects dashboard. Not solicitation values, bid deadlines or contract terms.",
+  "counts": {
+    "acquired_rows": 10002,
+    "admitted_agency_rows": 8070,
+    "financial": {
+      "changed": 611,
+      "compared": 932,
+      "disappeared": 17,
+      "first_observed": 60,
+      "identities": 1481,
+      "single_observation": 251,
+      "unchanged": 321
+    },
+    "quarantined_financial": 0,
+    "quarantined_schedule": 19,
+    "schedule": {
+      "changed": 520,
+      "compared": 635,
+      "disappeared": 6,
+      "first_observed": 32,
+      "identities": 726,
+      "single_observation": 35,
+      "unchanged": 115
+    }
+  },
+  "record": {
+    "after": {
+      "agency_data_date": "2026-06-23",
+      "current_phase": "Construction Procurement",
+      "financial_data_date": "2026-05-18",
+      "fms_id": "70MULBREC",
+      "forecast_completion": "2030-02-04",
+      "managing_agency": "DDC",
+      "pid": "3877",
+      "reporting_period": "202605",
+      "spend_to_date": "13609044.30",
+      "total_budget": "198365085.77"
+    },
+    "before": {
+      "agency_data_date": "2026-03-16",
+      "current_phase": "Construction Procurement",
+      "financial_data_date": "2026-02-17",
+      "fms_id": "70MULBREC",
+      "forecast_completion": "2029-10-26",
+      "managing_agency": "DDC",
+      "pid": "3877",
+      "reporting_period": "202601",
+      "spend_to_date": "13011565.62",
+      "total_budget": "181365085.77"
+    },
+    "changed": true,
+    "changes": {
+      "current_phase": {
+        "after": "Construction Procurement",
+        "before": "Construction Procurement",
+        "state": "unchanged"
+      },
+      "forecast_completion": {
+        "after": "2030-02-04",
+        "before": "2029-10-26",
+        "delta_days": 101,
+        "state": "changed"
+      },
+      "spend_to_date": {
+        "after": "13609044.30",
+        "before": "13011565.62",
+        "delta": "597478.68",
+        "state": "changed"
+      },
+      "total_budget": {
+        "after": "198365085.77",
+        "before": "181365085.77",
+        "delta": "17000000.00",
+        "state": "changed"
+      }
+    },
+    "first_observed_release": "202401",
+    "fms_id": "70MULBREC",
+    "history_depth": 8,
+    "identity_state": "compared",
+    "last_observed_release": "202605",
+    "managing_agency": "DDC"
+  },
+  "selection": "first financial project at pinned source; one positive fixture, not the population"
+}

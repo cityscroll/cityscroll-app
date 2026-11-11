@@ -1,0 +1,87 @@
+{
+ "schema": "cityscroll.agency_procurement_history.v1",
+ "generated_at": "2026-11-11T02:02:12.947Z",
+ "agency_id": "youth-and-community-development",
+ "window": {
+  "start_inclusive": "2024-11-11",
+  "end_exclusive": "2026-11-11"
+ },
+ "sources": {
+  "city-record": {
+   "status": "unavailable",
+   "reason": "full_city_record_population_not_resolvable"
+  },
+  "checkbook-contracts": {
+   "status": "stale",
+   "observed_at": "2026-09-09",
+   "snapshot_date": "2026-09-09",
+   "current_claim_allowed": false,
+   "normalized_unique_contracts": 26846,
+   "latest_accepted_observation": {
+    "observed_at": "2026-11-10T15:17:39.651Z",
+    "manifest_sha256": "8d1226cf1072deea57bd224c4a7cc8fbc986b572a7d79c67d42d053dffdfa32c",
+    "population": 29581,
+    "dycd_window_eligible": 2492,
+    "median_original_registered_amount": 436226
+   }
+  }
+ },
+ "source_status": {
+  "city-record": "unavailable",
+  "checkbook-contracts": "stale"
+ },
+ "solicitation_notices": {
+  "status": "unavailable",
+  "value": null
+ },
+ "response_window": {
+  "status": "unavailable",
+  "value": null
+ },
+ "registered_contracts": {
+  "status": "stale",
+  "observed_at": "2026-09-09",
+  "current_claim_allowed": false,
+  "count": 2309,
+  "amount_eligible": 2309,
+  "missing_or_invalid_amount": 0,
+  "median_original_registered_amount": 410783,
+  "label": "Median original registered contract value",
+  "evidence": {
+   "first25": [
+    "CT126020248807160",
+    "CT126020248809116",
+    "CT126020251406646",
+    "CT126020251410126",
+    "CT126020251410396",
+    "CT126020251411374",
+    "CT126020251412406",
+    "CT126020251412528",
+    "CT126020251414635",
+    "CT126020251417584",
+    "CT126020258800307",
+    "CT126020258800356",
+    "CT126020258800414",
+    "CT126020258800430",
+    "CT126020258800448",
+    "CT126020258800580",
+    "CT126020258801004",
+    "CT126020258801449",
+    "CT126020258801540",
+    "CT126020258801615",
+    "CT126020258802005",
+    "CT126020258802023",
+    "CT126020258802047",
+    "CT126020258802056",
+    "CT126020258802144"
+   ],
+   "contributor_count": 2309,
+   "contributors_sha256": "8ce2b20b59c77f6aa9af4b12097c4ce072f06b36bbff5a4a6dc50e9d171bf62b"
+  }
+ },
+ "coverage": {
+  "unit": "distinct prime contract",
+  "agency_count": 1,
+  "scope": "DYCD registered contracts 2024-11-11 (inclusive) to 2026-11-11 (exclusive); City Record notice history unavailable without the full corpus"
+ }
+}

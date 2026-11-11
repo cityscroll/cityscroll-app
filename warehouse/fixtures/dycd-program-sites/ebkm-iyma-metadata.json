@@ -1,0 +1,2377 @@
+{
+  "id" : "ebkm-iyma",
+  "name" : "DYCD Program Sites",
+  "assetType" : "dataset",
+  "attribution" : "Department of Youth and Community Development (DYCD)",
+  "averageRating" : 0,
+  "category" : "Social Services",
+  "createdAt" : 1561660303,
+  "description" : "This dataset provides a breakdown of all the Service Categories that are provided, and funded by DYCD. For each Service Category, the datasets list their DYCD business unit (Program Area), sub-divisions (Program Types), the DYCD-funded organization (Provider) that provide their respective services, and finally, the Program Sites where these services are available.",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "downloadCount" : 8466,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 42601979,
+  "provenance" : "official",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1790258022,
+  "publicationGroup" : 16315564,
+  "publicationStage" : "published",
+  "rowClass" : "",
+  "rowsUpdatedAt" : 1790257979,
+  "rowsUpdatedBy" : "d2qk-x9en",
+  "tableId" : 20635471,
+  "totalTimesRated" : 0,
+  "viewCount" : 8944,
+  "viewLastModified" : 1790258022,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1561666786,
+    "reviewedAutomatically" : true,
+    "state" : "approved",
+    "submissionId" : 7758053,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1561666786,
+    "targetAudience" : "public",
+    "workflowId" : 2285,
+    "submissionDetails" : {
+      "permissionType" : "READ"
+    },
+    "submissionOutcomeApplication" : {
+      "failureCount" : 0,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "5fuc-pqz2",
+      "displayName" : "NYC OpenData"
+    }
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 647050094,
+    "name" : "FiscalYear",
+    "dataTypeName" : "number",
+    "description" : "Fiscal Year during which the program site was operating.",
+    "fieldName" : "date",
+    "position" : 1,
+    "renderTypeName" : "number",
+    "tableColumnId" : 143208114,
+    "cachedContents" : {
+      "non_null" : "31677",
+      "largest" : "2026",
+      "null" : "0",
+      "top" : [ {
+        "item" : "2025",
+        "count" : "4364"
+      }, {
+        "item" : "2019",
+        "count" : "4197"
+      }, {
+        "item" : "2020",
+        "count" : "3744"
+      }, {
+        "item" : "2022",
+        "count" : "3657"
+      }, {
+        "item" : "2023",
+        "count" : "3600"
+      }, {
+        "item" : "2021",
+        "count" : "3429"
+      }, {
+        "item" : "2018",
+        "count" : "3021"
+      }, {
+        "item" : "2024",
+        "count" : "3004"
+      }, {
+        "item" : "2026",
+        "count" : "2660"
+      }, {
+        "item" : "2017",
+        "count" : "1"
+      } ],
+      "smallest" : "2017",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : {
+      "view" : "date",
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 647050095,
+    "name" : "Program Area",
+    "dataTypeName" : "text",
+    "description" : "DYCD unit monitoring this program site",
+    "fieldName" : "program_area",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254880,
+    "cachedContents" : {
+      "non_null" : "31677",
+      "largest" : "WIOA",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Discretionary",
+        "count" : "11305"
+      }, {
+        "item" : "Compass",
+        "count" : "9224"
+      }, {
+        "item" : "SYEP",
+        "count" : "2272"
+      }, {
+        "item" : "Literacy and Immigrant Services",
+        "count" : "2101"
+      }, {
+        "item" : "CSBG",
+        "count" : "1768"
+      }, {
+        "item" : "Cornerstone",
+        "count" : "1689"
+      }, {
+        "item" : "Beacon",
+        "count" : "1336"
+      }, {
+        "item" : "Office of Neighborhood Safety",
+        "count" : "631"
+      }, {
+        "item" : "RHY",
+        "count" : "521"
+      }, {
+        "item" : "WIOA",
+        "count" : "394"
+      }, {
+        "item" : "Strategic Partnerships",
+        "count" : "215"
+      }, {
+        "item" : "Advance and Earn",
+        "count" : "125"
+      }, {
+        "item" : "CSBG-HRA",
+        "count" : "69"
+      }, {
+        "item" : "CRED",
+        "count" : "24"
+      }, {
+        "item" : "Unity Works",
+        "count" : "3"
+      } ],
+      "smallest" : "Advance and Earn",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050096,
+    "name" : "Program Type",
+    "dataTypeName" : "text",
+    "description" : "The program model (within the broader Program Area) under which this program site operates",
+    "fieldName" : "program_type",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254881,
+    "cachedContents" : {
+      "non_null" : "31677",
+      "largest" : "Youth Service Coordination",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Over Threshold",
+        "count" : "6340"
+      }, {
+        "item" : "COMPASS Middle School",
+        "count" : "5051"
+      }, {
+        "item" : "Under Threshold",
+        "count" : "4467"
+      }, {
+        "item" : "COMPASS Elementary",
+        "count" : "3291"
+      }, {
+        "item" : "Cornerstone",
+        "count" : "1158"
+      }, {
+        "item" : "Beacon",
+        "count" : "1073"
+      }, {
+        "item" : "Saturday Night Lights",
+        "count" : "632"
+      }, {
+        "item" : "Adult Literacy - BENL/ESOL",
+        "count" : "621"
+      }, {
+        "item" : "Older Youth (OY)",
+        "count" : "545"
+      }, {
+        "item" : "WLG (OY)",
+        "count" : "496"
+      }, {
+        "item" : "SYEP School-Based",
+        "count" : "477"
+      }, {
+        "item" : "NDA Healthy Families",
+        "count" : "400"
+      }, {
+        "item" : "High School",
+        "count" : "400"
+      }, {
+        "item" : "Younger Youth (YY)",
+        "count" : "389"
+      }, {
+        "item" : "Seniors",
+        "count" : "355"
+      }, {
+        "item" : "Transitional Independent Living (TIL)",
+        "count" : "320"
+      }, {
+        "item" : "Youth Neighborhood Team Sports",
+        "count" : "302"
+      }, {
+        "item" : "Learning Labs",
+        "count" : "289"
+      }, {
+        "item" : "Adult Literacy - BENL/ESOL (Discretionary)",
+        "count" : "286"
+      }, {
+        "item" : "COMPASS Explore",
+        "count" : "272"
+      } ],
+      "smallest" : "Adolescent Literacy",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050097,
+    "name" : "Service Category",
+    "dataTypeName" : "text",
+    "description" : "Type of services provided at this site for this contract, used for identification on DiscoverDYCD. Each Program Type has one or more associated Service Categories.",
+    "fieldName" : "service_category",
+    "position" : 4,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254878,
+    "cachedContents" : {
+      "non_null" : "30490",
+      "largest" : "Youth and Afterschool Programs",
+      "null" : "1187",
+      "top" : [ {
+        "item" : "Community Services",
+        "count" : "11749"
+      }, {
+        "item" : "Community Services; Educational Services; Youth and Afterschool Programs",
+        "count" : "8877"
+      }, {
+        "item" : "Community Services; Educational Services; Family Support; Youth and Afterschool Programs",
+        "count" : "2231"
+      }, {
+        "item" : "Educational Services; Jobs and Internships",
+        "count" : "1775"
+      }, {
+        "item" : "Educational Services",
+        "count" : "1264"
+      }, {
+        "item" : "Community Services; Family Support; Housing Support; Immigrant Services",
+        "count" : "940"
+      }, {
+        "item" : "Jobs and Internships",
+        "count" : "841"
+      }, {
+        "item" : "Educational Services; Family Support; Housing Support; Jobs and Internships",
+        "count" : "417"
+      }, {
+        "item" : "Community Services; Educational Services; Family Support; Immigrant Services; Youth and Afterschool Programs",
+        "count" : "400"
+      }, {
+        "item" : "Community Services; Educational Services; Family Support",
+        "count" : "289"
+      }, {
+        "item" : "Educational Services; Family Support; Immigrant Services",
+        "count" : "246"
+      }, {
+        "item" : "Family Support; Immigrant Services",
+        "count" : "206"
+      }, {
+        "item" : "Educational Services; Jobs and Internships; Youth and Afterschool Programs",
+        "count" : "177"
+      }, {
+        "item" : "Youth and Afterschool Programs",
+        "count" : "172"
+      }, {
+        "item" : "Community Services; Educational Services; Family Support; Immigrant Services; Jobs and Internships",
+        "count" : "162"
+      }, {
+        "item" : "Community Services; Educational Services",
+        "count" : "161"
+      }, {
+        "item" : "Community Services; Family Support; Housing Support; Immigrant Services; Jobs and Internships",
+        "count" : "105"
+      }, {
+        "item" : "Family Support; Housing Support",
+        "count" : "102"
+      }, {
+        "item" : "Educational Services; Immigrant Services",
+        "count" : "89"
+      }, {
+        "item" : "Educational Services; Youth and Afterschool Programs",
+        "count" : "84"
+      } ],
+      "smallest" : "Community Services",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050098,
+    "name" : "Provider",
+    "dataTypeName" : "text",
+    "description" : "The community-based organization associated with this contract and workscope.",
+    "fieldName" : "provider",
+    "position" : 5,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254882,
+    "cachedContents" : {
+      "non_null" : "31676",
+      "largest" : "ZMI Foundation, Inc",
+      "null" : "1",
+      "top" : [ {
+        "item" : "New York Edge, Inc.",
+        "count" : "885"
+      }, {
+        "item" : "The Children's Aid Society",
+        "count" : "519"
+      }, {
+        "item" : "Good Shepherd Services",
+        "count" : "435"
+      }, {
+        "item" : "YMCA of Greater New York/Corporate",
+        "count" : "425"
+      }, {
+        "item" : "The Child Center of NY Inc",
+        "count" : "398"
+      }, {
+        "item" : "CAMBA, Inc.",
+        "count" : "386"
+      }, {
+        "item" : "Child Development Ctr of the Mosholu Montefiore Comm Center",
+        "count" : "381"
+      }, {
+        "item" : "Chinese-American Planning Council Inc",
+        "count" : "378"
+      }, {
+        "item" : "New York Junior Tennis League Inc",
+        "count" : "361"
+      }, {
+        "item" : "United Activities Unlimited, Inc.",
+        "count" : "354"
+      }, {
+        "item" : "BronxWorks, Inc.",
+        "count" : "352"
+      }, {
+        "item" : "The Greater Ridgewood Youth Council, Inc.",
+        "count" : "330"
+      }, {
+        "item" : "Catholic Charities Community Services, Archdiocese of NY",
+        "count" : "323"
+      }, {
+        "item" : "Research Foundation of the City University of New York",
+        "count" : "318"
+      }, {
+        "item" : "Grand Street Settlement, Inc.",
+        "count" : "303"
+      }, {
+        "item" : "Police Athletic League, Inc.",
+        "count" : "293"
+      }, {
+        "item" : "ST. NICKS ALLIANCE CORP.",
+        "count" : "286"
+      }, {
+        "item" : "NIA Community Services Network Inc",
+        "count" : "280"
+      }, {
+        "item" : "Phipps Neighborhoods, Inc.",
+        "count" : "270"
+      }, {
+        "item" : "SCAN-HARBOR INC",
+        "count" : "269"
+      } ],
+      "smallest" : "109th Precinct Community Council,",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050099,
+    "name" : "Program Site Name",
+    "dataTypeName" : "text",
+    "description" : "The name under which this program site is identified in DYCD systems",
+    "fieldName" : "program_site_name",
+    "position" : 6,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254883,
+    "cachedContents" : {
+      "non_null" : "31220",
+      "largest" : "Zoom: Sisters in Solidarity Cohort 2",
+      "null" : "457",
+      "top" : [ {
+        "item" : "Chinese American Planning Council",
+        "count" : "91"
+      }, {
+        "item" : "Brooklyn",
+        "count" : "82"
+      }, {
+        "item" : "Bronx",
+        "count" : "65"
+      }, {
+        "item" : "Northern Manhattan Improvement Corporation",
+        "count" : "59"
+      }, {
+        "item" : "Make the Road New York",
+        "count" : "54"
+      }, {
+        "item" : "Carolyn McLaughlin Community Center",
+        "count" : "53"
+      }, {
+        "item" : "St. Nicks Alliance",
+        "count" : "50"
+      }, {
+        "item" : "Edith and Carl Marks Jewish Community House of Bensonhurst",
+        "count" : "47"
+      }, {
+        "item" : "Queens",
+        "count" : "47"
+      }, {
+        "item" : "Main Site",
+        "count" : "46"
+      }, {
+        "item" : "Grand Street Campus",
+        "count" : "42"
+      }, {
+        "item" : "Ridgewood Bushwick Youth Center",
+        "count" : "41"
+      }, {
+        "item" : "Italian American Civil Rights League",
+        "count" : "41"
+      }, {
+        "item" : "Kingsbridge Heights Community Center",
+        "count" : "40"
+      }, {
+        "item" : "Mosholu Montefiore Community Center",
+        "count" : "40"
+      }, {
+        "item" : "Manhattan",
+        "count" : "39"
+      }, {
+        "item" : "The Children's Aid Society",
+        "count" : "38"
+      }, {
+        "item" : "Opportunities for a Better Tomorrow",
+        "count" : "38"
+      }, {
+        "item" : "Grand Street Settlement, Inc.",
+        "count" : "34"
+      }, {
+        "item" : "Catholic Charities Neighborhood Services, Inc.",
+        "count" : "32"
+      } ],
+      "smallest" : "08X 304",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050100,
+    "name" : "Borough",
+    "dataTypeName" : "text",
+    "description" : "The borough for the street address of the program site.",
+    "fieldName" : "borough",
+    "position" : 7,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254884,
+    "cachedContents" : {
+      "non_null" : "31676",
+      "largest" : "Staten Island",
+      "null" : "1",
+      "top" : [ {
+        "item" : "Brooklyn",
+        "count" : "10169"
+      }, {
+        "item" : "Manhattan",
+        "count" : "7319"
+      }, {
+        "item" : "Bronx",
+        "count" : "6410"
+      }, {
+        "item" : "Queens",
+        "count" : "6103"
+      }, {
+        "item" : "Staten Island",
+        "count" : "1656"
+      }, {
+        "item" : "Outside of NYC",
+        "count" : "19"
+      } ],
+      "smallest" : "Bronx",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050101,
+    "name" : "Street Address",
+    "dataTypeName" : "text",
+    "description" : "The street address of the program site.",
+    "fieldName" : "street_address",
+    "position" : 8,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254885,
+    "cachedContents" : {
+      "non_null" : "31228",
+      "largest" : "W Brighton Ave & W 2nd St.",
+      "null" : "449",
+      "top" : [ {
+        "item" : "1474 Gates Avenue",
+        "count" : "116"
+      }, {
+        "item" : "1130 Grand Concourse",
+        "count" : "101"
+      }, {
+        "item" : "850 Grand Street",
+        "count" : "100"
+      }, {
+        "item" : "10-25 41 Avenue",
+        "count" : "88"
+      }, {
+        "item" : "45 Wadsworth Avenue",
+        "count" : "83"
+      }, {
+        "item" : "1523 Avenue M",
+        "count" : "80"
+      }, {
+        "item" : "800 East Gun Hill Road",
+        "count" : "76"
+      }, {
+        "item" : "1980 Lafayette Avenue",
+        "count" : "68"
+      }, {
+        "item" : "7802 Bay Parkway",
+        "count" : "65"
+      }, {
+        "item" : "3512 Dekalb Avenue",
+        "count" : "64"
+      }, {
+        "item" : "121 Avenue Of The Americas",
+        "count" : "63"
+      }, {
+        "item" : "25 Thornton Street",
+        "count" : "63"
+      }, {
+        "item" : "1865 Morris Avenue",
+        "count" : "62"
+      }, {
+        "item" : "108-25 62 Drive",
+        "count" : "60"
+      }, {
+        "item" : "4 West 43 Street",
+        "count" : "59"
+      }, {
+        "item" : "5 West 63rd Street",
+        "count" : "58"
+      }, {
+        "item" : "77-17 Queens Boulevard",
+        "count" : "57"
+      }, {
+        "item" : "3101 Kingsbridge Terrace",
+        "count" : "57"
+      }, {
+        "item" : "177-01 Baisley Boulevard",
+        "count" : "56"
+      }, {
+        "item" : "650 Academy Street",
+        "count" : "56"
+      } ],
+      "smallest" : "100-00 Beach Channel Drive",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050102,
+    "name" : "City",
+    "dataTypeName" : "text",
+    "description" : "The city listed in the address of the program site.",
+    "fieldName" : "city",
+    "position" : 9,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254886,
+    "cachedContents" : {
+      "non_null" : "31647",
+      "largest" : "Woodside",
+      "null" : "30",
+      "top" : [ {
+        "item" : "Brooklyn",
+        "count" : "10038"
+      }, {
+        "item" : "New York",
+        "count" : "7215"
+      }, {
+        "item" : "Bronx",
+        "count" : "6265"
+      }, {
+        "item" : "Staten Island",
+        "count" : "1605"
+      }, {
+        "item" : "Jamaica",
+        "count" : "871"
+      }, {
+        "item" : "Flushing",
+        "count" : "599"
+      }, {
+        "item" : "Astoria",
+        "count" : "469"
+      }, {
+        "item" : "Far Rockaway",
+        "count" : "458"
+      }, {
+        "item" : "Long Island City",
+        "count" : "412"
+      }, {
+        "item" : "Elmhurst",
+        "count" : "285"
+      }, {
+        "item" : "Jackson Heights",
+        "count" : "229"
+      }, {
+        "item" : "Forest Hills",
+        "count" : "226"
+      }, {
+        "item" : "Woodside",
+        "count" : "196"
+      }, {
+        "item" : "Ridgewood",
+        "count" : "184"
+      }, {
+        "item" : "Springfield Gardens",
+        "count" : "146"
+      }, {
+        "item" : "Corona",
+        "count" : "142"
+      }, {
+        "item" : "Bayside",
+        "count" : "120"
+      }, {
+        "item" : "Fresh Meadows",
+        "count" : "111"
+      }, {
+        "item" : "Arverne",
+        "count" : "106"
+      }, {
+        "item" : "South Ozone Park",
+        "count" : "90"
+      } ],
+      "smallest" : "7 B",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050103,
+    "name" : "State",
+    "dataTypeName" : "text",
+    "description" : "The state in which the program site is located.",
+    "fieldName" : "state",
+    "position" : 10,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254887,
+    "cachedContents" : {
+      "non_null" : "31677",
+      "largest" : "NY",
+      "null" : "0",
+      "top" : [ {
+        "item" : "NY",
+        "count" : "31674"
+      }, {
+        "item" : "CA",
+        "count" : "1"
+      }, {
+        "item" : "IL",
+        "count" : "1"
+      }, {
+        "item" : "CT",
+        "count" : "1"
+      } ],
+      "smallest" : "CA",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050104,
+    "name" : "Postcode",
+    "dataTypeName" : "text",
+    "description" : "The zipcode for the street address of the program site.",
+    "fieldName" : "zipcode",
+    "position" : 11,
+    "renderTypeName" : "text",
+    "tableColumnId" : 147129774,
+    "cachedContents" : {
+      "non_null" : "31639",
+      "largest" : "NULL",
+      "null" : "38",
+      "top" : [ {
+        "item" : "10002",
+        "count" : "786"
+      }, {
+        "item" : "10029",
+        "count" : "624"
+      }, {
+        "item" : "11212",
+        "count" : "605"
+      }, {
+        "item" : "10456",
+        "count" : "579"
+      }, {
+        "item" : "11201",
+        "count" : "533"
+      }, {
+        "item" : "11207",
+        "count" : "530"
+      }, {
+        "item" : "11206",
+        "count" : "511"
+      }, {
+        "item" : "10027",
+        "count" : "470"
+      }, {
+        "item" : "10467",
+        "count" : "446"
+      }, {
+        "item" : "10452",
+        "count" : "429"
+      }, {
+        "item" : "10457",
+        "count" : "426"
+      }, {
+        "item" : "11101",
+        "count" : "412"
+      }, {
+        "item" : "10455",
+        "count" : "407"
+      }, {
+        "item" : "10451",
+        "count" : "391"
+      }, {
+        "item" : "10453",
+        "count" : "374"
+      }, {
+        "item" : "11203",
+        "count" : "365"
+      }, {
+        "item" : "11232",
+        "count" : "358"
+      }, {
+        "item" : "10009",
+        "count" : "345"
+      }, {
+        "item" : "11233",
+        "count" : "345"
+      }, {
+        "item" : "10460",
+        "count" : "343"
+      } ],
+      "smallest" : "10001",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 647050105,
+    "name" : "Latitude",
+    "dataTypeName" : "number",
+    "description" : "Latitude of the program site.",
+    "fieldName" : "latitude",
+    "position" : 12,
+    "renderTypeName" : "number",
+    "tableColumnId" : 83254875,
+    "cachedContents" : {
+      "non_null" : "31167",
+      "largest" : "43.1805599",
+      "null" : "510",
+      "top" : [ {
+        "item" : "40.6975502",
+        "count" : "116"
+      }, {
+        "item" : "40.8326862",
+        "count" : "101"
+      }, {
+        "item" : "40.7119673",
+        "count" : "100"
+      }, {
+        "item" : "40.7555154",
+        "count" : "88"
+      }, {
+        "item" : "40.8461063",
+        "count" : "83"
+      }, {
+        "item" : "40.6184019",
+        "count" : "80"
+      }, {
+        "item" : "40.8751267",
+        "count" : "76"
+      }, {
+        "item" : "40.8211936",
+        "count" : "68"
+      }, {
+        "item" : "40.6063449",
+        "count" : "65"
+      }, {
+        "item" : "40.882585",
+        "count" : "64"
+      }, {
+        "item" : "40.7240978",
+        "count" : "63"
+      }, {
+        "item" : "40.7011568",
+        "count" : "63"
+      }, {
+        "item" : "40.8485816",
+        "count" : "62"
+      }, {
+        "item" : "40.7362957",
+        "count" : "60"
+      }, {
+        "item" : "40.7543471",
+        "count" : "59"
+      }, {
+        "item" : "40.77066332",
+        "count" : "58"
+      }, {
+        "item" : "40.7389333",
+        "count" : "57"
+      }, {
+        "item" : "40.8776646",
+        "count" : "57"
+      }, {
+        "item" : "40.8659143",
+        "count" : "56"
+      }, {
+        "item" : "40.792727",
+        "count" : "56"
+      } ],
+      "smallest" : "32.78976822",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050106,
+    "name" : "Longitude",
+    "dataTypeName" : "number",
+    "description" : "Longitude of the program site.",
+    "fieldName" : "longitude",
+    "position" : 13,
+    "renderTypeName" : "number",
+    "tableColumnId" : 83254876,
+    "cachedContents" : {
+      "non_null" : "31167",
+      "largest" : "-73.2374988",
+      "null" : "510",
+      "top" : [ {
+        "item" : "-73.9135417",
+        "count" : "116"
+      }, {
+        "item" : "-73.9372221",
+        "count" : "104"
+      }, {
+        "item" : "-73.9187597",
+        "count" : "101"
+      }, {
+        "item" : "-73.9400499",
+        "count" : "100"
+      }, {
+        "item" : "-73.9445939",
+        "count" : "88"
+      }, {
+        "item" : "-73.9593562",
+        "count" : "80"
+      }, {
+        "item" : "-73.8617246",
+        "count" : "76"
+      }, {
+        "item" : "-73.856527",
+        "count" : "68"
+      }, {
+        "item" : "-73.9897061",
+        "count" : "65"
+      }, {
+        "item" : "-73.8800023",
+        "count" : "64"
+      }, {
+        "item" : "-74.0052743",
+        "count" : "63"
+      }, {
+        "item" : "-73.9437202",
+        "count" : "63"
+      }, {
+        "item" : "-73.9087503",
+        "count" : "62"
+      }, {
+        "item" : "-73.8501413",
+        "count" : "60"
+      }, {
+        "item" : "-73.9812147",
+        "count" : "59"
+      }, {
+        "item" : "-73.8740662",
+        "count" : "59"
+      }, {
+        "item" : "-73.98030549",
+        "count" : "58"
+      }, {
+        "item" : "-73.8865151",
+        "count" : "57"
+      }, {
+        "item" : "-73.9006799",
+        "count" : "57"
+      }, {
+        "item" : "-73.9421359",
+        "count" : "56"
+      } ],
+      "smallest" : "-118.402892",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050107,
+    "name" : "X_Coordinate",
+    "dataTypeName" : "number",
+    "description" : "The NYC X-coordinate of the program site.",
+    "fieldName" : "x_coordinate",
+    "position" : 14,
+    "renderTypeName" : "number",
+    "tableColumnId" : 143208113,
+    "cachedContents" : {
+      "non_null" : "31142",
+      "largest" : "1064976",
+      "null" : "535",
+      "top" : [ {
+        "item" : "1008123",
+        "count" : "116"
+      }, {
+        "item" : "1006502",
+        "count" : "101"
+      }, {
+        "item" : "1000961",
+        "count" : "100"
+      }, {
+        "item" : "999397",
+        "count" : "88"
+      }, {
+        "item" : "1001508",
+        "count" : "83"
+      }, {
+        "item" : "995514",
+        "count" : "80"
+      }, {
+        "item" : "1022422",
+        "count" : "76"
+      }, {
+        "item" : "989661",
+        "count" : "72"
+      }, {
+        "item" : "1024059",
+        "count" : "68"
+      }, {
+        "item" : "987239",
+        "count" : "65"
+      }, {
+        "item" : "1017416",
+        "count" : "64"
+      }, {
+        "item" : "999861",
+        "count" : "63"
+      }, {
+        "item" : "982950",
+        "count" : "63"
+      }, {
+        "item" : "1009588",
+        "count" : "62"
+      }, {
+        "item" : "1025761",
+        "count" : "60"
+      }, {
+        "item" : "989533",
+        "count" : "59"
+      }, {
+        "item" : "1015655",
+        "count" : "57"
+      }, {
+        "item" : "1011813",
+        "count" : "57"
+      }, {
+        "item" : "1003444",
+        "count" : "57"
+      }, {
+        "item" : "1048466",
+        "count" : "56"
+      } ],
+      "smallest" : "913833",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 647050108,
+    "name" : "Y_Coordinate",
+    "dataTypeName" : "number",
+    "description" : "The NYC Y-coordinate of the program site.",
+    "fieldName" : "y_coordinate",
+    "position" : 15,
+    "renderTypeName" : "number",
+    "tableColumnId" : 143208112,
+    "cachedContents" : {
+      "non_null" : "31142",
+      "largest" : "270037",
+      "null" : "535",
+      "top" : [ {
+        "item" : "193511",
+        "count" : "116"
+      }, {
+        "item" : "242528",
+        "count" : "101"
+      }, {
+        "item" : "198750",
+        "count" : "100"
+      }, {
+        "item" : "214526",
+        "count" : "88"
+      }, {
+        "item" : "247572",
+        "count" : "83"
+      }, {
+        "item" : "164462",
+        "count" : "80"
+      }, {
+        "item" : "258441",
+        "count" : "76"
+      }, {
+        "item" : "238892",
+        "count" : "68"
+      }, {
+        "item" : "160193",
+        "count" : "65"
+      }, {
+        "item" : "260902",
+        "count" : "64"
+      }, {
+        "item" : "194681",
+        "count" : "63"
+      }, {
+        "item" : "203014",
+        "count" : "63"
+      }, {
+        "item" : "248439",
+        "count" : "62"
+      }, {
+        "item" : "207424",
+        "count" : "60"
+      }, {
+        "item" : "214115",
+        "count" : "59"
+      }, {
+        "item" : "220060",
+        "count" : "58"
+      }, {
+        "item" : "258992",
+        "count" : "57"
+      }, {
+        "item" : "208365",
+        "count" : "57"
+      }, {
+        "item" : "228219",
+        "count" : "56"
+      }, {
+        "item" : "254813",
+        "count" : "56"
+      } ],
+      "smallest" : "122219",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 647050109,
+    "name" : "Community Board",
+    "dataTypeName" : "text",
+    "description" : "Community District in which the program site is located.",
+    "fieldName" : "communitydistrict",
+    "position" : 16,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254895,
+    "cachedContents" : {
+      "non_null" : "31606",
+      "largest" : "Richmond CD 003",
+      "null" : "71",
+      "top" : [ {
+        "item" : "Manhattan CD 003",
+        "count" : "1213"
+      }, {
+        "item" : "Manhattan CD 012",
+        "count" : "1041"
+      }, {
+        "item" : "Richmond CD 001",
+        "count" : "1015"
+      }, {
+        "item" : "Bronx CD 001",
+        "count" : "1005"
+      }, {
+        "item" : "Brooklyn CD 005",
+        "count" : "966"
+      }, {
+        "item" : "Manhattan CD 011",
+        "count" : "944"
+      }, {
+        "item" : "Brooklyn CD 003",
+        "count" : "930"
+      }, {
+        "item" : "Queens CD 012",
+        "count" : "905"
+      }, {
+        "item" : "Brooklyn CD 002",
+        "count" : "846"
+      }, {
+        "item" : "Brooklyn CD 001",
+        "count" : "818"
+      }, {
+        "item" : "Bronx CD 004",
+        "count" : "813"
+      }, {
+        "item" : "Queens CD 001",
+        "count" : "790"
+      }, {
+        "item" : "Manhattan CD 010",
+        "count" : "730"
+      }, {
+        "item" : "Brooklyn CD 016",
+        "count" : "677"
+      }, {
+        "item" : "Manhattan CD 001",
+        "count" : "659"
+      }, {
+        "item" : "Bronx CD 009",
+        "count" : "646"
+      }, {
+        "item" : "Bronx CD 003",
+        "count" : "643"
+      }, {
+        "item" : "Brooklyn CD 007",
+        "count" : "619"
+      }, {
+        "item" : "Queens CD 014",
+        "count" : "587"
+      }, {
+        "item" : "Brooklyn CD 004",
+        "count" : "565"
+      } ],
+      "smallest" : "Bronx CD 001",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050111,
+    "name" : "Council District",
+    "dataTypeName" : "text",
+    "description" : "City Council district in which the program site is located.",
+    "fieldName" : "city_council_district",
+    "position" : 18,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254894,
+    "cachedContents" : {
+      "non_null" : "31635",
+      "largest" : "NULL",
+      "null" : "42",
+      "top" : [ {
+        "item" : "Council District 001 Manhattan",
+        "count" : "1593"
+      }, {
+        "item" : "Council District 008 Manhattan",
+        "count" : "1465"
+      }, {
+        "item" : "Council District 017 Bronx",
+        "count" : "1235"
+      }, {
+        "item" : "Council District 010 Manhattan",
+        "count" : "1084"
+      }, {
+        "item" : "Council District 016 Bronx",
+        "count" : "1055"
+      }, {
+        "item" : "Council District 049 Richmond",
+        "count" : "995"
+      }, {
+        "item" : "Council District 033 Brooklyn",
+        "count" : "928"
+      }, {
+        "item" : "Council District 009 Manhattan",
+        "count" : "894"
+      }, {
+        "item" : "Council District 036 Brooklyn",
+        "count" : "867"
+      }, {
+        "item" : "Council District 041 Brooklyn",
+        "count" : "866"
+      }, {
+        "item" : "Council District 037 Brooklyn",
+        "count" : "860"
+      }, {
+        "item" : "Council District 038 Brooklyn",
+        "count" : "812"
+      }, {
+        "item" : "Council District 035 Brooklyn",
+        "count" : "776"
+      }, {
+        "item" : "Council District 026 Queens",
+        "count" : "768"
+      }, {
+        "item" : "Council District 015 Bronx",
+        "count" : "755"
+      }, {
+        "item" : "Council District 042 Brooklyn",
+        "count" : "754"
+      }, {
+        "item" : "Council District 003 Manhattan",
+        "count" : "699"
+      }, {
+        "item" : "Council District 031 Queens",
+        "count" : "689"
+      }, {
+        "item" : "Council District 002 Manhattan",
+        "count" : "637"
+      }, {
+        "item" : "Council District 007 Manhattan",
+        "count" : "618"
+      } ],
+      "smallest" : "Community District 001 Manhattan",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050112,
+    "name" : "Census Tract 2010",
+    "dataTypeName" : "number",
+    "description" : "Census tract (2010) in which the program site is located.",
+    "fieldName" : "census_tract_2010",
+    "position" : 19,
+    "renderTypeName" : "number",
+    "tableColumnId" : 83254896,
+    "cachedContents" : {
+      "non_null" : "31116",
+      "largest" : "157902",
+      "null" : "561",
+      "top" : [ {
+        "item" : "9",
+        "count" : "257"
+      }, {
+        "item" : "16",
+        "count" : "237"
+      }, {
+        "item" : "43",
+        "count" : "237"
+      }, {
+        "item" : "18",
+        "count" : "236"
+      }, {
+        "item" : "485",
+        "count" : "224"
+      }, {
+        "item" : "433",
+        "count" : "204"
+      }, {
+        "item" : "21",
+        "count" : "192"
+      }, {
+        "item" : "25",
+        "count" : "189"
+      }, {
+        "item" : "13",
+        "count" : "184"
+      }, {
+        "item" : "7",
+        "count" : "183"
+      }, {
+        "item" : "67",
+        "count" : "175"
+      }, {
+        "item" : "291",
+        "count" : "167"
+      }, {
+        "item" : "251",
+        "count" : "167"
+      }, {
+        "item" : "37",
+        "count" : "151"
+      }, {
+        "item" : "84",
+        "count" : "150"
+      }, {
+        "item" : "77",
+        "count" : "147"
+      }, {
+        "item" : "277",
+        "count" : "146"
+      }, {
+        "item" : "170",
+        "count" : "142"
+      }, {
+        "item" : "41",
+        "count" : "136"
+      }, {
+        "item" : "39",
+        "count" : "136"
+      } ],
+      "smallest" : "0",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 647050113,
+    "name" : "NDA",
+    "dataTypeName" : "text",
+    "description" : "Neighborhood Development Area (if applicable) in which the program site is located. NDAs are used by DYCD to identify areas for Community Anti-Poverty Programs.",
+    "fieldName" : "nda",
+    "position" : 20,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254889,
+    "cachedContents" : {
+      "non_null" : "31625",
+      "largest" : "Out of NDA",
+      "null" : "52",
+      "top" : [ {
+        "item" : "Out of NDA",
+        "count" : "9968"
+      }, {
+        "item" : "NDA012M",
+        "count" : "1088"
+      }, {
+        "item" : "NDA003M",
+        "count" : "1074"
+      }, {
+        "item" : "NDA001X",
+        "count" : "994"
+      }, {
+        "item" : "NDA011M",
+        "count" : "918"
+      }, {
+        "item" : "NDA016K",
+        "count" : "903"
+      }, {
+        "item" : "NDA001R",
+        "count" : "869"
+      }, {
+        "item" : "NDA004X",
+        "count" : "818"
+      }, {
+        "item" : "NDA004K",
+        "count" : "814"
+      }, {
+        "item" : "NDA005K",
+        "count" : "776"
+      }, {
+        "item" : "NDA010M",
+        "count" : "750"
+      }, {
+        "item" : "NDA003K",
+        "count" : "695"
+      }, {
+        "item" : "NDA003X",
+        "count" : "687"
+      }, {
+        "item" : "NDA007K",
+        "count" : "664"
+      }, {
+        "item" : "NDA009X",
+        "count" : "657"
+      }, {
+        "item" : "NDA002K",
+        "count" : "627"
+      }, {
+        "item" : "NDA014K",
+        "count" : "556"
+      }, {
+        "item" : "NDA009M",
+        "count" : "554"
+      }, {
+        "item" : "NDA005X",
+        "count" : "506"
+      }, {
+        "item" : "NDA009K",
+        "count" : "489"
+      } ],
+      "smallest" : "NDA001K",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050114,
+    "name" : "NTA",
+    "dataTypeName" : "text",
+    "description" : "Neighborhood Tabulation Area in which the program site is located.",
+    "fieldName" : "nta",
+    "position" : 21,
+    "renderTypeName" : "text",
+    "tableColumnId" : 83254890,
+    "cachedContents" : {
+      "non_null" : "31627",
+      "largest" : "SI54",
+      "null" : "50",
+      "top" : [ {
+        "item" : "MN28",
+        "count" : "584"
+      }, {
+        "item" : "BX39",
+        "count" : "554"
+      }, {
+        "item" : "BK81",
+        "count" : "553"
+      }, {
+        "item" : "MN25",
+        "count" : "552"
+      }, {
+        "item" : "BK82",
+        "count" : "522"
+      }, {
+        "item" : "MN33",
+        "count" : "499"
+      }, {
+        "item" : "MN27",
+        "count" : "493"
+      }, {
+        "item" : "BK38",
+        "count" : "472"
+      }, {
+        "item" : "BX34",
+        "count" : "444"
+      }, {
+        "item" : "BK61",
+        "count" : "444"
+      }, {
+        "item" : "MN03",
+        "count" : "442"
+      }, {
+        "item" : "BK78",
+        "count" : "431"
+      }, {
+        "item" : "BK32",
+        "count" : "431"
+      }, {
+        "item" : "MN34",
+        "count" : "423"
+      }, {
+        "item" : "MN36",
+        "count" : "420"
+      }, {
+        "item" : "BK75",
+        "count" : "391"
+      }, {
+        "item" : "BK77",
+        "count" : "383"
+      }, {
+        "item" : "BX14",
+        "count" : "378"
+      }, {
+        "item" : "QN31",
+        "count" : "375"
+      }, {
+        "item" : "MN01",
+        "count" : "371"
+      } ],
+      "smallest" : "BK09",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050115,
+    "name" : "BIN",
+    "dataTypeName" : "text",
+    "description" : "The BIN (Building Identification Number) is a unique identifier for each building in the City",
+    "fieldName" : "bin",
+    "position" : 22,
+    "renderTypeName" : "text",
+    "tableColumnId" : 147129775,
+    "cachedContents" : {
+      "non_null" : "31019",
+      "largest" : "ERROR: #N/A",
+      "null" : "658",
+      "top" : [ {
+        "item" : "3387654",
+        "count" : "116"
+      }, {
+        "item" : "3000000",
+        "count" : "110"
+      }, {
+        "item" : "2002833",
+        "count" : "101"
+      }, {
+        "item" : "3325733",
+        "count" : "100"
+      }, {
+        "item" : "4433386",
+        "count" : "88"
+      }, {
+        "item" : "1089928",
+        "count" : "83"
+      }, {
+        "item" : "3406670",
+        "count" : "80"
+      }, {
+        "item" : "2057045",
+        "count" : "76"
+      }, {
+        "item" : "1083493",
+        "count" : "71"
+      }, {
+        "item" : "2022205",
+        "count" : "68"
+      }, {
+        "item" : "3162352",
+        "count" : "65"
+      }, {
+        "item" : "1034201",
+        "count" : "65"
+      }, {
+        "item" : "2094751",
+        "count" : "64"
+      }, {
+        "item" : "ERROR: #N/A",
+        "count" : "63"
+      }, {
+        "item" : "3061498",
+        "count" : "63"
+      }, {
+        "item" : "2007902",
+        "count" : "62"
+      }, {
+        "item" : "4432108",
+        "count" : "60"
+      }, {
+        "item" : "1027468",
+        "count" : "58"
+      }, {
+        "item" : "1000000",
+        "count" : "58"
+      }, {
+        "item" : "2015788",
+        "count" : "57"
+      } ],
+      "smallest" : "1000000",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 647050116,
+    "name" : "BBL",
+    "dataTypeName" : "text",
+    "description" : "The BBL (Borough, Block, and Lot) is a unique identifier for each tax lot in the City",
+    "fieldName" : "bbl",
+    "position" : 23,
+    "renderTypeName" : "text",
+    "tableColumnId" : 147129776,
+    "cachedContents" : {
+      "non_null" : "31019",
+      "largest" : "ERROR: #N/A",
+      "null" : "658",
+      "top" : [ {
+        "item" : "3033440016",
+        "count" : "116"
+      }, {
+        "item" : "2024620042",
+        "count" : "101"
+      }, {
+        "item" : "3030160001",
+        "count" : "100"
+      }, {
+        "item" : "4004700100",
+        "count" : "97"
+      }, {
+        "item" : "1021440003",
+        "count" : "83"
+      }, {
+        "item" : "3067350044",
+        "count" : "80"
+      }, {
+        "item" : "2046330040",
+        "count" : "76"
+      }, {
+        "item" : "1004777501",
+        "count" : "71"
+      }, {
+        "item" : "2036040039",
+        "count" : "68"
+      }, {
+        "item" : "3062640030",
+        "count" : "65"
+      }, {
+        "item" : "1012580042",
+        "count" : "65"
+      }, {
+        "item" : "2033280138",
+        "count" : "64"
+      }, {
+        "item" : "ERROR: #N/A",
+        "count" : "63"
+      }, {
+        "item" : "3022750021",
+        "count" : "63"
+      }, {
+        "item" : "2028270001",
+        "count" : "62"
+      }, {
+        "item" : "2057160725",
+        "count" : "61"
+      }, {
+        "item" : "4021590015",
+        "count" : "60"
+      }, {
+        "item" : "2051410150",
+        "count" : "60"
+      }, {
+        "item" : "1011160024",
+        "count" : "58"
+      }, {
+        "item" : "4124060180",
+        "count" : "57"
+      } ],
+      "smallest" : "1000010010",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : {
+      "noCommas" : "true"
+    }
+  }, {
+    "id" : 647050117,
+    "name" : "TotalSlots",
+    "dataTypeName" : "text",
+    "description" : "The number of funded slots for this program site.",
+    "fieldName" : "totalslots",
+    "position" : 24,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143208118,
+    "cachedContents" : {
+      "non_null" : "15874",
+      "largest" : "NULL",
+      "null" : "15803",
+      "top" : [ {
+        "item" : "0",
+        "count" : "955"
+      }, {
+        "item" : "30",
+        "count" : "884"
+      }, {
+        "item" : "100",
+        "count" : "864"
+      }, {
+        "item" : "90",
+        "count" : "855"
+      }, {
+        "item" : "300",
+        "count" : "787"
+      }, {
+        "item" : "NULL",
+        "count" : "667"
+      }, {
+        "item" : "150",
+        "count" : "656"
+      }, {
+        "item" : "120",
+        "count" : "621"
+      }, {
+        "item" : "50",
+        "count" : "588"
+      }, {
+        "item" : "91",
+        "count" : "418"
+      }, {
+        "item" : "60",
+        "count" : "414"
+      }, {
+        "item" : "75",
+        "count" : "313"
+      }, {
+        "item" : "157",
+        "count" : "295"
+      }, {
+        "item" : "1",
+        "count" : "232"
+      }, {
+        "item" : "140",
+        "count" : "166"
+      }, {
+        "item" : "80",
+        "count" : "157"
+      }, {
+        "item" : "115",
+        "count" : "153"
+      }, {
+        "item" : "105",
+        "count" : "147"
+      }, {
+        "item" : "200",
+        "count" : "144"
+      }, {
+        "item" : "110",
+        "count" : "139"
+      } ],
+      "smallest" : "0",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050118,
+    "name" : "TotalParticipants",
+    "dataTypeName" : "text",
+    "description" : "The number of enrolled participants for this program site.\n",
+    "fieldName" : "totalparticipants",
+    "position" : 25,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143208116,
+    "cachedContents" : {
+      "non_null" : "16685",
+      "largest" : "99",
+      "null" : "14992",
+      "top" : [ {
+        "item" : "0",
+        "count" : "3316"
+      }, {
+        "item" : "106",
+        "count" : "119"
+      }, {
+        "item" : "105",
+        "count" : "112"
+      }, {
+        "item" : "101",
+        "count" : "109"
+      }, {
+        "item" : "100",
+        "count" : "104"
+      }, {
+        "item" : "109",
+        "count" : "99"
+      }, {
+        "item" : "104",
+        "count" : "97"
+      }, {
+        "item" : "103",
+        "count" : "97"
+      }, {
+        "item" : "108",
+        "count" : "97"
+      }, {
+        "item" : "123",
+        "count" : "96"
+      }, {
+        "item" : "30",
+        "count" : "96"
+      }, {
+        "item" : "150",
+        "count" : "96"
+      }, {
+        "item" : "90",
+        "count" : "96"
+      }, {
+        "item" : "50",
+        "count" : "95"
+      }, {
+        "item" : "115",
+        "count" : "95"
+      }, {
+        "item" : "112",
+        "count" : "95"
+      }, {
+        "item" : "120",
+        "count" : "95"
+      }, {
+        "item" : "110",
+        "count" : "95"
+      }, {
+        "item" : "102",
+        "count" : "93"
+      }, {
+        "item" : "125",
+        "count" : "92"
+      } ],
+      "smallest" : "0",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050119,
+    "name" : "Contract",
+    "dataTypeName" : "text",
+    "description" : "The DYCD contract number associated with this program site. ",
+    "fieldName" : "contract",
+    "position" : 26,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143208115,
+    "cachedContents" : {
+      "non_null" : "31677",
+      "largest" : "9949E",
+      "null" : "0",
+      "top" : [ {
+        "item" : "99345A",
+        "count" : "78"
+      }, {
+        "item" : "99345B",
+        "count" : "69"
+      }, {
+        "item" : "766607A",
+        "count" : "63"
+      }, {
+        "item" : "99216C",
+        "count" : "57"
+      }, {
+        "item" : "99216A",
+        "count" : "56"
+      }, {
+        "item" : "62158P",
+        "count" : "56"
+      }, {
+        "item" : "134318",
+        "count" : "53"
+      }, {
+        "item" : "99203C",
+        "count" : "48"
+      }, {
+        "item" : "542180",
+        "count" : "45"
+      }, {
+        "item" : "542078",
+        "count" : "45"
+      }, {
+        "item" : "99203A",
+        "count" : "42"
+      }, {
+        "item" : "542151",
+        "count" : "39"
+      }, {
+        "item" : "524120",
+        "count" : "39"
+      }, {
+        "item" : "542009",
+        "count" : "39"
+      }, {
+        "item" : "99228A",
+        "count" : "39"
+      }, {
+        "item" : "766578A",
+        "count" : "36"
+      }, {
+        "item" : "534115",
+        "count" : "36"
+      }, {
+        "item" : "99216",
+        "count" : "35"
+      }, {
+        "item" : "99226C",
+        "count" : "34"
+      }, {
+        "item" : "542055",
+        "count" : "33"
+      } ],
+      "smallest" : "12119P",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050120,
+    "name" : "PortfolioID",
+    "dataTypeName" : "text",
+    "description" : "The DYCD identifier used to differentiate between program sites under a contract where each program site has individual deliverables.\n",
+    "fieldName" : "portfolioid",
+    "position" : 27,
+    "renderTypeName" : "text",
+    "tableColumnId" : 143208111,
+    "cachedContents" : {
+      "non_null" : "10205",
+      "largest" : "SR-X194 K8",
+      "null" : "21472",
+      "top" : [ {
+        "item" : "151001-1",
+        "count" : "11"
+      }, {
+        "item" : "99223",
+        "count" : "11"
+      }, {
+        "item" : "99242-1",
+        "count" : "10"
+      }, {
+        "item" : "151007-4",
+        "count" : "10"
+      }, {
+        "item" : "142238-1",
+        "count" : "10"
+      }, {
+        "item" : "134243-1",
+        "count" : "10"
+      }, {
+        "item" : "142309",
+        "count" : "10"
+      }, {
+        "item" : "142145-1",
+        "count" : "10"
+      }, {
+        "item" : "142011-2",
+        "count" : "10"
+      }, {
+        "item" : "142241-1",
+        "count" : "10"
+      }, {
+        "item" : "134110-1",
+        "count" : "10"
+      }, {
+        "item" : "124204-1",
+        "count" : "10"
+      }, {
+        "item" : "134221-2",
+        "count" : "10"
+      }, {
+        "item" : "142148-1",
+        "count" : "10"
+      }, {
+        "item" : "142116-1",
+        "count" : "10"
+      }, {
+        "item" : "142342-1",
+        "count" : "10"
+      }, {
+        "item" : "142144-2",
+        "count" : "10"
+      }, {
+        "item" : "135404-1",
+        "count" : "10"
+      }, {
+        "item" : "124418-1",
+        "count" : "10"
+      }, {
+        "item" : "99242-3",
+        "count" : "10"
+      } ],
+      "smallest" : "124100",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050121,
+    "name" : "Age Range",
+    "dataTypeName" : "text",
+    "description" : "",
+    "fieldName" : "age_range",
+    "position" : 28,
+    "renderTypeName" : "text",
+    "tableColumnId" : 145540067,
+    "cachedContents" : {
+      "non_null" : "18782",
+      "largest" : "Grades Pre-K - 8",
+      "null" : "12895",
+      "top" : [ {
+        "item" : "Grades 6 - 8",
+        "count" : "5135"
+      }, {
+        "item" : "Grades K - 5",
+        "count" : "3291"
+      }, {
+        "item" : "Ages 4+",
+        "count" : "2231"
+      }, {
+        "item" : "Ages 16+",
+        "count" : "1605"
+      }, {
+        "item" : "Ages 16 - 24",
+        "count" : "1059"
+      }, {
+        "item" : "Ages 14 - 24",
+        "count" : "831"
+      }, {
+        "item" : "Ages 16 - 21",
+        "count" : "538"
+      }, {
+        "item" : "Ages 18+",
+        "count" : "465"
+      }, {
+        "item" : "Ages 16 - 20",
+        "count" : "407"
+      }, {
+        "item" : "Ages 14+",
+        "count" : "400"
+      }, {
+        "item" : "Grades 9 - 12",
+        "count" : "400"
+      }, {
+        "item" : "Ages 14 - 15",
+        "count" : "389"
+      }, {
+        "item" : "Ages 60+",
+        "count" : "355"
+      }, {
+        "item" : "Ages 14 - 28",
+        "count" : "352"
+      }, {
+        "item" : "Grades K - 12",
+        "count" : "328"
+      }, {
+        "item" : "Grades Pre-K - 8",
+        "count" : "289"
+      }, {
+        "item" : "Grades 9 - 10",
+        "count" : "264"
+      }, {
+        "item" : "Ages 11 - 21",
+        "count" : "230"
+      }, {
+        "item" : "Grades 11 - 12",
+        "count" : "165"
+      }, {
+        "item" : "Ages 21 - 24",
+        "count" : "31"
+      } ],
+      "smallest" : "Ages 0+",
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050122,
+    "name" : "Location",
+    "dataTypeName" : "point",
+    "description" : "",
+    "fieldName" : "geocoded_column",
+    "position" : 29,
+    "renderTypeName" : "point",
+    "tableColumnId" : 83254892,
+    "cachedContents" : {
+      "non_null" : "31167",
+      "null" : "510",
+      "top" : [ {
+        "item" : {
+          "coordinates" : [ -73.9135417, 40.6975502 ],
+          "type" : "Point"
+        },
+        "count" : "116"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9187597, 40.8326862 ],
+          "type" : "Point"
+        },
+        "count" : "101"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9400499, 40.7119673 ],
+          "type" : "Point"
+        },
+        "count" : "100"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9445939, 40.7555154 ],
+          "type" : "Point"
+        },
+        "count" : "88"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9372221, 40.8461063 ],
+          "type" : "Point"
+        },
+        "count" : "83"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9593562, 40.6184019 ],
+          "type" : "Point"
+        },
+        "count" : "80"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.8617246, 40.8751267 ],
+          "type" : "Point"
+        },
+        "count" : "76"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.856527, 40.8211936 ],
+          "type" : "Point"
+        },
+        "count" : "68"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9897061, 40.6063449 ],
+          "type" : "Point"
+        },
+        "count" : "65"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.8800023, 40.882585 ],
+          "type" : "Point"
+        },
+        "count" : "64"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9437202, 40.7011568 ],
+          "type" : "Point"
+        },
+        "count" : "63"
+      }, {
+        "item" : {
+          "coordinates" : [ -74.0052743, 40.7240978 ],
+          "type" : "Point"
+        },
+        "count" : "63"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9087503, 40.8485816 ],
+          "type" : "Point"
+        },
+        "count" : "62"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.8501413, 40.7362957 ],
+          "type" : "Point"
+        },
+        "count" : "60"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9812147, 40.7543471 ],
+          "type" : "Point"
+        },
+        "count" : "59"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.98030549, 40.77066332 ],
+          "type" : "Point"
+        },
+        "count" : "58"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9006799, 40.8776646 ],
+          "type" : "Point"
+        },
+        "count" : "57"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.8865151, 40.7389333 ],
+          "type" : "Point"
+        },
+        "count" : "57"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.925157, 40.8659143 ],
+          "type" : "Point"
+        },
+        "count" : "56"
+      }, {
+        "item" : {
+          "coordinates" : [ -73.9421359, 40.792727 ],
+          "type" : "Point"
+        },
+        "count" : "56"
+      } ],
+      "count" : "31677",
+      "cardinality" : "31677"
+    },
+    "format" : { }
+  }, {
+    "id" : 647050123,
+    "name" : "Community Districts",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : ":@computed_region_f5dn_yrer",
+    "position" : 31,
+    "renderTypeName" : "number",
+    "tableColumnId" : 83254898,
+    "computationStrategy" : {
+      "source_columns" : [ "geocoded_column" ],
+      "type" : "georegion_match_on_point",
+      "parameters" : {
+        "region" : "_f5dn-yrer",
+        "primary_key" : "_feature_id"
+      }
+    },
+    "format" : { }
+  }, {
+    "id" : 647050124,
+    "name" : "Borough Boundaries",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : ":@computed_region_yeji_bk3q",
+    "position" : 32,
+    "renderTypeName" : "number",
+    "tableColumnId" : 83254899,
+    "computationStrategy" : {
+      "source_columns" : [ "geocoded_column" ],
+      "type" : "georegion_match_on_point",
+      "parameters" : {
+        "region" : "_yeji-bk3q",
+        "primary_key" : "_feature_id"
+      }
+    },
+    "format" : { }
+  }, {
+    "id" : 647050125,
+    "name" : "City Council Districts",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : ":@computed_region_92fq_4b7q",
+    "position" : 33,
+    "renderTypeName" : "number",
+    "tableColumnId" : 83254900,
+    "computationStrategy" : {
+      "source_columns" : [ "geocoded_column" ],
+      "type" : "georegion_match_on_point",
+      "parameters" : {
+        "region" : "_92fq-4b7q",
+        "primary_key" : "_feature_id"
+      }
+    },
+    "format" : { }
+  }, {
+    "id" : 647050126,
+    "name" : "Police Precincts",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : ":@computed_region_sbqj_enih",
+    "position" : 34,
+    "renderTypeName" : "number",
+    "tableColumnId" : 83254901,
+    "computationStrategy" : {
+      "source_columns" : [ "geocoded_column" ],
+      "type" : "georegion_match_on_point",
+      "parameters" : {
+        "region" : "_sbqj-enih",
+        "primary_key" : "_feature_id"
+      }
+    },
+    "format" : { }
+  }, {
+    "id" : 647050127,
+    "name" : "Zip Codes",
+    "dataTypeName" : "number",
+    "description" : "",
+    "fieldName" : ":@computed_region_efsh_h5xi",
+    "position" : 35,
+    "renderTypeName" : "number",
+    "tableColumnId" : 83254897,
+    "computationStrategy" : {
+      "source_columns" : [ "geocoded_column" ],
+      "type" : "georegion_match_on_point",
+      "parameters" : {
+        "region" : "_efsh-h5xi",
+        "primary_key" : "_feature_id"
+      }
+    },
+    "format" : { }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "rdfSubject" : "0",
+    "rdfClass" : "",
+    "jsonQuery" : {
+      "order" : [ {
+        "columnFieldName" : "date",
+        "ascending" : false
+      }, {
+        "columnFieldName" : "provider",
+        "ascending" : true
+      } ]
+    },
+    "attachments" : [ {
+      "filename" : "Program_Sites_Data_Dictionary.xlsx",
+      "assetId" : "0e07095d-453d-4da1-8417-1794924bdf47",
+      "name" : "Program_Sites_Data_Dictionary.xlsx"
+    } ],
+    "custom_fields" : {
+      "Update" : {
+        "Automation" : "No",
+        "Date Made Public" : "6/27/2019",
+        "Update Frequency" : "Annually"
+      },
+      "Dataset Information" : {
+        "Agency" : "Department of Youth and Community Development (DYCD)"
+      }
+    },
+    "rowLabel" : "Program Site",
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+    "renderTypeConfig" : {
+      "visible" : {
+        "table" : true
+      }
+    }
+  },
+  "owner" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "query" : {
+    "orderBys" : [ {
+      "ascending" : false,
+      "expression" : {
+        "columnId" : 647050094,
+        "type" : "column"
+      }
+    }, {
+      "ascending" : true,
+      "expression" : {
+        "columnId" : 647050098,
+        "type" : "column"
+      }
+    } ]
+  },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "profileImageUrlLarge" : "/api/users/5fuc-pqz2/profile_images/LARGE",
+    "profileImageUrlMedium" : "/api/users/5fuc-pqz2/profile_images/THUMB",
+    "profileImageUrlSmall" : "/api/users/5fuc-pqz2/profile_images/TINY",
+    "screenName" : "NYC OpenData",
+    "type" : "interactive",
+    "flags" : [ "acceptedEula", "mayBeStoriesCoOwner" ]
+  },
+  "tags" : [ "program sites", "dycd" ],
+  "flags" : [ "default", "ownerMayBeContacted", "restorable", "restorePossibleForType" ]
+}

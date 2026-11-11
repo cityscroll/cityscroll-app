@@ -254,8 +254,18 @@ def fetch_to_file(
     label: str = "fetch",
     max_attempts: int = 3,
     backoff_s: float = 2.0,
+    max_bytes: int | None = None,
+    total_timeout_s: float | None = None,
+    count_csv_rows: bool = True,
 ) -> dict:
-    """Stream URL to dest. Optional heartbeat lines on stderr for long bulk pulls."""
+    """Stream URL to dest. Optional heartbeat lines on stderr for long bulk pulls.
+
+    Optional bounds (defaults preserve every existing caller exactly):
+    ``max_bytes`` aborts the capture once the streamed body exceeds the cap,
+    ``total_timeout_s`` bounds the whole call across attempts, and
+    ``count_csv_rows=False`` skips CSV row counting for non-CSV (e.g. JSON
+    metadata) destinations, reporting ``row_count`` as None.
+    """
     dest.parent.mkdir(parents=True, exist_ok=True)
     partial = dest.with_suffix(dest.suffix + ".partial")
     started = time.time()
@@ -265,6 +275,11 @@ def fetch_to_file(
     written = 0
     h = hashlib.sha256()
     for attempt in range(1, max_attempts + 1):
+        if total_timeout_s is not None and time.time() - started > total_timeout_s:
+            partial.unlink(missing_ok=True)
+            raise SystemExit(
+                f"Socrata fetch exceeded total {total_timeout_s:g}s budget for {url}"
+            )
         request_headers = {  # code structure (not a sourced data record)
             "User-Agent": USER_AGENT,
             "Accept": "text/csv,*/*",
@@ -279,12 +294,20 @@ def fetch_to_file(
                 }
                 with partial.open("wb") as out:
                     while True:
+                        if total_timeout_s is not None and time.time() - started > total_timeout_s:
+                            raise urllib.error.URLError(
+                                f"exceeded total {total_timeout_s:g}s budget"
+                            )
                         chunk = resp.read(256 * 1024)
                         if not chunk:
                             break
                         out.write(chunk)
                         h.update(chunk)
                         written += len(chunk)
+                        if max_bytes is not None and written > max_bytes:
+                            raise urllib.error.URLError(
+                                f"exceeded {max_bytes} byte capture bound"
+                            )
                         now = time.time()
                         if heartbeat_every_s > 0 and (now - last_hb) >= heartbeat_every_s:
                             elapsed = int(now - started)
@@ -305,6 +328,10 @@ def fetch_to_file(
                         f"Socrata fetch HTTP {e.code} for {url}: {e.reason}"
                     ) from e
                 raise SystemExit(f"Socrata fetch failed for {url}: {e.reason}") from e
+            if total_timeout_s is not None and time.time() - started > total_timeout_s:
+                raise SystemExit(
+                    f"Socrata fetch exceeded total {total_timeout_s:g}s budget for {url}"
+                ) from e
             delay = backoff_s * (2 ** (attempt - 1))
             print(
                 f"  {label}: retry {attempt + 1}/{max_attempts} in {delay:g}s",
@@ -315,7 +342,7 @@ def fetch_to_file(
 
     partial.replace(dest)
     size = dest.stat().st_size
-    rows = _count_csv_rows(dest)
+    rows = _count_csv_rows(dest) if count_csv_rows else None
     return {
         "url": url,
         "path": str(dest),

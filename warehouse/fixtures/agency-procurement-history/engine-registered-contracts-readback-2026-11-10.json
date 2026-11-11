@@ -1,0 +1,393 @@
+{
+  "schema": "waypoint.engine_source_readback.v1",
+  "observed_at": "2026-11-11T02:02:12.947Z",
+  "repository": "cityscroll-app",
+  "revision": "5b0a2c9033bd5f48af4834025bb2a20a08ad6c43",
+  "acquisition": "Existing engine readAnalyticalProjectionDocument; all declared shards read successfully; no publisher request or new collector",
+  "manifest_sha256": "8d1226cf1072deea57bd224c4a7cc8fbc986b572a7d79c67d42d053dffdfa32c",
+  "manifest": {
+    "schema": "cityscroll.analytics_registered_contracts.v1",
+    "projection_contract": "cityscroll.analytical_projection.v1",
+    "generated_at": "2026-11-10T15:17:39.651Z",
+    "snapshot_date": "2026-11-10",
+    "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
+    "dimensions": [
+      "agency",
+      "prime_vendor",
+      "registration_fiscal_year",
+      "contract_amount_band",
+      "award_method",
+      "industry",
+      "registration_timing",
+      "city_record_match"
+    ],
+    "measures": [
+      "unique_contract_count",
+      "sum_original_registered_amount",
+      "sum_current_registered_amount",
+      "median_current_registered_amount",
+      "eligible_contract_count",
+      "missing_date_contract_count",
+      "retroactive_contract_count",
+      "retroactive_share",
+      "median_registration_lag_days",
+      "p75_registration_lag_days",
+      "p90_registration_lag_days",
+      "city_record_eligible_contract_count",
+      "city_record_matched_contract_count",
+      "city_record_unmatched_contract_count",
+      "city_record_missing_pin_contract_count"
+    ],
+    "registration_timing_summary": {
+      "total_contract_count": 29581,
+      "eligible_contract_count": 29581,
+      "missing_date_contract_count": 0,
+      "retroactive_contract_count": 16296,
+      "early_on_time_contract_count": 13285,
+      "retroactive_share": 0.5508941550319462,
+      "missing_date_share": 0,
+      "median_lag_days": 7,
+      "p75_lag_days": 107,
+      "p90_lag_days": 445,
+      "excluded_row_count": 0
+    },
+    "city_record_match": {
+      "join": "existing exact normalized Checkbook PIN \u2194 City Record award PIN overlap",
+      "city_record_input": "site/data/ocp_awards_warehouse_lookup.json",
+      "pin_enrichment": null,
+      "buckets": {
+        "exact": 5205,
+        "none": 11722,
+        "cannot_evaluate_missing_pin": 12654
+      }
+    },
+    "source_population": {
+      "source_tag": "checkbook-contracts",
+      "observed_at": "2026-11-10T15:17:39.651Z",
+      "observation_basis": "acquisition receipt pulled_at",
+      "normalized_unique_contracts": 29581,
+      "source_fiscal_years": [
+        2025,
+        2026,
+        2027
+      ],
+      "normalized_receipt": "embedded source_receipt envelope in the committed analytical population receipt"
+    },
+    "representation": "sharded",
+    "shard_schema": "cityscroll.analytics_registered_contracts_shard.v1",
+    "row_count": 29581,
+    "shards": [
+      {
+        "path": "analytics_registered_contracts/shard-000.json",
+        "bytes": 18664017,
+        "row_count": 14964
+      },
+      {
+        "path": "analytics_registered_contracts/shard-001.json",
+        "bytes": 18299782,
+        "row_count": 14617
+      }
+    ]
+  },
+  "actual_rows": 29581,
+  "unique_ids": 29581,
+  "dycd_rows": 3093,
+  "window": {
+    "start_inclusive": "2024-11-11",
+    "end_exclusive": "2026-11-11"
+  },
+  "selected_contracts": 2492,
+  "eligible_amounts": 2492,
+  "median_original_registered_amount": 436226,
+  "examples": [
+    {
+      "prime_contract_id": "CT126020271405746",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "ESIS INC",
+      "pin": null,
+      "registration_date": "2026-11-06",
+      "start_date": "2026-07-01",
+      "registration_fiscal_year": 2027,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Central Insurance Program",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 128,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 12931,
+      "original_registered_amount": 12931,
+      "source_fiscal_years": [
+        "2027"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2026-07-01"
+        ],
+        "registration_date_observations": [
+          "2026-11-06"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT126020278803133",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "WE STAY NOS QUEDAMOS INC",
+      "pin": "26024L0742001",
+      "registration_date": "2026-11-06",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2027,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Human Services",
+      "contract_purpose": "A Greener NYC supports environmentally friendly programs",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 1224,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 75000,
+      "original_registered_amount": 75000,
+      "source_fiscal_years": [
+        "2027"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2026-11-06"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020271405656",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "ACE AMERICAN INSURANCE CO.",
+      "pin": null,
+      "registration_date": "2026-11-05",
+      "start_date": "2026-07-01",
+      "registration_fiscal_year": 2027,
+      "contract_amount_band": "$1 million\u2013$9.99 million",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "SERVICE; RW; 646-343-6831; RAWALSH@DYCD.NYC.GOV",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 127,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1476002,
+      "original_registered_amount": 1476002,
+      "source_fiscal_years": [
+        "2027"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2026-07-01"
+        ],
+        "registration_date_observations": [
+          "2026-11-05"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT126020278802382",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "BOYS & GIRLS CLUB OF HARLEM INC",
+      "pin": "26026P0004081",
+      "registration_date": "2026-11-05",
+      "start_date": "2026-08-01",
+      "registration_fiscal_year": 2027,
+      "contract_amount_band": "$1 million\u2013$9.99 million",
+      "award_method": "RFP FROM A PQVL",
+      "industry": "Human Services",
+      "contract_purpose": "COMPASS Center Base CD - 09 Manhattan Elementary",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 96,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 5335200,
+      "original_registered_amount": 5335200,
+      "source_fiscal_years": [
+        "2027"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2026-08-01"
+        ],
+        "registration_date_observations": [
+          "2026-11-05"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020278803268",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "Coney Island Sharks education sports club Inc",
+      "pin": "26024L1019001",
+      "registration_date": "2026-11-05",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2027,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Human Services",
+      "contract_purpose": "To support youth sports and mentoring programs.",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 1223,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 63750,
+      "original_registered_amount": 63750,
+      "source_fiscal_years": [
+        "2027"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2026-11-05"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020278803427",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "INWOOD-MANHATTAN LITTLE LEAGUE BASEBALL INC",
+      "pin": "26024L0637001",
+      "registration_date": "2026-11-05",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2027,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Human Services",
+      "contract_purpose": "For baseball equipment, uniforms and trophies.",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 1223,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 41250,
+      "original_registered_amount": 41250,
+      "source_fiscal_years": [
+        "2027"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2026-11-05"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020278803505",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "BROOKLYN HEIGHTS ASSOCIATION, INC.",
+      "pin": "26024L1269001",
+      "registration_date": "2026-11-05",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2027,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Standardized Services",
+      "contract_purpose": "To support community events and improve open spaces",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 1223,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 93750,
+      "original_registered_amount": 93750,
+      "source_fiscal_years": [
+        "2027"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2026-11-05"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020278803249",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "CARIBBEAN AMERICAN CENTER OF NEW YORK INC",
+      "pin": "26024L0784001",
+      "registration_date": "2026-11-02",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2027,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Human Services",
+      "contract_purpose": "To support youth program services",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 1220,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 82500,
+      "original_registered_amount": 82500,
+      "source_fiscal_years": [
+        "2027"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2026-11-02"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    }
+  ],
+  "dycd_rows_sha256": "ad6adc91617e1f15588f7fa0ec9eaf33f905034b13202552d618331d2f2a0c29"
+}

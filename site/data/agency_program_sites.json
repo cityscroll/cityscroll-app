@@ -1,0 +1,186 @@
+{
+ "agency_id": "youth-and-community-development",
+ "capture_complete": true,
+ "checked_at": "2026-11-11T01:40:22.368510+00:00",
+ "counts": {
+  "distinct_program_sites": 482,
+  "duplicate_observations": 1,
+  "excluded_queens": 2,
+  "mapped_queens": 480,
+  "raw_rows": 483
+ },
+ "dataset_id": "ebkm-iyma",
+ "exclusions": [
+  {
+   "id": "266a323bd30fb144f2dc64c80f0d3fd8d23b23822290b10a9bbf9c0ab080d357",
+   "reason": "joint_interest_area"
+  },
+  {
+   "id": "563bc7f6d43b0633f71167ea5bc69f2662d5c6fc0b7f9d3342a605f81cd221b1",
+   "reason": "missing_or_invalid_district"
+  }
+ ],
+ "fiscal_year": 2026,
+ "generated_at": "2026-11-11T01:40:22.368510+00:00",
+ "publisher_updated_at": "2026-09-24T13:52:59+00:00",
+ "schema": "cityscroll.agency_program_sites.v1",
+ "shards": [
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 35671,
+   "district": "Q01",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q01-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q01-p000.json",
+   "row_count": 54,
+   "sha256": "37069c5f7c559b175289d42c3832e4adf86ae006e9c1142ca2a0ed261dd95ed7"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 19784,
+   "district": "Q02",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q02-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q02-p000.json",
+   "row_count": 30,
+   "sha256": "c8ad783d1907117a730d084573195e5c206899cbd2bca49a84615d75457e1f6b"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 15977,
+   "district": "Q03",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q03-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q03-p000.json",
+   "row_count": 24,
+   "sha256": "7a4e1b42c90a2a672dfa73f222889d078e353d0d17a1d7709229427ae9b7ed75"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 22357,
+   "district": "Q04",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q04-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q04-p000.json",
+   "row_count": 34,
+   "sha256": "e668c1b66326768c6ddb8235e5f60d6237396feb8dd2634a08d4be079ec3735b"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 12706,
+   "district": "Q05",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q05-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q05-p000.json",
+   "row_count": 19,
+   "sha256": "8ebb95a9b4e9fb357cb087760cb297a82557acef1a88d0156a1ac8fa1b36ecb9"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 13847,
+   "district": "Q06",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q06-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q06-p000.json",
+   "row_count": 21,
+   "sha256": "92e106a9ff0b1f550f168183e6b9dc53ff94a91987ebc5a695368d7a91b25053"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 26594,
+   "district": "Q07",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q07-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q07-p000.json",
+   "row_count": 40,
+   "sha256": "890797f42fb1326012ad7c8fdadea8cc9bbfa040fe9b4583a2f7ba13e1f830f1"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 23825,
+   "district": "Q08",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q08-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q08-p000.json",
+   "row_count": 36,
+   "sha256": "e97208259be0149f292ef627219a119d5def376510b771b35f6262b34e41fa25"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 13998,
+   "district": "Q09",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q09-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q09-p000.json",
+   "row_count": 21,
+   "sha256": "e0ed94cd28aed9e86216cd2b38f91136b95da6d81dc089b9037ba2fb81545395"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 13473,
+   "district": "Q10",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q10-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q10-p000.json",
+   "row_count": 20,
+   "sha256": "2dab097d6c144002e03227a4bd808d5314eb46c2248a9d32f5adf63cce687e3a"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 7517,
+   "district": "Q11",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q11-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q11-p000.json",
+   "row_count": 11,
+   "sha256": "7f89bf5133aab352bff221a6c1c8d9ca69da29decaf3bcdb666bee6997c928d1"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 53052,
+   "district": "Q12",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q12-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q12-p000.json",
+   "row_count": 80,
+   "sha256": "38915d15d8046651018577f06370be05daa2eb0ce6b26d5c5f48ce3f9f06c66a"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 25879,
+   "district": "Q13",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q13-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q13-p000.json",
+   "row_count": 39,
+   "sha256": "c89225031fb59a7761ca076d390c69cbd6d087c915f9b0897e1f77b1e9947506"
+  },
+  {
+   "agency_id": "youth-and-community-development",
+   "bytes": 34022,
+   "district": "Q14",
+   "fiscal_year": 2026,
+   "id": "dycd-fy2026-Q14-p000",
+   "page": 0,
+   "path": "agency_program_sites/dycd-fy2026-Q14-p000.json",
+   "row_count": 51,
+   "sha256": "6375dc23415321e1e0e40e1c3f5082b9aeade3c4df74125ce3241d51ad533781"
+  }
+ ],
+ "source_id": "dycd-program-sites",
+ "source_sha256": "6a495766c92f45814b7145e8b7bcdbea7ef52ceadf1856de3fde6b0856030398",
+ "source_status": "available"
+}
