@@ -809,7 +809,10 @@
     guide_text_7382a1e9d7b801bc: "Suivez un organisme jusqu’à un fournisseur et une attribution, puis vérifiez que le lien copié conserve les deux étapes.",
     guide_text_7e3d52faa6b99ae9: "Checkbook NYC, le site des dépenses du contrôleur municipal",
     guide_text_9044f2c0f4a88307: "Ouvrez le parcours terminé de deux étapes",
-    // END GUIDE TRANSLATIONS
+        guide_text_9d6194195e73dee7: "Les 66 sources publiques de ces documents, selon leur fréquence de changement",
+        guide_text_3fbb8c75fe8cc71f: "Les 67 sources publiques de ces documents, selon leur fréquence de changement",
+    guide_text_30dfc11c63559ad9: "Demander à l’IA",
+// END GUIDE TRANSLATIONS
     guide_text_c78eb973e4f540e5: "Source anglaise : Step 1 — Choose an observation experience",
     guide_text_18cef082052f7197: "Source anglaise : Siguiente paso oficial: [Read Hart Island visitation information]({link_a}). The page's registration instructions are the authority for selected dates and capacity.",
     guide_text_5c2f75c692972ac3: "Source anglaise : The [CCRB public trial page]({link_a}) is the official link for the current rolling three-week grid. Open it close to the day you plan to attend because dates are subject to change. The grid may show an incident borough, officer, and charges, but the incident borough is not the venue and charges are allegations, not adjudicated findings.",

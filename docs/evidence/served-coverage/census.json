@@ -2,8 +2,8 @@
   "schema": "cityscroll.served_coverage_census.v1",
   "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
   "registry": {
-    "reviewed_registry_size": 68,
-    "observed_registry_size": 68,
+    "reviewed_registry_size": 70,
+    "observed_registry_size": 70,
     "changed": false
   },
   "disposition_vocabulary": [
@@ -14,7 +14,7 @@
   ],
   "disposition_counts": {
     "publicly_represented": 19,
-    "context_only": 31,
+    "context_only": 33,
     "not_served": 7,
     "unresolved": 11
   },
@@ -1263,6 +1263,32 @@
           "status": "live",
           "delivery_tier": "inline-at-build",
           "used_for": "Public Design Commission dated sessions and agenda context."
+        }
+      }
+    },
+    {
+      "source_id": "procurement-codes-naics-2022",
+      "name": "North American Industry Classification System 2022 structure",
+      "disposition": "context_only",
+      "reason": "Complete industry-code hierarchy for procurement matching; a classification catalog is not a served record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Complete industry-code lookup, hierarchy, and validation for procurement matching."
+        }
+      }
+    },
+    {
+      "source_id": "procurement-codes-nyc-commodity-directory",
+      "name": "NYC commodity classification directory",
+      "disposition": "context_only",
+      "reason": "Exact numeric commodity-code status for procurement matching; a classification catalog is not a served record unit.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Exact numeric commodity-code status lookup for procurement matching."
         }
       }
     },

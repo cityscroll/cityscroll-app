@@ -1190,6 +1190,26 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "procurement-codes-naics-2022",
+      "name": "North American Industry Classification System 2022 structure",
+      "source_contract_id": "procurement-codes-naics-2022",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.census.gov/naics/",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "procurement-codes-nyc-commodity-directory",
+      "name": "NYC commodity classification directory",
+      "source_contract_id": "procurement-codes-nyc-commodity-directory",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/site/mocs/resources-reports/learning-to-use-passport.page",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "public-consultations",
       "name": "Public consultation invitations",
       "source_contract_id": "public-consultations",
@@ -3816,7 +3836,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-11-11",
-    "source_contracts_fingerprint": "01cbd41888d628124764f720863501567a2d778a612f43892da0f2142c997b11",
+    "source_contracts_fingerprint": "bb94f1a6d6c24f0ab9b1307bdfa4f4176987590d46c26e0ce9469c5b27e63ea2",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 91,
     "class_changes": 0,

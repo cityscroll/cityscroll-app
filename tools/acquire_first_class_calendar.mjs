@@ -1,25 +1,65 @@
 #!/usr/bin/env node
 
-import { mkdirSync, renameSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { captureGovernmentSourceBytes } from "../site/government_observation_refresh.mjs";
 
-export async function acquireFirstClassCalendar({ sourceId, capturePath, receiptPath, asOf, fetchImpl } = {}) {
+function loadPreviousCapture(capturePath, receiptPath) {
+  if (!existsSync(capturePath) || !existsSync(receiptPath)) return null;
+  try {
+    const bytes = new Uint8Array(readFileSync(capturePath));
+    const receipt = JSON.parse(readFileSync(receiptPath, "utf8"));
+    if (!bytes.byteLength || !receipt || typeof receipt !== "object") return null;
+    return { bytes, receipt };
+  } catch {
+    return null;
+  }
+}
+
+export async function acquireFirstClassCalendar({
+  sourceId,
+  capturePath,
+  receiptPath,
+  asOf,
+  fetchImpl,
+  previous = undefined,
+} = {}) {
   if (!sourceId || !capturePath || !receiptPath) {
     throw new Error("sourceId, capturePath, and receiptPath are required");
   }
-  const capture = await captureGovernmentSourceBytes(sourceId, { asOf, fetchImpl });
+  const retained = previous === undefined
+    ? loadPreviousCapture(capturePath, receiptPath)
+    : previous;
   mkdirSync(dirname(capturePath), { recursive: true });
   mkdirSync(dirname(receiptPath), { recursive: true });
-  const captureTemp = `${capturePath}.tmp`;
-  const receiptTemp = `${receiptPath}.tmp`;
-  writeFileSync(captureTemp, capture.bytes);
-  writeFileSync(receiptTemp, `${JSON.stringify(capture.receipt, null, 2)}\n`);
-  renameSync(captureTemp, capturePath);
-  renameSync(receiptTemp, receiptPath);
-  return capture.receipt;
+  try {
+    const capture = await captureGovernmentSourceBytes(sourceId, {
+      asOf,
+      fetchImpl,
+      previous: retained || null,
+    });
+    const captureTemp = `${capturePath}.tmp`;
+    const receiptTemp = `${receiptPath}.tmp`;
+    writeFileSync(captureTemp, capture.bytes);
+    writeFileSync(receiptTemp, `${JSON.stringify(capture.receipt, null, 2)}\n`);
+    renameSync(captureTemp, capturePath);
+    renameSync(receiptTemp, receiptPath);
+    try {
+      // Prefer owner-only modes for ignored acquisition scratch.
+      writeFileSync(capturePath, capture.bytes, { mode: 0o600 });
+    } catch {
+      // Some platforms ignore mode on rewrite; the rename already landed bytes.
+    }
+    return capture.receipt;
+  } catch (error) {
+    if (retained?.bytes?.byteLength) {
+      // Keep last-good bytes and receipt on disk; surface the failure.
+      error.lastGoodPreserved = true;
+    }
+    throw error;
+  }
 }
 
 async function main(argv = process.argv.slice(2)) {

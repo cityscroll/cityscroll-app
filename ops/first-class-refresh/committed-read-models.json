@@ -53,6 +53,19 @@
       "after": []
     },
     {
+      "id": "procurement-code-manifest",
+      "command": [
+        "tools/build_procurement_code_manifest.mjs"
+      ],
+      "covers": [
+        "tools/build_procurement_code_manifest.mjs"
+      ],
+      "after": [
+        "publication-guard"
+      ],
+      "note": "Rebuilds the public industry-code catalog manifest from committed NAICS and NYC status artifacts only; no publisher acquisition."
+    },
+    {
       "id": "list-depth-closed-exams",
       "command": [
         "tools/rebuild_list_depth_closed_exams.mjs"
@@ -725,6 +738,7 @@
     "tools/build_pin_family_review.mjs",
     "tools/build_primary_documents.mjs",
     "tools/build_process_conformance.mjs",
+    "tools/build_procurement_code_manifest.mjs",
     "tools/build_procurement_crosswalk.mjs",
     "tools/build_property_disposition_cohort.mjs",
     "tools/build_property_resident_snapshot.mjs",

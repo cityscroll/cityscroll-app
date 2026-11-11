@@ -957,7 +957,10 @@ const STRINGS = {
     guide_text_7382a1e9d7b801bc: "Follow an agency to a vendor and an award, then check whether the copied link keeps both steps.",
     guide_text_7e3d52faa6b99ae9: "Checkbook NYC, the city comptroller's spending site",
     guide_text_9044f2c0f4a88307: "Open the finished two-step trail",
-    // END GUIDE TRANSLATIONS
+        guide_text_9d6194195e73dee7: "The 66 public sources behind these records, by how often each one changes",
+        guide_text_3fbb8c75fe8cc71f: "The 67 public sources behind these records, by how often each one changes",
+    guide_text_30dfc11c63559ad9: "Ask with AI",
+// END GUIDE TRANSLATIONS
 
     as_of_date_control: "As of",
     as_of_apply_control: "Apply",

@@ -90,6 +90,8 @@ const PRODUCT_AREA_BY_SOURCE = Object.freeze({
   "ocp-recent-contract-awards": "contracts",
   "passport-public-contracts": "contracts",
   "passport-public-rfx": "contracts",
+  "procurement-codes-naics-2022": "contracts",
+  "procurement-codes-nyc-commodity-directory": "contracts",
   "nys-contract-reporter": "contracts",
   "mta-current-opportunities": "contracts",
   "mta-bid-results": "contracts",

@@ -729,6 +729,32 @@ async function verifyDisabledMocs(contract) {
   return "disabled field case confirmed";
 }
 
+async function verifyXlsx(contract) {
+  const probeUrl = resolveProbeEndpoint(contract) || contract.endpoint;
+  if (!probeUrl) throw new Error(`${contract.id}: missing xlsx endpoint`);
+  const response = await labeledFetch(contract.id, "machine-endpoint", probeUrl, {
+    redirect: "follow",
+    headers: {
+      Accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/octet-stream",
+    },
+  });
+  if (!response.ok) throw new Error(`${contract.id}: xlsx endpoint HTTP ${response.status}`);
+  const declared = Number(response.headers.get("content-length"));
+  if (Number.isFinite(declared) && declared > 5 * 1024 * 1024) {
+    throw new Error(`${contract.id}: xlsx content-length exceeds 5MiB bound`);
+  }
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  if (bytes.byteLength > 5 * 1024 * 1024) {
+    throw new Error(`${contract.id}: xlsx body exceeds 5MiB bound`);
+  }
+  if (bytes.byteLength < 4) throw new Error(`${contract.id}: xlsx body too small`);
+  const signature = String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3]);
+  if (!signature.startsWith("PK")) {
+    throw new Error(`${contract.id}: xlsx endpoint did not return a ZIP/XLSX signature`);
+  }
+  return `xlsx workbook reachable (${bytes.byteLength} bytes)`;
+}
+
 export async function verifyLiveContract(contract, options = {}) {
   if (contract.kind === "socrata") return verifySocrata(contract, options);
   if (contract.kind === "checkbook") return verifyCheckbook(contract);
@@ -736,6 +762,7 @@ export async function verifyLiveContract(contract, options = {}) {
   if (contract.kind === "geosearch") return verifyGeosearch(contract, options);
   if (contract.kind === "html") return verifyHtml(contract);
   if (contract.kind === "rss") return verifyRss(contract);
+  if (contract.kind === "xlsx") return verifyXlsx(contract);
   if (contract.kind === "mocs-disabled") return verifyDisabledMocs(contract);
   throw new Error(`${contract.id}: no live verifier for ${contract.kind}`);
 }

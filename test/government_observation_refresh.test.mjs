@@ -32,9 +32,21 @@ const previous = {
 };
 const parse = (bytes) => JSON.parse(new TextDecoder().decode(bytes));
 
-test("registers the three observer sources with daily cadence and shared bounds", () => {
-  assert.deepEqual(GOVERNMENT_SOURCE_DEFINITIONS.map((item) => item.id), ["pdc-calendar", "bsa-calendar", "oath-trial-calendar"]);
-  assert.ok(GOVERNMENT_SOURCE_DEFINITIONS.every((item) => item.cadenceHours <= 24 && item.cursor));
+test("registers observer calendars and industry-code workbooks with shared bounds", () => {
+  assert.deepEqual(
+    GOVERNMENT_SOURCE_DEFINITIONS.map((item) => item.id),
+    [
+      "pdc-calendar",
+      "bsa-calendar",
+      "oath-trial-calendar",
+      "procurement-codes-naics-2022",
+      "procurement-codes-nyc-commodity-directory",
+    ],
+  );
+  const calendars = GOVERNMENT_SOURCE_DEFINITIONS.filter((item) => item.id.endsWith("-calendar"));
+  const codeCatalogs = GOVERNMENT_SOURCE_DEFINITIONS.filter((item) => item.id.startsWith("procurement-codes-"));
+  assert.ok(calendars.every((item) => item.cadenceHours <= 24 && item.cursor));
+  assert.ok(codeCatalogs.every((item) => item.cadenceHours === 168 && item.kind === "xlsx"));
   assert.deepEqual(GOVERNMENT_REFRESH_BOUNDS, {
     maxRequests: 100, maxResponseBytes: 5 * 1024 * 1024, maxAggregateBytes: 25 * 1024 * 1024,
     timeoutMs: 25_000, maxRedirects: 3, retries: 2, minOriginIntervalMs: 2_000,

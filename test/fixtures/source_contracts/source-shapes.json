@@ -1034,6 +1034,36 @@
         "contract",
         "portfolioid"
       ]
+    },
+    {
+      "id": "procurement-codes-naics-2022",
+      "kind": "xlsx",
+      "identifier": "naics/2022NAICS/2022_NAICS_Structure.xlsx",
+      "response_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "fields": [
+        "code",
+        "label",
+        "level",
+        "parents"
+      ],
+      "headers": [
+        "Sequence Number",
+        "2022 NAICS US   Code",
+        "2022 NAICS US Title"
+      ]
+    },
+    {
+      "id": "procurement-codes-nyc-commodity-directory",
+      "kind": "xlsx",
+      "identifier": "assets/mocs/downloads/PASSPort/learning-to-use-passport/NYCCommodityClassificationDirectory.xlsx",
+      "response_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "fields": [
+        "code",
+        "status"
+      ],
+      "headers": [
+        "L5 Category (NIGP Code and Description)"
+      ]
     }
   ]
 }

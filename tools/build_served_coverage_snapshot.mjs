@@ -42,7 +42,7 @@ export const SNAPSHOT_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
 export const CENSUS_SCHEMA = "cityscroll.served_coverage_census.v1";
 
 /** The registry size this census was reviewed against. A change is reported, never absorbed. */
-export const REVIEWED_REGISTRY_SIZE = 68;
+export const REVIEWED_REGISTRY_SIZE = 70;
 
 export { SERVED_UNITS, DECLARED_DISPOSITIONS };
 
@@ -296,6 +296,8 @@ const DECLARED_DISPOSITIONS = Object.freeze({
   "ulurp-recommendation-pdfs": ["unresolved", "Serves the land recommendation panel behind a usefulness gate, but no first-class served-population artifact declares this contract as its source."],
   "ulurp-recommendations": ["unresolved", "Serves the land recommendation panel behind a usefulness gate, but no first-class served-population artifact declares this contract as its source."],
   "zap-bbl": ["context_only", "Tax-lot joins from land-use projects to parcels; projects and properties are each counted once as their own record unit."],
+  "procurement-codes-naics-2022": ["context_only", "Complete industry-code hierarchy for procurement matching; a classification catalog is not a served record unit."],
+  "procurement-codes-nyc-commodity-directory": ["context_only", "Exact numeric commodity-code status for procurement matching; a classification catalog is not a served record unit."],
 });
 
 function readJson(path) {

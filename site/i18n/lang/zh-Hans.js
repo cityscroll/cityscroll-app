@@ -805,7 +805,10 @@
     guide_text_7382a1e9d7b801bc: "从机构追溯供应商和中标记录，然后检查复制的链接是否保留两步。",
     guide_text_7e3d52faa6b99ae9: "Checkbook NYC，市审计长的支出网站",
     guide_text_9044f2c0f4a88307: "打开完成的两步路径",
-    // END GUIDE TRANSLATIONS
+        guide_text_9d6194195e73dee7: "这些记录背后的66个公共来源，按各自变化频率分类",
+        guide_text_3fbb8c75fe8cc71f: "这些记录背后的67个公共来源，按各自变化频率分类",
+    guide_text_30dfc11c63559ad9: "用 AI 提问",
+// END GUIDE TRANSLATIONS
     guide_text_c78eb973e4f540e5: "英文原文：Step 1 — Choose an observation experience",
     guide_text_18cef082052f7197: "英文原文：Siguiente paso oficial: [Read Hart Island visitation information]({link_a}). The page's registration instructions are the authority for selected dates and capacity.",
     guide_text_5c2f75c692972ac3: "英文原文：The [CCRB public trial page]({link_a}) is the official link for the current rolling three-week grid. Open it close to the day you plan to attend because dates are subject to change. The grid may show an incident borough, officer, and charges, but the incident borough is not the venue and charges are allegations, not adjudicated findings.",

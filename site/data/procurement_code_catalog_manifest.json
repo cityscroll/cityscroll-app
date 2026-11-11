@@ -1,0 +1,34 @@
+{
+  "schema": "cityscroll.procurement_code_catalog_manifest.v1",
+  "generated_at": "2026-11-11T04:00:00.000Z",
+  "catalogs": [
+    {
+      "scheme": "NAICS",
+      "version": "2022",
+      "path": "/data/procurement_codes/naics-2022.json",
+      "sha256": "5bdca87cd34dd9555afe2ba410fbff551b2ffa1fd4b97eff0d6573957e24e9cf",
+      "records": 2125,
+      "checked_at": "2026-11-11T04:00:00.000Z",
+      "source_url": "https://www.census.gov/naics/2022NAICS/2022_NAICS_Structure.xlsx",
+      "source_sha256": "217c9e0d4d74e7517bc288f5f308b73aa0de5ee787976a6dd222412be28ada22",
+      "freshness": {
+        "checked_at": "2026-11-11T04:00:00.000Z",
+        "acquired_at": "2026-11-11T04:00:00.000Z"
+      }
+    },
+    {
+      "scheme": "NYC_COMMODITY",
+      "version": "snapshot-2026-11-11-6325fbf06b26",
+      "path": "/data/procurement_codes/nyc-commodity-status.json",
+      "sha256": "f5b52f8112f69483708ecf6358722711ba991a75d6424b67cc96e4bcf65aa0d2",
+      "records": 9038,
+      "checked_at": "2026-11-11T04:00:00.000Z",
+      "source_url": "https://www.nyc.gov/assets/mocs/downloads/PASSPort/learning-to-use-passport/NYCCommodityClassificationDirectory.xlsx",
+      "source_sha256": "6325fbf06b2620ea7992c6f16da4f1f209cd1339d736f86a23b17fdec579a6b7",
+      "freshness": {
+        "checked_at": "2026-11-11T04:00:00.000Z",
+        "acquired_at": "2026-11-11T04:00:00.000Z"
+      }
+    }
+  ]
+}
