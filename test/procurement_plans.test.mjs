@@ -473,10 +473,10 @@ print("OK")
   assert.match(result.stdout, /OK/);
 });
 
-test("A8 unpatched HEAD parser reproduces committed OCME (6) and DORIS (13) shard rows including list rows", () => {
+test("A8 unpatched origin/main parser reproduces committed OCME (6) and DORIS (13) shard rows including list rows", () => {
   if (!existsSync(join(WAREHOUSE, ".venv", "bin", "python"))) return;
   const result = python(`
-import hashlib, importlib.util, json, subprocess, sys, tempfile, warnings
+import hashlib, importlib.util, json, shutil, subprocess, sys, tempfile, warnings
 from pathlib import Path
 import openpyxl
 
@@ -492,44 +492,51 @@ for shard in manifest["collections"]["plans"]["shards"]:
     committed.extend(json.load(open(shard["path"]))["rows"])
 fixtures = Path("test/fixtures/procurement_plans")
 
-head = subprocess.check_output(["git", "show", "HEAD:warehouse/lib/procurement_plans.py"])
-tmp = Path(tempfile.mkdtemp(prefix="a8-unpatched-")) / "procurement_plans.py"
-tmp.write_bytes(head)
-spec = importlib.util.spec_from_file_location("baseline_procurement_plans", tmp)
-baseline = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(baseline)
+# Unpatched baseline is origin/main: HEAD already carries the list-row + probability patch.
+baseline_bytes = subprocess.check_output(
+    ["git", "show", "origin/main:warehouse/lib/procurement_plans.py"]
+)
+tmpdir = Path(tempfile.mkdtemp(prefix="a8-unpatched-"))
+try:
+    tmp = tmpdir / "procurement_plans.py"
+    tmp.write_bytes(baseline_bytes)
+    spec = importlib.util.spec_from_file_location("baseline_procurement_plans", tmp)
+    baseline = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(baseline)
 
-def workbook_plan_rows(module, path, url):
-    rows = []
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        workbook = openpyxl.load_workbook(path, read_only=True, data_only=True)
-        try:
-            for worksheet in workbook.worksheets:
-                values = [list(row) for row in worksheet.iter_rows(values_only=True)]
-                normalized = module.normalize_plan_rows(
-                    values,
-                    source="mocs_ll1",
-                    source_url=url,
-                    agency_hint=module.clean_text(labels[url].get("label")),
-                    fiscal_year=2027,
-                )
-                for item in normalized:
-                    item["source_sheet"] = worksheet.title
-                rows.extend(normalized)
-        finally:
-            workbook.close()
-    return rows
+    def workbook_plan_rows(module, path, url):
+        rows = []
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            workbook = openpyxl.load_workbook(path, read_only=True, data_only=True)
+            try:
+                for worksheet in workbook.worksheets:
+                    values = [list(row) for row in worksheet.iter_rows(values_only=True)]
+                    normalized = module.normalize_plan_rows(
+                        values,
+                        source="mocs_ll1",
+                        source_url=url,
+                        agency_hint=module.clean_text(labels[url].get("label")),
+                        fiscal_year=2027,
+                    )
+                    for item in normalized:
+                        item["source_sheet"] = worksheet.title
+                    rows.extend(normalized)
+            finally:
+                workbook.close()
+        return rows
 
-for name, url in WORKBOOKS.items():
-    got = workbook_plan_rows(baseline, fixtures / name, url)
-    want = [row for row in committed if row["source_url"] == url]
-    assert len(got) == labels[url]["plan_rows"], name
-    assert got == want, name
-    assert {r["plan_id"] for r in got} & LIST_ROW_PLAN_IDS == LIST_ROW_PLAN_IDS, name
-assert labels[WORKBOOKS["OCME_LL1_FY27.xlsx"]]["plan_rows"] == 6
-assert labels[WORKBOOKS["DORIS_LL1_FY27.xlsx"]]["plan_rows"] == 13
-print("OK")
+    for name, url in WORKBOOKS.items():
+        got = workbook_plan_rows(baseline, fixtures / name, url)
+        want = [row for row in committed if row["source_url"] == url]
+        assert len(got) == labels[url]["plan_rows"], name
+        assert got == want, name
+        assert {r["plan_id"] for r in got} & LIST_ROW_PLAN_IDS == LIST_ROW_PLAN_IDS, name
+    assert labels[WORKBOOKS["OCME_LL1_FY27.xlsx"]]["plan_rows"] == 6
+    assert labels[WORKBOOKS["DORIS_LL1_FY27.xlsx"]]["plan_rows"] == 13
+    print("OK")
+finally:
+    shutil.rmtree(tmpdir, ignore_errors=True)
 `);
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.match(result.stdout, /OK/);

@@ -982,7 +982,7 @@
       },
       {
         "path": "site/i18n.js",
-        "sha256": "c1bbf5667826cabfc3362eb82bff58b25d813f16a9164578adf7327e7dc8ae8a"
+        "sha256": "46e7d802c2fd3d4a64ab1062457720c80a145dc4c8a38d473edc4a056c5ee703"
       },
       {
         "path": "site/land_view_state.mjs",
@@ -1315,7 +1315,7 @@
       },
       {
         "path": "site/i18n.js",
-        "sha256": "4499f329b5ba537746bebdd28a1118bfdc0c2c13c2044b2f6ecb15ef709df7f2"
+        "sha256": "46e7d802c2fd3d4a64ab1062457720c80a145dc4c8a38d473edc4a056c5ee703"
       },
       {
         "path": "site/land_view_state.mjs",
@@ -1511,8 +1511,7 @@
     "state": "stale",
     "changed_inputs": [
       "site/analytics_surface_taxonomy.mjs",
-      "site/beta-flags.json",
-      "site/i18n.js"
+      "site/beta-flags.json"
     ]
   }
 }
