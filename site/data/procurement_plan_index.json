@@ -3,9 +3,9 @@
   "fiscal_year": 2027,
   "source_manifest": {
     "path": "site/data/procurement_planning_payload.json",
-    "sha256": "0be1a1c51ae8aed6d6e96412ea96b7b7897962f0444391fc02ce2ffeb75f1b6d",
-    "generated_at": "2026-08-11T18:55:26Z",
-    "plans_rows": 11566
+    "sha256": "18aa8202146d53ccfe204299d04445bd4fd9316a6d2c98d3dc4cf4900b824bb0",
+    "generated_at": "2026-11-12T13:01:37Z",
+    "plans_rows": 11785
   },
   "rule": {
     "agency_code": "publisher workbook file-name prefix, upper-cased (ACS_LL1_FY27.xlsx -> ACS)",
@@ -13,31 +13,31 @@
     "agency_id": "exactAgency() over worker/src/data/agency_crosswalk.json, by code then by Local Law 1 workbook label; ambiguous or absent stays null"
   },
   "totals": {
-    "rows_held": 11566,
-    "rows_listable": 11473,
+    "rows_held": 11785,
+    "rows_listable": 11785,
     "withheld": {
-      "workbook_list_row": 93
+      "workbook_list_row": 0
     },
     "by_source": {
       "ll1": {
-        "rows_held": 2925,
+        "rows_held": 2832,
         "rows_listable": 2832,
         "workbooks": 32
       },
       "ll63": {
-        "rows_held": 8641,
-        "rows_listable": 8641,
-        "workbooks": 69
+        "rows_held": 8953,
+        "rows_listable": 8953,
+        "workbooks": 101
       }
     }
   },
   "quality_flags": {
-    "published_term_end_before_start": 23
+    "published_term_end_before_start": 24
   },
   "shards": [
     {
       "path": "site/data/procurement_planning_payload/plans-000.json",
-      "sha256": "040f9ffdc75c0bcf21089626fbbb0b58bd75ded1b0f81409259303eb5f625bab",
+      "sha256": "569ea04cc7dc4c2c328aaf856df2a56bb6752565cf3d1019e63bc0823df23b4a",
       "rows": 10000,
       "agency_codes": [
         "ACS",
@@ -63,6 +63,7 @@
         "DOT",
         "DPR",
         "DPRC",
+        "DPRE",
         "DSNY",
         "DYCD",
         "FDNY",
@@ -85,8 +86,8 @@
     },
     {
       "path": "site/data/procurement_planning_payload/plans-001.json",
-      "sha256": "e991537708e7929e21b8e8af4d5f5fb0f3aa29913437867990c84ff669f557ee",
-      "rows": 1566,
+      "sha256": "5f0dd77fd2fd1b9838d9e3526925c1b819e1716c20eee5b77adf70f839046f74",
+      "rows": 1785,
       "agency_codes": [
         "DPR",
         "DSNY",
@@ -121,10 +122,10 @@
         "ACS",
         "ADMINISTRATION FOR CHILDREN S SERVICES"
       ],
-      "rows_held": 51,
-      "rows_listable": 48,
+      "rows_held": 52,
+      "rows_listable": 52,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -134,8 +135,10 @@
           ]
         },
         "ll63": {
-          "rows_listable": 43,
+          "rows_listable": 47,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_LL63_FY27_RE.xlsx"
           ]
@@ -145,16 +148,16 @@
         "1": 9,
         "2": 3,
         "3": 4,
-        "not_published": 32
+        "not_published": 36
       },
       "industries": {
         "Professional Services": 3,
         "Standard Services": 2,
-        "not_published": 43
+        "not_published": 47
       },
       "estimated_amount": {
         "published": 5,
-        "not_published": 43
+        "not_published": 47
       },
       "quality_flags": {
         "published_term_end_before_start": 2
@@ -173,10 +176,10 @@
       "agency_keys": [
         "CITY COMMISSION ON HUMAN RIGHTS"
       ],
-      "rows_held": 6,
+      "rows_held": 3,
       "rows_listable": 3,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -212,10 +215,10 @@
       "agency_keys": [
         "CIVILIAN COMPLAINT REVIEW BOARD"
       ],
-      "rows_held": 7,
+      "rows_held": 4,
       "rows_listable": 4,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -333,17 +336,20 @@
         "Comptroller"
       ],
       "agency_keys": [
+        "COMP",
         "COMPTROLLER"
       ],
-      "rows_held": 74,
-      "rows_listable": 74,
+      "rows_held": 87,
+      "rows_listable": 87,
       "withheld": {
         "workbook_list_row": 0
       },
       "by_source": {
         "ll63": {
-          "rows_listable": 74,
+          "rows_listable": 87,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Comptroller_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Comptroller_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Comptroller_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Comptroller_LL63_FY27_RE.xlsx"
           ]
@@ -354,14 +360,14 @@
         "2": 9,
         "3": 9,
         "4": 10,
-        "not_published": 36
+        "not_published": 49
       },
       "industries": {
-        "not_published": 74
+        "not_published": 87
       },
       "estimated_amount": {
         "published": 0,
-        "not_published": 74
+        "not_published": 87
       },
       "quality_flags": {
         "published_term_end_before_start": 2
@@ -423,10 +429,10 @@
         "DCAS",
         "DEPARTMENT OF CITYWIDE ADMINISTRATIVE SERVICES"
       ],
-      "rows_held": 238,
-      "rows_listable": 232,
+      "rows_held": 236,
+      "rows_listable": 236,
       "withheld": {
-        "workbook_list_row": 6
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -436,8 +442,10 @@
           ]
         },
         "ll63": {
-          "rows_listable": 117,
+          "rows_listable": 121,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCAS_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCAS_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCAS_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCAS_LL63_FY27_RE.xlsx"
           ]
@@ -448,18 +456,18 @@
         "2": 23,
         "3": 66,
         "4": 7,
-        "not_published": 20
+        "not_published": 24
       },
       "industries": {
         "Construction Services": 25,
         "Goods <$1 million": 2,
         "Professional Services": 72,
         "Standard Services": 16,
-        "not_published": 117
+        "not_published": 121
       },
       "estimated_amount": {
         "published": 115,
-        "not_published": 117
+        "not_published": 121
       },
       "quality_flags": {},
       "shards": [
@@ -478,10 +486,10 @@
         "DCP",
         "DEPARTMENT OF CITY PLANNING"
       ],
-      "rows_held": 109,
+      "rows_held": 106,
       "rows_listable": 106,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -530,10 +538,10 @@
         "DCWP",
         "DEPARTMENT OF CONSUMER AND WORKER PROTECTION"
       ],
-      "rows_held": 11,
+      "rows_held": 8,
       "rows_listable": 8,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -579,10 +587,10 @@
         "DDC",
         "DEPARTMENT OF DESIGN AND CONSTRUCTION"
       ],
-      "rows_held": 956,
-      "rows_listable": 953,
+      "rows_held": 1106,
+      "rows_listable": 1106,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -592,8 +600,10 @@
           ]
         },
         "ll63": {
-          "rows_listable": 803,
+          "rows_listable": 956,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DDC_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DDC_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DDC_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DDC_LL63_FY27_RE.xlsx"
           ]
@@ -604,16 +614,16 @@
         "2": 327,
         "3": 130,
         "4": 260,
-        "not_published": 15
+        "not_published": 168
       },
       "industries": {
         "Construction Services": 120,
         "Professional Services": 30,
-        "not_published": 803
+        "not_published": 956
       },
       "estimated_amount": {
         "published": 59,
-        "not_published": 894
+        "not_published": 1047
       },
       "quality_flags": {
         "published_term_end_before_start": 1
@@ -634,10 +644,10 @@
         "DEP",
         "DEPARTMENT OF ENVIRONMENTAL PROTECTION"
       ],
-      "rows_held": 371,
-      "rows_listable": 368,
+      "rows_held": 388,
+      "rows_listable": 388,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -647,8 +657,10 @@
           ]
         },
         "ll63": {
-          "rows_listable": 235,
+          "rows_listable": 255,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx"
           ]
@@ -659,17 +671,17 @@
         "2": 74,
         "3": 30,
         "4": 34,
-        "not_published": 143
+        "not_published": 163
       },
       "industries": {
         "Construction Services": 49,
         "Professional Services": 31,
         "Standard Services": 53,
-        "not_published": 235
+        "not_published": 255
       },
       "estimated_amount": {
         "published": 47,
-        "not_published": 321
+        "not_published": 341
       },
       "quality_flags": {
         "published_term_end_before_start": 3
@@ -690,10 +702,10 @@
         "DEPARTMENT OF HOMELESS SERVICES",
         "DHS"
       ],
-      "rows_held": 55,
-      "rows_listable": 52,
+      "rows_held": 54,
+      "rows_listable": 54,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -703,8 +715,9 @@
           ]
         },
         "ll63": {
-          "rows_listable": 34,
+          "rows_listable": 36,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DHS_FY27LL63_NP_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DHS_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DHS_LL63_FY27_RE.xlsx"
           ]
@@ -715,16 +728,16 @@
         "2": 5,
         "3": 3,
         "4": 10,
-        "not_published": 17
+        "not_published": 19
       },
       "industries": {
         "Goods <$1 million": 4,
         "Standard Services": 14,
-        "not_published": 34
+        "not_published": 36
       },
       "estimated_amount": {
         "published": 18,
-        "not_published": 34
+        "not_published": 36
       },
       "quality_flags": {},
       "shards": [
@@ -785,10 +798,10 @@
         "DEPARTMENT OF CORRECTION",
         "DOC"
       ],
-      "rows_held": 75,
-      "rows_listable": 72,
+      "rows_held": 74,
+      "rows_listable": 74,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -798,8 +811,9 @@
           ]
         },
         "ll63": {
-          "rows_listable": 41,
+          "rows_listable": 43,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOC_FY27LL63_NP_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOC_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOC_LL63_FY27_RE.xlsx"
           ]
@@ -809,18 +823,20 @@
         "1": 26,
         "2": 7,
         "3": 33,
-        "not_published": 6
+        "not_published": 8
       },
       "industries": {
         "Professional Services": 19,
         "Standard Services": 12,
-        "not_published": 41
+        "not_published": 43
       },
       "estimated_amount": {
         "published": 30,
-        "not_published": 42
+        "not_published": 44
       },
-      "quality_flags": {},
+      "quality_flags": {
+        "published_term_end_before_start": 1
+      },
       "shards": [
         "site/data/procurement_planning_payload/plans-000.json"
       ]
@@ -837,10 +853,10 @@
         "DEPARTMENT OF FINANCE",
         "DOF"
       ],
-      "rows_held": 35,
-      "rows_listable": 32,
+      "rows_held": 36,
+      "rows_listable": 36,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -850,8 +866,10 @@
           ]
         },
         "ll63": {
-          "rows_listable": 21,
+          "rows_listable": 25,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOF_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOF_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOF_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOF_LL63_FY27_RE.xlsx"
           ]
@@ -862,15 +880,15 @@
         "2": 3,
         "3": 3,
         "4": 2,
-        "not_published": 8
+        "not_published": 12
       },
       "industries": {
         "Professional Services": 11,
-        "not_published": 21
+        "not_published": 25
       },
       "estimated_amount": {
         "published": 11,
-        "not_published": 21
+        "not_published": 25
       },
       "quality_flags": {},
       "shards": [
@@ -890,9 +908,9 @@
         "DOHMH"
       ],
       "rows_held": 210,
-      "rows_listable": 207,
+      "rows_listable": 210,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -902,8 +920,10 @@
           ]
         },
         "ll63": {
-          "rows_listable": 199,
+          "rows_listable": 202,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOHMH_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOHMH_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOHMH_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOHMH_LL63_FY27_RE.xlsx"
           ]
@@ -914,17 +934,17 @@
         "2": 23,
         "3": 10,
         "4": 3,
-        "not_published": 25
+        "not_published": 28
       },
       "industries": {
         "Construction Services": 1,
         "Professional Services": 5,
         "Standard Services": 2,
-        "not_published": 199
+        "not_published": 202
       },
       "estimated_amount": {
         "published": 8,
-        "not_published": 199
+        "not_published": 202
       },
       "quality_flags": {},
       "shards": [
@@ -943,10 +963,10 @@
         "DEPARTMENT OF INVESTIGATION",
         "DOI"
       ],
-      "rows_held": 20,
+      "rows_held": 17,
       "rows_listable": 17,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1033,10 +1053,10 @@
         "DEPARTMENT OF RECORDS AND INFORMATION SERVICES",
         "DORIS"
       ],
-      "rows_held": 15,
+      "rows_held": 12,
       "rows_listable": 12,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1084,10 +1104,10 @@
         "DEPARTMENT OF TRANSPORTATION",
         "DOT"
       ],
-      "rows_held": 2717,
-      "rows_listable": 2714,
+      "rows_held": 2734,
+      "rows_listable": 2734,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1097,8 +1117,10 @@
           ]
         },
         "ll63": {
-          "rows_listable": 2626,
+          "rows_listable": 2646,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx"
           ]
@@ -1109,18 +1131,18 @@
         "2": 945,
         "3": 341,
         "4": 377,
-        "not_published": 95
+        "not_published": 115
       },
       "industries": {
         "Construction Services": 7,
         "Goods <$1 million": 1,
         "Professional Services": 53,
         "Standard Services": 27,
-        "not_published": 2626
+        "not_published": 2646
       },
       "estimated_amount": {
         "published": 85,
-        "not_published": 2629
+        "not_published": 2649
       },
       "quality_flags": {},
       "shards": [
@@ -1137,10 +1159,10 @@
       "agency_keys": [
         "DEPARTMENT OF PARKS AND RECREATION"
       ],
-      "rows_held": 1609,
+      "rows_held": 1606,
       "rows_listable": 1606,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1179,17 +1201,21 @@
         "DPR-C"
       ],
       "agency_keys": [
+        "DPR",
+        "DPR C",
         "DPR CAPITAL"
       ],
-      "rows_held": 1579,
-      "rows_listable": 1579,
+      "rows_held": 1591,
+      "rows_listable": 1591,
       "withheld": {
         "workbook_list_row": 0
       },
       "by_source": {
         "ll63": {
-          "rows_listable": 1579,
+          "rows_listable": 1591,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRC_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRC_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRC_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRC_LL63_FY27_RE.xlsx"
           ]
@@ -1200,18 +1226,62 @@
         "2": 30,
         "3": 93,
         "4": 76,
-        "not_published": 71
+        "not_published": 83
       },
       "industries": {
-        "not_published": 1579
+        "not_published": 1591
       },
       "estimated_amount": {
         "published": 0,
-        "not_published": 1579
+        "not_published": 1591
       },
       "quality_flags": {
         "published_term_end_before_start": 6
       },
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DPRE",
+      "agency_id": null,
+      "agency_id_basis": null,
+      "published_names": [
+        "DPR-E"
+      ],
+      "agency_keys": [
+        "DPR",
+        "DPR EXPENSE"
+      ],
+      "rows_held": 56,
+      "rows_listable": 56,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 56,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRE_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRE_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 14,
+        "2": 22,
+        "3": 3,
+        "4": 8,
+        "not_published": 9
+      },
+      "industries": {
+        "not_published": 56
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 56
+      },
+      "quality_flags": {},
       "shards": [
         "site/data/procurement_planning_payload/plans-000.json"
       ]
@@ -1228,10 +1298,10 @@
         "DEPARTMENT OF SANITATION",
         "DSNY"
       ],
-      "rows_held": 92,
-      "rows_listable": 89,
+      "rows_held": 93,
+      "rows_listable": 93,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1241,8 +1311,10 @@
           ]
         },
         "ll63": {
-          "rows_listable": 52,
+          "rows_listable": 56,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_LL63_FY27_RE.xlsx"
           ]
@@ -1253,18 +1325,18 @@
         "2": 12,
         "3": 7,
         "4": 8,
-        "not_published": 28
+        "not_published": 32
       },
       "industries": {
         "Construction Services": 6,
         "Goods <$1 million": 2,
         "Professional Services": 22,
         "Standard Services": 7,
-        "not_published": 52
+        "not_published": 56
       },
       "estimated_amount": {
         "published": 37,
-        "not_published": 52
+        "not_published": 56
       },
       "quality_flags": {},
       "shards": [
@@ -1284,10 +1356,10 @@
         "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
         "DYCD"
       ],
-      "rows_held": 80,
-      "rows_listable": 77,
+      "rows_held": 78,
+      "rows_listable": 78,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1297,8 +1369,9 @@
           ]
         },
         "ll63": {
-          "rows_listable": 41,
+          "rows_listable": 42,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_FY27LL63_NP_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx"
           ]
@@ -1309,15 +1382,15 @@
         "2": 18,
         "3": 5,
         "4": 4,
-        "not_published": 7
+        "not_published": 8
       },
       "industries": {
         "Professional Services": 36,
-        "not_published": 41
+        "not_published": 42
       },
       "estimated_amount": {
         "published": 36,
-        "not_published": 41
+        "not_published": 42
       },
       "quality_flags": {
         "published_term_end_before_start": 5
@@ -1339,8 +1412,8 @@
         "FDNY",
         "FIRE DEPARTMENT OF NEW YORK"
       ],
-      "rows_held": 135,
-      "rows_listable": 135,
+      "rows_held": 136,
+      "rows_listable": 136,
       "withheld": {
         "workbook_list_row": 0
       },
@@ -1352,8 +1425,9 @@
           ]
         },
         "ll63": {
-          "rows_listable": 73,
+          "rows_listable": 74,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FDNY_FY27LL63_NP_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FDNY_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FDNY_LL63_FY27_RE.xlsx"
           ]
@@ -1364,17 +1438,17 @@
         "2": 51,
         "3": 16,
         "4": 8,
-        "not_published": 14
+        "not_published": 15
       },
       "industries": {
         "Construction Services": 4,
         "Professional Services": 27,
         "Standard Services": 29,
-        "not_published": 75
+        "not_published": 76
       },
       "estimated_amount": {
         "published": 60,
-        "not_published": 75
+        "not_published": 76
       },
       "quality_flags": {},
       "shards": [
@@ -1436,10 +1510,10 @@
         "HOUSING PRESERVATION AND DEVELOPMENT",
         "HPD"
       ],
-      "rows_held": 70,
+      "rows_held": 67,
       "rows_listable": 67,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1492,10 +1566,10 @@
         "HRA",
         "HUMAN RESOURCES ADMINISTRATION"
       ],
-      "rows_held": 88,
-      "rows_listable": 85,
+      "rows_held": 89,
+      "rows_listable": 89,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1505,8 +1579,9 @@
           ]
         },
         "ll63": {
-          "rows_listable": 68,
+          "rows_listable": 72,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HRA_FY27LL63_NP_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HRA_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HRA_LL63_FY27_RE.xlsx"
           ]
@@ -1517,17 +1592,17 @@
         "2": 7,
         "3": 5,
         "4": 1,
-        "not_published": 41
+        "not_published": 45
       },
       "industries": {
         "Goods <$1 million": 1,
         "Professional Services": 6,
         "Standard Services": 10,
-        "not_published": 68
+        "not_published": 72
       },
       "estimated_amount": {
         "published": 17,
-        "not_published": 68
+        "not_published": 72
       },
       "quality_flags": {},
       "shards": [
@@ -1547,10 +1622,10 @@
         "LAW",
         "LAW DEPARTMENT"
       ],
-      "rows_held": 46,
-      "rows_listable": 43,
+      "rows_held": 44,
+      "rows_listable": 44,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1560,8 +1635,9 @@
           ]
         },
         "ll63": {
-          "rows_listable": 19,
+          "rows_listable": 20,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/LAW_FY27LL63_NP_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Law_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Law_LL63_FY27_RE.xlsx"
           ]
@@ -1571,17 +1647,17 @@
         "1": 15,
         "2": 13,
         "3": 11,
-        "not_published": 4
+        "not_published": 5
       },
       "industries": {
         "Goods <$1 million": 10,
         "Professional Services": 13,
         "Standard Services": 1,
-        "not_published": 19
+        "not_published": 20
       },
       "estimated_amount": {
         "published": 24,
-        "not_published": 19
+        "not_published": 20
       },
       "quality_flags": {},
       "shards": [
@@ -1599,10 +1675,10 @@
       "agency_keys": [
         "MAYOR S OFFICE"
       ],
-      "rows_held": 6,
+      "rows_held": 3,
       "rows_listable": 3,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1637,10 +1713,10 @@
       "agency_keys": [
         "MAYOR S OFFICE OF CRIMINAL JUSTICE"
       ],
-      "rows_held": 7,
+      "rows_held": 4,
       "rows_listable": 4,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1716,10 +1792,10 @@
         "NEW YORK CITY EMERGENCY MANAGEMENT DEPARTMENT",
         "NYCEM"
       ],
-      "rows_held": 22,
+      "rows_held": 19,
       "rows_listable": 19,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1771,10 +1847,10 @@
         "NEW YORK POLICE DEPARTMENT",
         "NYPD"
       ],
-      "rows_held": 1856,
-      "rows_listable": 1853,
+      "rows_held": 1855,
+      "rows_listable": 1855,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1784,8 +1860,9 @@
           ]
         },
         "ll63": {
-          "rows_listable": 1821,
+          "rows_listable": 1823,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYPD_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYPD_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYPD_LL63_FY27_RE.xlsx"
           ]
@@ -1796,17 +1873,17 @@
         "2": 415,
         "3": 865,
         "4": 322,
-        "not_published": 25
+        "not_published": 27
       },
       "industries": {
         "Construction Services": 20,
         "Professional Services": 5,
         "Standard Services": 7,
-        "not_published": 1821
+        "not_published": 1823
       },
       "estimated_amount": {
         "published": 32,
-        "not_published": 1821
+        "not_published": 1823
       },
       "quality_flags": {},
       "shards": [
@@ -1864,10 +1941,10 @@
         "OCME",
         "OFFICE OF CHIEF MEDICAL EXAMINER"
       ],
-      "rows_held": 13,
+      "rows_held": 10,
       "rows_listable": 10,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1916,10 +1993,10 @@
         "OFFICE OF LABOR RELATIONS",
         "OLR"
       ],
-      "rows_held": 91,
+      "rows_held": 88,
       "rows_listable": 88,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1968,10 +2045,10 @@
         "MAYOR S OFFICE OF MANAGEMENT AND BUDGET",
         "OMB"
       ],
-      "rows_held": 103,
-      "rows_listable": 100,
+      "rows_held": 101,
+      "rows_listable": 101,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -1981,8 +2058,9 @@
           ]
         },
         "ll63": {
-          "rows_listable": 58,
+          "rows_listable": 59,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_FY27LL63_NP_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_LL63_FY27_RE.xlsx"
           ]
@@ -1993,16 +2071,16 @@
         "2": 23,
         "3": 22,
         "4": 18,
-        "not_published": 15
+        "not_published": 16
       },
       "industries": {
         "Professional Services": 40,
         "Standard Services": 2,
-        "not_published": 58
+        "not_published": 59
       },
       "estimated_amount": {
         "published": 2,
-        "not_published": 98
+        "not_published": 99
       },
       "quality_flags": {},
       "shards": [
@@ -2060,8 +2138,8 @@
         "OFFICE OF TECHNOLOGY AND INNOVATION",
         "OTI"
       ],
-      "rows_held": 647,
-      "rows_listable": 647,
+      "rows_held": 651,
+      "rows_listable": 651,
       "withheld": {
         "workbook_list_row": 0
       },
@@ -2073,8 +2151,9 @@
           ]
         },
         "ll63": {
-          "rows_listable": 399,
+          "rows_listable": 403,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OTI_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OTI_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OTI_LL63_FY27_RE.xlsx"
           ]
@@ -2085,16 +2164,16 @@
         "2": 20,
         "3": 20,
         "4": 16,
-        "not_published": 21
+        "not_published": 25
       },
       "industries": {
         "Professional Services": 232,
         "Standard Services": 16,
-        "not_published": 399
+        "not_published": 403
       },
       "estimated_amount": {
         "published": 248,
-        "not_published": 399
+        "not_published": 403
       },
       "quality_flags": {
         "published_term_end_before_start": 3
@@ -2116,10 +2195,10 @@
         "DEPARTMENT OF SMALL BUSINESS SERVICES",
         "SBS"
       ],
-      "rows_held": 47,
-      "rows_listable": 44,
+      "rows_held": 45,
+      "rows_listable": 45,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -2129,8 +2208,9 @@
           ]
         },
         "ll63": {
-          "rows_listable": 43,
+          "rows_listable": 44,
           "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx"
           ]
@@ -2139,15 +2219,15 @@
       "quarters": {
         "1": 22,
         "2": 1,
-        "not_published": 21
+        "not_published": 22
       },
       "industries": {
         "Professional Services": 1,
-        "not_published": 43
+        "not_published": 44
       },
       "estimated_amount": {
         "published": 1,
-        "not_published": 43
+        "not_published": 44
       },
       "quality_flags": {},
       "shards": [
@@ -2167,10 +2247,10 @@
         "TAXI AND LIMOUSINE COMMISSION",
         "TLC"
       ],
-      "rows_held": 16,
+      "rows_held": 13,
       "rows_listable": 13,
       "withheld": {
-        "workbook_list_row": 3
+        "workbook_list_row": 0
       },
       "by_source": {
         "ll1": {
@@ -2211,7 +2291,8 @@
   ],
   "unlinked_agency_codes": [
     "CITYHALL",
-    "DPRC"
+    "DPRC",
+    "DPRE"
   ],
   "known_agencies_without_rows": [
     "administrative-tax-appeals",
