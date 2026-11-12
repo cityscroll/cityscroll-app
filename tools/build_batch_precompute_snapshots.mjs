@@ -5,6 +5,9 @@
 //   node tools/build_batch_precompute_snapshots.mjs            # write all
 //   node tools/build_batch_precompute_snapshots.mjs --check     # fail if stale (CI)
 //   node tools/build_batch_precompute_snapshots.mjs --fixture   # use offline fixtures
+//   node tools/build_batch_precompute_snapshots.mjs --money-open-solicitations-only
+//        # every open solicitation; its own first-class artifact, so a failed pull keeps
+//        # the last good file without touching the 40-row --money-only strip
 //
 // Snapshots are commit-time artifacts (inline-at-build). Browser readers filter
 // them locally; only this acquisition command contacts publisher sources.
@@ -20,12 +23,14 @@ import {
   buildLandOutcomesSeed,
   buildMoneyAgenciesSnapshot,
   buildMoneyDefaultOpenSnapshot,
+  buildMoneyOpenSolicitationsSnapshot,
   buildStaffingHiresSnapshot,
   fetchDataPageCharts,
   fetchLandDefaultProjects,
   fetchLandOutcomeSnapshots,
   fetchMoneyAgencies,
   fetchMoneyDefaultOpen,
+  fetchMoneyOpenSolicitations,
   fetchStaffingHires,
 } from "./lib/batch_precompute_snapshots.mjs";
 
@@ -35,6 +40,7 @@ const DATA_PAGE_OUT = path.join(DATA_DIR, "data_page_charts.json");
 const LAND_OUT = path.join(DATA_DIR, "land_default_ulurp.json");
 const LAND_OUTCOMES_SEED_OUT = path.join(DATA_DIR, "land_outcomes_seed.json");
 const MONEY_OPEN_OUT = path.join(DATA_DIR, "money_default_open.json");
+const MONEY_OPEN_SOLICITATIONS_OUT = path.join(DATA_DIR, "money_open_solicitations.json");
 const MONEY_AGENCIES_OUT = path.join(DATA_DIR, "money_procurement_agencies.json");
 const STAFFING_HIRES_OUT = path.join(DATA_DIR, "staffing_default_hires.json");
 const FIXTURE_DIR = path.join(ROOT, "test", "fixtures", "batch-precompute");
@@ -46,6 +52,7 @@ function parseArgs(argv) {
     dataOnly: argv.includes("--data-only"),
     landOnly: argv.includes("--land-only"),
     moneyOnly: argv.includes("--money-only"),
+    moneyOpenSolicitationsOnly: argv.includes("--money-open-solicitations-only"),
     staffingOnly: argv.includes("--staffing-only"),
   };
 }
@@ -81,8 +88,9 @@ async function writeOrCheck(filePath, payload, check) {
 
 function wants(args, key) {
   const only =
-    args.dataOnly || args.landOnly || args.moneyOnly || args.staffingOnly;
+    args.dataOnly || args.landOnly || args.moneyOnly || args.staffingOnly || args.moneyOpenSolicitationsOnly;
   if (!only) return true;
+  if (key === "money_open_solicitations") return args.moneyOpenSolicitationsOnly;
   if (key === "data") return args.dataOnly;
   if (key === "land") return args.landOnly;
   if (key === "money") return args.moneyOnly;
@@ -98,8 +106,9 @@ export async function buildAll({
   landOnly = false,
   moneyOnly = false,
   staffingOnly = false,
+  moneyOpenSolicitationsOnly = false,
 } = {}) {
-  const args = { dataOnly, landOnly, moneyOnly, staffingOnly };
+  const args = { dataOnly, landOnly, moneyOnly, staffingOnly, moneyOpenSolicitationsOnly };
   const results = {};
   if (wants(args, "data")) {
     let raw;
@@ -162,6 +171,15 @@ export async function buildAll({
       acquisition: agencyRows?.acquisition,
     });
   }
+  if (wants(args, "money_open_solicitations")) {
+    const population = fixture
+      ? {
+        rows: await loadFixture("money_open_solicitations_raw.json"),
+        sourceCount: Number((await loadFixture("money_open_solicitations_count.json"))[0].n),
+      }
+      : await fetchMoneyOpenSolicitations(fetchImpl, now);
+    results.money_open_solicitations = buildMoneyOpenSolicitationsSnapshot(population, { now });
+  }
   if (wants(args, "staffing")) {
     let hires;
     if (fixture) {
@@ -184,6 +202,7 @@ async function main() {
     landOnly: args.landOnly,
     moneyOnly: args.moneyOnly,
     staffingOnly: args.staffingOnly,
+    moneyOpenSolicitationsOnly: args.moneyOpenSolicitationsOnly,
   });
   const out = [];
   if (built.data_page) {
@@ -197,6 +216,9 @@ async function main() {
   }
   if (built.money_default_open) {
     out.push(await writeOrCheck(MONEY_OPEN_OUT, built.money_default_open, args.check));
+  }
+  if (built.money_open_solicitations) {
+    out.push(await writeOrCheck(MONEY_OPEN_SOLICITATIONS_OUT, built.money_open_solicitations, args.check));
   }
   if (built.money_agencies) {
     out.push(await writeOrCheck(MONEY_AGENCIES_OUT, built.money_agencies, args.check));

@@ -5406,6 +5406,43 @@
       "production_evidence_field": "first_class.contracts_open"
     },
     {
+      "id": "contracts-open-population",
+      "public_artifact_path": "site/data/money_open_solicitations.json",
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
+      "source_contract_id": "city-record",
+      "acquisition_command": [
+        "node",
+        "tools/build_batch_precompute_snapshots.mjs",
+        "--money-open-solicitations-only"
+      ],
+      "owning_builder": "tools/build_batch_precompute_snapshots.mjs",
+      "builder_command": [
+        "node",
+        "tools/build_batch_precompute_snapshots.mjs",
+        "--money-open-solicitations-only"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs"
+      ],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 24,
+      "hard_maximum_age_hours": 36,
+      "vintage_fields": [
+        "open_as_of",
+        "generated_at"
+      ],
+      "population_fields": [
+        "count",
+        "notices"
+      ],
+      "last_known_good_behavior": "Retain the last verified open population within its hard age; a short, capped or partly invalid pull is published marked incomplete with its reasons and its count against the publisher count.",
+      "resident_stale_behavior": "Do not describe the list as every current open solicitation after the hard maximum age.",
+      "resident_unavailable_behavior": "Show the full open list as unavailable; never substitute the 40-row first-paint strip as if it were the whole population.",
+      "production_evidence_field": "first_class.contracts_open_population"
+    },
+    {
       "id": "contracts-agency-filter",
       "public_artifact_path": "site/data/money_procurement_agencies.json",
       "primary_routes": [

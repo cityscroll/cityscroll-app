@@ -111,6 +111,14 @@ export const MONEY_DEFAULT_DETAIL_SELECT = [
   "other_info_1",
 ].join(",");
 export const MONEY_DEFAULT_LIMIT = 40;
+// Full open-solicitation population. Sized from measurement (retained capture fixtures):
+// 160 to 249 open rows on every bimonthly day from 2023-11-12 to 2026-11-12,
+// 194 on 2026-11-12 at about 0.6 KiB per pretty-printed row. 500 rows is twice the
+// observed maximum; 384 KiB holds 500 rows at the longest observed row.
+export const MONEY_OPEN_SOLICITATIONS_SCHEMA = "cityscroll.money_open_solicitations.v1";
+export const MONEY_OPEN_SOLICITATIONS_MAX_ROWS = 500;
+export const MONEY_OPEN_SOLICITATIONS_MAX_BYTES = 384 * 1024;
+export const MONEY_OPEN_SOLICITATION_REQUEST_ID = /^[0-9]{11}$/;
 export const MONEY_AGENCIES_LIMIT = 600;
 export const STAFFING_HIRES_LIMIT = 80;
 export const STAFFING_HIRES_SELECT =
@@ -249,6 +257,20 @@ export function moneyDefaultOpenQuery(now = new Date()) {
   };
 }
 
+/** One page, one row past the bound so an over-bound population is detected, not hidden. */
+export function moneyOpenSolicitationsQuery(now = new Date(), { maxRows = MONEY_OPEN_SOLICITATIONS_MAX_ROWS } = {}) {
+  return {
+    $select: MONEY_DEFAULT_SELECT,
+    $where: moneyDefaultOpenWhere(now),
+    $order: "due_date ASC, request_id ASC",
+    $limit: String(maxRows + 1),
+  };
+}
+
+export function moneyOpenSolicitationsCountQuery(now = new Date()) {
+  return { $select: "count(*) AS n", $where: moneyDefaultOpenWhere(now) };
+}
+
 export function moneyAgenciesQuery() {
   return {
     $select: "agency_name",
@@ -340,6 +362,77 @@ export function buildMoneyDefaultOpenSnapshot(rows, { now = new Date() } = {}) {
     count: list.length,
     notices: list,
   };
+}
+
+/**
+ * Every open solicitation, not only the soonest-due first-paint strip. Same publisher
+ * predicate and list-card fields as money_default_open (no contact fields), one bounded
+ * page ordered due_date then request_id, and the publisher's own count for the same
+ * predicate. The projection states its count against that source count; a short, capped
+ * or partly invalid pull is published as incomplete with its reasons, never as complete.
+ */
+export function buildMoneyOpenSolicitationsSnapshot(
+  { rows, sourceCount } = {},
+  { now = new Date(), maxRows = MONEY_OPEN_SOLICITATIONS_MAX_ROWS, maxBytes = MONEY_OPEN_SOLICITATIONS_MAX_BYTES } = {},
+) {
+  if (!Array.isArray(rows)) throw new Error("money open solicitations: rows must be an array");
+  const count = Number(sourceCount);
+  if (!Number.isInteger(count) || count < 0) {
+    throw new Error("money open solicitations: publisher count is missing or not a whole number");
+  }
+  const reasons = [];
+  const seen = new Set();
+  let rejected = 0;
+  const notices = [];
+  for (const row of rows) {
+    const id = typeof row?.request_id === "string" ? row.request_id.trim() : "";
+    if (!MONEY_OPEN_SOLICITATION_REQUEST_ID.test(id) || seen.has(id)) {
+      rejected += 1;
+      continue;
+    }
+    seen.add(id);
+    notices.push(projectToMoneyRow(row));
+  }
+  if (rejected) reasons.push("invalid_rows");
+  if (notices.length > maxRows) {
+    notices.length = maxRows;
+    reasons.push("row_cap");
+  }
+  if (!reasons.includes("row_cap") && rows.length !== count) reasons.push("count_mismatch");
+  const pins = new Set(notices.map((row) => row.pin).filter((pin) => typeof pin === "string" && pin));
+  const payload = {
+    schema: MONEY_OPEN_SOLICITATIONS_SCHEMA,
+    schema_version: 1,
+    delivery_tier: "inline-at-build",
+    generated_at: now.toISOString(),
+    open_as_of: calendarDayISO(now),
+    source: {
+      name: "City Record Online",
+      dataset: CITY_RECORD_DATASET,
+      url: `https://data.cityofnewyork.us/d/${CITY_RECORD_DATASET}`,
+    },
+    query: {
+      ...moneyOpenSolicitationsQuery(now, { maxRows }),
+      note: "Every open solicitation (same predicate as money_default_open, without its 40-row strip limit). Contact fields stay on the notice detail read.",
+    },
+    bounds: { max_rows: maxRows, max_bytes: maxBytes },
+    population: {
+      state: reasons.length ? "incomplete" : "complete",
+      reasons,
+      source_count: count,
+      published_count: notices.length,
+      rejected_rows: rejected,
+      distinct_pins: pins.size,
+      rows_without_pin: notices.filter((row) => !row.pin).length,
+    },
+    count: notices.length,
+    notices,
+  };
+  const bytes = Buffer.byteLength(`${JSON.stringify(payload, null, 2)}\n`);
+  if (bytes > maxBytes) {
+    throw new Error(`money open solicitations: ${bytes} bytes exceeds the ${maxBytes}-byte bound; last good artifact retained`);
+  }
+  return payload;
 }
 
 export function buildMoneyAgenciesSnapshot(rows, { now = new Date(), acquisition = rows?.acquisition } = {}) {
@@ -743,6 +836,22 @@ export async function fetchMoneyDefaultOpen(fetchImpl = fetch, now = new Date())
   const rows = await fetchJson(fetchImpl, sodaUrl(CITY_RECORD_DATASET, moneyDefaultOpenQuery(now)));
   if (!Array.isArray(rows)) throw new Error("money default open SODA returned a non-array");
   return rows;
+}
+
+/**
+ * Count first, then the bounded page, through the shared retrying fetch. A failed or
+ * timed-out request throws: the caller keeps the last good artifact instead of writing
+ * a short list.
+ */
+export async function fetchMoneyOpenSolicitations(fetchImpl = fetch, now = new Date(), options = {}) {
+  const counted = await fetchJson(fetchImpl, sodaUrl(CITY_RECORD_DATASET, moneyOpenSolicitationsCountQuery(now)), options);
+  const sourceCount = Number(Array.isArray(counted) ? counted[0]?.n : Number.NaN);
+  if (!Number.isInteger(sourceCount) || sourceCount < 0) {
+    throw new Error("money open solicitations count SODA returned no whole-number count");
+  }
+  const rows = await fetchJson(fetchImpl, sodaUrl(CITY_RECORD_DATASET, moneyOpenSolicitationsQuery(now, options)), options);
+  if (!Array.isArray(rows)) throw new Error("money open solicitations SODA returned a non-array");
+  return { rows, sourceCount };
 }
 
 export async function fetchMoneyAgencies(
