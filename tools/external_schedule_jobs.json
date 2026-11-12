@@ -69,6 +69,14 @@
    ],
    "runner": "legal-source-watch",
    "issue_title_prefix": "Procurement legal source"
+  },
+  {
+   "id": "procurement-plan-index-watch",
+   "schedule": [
+    "53 12 * * *"
+   ],
+   "runner": "procurement-plan-index-watch",
+   "issue_title_prefix": "Procurement plan index"
   }
  ],
  "follow_up_jobs": [

@@ -62,6 +62,8 @@ export const REPAIR_FAILURE_CLASSES = Object.freeze([
   "missed-slot",
   "legal-source-changed",
   "legal-source-unreachable",
+  "plan-index-changed",
+  "plan-index-unreachable",
 ]);
 
 const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]+/g;
@@ -378,6 +380,46 @@ export function monitorRepairFindings(job, output, { now = null } = {}) {
     }
     close(scope({ monitor, failureClass: "legal-source-changed", stillFailing: changed.map((row) => row?.source_file) }));
     close(scope({ monitor, failureClass: "legal-source-unreachable", stillFailing: unreachable.map((row) => row?.source_file) }));
+    return bound({ findings, recovered });
+  }
+
+  if (runner === "procurement-plan-index-watch") {
+    // Both MOCS indexes are evaluated every run. Subjects stay on source ids
+    // (mocs_ll1 / mocs_ll63) so signatures stay stable across label wording.
+    // Both classes are declared judgment: a changed index is a deliberate
+    // collection decision, and an unreadable page cannot be repaired locally.
+    const changed = Array.isArray(result.changed_indexes) ? result.changed_indexes : [];
+    const unreachable = Array.isArray(result.unreachable_indexes) ? result.unreachable_indexes : [];
+    for (const row of changed) {
+      const added = Array.isArray(row?.added) ? row.added.length : 0;
+      const removed = Array.isArray(row?.removed) ? row.removed.length : 0;
+      const notes = Array.isArray(row?.note_changes) ? row.note_changes.length : 0;
+      const newer = Array.isArray(row?.new_fiscal_years) ? row.new_fiscal_years : [];
+      add(finding({
+        monitor,
+        failureClass: "plan-index-changed",
+        subject: row?.source,
+        findings: [
+          `${row?.source}: MOCS plan index workbook set or notes differ from the committed collection`,
+          added || removed || notes
+            ? `added ${added}, removed ${removed}, note changes ${notes}`
+            : null,
+          newer.length ? `newer fiscal years observed: ${newer.join(", ")}` : null,
+        ].filter(Boolean),
+        observedAt,
+      }));
+    }
+    for (const row of unreachable) {
+      add(finding({
+        monitor,
+        failureClass: "plan-index-unreachable",
+        subject: row?.source,
+        findings: [`${row?.source}: could not be checked (${row?.reason || "unreadable"}), so it is not confirmed unchanged`],
+        observedAt,
+      }));
+    }
+    close(scope({ monitor, failureClass: "plan-index-changed", stillFailing: changed.map((row) => row?.source) }));
+    close(scope({ monitor, failureClass: "plan-index-unreachable", stillFailing: unreachable.map((row) => row?.source) }));
     return bound({ findings, recovered });
   }
 

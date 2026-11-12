@@ -70,6 +70,8 @@ export const REPAIR_JUDGMENT_CLASSES = Object.freeze({
   "stats-snapshot-missing": "the daily snapshot did not publish, and the remedy is a change to the publication path in this repository",
   "legal-source-changed": "a watched legal source text no longer matches the register, and the remedy is to re-read the source and propose a reviewed register change (a new record_version) — never an automated edit of the register or a review status",
   "legal-source-unreachable": "a watched legal source could not be read, so whether it changed is unknown; no deterministic local remedy exists beyond waiting for a later scheduled observation, and acting as if it were unchanged would be unsafe",
+  "plan-index-changed": "the publisher posted, removed, or re-dated plan workbooks on a MOCS index page; refreshing is a deliberate rate-limited host-side collection run reviewed as a payload change, never an automated rewrite of the committed plan index",
+  "plan-index-unreachable": "a MOCS plan index page could not be read, so whether it changed is unknown; a repair cannot make the publisher answer, and acting as if the index were unchanged would be unsafe",
 });
 
 function startedStallKillSwitchOn() {

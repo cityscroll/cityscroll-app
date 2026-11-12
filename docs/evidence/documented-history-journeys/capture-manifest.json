@@ -574,8 +574,7 @@
       "state": "stale",
       "changed_inputs": [
         "site/analytics_surface_taxonomy.mjs",
-        "site/beta-flags.json",
-        "site/i18n.js"
+        "site/beta-flags.json"
       ]
     }
   },
@@ -982,7 +981,7 @@
       },
       {
         "path": "site/i18n.js",
-        "sha256": "c1bbf5667826cabfc3362eb82bff58b25d813f16a9164578adf7327e7dc8ae8a"
+        "sha256": "a265396278057cbf66d3fdba43123b841548f416859b06c3a275ecc938edbd01"
       },
       {
         "path": "site/land_view_state.mjs",
@@ -1315,7 +1314,7 @@
       },
       {
         "path": "site/i18n.js",
-        "sha256": "4499f329b5ba537746bebdd28a1118bfdc0c2c13c2044b2f6ecb15ef709df7f2"
+        "sha256": "a265396278057cbf66d3fdba43123b841548f416859b06c3a275ecc938edbd01"
       },
       {
         "path": "site/land_view_state.mjs",
@@ -1511,8 +1510,7 @@
     "state": "stale",
     "changed_inputs": [
       "site/analytics_surface_taxonomy.mjs",
-      "site/beta-flags.json",
-      "site/i18n.js"
+      "site/beta-flags.json"
     ]
   }
 }

@@ -12,6 +12,7 @@ import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as m from '../site/procurement_evidence.mjs';
+import { planCapabilityFamilies } from './build_procurement_plan_index.mjs';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const FIXTURE_DIR = join(ROOT, 'warehouse/fixtures/procurement-evidence');
@@ -21,6 +22,7 @@ const PROGRAM_SITES_PATH = join(ROOT, 'site/data/agency_program_sites.json');
 const PROGRAM_SITES_DIR = join(ROOT, 'site/data/agency_program_sites');
 const REGISTERED_MANIFEST_PATH = join(ROOT, 'site/data/analytics_registered_contracts.json');
 const CROSSWALK_PATH = join(ROOT, 'worker/src/data/agency_crosswalk.json');
+const PLAN_INDEX_PATH = join(ROOT, 'site/data/procurement_plan_index.json');
 
 const MANIFEST_SCHEMA = 'cityscroll.procurement_evidence_manifest.v1';
 const CAPABILITIES_SCHEMA = 'cityscroll.procurement_evidence_capabilities.v1';
@@ -56,12 +58,14 @@ export function buildAll() {
     registered.snapshot_date,
   ].sort().at(-1);
 
+  const planIndex = read(PLAN_INDEX_PATH);
   const families = [
     { id: 'registered-contracts', source_id: 'checkbook-contracts', agency_ids: ['environmental-protection', 'health-and-mental-hygiene'], status: 'available', unit: 'distinct prime contract', version: registered.snapshot_date, source_as_of: registered.snapshot_date },
     { id: 'program-sites', source_id: 'ebkm-iyma', agency_ids: ['youth-and-community-development'], status: 'available', unit: 'distinct program-site offering', geography: 'service_site_community_district', version: `fy${programSites.fiscal_year}`, source_as_of: null },
     { id: 'capital-projects', source_id: 'fb86-vt7u', agency_ids: ['design-and-construction'], status: 'available', unit: 'financial project identity', version: capital.record.after.reporting_period },
     { id: 'budget-requests', source_id: 'vn4m-mk4t', agency_ids: ['education', 'environmental-protection'], status: 'available', unit: 'tracking code and fiscal cycle', version: cb.publications.latest },
     { id: 'contract-terms', source_id: 'checkbook-nycha-contracts', agency_ids: ['housing-authority'], status: 'dated_retained', unit: 'contract agreement', version: nycha[0].retrieval_timestamp.slice(0, 10) },
+    ...planCapabilityFamilies(planIndex),
   ];
 
   const dycdRows = [];

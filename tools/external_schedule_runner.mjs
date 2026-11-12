@@ -642,6 +642,132 @@ export async function runLegalSourceWatch(job, context) {
   return { result, intents };
 }
 
+const PLAN_INDEX_LABELS = Object.freeze({ mocs_ll1: "Local Law 1", mocs_ll63: "Local Law 63" });
+
+function planIndexChangedBody(row) {
+  const label = PLAN_INDEX_LABELS[row.source] || row.source;
+  const lines = [
+    `The MOCS ${label} plan index no longer matches the workbook set recorded in the committed planning collection.`,
+    `Added: ${(row.added || []).length}. Removed: ${(row.removed || []).length}. Note changes: ${(row.note_changes || []).length}.`,
+  ];
+  for (const item of row.added || []) lines.push(`- added: ${item.url}${item.note ? ` ${item.note}` : ""}`);
+  for (const item of row.removed || []) lines.push(`- removed: ${item.url}`);
+  for (const item of row.note_changes || []) lines.push(`- note change: ${item.url} recorded ${item.recorded ?? "null"} observed ${item.observed ?? "null"}`);
+  if ((row.new_fiscal_years || []).length) lines.push(`Newer fiscal-year folders observed: ${row.new_fiscal_years.join(", ")}.`);
+  lines.push("Refreshing is a deliberate host-side collection run of warehouse/scripts/procurement_plans_run.py, reviewed as a payload change. This check never downloads a workbook and never writes the payload.");
+  return lines.join("\n");
+}
+
+function planIndexUnreachableBody(unreachable) {
+  return [
+    "One or more MOCS plan index pages could not be read, so they are NOT confirmed unchanged.",
+    ...unreachable.map((row) => `- ${PLAN_INDEX_LABELS[row.source] || row.source}: ${row.reason || "unreadable"}`),
+    "A page that could not be checked is never reported as all-clear.",
+  ].join("\n");
+}
+
+/**
+ * Re-check the two MOCS procurement-plan index pages against the committed
+ * planning manifest. Spawns tools/check_procurement_plan_index.mjs, parses its
+ * JSON receipt, and opens or closes issues for changed / unreadable indexes.
+ * Collection stays a deliberate host-side run; this monitor never downloads a
+ * workbook and never writes the payload.
+ */
+export async function runProcurementPlanIndexWatch(job, context) {
+  const resultRun = await runProcess(process.execPath, ["tools/check_procurement_plan_index.mjs"], { cwd: ROOT });
+  let receipt;
+  try {
+    receipt = JSON.parse(String(resultRun.stdout || "").trim());
+  } catch {
+    receipt = {
+      schema: "cityscroll.procurement_plan_index_watch.v1",
+      summary: "could_not_check",
+      changes_found: false,
+      could_not_check: true,
+      indexes: [
+        { source: "mocs_ll1", status: "could_not_check", reason: "receipt_unreadable" },
+        { source: "mocs_ll63", status: "could_not_check", reason: "receipt_unreadable" },
+      ],
+    };
+  }
+  const observed = context.now.toISOString();
+  const indexes = Array.isArray(receipt.indexes) ? receipt.indexes : [];
+  const changed = indexes.filter((row) => row.status === "changed");
+  const unreachable = indexes.filter((row) => row.status === "could_not_check");
+  const result = {
+    observed_at: observed,
+    status: receipt.changes_found || receipt.could_not_check ? "degraded" : "healthy",
+    command_exit: resultRun.code,
+    summary: receipt.summary,
+    changes_found: !!receipt.changes_found,
+    could_not_check: !!receipt.could_not_check,
+    changed_indexes: changed,
+    unreachable_indexes: unreachable,
+    indexes,
+    scheduler_heartbeat: { observed_at: observed, status: "succeeded", run_id: context.runKey },
+    body: receipt.changes_found || receipt.could_not_check
+      ? `${changed.length} changed, ${unreachable.length} could not be checked, ${indexes.filter((row) => row.status === "unchanged").length} unchanged.`
+      : `Both watched plan indexes match the committed collection.`,
+  };
+  const intents = [];
+  for (const row of indexes) {
+    const label = PLAN_INDEX_LABELS[row.source] || row.source;
+    const title = `${job.issue_title_prefix} changed: ${label}`;
+    if (row.status === "changed") {
+      intents.push({
+        result,
+        issue: {
+          mode: "open",
+          title,
+          body: planIndexChangedBody(row),
+          body_contains: [`changed: ${label}`],
+        },
+      });
+    } else if (row.status === "unchanged") {
+      intents.push({
+        result,
+        issue: {
+          mode: "close",
+          title,
+          body: `Resolved: ${label} plan index matches the committed collection again.`,
+        },
+      });
+    }
+  }
+  const unreachableTitle = `${job.issue_title_prefix} could not be checked`;
+  if (receipt.could_not_check) {
+    intents.push({
+      result,
+      issue: {
+        mode: "open",
+        title: unreachableTitle,
+        body: planIndexUnreachableBody(unreachable),
+        body_contains: ["could not be read"],
+      },
+    });
+  } else {
+    intents.push({
+      result,
+      issue: {
+        mode: "close",
+        title: unreachableTitle,
+        body: "Resolved: every watched plan index page was read and compared against the committed collection.",
+      },
+    });
+  }
+  if (!receipt.changes_found && !receipt.could_not_check) {
+    intents.push({
+      result,
+      issue: {
+        mode: "close-recovered",
+        title_prefix: job.issue_title_prefix,
+        body: "Classification: resolved. Both plan indexes match the committed collection again.",
+      },
+    });
+  }
+  return { result, intents };
+}
+
 export async function runScheduledJob(job, options = {}) {
   const now = options.now || new Date();
   const stateDir = options.stateDir || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR || join(ROOT, ".external-schedule-state");
@@ -661,6 +787,7 @@ export async function runScheduledJob(job, options = {}) {
   else if (job.runner === "stats-daily-snapshot") output = await runStatsDailySnapshot(job, context);
   else if (job.runner === "notice-synthetic-probe") output = await runNoticeSyntheticProbe(job, context);
   else if (job.runner === "legal-source-watch") output = await runLegalSourceWatch(job, context);
+  else if (job.runner === "procurement-plan-index-watch") output = await runProcurementPlanIndexWatch(job, context);
   else throw new Error(`unknown external schedule runner: ${job.runner}`);
   if (output.intents) {
     for (const [index, intent] of output.intents.entries()) await persistScheduleResult({
