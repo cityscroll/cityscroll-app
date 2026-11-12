@@ -17,6 +17,7 @@ import {
   SOURCE_RECORD_INSERT_SQL,
   sourceRecordDualWriteEnabled,
 } from "./lib/source_records.mjs";
+import { passportRfxCommodityCoverage } from "./lib/passport_commodity_category.mjs";
 
 const BATCH = 80;
 export const PASSPORT_SOURCE_RECORD_DUAL_WRITE_FLAG = "PASSPORT_SOURCE_RECORD_DUAL_WRITE";
@@ -504,6 +505,15 @@ export async function ingestPassportPublic(env) {
     }
   }
 
+  // Category coverage for this population (exact L3 label match). Advisory: a coverage
+  // failure is recorded, never a reason to fail the RFx materialization itself.
+  let categoryCoverage;
+  try {
+    categoryCoverage = { measured_at: ingestedAt, ...passportRfxCommodityCoverage(rfx) };
+  } catch (e) {
+    categoryCoverage = { measured_at: ingestedAt, state: "error", error: String(e?.message || e) };
+  }
+
   await writePassportMeta(env, [
     ["ingested_at", ingestedAt],
     ["contract_rows", String(contracts.length)],
@@ -515,6 +525,7 @@ export async function ingestPassportPublic(env) {
     ["dual_write_contracts", String(dualWriteContracts)],
     ["dual_write_rfx", String(dualWriteRfx)],
     ["dual_write_errors", String(dualWriteErrors)],
+    ["rfx_category_coverage", JSON.stringify(categoryCoverage)],
   ]);
 
   // Dual-write enabled but wrote nothing while product has rows — recover from product payloads.
@@ -537,6 +548,7 @@ export async function ingestPassportPublic(env) {
     rfx: rfx.length,
     ingested_at: ingestedAt,
     last_modified: lastModified,
+    rfx_category_coverage: categoryCoverage,
     dual_write: {
       contracts: dualWriteContracts,
       rfx: dualWriteRfx,

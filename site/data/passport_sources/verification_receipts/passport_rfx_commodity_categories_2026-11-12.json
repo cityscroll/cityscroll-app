@@ -1,0 +1,92 @@
+{
+  "schema": "cityscroll.passport_rfx_commodity_category_coverage.v1",
+  "source_contract_id": "passport-public-rfx",
+  "source_url": "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js",
+  "fetched_at": "2026-11-12T12:27:55Z",
+  "publisher_last_modified": "Thu, 12 Nov 2026 05:37:04 GMT",
+  "source_sha256": "9b7558ce92269c7106f04bca8cfe87b46fecf6ad26089e9921d3085d7e9e2e2d",
+  "source_bytes": 3600581,
+  "dump_row_lines": 12609,
+  "rows_parsed": 12585,
+  "catalog": {
+    "path": "/data/procurement_codes/nyc-commodity-categories.json",
+    "version": "snapshot-2026-11-11-6325fbf06b26",
+    "source_sha256": "6325fbf06b2620ea7992c6f16da4f1f209cd1339d736f86a23b17fdec579a6b7",
+    "l3_categories": 404
+  },
+  "match_rule": "exact label after Unicode NFKC, whitespace collapse, trim and lower-case",
+  "coverage": {
+    "catalog_version": "snapshot-2026-11-11-6325fbf06b26",
+    "state": "measured",
+    "total": 12585,
+    "matched": 12533,
+    "unmatched": 52,
+    "no_label": 0,
+    "by_status": {
+      "Closed": {
+        "total": 3530,
+        "matched": 3530,
+        "unmatched": 0,
+        "no_label": 0
+      },
+      "Planned": {
+        "total": 845,
+        "matched": 844,
+        "unmatched": 1,
+        "no_label": 0
+      },
+      "Released": {
+        "total": 252,
+        "matched": 252,
+        "unmatched": 0,
+        "no_label": 0
+      },
+      "Responses Received": {
+        "total": 6811,
+        "matched": 6789,
+        "unmatched": 22,
+        "no_label": 0
+      },
+      "Selections Made": {
+        "total": 1147,
+        "matched": 1118,
+        "unmatched": 29,
+        "no_label": 0
+      }
+    },
+    "unmatched_labels": [
+      {
+        "label": "Architectural Consulting",
+        "rows": 22
+      },
+      {
+        "label": "CONSULTING SERVICES",
+        "rows": 12
+      },
+      {
+        "label": "Educational Services, Alternative",
+        "rows": 7
+      },
+      {
+        "label": "Certified Public Accountant (CPA) Services",
+        "rows": 4
+      },
+      {
+        "label": "Natural Disasters (Fire, Flood, Wind, Quakes) Consulting",
+        "rows": 3
+      },
+      {
+        "label": "Translation Services",
+        "rows": 2
+      },
+      {
+        "label": "PROJECT MANAGEMENT SERVICES",
+        "rows": 1
+      },
+      {
+        "label": "Professional Services (Not Otherwise Classified)",
+        "rows": 1
+      }
+    ]
+  }
+}

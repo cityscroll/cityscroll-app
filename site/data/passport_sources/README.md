@@ -28,6 +28,25 @@ See `worker/src/lib/passport_join.mjs` and measured rates in
 `site/data/source_contracts.json` (`join_measurement`) and
 `verification_receipts/passport_public_2026-07-30.json`.
 
+## Commodity category (L3)
+
+The RFx `main_commodity` column carries the City's own L3 category label from the NYC
+Commodity Classification Directory. Every published RFx read (`slimRfx` in
+`worker/src/lib/passport_lifecycle.mjs`, so `GET /contract-lifecycle` `rfx_detail` and the
+solicitation stage) carries `main_commodity_category`: `matched` with the L3 `code`, `label`,
+`parents` `[L1, L2]` and `catalog_version`; `unmatched` with the publisher's `raw_label`; or
+`no_label`. Matching is exact after NFKC, whitespace collapse, trim and lower-case against
+`site/data/procurement_codes/nyc-commodity-categories.json` (the Worker bundles its L3
+projection, `worker/src/data/nyc_commodity_l3_categories.json`). No fuzzy match, no guess.
+
+Coverage: each ingest writes `passport_ingest_meta.rfx_category_coverage` (total, matched,
+unmatched, no_label, by RFx status, unmatched labels). Measured 2026-11-12 on the public dump
+(sha256 `9b7558ce…`): 12,533 of 12,585 parsed rows matched (99.59%); Released 252/252,
+Planned 844/845; 8 legacy labels over 52 rows stay unmatched. The dump had 12,609 row lines;
+the engine parser reads 12,589 (20 rows carry a raw tab in the title) and keeps 12,585 with an
+EPIN. Receipt: `verification_receipts/passport_rfx_commodity_categories_2026-11-12.json`
+(`node tools/measure_passport_rfx_commodity_categories.mjs --check <receipt>`).
+
 ## Package documents (measured stop)
 
 The public RFx dump has **no document URL columns** (schema is EPIN, title, agency,

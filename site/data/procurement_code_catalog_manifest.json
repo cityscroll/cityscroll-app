@@ -29,6 +29,27 @@
         "checked_at": "2026-11-11T04:00:00.000Z",
         "acquired_at": "2026-11-11T04:00:00.000Z"
       }
+    },
+    {
+      "scheme": "NYC_COMMODITY_CATEGORIES",
+      "version": "snapshot-2026-11-11-6325fbf06b26",
+      "path": "/data/procurement_codes/nyc-commodity-categories.json",
+      "sha256": "bbdae6e16eba9019f9a9757092070d3804f024fe0aa16e91ad4364520c3a4f8c",
+      "records": 463,
+      "codes": 9038,
+      "counts": {
+        "l1": 6,
+        "l2": 53,
+        "l3": 404,
+        "codes": 9038
+      },
+      "checked_at": "2026-11-11T04:00:00.000Z",
+      "source_url": "https://www.nyc.gov/assets/mocs/downloads/PASSPort/learning-to-use-passport/NYCCommodityClassificationDirectory.xlsx",
+      "source_sha256": "6325fbf06b2620ea7992c6f16da4f1f209cd1339d736f86a23b17fdec579a6b7",
+      "freshness": {
+        "checked_at": "2026-11-11T04:00:00.000Z",
+        "acquired_at": "2026-11-11T04:00:00.000Z"
+      }
     }
   ]
 }

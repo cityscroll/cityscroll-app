@@ -1122,6 +1122,7 @@
 /worker/src/data/keyword_search_index_shards/vendors.json.br
 /worker/src/data/keyword_search_index_shards/vendors.json.gz
 /worker/src/data/land_expedited_corpus.json
+/worker/src/data/nyc_commodity_l3_categories.json
 /worker/src/data/passport_ei_graph.json
 /worker/src/data/payroll_title_warehouse_lookup.json
 /worker/src/data/performance-coverage-contract.v1.json

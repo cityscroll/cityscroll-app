@@ -705,6 +705,7 @@ site/process_conformance.mjs
 site/procurement_alert_atom.mjs
 site/procurement_browse_capability_index.mjs
 site/procurement_browse_query.mjs
+site/procurement_code_catalog.mjs
 site/procurement_coverage_labels.mjs
 site/procurement_deadline_projection.mjs
 site/procurement_digest_compile.mjs
@@ -1150,6 +1151,7 @@ test/fixtures/land_use_action_type/2024M0158.json
 test/fixtures/legistar/upcoming_contracts_22691.json
 test/fixtures/near_you_coverage_semantics.v1.json
 test/fixtures/oath/daily-calendar-2026-09-15.csv
+test/fixtures/passport/rfx_commodity_sample.js
 test/fixtures/procurement_search/golden_cohort.json
 test/fixtures/repository_governance/positive/test-example.mjs
 test/fixtures/rules_stage/20260728026.json
@@ -2086,6 +2088,7 @@ worker/src/data/keyword_search_index_shards/procurements.json.gz
 worker/src/data/keyword_search_index_shards/vendors.json.br
 worker/src/data/keyword_search_index_shards/vendors.json.gz
 worker/src/data/land_expedited_corpus.json
+worker/src/data/nyc_commodity_l3_categories.json
 worker/src/data/passport_ei_graph.json
 worker/src/data/payroll_title_warehouse_lookup.json
 worker/src/data/performance-coverage-contract.v1.json
@@ -2233,6 +2236,7 @@ worker/src/lib/ops_contract.mjs
 worker/src/lib/ops_notification_policy.mjs
 worker/src/lib/owed_attach.mjs
 worker/src/lib/paper_trail_phase.mjs
+worker/src/lib/passport_commodity_category.mjs
 worker/src/lib/passport_join.mjs
 worker/src/lib/passport_lifecycle.mjs
 worker/src/lib/passport_parse.mjs
