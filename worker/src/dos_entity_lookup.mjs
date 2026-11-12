@@ -2,6 +2,7 @@
 // Read-only. Failures are never cached. Per-IP daily limit via NL_METER.
 
 import { fetchSodaRowsWithRetry } from "./alerts.mjs";
+import { corsHeaders as sharedCorsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { overActorLimit } from "./lib/meter.mjs";
 import {
   DOS_LIMITS,
@@ -14,22 +15,11 @@ import {
 const MAX_LOOKUPS_PER_IP_DAY = 200;
 const METER_KEY = "org-register-dos";
 
-const ALLOW = new Set([
-  "https://cityscroll.org", "https://www.cityscroll.org",
-  "https://crol-list.org", "https://www.crol-list.org",
-  "https://cityscroll.pages.dev",
-  "https://crol-list.jimdc.com", "https://jimdc.github.io",
-  "http://localhost:8000", "http://localhost:8787",
-]);
-
 function corsHeaders(origin) {
-  const o = ALLOW.has(origin) ? origin : "https://cityscroll.org";
-  return {
-    "Access-Control-Allow-Origin": o,
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Vary": "Origin",
-  };
+  return sharedCorsHeaders(origin || "", {}, {
+    methods: "GET, OPTIONS",
+    headers: "Content-Type",
+  });
 }
 
 function json(obj, status, cors) {
@@ -182,5 +172,5 @@ export async function handleDosEntityLookup(request, env, ctx = null, deps = {})
   return json(body, httpStatusFor(result), cors);
 }
 
-export const DOS_ENTITY_LOOKUP_ALLOW = ALLOW;
+export { isAllowedRequestOrigin as dosOriginAllowed };
 export const DOS_ENTITY_LOOKUP_MAX_PER_IP_DAY = MAX_LOOKUPS_PER_IP_DAY;

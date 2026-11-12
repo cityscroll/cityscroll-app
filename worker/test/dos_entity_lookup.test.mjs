@@ -5,8 +5,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
-  DOS_ENTITY_LOOKUP_ALLOW,
   DOS_ENTITY_LOOKUP_MAX_PER_IP_DAY,
+  dosOriginAllowed,
   handleDosEntityLookup,
 } from "../src/dos_entity_lookup.mjs";
 import { buildNameQuery } from "../../entity_resolution/registers/dos_entities.mjs";
@@ -69,7 +69,9 @@ test.afterEach(() => {
 
 test("CORS allowlist matches /batch", () => {
   const batch = corsAllowlistFromBatch();
-  assert.deepEqual([...DOS_ENTITY_LOOKUP_ALLOW].sort(), [...batch].sort());
+  for (const origin of batch) {
+    assert.equal(dosOriginAllowed(origin), true, origin);
+  }
   assert.equal(DOS_ENTITY_LOOKUP_MAX_PER_IP_DAY, 200);
 });
 

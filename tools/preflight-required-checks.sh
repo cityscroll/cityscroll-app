@@ -429,6 +429,8 @@ family_static_standards() {
   run_and_fail node tools/build_later_housing_activity.mjs --check
   run_and_fail node tools/build_doing_business_warehouse_lookup.mjs --check
   run_and_fail node tools/build_sbs_certified_business_directory.mjs --check
+  run_and_fail node tools/build_register_shards.mjs --check
+  run_and_fail node tools/build_dos_entities_vendor_lookup.mjs --check
   run_and_fail node tools/build_city_record_pin_chain_lookup.mjs --check
   run_and_fail node tools/build_keyword_search_index.mjs --check
   run_and_fail node tools/build_agency_constellation_documents.mjs --check

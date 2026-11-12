@@ -4,10 +4,10 @@
 // engine's real upstream_failure.mjs. If the engine text changes shape, the cut fails loudly and
 // the tests fail.
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
+import { withTempDir } from "../../tools/lib/with_temp_dir.mjs";
 
 export async function loadFetchSodaRowsWithRetry(appRoot) {
   const file = path.join(appRoot, "worker/src/alerts.mjs");
@@ -29,11 +29,12 @@ export async function loadFetchSodaRowsWithRetry(appRoot) {
   });
   const upstream = pathToFileURL(path.join(appRoot, "worker/src/lib/upstream_failure.mjs")).href;
   const text = `import { markUpstreamFailure, TRANSIENT_UPSTREAM_STATUSES } from ${JSON.stringify(upstream)};\n${consts.join("\n")}\n${fn}\n`;
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "engine-soda-"));
-  const out = path.join(dir, "helper.mjs");
-  fs.writeFileSync(out, text);
-  const mod = await import(pathToFileURL(out).href);
-  return { fetchSodaRowsWithRetry: mod.fetchSodaRowsWithRetry, alerts_sha256: sha, cut_bytes: fn.length };
+  return withTempDir("engine-soda", async (dir) => {
+    const out = path.join(dir, "helper.mjs");
+    fs.writeFileSync(out, text);
+    const mod = await import(pathToFileURL(out).href);
+    return { fetchSodaRowsWithRetry: mod.fetchSodaRowsWithRetry, alerts_sha256: sha, cut_bytes: fn.length };
+  });
 }
 
 export const loadEngineSodaHelper = loadFetchSodaRowsWithRetry;

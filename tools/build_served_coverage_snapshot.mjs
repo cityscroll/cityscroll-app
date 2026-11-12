@@ -42,7 +42,7 @@ export const SNAPSHOT_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
 export const CENSUS_SCHEMA = "cityscroll.served_coverage_census.v1";
 
 /** The registry size this census was reviewed against. A change is reported, never absorbed. */
-export const REVIEWED_REGISTRY_SIZE = 71;
+export const REVIEWED_REGISTRY_SIZE = 75;
 
 export { SERVED_UNITS, DECLARED_DISPOSITIONS };
 
@@ -276,7 +276,11 @@ const DECLARED_DISPOSITIONS = Object.freeze({
   "dof-tax-lien-sale-lists": ["context_only", "Per-parcel lien progression and cycle rates shown on property surfaces; properties are counted once as their own record unit."],
   "sbs-certified-business-list": ["not_served", "Committed sharded directory only; no resident route reads it until the supplier-side product slices land, so no served count is claimed."],
   "doing-business-entities": ["context_only", "Vendor identity enrichment on vendor profiles; vendors appear through the procurement records already counted."],
+  "dos-active-entities": ["context_only", "On-demand organization entity-class and officer evidence for supplier directories; answers stay candidate_only and do not form an independent served record population."],
   "dsny-district-boundaries": ["not_served", "Backstage ingestion and congruence drift measurement only; no resident-facing scope is published."],
+  "irs-eo-bmf-ny": ["context_only", "Tax-exempt organization evidence for supplier directories; answers stay candidate_only and do not form an independent served record population."],
+  "nys-dol-contractor-registry": ["context_only", "Contractor registry, debarment, and MWBE evidence for supplier directories; answers stay candidate_only and do not form an independent served record population."],
+  "nyc-sca-prequalified-firms": ["context_only", "School Construction Authority prequalification and trade evidence for supplier directories; answers stay candidate_only and do not form an independent served record population."],
   "expense-budget": ["context_only", "Agency budget codes and adopted totals used as agency context; agencies are counted once as their own record unit."],
   "ibo-fiscal-history": ["context_only", "Fiscal-year expenditure and staffing context inside the agency fiscal projection. The registry records this source as a family of two component workbooks; a component artifact is not a searchable source, and the family is not two."],
   "legacy-dob-job-filings": ["context_only", "Legacy demolition-filing verification against an already served record; no independent served record population."],
