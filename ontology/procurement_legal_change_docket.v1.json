@@ -1,0 +1,707 @@
+{
+  "schema": "cityscroll.procurement_legal_change_docket.v1",
+  "version": "2026-11-11.1",
+  "description": "What is about to change in NYC procurement law, with four clocks per change, and the register's open divergences as tracked review items. A docket entry never edits the register; adoption is a separate reviewed register change that the entry then references through adopted_as.",
+  "baseline": {
+    "repository": "cityscroll-app",
+    "revision": "919ddc5a4438cecf3b5e66632e1746c0138ae064"
+  },
+  "register_ref": {
+    "schema": "cityscroll.procurement_legal_register.v1",
+    "version": "2026-11-11.1"
+  },
+  "entries": [
+    {
+      "id": "nyc.charter.2026-q2.certification-effective",
+      "title": "Question 2: provisions effective on certification of the vote (Charter 20-t, 325(a))",
+      "status": "passed_uncertified",
+      "jurisdiction": "nyc",
+      "instrument": "charter_amendment",
+      "citation": "Charter 20-t (subdivision d amended, subdivision h added, section renumbered 20-v) and 325(a); effective-date clause Charter 1152(q)(2); Question 2 of the 2026-11-03 ballot",
+      "summary": "Question 2 amends Charter 20-t(d), adds 20-t(h), renumbers 20-t as 20-v and amends 325(a) (client services plan and schedule). Per the proposed text these take effect immediately upon certification that the electors approved them. The text does not amend Administrative Code 6-129.",
+      "affects": [],
+      "affects_note": "Charter 20-t and 325 are not modelled in the register.",
+      "clocks": {
+        "legal_effect": {
+          "trigger": "event",
+          "date": null,
+          "event": "Certification that the electors have approved the Question 2 amendments",
+          "state": "pending",
+          "evidence": [
+            {
+              "url": "https://www.nyc.gov/assets/charter/downloads/pdf/2026/Proposed-Charter-Amendments-20260720.pdf",
+              "retrieved_on": "2026-11-11",
+              "quote": "shall take effect immediately upon certification that the electors have approved such amendments"
+            },
+            {
+              "url": "https://www.amny.com/politics/nyc-voters-approve-all-five-ballot-proposals/",
+              "retrieved_on": "2026-11-11",
+              "quote": "unofficial results from the city Board of Elections"
+            }
+          ],
+          "note": "No date until certification evidence is retrieved. The retrieved results are unofficial."
+        },
+        "agency_rollout": {
+          "trigger": "event",
+          "date": null,
+          "event": "Agency or Procurement Policy Board implementation after the amendment takes effect",
+          "state": "unknown",
+          "evidence": [],
+          "note": "No source retrieved describing rollout steps."
+        },
+        "source_publication": {
+          "trigger": "event",
+          "date": null,
+          "event": "Official Charter text republished with the amendment (American Legal / BetaNYC mirror)",
+          "state": "pending",
+          "evidence": []
+        },
+        "cityscroll_display": {
+          "trigger": "event",
+          "date": null,
+          "event": "A reviewed register change adopts the provision, or a recorded decision not to model it",
+          "state": "pending",
+          "evidence": []
+        }
+      },
+      "sources": [
+        {
+          "url": "https://www.nyc.gov/assets/charter/downloads/pdf/2026/Proposed-Charter-Amendments-20260720.pdf",
+          "retrieved_on": "2026-11-11",
+          "quote": "Proposed Charter Amendment: Question 2"
+        },
+        {
+          "url": "https://www.amny.com/politics/nyc-voters-approve-all-five-ballot-proposals/",
+          "retrieved_on": "2026-11-11",
+          "quote": "New York City voters approved all five ballot proposals Tuesday"
+        },
+        {
+          "url": "https://vote.nyc/page/election-results-summary",
+          "retrieved_on": "2026-11-11"
+        }
+      ],
+      "review": {
+        "status": "source_checked",
+        "by": "agent source-capture check (not a legal practitioner)",
+        "on": "2026-11-11",
+        "note": "Proposed text read locally from the official PDF. Approval rests on a news report of unofficial results (posted 2026-11-03); vote.nyc/page/election-results-summary showed only 2026 primary and special elections on 2026-11-11, so certification could not be confirmed."
+      },
+      "recorded_at": "2026-11-11"
+    },
+    {
+      "id": "nyc.charter.2026-q2.311a-quarterly-meetings",
+      "title": "Question 2: Procurement Policy Board meets at least quarterly (Charter 311(a)), effective 2027-01-01",
+      "status": "passed_uncertified",
+      "jurisdiction": "nyc",
+      "instrument": "charter_amendment",
+      "citation": "Charter 311(a); effective-date clause Charter 1152(q)(3); Question 2 of the 2026-11-03 ballot",
+      "summary": "Question 2 amends Charter 311 subdivision a, adding that the board shall meet on a regular basis and no less than quarterly. The effective-date clause fixes 2027-01-01. Only 311(i)(1) is modelled in the register and it is not changed.",
+      "affects": [],
+      "affects_note": "Register models Charter 311(i)(1) only; 311(a) meeting frequency is not modelled.",
+      "clocks": {
+        "legal_effect": {
+          "trigger": "date",
+          "date": "2027-01-01",
+          "event": null,
+          "state": "pending",
+          "evidence": [
+            {
+              "url": "https://www.nyc.gov/assets/charter/downloads/pdf/2026/Proposed-Charter-Amendments-20260720.pdf",
+              "retrieved_on": "2026-11-11",
+              "quote": "The amendments to the charter amending section 311, as approved by the electors on November 3, 2026, shall take effect on January 1, 2027."
+            },
+            {
+              "url": "https://www.nyc.gov/assets/charter/downloads/pdf/2026/Proposed-Charter-Amendments-20260720.pdf",
+              "retrieved_on": "2026-11-11",
+              "quote": "The board shall meet on a regular basis and no less than quarterly."
+            },
+            {
+              "url": "https://www.amny.com/politics/nyc-voters-approve-all-five-ballot-proposals/",
+              "retrieved_on": "2026-11-11",
+              "quote": "unofficial results from the city Board of Elections"
+            }
+          ],
+          "note": "Date comes from the proposed text; it presupposes approval, which is reported but not certified."
+        },
+        "agency_rollout": {
+          "trigger": "event",
+          "date": null,
+          "event": "Agency or Procurement Policy Board implementation after the amendment takes effect",
+          "state": "unknown",
+          "evidence": [],
+          "note": "No source retrieved describing rollout steps."
+        },
+        "source_publication": {
+          "trigger": "event",
+          "date": null,
+          "event": "Official Charter text republished with the amendment (American Legal / BetaNYC mirror)",
+          "state": "pending",
+          "evidence": []
+        },
+        "cityscroll_display": {
+          "trigger": "event",
+          "date": null,
+          "event": "A reviewed register change adopts the provision, or a recorded decision not to model it",
+          "state": "pending",
+          "evidence": []
+        }
+      },
+      "sources": [
+        {
+          "url": "https://www.nyc.gov/assets/charter/downloads/pdf/2026/Proposed-Charter-Amendments-20260720.pdf",
+          "retrieved_on": "2026-11-11",
+          "quote": "Proposed Charter Amendment: Question 2"
+        },
+        {
+          "url": "https://www.amny.com/politics/nyc-voters-approve-all-five-ballot-proposals/",
+          "retrieved_on": "2026-11-11",
+          "quote": "New York City voters approved all five ballot proposals Tuesday"
+        },
+        {
+          "url": "https://vote.nyc/page/election-results-summary",
+          "retrieved_on": "2026-11-11"
+        }
+      ],
+      "review": {
+        "status": "source_checked",
+        "by": "agent source-capture check (not a legal practitioner)",
+        "on": "2026-11-11",
+        "note": "Proposed text read locally from the official PDF. Approval rests on a news report of unofficial results (posted 2026-11-03); vote.nyc/page/election-results-summary showed only 2026 primary and special elections on 2026-11-11, so certification could not be confirmed."
+      },
+      "recorded_at": "2026-11-11"
+    },
+    {
+      "id": "nyc.charter.2026-q2.326-comment-process",
+      "title": "Question 2: contract-award public notice and comment process (Charter 326), effective 2030-10-01",
+      "status": "passed_uncertified",
+      "jurisdiction": "nyc",
+      "instrument": "charter_amendment",
+      "citation": "Charter 326; effective-date clause Charter 1152(q)(4); Question 2 of the 2026-11-03 ballot",
+      "summary": "Question 2 amends Charter 326 so that notice and online comment applies above an amount determined by rule of the Procurement Policy Board rather than one hundred thousand dollars. The effective-date clause fixes 2030-10-01.",
+      "affects": [],
+      "affects_note": "Charter 326 is not modelled in the register.",
+      "clocks": {
+        "legal_effect": {
+          "trigger": "date",
+          "date": "2030-10-01",
+          "event": null,
+          "state": "pending",
+          "evidence": [
+            {
+              "url": "https://www.nyc.gov/assets/charter/downloads/pdf/2026/Proposed-Charter-Amendments-20260720.pdf",
+              "retrieved_on": "2026-11-11",
+              "quote": "The amendments to the charter amending section 326, as approved by the electors on November 3, 2026, shall take effect on October 1, 2030."
+            },
+            {
+              "url": "https://www.amny.com/politics/nyc-voters-approve-all-five-ballot-proposals/",
+              "retrieved_on": "2026-11-11",
+              "quote": "unofficial results from the city Board of Elections"
+            }
+          ],
+          "note": "Date comes from the proposed text; it presupposes approval, which is reported but not certified."
+        },
+        "agency_rollout": {
+          "trigger": "event",
+          "date": null,
+          "event": "Agency or Procurement Policy Board implementation after the amendment takes effect",
+          "state": "unknown",
+          "evidence": [],
+          "note": "No source retrieved describing rollout steps."
+        },
+        "source_publication": {
+          "trigger": "event",
+          "date": null,
+          "event": "Official Charter text republished with the amendment (American Legal / BetaNYC mirror)",
+          "state": "pending",
+          "evidence": []
+        },
+        "cityscroll_display": {
+          "trigger": "event",
+          "date": null,
+          "event": "A reviewed register change adopts the provision, or a recorded decision not to model it",
+          "state": "pending",
+          "evidence": []
+        }
+      },
+      "sources": [
+        {
+          "url": "https://www.nyc.gov/assets/charter/downloads/pdf/2026/Proposed-Charter-Amendments-20260720.pdf",
+          "retrieved_on": "2026-11-11",
+          "quote": "Proposed Charter Amendment: Question 2"
+        },
+        {
+          "url": "https://www.amny.com/politics/nyc-voters-approve-all-five-ballot-proposals/",
+          "retrieved_on": "2026-11-11",
+          "quote": "New York City voters approved all five ballot proposals Tuesday"
+        },
+        {
+          "url": "https://vote.nyc/page/election-results-summary",
+          "retrieved_on": "2026-11-11"
+        }
+      ],
+      "review": {
+        "status": "source_checked",
+        "by": "agent source-capture check (not a legal practitioner)",
+        "on": "2026-11-11",
+        "note": "Proposed text read locally from the official PDF. Approval rests on a news report of unofficial results (posted 2026-11-03); vote.nyc/page/election-results-summary showed only 2026 primary and special elections on 2026-11-11, so certification could not be confirmed."
+      },
+      "recorded_at": "2026-11-11"
+    },
+    {
+      "id": "nyc.ppb.2025-hhs-accelerator-rule",
+      "title": "PPB proposed rule: replace HHS Accelerator references and add HHS procurement timeframes (9 RCNY 3-16 and others)",
+      "status": "proposed",
+      "jurisdiction": "nyc",
+      "instrument": "ppb_rule",
+      "citation": "9 RCNY 1-01(e), 2-04, 2-08, 2-09, 3-01, 3-03, 3-10, 3-16 (repealed and replaced) and 4-12; Amendment of PPB Rules Relating to HHS Accelerator",
+      "summary": "The Procurement Policy Board proposes to remove HHS Accelerator references, repeal and replace 3-16 as HHS Procurements (client services through an HHS prequalified list under 3-10) and add procurement timeframes under Local Law 169 of 2023. The NYC Rules page still lists it as proposed; the hearing was 2025-11-17 and comments are closed.",
+      "affects": [
+        "nyc.ppb.3-16.a.client_services_through_hhs_accelerator"
+      ],
+      "clocks": {
+        "legal_effect": {
+          "trigger": "event",
+          "date": null,
+          "event": "Adoption of the final rule and its effective date",
+          "state": "pending",
+          "evidence": [
+            {
+              "url": "https://rules.cityofnewyork.us/rule/amendment-of-ppb-rules-relating-to-hhs-accelerator",
+              "retrieved_on": "2026-11-11",
+              "quote": "Status: Proposed"
+            },
+            {
+              "url": "https://rules.cityofnewyork.us/wp-content/uploads/2025/10/PPB-Proposed-Amendment-of-Rules-Relating-to-HHS-Accelerator.pdf",
+              "retrieved_on": "2026-11-11",
+              "quote": "(e) HHS Procurement Timeframes. The following time schedules shall apply to HHS procurements pursuant to section 3-03 of these Rules"
+            },
+            {
+              "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+              "retrieved_on": "2026-11-11",
+              "quote": "Client services contracts must be procured through HHS Accelerator unless the HHS Accelerator Director authorizes"
+            }
+          ],
+          "note": "No adoption notice found. The mirror, current through rules effective 2026-11-08, still carries the old 3-16."
+        },
+        "agency_rollout": {
+          "trigger": "event",
+          "date": null,
+          "event": "Agency adoption of the new 3-16 process and timeframes",
+          "state": "unknown",
+          "evidence": [],
+          "note": "The proposal states time frames to support timely registration of human services contracts; no rollout date retrieved."
+        },
+        "source_publication": {
+          "trigger": "event",
+          "date": null,
+          "event": "Adopted rule text published in the NYC Rules/Administrative Code mirror",
+          "state": "pending",
+          "evidence": []
+        },
+        "cityscroll_display": {
+          "trigger": "event",
+          "date": null,
+          "event": "A reviewed register change supersedes the 3-16(a) entry, citing the adopted rule",
+          "state": "pending",
+          "evidence": []
+        }
+      },
+      "sources": [
+        {
+          "url": "https://rules.cityofnewyork.us/rule/amendment-of-ppb-rules-relating-to-hhs-accelerator",
+          "retrieved_on": "2026-11-11",
+          "quote": "Amendment of PPB Rules Relating to HHS Accelerator"
+        },
+        {
+          "url": "https://rules.cityofnewyork.us/wp-content/uploads/2025/10/PPB-Proposed-Amendment-of-Rules-Relating-to-HHS-Accelerator.pdf",
+          "retrieved_on": "2026-11-11",
+          "quote": "Rules to reflect the decommissioning of HHS Accelerator and to comply with Local Law 169 of 2023"
+        }
+      ],
+      "review": {
+        "status": "source_checked",
+        "by": "agent source-capture check (not a legal practitioner)",
+        "on": "2026-11-11",
+        "note": "Proposed rule PDF read locally; the rule page was read through a fetch summariser."
+      },
+      "recorded_at": "2026-11-11"
+    },
+    {
+      "id": "nys.executive-law.2025-s267.mwbe-certification-reciprocity",
+      "title": "NY Senate bill S267 (2025-2026): reciprocal City-State M/WBE certification",
+      "status": "pending_signature",
+      "jurisdiction": "nys",
+      "instrument": "state_bill",
+      "citation": "NY Senate Bill 2025-S267, an act to amend the executive law, in relation to reciprocal minority and women-owned business enterprise certification; Assembly substitute A8294",
+      "summary": "Authorizes the state director of minority and women's business development and the New York City mayor to enter a memorandum of understanding for reciprocal acceptance of M/WBE certification. Passed the Senate 2026-05-28 and the Assembly 2026-06-04 (substituted for A8294). No governor action appears in the action history.",
+      "affects": [],
+      "affects_note": "M/WBE certification reciprocity between City and State is not modelled in the register.",
+      "clocks": {
+        "legal_effect": {
+          "trigger": "event",
+          "date": null,
+          "event": "Governor signs (or vetoes) S267; effective date per the chaptered act",
+          "state": "pending",
+          "evidence": [
+            {
+              "url": "https://www.nysenate.gov/legislation/bills/2025/S267",
+              "retrieved_on": "2026-11-11",
+              "quote": "Current Bill Status - Passed Senate & Assembly"
+            },
+            {
+              "url": "https://www.nysenate.gov/legislation/bills/2025/S267",
+              "retrieved_on": "2026-11-11",
+              "quote": "passed assembly"
+            }
+          ],
+          "note": "Action history shows no delivery-to-governor, signature, veto or chapter line as of the retrieval."
+        },
+        "agency_rollout": {
+          "trigger": "event",
+          "date": null,
+          "event": "State and City implement the memorandum of understanding",
+          "state": "unknown",
+          "evidence": [],
+          "note": "Depends on enactment; nothing retrieved."
+        },
+        "source_publication": {
+          "trigger": "event",
+          "date": null,
+          "event": "Chaptered text published",
+          "state": "pending",
+          "evidence": []
+        },
+        "cityscroll_display": {
+          "trigger": "event",
+          "date": null,
+          "event": "Decision whether certification reciprocity is modelled at all",
+          "state": "pending",
+          "evidence": []
+        }
+      },
+      "sources": [
+        {
+          "url": "https://www.nysenate.gov/legislation/bills/2025/S267",
+          "retrieved_on": "2026-11-11",
+          "quote": "NY State Senate Bill 2025-S267"
+        }
+      ],
+      "review": {
+        "status": "source_checked",
+        "by": "agent source-capture check (not a legal practitioner)",
+        "on": "2026-11-11",
+        "note": "The raw page is a challenge page to scripted requests (about 5.5 KB), so the title, status banner and action lines were read through a fetch summariser, not byte-verified. A teammate reported the bill as awaiting the governor; the page shows passage but no governor action line."
+      },
+      "recorded_at": "2026-11-11"
+    },
+    {
+      "id": "nyc.admin-code.2026-ll040",
+      "title": "Local Law 40 of 2026 (new section 6-151 (labor and human rights disclosures in procurement))",
+      "status": "in_force_unmodelled",
+      "jurisdiction": "nyc",
+      "instrument": "local_law",
+      "citation": "L.L. 2026/040; Administrative Code new section 6-151 (labor and human rights disclosures in procurement)",
+      "summary": "Local Law 40 of 2026 is recorded in the Administrative Code history for new section 6-151 (labor and human rights disclosures in procurement) with effective date 5/17/2026. The register has no entry for it.",
+      "affects": [],
+      "affects_note": "New section 6-151 is not modelled.",
+      "clocks": {
+        "legal_effect": {
+          "trigger": "date",
+          "date": "2026-05-17",
+          "event": null,
+          "state": "reached",
+          "evidence": [
+            {
+              "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+              "retrieved_on": "2026-11-11",
+              "quote": "(L.L. 2026/040, 1/17/2026, eff. 5/17/2026)"
+            }
+          ]
+        },
+        "agency_rollout": {
+          "trigger": "event",
+          "date": null,
+          "event": "Agency implementation of the new duties",
+          "state": "unknown",
+          "evidence": [],
+          "note": "No source retrieved."
+        },
+        "source_publication": {
+          "trigger": "event",
+          "date": null,
+          "event": "Text present in the Administrative Code mirror",
+          "state": "reached",
+          "evidence": [
+            {
+              "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+              "retrieved_on": "2026-11-11",
+              "quote": "(L.L. 2026/040, 1/17/2026, eff. 5/17/2026)"
+            }
+          ]
+        },
+        "cityscroll_display": {
+          "trigger": "event",
+          "date": null,
+          "event": "A reviewed register change models the provision, or a recorded decision not to",
+          "state": "pending",
+          "evidence": []
+        }
+      },
+      "sources": [
+        {
+          "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+          "retrieved_on": "2026-11-11",
+          "quote": "(L.L. 2026/040, 1/17/2026, eff. 5/17/2026)"
+        }
+      ],
+      "review": {
+        "status": "source_checked",
+        "by": "agent source-capture check (not a legal practitioner)",
+        "on": "2026-11-11",
+        "note": "History note quoted from the mirrored admin_code.md (current through Local Law 2026/163); the official code site returned HTTP 403 to automated requests."
+      },
+      "recorded_at": "2026-11-11"
+    },
+    {
+      "id": "nyc.admin-code.2026-ll055",
+      "title": "Local Law 55 of 2026 (new section 6-150 (conflicts of interest and misconduct concerning city contracts))",
+      "status": "in_force_unmodelled",
+      "jurisdiction": "nyc",
+      "instrument": "local_law",
+      "citation": "L.L. 2026/055; Administrative Code new section 6-150 (conflicts of interest and misconduct concerning city contracts)",
+      "summary": "Local Law 55 of 2026 is recorded in the Administrative Code history for new section 6-150 (conflicts of interest and misconduct concerning city contracts) with effective date 5/29/2026. The register has no entry for it. The mirror carries two sections numbered 6-150 (an editor's note says so), so the number alone does not identify it.",
+      "affects": [],
+      "affects_note": "New section 6-150 (conflicts of interest) is not modelled.",
+      "clocks": {
+        "legal_effect": {
+          "trigger": "date",
+          "date": "2026-05-29",
+          "event": null,
+          "state": "reached",
+          "evidence": [
+            {
+              "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+              "retrieved_on": "2026-11-11",
+              "quote": "(L.L. 2026/055, 1/29/2026, eff. 5/29/2026)"
+            }
+          ]
+        },
+        "agency_rollout": {
+          "trigger": "event",
+          "date": null,
+          "event": "Agency implementation of the new duties",
+          "state": "unknown",
+          "evidence": [],
+          "note": "No source retrieved."
+        },
+        "source_publication": {
+          "trigger": "event",
+          "date": null,
+          "event": "Text present in the Administrative Code mirror",
+          "state": "reached",
+          "evidence": [
+            {
+              "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+              "retrieved_on": "2026-11-11",
+              "quote": "(L.L. 2026/055, 1/29/2026, eff. 5/29/2026)"
+            }
+          ]
+        },
+        "cityscroll_display": {
+          "trigger": "event",
+          "date": null,
+          "event": "A reviewed register change models the provision, or a recorded decision not to",
+          "state": "pending",
+          "evidence": []
+        }
+      },
+      "sources": [
+        {
+          "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+          "retrieved_on": "2026-11-11",
+          "quote": "(L.L. 2026/055, 1/29/2026, eff. 5/29/2026)"
+        }
+      ],
+      "review": {
+        "status": "source_checked",
+        "by": "agent source-capture check (not a legal practitioner)",
+        "on": "2026-11-11",
+        "note": "History note quoted from the mirrored admin_code.md (current through Local Law 2026/163); the official code site returned HTTP 403 to automated requests."
+      },
+      "recorded_at": "2026-11-11"
+    },
+    {
+      "id": "nyc.admin-code.2026-ll067",
+      "title": "Local Law 67 of 2026 (amendments to sections 6-112 and 6-116.2)",
+      "status": "in_force_unmodelled",
+      "jurisdiction": "nyc",
+      "instrument": "local_law",
+      "citation": "L.L. 2026/067; Administrative Code amendments to sections 6-112 and 6-116.2",
+      "summary": "Local Law 67 of 2026 is recorded in the Administrative Code history for amendments to sections 6-112 and 6-116.2 with effective date 7/12/2026. The register has no entry for it.",
+      "affects": [],
+      "affects_note": "Sections 6-112 (false statements) and 6-116.2 (computerized database) are not modelled.",
+      "clocks": {
+        "legal_effect": {
+          "trigger": "date",
+          "date": "2026-07-12",
+          "event": null,
+          "state": "reached",
+          "evidence": [
+            {
+              "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+              "retrieved_on": "2026-11-11",
+              "quote": "Am. L.L. 2026/067, 3/14/2026, eff. 7/12/2026"
+            }
+          ]
+        },
+        "agency_rollout": {
+          "trigger": "event",
+          "date": null,
+          "event": "Agency implementation of the new duties",
+          "state": "unknown",
+          "evidence": [],
+          "note": "No source retrieved."
+        },
+        "source_publication": {
+          "trigger": "event",
+          "date": null,
+          "event": "Text present in the Administrative Code mirror",
+          "state": "reached",
+          "evidence": [
+            {
+              "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+              "retrieved_on": "2026-11-11",
+              "quote": "Am. L.L. 2026/067, 3/14/2026, eff. 7/12/2026"
+            }
+          ]
+        },
+        "cityscroll_display": {
+          "trigger": "event",
+          "date": null,
+          "event": "A reviewed register change models the provision, or a recorded decision not to",
+          "state": "pending",
+          "evidence": []
+        }
+      },
+      "sources": [
+        {
+          "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+          "retrieved_on": "2026-11-11",
+          "quote": "Am. L.L. 2026/067, 3/14/2026, eff. 7/12/2026"
+        }
+      ],
+      "review": {
+        "status": "source_checked",
+        "by": "agent source-capture check (not a legal practitioner)",
+        "on": "2026-11-11",
+        "note": "History note quoted from the mirrored admin_code.md (current through Local Law 2026/163); the official code site returned HTTP 403 to automated requests."
+      },
+      "recorded_at": "2026-11-11"
+    },
+    {
+      "id": "nyc.admin-code.2026-ll070",
+      "title": "Local Law 70 of 2026 (new section 6-150 (online public procurement interface))",
+      "status": "in_force_unmodelled",
+      "jurisdiction": "nyc",
+      "instrument": "local_law",
+      "citation": "L.L. 2026/070; Administrative Code new section 6-150 (online public procurement interface)",
+      "summary": "Local Law 70 of 2026 is recorded in the Administrative Code history for new section 6-150 (online public procurement interface) with effective date 9/10/2026. The register has no entry for it. The history note prints the enactment date as 3/14/2025 for a 2026 local law; recorded as the mirror states it, unresolved. The mirror carries two sections numbered 6-150.",
+      "affects": [],
+      "affects_note": "New section 6-150 (online public procurement interface) is not modelled.",
+      "clocks": {
+        "legal_effect": {
+          "trigger": "date",
+          "date": "2026-09-10",
+          "event": null,
+          "state": "reached",
+          "evidence": [
+            {
+              "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+              "retrieved_on": "2026-11-11",
+              "quote": "(L.L. 2026/070, 3/14/2025, eff. 9/10/2026)"
+            }
+          ]
+        },
+        "agency_rollout": {
+          "trigger": "event",
+          "date": null,
+          "event": "Agency implementation of the new duties",
+          "state": "unknown",
+          "evidence": [],
+          "note": "No source retrieved."
+        },
+        "source_publication": {
+          "trigger": "event",
+          "date": null,
+          "event": "Text present in the Administrative Code mirror",
+          "state": "reached",
+          "evidence": [
+            {
+              "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+              "retrieved_on": "2026-11-11",
+              "quote": "(L.L. 2026/070, 3/14/2025, eff. 9/10/2026)"
+            }
+          ]
+        },
+        "cityscroll_display": {
+          "trigger": "event",
+          "date": null,
+          "event": "A reviewed register change models the provision, or a recorded decision not to",
+          "state": "pending",
+          "evidence": []
+        }
+      },
+      "sources": [
+        {
+          "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+          "retrieved_on": "2026-11-11",
+          "quote": "(L.L. 2026/070, 3/14/2025, eff. 9/10/2026)"
+        }
+      ],
+      "review": {
+        "status": "source_checked",
+        "by": "agent source-capture check (not a legal practitioner)",
+        "on": "2026-11-11",
+        "note": "History note quoted from the mirrored admin_code.md (current through Local Law 2026/163); the official code site returned HTTP 403 to automated requests."
+      },
+      "recorded_at": "2026-11-11"
+    }
+  ],
+  "register_review_items": [
+    {
+      "id": "ri.mwbe_small_purchase_ceiling_dates",
+      "register_divergence_id": "kd.mwbe_small_purchase_ceiling_dates",
+      "summary": "Policy registry applies the $1,500,000 M/WBE band from 2023-06-03 but the register records the Charter ceiling as $1,000,000 until 2023-12-08 (or 12-19).",
+      "owner_slice": "waypoint-v4-legal-register (register correction: chaptered text of 2023 N.Y. Laws ch. 719 plus practitioner review)",
+      "status": "open"
+    },
+    {
+      "id": "ri.ppb_3_08_effective_dates",
+      "register_divergence_id": "kd.ppb_3_08_effective_dates",
+      "summary": "The policy registry dates every 3-08 family from 2023-06-03; the register asserts the current text only from 2025-09-26 and answers unknown before.",
+      "owner_slice": "waypoint-v4-legal-register (register correction: 2023-2025 City Record rule notices)",
+      "status": "open"
+    },
+    {
+      "id": "ri.coverage_labels_missing_category",
+      "register_divergence_id": "kd.coverage_labels_missing_category",
+      "summary": "site/procurement_coverage_labels.mjs treats a missing category as matching any band; the register yields unknown.",
+      "owner_slice": "waypoint-v4-legal-register-consumers",
+      "status": "open"
+    },
+    {
+      "id": "ri.city_record_coverage_boundary",
+      "register_divergence_id": "kd.city_record_coverage_boundary",
+      "summary": "The coverage threshold includes amount == 100000 while 3-08(a) makes not more than $100,000 a small purchase.",
+      "owner_slice": "waypoint-v4-legal-register-consumers",
+      "status": "open"
+    },
+    {
+      "id": "ri.policy_registry_category_vocabulary",
+      "register_divergence_id": "kd.policy_registry_category_vocabulary",
+      "summary": "Policy registry category keys differ from the register fact vocabulary; a consumer must translate and human services is excluded from the M/WBE method.",
+      "owner_slice": "waypoint-v4-legal-register-consumers",
+      "status": "open"
+    }
+  ]
+}

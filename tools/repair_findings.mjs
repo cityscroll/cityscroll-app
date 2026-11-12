@@ -60,6 +60,8 @@ export const REPAIR_FAILURE_CLASSES = Object.freeze([
   "action-link-degraded",
   "stats-snapshot-missing",
   "missed-slot",
+  "legal-source-changed",
+  "legal-source-unreachable",
 ]);
 
 const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]+/g;
@@ -340,6 +342,42 @@ export function monitorRepairFindings(job, output, { now = null } = {}) {
       }));
     }
     close(scope({ monitor, failureClass: "action-link-degraded", stillFailing: degraded ? [monitor] : [] }));
+    return bound({ findings, recovered });
+  }
+
+  if (runner === "legal-source-watch") {
+    // The whole watched set is evaluated every run, so each class is a closed
+    // scope: whatever is no longer changed or unreachable has recovered. Both
+    // classes are declared judgment, so a finding parks for a person to read the
+    // source and propose a reviewed register change rather than being repaired.
+    const changed = Array.isArray(result.changed_sources) ? result.changed_sources : [];
+    const unreachable = Array.isArray(result.unreachable_sources) ? result.unreachable_sources : [];
+    for (const row of changed) {
+      const broken = Array.isArray(row?.broken_quote_entry_ids) ? row.broken_quote_entry_ids : [];
+      add(finding({
+        monitor,
+        failureClass: "legal-source-changed",
+        subject: row?.source_file,
+        findings: [
+          `${row?.source_file}: the watched legal source text no longer matches the register`,
+          (Array.isArray(row?.affected_entry_ids) && row.affected_entry_ids.length)
+            ? `affects ${row.affected_entry_ids.join(", ")}` : null,
+          broken.length ? `reviewed quote no longer occurs for ${broken.join(", ")}` : null,
+        ].filter(Boolean),
+        observedAt,
+      }));
+    }
+    for (const row of unreachable) {
+      add(finding({
+        monitor,
+        failureClass: "legal-source-unreachable",
+        subject: row?.source_file,
+        findings: [`${row?.source_file}: could not be checked (${row?.status || "unreadable"}${row?.reason ? `: ${row.reason}` : ""}), so it is not confirmed unchanged`],
+        observedAt,
+      }));
+    }
+    close(scope({ monitor, failureClass: "legal-source-changed", stillFailing: changed.map((row) => row?.source_file) }));
+    close(scope({ monitor, failureClass: "legal-source-unreachable", stillFailing: unreachable.map((row) => row?.source_file) }));
     return bound({ findings, recovered });
   }
 

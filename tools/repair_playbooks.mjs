@@ -68,6 +68,8 @@ export const REPAIR_JUDGMENT_CLASSES = Object.freeze({
   "digest-shadow-degraded": "the rehearsal built something the redlines refused; what to do about the content is an editorial decision, not a mechanical one",
   "action-link-degraded": "an outbound action link changed on the publisher's side; choosing a replacement destination is an editorial decision",
   "stats-snapshot-missing": "the daily snapshot did not publish, and the remedy is a change to the publication path in this repository",
+  "legal-source-changed": "a watched legal source text no longer matches the register, and the remedy is to re-read the source and propose a reviewed register change (a new record_version) — never an automated edit of the register or a review status",
+  "legal-source-unreachable": "a watched legal source could not be read, so whether it changed is unknown; no deterministic local remedy exists beyond waiting for a later scheduled observation, and acting as if it were unchanged would be unsafe",
 });
 
 function startedStallKillSwitchOn() {

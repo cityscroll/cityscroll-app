@@ -55,6 +55,33 @@ export {
 } from "./procurement_legal_register.mjs";
 
 export {
+  PROCUREMENT_LEGAL_DOCKET_SCHEMA,
+  PROCUREMENT_LEGAL_DOCKET_RELATIVE,
+  DOCKET_STATUSES,
+  DOCKET_CLOSED_STATUSES,
+  DOCKET_CLOCK_NAMES,
+  DOCKET_CLOCK_STATES,
+  DOCKET_CLOCK_TRIGGERS,
+  DOCKET_INSTRUMENTS,
+  DOCKET_JURISDICTIONS,
+  DOCKET_REVIEW_STATUSES,
+  validDate,
+  quoteOccurs,
+  loadProcurementLegalDocket,
+  validateChangeDocket,
+  docketDue,
+  docketAwaitingEvents,
+  docketForRegisterEntry,
+} from "./procurement_legal_docket.mjs";
+
+export {
+  LEGAL_SOURCE_WATCH_RECEIPT_SCHEMA,
+  SOURCE_WATCH_STATUSES,
+  normalizeCapture,
+  compareSourceCaptures,
+} from "./procurement_legal_source_watch.mjs";
+
+export {
   PERSON_PROJECTION_SCHEMA,
   PERSON_IDENTITY_LINK_SCHEMA,
   PERSON_IDENTITY_LINK_VERSION,
