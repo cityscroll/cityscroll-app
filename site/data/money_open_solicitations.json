@@ -2,7 +2,7 @@
   "schema": "cityscroll.money_open_solicitations.v1",
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-12T14:05:07.325Z",
+  "generated_at": "2026-11-12T18:44:04.165Z",
   "open_as_of": "2026-11-12",
   "source": {
     "name": "City Record Online",
