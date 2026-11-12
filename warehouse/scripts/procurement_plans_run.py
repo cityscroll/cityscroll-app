@@ -321,6 +321,8 @@ def live_inputs(args: argparse.Namespace, collector: CheckpointedCollector) -> d
             "sha256": meta["sha256"],
             "bytes": meta["bytes"],
             "plan_rows": len(normalized),
+            "index_note": link.get("index_note"),
+            "observed_at": meta.get("observed_at"),
         })
         print(f"xlsx {number}/{len(links)} {link['source']} rows={len(normalized)}", flush=True)
 
@@ -486,8 +488,13 @@ def build_payload(
             "budget_provenance_required": True,
         },
         "sources": [{
-            key: item.get(key) for key in ("source", "url", "label", "sha256", "plan_rows")
-            if item.get(key) is not None
+            **{
+                key: item.get(key) for key in ("source", "url", "label", "sha256", "plan_rows", "observed_at")
+                if item.get(key) is not None
+            },
+            # Recorded even when null so the index watch can tell "the page showed
+            # no note" from "this collection did not record notes".
+            **({"index_note": item.get("index_note")} if item.get("source") in ("mocs_ll1", "mocs_ll63") else {}),
         } for item in source_files],
         "plans": plans,
         "capital_projects": capital,

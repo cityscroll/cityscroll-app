@@ -24,7 +24,7 @@ export function exactAgency(label, crosswalk) {
 // Capability support derives from admitted source families only. A missing
 // agency is unknown, never a zero-count population.
 export function capabilities(families, agency) {
-  const results=families.filter(f=>f.agency_ids.includes(agency)).map(f=>({family:f.id,source_id:f.source_id,status:f.status,unit:f.unit,geography:f.geography||null,source_as_of:f.source_as_of||null,version:f.version}));
+  const results=families.filter(f=>f.agency_ids.includes(agency)).map(f=>({family:f.id,source_id:f.source_id,status:f.status,unit:f.unit,geography:f.geography||null,source_as_of:f.source_as_of||null,version:f.version,index:f.index??null}));
   return {agency, state:results.length?'supported':'unknown', families:results};
 }
 

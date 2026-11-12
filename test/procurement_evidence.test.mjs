@@ -90,3 +90,28 @@ test('committed evidence pages survive the builder and match --check', () => {
   const out = execFileSync('node', ['tools/build_procurement_evidence.mjs', '--check'], { encoding: 'utf8', cwd: ROOT });
   assert.match(out, /"status":"ok"/);
 });
+
+test('plan capability families register from the plan index with index pass-through', () => {
+  const capabilities = JSON.parse(readFileSync(join(ROOT, 'site/data/procurement_evidence_capabilities.json'), 'utf8'));
+  const ll1 = capabilities.families.find((f) => f.id === 'agency-plans-ll1');
+  const ll63 = capabilities.families.find((f) => f.id === 'agency-plans-ll63');
+  assert.ok(ll1, 'agency-plans-ll1 family present');
+  assert.ok(ll63, 'agency-plans-ll63 family present');
+  assert.equal(ll1.source_id, 'mocs-ll1-plans');
+  assert.equal(ll63.source_id, 'mocs-ll63-plans');
+  assert.equal(ll1.unit, 'published plan row');
+  assert.equal(ll1.version, 'fy2027');
+  assert.equal(ll1.source_as_of, '2026-08-11');
+  assert.equal(ll1.index, '/data/procurement_plan_index.json');
+  assert.equal(ll63.index, '/data/procurement_plan_index.json');
+
+  const acs = m.capabilities(capabilities.families, 'administration-for-childrens-services');
+  assert.equal(acs.state, 'supported');
+  assert.ok(acs.families.some((f) => f.family === 'agency-plans-ll1'));
+  assert.ok(acs.families.some((f) => f.family === 'agency-plans-ll63'));
+  assert.ok(acs.families.filter((f) => f.family.startsWith('agency-plans-')).every((f) => f.index === '/data/procurement_plan_index.json'));
+
+  const aging = m.capabilities(capabilities.families, 'aging');
+  assert.equal(aging.state, 'unknown');
+  assert.equal(aging.families.length, 0);
+});

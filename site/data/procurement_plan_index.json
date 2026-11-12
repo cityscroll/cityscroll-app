@@ -1,0 +1,2296 @@
+{
+  "schema": "cityscroll.procurement_plan_index.v1",
+  "fiscal_year": 2027,
+  "source_manifest": {
+    "path": "site/data/procurement_planning_payload.json",
+    "sha256": "0be1a1c51ae8aed6d6e96412ea96b7b7897962f0444391fc02ce2ffeb75f1b6d",
+    "generated_at": "2026-08-11T18:55:26Z",
+    "plans_rows": 11566
+  },
+  "rule": {
+    "agency_code": "publisher workbook file-name prefix, upper-cased (ACS_LL1_FY27.xlsx -> ACS)",
+    "withheld_workbook_list_row": "plan_id present and not matching ^FY\\d{2}[A-Z]: the drop-down list table at the foot of each Local Law 1 sheet",
+    "agency_id": "exactAgency() over worker/src/data/agency_crosswalk.json, by code then by Local Law 1 workbook label; ambiguous or absent stays null"
+  },
+  "totals": {
+    "rows_held": 11566,
+    "rows_listable": 11473,
+    "withheld": {
+      "workbook_list_row": 93
+    },
+    "by_source": {
+      "ll1": {
+        "rows_held": 2925,
+        "rows_listable": 2832,
+        "workbooks": 32
+      },
+      "ll63": {
+        "rows_held": 8641,
+        "rows_listable": 8641,
+        "workbooks": 69
+      }
+    }
+  },
+  "quality_flags": {
+    "published_term_end_before_start": 23
+  },
+  "shards": [
+    {
+      "path": "site/data/procurement_planning_payload/plans-000.json",
+      "sha256": "040f9ffdc75c0bcf21089626fbbb0b58bd75ded1b0f81409259303eb5f625bab",
+      "rows": 10000,
+      "agency_codes": [
+        "ACS",
+        "CCHR",
+        "CCRB",
+        "CFB",
+        "CITYHALL",
+        "COMPTROLLER",
+        "CORE",
+        "DCAS",
+        "DCP",
+        "DCWP",
+        "DDC",
+        "DEP",
+        "DHS",
+        "DOB",
+        "DOC",
+        "DOF",
+        "DOHMH",
+        "DOI",
+        "DOP",
+        "DORIS",
+        "DOT",
+        "DPR",
+        "DPRC",
+        "DSNY",
+        "DYCD",
+        "FDNY",
+        "FISA",
+        "HPD",
+        "HRA",
+        "LAW",
+        "MOCS",
+        "NYCEM",
+        "NYPD",
+        "OATH",
+        "OCME",
+        "OLR",
+        "OMB",
+        "OPA",
+        "OTI",
+        "SBS",
+        "TLC"
+      ]
+    },
+    {
+      "path": "site/data/procurement_planning_payload/plans-001.json",
+      "sha256": "e991537708e7929e21b8e8af4d5f5fb0f3aa29913437867990c84ff669f557ee",
+      "rows": 1566,
+      "agency_codes": [
+        "DPR",
+        "DSNY",
+        "DYCD",
+        "FDNY",
+        "HPD",
+        "HRA",
+        "LAW",
+        "MAYORALTY",
+        "MOCJ",
+        "NYCEM",
+        "NYPD",
+        "OCME",
+        "OLR",
+        "OMB",
+        "OTI",
+        "SBS",
+        "TLC"
+      ]
+    }
+  ],
+  "agencies": [
+    {
+      "agency_code": "ACS",
+      "agency_id": "administration-for-childrens-services",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "ACS",
+        "Administration for Children's Services"
+      ],
+      "agency_keys": [
+        "ACS",
+        "ADMINISTRATION FOR CHILDREN S SERVICES"
+      ],
+      "rows_held": 51,
+      "rows_listable": 48,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 5,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/ACS_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 43,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 9,
+        "2": 3,
+        "3": 4,
+        "not_published": 32
+      },
+      "industries": {
+        "Professional Services": 3,
+        "Standard Services": 2,
+        "not_published": 43
+      },
+      "estimated_amount": {
+        "published": 5,
+        "not_published": 43
+      },
+      "quality_flags": {
+        "published_term_end_before_start": 2
+      },
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "CCHR",
+      "agency_id": "commission-on-human-rights",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "City Commission on Human Rights"
+      ],
+      "agency_keys": [
+        "CITY COMMISSION ON HUMAN RIGHTS"
+      ],
+      "rows_held": 6,
+      "rows_listable": 3,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 3,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/CCHR_LL1_FY27.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 3
+      },
+      "industries": {
+        "Professional Services": 2,
+        "Standard Services": 1
+      },
+      "estimated_amount": {
+        "published": 3,
+        "not_published": 0
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "CCRB",
+      "agency_id": "civilian-complaint-review-board",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "Civilian Complaint Review Board"
+      ],
+      "agency_keys": [
+        "CIVILIAN COMPLAINT REVIEW BOARD"
+      ],
+      "rows_held": 7,
+      "rows_listable": 4,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 4,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/CCRB_LL1_FY27.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 3,
+        "2": 1
+      },
+      "industries": {
+        "Goods <$1 million": 1,
+        "Professional Services": 3
+      },
+      "estimated_amount": {
+        "published": 4,
+        "not_published": 0
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "CFB",
+      "agency_id": "campaign-finance-board",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "CFB"
+      ],
+      "agency_keys": [
+        "CFB"
+      ],
+      "rows_held": 25,
+      "rows_listable": 25,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 25,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/CFB_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/CFB_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 5,
+        "2": 7,
+        "3": 3,
+        "4": 6,
+        "not_published": 4
+      },
+      "industries": {
+        "not_published": 25
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 25
+      },
+      "quality_flags": {
+        "published_term_end_before_start": 1
+      },
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "CITYHALL",
+      "agency_id": null,
+      "agency_id_basis": null,
+      "published_names": [
+        "City Hall"
+      ],
+      "agency_keys": [
+        "MAYORALTY"
+      ],
+      "rows_held": 1,
+      "rows_listable": 1,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 1,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/CityHall_LL63_FY27_New.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 1
+      },
+      "industries": {
+        "not_published": 1
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 1
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "COMPTROLLER",
+      "agency_id": "comptroller",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "Comptroller"
+      ],
+      "agency_keys": [
+        "COMPTROLLER"
+      ],
+      "rows_held": 74,
+      "rows_listable": 74,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 74,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Comptroller_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Comptroller_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 10,
+        "2": 9,
+        "3": 9,
+        "4": 10,
+        "not_published": 36
+      },
+      "industries": {
+        "not_published": 74
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 74
+      },
+      "quality_flags": {
+        "published_term_end_before_start": 2
+      },
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "CORE",
+      "agency_id": "commission-on-racial-equity",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "CORE"
+      ],
+      "agency_keys": [
+        "CORE",
+        "NYC CORE"
+      ],
+      "rows_held": 2,
+      "rows_listable": 2,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 2,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/CORE_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/CORE_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 1,
+        "not_published": 1
+      },
+      "industries": {
+        "not_published": 2
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 2
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DCAS",
+      "agency_id": "citywide-administrative-services",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DCAS",
+        "Department of Citywide Administrative Services"
+      ],
+      "agency_keys": [
+        "DCAS",
+        "DEPARTMENT OF CITYWIDE ADMINISTRATIVE SERVICES"
+      ],
+      "rows_held": 238,
+      "rows_listable": 232,
+      "withheld": {
+        "workbook_list_row": 6
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 115,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DCAS_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 117,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCAS_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCAS_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 116,
+        "2": 23,
+        "3": 66,
+        "4": 7,
+        "not_published": 20
+      },
+      "industries": {
+        "Construction Services": 25,
+        "Goods <$1 million": 2,
+        "Professional Services": 72,
+        "Standard Services": 16,
+        "not_published": 117
+      },
+      "estimated_amount": {
+        "published": 115,
+        "not_published": 117
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DCP",
+      "agency_id": "city-planning",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DCP",
+        "Department of City Planning"
+      ],
+      "agency_keys": [
+        "DCP",
+        "DEPARTMENT OF CITY PLANNING"
+      ],
+      "rows_held": 109,
+      "rows_listable": 106,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 30,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DCP_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 76,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCP_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCP_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 58,
+        "2": 11,
+        "3": 25,
+        "not_published": 12
+      },
+      "industries": {
+        "Goods <$1 million": 13,
+        "Professional Services": 17,
+        "not_published": 76
+      },
+      "estimated_amount": {
+        "published": 4,
+        "not_published": 102
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DCWP",
+      "agency_id": "consumer-and-worker-protection",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DCWP",
+        "Department of Consumer and Worker Protection"
+      ],
+      "agency_keys": [
+        "DCWP",
+        "DEPARTMENT OF CONSUMER AND WORKER PROTECTION"
+      ],
+      "rows_held": 11,
+      "rows_listable": 8,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 5,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DCWP_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 3,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCWP_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCWP_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 7,
+        "not_published": 1
+      },
+      "industries": {
+        "Professional Services": 5,
+        "not_published": 3
+      },
+      "estimated_amount": {
+        "published": 5,
+        "not_published": 3
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DDC",
+      "agency_id": "design-and-construction",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DDC",
+        "Department of Design and Construction"
+      ],
+      "agency_keys": [
+        "DDC",
+        "DEPARTMENT OF DESIGN AND CONSTRUCTION"
+      ],
+      "rows_held": 956,
+      "rows_listable": 953,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 150,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DDC_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 803,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DDC_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DDC_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 221,
+        "2": 327,
+        "3": 130,
+        "4": 260,
+        "not_published": 15
+      },
+      "industries": {
+        "Construction Services": 120,
+        "Professional Services": 30,
+        "not_published": 803
+      },
+      "estimated_amount": {
+        "published": 59,
+        "not_published": 894
+      },
+      "quality_flags": {
+        "published_term_end_before_start": 1
+      },
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DEP",
+      "agency_id": "environmental-protection",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DEP",
+        "Department of Environmental Protection"
+      ],
+      "agency_keys": [
+        "DEP",
+        "DEPARTMENT OF ENVIRONMENTAL PROTECTION"
+      ],
+      "rows_held": 371,
+      "rows_listable": 368,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 133,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DEP_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 235,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 87,
+        "2": 74,
+        "3": 30,
+        "4": 34,
+        "not_published": 143
+      },
+      "industries": {
+        "Construction Services": 49,
+        "Professional Services": 31,
+        "Standard Services": 53,
+        "not_published": 235
+      },
+      "estimated_amount": {
+        "published": 47,
+        "not_published": 321
+      },
+      "quality_flags": {
+        "published_term_end_before_start": 3
+      },
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DHS",
+      "agency_id": "homeless-services",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DHS",
+        "Department of Homeless Services"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF HOMELESS SERVICES",
+        "DHS"
+      ],
+      "rows_held": 55,
+      "rows_listable": 52,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 18,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DHS_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 34,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DHS_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DHS_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 17,
+        "2": 5,
+        "3": 3,
+        "4": 10,
+        "not_published": 17
+      },
+      "industries": {
+        "Goods <$1 million": 4,
+        "Standard Services": 14,
+        "not_published": 34
+      },
+      "estimated_amount": {
+        "published": 18,
+        "not_published": 34
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DOB",
+      "agency_id": "buildings",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DOB"
+      ],
+      "agency_keys": [
+        "DOB"
+      ],
+      "rows_held": 21,
+      "rows_listable": 21,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 21,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOB_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOB_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 3,
+        "2": 8,
+        "3": 4,
+        "not_published": 6
+      },
+      "industries": {
+        "not_published": 21
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 21
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DOC",
+      "agency_id": "correction",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DOC",
+        "Department of Correction"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF CORRECTION",
+        "DOC"
+      ],
+      "rows_held": 75,
+      "rows_listable": 72,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 31,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DOC_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 41,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOC_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOC_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 26,
+        "2": 7,
+        "3": 33,
+        "not_published": 6
+      },
+      "industries": {
+        "Professional Services": 19,
+        "Standard Services": 12,
+        "not_published": 41
+      },
+      "estimated_amount": {
+        "published": 30,
+        "not_published": 42
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DOF",
+      "agency_id": "finance",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DOF",
+        "Department of Finance"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF FINANCE",
+        "DOF"
+      ],
+      "rows_held": 35,
+      "rows_listable": 32,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 11,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DOF_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 21,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOF_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOF_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 16,
+        "2": 3,
+        "3": 3,
+        "4": 2,
+        "not_published": 8
+      },
+      "industries": {
+        "Professional Services": 11,
+        "not_published": 21
+      },
+      "estimated_amount": {
+        "published": 11,
+        "not_published": 21
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DOHMH",
+      "agency_id": "health-and-mental-hygiene",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DOHMH",
+        "Department of Health and Mental Hygiene"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+        "DOHMH"
+      ],
+      "rows_held": 210,
+      "rows_listable": 207,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 8,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DOHMH_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 199,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOHMH_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOHMH_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 146,
+        "2": 23,
+        "3": 10,
+        "4": 3,
+        "not_published": 25
+      },
+      "industries": {
+        "Construction Services": 1,
+        "Professional Services": 5,
+        "Standard Services": 2,
+        "not_published": 199
+      },
+      "estimated_amount": {
+        "published": 8,
+        "not_published": 199
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DOI",
+      "agency_id": "investigation",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DOI",
+        "Department of Investigation"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF INVESTIGATION",
+        "DOI"
+      ],
+      "rows_held": 20,
+      "rows_listable": 17,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 15,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DOI_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 2,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOI_LL63_FY27_New.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 6,
+        "2": 6,
+        "3": 3,
+        "4": 2
+      },
+      "industries": {
+        "Goods": 1,
+        "Professional Services": 9,
+        "Standardized Services": 5,
+        "not_published": 2
+      },
+      "estimated_amount": {
+        "published": 15,
+        "not_published": 2
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DOP",
+      "agency_id": "probation",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DOP"
+      ],
+      "agency_keys": [
+        "DOP"
+      ],
+      "rows_held": 3,
+      "rows_listable": 3,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 3,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOP_LL63_FY27_New.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 3
+      },
+      "industries": {
+        "not_published": 3
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 3
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DORIS",
+      "agency_id": "records-and-information-services",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DORIS",
+        "Department of Records and Information Services"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF RECORDS AND INFORMATION SERVICES",
+        "DORIS"
+      ],
+      "rows_held": 15,
+      "rows_listable": 12,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 10,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DORIS_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 2,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DORIS_LL63_FY27_New.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 10,
+        "2": 2
+      },
+      "industries": {
+        "Construction Services": 1,
+        "Goods <$1 million": 2,
+        "Professional Services": 6,
+        "Standard Services": 1,
+        "not_published": 2
+      },
+      "estimated_amount": {
+        "published": 8,
+        "not_published": 4
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DOT",
+      "agency_id": "transportation",
+      "agency_id_basis": "crosswalk_exact_ll1_label",
+      "published_names": [
+        "DOT",
+        "Department of Transportation"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF TRANSPORTATION",
+        "DOT"
+      ],
+      "rows_held": 2717,
+      "rows_listable": 2714,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 88,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DOT_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 2626,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 956,
+        "2": 945,
+        "3": 341,
+        "4": 377,
+        "not_published": 95
+      },
+      "industries": {
+        "Construction Services": 7,
+        "Goods <$1 million": 1,
+        "Professional Services": 53,
+        "Standard Services": 27,
+        "not_published": 2626
+      },
+      "estimated_amount": {
+        "published": 85,
+        "not_published": 2629
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DPR",
+      "agency_id": "parks-and-recreation",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "Department of Parks and Recreation"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF PARKS AND RECREATION"
+      ],
+      "rows_held": 1609,
+      "rows_listable": 1606,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 1606,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DPR_LL1_FY27.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 1283,
+        "2": 50,
+        "3": 176,
+        "4": 97
+      },
+      "industries": {
+        "Construction Services": 159,
+        "Professional Services": 1446,
+        "Standard Services": 1
+      },
+      "estimated_amount": {
+        "published": 1606,
+        "not_published": 0
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "DPRC",
+      "agency_id": null,
+      "agency_id_basis": null,
+      "published_names": [
+        "DPR-C"
+      ],
+      "agency_keys": [
+        "DPR CAPITAL"
+      ],
+      "rows_held": 1579,
+      "rows_listable": 1579,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 1579,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRC_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRC_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 1309,
+        "2": 30,
+        "3": 93,
+        "4": 76,
+        "not_published": 71
+      },
+      "industries": {
+        "not_published": 1579
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 1579
+      },
+      "quality_flags": {
+        "published_term_end_before_start": 6
+      },
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "DSNY",
+      "agency_id": "sanitation",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DSNY",
+        "Department of Sanitation"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF SANITATION",
+        "DSNY"
+      ],
+      "rows_held": 92,
+      "rows_listable": 89,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 37,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DSNY_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 52,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 34,
+        "2": 12,
+        "3": 7,
+        "4": 8,
+        "not_published": 28
+      },
+      "industries": {
+        "Construction Services": 6,
+        "Goods <$1 million": 2,
+        "Professional Services": 22,
+        "Standard Services": 7,
+        "not_published": 52
+      },
+      "estimated_amount": {
+        "published": 37,
+        "not_published": 52
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "DYCD",
+      "agency_id": "youth-and-community-development",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "DYCD",
+        "Department of Youth and Community Development"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
+        "DYCD"
+      ],
+      "rows_held": 80,
+      "rows_listable": 77,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 36,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DYCD_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 41,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 43,
+        "2": 18,
+        "3": 5,
+        "4": 4,
+        "not_published": 7
+      },
+      "industries": {
+        "Professional Services": 36,
+        "not_published": 41
+      },
+      "estimated_amount": {
+        "published": 36,
+        "not_published": 41
+      },
+      "quality_flags": {
+        "published_term_end_before_start": 5
+      },
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "FDNY",
+      "agency_id": "fire-department",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "FDNY",
+        "Fire Department of New York"
+      ],
+      "agency_keys": [
+        "FDNY",
+        "FIRE DEPARTMENT OF NEW YORK"
+      ],
+      "rows_held": 135,
+      "rows_listable": 135,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 62,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/FDNY_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 73,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FDNY_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FDNY_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 46,
+        "2": 51,
+        "3": 16,
+        "4": 8,
+        "not_published": 14
+      },
+      "industries": {
+        "Construction Services": 4,
+        "Professional Services": 27,
+        "Standard Services": 29,
+        "not_published": 75
+      },
+      "estimated_amount": {
+        "published": 60,
+        "not_published": 75
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "FISA",
+      "agency_id": "financial-information-services-agency",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "FISA"
+      ],
+      "agency_keys": [
+        "FISA"
+      ],
+      "rows_held": 51,
+      "rows_listable": 51,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 51,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FISA_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FISA_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 42,
+        "2": 1,
+        "3": 6,
+        "not_published": 2
+      },
+      "industries": {
+        "not_published": 51
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 51
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "HPD",
+      "agency_id": "housing-preservation-and-development",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "HPD",
+        "Housing Preservation and Development"
+      ],
+      "agency_keys": [
+        "HOUSING PRESERVATION AND DEVELOPMENT",
+        "HPD"
+      ],
+      "rows_held": 70,
+      "rows_listable": 67,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 34,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/HPD_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 33,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 10,
+        "2": 6,
+        "3": 25,
+        "4": 18,
+        "not_published": 8
+      },
+      "industries": {
+        "Construction Services": 2,
+        "Goods <$1 million": 12,
+        "Professional Services": 19,
+        "Standard Services": 1,
+        "not_published": 33
+      },
+      "estimated_amount": {
+        "published": 33,
+        "not_published": 34
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "HRA",
+      "agency_id": "human-resources-administration",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "HRA",
+        "Human Resources Administration"
+      ],
+      "agency_keys": [
+        "HRA",
+        "HUMAN RESOURCES ADMINISTRATION"
+      ],
+      "rows_held": 88,
+      "rows_listable": 85,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 17,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/HRA_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 68,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HRA_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HRA_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 31,
+        "2": 7,
+        "3": 5,
+        "4": 1,
+        "not_published": 41
+      },
+      "industries": {
+        "Goods <$1 million": 1,
+        "Professional Services": 6,
+        "Standard Services": 10,
+        "not_published": 68
+      },
+      "estimated_amount": {
+        "published": 17,
+        "not_published": 68
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "LAW",
+      "agency_id": "law-department",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "LAW",
+        "Law Department"
+      ],
+      "agency_keys": [
+        "LAW",
+        "LAW DEPARTMENT"
+      ],
+      "rows_held": 46,
+      "rows_listable": 43,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 24,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/Law_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 19,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Law_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Law_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 15,
+        "2": 13,
+        "3": 11,
+        "not_published": 4
+      },
+      "industries": {
+        "Goods <$1 million": 10,
+        "Professional Services": 13,
+        "Standard Services": 1,
+        "not_published": 19
+      },
+      "estimated_amount": {
+        "published": 24,
+        "not_published": 19
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "MAYORALTY",
+      "agency_id": "office-of-the-mayor",
+      "agency_id_basis": "crosswalk_exact_ll1_label",
+      "published_names": [
+        "Mayor's Office"
+      ],
+      "agency_keys": [
+        "MAYOR S OFFICE"
+      ],
+      "rows_held": 6,
+      "rows_listable": 3,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 3,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/Mayoralty_LL1_FY27.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 3
+      },
+      "industries": {
+        "Standardized Services": 3
+      },
+      "estimated_amount": {
+        "published": 3,
+        "not_published": 0
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "MOCJ",
+      "agency_id": "mayors-office-of-criminal-justice",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "Mayor's Office of Criminal Justice"
+      ],
+      "agency_keys": [
+        "MAYOR S OFFICE OF CRIMINAL JUSTICE"
+      ],
+      "rows_held": 7,
+      "rows_listable": 4,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 4,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/MOCJ_LL1_FY27.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "4": 4
+      },
+      "industries": {
+        "Goods <$1 million": 2,
+        "Professional Services": 2
+      },
+      "estimated_amount": {
+        "published": 4,
+        "not_published": 0
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "MOCS",
+      "agency_id": "mayors-office-of-contract-services",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "MOCS"
+      ],
+      "agency_keys": [
+        "MOCS"
+      ],
+      "rows_held": 2,
+      "rows_listable": 2,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 2,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/MOCS_LL63_FY27_New.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "not_published": 2
+      },
+      "industries": {
+        "not_published": 2
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 2
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "NYCEM",
+      "agency_id": "emergency-management",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "NYCEM",
+        "New York City Emergency Management Department"
+      ],
+      "agency_keys": [
+        "NEW YORK CITY EMERGENCY MANAGEMENT DEPARTMENT",
+        "NYCEM"
+      ],
+      "rows_held": 22,
+      "rows_listable": 19,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 12,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/NYCEM_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 7,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYCEM_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYCEM_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 2,
+        "2": 3,
+        "3": 9,
+        "4": 1,
+        "not_published": 4
+      },
+      "industries": {
+        "Goods <$1 million": 3,
+        "Professional Services": 1,
+        "Standard Services": 8,
+        "not_published": 7
+      },
+      "estimated_amount": {
+        "published": 11,
+        "not_published": 8
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "NYPD",
+      "agency_id": "police-department",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "NYPD",
+        "New York Police Department"
+      ],
+      "agency_keys": [
+        "NEW YORK POLICE DEPARTMENT",
+        "NYPD"
+      ],
+      "rows_held": 1856,
+      "rows_listable": 1853,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 32,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/NYPD_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 1821,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYPD_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYPD_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 226,
+        "2": 415,
+        "3": 865,
+        "4": 322,
+        "not_published": 25
+      },
+      "industries": {
+        "Construction Services": 20,
+        "Professional Services": 5,
+        "Standard Services": 7,
+        "not_published": 1821
+      },
+      "estimated_amount": {
+        "published": 32,
+        "not_published": 1821
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "OATH",
+      "agency_id": "administrative-trials-and-hearings",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "OATH"
+      ],
+      "agency_keys": [
+        "OATH"
+      ],
+      "rows_held": 3,
+      "rows_listable": 3,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 3,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OATH_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "not_published": 3
+      },
+      "industries": {
+        "not_published": 3
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 3
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "OCME",
+      "agency_id": "chief-medical-examiner",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "OCME",
+        "Office of Chief Medical Examiner"
+      ],
+      "agency_keys": [
+        "OCME",
+        "OFFICE OF CHIEF MEDICAL EXAMINER"
+      ],
+      "rows_held": 13,
+      "rows_listable": 10,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 3,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/OCME_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 7,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OCME_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OCME_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 7,
+        "2": 1,
+        "not_published": 2
+      },
+      "industries": {
+        "Professional Services": 1,
+        "Standard Services": 2,
+        "not_published": 7
+      },
+      "estimated_amount": {
+        "published": 3,
+        "not_published": 7
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "OLR",
+      "agency_id": "office-of-labor-relations",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "OLR",
+        "Office of Labor Relations"
+      ],
+      "agency_keys": [
+        "OFFICE OF LABOR RELATIONS",
+        "OLR"
+      ],
+      "rows_held": 91,
+      "rows_listable": 88,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 40,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/OLR_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 48,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OLR_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OLR_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 36,
+        "2": 8,
+        "3": 43,
+        "not_published": 1
+      },
+      "industries": {
+        "Professional Services": 40,
+        "not_published": 48
+      },
+      "estimated_amount": {
+        "published": 40,
+        "not_published": 48
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "OMB",
+      "agency_id": "management-and-budget",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "Mayor's Office of Management and Budget",
+        "OMB"
+      ],
+      "agency_keys": [
+        "MAYOR S OFFICE OF MANAGEMENT AND BUDGET",
+        "OMB"
+      ],
+      "rows_held": 103,
+      "rows_listable": 100,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 42,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/OMB_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 58,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 22,
+        "2": 23,
+        "3": 22,
+        "4": 18,
+        "not_published": 15
+      },
+      "industries": {
+        "Professional Services": 40,
+        "Standard Services": 2,
+        "not_published": 58
+      },
+      "estimated_amount": {
+        "published": 2,
+        "not_published": 98
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "OPA",
+      "agency_id": "payroll-administration",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "OPA"
+      ],
+      "agency_keys": [
+        "OPA"
+      ],
+      "rows_held": 1,
+      "rows_listable": 1,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll63": {
+          "rows_listable": 1,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OPA_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "not_published": 1
+      },
+      "industries": {
+        "not_published": 1
+      },
+      "estimated_amount": {
+        "published": 0,
+        "not_published": 1
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json"
+      ]
+    },
+    {
+      "agency_code": "OTI",
+      "agency_id": "information-technology-and-telecommunications",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "OTI",
+        "Office of Technology and Innovation"
+      ],
+      "agency_keys": [
+        "OFFICE OF TECHNOLOGY AND INNOVATION",
+        "OTI"
+      ],
+      "rows_held": 647,
+      "rows_listable": 647,
+      "withheld": {
+        "workbook_list_row": 0
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 248,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/OTI_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 399,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OTI_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OTI_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 570,
+        "2": 20,
+        "3": 20,
+        "4": 16,
+        "not_published": 21
+      },
+      "industries": {
+        "Professional Services": 232,
+        "Standard Services": 16,
+        "not_published": 399
+      },
+      "estimated_amount": {
+        "published": 248,
+        "not_published": 399
+      },
+      "quality_flags": {
+        "published_term_end_before_start": 3
+      },
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "SBS",
+      "agency_id": "small-business-services",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "Department of Small Business Services",
+        "SBS"
+      ],
+      "agency_keys": [
+        "DEPARTMENT OF SMALL BUSINESS SERVICES",
+        "SBS"
+      ],
+      "rows_held": 47,
+      "rows_listable": 44,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 1,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/SBS_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 43,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 22,
+        "2": 1,
+        "not_published": 21
+      },
+      "industries": {
+        "Professional Services": 1,
+        "not_published": 43
+      },
+      "estimated_amount": {
+        "published": 1,
+        "not_published": 43
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    },
+    {
+      "agency_code": "TLC",
+      "agency_id": "taxi-and-limousine-commission",
+      "agency_id_basis": "crosswalk_exact_code",
+      "published_names": [
+        "TLC",
+        "Taxi and Limousine Commission"
+      ],
+      "agency_keys": [
+        "TAXI AND LIMOUSINE COMMISSION",
+        "TLC"
+      ],
+      "rows_held": 16,
+      "rows_listable": 13,
+      "withheld": {
+        "workbook_list_row": 3
+      },
+      "by_source": {
+        "ll1": {
+          "rows_listable": 5,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/TLC_LL1_FY27.xlsx"
+          ]
+        },
+        "ll63": {
+          "rows_listable": 8,
+          "workbooks": [
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/TLC_LL63_FY27_New.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/TLC_LL63_FY27_RE.xlsx"
+          ]
+        }
+      },
+      "quarters": {
+        "1": 4,
+        "2": 3,
+        "3": 1,
+        "4": 1,
+        "not_published": 4
+      },
+      "industries": {
+        "Professional Services": 5,
+        "not_published": 8
+      },
+      "estimated_amount": {
+        "published": 5,
+        "not_published": 8
+      },
+      "quality_flags": {},
+      "shards": [
+        "site/data/procurement_planning_payload/plans-000.json",
+        "site/data/procurement_planning_payload/plans-001.json"
+      ]
+    }
+  ],
+  "unlinked_agency_codes": [
+    "CITYHALL",
+    "DPRC"
+  ],
+  "known_agencies_without_rows": [
+    "administrative-tax-appeals",
+    "aging",
+    "banking-commission",
+    "board-of-correction",
+    "board-of-education-retirement-system",
+    "board-of-elections",
+    "board-of-standards-and-appeals",
+    "borough-president-bronx",
+    "borough-president-brooklyn",
+    "borough-president-manhattan",
+    "borough-president-queens",
+    "borough-president-staten-island",
+    "build-nyc-resource-corporation",
+    "business-integrity-commission",
+    "charter-revision-commission",
+    "city-clerk",
+    "city-council",
+    "city-planning-commission",
+    "city-university",
+    "civic-engagement-commission",
+    "civil-service-commission",
+    "community-boards",
+    "conflicts-of-interest-board",
+    "criminal-justice-coordinator",
+    "cultural-affairs",
+    "district-attorney-bronx-county",
+    "district-attorney-kings-county",
+    "district-attorney-new-york-county",
+    "district-attorney-queens-county",
+    "district-attorney-richmond-county",
+    "districting-commission",
+    "economic-development-corporation",
+    "education",
+    "educational-construction-fund",
+    "environmental-control-board",
+    "equal-employ-practices-comm",
+    "equal-employment-practices-commission",
+    "housing-authority",
+    "hudson-river-park-trust",
+    "independent-budget-office",
+    "industrial-development-agency",
+    "landmarks-preservation-commission",
+    "loft-board",
+    "lower-manhattan-development-corporation",
+    "mayors-fund-to-advance-new-york-city",
+    "mayors-office-of-environmental-coordination",
+    "mayors-office-of-media-and-entertainment",
+    "mayors-office-of-operations",
+    "mayors-office-of-special-enforcement",
+    "metropolitan-transportation-authority",
+    "new-york-city-police-pension-fund",
+    "nyc-and-company",
+    "nyc-department-of-veterans-services",
+    "nyc-health-hospitals",
+    "nyc-workforce-development-board",
+    "office-of-collective-bargaining",
+    "office-of-special-narcotics-prosecutor",
+    "office-of-the-actuary",
+    "procurement-policy-board",
+    "public-administrator-bronx-county",
+    "public-administrator-kings-county",
+    "public-administrator-new-york-county",
+    "public-administrator-queens-county",
+    "public-administrator-richmond-county",
+    "public-advocate",
+    "public-design-commission",
+    "public-housing-preservation-trust",
+    "public-library-brooklyn",
+    "public-library-queens",
+    "rent-guidelines-board",
+    "school-construction-authority",
+    "tax-commission",
+    "teachers-retirement-system",
+    "trust-for-governors-island",
+    "water-board"
+  ],
+  "crosswalk": {
+    "path": "worker/src/data/agency_crosswalk.json"
+  }
+}

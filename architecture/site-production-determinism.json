@@ -598,6 +598,7 @@
     "site/procurement_payment_place_context.mjs",
     "site/procurement_phase_spine.mjs",
     "site/procurement_pin.mjs",
+    "site/procurement_plan_listing.mjs",
     "site/procurement_planning_gate.mjs",
     "site/procurement_planning_surface.mjs",
     "site/procurement_preference_set.mjs",

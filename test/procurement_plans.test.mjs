@@ -412,3 +412,161 @@ test("RC-1 stage one publishes a fixture proof and schema without claiming produ
   assert.equal(schema.properties.contract.properties.infer_budget_from_agency_total.const, false);
   assert.equal(schema.properties.contract.properties.reader_surface_included.const, false);
 });
+
+test("A8 patched parser drops list rows and records procurement_probability on OCME and DORIS workbooks", () => {
+  if (!existsSync(join(WAREHOUSE, ".venv", "bin", "python"))) return;
+  const result = python(`
+import json, sys, warnings
+from collections import Counter
+from pathlib import Path
+sys.path.insert(0, "warehouse/lib")
+import openpyxl
+from procurement_plans import normalize_plan_rows, clean_text
+
+LIST_ROW_PLAN_IDS = {"Exclusions", "Will Not Be Renewed/Extended", "$200K or Below"}
+WORKBOOKS = {
+    "OCME_LL1_FY27.xlsx": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/OCME_LL1_FY27.xlsx",
+    "DORIS_LL1_FY27.xlsx": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DORIS_LL1_FY27.xlsx",
+}
+manifest = json.load(open("site/data/procurement_planning_payload.json"))
+labels = {s["url"]: s for s in manifest["sources"] if s["source"] == "mocs_ll1"}
+fixtures = Path("test/fixtures/procurement_plans")
+
+def workbook_plan_rows(path, url):
+    rows = []
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        workbook = openpyxl.load_workbook(path, read_only=True, data_only=True)
+        try:
+            for worksheet in workbook.worksheets:
+                values = [list(row) for row in worksheet.iter_rows(values_only=True)]
+                normalized = normalize_plan_rows(
+                    values,
+                    source="mocs_ll1",
+                    source_url=url,
+                    agency_hint=clean_text(labels[url].get("label")),
+                    fiscal_year=2027,
+                )
+                for item in normalized:
+                    item["source_sheet"] = worksheet.title
+                rows.extend(normalized)
+        finally:
+            workbook.close()
+    return rows
+
+values = {}
+for name, url in WORKBOOKS.items():
+    assert labels[url]["sha256"] == __import__("hashlib").sha256((fixtures / name).read_bytes()).hexdigest(), name
+    got = workbook_plan_rows(fixtures / name, url)
+    assert not ({r["plan_id"] for r in got} & LIST_ROW_PLAN_IDS), name
+    for row in got:
+        assert row["procurement_probability"] in {"Definite", "Likely", "Unlikely"}, name
+        assert not ({"initial_agency_comments", "oversight_comments", "agency_responses"} & set(row))
+        values.setdefault(name, Counter())[row["procurement_probability"]] += 1
+assert len(workbook_plan_rows(fixtures / "OCME_LL1_FY27.xlsx", WORKBOOKS["OCME_LL1_FY27.xlsx"])) == 3
+assert dict(values["OCME_LL1_FY27.xlsx"]) == {"Likely": 3}
+assert len(workbook_plan_rows(fixtures / "DORIS_LL1_FY27.xlsx", WORKBOOKS["DORIS_LL1_FY27.xlsx"])) == 10
+assert dict(values["DORIS_LL1_FY27.xlsx"]) == {"Likely": 8, "Definite": 2}
+print("OK")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /OK/);
+});
+
+test("A8 unpatched HEAD parser reproduces committed OCME (6) and DORIS (13) shard rows including list rows", () => {
+  if (!existsSync(join(WAREHOUSE, ".venv", "bin", "python"))) return;
+  const result = python(`
+import hashlib, importlib.util, json, subprocess, sys, tempfile, warnings
+from pathlib import Path
+import openpyxl
+
+LIST_ROW_PLAN_IDS = {"Exclusions", "Will Not Be Renewed/Extended", "$200K or Below"}
+WORKBOOKS = {
+    "OCME_LL1_FY27.xlsx": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/OCME_LL1_FY27.xlsx",
+    "DORIS_LL1_FY27.xlsx": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DORIS_LL1_FY27.xlsx",
+}
+manifest = json.load(open("site/data/procurement_planning_payload.json"))
+labels = {s["url"]: s for s in manifest["sources"] if s["source"] == "mocs_ll1"}
+committed = []
+for shard in manifest["collections"]["plans"]["shards"]:
+    committed.extend(json.load(open(shard["path"]))["rows"])
+fixtures = Path("test/fixtures/procurement_plans")
+
+head = subprocess.check_output(["git", "show", "HEAD:warehouse/lib/procurement_plans.py"])
+tmp = Path(tempfile.mkdtemp(prefix="a8-unpatched-")) / "procurement_plans.py"
+tmp.write_bytes(head)
+spec = importlib.util.spec_from_file_location("baseline_procurement_plans", tmp)
+baseline = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(baseline)
+
+def workbook_plan_rows(module, path, url):
+    rows = []
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        workbook = openpyxl.load_workbook(path, read_only=True, data_only=True)
+        try:
+            for worksheet in workbook.worksheets:
+                values = [list(row) for row in worksheet.iter_rows(values_only=True)]
+                normalized = module.normalize_plan_rows(
+                    values,
+                    source="mocs_ll1",
+                    source_url=url,
+                    agency_hint=module.clean_text(labels[url].get("label")),
+                    fiscal_year=2027,
+                )
+                for item in normalized:
+                    item["source_sheet"] = worksheet.title
+                rows.extend(normalized)
+        finally:
+            workbook.close()
+    return rows
+
+for name, url in WORKBOOKS.items():
+    got = workbook_plan_rows(baseline, fixtures / name, url)
+    want = [row for row in committed if row["source_url"] == url]
+    assert len(got) == labels[url]["plan_rows"], name
+    assert got == want, name
+    assert {r["plan_id"] for r in got} & LIST_ROW_PLAN_IDS == LIST_ROW_PLAN_IDS, name
+assert labels[WORKBOOKS["OCME_LL1_FY27.xlsx"]]["plan_rows"] == 6
+assert labels[WORKBOOKS["DORIS_LL1_FY27.xlsx"]]["plan_rows"] == 13
+print("OK")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /OK/);
+});
+
+test("A8 collector fixture yields Definite procurement_probability under the patched parser", () => {
+  const result = python(`
+import json, sys
+sys.path.insert(0, "warehouse/lib")
+from procurement_plans import normalize_plan_rows
+
+fixture = json.load(open("warehouse/fixtures/procurement-plans/collector.json"))
+ll1 = normalize_plan_rows(fixture["ll1_rows"], source="mocs_ll1", source_url="https://example.test/ll1.xlsx", agency_hint="ACS", fiscal_year=2027)
+ll63 = normalize_plan_rows(fixture["ll63_rows"], source="mocs_ll63", source_url="https://example.test/ll63.xlsx", agency_hint="ACS", fiscal_year=2027)
+assert ll1[0]["procurement_probability"] == "Definite"
+assert ll63[0]["procurement_probability"] is None
+print("OK")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /OK/);
+});
+
+test("A8 parse_plan_index records HPD note (updated 7/20/2026) on the retained LL1 page", () => {
+  const result = python(`
+import sys
+sys.path.insert(0, "warehouse/lib")
+from pathlib import Path
+from procurement_plans import parse_plan_index
+
+ll1 = Path("test/fixtures/procurement_plans/index-pages/m-wbe-ll1.2026-11-11.html").read_text("utf-8")
+links = parse_plan_index(ll1, "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page", "mocs_ll1", 2027)
+assert len(links) == 32
+hpd = next(l for l in links if l["url"].endswith("/HPD_LL1_FY27.xlsx"))
+assert hpd["index_note"] == "(updated 7/20/2026)"
+assert all(l.get("index_note") for l in links)
+print("OK")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /OK/);
+});

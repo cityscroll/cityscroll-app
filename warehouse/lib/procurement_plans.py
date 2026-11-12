@@ -26,6 +26,11 @@ DETERMINISTIC_METHODS = frozenset({
     "epin_prefix_of_pin",
     "pin_strip_suffix",
 })
+# Every MOCS plan row carries a plan id of this shape (FY27NACS1, FY27RNACS2,
+# FY27NDPR686). Each Local Law 1 sheet keeps its drop-down list table at its
+# foot (Plan ID cells "Exclusions", "Will Not Be Renewed/Extended",
+# "$200K or Below" with text in the description column); those rows are not plans.
+PLAN_ID_RE = re.compile(r"^FY\d{2}[A-Z]")
 CONTENT_STOPWORDS = {
     "and", "the", "for", "from", "with", "into", "services", "service",
     "goods", "city", "new", "york", "contract", "procurement", "project",
@@ -217,6 +222,9 @@ HEADER_ALIASES = {
     "quarter": ("anticipated fiscal quarter", "fiscal quarter of solicitation"),
     "industry": ("procurement industry", "industry"),
     "estimated_amount": ("estimated amount",),
+    # Verbatim publisher value (Local Law 1 list: Definite, Likely, Unlikely).
+    # The three comment columns that follow it stay unmapped and are dropped.
+    "procurement_probability": ("procurement probability",),
     "vendor": ("vendor", "vendor name"),
     "contract_number": ("contract number ct1 ma1 mma1 858", "contract number"),
 }
@@ -281,6 +289,8 @@ def normalize_plan_rows(
         description = clean_text(_cell(row, headers, "description"))
         if not description:
             continue
+        if plan_id and not PLAN_ID_RE.match(plan_id):
+            continue
         agency_raw = clean_text(_cell(row, headers, "agency")) or clean_text(agency_hint)
         agency = clean_text(agency_hint) or agency_raw
         method = clean_text(_cell(row, headers, "procurement_method"))
@@ -316,6 +326,7 @@ def normalize_plan_rows(
                 if amount is not None else None
             ),
             "vendor": vendor,
+            "procurement_probability": clean_text(_cell(row, headers, "procurement_probability")),
             "published_identifiers": identifiers,
             "quality_flags": quality_flags,
         })
@@ -372,22 +383,39 @@ class _LinkParser(HTMLParser):
         self.href: str | None = None
         self.parts: list[str] = []
         self.links: list[tuple[str, str]] = []
+        self.notes: dict[int, list[str]] = {}
+        self.after: int | None = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if tag.lower() != "a":
             return
+        self.after = None
         self.href = dict(attrs).get("href")
         self.parts = []
 
     def handle_data(self, data: str) -> None:
         if self.href is not None:
             self.parts.append(data)
+        elif self.after is not None:
+            self.notes.setdefault(self.after, []).append(data)
 
     def handle_endtag(self, tag: str) -> None:
         if tag.lower() == "a" and self.href is not None:
             self.links.append((self.href, clean_text(" ".join(self.parts)) or ""))
             self.href = None
             self.parts = []
+            self.after = len(self.links) - 1
+        elif tag.lower() in ("p", "li", "div", "ul", "td"):
+            self.after = None
+
+
+INDEX_NOTE_RE = re.compile(r"\((?:updated|posted on)[^)]*\)", re.IGNORECASE)
+
+
+def index_note(text: str | None) -> str | None:
+    """The page's per-file text after a workbook link, e.g. "(updated 6/30/2026)"."""
+    match = INDEX_NOTE_RE.search(re.sub(r"\s+", " ", text or ""))
+    return match.group(0) if match else None
 
 
 def parse_plan_index(html_text: str, base_url: str, source: str, fiscal_year: int) -> list[dict[str, str]]:
@@ -400,10 +428,15 @@ def parse_plan_index(html_text: str, base_url: str, source: str, fiscal_year: in
     else:
         raise ValueError(f"unknown plan source: {source}")
     links = []
-    for href, label in parser.links:
+    for position, (href, label) in enumerate(parser.links):
         if marker.lower() not in href.lower() or not href.lower().endswith(".xlsx"):
             continue
-        links.append({"url": urljoin(base_url, href), "label": label, "source": source})
+        links.append({
+            "url": urljoin(base_url, href),
+            "label": label,
+            "source": source,
+            "index_note": index_note(" ".join(parser.notes.get(position, []))),
+        })
     by_url = {item["url"]: item for item in links}
     return [by_url[url] for url in sorted(by_url)]
 
