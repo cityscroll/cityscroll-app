@@ -807,6 +807,7 @@
     guide_text_9044f2c0f4a88307: "완성된 두 단계 경로 열기",
         guide_text_9d6194195e73dee7: "이 기록들의 바탕인 공공 출처 66개를 변경 빈도별로 분류",
         guide_text_3fbb8c75fe8cc71f: "이 기록들의 바탕인 공공 출처 67개를 변경 빈도별로 분류",
+        guide_text_2619d0595c363394: '이 기록들의 바탕인 공공 출처 71개를 변경 빈도별로 분류',
     guide_text_30dfc11c63559ad9: "AI에게 묻기",
 // END GUIDE TRANSLATIONS
     guide_text_c78eb973e4f540e5: "English source: Step 1 — Choose an observation experience",

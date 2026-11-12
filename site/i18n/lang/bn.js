@@ -807,6 +807,7 @@
     guide_text_9044f2c0f4a88307: "সম্পূর্ণ দুই ধাপের পথ খুলুন",
         guide_text_9d6194195e73dee7: "এই নথির পেছনের ৬৬টি সরকারি উৎস, বদলের ব্যবধান অনুযায়ী",
         guide_text_3fbb8c75fe8cc71f: "এই নথির পেছনের ৬৭টি সরকারি উৎস, বদলের ব্যবধান অনুযায়ী",
+        guide_text_2619d0595c363394: 'এই নথির পেছনের ৭১টি সরকারি উৎস, বদলের ব্যবধান অনুযায়ী',
     guide_text_30dfc11c63559ad9: "AI দিয়ে জিজ্ঞাসা",
 // END GUIDE TRANSLATIONS
     guide_text_c78eb973e4f540e5: "English source: Step 1 — Choose an observation experience",

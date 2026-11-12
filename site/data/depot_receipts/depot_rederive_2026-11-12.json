@@ -4,7 +4,7 @@
   "observed_on": "2026-11-12",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 73,
+  "sources_count": 76,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -559,7 +559,18 @@
       ]
     },
     {
-      "id": "abo-local-authorities-x-sbs-certified-business-list-via-vendor_name",
+      "id": "abo-local-authorities-x-dos-active-entities-via-vendor_name",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "vendor_name"
+      ],
+      "gaps_would_close": [
+        "external-awards-abo-none"
+      ]
+    },
+    {
+      "id": "abo-local-authorities-x-irs-eo-bmf-ny-via-vendor_name",
       "worth_materializing": "maybe",
       "score": 1,
       "key_path": [
@@ -1126,7 +1137,25 @@
       "gaps_would_close": []
     },
     {
-      "id": "doing-business-entities-x-sbs-certified-business-list-via-vendor_name",
+      "id": "doing-business-entities-x-dos-active-entities-via-vendor_name",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "vendor_name"
+      ],
+      "gaps_would_close": []
+    },
+    {
+      "id": "doing-business-entities-x-irs-eo-bmf-ny-via-vendor_name",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "vendor_name"
+      ],
+      "gaps_would_close": []
+    },
+    {
+      "id": "dos-active-entities-x-irs-eo-bmf-ny-via-vendor_name",
       "worth_materializing": "no",
       "score": 0,
       "key_path": [
@@ -1204,5 +1233,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "739c8b4d9256cf7ddef7a1da8c91a302a19576a536e9c1ec04108f59cb24e2c4"
+  "registry_sha256": "a670ab63c8b243370a6697c0fdfcbb6876ebb87b04603f8271250b4ec435bf1a"
 }

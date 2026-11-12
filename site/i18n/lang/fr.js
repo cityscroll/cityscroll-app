@@ -811,6 +811,7 @@
     guide_text_9044f2c0f4a88307: "Ouvrez le parcours terminé de deux étapes",
         guide_text_9d6194195e73dee7: "Les 66 sources publiques de ces documents, selon leur fréquence de changement",
         guide_text_3fbb8c75fe8cc71f: "Les 67 sources publiques de ces documents, selon leur fréquence de changement",
+        guide_text_2619d0595c363394: 'Les 71 sources publiques de ces documents, selon leur fréquence de changement',
     guide_text_30dfc11c63559ad9: "Demander à l’IA",
 // END GUIDE TRANSLATIONS
     guide_text_c78eb973e4f540e5: "Source anglaise : Step 1 — Choose an observation experience",

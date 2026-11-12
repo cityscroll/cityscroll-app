@@ -807,6 +807,7 @@
     guide_text_9044f2c0f4a88307: "Abra el recorrido terminado de dos pasos",
         guide_text_9d6194195e73dee7: "Las 66 fuentes públicas de estos registros, según la frecuencia de cambio",
         guide_text_3fbb8c75fe8cc71f: "Las 67 fuentes públicas de estos registros, según la frecuencia de cambio",
+        guide_text_2619d0595c363394: 'Las 71 fuentes públicas de estos registros, según la frecuencia de cambio',
     guide_text_30dfc11c63559ad9: "Preguntar con IA",
 // END GUIDE TRANSLATIONS
     guide_text_c78eb973e4f540e5: "Paso 1 — Elija una experiencia de observación",
