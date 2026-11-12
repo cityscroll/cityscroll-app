@@ -1220,6 +1220,32 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "sbs-certified-business-list",
+      "name": "SBS Certified Business List",
+      "source_contract_id": "sbs-certified-business-list",
+      "status": "landed",
+      "join_keys": [
+        "vendor_formal_name",
+        "vendor_dba",
+        "vendor_name"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 0.1609,
+          "joined": 1894,
+          "total": 11772,
+          "metric": "firms_by_formal_name_stem",
+          "observed_on": "2026-11-11",
+          "universe": "SBS Certified Business List, 11,772 firms, joined to vendor names in the committed OCP awards, registered-contract, PASSPort, Checkbook and NYCHA artifacts",
+          "strategy": "vendor_stem_v1 equality on vendor_formal_name, then on vendor_dba. Substring, token-overlap and phone-only joins rejected.",
+          "verdict": "Below the usefulness floor (16.1% of firms) and the reviewed precision floor (42 of 50 confirmed, 8 undecidable without an address on the contract side). No automatic link: publish same-normalized-name candidates only.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/ci93-uc8s",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "suitability-city-owned-leased-property-ll48",
       "name": "Suitability of City-Owned and Leased Property for Urban Agriculture (LL48)",
       "source_contract_id": "suitability-city-owned-leased-property-ll48",
@@ -2332,6 +2358,22 @@
       "evidence": "Shared keys vendor_name; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "abo-local-authorities-x-sbs-certified-business-list-via-vendor_name",
+      "source_a": "abo-local-authorities",
+      "source_b": "sbs-certified-business-list",
+      "key_path": [
+        "vendor_name"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "external-awards-abo-none"
+      ],
+      "score": 1,
+      "evidence": "Shared keys vendor_name; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "active-civil-service-list-x-dcas-annual-exam-outcomes-via-exam_no",
       "source_a": "active-civil-service-list",
       "source_b": "dcas-annual-exam-outcomes",
@@ -3138,6 +3180,20 @@
       "evidence": "Shared keys PIN; 0 taxonomy gap(s) could close."
     },
     {
+      "id": "doing-business-entities-x-sbs-certified-business-list-via-vendor_name",
+      "source_a": "doing-business-entities",
+      "source_b": "sbs-certified-business-list",
+      "key_path": [
+        "vendor_name"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys vendor_name; 0 taxonomy gap(s) could close."
+    },
+    {
       "id": "legacy-dob-job-filings-x-mappluto-via-BBL",
       "source_a": "legacy-dob-job-filings",
       "source_b": "mappluto",
@@ -3835,10 +3891,10 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-11-11",
-    "source_contracts_fingerprint": "bb94f1a6d6c24f0ab9b1307bdfa4f4176987590d46c26e0ce9469c5b27e63ea2",
+    "observed_on": "2026-11-12",
+    "source_contracts_fingerprint": "ca35cd434523e3cf312fdbc10c03ba64e6f273a28d56bf98c22a373dee3c61d8",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 91,
+    "candidate_crosswalks": 93,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

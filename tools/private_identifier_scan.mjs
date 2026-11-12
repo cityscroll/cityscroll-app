@@ -24,6 +24,7 @@
  * private evidence lane, never in this repository.
  */
 
+import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { existsSync, lstatSync, readFileSync, readlinkSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -34,6 +35,8 @@ import { isolatedGitEnv } from "./architecture_evidence_shards.mjs";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const RECEIPT_SCHEMA = "cityscroll.private_identifier_scan_receipt.v1";
+export const PUBLISHER_ALLOWANCES_SCHEMA = "cityscroll.private_identifier_publisher_allowances.v1";
+export const PUBLISHER_ALLOWANCES_RELATIVE_PATH = "architecture/private-identifier-publisher-allowances.json";
 
 /**
  * The supported normalization contract, versioned so a receipt states exactly
@@ -269,6 +272,159 @@ function matchTerms(value, terms) {
   return hits;
 }
 
+export function sha256Hex(value) {
+  return createHash("sha256").update(String(value), "utf8").digest("hex");
+}
+
+/**
+ * Load exact-record publisher allowances from the repository registry.
+ * The registry never carries a private identifier: only publisher, dataset,
+ * account, field name, and the sha256 of the exact published string.
+ */
+export function loadPublisherAllowances({ root = ROOT, allowancesPath = null } = {}) {
+  const filePath = allowancesPath
+    ? resolve(allowancesPath)
+    : join(root, PUBLISHER_ALLOWANCES_RELATIVE_PATH);
+  if (!existsSync(filePath)) {
+    return { allowances: [], path: filePath, error: null };
+  }
+  let parsed;
+  try {
+    parsed = JSON.parse(readFileSync(filePath, "utf8"));
+  } catch (error) {
+    return { allowances: [], path: filePath, error: `publisher allowances are unreadable: ${error?.message || error}` };
+  }
+  if (!parsed || parsed.schema !== PUBLISHER_ALLOWANCES_SCHEMA || !Array.isArray(parsed.allowances)) {
+    return { allowances: [], path: filePath, error: "publisher allowances schema is invalid" };
+  }
+  const allowances = [];
+  for (const row of parsed.allowances) {
+    if (!row || typeof row !== "object") continue;
+    const publisher = String(row.publisher || "");
+    const dataset = String(row.dataset || "");
+    const account_number = String(row.account_number || "");
+    const field = String(row.field || "");
+    const value_sha256 = String(row.value_sha256 || "").toLowerCase();
+    const artifact_kinds = Array.isArray(row.artifact_kinds)
+      ? row.artifact_kinds.map((kind) => String(kind))
+      : [];
+    if (!publisher || !dataset || !account_number || !field || !/^[0-9a-f]{64}$/.test(value_sha256)) {
+      return { allowances: [], path: filePath, error: "publisher allowances contain an incomplete exact-record entry" };
+    }
+    if (!artifact_kinds.length) {
+      return { allowances: [], path: filePath, error: "publisher allowances require artifact_kinds" };
+    }
+    allowances.push({
+      id: String(row.id || `${publisher}-${dataset}-${account_number}-${field}`),
+      publisher,
+      dataset,
+      account_number,
+      field,
+      value_sha256,
+      artifact_kinds,
+    });
+  }
+  return { allowances, path: filePath, error: null };
+}
+
+/**
+ * Classify a tracked path as a known SBS publisher artifact, or null.
+ * Only these layouts may use exact-record allowances.
+ */
+export function classifyPublisherArtifact(path) {
+  const normalized = String(path || "").replace(/\\/g, "/");
+  if (/(?:^|\/)site\/data\/sbs_certified_businesses\/rows-\d+\.json$/.test(normalized)) {
+    return { publisher: "nyc-open-data", dataset: "ci93-uc8s", kind: "sbs_row_shard" };
+  }
+  if (/(?:^|\/)site\/data\/sbs_certified_businesses\/names\.json$/.test(normalized)) {
+    return { publisher: "nyc-open-data", dataset: "ci93-uc8s", kind: "sbs_names_index" };
+  }
+  return null;
+}
+
+function stripTrailingComma(line) {
+  return String(line || "").replace(/,\s*$/, "");
+}
+
+/**
+ * Build the residual text that remains after exact-record allowances remove
+ * matching field values. Field removal is structural (on the parsed record),
+ * so masking one field cannot break the exact string of another.
+ */
+export function residualPublisherText(line, artifact, allowances) {
+  if (!artifact || !allowances?.length) return { residual: line, changed: false };
+  const applicable = allowances.filter(
+    (row) => row.publisher === artifact.publisher
+      && row.dataset === artifact.dataset
+      && row.artifact_kinds.includes(artifact.kind),
+  );
+  if (!applicable.length) return { residual: line, changed: false };
+
+  if (artifact.kind === "sbs_row_shard") {
+    let row;
+    try {
+      row = JSON.parse(stripTrailingComma(line));
+    } catch {
+      return { residual: line, changed: false };
+    }
+    if (!row || typeof row !== "object" || Array.isArray(row)) {
+      return { residual: line, changed: false };
+    }
+    const account = String(row.account_number ?? "");
+    const residual = { ...row };
+    let changed = false;
+    for (const allowance of applicable) {
+      if (allowance.account_number !== account) continue;
+      if (!Object.prototype.hasOwnProperty.call(residual, allowance.field)) continue;
+      const raw = residual[allowance.field];
+      if (typeof raw !== "string") continue;
+      if (sha256Hex(raw) !== allowance.value_sha256) continue;
+      delete residual[allowance.field];
+      changed = true;
+    }
+    return { residual: changed ? JSON.stringify(residual) : line, changed };
+  }
+
+  if (artifact.kind === "sbs_names_index") {
+    let entry;
+    try {
+      entry = JSON.parse(`{${stripTrailingComma(line)}}`);
+    } catch {
+      return { residual: line, changed: false };
+    }
+    const keys = Object.keys(entry);
+    if (keys.length !== 1) return { residual: line, changed: false };
+    const stem = keys[0];
+    const accounts = entry[stem];
+    if (!Array.isArray(accounts)) return { residual: line, changed: false };
+    const accountSet = new Set(accounts.map((value) => String(value)));
+    for (const allowance of applicable) {
+      if (allowance.field !== "name_stem") continue;
+      if (!accountSet.has(allowance.account_number)) continue;
+      if (sha256Hex(stem) !== allowance.value_sha256) continue;
+      return { residual: JSON.stringify({ [allowance.account_number]: accounts }), changed: true };
+    }
+    return { residual: line, changed: false };
+  }
+
+  return { residual: line, changed: false };
+}
+
+/** @deprecated use residualPublisherText; kept for call-site clarity in tests */
+export function maskAllowedPublisherValues(line, artifact, allowances) {
+  return residualPublisherText(line, artifact, allowances).residual;
+}
+
+function contentHitCoveredByAllowance(line, hit, terms, artifact, allowances) {
+  if (!artifact || !allowances?.length) return false;
+  const termIndex = Number.parseInt(String(hit.term_ref).replace(/\D+/g, ""), 10) - 1;
+  if (!Number.isInteger(termIndex) || termIndex < 0 || termIndex >= terms.length) return false;
+  const term = terms[termIndex];
+  const { residual, changed } = residualPublisherText(line, artifact, allowances);
+  if (!changed) return false;
+  return matchTerms(residual, [term]).length === 0;
+}
+
 export function loadTermSet({ termsFile = null, termsValue = null, env = process.env } = {}) {
   const file = termsFile || env.PRIVATE_IDENTIFIER_TERMS_FILE || null;
   const inline = termsValue ?? env.PRIVATE_IDENTIFIER_TERMS ?? null;
@@ -369,12 +525,25 @@ function collectSubjects({ root, rev }) {
  * Scan tracked paths and tracked textual content for an owner-supplied term set.
  * Returns both a public-safe receipt and a private inventory; only the receipt
  * is ever printed.
+ *
+ * Exact-record publisher allowances may suppress a content hit only when the
+ * match sits inside a registered (publisher, dataset, account, field, value
+ * sha256) tuple. Path hits and every other occurrence still fail.
  */
-export function scanPrivateIdentifiers({ root = ROOT, rev = null, terms = [] } = {}) {
+export function scanPrivateIdentifiers({
+  root = ROOT,
+  rev = null,
+  terms = [],
+  allowances = null,
+} = {}) {
+  const loadedAllowances = allowances == null
+    ? loadPublisherAllowances({ root }).allowances
+    : allowances;
   const subjects = collectSubjects({ root, rev });
   const findings = [];
   const inventory = [];
   const redactedPaths = new Map();
+  let allowance_suppressions = 0;
 
   const pathMatches = new Map();
   for (const subject of subjects) {
@@ -398,8 +567,13 @@ export function scanPrivateIdentifiers({ root = ROOT, rev = null, terms = [] } =
     }
     if (subject.text === null) continue;
     const surface = subject.kind === "symlink" ? "symlink-target" : "content";
+    const artifact = classifyPublisherArtifact(subject.path);
     subject.text.split(/\r?\n/).forEach((line, index) => {
       for (const hit of matchTerms(line, terms)) {
+        if (contentHitCoveredByAllowance(line, hit, terms, artifact, loadedAllowances)) {
+          allowance_suppressions += 1;
+          continue;
+        }
         findings.push({ surface, path: safePath(subject.path), line: index + 1, rule: hit.rule, term_ref: hit.term_ref });
         inventory.push({ surface, path: subject.path, line: index + 1, rule: hit.rule, term_ref: hit.term_ref, context: line.trim().slice(0, 400) });
       }
@@ -414,6 +588,7 @@ export function scanPrivateIdentifiers({ root = ROOT, rev = null, terms = [] } =
     scanned_path_count: subjects.length,
     scanned_textual_path_count: scannedTextual,
     scanned_symlink_count: subjects.filter((subject) => subject.kind === "symlink").length,
+    allowance_suppressions,
   };
 }
 
@@ -490,13 +665,36 @@ export function main(argv = process.argv.slice(2)) {
   }
 
   const loaded = loadTermSet({ termsFile });
+  const loadedAllowances = loadPublisherAllowances({ root });
+  if (loadedAllowances.error) {
+    console.error(`private-identifier scan: ${loadedAllowances.error}`);
+    process.exitCode = 2;
+    return null;
+  }
 
-  let result = { status: "PASS", findings: [], inventory: [], scanned_path_count: 0, scanned_textual_path_count: 0, scanned_symlink_count: 0 };
+  let result = {
+    status: "PASS",
+    findings: [],
+    inventory: [],
+    scanned_path_count: 0,
+    scanned_textual_path_count: 0,
+    scanned_symlink_count: 0,
+    allowance_suppressions: 0,
+  };
   if (loaded.terms.length && !loaded.error) {
-    result = scanPrivateIdentifiers({ root, rev, terms: loaded.terms });
+    result = scanPrivateIdentifiers({
+      root,
+      rev,
+      terms: loaded.terms,
+      allowances: loadedAllowances.allowances,
+    });
   }
 
   const receipt = buildReceipt({ mode, revision: rev, terms: loaded.terms, result, termError: loaded.error });
+  if (loadedAllowances.allowances.length) {
+    receipt.publisher_allowance_count = loadedAllowances.allowances.length;
+    receipt.allowance_suppressions = result.allowance_suppressions || 0;
+  }
   process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`);
 
   if (write) {

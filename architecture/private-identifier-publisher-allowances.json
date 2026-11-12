@@ -1,0 +1,42 @@
+{
+  "schema": "cityscroll.private_identifier_publisher_allowances.v1",
+  "summary": "Exact-record allowances for verbatim public publisher values that collide with an owner-controlled private-identifier term. Each entry matches one publisher dataset, one account, one field, and the sha256 of that field's exact published string. A changed publisher value fails closed. Path-wide exemptions are not allowed.",
+  "allowances": [
+    {
+      "id": "nyc-open-data-sbs-ci93-uc8s-387393-vendor_formal_name",
+      "publisher": "nyc-open-data",
+      "dataset": "ci93-uc8s",
+      "account_number": "387393",
+      "field": "vendor_formal_name",
+      "value_sha256": "588ec272445b43cfb891d987b509f0d0e05f15ced562c26f92a772daf42f7b9e",
+      "artifact_kinds": ["sbs_row_shard"]
+    },
+    {
+      "id": "nyc-open-data-sbs-ci93-uc8s-387393-business_description",
+      "publisher": "nyc-open-data",
+      "dataset": "ci93-uc8s",
+      "account_number": "387393",
+      "field": "business_description",
+      "value_sha256": "f395ee025138fabfc82bd21cd1ae86b822daa20d1584b23964e6a5ee51067e44",
+      "artifact_kinds": ["sbs_row_shard"]
+    },
+    {
+      "id": "nyc-open-data-sbs-ci93-uc8s-387393-website",
+      "publisher": "nyc-open-data",
+      "dataset": "ci93-uc8s",
+      "account_number": "387393",
+      "field": "website",
+      "value_sha256": "7b38f8a619325272b9c1f49d5cb3d1977cc8a526992e2cd6c210b8bba26bfdaf",
+      "artifact_kinds": ["sbs_row_shard"]
+    },
+    {
+      "id": "nyc-open-data-sbs-ci93-uc8s-387393-name_stem",
+      "publisher": "nyc-open-data",
+      "dataset": "ci93-uc8s",
+      "account_number": "387393",
+      "field": "name_stem",
+      "value_sha256": "200834a90e950296bc17b0181cba0f17f6c4a402184679d2837d45a1bbd47117",
+      "artifact_kinds": ["sbs_row_shard", "sbs_names_index"]
+    }
+  ]
+}

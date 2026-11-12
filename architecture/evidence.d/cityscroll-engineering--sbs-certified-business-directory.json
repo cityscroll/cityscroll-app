@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/sbs-certified-business-directory",
+  "status": "implemented",
+  "fingerprint": "sbs-certified-business-directory.v1",
+  "updated_at": "2026-11-12T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "sbs-certified-business-lookup-module",
+      "path": "site/sbs_certified_business_lookup.mjs"
+    },
+    {
+      "id": "sbs-certified-business-directory-lib",
+      "path": "warehouse/lib/sbs_certified_business_directory.mjs"
+    },
+    {
+      "id": "sbs-certified-business-directory-builder",
+      "path": "tools/build_sbs_certified_business_directory.mjs"
+    },
+    {
+      "id": "sbs-certified-business-directory-test",
+      "path": "test/sbs_certified_business_directory.test.mjs"
+    },
+    {
+      "id": "sbs-certified-business-manifest",
+      "path": "site/data/sbs_certified_businesses.json"
+    },
+    {
+      "id": "private-identifier-publisher-allowances",
+      "path": "architecture/private-identifier-publisher-allowances.json"
+    },
+    {
+      "id": "observer-coverage-watermark",
+      "path": "architecture/watermark.d/observer-coverage.json"
+    }
+  ]
+}

@@ -904,6 +904,24 @@
       ]
     },
     {
+      "id": "sbs-certified-business-list",
+      "kind": "socrata",
+      "identifier": "ci93-uc8s",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "account_number",
+        "vendor_formal_name",
+        "vendor_dba",
+        "telephone",
+        "certification",
+        "address1",
+        "zip",
+        "naics_sector",
+        "nigp_codes"
+      ]
+    },
+    {
       "id": "dcas-vehicle-auction-list",
       "kind": "socrata",
       "identifier": "ynic-uz5i",

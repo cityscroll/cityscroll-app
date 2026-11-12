@@ -696,6 +696,7 @@
     "site/rum_stateful_instrumentation.mjs",
     "site/rum_static_record_instrumentation.mjs",
     "site/same_consolidation.mjs",
+    "site/sbs_certified_business_lookup.mjs",
     "site/scope_now_adapter.mjs",
     "site/scope_v0.mjs",
     "site/search_activity_receipt.mjs",

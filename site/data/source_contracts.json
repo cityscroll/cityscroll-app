@@ -4062,6 +4062,103 @@
       }
     },
     {
+      "id": "sbs-certified-business-list",
+      "name": "SBS Certified Business List",
+      "owner": "NYC Department of Small Business Services",
+      "status": "live",
+      "scope": "build-time",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "ci93-uc8s",
+      "landing_page": "https://data.cityofnewyork.us/d/ci93-uc8s",
+      "required_fields": [
+        "account_number",
+        "vendor_formal_name",
+        "vendor_dba",
+        "telephone",
+        "certification",
+        "address1",
+        "zip",
+        "naics_sector",
+        "nigp_codes"
+      ],
+      "max_stale_days": 45,
+      "publisher_cadence": "Every 2 weeks (Open Data metadata, Automation: No; rowsUpdatedAt 2026-11-10T14:39:18Z at recon)",
+      "acquisition_cadence": "Every two weeks",
+      "acquisition_cadence_days": 14,
+      "product_freshness": "A full paginated pull is committed as a sharded static directory under site/data/sbs_certified_businesses/ by the daily first-class refresh when the committed collected_at is 14 days old. Readers never call the publisher.",
+      "used_for": "Supplier-side directory of City-certified businesses (M/WBE, EBE, LBE) so users can look up possible primes, subcontractors and partners and add them as contacts. Every published field is carried, including contact name, phone, address and website. Name-stem links to contract vendors are candidates, not merged identities. Health visibility stays backstage-only until a reader-facing surface reads the directory.",
+      "join_keys": [
+        "vendor_formal_name",
+        "vendor_dba",
+        "vendor_name"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-11-11",
+        "universe": "SBS Certified Business List, 11,772 firms, joined to vendor names in the committed OCP awards, registered-contract, PASSPort, Checkbook and NYCHA artifacts",
+        "sbs_firms": 11772,
+        "engine_distinct_vendor_stems": 19512,
+        "strategy": "vendor_stem_v1 equality on vendor_formal_name, then on vendor_dba. Substring, token-overlap and phone-only joins rejected.",
+        "rates": {
+          "firms_by_formal_name_stem": {
+            "joined": 1894,
+            "total": 11772,
+            "rate": 0.1609
+          },
+          "firms_by_either_stem": {
+            "joined": 1905,
+            "total": 11772,
+            "rate": 0.1618
+          },
+          "engine_vendor_stems": {
+            "joined": 1904,
+            "total": 19512,
+            "rate": 0.0976
+          }
+        },
+        "precision_sample": {
+          "size": 50,
+          "same": 42,
+          "different": 0,
+          "cannot_tell": 8
+        },
+        "usefulness_threshold": 0.3,
+        "precision_threshold": 0.95,
+        "verdict": "Below the usefulness floor (16.1% of firms) and the reviewed precision floor (42 of 50 confirmed, 8 undecidable without an address on the contract side). No automatic link: publish same-normalized-name candidates only."
+      },
+      "code_references": [
+        {
+          "path": "site/sbs_certified_business_lookup.mjs",
+          "contains": "findByName"
+        },
+        {
+          "path": "warehouse/lib/sbs_certified_business_directory.mjs",
+          "contains": "SBS_QUALITY_FLAGS"
+        },
+        {
+          "path": "tools/build_sbs_certified_business_directory.mjs",
+          "contains": "--from-soda"
+        },
+        {
+          "path": "test/sbs_certified_business_directory.test.mjs",
+          "contains": "sbs-certified-business-list"
+        }
+      ],
+      "delivery_tier": "inline-at-build",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 45,
+        "clock_basis": "publisher_updated",
+        "serving_max_age_days": 60,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "backstage-only",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
+    },
+    {
       "id": "dcas-vehicle-auction-list",
       "name": "DCAS Vehicle Auction List",
       "owner": "NYC Department of Citywide Administrative Services",
@@ -6111,6 +6208,43 @@
       "resident_stale_behavior": "Do not describe Doing Business coverage as current after the hard maximum age.",
       "resident_unavailable_behavior": "Show Doing Business coverage as unavailable; never infer that no entities exist.",
       "production_evidence_field": "first_class.doing_business"
+    },
+    {
+      "id": "sbs-certified-businesses",
+      "public_artifact_path": "site/data/sbs_certified_businesses.json",
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
+      "source_contract_id": "sbs-certified-business-list",
+      "acquisition_command": [
+        "node",
+        "tools/build_sbs_certified_business_directory.mjs",
+        "--from-soda"
+      ],
+      "owning_builder": "tools/build_sbs_certified_business_directory.mjs",
+      "builder_command": [
+        "node",
+        "tools/build_sbs_certified_business_directory.mjs",
+        "--from-soda"
+      ],
+      "dependent_materializers": [
+        "tools/build_primary_documents.mjs"
+      ],
+      "normal_refresh_cadence_hours": 336,
+      "cadence_justification": "The publisher refreshes the list every two weeks (Automation: No); a 14-day cadence matches it. An unchanged publisher clock rewrites only the manifest collected_at.",
+      "warning_age_hours": 720,
+      "hard_maximum_age_hours": 1440,
+      "vintage_fields": [
+        "collected_at",
+        "rows_updated_at"
+      ],
+      "population_fields": [
+        "row_count"
+      ],
+      "last_known_good_behavior": "Retain the last verified directory and disclose its collected_at and rows_updated_at; a short, duplicate-keyed or non-array pull is refused and never replaces it.",
+      "resident_stale_behavior": "Do not describe the certified-business directory as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Show the directory as unavailable; never infer that a firm is not certified from its absence.",
+      "production_evidence_field": "first_class.sbs_certified_businesses"
     },
     {
       "id": "city-record-pin-chain",

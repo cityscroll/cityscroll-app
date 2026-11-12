@@ -53,3 +53,9 @@ test("all shipped payload trees are free of test records", () => {
   );
   assert.deepEqual(findings, []);
 });
+
+test("SBS directory shards are verbatim publisher records, not scanned for test markers", () => {
+  const rows = [{ account_number: "5085", telephone: "5555555555", name_stem: "FIXED BY MORGAN ME" }];
+  assert.deepEqual(publicPayloadFindings(rows, { source: "site/data/sbs_certified_businesses/rows-006.json" }), []);
+  assert.equal(publicPayloadFindings(rows, { source: "site/data/other_lookup/rows-006.json" }).length, 2);
+});

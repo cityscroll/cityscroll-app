@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "kind": "depot_rederive",
-  "observed_on": "2026-11-11",
+  "observed_on": "2026-11-12",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 72,
+  "sources_count": 73,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -549,6 +549,17 @@
     },
     {
       "id": "abo-local-authorities-x-doing-business-entities-via-vendor_name",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "vendor_name"
+      ],
+      "gaps_would_close": [
+        "external-awards-abo-none"
+      ]
+    },
+    {
+      "id": "abo-local-authorities-x-sbs-certified-business-list-via-vendor_name",
       "worth_materializing": "maybe",
       "score": 1,
       "key_path": [
@@ -1115,6 +1126,15 @@
       "gaps_would_close": []
     },
     {
+      "id": "doing-business-entities-x-sbs-certified-business-list-via-vendor_name",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "vendor_name"
+      ],
+      "gaps_would_close": []
+    },
+    {
       "id": "legacy-dob-job-filings-x-mappluto-via-BBL",
       "worth_materializing": "no",
       "score": 0,
@@ -1184,5 +1204,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "901b187d7b4eb0cd428910ea1a5c3c6e983e2a1456d132e1910733f50e85d419"
+  "registry_sha256": "739c8b4d9256cf7ddef7a1da8c91a302a19576a536e9c1ec04108f59cb24e2c4"
 }

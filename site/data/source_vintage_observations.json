@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-11-11T01:40:22.368Z",
-  "contract_count": 70,
+  "generated_at": "2026-11-12T12:39:57.269Z",
+  "contract_count": 71,
   "observations": [
     {
       "source_id": "abo-local-authorities",
@@ -1989,6 +1989,37 @@
       },
       "expected_cadence": "Daily verification of retained public consultation invitations",
       "expected_lag_tolerance_days": 7,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "sbs-certified-business-list",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": "2026-11-10T14:39:18.000Z",
+      "publisher_last_update_basis": "warehouse_source_summary",
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-11-12T12:39:57.269Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "sbs-certified-business-list:2026-11-12T12:39:57.269Z"
+      },
+      "expected_cadence": "Every 2 weeks (Open Data metadata, Automation: No; rowsUpdatedAt 2026-11-10T14:39:18Z at recon)",
+      "expected_lag_tolerance_days": 45,
       "current_lag": {
         "value": null,
         "unit": null,

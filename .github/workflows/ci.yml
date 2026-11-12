@@ -326,6 +326,7 @@ jobs:
           node tools/build_e_designation_digest.mjs --check
           node tools/build_later_housing_activity.mjs --check
           node tools/build_doing_business_warehouse_lookup.mjs --check
+          node tools/build_sbs_certified_business_directory.mjs --check
           node tools/build_city_record_pin_chain_lookup.mjs --check
       - name: Committed keyword search read-model freshness
         if: matrix.family == 'static-standards'
