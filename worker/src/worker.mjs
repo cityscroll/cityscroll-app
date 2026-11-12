@@ -508,6 +508,15 @@ const worker = {
       }
       if (pathname === "/following" || pathname === "/following/" || pathname === "/following/personal") return handleFollowing(request, env, ctx);
       if (pathname === "/prefs") return handlePrefs(request, env);
+      // The common-account sign-in shell and its one-time confirmation page are
+      // engine-served on the canonical site host (the email link points at
+      // cityscroll.org/account/confirm). Without this the apex request falls to
+      // the Pages mirror below and the sign-in form never appears. The session
+      // API stays on api.cityscroll.org via the dispatch further down. Inert
+      // (404) until CITYSCROLL_ACCOUNTS_ENABLED is "true".
+      if (pathname === "/account" || pathname === "/account/" || pathname === "/account/confirm") {
+        return handleAccountPage(request, env, pathname);
+      }
       return handleMirror(request);
     }
     if (pathname === "/nl") return handleNl(request, env);
