@@ -22,6 +22,8 @@ open a repair item. The existing grace period, dated gaps, and receipt-retention
 apply to days inside that set, and actual failures continue through the repair classification.
 A verification alone cannot prove that the promised dated aggregate exists.
 
+The `legal-source-watch` job re-checks the retained NYC procurement-law source sections that the legal register (`ontology/procurement_legal_register.v1.json`) cites. Once a day it runs `tools/check_procurement_legal_sources.mjs`, which reads each section through a bounded, allowlisted fetch (`raw.githubusercontent.com` only, one HEAD per aggregate as an ETag gate, then a capped Range window around each section's stored byte offset) and compares its hash against the register's `authority.source_sha256`. The comparison is pure: it never writes the register and never advances a clock. A section whose text differs opens `Procurement legal source changed: <source file>`, naming the register entries that cite it and any reviewed quote that no longer occurs; a section that could not be read opens `Procurement legal sources could not be checked` and is never reported as all-clear. A clean run closes both. The same findings ride the repair rail as the declared judgment classes `legal-source-changed` and `legal-source-unreachable`: the remedy is always a human re-reading the source and proposing a reviewed register change, never an automated edit. These are automated text-difference signals, not legal advice, and nothing they surface has been reviewed by a legal practitioner.
+
 Verification:
 
 ```bash
@@ -328,6 +330,8 @@ A failure class with no deterministic local remedy is not given a playbook that 
 | `digest-shadow-degraded` | the rehearsal built something the redlines refused, and what to do about the content is an editorial decision |
 | `action-link-degraded` | an outbound action link changed on the publisher's side, and choosing a replacement destination is an editorial decision |
 | `stats-snapshot-missing` | the daily snapshot did not publish, and the remedy is a change to the publication path in this repository |
+| `legal-source-changed` | a watched legal source text no longer matches the register, and the remedy is to re-read the source and propose a reviewed register change — never an automated edit of the register or a review status |
+| `legal-source-unreachable` | a watched legal source could not be read, so whether it changed is unknown and acting as if it were unchanged would be unsafe; there is no deterministic local remedy beyond a later scheduled observation |
 
 ### What judgment means for the operator
 

@@ -34,6 +34,7 @@ import {
   resolveGitHubAppCredential,
 } from "./github_app_identity.mjs";
 import { loadSourceContracts } from "./source_contracts.mjs";
+import { runSourceWatch } from "./check_procurement_legal_sources.mjs";
 import {
   CHECKOUT_REFRESH_HANDOFF,
   recordCheckoutRefresh,
@@ -557,6 +558,90 @@ async function runNoticeSyntheticProbe(job, context) {
   };
 }
 
+const LEGAL_SOURCE_REGISTER_PATH = join(ROOT, "ontology", "procurement_legal_register.v1.json");
+const LEGAL_SOURCE_TARGETS_PATH = join(ROOT, "ontology", "procurement_legal_source_targets.v1.json");
+
+function legalSourceChangedBody(row) {
+  const affected = row.affected_entry_ids?.length ? row.affected_entry_ids.join(", ") : "no register entry yet cites this source";
+  const broken = [...new Set((row.broken_quotes || []).map((quote) => quote.entry_id))].sort();
+  return [
+    `The watched legal source ${row.source_file} no longer matches the text the register recorded.`,
+    `Register entries citing this source: ${affected}.`,
+    broken.length
+      ? `A reviewed quote no longer occurs for: ${broken.join(", ")}. Re-read the source and propose a register change (a new record_version) through a reviewed commit.`
+      : "Every reviewed quote still occurs; re-read the section and decide whether a register change is needed.",
+    "This is an automated text-difference signal, not legal advice, and nothing here has been reviewed by a legal practitioner.",
+  ].join("\n");
+}
+
+function legalSourceUnreachableBody(unreachable) {
+  return [
+    "One or more watched legal sources could not be read, so they are NOT confirmed unchanged.",
+    ...unreachable.map((row) => `- ${row.source_file}: ${row.status}${row.reason ? ` (${row.reason})` : ""}`),
+    "A source that could not be checked is never reported as all-clear.",
+  ].join("\n");
+}
+
+/**
+ * Compare the register's retained legal source sections against the BetaNYC
+ * mirror and report what changed or could not be read. The comparison is pure:
+ * it never writes the register and never advances a clock. A changed source
+ * opens an issue naming the affected register entries and any broken quote; an
+ * unreadable one opens a "could not be checked" issue; a clean run closes both.
+ * The same findings ride the repair rail as declared judgment classes. The fetch
+ * is injected so a test never touches the network, exactly as the other monitors
+ * resolve `context.fetchImpl`.
+ */
+export async function runLegalSourceWatch(job, context) {
+  const register = JSON.parse(await readFile(LEGAL_SOURCE_REGISTER_PATH, "utf8"));
+  const targets = JSON.parse(await readFile(LEGAL_SOURCE_TARGETS_PATH, "utf8"));
+  const stateDir = join(context.stateDir, "legal-source-watch");
+  const receipt = await runSourceWatch({
+    register,
+    targets,
+    fetchImpl: context.fetchImpl || globalThis.fetch,
+    stateDir,
+    now: context.now,
+  });
+  const observed = context.now.toISOString();
+  const changed = receipt.sources.filter((row) => row.status === "changed");
+  const unreachable = receipt.sources.filter((row) => row.status === "fetch_failed" || row.status === "not_checked");
+  const result = {
+    observed_at: observed,
+    status: receipt.changes_found || receipt.could_not_check ? "degraded" : "healthy",
+    summary: receipt.summary,
+    changes_found: receipt.changes_found,
+    could_not_check: receipt.could_not_check,
+    changed_sources: changed.map((row) => ({
+      source_file: row.source_file,
+      affected_entry_ids: row.affected_entry_ids,
+      broken_quote_entry_ids: [...new Set((row.broken_quotes || []).map((quote) => quote.entry_id))].sort(),
+    })),
+    unreachable_sources: unreachable.map((row) => ({ source_file: row.source_file, status: row.status, reason: row.reason })),
+    scheduler_heartbeat: { observed_at: observed, status: "succeeded", run_id: context.runKey },
+    body: receipt.changes_found || receipt.could_not_check
+      ? `${receipt.summary.changed} changed, ${receipt.summary.fetch_failed + receipt.summary.not_checked} could not be checked, ${receipt.summary.unchanged} unchanged.`
+      : `All ${receipt.summary.unchanged} watched legal sources match the register.`,
+  };
+  const intents = [];
+  for (const row of receipt.sources) {
+    const title = `${job.issue_title_prefix} changed: ${row.source_file}`;
+    if (row.status === "changed") {
+      intents.push({ result, issue: { mode: "open", title, body: legalSourceChangedBody(row), body_contains: [`changed: ${row.source_file}`] } });
+    } else if (row.status === "unchanged") {
+      // A source that now matches the register again closes any open "changed" issue.
+      intents.push({ result, issue: { mode: "close", title, body: `Resolved: ${row.source_file} matches the register text again.` } });
+    }
+  }
+  const unreachableTitle = `${job.issue_title_prefix}s could not be checked`;
+  if (receipt.could_not_check) {
+    intents.push({ result, issue: { mode: "open", title: unreachableTitle, body: legalSourceUnreachableBody(unreachable), body_contains: ["could not be read"] } });
+  } else {
+    intents.push({ result, issue: { mode: "close", title: unreachableTitle, body: "Resolved: every watched legal source was read and compared against the register." } });
+  }
+  return { result, intents };
+}
+
 export async function runScheduledJob(job, options = {}) {
   const now = options.now || new Date();
   const stateDir = options.stateDir || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR || join(ROOT, ".external-schedule-state");
@@ -575,6 +660,7 @@ export async function runScheduledJob(job, options = {}) {
   else if (job.runner === "digest-shadow") output = await runDigestShadowJob(job, context);
   else if (job.runner === "stats-daily-snapshot") output = await runStatsDailySnapshot(job, context);
   else if (job.runner === "notice-synthetic-probe") output = await runNoticeSyntheticProbe(job, context);
+  else if (job.runner === "legal-source-watch") output = await runLegalSourceWatch(job, context);
   else throw new Error(`unknown external schedule runner: ${job.runner}`);
   if (output.intents) {
     for (const [index, intent] of output.intents.entries()) await persistScheduleResult({

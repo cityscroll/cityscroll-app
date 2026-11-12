@@ -1,0 +1,62 @@
+{
+  "schema": "cityscroll.legal_source_targets.v1",
+  "description": "Where each retained register source section lives inside the BetaNYC mirror aggregate files. A section is identified by aggregate + exact heading line (section numbers repeat across rule titles, so the heading text is part of the identity). hint_offset is a byte offset of the heading line in the aggregate as observed on hint_observed_on; the watch refreshes it in its own state after every run.",
+  "mirror": {
+    "repository": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "ref": "main",
+    "raw_base": "https://raw.githubusercontent.com/BetaNYC/nyc-charter-laws-rules/main/data/index/",
+    "section_delimiter": "\\n---\\n\\n## (retained section = heading line through the first \\n---\\n that precedes the next heading)"
+  },
+  "hint_observed_on": "2026-11-11",
+  "targets": [
+    {
+      "source_file": "admin-code-6-129.md",
+      "aggregate": "markdown/admin_code.md",
+      "heading": "## § 6-129 Participation by minority-owned and women-owned business enterprises and emerging business enterprises in city procurement.",
+      "hint_offset": 22037678,
+      "expected_bytes": 73230
+    },
+    {
+      "source_file": "charter-311.md",
+      "aggregate": "markdown/charter.md",
+      "heading": "## Section 311. Procurement policy board.",
+      "hint_offset": 33465,
+      "expected_bytes": 9704
+    },
+    {
+      "source_file": "ppb-1-01.md",
+      "aggregate": "markdown/rules.md",
+      "heading": "## § 1-01 Use of Language in These Rules.",
+      "hint_offset": 10068087,
+      "expected_bytes": 31644
+    },
+    {
+      "source_file": "ppb-1-02.md",
+      "aggregate": "markdown/rules.md",
+      "heading": "## § 1-02 Applicability of PPB Rules.",
+      "hint_offset": 10099732,
+      "expected_bytes": 8614
+    },
+    {
+      "source_file": "ppb-3-04.md",
+      "aggregate": "markdown/rules.md",
+      "heading": "## § 3-04 Negotiated Acquisition.",
+      "hint_offset": 10210129,
+      "expected_bytes": 9533
+    },
+    {
+      "source_file": "ppb-3-08.md",
+      "aggregate": "markdown/rules.md",
+      "heading": "## § 3-08 Small Purchases.",
+      "hint_offset": 10231279,
+      "expected_bytes": 7060
+    },
+    {
+      "source_file": "ppb-3-16.md",
+      "aggregate": "markdown/rules.md",
+      "heading": "## § 3-16 HHS Accelerator.",
+      "hint_offset": 10286158,
+      "expected_bytes": 31108
+    }
+  ]
+}
