@@ -7,7 +7,7 @@
     "raw_base": "https://raw.githubusercontent.com/BetaNYC/nyc-charter-laws-rules/main/data/index/",
     "section_delimiter": "\\n---\\n\\n## (retained section = heading line through the first \\n---\\n that precedes the next heading)"
   },
-  "hint_observed_on": "2026-11-11",
+  "hint_observed_on": "2026-11-12",
   "targets": [
     {
       "source_file": "admin-code-6-129.md",
@@ -38,11 +38,32 @@
       "expected_bytes": 8614
     },
     {
+      "source_file": "ppb-3-02.md",
+      "aggregate": "markdown/rules.md",
+      "heading": "## § 3-02 Competitive Sealed Bidding.",
+      "hint_offset": 10135040,
+      "expected_bytes": 38808
+    },
+    {
+      "source_file": "ppb-3-03.md",
+      "aggregate": "markdown/rules.md",
+      "heading": "## § 3-03 Competitive Sealed Proposals.",
+      "hint_offset": 10173849,
+      "expected_bytes": 36279
+    },
+    {
       "source_file": "ppb-3-04.md",
       "aggregate": "markdown/rules.md",
       "heading": "## § 3-04 Negotiated Acquisition.",
       "hint_offset": 10210129,
       "expected_bytes": 9533
+    },
+    {
+      "source_file": "ppb-3-07.md",
+      "aggregate": "markdown/rules.md",
+      "heading": "## § 3-07 Accelerated Procurement.",
+      "hint_offset": 10226205,
+      "expected_bytes": 5073
     },
     {
       "source_file": "ppb-3-08.md",
