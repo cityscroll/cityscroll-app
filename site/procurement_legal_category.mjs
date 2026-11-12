@@ -12,13 +12,13 @@
 
 import { PROCUREMENT_LEGAL_PROJECTION } from "./procurement_legal_projection.mjs";
 
-const P = PROCUREMENT_LEGAL_PROJECTION;
+const PROJECTION = PROCUREMENT_LEGAL_PROJECTION;
 
 export const LEGAL_PROCUREMENT_CATEGORIES = Object.freeze([
   "goods", "standard_services", "professional_services", "construction", "human_services",
 ]);
 const POLICY_BAND_CATEGORIES = Object.freeze(Object.keys(
-  Object.values(P.policy.families)[0]?.bands || {},
+  Object.values(PROJECTION.policy.families)[0]?.bands || {},
 ));
 
 export const LEGAL_CATEGORY_STATES = Object.freeze({
@@ -44,7 +44,7 @@ export function isoDate(value) {
 
 /** Citation summary for a register rule id, or null when the projection does not carry it. */
 export function legalRuleCitation(ruleId) {
-  const rule = P.rules[ruleId];
+  const rule = PROJECTION.rules[ruleId];
   if (!rule) return null;
   return Object.freeze({
     rule_id: ruleId,
@@ -67,7 +67,7 @@ export function resolveLegalCategory(record = {}) {
       state: LEGAL_CATEGORY_STATES.RESOLVED,
       source: "procurement_category",
       candidates: Object.freeze([explicit]),
-      band_categories: Object.freeze([P.band_category_by_legal_category[explicit]]),
+      band_categories: Object.freeze([PROJECTION.band_category_by_legal_category[explicit]]),
       label: null,
       mapping_rule: null,
     });
@@ -89,7 +89,7 @@ export function resolveLegalCategory(record = {}) {
       band_categories: Object.freeze([]), label: null, mapping_rule: null,
     });
   }
-  const mapping = P.category_labels[label];
+  const mapping = PROJECTION.category_labels[label];
   if (!mapping) {
     return Object.freeze({
       state: LEGAL_CATEGORY_STATES.UNMAPPED, source: "category_description", candidates: Object.freeze([]),
@@ -100,7 +100,7 @@ export function resolveLegalCategory(record = {}) {
     state: LEGAL_CATEGORY_STATES.RESOLVED,
     source: "category_description",
     candidates: Object.freeze([...mapping.candidates]),
-    band_categories: Object.freeze([...new Set(mapping.candidates.map((c) => P.band_category_by_legal_category[c]))]),
+    band_categories: Object.freeze([...new Set(mapping.candidates.map((c) => PROJECTION.band_category_by_legal_category[c]))]),
     label,
     mapping_rule: legalRuleCitation(mapping.rule_id),
   });
@@ -122,7 +122,7 @@ export function participationRequirement({ candidates = [], awardee_legal_form =
   if (!date) return unknown("occurred_on_missing");
   const keys = candidates.length ? candidates : [null];
   const results = keys.map((category) => {
-    const table = P.participation.table[`${category ?? "_"}|${form ?? "_"}`];
+    const table = PROJECTION.participation.table[`${category ?? "_"}|${form ?? "_"}`];
     return table ? intervalOn(table, date) : null;
   });
   if (results.some((r) => !r)) return unknown("no_projection_row");
@@ -145,7 +145,7 @@ export function participationRequirement({ candidates = [], awardee_legal_form =
 export function mwbeSmallPurchaseCeilingOn(occurredOn) {
   const date = isoDate(occurredOn);
   if (!date) return null;
-  const interval = intervalOn(P.mwbe_small_purchase_ceiling, date);
+  const interval = intervalOn(PROJECTION.mwbe_small_purchase_ceiling, date);
   if (!interval || interval.max_usd == null) return null;
   return Object.freeze({ max_usd: interval.max_usd, rule_ids: interval.rule_ids, review_status: interval.review_status });
 }
@@ -156,10 +156,10 @@ export function mwbeSmallPurchaseCeilingOn(occurredOn) {
  * otherwise "unverified" and the reader copy must not assert a rule.
  */
 export function responseFloorRule(kind, occurredOn) {
-  const floor = P.floors[kind];
+  const floor = PROJECTION.floors[kind];
   if (!floor) return null;
   const date = isoDate(occurredOn);
-  const rule = P.rules[floor.rule_id];
+  const rule = PROJECTION.rules[floor.rule_id];
   const inForce = Boolean(date) && date >= floor.in_force_from && (floor.in_force_to === null || date < floor.in_force_to);
   const reviewed = rule?.review_status === "source_checked" || rule?.review_status === "practitioner_reviewed";
   return Object.freeze({
@@ -175,4 +175,4 @@ export function responseFloorRule(kind, occurredOn) {
   });
 }
 
-export const PROCUREMENT_LEGAL_PROJECTION_VERSION = P.generated_from;
+export const PROCUREMENT_LEGAL_PROJECTION_VERSION = PROJECTION.generated_from;
