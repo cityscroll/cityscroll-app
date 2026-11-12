@@ -20,18 +20,25 @@ const manifest = JSON.parse(manifestBytes.toString("utf8"));
 
 function pageFor(source, { drop = null, add = null, notes = {}, extraYear = null } = {}) {
   const workbooks = manifest.sources.filter((s) => s.source === source);
-  const items = workbooks.filter((w) => w.url !== drop).map((w) => `<li><a href="${w.url.replace("https://www.nyc.gov", "")}">${w.label}</a> ${notes[w.url] ?? "(updated 6/30/2026)"}</li>`);
+  const items = workbooks.filter((w) => w.url !== drop).map((w) => {
+    const note = Object.hasOwn(notes, w.url)
+      ? notes[w.url]
+      : (w.index_note ?? "(updated 6/30/2026)");
+    return `<li><a href="${w.url.replace("https://www.nyc.gov", "")}">${w.label}</a> ${note}</li>`;
+  });
   if (add) items.push(`<li><a href="${add}">Added</a> (Posted on 11/06/2026)</li>`);
   if (extraYear) items.push(`<li><a href="${extraYear}">Next year</a> (updated 6/30/2027)</li>`);
   return `<html><body><ul>${items.join("\n")}</ul></body></html>`;
 }
 const okPages = () => ({ mocs_ll1: { ok: true, html: pageFor("mocs_ll1") }, mocs_ll63: { ok: true, html: pageFor("mocs_ll63") } });
 
-test("(viii) unchanged link set is unchanged; notes not yet recorded are counted, not compared", () => {
+test("(viii) unchanged link set is unchanged when recorded notes match the page", () => {
   const r = comparePlanIndexes(manifest, okPages());
   assert.equal(r.summary, "unchanged");
-  assert.equal(r.indexes[0].notes_not_recorded, 32);
-  assert.equal(r.indexes[1].notes_not_recorded, 69);
+  assert.equal(r.indexes[0].notes_not_recorded, 0);
+  assert.equal(r.indexes[1].notes_not_recorded, 0);
+  assert.equal(r.indexes[0].recorded_workbooks, 32);
+  assert.equal(r.indexes[1].recorded_workbooks, 101);
   assert.equal(exitCodeFor(r), EXIT.clean);
 });
 
@@ -40,35 +47,44 @@ test("(viii) removed or added link, changed note and a new fiscal-year folder ar
   const removed = comparePlanIndexes(manifest, { ...okPages(), mocs_ll1: { ok: true, html: pageFor("mocs_ll1", { drop: ll1[3].url }) } });
   assert.equal(removed.summary, "changed");
   assert.deepEqual(removed.indexes[0].removed.map((x) => x.url), [ll1[3].url]);
-  const addedUrl = "/assets/mocs/downloads/Resources/ll63/2027fy/ACS_FY27LL63_NP_ADFY.xlsx";
+  const addedUrl = "/assets/mocs/downloads/Resources/ll63/2027fy/ZZZ_FY27LL63_NP_ADFY.xlsx";
   const added = comparePlanIndexes(manifest, { ...okPages(), mocs_ll63: { ok: true, html: pageFor("mocs_ll63", { add: addedUrl }) } });
   assert.deepEqual(added.indexes[1].added.map((x) => [x.url, x.note]), [[`https://www.nyc.gov${addedUrl}`, "(Posted on 11/06/2026)"]]);
+  const uniformNotes = Object.fromEntries(ll1.map((s) => [s.url, "(updated 6/30/2026)"]));
   const withNotes = structuredClone(manifest);
   for (const s of withNotes.sources) if (s.source === "mocs_ll1") s.index_note = "(updated 6/30/2026)";
-  const noteChanged = comparePlanIndexes(withNotes, { ...okPages(), mocs_ll1: { ok: true, html: pageFor("mocs_ll1", { notes: { [ll1[0].url]: "(updated 12/01/2026)" } }) } });
+  const noteChanged = comparePlanIndexes(withNotes, {
+    ...okPages(),
+    mocs_ll1: { ok: true, html: pageFor("mocs_ll1", { notes: { ...uniformNotes, [ll1[0].url]: "(updated 12/01/2026)" } }) },
+  });
   assert.equal(noteChanged.summary, "changed");
   assert.deepEqual(noteChanged.indexes[0].note_changes, [{ url: ll1[0].url, recorded: "(updated 6/30/2026)", observed: "(updated 12/01/2026)" }]);
   assert.equal(noteChanged.indexes[0].notes_not_recorded, 0);
-  assert.equal(comparePlanIndexes(withNotes, okPages()).summary, "unchanged");
+  assert.equal(comparePlanIndexes(withNotes, {
+    ...okPages(),
+    mocs_ll1: { ok: true, html: pageFor("mocs_ll1", { notes: uniformNotes }) },
+  }).summary, "unchanged");
   const nextYear = comparePlanIndexes(manifest, { ...okPages(), mocs_ll1: { ok: true, html: pageFor("mocs_ll1", { extraYear: "/assets/mocs/downloads/Resources/mwbe-LL1/fy28/ACS_LL1_FY28.xlsx" }) } });
   assert.deepEqual(nextYear.indexes[0].new_fiscal_years, [2028]);
   assert.equal(nextYear.indexes[0].status, "changed");
   assert.equal(fiscalYearOfUrl("https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2028fy/X.xlsx"), 2028);
 });
 
-test("(viii) the retained 2026-11-11 pages: Local Law 1 unchanged, Local Law 63 has 32 workbooks the collection lacks", () => {
+test("(viii) the retained 2026-11-11 pages match the refreshed FY2027 collection", () => {
   const ll1 = readFileSync(join(FIXTURES, "index-pages/m-wbe-ll1.2026-11-11.html"), "utf8");
   const ll63 = readFileSync(join(FIXTURES, "index-pages/standard-prof-services-ll63.2026-11-11.html"), "utf8");
   const r = comparePlanIndexes(manifest, { mocs_ll1: { ok: true, html: ll1 }, mocs_ll63: { ok: true, html: ll63 } });
   assert.equal(r.indexes[0].status, "unchanged");
-  assert.equal(r.indexes[1].status, "changed");
-  assert.equal(r.indexes[1].added.length, 32);
+  assert.equal(r.indexes[1].status, "unchanged");
+  assert.equal(r.indexes[1].added.length, 0);
   assert.equal(r.indexes[1].removed.length, 0);
-  assert.ok(r.indexes[1].added.some((a) => a.url.endsWith("/DPRE_LL63_FY27_New.xlsx") && a.note === "(Posted on 08/05/2026)"));
-  assert.equal(r.indexes[1].added.filter((a) => /_ADFY\.xlsx$/.test(a.url)).length, 30);
+  assert.equal(r.indexes[1].recorded_workbooks, 101);
+  assert.equal(r.indexes[1].observed_workbooks, 101);
   const links = extractIndexLinks(ll1, "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page");
   assert.equal(links.find((l) => l.url.endsWith("/HPD_LL1_FY27.xlsx")).note, "(updated 7/20/2026)");
-  assert.equal(exitCodeFor(r), EXIT.changed);
+  assert.ok(extractIndexLinks(ll63, "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page")
+    .some((a) => a.url.endsWith("/DPRE_LL63_FY27_New.xlsx") && a.note === "(Posted on 08/05/2026)"));
+  assert.equal(exitCodeFor(r), EXIT.clean);
 });
 
 function stubFetch(routes) {
@@ -130,9 +146,11 @@ test("(viii) CLI: exit 0 clean, 3 changed, 2 usage; reads the manifest and makes
     assert.equal(await watchMain(["--manifest", path, "--out", join(dir, "r.json")], { fetchImpl: clean.impl, stdout: sink }), 0);
     assert.equal(clean.calls.length, 2);
     assert.equal(JSON.parse(readFileSync(join(dir, "r.json"), "utf8")).summary, "unchanged");
-    const real = readFileSync(join(FIXTURES, "index-pages/standard-prof-services-ll63.2026-11-11.html"), "utf8");
-    const changed = stubFetch({ [LL1_INDEX]: html(pageFor("mocs_ll1")), [LL63_INDEX]: html(real) });
-    assert.equal(await watchMain(["--manifest", path], { fetchImpl: changed.impl, stdout: sink }), 3);
+    const dropped = stubFetch({
+      [LL1_INDEX]: html(pageFor("mocs_ll1")),
+      [LL63_INDEX]: html(pageFor("mocs_ll63", { drop: manifest.sources.find((s) => s.source === "mocs_ll63").url })),
+    });
+    assert.equal(await watchMain(["--manifest", path], { fetchImpl: dropped.impl, stdout: sink }), 3);
     assert.equal(await watchMain(["--bogus"], { stdout: sink }), 2);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
