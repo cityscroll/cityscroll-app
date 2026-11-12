@@ -35,8 +35,13 @@ function pageResponse(html, scriptNonce) {
         "form-action 'none'",
         "img-src 'self' data:",
         "style-src 'unsafe-inline'",
-        `script-src 'nonce-${scriptNonce}'`,
-        "connect-src https://api.cityscroll.org",
+        // Turnstile loads its script and renders its challenge in an iframe from
+        // challenges.cloudflare.com, and the widget posts back to the same origin.
+        // These are exactly the origins the civic signup surface already allows
+        // (see worker/src/following.mjs); no new third-party origin is introduced.
+        `script-src 'nonce-${scriptNonce}' https://challenges.cloudflare.com`,
+        "connect-src https://api.cityscroll.org https://challenges.cloudflare.com",
+        "frame-src https://challenges.cloudflare.com",
       ].join("; "),
     },
   });
@@ -68,15 +73,55 @@ function signInShell(scriptNonce) {
 </div>
 <script nonce="${scriptNonce}">
   (function(){
-    var btn=document.getElementById('continue'),status=document.getElementById('status'),email=document.getElementById('email');
+    // Mirrors the civic signup bot-check (site/signup_turnstile.mjs): one fresh
+    // proof per request, from the same managed Turnstile widget, with the same
+    // "signup" action the account login endpoint verifies server-side. The
+    // Worker still validates every token, so this never weakens the check.
+    var SITEKEY='0x4AAAAAADtj-Mskk_RnVd5K';
+    var btn=document.getElementById('continue'),status=document.getElementById('status'),
+        email=document.getElementById('email'),holder=document.getElementById('turnstile');
+    var scriptPromise;
+    function loadTurnstile(){
+      if(window.turnstile)return Promise.resolve(window.turnstile);
+      if(!scriptPromise){
+        scriptPromise=new Promise(function(resolve,reject){
+          var s=document.createElement('script');
+          s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+          s.async=true;
+          s.onload=function(){window.turnstile?resolve(window.turnstile):reject(new Error('bot-check-unavailable'));};
+          s.onerror=function(){reject(new Error('bot-check-unavailable'));};
+          document.head.appendChild(s);
+        }).catch(function(e){scriptPromise=null;throw e;});
+      }
+      return scriptPromise;
+    }
+    function freshToken(){
+      return loadTurnstile().then(function(turnstile){
+        return new Promise(function(resolve,reject){
+          var widget,finished=false;
+          var timer=setTimeout(function(){finish(new Error('bot-check-timeout'));},120000);
+          function finish(r){if(finished)return;finished=true;clearTimeout(timer);if(widget!=null)turnstile.remove(widget);if(r instanceof Error)reject(r);else resolve(r);}
+          try{
+            widget=turnstile.render(holder,{sitekey:SITEKEY,action:'signup',appearance:'interaction-only',execution:'execute',
+              callback:function(t){finish(t);},
+              'error-callback':function(){finish(new Error('bot-check'));},
+              'expired-callback':function(){finish(new Error('bot-check-expired'));},
+              'timeout-callback':function(){finish(new Error('bot-check-timeout'));}});
+            turnstile.execute(widget);
+          }catch(e){finish(new Error('bot-check-unavailable'));}
+        });
+      });
+    }
     btn.addEventListener('click',function(){
       var value=(email.value||'').trim();
       if(!value||value.indexOf('@')<0){status.textContent='Enter a complete email address.';return;}
-      btn.disabled=true;status.textContent='Sending your sign-in link…';
-      fetch('${AUTH_BASE}/login',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({email:value,operationId:(crypto.randomUUID?crypto.randomUUID():String(Date.now())),turnstileToken:(window.__cs_turnstile||'')})})
-        .then(function(){status.textContent='If that address can sign in, we just sent a link. Open it in this browser to continue.';})
-        .catch(function(){btn.disabled=false;status.textContent='Could not send a link right now. Please try again shortly.';});
+      btn.disabled=true;status.textContent='Checking your browser…';
+      freshToken().then(function(token){
+        status.textContent='Sending your sign-in link…';
+        return fetch('${AUTH_BASE}/login',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({email:value,operationId:(crypto.randomUUID?crypto.randomUUID():String(Date.now())),turnstileToken:token})});
+      }).then(function(){status.textContent='If that address can sign in, we just sent a link. Open it in this browser to continue.';})
+      .catch(function(){btn.disabled=false;status.textContent='Could not verify your browser or send a link right now. Please try again shortly.';});
     });
   })();
 </script>
