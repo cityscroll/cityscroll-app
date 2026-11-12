@@ -1,0 +1,165 @@
+{
+ "source": "https://data.ny.gov/api/views/n9v6-gdp6.json",
+ "fetched": "2026-11-11",
+ "id": "n9v6-gdp6",
+ "name": "Active Corporations:  Beginning 1800",
+ "attribution": "New York State Department of State",
+ "attributionLink": "http://www.dos.ny.gov/corps/bus_entity_search.html",
+ "license": null,
+ "description": "The Department of State keeps a record of every filing for every incorporated business in the state of New York. This dataset contains information on all active corporations as of the last business day of the specified month and year.",
+ "rowsUpdatedAt": 1794406802,
+ "rowsUpdatedAt_iso": "2026-11-11T14:20:02+00:00",
+ "row_count_query": 4315387,
+ "columns": [
+  {
+   "fieldName": "dos_id",
+   "dataTypeName": "text",
+   "name": "DOS ID"
+  },
+  {
+   "fieldName": "current_entity_name",
+   "dataTypeName": "text",
+   "name": "Current Entity Name"
+  },
+  {
+   "fieldName": "initial_dos_filing_date",
+   "dataTypeName": "calendar_date",
+   "name": "Initial DOS Filing Date"
+  },
+  {
+   "fieldName": "county",
+   "dataTypeName": "text",
+   "name": "County"
+  },
+  {
+   "fieldName": "jurisdiction",
+   "dataTypeName": "text",
+   "name": "Jurisdiction"
+  },
+  {
+   "fieldName": "entity_type",
+   "dataTypeName": "text",
+   "name": "Entity Type"
+  },
+  {
+   "fieldName": "dos_process_name",
+   "dataTypeName": "text",
+   "name": "DOS Process Name"
+  },
+  {
+   "fieldName": "dos_process_address_1",
+   "dataTypeName": "text",
+   "name": "DOS Process Address 1"
+  },
+  {
+   "fieldName": "dos_process_address_2",
+   "dataTypeName": "text",
+   "name": "DOS Process Address 2"
+  },
+  {
+   "fieldName": "dos_process_city",
+   "dataTypeName": "text",
+   "name": "DOS Process City"
+  },
+  {
+   "fieldName": "dos_process_state",
+   "dataTypeName": "text",
+   "name": "DOS Process State"
+  },
+  {
+   "fieldName": "dos_process_zip",
+   "dataTypeName": "text",
+   "name": "DOS Process Zip"
+  },
+  {
+   "fieldName": "chairman_name",
+   "dataTypeName": "text",
+   "name": "CEO Name"
+  },
+  {
+   "fieldName": "chairman_address_1",
+   "dataTypeName": "text",
+   "name": "CEO Address 1"
+  },
+  {
+   "fieldName": "chairman_address_2",
+   "dataTypeName": "text",
+   "name": "CEO Address 2"
+  },
+  {
+   "fieldName": "chairman_city",
+   "dataTypeName": "text",
+   "name": "CEO City"
+  },
+  {
+   "fieldName": "chairman_state",
+   "dataTypeName": "text",
+   "name": "CEO State"
+  },
+  {
+   "fieldName": "chairman_zip",
+   "dataTypeName": "text",
+   "name": "CEO Zip"
+  },
+  {
+   "fieldName": "registered_agent_name",
+   "dataTypeName": "text",
+   "name": "Registered Agent Name"
+  },
+  {
+   "fieldName": "registered_agent_address_1",
+   "dataTypeName": "text",
+   "name": "Registered Agent Address 1"
+  },
+  {
+   "fieldName": "registered_agent_address_2",
+   "dataTypeName": "text",
+   "name": "Registered Agent Address 2"
+  },
+  {
+   "fieldName": "registered_agent_city",
+   "dataTypeName": "text",
+   "name": "Registered Agent City"
+  },
+  {
+   "fieldName": "registered_agent_state",
+   "dataTypeName": "text",
+   "name": "Registered Agent State"
+  },
+  {
+   "fieldName": "registered_agent_zip",
+   "dataTypeName": "text",
+   "name": "Registered Agent Zip"
+  },
+  {
+   "fieldName": "location_name",
+   "dataTypeName": "text",
+   "name": "Location Name"
+  },
+  {
+   "fieldName": "location_address_1",
+   "dataTypeName": "text",
+   "name": "Location Address 1"
+  },
+  {
+   "fieldName": "location_address_2",
+   "dataTypeName": "text",
+   "name": "Location Address 2"
+  },
+  {
+   "fieldName": "location_city",
+   "dataTypeName": "text",
+   "name": "Location City"
+  },
+  {
+   "fieldName": "location_state",
+   "dataTypeName": "text",
+   "name": "Location State"
+  },
+  {
+   "fieldName": "location_zip",
+   "dataTypeName": "text",
+   "name": "Location Zip"
+  }
+ ]
+}

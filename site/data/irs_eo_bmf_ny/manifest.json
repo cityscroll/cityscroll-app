@@ -1,0 +1,1046 @@
+{
+  "schema": "cityscroll.register_shards_manifest.v1",
+  "register": "irs_eo_bmf_ny",
+  "collected_at": "2026-11-12T12:00:00.000Z",
+  "source_url": "https://www.irs.gov/pub/irs-soi/eo_ny.csv",
+  "row_count": 125622,
+  "source_row_count": 125622,
+  "source_receipt": {
+    "bytes": 21920529,
+    "sha256": "59cd4d7ef5966fafdf655b4b6f566f3321a032fd0692b891e9f8c61ebb56f6f8",
+    "row_count": 125622
+  },
+  "bucket_count": 64,
+  "shards": [
+    {
+      "path": "ein-00.json",
+      "kind": "ein",
+      "bucket": "00",
+      "rows": 1910,
+      "bytes": 656837,
+      "sha256": "c690409333fcee58d540e2bbe2972f549f717bbbbc4adc58cf5dd7ceff49733a"
+    },
+    {
+      "path": "ein-01.json",
+      "kind": "ein",
+      "bucket": "01",
+      "rows": 2009,
+      "bytes": 690390,
+      "sha256": "0abdc3159f837aa4393ad85354b3c82b302b6185df87088b5d67998fc3d23b8f"
+    },
+    {
+      "path": "ein-02.json",
+      "kind": "ein",
+      "bucket": "02",
+      "rows": 1983,
+      "bytes": 678638,
+      "sha256": "8bf12a055e055161bec8f2ba9d0ea29d51c80a0c4859bbadc62c72b697af1419"
+    },
+    {
+      "path": "ein-03.json",
+      "kind": "ein",
+      "bucket": "03",
+      "rows": 1948,
+      "bytes": 665521,
+      "sha256": "675551d871d5bb01d03d154f46f81b3e806156bf584f068d8dece6b52cd76a4a"
+    },
+    {
+      "path": "ein-04.json",
+      "kind": "ein",
+      "bucket": "04",
+      "rows": 1979,
+      "bytes": 676735,
+      "sha256": "132eb8f4b4c84fd08a95c371fe4c36a762d880db062b92a409696e29c73fbb6f"
+    },
+    {
+      "path": "ein-05.json",
+      "kind": "ein",
+      "bucket": "05",
+      "rows": 1933,
+      "bytes": 665741,
+      "sha256": "03e85482cea0b3368d4610373b83093854880b725c8b08aa224b7c43db88388c"
+    },
+    {
+      "path": "ein-06.json",
+      "kind": "ein",
+      "bucket": "06",
+      "rows": 2017,
+      "bytes": 691445,
+      "sha256": "7c04155910be07c3d0e0bb7232ffdb6d85a8ba9da29234bde8a82f499eea7e87"
+    },
+    {
+      "path": "ein-07.json",
+      "kind": "ein",
+      "bucket": "07",
+      "rows": 1951,
+      "bytes": 670354,
+      "sha256": "6a26f347095118e87541d2ac90ea9ab46c300e3c3a565f7972930afd6641a781"
+    },
+    {
+      "path": "ein-08.json",
+      "kind": "ein",
+      "bucket": "08",
+      "rows": 1943,
+      "bytes": 666444,
+      "sha256": "3aa106c5c657b345d9588048d6e32856513c12238f3f58d0c11cbe3c785167da"
+    },
+    {
+      "path": "ein-09.json",
+      "kind": "ein",
+      "bucket": "09",
+      "rows": 1955,
+      "bytes": 670318,
+      "sha256": "f494efbd874ee1e12e7c856d2069df1bf130cb2d808a1355ae9a83ee7c6e1785"
+    },
+    {
+      "path": "ein-0a.json",
+      "kind": "ein",
+      "bucket": "0a",
+      "rows": 1970,
+      "bytes": 678481,
+      "sha256": "7d93ab24e89baec65f4dfdd020f5d5e0095285b49791f64880eadc731058fba8"
+    },
+    {
+      "path": "ein-0b.json",
+      "kind": "ein",
+      "bucket": "0b",
+      "rows": 1927,
+      "bytes": 659418,
+      "sha256": "d34f0e33e2950535e1c65d539d661c5dae2b2835b25b1674261aaec023fa28dd"
+    },
+    {
+      "path": "ein-0c.json",
+      "kind": "ein",
+      "bucket": "0c",
+      "rows": 2005,
+      "bytes": 689266,
+      "sha256": "5ca85a57fb184d5c68d55bdc484efb95669803f37aca29d8e4f5616b499cdf21"
+    },
+    {
+      "path": "ein-0d.json",
+      "kind": "ein",
+      "bucket": "0d",
+      "rows": 1917,
+      "bytes": 655179,
+      "sha256": "64b80415b66eec44349c5a5189512bac8b6953ec4d09cdbe93dd905ffb312823"
+    },
+    {
+      "path": "ein-0e.json",
+      "kind": "ein",
+      "bucket": "0e",
+      "rows": 1950,
+      "bytes": 667310,
+      "sha256": "0768ebc797eb91fbec206aad0fcab04ac69de636c2187e2cc44f88ffff66a27f"
+    },
+    {
+      "path": "ein-0f.json",
+      "kind": "ein",
+      "bucket": "0f",
+      "rows": 1884,
+      "bytes": 647396,
+      "sha256": "1129131d60132cbde507b816489192b4cf1128d9feaae8fedb919b760a0b9b45"
+    },
+    {
+      "path": "ein-10.json",
+      "kind": "ein",
+      "bucket": "10",
+      "rows": 2005,
+      "bytes": 687695,
+      "sha256": "a5f4b79a34fb2a52ef1b236c1c0b3779fd9aab9980699b6673cb9d7677ae3280"
+    },
+    {
+      "path": "ein-11.json",
+      "kind": "ein",
+      "bucket": "11",
+      "rows": 2035,
+      "bytes": 699452,
+      "sha256": "dfe3e4213cdc584e01933eeb462412af74fb35dd539f38058a4aa4ec1c27d0f6"
+    },
+    {
+      "path": "ein-12.json",
+      "kind": "ein",
+      "bucket": "12",
+      "rows": 1997,
+      "bytes": 684805,
+      "sha256": "a1f638d9c2d3db16f6e00635e75ee49ca83ec60ce0878672645e6a81beb02554"
+    },
+    {
+      "path": "ein-13.json",
+      "kind": "ein",
+      "bucket": "13",
+      "rows": 1948,
+      "bytes": 668807,
+      "sha256": "10db11c44f5d555375c1a10b15534d2f4b294866d1349be5fb208fbf3b098586"
+    },
+    {
+      "path": "ein-14.json",
+      "kind": "ein",
+      "bucket": "14",
+      "rows": 1956,
+      "bytes": 671199,
+      "sha256": "b40450ca34319bcd89acb3902786f8374086fb2692259387d9f676d2e7b0c0bc"
+    },
+    {
+      "path": "ein-15.json",
+      "kind": "ein",
+      "bucket": "15",
+      "rows": 1904,
+      "bytes": 652312,
+      "sha256": "3bbd802a72252dd3f132abc4a5642d160d33eff8d8eee90c3af8cf8978bd9f8a"
+    },
+    {
+      "path": "ein-16.json",
+      "kind": "ein",
+      "bucket": "16",
+      "rows": 2029,
+      "bytes": 695883,
+      "sha256": "9dd4b390906f4d26123770e4ac638cc626af74fc29586d03b52d69316bad8226"
+    },
+    {
+      "path": "ein-17.json",
+      "kind": "ein",
+      "bucket": "17",
+      "rows": 2021,
+      "bytes": 693357,
+      "sha256": "114c515bcc91445d9f52dc1f2f965d44c2aebc438ba499d5c06b229eedca2140"
+    },
+    {
+      "path": "ein-18.json",
+      "kind": "ein",
+      "bucket": "18",
+      "rows": 1924,
+      "bytes": 660889,
+      "sha256": "a0d86e3bdb213f397d87dd1b63913749213e0477dde47ffaeba02a9a48e3a1c5"
+    },
+    {
+      "path": "ein-19.json",
+      "kind": "ein",
+      "bucket": "19",
+      "rows": 1862,
+      "bytes": 638331,
+      "sha256": "b0943987006503f91fa150874d40ede5436cb76218e8d716e42dff637e0a9a29"
+    },
+    {
+      "path": "ein-1a.json",
+      "kind": "ein",
+      "bucket": "1a",
+      "rows": 1989,
+      "bytes": 683419,
+      "sha256": "af887d69166afcdedd5a339bfae9da6d4be77a81dc0c7affe157719f175120ee"
+    },
+    {
+      "path": "ein-1b.json",
+      "kind": "ein",
+      "bucket": "1b",
+      "rows": 1977,
+      "bytes": 679695,
+      "sha256": "205b73bed16f0d767908cc4e2b8e3d56f30284ac268133e0ae094cd87bec7c94"
+    },
+    {
+      "path": "ein-1c.json",
+      "kind": "ein",
+      "bucket": "1c",
+      "rows": 1932,
+      "bytes": 662480,
+      "sha256": "3ccd3d792264b21bb5bafaf5485c7d742ccb912fb4ca94ff87c7d632aefd9cf5"
+    },
+    {
+      "path": "ein-1d.json",
+      "kind": "ein",
+      "bucket": "1d",
+      "rows": 1983,
+      "bytes": 682013,
+      "sha256": "ee17244cd04b4779a3d5a48e914c0cd40845972c784cae55280c3ef9edb392b0"
+    },
+    {
+      "path": "ein-1e.json",
+      "kind": "ein",
+      "bucket": "1e",
+      "rows": 1957,
+      "bytes": 668432,
+      "sha256": "69a653b93b04a7e0a1f0185e9fd5525fb4801232a8d68c9169ac991d25ee8f85"
+    },
+    {
+      "path": "ein-1f.json",
+      "kind": "ein",
+      "bucket": "1f",
+      "rows": 1946,
+      "bytes": 668276,
+      "sha256": "7e1471e4eeab51e944faadd1a459bb4a944c8b50ae9e6a73b535062fd00faa70"
+    },
+    {
+      "path": "ein-20.json",
+      "kind": "ein",
+      "bucket": "20",
+      "rows": 1974,
+      "bytes": 675691,
+      "sha256": "cb91e0258b2a80f18512544b2e67ef1fb9cdbe28cd90e5260bdfbe33123b1fd4"
+    },
+    {
+      "path": "ein-21.json",
+      "kind": "ein",
+      "bucket": "21",
+      "rows": 1946,
+      "bytes": 669521,
+      "sha256": "778e2d3cab7c81c05d02b0318a100bb965745288459f0b7d305bf834ae783cec"
+    },
+    {
+      "path": "ein-22.json",
+      "kind": "ein",
+      "bucket": "22",
+      "rows": 2044,
+      "bytes": 700520,
+      "sha256": "668109e13b5389267f06c0c48d95a418fc2952bccec599e8a2ca13aaa0ca919b"
+    },
+    {
+      "path": "ein-23.json",
+      "kind": "ein",
+      "bucket": "23",
+      "rows": 1972,
+      "bytes": 674360,
+      "sha256": "03ac34469a6b7ffcd8f7277d44bf4faaff32bc284474093f48eed00ca7ab6273"
+    },
+    {
+      "path": "ein-24.json",
+      "kind": "ein",
+      "bucket": "24",
+      "rows": 2009,
+      "bytes": 688027,
+      "sha256": "69c09f0b0142de6e50a0ffda0bf9223812fb6eac2d08bc76022891c210ec5a67"
+    },
+    {
+      "path": "ein-25.json",
+      "kind": "ein",
+      "bucket": "25",
+      "rows": 1978,
+      "bytes": 676844,
+      "sha256": "84de3835b5522a2243e3f78a6afcd8f8073a9fe6b180505d046b31ab9795c682"
+    },
+    {
+      "path": "ein-26.json",
+      "kind": "ein",
+      "bucket": "26",
+      "rows": 1963,
+      "bytes": 671898,
+      "sha256": "a06b3f0af3c53d0be452d7068d756cd2df8261549329586c2ca6f540f5bd9e4a"
+    },
+    {
+      "path": "ein-27.json",
+      "kind": "ein",
+      "bucket": "27",
+      "rows": 1985,
+      "bytes": 682336,
+      "sha256": "c198b65e89df00e934111f330c0a17122dd58652acd78b9f469ecb86647809df"
+    },
+    {
+      "path": "ein-28.json",
+      "kind": "ein",
+      "bucket": "28",
+      "rows": 1927,
+      "bytes": 660864,
+      "sha256": "119b8cbbea380b0ac9717afdac421e5500992b5a214542807af674eb92c0849d"
+    },
+    {
+      "path": "ein-29.json",
+      "kind": "ein",
+      "bucket": "29",
+      "rows": 1988,
+      "bytes": 680694,
+      "sha256": "c2d66a2d0c4957ecb58ebb9a8d710abc6d6fa2430a0e98ab9a2e6f9086b36945"
+    },
+    {
+      "path": "ein-2a.json",
+      "kind": "ein",
+      "bucket": "2a",
+      "rows": 1964,
+      "bytes": 671066,
+      "sha256": "5efd6d37352cecab6c3fe44217ccf00a6bc6a2bfc8e6f803d9eb35c6ed6d58c2"
+    },
+    {
+      "path": "ein-2b.json",
+      "kind": "ein",
+      "bucket": "2b",
+      "rows": 1930,
+      "bytes": 663743,
+      "sha256": "ceadb122e88e912ab416ffffa7ec1bbb0a799977ed4d5a54315c830376ff9e8f"
+    },
+    {
+      "path": "ein-2c.json",
+      "kind": "ein",
+      "bucket": "2c",
+      "rows": 1970,
+      "bytes": 673972,
+      "sha256": "f3545c131969729dcccdf0c6cb122dd38294323156b9bcbb70c2a2236ee1c877"
+    },
+    {
+      "path": "ein-2d.json",
+      "kind": "ein",
+      "bucket": "2d",
+      "rows": 1937,
+      "bytes": 663609,
+      "sha256": "5d1aa12e649e2d90eaa20dd6c540b29163186fae940c7470b4c332ee792a39f7"
+    },
+    {
+      "path": "ein-2e.json",
+      "kind": "ein",
+      "bucket": "2e",
+      "rows": 1986,
+      "bytes": 681966,
+      "sha256": "fd6e0dbd474f7c08d658317361dfeb00414ac1f881b11b3f34b9e4c5888c310b"
+    },
+    {
+      "path": "ein-2f.json",
+      "kind": "ein",
+      "bucket": "2f",
+      "rows": 1943,
+      "bytes": 668245,
+      "sha256": "91ed569ad357871cadebbd82a10d40b944d917ab2a7836f7cc20f70f43cb6fcd"
+    },
+    {
+      "path": "ein-30.json",
+      "kind": "ein",
+      "bucket": "30",
+      "rows": 1952,
+      "bytes": 667071,
+      "sha256": "5af35e4c5a007e0ef9c25fc5729a9bfd36d14d6bd7b759aff2dd0cf28b168523"
+    },
+    {
+      "path": "ein-31.json",
+      "kind": "ein",
+      "bucket": "31",
+      "rows": 1939,
+      "bytes": 663807,
+      "sha256": "94327eb36e243c2adecf0b228dc7cc174e52d8670a922a008ef1549b191eb61b"
+    },
+    {
+      "path": "ein-32.json",
+      "kind": "ein",
+      "bucket": "32",
+      "rows": 1977,
+      "bytes": 674747,
+      "sha256": "131e0d2b2fd3a4c4d667a416985d2c04362b24954c6fb8435740260a8e0e2384"
+    },
+    {
+      "path": "ein-33.json",
+      "kind": "ein",
+      "bucket": "33",
+      "rows": 1889,
+      "bytes": 645060,
+      "sha256": "91a02d416ebf1ac59a38d146c68d5d4289f7e37c05ca709b7da578ebf819b32b"
+    },
+    {
+      "path": "ein-34.json",
+      "kind": "ein",
+      "bucket": "34",
+      "rows": 2014,
+      "bytes": 688125,
+      "sha256": "9209f556f3a9f8ea94dcf1c8393f1989e8b0f459b35ef100f6aae18afb96ed7f"
+    },
+    {
+      "path": "ein-35.json",
+      "kind": "ein",
+      "bucket": "35",
+      "rows": 1965,
+      "bytes": 674654,
+      "sha256": "75d7088d78baee4e1d65e73c537a0d82d565279c491c675be1f6fae6cb3bb896"
+    },
+    {
+      "path": "ein-36.json",
+      "kind": "ein",
+      "bucket": "36",
+      "rows": 1949,
+      "bytes": 667426,
+      "sha256": "0ef23aa907e04013bbd798da75d7a298a32586a261b514d298501be6fdba5bc8"
+    },
+    {
+      "path": "ein-37.json",
+      "kind": "ein",
+      "bucket": "37",
+      "rows": 1964,
+      "bytes": 673548,
+      "sha256": "ed78d1a5ba81fdf05caaff402178ad4dd1f6c28ee205887397b1912d326a4052"
+    },
+    {
+      "path": "ein-38.json",
+      "kind": "ein",
+      "bucket": "38",
+      "rows": 2026,
+      "bytes": 695388,
+      "sha256": "3fa11caa0d38a3578def3f0a4d5ad1e19c6bc687aeb3b6b8127054105bd60eb5"
+    },
+    {
+      "path": "ein-39.json",
+      "kind": "ein",
+      "bucket": "39",
+      "rows": 1965,
+      "bytes": 671586,
+      "sha256": "e4d28ebb9696e0674f12395aee6b3a72e1ceca754a07f0a02d4af5fa89045082"
+    },
+    {
+      "path": "ein-3a.json",
+      "kind": "ein",
+      "bucket": "3a",
+      "rows": 1952,
+      "bytes": 668613,
+      "sha256": "46c70dc58892f6fd188ecb36dce9e3917cc37ca8ba4c4771e9f4d2bf909c880a"
+    },
+    {
+      "path": "ein-3b.json",
+      "kind": "ein",
+      "bucket": "3b",
+      "rows": 2031,
+      "bytes": 695795,
+      "sha256": "1d8e5410c4214138545f88552f8b2f809c317e7f96a00dce5c9190b256d3aa49"
+    },
+    {
+      "path": "ein-3c.json",
+      "kind": "ein",
+      "bucket": "3c",
+      "rows": 1918,
+      "bytes": 661284,
+      "sha256": "d094048a102b094097a6e815501c61fb608352e0f05760f6a3250d7e52bbb05e"
+    },
+    {
+      "path": "ein-3d.json",
+      "kind": "ein",
+      "bucket": "3d",
+      "rows": 1901,
+      "bytes": 649071,
+      "sha256": "36d543d27e797950a5dac1c50119babc60e8432f66629d27d4848953f485c272"
+    },
+    {
+      "path": "ein-3e.json",
+      "kind": "ein",
+      "bucket": "3e",
+      "rows": 1957,
+      "bytes": 670195,
+      "sha256": "5e3cc8ad82ea663387c95fd0e92765776ad49a93fae013c7f67be3dcf97217eb"
+    },
+    {
+      "path": "ein-3f.json",
+      "kind": "ein",
+      "bucket": "3f",
+      "rows": 1961,
+      "bytes": 671954,
+      "sha256": "1a116cc5321c9b535e951594787fa08a5e7ca7ea9d16c31440822c8fcc1674ea"
+    },
+    {
+      "path": "stem-00.json",
+      "kind": "stem",
+      "bucket": "00",
+      "rows": 1930,
+      "bytes": 377716,
+      "sha256": "da40ae72dc280355521a08827a872a2b51e8029a64f5f159c724dc2df4521e46"
+    },
+    {
+      "path": "stem-01.json",
+      "kind": "stem",
+      "bucket": "01",
+      "rows": 1869,
+      "bytes": 366577,
+      "sha256": "56dd670eade0c72b835e0cfad01124f25d0cf0bcee5373a551a0ce143fdc5934"
+    },
+    {
+      "path": "stem-02.json",
+      "kind": "stem",
+      "bucket": "02",
+      "rows": 1832,
+      "bytes": 356027,
+      "sha256": "5fb46522db489f862987411cfe2ba7227339308c44006503b09033aaa68e12ab"
+    },
+    {
+      "path": "stem-03.json",
+      "kind": "stem",
+      "bucket": "03",
+      "rows": 1900,
+      "bytes": 372828,
+      "sha256": "d73af366e232e0e7f2cf05ff077a9266f3f74f89b98f59f331eaef81c20e36fa"
+    },
+    {
+      "path": "stem-04.json",
+      "kind": "stem",
+      "bucket": "04",
+      "rows": 1747,
+      "bytes": 342095,
+      "sha256": "79e291fee98e275c2d1366b9600cb9ce078fe7a77fe0c2bb8f2334b99c85c783"
+    },
+    {
+      "path": "stem-05.json",
+      "kind": "stem",
+      "bucket": "05",
+      "rows": 1980,
+      "bytes": 384225,
+      "sha256": "e8345f0e3c4fd8ba6613c25ff282c15439e9760a2d0fadba4277bc055d5d232d"
+    },
+    {
+      "path": "stem-06.json",
+      "kind": "stem",
+      "bucket": "06",
+      "rows": 1835,
+      "bytes": 357405,
+      "sha256": "2329469fc7173686affe5d38783b91a005d64ad98f322016d9c493982dff669c"
+    },
+    {
+      "path": "stem-07.json",
+      "kind": "stem",
+      "bucket": "07",
+      "rows": 1817,
+      "bytes": 352756,
+      "sha256": "96e81fa62956e02e9c49eaa46332b271f5af34c25a09bddeb6bab360df0343b1"
+    },
+    {
+      "path": "stem-08.json",
+      "kind": "stem",
+      "bucket": "08",
+      "rows": 1922,
+      "bytes": 373496,
+      "sha256": "19b846ee8fc56a9932a08caa12ea5244eb646a11733621da5c9eb78fd3cc63f2"
+    },
+    {
+      "path": "stem-09.json",
+      "kind": "stem",
+      "bucket": "09",
+      "rows": 1822,
+      "bytes": 357185,
+      "sha256": "c55c61e0d6d2d004269e2c74b09356bab78e0c9af30ca4a357c0610449b7a85e"
+    },
+    {
+      "path": "stem-0a.json",
+      "kind": "stem",
+      "bucket": "0a",
+      "rows": 1838,
+      "bytes": 360122,
+      "sha256": "0ae24f05dabac0c407c1e0c04c82bfcef624939527a2eb8d0ba190696e6149cb"
+    },
+    {
+      "path": "stem-0b.json",
+      "kind": "stem",
+      "bucket": "0b",
+      "rows": 1873,
+      "bytes": 367083,
+      "sha256": "16565c5196f45ebd3dc12e5430b0c4b1e4eb88d706ea29788f73364f83342b6a"
+    },
+    {
+      "path": "stem-0c.json",
+      "kind": "stem",
+      "bucket": "0c",
+      "rows": 1910,
+      "bytes": 374710,
+      "sha256": "506dc3802376f3f6604bc39b15c5186be9c17a031045550ebc4a798c5becae6e"
+    },
+    {
+      "path": "stem-0d.json",
+      "kind": "stem",
+      "bucket": "0d",
+      "rows": 1928,
+      "bytes": 379511,
+      "sha256": "769bea35018714c9311e9da36b24993b44557496deac32ace6d6c09c74f95459"
+    },
+    {
+      "path": "stem-0e.json",
+      "kind": "stem",
+      "bucket": "0e",
+      "rows": 1827,
+      "bytes": 355391,
+      "sha256": "b20cef3195dfaffa70965eaac0c9976e992fd6c05566fa38556c425e03e6746b"
+    },
+    {
+      "path": "stem-0f.json",
+      "kind": "stem",
+      "bucket": "0f",
+      "rows": 2019,
+      "bytes": 402215,
+      "sha256": "20f2abb18a473f9ad8e24efa4880c4bbcb5b0785caf2e18c90482d299b45db0c"
+    },
+    {
+      "path": "stem-10.json",
+      "kind": "stem",
+      "bucket": "10",
+      "rows": 1846,
+      "bytes": 362809,
+      "sha256": "e0d3db59fc78cd7b7c9034ea7722a6216e6267be7eef4ee11bf25f30cdd76b12"
+    },
+    {
+      "path": "stem-11.json",
+      "kind": "stem",
+      "bucket": "11",
+      "rows": 1729,
+      "bytes": 337985,
+      "sha256": "5342e33f62d933707022b3d5c4accc2846c817d93f8a2c265fa6f2a0dd435c36"
+    },
+    {
+      "path": "stem-12.json",
+      "kind": "stem",
+      "bucket": "12",
+      "rows": 1918,
+      "bytes": 380375,
+      "sha256": "c16e13d0dcf48e23714eea0db6b86c8f51f1781fb417db6b2fcc6ed64026d567"
+    },
+    {
+      "path": "stem-13.json",
+      "kind": "stem",
+      "bucket": "13",
+      "rows": 1827,
+      "bytes": 357482,
+      "sha256": "167f964157eb840dea73d86add552987e1bd3f3879b3338eb2fe4770b9151b7a"
+    },
+    {
+      "path": "stem-14.json",
+      "kind": "stem",
+      "bucket": "14",
+      "rows": 2228,
+      "bytes": 428367,
+      "sha256": "b0301fa85997533f34cfe2469f9ae8cb693445a36caf44f57de6bd40d7d7e6e2"
+    },
+    {
+      "path": "stem-15.json",
+      "kind": "stem",
+      "bucket": "15",
+      "rows": 1797,
+      "bytes": 351199,
+      "sha256": "3aecbcc5af0c5686110ebf9200b62a44cbdb62782ab6c5fb30d5b790c3537aea"
+    },
+    {
+      "path": "stem-16.json",
+      "kind": "stem",
+      "bucket": "16",
+      "rows": 1840,
+      "bytes": 358353,
+      "sha256": "f2642444411cac2956987b576f488a0604a426dc54d8f6dc714e306a8d1c2f79"
+    },
+    {
+      "path": "stem-17.json",
+      "kind": "stem",
+      "bucket": "17",
+      "rows": 1794,
+      "bytes": 349612,
+      "sha256": "34b7226d6c51cbac0446f2e089b3c6d5072bfa86ca0c907f6d7f887f7826d811"
+    },
+    {
+      "path": "stem-18.json",
+      "kind": "stem",
+      "bucket": "18",
+      "rows": 1863,
+      "bytes": 363510,
+      "sha256": "75d1cc15f658ffcd5ace2812745b9065b53f1abf1ac332e8b922407729e18af5"
+    },
+    {
+      "path": "stem-19.json",
+      "kind": "stem",
+      "bucket": "19",
+      "rows": 1821,
+      "bytes": 354818,
+      "sha256": "b2d78c9d691be6ed21efc649b1e285ae999e05e184aa1dfccc74c0523b26c015"
+    },
+    {
+      "path": "stem-1a.json",
+      "kind": "stem",
+      "bucket": "1a",
+      "rows": 1831,
+      "bytes": 358631,
+      "sha256": "b213c96e64bd5a6b6a1e2a5d4398077de0ed013851c07107f1dde5ced7056903"
+    },
+    {
+      "path": "stem-1b.json",
+      "kind": "stem",
+      "bucket": "1b",
+      "rows": 1873,
+      "bytes": 365032,
+      "sha256": "93e5875fe295630a03564b02a2a8854b97aef7b6b575a3c74483f29ce824f9b3"
+    },
+    {
+      "path": "stem-1c.json",
+      "kind": "stem",
+      "bucket": "1c",
+      "rows": 1835,
+      "bytes": 356363,
+      "sha256": "9a0f293998937da9f1a64902b5ad24195e2f7240cfe7ff808d32f7d85e56d99e"
+    },
+    {
+      "path": "stem-1d.json",
+      "kind": "stem",
+      "bucket": "1d",
+      "rows": 1855,
+      "bytes": 370076,
+      "sha256": "0860b14d59762bacbc9b834c9413e8493d979573913b8432bc04321fc1459fb6"
+    },
+    {
+      "path": "stem-1e.json",
+      "kind": "stem",
+      "bucket": "1e",
+      "rows": 1839,
+      "bytes": 359946,
+      "sha256": "8a1bcf1eb0dd145bc16e6c4737d1ab91196e359ce42d1197b1bc2a0c1d46aa6e"
+    },
+    {
+      "path": "stem-1f.json",
+      "kind": "stem",
+      "bucket": "1f",
+      "rows": 1852,
+      "bytes": 360360,
+      "sha256": "48c244cc9469508b6752705fd72918d47356c1aaeccab2cd025ec9b4ee9d096e"
+    },
+    {
+      "path": "stem-20.json",
+      "kind": "stem",
+      "bucket": "20",
+      "rows": 2925,
+      "bytes": 573688,
+      "sha256": "ce16bcf2e8b3db67215ac77661d63b497e200a43c76589daadb276dc5779ba69"
+    },
+    {
+      "path": "stem-21.json",
+      "kind": "stem",
+      "bucket": "21",
+      "rows": 1904,
+      "bytes": 377934,
+      "sha256": "43bdaa91b536b3a06f3a91effa4921a9580ff95baf7e319823e5cb56e008946e"
+    },
+    {
+      "path": "stem-22.json",
+      "kind": "stem",
+      "bucket": "22",
+      "rows": 1895,
+      "bytes": 368497,
+      "sha256": "82d15a6d4c3b1a84bb0182013a9f8e9a4cbb200adc58112b27f083fa6eba1dde"
+    },
+    {
+      "path": "stem-23.json",
+      "kind": "stem",
+      "bucket": "23",
+      "rows": 1741,
+      "bytes": 339791,
+      "sha256": "25825d0d37a595e00f1fae73bb1611fb284ff9877231ed51e2782d31faef5d40"
+    },
+    {
+      "path": "stem-24.json",
+      "kind": "stem",
+      "bucket": "24",
+      "rows": 1841,
+      "bytes": 358646,
+      "sha256": "a279f61d14cd25c490dfd24e6618e9252b9bd8a392ee1bf134e6a239f1c09baa"
+    },
+    {
+      "path": "stem-25.json",
+      "kind": "stem",
+      "bucket": "25",
+      "rows": 1877,
+      "bytes": 367784,
+      "sha256": "ae89900de570fdcbcc86dc07577b496d890493b276a714502263cead7a5c7d7d"
+    },
+    {
+      "path": "stem-26.json",
+      "kind": "stem",
+      "bucket": "26",
+      "rows": 1857,
+      "bytes": 364372,
+      "sha256": "b855e0f097528ffe476d18fdfd8d843d14fdaacf70aa3429b45f69d697c8a75e"
+    },
+    {
+      "path": "stem-27.json",
+      "kind": "stem",
+      "bucket": "27",
+      "rows": 1914,
+      "bytes": 369690,
+      "sha256": "6c23c56f0fdb37c14645bfc6089ebc1feb51c333f3983ae700ce044b4a990524"
+    },
+    {
+      "path": "stem-28.json",
+      "kind": "stem",
+      "bucket": "28",
+      "rows": 1903,
+      "bytes": 374325,
+      "sha256": "c73d9498df18fcde58b7e4642e75a5dc38caa6e0b5a61249dbdb6424253f66b0"
+    },
+    {
+      "path": "stem-29.json",
+      "kind": "stem",
+      "bucket": "29",
+      "rows": 3148,
+      "bytes": 627187,
+      "sha256": "7d92fa1cbf5276c378e7e84ae28a5a7df5896baf60880cece28a809d61e448db"
+    },
+    {
+      "path": "stem-2a.json",
+      "kind": "stem",
+      "bucket": "2a",
+      "rows": 2046,
+      "bytes": 396673,
+      "sha256": "51e003da2a711fcaec432b6d81f5a4cb9f7bf4feea256c930a7348574ce9b152"
+    },
+    {
+      "path": "stem-2b.json",
+      "kind": "stem",
+      "bucket": "2b",
+      "rows": 2229,
+      "bytes": 435502,
+      "sha256": "8112bd955570f798f1fdf42ef8ba07184318f4a462000fe6925ed3fbb27f92d2"
+    },
+    {
+      "path": "stem-2c.json",
+      "kind": "stem",
+      "bucket": "2c",
+      "rows": 1757,
+      "bytes": 342393,
+      "sha256": "44a67cb8e99b98489b098be8fd826a767c2a73248f3ca54f3564d6dedc925223"
+    },
+    {
+      "path": "stem-2d.json",
+      "kind": "stem",
+      "bucket": "2d",
+      "rows": 1950,
+      "bytes": 378147,
+      "sha256": "4bb669b4d933056eb7a243f16edcc697a2fef7ed1f7fdf33105e7e1b44db5597"
+    },
+    {
+      "path": "stem-2e.json",
+      "kind": "stem",
+      "bucket": "2e",
+      "rows": 2100,
+      "bytes": 405926,
+      "sha256": "b6788ac68abe816483a71734ee22630fea603771a9d17a59d69b7a73509681a7"
+    },
+    {
+      "path": "stem-2f.json",
+      "kind": "stem",
+      "bucket": "2f",
+      "rows": 2276,
+      "bytes": 448394,
+      "sha256": "345a18f08ac0e697a57a5088ff6c0d1de6e8a552c575b1b84e9387887b6f0cdc"
+    },
+    {
+      "path": "stem-30.json",
+      "kind": "stem",
+      "bucket": "30",
+      "rows": 1768,
+      "bytes": 345214,
+      "sha256": "2dc349055978d6f358fc649c827c1d9f746018bfb6ce7bb405b1d66e54a16a63"
+    },
+    {
+      "path": "stem-31.json",
+      "kind": "stem",
+      "bucket": "31",
+      "rows": 1883,
+      "bytes": 368310,
+      "sha256": "eb59f354dc384f9388b4fca99d1bc8db99b290ce3291e363f657dbcd2cd7ac9a"
+    },
+    {
+      "path": "stem-32.json",
+      "kind": "stem",
+      "bucket": "32",
+      "rows": 1787,
+      "bytes": 349327,
+      "sha256": "3294a7ca660a6cc323e268d7456fa3980accd20071266fc4a746514b5aa6915b"
+    },
+    {
+      "path": "stem-33.json",
+      "kind": "stem",
+      "bucket": "33",
+      "rows": 2113,
+      "bytes": 410397,
+      "sha256": "121f746468c701a660b786e4da8833c76ec3feffae40faca0e9fc791febd7671"
+    },
+    {
+      "path": "stem-34.json",
+      "kind": "stem",
+      "bucket": "34",
+      "rows": 1773,
+      "bytes": 346146,
+      "sha256": "a889cff16c07b349e6c43d6e5fa5d53edca7d02e89221a0257d0e917764b32b3"
+    },
+    {
+      "path": "stem-35.json",
+      "kind": "stem",
+      "bucket": "35",
+      "rows": 1761,
+      "bytes": 343011,
+      "sha256": "063ce4bff428e681cbe8fe2f9cc996372fb2564f8a351b24a010cc9d5a1befad"
+    },
+    {
+      "path": "stem-36.json",
+      "kind": "stem",
+      "bucket": "36",
+      "rows": 1878,
+      "bytes": 367835,
+      "sha256": "612ee1d9a699df422a86673128d11add28009cf3c3461d38eaae803dfe1af664"
+    },
+    {
+      "path": "stem-37.json",
+      "kind": "stem",
+      "bucket": "37",
+      "rows": 1964,
+      "bytes": 383600,
+      "sha256": "9e2ee05768a259899dc52c432b15eb32932467e781cbd5e34909edb48bf87551"
+    },
+    {
+      "path": "stem-38.json",
+      "kind": "stem",
+      "bucket": "38",
+      "rows": 1995,
+      "bytes": 382332,
+      "sha256": "437f4076c1c5ee05420d94b5b3b15df863b03e40574e76e269c60d51c664712d"
+    },
+    {
+      "path": "stem-39.json",
+      "kind": "stem",
+      "bucket": "39",
+      "rows": 1969,
+      "bytes": 383189,
+      "sha256": "01fc31a6a627e481dab58ea504c91dcb4efd46fa2b7b634df08d8e1d0eca5fbe"
+    },
+    {
+      "path": "stem-3a.json",
+      "kind": "stem",
+      "bucket": "3a",
+      "rows": 1874,
+      "bytes": 368885,
+      "sha256": "e061796acbbdb9a89eaf7563d39fefc9f7cd4916fd5e2f0c8ef422cdde221ced"
+    },
+    {
+      "path": "stem-3b.json",
+      "kind": "stem",
+      "bucket": "3b",
+      "rows": 2422,
+      "bytes": 465491,
+      "sha256": "e0add76d4f20619ec68144cb25cda0a36af141a2836688e77f3e1b71dab7be94"
+    },
+    {
+      "path": "stem-3c.json",
+      "kind": "stem",
+      "bucket": "3c",
+      "rows": 2101,
+      "bytes": 403915,
+      "sha256": "343456ab371779566726ec0d9ac479b2350653831efaab63a3cfff6c30380429"
+    },
+    {
+      "path": "stem-3d.json",
+      "kind": "stem",
+      "bucket": "3d",
+      "rows": 3446,
+      "bytes": 645908,
+      "sha256": "51e4710c722678d8b6b75926f348a756ae7ad512ac9880a805f56541704bfd5b"
+    },
+    {
+      "path": "stem-3e.json",
+      "kind": "stem",
+      "bucket": "3e",
+      "rows": 1870,
+      "bytes": 364059,
+      "sha256": "aa4cc93291262ec76925cc891cc389725bb7fad97121460a36df47a58c67586f"
+    },
+    {
+      "path": "stem-3f.json",
+      "kind": "stem",
+      "bucket": "3f",
+      "rows": 1858,
+      "bytes": 363750,
+      "sha256": "fd6710a10e1b9898ed7a1f0d155db164f17bbfa4352421a37c371d158c1edf21"
+    }
+  ],
+  "canary_rows": [
+    {
+      "EIN": "263419217",
+      "NAME": "VINCENT NASTA FOUNDATION INC"
+    }
+  ]
+}

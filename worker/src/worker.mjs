@@ -54,6 +54,7 @@ import {
 } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
+import { handleDosEntityLookup } from "./dos_entity_lookup.mjs";
 import { handleAgencies } from "./agencies.mjs";
 import { handleInv } from "./inv.mjs";
 import { handleStats, countActiveSubs, prewarmStats } from "./stats.mjs";
@@ -320,6 +321,14 @@ const COST_PROBE_HTTP_WORKLOADS = Object.freeze({
     method: "GET",
     validate: (_input, target) => String(target.searchParams.get("name") || "").trim().length >= 3,
   },
+  "org-register-dos": {
+    path: "/org-register/dos",
+    method: "GET",
+    validate: (_input, target) => (
+      String(target.searchParams.get("name") || "").trim().length >= 3
+      || /^\d{1,10}$/.test(String(target.searchParams.get("dos_id") || "").trim())
+    ),
+  },
 });
 const COST_PROBE_HTTP_ORIGIN = "https://api.cityscroll.org";
 const COST_PROBE_CRONS = new Map([
@@ -551,6 +560,7 @@ const worker = {
     if (pathname === "/feedback") return handleFeedback(request, env);
     if (pathname === "/feed.xml" || pathname === "/feed.json" || pathname === "/feed.ics") return handleFeed(request, env, ctx);
     if (pathname === "/batch") return handleBatch(request, env);
+    if (pathname === "/org-register/dos") return handleDosEntityLookup(request, env, ctx);
     if (pathname === "/agencies") return handleAgencies(request, env, ctx);
     if (pathname === "/inv" || pathname.startsWith("/inv/")) return handleInv(request, env, pathname, ctx);
     if (pathname.startsWith("/priorcycle/")) return handlePriorCycle(request, env, pathname, ctx);

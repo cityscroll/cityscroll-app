@@ -1,0 +1,400 @@
+{
+ "schema": "cityscroll.prekraken.dos_entity_type_class_map.v1",
+ "dataset_id": "n9v6-gdp6",
+ "observed": "2026-11-11",
+ "source_request": "https://data.ny.gov/resource/n9v6-gdp6.json?$select=entity_type,count(1) as n&$group=entity_type&$order=n DESC&$limit=200",
+ "source_response_file": "fixtures/dos_entity_type_counts.response.json",
+ "source_response_sha256": "fef3fdec5eca34ca3bea615756721827ac307973ef72e38582c200f63cd3f736",
+ "dataset_row_count": 4315387,
+ "distinct_entity_types": 53,
+ "sum_of_counts": 4315387,
+ "classes": [
+  "business_corporation",
+  "llc",
+  "not_for_profit",
+  "professional",
+  "limited_partnership",
+  "llp",
+  "other"
+ ],
+ "rules": [
+  {
+   "id": "not_for_profit_label",
+   "class": "not_for_profit",
+   "pattern": "NOT-FOR-PROFIT",
+   "why": "the published label says NOT-FOR-PROFIT"
+  },
+  {
+   "id": "professional_label",
+   "class": "professional",
+   "pattern": "PROFESSIONAL SERVICE",
+   "why": "professional service corporation or PLLC (design professional included)"
+  },
+  {
+   "id": "llp_label",
+   "class": "llp",
+   "pattern": "LIMITED LIABILITY PARTNERSHIP",
+   "why": "registered limited liability partnership (domestic or foreign)"
+  },
+  {
+   "id": "reservation_label",
+   "class": "other",
+   "pattern": "^RESERVATION OF",
+   "why": "a name reservation, not an operating entity"
+  },
+  {
+   "id": "limited_partnership_label",
+   "class": "limited_partnership",
+   "pattern": "LIMITED PARTNERSHIP|\\(LIMITED PARTNERSHIP\\)",
+   "why": "limited partnership (domestic or foreign, redevelopment company LP)"
+  },
+  {
+   "id": "llc_label",
+   "class": "llc",
+   "pattern": "LIMITED LIABILITY COMPANY",
+   "why": "limited liability company (domestic, foreign, unauthorized, redevelopment company LLC)"
+  },
+  {
+   "id": "business_corporation_label",
+   "class": "business_corporation",
+   "pattern": "BUSINESS CORPORATION|^DOMESTIC BENEFIT CORPORATION|^DOMESTIC PUBLIC BENEFIT CORPORATION",
+   "why": "business corporation or benefit corporation under the Business Corporation Law"
+  },
+  {
+   "id": "fallback_other",
+   "class": "other",
+   "pattern": "(anything not matched above)",
+   "why": "label names another form (cooperative, religious corporation, benevolent order, housing development fund company, general association, condominium, transportation or railroad corporation, joint stock association, governmental agency, designation) that is not one of the six named classes; the published entity_type is kept beside the class"
+  }
+ ],
+ "totals_by_class": {
+  "llc": 2250586,
+  "business_corporation": 1593786,
+  "not_for_profit": 302417,
+  "professional": 119988,
+  "limited_partnership": 35686,
+  "llp": 5587,
+  "other": 7337
+ },
+ "unmapped_policy": "A value not in `entries` maps to `other` and the record is flagged unmapped_entity_type; the load never fails on a new publisher value.",
+ "entries": [
+  {
+   "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+   "count": 2075717,
+   "entity_class": "llc",
+   "rule": "llc_label"
+  },
+  {
+   "entity_type": "DOMESTIC BUSINESS CORPORATION",
+   "count": 1456355,
+   "entity_class": "business_corporation",
+   "rule": "business_corporation_label"
+  },
+  {
+   "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+   "count": 288407,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+   "count": 174845,
+   "entity_class": "llc",
+   "rule": "llc_label"
+  },
+  {
+   "entity_type": "FOREIGN BUSINESS CORPORATION",
+   "count": 135466,
+   "entity_class": "business_corporation",
+   "rule": "business_corporation_label"
+  },
+  {
+   "entity_type": "DOMESTIC PROFESSIONAL SERVICE CORPORATION",
+   "count": 60306,
+   "entity_class": "professional",
+   "rule": "professional_label"
+  },
+  {
+   "entity_type": "DOMESTIC PROFESSIONAL SERVICE LIMITED LIABILITY COMPANY",
+   "count": 54342,
+   "entity_class": "professional",
+   "rule": "professional_label"
+  },
+  {
+   "entity_type": "FOREIGN LIMITED PARTNERSHIP",
+   "count": 20510,
+   "entity_class": "limited_partnership",
+   "rule": "limited_partnership_label"
+  },
+  {
+   "entity_type": "DOMESTIC LIMITED PARTNERSHIP",
+   "count": 15173,
+   "entity_class": "limited_partnership",
+   "rule": "limited_partnership_label"
+  },
+  {
+   "entity_type": "FOREIGN NOT-FOR-PROFIT CORPORATION",
+   "count": 10247,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "DOMESTIC REGISTERED LIMITED LIABILITY PARTNERSHIP",
+   "count": 4826,
+   "entity_class": "llp",
+   "rule": "llp_label"
+  },
+  {
+   "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION (HOUSING DEVELOPMENT FUND COMPANY) (ARTICLE XI)",
+   "count": 3437,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "FOREIGN PROFESSIONAL SERVICE CORPORATION",
+   "count": 3022,
+   "entity_class": "professional",
+   "rule": "professional_label"
+  },
+  {
+   "entity_type": "DOMESTIC BENEVOLENT ORDER",
+   "count": 2358,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "FOREIGN PROFESSIONAL SERVICE LIMITED LIABILITY COMPANY",
+   "count": 2052,
+   "entity_class": "professional",
+   "rule": "professional_label"
+  },
+  {
+   "entity_type": "DOMESTIC BENEFIT CORPORATION",
+   "count": 1905,
+   "entity_class": "business_corporation",
+   "rule": "business_corporation_label"
+  },
+  {
+   "entity_type": "DOMESTIC HOUSING DEVELOPMENT FUND COMPANY (ARTICLE XI)",
+   "count": 1218,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "FOREIGN GENERAL ASSOCIATION",
+   "count": 1165,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC COOPERATIVE CORPORATION",
+   "count": 1017,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "NEW YORK REGISTERED FOREIGN LIMITED LIABILITY PARTNERSHIP",
+   "count": 761,
+   "entity_class": "llp",
+   "rule": "llp_label"
+  },
+  {
+   "entity_type": "DOMESTIC CONDOMINIUM",
+   "count": 491,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC GENERAL ASSOCIATION",
+   "count": 387,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC RELIGIOUS CORPORATION",
+   "count": 307,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC TRANSPORTATION CORPORATION",
+   "count": 266,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC DESIGN PROFESSIONAL SERVICE CORPORATION",
+   "count": 266,
+   "entity_class": "professional",
+   "rule": "professional_label"
+  },
+  {
+   "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION (BOARD OF TRADE AND CHAMBER OF COMMERCE CORPORATION)",
+   "count": 111,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION (UNIVERSITY FACULTY PRACTICE CORPORATION)",
+   "count": 85,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "DOMESTIC PUBLIC BENEFIT CORPORATION",
+   "count": 48,
+   "entity_class": "business_corporation",
+   "rule": "business_corporation_label"
+  },
+  {
+   "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION (COMMUNITY MENTAL HEALTH SERVICES AND MENTAL RETARDATION SERVICES COMPANIES)",
+   "count": 46,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION (LOCAL DEVELOPMENT CORPORATION)",
+   "count": 27,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "DOMESTIC COOPERATIVE CORPORATION (WORKER COOPERATIVE)",
+   "count": 24,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC LIMITED-PROFIT HOUSING COMPANY (ARTICLE 2 PHFL & NPCL)",
+   "count": 23,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC REDEVELOPMENT COMPANY (ARTICLE V)",
+   "count": 21,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION (LAND BANK)",
+   "count": 21,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION (FIRE CORPORATION)",
+   "count": 20,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "DOMESTIC REDEVELOPMENT COMPANY (LIMITED LIABILITY COMPANY)",
+   "count": 20,
+   "entity_class": "llc",
+   "rule": "llc_label"
+  },
+  {
+   "entity_type": "DOMESTIC JOINT STOCK ASSOCIATION",
+   "count": 18,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "UNAUTHORIZED FOREIGN BUSINESS CORPORATION",
+   "count": 10,
+   "entity_class": "business_corporation",
+   "rule": "business_corporation_label"
+  },
+  {
+   "entity_type": "DOMESTIC LIMITED-PROFIT HOUSING COMPANY (ARTICLE 2 PHFL & BCL)",
+   "count": 9,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION (MILITIA ASSOCIATION)",
+   "count": 8,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "DOMESTIC RAILROAD CORPORATION",
+   "count": 8,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION (PUBLIC CEMETERY CORPORATION)",
+   "count": 8,
+   "entity_class": "not_for_profit",
+   "rule": "not_for_profit_label"
+  },
+  {
+   "entity_type": "FOREIGN COOPERATIVE CORPORATION",
+   "count": 7,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "FOREIGN RELIGIOUS CORPORATION",
+   "count": 6,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "UNAUTHORIZED FOREIGN LIMITED LIABILITY COMPANY",
+   "count": 4,
+   "entity_class": "llc",
+   "rule": "llc_label"
+  },
+  {
+   "entity_type": "DOMESTIC GOVERNMENTAL AGENCY",
+   "count": 3,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "GENERAL ASSOCIATION DESIGNATION",
+   "count": 3,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "DOMESTIC REDEVELOPMENT COMPANY (LIMITED PARTNERSHIP)",
+   "count": 3,
+   "entity_class": "limited_partnership",
+   "rule": "limited_partnership_label"
+  },
+  {
+   "entity_type": "RESERVATION OF DOMESTIC LIMITED LIABILITY COMPANY",
+   "count": 2,
+   "entity_class": "other",
+   "rule": "reservation_label"
+  },
+  {
+   "entity_type": "DOMESTIC RELIGIOUS CORPORATION (GOVERNING OR ADVISORY BODY)",
+   "count": 2,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "UNAUTHORIZED BUSINESS CORPORATION",
+   "count": 2,
+   "entity_class": "business_corporation",
+   "rule": "business_corporation_label"
+  },
+  {
+   "entity_type": "DOMESTIC CONDOMINIUM DECLARATION",
+   "count": 1,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  },
+  {
+   "entity_type": "FOREIGN DESIGNATION OF THE SECRETARY OF STATE",
+   "count": 1,
+   "entity_class": "other",
+   "rule": "fallback_other"
+  }
+ ]
+}

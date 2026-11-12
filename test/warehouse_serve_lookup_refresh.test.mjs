@@ -47,9 +47,11 @@ function writeServeDoc(root, relativePath, doc) {
 }
 
 function canaryDoc(contract, stamped) {
+  const timestampField = contract.timestamp_field || "materialized_at";
   return {
     schema_version: 1,
     materialized_at: stamped,
+    [timestampField]: stamped,
     row_count: contract.canaries.length,
     project_count: contract.canaries.length,
     rows: contract.canaries.map((canary) => ({ [canary.field]: canary.value })),
@@ -57,13 +59,17 @@ function canaryDoc(contract, stamped) {
 }
 
 describe("warehouse serve lookup scheduled refresh", () => {
-  it("lists the seven CI-gated warehouse serve builders", () => {
+  it("lists the CI-gated warehouse serve builders", () => {
     const ids = WAREHOUSE_SERVE_LOOKUPS.map((row) => row.id).sort();
     assert.deepEqual(ids, [
       "city_record_pin_chain",
       "doing_business",
+      "dos_entities",
       "e_designation",
+      "irs_eo_bmf_ny",
       "later_housing_activity",
+      "nyc_sca_prequalified_firms",
+      "nys_dol_contractor_registry",
       "ocp_awards",
       "zap_bbl",
       "zap_projects",

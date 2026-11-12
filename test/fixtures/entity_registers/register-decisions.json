@@ -1,0 +1,146 @@
+{
+  "schema": "cityscroll.prekraken.register_decisions.v1",
+  "observed_on": "2026-11-11",
+  "decisions": [
+    {
+      "id": "ny_dos_entities",
+      "name": "NYS Department of State active entities (data.ny.gov n9v6-gdp6)",
+      "decision": "included",
+      "modes": ["on-demand bounded worker query by name or dos_id", "batch confirmation for the engine's known vendor stems into a small committed lookup"],
+      "reason": "The only register that says an organization is a registered New York corporation, LLC, partnership or nonprofit; 4,315,387 active rows (updated 2026-11-11T14:20:02Z), 30 published fields, 53 entity types. 143 of 300 seeded engine vendors (47.7%) have exactly one state record by exact or stem-equal name. Too large to copy (about 1.4 GB), so only the on-demand path serves the full register.",
+      "counts": {"rows": 4315387, "distinct_entity_types": 53, "not_for_profit_classes": 302417, "llc": 2250586, "business_corporation": 1593786},
+      "evidence": [
+        {"url": "https://data.ny.gov/resource/n9v6-gdp6.json", "status": 200, "date": "2026-11-11", "observed": "count 4315387; metadata license null; attribution New York State Department of State"},
+        {"url": "https://data.ny.gov/d/n9v6-gdp6", "status": 200, "date": "2026-11-11", "observed": "dataset page"}
+      ]
+    },
+    {
+      "id": "irs_eo_bmf_ny",
+      "name": "IRS Exempt Organizations Business Master File, New York (eo_ny.csv)",
+      "decision": "included",
+      "modes": ["full warehouse ingest and sharded committed serve artifact"],
+      "reason": "The only register with an EIN, NTEE code, IRS subsection and (for filers) asset, income and revenue amounts. 125,622 rows, 21,920,529 bytes (21.9 MB), 28 columns, Last-Modified Mon, 09 Nov 2026 05:11:37 GMT; one row per EIN. 37 of 100 nonprofit-looking and 14 of 100 random engine vendor names have an IRS record by stem. It is a bulk CSV on irs.gov, not Socrata, and the IRS search UI is disallowed by robots.txt, so the bulk file is the path.",
+      "counts": {"rows": 125622, "bytes": 21920529, "columns": 28},
+      "evidence": [
+        {"url": "https://www.irs.gov/pub/irs-soi/eo_ny.csv", "status": 200, "date": "2026-11-11", "observed": "text/csv, 21920529 bytes, sha256 59cd4d7ef5966fafdf655b4b6f566f3321a032fd0692b891e9f8c61ebb56f6f8"},
+        {"url": "https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-file-extract-eo-bmf", "status": 200, "date": "2026-11-11", "observed": "page loaded; states cumulative file, most recent IRS information"}
+      ]
+    },
+    {
+      "id": "nys_dol_contractor_registry",
+      "name": "NYS Department of Labor Contractor Registry Certificates (data.ny.gov i4jv-zkey)",
+      "decision": "included",
+      "modes": ["warehouse source and committed serve artifact, doing-business pattern"],
+      "reason": "Found while checking what else data.ny.gov holds. It lists businesses registered with the Bureau of Public Work to bid on public work: 15,193 rows (all Active, updated daily, last 2026-11-11T10:01:22Z), 17,452,975 bytes for the full pull. It is the only register here that carries sole proprietorships (227) and partnerships (136) next to corporations (10,198) and LLCs (4,468), plus MWBE ownership, debarment flags (35 debarred) and officers. 4 of 100 and 1,219 of 19,506 engine vendor stems (6.2%) match.",
+      "counts": {"rows": 15193, "bytes_full_pull": 17452975, "sole_proprietorship": 227, "partnership": 136, "debarred": 35, "mwbe_owned": 2643},
+      "evidence": [
+        {"url": "https://data.ny.gov/resource/i4jv-zkey.json", "status": 200, "date": "2026-11-11", "observed": "count 15193, license null"},
+        {"url": "https://data.ny.gov/api/views/i4jv-zkey.json", "status": 200, "date": "2026-11-11", "observed": "owner New York State Department of Labor; four-year window of active and expired licences"}
+      ]
+    },
+    {
+      "id": "nyc_sca_prequalified_firms",
+      "name": "NYC Open Data Prequalified Firms (szkz-syh6), the School Construction Authority prequalified list",
+      "decision": "included",
+      "modes": ["warehouse source and committed serve artifact, doing-business pattern"],
+      "reason": "Metadata says: list of firms qualified to perform work for the School Construction Authority, their trades, and the end date of their qualification. It is not a city-wide or agency-wide prequalification. 6,092 rows (one per firm and MasterFormat trade) = 2,178 distinct firms, weekly, updated 2026-11-06T20:15:24Z, 4,590,032 bytes; qualification end dates run 2026-11-08 to 2029-11-05. It adds facts found nowhere else here: trades, minority, women and local business indicators as the firm reported them, and a contact person. Small enough to carry whole. 2 of 100 and 488 of 19,506 engine vendor stems (2.5%) match; this is a directory facet, not an identity register, so the low join rate does not block it.",
+      "counts": {"rows": 6092, "firms": 2178, "bytes_full_pull": 4590032},
+      "evidence": [
+        {"url": "https://data.cityofnewyork.us/api/views/szkz-syh6.json", "status": 200, "date": "2026-11-11", "observed": "attribution School Construction Authority (SCA); description quoted above"},
+        {"url": "https://data.cityofnewyork.us/resource/szkz-syh6.json", "status": 200, "date": "2026-11-11", "observed": "count 6092"}
+      ]
+    },
+    {
+      "id": "nyc_dcwp_issued_licenses",
+      "name": "NYC Open Data DCWP Issued Licenses (w7w3-xahh)",
+      "decision": "not_included",
+      "reason": "Measured and rejected. 74,271 rows (47,396,636 bytes for the full pull, 11 s), weekly. 3 of 100 and 381 of 19,506 engine vendor stems (1.95%) match on business name or trade name, far below the 0.30 usefulness line. 17,496 rows (23.6%) are Individual licences (tow truck drivers, sightseeing guides, locksmiths) whose business_name is a person's name, so the file is half about people and not about organizations. It carries no EIN or entity type, and its business_name is, per its own metadata, the legal name filed with the State, which the State register already covers authoritatively. Adding it would cost a 47 MB weekly pull for one fact (licence category and status) on about 2% of engine vendors. Reopen if the product needs a licensed-trade filter: it can then be queried live from Socrata by name, the same way the State register is.",
+      "counts": {"rows": 74271, "individual_licences": 17496, "premises_licences": 56775, "stem_hits_sample_100": 3, "stem_hits_universe": 381},
+      "evidence": [
+        {"url": "https://data.cityofnewyork.us/resource/w7w3-xahh.json", "status": 200, "date": "2026-11-11", "observed": "count 74271; $limit=100000 returned 47396636 bytes in 11.2 s"},
+        {"url": "https://data.cityofnewyork.us/api/views/w7w3-xahh.json", "status": 200, "date": "2026-11-11", "observed": "agency DCWP; weekly; business_name described as legal name filed with the NYS Secretary of State"}
+      ]
+    },
+    {
+      "id": "nys_dbe_ucp_directory",
+      "name": "NYS Unified Certification Program Disadvantaged Business Enterprises (data.ny.gov pfeu-dsx6)",
+      "decision": "not_included",
+      "reason": "Stale. 2,262 rows, but the dataset's rowsUpdatedAt is 2016-12-02T20:10:22Z while its metadata promises semi-annual posting and time period Current, so nothing has been published for almost ten years. 1 of 100 and 212 of 19,506 engine vendor stems (1.1%) match. A directory of certified firms that may have lost certification years ago would tell a user a firm is certified when it may not be.",
+      "counts": {"rows": 2262, "stem_hits_sample_100": 1, "stem_hits_universe": 212},
+      "evidence": [
+        {"url": "https://data.ny.gov/api/views/pfeu-dsx6.json", "status": 200, "date": "2026-11-11", "observed": "rowsUpdatedAt 2016-12-02T20:10:22Z; Posting Frequency Semi-annually"}
+      ]
+    },
+    {
+      "id": "nyc_doing_business_entities",
+      "name": "Doing Business Search entities (72mk-a8z7)",
+      "decision": "not_included",
+      "reason": "Already held by the engine (source contract doing-business-entities, 10,770 rows committed in site/data/doing_business_warehouse_lookup.json); nothing to add. The new registers follow its pattern.",
+      "evidence": [{"url": "https://data.cityofnewyork.us/resource/72mk-a8z7.json", "status": 200, "date": "2026-11-11", "observed": "engine file materialized_at 2026-11-03T19:29:09Z, row_count 10770"}]
+    },
+    {
+      "id": "nys_dos_search_ui",
+      "name": "NYS DOS public entity search UI (apps.dos.ny.gov/publicInquiry/)",
+      "decision": "cannot_be_ingested",
+      "reason": "cannot be ingested: connection reset by peer on 2026-11-11 for the search page and for /robots.txt (curl exit 56, status 000), the same as the earlier observation. The State publishes the same records on data.ny.gov, which is used instead; no workaround of the reset was attempted.",
+      "evidence": [
+        {"url": "https://apps.dos.ny.gov/publicInquiry/", "status": null, "date": "2026-11-11", "observed": "curl: (56) Recv failure: Connection reset by peer"},
+        {"url": "https://apps.dos.ny.gov/robots.txt", "status": null, "date": "2026-11-11", "observed": "connection failed, no status"}
+      ]
+    },
+    {
+      "id": "nys_charities_registry",
+      "name": "NYS Attorney General Charities Bureau registry (charitiesnys.com)",
+      "decision": "cannot_be_ingested",
+      "reason": "cannot be ingested: charitiesnys.com now answers 200 and redirects to the Attorney General's site; the registry search is a single-page app at https://charities-search.ag.ny.gov/ (200) whose JavaScript calls https://charities-search-api.ag.ny.gov/api and verifies a Google reCAPTCHA token (action pfc_search, POST /recaptcha/verify) before searching. That is bot detection and is not circumvented. data.ny.gov has no charities dataset (catalog search for 'charities' returned 0). The IRS file above covers federally exempt New York nonprofits, and the DOS register covers New York not-for-profit corporations.",
+      "evidence": [
+        {"url": "https://www.charitiesnys.com/RegistrySearch/search_charities.jsp", "status": 200, "date": "2026-11-11", "observed": "redirected to https://charities-search.ag.ny.gov/RegistrySearch, 499-byte app shell"},
+        {"url": "https://charities-search.ag.ny.gov/assets/index-C5m9GbLo.js", "status": 200, "date": "2026-11-11", "observed": "bundle references recaptcha/verify and api.js?render for the search"},
+        {"url": "https://charities-search-api.ag.ny.gov/robots.txt", "status": 404, "date": "2026-11-11", "observed": "no robots file"}
+      ]
+    },
+    {
+      "id": "nys_mwbe_directory",
+      "name": "Empire State Development M/WBE Directory of Certified Firms (ny.newnycontracts.com)",
+      "decision": "cannot_be_ingested",
+      "reason": "cannot be ingested: the host loads on retry (the portal home 200, SearchCertifiedDirectory.asp 200, 35,296 bytes) but the directory is an interactive search form that requires at least one certification type, loads Google reCAPTCHA, and publishes no export, bulk file or documented API; its former path /FrontEnd/VendorSearchPublic.asp returns 404. The only way to read it is to drive the search form, which this slice does not do. No data.ny.gov dataset of certified M/WBE firms exists (catalog search 'MWBE' found only spending datasets).",
+      "evidence": [
+        {"url": "https://ny.newnycontracts.com/", "status": 200, "date": "2026-11-11", "observed": "portal home; links the directory"},
+        {"url": "https://ny.newnycontracts.com/FrontEnd/SearchCertifiedDirectory.asp?TN=ny&XID=9302", "status": 200, "date": "2026-11-11", "observed": "search form, select at least one certification type, recaptcha present"},
+        {"url": "https://ny.newnycontracts.com/FrontEnd/VendorSearchPublic.asp", "status": 404, "date": "2026-11-11", "observed": "IIS 404"}
+      ]
+    },
+    {
+      "id": "nys_sdvob_directory",
+      "name": "NYS Office of General Services Service-Disabled Veteran-Owned Business directory",
+      "decision": "cannot_be_ingested",
+      "reason": "cannot be ingested: every OGS address tried returned 404 on 2026-11-11 and no replacement could be located from the OGS site. No data.ny.gov dataset for it exists (catalog search 'veteran' returned only workforce and benefit datasets).",
+      "evidence": [
+        {"url": "https://online.ogs.ny.gov/SDVOB/search", "status": 404, "date": "2026-11-11", "observed": "IIS not found"},
+        {"url": "https://online.ogs.ny.gov/SDVOB/", "status": 404, "date": "2026-11-11", "observed": "not found"},
+        {"url": "https://ogs.ny.gov/veterans/sdvob-directory", "status": 404, "date": "2026-11-11", "observed": "OGS 404 page"},
+        {"url": "https://ogs.ny.gov/sdvob", "status": 404, "date": "2026-11-11", "observed": "OGS 404 page"}
+      ]
+    },
+    {
+      "id": "sba_dsbs",
+      "name": "SBA Dynamic Small Business Search",
+      "decision": "cannot_be_ingested",
+      "reason": "cannot be ingested: web.sba.gov no longer resolves (DNS failure); the search moved to https://search.certifications.sba.gov/ (200), a single-page app whose only data calls are its own undocumented /_api/v2/search and /_api/v2/profile endpoints. There is no documented public API, bulk file or licence statement, and the 503 seen earlier is gone. Using an undocumented first-party endpoint is not done here.",
+      "evidence": [
+        {"url": "https://web.sba.gov/pro-net/search/dsp_dsbs.cfm", "status": null, "date": "2026-11-11", "observed": "curl: (6) Could not resolve host"},
+        {"url": "https://dsbs.sba.gov/search/dsp_dsbs.cfm", "status": 200, "date": "2026-11-11", "observed": "redirected to https://search.certifications.sba.gov/, 1,249-byte app shell"},
+        {"url": "https://search.certifications.sba.gov/static/js/main.5f8aeefa.js", "status": 200, "date": "2026-11-11", "observed": "fetch calls to /_api/v2/search, /_api/v2/profile; no public API documentation link"}
+      ]
+    },
+    {
+      "id": "sam_gov_entities",
+      "name": "SAM.gov entity registrations",
+      "decision": "cannot_be_ingested",
+      "reason": "cannot be ingested without an API key, and requesting a key is out of scope. https://open.gsa.gov/api/entity-api/ (200) documents requests to api.sam.gov/entity-information with an api_key; public data fields include legal business name, UEI, registration details, physical and mailing addresses, business types, PSC, NAICS and points of contact name and address; an asynchronous extract of up to 1,000,000 records is offered through the same keyed API; a non-federal user with no role gets 10 requests per day and one with a role 1,000. The page describes no keyless public extract. When a key exists later the register fits the contract (register id sam_gov_entities, record id UEI).",
+      "evidence": [
+        {"url": "https://open.gsa.gov/api/entity-api/", "status": 200, "date": "2026-11-11", "observed": "api_key required; rate limits table; Public Data definition; Extract API up to 1,000,000 records"}
+      ]
+    }
+  ]
+}

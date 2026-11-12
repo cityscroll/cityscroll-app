@@ -373,6 +373,91 @@
         "portfolioid"
       ],
       "notes": "Annual fiscal-year program-site offerings. Engine capture is the latest published FY Queens subset with count and metadata guards; citywide publisher totals are context only."
+    },
+    "dos-active-entities": {
+      "id": "dos-active-entities",
+      "source_contract_id": "dos-active-entities",
+      "name": "NYS Department of State Active Corporations",
+      "kind": "socrata",
+      "domain": "https://data.ny.gov",
+      "dataset_id": "n9v6-gdp6",
+      "table_name": "dos_active_entities",
+      "bulk_class": "LIVE",
+      "default_limit": 50,
+      "wh02_full_export": false,
+      "required_fields": [
+        "dos_id",
+        "current_entity_name",
+        "entity_type",
+        "dos_process_name",
+        "initial_dos_filing_date"
+      ],
+      "notes": "On-demand entity lookup plus a committed vendor-stem batch; not a full warehouse bulk copy of the 4.3M-row table."
+    },
+    "irs-eo-bmf-ny": {
+      "id": "irs-eo-bmf-ny",
+      "source_contract_id": "irs-eo-bmf-ny",
+      "name": "IRS Exempt Organizations Business Master File (New York)",
+      "kind": "csv_download",
+      "download_url": "https://www.irs.gov/pub/irs-soi/eo_ny.csv",
+      "table_name": "irs_eo_bmf_ny",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": false,
+      "required_fields": [
+        "EIN",
+        "NAME",
+        "STREET",
+        "CITY",
+        "STATE",
+        "ZIP",
+        "SUBSECTION",
+        "STATUS",
+        "NTEE_CD"
+      ],
+      "notes": "Weekly CSV acquire into first-class inputs; builder shards under site/data/irs_eo_bmf_ny/."
+    },
+    "nys-dol-contractor-registry": {
+      "id": "nys-dol-contractor-registry",
+      "source_contract_id": "nys-dol-contractor-registry",
+      "name": "NYS Department of Labor Contractor Registry",
+      "kind": "socrata",
+      "domain": "https://data.ny.gov",
+      "dataset_id": "i4jv-zkey",
+      "table_name": "nys_dol_contractor_registry",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "soda_order": "certificate_number ASC",
+      "required_fields": [
+        "certificate_number",
+        "business_name",
+        "business_type",
+        "business_has_been_debarred",
+        "business_is_mwbe_owned"
+      ],
+      "notes": "Full registry ingest; published as 64 id/stem shards under site/data/nys_dol_contractor_registry/."
+    },
+    "nyc-sca-prequalified-firms": {
+      "id": "nyc-sca-prequalified-firms",
+      "source_contract_id": "nyc-sca-prequalified-firms",
+      "name": "NYC School Construction Authority Prequalified Firms",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "szkz-syh6",
+      "table_name": "nyc_sca_prequalified_firms",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "soda_order": "prequalified_vendor_name ASC",
+      "required_fields": [
+        "prequalified_vendor_name",
+        "prequalified_vendor_trade_description",
+        "prequalified_vendor_address",
+        "prequalified_vendor_city_name",
+        "prequalified_vendor_state_code"
+      ],
+      "notes": "Trade rows grouped to firm records; published as 16 id/stem shards under site/data/nyc_sca_prequalified_firms/."
     }
   }
 }

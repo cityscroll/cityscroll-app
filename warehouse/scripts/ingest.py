@@ -165,6 +165,27 @@ def stage_raw_from_socrata(ds: dict, snap: str, limit: int) -> dict:
     return meta
 
 
+def stage_raw_from_csv_download(ds: dict, snap: str) -> dict:
+    """Fetch a publisher CSV endpoint (non-Socrata bulk file) and stage it."""
+    if ds.get("kind") != "csv_download":
+        raise SystemExit(f"csv_download path requires kind csv_download; got {ds.get('kind')!r}")
+    url = ds.get("download_url") or ds.get("endpoint")
+    if not url:
+        raise SystemExit(f"Dataset {ds.get('id')!r} needs download_url for csv_download")
+    dest_dir = raw_dir(ds["id"], snap)
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / f"{ds['id']}.csv"
+    print(f"raw: csv_download {url}", flush=True)
+    meta = fetch_to_file(url, dest)
+    meta["mode"] = "csv_download"
+    meta["download_url"] = url
+    if "sha256" not in meta:
+        meta["sha256"] = sha256_file(dest)
+    if "row_count" not in meta:
+        meta["row_count"] = csv_row_count(dest)
+    return meta
+
+
 def stage_raw_from_bulk(ds: dict, snap: str, reg_defaults: dict, *, resume: bool = False) -> dict:
     """Full rows.csv?accessType=DOWNLOAD — WH-02 path only."""
     if ds.get("kind") != "socrata":
@@ -348,6 +369,13 @@ def main(argv: list[str] | None = None) -> int:
             print(
                 f"raw: bulk → {raw_meta['path']} rows={raw_meta['row_count']} "
                 f"bytes={raw_meta['bytes']} sha256={raw_meta.get('sha256', '')[:12]}…"
+            )
+        elif raw_meta is None and ds.get("kind") == "csv_download":
+            raw_meta = stage_raw_from_csv_download(ds, snap)
+            write_json(raw_meta_path, raw_meta)
+            print(
+                f"raw: csv_download → {raw_meta['path']} rows={raw_meta['row_count']} "
+                f"bytes={raw_meta.get('bytes')} sha256={str(raw_meta.get('sha256', ''))[:12]}…"
             )
         elif raw_meta is None:
             assert limit is not None

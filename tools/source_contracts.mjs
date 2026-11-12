@@ -19,6 +19,7 @@ export const ALLOWED_KIND = new Set([
   "mocs-disabled",
   "rss",
   "xlsx",
+  "csv",
 ]);
 const ALLOWED_DELIVERY_TIERS = new Set(["inline-at-build", "edge-materialized", "live-only"]);
 const ALLOWED_CONTRACT_CLASS = new Set(["ingest", "pointer"]);
@@ -299,7 +300,7 @@ export function validateSourceContracts(registry) {
         }
       }
     }
-    if (["checkbook", "arcgis", "geosearch", "rss", "xlsx"].includes(contract.kind) && !contract.endpoint) {
+    if (["checkbook", "arcgis", "geosearch", "rss", "xlsx", "csv"].includes(contract.kind) && !contract.endpoint) {
       errors.push(`${label}: missing endpoint`);
     }
     if (contract.kind === "xlsx") {
@@ -308,6 +309,14 @@ export function validateSourceContracts(registry) {
       }
       if (!/\.xlsx(?:$|\?)/i.test(contract.endpoint || "")) {
         errors.push(`${label}: xlsx endpoint must point at an .xlsx workbook`);
+      }
+    }
+    if (contract.kind === "csv") {
+      if (!Array.isArray(contract.required_fields) || contract.required_fields.length === 0) {
+        errors.push(`${label}: required_fields must be non-empty`);
+      }
+      if (!/\.csv(?:$|\?)/i.test(contract.endpoint || "")) {
+        errors.push(`${label}: csv endpoint must point at a .csv file`);
       }
     }
     if (contract.status === "disabled" && !contract.gap) errors.push(`${label}: disabled sources need a specific gap`);
@@ -369,6 +378,9 @@ export function contractIdentifier(contract) {
   if (contract.kind === "mocs-disabled") return contract.legacy_dataset_ids.join("|");
   if (contract.kind === "rss") return new URL(contract.endpoint).pathname.replace(/^\/+/, "").replace(/\/+$/, "");
   if (contract.kind === "xlsx") {
+    return new URL(contract.endpoint).pathname.replace(/^\/+/, "");
+  }
+  if (contract.kind === "csv") {
     return new URL(contract.endpoint).pathname.replace(/^\/+/, "");
   }
   return "";
@@ -442,6 +454,13 @@ export function validateSourceContractFixtures(registry, fixtures) {
       }
       if (!Array.isArray(fixture.headers) || fixture.headers.length === 0) {
         errors.push(`${contract.id}: xlsx fixture needs numeric/header shape headers`);
+      }
+    } else if (contract.kind === "csv") {
+      if (fixture.response_type !== "text/csv") {
+        errors.push(`${contract.id}: fixture does not record a CSV publication`);
+      }
+      if (!Array.isArray(fixture.headers) || fixture.headers.length === 0) {
+        errors.push(`${contract.id}: csv fixture needs header shape headers`);
       }
     } else if (contract.kind === "mocs-disabled") {
       if (

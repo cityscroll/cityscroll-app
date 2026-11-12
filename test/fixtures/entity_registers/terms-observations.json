@@ -1,0 +1,211 @@
+{
+ "schema": "cityscroll.prekraken.terms_observations.v1",
+ "observed_on": "2026-11-11",
+ "note": "Quotes are short extracts, verbatim, from pages loaded on the observed date. The loaded text is the evidence; the interpretation lines are this slice's reading and are labelled as such.",
+ "sources": [
+  {
+   "id": "open_ny_terms_of_use",
+   "publisher": "New York State Office of Information Technology Services (OPEN-NY / data.ny.gov)",
+   "page_url": "https://data.ny.gov/dataset/OPEN-NY-Terms-Of-Use/77gx-ii52",
+   "document_url": "https://data.ny.gov/api/views/77gx-ii52/files/ef0c1840-ad54-4240-92fd-6397c49fde46?download=true&filename=OPEN-NY_20Terms_20of_20Use.pdf",
+   "document": {
+    "format": "PDF, 6 pages",
+    "bytes": 128817,
+    "sha256": "9437c849705d58df008f01fc23f404444becce6b86676adc3974f9160a4cb650",
+    "last_modified_stated": "March 8, 2013"
+   },
+   "how_found": "The data.ny.gov home page footer links the dataset 'OPEN NY Terms Of Use'; the paths /terms-of-use and the ITS and ny.gov policy paths returned 404 on 2026-11-11.",
+   "loaded": true,
+   "quotes": [
+    {
+     "text": "do not contain restrictions requiring members of the public to use attribution",
+     "where": "introduction"
+    },
+    {
+     "text": "nor require the public to obtain pre-approval before re-use of the data",
+     "where": "introduction"
+    },
+    {
+     "text": "Keep your re-uses lawful.",
+     "where": "introduction"
+    },
+    {
+     "text": "You are welcome to freely download and use this Content",
+     "where": "Contract"
+    },
+    {
+     "text": "non-exclusive, revocable license to use the Content",
+     "where": "Intellectual Property"
+    },
+    {
+     "text": "The State reserves the right to modify, discontinue or remove any Content",
+     "where": "Content Quality, Disclaimer of Warranties, and Limitation of Liability"
+    },
+    {
+     "text": "does not assume legal liability or responsibility for the accuracy, timeliness, completeness, or quality of the Content",
+     "where": "Content Quality, Disclaimer of Warranties, and Limitation of Liability"
+    }
+   ],
+   "conditions_that_bind_this_design": [
+    "Reuse is allowed without attribution or approval, so long as use is lawful. The licence granted is described as revocable and the State may withdraw content, so the design keeps a source_url and queried_at/collected_at on every record and never presents a record as current beyond that stamp.",
+    "The State disclaims accuracy and timeliness. The product must label state records with their query time and the dataset's own rowsUpdatedAt (2026-11-11T14:20:02Z for n9v6-gdp6) rather than describing them as live truth.",
+    "The page's licence field for each dataset is null in the Socrata metadata (observed for n9v6-gdp6, i4jv-zkey); the Terms of Use above are therefore the governing text."
+   ],
+   "risk_observed": {
+    "text": "You must not create accounts with OPEN-NY or access the site through unauthorized means, including but not limited to, by using an automated device, script, bot, spider, crawler or scraper.",
+    "where": "'Public Participation' section, which opens 'To the extent OPEN-NY activates a module or forum for public comment or the uploading of Content'",
+    "reading": "This slice reads the sentence as scoped to the public-participation features and not to the published SODA API, which is the State's documented machine access path for the datasets (the robots file for data.ny.gov permits /resource/ paths and sets Crawl-delay: 1). The text is not unambiguous, so the design keeps traffic small and polite: bounded queries (LIMIT always present), a 300 second cache, one request per user lookup, a 1 second delay in every batch loop, and no account or login. If the State objects, the on-demand path can be switched off without data loss because the batch lookup is committed.",
+    "decision_needed_from_owner": false
+   }
+  },
+  {
+   "id": "data_ny_gov_robots",
+   "publisher": "data.ny.gov",
+   "page_url": "https://data.ny.gov/robots.txt",
+   "loaded": true,
+   "quotes": [
+    {
+     "text": "Crawl-delay: 1",
+     "where": "User-agent: *"
+    }
+   ],
+   "conditions_that_bind_this_design": [
+    "Every batch loop spaces requests by at least 1 second. The /resource/ and /api/views/ paths are not listed as disallowed; the disallowed paths are /browse query variants."
+   ]
+  },
+  {
+   "id": "irs_eo_bmf_page",
+   "publisher": "Internal Revenue Service",
+   "page_url": "https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-file-extract-eo-bmf",
+   "loaded": true,
+   "page_last_reviewed_stated": "15-Oct-2026",
+   "quotes": [
+    {
+     "text": "This is a cumulative file, and the data are the most recent information the IRS has for these organizations.",
+     "where": "page body"
+    },
+    {
+     "text": "States and regions are determined from the filing address and represent the location of an organization's headquarters",
+     "where": "page body"
+    }
+   ],
+   "information_sheet": {
+    "url": "https://www.irs.gov/pub/foia/ig/tege/eo-info.pdf",
+    "bytes": 425457,
+    "sha256": "1ebe7a2752b81d3a2f14a0c452a2e5c4d728b42f5226ae374b3f10d3350eeae4",
+    "loaded": true,
+    "quotes": [
+     {
+      "text": "Churches and other organizations that are not required under the Code to file an application",
+      "where": "'What data isn't available in this dataset?'"
+     },
+     {
+      "text": "Self-declared organizations",
+      "where": "'What data isn't available in this dataset?'"
+     }
+    ]
+   },
+   "conditions_that_bind_this_design": [
+    "The page states no licence, attribution or reuse condition for the files. Nothing in the loaded text restricts reuse; the loaded text also grants nothing explicitly. Whether the extract is in the public domain as a United States government publication is NOT established by any page loaded here and is not asserted.",
+    "State is the headquarters filing address, so an organization operating in New York but headquartered elsewhere is absent from eo_ny.csv, and an organization headquartered in New York with operations elsewhere is present.",
+    "The extract excludes self-declared organizations, churches that never applied for recognition, and split-interest trusts, so a miss in this register does not mean the organization is not tax-exempt."
+   ],
+   "mismatch_observed": "The page states 'Updated data posting date: 10/13/2026' and a national record count of 1,975,975 while the New York file's HTTP Last-Modified is Mon, 09 Nov 2026 05:11:37 GMT. The design records the file's own Last-Modified and sha256 as the vintage and does not rely on the page date."
+  },
+  {
+   "id": "irs_website_policy_pages",
+   "publisher": "Internal Revenue Service",
+   "attempts": [
+    {
+     "url": "https://www.irs.gov/privacy-disclosure/irs-copyright-notices",
+     "status": 404
+    },
+    {
+     "url": "https://www.irs.gov/about-irs/website-policies",
+     "status": 404
+    },
+    {
+     "url": "https://www.irs.gov/privacy-disclosure/irs-website-policies",
+     "status": 404
+    },
+    {
+     "url": "https://www.irs.gov/website-policies",
+     "status": 404
+    },
+    {
+     "url": "https://www.irs.gov/privacy-disclosure/website-policies",
+     "status": 404
+    },
+    {
+     "url": "https://www.irs.gov/privacy-disclosure/irs-privacy-policy",
+     "status": 200,
+     "contains_public_domain_statement": false
+    }
+   ],
+   "loaded": false,
+   "result": "No IRS copyright or reuse notice could be loaded (five 404s; the privacy policy page loaded and contains no public-domain statement). The design relies only on the EO BMF page text above."
+  },
+  {
+   "id": "nyc_open_data_terms",
+   "publisher": "City of New York (NYC Open Data, used for szkz-syh6)",
+   "page_url": "https://www.nyc.gov/main/terms-of-use",
+   "also_loaded": [
+    "https://opendata.cityofnewyork.us/overview/ (redirected to https://www.nyc.gov/opendata/get-started/what-is-open-data-, 200)",
+    "https://data.cityofnewyork.us/api/views/szkz-syh6.json (200, license null, attribution School Construction Authority)"
+   ],
+   "tried_and_failed": [
+    {
+     "url": "https://www.nyc.gov/html/data/terms.html",
+     "status": 404
+    },
+    {
+     "url": "https://www.nyc.gov/opendata/terms-of-use",
+     "status": 404
+    }
+   ],
+   "loaded": true,
+   "quotes": [
+    {
+     "text": "are the property of the City of New York. All rights are reserved.",
+     "where": "IV. INTELLECTUAL PROPERTY (nyc.gov website terms)"
+    }
+   ],
+   "conditions_that_bind_this_design": [
+    "The only NYC terms page that loaded is the general nyc.gov website Terms of Use. It speaks about the website's design and content and says nothing specific about reuse of Open Data datasets; the Open Data overview page loaded states New York City's Open Data Law but no reuse licence either. The slice therefore asserts no NYC reuse licence for szkz-syh6 and records the publisher (School Construction Authority) and the dataset's own updated time on every record. The engine already redistributes NYC Open Data datasets (doing-business-entities, ocp awards) on the same posture."
+   ]
+  },
+  {
+   "id": "sam_gov_entity_api_docs",
+   "publisher": "U.S. General Services Administration",
+   "page_url": "https://open.gsa.gov/api/entity-api/",
+   "loaded": true,
+   "quotes": [
+    {
+     "text": "Public Data: This constitutes publicly available entities and their unclassified data",
+     "where": "Overview"
+    },
+    {
+     "text": "Non-federal user with no Role in SAM.gov Personal API key 10 requests/day",
+     "where": "API Key Rate Limits table"
+    }
+   ],
+   "conditions_that_bind_this_design": [
+    "Requests need an api_key parameter. No keyless public extract is described on this page. No key was requested (out of scope)."
+   ]
+  }
+ ],
+ "could_not_load": [
+  {
+   "what": "a data.ny.gov per-dataset licence statement",
+   "why": "the licence field is null in the metadata of n9v6-gdp6 and i4jv-zkey"
+  },
+  {
+   "what": "an IRS copyright or reuse notice",
+   "why": "five candidate URLs returned 404 on 2026-11-11"
+  },
+  {
+   "what": "a dataset-specific NYC Open Data reuse licence",
+   "why": "no such text exists on the pages that loaded (nyc.gov Terms of Use is website-only; dataset metadata license is null)"
+  }
+ ]
+}
