@@ -33,6 +33,28 @@ export {
 } from "./procurement_policy.mjs";
 
 export {
+  PROCUREMENT_LEGAL_REGISTER_SCHEMA,
+  PROCUREMENT_LEGAL_REGISTER_RELATIVE,
+  LEGAL_POLICY_REGISTRY_ID,
+  LEGAL_RULE_KINDS,
+  LEGAL_JURISDICTIONS,
+  LEGAL_INSTRUMENTS,
+  LEGAL_REVIEW_STATUSES,
+  LEGAL_EVALUATION_STATES,
+  LEGAL_DIVERGENCE_KINDS,
+  LEGAL_FACT_VOCABULARY,
+  LEGAL_EFFECT_KEYS,
+  sha256Hex,
+  normalizeLegalText,
+  loadProcurementLegalRegister,
+  validateLegalRegister,
+  registerAsOf,
+  registerKnownAsOf,
+  resolveLegalRules,
+  effectFor,
+} from "./procurement_legal_register.mjs";
+
+export {
   PERSON_PROJECTION_SCHEMA,
   PERSON_IDENTITY_LINK_SCHEMA,
   PERSON_IDENTITY_LINK_VERSION,

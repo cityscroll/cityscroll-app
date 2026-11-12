@@ -33,6 +33,7 @@ cards only when metrics show a real gap.
 | `person.mjs` | Source-qualified person projection, `person_identity_link.v1` builder, capability boundary |
 | `person_identity_link_ledger.mjs` + `person_identity_links.jsonl` | Append-only reviewed same-person ledger, accepted-only `canonical_person_ref` materialization, diagnostics listing (`node tools/check_person_identity_link_ledger.mjs --check`) |
 | `land_use_filing.mjs` | LDP-23: land-use filing obligation, filing document, and Racial Equity Report envelope contracts, the five filing relations, and an as-of projector |
+| `procurement_legal_register.mjs` + `procurement_legal_register.v1.json` | Append-only, bitemporal register of cited NYC procurement-law beliefs; three-valued evaluation; PPB 3-08 numbers read from `procurement_policy_registry`. Source captures under `test/fixtures/procurement_legal_register/sources/` are agent-checked and not practitioner-reviewed. |
 | `index.mjs` | Package exports |
 
 Docs: [`docs/civic-graph.md`](../docs/civic-graph.md) · [`docs/multi-flywheel.md`](../docs/multi-flywheel.md) · ADR: [`docs/adr/ontology-registry-v0.md`](../docs/adr/ontology-registry-v0.md) · [`docs/adr/land-use-filing-ontology.md`](../docs/adr/land-use-filing-ontology.md).

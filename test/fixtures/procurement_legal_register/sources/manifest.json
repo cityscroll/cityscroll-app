@@ -1,0 +1,39 @@
+{
+ "schema": "cityscroll.legal_source_capture.v1",
+ "retrieved_on": "2026-11-11",
+ "publisher": "BetaNYC nyc-charter-laws-rules (public mirror of official NYC Charter, Administrative Code and Rules)",
+ "publisher_url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+ "currency_statement": "Administrative Code current through Local Law 2026/163, enacted November 7, 2026; rules effective November 8, 2026 (as stated by the mirror)",
+ "official_site_note": "codelibrary.amlegal.com returned HTTP 403 to automated requests on 2026-11-11; section 3-08 sentences were additionally compared with the PPB Rules PDF published by MOCS (https://www.nyc.gov/assets/mocs/downloads/Regulations/PPB/PPBRules.pdf).",
+ "review": "source text captured by an agent; not reviewed by a legal practitioner",
+ "files": {
+  "admin-code-6-129.md": {
+   "bytes": 73230,
+   "sha256": "16a23de92219e9e066e307fa9e3f1028abe24bbf5c3221b72f479684ccba9527"
+  },
+  "charter-311.md": {
+   "bytes": 9704,
+   "sha256": "4238fa2dbd67c1a2a7a56b89462ff7c1567d518b61520f7da086752c4477ca31"
+  },
+  "ppb-1-01.md": {
+   "bytes": 31644,
+   "sha256": "1c13368321b3ab905def81747ef0f718ad2eac1bc7a7ea0790811cc1e6d64b8c"
+  },
+  "ppb-1-02.md": {
+   "bytes": 8614,
+   "sha256": "0746509aaa802445edae54261e0e146ac99392b6cea72a63f9b6e58f56d2a33c"
+  },
+  "ppb-3-08.md": {
+   "bytes": 7060,
+   "sha256": "58178d4bd1eacdeab3a98165ea2c1fa7c02e614780189e6076206dae2fca0a7f"
+  },
+  "ppb-3-16.md": {
+   "bytes": 31108,
+   "sha256": "67857309be79efeb3649ca8704991687fcd579b4840c3055416023a01b3fc36f"
+  },
+  "ppb-3-04.md": {
+   "bytes": 9533,
+   "sha256": "93f400fb5838a781a1d8a8d5bee06b259852103b11e34db938d705cbbbf48b21"
+  }
+ }
+}
