@@ -1,12 +1,12 @@
 {
   "schema": "cityscroll.notice_procurement_subjects.v1",
   "version": 1,
-  "generated_at": "2026-11-10T15:17:39.651Z",
+  "generated_at": "2026-11-12T15:39:51.311Z",
   "method": "compatibility.city_record_notice_hrefs",
-  "source_model_fingerprint": "6d7347cdb407d8380f85542113c940395643f3703d85c1824a42c1ddf589d069",
+  "source_model_fingerprint": "66b29a9bc38a18af74d7fa962d6fe32276656dcef6a0e34657ed93c5fd7e5cf0",
   "counts": {
-    "notices": 12944,
-    "subject_links": 12944
+    "notices": 12945,
+    "subject_links": 12945
   },
   "by_notice": {
     "20201016111": [
@@ -66030,6 +66030,13 @@
       {
         "procurement_id": "procurement:contract:MMA185020258805849",
         "href": "/procurements/procurement%3Acontract%3AMMA185020258805849",
+        "relation_basis": "compatibility.city_record_notice_hrefs"
+      }
+    ],
+    "20250501009": [
+      {
+        "procurement_id": "procurement:contract:MMA184620258807055",
+        "href": "/procurements/procurement%3Acontract%3AMMA184620258807055",
         "relation_basis": "compatibility.city_record_notice_hrefs"
       }
     ],
