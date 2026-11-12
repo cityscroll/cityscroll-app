@@ -2304,7 +2304,7 @@
     procurement_coverage_mwbe_award_not_yet_found: "M/WBE 낙찰 공고를 아직 찾지 못함",
     procurement_coverage_counts: "{observed}건 관찰, 게시자는 {publisher}건 보고",
     plan_reader_kind_label: "기관 조달 계획",
-    plan_reader_not_solicitation: "이것은 기관이 공개한 계획이며 입찰 공고가 아닙니다. 기관은 이를 변경하거나 연기하거나 아예 공고하지 않을 수 있습니다.",
+    plan_reader_not_solicitation: "이것은 기관이 공개한 계획입니다. 기관은 이를 변경하거나 연기하거나 응답 접수를 열지 않은 채로 둘 수 있습니다.",
     plan_reader_source_ll1: "지방법 제1호 계획(예상 계약 조치)",
     plan_reader_source_ll63: "지방법 제63호 계획(표준 및 전문 서비스)",
     plan_reader_quarter: "{fiscal_year} 회계연도 {quarter}분기에 공고 예정",

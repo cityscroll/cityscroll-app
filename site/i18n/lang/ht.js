@@ -2303,7 +2303,7 @@
     procurement_coverage_mwbe_award_not_yet_found: "Avi prim M/WBE a poko jwenn",
     procurement_coverage_counts: "{observed} obsève, piblikatè a rapòte {publisher}",
     plan_reader_kind_label: "Plan acha ajans lan",
-    plan_reader_not_solicitation: "Sa a se yon plan ajans lan pibliye, se pa yon apèl òf. Ajans lan ka chanje l, retade l, oswa pa janm lanse apèl òf la.",
+    plan_reader_not_solicitation: "Sa a se yon plan ajans lan pibliye. Ajans lan ka chanje l, retade l, oswa kite l san ouvri repons.",
     plan_reader_source_ll1: "Plan Lwa Lokal 1 (kontra yo prevwa)",
     plan_reader_source_ll63: "Plan Lwa Lokal 63 (sèvis estanda ak sèvis pwofesyonèl)",
     plan_reader_quarter: "Apèl òf la planifye pou trimès {quarter} ane fiskal {fiscal_year}",

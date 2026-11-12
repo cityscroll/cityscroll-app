@@ -2304,7 +2304,7 @@
     procurement_coverage_mwbe_award_not_yet_found: "尚未找到 M/WBE 授标公告",
     procurement_coverage_counts: "已观察到 {observed} 条，发布方报告 {publisher} 条",
     plan_reader_kind_label: "机构采购计划",
-    plan_reader_not_solicitation: "这是机构公布的计划，不是招标。机构可能更改、推迟或根本不进行招标。",
+    plan_reader_not_solicitation: "这是机构公布的计划。机构可能更改、推迟，或始终不开放响应。",
     plan_reader_source_ll1: "地方法第1号计划（预期签约事项）",
     plan_reader_source_ll63: "地方法第63号计划（标准服务和专业服务）",
     plan_reader_quarter: "计划在 {fiscal_year} 财年第 {quarter} 季度招标",

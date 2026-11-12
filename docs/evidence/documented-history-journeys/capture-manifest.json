@@ -981,7 +981,7 @@
       },
       {
         "path": "site/i18n.js",
-        "sha256": "46e7d802c2fd3d4a64ab1062457720c80a145dc4c8a38d473edc4a056c5ee703"
+        "sha256": "a265396278057cbf66d3fdba43123b841548f416859b06c3a275ecc938edbd01"
       },
       {
         "path": "site/land_view_state.mjs",
@@ -1314,7 +1314,7 @@
       },
       {
         "path": "site/i18n.js",
-        "sha256": "46e7d802c2fd3d4a64ab1062457720c80a145dc4c8a38d473edc4a056c5ee703"
+        "sha256": "a265396278057cbf66d3fdba43123b841548f416859b06c3a275ecc938edbd01"
       },
       {
         "path": "site/land_view_state.mjs",

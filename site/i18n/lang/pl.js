@@ -2318,7 +2318,7 @@
     procurement_coverage_mwbe_award_not_yet_found: "Ogłoszenia o przyznaniu M/WBE jeszcze nie znaleziono",
     procurement_coverage_counts: "{observed} zaobserwowanych, wydawca podaje {publisher}",
     plan_reader_kind_label: "Plan zamówień agencji",
-    plan_reader_not_solicitation: "To jest plan opublikowany przez agencję, a nie ogłoszenie o zamówieniu. Agencja może go zmienić, odłożyć lub w ogóle nie ogłosić zamówienia.",
+    plan_reader_not_solicitation: "To jest plan opublikowany przez agencję. Agencja może go zmienić, odłożyć lub pozostawić bez otwarcia zgłoszeń.",
     plan_reader_source_ll1: "Plan według ustawy lokalnej nr 1 (przewidywane działania kontraktowe)",
     plan_reader_source_ll63: "Plan według ustawy lokalnej nr 63 (usługi standardowe i profesjonalne)",
     plan_reader_quarter: "Ogłoszenie zaplanowane na {quarter}. kwartał roku budżetowego {fiscal_year}",

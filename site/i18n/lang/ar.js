@@ -2307,7 +2307,7 @@
     procurement_coverage_mwbe_award_not_yet_found: "إعلان ترسية M/WBE لم يُعثر عليه بعد",
     procurement_coverage_counts: "{observed} مرصودة، والناشر يبلّغ عن {publisher}",
     plan_reader_kind_label: "خطة مشتريات الجهة",
-    plan_reader_not_solicitation: "هذه خطة نشرتها الجهة، وليست طلب عروض. قد تغيّرها الجهة أو تؤجلها أو لا تطرحها أبدًا.",
+    plan_reader_not_solicitation: "هذه خطة نشرتها الجهة. قد تغيّرها الجهة أو تؤجلها أو تتركها دون فتح باب الردود.",
     plan_reader_source_ll1: "خطة القانون المحلي رقم 1 (إجراءات التعاقد المتوقعة)",
     plan_reader_source_ll63: "خطة القانون المحلي رقم 63 (الخدمات القياسية والمهنية)",
     plan_reader_quarter: "من المخطط طرح العروض في الربع {quarter} من السنة المالية {fiscal_year}",

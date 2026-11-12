@@ -2304,7 +2304,7 @@
     procurement_coverage_mwbe_award_not_yet_found: "M/WBE পুরস্কার বিজ্ঞপ্তি এখনও পাওয়া যায়নি",
     procurement_coverage_counts: "{observed} দেখা গেছে, প্রকাশক জানায় {publisher}",
     plan_reader_kind_label: "সংস্থার ক্রয় পরিকল্পনা",
-    plan_reader_not_solicitation: "এটি সংস্থার প্রকাশিত একটি পরিকল্পনা, কোনো দরপত্র আহ্বান নয়। সংস্থা এটি বদলাতে, পিছিয়ে দিতে বা একেবারেই আহ্বান না করতে পারে।",
+    plan_reader_not_solicitation: "এটি সংস্থার প্রকাশিত একটি পরিকল্পনা। সংস্থা এটি বদলাতে, পিছিয়ে দিতে বা সাড়া দেওয়ার সুযোগ না খুলে রাখতে পারে।",
     plan_reader_source_ll1: "স্থানীয় আইন ১ পরিকল্পনা (প্রত্যাশিত চুক্তি কার্যক্রম)",
     plan_reader_source_ll63: "স্থানীয় আইন ৬৩ পরিকল্পনা (স্ট্যান্ডার্ড ও পেশাদার সেবা)",
     plan_reader_quarter: "{fiscal_year} অর্থবছরের {quarter} নম্বর ত্রৈমাসিকে দরপত্র আহ্বানের পরিকল্পনা",

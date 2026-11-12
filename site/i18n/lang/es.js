@@ -1525,7 +1525,7 @@
     procurement_coverage_mwbe_award_not_yet_found: "Aviso de adjudicación M/WBE aún no encontrado",
     procurement_coverage_counts: "{observed} observados, el editor informa {publisher}",
     plan_reader_kind_label: "Plan de compras de la agencia",
-    plan_reader_not_solicitation: "Este es un plan que publicó la agencia, no una convocatoria. La agencia puede cambiarlo, aplazarlo o no convocarlo nunca.",
+    plan_reader_not_solicitation: "Este es un plan que publicó la agencia. La agencia puede cambiarlo, aplazarlo o dejarlo sin abrir una convocatoria.",
     plan_reader_source_ll1: "Plan de la Ley Local 1 (contrataciones previstas)",
     plan_reader_source_ll63: "Plan de la Ley Local 63 (servicios estándar y profesionales)",
     plan_reader_quarter: "Convocatoria prevista para el trimestre {quarter} del año fiscal {fiscal_year}",

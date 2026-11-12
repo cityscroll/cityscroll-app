@@ -296,7 +296,7 @@ test("(vi) every row renders as a plan with the not-a-solicitation sentence; qua
   for (const row of rows) {
     const r = renderPlanRow(row);
     assert.equal(r.kind_label, "Agency procurement plan");
-    assert.equal(r.not_solicitation, "This is a plan the agency published, not a solicitation. The agency may change it, delay it, or not solicit it at all.");
+    assert.equal(r.not_solicitation, "This is a plan the agency published. The agency may change it, delay it, or leave it without opening responses.");
     assert.equal(r.fiscal_year_span, "New York City fiscal year 2027 runs from July 1, 2026 to June 30, 2027.");
     assert.equal(r.quarter, row.quarter == null ? "Planned quarter not published" : `Solicitation planned for quarter ${row.quarter} of fiscal year 2027`);
     if (row.estimated_amount == null) {

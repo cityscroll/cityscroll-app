@@ -2307,7 +2307,7 @@
     procurement_coverage_mwbe_award_not_yet_found: "M/WBE ایوارڈ نوٹس ابھی نہیں ملا",
     procurement_coverage_counts: "{observed} مشاہدہ شدہ، ناشر {publisher} بتاتا ہے",
     plan_reader_kind_label: "ادارے کا خریداری منصوبہ",
-    plan_reader_not_solicitation: "یہ ادارے کا شائع کردہ منصوبہ ہے، ٹینڈر کی طلبی نہیں۔ ادارہ اسے بدل سکتا ہے، مؤخر کر سکتا ہے یا بالکل طلب نہیں کر سکتا۔",
+    plan_reader_not_solicitation: "یہ ادارے کا شائع کردہ منصوبہ ہے۔ ادارہ اسے بدل سکتا ہے، مؤخر کر سکتا ہے یا جوابات کھولے بغیر چھوڑ سکتا ہے۔",
     plan_reader_source_ll1: "مقامی قانون 1 کا منصوبہ (متوقع معاہداتی اقدامات)",
     plan_reader_source_ll63: "مقامی قانون 63 کا منصوبہ (معیاری اور پیشہ ورانہ خدمات)",
     plan_reader_quarter: "مالی سال {fiscal_year} کی سہ ماہی {quarter} میں طلبی کا منصوبہ",

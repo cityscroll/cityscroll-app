@@ -80,7 +80,7 @@ export const ROW_KEYS = Object.freeze([
 // and in each site/i18n/lang/<lang>.js; consumers pass their own t().
 export const PLAN_READER_STRINGS = Object.freeze({
   plan_reader_kind_label: "Agency procurement plan",
-  plan_reader_not_solicitation: "This is a plan the agency published, not a solicitation. The agency may change it, delay it, or not solicit it at all.",
+  plan_reader_not_solicitation: "This is a plan the agency published. The agency may change it, delay it, or leave it without opening responses.",
   plan_reader_source_ll1: "Local Law 1 plan (anticipated contracting actions)",
   plan_reader_source_ll63: "Local Law 63 plan (standard and professional services)",
   plan_reader_quarter: "Solicitation planned for quarter {quarter} of fiscal year {fiscal_year}",

@@ -2333,7 +2333,7 @@
     procurement_coverage_mwbe_award_not_yet_found: "Avis d’attribution M/WBE pas encore trouvé",
     procurement_coverage_counts: "{observed} observés, l’éditeur en signale {publisher}",
     plan_reader_kind_label: "Plan d'achats de l'agence",
-    plan_reader_not_solicitation: "Il s'agit d'un plan publié par l'agence, pas d'un appel d'offres. L'agence peut le modifier, le reporter ou ne jamais lancer l'appel.",
+    plan_reader_not_solicitation: "Il s'agit d'un plan publié par l'agence. L'agence peut le modifier, le reporter ou le laisser sans ouvrir d'appel d'offres.",
     plan_reader_source_ll1: "Plan de la loi locale 1 (marchés prévus)",
     plan_reader_source_ll63: "Plan de la loi locale 63 (services standard et professionnels)",
     plan_reader_quarter: "Appel prévu au trimestre {quarter} de l'exercice {fiscal_year}",
