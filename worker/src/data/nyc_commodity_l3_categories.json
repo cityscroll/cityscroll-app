@@ -1,0 +1,3242 @@
+{
+ "schema": "cityscroll.nyc_commodity_l3_index.v1",
+ "version": "snapshot-2026-11-11-6325fbf06b26",
+ "source_sha256": "6325fbf06b2620ea7992c6f16da4f1f209cd1339d736f86a23b17fdec579a6b7",
+ "categories_path": "/data/procurement_codes/nyc-commodity-categories.json",
+ "categories_sha256": "bbdae6e16eba9019f9a9757092070d3804f024fe0aa16e91ad4364520c3a4f8c",
+ "match_rule": "exact label after Unicode NFKC, whitespace collapse, trim and lower-case",
+ "categories": [
+  {
+   "code": "001",
+   "label": "Agricultural Equipment and Supplies",
+   "parents": [
+    "1",
+    "01"
+   ]
+  },
+  {
+   "code": "002",
+   "label": "Agricultural Services",
+   "parents": [
+    "1",
+    "01"
+   ]
+  },
+  {
+   "code": "003",
+   "label": "Agriculture and Animal Management Services",
+   "parents": [
+    "1",
+    "01"
+   ]
+  },
+  {
+   "code": "004",
+   "label": "Animals, Livestock, Wildlife, and Related Services",
+   "parents": [
+    "1",
+    "01"
+   ]
+  },
+  {
+   "code": "005",
+   "label": "Animals, Livestock, Wildlife, and Related Supplies",
+   "parents": [
+    "1",
+    "01"
+   ]
+  },
+  {
+   "code": "006",
+   "label": "Veterinary and Animal Care Services",
+   "parents": [
+    "1",
+    "01"
+   ]
+  },
+  {
+   "code": "007",
+   "label": "Clothing and Accessories",
+   "parents": [
+    "1",
+    "02"
+   ]
+  },
+  {
+   "code": "008",
+   "label": "Clothing Related Services",
+   "parents": [
+    "1",
+    "02"
+   ]
+  },
+  {
+   "code": "009",
+   "label": "Safety and Protective Equipment",
+   "parents": [
+    "1",
+    "02"
+   ]
+  },
+  {
+   "code": "010",
+   "label": "Textiles and Sewing Supplies",
+   "parents": [
+    "1",
+    "02"
+   ]
+  },
+  {
+   "code": "011",
+   "label": "Art Supplies and Equipment",
+   "parents": [
+    "1",
+    "03"
+   ]
+  },
+  {
+   "code": "012",
+   "label": "Arts and Crafts Services",
+   "parents": [
+    "1",
+    "03"
+   ]
+  },
+  {
+   "code": "013",
+   "label": "Event and Entertainment Management Services",
+   "parents": [
+    "1",
+    "03"
+   ]
+  },
+  {
+   "code": "014",
+   "label": "Event and Entertainment Services",
+   "parents": [
+    "1",
+    "03"
+   ]
+  },
+  {
+   "code": "015",
+   "label": "Event and Entertainment Supplies",
+   "parents": [
+    "1",
+    "03"
+   ]
+  },
+  {
+   "code": "016",
+   "label": "Graphic Design, Photographic and Film Equipment and Supplies",
+   "parents": [
+    "1",
+    "03"
+   ]
+  },
+  {
+   "code": "017",
+   "label": "Production, Film, Stage and Theatre Services",
+   "parents": [
+    "1",
+    "03"
+   ]
+  },
+  {
+   "code": "018",
+   "label": "Production, Film, Stage and Theatre Supplies",
+   "parents": [
+    "1",
+    "03"
+   ]
+  },
+  {
+   "code": "019",
+   "label": "Promotional Items and Incentives Services",
+   "parents": [
+    "1",
+    "03"
+   ]
+  },
+  {
+   "code": "020",
+   "label": "Promotional Items and Incentives Supplies",
+   "parents": [
+    "1",
+    "03"
+   ]
+  },
+  {
+   "code": "021",
+   "label": "Industrial Chemicals",
+   "parents": [
+    "1",
+    "04"
+   ]
+  },
+  {
+   "code": "022",
+   "label": "Pesticides",
+   "parents": [
+    "1",
+    "04"
+   ]
+  },
+  {
+   "code": "023",
+   "label": "Specialty Chemicals",
+   "parents": [
+    "1",
+    "04"
+   ]
+  },
+  {
+   "code": "024",
+   "label": "Water Treatment Chemicals",
+   "parents": [
+    "1",
+    "04"
+   ]
+  },
+  {
+   "code": "025",
+   "label": "Appliance Services",
+   "parents": [
+    "1",
+    "05"
+   ]
+  },
+  {
+   "code": "026",
+   "label": "Appliances",
+   "parents": [
+    "1",
+    "05"
+   ]
+  },
+  {
+   "code": "027",
+   "label": "Audiovisual Equipment and Accessories",
+   "parents": [
+    "1",
+    "05"
+   ]
+  },
+  {
+   "code": "028",
+   "label": "Audiovisual Equipment Related Services",
+   "parents": [
+    "1",
+    "05"
+   ]
+  },
+  {
+   "code": "029",
+   "label": "Electronics and Power Supplies",
+   "parents": [
+    "1",
+    "05"
+   ]
+  },
+  {
+   "code": "030",
+   "label": "Gas System Equipment and Supplies",
+   "parents": [
+    "1",
+    "06"
+   ]
+  },
+  {
+   "code": "031",
+   "label": "Power Generating Equipment",
+   "parents": [
+    "1",
+    "06"
+   ]
+  },
+  {
+   "code": "032",
+   "label": "Renewable Energy Equipment and Supplies",
+   "parents": [
+    "1",
+    "06"
+   ]
+  },
+  {
+   "code": "033",
+   "label": "Renewable Energy Services",
+   "parents": [
+    "1",
+    "06"
+   ]
+  },
+  {
+   "code": "034",
+   "label": "Alarm and Security System Services",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "035",
+   "label": "Cleaning and Laundry Management Services",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "036",
+   "label": "Cleaning and Laundry Related Supplies",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "037",
+   "label": "Cleaning and Laundry Services",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "038",
+   "label": "Facilities Equipment and Supplies",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "039",
+   "label": "Facilities Maintenance and Repair Services",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "040",
+   "label": "Facilities Management Services",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "041",
+   "label": "Facilities Rental or Lease Services",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "042",
+   "label": "Pest Control Services",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "043",
+   "label": "Portable Toilet Services",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "044",
+   "label": "Real Estate Services",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "045",
+   "label": "Voting Machines and Supplies",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "046",
+   "label": "Voting Machines Services",
+   "parents": [
+    "1",
+    "07"
+   ]
+  },
+  {
+   "code": "047",
+   "label": "Aircraft and Aviation Vehicles and Equipment",
+   "parents": [
+    "1",
+    "08"
+   ]
+  },
+  {
+   "code": "048",
+   "label": "Automotive Vehicles",
+   "parents": [
+    "1",
+    "08"
+   ]
+  },
+  {
+   "code": "049",
+   "label": "Aviation Related Services",
+   "parents": [
+    "1",
+    "08"
+   ]
+  },
+  {
+   "code": "050",
+   "label": "Drones",
+   "parents": [
+    "1",
+    "08"
+   ]
+  },
+  {
+   "code": "051",
+   "label": "Fleet Management Services",
+   "parents": [
+    "1",
+    "08"
+   ]
+  },
+  {
+   "code": "052",
+   "label": "Fleet Services",
+   "parents": [
+    "1",
+    "08"
+   ]
+  },
+  {
+   "code": "053",
+   "label": "Fleet Supplies",
+   "parents": [
+    "1",
+    "08"
+   ]
+  },
+  {
+   "code": "054",
+   "label": "Marine Vessel Related Services",
+   "parents": [
+    "1",
+    "08"
+   ]
+  },
+  {
+   "code": "055",
+   "label": "Marine Vessels and Equipment",
+   "parents": [
+    "1",
+    "08"
+   ]
+  },
+  {
+   "code": "056",
+   "label": "Trailers",
+   "parents": [
+    "1",
+    "08"
+   ]
+  },
+  {
+   "code": "057",
+   "label": "Beverages",
+   "parents": [
+    "1",
+    "09"
+   ]
+  },
+  {
+   "code": "058",
+   "label": "Food and Beverage Management Services",
+   "parents": [
+    "1",
+    "09"
+   ]
+  },
+  {
+   "code": "059",
+   "label": "Food, Beverage and Preparation Equipment",
+   "parents": [
+    "1",
+    "09"
+   ]
+  },
+  {
+   "code": "060",
+   "label": "Food, Beverage and Preparation Services",
+   "parents": [
+    "1",
+    "09"
+   ]
+  },
+  {
+   "code": "061",
+   "label": "Non-Perishable Foods",
+   "parents": [
+    "1",
+    "09"
+   ]
+  },
+  {
+   "code": "062",
+   "label": "Paper Products - Food Related",
+   "parents": [
+    "1",
+    "09"
+   ]
+  },
+  {
+   "code": "063",
+   "label": "Perishable Foods",
+   "parents": [
+    "1",
+    "09"
+   ]
+  },
+  {
+   "code": "064",
+   "label": "Prepared Meals",
+   "parents": [
+    "1",
+    "09"
+   ]
+  },
+  {
+   "code": "065",
+   "label": "Water and Water Coolers",
+   "parents": [
+    "1",
+    "09"
+   ]
+  },
+  {
+   "code": "066",
+   "label": "Aviation Fuel",
+   "parents": [
+    "1",
+    "10"
+   ]
+  },
+  {
+   "code": "067",
+   "label": "Fuel Equipment and Supplies",
+   "parents": [
+    "1",
+    "10"
+   ]
+  },
+  {
+   "code": "068",
+   "label": "Fuel Management Services",
+   "parents": [
+    "1",
+    "10"
+   ]
+  },
+  {
+   "code": "069",
+   "label": "Heating Fuels",
+   "parents": [
+    "1",
+    "10"
+   ]
+  },
+  {
+   "code": "070",
+   "label": "Vehicle Fuel and Fluids",
+   "parents": [
+    "1",
+    "10"
+   ]
+  },
+  {
+   "code": "071",
+   "label": "Blinds, Curtains, and Shades",
+   "parents": [
+    "1",
+    "11"
+   ]
+  },
+  {
+   "code": "072",
+   "label": "Dormitory Furniture",
+   "parents": [
+    "1",
+    "11"
+   ]
+  },
+  {
+   "code": "073",
+   "label": "Furniture Services",
+   "parents": [
+    "1",
+    "11"
+   ]
+  },
+  {
+   "code": "074",
+   "label": "Household Furniture",
+   "parents": [
+    "1",
+    "11"
+   ]
+  },
+  {
+   "code": "075",
+   "label": "Library Furniture",
+   "parents": [
+    "1",
+    "11"
+   ]
+  },
+  {
+   "code": "076",
+   "label": "Mirrors",
+   "parents": [
+    "1",
+    "11"
+   ]
+  },
+  {
+   "code": "077",
+   "label": "Office Furniture and Accessories",
+   "parents": [
+    "1",
+    "11"
+   ]
+  },
+  {
+   "code": "078",
+   "label": "Schoolroom and Cafeteria Furniture",
+   "parents": [
+    "1",
+    "11"
+   ]
+  },
+  {
+   "code": "079",
+   "label": "Tables, Chairs, and Counters",
+   "parents": [
+    "1",
+    "11"
+   ]
+  },
+  {
+   "code": "080",
+   "label": "Book and Reference Material Services",
+   "parents": [
+    "1",
+    "12"
+   ]
+  },
+  {
+   "code": "081",
+   "label": "Human Resources Services",
+   "parents": [
+    "1",
+    "12"
+   ]
+  },
+  {
+   "code": "082",
+   "label": "Insurance Management Services",
+   "parents": [
+    "1",
+    "12"
+   ]
+  },
+  {
+   "code": "083",
+   "label": "Insurance Services",
+   "parents": [
+    "1",
+    "12"
+   ]
+  },
+  {
+   "code": "084",
+   "label": "Miscellaneous Administrative Services",
+   "parents": [
+    "1",
+    "12"
+   ]
+  },
+  {
+   "code": "085",
+   "label": "Office Equipment Services",
+   "parents": [
+    "1",
+    "12"
+   ]
+  },
+  {
+   "code": "086",
+   "label": "Printing Services",
+   "parents": [
+    "1",
+    "12"
+   ]
+  },
+  {
+   "code": "087",
+   "label": "Shipping and Logistics Services",
+   "parents": [
+    "1",
+    "12"
+   ]
+  },
+  {
+   "code": "088",
+   "label": "Supply Chain Management Services",
+   "parents": [
+    "1",
+    "12"
+   ]
+  },
+  {
+   "code": "089",
+   "label": "Training Services",
+   "parents": [
+    "1",
+    "12"
+   ]
+  },
+  {
+   "code": "090",
+   "label": "Books, Reference Materials, and Related Supplies",
+   "parents": [
+    "1",
+    "13"
+   ]
+  },
+  {
+   "code": "091",
+   "label": "Office Equipment",
+   "parents": [
+    "1",
+    "13"
+   ]
+  },
+  {
+   "code": "092",
+   "label": "Office Supplies",
+   "parents": [
+    "1",
+    "13"
+   ]
+  },
+  {
+   "code": "093",
+   "label": "Shipping and Packing Supplies",
+   "parents": [
+    "1",
+    "13"
+   ]
+  },
+  {
+   "code": "094",
+   "label": "Sale and Surplus Items",
+   "parents": [
+    "1",
+    "14"
+   ]
+  },
+  {
+   "code": "095",
+   "label": "Air Transportation Services",
+   "parents": [
+    "1",
+    "15"
+   ]
+  },
+  {
+   "code": "096",
+   "label": "Ground Transportation Equipment",
+   "parents": [
+    "1",
+    "15"
+   ]
+  },
+  {
+   "code": "097",
+   "label": "Ground Transportation Services",
+   "parents": [
+    "1",
+    "15"
+   ]
+  },
+  {
+   "code": "098",
+   "label": "Marine Transpiration Services",
+   "parents": [
+    "1",
+    "15"
+   ]
+  },
+  {
+   "code": "099",
+   "label": "Transportation Assistance Services",
+   "parents": [
+    "1",
+    "15"
+   ]
+  },
+  {
+   "code": "100",
+   "label": "Travel Management Services",
+   "parents": [
+    "1",
+    "15"
+   ]
+  },
+  {
+   "code": "101",
+   "label": "Building Maintenance and Repair Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "102",
+   "label": "Carpentry Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "103",
+   "label": "Demolition Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "104",
+   "label": "Door Maintenance and Repair Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "105",
+   "label": "Electrical Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "106",
+   "label": "Elevator/Escalator Installation, Maintenance and Repair Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "107",
+   "label": "Fabricated and Prefabricated Buildings/Structures",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "108",
+   "label": "Fabricated and Prefabricated Buildings/Structures Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "109",
+   "label": "Flooring Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "110",
+   "label": "General Contractor/Construction Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "111",
+   "label": "HVAC Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "112",
+   "label": "Inspection/Testing",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "113",
+   "label": "Ironwork and Welding Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "114",
+   "label": "Masonry Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "115",
+   "label": "Painting/Plastering/Finishing Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "116",
+   "label": "Plumbing Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "117",
+   "label": "Roofing/Siding Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "118",
+   "label": "Scaffolding Maintenance and Rental Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "119",
+   "label": "Windows/Glazing Installation and Maintenance Services",
+   "parents": [
+    "2",
+    "16"
+   ]
+  },
+  {
+   "code": "120",
+   "label": "Environmental Site Assessment, Permitting, Auditing Services",
+   "parents": [
+    "2",
+    "17"
+   ]
+  },
+  {
+   "code": "121",
+   "label": "Environmental Testing Services",
+   "parents": [
+    "2",
+    "17"
+   ]
+  },
+  {
+   "code": "122",
+   "label": "Hazardous Materials (Asbestos/Lead/Mold) Services",
+   "parents": [
+    "2",
+    "17"
+   ]
+  },
+  {
+   "code": "123",
+   "label": "Soil Remediation Equipment",
+   "parents": [
+    "2",
+    "17"
+   ]
+  },
+  {
+   "code": "124",
+   "label": "Soil Remediation Services",
+   "parents": [
+    "2",
+    "17"
+   ]
+  },
+  {
+   "code": "125",
+   "label": "Specialty Waste Disposal Services",
+   "parents": [
+    "2",
+    "17"
+   ]
+  },
+  {
+   "code": "126",
+   "label": "Industrial and Manufacturing Services",
+   "parents": [
+    "2",
+    "18"
+   ]
+  },
+  {
+   "code": "127",
+   "label": "Industrial Testing and Site Preparation Services",
+   "parents": [
+    "2",
+    "18"
+   ]
+  },
+  {
+   "code": "128",
+   "label": "Airport Construction and Maintenance",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "129",
+   "label": "Airport Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "130",
+   "label": "Boring/Drilling Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "131",
+   "label": "Bridge Construction Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "132",
+   "label": "Bridge Parts and Accessories",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "133",
+   "label": "Excavation/Dredging/Grading/Shoring Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "134",
+   "label": "Heavy Construction Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "135",
+   "label": "Parks and Site Work Construction",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "136",
+   "label": "Parks and Site Work Landscaping and Grounds Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "137",
+   "label": "Roadwork/Paving Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "138",
+   "label": "Traffic Signal/Lights/Camera Related Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "139",
+   "label": "Transit Rail Construction Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "140",
+   "label": "Tunnel Construction Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "141",
+   "label": "Utilities (Sewers/Water Mains/Gas) Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "142",
+   "label": "Water (Canal, Dam, Aqueduct) Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "143",
+   "label": "Water and Wastewater Treatment Services",
+   "parents": [
+    "2",
+    "19"
+   ]
+  },
+  {
+   "code": "144",
+   "label": "Boat and Ferry Construction Related Services",
+   "parents": [
+    "2",
+    "20"
+   ]
+  },
+  {
+   "code": "145",
+   "label": "Marine and Waterfront Construction",
+   "parents": [
+    "2",
+    "20"
+   ]
+  },
+  {
+   "code": "146",
+   "label": "Air Compressors and Generators",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "147",
+   "label": "Bricks, Stone, Concrete, and Masonry Materials and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "148",
+   "label": "Electrical Equipment, Materials, and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "149",
+   "label": "Engineering Equipment, Materials, and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "150",
+   "label": "Environmental Remediation Equipment",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "151",
+   "label": "Fasteners, Valves, and  Bearings",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "152",
+   "label": "Flooring Equipment, Materials, and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "153",
+   "label": "Freight Containers, Storage, and Tanks Equipment",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "154",
+   "label": "General Building and Construction Equipment, Materials, and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "155",
+   "label": "Grinders and Pumps",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "156",
+   "label": "Handheld Tools and Hardware Equipment and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "157",
+   "label": "Heating and Cooling Equipment and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "158",
+   "label": "Industrial Machinery, Equipment, and Tools",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "159",
+   "label": "Metal, Ironwork, and Steel Equipment, Materials, and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "160",
+   "label": "Painting Equipment and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "161",
+   "label": "Parks and Landscaping Equipment and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "162",
+   "label": "Pipes and Plumbing Materials, Equipment, and  Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "163",
+   "label": "Plastics, Resins, Fiberglass",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "164",
+   "label": "Pumping Equipment and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "165",
+   "label": "Road and Highway Equipment, Materials, and Supplies",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "166",
+   "label": "Tapes and Adhesives",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "167",
+   "label": "Tools and Equipment Maintenance, Repair and Other Services",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "168",
+   "label": "Tools and Equipment Rental and Lease",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "169",
+   "label": "Tunneling Equipment",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "170",
+   "label": "Utility Supplies and Equipment",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "171",
+   "label": "Water, Wastewater, and Sewer Equipment",
+   "parents": [
+    "2",
+    "21"
+   ]
+  },
+  {
+   "code": "172",
+   "label": "Case Management Services",
+   "parents": [
+    "3",
+    "22"
+   ]
+  },
+  {
+   "code": "173",
+   "label": "Conflict Resolution/Mediation Services",
+   "parents": [
+    "3",
+    "22"
+   ]
+  },
+  {
+   "code": "174",
+   "label": "Food and Entitlements Assistance Services",
+   "parents": [
+    "3",
+    "22"
+   ]
+  },
+  {
+   "code": "175",
+   "label": "General Human Services",
+   "parents": [
+    "3",
+    "22"
+   ]
+  },
+  {
+   "code": "176",
+   "label": "Preventive Services",
+   "parents": [
+    "3",
+    "22"
+   ]
+  },
+  {
+   "code": "177",
+   "label": "Protective Services",
+   "parents": [
+    "3",
+    "22"
+   ]
+  },
+  {
+   "code": "178",
+   "label": "Academic Supports",
+   "parents": [
+    "3",
+    "23"
+   ]
+  },
+  {
+   "code": "179",
+   "label": "Community Enrichment Services",
+   "parents": [
+    "3",
+    "23"
+   ]
+  },
+  {
+   "code": "180",
+   "label": "Recreational Services",
+   "parents": [
+    "3",
+    "23"
+   ]
+  },
+  {
+   "code": "181",
+   "label": "Adoption Services",
+   "parents": [
+    "3",
+    "24"
+   ]
+  },
+  {
+   "code": "182",
+   "label": "Child Care Services",
+   "parents": [
+    "3",
+    "24"
+   ]
+  },
+  {
+   "code": "183",
+   "label": "Family Planning and Parenting Services",
+   "parents": [
+    "3",
+    "24"
+   ]
+  },
+  {
+   "code": "184",
+   "label": "Foster Care Services",
+   "parents": [
+    "3",
+    "24"
+   ]
+  },
+  {
+   "code": "185",
+   "label": "Senior Services",
+   "parents": [
+    "3",
+    "24"
+   ]
+  },
+  {
+   "code": "186",
+   "label": "Transitional Living Skills Services",
+   "parents": [
+    "3",
+    "24"
+   ]
+  },
+  {
+   "code": "187",
+   "label": "Home Attendant and Housekeeping Services",
+   "parents": [
+    "3",
+    "25"
+   ]
+  },
+  {
+   "code": "188",
+   "label": "Housing Financial Assistance Services",
+   "parents": [
+    "3",
+    "26"
+   ]
+  },
+  {
+   "code": "189",
+   "label": "Housing Services",
+   "parents": [
+    "3",
+    "26"
+   ]
+  },
+  {
+   "code": "190",
+   "label": "Shelter and Homelessness Prevention",
+   "parents": [
+    "3",
+    "26"
+   ]
+  },
+  {
+   "code": "191",
+   "label": "Alternative Justice Management and Support",
+   "parents": [
+    "3",
+    "27"
+   ]
+  },
+  {
+   "code": "192",
+   "label": "Court-Based Support",
+   "parents": [
+    "3",
+    "27"
+   ]
+  },
+  {
+   "code": "193",
+   "label": "Detention Center Services",
+   "parents": [
+    "3",
+    "27"
+   ]
+  },
+  {
+   "code": "194",
+   "label": "Job Placement Services",
+   "parents": [
+    "3",
+    "28"
+   ]
+  },
+  {
+   "code": "195",
+   "label": "Vocational Training Services",
+   "parents": [
+    "3",
+    "28"
+   ]
+  },
+  {
+   "code": "196",
+   "label": "Anything As A Service (Axis)",
+   "parents": [
+    "4",
+    "29"
+   ]
+  },
+  {
+   "code": "197",
+   "label": "Cloud  Equipment",
+   "parents": [
+    "4",
+    "29"
+   ]
+  },
+  {
+   "code": "198",
+   "label": "Cloud  Services",
+   "parents": [
+    "4",
+    "29"
+   ]
+  },
+  {
+   "code": "199",
+   "label": "Assistive Technology Services",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "200",
+   "label": "Cables",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "201",
+   "label": "Cabling Services",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "202",
+   "label": "Cameras - Photography",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "203",
+   "label": "Computer Maintenance and Rental Services",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "204",
+   "label": "Computer Services",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "205",
+   "label": "Computer Supplies and Equipment",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "206",
+   "label": "Cybersecurity Products",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "207",
+   "label": "Cybersecurity Threat Intelligence",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "208",
+   "label": "Data Storage Products",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "209",
+   "label": "Education IT Hardware",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "210",
+   "label": "GPS/GIS Mapping Equipment and Accessories",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "211",
+   "label": "Law Enforcement IT Products",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "212",
+   "label": "Memory",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "213",
+   "label": "Mobile Digital Video/Mobile DVR",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "214",
+   "label": "Networking Products",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "215",
+   "label": "Networking Products Services",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "216",
+   "label": "Other IT Equipment",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "217",
+   "label": "Printers, Scanners and Accessories",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "218",
+   "label": "Printers, Scanners and Accessories Rental Services",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "219",
+   "label": "Radio/Interoperable Communication Equipment",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "220",
+   "label": "Surveillance Cameras",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "221",
+   "label": "Telephone Equipment",
+   "parents": [
+    "4",
+    "30"
+   ]
+  },
+  {
+   "code": "222",
+   "label": "Advisory and Research Subscription Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "223",
+   "label": "Application Development Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "224",
+   "label": "Application Maintenance Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "225",
+   "label": "Break/Fix Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "226",
+   "label": "Business Continuity and Disaster Recovery Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "227",
+   "label": "Business Intelligence/Data Warehouse Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "228",
+   "label": "Comprehensive Web Development and Management Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "229",
+   "label": "Data Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "230",
+   "label": "Design Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "231",
+   "label": "Document Management Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "232",
+   "label": "Geospatial Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "233",
+   "label": "Identity and Access Management Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "234",
+   "label": "Independent Verification and Validation Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "235",
+   "label": "Information Technology Training Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "236",
+   "label": "IT Managed Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "237",
+   "label": "Law Enforcement IT Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "238",
+   "label": "Monitoring Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "239",
+   "label": "Network Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "240",
+   "label": "Other IT Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "241",
+   "label": "Quality Control/Project Management/Strategy Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "242",
+   "label": "Storage Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "243",
+   "label": "System Integration Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "244",
+   "label": "Technology Migration/Upgrading Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "245",
+   "label": "UI/UX Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "246",
+   "label": "Web Hosting Services",
+   "parents": [
+    "4",
+    "31"
+   ]
+  },
+  {
+   "code": "247",
+   "label": "Accounting and Financial Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "248",
+   "label": "AI and Machine Learning Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "249",
+   "label": "Analytics, Database and Business Intelligence Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "250",
+   "label": "Application Development Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "251",
+   "label": "Architectural Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "252",
+   "label": "Asset and Inventory Management Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "253",
+   "label": "Assistive Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "254",
+   "label": "Backup/Archive/Storage Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "255",
+   "label": "Business Software Services",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "256",
+   "label": "Content Management Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "257",
+   "label": "Customer Relationship Management Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "258",
+   "label": "Data Management, Quality and Integration Software and Equipment",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "259",
+   "label": "Database and Business Intelligence Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "260",
+   "label": "Digital Design and Publishing Services",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "261",
+   "label": "Digital Design and Publishing Software and Computers",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "262",
+   "label": "Education, Training, and Learning Management Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "263",
+   "label": "Engineering Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "264",
+   "label": "Geospatial Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "265",
+   "label": "Human Resources Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "266",
+   "label": "IT Operations Management Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "267",
+   "label": "IT Security Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "268",
+   "label": "IT Storage Management Application and Tools",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "269",
+   "label": "IT Utilities",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "270",
+   "label": "Law Enforcement  Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "271",
+   "label": "Law Enforcement Software Services",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "272",
+   "label": "Legal Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "273",
+   "label": "Licensing and Permitting Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "274",
+   "label": "Maintenance - Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "275",
+   "label": "Mobile Device Management Services",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "276",
+   "label": "Network Monitoring Software Services",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "277",
+   "label": "Networking Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "278",
+   "label": "Office Productivity Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "279",
+   "label": "Operating Systems",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "280",
+   "label": "Operations Management Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "281",
+   "label": "Other Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "282",
+   "label": "POS/ AIDC/ BARCODE",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "283",
+   "label": "Procurement Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "284",
+   "label": "Project Management Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "285",
+   "label": "Property Management Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "286",
+   "label": "Reference Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "287",
+   "label": "Sales and Marketing Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "288",
+   "label": "Security and Surveillance Software Services",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "289",
+   "label": "Unified Communication Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "290",
+   "label": "Utility Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "291",
+   "label": "Virtualization Software",
+   "parents": [
+    "4",
+    "32"
+   ]
+  },
+  {
+   "code": "292",
+   "label": "Cloud Services - Telecom",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "293",
+   "label": "Data Circuits and Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "294",
+   "label": "E911 Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "295",
+   "label": "Ethernet Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "296",
+   "label": "Internet Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "297",
+   "label": "Maintenance - Telecom Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "298",
+   "label": "Optical Ring Solutions, Waveguide",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "299",
+   "label": "Other Telecommunication Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "300",
+   "label": "Paging Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "301",
+   "label": "Satellite Maintenance Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "302",
+   "label": "Telecommunications Equipment and Accessories",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "303",
+   "label": "Telecommunications System Management",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "304",
+   "label": "Telephone System Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "305",
+   "label": "Telephone Systems",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "306",
+   "label": "Video",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "307",
+   "label": "Video Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "308",
+   "label": "Voice Response Systems",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "309",
+   "label": "Voice Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "310",
+   "label": "Web Conferencing Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "311",
+   "label": "Wireless/Cellular Services",
+   "parents": [
+    "4",
+    "33"
+   ]
+  },
+  {
+   "code": "312",
+   "label": "Advertising Services",
+   "parents": [
+    "5",
+    "34"
+   ]
+  },
+  {
+   "code": "313",
+   "label": "Public Relations Services",
+   "parents": [
+    "5",
+    "34"
+   ]
+  },
+  {
+   "code": "314",
+   "label": "Building and Structural Architecture",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "315",
+   "label": "Building and Structural Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "316",
+   "label": "Chemical Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "317",
+   "label": "Civil Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "318",
+   "label": "Electrical Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "319",
+   "label": "Environmental Architecture",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "320",
+   "label": "Environmental Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "321",
+   "label": "Flood/Drainage Architecture",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "322",
+   "label": "Flood/Drainage Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "323",
+   "label": "General Architecture Services and Consulting",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "324",
+   "label": "General Engineering Services and Consulting",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "325",
+   "label": "Geological Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "326",
+   "label": "Geotechnical Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "327",
+   "label": "Industrial Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "328",
+   "label": "Landscape Architecture and Design",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "329",
+   "label": "Marine Architecture",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "330",
+   "label": "Marine Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "331",
+   "label": "Mechanical Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "332",
+   "label": "Power/Energy Architecture",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "333",
+   "label": "Power/Energy Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "334",
+   "label": "Specialized Architecture",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "335",
+   "label": "Specialized Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "336",
+   "label": "Transportation Architecture",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "337",
+   "label": "Transportation Engineering",
+   "parents": [
+    "5",
+    "35"
+   ]
+  },
+  {
+   "code": "338",
+   "label": "Graphic Design and Visual Art Services",
+   "parents": [
+    "5",
+    "36"
+   ]
+  },
+  {
+   "code": "339",
+   "label": "Interior Design Services",
+   "parents": [
+    "5",
+    "36"
+   ]
+  },
+  {
+   "code": "340",
+   "label": "Video and Photography Services",
+   "parents": [
+    "5",
+    "36"
+   ]
+  },
+  {
+   "code": "341",
+   "label": "Construction Consulting",
+   "parents": [
+    "5",
+    "37"
+   ]
+  },
+  {
+   "code": "342",
+   "label": "Design-Build Services",
+   "parents": [
+    "5",
+    "37"
+   ]
+  },
+  {
+   "code": "343",
+   "label": "General Construction Management, Scheduling and Cost Estimation Services",
+   "parents": [
+    "5",
+    "37"
+   ]
+  },
+  {
+   "code": "344",
+   "label": "Quality Control, Quality Assurance, and Inspection Services",
+   "parents": [
+    "5",
+    "37"
+   ]
+  },
+  {
+   "code": "345",
+   "label": "Agriculture Consulting",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "346",
+   "label": "Business Consulting",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "347",
+   "label": "Emergency Management Consulting",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "348",
+   "label": "Energy and Utilities Consulting",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "349",
+   "label": "Food and Beverage Consulting",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "350",
+   "label": "Insurance Consulting",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "351",
+   "label": "IT Consulting",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "352",
+   "label": "Medical and Human Service Consulting",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "353",
+   "label": "Miscellaneous Professional Services",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "354",
+   "label": "Social Science Consulting",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "355",
+   "label": "Transportation Consulting",
+   "parents": [
+    "5",
+    "38"
+   ]
+  },
+  {
+   "code": "356",
+   "label": "Conservation and Environmental Protection Services",
+   "parents": [
+    "5",
+    "39"
+   ]
+  },
+  {
+   "code": "357",
+   "label": "Environmental Consulting",
+   "parents": [
+    "5",
+    "39"
+   ]
+  },
+  {
+   "code": "358",
+   "label": "Environmental Safety Services",
+   "parents": [
+    "5",
+    "39"
+   ]
+  },
+  {
+   "code": "359",
+   "label": "Weather Forecasting Services",
+   "parents": [
+    "5",
+    "39"
+   ]
+  },
+  {
+   "code": "360",
+   "label": "Accounting, Auditing and Budgeting",
+   "parents": [
+    "5",
+    "40"
+   ]
+  },
+  {
+   "code": "361",
+   "label": "Banking Services",
+   "parents": [
+    "5",
+    "40"
+   ]
+  },
+  {
+   "code": "362",
+   "label": "Cash Management Services",
+   "parents": [
+    "5",
+    "40"
+   ]
+  },
+  {
+   "code": "363",
+   "label": "Real Estate Land and Appraisal Services",
+   "parents": [
+    "5",
+    "40"
+   ]
+  },
+  {
+   "code": "364",
+   "label": "Economic Development Services",
+   "parents": [
+    "5",
+    "41"
+   ]
+  },
+  {
+   "code": "365",
+   "label": "Financial Consulting and Advisory Services",
+   "parents": [
+    "5",
+    "40"
+   ]
+  },
+  {
+   "code": "366",
+   "label": "Historical Preservation Services",
+   "parents": [
+    "5",
+    "42"
+   ]
+  },
+  {
+   "code": "367",
+   "label": "Interpreter and Translation Services",
+   "parents": [
+    "5",
+    "43"
+   ]
+  },
+  {
+   "code": "368",
+   "label": "Investigative Services",
+   "parents": [
+    "5",
+    "44"
+   ]
+  },
+  {
+   "code": "369",
+   "label": "Legal Services",
+   "parents": [
+    "5",
+    "44"
+   ]
+  },
+  {
+   "code": "370",
+   "label": "Education and Training Services",
+   "parents": [
+    "5",
+    "45"
+   ]
+  },
+  {
+   "code": "371",
+   "label": "Research Services",
+   "parents": [
+    "5",
+    "46"
+   ]
+  },
+  {
+   "code": "372",
+   "label": "Studies and Surveys",
+   "parents": [
+    "5",
+    "46"
+   ]
+  },
+  {
+   "code": "373",
+   "label": "Land Surveying",
+   "parents": [
+    "5",
+    "47"
+   ]
+  },
+  {
+   "code": "374",
+   "label": "Urban Planning Consulting and Services",
+   "parents": [
+    "5",
+    "47"
+   ]
+  },
+  {
+   "code": "375",
+   "label": "Emergency Management Equipment and Supplies",
+   "parents": [
+    "6",
+    "48"
+   ]
+  },
+  {
+   "code": "376",
+   "label": "Emergency Management Services",
+   "parents": [
+    "6",
+    "48"
+   ]
+  },
+  {
+   "code": "377",
+   "label": "Fire Fighting Equipment and Supplies",
+   "parents": [
+    "6",
+    "49"
+   ]
+  },
+  {
+   "code": "378",
+   "label": "Fire Fighting Equipment Maintenance and Repair Services",
+   "parents": [
+    "6",
+    "49"
+   ]
+  },
+  {
+   "code": "379",
+   "label": "Fire Fighting Services",
+   "parents": [
+    "6",
+    "49"
+   ]
+  },
+  {
+   "code": "380",
+   "label": "Laboratory Services",
+   "parents": [
+    "6",
+    "50"
+   ]
+  },
+  {
+   "code": "381",
+   "label": "Medical Laboratory Equipment and Supplies",
+   "parents": [
+    "6",
+    "50"
+   ]
+  },
+  {
+   "code": "382",
+   "label": "Scientific/Chemical Laboratory Equipment and Supplies",
+   "parents": [
+    "6",
+    "50"
+   ]
+  },
+  {
+   "code": "383",
+   "label": "Law Enforcement and Guard Services",
+   "parents": [
+    "6",
+    "51"
+   ]
+  },
+  {
+   "code": "384",
+   "label": "Law Enforcement Equipment and Supplies",
+   "parents": [
+    "6",
+    "51"
+   ]
+  },
+  {
+   "code": "385",
+   "label": "Law Enforcement Equipment Services",
+   "parents": [
+    "6",
+    "51"
+   ]
+  },
+  {
+   "code": "386",
+   "label": "Assistive Devices for Hearing, Mobility, Vision",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "387",
+   "label": "Dental Equipment and Supplies",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "388",
+   "label": "Dental Services",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "389",
+   "label": "Disease Prevention and Nutrition",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "390",
+   "label": "Medical and Nursing Services",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "391",
+   "label": "Medical Equipment and Supplies",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "392",
+   "label": "Medical Equipment Maintenance and Rental Services",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "393",
+   "label": "Medical Furniture",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "394",
+   "label": "Medical Management Services",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "395",
+   "label": "Mental Health Services",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "396",
+   "label": "Pharmaceutical Supplies and Equipment",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "397",
+   "label": "Rehabilitation/Therapy Services",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "398",
+   "label": "Substance Abuse Services",
+   "parents": [
+    "6",
+    "52"
+   ]
+  },
+  {
+   "code": "399",
+   "label": "Recycling Services",
+   "parents": [
+    "6",
+    "53"
+   ]
+  },
+  {
+   "code": "400",
+   "label": "Sanitation Related  Maintenance and Repair Services",
+   "parents": [
+    "6",
+    "53"
+   ]
+  },
+  {
+   "code": "401",
+   "label": "Snow Removal and Street Cleaning",
+   "parents": [
+    "6",
+    "53"
+   ]
+  },
+  {
+   "code": "402",
+   "label": "Waste and Hazardous Waste Equipment and Supplies",
+   "parents": [
+    "6",
+    "53"
+   ]
+  },
+  {
+   "code": "403",
+   "label": "Waste Disposal Services",
+   "parents": [
+    "6",
+    "53"
+   ]
+  },
+  {
+   "code": "404",
+   "label": "Waste Management Services",
+   "parents": [
+    "6",
+    "53"
+   ]
+  }
+ ]
+}

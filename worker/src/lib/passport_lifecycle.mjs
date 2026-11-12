@@ -16,6 +16,7 @@ import {
 } from "./passport_join.mjs";
 import { CONTRACTS_PORTAL, RFX_PORTAL, passportRfxHandoffUrl } from "./passport_parse.mjs";
 import { buildRfxPackageDocumentSurface } from "./rfx_documents_join.mjs";
+import { passportRfxCommodityCategory } from "./passport_commodity_category.mjs";
 import { recoverPaymentFromRegisteredJoin } from "./checkbook_lifecycle.mjs";
 import {
   attachLifecycleCoherence,
@@ -425,6 +426,7 @@ function slimRfx(r) {
     due_date: r.due_date || null,
     procurement_method: r.procurement_method || null,
     main_commodity: r.main_commodity || null,
+    main_commodity_category: passportRfxCommodityCategory(r),
     industry: r.industry || null,
     rfp_id: r.rfp_id || null,
     ...(addenda_date ? { addenda_date } : {}),

@@ -268,7 +268,9 @@ export function mapRfxRow(cells) {
     rfx_status: get(7) || null,
     release_date: get(8) || null,
     due_date: get(9) || null,
-    main_commodity: get(10) || null,
+    // Positional dump: a row without every publisher column cannot say which cell is the
+    // Main Commodity, so it carries none rather than a shifted neighbour.
+    main_commodity: cells.length >= RFX_COLUMNS.length ? get(10) || null : null,
     procurement_method: get(11) || null,
   };
 }

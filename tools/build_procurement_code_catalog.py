@@ -9,6 +9,7 @@ import hashlib
 import json
 import re
 import sys
+import unicodedata
 import zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -61,6 +62,13 @@ FORBIDDEN_PUBLIC_NYC_KEYS = {
     "rawbytes",
     "raw_bytes",
 }
+# The categories artifact publishes NYC-authored L1-L3 labels. L5 rows keep NIGP text private:
+# a code row carries exactly these keys and nothing else.
+PUBLIC_NYC_CATEGORY_CODE_FIELDS = ("code", "status", "l1", "l2", "l3")
+PUBLIC_NYC_CATEGORY_FIELDS = ("code", "label", "level", "parents")
+NYC_CATEGORY_COUNTS = {1: 6, 2: 53, 3: 404}
+NYC_CATEGORIES_FILENAME = "nyc-commodity-categories.json"
+NYC_CATEGORIES_MAX_BYTES = 1024 * 1024
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -206,7 +214,128 @@ def build_naics(input_path: Path, receipt_path: Path | None, output_path: Path):
     return artifact
 
 
-def build_nyc(input_path: Path, receipt_path: Path | None, output_path: Path):
+def normalize_category_label(value: str) -> str:
+    """Exact-match key: Unicode NFKC, whitespace collapsed, trimmed, lower-cased. Nothing fuzzier.
+
+    Mirrors normalizeCommodityLabel in site/procurement_code_catalog.mjs.
+    """
+    return re.sub(r"\s+", " ", unicodedata.normalize("NFKC", value or "")).strip().lower()
+
+
+def assert_public_nyc_categories(payload: str, l5_descriptions, published_labels) -> None:
+    """Refuse a categories payload that carries any L5 description or a non-public field."""
+    artifact = json.loads(payload)
+    for row in artifact.get("codes", []):
+        if tuple(sorted(row)) != tuple(sorted(PUBLIC_NYC_CATEGORY_CODE_FIELDS)):
+            raise SystemExit(f"public NYC categories code row has fields {sorted(row)}")
+        for key in FORBIDDEN_PUBLIC_NYC_KEYS:
+            if key in row:
+                raise SystemExit(f"public NYC categories code row leaked forbidden key {key}")
+    for row in artifact.get("categories", []):
+        if tuple(sorted(row)) != tuple(sorted(PUBLIC_NYC_CATEGORY_FIELDS)) or row.get("level") not in (1, 2, 3):
+            raise SystemExit(f"public NYC category row is not an L1-L3 category: {row.get('code')}")
+    allowed = set(published_labels)
+    strings = []
+
+    def walk(value):
+        if isinstance(value, str):
+            strings.append(value)
+        elif isinstance(value, dict):
+            for item in value.values():
+                walk(item)
+        elif isinstance(value, list):
+            for item in value:
+                walk(item)
+
+    walk(artifact)
+    private = {text for text in l5_descriptions if text and text not in allowed}
+    leaked = sorted({text for text in strings if text in private})
+    if leaked:
+        raise SystemExit(f"public NYC categories artifact leaked {len(leaked)} L5 description(s), e.g. {leaked[0]!r}")
+
+
+def build_nyc_categories(levels, ancestry, version, digest, checked_at, receipt, output_path: Path):
+    categories = []
+    for level in (1, 2, 3):
+        for entry in sorted(
+            (e for e in levels.values() if e["level"] == level), key=lambda e: e["code"]
+        ):
+            if len(entry["parents"]) > 1:
+                raise SystemExit(f"NYC L{level} category {entry['code']} has more than one parent")
+            parents = []
+            if level > 1:
+                parent = levels[(level - 1, entry["parents"][0])]
+                parents = [*([] if level == 2 else [parent["parents"][0]]), parent["code"]]
+            categories.append(
+                {"code": entry["code"], "label": entry["label"], "level": level, "parents": parents}
+            )
+    counts = collections.Counter(row["level"] for row in categories)
+    if dict(counts) != NYC_CATEGORY_COUNTS:
+        raise SystemExit(f"unexpected NYC category level counts: {dict(counts)}")
+    seen = {}
+    for row in categories:
+        if row["level"] != 3:
+            continue
+        key = normalize_category_label(row["label"])
+        if not key:
+            raise SystemExit(f"NYC L3 category {row['code']} has an empty label")
+        if key in seen:
+            raise SystemExit(
+                f"duplicate NYC L3 category label {row['label']!r}: {seen[key]} and {row['code']}"
+            )
+        seen[key] = row["code"]
+    codes = []
+    for entry in sorted(
+        (e for e in levels.values() if e["level"] == 5 and re.fullmatch(r"\d{5}", e["code"])),
+        key=lambda e: e["code"],
+    ):
+        l1, l2, l3 = ancestry[entry["code"]]
+        codes.append({"code": entry["code"], "status": entry["status"], "l1": l1, "l2": l2, "l3": l3})
+    if len(codes) != 9038:
+        raise SystemExit(f"expected 9038 public NYC category code rows, got {len(codes)}")
+    status_counts = collections.Counter(row["status"] for row in codes)
+    artifact = {
+        "schema": "cityscroll.nyc_commodity_categories.v1",
+        "version": version,
+        "source_url": NYC_URL,
+        "source_sha256": digest,
+        "checked_at": checked_at,
+        "source_rows": 9041,
+        "omitted_internal_rows": 3,
+        "source_receipt": {
+            "observed_at": receipt.get("observed_at"),
+            "acquired_at": receipt.get("acquired_at") or receipt.get("observed_at"),
+            "checked_at": checked_at,
+            "source_revision": digest,
+        },
+        "label_policy": "L1-L3 category labels are published; L5 code descriptions are not.",
+        "match_rule": "exact label after Unicode NFKC, whitespace collapse, trim and lower-case",
+        "counts": {
+            "l1": NYC_CATEGORY_COUNTS[1],
+            "l2": NYC_CATEGORY_COUNTS[2],
+            "l3": NYC_CATEGORY_COUNTS[3],
+            "codes": len(codes),
+            "codes_by_status": dict(sorted(status_counts.items())),
+        },
+        "categories": categories,
+        "codes": codes,
+    }
+    payload = json.dumps(artifact, separators=(",", ":"))
+    l5_descriptions = [e["label"] for e in levels.values() if e["level"] == 5]
+    assert_public_nyc_categories(payload, l5_descriptions, [row["label"] for row in categories])
+    if len(payload.encode("utf-8")) >= NYC_CATEGORIES_MAX_BYTES:
+        raise SystemExit("public NYC categories artifact exceeds 1MiB bound")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(payload + "\n")
+    return artifact
+
+
+def build_nyc(
+    input_path: Path,
+    receipt_path: Path | None,
+    output_path: Path,
+    categories_output: Path | None = None,
+):
     digest = sha256_file(input_path)
     if digest != RETAINED_DIGESTS["nyc-commodity-directory"]:
         raise SystemExit(
@@ -220,6 +349,7 @@ def build_nyc(input_path: Path, receipt_path: Path | None, output_path: Path):
     levels = {}
     anomalies = []
     leaf = []
+    ancestry = {}
     for row in rows[1:]:
         values = {}
         for col, level in [("A", 1), ("C", 2), ("D", 3), ("E", 5)]:
@@ -249,6 +379,7 @@ def build_nyc(input_path: Path, receipt_path: Path | None, output_path: Path):
                 if parent not in entry["parents"]:
                     entry["parents"].append(parent)
             if level == 5:
+                ancestry[code] = (values[1], values[2], values[3])
                 entry["commodity_type"] = row.get("F")
                 entry["industry"] = row.get("G")
                 if not re.fullmatch(r"\d{5}", code):
@@ -335,6 +466,15 @@ def build_nyc(input_path: Path, receipt_path: Path | None, output_path: Path):
         raise SystemExit("public NYC artifact exceeds 512KiB bound")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(payload + "\n")
+    build_nyc_categories(
+        levels,
+        ancestry,
+        version,
+        digest,
+        checked_at,
+        receipt,
+        categories_output or output_path.parent / NYC_CATEGORIES_FILENAME,
+    )
     return artifact
 
 
@@ -363,6 +503,11 @@ def verify_retained() -> int:
     assert sum(1 for row in nyc["records"] if row["status"] == "inactive") == 150
     assert nyc["source_rows"] == 9041
     assert nyc["omitted_internal_rows"] == 3
+    categories = json.loads((DEFAULT_OUTPUTS["nyc-commodity-directory"].parent / NYC_CATEGORIES_FILENAME).read_text())
+    assert categories["counts"] == {
+        "l1": 6, "l2": 53, "l3": 404, "codes": 9038,
+        "codes_by_status": {"inactive": 150, "listed": 8888},
+    }
     assert naics["source_sha256"] == RETAINED_DIGESTS["naics-2022"]
     assert nyc["source_sha256"] == RETAINED_DIGESTS["nyc-commodity-directory"]
     print(
@@ -375,9 +520,13 @@ def verify_retained() -> int:
                 "nyc_listed": 8888,
                 "nyc_inactive": 150,
                 "nyc_omitted_internal": 3,
+                "nyc_categories": {"l1": 6, "l2": 53, "l3": 404},
                 "outputs": {
                     "naics": str(DEFAULT_OUTPUTS["naics-2022"].relative_to(ROOT)),
                     "nyc": str(DEFAULT_OUTPUTS["nyc-commodity-directory"].relative_to(ROOT)),
+                    "nyc_categories": str(
+                        (DEFAULT_OUTPUTS["nyc-commodity-directory"].parent / NYC_CATEGORIES_FILENAME).relative_to(ROOT)
+                    ),
                     "private_nyc_full": str(PRIVATE_NYC_FULL.relative_to(ROOT)),
                 },
             },
@@ -394,6 +543,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--input", type=Path)
     parser.add_argument("--receipt", type=Path)
     parser.add_argument("--output", type=Path)
+    parser.add_argument(
+        "--categories-output",
+        type=Path,
+        help="NYC only: L1-L3 categories artifact (default: nyc-commodity-categories.json beside --output)",
+    )
     args = parser.parse_args(argv)
 
     if args.verify_retained:
@@ -406,7 +560,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.source == "naics-2022":
         artifact = build_naics(input_path, receipt_path, output_path)
     else:
-        artifact = build_nyc(input_path, receipt_path, output_path)
+        artifact = build_nyc(input_path, receipt_path, output_path, args.categories_output)
     print(
         json.dumps(
             {
