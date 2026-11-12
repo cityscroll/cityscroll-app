@@ -216,12 +216,14 @@ test("Preserved method fixtures pair correctly with the window display line: def
   const rule = extractSolicitationProcurementMethod({
     section_name: "Procurement",
     type_of_notice_description: "Solicitation",
-    additional_description_1: "This is a standard competitive sealed bid procurement.",
+    selection_method_description: "Competitive Sealed Proposals",
+    start_date: "2026-07-01",
+    additional_description_1: "This is a standard competitive sealed proposals procurement.",
   });
-  assert.equal(rule.response_floor.kind, RESPONSE_FLOOR_KIND.DEFAULT_COMPETITIVE);
+  assert.equal(rule.response_floor.kind, RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_PROPOSAL);
   assert.equal(rule.response_floor.days, 20);
   const line = opportunityWindowDisplayLine(window, rule.response_floor);
-  assert.equal(line, "Published response window: 35 calendar days · applicable rule floor: 20 calendar days");
+  assert.equal(line, "Published response window: 35 calendar days · applicable rule floor: 20 calendar days (9 RCNY 3-03(c)(1))");
   assert.doesNotMatch(line, BANNED_VERDICT_WORDS);
 });
 
@@ -234,12 +236,14 @@ test("Preserved method fixtures pair correctly with the window display line: Sec
   const rule = extractSolicitationProcurementMethod({
     section_name: "Procurement",
     type_of_notice_description: "Solicitation",
+    selection_method_description: "Competitive Sealed Proposals",
+    start_date: "2026-07-01",
     additional_description_1: "This procurement is subject to participation goals for M/WBE firms under Admin. Code Section 6-129.",
   });
-  assert.equal(rule.response_floor.kind, RESPONSE_FLOOR_KIND.SECTION_6_129);
+  assert.equal(rule.response_floor.kind, RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_PROPOSAL_SECTION_6_129);
   assert.equal(rule.response_floor.days, 27);
   const line = opportunityWindowDisplayLine(window, rule.response_floor);
-  assert.equal(line, "Published response window: 35 calendar days · applicable rule floor: 27 calendar days");
+  assert.equal(line, "Published response window: 35 calendar days · applicable rule floor: 27 calendar days (9 RCNY 3-03(c)(1))");
   assert.doesNotMatch(line, BANNED_VERDICT_WORDS);
 });
 
@@ -252,13 +256,14 @@ test("Preserved method fixtures pair correctly with the window display line: acc
   const rule = extractSolicitationProcurementMethod({
     section_name: "Procurement",
     type_of_notice_description: "Solicitation",
+    start_date: "2026-07-01",
     additional_description_1: "This solicitation is being conducted pursuant to the Accelerated Procurement Method.",
   });
   assert.equal(rule.response_floor.kind, RESPONSE_FLOOR_KIND.ACCELERATED);
   assert.equal(rule.response_floor.days, 3);
   assert.equal(rule.response_floor.day_unit, "business_days");
   const line = opportunityWindowDisplayLine(window, rule.response_floor);
-  assert.equal(line, "Published response window: 5 calendar days · applicable rule floor: 3 business days");
+  assert.equal(line, "Published response window: 5 calendar days · applicable rule floor: 3 business days (9 RCNY 3-07(h)(1)(i))");
   assert.doesNotMatch(line, BANNED_VERDICT_WORDS);
 });
 

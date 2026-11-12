@@ -34,6 +34,18 @@
   "ppb-3-04.md": {
    "bytes": 9533,
    "sha256": "93f400fb5838a781a1d8a8d5bee06b259852103b11e34db938d705cbbbf48b21"
+  },
+  "ppb-3-02.md": {
+   "bytes": 38808,
+   "sha256": "1537d654478739a216ba7047ce9581d78391a076e1a649ca0d25593d53c81570"
+  },
+  "ppb-3-03.md": {
+   "bytes": 36279,
+   "sha256": "714beb0f52377115b231503f52c6bdc11b57eee2e2530a0044a12990ae701f55"
+  },
+  "ppb-3-07.md": {
+   "bytes": 5073,
+   "sha256": "6cbe97dbba896eeca312f0668a918b6c4c3268308d7860ed1ddab2f8a631e8cb"
   }
  }
 }

@@ -1,0 +1,1050 @@
+{
+ "schema": "cityscroll.register_consumption_fixtures.v1",
+ "note": "Synthetic notice and record rows shaped like City Record (dg92-zbpx) solicitations and Contracts browse rows. Labels are exact strings inventoried from the engine baseline data; notice prose follows the wording of test/fixtures/solicitation_procurement_method/real_notices.json. 'classes' lists the declared before/after difference classes.",
+ "declared_classes": [
+  "label_withdrawn_abstain",
+  "requirement_not_applicable_annotation",
+  "floor_change"
+ ],
+ "window_for_floor_line": {
+  "available": true,
+  "kind": "response_window",
+  "days": 35
+ },
+ "fixtures": [
+  {
+   "id": "N01",
+   "kind": "notice",
+   "purpose": "human services, cited goal, sealed proposals (F1 canary)",
+   "input": {
+    "request_id": "synthetic-N01",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Human Services/Client Services",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "start_date": "2026-07-20T00:00:00.000",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code. The M/WBE goal for this project is 30%."
+   },
+   "expected": {
+    "state": "goal_published_requirement_not_applicable",
+    "rule_id": "nyc.admin_code.6-129.q.7.human_services_contracts",
+    "floor": {
+     "kind": "competitive_sealed_proposal",
+     "days": 20,
+     "claim": "rule"
+    },
+    "classes": [
+     "requirement_not_applicable_annotation",
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N02",
+   "kind": "notice",
+   "purpose": "human services, nothing published, sealed proposals",
+   "input": {
+    "request_id": "synthetic-N02",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Human Services/Client Services",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "start_date": "2026-07-21",
+    "additional_description_1": "Proposals must be submitted electronically through PASSPort by the due date."
+   },
+   "expected": {
+    "state": "requirement_not_applicable",
+    "rule_id": "nyc.admin_code.6-129.q.7.human_services_contracts",
+    "floor": {
+     "kind": "competitive_sealed_proposal",
+     "days": 20,
+     "claim": "rule"
+    },
+    "classes": [
+     "requirement_not_applicable_annotation",
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N03",
+   "kind": "notice",
+   "purpose": "construction, cited goal, sealed bids (27 -> 22)",
+   "input": {
+    "request_id": "synthetic-N03",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Construction/Construction Services",
+    "selection_method_description": "Competitive Sealed Bids",
+    "start_date": "2026-06-08",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code."
+   },
+   "expected": {
+    "state": "goal_published",
+    "floor": {
+     "kind": "competitive_sealed_bid_section_6_129",
+     "days": 22,
+     "claim": "rule"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N04",
+   "kind": "notice",
+   "purpose": "construction, cited goal, sealed proposals (27 kept, cited)",
+   "input": {
+    "request_id": "synthetic-N04",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Construction/Construction Services",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "start_date": "2026-07-20",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code. The M/WBE goal for this project is 30%."
+   },
+   "expected": {
+    "state": "goal_published",
+    "floor": {
+     "kind": "competitive_sealed_proposal_section_6_129",
+     "days": 27,
+     "claim": "rule"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N05",
+   "kind": "notice",
+   "purpose": "goods, no goal, sealed bids (20 -> 15)",
+   "input": {
+    "request_id": "synthetic-N05",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Goods",
+    "selection_method_description": "Competitive Sealed Bids",
+    "start_date": "2026-07-24",
+    "additional_description_1": "Proposals must be submitted electronically through PASSPort by the due date."
+   },
+   "expected": {
+    "state": "no_goal_published",
+    "floor": {
+     "kind": "competitive_sealed_bid",
+     "days": 15,
+     "claim": "rule"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N06",
+   "kind": "notice",
+   "purpose": "services other than human services, cited goal, sealed proposals",
+   "input": {
+    "request_id": "synthetic-N06",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Services (other than human services)",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "start_date": "2026-05-27",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code. The M/WBE goal for this project is 30%."
+   },
+   "expected": {
+    "state": "goal_published",
+    "floor": {
+     "kind": "competitive_sealed_proposal_section_6_129",
+     "days": 27,
+     "claim": "rule"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N07",
+   "kind": "notice",
+   "purpose": "uncategorised, cited goal, sealed proposals",
+   "input": {
+    "request_id": "synthetic-N07",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "start_date": "2026-07-20",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code. The M/WBE goal for this project is 30%."
+   },
+   "expected": {
+    "state": "goal_published",
+    "category_state": "missing",
+    "floor": {
+     "kind": "competitive_sealed_proposal_section_6_129",
+     "days": 27,
+     "claim": "rule"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N08",
+   "kind": "notice",
+   "purpose": "uncategorised, no goal, sealed bids",
+   "input": {
+    "request_id": "synthetic-N08",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "selection_method_description": "Competitive Sealed Bids",
+    "start_date": "2026-07-24",
+    "additional_description_1": "Proposals must be submitted electronically through PASSPort by the due date."
+   },
+   "expected": {
+    "state": "needs_checking",
+    "category_state": "missing",
+    "floor": {
+     "kind": "competitive_sealed_bid",
+     "days": 15,
+     "claim": "rule"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N09",
+   "kind": "notice",
+   "purpose": "unmapped label 'Human Services', cited goal (no verdict from an unmapped label)",
+   "input": {
+    "request_id": "synthetic-N09",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Human Services",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "start_date": "2026-07-20",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code. The M/WBE goal for this project is 30%."
+   },
+   "expected": {
+    "state": "goal_published",
+    "category_state": "unmapped",
+    "floor": {
+     "kind": "competitive_sealed_proposal_section_6_129",
+     "days": 27,
+     "claim": "rule"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N10",
+   "kind": "notice",
+   "purpose": "M/WBE noncompetitive small purchase solicitation (no advertising floor)",
+   "input": {
+    "request_id": "synthetic-N10",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Goods and Services",
+    "selection_method_description": "M/WBE Noncompetitive Small Purchase",
+    "start_date": "2025-11-18",
+    "additional_description_1": "This is an M/WBE Noncompetitive Small Purchase pursuant to PPB Rule 3-08."
+   },
+   "expected": {
+    "state": "no_goal_published",
+    "floor": null,
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N11",
+   "kind": "notice",
+   "purpose": "accelerated procurement, goods, sealed bids",
+   "input": {
+    "request_id": "synthetic-N11",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Goods",
+    "selection_method_description": "Competitive Sealed Bids",
+    "start_date": "2026-03-02",
+    "additional_description_1": "Fuel oil. This is an Accelerated Procurement pursuant to PPB Rules Section 3-07."
+   },
+   "expected": {
+    "state": "no_goal_published",
+    "floor": {
+     "kind": "accelerated",
+     "days": 3,
+     "day_unit": "business_days",
+     "claim": "rule"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N12",
+   "kind": "notice",
+   "purpose": "human services, cited goal, start_date missing (missing occurred_on -> unknown)",
+   "input": {
+    "request_id": "synthetic-N12",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Human Services/Client Services",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code. The M/WBE goal for this project is 30%."
+   },
+   "expected": {
+    "state": "goal_published",
+    "requirement": "unknown",
+    "floor": {
+     "kind": "competitive_sealed_proposal_section_6_129",
+     "days": 27,
+     "claim": "unverified"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N13",
+   "kind": "notice",
+   "purpose": "construction related services, cited goal: three candidates agree (not ruled out)",
+   "input": {
+    "request_id": "synthetic-N13",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Construction Related Services",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "start_date": "2026-07-20",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code. The M/WBE goal for this project is 30%."
+   },
+   "expected": {
+    "state": "goal_published",
+    "requirement": "not_ruled_out",
+    "floor": {
+     "kind": "competitive_sealed_proposal_section_6_129",
+     "days": 27,
+     "claim": "rule"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N14",
+   "kind": "notice",
+   "purpose": "human services, cited goal, 'Request for Proposals' label (no floor)",
+   "input": {
+    "request_id": "synthetic-N14",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Human Services/Client Services",
+    "selection_method_description": "Request for Proposals",
+    "start_date": "2026-07-27",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code. The M/WBE goal for this project is 30%."
+   },
+   "expected": {
+    "state": "goal_published_requirement_not_applicable",
+    "rule_id": "nyc.admin_code.6-129.q.7.human_services_contracts",
+    "floor": null,
+    "classes": [
+     "requirement_not_applicable_annotation",
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N15",
+   "kind": "notice",
+   "purpose": "human services, cited goal, 2021 (before 6-129(q)(7) in_force_as_of)",
+   "input": {
+    "request_id": "synthetic-N15",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Human Services/Client Services",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "start_date": "2021-05-03",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code. The M/WBE goal for this project is 30%."
+   },
+   "expected": {
+    "state": "goal_published",
+    "requirement": "unknown",
+    "floor": {
+     "kind": "competitive_sealed_proposal_section_6_129",
+     "days": 27,
+     "claim": "unverified"
+    },
+    "classes": [
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "N16",
+   "kind": "notice",
+   "purpose": "human services, cited goal, sealed bids (27 -> 15)",
+   "input": {
+    "request_id": "synthetic-N16",
+    "section_name": "Procurement",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Human Services/Client Services",
+    "selection_method_description": "Competitive Sealed Bids",
+    "start_date": "2026-06-08",
+    "additional_description_1": "This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code."
+   },
+   "expected": {
+    "state": "goal_published_requirement_not_applicable",
+    "rule_id": "nyc.admin_code.6-129.q.7.human_services_contracts",
+    "floor": {
+     "kind": "competitive_sealed_bid",
+     "days": 15,
+     "claim": "rule"
+    },
+    "classes": [
+     "requirement_not_applicable_annotation",
+     "floor_change"
+    ]
+   }
+  },
+  {
+   "id": "R01",
+   "kind": "record",
+   "purpose": "micropurchase goods at exactly $20,000",
+   "input": {
+    "selection_method_description": "MICROPURCHASE",
+    "category_description": "Goods",
+    "contract_amount": 20000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": "targeted_small_purchase",
+    "classes": []
+   }
+  },
+  {
+   "id": "R02",
+   "kind": "record",
+   "purpose": "micropurchase goods at $20,001 (baseline matched through the construction band)",
+   "input": {
+    "selection_method_description": "MICROPURCHASE",
+    "category_description": "Goods",
+    "contract_amount": 20001,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "reason": "outside_band",
+    "classes": [
+     "label_withdrawn_abstain"
+    ]
+   }
+  },
+  {
+   "id": "R03",
+   "kind": "record",
+   "purpose": "micropurchase construction at exactly $35,000",
+   "input": {
+    "selection_method_description": "MICROPURCHASE",
+    "category_description": "Construction/Construction Services",
+    "contract_amount": 35000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": "targeted_small_purchase",
+    "classes": []
+   }
+  },
+  {
+   "id": "R04",
+   "kind": "record",
+   "purpose": "micropurchase construction at $35,001",
+   "input": {
+    "selection_method_description": "MICROPURCHASE",
+    "category_description": "Construction/Construction Services",
+    "contract_amount": 35001,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "classes": []
+   }
+  },
+  {
+   "id": "R05",
+   "kind": "record",
+   "purpose": "written small purchase goods at exactly $100,000",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - WRITTEN",
+    "category_description": "Goods",
+    "contract_amount": 100000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": "targeted_small_purchase",
+    "classes": []
+   }
+  },
+  {
+   "id": "R06",
+   "kind": "record",
+   "purpose": "written small purchase goods at $100,001",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - WRITTEN",
+    "category_description": "Goods",
+    "contract_amount": 100001,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "classes": []
+   }
+  },
+  {
+   "id": "R07",
+   "kind": "record",
+   "purpose": "written small purchase, services other than human services, $30,000 (two candidates agree)",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - WRITTEN",
+    "category_description": "Services (other than human services)",
+    "contract_amount": 30000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": "targeted_small_purchase",
+    "classes": []
+   }
+  },
+  {
+   "id": "R08",
+   "kind": "record",
+   "purpose": "written small purchase, construction related services, $30,000 (candidates disagree)",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - WRITTEN",
+    "category_description": "Construction Related Services",
+    "contract_amount": 30000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "reason": "category_candidates_disagree",
+    "classes": [
+     "label_withdrawn_abstain"
+    ]
+   }
+  },
+  {
+   "id": "R09",
+   "kind": "record",
+   "purpose": "written small purchase, no category, $50,000: every legal category agrees (label kept)",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - WRITTEN",
+    "contract_amount": 50000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": "targeted_small_purchase",
+    "classes": []
+   }
+  },
+  {
+   "id": "R10",
+   "kind": "record",
+   "purpose": "written small purchase, unmapped label 'Human Services', $50,000",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - WRITTEN",
+    "category_description": "Human Services",
+    "contract_amount": 50000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "reason": "category_unmapped",
+    "classes": [
+     "label_withdrawn_abstain"
+    ]
+   }
+  },
+  {
+   "id": "R11",
+   "kind": "record",
+   "purpose": "M/WBE small purchase goods at exactly $1,500,000, award notice not found",
+   "input": {
+    "selection_method_description": "MWBE Non Competitive Small Purchase",
+    "category_description": "Goods",
+    "contract_amount": 1500000,
+    "start_date": "2026-03-02",
+    "coverage_state": "source_checked_no_record",
+    "procurement_stages": [
+     "award"
+    ]
+   },
+   "expected": {
+    "label": "mwbe_award_notice_not_yet_found",
+    "classes": []
+   }
+  },
+  {
+   "id": "R12",
+   "kind": "record",
+   "purpose": "M/WBE small purchase goods at $1,500,001",
+   "input": {
+    "selection_method_description": "MWBE Non Competitive Small Purchase",
+    "category_description": "Goods",
+    "contract_amount": 1500001,
+    "start_date": "2026-03-02",
+    "coverage_state": "source_checked_no_record",
+    "procurement_stages": [
+     "award"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "classes": []
+   }
+  },
+  {
+   "id": "R13",
+   "kind": "record",
+   "purpose": "M/WBE small purchase goods, $1,200,000 in mid-2023 (ceiling not established)",
+   "input": {
+    "selection_method_description": "MWBE Non Competitive Small Purchase",
+    "category_description": "Goods",
+    "contract_amount": 1200000,
+    "start_date": "2023-07-17",
+    "coverage_state": "source_checked_no_record",
+    "procurement_stages": [
+     "award"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "reason": "mwbe_ceiling_not_established",
+    "classes": [
+     "label_withdrawn_abstain"
+    ]
+   }
+  },
+  {
+   "id": "R14",
+   "kind": "record",
+   "purpose": "M/WBE small purchase labelled human services, $50,000 (method excludes human services)",
+   "input": {
+    "selection_method_description": "MWBE Non Competitive Small Purchase",
+    "category_description": "Human Services/Client Services",
+    "contract_amount": 50000,
+    "start_date": "2026-03-02",
+    "coverage_state": "source_checked_no_record",
+    "procurement_stages": [
+     "award"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "reason": "outside_band",
+    "classes": [
+     "label_withdrawn_abstain"
+    ]
+   }
+  },
+  {
+   "id": "R15",
+   "kind": "record",
+   "purpose": "micropurchase human services, $15,000",
+   "input": {
+    "selection_method_description": "MICROPURCHASE",
+    "category_description": "Human Services/Client Services",
+    "contract_amount": 15000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": "targeted_small_purchase",
+    "classes": []
+   }
+  },
+  {
+   "id": "R16",
+   "kind": "record",
+   "purpose": "written small purchase human services, $60,000",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - WRITTEN",
+    "category_description": "Human Services/Client Services",
+    "contract_amount": 60000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": "targeted_small_purchase",
+    "classes": []
+   }
+  },
+  {
+   "id": "R17",
+   "kind": "record",
+   "purpose": "micropurchase goods at $20,000 with no date",
+   "input": {
+    "selection_method_description": "MICROPURCHASE",
+    "category_description": "Goods",
+    "contract_amount": 20000,
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "reason": "occurred_on_missing",
+    "classes": []
+   }
+  },
+  {
+   "id": "R18",
+   "kind": "record",
+   "purpose": "M/WBE small purchase goods, exactly $1,000,000 in mid-2023",
+   "input": {
+    "selection_method_description": "MWBE Non Competitive Small Purchase",
+    "category_description": "Goods",
+    "contract_amount": 1000000,
+    "start_date": "2023-07-17",
+    "coverage_state": "source_checked_no_record",
+    "procurement_stages": [
+     "award"
+    ]
+   },
+   "expected": {
+    "label": "mwbe_award_notice_not_yet_found",
+    "classes": []
+   }
+  },
+  {
+   "id": "R19",
+   "kind": "record",
+   "purpose": "written small purchase with caller-asserted policy band category",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - WRITTEN",
+    "procurement_category": "goods_and_non_construction_services",
+    "contract_amount": 75000,
+    "start_date": "2024-01-15",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": "targeted_small_purchase",
+    "classes": []
+   }
+  },
+  {
+   "id": "R20",
+   "kind": "record",
+   "purpose": "micropurchase construction related services, $20,000 (three candidates agree)",
+   "input": {
+    "selection_method_description": "MICROPURCHASE",
+    "category_description": "Construction Related Services",
+    "contract_amount": 20000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": "targeted_small_purchase",
+    "classes": []
+   }
+  },
+  {
+   "id": "R21",
+   "kind": "record",
+   "purpose": "M/WBE small purchase goods, $1,000,001 in mid-2023",
+   "input": {
+    "selection_method_description": "MWBE Non Competitive Small Purchase",
+    "category_description": "Goods",
+    "contract_amount": 1000001,
+    "start_date": "2023-07-17",
+    "coverage_state": "source_checked_no_record",
+    "procurement_stages": [
+     "award"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "reason": "mwbe_ceiling_not_established",
+    "classes": [
+     "label_withdrawn_abstain"
+    ]
+   }
+  },
+  {
+   "id": "R22",
+   "kind": "record",
+   "purpose": "M/WBE small purchase goods, $1,200,000 on 2023-12-08",
+   "input": {
+    "selection_method_description": "MWBE Non Competitive Small Purchase",
+    "category_description": "Goods",
+    "contract_amount": 1200000,
+    "start_date": "2023-12-08",
+    "coverage_state": "source_checked_no_record",
+    "procurement_stages": [
+     "award"
+    ]
+   },
+   "expected": {
+    "label": "mwbe_award_notice_not_yet_found",
+    "classes": []
+   }
+  },
+  {
+   "id": "R23",
+   "kind": "record",
+   "purpose": "uncategorised small purchase under $5,000: all five legal categories agree (label kept)",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+    "contract_amount": 4500,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": "targeted_small_purchase",
+    "classes": []
+   }
+  },
+  {
+   "id": "R24",
+   "kind": "record",
+   "purpose": "uncategorised micropurchase at $25,000, between the goods/services and construction limits: candidates disagree (F2 canary)",
+   "input": {
+    "selection_method_description": "MICROPURCHASE",
+    "contract_amount": 25000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "reason": "category_missing_candidates_disagree",
+    "missing_facts": [
+     "procurement_category"
+    ],
+    "classes": [
+     "label_withdrawn_abstain"
+    ]
+   }
+  },
+  {
+   "id": "R25",
+   "kind": "record",
+   "purpose": "unmapped label Human Services on a $4,500 small purchase where every category would agree: stays unknown",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+    "category_description": "Human Services",
+    "contract_amount": 4500,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "reason": "category_unmapped",
+    "missing_facts": [
+     "procurement_category"
+    ],
+    "classes": [
+     "label_withdrawn_abstain"
+    ]
+   }
+  },
+  {
+   "id": "R26",
+   "kind": "record",
+   "purpose": "uncategorised written small purchase at $30,000: candidates disagree",
+   "input": {
+    "selection_method_description": "SMALL PURCHASE - WRITTEN",
+    "contract_amount": 30000,
+    "start_date": "2024-03-01",
+    "procurement_stages": [
+     "registered"
+    ]
+   },
+   "expected": {
+    "label": null,
+    "reason": "category_missing_candidates_disagree",
+    "missing_facts": [
+     "procurement_category"
+    ],
+    "classes": [
+     "label_withdrawn_abstain"
+    ]
+   }
+  },
+  {
+   "id": "R27",
+   "kind": "record",
+   "purpose": "uncategorised M/WBE small purchase at $500,000: four legal categories (human services excluded by 3-08(c)(1)(iv)) agree",
+   "input": {
+    "selection_method_description": "MWBE Non Competitive Small Purchase",
+    "contract_amount": 500000,
+    "start_date": "2026-03-02",
+    "coverage_state": "source_checked_no_record",
+    "procurement_stages": [
+     "award"
+    ]
+   },
+   "expected": {
+    "label": "mwbe_award_notice_not_yet_found",
+    "classes": []
+   }
+  },
+  {
+   "id": "A01",
+   "kind": "award_participation",
+   "purpose": "not-for-profit awardee at award stage, construction",
+   "input": {
+    "row": {
+     "category_description": "Construction/Construction Services"
+    },
+    "awardee_legal_form": "not_for_profit",
+    "occurred_on": "2026-03-02"
+   },
+   "expected": {
+    "state": "requirement_not_applicable",
+    "rule_id": "nyc.admin_code.6-129.q.8.not_for_profit_awardees",
+    "classes": [
+     "requirement_not_applicable_annotation"
+    ]
+   }
+  },
+  {
+   "id": "A02",
+   "kind": "award_participation",
+   "purpose": "for-profit awardee at award stage, construction",
+   "input": {
+    "row": {
+     "category_description": "Construction/Construction Services"
+    },
+    "awardee_legal_form": "for_profit",
+    "occurred_on": "2026-03-02"
+   },
+   "expected": {
+    "state": "no_goal_published",
+    "requirement": "not_ruled_out",
+    "classes": []
+   }
+  },
+  {
+   "id": "A03",
+   "kind": "award_participation",
+   "purpose": "not-for-profit awardee, category missing",
+   "input": {
+    "row": {},
+    "awardee_legal_form": "not_for_profit",
+    "occurred_on": "2026-03-02"
+   },
+   "expected": {
+    "state": "requirement_not_applicable",
+    "rule_id": "nyc.admin_code.6-129.q.8.not_for_profit_awardees",
+    "classes": [
+     "requirement_not_applicable_annotation"
+    ]
+   }
+  }
+ ],
+ "category_inventory": {
+  "method": "every tracked *.json file at the baseline whose text contains category_description (git grep -l), parsed; values of keys named category_description counted recursively",
+  "files": [
+   "site/data/money_default_open.json",
+   "site/data/money_resident_snapshot.json",
+   "site/data/procurement_capability_compare_corpus.json",
+   "site/data/procurement_program_capabilities_corpus.json",
+   "site/data/task_first_examples.json",
+   "test/fixtures/batch-precompute/money_default_open_raw.json",
+   "test/fixtures/interpret-preview/money_resident_snapshot.json",
+   "test/fixtures/money_action_field_cases.json",
+   "test/fixtures/source_contracts/source-shapes.json",
+   "test/performance/fixtures/contracts.keyword-housing.json",
+   "test/performance/fixtures/home.cold.json",
+   "test/performance/fixtures/home.warm.json",
+   "warehouse/fixtures/authority-native-procurement/institution_source_census.v1.json",
+   "warehouse/fixtures/award-registration-dwell/city_record_hs_awards.json",
+   "warehouse/fixtures/procurement-project-context/city-record-ddc-notices.json",
+   "warehouse/fixtures/seqra-institutional-signals/nyc_city_record_notices/2026-09-04-sample/raw/dataset_metadata.json",
+   "warehouse/fixtures/seqra-inventory/observation.v1.json",
+   "warehouse/receipts/proof/city-record_bulk_latest.json",
+   "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
+   "warehouse/receipts/proof/seqra_institutional_signal_adapters_latest.json"
+  ],
+  "counts": {
+   "Construction/Construction Services": 199,
+   "Construction Related Services": 192,
+   "Services (other than human services)": 63,
+   "Goods and Services": 17,
+   "Goods": 12,
+   "Human Services/Client Services": 10,
+   "Human Services": 3
+  },
+  "unmapped": [
+   "Human Services"
+  ],
+  "publisher_vocabulary_source": "worker/src/lib/filter.mjs CATEGORIES"
+ },
+ "population": {
+  "source": "site/data/shared_procurement_read_model/shard-000..014.json at the baseline (materialized objects + observations)",
+  "measure": "projectProcurementCoverageSignals(coverageInputFromProcurement(object, observations)) labels, baseline vs prototype",
+  "objects": 20601,
+  "tally": {
+   "- -> -": 16267,
+   "targeted_small_purchase -> targeted_small_purchase": 1320,
+   "targeted_small_purchase -> -": 3014
+  },
+  "withdrawn_by_reason": {
+   "category_missing_candidates_disagree": 3014
+  },
+  "note": "All 4,334 baseline labels sit on Checkbook small purchases with no category in any observation. Under the candidate-set rule 1,320 are kept because every legal category gives the same answer (1,317 SMALL PURCHASE - UNDER $5,000, 3 SMALL PURCHASE - WRITTEN) and 3,014 are withdrawn because the goods/services and construction bands disagree at their amount (3,013 WRITTEN, 1 SMALL PURCHASE - UNDER $5,000 recorded at $35,000). The earlier strict rule withdrew all 4,334. No label is added anywhere."
+ }
+}

@@ -30,6 +30,8 @@ function compactFloor(floor) {
     days: floor.days,
     day_unit: floor.day_unit,
     rule_source: floor.rule_source,
+    rule_section: floor.rule_section,
+    claim: floor.claim,
   };
 }
 
@@ -62,7 +64,11 @@ for (const entry of fixture.cases) {
     }
     if (pm.response_floor) {
       assert.equal(pm.response_floor.source, "derived");
-      assert.ok(pm.response_floor.rule_cite.length > 20);
+      // These captured excerpts carry no notice date, so the register rule cannot be
+      // confirmed in force: the floor is reported as unverified, with no rule citation.
+      assert.equal(pm.response_floor.claim, "unverified");
+      assert.equal(pm.response_floor.rule_cite, null);
+      assert.ok(pm.response_floor.rule_section.length > 5);
     }
   });
 }
@@ -114,47 +120,71 @@ test("accelerated procurement requires method cue, not schedule language", () =>
 });
 
 test("response floor priority: accelerated > 6-129 > default solicitation", () => {
+  // Accelerated wins over the published competitive method, whatever that method is.
   assert.deepEqual(
     compactFloor(
       deriveResponseFloor({
         accelerated: { present: true, evidence: "Accelerated Procurement" },
         section_6_129: { present: true, evidence: "Section 6-129" },
         is_solicitation: true,
+        method: "competitive_sealed_proposal",
+        occurred_on: "2026-06-01",
       })
     ),
     {
       kind: RESPONSE_FLOOR_KIND.ACCELERATED,
       days: 3,
       day_unit: "business_days",
-      rule_source: "ppb_3_07_accelerated_3_business_days",
+      rule_source: "app.solicitation_method.response_floor.accelerated_3_business_days",
+      rule_section: "9 RCNY 3-07(h)(1)(i)",
+      claim: "rule",
     }
   );
 
+  // Competitive sealed proposals subject to §6-129: 27 calendar days (3-03(c)(1)).
   assert.deepEqual(
     compactFloor(
       deriveResponseFloor({
         section_6_129: { present: true, evidence: "Section 6-129" },
         is_solicitation: true,
+        method: "competitive_sealed_proposal",
+        occurred_on: "2026-06-01",
       })
     ),
     {
-      kind: RESPONSE_FLOOR_KIND.SECTION_6_129,
+      kind: RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_PROPOSAL_SECTION_6_129,
       days: 27,
       day_unit: "calendar_days",
-      rule_source: "admin_code_6_129_extended_27_calendar_days",
+      rule_source: "app.solicitation_method.response_floor.section_6_129_27_calendar_days",
+      rule_section: "9 RCNY 3-03(c)(1)",
+      claim: "rule",
     }
   );
 
+  // Competitive sealed proposals without §6-129: 20 calendar days.
   assert.deepEqual(
-    compactFloor(deriveResponseFloor({ is_solicitation: true })),
+    compactFloor(
+      deriveResponseFloor({
+        is_solicitation: true,
+        method: "competitive_sealed_proposal",
+        occurred_on: "2026-06-01",
+      })
+    ),
     {
-      kind: RESPONSE_FLOOR_KIND.DEFAULT_COMPETITIVE,
+      kind: RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_PROPOSAL,
       days: 20,
       day_unit: "calendar_days",
-      rule_source: "ppb_competitive_default_20_calendar_days",
+      rule_source: "app.solicitation_method.response_floor.default_competitive_20_calendar_days",
+      rule_section: "9 RCNY 3-03(c)(1)",
+      claim: "rule",
     }
   );
 
+  // No published competitive method and not accelerated: no floor is asserted.
+  assert.equal(
+    deriveResponseFloor({ section_6_129: { present: true }, is_solicitation: true }),
+    null
+  );
   assert.equal(deriveResponseFloor({ is_solicitation: false }), null);
 });
 
@@ -166,11 +196,14 @@ test("full extract: accelerated solicitation yields 3-business-day floor", () =>
       "<p>This solicitation is being made pursuant to the Accelerated Procurement Method, Section 3-07 of the PPB Rules.</p>",
   });
   assert.equal(pm.accelerated.present, true);
+  // No notice date on this row, so the accelerated floor is reported unverified.
   assert.deepEqual(compactFloor(pm.response_floor), {
     kind: RESPONSE_FLOOR_KIND.ACCELERATED,
     days: 3,
     day_unit: "business_days",
-    rule_source: "ppb_3_07_accelerated_3_business_days",
+    rule_source: "app.solicitation_method.response_floor.accelerated_3_business_days",
+    rule_section: "9 RCNY 3-07(h)(1)(i)",
+    claim: "unverified",
   });
 });
 
@@ -188,12 +221,20 @@ test("extractNoticeFacts nests procurement_method on structured facts", () => {
   const facts = extractNoticeFacts({
     section_name: "Procurement",
     type_of_notice_description: "Solicitation",
+    selection_method_description: "Competitive Sealed Proposals",
+    start_date: "2026-06-01",
     additional_description_1:
       "This procurement is subject to Section 6-129 of the New York City Administrative Code. The MWBE goal for this project is 25%. PIN: 85026Y0001",
   });
   assert.ok(Array.isArray(facts.identifiers));
   assert.equal(facts.procurement_method.section_6_129.goal_percent, 25);
+  // Competitive sealed proposals subject to §6-129, with an in-force date: 27-day rule floor.
   assert.equal(facts.procurement_method.response_floor.days, 27);
+  assert.equal(
+    facts.procurement_method.response_floor.kind,
+    RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_PROPOSAL_SECTION_6_129
+  );
+  assert.equal(facts.procurement_method.response_floor.claim, "rule");
 });
 
 /* ===== Card 2: procurement_opportunity_window.mjs pairs with, and never
@@ -205,32 +246,39 @@ test("Card 2: the three preserved response-floor fixtures (default 20 / 6-129 27
     passport_due_date: "2026-08-05",
   });
 
-  const defaultFloor = deriveResponseFloor({ is_solicitation: true });
+  const defaultFloor = deriveResponseFloor({
+    is_solicitation: true,
+    method: "competitive_sealed_proposal",
+    occurred_on: "2026-07-01",
+  });
   assert.equal(defaultFloor.days, 20);
   assert.equal(
     opportunityWindowDisplayLine(window, defaultFloor),
-    "Published response window: 35 calendar days · applicable rule floor: 20 calendar days"
+    "Published response window: 35 calendar days · applicable rule floor: 20 calendar days (9 RCNY 3-03(c)(1))"
   );
 
   const section6129Floor = deriveResponseFloor({
     section_6_129: { present: true, evidence: "Section 6-129" },
     is_solicitation: true,
+    method: "competitive_sealed_proposal",
+    occurred_on: "2026-07-01",
   });
   assert.equal(section6129Floor.days, 27);
   assert.equal(
     opportunityWindowDisplayLine(window, section6129Floor),
-    "Published response window: 35 calendar days · applicable rule floor: 27 calendar days"
+    "Published response window: 35 calendar days · applicable rule floor: 27 calendar days (9 RCNY 3-03(c)(1))"
   );
 
   const acceleratedFloor = deriveResponseFloor({
     accelerated: { present: true, evidence: "Accelerated Procurement" },
     is_solicitation: true,
+    occurred_on: "2026-07-01",
   });
   assert.equal(acceleratedFloor.days, 3);
   assert.equal(acceleratedFloor.day_unit, "business_days");
   assert.equal(
     opportunityWindowDisplayLine(window, acceleratedFloor),
-    "Published response window: 35 calendar days · applicable rule floor: 3 business days"
+    "Published response window: 35 calendar days · applicable rule floor: 3 business days (9 RCNY 3-07(h)(1)(i))"
   );
 });
 
@@ -260,9 +308,12 @@ test("fixture hand-check corpus covers all three response floors plus NCSP", () 
   const floors = new Set(
     fixture.cases.map((c) => c.expected.response_floor?.kind).filter(Boolean)
   );
-  assert.ok(floors.has(RESPONSE_FLOOR_KIND.SECTION_6_129));
-  assert.ok(floors.has(RESPONSE_FLOOR_KIND.DEFAULT_COMPETITIVE));
-  // Accelerated is rare in the live corpus; unit cases cover the third floor.
+  // The corpus covers both §6-129 and plain competitive sealed proposals and bids.
+  assert.ok(floors.has(RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_PROPOSAL_SECTION_6_129));
+  assert.ok(floors.has(RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_BID_SECTION_6_129));
+  assert.ok(floors.has(RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_PROPOSAL));
+  assert.ok(floors.has(RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_BID));
+  // Accelerated is rare in the live corpus; unit cases cover that floor.
   assert.ok(fixture.cases.some((c) => c.expected.ncsp_present));
   assert.ok(fixture.cases.some((c) => c.expected.section_6_129_present));
   assert.equal(fixture.cases.length, 10);

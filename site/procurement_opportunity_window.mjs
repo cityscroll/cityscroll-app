@@ -270,7 +270,8 @@ export function procurementOpportunityWindow(object = {}, observations = []) {
 
 /**
  * Display copy pairing a published window with a rule-derived response
- * floor (`solicitation_procurement_method.mjs`'s `response_floor`). The
+ * floor (`solicitation_procurement_method.mjs`'s `response_floor`, claim "rule"
+ * only for a source_checked register rule in force on the notice date). The
  * pairing is presented side by side and never as a verdict: no compliant,
  * noncompliant, suspicious, wired, preselected, or fake language, and no
  * floor comparison at all when the window itself is unavailable (rule 3).
@@ -282,5 +283,11 @@ export function opportunityWindowDisplayLine(window, responseFloor = null) {
     : `Published notice-to-due window: ${window.days} calendar days`;
   if (!responseFloor || !Number.isFinite(responseFloor.days)) return windowLabel;
   const floorUnit = responseFloor.day_unit === "business_days" ? "business days" : "calendar days";
-  return `${windowLabel} · applicable rule floor: ${responseFloor.days} ${floorUnit}`;
+  // Only a register rule that is source_checked and in force on the notice date is
+  // called a rule floor; anything else is shown without asserting a rule.
+  if (responseFloor.claim !== "rule") {
+    return `${windowLabel} · minimum response time (not verified against the rule text): ${responseFloor.days} ${floorUnit}`;
+  }
+  const section = responseFloor.rule_section ? ` (${responseFloor.rule_section})` : "";
+  return `${windowLabel} · applicable rule floor: ${responseFloor.days} ${floorUnit}${section}`;
 }
