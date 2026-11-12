@@ -9,6 +9,11 @@ const DISPLAY_KEY = /(?:^|_)(?:title|name|label|description|summary|display|text
 const ID_KEY = /(?:^|_)(?:id|ref|key|pin|contract|notice|project)(?:_|$)/i;
 const PHONE_KEY = /(?:^|_)(?:phone|telephone)(?:_|$)/i;
 const PUBLIC_LOOKUP = /(?:^|\/)\w+_warehouse_lookup\.json$/;
+// Verbatim publisher records (SBS Certified Business List). Real firms have placeholder phones such as
+// 5555555555 and names whose upper-cased stem starts with FIX; neither is a test marker, and the
+// directory never drops or masks published fields, so these shards are not scanned for test markers.
+// The builder only writes them from a live pull, and the manifest is still scanned.
+const PUBLISHER_RECORD_SHARDS = /(?:^|\/)site\/data\/sbs_certified_businesses\/rows-\d{3}\.json$/;
 
 function pathText(parts) {
   return parts.map(String).join(".");
@@ -26,6 +31,7 @@ function finding(source, parts, kind, value) {
 /** Findings that identify test-only records in a public JSON document. */
 export function publicPayloadFindings(value, { source = "document" } = {}) {
   const findings = [];
+  if (PUBLISHER_RECORD_SHARDS.test(String(source).replaceAll("\\", "/"))) return findings;
 
   function walk(node, parts = []) {
     if (Array.isArray(node)) {

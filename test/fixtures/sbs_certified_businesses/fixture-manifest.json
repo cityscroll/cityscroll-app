@@ -1,0 +1,677 @@
+{
+  "schema": "cityscroll.sbs_fixture_manifest.v1",
+  "dataset_id": "ci93-uc8s",
+  "collected_at": "2026-11-11T23:52:18Z",
+  "rows_updated_at": "2026-11-10T14:39:18.000Z",
+  "publisher_row_count": 11772,
+  "fetched_from": [
+    "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=0",
+    "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=2000",
+    "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=4000",
+    "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=6000",
+    "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=8000",
+    "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=10000",
+    "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=12000"
+  ],
+  "fetches": [
+    {
+      "url": "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=0",
+      "response_date": "Wed, 11 Nov 2026 23:51:31 GMT",
+      "bytes": 3970207,
+      "sha256": "ed9fad115295e5cb3266862dfe1c87bc2d68fe8d6011621302a5be9c548b85bb"
+    },
+    {
+      "url": "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=2000",
+      "response_date": "Wed, 11 Nov 2026 23:51:41 GMT",
+      "bytes": 3950609,
+      "sha256": "1cc13b1cd5004c14c85d103c5ac63134721dee693e4f796fb8498ad40b60da57"
+    },
+    {
+      "url": "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=4000",
+      "response_date": "Wed, 11 Nov 2026 23:51:44 GMT",
+      "bytes": 4143791,
+      "sha256": "b5bc019f64835eefb277d8f77f630d58c0ee7ae5b3080f2ffcd3e7d35d7d83a5"
+    },
+    {
+      "url": "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=6000",
+      "response_date": "Wed, 11 Nov 2026 23:51:48 GMT",
+      "bytes": 4042356,
+      "sha256": "146afb103e51aea1053c95dfe79fd9fcca53e59805133b765ef042d9a915dd91"
+    },
+    {
+      "url": "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=8000",
+      "response_date": "Wed, 11 Nov 2026 23:51:50 GMT",
+      "bytes": 4242844,
+      "sha256": "e2582294ab51ae0b35f47ce293c01c74c007573f57916eab3706a7d923898519"
+    },
+    {
+      "url": "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=10000",
+      "response_date": "Wed, 11 Nov 2026 23:51:52 GMT",
+      "bytes": 3717406,
+      "sha256": "6edcff26ef35740b76a6c9fb08315052fb89ddb4094b804b424dffa33711e915"
+    },
+    {
+      "url": "https://data.cityofnewyork.us/resource/ci93-uc8s.json?$order=account_number&$limit=2000&$offset=12000",
+      "response_date": "Wed, 11 Nov 2026 23:52:08 GMT",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ],
+  "metadata_fetch": {
+    "url": "https://data.cityofnewyork.us/api/views/ci93-uc8s.json",
+    "sha256": "11aa5bee365a09c382c9143df026a9f2b544138e3de422b4c7601636dbf8ae15"
+  },
+  "selection": {
+    "file": "sample-rows.json",
+    "rows": 199,
+    "sha256": "fb377c3264dab0526d43f403a32b251c9b4571ec924bfa580c05827faff5cd43",
+    "seed": 20261111,
+    "prng": "mulberry32",
+    "rule": "see make_fixtures.mjs; every certification combination present in the full pull, short-zip NJ/CT/MA/RI/NH rows, PA rows (no PA row has a short zip in the full pull), every known-dirty row type, DBA and borough presence/absence, seeded random fill to about 200",
+    "reasons_by_account": {
+      "473": [
+        "certification:MBE"
+      ],
+      "817": [
+        "seeded_random_fill"
+      ],
+      "1014": [
+        "without_borough"
+      ],
+      "1591": [
+        "short_zip:MA"
+      ],
+      "1622": [
+        "certification:MBE"
+      ],
+      "2263": [
+        "without_borough"
+      ],
+      "2327": [
+        "no_renewal_date"
+      ],
+      "3211": [
+        "has_dba"
+      ],
+      "3285": [
+        "has_dba"
+      ],
+      "3377": [
+        "without_borough"
+      ],
+      "3614": [
+        "seeded_random_fill"
+      ],
+      "3929": [
+        "has_dba"
+      ],
+      "4655": [
+        "has_dba"
+      ],
+      "4716": [
+        "short_zip:RI"
+      ],
+      "4768": [
+        "certification:WBE"
+      ],
+      "4903": [
+        "has_dba"
+      ],
+      "5057": [
+        "date_out_of_range"
+      ],
+      "5189": [
+        "with_borough"
+      ],
+      "5522": [
+        "state:PA_five_digit_zip"
+      ],
+      "5991": [
+        "no_renewal_date"
+      ],
+      "6211": [
+        "certification:MBE"
+      ],
+      "6392": [
+        "website_is_email"
+      ],
+      "6781": [
+        "short_zip:NJ"
+      ],
+      "10026": [
+        "with_borough"
+      ],
+      "10034": [
+        "has_dba"
+      ],
+      "10235": [
+        "no_renewal_date"
+      ],
+      "10356": [
+        "certification:MBE,WBE,EBE",
+        "three_valued_renewal_dates"
+      ],
+      "10569": [
+        "has_dba"
+      ],
+      "10608": [
+        "no_renewal_date"
+      ],
+      "10761": [
+        "short_zip:RI"
+      ],
+      "10898": [
+        "date_out_of_range"
+      ],
+      "11078": [
+        "has_dba"
+      ],
+      "11194": [
+        "no_renewal_date"
+      ],
+      "11846": [
+        "without_borough"
+      ],
+      "11863": [
+        "no_renewal_date"
+      ],
+      "11874": [
+        "has_dba"
+      ],
+      "11969": [
+        "seeded_random_fill"
+      ],
+      "12036": [
+        "seeded_random_fill"
+      ],
+      "12113": [
+        "without_borough"
+      ],
+      "12155": [
+        "certification:WBE"
+      ],
+      "12275": [
+        "certification:MBE,EBE"
+      ],
+      "12333": [
+        "has_dba",
+        "seeded_random_fill"
+      ],
+      "12554": [
+        "without_borough"
+      ],
+      "12613": [
+        "with_borough"
+      ],
+      "12783": [
+        "seeded_random_fill"
+      ],
+      "13029": [
+        "seeded_random_fill"
+      ],
+      "13290": [
+        "seeded_random_fill"
+      ],
+      "13296": [
+        "two_valued_renewal_dates"
+      ],
+      "13515": [
+        "has_dba"
+      ],
+      "13612": [
+        "seeded_random_fill"
+      ],
+      "13724": [
+        "without_borough"
+      ],
+      "13741": [
+        "with_borough"
+      ],
+      "13825": [
+        "has_dba"
+      ],
+      "13887": [
+        "short_zip:RI"
+      ],
+      "14009": [
+        "has_dba"
+      ],
+      "14022": [
+        "short_zip:NH"
+      ],
+      "14075": [
+        "has_dba"
+      ],
+      "14446": [
+        "short_zip:CT"
+      ],
+      "14502": [
+        "without_borough"
+      ],
+      "14615": [
+        "certification:MBE,WBE"
+      ],
+      "14824": [
+        "has_dba",
+        "without_borough"
+      ],
+      "14910": [
+        "negative_amount"
+      ],
+      "14932": [
+        "seeded_random_fill"
+      ],
+      "15022": [
+        "with_borough"
+      ],
+      "15518": [
+        "certification:MBE,WBE"
+      ],
+      "15781": [
+        "without_borough"
+      ],
+      "15988": [
+        "certification:WBE"
+      ],
+      "16073": [
+        "has_dba"
+      ],
+      "16277": [
+        "has_dba"
+      ],
+      "16694": [
+        "seeded_random_fill"
+      ],
+      "16778": [
+        "seeded_random_fill"
+      ],
+      "16845": [
+        "seeded_random_fill"
+      ],
+      "17057": [
+        "seeded_random_fill"
+      ],
+      "100075": [
+        "seeded_random_fill"
+      ],
+      "100106": [
+        "date_out_of_range"
+      ],
+      "100157": [
+        "short_zip:NH"
+      ],
+      "100400": [
+        "without_borough"
+      ],
+      "100507": [
+        "without_borough"
+      ],
+      "100510": [
+        "with_borough"
+      ],
+      "100681": [
+        "seeded_random_fill"
+      ],
+      "100694": [
+        "short_zip:NH"
+      ],
+      "100725": [
+        "has_dba"
+      ],
+      "100911": [
+        "phone_not_ten_digits"
+      ],
+      "101109": [
+        "negative_amount"
+      ],
+      "101289": [
+        "certification:WBE"
+      ],
+      "101627": [
+        "seeded_random_fill"
+      ],
+      "101915": [
+        "without_borough"
+      ],
+      "102115": [
+        "state:PA_five_digit_zip"
+      ],
+      "102292": [
+        "seeded_random_fill"
+      ],
+      "102968": [
+        "without_borough"
+      ],
+      "103174": [
+        "certification:MBE,EBE"
+      ],
+      "103175": [
+        "state:PA_five_digit_zip"
+      ],
+      "103298": [
+        "certification:MBE,WBE"
+      ],
+      "103571": [
+        "short_zip:MA"
+      ],
+      "103664": [
+        "without_borough"
+      ],
+      "103678": [
+        "seeded_random_fill"
+      ],
+      "103751": [
+        "phone_not_ten_digits"
+      ],
+      "103923": [
+        "seeded_random_fill"
+      ],
+      "104076": [
+        "seeded_random_fill"
+      ],
+      "104119": [
+        "has_dba"
+      ],
+      "212434": [
+        "with_borough"
+      ],
+      "252364": [
+        "certification:EBE"
+      ],
+      "284309": [
+        "with_borough"
+      ],
+      "294453": [
+        "certification:MBE,WBE,EBE"
+      ],
+      "308427": [
+        "without_borough"
+      ],
+      "309020": [
+        "date_out_of_range"
+      ],
+      "313853": [
+        "with_borough"
+      ],
+      "322481": [
+        "certification:MBE,EBE"
+      ],
+      "324591": [
+        "phone_placeholder"
+      ],
+      "324628": [
+        "date_out_of_range"
+      ],
+      "324645": [
+        "has_dba"
+      ],
+      "326100": [
+        "certification:MBE,WBE"
+      ],
+      "326458": [
+        "certification:MBE,WBE"
+      ],
+      "326755": [
+        "with_borough"
+      ],
+      "327233": [
+        "with_borough"
+      ],
+      "327628": [
+        "two_valued_renewal_dates"
+      ],
+      "330196": [
+        "without_borough"
+      ],
+      "330928": [
+        "certification:WBE"
+      ],
+      "331737": [
+        "certification:MBE"
+      ],
+      "331739": [
+        "has_dba"
+      ],
+      "331860": [
+        "certification:EBE"
+      ],
+      "332742": [
+        "certification:WBE"
+      ],
+      "333042": [
+        "seeded_random_fill"
+      ],
+      "333049": [
+        "seeded_random_fill"
+      ],
+      "337880": [
+        "seeded_random_fill"
+      ],
+      "338805": [
+        "certification:MBE,EBE"
+      ],
+      "339654": [
+        "short_zip:CT"
+      ],
+      "340526": [
+        "without_borough"
+      ],
+      "340928": [
+        "seeded_random_fill"
+      ],
+      "341307": [
+        "certification:MBE,WBE,EBE"
+      ],
+      "342488": [
+        "with_borough"
+      ],
+      "343649": [
+        "has_dba"
+      ],
+      "344866": [
+        "has_dba"
+      ],
+      "346092": [
+        "without_borough"
+      ],
+      "346283": [
+        "has_dba"
+      ],
+      "355624": [
+        "certification:WBE,EBE"
+      ],
+      "357071": [
+        "seeded_random_fill"
+      ],
+      "357418": [
+        "name_error_token"
+      ],
+      "357476": [
+        "has_dba"
+      ],
+      "358320": [
+        "website_is_email"
+      ],
+      "358359": [
+        "short_zip:MA"
+      ],
+      "359865": [
+        "with_borough"
+      ],
+      "361994": [
+        "with_borough"
+      ],
+      "362057": [
+        "certification:WBE",
+        "with_borough"
+      ],
+      "362103": [
+        "certification:WBE"
+      ],
+      "362479": [
+        "without_borough"
+      ],
+      "363147": [
+        "no_nigp"
+      ],
+      "363151": [
+        "has_dba"
+      ],
+      "363299": [
+        "short_zip:NJ"
+      ],
+      "363996": [
+        "seeded_random_fill"
+      ],
+      "364197": [
+        "certification:MBE,WBE,EBE"
+      ],
+      "365268": [
+        "no_renewal_date"
+      ],
+      "365839": [
+        "seeded_random_fill"
+      ],
+      "367374": [
+        "zip_three_digits"
+      ],
+      "368039": [
+        "seeded_random_fill"
+      ],
+      "368580": [
+        "phone_not_ten_digits"
+      ],
+      "368750": [
+        "certification:MBE"
+      ],
+      "368892": [
+        "certification:MBE,WBE"
+      ],
+      "368958": [
+        "with_borough"
+      ],
+      "369287": [
+        "short_zip:CT"
+      ],
+      "369312": [
+        "has_dba"
+      ],
+      "369681": [
+        "certification:MBE"
+      ],
+      "369786": [
+        "has_dba"
+      ],
+      "370351": [
+        "seeded_random_fill"
+      ],
+      "370665": [
+        "without_borough"
+      ],
+      "370965": [
+        "with_borough"
+      ],
+      "372188": [
+        "certification:LBE"
+      ],
+      "372982": [
+        "phone_not_ten_digits"
+      ],
+      "373445": [
+        "no_renewal_date"
+      ],
+      "375374": [
+        "certification:MBE"
+      ],
+      "376018": [
+        "without_borough"
+      ],
+      "377352": [
+        "has_dba"
+      ],
+      "377438": [
+        "two_valued_renewal_dates"
+      ],
+      "377687": [
+        "without_borough"
+      ],
+      "377743": [
+        "certification:MBE"
+      ],
+      "377929": [
+        "with_borough"
+      ],
+      "378140": [
+        "certification:MBE,WBE,EBE",
+        "three_valued_renewal_dates"
+      ],
+      "378931": [
+        "website_is_email"
+      ],
+      "380007": [
+        "short_zip:NJ"
+      ],
+      "386641": [
+        "certification:MBE,LBE"
+      ],
+      "388069": [
+        "has_dba"
+      ],
+      "388911": [
+        "without_borough"
+      ],
+      "389620": [
+        "without_borough"
+      ],
+      "390378": [
+        "certification:MBE,WBE"
+      ],
+      "390451": [
+        "phone_not_ten_digits"
+      ],
+      "390655": [
+        "no_nigp"
+      ],
+      "390951": [
+        "certification:MBE,WBE"
+      ],
+      "391616": [
+        "with_borough"
+      ],
+      "393231": [
+        "with_borough"
+      ],
+      "393515": [
+        "with_borough"
+      ],
+      "395038": [
+        "ethnicity_odd_value"
+      ],
+      "395448": [
+        "with_borough"
+      ],
+      "395970": [
+        "with_borough"
+      ],
+      "396356": [
+        "seeded_random_fill"
+      ],
+      "397781": [
+        "website_is_email"
+      ],
+      "397988": [
+        "with_borough"
+      ],
+      "403343": [
+        "with_borough"
+      ],
+      "403790": [
+        "no_nigp"
+      ],
+      "403954": [
+        "date_out_of_range"
+      ]
+    }
+  },
+  "note": "Rows are verbatim publisher JSON (Socrata omits null cells). Contact names, phones, addresses and websites are published fields and are retained unmasked by owner direction."
+}

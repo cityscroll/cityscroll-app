@@ -42,7 +42,7 @@ export const SNAPSHOT_SCHEMA = "cityscroll.served_coverage_snapshot.v1";
 export const CENSUS_SCHEMA = "cityscroll.served_coverage_census.v1";
 
 /** The registry size this census was reviewed against. A change is reported, never absorbed. */
-export const REVIEWED_REGISTRY_SIZE = 70;
+export const REVIEWED_REGISTRY_SIZE = 71;
 
 export { SERVED_UNITS, DECLARED_DISPOSITIONS };
 
@@ -274,6 +274,7 @@ const DECLARED_DISPOSITIONS = Object.freeze({
   "dob-certificate-of-occupancy": ["context_only", "Certificate evidence inside the observed parcel biography; properties are counted once as their own record unit."],
   "dob-now-job-filings": ["context_only", "Current demolition-filing verification against an already served record; no independent served record population."],
   "dof-tax-lien-sale-lists": ["context_only", "Per-parcel lien progression and cycle rates shown on property surfaces; properties are counted once as their own record unit."],
+  "sbs-certified-business-list": ["not_served", "Committed sharded directory only; no resident route reads it until the supplier-side product slices land, so no served count is claimed."],
   "doing-business-entities": ["context_only", "Vendor identity enrichment on vendor profiles; vendors appear through the procurement records already counted."],
   "dsny-district-boundaries": ["not_served", "Backstage ingestion and congruence drift measurement only; no resident-facing scope is published."],
   "expense-budget": ["context_only", "Agency budget codes and adopted totals used as agency context; agencies are counted once as their own record unit."],

@@ -2,8 +2,8 @@
   "schema": "cityscroll.served_coverage_census.v1",
   "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
   "registry": {
-    "reviewed_registry_size": 70,
-    "observed_registry_size": 70,
+    "reviewed_registry_size": 71,
+    "observed_registry_size": 71,
     "changed": false
   },
   "disposition_vocabulary": [
@@ -15,7 +15,7 @@
   "disposition_counts": {
     "publicly_represented": 19,
     "context_only": 33,
-    "not_served": 7,
+    "not_served": 8,
     "unresolved": 11
   },
   "served_units": [
@@ -1302,6 +1302,19 @@
           "status": "live",
           "delivery_tier": "inline-at-build",
           "used_for": "Consultation browsing, local-scope placement, search evidence, and supported response-date actions."
+        }
+      }
+    },
+    {
+      "source_id": "sbs-certified-business-list",
+      "name": "SBS Certified Business List",
+      "disposition": "not_served",
+      "reason": "Committed sharded directory only; no resident route reads it until the supplier-side product slices land, so no served count is claimed.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Supplier-side directory of City-certified businesses (M/WBE, EBE, LBE) so users can look up possible primes, subcontractors and partners and add them as contacts. Every published field is carried, including contact name, phone, address and website. Name-stem links to contract vendors are candidates, not merged identities. Health visibility stays backstage-only until a reader-facing surface reads the directory."
         }
       }
     },

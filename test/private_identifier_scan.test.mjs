@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { homedir, tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
@@ -10,11 +11,16 @@ import { isolatedGitEnv } from "../tools/architecture_evidence_shards.mjs";
 import { forbiddenVocabularyPattern } from "./helpers/internal_vocabulary.mjs";
 import {
   buildReceipt,
+  classifyPublisherArtifact,
+  loadPublisherAllowances,
   loadTermSet,
   NORMALIZATION_RULES,
   NORMALIZATION_VERSION,
   normalizedViews,
+  PUBLISHER_ALLOWANCES_RELATIVE_PATH,
+  PUBLISHER_ALLOWANCES_SCHEMA,
   scanPrivateIdentifiers,
+  sha256Hex,
 } from "../tools/private_identifier_scan.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -406,4 +412,127 @@ test("the committed vocabulary helper contains no private term, only the contrac
   // never reaches for that shape.
   assert.ok(!/\+\s*["'][a-z]{2,}["']/i.test(source), "no term may be assembled from joined fragments");
   assert.match(source, /owner-controlled/);
+});
+
+function publisherAllowanceFixture({ account, field, value, kinds = ["sbs_row_shard"] }) {
+  return {
+    schema: PUBLISHER_ALLOWANCES_SCHEMA,
+    allowances: [
+      {
+        id: `fixture-${account}-${field}`,
+        publisher: "nyc-open-data",
+        dataset: "ci93-uc8s",
+        account_number: String(account),
+        field,
+        value_sha256: sha256Hex(value),
+        artifact_kinds: kinds,
+      },
+    ],
+  };
+}
+
+test("exact-record publisher allowance: the allowed record passes", () => {
+  withScratch((directory) => {
+    const value = `Acme ${SENTINEL} Services LLC`;
+    const row = JSON.stringify({
+      account_number: "387393",
+      vendor_formal_name: value,
+      website: "https://example.invalid",
+    });
+    scratchRepo(directory, {
+      [PUBLISHER_ALLOWANCES_RELATIVE_PATH]: `${JSON.stringify(publisherAllowanceFixture({
+        account: "387393",
+        field: "vendor_formal_name",
+        value,
+      }), null, 2)}\n`,
+      "site/data/sbs_certified_businesses/rows-000.json": `{"schema":"cityscroll.sbs_certified_businesses.shard.v1","shard":0,"rows":[\n${row}\n]}\n`,
+    });
+    assert.equal(classifyPublisherArtifact("site/data/sbs_certified_businesses/rows-000.json")?.kind, "sbs_row_shard");
+    const result = scanPrivateIdentifiers({ root: directory, terms: [SENTINEL] });
+    assert.equal(result.status, "PASS");
+    assert.deepEqual(result.findings, []);
+    assert.equal(result.allowance_suppressions, 1);
+  });
+});
+
+test("exact-record publisher allowance: the same literal in a different SBS row fails", () => {
+  withScratch((directory) => {
+    const allowedValue = `Acme ${SENTINEL} Services LLC`;
+    const otherValue = `Other ${SENTINEL} Firm Inc`;
+    const allowedRow = JSON.stringify({
+      account_number: "387393",
+      vendor_formal_name: allowedValue,
+    });
+    const otherRow = JSON.stringify({
+      account_number: "999001",
+      vendor_formal_name: otherValue,
+    });
+    scratchRepo(directory, {
+      [PUBLISHER_ALLOWANCES_RELATIVE_PATH]: `${JSON.stringify(publisherAllowanceFixture({
+        account: "387393",
+        field: "vendor_formal_name",
+        value: allowedValue,
+      }), null, 2)}\n`,
+      "site/data/sbs_certified_businesses/rows-000.json": `{"schema":"cityscroll.sbs_certified_businesses.shard.v1","shard":0,"rows":[\n${allowedRow},\n${otherRow}\n]}\n`,
+    });
+    const result = scanPrivateIdentifiers({ root: directory, terms: [SENTINEL] });
+    assert.equal(result.status, "FAIL");
+    assert.equal(result.findings.length, 1);
+    assert.equal(result.findings[0].surface, "content");
+    assert.equal(result.allowance_suppressions, 1);
+  });
+});
+
+test("exact-record publisher allowance: the same literal in a non-SBS public file fails", () => {
+  withScratch((directory) => {
+    const value = `Acme ${SENTINEL} Services LLC`;
+    const row = JSON.stringify({
+      account_number: "387393",
+      vendor_formal_name: value,
+    });
+    scratchRepo(directory, {
+      [PUBLISHER_ALLOWANCES_RELATIVE_PATH]: `${JSON.stringify(publisherAllowanceFixture({
+        account: "387393",
+        field: "vendor_formal_name",
+        value,
+      }), null, 2)}\n`,
+      "site/data/sbs_certified_businesses/rows-000.json": `{"schema":"cityscroll.sbs_certified_businesses.shard.v1","shard":0,"rows":[\n${row}\n]}\n`,
+      "docs/notes.md": `A public note that quotes ${value} outside the publisher artifact.\n`,
+    });
+    const result = scanPrivateIdentifiers({ root: directory, terms: [SENTINEL] });
+    assert.equal(result.status, "FAIL");
+    assert.ok(result.findings.some((row) => row.path === "docs/notes.md"));
+    assert.equal(result.allowance_suppressions, 1);
+  });
+});
+
+test("exact-record publisher allowance: the owner-controlled codename list is unchanged", () => {
+  const loaded = loadPublisherAllowances({ root: ROOT });
+  assert.equal(loaded.error, null);
+  assert.ok(loaded.allowances.length >= 1);
+  for (const row of loaded.allowances) {
+    assert.equal(row.publisher, "nyc-open-data");
+    assert.equal(row.dataset, "ci93-uc8s");
+    assert.equal(row.account_number, "387393");
+    assert.match(row.value_sha256, /^[0-9a-f]{64}$/);
+    assert.ok(!Object.prototype.hasOwnProperty.call(row, "exclude_term"));
+    assert.ok(!Object.prototype.hasOwnProperty.call(row, "term"));
+  }
+  // The registry itself must not carry a private identifier spelling.
+  const registryText = readFileSync(join(ROOT, PUBLISHER_ALLOWANCES_RELATIVE_PATH), "utf8");
+  assert.doesNotMatch(registryText, /exclude_term|"term"\s*:/);
+
+  // Owner-controlled ban list still carries the short public-codename entry
+  // identified only by sha256 prefix, never by printing the value.
+  const banPath = join(homedir(), "zhongjun/config/public-codename-ban");
+  assert.ok(existsSync(banPath), "owner public-codename-ban list must be present for this gate");
+  const prefixes = readFileSync(banPath, "utf8")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => createHash("sha256").update(line.toLowerCase(), "utf8").digest("hex").slice(0, 12));
+  assert.ok(
+    prefixes.includes("686d22d695e2"),
+    "public-codename-ban must still include the short codename (sha256 prefix only)",
+  );
 });

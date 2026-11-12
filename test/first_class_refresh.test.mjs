@@ -105,7 +105,7 @@ test("an input-requiring builder cannot be registered as its own acquisition", (
 
 test("scheduled plan groups by cadence and orders acquisition before owning builders and dependents", () => {
   const plan = buildScheduledRefreshPlan(canonical());
-  assert.deepEqual(plan.groups.map((group) => group.cadence_hours), [24, 168, 720]);
+  assert.deepEqual(plan.groups.map((group) => group.cadence_hours), [24, 168, 336, 720]);
   for (const group of plan.groups) {
     assert.deepEqual(group.stages.map((stage) => stage.kind), ["acquisition", "owning-builder", "dependent-materializer"]);
     assert.deepEqual(group.stages.map((stage) => stage.order), [1, 2, 3]);

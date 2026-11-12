@@ -1,0 +1,14 @@
+{
+  "schema": "cityscroll.source_acquisition_receipt.v1",
+  "source_contract_id": "sbs-certified-business-list",
+  "observed_at": "2026-11-12T12:39:57.269Z",
+  "status": "succeeded",
+  "run_id": "sbs-certified-business-list:2026-11-12T12:39:57.269Z",
+  "publisher_clock_basis": "socrata_rows_updated_at",
+  "publisher_updated_at": "2026-11-10T14:39:18.000Z",
+  "acquisition": {
+    "mode": "bulk_soda",
+    "row_count": 11772,
+    "requests": 8
+  }
+}

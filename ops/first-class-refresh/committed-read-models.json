@@ -693,6 +693,11 @@
       "reason": "Materialized from the retained analytical catalog, which a hosted runner does not have."
     },
     {
+      "builder": "tools/build_sbs_certified_business_directory.mjs",
+      "disposition": "acquired-by-first-class-refresh",
+      "reason": "Its --from-soda mode is the declared acquisition and builder command of the sbs-certified-businesses first-class artifact, which tools/first_class_refresh.mjs --run-due runs when the directory is 336 hours old. The CI --check only verifies the committed set, so the rebuild sequence has nothing further to regenerate."
+    },
+    {
       "builder": "tools/build_doing_business_warehouse_lookup.mjs",
       "disposition": "warehouse-backed",
       "reason": "Materialized from the retained analytical catalog, which a hosted runner does not have."

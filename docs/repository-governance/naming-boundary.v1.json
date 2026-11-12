@@ -42,6 +42,11 @@
     "public_mode": "without a term set the scan reports SKIPPED and asserts nothing, so public CI stays credential-free",
     "private_mode": "with --private a missing term set is a hard failure; the scan never reports a pass with nothing to match",
     "output_discipline": "a finding names a surface, a normalization rule, and an opaque term reference; a matching path is reported as an ordinal, and the detailed inventory is written only to an explicit destination outside this repository",
+    "publisher_allowances": {
+      "registry": "architecture/private-identifier-publisher-allowances.json",
+      "schema": "cityscroll.private_identifier_publisher_allowances.v1",
+      "rule": "A content hit may be suppressed only by an exact-record allowance that names the publisher, dataset, account number, field, and sha256 of the exact published string value; path hits and every other occurrence still fail; the owner-controlled term set is never edited by an allowance."
+    },
     "limits": "this is a normalization contract over mechanical, reversible representations; it does not detect encryption or arbitrary obfuscation"
   },
   "gate": {
