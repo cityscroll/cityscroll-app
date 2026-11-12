@@ -27,6 +27,9 @@ entity_resolution/eval/fixtures/review_actions_v0.json
 entity_resolution/eval/fixtures/shadow_monitoring_v0.json
 entity_resolution/eval/fixtures/source_records_authority_v0.jsonl
 entity_resolution/eval/monitoring/2026-08-01/receipt.json
+entity_resolution/registers/entity_class.mjs
+entity_resolution/registers/index.mjs
+entity_resolution/registers/read_contract.mjs
 entity_resolution/review/boards_wall_measurement.json
 entity_resolution/review/mayoral_board_registry.json
 entity_resolution/review/title_code_registry.json
