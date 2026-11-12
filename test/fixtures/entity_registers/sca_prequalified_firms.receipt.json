@@ -1,5 +1,5 @@
 {
- "schema": "cityscroll.prekraken.table_receipt.v1",
+ "schema": "cityscroll.entity_register.table_receipt.v1",
  "register": "nyc_sca_prequalified_firms",
  "request": "https://data.cityofnewyork.us/resource/szkz-syh6.json?$limit=100000",
  "http_status": 200,

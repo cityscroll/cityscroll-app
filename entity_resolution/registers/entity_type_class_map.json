@@ -1,5 +1,5 @@
 {
- "schema": "cityscroll.prekraken.dos_entity_type_class_map.v1",
+ "schema": "cityscroll.entity_register.dos_entity_type_class_map.v1",
  "dataset_id": "n9v6-gdp6",
  "observed": "2026-11-11",
  "source_request": "https://data.ny.gov/resource/n9v6-gdp6.json?$select=entity_type,count(1) as n&$group=entity_type&$order=n DESC&$limit=200",

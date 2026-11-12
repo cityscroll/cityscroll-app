@@ -1,5 +1,5 @@
 {
-  "schema": "cityscroll.prekraken.register_decisions.v1",
+  "schema": "cityscroll.entity_register.register_decisions.v1",
   "observed_on": "2026-11-11",
   "decisions": [
     {

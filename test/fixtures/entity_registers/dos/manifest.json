@@ -1,5 +1,5 @@
 {
- "schema": "cityscroll.prekraken.dos_fixture_manifest.v1",
+ "schema": "cityscroll.entity_register.dos_fixture_manifest.v1",
  "recorded_on": "2026-11-11",
  "host": "data.ny.gov",
  "dataset_id": "n9v6-gdp6",

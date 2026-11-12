@@ -5,7 +5,7 @@
 import { vendorStem } from "../normalizers/vendor_stem.mjs";
 import { REGISTER_IDS, validateRecord } from "./read_contract.mjs";
 
-export const ARTIFACT_SCHEMA = "cityscroll.prekraken.register_artifact.v1";
+export const ARTIFACT_SCHEMA = "cityscroll.entity_register.register_artifact.v1";
 
 export function buildArtifact({ register, collected_at, source_url, records, source_row_count = null, source_receipt = null }) {
   return {

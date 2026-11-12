@@ -1,5 +1,5 @@
 {
- "schema": "cityscroll.prekraken.entity_registers_manifest.v1",
+ "schema": "cityscroll.entity_register.entity_registers_manifest.v1",
  "generated_on": "2026-11-11",
  "baseline": {
   "repository": "cityscroll-app",

@@ -1,5 +1,5 @@
 {
- "schema": "cityscroll.prekraken.table_receipt.v1",
+ "schema": "cityscroll.entity_register.table_receipt.v1",
  "register": "nys_dol_contractor_registry",
  "request": "https://data.ny.gov/resource/i4jv-zkey.json?$limit=20000",
  "http_status": 200,

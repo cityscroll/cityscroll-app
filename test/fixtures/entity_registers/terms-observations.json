@@ -1,5 +1,5 @@
 {
- "schema": "cityscroll.prekraken.terms_observations.v1",
+ "schema": "cityscroll.entity_register.terms_observations.v1",
  "observed_on": "2026-11-11",
  "note": "Quotes are short extracts, verbatim, from pages loaded on the observed date. The loaded text is the evidence; the interpretation lines are this slice's reading and are labelled as such.",
  "sources": [

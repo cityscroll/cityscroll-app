@@ -1,5 +1,5 @@
 {
- "schema": "cityscroll.prekraken.irs_match_sample.v1",
+ "schema": "cityscroll.entity_register.irs_match_sample.v1",
  "observed_on": "2026-11-11",
  "register": "irs_eo_bmf_ny",
  "source": "https://www.irs.gov/pub/irs-soi/eo_ny.csv",

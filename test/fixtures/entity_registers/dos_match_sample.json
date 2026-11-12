@@ -1,5 +1,5 @@
 {
- "schema": "cityscroll.prekraken.dos_match_sample.v1",
+ "schema": "cityscroll.entity_register.dos_match_sample.v1",
  "observed_on": "2026-11-11",
  "dataset": "n9v6-gdp6",
  "host": "data.ny.gov",

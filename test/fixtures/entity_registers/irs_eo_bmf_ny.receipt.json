@@ -1,5 +1,5 @@
 {
- "schema": "cityscroll.prekraken.irs_eo_bmf_receipt.v1",
+ "schema": "cityscroll.entity_register.irs_eo_bmf_receipt.v1",
  "url": "https://www.irs.gov/pub/irs-soi/eo_ny.csv",
  "http_last_modified": "Mon, 09 Nov 2026 05:11:37 GMT",
  "fetched_at": "2026-11-11T23:57:00Z",
