@@ -18,10 +18,12 @@
         "ncsp_present": false,
         "accelerated_present": false,
         "response_floor": {
-          "kind": "section_6_129_27_calendar_days",
+          "kind": "competitive_sealed_proposal_section_6_129",
           "days": 27,
           "day_unit": "calendar_days",
-          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+          "rule_source": "app.solicitation_method.response_floor.section_6_129_27_calendar_days",
+          "rule_section": "9 RCNY 3-03(c)(1)",
+          "claim": "unverified"
         }
       }
     },
@@ -41,10 +43,12 @@
         "ncsp_present": false,
         "accelerated_present": false,
         "response_floor": {
-          "kind": "section_6_129_27_calendar_days",
-          "days": 27,
+          "kind": "competitive_sealed_bid_section_6_129",
+          "days": 22,
           "day_unit": "calendar_days",
-          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+          "rule_source": "nyc.ppb.3-02.e.1.i.section_6_129_bid_notice_22_days",
+          "rule_section": "9 RCNY 3-02(e)(1)(i)",
+          "claim": "unverified"
         }
       }
     },
@@ -64,10 +68,12 @@
         "ncsp_present": false,
         "accelerated_present": false,
         "response_floor": {
-          "kind": "section_6_129_27_calendar_days",
+          "kind": "competitive_sealed_proposal_section_6_129",
           "days": 27,
           "day_unit": "calendar_days",
-          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+          "rule_source": "app.solicitation_method.response_floor.section_6_129_27_calendar_days",
+          "rule_section": "9 RCNY 3-03(c)(1)",
+          "claim": "unverified"
         }
       }
     },
@@ -87,10 +93,12 @@
         "ncsp_present": false,
         "accelerated_present": false,
         "response_floor": {
-          "kind": "section_6_129_27_calendar_days",
-          "days": 27,
+          "kind": "competitive_sealed_bid_section_6_129",
+          "days": 22,
           "day_unit": "calendar_days",
-          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+          "rule_source": "nyc.ppb.3-02.e.1.i.section_6_129_bid_notice_22_days",
+          "rule_section": "9 RCNY 3-02(e)(1)(i)",
+          "claim": "unverified"
         }
       }
     },
@@ -109,12 +117,7 @@
         "goal_percent": null,
         "ncsp_present": true,
         "accelerated_present": false,
-        "response_floor": {
-          "kind": "default_competitive_20_calendar_days",
-          "days": 20,
-          "day_unit": "calendar_days",
-          "rule_source": "ppb_competitive_default_20_calendar_days"
-        }
+        "response_floor": null
       }
     },
     {
@@ -132,12 +135,7 @@
         "goal_percent": null,
         "ncsp_present": true,
         "accelerated_present": false,
-        "response_floor": {
-          "kind": "default_competitive_20_calendar_days",
-          "days": 20,
-          "day_unit": "calendar_days",
-          "rule_source": "ppb_competitive_default_20_calendar_days"
-        }
+        "response_floor": null
       }
     },
     {
@@ -155,12 +153,7 @@
         "goal_percent": null,
         "ncsp_present": true,
         "accelerated_present": false,
-        "response_floor": {
-          "kind": "default_competitive_20_calendar_days",
-          "days": 20,
-          "day_unit": "calendar_days",
-          "rule_source": "ppb_competitive_default_20_calendar_days"
-        }
+        "response_floor": null
       }
     },
     {
@@ -178,12 +171,7 @@
         "goal_percent": null,
         "ncsp_present": false,
         "accelerated_present": false,
-        "response_floor": {
-          "kind": "default_competitive_20_calendar_days",
-          "days": 20,
-          "day_unit": "calendar_days",
-          "rule_source": "ppb_competitive_default_20_calendar_days"
-        }
+        "response_floor": null
       }
     },
     {
@@ -202,10 +190,12 @@
         "ncsp_present": false,
         "accelerated_present": false,
         "response_floor": {
-          "kind": "default_competitive_20_calendar_days",
+          "kind": "competitive_sealed_proposal",
           "days": 20,
           "day_unit": "calendar_days",
-          "rule_source": "ppb_competitive_default_20_calendar_days"
+          "rule_source": "app.solicitation_method.response_floor.default_competitive_20_calendar_days",
+          "rule_section": "9 RCNY 3-03(c)(1)",
+          "claim": "unverified"
         }
       }
     },
@@ -225,10 +215,12 @@
         "ncsp_present": false,
         "accelerated_present": false,
         "response_floor": {
-          "kind": "default_competitive_20_calendar_days",
-          "days": 20,
+          "kind": "competitive_sealed_bid",
+          "days": 15,
           "day_unit": "calendar_days",
-          "rule_source": "ppb_competitive_default_20_calendar_days"
+          "rule_source": "nyc.ppb.3-02.c.bidding_time_15_days",
+          "rule_section": "9 RCNY 3-02(c)",
+          "claim": "unverified"
         }
       }
     }

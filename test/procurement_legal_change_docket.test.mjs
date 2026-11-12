@@ -131,9 +131,9 @@ test("(iii) the certification-triggered entry is awaiting an event and has no da
 test("(iv) source watch: retained sources are all unchanged", () => {
   const receipt = compareSourceCaptures(register, allObserved(), { checkedAt: "2026-11-11T12:17:00.000Z" });
   assert.equal(receipt.schema, LEGAL_SOURCE_WATCH_RECEIPT_SCHEMA);
-  assert.equal(receipt.sources.length, 7);
-  assert.deepEqual(receipt.sources.map((row) => row.status), Array(7).fill("unchanged"));
-  assert.deepEqual(receipt.summary, { unchanged: 7, changed: 0, fetch_failed: 0, not_checked: 0 });
+  assert.equal(receipt.sources.length, 10);
+  assert.deepEqual(receipt.sources.map((row) => row.status), Array(10).fill("unchanged"));
+  assert.deepEqual(receipt.summary, { unchanged: 10, changed: 0, fetch_failed: 0, not_checked: 0 });
   assert.equal(receipt.changes_found, false);
   assert.equal(receipt.could_not_check, false);
   assert.deepEqual(receipt.review_items, []);
@@ -154,7 +154,7 @@ test("(iv) source watch: one flipped character inside a quote is changed and nam
   const threeEight = register.entries.filter((item) => item.authority.source_file === "ppb-3-08.md").map((item) => item.id).sort();
   assert.deepEqual(row.affected_entry_ids, threeEight);
   assert.equal(receipt.summary.changed, 1);
-  assert.equal(receipt.summary.unchanged, 6);
+  assert.equal(receipt.summary.unchanged, 9);
   assert.equal(receipt.changes_found, true);
   const item = receipt.review_items.find((value) => value.source_file === "ppb-3-08.md");
   assert.equal(item.kind, "quote_broken");
@@ -183,7 +183,7 @@ test("(iv) source watch: fetch failure is fetch_failed and not unchanged; never-
   assert.equal(status["charter-311.md"], "fetch_failed");
   assert.equal(status["ppb-1-02.md"], "not_checked");
   assert.equal(status["ppb-3-04.md"], "unchanged");
-  assert.equal(receipt.summary.unchanged, 5);
+  assert.equal(receipt.summary.unchanged, 8);
   assert.equal(receipt.could_not_check, true);
   assert.equal(receipt.changes_found, false);
   assert.equal(exitCodeFor(receipt), EXIT.COULD_NOT_CHECK);
@@ -230,8 +230,8 @@ test("(v) the register is deep-equal before and after every watch and docket cal
   // review statuses are never upgraded or downgraded
   const receipt = compareSourceCaptures(register, allObserved({ "ppb-3-08.md": flipped }));
   assert.equal(receipt.mutates_register, false);
-  assert.equal(register.entries.filter((e) => e.review.status === "source_checked").length, 23);
-  assert.equal(register.entries.filter((e) => e.review.status === "unreviewed").length, 15);
+  assert.equal(register.entries.filter((e) => e.review.status === "source_checked").length, 28);
+  assert.equal(register.entries.filter((e) => e.review.status === "unreviewed").length, 24);
   assert.ok(!JSON.stringify(receipt).includes('"review_status"'));
 });
 
@@ -254,7 +254,7 @@ function buildAggregates() {
   const aggregates = {
     "markdown/admin_code.md": make("# Admin", ["admin-code-6-129.md"]),
     "markdown/charter.md": make("# Charter", ["charter-311.md"]),
-    "markdown/rules.md": make("# Rules", ["ppb-1-01.md", "ppb-1-02.md", "ppb-3-04.md", "ppb-3-08.md", "ppb-3-16.md"]),
+    "markdown/rules.md": make("# Rules", ["ppb-1-01.md", "ppb-1-02.md", "ppb-3-02.md", "ppb-3-03.md", "ppb-3-04.md", "ppb-3-07.md", "ppb-3-08.md", "ppb-3-16.md"]),
   };
   const stubTargets = clone(targets);
   for (const target of stubTargets.targets) {
@@ -312,7 +312,7 @@ test("(vi) CLI: clean run uses ranged requests, writes state, and a second run i
   const stateDir = tempDir();
   const now = new Date("2026-11-12T12:17:00Z");
   const receipt = await runSourceWatch({ register, targets: stubTargets, fetchImpl: stub.fetchImpl, stateDir, now });
-  assert.deepEqual(receipt.summary, { unchanged: 7, changed: 0, fetch_failed: 0, not_checked: 0 });
+  assert.deepEqual(receipt.summary, { unchanged: 10, changed: 0, fetch_failed: 0, not_checked: 0 });
   assert.equal(exitCodeFor(receipt), EXIT.CLEAN);
   assert.ok(Object.values(receipt.acquisition).every((a) => a.method === "range"), JSON.stringify(receipt.acquisition));
   const fetched = stub.calls.filter((c) => c.method === "GET");
@@ -321,11 +321,11 @@ test("(vi) CLI: clean run uses ranged requests, writes state, and a second run i
   const bytes = Object.values(receipt.acquisition).reduce((sum, a) => sum + a.bytes_fetched, 0);
   assert.ok(bytes < total, `ranged bytes ${bytes} stay below the aggregates ${total}`);
   assert.equal(readFileSync(join(stateDir, "last-good/ppb-3-08.md"), "utf8"), retained("ppb-3-08.md"));
-  assert.equal(register.entries.length, 38);
+  assert.equal(register.entries.length, 52);
 
   const second = makeStub(aggregates);
   const again = await runSourceWatch({ register, targets: stubTargets, fetchImpl: second.fetchImpl, stateDir, now });
-  assert.equal(again.summary.unchanged, 7);
+  assert.equal(again.summary.unchanged, 10);
   assert.ok(Object.values(again.acquisition).every((a) => a.method === "cache" && a.bytes_fetched === 0));
   assert.ok(second.calls.every((c) => c.method === "HEAD"));
 });
@@ -336,7 +336,7 @@ test("(vi) CLI: wrong offset hints fall back to one capped full stream per aggre
   for (const target of wrong.targets) target.hint_offset = 5;
   const stub = makeStub(aggregates);
   const receipt = await runSourceWatch({ register, targets: wrong, fetchImpl: stub.fetchImpl, stateDir: null, now: new Date() });
-  assert.equal(receipt.summary.unchanged, 7);
+  assert.equal(receipt.summary.unchanged, 10);
   assert.ok(Object.values(receipt.acquisition).some((a) => a.method === "full_stream"));
 });
 
@@ -364,7 +364,7 @@ test("(vi) CLI: a host that is not on the allowlist is refused, including throug
   const stub = makeStub(aggregates);
   const receipt = await runSourceWatch({ register, targets: evil, fetchImpl: stub.fetchImpl, stateDir: null, now: new Date() });
   assert.equal(stub.calls.length, 0, "the refused host is never contacted");
-  assert.equal(receipt.summary.fetch_failed, 7);
+  assert.equal(receipt.summary.fetch_failed, 10);
   assert.ok(receipt.sources.every((row) => /host_not_allowed/.test(row.reason)));
   assert.equal(exitCodeFor(receipt), EXIT.COULD_NOT_CHECK);
 
@@ -372,7 +372,7 @@ test("(vi) CLI: a host that is not on the allowlist is refused, including throug
   const viaRedirect = await runSourceWatch({ register, targets: stubTargets, fetchImpl: redirecting.fetchImpl, stateDir: null, now: new Date() });
   assert.match(viaRedirect.sources.find((row) => row.source_file === "charter-311.md").reason, /host_not_allowed/);
   assert.ok(!redirecting.calls.some((c) => c.url.includes("evil.example.test")));
-  assert.equal(viaRedirect.summary.unchanged, 6);
+  assert.equal(viaRedirect.summary.unchanged, 9);
 
   const loop = makeStub(aggregates, { behaviour: { "markdown/charter.md": async () => new Response(null, { status: 302, headers: { location: `${REPO}markdown/charter.md` } }) } });
   const looped = await runSourceWatch({ register, targets: stubTargets, fetchImpl: loop.fetchImpl, stateDir: null, now: new Date() });
@@ -469,7 +469,7 @@ test("(vi) optional replay: sections cut from real mirror aggregates reproduce t
   };
   const stub = makeStub(aggregates);
   const receipt = await runSourceWatch({ register, targets, fetchImpl: stub.fetchImpl, stateDir: null, now: new Date() });
-  assert.deepEqual(receipt.summary, { unchanged: 7, changed: 0, fetch_failed: 0, not_checked: 0 });
+  assert.deepEqual(receipt.summary, { unchanged: 10, changed: 0, fetch_failed: 0, not_checked: 0 });
   assert.ok(Object.values(receipt.acquisition).every((a) => a.method === "range"), JSON.stringify(receipt.acquisition));
 });
 

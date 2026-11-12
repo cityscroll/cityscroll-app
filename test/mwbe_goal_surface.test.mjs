@@ -44,11 +44,12 @@ test("list chips: §6-129 with goal % on real solicitation 20260720022", () => {
   const goal = chips.find((c) => c.kind === SOLICITATION_CHIP_KIND.SECTION_6_129_GOAL);
   assert.equal(goal.goal_percent, 30);
   assert.equal(goal.i18n_key, "mwbe_chip_goal_percent");
-  // Non-default floor is list-eligible; default is not.
-  assert.ok(chips.some((c) => c.kind === SOLICITATION_CHIP_KIND.RESPONSE_FLOOR));
+  // The floor is list-eligible only when its register rule is source-checked and in force
+  // on the notice date. This captured excerpt carries no date, so the floor is unverified
+  // and no response-floor chip appears on the list row.
   assert.equal(
-    chips.find((c) => c.kind === SOLICITATION_CHIP_KIND.RESPONSE_FLOOR).days,
-    27,
+    chips.some((c) => c.kind === SOLICITATION_CHIP_KIND.RESPONSE_FLOOR),
+    false,
   );
 });
 
@@ -72,9 +73,11 @@ test("detail view includes default floor when distinctive markers exist", () => 
   const view = buildSolicitationMwbeView(row);
   assert.ok(view);
   assert.equal(view.schema, MWBE_GOAL_SURFACE_SCHEMA);
+  // M/WBE Noncompetitive Small Purchase is a distinctive marker, so the panel shows.
   assert.ok(view.chips.some((c) => c.kind === SOLICITATION_CHIP_KIND.NCSP));
-  assert.ok(view.chips.some((c) => c.kind === SOLICITATION_CHIP_KIND.RESPONSE_FLOOR));
-  assert.equal(view.floor?.days, 20);
+  // The register gives this method no advertising response floor, so none is shown.
+  assert.equal(view.chips.some((c) => c.kind === SOLICITATION_CHIP_KIND.RESPONSE_FLOOR), false);
+  assert.equal(view.floor, null);
 });
 
 test("detail view hidden when only default floor would apply (no markers)", () => {
@@ -103,15 +106,16 @@ test("solicitationMethodChips: accelerated tone is soon", () => {
   const chips = solicitationMethodChips({
     accelerated: { present: true },
     response_floor: {
-      kind: "accelerated_3_business_days",
+      kind: "accelerated",
       days: 3,
       day_unit: "business_days",
     },
-  });
+  }, { includeDefaultFloor: true });
   assert.ok(chips.some((c) => c.kind === SOLICITATION_CHIP_KIND.ACCELERATED && c.tone === "soon"));
+  // A floor with no 'rule' claim renders the unverified chip, never the rule-floor chip.
   assert.ok(
     chips.some(
-      (c) => c.kind === SOLICITATION_CHIP_KIND.RESPONSE_FLOOR && c.i18n_key === "mwbe_chip_floor_business",
+      (c) => c.kind === SOLICITATION_CHIP_KIND.RESPONSE_FLOOR && c.i18n_key === "mwbe_chip_floor_unverified_business",
     ),
   );
 });

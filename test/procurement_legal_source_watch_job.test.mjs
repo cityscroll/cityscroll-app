@@ -54,7 +54,7 @@ function buildAggregates() {
   return {
     "markdown/admin_code.md": make("# Admin", ["admin-code-6-129.md"]),
     "markdown/charter.md": make("# Charter", ["charter-311.md"]),
-    "markdown/rules.md": make("# Rules", ["ppb-1-01.md", "ppb-1-02.md", "ppb-3-04.md", "ppb-3-08.md", "ppb-3-16.md"]),
+    "markdown/rules.md": make("# Rules", ["ppb-1-01.md", "ppb-1-02.md", "ppb-3-02.md", "ppb-3-03.md", "ppb-3-04.md", "ppb-3-07.md", "ppb-3-08.md", "ppb-3-16.md"]),
   };
 }
 function makeStub(aggregates, { etag = "e1", behaviour = {} } = {}) {
@@ -118,7 +118,7 @@ test("a clean run is healthy, opens nothing, and emits closing intents the issue
   assert.equal(output.result.status, "healthy");
   assert.equal(output.result.changes_found, false);
   assert.equal(output.result.could_not_check, false);
-  assert.deepEqual(output.result.summary, { unchanged: 7, changed: 0, fetch_failed: 0, not_checked: 0 });
+  assert.deepEqual(output.result.summary, { unchanged: 10, changed: 0, fetch_failed: 0, not_checked: 0 });
   assert.ok(!output.intents.some((intent) => intent.issue.mode === "open"), "a clean run opens no issue");
   assert.ok(output.intents.some((intent) => intent.issue.mode === "close" && intent.issue.title === "Procurement legal sources could not be checked"));
   const findings = monitorRepairFindings(JOB, output);
@@ -176,5 +176,5 @@ test("the run leaves the register byte-identical", async () => {
   await runLegalSourceWatch({ ...JOB }, { stateDir: tempDir(), now: new Date("2026-11-12T12:17:00Z"), fetchImpl: makeStub(buildAggregates()).fetchImpl });
   assert.equal(readFileSync(join(ROOT, "ontology/procurement_legal_register.v1.json"), "utf8"), before);
   assert.ok(register.schema, "register loaded");
-  assert.ok(targets.targets.length === 7, "targets cover the seven sources");
+  assert.ok(targets.targets.length === 10, "targets cover the ten sources");
 });

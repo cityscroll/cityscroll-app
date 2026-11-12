@@ -7,14 +7,26 @@
  *   - cityscroll.award_prime_goal.v1 on GET /contract-lifecycle
  *
  * Never invents goal % or remaining utilization. Class-(b) when subcontract
- * goals are not published. Chips are presence-gated: default 20-day floors do
- * not spam every list row.
+ * goals are not published. Chips are presence-gated: ordinary method floors
+ * (sealed proposals 20 days, sealed bids 15 days) do not spam every list row.
+ *
+ * Published goal chips are never removed or rewritten by the legal register.
+ * The register's answer (site/mwbe_requirement_state.mjs) is added beside them:
+ * a human services notice that cites a goal keeps its goal chip and gains a
+ * "not required by law" chip and sentence. A response floor is shown as a rule
+ * only when its register rule is source_checked and in force on the notice date.
  */
 
 import {
-  RESPONSE_FLOOR_KIND,
+  DEFAULT_RESPONSE_FLOOR_KINDS,
+  SOLICITATION_PROCUREMENT_METHOD_SCHEMA,
   extractSolicitationProcurementMethod,
+  withRegisterFacts,
 } from "./solicitation_procurement_method.mjs";
+import {
+  MWBE_READER_STATES,
+  mwbeStateAnnotation,
+} from "./mwbe_requirement_state.mjs";
 
 export const MWBE_GOAL_SURFACE_SCHEMA = "cityscroll.mwbe_goal_surface.v1";
 
@@ -22,10 +34,19 @@ export const MWBE_GOAL_SURFACE_SCHEMA = "cityscroll.mwbe_goal_surface.v1";
 export const SOLICITATION_CHIP_KIND = Object.freeze({
   SECTION_6_129_GOAL: "section_6_129_goal",
   SECTION_6_129: "section_6_129",
+  REQUIREMENT_NOT_APPLICABLE: "mwbe_requirement_not_applicable",
   NCSP: "mwbe_ncsp",
   ACCELERATED: "accelerated",
   RESPONSE_FLOOR: "response_floor",
 });
+
+function currentPayload(pm, row) {
+  if (!pm || typeof pm !== "object") return null;
+  if (pm.schema === SOLICITATION_PROCUREMENT_METHOD_SCHEMA) return pm;
+  // Stored v1 payload (structured_facts written before this change): keep its
+  // published markers, recompute the register-derived fields from the row.
+  return withRegisterFacts(pm, row && typeof row === "object" ? row : {});
+}
 
 /**
  * Resolve procurement_method payload from structured_facts or body extract.
@@ -35,16 +56,16 @@ export const SOLICITATION_CHIP_KIND = Object.freeze({
  */
 export function resolveProcurementMethod(row = {}, procurementMethod = null) {
   if (procurementMethod && typeof procurementMethod === "object") {
-    return procurementMethod;
+    return currentPayload(procurementMethod, row);
   }
   const facts = row?.structured_facts;
   if (facts && typeof facts === "object" && facts.procurement_method) {
-    return facts.procurement_method;
+    return currentPayload(facts.procurement_method, row);
   }
   if (typeof facts === "string") {
     try {
       const parsed = JSON.parse(facts);
-      if (parsed?.procurement_method) return parsed.procurement_method;
+      if (parsed?.procurement_method) return currentPayload(parsed.procurement_method, row);
     } catch {
       /* ignore */
     }
@@ -87,6 +108,18 @@ export function solicitationMethodChips(pm, opts = {}) {
         tone: "mwbe",
       });
     }
+    // Beside (never instead of) the published goal chip.
+    const annotation = mwbeStateAnnotation(pm.mwbe_requirement);
+    if (annotation && pm.mwbe_requirement.state === MWBE_READER_STATES.GOAL_PUBLISHED_REQUIREMENT_NOT_APPLICABLE) {
+      chips.push({
+        kind: SOLICITATION_CHIP_KIND.REQUIREMENT_NOT_APPLICABLE,
+        key: pm.mwbe_requirement.state,
+        i18n_key: "mwbe_chip_goal_not_required",
+        tone: "muted",
+        rule_id: annotation.rule.rule_id,
+        rule_section: annotation.rule.section,
+      });
+    }
   }
   if (pm.mwbe_noncompetitive_small_purchase?.present) {
     chips.push({
@@ -106,21 +139,25 @@ export function solicitationMethodChips(pm, opts = {}) {
   }
   const floor = pm.response_floor;
   if (floor && floor.kind) {
-    const isDefault = floor.kind === RESPONSE_FLOOR_KIND.DEFAULT_COMPETITIVE;
-    if (!isDefault || opts.includeDefaultFloor) {
+    const isDefault = DEFAULT_RESPONSE_FLOOR_KINDS.includes(floor.kind);
+    const isRule = floor.claim === "rule";
+    // A list row only ever shows a checked, distinctive rule floor.
+    if (opts.includeDefaultFloor || (!isDefault && isRule)) {
       chips.push({
         kind: SOLICITATION_CHIP_KIND.RESPONSE_FLOOR,
         key: floor.kind,
-        i18n_key:
-          floor.day_unit === "business_days"
+        i18n_key: !isRule
+          ? (floor.day_unit === "business_days" ? "mwbe_chip_floor_unverified_business" : "mwbe_chip_floor_unverified_calendar")
+          : floor.day_unit === "business_days"
             ? "mwbe_chip_floor_business"
             : "mwbe_chip_floor_calendar",
         i18n_params: { days: String(floor.days) },
-        tone: isDefault ? "muted" : "floor",
+        tone: isDefault || !isRule ? "muted" : "floor",
         floor_kind: floor.kind,
         days: floor.days,
         day_unit: floor.day_unit,
-        rule_cite: floor.rule_cite || null,
+        claim: floor.claim || null,
+        rule_cite: isRule ? floor.rule_cite || null : null,
       });
     }
   }
@@ -142,12 +179,15 @@ export function buildSolicitationMwbeView(row = {}, procurementMethod = null) {
   // Detail still surfaces a non-default floor if chips already include distinctive markers,
   // and always includes floor in the chip set when distinctive; for default-only
   // solicitations with no markers, hide the panel (nothing to teach).
+  const state = pm.mwbe_requirement?.state || null;
   const hasSignal =
     chips.length > 0 ||
     !!pm.section_6_129?.present ||
     !!pm.mwbe_noncompetitive_small_purchase?.present ||
-    !!pm.accelerated?.present;
+    !!pm.accelerated?.present ||
+    state === MWBE_READER_STATES.REQUIREMENT_NOT_APPLICABLE;
   if (!hasSignal) return null;
+  const annotation = mwbeStateAnnotation(pm.mwbe_requirement);
   return {
     schema: MWBE_GOAL_SURFACE_SCHEMA,
     show: true,
@@ -156,6 +196,9 @@ export function buildSolicitationMwbeView(row = {}, procurementMethod = null) {
     section_6_129: pm.section_6_129 || null,
     ncsp: pm.mwbe_noncompetitive_small_purchase || null,
     accelerated: pm.accelerated || null,
+    mwbe_requirement: pm.mwbe_requirement || null,
+    mwbe_state: state,
+    mwbe_annotation: annotation,
   };
 }
 

@@ -4,7 +4,23 @@
  * Labels render only when a method/policy/coverage predicate is informative.
  * Unknown methods, source absence, and empty facets emit nothing. Candidate
  * gaps stay coverage facts — never compliance verdicts or always-on caveats.
+ *
+ * Amount bands, family dates, stage obligations and the M/WBE ceiling come from
+ * the generated site/procurement_legal_projection.mjs (policy registry + legal
+ * register); this module holds no dollar figure or policy date of its own.
+ * Category is evaluated as a candidate set: a label's mapped categories, or, when
+ * the record has no category, every category the family can legally take. A label
+ * is shown only when every candidate gives the same answer. An unrecognised label,
+ * disagreeing candidates, a missing date, or an M/WBE amount above the ceiling the
+ * register records for that date abstains (no label), never "not_required".
  */
+
+import { PROCUREMENT_LEGAL_PROJECTION } from "./procurement_legal_projection.mjs";
+import {
+  isoDate as legalIsoDate,
+  mwbeSmallPurchaseCeilingOn,
+  resolveLegalCategory,
+} from "./procurement_legal_category.mjs";
 
 export const PROCUREMENT_COVERAGE_LABEL_SCHEMA = "cityscroll.procurement_coverage_label.v1";
 export const PROCUREMENT_COVERAGE_FACT_SCHEMA = "cityscroll.procurement_coverage_fact.v1";
@@ -31,11 +47,8 @@ const COPY = Object.freeze({
 });
 
 const ORDINARY_FAMILIES = new Set(["ordinary_micropurchase", "ordinary_5_plus_10"]);
-const POLICY_FAMILIES = new Set([
-  "ordinary_micropurchase",
-  "ordinary_5_plus_10",
-  "mwbe_small_purchase",
-]);
+const POLICY = PROCUREMENT_LEGAL_PROJECTION.policy;
+const POLICY_FAMILIES = new Set(Object.keys(POLICY.families));
 
 /** Exact publisher labels only. Variants stay unmapped and make no legal claim. */
 const EXACT_METHOD_FAMILY = Object.freeze({
@@ -47,27 +60,13 @@ const EXACT_METHOD_FAMILY = Object.freeze({
   "M WBE SMALL PURCHASE RENEWALS": "mwbe_small_purchase",
 });
 
-const AMOUNT_BANDS = Object.freeze({
-  ordinary_micropurchase: Object.freeze({
-    goods_and_non_construction_services: Object.freeze({ min: 0, minInclusive: true, max: 20_000, maxInclusive: true }),
-    construction: Object.freeze({ min: 0, minInclusive: true, max: 35_000, maxInclusive: true }),
-  }),
-  ordinary_5_plus_10: Object.freeze({
-    goods_and_non_construction_services: Object.freeze({ min: 20_000, minInclusive: false, max: 100_000, maxInclusive: true }),
-    construction: Object.freeze({ min: 35_000, minInclusive: false, max: 100_000, maxInclusive: true }),
-  }),
-  mwbe_small_purchase: Object.freeze({
-    goods_and_non_construction_services: Object.freeze({ min: 20_000, minInclusive: false, max: 1_500_000, maxInclusive: true }),
-    construction: Object.freeze({ min: 35_000, minInclusive: false, max: 1_500_000, maxInclusive: true }),
-  }),
-});
+// Same shape as before ({family: {band_category: {min, minInclusive, max, maxInclusive}}}),
+// now read from the generated projection of the policy registry.
+const AMOUNT_BANDS = Object.freeze(Object.fromEntries(
+  Object.entries(POLICY.families).map(([id, family]) => [id, family.bands]),
+));
 
-const CATEGORIES = Object.freeze([
-  "goods_and_non_construction_services",
-  "construction",
-]);
-
-const POLICY_EFFECTIVE_FROM = "2023-06-03";
+const POLICY_EFFECTIVE_FROM = POLICY.effective_from;
 
 function clean(value, max = 240) {
   return String(value ?? "")
@@ -129,8 +128,8 @@ function amountWithin(amount, band) {
   return true;
 }
 
-function dateApplies(occurredOn) {
-  return validDate(occurredOn) && occurredOn >= POLICY_EFFECTIVE_FROM;
+function within(date, from, to) {
+  return date >= from && (to === null || to === undefined || date <= to);
 }
 
 function normalizePublisherMethod(value) {
@@ -149,17 +148,59 @@ export function mapPublisherMethodFamily(value) {
   return EXACT_METHOD_FAMILY[normalized] || null;
 }
 
-function familyMatches(familyId, record) {
-  if (!POLICY_FAMILIES.has(familyId) || !dateApplies(record.occurred_on)) return false;
-  if (familyId === "mwbe_small_purchase" && record.procurement_category === "human_services") {
-    return false;
-  }
-  const bands = AMOUNT_BANDS[familyId];
+/**
+ * Three-valued family match: "matched" | "unmatched" | "abstain".
+ * Each category candidate is evaluated on its own; a verdict needs them all to agree.
+ */
+function familyDecision(familyId, record, stageId) {
+  const family = POLICY.families[familyId];
+  if (!family) return { state: "unmatched", reason: "not_a_policy_family" };
+  const date = legalIsoDate(record.occurred_on);
+  if (!date || !validDate(date)) return { state: "abstain", reason: "occurred_on_missing" };
+  if (!within(date, family.effective_from, family.effective_to)) return { state: "unmatched", reason: "outside_family_dates" };
+  const stage = stageId ? family.stages[stageId] : null;
+  if (stage && !within(date, stage.effective_from, stage.effective_to)) return { state: "unmatched", reason: "outside_stage_dates" };
+
+  const category = resolveLegalCategory(record);
+  // A present but unrecognised label never yields a verdict.
+  if (category.state === "unmapped") return { state: "abstain", reason: "category_unmapped", missing_facts: ["procurement_category"] };
   const amount = amountOf(record.amount);
-  const categories = CATEGORIES.includes(record.procurement_category)
-    ? [record.procurement_category]
-    : CATEGORIES;
-  return categories.some((category) => amountWithin(amount, bands[category]));
+  if (!Number.isFinite(amount)) return { state: "abstain", reason: "amount_missing", missing_facts: ["amount"] };
+
+  // Candidates: the label's register categories (exclusions apply by name), a caller-asserted
+  // band category, or, with no category at all, every register category this family can
+  // legally take (projection legal_categories, cited per family to 3-08(c)(1)(ii)-(iv)).
+  const legalCandidates = category.state === "missing" ? family.legal_categories : category.candidates;
+  const candidates = legalCandidates.length
+    ? legalCandidates.map((legal) => ({ legal, band: PROCUREMENT_LEGAL_PROJECTION.band_category_by_legal_category[legal] }))
+    : category.band_categories.map((band) => ({ legal: null, band }));
+  if (!candidates.length) return { state: "abstain", reason: "category_missing", missing_facts: ["procurement_category"] };
+  const verdicts = new Set(candidates.map(({ legal, band }) => (
+    legal && family.excluded_categories.includes(legal)
+      ? "unmatched"
+      : amountWithin(amount, family.bands[band]) ? "matched" : "unmatched"
+  )));
+  if (verdicts.size !== 1) {
+    return {
+      state: "abstain",
+      reason: category.state === "missing" ? "category_missing_candidates_disagree" : "category_candidates_disagree",
+      missing_facts: ["procurement_category"],
+    };
+  }
+  const [verdict] = verdicts;
+
+  if (verdict === "matched" && familyId === "mwbe_small_purchase") {
+    // kd.mwbe_small_purchase_ceiling_dates: the registry band reaches $1.5M from 2023-06-03,
+    // the register records the Charter ceiling as $1M until 2023-12-08.
+    const ceiling = mwbeSmallPurchaseCeilingOn(date);
+    if (!ceiling || amount > ceiling.max_usd) return { state: "abstain", reason: "mwbe_ceiling_not_established", missing_facts: [] };
+  }
+  return {
+    state: verdict,
+    reason: verdict === "matched" ? "policy_band" : "outside_band",
+    category_basis: category.state === "missing" ? "all_legal_categories_agree" : category.source,
+    missing_facts: [],
+  };
 }
 
 function resolvedPolicy(record, stageId) {
@@ -176,25 +217,28 @@ function resolvedPolicy(record, stageId) {
   const family = POLICY_FAMILIES.has(record?.method_family)
     ? record.method_family
     : mapPublisherMethodFamily(record?.publisher_method || record?.selection_method_description);
-  if (!family || !familyMatches(family, record || {})) {
+  const decision = family ? familyDecision(family, record || {}, stageId) : null;
+  if (!family || decision.state !== "matched") {
     return {
-      policy_match: family ? "unmatched" : "unmapped",
+      policy_match: family ? (decision.state === "abstain" ? "unknown" : "unmatched") : "unmapped",
       publication_obligation: "unknown",
       method_family: family || "unmapped_publisher_variant",
       coverage_state: record?.coverage_state || "unknown",
       stage: stageId || record?.stage || null,
+      reason: decision?.reason || "method_unmapped",
+      missing_facts: decision?.missing_facts || [],
     };
   }
 
-  const obligation = family === "mwbe_small_purchase" && stageId === "award"
-    ? "required"
-    : "not_required";
+  // Stage obligation from the registry (null stage reads the solicitation stage, as before).
+  const obligation = POLICY.families[family].stages[stageId || "solicitation"]?.publication_obligation || "unknown";
   return {
     policy_match: "matched",
     publication_obligation: obligation,
     method_family: family,
     coverage_state: record?.coverage_state || "not_checked",
     stage: stageId,
+    category_basis: decision.category_basis,
   };
 }
 
@@ -298,6 +342,9 @@ export function coverageInputFromProcurement(object = {}, observations = []) {
     procurement_category: object.procurement_category
       || firstField(rows, ["procurement_category"])
       || null,
+    category_description: object.category_description
+      || firstField(rows, ["category_description"])
+      || null,
     amount,
     occurred_on: isoDay(object.occurred_on || firstField(rows, [
       "occurred_on", "registration_date", "registered", "start_date", "issue_date", "date",
@@ -315,6 +362,7 @@ export function coverageInputFromBrowseRow(row = {}) {
     method_family: row.method_family || null,
     publisher_method: row.selection_method_description || row.publisher_method || null,
     procurement_category: row.procurement_category || null,
+    category_description: row.category_description || null,
     amount: amountOf(row.contract_amount ?? row.amount),
     occurred_on: isoDay(row.occurred_on || row.start_date || row.registration_date),
     coverage_state: row.coverage_state || "not_checked",
@@ -393,6 +441,11 @@ export function renderProcurementRowCoverageHtml(row, options = {}) {
     return `<p class="procurement-coverage" data-coverage-kind="${escapeHtml(row.coverage_kind || "stamped")}" data-compliance-verdict="not_adjudicated">${escapeHtml(row.coverage_label)}</p>`;
   }
   return renderProcurementCoverageHtml(coverageInputFromBrowseRow(row), options);
+}
+
+/** The policy decision behind a label, including why it abstained (tests and evidence views). */
+export function resolveProcurementCoveragePolicy(record = {}, stageId = null) {
+  return Object.freeze(resolvedPolicy(record, stageId || record.stage || null));
 }
 
 export const PROCUREMENT_COVERAGE_AMOUNT_BANDS = AMOUNT_BANDS;

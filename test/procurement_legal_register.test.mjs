@@ -80,10 +80,10 @@ function rejects(mutate, pattern, { mutateSources } = {}) {
 test("(i) the seed validates against the baseline policy registry and retained sources", () => {
   validateProcurementPolicyRegistry(policyRegistry);
   assert.equal(validateLegalRegister(register, { policyRegistry, sources }), true);
-  assert.equal(register.entries.length, 38);
+  assert.equal(register.entries.length, 52);
   const counts = {};
   for (const e of register.entries) counts[e.review.status] = (counts[e.review.status] || 0) + 1;
-  assert.deepEqual(counts, { source_checked: 23, unreviewed: 15 });
+  assert.deepEqual(counts, { source_checked: 28, unreviewed: 24 });
   assert.equal(register.entries.filter((e) => e.review.status === "practitioner_reviewed").length, 0);
 });
 
@@ -93,7 +93,7 @@ test("(ii) every source_checked quote occurs literally in its retained source an
     assert.equal(register.sources.files[file].sha256, meta.sha256, file);
   }
   const checked = register.entries.filter((e) => e.review.status === "source_checked");
-  assert.equal(checked.length, 23);
+  assert.equal(checked.length, 28);
   for (const e of checked) {
     const a = e.authority;
     const text = sources[a.source_file];
@@ -240,7 +240,7 @@ test("(vi) failure controls are rejected with specific messages", () => {
 
 test("(vii) every consumer path exists in the engine tree", () => {
   const consumers = new Set(register.entries.flatMap((e) => e.consumers));
-  assert.equal(consumers.size, 18);
+  assert.equal(consumers.size, 23);
   for (const path of consumers) assert.ok(existsSync(join(REPO_ROOT, path)), path);
 });
 

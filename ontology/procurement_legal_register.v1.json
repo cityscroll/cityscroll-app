@@ -1,6 +1,6 @@
 {
  "schema": "cityscroll.procurement_legal_register.v1",
- "version": "2026-11-11.1",
+ "version": "2026-11-11.2",
  "description": "Cited, dated register of what CityScroll believes about NYC procurement law. Numbers for PPB 3-08 bands live only in ontology/registry.v0.json procurement_policy_registry; entries point there with realized_by.",
  "baseline": {
   "repository": "cityscroll-app",
@@ -41,6 +41,18 @@
    "ppb-3-16.md": {
     "sha256": "67857309be79efeb3649ca8704991687fcd579b4840c3055416023a01b3fc36f",
     "bytes": 31108
+   },
+   "ppb-3-02.md": {
+    "sha256": "1537d654478739a216ba7047ce9581d78391a076e1a649ca0d25593d53c81570",
+    "bytes": 38808
+   },
+   "ppb-3-03.md": {
+    "sha256": "714beb0f52377115b231503f52c6bdc11b57eee2e2530a0044a12990ae701f55",
+    "bytes": 36279
+   },
+   "ppb-3-07.md": {
+    "sha256": "6cbe97dbba896eeca312f0668a918b6c4c3268308d7860ed1ddab2f8a631e8cb",
+    "bytes": 5073
    }
   }
  },
@@ -53,7 +65,7 @@
     "nyc.charter.311.i.1.mwbe_small_purchase_ceiling.from_2023_12_08"
    ],
    "statement": "The policy registry applies the $1,500,000 M/WBE band from 2023-06-03. This register records the Charter ceiling as $1,000,000 until 2023-12-08 (secondary sources: 2023-12-08 or 2023-12-19), so between 2023-06-03 and 2023-12-07 the registry band exceeds the recorded Charter ceiling.",
-   "resolution": "open: needs the chaptered text of 2023 N.Y. Laws ch. 719 and a practitioner review; registry.v0.json is unchanged in this slice."
+   "resolution": "consumer abstains (this slice): coverage labels answer unknown for an M/WBE small purchase above the Charter ceiling the register records for its date ($1,000,000 before 2023-12-08, unreviewed). The legal date question stays open: needs the chaptered text of 2023 N.Y. Laws ch. 719 and a practitioner review; registry.v0.json is unchanged."
   },
   {
    "id": "kd.ppb_3_08_effective_dates",
@@ -66,7 +78,7 @@
     "nyc.ppb.3-08.d.2.i.mwbe_small_purchase_award_notice"
    ],
    "statement": "The policy registry dates every 3-08 family from 2023-06-03. The retained text lists amendments eff. 6/3/2023, 9/22/2024 and 9/26/2025 without showing which provisions changed, so the register asserts the current text only from 2025-09-26 and answers unknown before then.",
-   "resolution": "open: needs the 2023-2025 City Record rule notices."
+   "resolution": "carried open by this slice: coverage labels keep the policy registry's 2023-06-03 start, as before; the labels are not compliance verdicts. Needs the 2023-2025 City Record rule notices before the registry or labels change."
   },
   {
    "id": "kd.coverage_labels_missing_category",
@@ -75,7 +87,7 @@
     "app.coverage_labels.missing_category_matches_any_band"
    ],
    "statement": "site/procurement_coverage_labels.mjs treats a missing category as matching any band; the register yields unknown for a missing fact.",
-   "resolution": "consumer slice"
+   "resolution": "resolved by this slice: a missing category is evaluated over every register category the family can legally take (3-08(c)(1)(ii)-(iv)) and yields a label only when all candidates agree, otherwise unknown with missing_facts procurement_category; an unmapped label always yields unknown; never not_required by fall-through. app.coverage_labels.missing_category_matches_any_band is closed on the delivery date."
   },
   {
    "id": "kd.city_record_coverage_boundary",
@@ -85,7 +97,7 @@
     "nyc.ppb.3-08.a.small_purchase_limit"
    ],
    "statement": "The coverage threshold includes amount == 100000, but 3-08(a) makes a procurement of not more than $100,000 a small purchase.",
-   "resolution": "consumer slice"
+   "resolution": "carried open: the threshold lives in capabilities/analytical_projection.mjs and site/city_record_coverage_view.mjs, which this slice does not change."
   },
   {
    "id": "kd.policy_registry_category_vocabulary",
@@ -95,7 +107,7 @@
     "nyc.ppb.3-08.c.1.iv.mwbe_small_purchase_excludes_human_services"
    ],
    "statement": "The policy registry keys bands by goods_and_non_construction_services or construction and excludes human_services by category name, while the register facts use goods, standard_services, professional_services, construction and human_services. A consumer must translate; human services is a non-construction service for micropurchase bands but is excluded from the M/WBE method.",
-   "resolution": "consumer slice; no translation is asserted here"
+   "resolution": "resolved by this slice: tools/build_procurement_legal_projection.mjs translates goods, standard_services, professional_services and human_services to goods_and_non_construction_services and construction to construction, on the authority of nyc.ppb.3-08.c.1.ii.micropurchase_limits ('goods and all services except construction'); human_services stays excluded from the M/WBE family by the registry's excluded_categories."
   }
  ],
  "entries": [
@@ -1785,6 +1797,678 @@
     "site/city_record_coverage_view.mjs"
    ],
    "notes": "Code filters amount >= 100000, which includes an exactly-$100,000 small purchase that needs no public notice. See kd.city_record_coverage_boundary."
+  },
+  {
+   "id": "app.solicitation_method.response_floor.default_competitive_20_calendar_days",
+   "record_version": 2,
+   "statement": "Competitive sealed proposals must allow vendors at least twenty days to prepare proposals. The engine applies this floor only to a City Record solicitation whose published selection method is exactly Competitive Sealed Proposals.",
+   "kind": "timeline",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-03(c)(1)",
+    "quote": "A minimum of twenty days shall be provided.",
+    "quote_sha256": "5aa00d761f17da996f2c5e027477db43a10ec24ec5aadaefe5a8fc5102d7319a",
+    "context_quote": "(c) Proposal preparation time and form. (1) Proposal preparation time shall be set to provide vendors a reasonable time to prepare their proposals.",
+    "context_quote_sha256": "86dd0cdd0638fbd2e75deb86f9862faa90b64b7be865be619fd4ec57addc045c",
+    "source_file": "ppb-3-03.md",
+    "source_sha256": "714beb0f52377115b231503f52c6bdc11b57eee2e2530a0044a12990ae701f55",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_basis": [
+     "competitive"
+    ]
+   },
+   "effect": {
+    "minimum_response_calendar_days": 20
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2025-01-01",
+   "effective_from_basis": "current text in force since the last listed amendment (City Record 12/2/2024, eff. 1/1/2025); the retained history lists amendments eff. 3/1/2016 & 7/1/2016, 1/1/2020 and 1/1/2025 without establishing when this provision took its current form.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "worker/src/lib/solicitation_procurement_method.mjs",
+    "worker/src/lib/notice_facts.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "site/procurement_opportunity_window.mjs",
+    "site/procurement_pursuit_snapshot.mjs",
+    "site/procurement_legal_projection.mjs"
+   ],
+   "notes": "Correction of record_version 1, which applied 20 days to every competitive solicitation and cited no section. Competitive sealed bids have a 15-day bidding time (nyc.ppb.3-02.c.bidding_time_15_days). 3-03(d)(1)(i) and (d)(1)(ii)(A) repeat the twenty-day figure for electronic distribution and City Record publication.",
+   "unmodelled_conditions": [
+    "method_is_competitive_sealed_proposal"
+   ]
+  },
+  {
+   "id": "app.solicitation_method.response_floor.section_6_129_27_calendar_days",
+   "record_version": 2,
+   "statement": "Competitive sealed proposals subject to Admin Code 6-129 must allow at least twenty-seven days for proposal preparation. The engine applies this floor only to a Competitive Sealed Proposals solicitation that cites 6-129 and whose participation requirement is not ruled out.",
+   "kind": "timeline",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-03(c)(1)",
+    "quote": "For those proposals which are subject to § 6-129 of the New York City Administrative Code (M/WBE and EBE program), a minimum of twenty seven (27) days shall be provided.",
+    "quote_sha256": "bb298ecb1d3d2e04dd5d81b2d21faeda87f9acca3f6faf5079a678b1e1b2881a",
+    "context_quote": "(c) Proposal preparation time and form. (1) Proposal preparation time shall be set to provide vendors a reasonable time to prepare their proposals.",
+    "context_quote_sha256": "86dd0cdd0638fbd2e75deb86f9862faa90b64b7be865be619fd4ec57addc045c",
+    "source_file": "ppb-3-03.md",
+    "source_sha256": "714beb0f52377115b231503f52c6bdc11b57eee2e2530a0044a12990ae701f55",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_basis": [
+     "competitive"
+    ]
+   },
+   "unmodelled_conditions": [
+    "method_is_competitive_sealed_proposal",
+    "section_6_129_applies"
+   ],
+   "effect": {
+    "minimum_response_calendar_days": 27
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2025-01-01",
+   "effective_from_basis": "current text in force since the last listed amendment (City Record 12/2/2024, eff. 1/1/2025); the retained history lists amendments eff. 3/1/2016 & 7/1/2016, 1/1/2020 and 1/1/2025 without establishing when this provision took its current form.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "worker/src/lib/solicitation_procurement_method.mjs",
+    "worker/src/lib/notice_facts.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "site/procurement_opportunity_window.mjs",
+    "site/procurement_pursuit_snapshot.mjs",
+    "site/procurement_legal_projection.mjs"
+   ],
+   "notes": "Correction of record_version 1. The trigger is a proposal 'subject to § 6-129', which the engine reads from a notice citation; it is not applied where the register rules the participation requirement out (6-129(q)(7) human services, (q)(8) not-for-profit awardee). Bids subject to 6-129 have a 22-day electronic-notice minimum instead (nyc.ppb.3-02.e.1.i.section_6_129_bid_notice_22_days)."
+  },
+  {
+   "id": "app.solicitation_method.response_floor.accelerated_3_business_days",
+   "record_version": 2,
+   "statement": "Notice of an accelerated procurement solicitation must be published in the City Record at least three business days before the bid opening, proposal due date or start of negotiation.",
+   "kind": "timeline",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-07(h)(1)(i)",
+    "quote": "Notice shall be published at least once in the City Record not less than three business days before the bid opening date, the proposal due date, or initiation of negotiations with a vendor pursuant to the sole source or negotiated acquisition methods, or the initiation of another procurement method provided by these Rules",
+    "quote_sha256": "c0644a8db8d3f890892ed7cb7c7b2b92bf87a2b5fd8d3263287f0c3ccb74fc3c",
+    "context_quote": "(h) Public notice. (1) Notice of solicitation. (i) Frequency.",
+    "context_quote_sha256": "66732c43c22b2804a2b78d8b2b746f4f34f3d1651eb1cc804fe86a44a3400d97",
+    "source_file": "ppb-3-07.md",
+    "source_sha256": "6cbe97dbba896eeca312f0668a918b6c4c3268308d7860ed1ddab2f8a631e8cb",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {},
+   "unmodelled_conditions": [
+    "accelerated_procurement_cited"
+   ],
+   "effect": {
+    "minimum_response_business_days": 3
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2025-09-26",
+   "effective_from_basis": "current text in force since the only listed amendment (City Record 8/27/2025, eff. 9/26/2025); the date this provision took its current form is not established.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "worker/src/lib/solicitation_procurement_method.mjs",
+    "worker/src/lib/notice_facts.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "site/procurement_opportunity_window.mjs",
+    "site/procurement_pursuit_snapshot.mjs",
+    "site/procurement_legal_projection.mjs"
+   ],
+   "notes": "Correction of record_version 1. The text states business days, so the unit is explicit and does not depend on the 1-01 calendar-day default. 3-07(a) limits accelerated procurement to designated commodities; the engine still keys this floor on an explicit accelerated-procurement cue in the notice."
+  },
+  {
+   "id": "nyc.ppb.3-02.c.bidding_time_15_days",
+   "record_version": 1,
+   "statement": "Competitive sealed bids must allow a bidding time of at least fifteen days between public advertisement of the IFB and bid opening.",
+   "kind": "timeline",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-02(c)",
+    "quote": "The bidding time shall be not less than fifteen days before the bid opening date.",
+    "quote_sha256": "f3506eceafe747303e7dfe6c5234218b521d9521b85db11c353cd9111f4aedf9",
+    "context_quote": "(c) Bidding time. Bidding time is the period of time between the date of public advertisement of the IFB and the time and date set for receipt of bids.",
+    "context_quote_sha256": "6622d12d5d32e666149938e1d54dae06c8f527030f6d0c490125f1945877d33b",
+    "source_file": "ppb-3-02.md",
+    "source_sha256": "1537d654478739a216ba7047ce9581d78391a076e1a649ca0d25593d53c81570",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_basis": [
+     "competitive"
+    ]
+   },
+   "unmodelled_conditions": [
+    "method_is_competitive_sealed_bid"
+   ],
+   "effect": {
+    "minimum_response_calendar_days": 15
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2025-01-01",
+   "effective_from_basis": "current text in force since the last listed amendment (City Record 12/2/2024, eff. 1/1/2025); the retained history lists amendments eff. 3/1/2016 & 7/1/2016, 1/1/2020 and 1/1/2025 without establishing when this provision took its current form.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "worker/src/lib/solicitation_procurement_method.mjs",
+    "worker/src/lib/notice_facts.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "site/procurement_opportunity_window.mjs",
+    "site/procurement_pursuit_snapshot.mjs",
+    "site/procurement_legal_projection.mjs"
+   ],
+   "notes": "3-02(e)(1)(ii)(A) repeats fifteen days for City Record publication of bids above the small purchase limits. Before this slice the engine showed 20 days for bids."
+  },
+  {
+   "id": "nyc.ppb.3-02.e.1.i.section_6_129_bid_notice_22_days",
+   "record_version": 1,
+   "statement": "IFBs (or notices of their availability) for bids subject to Admin Code 6-129 must be sent electronically at least twenty-two days before the bid due date.",
+   "kind": "timeline",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-02(e)(1)(i)",
+    "quote": "Such IFBs or notices must be sent electronically at least fifteen (15) days in advance of the due date for bids, or at least twenty-two (22) days in advance of the due date for bids which are subject to § 6-129 of the New York City Administrative Code (M/WBE and EBE program).",
+    "quote_sha256": "6b059e0383f9383bd723a25e59219e8a18f1fbdefe69d0e2a77acf50dc467232",
+    "context_quote": "(e) Public Notice. (1) Notice of Solicitation. (i) Distribution.",
+    "context_quote_sha256": "897a02f541f939836c17b41a2d2f535e50088e19dd92b2e0ca2e12f20f76de68",
+    "source_file": "ppb-3-02.md",
+    "source_sha256": "1537d654478739a216ba7047ce9581d78391a076e1a649ca0d25593d53c81570",
+    "url": "https://github.com/BetaNYC/nyc-charter-laws-rules",
+    "retrieved_on": "2026-11-11",
+    "current_through": "Administrative Code through L.L. 2026/163 (enacted 2026-11-07); rules effective through 2026-11-08 (as stated by the mirror)"
+   },
+   "applies_when": {
+    "procurement_basis": [
+     "competitive"
+    ]
+   },
+   "unmodelled_conditions": [
+    "method_is_competitive_sealed_bid",
+    "section_6_129_applies"
+   ],
+   "effect": {
+    "minimum_response_calendar_days": 22
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2025-01-01",
+   "effective_from_basis": "current text in force since the last listed amendment (City Record 12/2/2024, eff. 1/1/2025); the retained history lists amendments eff. 3/1/2016 & 7/1/2016, 1/1/2020 and 1/1/2025 without establishing when this provision took its current form.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "source_checked",
+    "by": "agent source-capture check (not a legal practitioner)",
+    "on": "2026-11-11"
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "worker/src/lib/solicitation_procurement_method.mjs",
+    "worker/src/lib/notice_facts.mjs",
+    "site/mwbe_goal_surface.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "site/procurement_opportunity_window.mjs",
+    "site/procurement_pursuit_snapshot.mjs",
+    "site/procurement_legal_projection.mjs"
+   ],
+   "notes": "The rule is an electronic-distribution minimum, not a bidding-time rule; City Record publication for bids stays fifteen days (3-02(e)(1)(ii)(A)). The engine shows it as the minimum response time for a 6-129 bid because a due date fewer than 22 days after distribution would not meet it."
+  },
+  {
+   "id": "app.city_record.category_vocabulary",
+   "record_version": 2,
+   "statement": "The City Record category label 'Human Services/Client Services' denotes procurement_category human_services.",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "publisher category vocabulary",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {
+    "procurement_category": [
+     "human_services"
+    ]
+   },
+   "effect": {
+    "publisher_category_label": "Human Services/Client Services"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "worker/src/lib/filter.mjs",
+    "worker/src/nl.mjs",
+    "worker/src/lib/award_registration_dwell.mjs",
+    "site/buyer_history_pursuit_comparison.mjs",
+    "site/app/procurement-phase.mjs",
+    "site/procurement_legal_category.mjs",
+    "site/procurement_legal_projection.mjs",
+    "site/procurement_coverage_labels.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "tools/build_procurement_legal_projection.mjs"
+   ],
+   "notes": "Correction of record_version 1, whose applies_when was empty and whose statement bundled two labels. The label names both the 6-129(c)(21) term and the PPB 1-01 'Client Services' term (nyc.ppb.1-01.client_services_alias_human_services)."
+  },
+  {
+   "id": "app.city_record.category_label.construction",
+   "record_version": 1,
+   "statement": "The City Record category label 'Construction/Construction Services' denotes procurement_category construction.",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "City Record category_description vocabulary (publisher label)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {
+    "procurement_category": [
+     "construction"
+    ]
+   },
+   "effect": {
+    "publisher_category_label": "Construction/Construction Services"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine by this slice and recorded on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_legal_category.mjs",
+    "site/procurement_legal_projection.mjs",
+    "site/procurement_coverage_labels.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "tools/build_procurement_legal_projection.mjs"
+   ],
+   "notes": "Exact City Record label; the publisher vocabulary separates it from 'Construction Related Services'."
+  },
+  {
+   "id": "app.city_record.category_label.construction_related_services",
+   "record_version": 1,
+   "statement": "The City Record category label 'Construction Related Services' denotes procurement_category one of construction, professional_services, standard_services (not determinable from the label).",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "City Record category_description vocabulary (publisher label)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {
+    "procurement_category": [
+     "construction",
+     "professional_services",
+     "standard_services"
+    ]
+   },
+   "effect": {
+    "publisher_category_label": "Construction Related Services"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine by this slice and recorded on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_legal_category.mjs",
+    "site/procurement_legal_projection.mjs",
+    "site/procurement_coverage_labels.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "tools/build_procurement_legal_projection.mjs"
+   ],
+   "notes": "Construction-related services (design, inspection, construction management) may be professional or standard services, and PPB 1-01 treats a construction management contract as a form of construction contract, so the label cannot exclude construction. Consumers answer only where all three candidates agree."
+  },
+  {
+   "id": "app.city_record.category_label.goods",
+   "record_version": 1,
+   "statement": "The City Record category label 'Goods' denotes procurement_category goods.",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "City Record category_description vocabulary (publisher label)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {
+    "procurement_category": [
+     "goods"
+    ]
+   },
+   "effect": {
+    "publisher_category_label": "Goods"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine by this slice and recorded on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_legal_category.mjs",
+    "site/procurement_legal_projection.mjs",
+    "site/procurement_coverage_labels.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "tools/build_procurement_legal_projection.mjs"
+   ],
+   "notes": "Exact City Record label."
+  },
+  {
+   "id": "app.city_record.category_label.goods_and_services",
+   "record_version": 1,
+   "statement": "The City Record category label 'Goods and Services' denotes procurement_category one of goods, professional_services, standard_services (not determinable from the label).",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "City Record category_description vocabulary (publisher label)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {
+    "procurement_category": [
+     "goods",
+     "professional_services",
+     "standard_services"
+    ]
+   },
+   "effect": {
+    "publisher_category_label": "Goods and Services"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine by this slice and recorded on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_legal_category.mjs",
+    "site/procurement_legal_projection.mjs",
+    "site/procurement_coverage_labels.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "tools/build_procurement_legal_projection.mjs"
+   ],
+   "notes": "Assumes the six-label City Record vocabulary (worker/src/lib/filter.mjs) is a partition with a dedicated human-services label, so this label excludes human services. Not checked against the publisher's data dictionary."
+  },
+  {
+   "id": "app.city_record.category_label.services_other_than_human_services",
+   "record_version": 1,
+   "statement": "The City Record category label 'Services (other than human services)' denotes procurement_category one of professional_services, standard_services (not determinable from the label).",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "City Record category_description vocabulary (publisher label)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {
+    "procurement_category": [
+     "professional_services",
+     "standard_services"
+    ]
+   },
+   "effect": {
+    "publisher_category_label": "Services (other than human services)"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine by this slice and recorded on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_legal_category.mjs",
+    "site/procurement_legal_projection.mjs",
+    "site/procurement_coverage_labels.mjs",
+    "site/mwbe_requirement_state.mjs",
+    "tools/build_procurement_legal_projection.mjs"
+   ],
+   "notes": "The label excludes human services by its own words but cannot split professional from standard services."
+  },
+  {
+   "id": "app.solicitation_method.selection_method_label_mapping",
+   "record_version": 1,
+   "statement": "The engine treats a City Record solicitation as a competitive sealed bid or proposal only when selection_method_description is exactly 'Competitive Sealed Bids' or 'Competitive Sealed Proposals'; every other label (including PQL variants and 'Request for Proposals') selects no rule floor.",
+   "kind": "vocabulary_mapping",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "City Record selection_method_description vocabulary (publisher label)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "unmodelled_conditions": [
+    "selection_method_label_names_competitive_sealed_method"
+   ],
+   "effect": {
+    "detection_rule": "exact_normalized_publisher_label"
+   },
+   "effective_from": null,
+   "effective_to": null,
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine by this slice and recorded on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/solicitation_procurement_method.mjs",
+    "site/mwbe_requirement_state.mjs"
+   ],
+   "notes": "PQL variants are excluded because 3-02(e)(1)(ii) and 3-03(d)(1)(ii) publication rules do not apply where vendors are solicited from a PQL."
+  },
+  {
+   "id": "app.coverage_labels.duplicate_amount_bands",
+   "record_version": 2,
+   "statement": "The coverage-label module keeps its own copy of the 3-08 amount bands ($20,000/$35,000/$100,000/$1,500,000) and the 2023-06-03 effective date.",
+   "kind": "threshold",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "rcny",
+    "section": "9 RCNY 3-08 (duplicated in consumer)",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "consumer_duplicates_registry": "amount_bands_and_effective_from"
+   },
+   "realized_by": [
+    {
+     "registry": "procurement_policy_registry",
+     "family": "ordinary_micropurchase"
+    },
+    {
+     "registry": "procurement_policy_registry",
+     "family": "ordinary_5_plus_10"
+    },
+    {
+     "registry": "procurement_policy_registry",
+     "family": "mwbe_small_purchase"
+    }
+   ],
+   "effective_from": null,
+   "effective_to": "2026-11-12",
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": "AMOUNT_BANDS and POLICY_EFFECTIVE_FROM duplicate the policy registry. The next slice should read the registry instead. Closed by this slice: site/procurement_coverage_labels.mjs reads bands from the generated site/procurement_legal_projection.mjs; a missing category is evaluated over every category the family can legally take and yields a label only when all agree; an unrecognised label abstains."
+  },
+  {
+   "id": "app.coverage_labels.missing_category_matches_any_band",
+   "record_version": 2,
+   "statement": "When procurement category is missing, the coverage-label module treats a record as matching a 3-08 family if the amount fits the band of any category.",
+   "kind": "heuristic",
+   "jurisdiction": "nyc",
+   "authority": {
+    "instrument": "none",
+    "section": "engine evaluation rule",
+    "quote": null,
+    "quote_sha256": null,
+    "source_file": null,
+    "source_sha256": null,
+    "url": null,
+    "retrieved_on": null,
+    "current_through": null
+   },
+   "applies_when": {},
+   "effect": {
+    "detection_rule": "any_category_band_when_category_missing"
+   },
+   "effective_from": null,
+   "effective_to": "2026-11-12",
+   "in_force_as_of": "2026-11-11",
+   "effective_from_basis": "encoded in the engine at baseline 919ddc5a4438cecf3b5e66632e1746c0138ae064 and read on 2026-11-11; no legal effective date established for the belief.",
+   "recorded_at": "2026-11-11",
+   "supersedes": null,
+   "review": {
+    "status": "unreviewed",
+    "by": null,
+    "on": null
+   },
+   "consumers": [
+    "site/procurement_coverage_labels.mjs"
+   ],
+   "notes": "Contradicts the register's three-valued rule (a missing fact yields unknown). See kd.coverage_labels_missing_category. Closed by this slice: site/procurement_coverage_labels.mjs reads bands from the generated site/procurement_legal_projection.mjs; a missing category is evaluated over every category the family can legally take and yields a label only when all agree; an unrecognised label abstains."
   }
  ]
 }

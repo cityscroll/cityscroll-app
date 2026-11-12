@@ -5,44 +5,56 @@
 //   - Admin Code §6-129 M/WBE participation-goal citations (+ optional goal %)
 //   - M/WBE Noncompetitive Small Purchase (PPB §3-08)
 //   - Accelerated procurement timing markers (PPB §3-07)
-//   - Derived response floor with rule source:
-//       20 calendar days  — default competitive advertising minimum
-//       27 calendar days  — when §6-129 goals apply
-//       3 business days   — accelerated procurement
+//   - Response floor selected from the procurement legal register (days, unit,
+//     section and review status come from site/procurement_legal_projection.mjs):
+//       competitive sealed proposals   9 RCNY 3-03(c)(1)    20 / 27 (§6-129) days
+//       competitive sealed bids        9 RCNY 3-02(c), (e)  15 / 22 (§6-129) days
+//       accelerated procurement        9 RCNY 3-07(h)(1)(i) 3 business days
+//     Any other published method (small purchases, PQL variants, RFP labels,
+//     no label) selects no floor. The §6-129 floors apply only while the
+//     register does not rule the participation requirement out.
+//   - M/WBE requirement state (site/mwbe_requirement_state.mjs): published goal
+//     facts stay as extracted; the register's answer and the reader state sit
+//     beside them.
 //
 // Label-bound: only explicit citations and method names become structured
 // fields. Response floor is derived, never invented from calendar math on
 // start/due dates. UI chips / list badges consume this payload (site/mwbe_goal_surface.mjs).
 
 import { plainText } from "./text_clean.mjs";
+import { isoDate, responseFloorRule } from "./procurement_legal_category.mjs";
+import { mwbeRequirementState } from "./mwbe_requirement_state.mjs";
 
 export const SOLICITATION_PROCUREMENT_METHOD_SCHEMA =
+  "cityscroll.solicitation_procurement_method.v2";
+export const SOLICITATION_PROCUREMENT_METHOD_SCHEMA_V1 =
   "cityscroll.solicitation_procurement_method.v1";
 
-/** Stable kind keys for the derived advertising / response floor. */
+/** Stable kind keys for the derived response floor (= projection floor kinds). */
 export const RESPONSE_FLOOR_KIND = Object.freeze({
-  DEFAULT_COMPETITIVE: "default_competitive_20_calendar_days",
-  SECTION_6_129: "section_6_129_27_calendar_days",
-  ACCELERATED: "accelerated_3_business_days",
+  COMPETITIVE_SEALED_PROPOSAL: "competitive_sealed_proposal",
+  COMPETITIVE_SEALED_PROPOSAL_SECTION_6_129: "competitive_sealed_proposal_section_6_129",
+  COMPETITIVE_SEALED_BID: "competitive_sealed_bid",
+  COMPETITIVE_SEALED_BID_SECTION_6_129: "competitive_sealed_bid_section_6_129",
+  ACCELERATED: "accelerated",
 });
 
-const RULE_SOURCE = Object.freeze({
-  DEFAULT_COMPETITIVE: {
-    id: "ppb_competitive_default_20_calendar_days",
-    cite:
-      "NYC Procurement Policy Board Rules — competitive sealed bid/proposal advertising minimum (20 calendar days)",
-  },
-  SECTION_6_129: {
-    id: "admin_code_6_129_extended_27_calendar_days",
-    cite:
-      "NYC Admin. Code §6-129 participation goals — PPB competitive advertising minimum (27 calendar days)",
-  },
-  ACCELERATED: {
-    id: "ppb_3_07_accelerated_3_business_days",
-    cite:
-      "NYC Procurement Policy Board Rules §3-07 Accelerated Procurement (3 business days)",
-  },
+/** Floors that every ordinary solicitation of the method has (detail-only, no list chip). */
+export const DEFAULT_RESPONSE_FLOOR_KINDS = Object.freeze([
+  RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_PROPOSAL,
+  RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_BID,
+]);
+
+/** Exact City Record selection_method_description labels (app.solicitation_method.selection_method_label_mapping). */
+const EXACT_COMPETITIVE_METHOD = Object.freeze({
+  "competitive sealed proposals": "competitive_sealed_proposal",
+  "competitive sealed bids": "competitive_sealed_bid",
 });
+
+export function competitiveMethodFromLabel(value) {
+  const label = String(value ?? "").replace(/\s+/g, " ").trim().toLowerCase();
+  return EXACT_COMPETITIVE_METHOD[label] || null;
+}
 
 function evidence(value) {
   return plainText(value).replace(/\s+/g, " ").trim().slice(0, 280);
@@ -241,53 +253,55 @@ export function extractAcceleratedProcurement(text, row = {}) {
   };
 }
 
+function floorPayload(kind, occurredOn, evidenceText) {
+  const rule = responseFloorRule(kind, occurredOn);
+  if (!rule) return null;
+  const isRule = rule.claim === "rule";
+  return {
+    kind,
+    days: rule.days,
+    day_unit: rule.day_unit,
+    rule_source: rule.rule_id,
+    rule_record_version: rule.record_version,
+    rule_section: rule.section,
+    rule_review_status: rule.review_status,
+    rule_temporal: rule.temporal,
+    claim: rule.claim,
+    // A citation is shown to readers only for a checked rule in force on the notice date.
+    rule_cite: isRule ? `NYC Procurement Policy Board Rules, ${rule.section}` : null,
+    source: "derived",
+    evidence: evidenceText || null,
+  };
+}
+
 /**
- * Derive the applicable response floor.
- * Priority: accelerated (3 business days) > §6-129 (27 calendar) > default 20
- * calendar for Procurement solicitations. Null outside that universe.
+ * Select the response floor from the register.
+ * Priority: accelerated (3 business days) > published competitive method
+ * (sealed proposals 20, or 27 with §6-129; sealed bids 15, or 22 with §6-129).
+ * The §6-129 variant needs a notice citation AND a participation requirement the
+ * register does not rule out. Null outside Procurement solicitations and for any
+ * other or missing published method.
  */
 export function deriveResponseFloor({
   section_6_129 = null,
   accelerated = null,
   is_solicitation = false,
+  method = null,
+  participation_not_ruled_out = true,
+  occurred_on = null,
 } = {}) {
   if (accelerated?.present) {
-    const rule = RULE_SOURCE.ACCELERATED;
-    return {
-      kind: RESPONSE_FLOOR_KIND.ACCELERATED,
-      days: 3,
-      day_unit: "business_days",
-      rule_source: rule.id,
-      rule_cite: rule.cite,
-      source: "derived",
-      evidence: accelerated.evidence || null,
-    };
+    return floorPayload(RESPONSE_FLOOR_KIND.ACCELERATED, occurred_on, accelerated.evidence);
   }
-  if (section_6_129?.present) {
-    const rule = RULE_SOURCE.SECTION_6_129;
-    return {
-      kind: RESPONSE_FLOOR_KIND.SECTION_6_129,
-      days: 27,
-      day_unit: "calendar_days",
-      rule_source: rule.id,
-      rule_cite: rule.cite,
-      source: "derived",
-      evidence: section_6_129.evidence || null,
-    };
-  }
-  if (is_solicitation) {
-    const rule = RULE_SOURCE.DEFAULT_COMPETITIVE;
-    return {
-      kind: RESPONSE_FLOOR_KIND.DEFAULT_COMPETITIVE,
-      days: 20,
-      day_unit: "calendar_days",
-      rule_source: rule.id,
-      rule_cite: rule.cite,
-      source: "derived",
-      evidence: null,
-    };
-  }
-  return null;
+  if (!is_solicitation || !method) return null;
+  const withGoals = Boolean(section_6_129?.present) && participation_not_ruled_out;
+  const kind = method === "competitive_sealed_proposal"
+    ? (withGoals ? RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_PROPOSAL_SECTION_6_129 : RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_PROPOSAL)
+    : method === "competitive_sealed_bid"
+      ? (withGoals ? RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_BID_SECTION_6_129 : RESPONSE_FLOOR_KIND.COMPETITIVE_SEALED_BID)
+      : null;
+  if (!kind) return null;
+  return floorPayload(kind, occurred_on, withGoals ? section_6_129.evidence : null);
 }
 
 /**
@@ -296,15 +310,35 @@ export function deriveResponseFloor({
  */
 export function extractSolicitationProcurementMethod(row = {}) {
   const text = noticeBody(row);
+  return withRegisterFacts({
+    section_6_129: extractSection6129(text),
+    mwbe_noncompetitive_small_purchase: extractMwbeNoncompetitiveSmallPurchase(text, row),
+    accelerated: extractAcceleratedProcurement(text, row),
+  }, row);
+}
+
+/**
+ * Add the register-derived fields (M/WBE requirement state, response floor) to
+ * already-extracted notice markers. Used for fresh extraction and to upgrade a
+ * stored v1 payload without re-reading or changing its published markers.
+ */
+export function withRegisterFacts(markers = {}, row = {}) {
+  const section_6_129 = markers.section_6_129 || null;
+  const mwbe_noncompetitive_small_purchase = markers.mwbe_noncompetitive_small_purchase || null;
+  const accelerated = markers.accelerated || null;
   const is_solicitation = isProcurementSolicitation(row);
-  const section_6_129 = extractSection6129(text);
-  const mwbe_noncompetitive_small_purchase =
-    extractMwbeNoncompetitiveSmallPurchase(text, row);
-  const accelerated = extractAcceleratedProcurement(text, row);
+  const occurred_on = isoDate(row.start_date || row.occurred_on);
+  const mwbe_requirement = is_solicitation
+    ? mwbeRequirementState({ section_6_129, row, occurred_on })
+    : null;
+  const method = competitiveMethodFromLabel(row.selection_method_description || row.selection_method);
   const response_floor = deriveResponseFloor({
     section_6_129,
     accelerated,
     is_solicitation,
+    method,
+    participation_not_ruled_out: mwbe_requirement ? mwbe_requirement.participation_not_ruled_out : true,
+    occurred_on,
   });
 
   return {
@@ -312,6 +346,8 @@ export function extractSolicitationProcurementMethod(row = {}) {
     section_6_129,
     mwbe_noncompetitive_small_purchase,
     accelerated,
+    competitive_method: method,
+    mwbe_requirement,
     response_floor,
   };
 }

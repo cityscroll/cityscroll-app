@@ -479,12 +479,22 @@ function solicitationMwbeDetailHTML(view){
       : `${view.floor.days} ${view.floor.day_unit || "days"}`;
     floorBlock = `<div class="lc-pct"><b>${t("mwbe_sol_floor_lbl")}:</b> ${escUiHtml(floorLabel)}
       ${view.floor.rule_cite ? `<div class="note muted">${t("mwbe_sol_floor_cite_html",{cite:escUiHtml(view.floor.rule_cite)})}</div>` : ""}
+      ${view.floor.claim !== "rule" ? `<div class="note muted">${t("mwbe_sol_floor_unverified_html")}</div>` : ""}
     </div>`;
   }
+  // Register answer beside the published goal (site/mwbe_requirement_state.mjs); never replaces it.
+  const ann = view.mwbe_annotation;
+  const annBlock = ann
+    ? `<p class="note" data-mwbe-requirement-state="${escUiHtml(ann.state)}">${escUiHtml(t(ann.i18n_key, {
+        ...ann.variables,
+        basis: ann.variables.basis_key ? t(ann.variables.basis_key) : (ann.variables.basis || ""),
+      }))}</p>`
+    : "";
   return `<section class="mwbe-sol-detail apply" data-mwbe-sol-detail="1" aria-label="${escUiHtml(t("mwbe_sol_heading"))}">
     <h3 class="chain-h" style="margin-top:0">${t("mwbe_sol_heading")}</h3>
     ${chipRow}
     ${goalBlock}
+    ${annBlock}
     ${floorBlock}
   </section>`;
 }
