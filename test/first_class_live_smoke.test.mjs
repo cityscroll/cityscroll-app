@@ -31,7 +31,12 @@ test("post-deploy smoke rejects stale first-class data without calling it empty"
     }
     return new Response("<main>Resident page</main>", { status: 200 });
   };
-  const receipt = await smokeFirstClassSurfaces({ baseUrl: "https://example.test", fetchImpl, deploymentIdentity: "release-a" });
+  const receipt = await smokeFirstClassSurfaces({
+    baseUrl: "https://example.test",
+    fetchImpl,
+    deploymentIdentity: "release-a",
+    skipProcurementEvidence: true,
+  });
   assert.equal(receipt.status, "failed");
   assert.match(receipt.findings.join("\n"), /deployed state is stale/);
   assert.doesNotMatch(receipt.findings.join("\n"), /empty/);

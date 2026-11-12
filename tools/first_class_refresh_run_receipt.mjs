@@ -126,6 +126,19 @@ export function rebuildStatusFor(artifact, builderStatus) {
   return "not_run";
 }
 
+/** Builder path for the per-agency procurement evidence projection. */
+export const PROCUREMENT_EVIDENCE_BUILDER = "tools/build_procurement_evidence.mjs";
+
+/**
+ * Status of the evidence projection step for one refresh run. Source owners
+ * list this builder among dependent_materializers so a failed evidence rebuild
+ * is visible on those datasets' combined receipts as well as on the
+ * capabilities artifact itself.
+ */
+export function procurementEvidenceRebuildStatus(rebuildRegistry, rebuildReceipt) {
+  return builderStatusMap(rebuildRegistry, rebuildReceipt).get(PROCUREMENT_EVIDENCE_BUILDER) || "not_run";
+}
+
 /**
  * Identify this refresh from the Actions environment (or as a local run).
  * `trigger` is the event name that started the job: `schedule` for the cron,

@@ -172,6 +172,62 @@ export function buildAll() {
   return { outputs, manifests, capabilities };
 }
 
+/**
+ * Publish one evidence generation. Immutable pages are written before any
+ * current manifest pointer moves. When `interruptBeforeManifest` is true the
+ * function stops after pages land so callers can prove the prior pointer is
+ * still served while the new generation is already readable on disk.
+ */
+export function publishOutputs(outputs, {
+  outDir = OUT_DIR,
+  capabilitiesPath = CAPABILITIES_PATH,
+  interruptBeforeManifest = false,
+} = {}) {
+  mkdirSync(outDir, { recursive: true });
+  const previousVersions = new Map();
+  let pagesWritten = 0;
+  for (const [rel, bodyBytes] of outputs) {
+    if (rel === 'capabilities' || rel.endsWith('manifest.json')) continue;
+    const [agency] = rel.split('/');
+    const agencyDir = join(outDir, agency);
+    const manifestPath = join(agencyDir, 'manifest.json');
+    if (!previousVersions.has(agency) && existsSync(manifestPath)) {
+      previousVersions.set(agency, read(manifestPath).version);
+    }
+    const path = join(outDir, rel);
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, bodyBytes);
+    pagesWritten += 1;
+  }
+  if (interruptBeforeManifest) {
+    return { interrupted: true, pagesWritten, previousVersions };
+  }
+  for (const [rel, bodyBytes] of outputs) {
+    if (rel === 'capabilities') { writeFileSync(capabilitiesPath, bodyBytes); continue; }
+    if (rel.endsWith('manifest.json')) writeFileSync(join(outDir, rel), bodyBytes);
+  }
+  const currentVersions = new Map();
+  for (const [rel, bodyBytes] of outputs) {
+    if (!rel.endsWith('manifest.json')) continue;
+    const agency = rel.split('/')[0];
+    const manifest = JSON.parse(bodyBytes.toString('utf8'));
+    if (typeof manifest.version !== 'string' || !/^[0-9a-f]{64}$/.test(manifest.version)) {
+      throw Error(`manifest for ${agency} lacks a content-addressed version`);
+    }
+    currentVersions.set(agency, manifest.version);
+  }
+  for (const agency of readdirSync(outDir)) {
+    const agencyDir = join(outDir, agency);
+    if (!statSync(agencyDir).isDirectory()) continue;
+    for (const version of readdirSync(agencyDir).filter(d => statSync(join(agencyDir, d)).isDirectory())) {
+      if (version !== currentVersions.get(agency) && version !== previousVersions.get(agency)) {
+        rmSync(join(agencyDir, version), { recursive: true, force: true });
+      }
+    }
+  }
+  return { interrupted: false, pagesWritten, previousVersions, currentVersions };
+}
+
 function main() {
   const check = process.argv.includes('--check');
   const { outputs } = buildAll();
@@ -203,50 +259,8 @@ function main() {
     return;
   }
 
-  mkdirSync(OUT_DIR, { recursive: true });
-  // Pages first, manifests last; retain one previous complete generation.
-  const previousVersions = new Map();
-  for (const [rel] of outputs) {
-    if (rel === 'capabilities' || rel.endsWith('manifest.json')) continue;
-    const [agency] = rel.split('/');
-    const agencyDir = join(OUT_DIR, agency);
-    const manifestPath = join(agencyDir, 'manifest.json');
-    if (!previousVersions.has(agency) && existsSync(manifestPath)) {
-      previousVersions.set(agency, read(manifestPath).version);
-    }
-    const path = join(OUT_DIR, rel);
-    mkdirSync(dirname(path), { recursive: true });
-    writeFileSync(path, body(rel, outputs));
-  }
-  for (const [rel, bodyBytes] of outputs) {
-    if (rel === 'capabilities') { writeFileSync(CAPABILITIES_PATH, bodyBytes); continue; }
-    if (rel.endsWith('manifest.json')) writeFileSync(join(OUT_DIR, rel), bodyBytes);
-  }
-  // Prune generations that are neither current nor the retained previous one.
-  // Version directories are content-addressed hashes under each agency; the
-  // current hash comes from the manifest body, never from the manifest path.
-  const currentVersions = new Map();
-  for (const [rel, bodyBytes] of outputs) {
-    if (!rel.endsWith('manifest.json')) continue;
-    const agency = rel.split('/')[0];
-    const manifest = JSON.parse(bodyBytes.toString('utf8'));
-    if (typeof manifest.version !== 'string' || !/^[0-9a-f]{64}$/.test(manifest.version)) {
-      throw Error(`manifest for ${agency} lacks a content-addressed version`);
-    }
-    currentVersions.set(agency, manifest.version);
-  }
-  for (const agency of readdirSync(OUT_DIR)) {
-    const agencyDir = join(OUT_DIR, agency);
-    if (!statSync(agencyDir).isDirectory()) continue;
-    for (const version of readdirSync(agencyDir).filter(d => statSync(join(agencyDir, d)).isDirectory())) {
-      if (version !== currentVersions.get(agency) && version !== previousVersions.get(agency)) {
-        rmSync(join(agencyDir, version), { recursive: true, force: true });
-      }
-    }
-  }
-  console.log(JSON.stringify({ status: 'written', files: outputs.size }));
+  const result = publishOutputs(outputs);
+  console.log(JSON.stringify({ status: 'written', files: outputs.size, pages: result.pagesWritten }));
 }
-
-function body(rel, outputs) { return outputs.get(rel); }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) main();

@@ -291,6 +291,37 @@ already uses (`tools/deliver_ops_alert.mjs`, the `ADMIN_KEY` secret). Before
 this job, the first thing anyone saw about an aging artifact was a failed
 Pages deploy once it reached its hard maximum.
 
+## Repairing an installed warehouse runner
+
+An installed copy of `run-warehouse-refresh.sh` that predates the current
+`published_paths` registry can stage only `site` and `worker` and then refuse
+to run when generated docs or receipts are dirty. Repair that drift through the
+repository entrypoint rather than inventing a second scheduler or reading
+credential files:
+
+1. Preserve the dirty generated paths that the installed copy left behind. Do
+   not reset or stash them. Typical leftovers are evidence documents under
+   `docs/`, vendor-footprint coverage receipts, and warehouse proof receipts.
+2. Reconcile those paths with the current default-branch tip on a bounded
+   recovery branch and open an ordinary pull request when they still differ
+   after a fast-forward. Keep the three dirty paths and their content hashes in
+   the recovery note so the next operator can verify nothing was discarded.
+3. Re-copy `run-warehouse-refresh.sh` and `preflight.sh` together from this
+   repository into the installed location, then execute the configured checkout
+   through the existing secret-loading wrapper:
+   `CITYSCROLL_REPO=… CITYSCROLL_WAREHOUSE_ROOT=… ./run-warehouse-refresh.sh --dry-run`
+   followed by one bounded due cycle under the ordinary supervisor lease.
+4. Staging must read `published_paths` from
+   `ops/first-class-refresh/committed-read-models.json` via
+   `rebuild-committed-read-models.mjs --published-paths`. Credential file
+   contents stay unread and never appear in receipts, dry-run output, or pull
+   request text.
+
+The procurement evidence projection is one of the rebuild steps that registry
+covers (`procurement-evidence`). It runs after the derived JSON boundary and
+before source-health observations, so a repaired runner that uses the current
+script publishes evidence pages whenever their source families refresh.
+
 ## Running a builder is not publishing it
 
 Both halves of the refresh commit a fixed list of pathspecs rather than the
