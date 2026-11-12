@@ -105,12 +105,12 @@ test("the CLI warns when the manifest has fewer than seven days remaining", () =
     encoding: "utf8",
     env: {
       ...process.env,
-      CITYSCROLL_TEST_TIME_PIN: "2026-11-09T00:00:00.000Z",
+      CITYSCROLL_TEST_TIME_PIN: "2026-12-06T00:00:00.000Z",
       NODE_OPTIONS: `--import=${preload}`,
     },
   });
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /warning: no-live debt manifest expires in 6 day\(s\) on 2026-11-15/);
+  assert.match(result.stdout, /warning: no-live debt manifest expires in 6 day\(s\) on 2026-12-12/);
 });
 
 test("the repository debt manifest expires under the shared clock one day after its date", async () => {
