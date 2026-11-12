@@ -698,11 +698,6 @@
       "reason": "Its --from-soda mode is the declared acquisition and builder command of the sbs-certified-businesses first-class artifact, which tools/first_class_refresh.mjs --run-due runs when the directory is 336 hours old. The CI --check only verifies the committed set, so the rebuild sequence has nothing further to regenerate."
     },
     {
-      "builder": "tools/acquire_irs_eo_bmf.mjs",
-      "disposition": "acquired-by-first-class-refresh",
-      "reason": "Its capture under .artifacts/first-class-inputs/irs-eo-bmf-ny is the declared acquisition of the irs-eo-bmf-ny first-class artifact; CI --check only verifies the committed shards."
-    },
-    {
       "builder": "tools/build_register_shards.mjs",
       "disposition": "acquired-by-first-class-refresh",
       "reason": "IRS uses the captured CSV; DOL and SCA --from-soda modes are the declared acquisition/builder commands of their first-class artifacts. CI --check verifies the committed shard manifests only."

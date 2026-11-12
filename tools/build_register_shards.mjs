@@ -103,6 +103,7 @@ function parseArgs(argv) {
     const a = argv[i];
     if (a === "--check") out.check = true;
     else if (a === "--from-acquired") out.fromAcquired = true;
+    // determinism-lint: allow external-data opt-in SODA acquisition flag; --check never sets it
     else if (a === "--from-soda") out.fromSoda = true;
     else if (a === "--register") out.register = argv[++i];
     else if (a === "--from-csv") out.fromCsv = argv[++i];
@@ -125,6 +126,7 @@ async function fetchSodaRows(resourceUrl, { fetchImpl = fetch } = {}) {
     // determinism-lint: allow external-data live SODA path only for --from-soda rematerialization
     const res = await fetchImpl(`${resourceUrl}?${params}`);
     if (!res.ok) {
+      // determinism-lint: allow external-data live SODA path only for --from-soda rematerialization
       throw new Error(`SODA ${res.status} during --from-soda materialization for ${resourceUrl}`);
     }
     const pageRows = await res.json();
@@ -144,9 +146,12 @@ function resolveRegisterKey(name) {
 }
 
 function writeAtomic(file, text) {
+  // determinism-lint: allow write non-check materialization output
   mkdirSync(path.dirname(file), { recursive: true });
   const tmp = `${file}.tmp`;
+  // determinism-lint: allow write non-check materialization output
   writeFileSync(tmp, text);
+  // determinism-lint: allow write non-check materialization output
   renameSync(tmp, file);
 }
 
@@ -310,12 +315,14 @@ function writeRegister({ cfg, records, collected_at, source_row_count = null, so
     source_url: cfg.source_url,
     buckets: cfg.buckets,
   });
+  // determinism-lint: allow write non-check materialization output
   mkdirSync(cfg.dir, { recursive: true });
   // Remove stale shard files not in the new set
   const keep = new Set(["manifest.json", ...shards.map((s) => s.path)]);
   if (existsSync(cfg.dir)) {
     for (const name of readdirSync(cfg.dir)) {
       if (!keep.has(name) && name.endsWith(".json")) {
+        // determinism-lint: allow write non-check materialization output
         rmSync(path.join(cfg.dir, name), { force: true });
       }
     }
@@ -446,6 +453,7 @@ async function main(argv = process.argv) {
       collected_at = null;
     }
   }
+  // determinism-lint: allow clock acquisition receipt timestamp only outside --check
   collected_at = collected_at || new Date().toISOString();
   const requested = args.register === "all" ? ["irs", "dol", "sca"] : [resolveRegisterKey(args.register)];
   const scratch = process.env.FM_TASK_SCRATCH
@@ -465,13 +473,16 @@ async function main(argv = process.argv) {
       if (args.fromSoda) {
         const rows = await fetchSodaRows(DOL_RESOURCE_URL);
         const tmp = path.join(ROOT, ".artifacts", "first-class-inputs", "nys-dol-contractor-registry", "rows.json");
+        // determinism-lint: allow write non-check materialization output
         mkdirSync(path.dirname(tmp), { recursive: true });
+        // determinism-lint: allow write non-check materialization output
         writeFileSync(tmp, `${JSON.stringify(rows)}\n`);
         summary.dol = buildDol(tmp, collected_at);
       } else {
         const json = args.fromJson
           || (scratch && path.join(scratch, "dol.json"));
         if (!json || !existsSync(json)) {
+          // determinism-lint: allow external-data opt-in SODA acquisition flag; --check never sets it
           throw new Error("DOL JSON missing (pass --from-json, --from-soda, or set FM_TASK_SCRATCH/registers/dol.json)");
         }
         summary.dol = buildDol(json, collected_at);
@@ -480,13 +491,16 @@ async function main(argv = process.argv) {
       if (args.fromSoda) {
         const rows = await fetchSodaRows(SCA_RESOURCE_URL);
         const tmp = path.join(ROOT, ".artifacts", "first-class-inputs", "nyc-sca-prequalified-firms", "rows.json");
+        // determinism-lint: allow write non-check materialization output
         mkdirSync(path.dirname(tmp), { recursive: true });
+        // determinism-lint: allow write non-check materialization output
         writeFileSync(tmp, `${JSON.stringify(rows)}\n`);
         summary.sca = buildSca(tmp, collected_at);
       } else {
         const json = args.fromJson
           || (scratch && path.join(scratch, "sca.json"));
         if (!json || !existsSync(json)) {
+          // determinism-lint: allow external-data opt-in SODA acquisition flag; --check never sets it
           throw new Error("SCA JSON missing (pass --from-json, --from-soda, or set FM_TASK_SCRATCH/registers/sca.json)");
         }
         summary.sca = buildSca(json, collected_at);

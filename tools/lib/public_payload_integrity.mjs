@@ -45,7 +45,9 @@ export function publicPayloadFindings(value, { source = "document" } = {}) {
     if (typeof node !== "string") return;
 
     const key = String(parts.at(-1) ?? "");
-    if (FIX_ID.test(node) || (ID_KEY.test(key) && (FIXTURE_KEY.test(node) || SYNTHETIC_KEY.test(node)))) {
+    // FIX_ID targets synthetic identifiers (FIX-ABC / FIX_01), not publisher
+    // display names that happen to contain English words like FIXED or FIXING.
+    if (((FIX_ID.test(node) && !/\s/.test(node)) || (ID_KEY.test(key) && (FIXTURE_KEY.test(node) || SYNTHETIC_KEY.test(node))))) {
       findings.push(finding(source, parts, "test identifier", node));
       return;
     }

@@ -92,10 +92,13 @@ async function defaultWait(ms) {
 }
 
 function writeLookup(doc) {
+  // determinism-lint: allow write non-check materialization output
   mkdirSync(path.dirname(OUT), { recursive: true });
   const text = stableStringify(doc);
   const tmp = `${OUT}.tmp`;
+  // determinism-lint: allow write non-check materialization output
   writeFileSync(tmp, text);
+  // determinism-lint: allow write non-check materialization output
   renameSync(tmp, OUT);
   return { path: OUT, sha256: sha256(text), bytes: Buffer.byteLength(text) };
 }
@@ -161,6 +164,7 @@ function buildFixtureDoc(collected_at) {
       sample_several_matches: severalCount,
       sample_candidates_only: matchSample.outcomes?.candidates_only ?? null,
       sample_truncated: matchSample.outcomes?.truncated ?? null,
+      // determinism-lint: allow external-data opt-in SODA acquisition flag; --check never sets it
       note: "Initial committed artifact seeded from recorded fixtures and the 300-name sample counts; live --from-soda fills matched records for the full vendor stem set.",
     },
     spacing_ms: MIN_SPACING_MS,
@@ -173,7 +177,9 @@ export async function buildFromSoda({
   limit = null,
   fetchImpl = fetch,
   waitFn = defaultWait,
+  // determinism-lint: allow clock acquisition receipt timestamp only outside --check
   now = () => Date.now(),
+  // determinism-lint: allow clock acquisition receipt timestamp only outside --check
   collected_at = new Date().toISOString(),
 } = {}) {
   const names = collectVendorNames({ limit });
@@ -344,6 +350,7 @@ async function main(argv = process.argv) {
       if (args.fromSoda) {
         doc = await buildFromSoda({ limit: args.limit });
       } else {
+        // determinism-lint: allow clock fixture materialization timestamp only outside --check
         doc = buildFixtureDoc(new Date().toISOString());
       }
     } else {
