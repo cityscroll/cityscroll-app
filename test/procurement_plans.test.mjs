@@ -350,7 +350,7 @@ test("RC-1 public materialization uses receipt-backed Pages-safe shards", () => 
     "utf8",
   ));
   const receipt = JSON.parse(readFileSync(
-    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-11.json"),
+    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-11-12.json"),
     "utf8",
   ));
   assert.equal(manifest.schema, "cityscroll.procurement_planning.manifest.v1");
@@ -473,10 +473,10 @@ print("OK")
   assert.match(result.stdout, /OK/);
 });
 
-test("A8 unpatched origin/main parser reproduces committed OCME (6) and DORIS (13) shard rows including list rows", () => {
+test("A8 origin/main parser matches committed OCME (3) and DORIS (10) shard rows without list rows", () => {
   if (!existsSync(join(WAREHOUSE, ".venv", "bin", "python"))) return;
   const result = python(`
-import hashlib, importlib.util, json, shutil, subprocess, sys, tempfile, warnings
+import importlib.util, json, shutil, subprocess, sys, tempfile, warnings
 from pathlib import Path
 import openpyxl
 
@@ -492,11 +492,12 @@ for shard in manifest["collections"]["plans"]["shards"]:
     committed.extend(json.load(open(shard["path"]))["rows"])
 fixtures = Path("test/fixtures/procurement_plans")
 
-# Unpatched baseline is origin/main: HEAD already carries the list-row + probability patch.
+# origin/main already carries the list-row + probability patch; the refreshed
+# collection keeps only plan-shaped rows.
 baseline_bytes = subprocess.check_output(
     ["git", "show", "origin/main:warehouse/lib/procurement_plans.py"]
 )
-tmpdir = Path(tempfile.mkdtemp(prefix="a8-unpatched-"))
+tmpdir = Path(tempfile.mkdtemp(prefix="a8-main-parser-"))
 try:
     tmp = tmpdir / "procurement_plans.py"
     tmp.write_bytes(baseline_bytes)
@@ -531,9 +532,9 @@ try:
         want = [row for row in committed if row["source_url"] == url]
         assert len(got) == labels[url]["plan_rows"], name
         assert got == want, name
-        assert {r["plan_id"] for r in got} & LIST_ROW_PLAN_IDS == LIST_ROW_PLAN_IDS, name
-    assert labels[WORKBOOKS["OCME_LL1_FY27.xlsx"]]["plan_rows"] == 6
-    assert labels[WORKBOOKS["DORIS_LL1_FY27.xlsx"]]["plan_rows"] == 13
+        assert {r["plan_id"] for r in got} & LIST_ROW_PLAN_IDS == set(), name
+    assert labels[WORKBOOKS["OCME_LL1_FY27.xlsx"]]["plan_rows"] == 3
+    assert labels[WORKBOOKS["DORIS_LL1_FY27.xlsx"]]["plan_rows"] == 10
     print("OK")
 finally:
     shutil.rmtree(tmpdir, ignore_errors=True)

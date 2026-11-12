@@ -53,26 +53,24 @@ function tempCopyOfPayload() {
 
 test("payload is the committed planning population", () => {
   assert.equal(manifest.schema, "cityscroll.procurement_planning.manifest.v1");
-  assert.equal(manifest.generated_at, "2026-08-11T18:55:26Z");
+  assert.equal(manifest.generated_at, "2026-11-12T13:01:37Z");
   assert.equal(population.status, "ok");
 });
 
-test("(i) totals: 2,925 LL1 + 8,641 LL63 = 11,566 rows held; 93 LL1 drop-down list rows withheld", () => {
+test("(i) totals: 2,832 LL1 + 8,953 LL63 = 11,785 rows held; drop-down list rows stay out of the payload", () => {
   const count = (src) => rawRows.filter((r) => r.row.source === src).length;
-  assert.equal(count("mocs_ll1"), 2925);
-  assert.equal(count("mocs_ll63"), 8641);
-  assert.equal(population.rows.length, 11566);
+  assert.equal(count("mocs_ll1"), 2832);
+  assert.equal(count("mocs_ll63"), 8953);
+  assert.equal(population.rows.length, 11785);
   assert.equal(new Set(manifest.sources.filter((s) => s.source === "mocs_ll1").map((s) => s.url)).size, 32);
-  assert.equal(new Set(manifest.sources.filter((s) => s.source === "mocs_ll63").map((s) => s.url)).size, 69);
+  assert.equal(new Set(manifest.sources.filter((s) => s.source === "mocs_ll63").map((s) => s.url)).size, 101);
   const withheld = rawRows.filter((r) => isWorkbookListRow(r.row));
-  assert.equal(withheld.length, 93);
-  assert.deepEqual([...new Set(withheld.map((r) => r.row.plan_id))].sort(), ["$200K or Below", "Exclusions", "Will Not Be Renewed/Extended"]);
-  assert.ok(withheld.every((r) => r.row.source === "mocs_ll1" && r.row.source_row >= 10584));
+  assert.equal(withheld.length, 0);
   const all = listAll();
-  assert.equal(all.first.total, 11566 - 93);
-  assert.deepEqual(all.first.withheld, { workbook_list_row: 93 });
+  assert.equal(all.first.total, 11785);
+  assert.deepEqual(all.first.withheld, { workbook_list_row: 0 });
   assert.equal(listAll({ source: "ll1" }).first.total, 2832);
-  assert.equal(listAll({ source: "ll63" }).first.total, 8641);
+  assert.equal(listAll({ source: "ll63" }).first.total, 8953);
 });
 
 test("(i) per-agency counts equal an independent recount, and every listed row resolves to its shard row", () => {
@@ -104,13 +102,13 @@ test("(i) per-agency counts equal an independent recount, and every listed row r
 
 test("(ii) positive canary ACS: Local Law 1 and Local Law 63 rows under one engine agency", () => {
   const acs = listAll({ agency_id: "administration-for-childrens-services" });
-  assert.equal(acs.first.total, 48);
-  assert.deepEqual(acs.first.withheld, { workbook_list_row: 3 });
+  assert.equal(acs.first.total, 52);
+  assert.deepEqual(acs.first.withheld, { workbook_list_row: 0 });
   assert.equal(acs.rows.filter((r) => r.source === "ll1").length, 5);
-  assert.equal(acs.rows.filter((r) => r.source === "ll63").length, 43);
+  assert.equal(acs.rows.filter((r) => r.source === "ll63").length, 47);
   assert.deepEqual(acs.first.agency.agency_codes, ["ACS"]);
   const byKey = listAll({ agency_key: "ACS" });
-  assert.equal(byKey.first.total, 43, "agency_key is exact: the LL63 spelling only");
+  assert.equal(byKey.first.total, 47, "agency_key is exact: the LL63 spelling only");
   // Deep-equal of committed ACS/OCME/DORIS/CFB rows is covered by shard provenance
   // resolution above and the per-agency canaries below; no committed-rows.json fixture.
 });
@@ -168,8 +166,8 @@ test("(iii) every sort pages through the whole listable population without loss 
   for (const sort of SORTS) {
     const a = listAll({ sort }).rows.map(provenanceKey);
     const b = listAll({ sort }).rows.map(provenanceKey);
-    assert.equal(a.length, 11473, sort);
-    assert.equal(new Set(a).size, 11473, sort);
+    assert.equal(a.length, 11785, sort);
+    assert.equal(new Set(a).size, 11785, sort);
     assert.deepEqual(a, b, sort);
   }
   const byAmount = listAll({ sort: "amount_desc" }).rows;
@@ -190,7 +188,7 @@ test("(iii) filters equal independent recounts and report rows excluded only for
   assert.equal(band.first.total, listable.filter((r) => r.budget && r.budget.amount >= 500000 && r.budget.amount <= 1000000).length);
   const ll63Industry = listPlans(population, { source: "ll63", industry: "Professional Services" }, { index });
   assert.equal(ll63Industry.total, 0);
-  assert.equal(ll63Industry.excluded_for_missing_value.industry, 8641);
+  assert.equal(ll63Industry.excluded_for_missing_value.industry, 8953);
   const p1 = listPlans(population, { agency_code: "ACS", limit: 10 }, { index });
   assert.equal(listPlans(population, { agency_code: "DOT", cursor: p1.next_cursor }, { index }).status, "invalid_query");
   assert.equal(listPlans(population, { limit: 101 }, { index }).status, "invalid_query");
@@ -211,7 +209,7 @@ test("(iv) no capital-project rows, no goal or percent fields, no inferred ident
     assert.deepEqual(row.published_identifiers, source.published_identifiers);
     assert.deepEqual(row.estimated_amount, source.budget);
   }
-  assert.equal(rows.filter((r) => r.published_identifiers.length).length, 124);
+  assert.equal(rows.filter((r) => r.published_identifiers.length).length, 125);
   const dir = tempCopyOfPayload();
   try {
     const shardPath = manifest.collections.plans.shards[1].path;
@@ -234,8 +232,8 @@ test("(v) the generated index equals a rebuild and a recount; a one-row change i
   assert.equal(index.schema, PLAN_INDEX_SCHEMA);
   assert.equal(index.source_manifest.sha256, sha256(manifestBytes));
   assert.deepEqual(index.totals, {
-    rows_held: 11566, rows_listable: 11473, withheld: { workbook_list_row: 93 },
-    by_source: { ll1: { rows_held: 2925, rows_listable: 2832, workbooks: 32 }, ll63: { rows_held: 8641, rows_listable: 8641, workbooks: 69 } },
+    rows_held: 11785, rows_listable: 11785, withheld: { workbook_list_row: 0 },
+    by_source: { ll1: { rows_held: 2832, rows_listable: 2832, workbooks: 32 }, ll63: { rows_held: 8953, rows_listable: 8953, workbooks: 101 } },
   });
   assert.ok(Buffer.byteLength(rebuilt) < 128 * 1024);
   for (const agency of index.agencies) {
@@ -245,7 +243,7 @@ test("(v) the generated index equals a rebuild and a recount; a one-row change i
     assert.equal(industries, agency.rows_listable);
     assert.equal(agency.rows_held, agency.rows_listable + agency.withheld.workbook_list_row);
   }
-  assert.deepEqual(index.unlinked_agency_codes, ["CITYHALL", "DPRC"]);
+  assert.deepEqual(index.unlinked_agency_codes, ["CITYHALL", "DPRC", "DPRE"]);
   const dir = tempCopyOfPayload();
   try {
     const out = join(dir, "index.json");
@@ -272,7 +270,7 @@ test("(v) the plan families register in the existing v3 capability registry with
   const [ll1, ll63] = planCapabilityFamilies(index);
   assert.equal(ll1.id, "agency-plans-ll1");
   assert.equal(ll63.id, "agency-plans-ll63");
-  assert.equal(ll1.source_as_of, "2026-08-11");
+  assert.equal(ll1.source_as_of, "2026-11-12");
   assert.equal(ll1.agency_ids.length, 32);
   assert.equal(ll63.agency_ids.length, 36);
   const registryHasPlans = current.families.some((f) => f.id === "agency-plans-ll1" || f.id === "agency-plans-ll63");
@@ -303,8 +301,15 @@ test("(vi) every row renders as a plan with the not-a-solicitation sentence; qua
       assert.equal(r.amount, "Estimated amount not published as a number");
       assert.ok(row.not_published.includes("estimated_amount"));
     }
-    assert.equal(r.probability, "Likelihood not published", "committed rows predate the probability column");
-    assert.ok(row.not_published.includes("procurement_probability"));
+    if (row.source === "ll1") {
+      assert.ok(row.procurement_probability, "Local Law 1 rows publish procurement_probability");
+      assert.equal(r.probability, `Agency's stated likelihood: ${row.procurement_probability}`);
+      assert.equal(row.not_published.includes("procurement_probability"), false);
+    } else {
+      assert.equal(row.procurement_probability, null);
+      assert.equal(r.probability, "Likelihood not published");
+      assert.ok(row.not_published.includes("procurement_probability"));
+    }
   }
   const ocme = listAll({ agency_code: "OCME", source: "ll1" }).rows[0];
   assert.equal(renderPlanRow(ocme).amount, "Agency estimate: $2,195,500");
@@ -338,10 +343,10 @@ test("(vi) i18n: ten shipping languages carry every PLAN_READER_STRINGS key with
 
 test("(ix) quality flags on committed rows are surfaced on the row and rendered", () => {
   const all = listAll();
-  assert.deepEqual(all.first.quality_flags, { published_term_end_before_start: 23 });
-  assert.deepEqual(index.quality_flags, { published_term_end_before_start: 23 });
+  assert.deepEqual(all.first.quality_flags, { published_term_end_before_start: 24 });
+  assert.deepEqual(index.quality_flags, { published_term_end_before_start: 24 });
   const flagged = all.rows.filter((r) => r.quality_flags.length);
-  assert.equal(flagged.length, 23);
+  assert.equal(flagged.length, 24);
   for (const row of flagged) {
     assert.ok(row.term_end < row.term_start);
     assert.deepEqual(renderPlanRow(row).quality, ["The published end date is earlier than the published start date."]);

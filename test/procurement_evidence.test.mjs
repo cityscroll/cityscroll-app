@@ -101,7 +101,7 @@ test('plan capability families register from the plan index with index pass-thro
   assert.equal(ll63.source_id, 'mocs-ll63-plans');
   assert.equal(ll1.unit, 'published plan row');
   assert.equal(ll1.version, 'fy2027');
-  assert.equal(ll1.source_as_of, '2026-08-11');
+  assert.equal(ll1.source_as_of, '2026-11-12');
   assert.equal(ll1.index, '/data/procurement_plan_index.json');
   assert.equal(ll63.index, '/data/procurement_plan_index.json');
 

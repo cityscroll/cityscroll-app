@@ -10,7 +10,7 @@ The host-side collector treats the MOCS pages as manifests for changing XLSX
 files. It uses conditional checkpoints, content hashes, an honest User-Agent,
 and at least 1.2 seconds between publisher requests. A 403 stops the source
 without retrying. Raw workbooks remain gitignored. The production checksum
-manifest points to deterministic, receipt-backed JSON shards containing 11,566
+manifest points to deterministic, receipt-backed JSON shards containing 11,785
 normalized MOCS rows and 50,000 Capital Projects rows; the
 DuckDB catalog and raw publisher files remain local warehouse materializations.
 
@@ -24,7 +24,7 @@ notices stay separate, and an agency total is never treated as a row budget.
 
 The framework proof is
 `warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json`. The
-production receipt is
-`verification_receipts/procurement_plans_2026-08-04.json`. Each of its six
-100-row bridge samples measured 0%, so no production edge materialized and the
-dependent Money planning reader remains inert.
+current production receipt is
+`verification_receipts/procurement_plans_2026-11-12.json`. Identifier-bearing
+plan→PASSPort prefix joins are receipt-backed in the planning payload; capital
+dashboard bridge paths remain stopped.

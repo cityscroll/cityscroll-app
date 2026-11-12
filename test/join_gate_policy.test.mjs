@@ -154,9 +154,9 @@ test("2026-08-11 ULURP receipt records shipped gate on recommendation rows", () 
   assert.ok(Object.keys(lookup.by_ulurp_key).length > 0);
 });
 
-test("RC-1 2026-08-11 receipt clears identifier-bearing prefix gate", () => {
+test("RC-1 current receipt clears identifier-bearing prefix gate", () => {
   const receipt = JSON.parse(readFileSync(
-    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-11.json"),
+    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-11-12.json"),
     "utf8",
   ));
   const path = receipt.join_measurement.paths.mocs_ll63_to_passport;
@@ -170,8 +170,8 @@ test("RC-1 2026-08-11 receipt clears identifier-bearing prefix gate", () => {
     strategies_attempted: ["exact", "pin_prefix_of_epin", "epin_prefix_of_pin"],
   });
   assert.equal(decision.materialize, true);
-  assert.equal(receipt.headline.shipped, true);
-  assert.ok(receipt.headline.bridge_edges > 0);
+  assert.equal(receipt.production_data_claimed, true);
+  assert.ok(receipt.payload_contract.production_bridge_edges > 0);
   const lookup = JSON.parse(readFileSync(
     join(ROOT, "site/data/procurement_planning_thread_lookup.json"),
     "utf8",

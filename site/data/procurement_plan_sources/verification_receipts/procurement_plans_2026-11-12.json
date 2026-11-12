@@ -1,0 +1,285 @@
+{
+  "schema": "cityscroll.procurement_plans.receipt.v1",
+  "proof_scope": "production_materialization",
+  "production_data_claimed": true,
+  "observed_at": "2026-11-12T13:01:37Z",
+  "fiscal_year": 2027,
+  "mode": "live",
+  "sources": {
+    "ll63_index": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page",
+    "ll1_index": "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page",
+    "capital_projects_dashboard": "https://data.cityofnewyork.us/d/fb86-vt7u"
+  },
+  "collection": {
+    "host_side": true,
+    "checkpointed": true,
+    "conditional_get": true,
+    "polite_min_delay_seconds": 1.2,
+    "user_agent": "Mozilla/5.0 (compatible; CityScrollProcurementPlans/1.0; +https://cityscroll.org; official procurement-plan materialization)",
+    "retry_on_403": false,
+    "source_files": 136,
+    "source_file_counts": {
+      "mocs_ll63": 101,
+      "mocs_ll1": 32,
+      "capital_projects_dashboard": 1
+    }
+  },
+  "normalization": {
+    "mocs_plan_rows": 11785,
+    "capital_project_rows": 50000,
+    "fields": [
+      "agency",
+      "description",
+      "procurement_method",
+      "industry",
+      "term_start",
+      "term_end",
+      "quarter",
+      "budget",
+      "published_identifiers"
+    ],
+    "honest_absent": true
+  },
+  "bridge_targets": {
+    "city_record": {
+      "rows": 8612,
+      "sha256": "8f7b4e8958038ae96f25035fdd8cd40706e6b5d555c1b8848713aee7c1295b43"
+    },
+    "passport_contracts": {
+      "rows": 63280,
+      "sha256": "19bd7eeeed2c375be770bdadb6282f2ff10b0ea9853bc6460d7a8813583782d0",
+      "malformed_rows_skipped": 11
+    },
+    "passport_rfx": {
+      "rows": 12585,
+      "sha256": "9b7558ce92269c7106f04bca8cfe87b46fecf6ad26089e9921d3085d7e9e2e2d",
+      "malformed_rows_skipped": 20
+    }
+  },
+  "join_measurement": {
+    "sample": {
+      "method": "identifier_bearing_plan_sample",
+      "size_per_plan_source": 100,
+      "modern_target_start": "2025-01-01",
+      "sort_key": "source_record_id ASC",
+      "denominator_policy": "joinable_candidate_rows",
+      "join_strategies": [
+        "exact",
+        "pin_strip_suffix",
+        "pin_prefix_of_epin",
+        "epin_prefix_of_pin",
+        "agency_title_time_reviewed"
+      ],
+      "product_join_reuse": "worker/src/lib/passport_join.mjs"
+    },
+    "usefulness_threshold": 0.3,
+    "precision_threshold": 0.95,
+    "paths": {
+      "mocs_ll63_to_city_record": {
+        "joined": 20,
+        "total": 100,
+        "rate": 0.2,
+        "candidates": 46,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "precision": 1.0,
+        "precision_threshold": 0.95,
+        "precision_ok": true,
+        "method_counts": {
+          "pin_prefix_of_epin": 46
+        },
+        "materialize": false,
+        "sample_method": "identifier_bearing",
+        "contrast_fixed_sorted": null,
+        "verdict": "Stop: below usefulness/precision threshold or review incomplete; no edges materialize."
+      },
+      "mocs_ll63_to_passport": {
+        "joined": 97,
+        "total": 100,
+        "rate": 0.97,
+        "candidates": 398,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "precision": 1.0,
+        "precision_threshold": 0.95,
+        "precision_ok": true,
+        "method_counts": {
+          "deterministic_identifier": 98,
+          "pin_prefix_of_epin": 300
+        },
+        "materialize": true,
+        "sample_method": "identifier_bearing",
+        "contrast_fixed_sorted": null,
+        "verdict": "Above usefulness and precision thresholds; reviewed edges may materialize."
+      },
+      "mocs_ll1_to_city_record": {
+        "joined": 0,
+        "total": 3,
+        "rate": 0.0,
+        "candidates": 0,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "precision": 1.0,
+        "precision_threshold": 0.95,
+        "precision_ok": true,
+        "method_counts": {},
+        "materialize": false,
+        "sample_method": "identifier_bearing",
+        "contrast_fixed_sorted": null,
+        "verdict": "Stop: below usefulness/precision threshold or review incomplete; no edges materialize."
+      },
+      "mocs_ll1_to_passport": {
+        "joined": 3,
+        "total": 3,
+        "rate": 1.0,
+        "candidates": 9,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "precision": 1.0,
+        "precision_threshold": 0.95,
+        "precision_ok": true,
+        "method_counts": {
+          "deterministic_identifier": 8,
+          "pin_prefix_of_epin": 1
+        },
+        "materialize": true,
+        "sample_method": "identifier_bearing",
+        "contrast_fixed_sorted": null,
+        "verdict": "Above usefulness and precision thresholds; reviewed edges may materialize."
+      },
+      "capital_projects_dashboard_to_city_record": {
+        "joined": 0,
+        "total": 100,
+        "rate": 0.0,
+        "candidates": 0,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "precision": 1.0,
+        "precision_threshold": 0.95,
+        "precision_ok": true,
+        "method_counts": {},
+        "materialize": false,
+        "sample_method": "identifier_bearing",
+        "contrast_fixed_sorted": null,
+        "verdict": "Stop: below usefulness/precision threshold or review incomplete; no edges materialize."
+      },
+      "capital_projects_dashboard_to_passport": {
+        "joined": 0,
+        "total": 100,
+        "rate": 0.0,
+        "candidates": 0,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "precision": 1.0,
+        "precision_threshold": 0.95,
+        "precision_ok": true,
+        "method_counts": {},
+        "materialize": false,
+        "sample_method": "identifier_bearing",
+        "contrast_fixed_sorted": null,
+        "verdict": "Stop: below usefulness/precision threshold or review incomplete; no edges materialize."
+      }
+    },
+    "false_positive_review": {
+      "reviewed": 0,
+      "accepted": 0,
+      "false_positives": 0,
+      "unreviewed": 0,
+      "cases": [],
+      "rubric": "Agency+title+time candidates require an explicit label. Deterministic product identifier strategies (exact, strip-suffix, pin_prefix_of_epin, epin_prefix_of_pin with rest_ok tails) auto-accept without title similarity."
+    }
+  },
+  "warehouse": {
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
+    "tables": [
+      "mocs_procurement_plan_files",
+      "mocs_procurement_plans",
+      "capital_projects_dashboard",
+      "procurement_plan_bridge_edges"
+    ],
+    "single_job_lock": true,
+    "headroom_gate": true,
+    "duckdb_threads": 1,
+    "headroom_status": "constrained"
+  },
+  "payload_contract": {
+    "schema": "cityscroll.procurement_planning.manifest.v1",
+    "path": "site/data/procurement_planning_payload.json",
+    "schema_path": "site/data/procurement_planning_manifest.schema.json",
+    "shard_schema": "cityscroll.procurement_planning.shard.v1",
+    "shard_directory": "site/data/procurement_planning_payload",
+    "max_shard_bytes": 20971520,
+    "collections": {
+      "plans": {
+        "rows": 11785,
+        "shards": [
+          {
+            "path": "site/data/procurement_planning_payload/plans-000.json",
+            "rows": 10000,
+            "bytes": 8604282,
+            "sha256": "569ea04cc7dc4c2c328aaf856df2a56bb6752565cf3d1019e63bc0823df23b4a"
+          },
+          {
+            "path": "site/data/procurement_planning_payload/plans-001.json",
+            "rows": 1785,
+            "bytes": 1892332,
+            "sha256": "5f0dd77fd2fd1b9838d9e3526925c1b819e1716c20eee5b77adf70f839046f74"
+          }
+        ]
+      },
+      "capital_projects": {
+        "rows": 50000,
+        "shards": [
+          {
+            "path": "site/data/procurement_planning_payload/capital-projects-000.json",
+            "rows": 10000,
+            "bytes": 10843487,
+            "sha256": "b4ae0af8b41ea59429aa2f4e79e918672008c478453944ab124c2564929a5378"
+          },
+          {
+            "path": "site/data/procurement_planning_payload/capital-projects-001.json",
+            "rows": 10000,
+            "bytes": 10765262,
+            "sha256": "10783c4338ad098b65c1a12a742f6f235300f8b44fa4c0e581a046606d4e88b3"
+          },
+          {
+            "path": "site/data/procurement_planning_payload/capital-projects-002.json",
+            "rows": 10000,
+            "bytes": 10595771,
+            "sha256": "249cd27033dbe820dde4c695a7ab4dbadeb3cefae4e92611e9b57d76122761e1"
+          },
+          {
+            "path": "site/data/procurement_planning_payload/capital-projects-003.json",
+            "rows": 10000,
+            "bytes": 10658593,
+            "sha256": "710d13887db5eeb432b2658897f65d92ef50fd5395ef7a6f1f187ed8b74b4008"
+          },
+          {
+            "path": "site/data/procurement_planning_payload/capital-projects-004.json",
+            "rows": 10000,
+            "bytes": 10619673,
+            "sha256": "0ac83d5a0fc708c9e46aa2505d98bbd4bd346202e984a6e89c6a869c2d65f429"
+          }
+        ]
+      },
+      "bridge_edges": {
+        "rows": 407,
+        "shards": [
+          {
+            "path": "site/data/procurement_planning_payload/bridge-edges-000.json",
+            "rows": 407,
+            "bytes": 198315,
+            "sha256": "612745570a2c0d4444e5e3f3b3a8e12199d253c9e9b233c5890b99147f6a907e"
+          }
+        ]
+      }
+    },
+    "thread_lookup_path": "site/data/procurement_planning_thread_lookup.json",
+    "reader_surface_included": false,
+    "unmatched_rows_remain_unmatched": true,
+    "infer_budget_from_agency_total": false,
+    "production_materialized": true,
+    "production_bridge_edges": 407,
+    "fixture_bridge_edges": 0
+  }
+}
