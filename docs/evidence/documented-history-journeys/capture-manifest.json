@@ -574,8 +574,7 @@
       "state": "stale",
       "changed_inputs": [
         "site/analytics_surface_taxonomy.mjs",
-        "site/beta-flags.json",
-        "site/i18n.js"
+        "site/beta-flags.json"
       ]
     }
   },
