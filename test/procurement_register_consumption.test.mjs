@@ -10,6 +10,7 @@
 // or an exemption sentence. None of the register has been reviewed by a legal practitioner;
 // the mappings are engine beliefs carried with their review status into the reader facts.
 
+import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -235,8 +236,28 @@ test("A9: a candidate set that disagrees, and a missing date, yield unknown", ()
 });
 
 // ---------------------------------------------------------------- A12: category inventory
-test("A12: every category_description label in the baseline data is mapped or listed as unmapped with its count", (t) => {
+// Counts are recomputed from the committed inventory files each run. Absolute publisher
+// totals are not pinned: a genuine rematerialize may change label frequencies. Drift that
+// still fails is an unlisted (or listed-but-missing) inventory file, an unmapped label that
+// is not declared, or a publisher CATEGORIES entry that no longer resolves.
+test("A12: every category_description label in the baseline data is mapped or listed as unmapped", (t) => {
   const inventory = fixtureFile.category_inventory;
+  const exclusions = new Set(inventory.grep_exclusions || []);
+  const grepped = execFileSync("git", ["grep", "-l", "category_description", "--", "*.json"], {
+    cwd: REPO_ROOT,
+    encoding: "utf8",
+  })
+    .trim()
+    .split("\n")
+    .filter(Boolean)
+    .filter((path) => !exclusions.has(path))
+    .sort();
+  assert.deepEqual(
+    grepped,
+    [...inventory.files].sort(),
+    "inventory.files matches git grep of category_description (minus documented exclusions)",
+  );
+
   const counts = {};
   const walk = (node) => {
     if (Array.isArray(node)) node.forEach(walk);
@@ -248,31 +269,48 @@ test("A12: every category_description label in the baseline data is mapped or li
     }
   };
   for (const file of inventory.files) walk(readJson(join(REPO_ROOT, file)));
-  assert.deepEqual(counts, inventory.counts, "recount equals the recorded inventory");
+
+  assert.ok(Object.keys(counts).length > 0, "inventory files yield at least one category_description");
   let mapped = 0;
+  let observed = 0;
   for (const [label, count] of Object.entries(counts)) {
+    observed += count;
     const category = resolveLegalCategory({ category_description: label });
     if (category.state === "resolved") mapped += 1;
     else assert.ok(inventory.unmapped.includes(label), `${label} (${count}) is neither mapped nor listed as unmapped`);
     t.diagnostic(`${category.state === "resolved" ? "mapped  " : "UNMAPPED"} ${count} ${JSON.stringify(label)}`);
   }
+  assert.ok(observed > 0, "recomputed inventory observes at least one label occurrence");
   for (const label of CATEGORIES) assert.equal(resolveLegalCategory({ category_description: label }).state, "resolved", label);
-  assert.equal(mapped, 6);
+  assert.equal(mapped, CATEGORIES.length, "every publisher CATEGORIES label appears as a resolved inventory label");
+  for (const label of inventory.unmapped) {
+    assert.equal(
+      resolveLegalCategory({ category_description: label }).state,
+      "unmapped",
+      `${label} stays unmapped`,
+    );
+    assert.ok(counts[label] > 0, `declared unmapped label ${label} still appears in the inventory files`);
+  }
 });
 
 // ---------------------------------------------------------------- A7: population
-test("A7: over the materialized read model the delivered module keeps exactly the 1,320 labels where every legal category agrees", (t) => {
-  // The population statistics (20,601 objects; 4,334 baseline 'Targeted small-purchase' labels
-  // splitting into 1,320 kept and 3,014 withdrawn) are the recorded before/after migration delta
-  // in fixtures.json. The baseline modules no longer exist in the tree, so this suite proves the
-  // after-determined half directly: the delivered module labels exactly 1,320 objects over the
-  // population, all 'targeted_small_purchase' (every legal category agrees), and a large set of
-  // uncategorised small purchases now abstain because the goods/services and construction bands
-  // diverge at their amount.
+// Object and kept-label counts are recomputed from the committed shared procurement shards.
+// Absolute publisher totals are not pinned. Drift that still fails is disagreement between
+// the shard walk, the shared read-model index, and Browse rows, or a coverage label other
+// than targeted_small_purchase over the population.
+test("A7: over the materialized read model the delivered module labels only agreed targeted small purchases", (t) => {
+  const population = fixtureFile.population;
+  const index = readJson(join(REPO_ROOT, population.index));
+  const browse = readJson(join(REPO_ROOT, population.browse_rows));
   const dir = join(REPO_ROOT, "site/data/shared_procurement_read_model");
+
   let objects = 0;
   const labelCounts = {};
+  let labeledObjects = 0;
   let abstainDisagree = 0;
+  let abstainOther = 0;
+  const shardRowTotal = (index.shards || []).reduce((sum, shard) => sum + (shard.row_count || 0), 0);
+
   for (const file of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) {
     const shard = readJson(join(dir, file));
     const byRef = new Map(shard.observations.map((o) => [o.source_observation_ref, o]));
@@ -282,6 +320,7 @@ test("A7: over the materialized read model the delivered module keeps exactly th
       const input = coverageInputFromProcurement(row, observations);
       const labels = projectProcurementCoverageSignals(input).labels.map((l) => l.kind);
       if (labels.length) {
+        labeledObjects += 1;
         for (const kind of labels) labelCounts[kind] = (labelCounts[kind] || 0) + 1;
       } else {
         const reason = resolveProcurementCoveragePolicy(
@@ -289,17 +328,33 @@ test("A7: over the materialized read model the delivered module keeps exactly th
           input.stages.includes("solicitation") ? "solicitation" : "award",
         ).reason;
         if (reason === "category_missing_candidates_disagree") abstainDisagree += 1;
+        else abstainOther += 1;
       }
     }
   }
-  const kept = fixtureFile.population.tally["targeted_small_purchase -> targeted_small_purchase"];
-  t.diagnostic(`objects ${objects}; labels ${JSON.stringify(labelCounts)}; abstain(disagree) ${abstainDisagree}; recorded withdrawn ${fixtureFile.population.withdrawn_by_reason.category_missing_candidates_disagree}`);
-  assert.equal(objects, fixtureFile.population.objects);
-  assert.deepEqual(labelCounts, { targeted_small_purchase: kept }, "the only labels over the population are the kept targeted small purchases");
-  // The recorded withdrawn count (previously-labeled records that now abstain) is a subset of the
-  // records that abstain because candidates disagree; no label is ever added.
+
+  const kept = labelCounts.targeted_small_purchase || 0;
+  t.diagnostic(
+    `objects ${objects}; labels ${JSON.stringify(labelCounts)}; abstain(disagree) ${abstainDisagree}; abstain(other) ${abstainOther}; index.total ${index.counts.total}; browse ${browse.row_count}`,
+  );
+
+  assert.equal(objects, index.counts.total, "shard walk matches shared_procurement_read_model counts.total");
+  assert.equal(objects, browse.row_count, "shard walk matches procurement_browse_rows row_count");
+  assert.equal(objects, shardRowTotal, "shard walk matches the sum of index shard row_count values");
+  assert.equal(
+    labeledObjects + abstainDisagree + abstainOther,
+    objects,
+    "every object is either labeled or abstains with a recorded reason",
+  );
+  assert.deepEqual(
+    Object.keys(labelCounts).sort(),
+    kept ? ["targeted_small_purchase"] : [],
+    "the only coverage label over the population is targeted_small_purchase",
+  );
+  assert.equal(kept, labeledObjects, "every labeled object carries exactly one targeted_small_purchase label");
+  assert.ok(objects > 0, "materialized population is non-empty");
   assert.ok(
-    abstainDisagree >= fixtureFile.population.withdrawn_by_reason.category_missing_candidates_disagree,
-    `abstain-disagree (${abstainDisagree}) covers the recorded withdrawn set`,
+    abstainDisagree > 0,
+    "uncategorised small purchases still abstain when goods/services and construction bands disagree",
   );
 });

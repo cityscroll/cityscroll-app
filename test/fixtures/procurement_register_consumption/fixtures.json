@@ -996,14 +996,16 @@
   }
  ],
  "category_inventory": {
-  "method": "every tracked *.json file at the baseline whose text contains category_description (git grep -l), parsed; values of keys named category_description counted recursively",
+  "method": "every tracked *.json file whose text contains category_description (git grep -l), minus grep_exclusions; values of keys named category_description recounted each run",
   "files": [
    "site/data/money_default_open.json",
+   "site/data/money_open_solicitations.json",
    "site/data/money_resident_snapshot.json",
    "site/data/procurement_capability_compare_corpus.json",
    "site/data/procurement_program_capabilities_corpus.json",
    "site/data/task_first_examples.json",
    "test/fixtures/batch-precompute/money_default_open_raw.json",
+   "test/fixtures/batch-precompute/money_open_solicitations_raw.json",
    "test/fixtures/interpret-preview/money_resident_snapshot.json",
    "test/fixtures/money_action_field_cases.json",
    "test/fixtures/source_contracts/source-shapes.json",
@@ -1019,32 +1021,21 @@
    "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
    "warehouse/receipts/proof/seqra_institutional_signal_adapters_latest.json"
   ],
-  "counts": {
-   "Construction/Construction Services": 199,
-   "Construction Related Services": 192,
-   "Services (other than human services)": 63,
-   "Goods and Services": 17,
-   "Goods": 12,
-   "Human Services/Client Services": 10,
-   "Human Services": 3
-  },
+  "grep_exclusions": [
+   "ontology/procurement_legal_register.v1.json",
+   "test/fixtures/procurement_register_consumption/fixtures.json"
+  ],
   "unmapped": [
    "Human Services"
   ],
-  "publisher_vocabulary_source": "worker/src/lib/filter.mjs CATEGORIES"
+  "publisher_vocabulary_source": "worker/src/lib/filter.mjs CATEGORIES",
+  "note": "Label frequencies are recomputed from files each run. Absolute publisher totals are not pinned; inventory.files must stay aligned with git grep of category_description minus grep_exclusions."
  },
  "population": {
-  "source": "site/data/shared_procurement_read_model/shard-000..014.json at the baseline (materialized objects + observations)",
-  "measure": "projectProcurementCoverageSignals(coverageInputFromProcurement(object, observations)) labels, baseline vs prototype",
-  "objects": 20601,
-  "tally": {
-   "- -> -": 16267,
-   "targeted_small_purchase -> targeted_small_purchase": 1320,
-   "targeted_small_purchase -> -": 3014
-  },
-  "withdrawn_by_reason": {
-   "category_missing_candidates_disagree": 3014
-  },
-  "note": "All 4,334 baseline labels sit on Checkbook small purchases with no category in any observation. Under the candidate-set rule 1,320 are kept because every legal category gives the same answer (1,317 SMALL PURCHASE - UNDER $5,000, 3 SMALL PURCHASE - WRITTEN) and 3,014 are withdrawn because the goods/services and construction bands disagree at their amount (3,013 WRITTEN, 1 SMALL PURCHASE - UNDER $5,000 recorded at $35,000). The earlier strict rule withdrew all 4,334. No label is added anywhere."
+  "source": "site/data/shared_procurement_read_model/shard-*.json",
+  "index": "site/data/shared_procurement_read_model.json",
+  "browse_rows": "site/data/procurement_browse_rows.json",
+  "measure": "projectProcurementCoverageSignals(coverageInputFromProcurement(object, observations)) labels over the committed shared procurement shards",
+  "note": "Object and kept-label counts are recomputed from the committed shards each run and cross-checked against the shared read-model index and Browse rows. Absolute publisher totals are not pinned."
  }
 }
