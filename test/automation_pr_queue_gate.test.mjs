@@ -14,10 +14,24 @@ function fixture() {
   const ghLog = join(root, "gh.log");
   const checkCount = join(root, "check-count");
   const gh = join(root, "gh");
+  const viewCount = join(root, "view-count");
   writeFileSync(gh, `#!/usr/bin/env bash
 printf '%s\\n' "$*" >> "${ghLog}"
 if [ "$1" = "pr" ] && [ "$2" = "view" ]; then
-  printf '%s\\t%s\\n' "\${GH_HEAD:-${HEAD}}" "\${GH_STATE:-OPEN}"
+  count=0
+  [ ! -f "${viewCount}" ] || count="$(cat "${viewCount}")"
+  count=$((count + 1))
+  printf '%s' "$count" > "${viewCount}"
+  sequence="\${GH_HEAD_SEQUENCE:-}"
+  if [ -n "\$sequence" ]; then
+    IFS=',' read -r -a heads <<< "\$sequence"
+    index=$((count - 1))
+    [ "\$index" -lt "\${#heads[@]}" ] || index=$((\${#heads[@]} - 1))
+    head="\${heads[\$index]}"
+  else
+    head="\${GH_HEAD:-${HEAD}}"
+  fi
+  printf '%s\\t%s\\n' "\$head" "\${GH_STATE:-OPEN}"
 elif [ "$1" = "pr" ] && [ "$2" = "checks" ]; then
   count=0
   [ ! -f "${checkCount}" ] || count="$(cat "${checkCount}")"
@@ -50,6 +64,8 @@ function runGate(fixture, env = {}) {
       PATH: `${fixture.root}:${process.env.PATH}`,
       AUTOMATION_CHECK_MAX_ATTEMPTS: "3",
       AUTOMATION_CHECK_POLL_SECONDS: "0",
+      AUTOMATION_HEAD_SETTLE_ATTEMPTS: "2",
+      AUTOMATION_HEAD_SETTLE_POLL_SECONDS: "0",
       ...env,
     },
   });
@@ -91,6 +107,23 @@ test("a changed automation head cannot inherit a green result", () => {
     assert.equal(result.status, 1);
     assert.match(result.stderr, /moved from/);
     assert.doesNotMatch(calls(f), /pr checks|pr merge/);
+  } finally {
+    rmSync(f.root, { recursive: true, force: true });
+  }
+});
+
+test("a stale PR head that settles to the generated commit still queues", () => {
+  const f = fixture();
+  const stale = "b".repeat(40);
+  try {
+    const result = runGate(f, {
+      GH_HEAD_SEQUENCE: `${stale},${HEAD}`,
+      GH_CHECK_SEQUENCE: "pass",
+      AUTOMATION_HEAD_SETTLE_ATTEMPTS: "3",
+    });
+    assert.equal(result.status, 0, result.stderr + result.stdout);
+    assert.match(result.stdout, /head settled to/);
+    assert.match(calls(f), new RegExp(`pr merge 4321 --auto --match-head-commit ${HEAD}`));
   } finally {
     rmSync(f.root, { recursive: true, force: true });
   }
