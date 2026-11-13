@@ -490,7 +490,7 @@
       ],
       "publisher_cadence": "As opportunities and addenda change",
       "product_freshness": "Retained MTA opportunity observations carry the official page URL, retrieval timestamp, and raw-response hash; source identifiers are exact-only join keys.",
-      "used_for": "MTA Construction & Development solicitation admission and inspectable current-opportunity facts.",
+      "used_for": "MTA Construction & Development solicitation admission and inspectable current-opportunity facts, and the plan-holder listing each open solicitation links (who obtained the documents, as printed, with the listing's own date).",
       "code_references": [
         {
           "path": "warehouse/lib/mta_opportunities.mjs",
@@ -499,6 +499,18 @@
         {
           "path": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json",
           "contains": "S48020"
+        },
+        {
+          "path": "warehouse/lib/mta_plan_holders.mjs",
+          "contains": "Plan Holders Listing"
+        },
+        {
+          "path": "tools/build_mta_plan_holders.mjs",
+          "contains": "site/data/mta_plan_holders.json"
+        },
+        {
+          "path": "warehouse/fixtures/authority-native-procurement/mta-plan-holders/retrieval.json",
+          "contains": "current-opportunities"
         }
       ],
       "delivery_tier": "edge-materialized",

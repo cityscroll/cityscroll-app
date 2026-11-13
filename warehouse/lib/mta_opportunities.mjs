@@ -24,6 +24,20 @@ function hash(value) {
   return createHash("sha256").update(String(value ?? "")).digest("hex");
 }
 
+// A retained plan-holder listing for this solicitation (warehouse/lib/mta_plan_holders.mjs), kept
+// with its URL, report date and hash. Absent listings stay null; nothing is inferred.
+function planHolders(fixture) {
+  const listing = fixture?.plan_holders;
+  if (!listing || typeof listing !== "object") return null;
+  return {
+    url: text(listing.url),
+    listed_at: text(listing.listed_at),
+    open_date: text(listing.open_date),
+    holder_count: Array.isArray(listing.holders) ? listing.holders.length : null,
+    sha256: text(listing.sha256),
+  };
+}
+
 function normalizedRow(fixture) {
   const row = fixture?.source_row || {};
   const typedDeadlines = resolveMtaOpportunityDeadlines(fixture);
@@ -55,6 +69,8 @@ function normalizedRow(fixture) {
     category: row.category || null,
     ad_type: row.ad_type || null,
     location: row.location || null,
+    plan_holders_url: text(row.plan_holders_url) || text(fixture.plan_holders?.url) || null,
+    plan_holders: planHolders(fixture),
     official_url: fixture.receipt?.url || null,
     mta_parent_institution_id: MTA_PARENT_INSTITUTION_ID,
     source_values: { ...row },
