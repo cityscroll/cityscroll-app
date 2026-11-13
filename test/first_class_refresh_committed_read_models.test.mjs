@@ -81,6 +81,24 @@ test("the derived JSON boundary really does build the gates it is credited with"
   }
 });
 
+test("community board activity lookup rebuilds with the derived JSON boundary", () => {
+  // Near You's A5 census rebuilds the lookup from meeting-index and board
+  // land/budget/resolution inputs. When those inputs rematerialize during
+  // first-class refresh without rebuilding the lookup, the committed artifact
+  // drifts and site-node verification fails closed. Credit the builder to the
+  // derived JSON boundary so every refresh rematerializes it before verification.
+  const registry = readRegistry(REPO_ROOT);
+  const boundary = registry.rebuild_sequence.find((step) => step.id === "derived-json-build-boundary");
+  assert.ok(boundary?.covers?.includes("tools/build_community_board_activity_lookup.mjs"));
+  const manifest = JSON.parse(readFileSync(DERIVED_MANIFEST, "utf8"));
+  const family = manifest.generated_families.find((row) => row.id === "community-board-activity-lookup");
+  assert.equal(family?.generator, "tools/build_community_board_activity_lookup.mjs");
+  assert.deepEqual(family?.output_paths, ["site/data/community_board_activity_lookup.json"]);
+  const constellation = manifest.generated_families.findIndex((row) => row.id === "community-board-constellation");
+  const activity = manifest.generated_families.findIndex((row) => row.id === "community-board-activity-lookup");
+  assert.ok(constellation >= 0 && activity === constellation + 1, "activity lookup follows constellation in the derived order");
+});
+
 test("both halves of the refresh run the rebuild", () => {
   // The hosted workflow refreshes everything a runner can reach; the
   // warehouse-held script refreshes the rest. Neither may commit inputs without

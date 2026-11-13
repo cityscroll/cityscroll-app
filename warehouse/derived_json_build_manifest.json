@@ -235,6 +235,21 @@
       ]
     },
     {
+      "id": "community-board-activity-lookup",
+      "generator": "tools/build_community_board_activity_lookup.mjs",
+      "source_paths": [
+        "site/data/community_board_geography_lookup.json",
+        "site/data/community_board_meeting_index.json",
+        "site/data/community_board_resolution_pilot.json",
+        "site/data/community_board_land_positions.json",
+        "site/data/community_board_budget_register.json"
+      ],
+      "output_paths": [
+        "site/data/community_board_activity_lookup.json"
+      ],
+      "note": "Slim per-board activity lookup Near You overview projection reads. Rebuilds after meeting-index and board land/budget/resolution inputs settle so the committed lookup stays aligned with composeCommunityBoardActivity."
+    },
+    {
       "id": "community-board-district-projects",
       "generator": "tools/build_community_board_district_projects.mjs",
       "source_paths": [
