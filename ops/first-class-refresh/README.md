@@ -53,6 +53,7 @@ These datasets refresh on the machine that holds the warehouse:
 | `site/data/procurement_browse_query.json` | `tools/build_shared_procurement_read_model.mjs` (rematerializes from retained spine + OCP awards; warehouse half refreshes those inputs) |
 | `site/data/analytics_registered_contracts.json` | `tools/build_analytical_registered_contracts.mjs` |
 | `site/data/analytics_payments.json` | `tools/build_analytical_payments.mjs` |
+| `site/data/analytics_first_payment_timing.json` | `tools/build_first_payment_timing.mjs` (reads the same payment population after `tools/build_analytical_payments.mjs`) |
 | `site/data/analytics_performance_evidence.json` | `tools/build_analytical_performance_evidence.mjs` |
 | `site/data/zap_projects_warehouse_lookup.json` | `tools/build_zap_warehouse_lookup.mjs` |
 | `site/data/zap_bbl_warehouse_lookup.json` | `tools/build_zap_bbl_warehouse_lookup.mjs` |

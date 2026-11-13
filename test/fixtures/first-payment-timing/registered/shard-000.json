@@ -1,0 +1,944 @@
+{
+  "schema": "cityscroll.analytics_registered_contracts_shard.v1",
+  "version": 1,
+  "shard_id": "shard-000",
+  "rows": [
+    {
+      "prime_contract_id": "CT185020251418139",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "NEW YORK CITY TRANSIT AUT HORITY-PARATRANSIT",
+      "pin": "8502024TA0010F",
+      "registration_date": "2025-06-30",
+      "start_date": "2025-07-17",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "FORCE ACCOUNT NEGOTIATION",
+      "industry": "Standardized Services",
+      "contract_purpose": "Reconstruction of Bruner Ave and Ely Ave, ETC",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -17,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 193696.8,
+      "original_registered_amount": 193696.8,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-17"
+        ],
+        "registration_date_observations": [
+          "2025-06-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020251418406",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "BROOKLYN PUBLIC LIBRARY",
+      "pin": "8502025LB0212G",
+      "registration_date": "2025-07-16",
+      "start_date": "2025-07-16",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "GRANTS",
+      "industry": "Construction Services",
+      "contract_purpose": "Brooklyn Public Library Central Branch Renovation, Phase 2",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 56437166,
+      "original_registered_amount": 56437166,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-16"
+        ],
+        "registration_date_observations": [
+          "2025-07-16"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020258803082",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "DIFAZIO IND LLC",
+      "pin": "85024B0041001",
+      "registration_date": "2024-10-23",
+      "start_date": "2025-08-11",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "COMPETITIVE SEALED BIDDING",
+      "industry": "Construction Services",
+      "contract_purpose": "Installation Of Non-Standard Pedestrian Ramps",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": -292,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 24713878.51,
+      "original_registered_amount": 24713878.51,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-11"
+        ],
+        "registration_date_observations": [
+          "2024-10-23"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020258805508",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "EN-TECH CORP",
+      "pin": "85025B0008001C001",
+      "registration_date": "2025-02-14",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "COMPETITIVE SEALED BIDDING",
+      "industry": "Construction Services",
+      "contract_purpose": "Emergency Rehabilitation Of Sanitary, Combined, And Sewers",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -137,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 10127250,
+      "original_registered_amount": 10127250,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-02-14"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020258806739",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "SBH COMMUNITY SERVICE NETWORK INC",
+      "pin": "85025L0029001",
+      "registration_date": "2025-05-14",
+      "start_date": "2025-07-17",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Goods",
+      "contract_purpose": "EDNSBH378, Initial Outfitting",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -64,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 284381,
+      "original_registered_amount": 284381,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-17"
+        ],
+        "registration_date_observations": [
+          "2025-05-14"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020258807487",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "ATLANTIC SPECIALTY INC",
+      "pin": "85025B0006001C002",
+      "registration_date": "2025-05-21",
+      "start_date": "2025-07-28",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "COMPETITIVE SEALED BIDDING",
+      "industry": "Construction Services",
+      "contract_purpose": "HH115DSFA: Dean Street Family Residence Fire Alarm Upgrade",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -68,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 3119800,
+      "original_registered_amount": 3119800,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-28"
+        ],
+        "registration_date_observations": [
+          "2025-05-21"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020258807495",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "J ANTHONY ENTERPRISES INC",
+      "pin": "85024B0068001",
+      "registration_date": "2025-05-22",
+      "start_date": "2025-08-04",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "COMPETITIVE SEALED BIDDING",
+      "industry": "Construction Services",
+      "contract_purpose": "Standard Pedestrian Ramp Upgrades - Brooklyn & Queens",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -74,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 17787378,
+      "original_registered_amount": 17787378,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-04"
+        ],
+        "registration_date_observations": [
+          "2025-05-22"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020258807497",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "D&G Elite Construction",
+      "pin": "85024B0066001",
+      "registration_date": "2025-05-21",
+      "start_date": "2025-08-04",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "COMPETITIVE SEALED BIDDING",
+      "industry": "Construction Services",
+      "contract_purpose": "STANDARD PEDESTRIAN RAMP UPGRADES",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -75,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 16982672.74,
+      "original_registered_amount": 16982672.74,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-04"
+        ],
+        "registration_date_observations": [
+          "2025-05-21"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT185020258807561",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "BROOKLYN BUREAU OF COMMUNITY SERVICE",
+      "pin": "85025L0027001",
+      "registration_date": "2025-05-23",
+      "start_date": "2025-07-07",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Goods",
+      "contract_purpose": "PWKNDUFLD, Purchase of Equipment",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -45,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 159713,
+      "original_registered_amount": 159713,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-07"
+        ],
+        "registration_date_observations": [
+          "2025-05-23"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020258807567",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "ST FRANCIS COLLEGE",
+      "pin": "85025L0030001",
+      "registration_date": "2025-05-20",
+      "start_date": "2025-07-17",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Goods",
+      "contract_purpose": "PWKDNSFRN, Initial Outfitting",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -58,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 3722000,
+      "original_registered_amount": 3722000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-17"
+        ],
+        "registration_date_observations": [
+          "2025-05-20"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020258807702",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "HALCYON CONSTRUCTION CORP",
+      "pin": "85025B0048001",
+      "registration_date": "2025-05-29",
+      "start_date": "2025-07-30",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "COMPETITIVE SEALED BIDDING",
+      "industry": "Construction Services",
+      "contract_purpose": "LINING INTERCEPTOR ASSETS IN ROCKAWAY, QUEENS",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -62,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 20471000,
+      "original_registered_amount": 20471000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-30",
+          "2025-11-03"
+        ],
+        "registration_date_observations": [
+          "2025-05-29"
+        ],
+        "conflicting_start_date_observations": true,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT185020258808049",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "OHEL CHILDREN'S HOME AND FAMILY SERVICES INC.",
+      "pin": "85025L0037001",
+      "registration_date": "2025-06-10",
+      "start_date": "2025-09-07",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "industry": "Goods",
+      "contract_purpose": "PWDNVIDEO, Purchase of Video Communications System",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -89,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 748358,
+      "original_registered_amount": 748358,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-09-07"
+        ],
+        "registration_date_observations": [
+          "2025-06-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106820260000121",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "NEW YORK CITY DEPARTMENT OF EDUCATION",
+      "pin": "06819T0001001R002",
+      "registration_date": "2025-05-27",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "G2G ACS/DOE EarlyLearn",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -35,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 1,
+      "original_registered_amount": 1,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-05-27"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106820260000256",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "IDESCO CORPORATION",
+      "pin": "26ACS12498",
+      "registration_date": "2025-06-16",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "SM PURCH GOODS SERVICES 100K",
+      "industry": "Goods",
+      "contract_purpose": "On-Call Maintenance & Repair for ID Cards and Equipment",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -15,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 100000,
+      "original_registered_amount": 100000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-06-16"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106820261401008",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "IDESCO CORPORATION",
+      "pin": "26ACS12956",
+      "registration_date": "2025-07-22",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Standardized Services",
+      "contract_purpose": "Maintenance & Repair to ID Printers and Laminators",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 21,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 20000,
+      "original_registered_amount": 20000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-07-22"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106820261401576",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "NYC IT INC",
+      "pin": "26ACS13022",
+      "registration_date": "2025-08-01",
+      "start_date": "2025-10-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Professional Services",
+      "contract_purpose": "DOCKER BUSINESS SUBSCRIPTION",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -61,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 3170,
+      "original_registered_amount": 3170,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-10-01"
+        ],
+        "registration_date_observations": [
+          "2025-08-01"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106820261401682",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "JABBER DORADO ENTERPRISES LLC",
+      "pin": "26ACS12471",
+      "registration_date": "2025-09-03",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "SM PURCH GOODS SERVICES 100K",
+      "industry": "Goods",
+      "contract_purpose": "ON-CALL BLANKET ORDER FOR SNACK ITEMS",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 64,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 100000,
+      "original_registered_amount": 100000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-03"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106820261402386",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "Alexandria Real Estate Equities Inc AREE",
+      "pin": "06826L0001",
+      "registration_date": "2025-09-16",
+      "start_date": "2025-08-11",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "LESSEE NEGOTIATION",
+      "industry": "Not Classified",
+      "contract_purpose": "License Agreement Scaffolding",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 36,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 60900,
+      "original_registered_amount": 60900,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-11"
+        ],
+        "registration_date_observations": [
+          "2025-09-16"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106820261402856",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "COMPULINK TECHNOLOGIES INC",
+      "pin": "26ACS12846",
+      "registration_date": "2025-08-27",
+      "start_date": "2025-09-02",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Professional Services",
+      "contract_purpose": "Canon Scanner DR-G2110 - 2 years on-site support.",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -6,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 5187,
+      "original_registered_amount": 5187,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-09-02"
+        ],
+        "registration_date_observations": [
+          "2025-08-27"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106820261403242",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "NORIX GROUP INC",
+      "pin": "26ACS13040",
+      "registration_date": "2025-09-03",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "industry": "Standardized Services",
+      "contract_purpose": "FURNITURE INSTALLATION SERVICES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 64,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 11176.25,
+      "original_registered_amount": 11176.25,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-09-03"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106820261403406",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "STELLAR SERVICES, INC.",
+      "pin": "26ACS12981",
+      "registration_date": "2025-10-03",
+      "start_date": "2025-07-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "SMALL PURCH - IT- 25 K TO 100K",
+      "industry": "Professional Services",
+      "contract_purpose": "OPEN TEXT ECM SUPPORT AND OTHER RECORDS MANAGEMENT SUPPORT",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 94,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 100000,
+      "original_registered_amount": 100000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-07-01"
+        ],
+        "registration_date_observations": [
+          "2025-10-03"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106820261404816",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "THE CENTER FOR THE STUDY OF SOCIAL POLICY",
+      "pin": "26ACS12983",
+      "registration_date": "2025-10-24",
+      "start_date": "2025-11-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SM PURCH GOODS SERVICES 100K",
+      "industry": "Human Services",
+      "contract_purpose": "CFWB Protective Factors Services",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -8,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 80000,
+      "original_registered_amount": 80000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-11-01"
+        ],
+        "registration_date_observations": [
+          "2025-10-24"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106320268804368",
+      "agency": "Department of Veterans' Services",
+      "prime_vendor": "NEW YORK LEGAL ASSISTANCE GROUP INC",
+      "pin": "06322N0001001R002",
+      "registration_date": "2026-06-23",
+      "start_date": "2025-08-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Upgrade discharge status",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 326,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 250000,
+      "original_registered_amount": 250000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-01"
+        ],
+        "registration_date_observations": [
+          "2026-06-23"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT106320268804370",
+      "agency": "Department of Veterans' Services",
+      "prime_vendor": "VETERAN ADVOCACY PROJECT INC",
+      "pin": "06322N0002001R002",
+      "registration_date": "2026-06-24",
+      "start_date": "2025-08-01",
+      "registration_fiscal_year": 2026,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "RENEWAL OF CONTRACT",
+      "industry": "Human Services",
+      "contract_purpose": "Upgrade discharge status",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 327,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 250000,
+      "original_registered_amount": 250000,
+      "source_fiscal_years": [
+        "2026"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-08-01"
+        ],
+        "registration_date_observations": [
+          "2026-06-24"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "exact"
+    },
+    {
+      "prime_contract_id": "CT185020261417836",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "SVAM INTERNATIONAL INC",
+      "pin": "85020266940",
+      "registration_date": "2026-07-10",
+      "start_date": "2026-07-24",
+      "registration_fiscal_year": 2027,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SUBSCRIPTION ETC PER PPB",
+      "industry": "Standardized Services",
+      "contract_purpose": "84 software annual subscription licenses and usage credits",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -14,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 39692.52,
+      "original_registered_amount": 39692.52,
+      "source_fiscal_years": [
+        "2027"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2026-07-24"
+        ],
+        "registration_date_observations": [
+          "2026-07-10"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020248808640",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "J ANTHONY ENTERPRISES INC",
+      "pin": "85024B0008001",
+      "registration_date": "2024-07-02",
+      "start_date": "2025-04-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "COMPETITIVE SEALED BIDDING",
+      "industry": "Construction Services",
+      "contract_purpose": "Standard Pedestrian Ramp Installations, Citywide",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": -273,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 5865575.5,
+      "original_registered_amount": 5865575.5,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2025-04-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-02"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    }
+  ]
+}
