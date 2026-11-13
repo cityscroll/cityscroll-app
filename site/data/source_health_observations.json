@@ -3103,7 +3103,7 @@
     },
     {
       "source_id": "doing-business-entities",
-      "contract_fingerprint": "cd229d2573d9ef059faa61236882fc23062d6c5b1755351f8b6f4b4da5c7704f",
+      "contract_fingerprint": "b18228d4bbe222b451f94309a1d1221ee2084a4a6822db5900cfae4fce429a64",
       "health": {
         "status": "Healthy",
         "reason_codes": [],
@@ -3161,8 +3161,7 @@
       "freshness_watchdog": {
         "status": "STALE",
         "reason_codes": [
-          "monitor-missing",
-          "acquisition-missing"
+          "monitor-missing"
         ],
         "source_contract_id": "doing-business-entities",
         "observed_at": "2026-11-12T12:39:57.269Z",
@@ -3175,7 +3174,7 @@
         },
         "acquisition": {
           "observed_at": "2026-11-03T19:29:08.996Z",
-          "cadence_days": 7,
+          "cadence_days": null,
           "age_days": 8.715836493055555
         },
         "receipts": [
@@ -3189,17 +3188,6 @@
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
             "state": "monitor-missing"
-          },
-          {
-            "schema": "cityscroll.source_acquisition_receipt.v1",
-            "source_contract_id": "doing-business-entities",
-            "observed_at": "2026-11-12T12:39:57.269Z",
-            "status": "held",
-            "run_id": "missing:doing-business-entities:2026-11-12T12-39",
-            "publisher_clock_basis": null,
-            "publisher_updated_at": null,
-            "event_kind": "acquisition-cadence",
-            "state": "acquisition-missing"
           }
         ]
       },

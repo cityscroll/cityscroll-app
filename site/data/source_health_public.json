@@ -1480,7 +1480,7 @@
       "name": "Doing Business Search - Entities",
       "publisher": "Mayor's Office of Contract Services (MOCS)",
       "official_url": "https://data.cityofnewyork.us/d/72mk-a8z7",
-      "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
+      "expected_cadence": "Monthly Open Data refresh (publisher Update Frequency: Monthly, Automation: Yes; rowsUpdatedAt 2026-10-18T19:05:16Z at recon 2026-11-13)",
       "mode": "periodic",
       "health": {
         "status": "Healthy",
@@ -1515,7 +1515,7 @@
         },
         "publisher_vintage": null,
         "retrieved_at": "2026-11-03T19:29:08.996Z",
-        "expected_lag_tolerance_days": 400,
+        "expected_lag_tolerance_days": 45,
         "current_lag": {
           "value": null,
           "unit": null
