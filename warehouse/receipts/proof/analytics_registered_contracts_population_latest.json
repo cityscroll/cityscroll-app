@@ -97,7 +97,7 @@
       "excluded_row_count": 0
     },
     "city_record_match": {
-      "join": "existing exact normalized Checkbook PIN ↔ City Record award PIN overlap",
+      "join": "existing exact normalized Checkbook PIN \u2194 City Record award PIN overlap",
       "city_record_input": "site/data/ocp_awards_warehouse_lookup.json",
       "pin_enrichment": null,
       "buckets": {
@@ -211,11 +211,11 @@
           "count": 15224
         },
         {
-          "value": "$100,000–$999,999",
+          "value": "$100,000\u2013$999,999",
           "count": 6559
         },
         {
-          "value": "$1 million–$9.99 million",
+          "value": "$1 million\u2013$9.99 million",
           "count": 6046
         },
         {
@@ -418,6 +418,7 @@
     "table": "analytics_registered_contracts",
     "site_artifact": "site/data/analytics_registered_contracts.json",
     "request_time_database_queries": false,
-    "reproducible_input": "warehouse/raw/checkbook-contracts/normalized.json"
+    "reproducible_input": "warehouse/raw/checkbook-contracts/normalized.json",
+    "index_sha256": "8d1226cf1072deea57bd224c4a7cc8fbc986b572a7d79c67d42d053dffdfa32c"
   }
 }

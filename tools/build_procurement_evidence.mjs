@@ -21,18 +21,56 @@ const CAPABILITIES_PATH = join(ROOT, 'site/data/procurement_evidence_capabilitie
 const PROGRAM_SITES_PATH = join(ROOT, 'site/data/agency_program_sites.json');
 const PROGRAM_SITES_DIR = join(ROOT, 'site/data/agency_program_sites');
 const REGISTERED_MANIFEST_PATH = join(ROOT, 'site/data/analytics_registered_contracts.json');
+const REGISTERED_RECEIPT_PATH = join(ROOT, 'warehouse/receipts/proof/analytics_registered_contracts_population_latest.json');
 const CROSSWALK_PATH = join(ROOT, 'worker/src/data/agency_crosswalk.json');
 const PLAN_INDEX_PATH = join(ROOT, 'site/data/procurement_plan_index.json');
 
 const MANIFEST_SCHEMA = 'cityscroll.procurement_evidence_manifest.v1';
 const CAPABILITIES_SCHEMA = 'cityscroll.procurement_evidence_capabilities.v1';
 const MANIFEST_MAX_BYTES = 262144;
-
-// Recorded hash of the accepted 2026-11-10 engine observation of the
-// normalized registered-contract population.
-const ACCEPTED_REGISTERED_MANIFEST_SHA256 = '8d1226cf1072deea57bd224c4a7cc8fbc986b572a7d79c67d42d053dffdfa32c';
+const REGISTERED_RECEIPT_SCHEMA = 'cityscroll.analytics_registered_contracts_population_receipt.v1';
+const REGISTERED_SITE_ARTIFACT = 'site/data/analytics_registered_contracts.json';
 
 const read = p => JSON.parse(readFileSync(p, 'utf8'));
+
+/**
+ * Accept the committed registered-contract index only when its owning
+ * population receipt records the same index bytes. Scheduled refresh
+ * rematerializes both together; a hardcoded tip hash would refuse every
+ * successful contracts rebuild that the evidence step depends on.
+ */
+export function assertAcceptedRegisteredContracts({
+  registeredPath = REGISTERED_MANIFEST_PATH,
+  receiptPath = REGISTERED_RECEIPT_PATH,
+  registeredBytes = readFileSync(registeredPath),
+  registered = JSON.parse(registeredBytes.toString('utf8')),
+} = {}) {
+  if (!existsSync(receiptPath)) {
+    throw Error('registered-contract population receipt is missing; refusing capability projection');
+  }
+  const receipt = read(receiptPath);
+  if (receipt.schema !== REGISTERED_RECEIPT_SCHEMA) {
+    throw Error('registered-contract population receipt has the wrong schema; refusing capability projection');
+  }
+  if (receipt.status !== 'complete') {
+    throw Error('registered-contract population receipt is not complete; refusing capability projection');
+  }
+  if (receipt.materialization?.site_artifact !== REGISTERED_SITE_ARTIFACT) {
+    throw Error('registered-contract population receipt names a different site artifact; refusing capability projection');
+  }
+  const acceptedHash = receipt.materialization?.index_sha256;
+  if (typeof acceptedHash !== 'string' || !/^[0-9a-f]{64}$/.test(acceptedHash)) {
+    throw Error('registered-contract population receipt lacks index_sha256; refusing capability projection');
+  }
+  const registeredHash = createHash('sha256').update(registeredBytes).digest('hex');
+  if (registeredHash !== acceptedHash) {
+    throw Error('accepted registered-contract manifest hash mismatch; refusing capability projection');
+  }
+  if (registered.snapshot_date !== receipt.snapshot_date || registered.generated_at !== receipt.generated_at) {
+    throw Error('registered-contract index provenance does not match its population receipt; refusing capability projection');
+  }
+  return { registeredHash, receipt };
+}
 
 export function buildAll() {
   const nycha = read(join(FIXTURE_DIR, 'nycha-contract-agreement.json'));
@@ -40,12 +78,9 @@ export function buildAll() {
   const capital = read(join(FIXTURE_DIR, 'ddc-capital-project.json'));
   const crosswalk = read(CROSSWALK_PATH).entries;
   const programSites = read(PROGRAM_SITES_PATH);
-  const registered = read(REGISTERED_MANIFEST_PATH);
-
-  const registeredHash = createHash('sha256').update(readFileSync(REGISTERED_MANIFEST_PATH)).digest('hex');
-  if (registeredHash !== ACCEPTED_REGISTERED_MANIFEST_SHA256) {
-    throw Error('accepted registered-contract manifest hash mismatch; refusing capability projection');
-  }
+  const registeredBytes = readFileSync(REGISTERED_MANIFEST_PATH);
+  const registered = JSON.parse(registeredBytes.toString('utf8'));
+  assertAcceptedRegisteredContracts({ registeredBytes, registered });
   if (programSites.source_status !== 'available' || programSites.capture_complete !== true) {
     throw Error('program-site source is not an accepted complete capture');
   }

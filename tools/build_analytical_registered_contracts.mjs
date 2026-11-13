@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /** Build the precomputed registered-contract analytical projection. */
 
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { basename, dirname, extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -304,6 +305,9 @@ function build(args) {
     },
   };
   const artifacts = writeProjection(args.output, payload);
+  const indexBytes = artifacts.outputs.find(([path]) => path === args.output)?.[1];
+  if (!indexBytes) throw new Error("projection write did not emit the site index artifact");
+  receipt.materialization.index_sha256 = createHash("sha256").update(indexBytes).digest("hex");
   writeJson(args.receipt, receipt);
   return { payload, receipt, artifacts };
 }
@@ -322,6 +326,11 @@ function check(args) {
   if (payload.rows.length !== receipt.population.normalized_unique_contracts) throw new Error("projection receipt count mismatch");
   if (Number(index.row_count) !== payload.rows.length) {
     throw new Error(`projection index reports ${index.row_count} rows and its shards carry ${payload.rows.length}`);
+  }
+  const indexBytes = readFileSync(args.output);
+  const indexSha = createHash("sha256").update(indexBytes).digest("hex");
+  if (receipt.materialization?.index_sha256 !== indexSha) {
+    throw new Error("projection index sha256 does not match population receipt");
   }
   const shardDir = join(dirname(args.output), basename(args.output, extname(args.output)));
   const expectedNames = new Set((index.shards || []).map((descriptor) => String(descriptor.path).split("/").at(-1)));

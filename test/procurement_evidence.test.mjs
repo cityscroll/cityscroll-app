@@ -1,12 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { copyFileSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as m from '../site/procurement_evidence.mjs';
+import { assertAcceptedRegisteredContracts } from '../tools/build_procurement_evidence.mjs';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
+const REGISTERED_PATH = join(ROOT, 'site/data/analytics_registered_contracts.json');
+const REGISTERED_RECEIPT_PATH = join(ROOT, 'warehouse/receipts/proof/analytics_registered_contracts_population_latest.json');
 
 const read=n=>JSON.parse(readFileSync(new URL('../warehouse/fixtures/procurement-evidence/'+n,import.meta.url)));
 const nycha=read('nycha-contract-agreement.json'), cb=read('queens-cb12-budget-register.json'), capital=read('ddc-capital-project.json');
@@ -89,6 +94,61 @@ test('committed evidence pages survive the builder and match --check', () => {
   }
   const out = execFileSync('node', ['tools/build_procurement_evidence.mjs', '--check'], { encoding: 'utf8', cwd: ROOT });
   assert.match(out, /"status":"ok"/);
+});
+
+test('rematerialized registered contracts are accepted when the population receipt records the new index hash', () => {
+  const scratch = mkdtempSync(join(tmpdir(), 'procurement-evidence-accept-'));
+  try {
+    const registeredPath = join(scratch, 'analytics_registered_contracts.json');
+    const receiptPath = join(scratch, 'receipt.json');
+    copyFileSync(REGISTERED_PATH, registeredPath);
+    copyFileSync(REGISTERED_RECEIPT_PATH, receiptPath);
+
+    const rematerialized = JSON.parse(readFileSync(registeredPath, 'utf8'));
+    rematerialized.generated_at = '2026-11-12T16:16:23.754Z';
+    rematerialized.snapshot_date = '2026-11-12';
+    rematerialized.row_count = Number(rematerialized.row_count) + 107;
+    const rematerializedBytes = Buffer.from(`${JSON.stringify(rematerialized, null, 2)}\n`, 'utf8');
+    writeFileSync(registeredPath, rematerializedBytes);
+
+    const receipt = JSON.parse(readFileSync(receiptPath, 'utf8'));
+    receipt.generated_at = rematerialized.generated_at;
+    receipt.snapshot_date = rematerialized.snapshot_date;
+    receipt.materialization.index_sha256 = createHash('sha256').update(rematerializedBytes).digest('hex');
+    writeFileSync(receiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
+
+    const accepted = assertAcceptedRegisteredContracts({
+      registeredPath,
+      receiptPath,
+      registeredBytes: rematerializedBytes,
+      registered: rematerialized,
+    });
+    assert.equal(accepted.registeredHash, receipt.materialization.index_sha256);
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
+  }
+});
+
+test('registered contracts rematerialization without a matching receipt hash is refused', () => {
+  const scratch = mkdtempSync(join(tmpdir(), 'procurement-evidence-refuse-'));
+  try {
+    const registeredPath = join(scratch, 'analytics_registered_contracts.json');
+    const receiptPath = join(scratch, 'receipt.json');
+    copyFileSync(REGISTERED_PATH, registeredPath);
+    copyFileSync(REGISTERED_RECEIPT_PATH, receiptPath);
+
+    const rematerialized = JSON.parse(readFileSync(registeredPath, 'utf8'));
+    rematerialized.generated_at = '2026-11-12T16:16:23.754Z';
+    rematerialized.row_count = Number(rematerialized.row_count) + 107;
+    writeFileSync(registeredPath, `${JSON.stringify(rematerialized, null, 2)}\n`);
+
+    assert.throws(
+      () => assertAcceptedRegisteredContracts({ registeredPath, receiptPath }),
+      /accepted registered-contract manifest hash mismatch/,
+    );
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
+  }
 });
 
 test('plan capability families register from the plan index with index pass-through', () => {
