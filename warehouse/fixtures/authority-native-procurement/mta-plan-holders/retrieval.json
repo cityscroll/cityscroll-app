@@ -1,0 +1,321 @@
+{
+  "schema": "cityscroll.mta_plan_holders_retrieval.v1",
+  "page": {
+    "url": "https://www.mta.info/agency/construction-and-development/contracting/current-opportunities",
+    "file": "current-opportunities.html",
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "bytes": 148574,
+    "sha256": "1023078f29d8d881efb818b2e0e9cf6f52bdba3162da8e9859bc06cc1f4d9d0a",
+    "retrieved_at": "2026-11-13T07:04:58Z"
+  },
+  "method": "HTTPS GET, one request per file, 1.5 seconds apart",
+  "listings": [
+    {
+      "url": "https://www.mta.info/document/227211",
+      "file": "listing-227211.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 13038,
+      "sha256": "5396d2b47893d10e3d22fad72f7c25ee284d5bc62c8dbaef8dea8d204c474d46",
+      "retrieved_at": "2026-11-13T07:05:04Z"
+    },
+    {
+      "url": "https://www.mta.info/document/215921",
+      "file": "listing-215921.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 2556,
+      "sha256": "01b8d4a0801eca3820e29595272845145b611c3ec4c69f8e5c81a7fc363eabfd",
+      "retrieved_at": "2026-11-13T07:05:06Z"
+    },
+    {
+      "url": "https://www.mta.info/document/217911",
+      "file": "listing-217911.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 2435,
+      "sha256": "47d34e1927f74c5782dfafa1291eb8fb3ce3340195cea3c031ec4ffa77bd6662",
+      "retrieved_at": "2026-11-13T07:05:08Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227121",
+      "file": "listing-227121.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 11370,
+      "sha256": "3e07b2a0734ebd5cf34fdf705ebd79179b758e512c93e5780c5df4678a50b308",
+      "retrieved_at": "2026-11-13T07:05:10Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227156",
+      "file": "listing-227156.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 10682,
+      "sha256": "77d79a08191b6e3cacab0b28b3a59d951bf23a6373455f9e4a4d4925066572d1",
+      "retrieved_at": "2026-11-13T07:05:11Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227111",
+      "file": "listing-227111.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 6063,
+      "sha256": "fd73e0117dad1561ca0a76c6d99176c881d8192436be72849a0830641fa333dd",
+      "retrieved_at": "2026-11-13T07:05:13Z"
+    },
+    {
+      "url": "https://www.mta.info/document/221421",
+      "file": "listing-221421.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 2556,
+      "sha256": "e9164ce6e1de9ad1f400be4c74bc0dda30ea540553215c1f49de3d8c210223bb",
+      "retrieved_at": "2026-11-13T07:05:15Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227126",
+      "file": "listing-227126.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 8389,
+      "sha256": "dce783643283459b899358075bc9e1a1cb91a52c641d27ff908f8d65e2b7dc06",
+      "retrieved_at": "2026-11-13T07:05:17Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227201",
+      "file": "listing-227201.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 19211,
+      "sha256": "5bcefe4892d3ba0dde88499de2e9bd23d31be5424b7111ae7e08fc94ebada6ce",
+      "retrieved_at": "2026-11-13T07:05:19Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227151",
+      "file": "listing-227151.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 8323,
+      "sha256": "d439bd8de94eaad066892da1075c6118b763c1718e41b8ed34d258c4dfef08e7",
+      "retrieved_at": "2026-11-13T07:05:20Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227106",
+      "file": "listing-227106.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 5754,
+      "sha256": "04237955f6d3f831b511a47b347069a60dfc37152eee0322bef82ff568a06dea",
+      "retrieved_at": "2026-11-13T07:05:22Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227116",
+      "file": "listing-227116.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 7091,
+      "sha256": "2fa3cb64464cce3ed356b99d5445fc2d8fb657c61b7baa5645bd40aaffe7f5bf",
+      "retrieved_at": "2026-11-13T07:05:24Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227136",
+      "file": "listing-227136.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 6068,
+      "sha256": "4d1b07c8d3daf4d8400cb85417b3d823942de32c8f331a719c89deb9f265ad9a",
+      "retrieved_at": "2026-11-13T07:05:26Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227131",
+      "file": "listing-227131.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 7791,
+      "sha256": "99f438458f723eb0af2400f775d6fa177814b424eb14ff0620331047e9b448c6",
+      "retrieved_at": "2026-11-13T07:05:28Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227216",
+      "file": "listing-227216.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 10681,
+      "sha256": "0045ab176eb27ce06fd5fbd62ff90b5164ac9382d10235395fbe3cf57c20e2df",
+      "retrieved_at": "2026-11-13T07:05:30Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227221",
+      "file": "listing-227221.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 10331,
+      "sha256": "5a1c0436b47b21e0a4b85f1ffe0ed2d993730b39c8242ad4b76906bddef64080",
+      "retrieved_at": "2026-11-13T07:05:31Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227206",
+      "file": "listing-227206.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 10341,
+      "sha256": "c38c64d67980675d5520e5657c939bfad5c00a202be72900fe288878aa0cca68",
+      "retrieved_at": "2026-11-13T07:05:33Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227141",
+      "file": "listing-227141.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 8288,
+      "sha256": "d95c6d603843c09b3ddc879db74a2ec527542c44e05b6622d8f723551dc4f7fe",
+      "retrieved_at": "2026-11-13T07:05:35Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227191",
+      "file": "listing-227191.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 10478,
+      "sha256": "88a9aa429a35349c3d08c8f59e91db60ecedd9d02953f0ca0fd17fef1eb941cc",
+      "retrieved_at": "2026-11-13T07:05:37Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227186",
+      "file": "listing-227186.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 8369,
+      "sha256": "77951a48b1440e18034e6eab529a8d4e7ead9324a4e66c3c9433269574ddd990",
+      "retrieved_at": "2026-11-13T07:05:39Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227231",
+      "file": "listing-227231.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 8582,
+      "sha256": "ba22dafc280c3726b2e4ed36584291e17c22bc83b07120579f9688664815f40b",
+      "retrieved_at": "2026-11-13T07:05:41Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227236",
+      "file": "listing-227236.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 5775,
+      "sha256": "e9a43ad9a5e7115d5a26ddb23e48f2914be7ff2b2b2b5054e5f032873ddfbb84",
+      "retrieved_at": "2026-11-13T07:05:42Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227181",
+      "file": "listing-227181.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 8384,
+      "sha256": "4c8f6ce1bbb38e5992035638b4585b3acbbdff638f46c1468de4de358bae3589",
+      "retrieved_at": "2026-11-13T07:05:44Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227146",
+      "file": "listing-227146.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 7599,
+      "sha256": "b93bf04b78d389029920d193a8e424f24bb7795b8507656a818aceae0e979356",
+      "retrieved_at": "2026-11-13T07:05:46Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227246",
+      "file": "listing-227246.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 7700,
+      "sha256": "5e3ed02cc9363be65c6c77218fc3efdd9e4360071cc5bf678a32f956111c4e86",
+      "retrieved_at": "2026-11-13T07:05:48Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227251",
+      "file": "listing-227251.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 5926,
+      "sha256": "4804f5efd383de4e04c32f33d57242c58fc1ae5f9f2a734f4a893eab82eecf09",
+      "retrieved_at": "2026-11-13T07:05:50Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227226",
+      "file": "listing-227226.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 7929,
+      "sha256": "875519391719fe65a4abb0affbae39382af34501133a00f620ca343c27ea0a71",
+      "retrieved_at": "2026-11-13T07:05:51Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227166",
+      "file": "listing-227166.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 5055,
+      "sha256": "707e0fade050cc37c5dea7c5b1c8f0d0fe1a2fa3f45384c9ebc0d90cd38e8e1d",
+      "retrieved_at": "2026-11-13T07:05:53Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227196",
+      "file": "listing-227196.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 3098,
+      "sha256": "8d277a7be15ec57fcefa5f64a7e02fc86d9f8026e193d179ec3b3e017fab4149",
+      "retrieved_at": "2026-11-13T07:05:55Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227161",
+      "file": "listing-227161.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 4704,
+      "sha256": "a1fddca12a897a3bf2ef0c18ea77fd0127eff91a4c5ebb819e821285734b48a0",
+      "retrieved_at": "2026-11-13T07:05:57Z"
+    },
+    {
+      "url": "https://www.mta.info/document/215936",
+      "file": "listing-215936.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 11618,
+      "sha256": "8b9952fc839db21669b1a3d0be9b5532fc30358f0c4260e45aaf998ec41f62eb",
+      "retrieved_at": "2026-11-13T07:05:59Z"
+    },
+    {
+      "url": "https://www.mta.info/document/212286",
+      "file": "listing-212286.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 8911,
+      "sha256": "d16e60fac3adb7036aa1f0d49bd22abd2236129c293fb09682555777071af4c6",
+      "retrieved_at": "2026-11-13T07:06:01Z"
+    },
+    {
+      "url": "https://www.mta.info/document/225576",
+      "file": "listing-225576.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 11183,
+      "sha256": "17f09a7eec1575e7dc06098844bc469ff91c7c98bac3c69fde5c9f6169b2e4c9",
+      "retrieved_at": "2026-11-13T07:06:03Z"
+    },
+    {
+      "url": "https://www.mta.info/document/227101",
+      "file": "listing-227101.pdf",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 5176,
+      "sha256": "42ee70a5c3eea67be6cb06027a00408690b7d59fd6fccba078f1b4aca41f11c1",
+      "retrieved_at": "2026-11-13T07:06:05Z"
+    }
+  ]
+}
