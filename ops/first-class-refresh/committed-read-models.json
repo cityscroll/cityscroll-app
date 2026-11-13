@@ -229,6 +229,7 @@
       "covers": [
         "tools/build_agency_constellation_documents.mjs",
         "tools/build_keyword_search_index.mjs",
+        "tools/build_organization_index.mjs",
         "tools/build_shared_procurement_read_model.mjs",
         "tools/build_money_resident_snapshot.mjs",
         "tools/build_notice_context_lookup.mjs",

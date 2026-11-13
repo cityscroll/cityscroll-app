@@ -33,6 +33,7 @@
       "/land-upcoming-hearings",
       "/inv",
       "/meeting-outcomes",
+      "/organization-search",
       "/pins",
       "/property-locations",
       "/rules",
@@ -47,6 +48,7 @@
     "explicit_transaction": [
       "/feedback",
       "/nl",
+      "/org-register",
       "/session",
       "/session/logout",
       "/subscribe"

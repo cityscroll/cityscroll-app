@@ -213,6 +213,7 @@ entity_resolution/publication/link_confidence.mjs
 entity_resolution/publication/relationship_graph.mjs
 entity_resolution/referents/index.mjs
 entity_resolution/registers/dos_entities.mjs
+entity_resolution/registers/shard_records.mjs
 entity_resolution/review/active_review.mjs
 entity_resolution/review/alias_registry.json
 entity_resolution/review/assertion_evidence.mjs
@@ -680,6 +681,9 @@ site/official_connections.mjs
 site/official_influence.mjs
 site/official_influence_ui.mjs
 site/official_profile_navigation.mjs
+site/organization_index_contract.mjs
+site/organization_record.mjs
+site/organization_search.mjs
 site/pages_edge.mjs
 site/paper_trail_phase.mjs
 site/parcel_biography_ui.mjs
@@ -786,6 +790,7 @@ site/rum_semantic_runtime.mjs
 site/rum_stateful_instrumentation.mjs
 site/rum_static_record_instrumentation.mjs
 site/same_consolidation.mjs
+site/sbs_certified_business_lookup.mjs
 site/scope_now_adapter.mjs
 site/scope_v0.mjs
 site/search/index.html
@@ -1860,6 +1865,7 @@ tools/lib/land_mapability_census.mjs
 tools/lib/land_upcoming_hearings.mjs
 tools/lib/notice_mandate_backlinks_index.mjs
 tools/lib/oasys_exam_map.mjs
+tools/lib/organization_index_build.mjs
 tools/lib/pdf_calendar_text.mjs
 tools/lib/performance_drift.mjs
 tools/lib/procurement_index_coherence.mjs
@@ -2341,6 +2347,7 @@ worker/src/near_you.mjs
 worker/src/nl.mjs
 worker/src/notice.mjs
 worker/src/operator_notification.mjs
+worker/src/organization_search_route.mjs
 worker/src/owed_backlog.mjs
 worker/src/passport.mjs
 worker/src/people_organizations.mjs

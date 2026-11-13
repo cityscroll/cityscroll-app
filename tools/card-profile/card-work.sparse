@@ -168,6 +168,7 @@
 /entity_resolution/publication/
 /entity_resolution/referents/
 /entity_resolution/registers/dos_entities.mjs
+/entity_resolution/registers/shard_records.mjs
 /entity_resolution/review/active_review.mjs
 /entity_resolution/review/alias_registry.json
 /entity_resolution/review/assertion_evidence.mjs
@@ -741,6 +742,9 @@
 /site/official_influence_ui.mjs
 /site/official_profile_navigation.mjs
 /site/opportunity_calendar.mjs
+/site/organization_index_contract.mjs
+/site/organization_record.mjs
+/site/organization_search.mjs
 /site/outcome_not_located_state.mjs
 /site/pages_edge.mjs
 /site/paper_trail_phase.mjs
@@ -1166,6 +1170,7 @@
 /worker/src/nl.mjs
 /worker/src/notice.mjs
 /worker/src/operator_notification.mjs
+/worker/src/organization_search_route.mjs
 /worker/src/owed_backlog.mjs
 /worker/src/passport.mjs
 /worker/src/people_organizations.mjs

@@ -80,6 +80,7 @@ import { handlePeopleOrganizations } from "./people_organizations.mjs";
 import { runSuggestionValidation, handleSuggestions, handleAdminSuggestRefresh } from "./suggest.mjs";
 import { handleMcp } from "./mcp.mjs";
 import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
+import { handleOrganizationSearch } from "./organization_search_route.mjs";
 import { handleMirror } from "./mirror.mjs";
 import { handleHearings, handleMeetingICS, refreshHearings } from "./hearings.mjs";
 import { handleLandUpcomingHearings, refreshLandUpcomingHearings } from "./land_upcoming_hearings.mjs";
@@ -572,6 +573,7 @@ const worker = {
     if (pathname === "/externalaward") return handleExternalAward(request, env, ctx);
     if (pathname === "/agency") return handleAgency(request, env, ctx);
     if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
+    if (pathname === "/organization-search") return handleOrganizationSearch(request, env);
     if (pathname === "/contract-lifecycle") return handleContractLifecycle(request, env, ctx);
     if (pathname === "/subsidy-lifecycle") return handleSubsidyLifecycle(request, env, ctx);
     if (pathname === "/hearings") return handleHearings(request, env, ctx);

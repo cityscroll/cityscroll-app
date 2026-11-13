@@ -1,0 +1,93 @@
+{
+ "schema": "cityscroll.organization_search.real_organizations.v1",
+ "chosen_on": "2026-11-11",
+ "how_chosen": "Cases a to c use certified-business rows already stored with the site fixtures. Cases f and f2 add four more published rows from the same certified-business list (extra-sbs-rows.json). Case e adds one published IRS row (extra-irs-rows.json). Each case is a real published organization, not an invented example.",
+ "organizations": [
+  {
+   "case": "a",
+   "stem": "COGENT INFOTECH",
+   "entity_ref": "org:COGENT INFOTECH",
+   "why": "A City-certified firm (SBS account 102115, MBE) that also has City awards in six engine sources; the SBS fixture's richest such firm (OCP 5 awards totalling 3,039,413; Checkbook 2 registered contracts; PASSPort 2; Checkbook M/WBE category Asian American; Doing Business entity).",
+   "sources": ["ocp_recent_contract_awards", "checkbook_registered_contracts", "passport_contracts", "checkbook_prime_vendor_contracts", "doing_business_entities", "sbs_certified_businesses"],
+   "queries": [
+    {"text": "Cogent Infotech Corporation", "expect_first": "COGENT INFOTECH", "match_reason": "exact_name"},
+    {"text": "Cogent Info", "expect_first": "COGENT INFOTECH", "match_reason": "prefix"},
+    {"text": "Infotech Cogent", "expect_first": "COGENT INFOTECH", "match_reason": "tokens"},
+    {"text": "Cogant Infotech", "expect_first": "COGENT INFOTECH", "match_reason": "close_spelling"},
+    {"text": "102115", "expect_first": "COGENT INFOTECH", "match_reason": "identifier"},
+    {"text": "sbs:102115", "expect_first": "COGENT INFOTECH", "match_reason": "identifier"}
+   ],
+   "proves": "every name method and the SBS account number reach the same row; the row lists the SBS firm beside the award sources with link label same_normalized_name (no source pair publishes two ZIPs)"
+  },
+  {
+   "case": "b",
+   "stem": "CHANG LEARNING CENTER",
+   "entity_ref": "org:CHANG LEARNING CENTER",
+   "why": "The only firm in the SBS fixture whose DBA (Chang Learning Center, account 403954, MBE and WBE) is also a City vendor name (Checkbook registered contract under CHANG LEARNING CENTER, INC.).",
+   "sources": ["checkbook_registered_contracts", "checkbook_prime_vendor_contracts", "sbs_certified_businesses"],
+   "queries": [{"text": "Chang Learning Center", "expect_first": "CHANG LEARNING CENTER", "match_reason": "dba"}],
+   "proves": "DBA search; the SBS source is carried via dba"
+  },
+  {
+   "case": "c",
+   "stem": "TAKBEER ENTERPRISES",
+   "entity_ref": "org:TAKBEER ENTERPRISES",
+   "why": "The first row of the SBS fixture (account 473, MBE, Westbury NY); no engine source carries its stem.",
+   "sources": ["sbs_certified_businesses"],
+   "queries": [{"text": "Takbeer Enterprises", "expect_first": "TAKBEER ENTERPRISES", "match_reason": "exact_name"}],
+   "proves": "a certified firm with no City awards is found and its facets say has_city_awards false, sbs_certified true"
+  },
+  {
+   "case": "d",
+   "stem": "XEROX",
+   "entity_ref": "org:XEROX",
+   "why": "Among engine vendors with OCP, Checkbook and PASSPort awards and no SBS or IRS record, the one with the third-most OCP award rows (168, total 232,321,503.96) and a name every reader knows.",
+   "sources": ["ocp_recent_contract_awards", "checkbook_registered_contracts", "passport_contracts", "checkbook_prime_vendor_contracts", "doing_business_entities"],
+   "queries": [{"text": "Xerox Corp", "expect_first": "XEROX", "match_reason": "exact_name"}],
+   "proves": "found with sbs_certified false, which is a fact about a valid index; an unavailable SBS directory is a different answer (not_indexed for facet search, a not_available SBS block in a record)"
+  },
+  {
+   "case": "e",
+   "stem": "CHINATOWN MANPOWER PROJECT",
+   "entity_ref": "org:CHINATOWN MANPOWER PROJECT",
+   "why": "A New York not-for-profit with City awards in five award sources (OCP 7 awards totalling 9,306,164; Checkbook; PASSPort; Doing Business) and a recorded New York State entity response (name query and DOS id 268736).",
+   "sources": ["ocp_recent_contract_awards", "checkbook_registered_contracts", "passport_contracts", "checkbook_prime_vendor_contracts", "doing_business_entities", "irs_eo_bmf_ny"],
+   "queries": [
+    {"text": "Chinatown Manpower Project", "expect_first": "CHINATOWN MANPOWER PROJECT", "match_reason": "exact_name"},
+    {"text": "ein:13-2755214", "expect_first": "CHINATOWN MANPOWER PROJECT", "match_reason": "identifier"},
+    {"text": "dos:268736", "expect_first": "CHINATOWN MANPOWER PROJECT", "match_reason": "identifier"}
+   ],
+   "recorded_inputs": ["extra-irs-rows.json"],
+   "proves": "IRS block (EIN 132755214, NTEE J200 as published, status 01) and state-register block (DOS 268736, DOMESTIC NOT-FOR-PROFIT CORPORATION, filed 1973-08-22) from recorded real responses; IRS ZIP 10002 equals the DOS process ZIP 10002 but engine sources publish no ZIP"
+  },
+  {
+   "case": "f",
+   "stem": "YO RE MI",
+   "entity_ref": "org:YO RE MI",
+   "why": "One of 8 stems in the full index carried by two SBS accounts (264546 and 3857, ZIPs 10014 and 12816), and the only one of the 8 with City awards (Checkbook).",
+   "sources": ["checkbook_registered_contracts", "checkbook_prime_vendor_contracts", "doing_business_entities", "sbs_certified_businesses"],
+   "queries": [{"text": "Yo Re Mi Inc", "expect_first": "YO RE MI", "match_reason": "exact_name"}],
+   "proves": "both accounts are returned (several_sbs_accounts) and the record has one SBS block per account"
+  },
+  {
+   "case": "f2",
+   "stem": "METROPOLITAN ELECTRIC",
+   "entity_ref": "org:METROPOLITAN ELECTRIC",
+   "why": "Second multi-account stem: accounts 14444 and 14445 publish different ZIPs (11420, 11520); vendorStem removes OF NEW YORK so 'Metropolitan Electric of New York Inc.' and 'Metropolitan Electric Co., Inc.' share the stem.",
+   "sources": ["sbs_certified_businesses"],
+   "queries": [{"text": "Metropolitan Electric of New York", "expect_first": "METROPOLITAN ELECTRIC", "match_reason": "exact_name"}],
+   "proves": "several accounts on one stem are listed, never collapsed"
+  },
+  {
+   "case": "g",
+   "queries": [
+    {"text": "Zxqvbk Quillfeather Holdings", "status": "no_match"},
+    {"text": "ab", "status": "query_refused", "reason": "input_too_short"},
+    {"text": "***", "status": "query_refused", "reason": "input_has_no_letters_or_digits"},
+    {"text": "%", "status": "query_refused", "reason": "input_has_no_letters_or_digits"}
+   ],
+   "also": "a missing manifest and a shard of another generation return not_indexed; a stubbed data.ny.gov 503 returns provider_unavailable for the state block only",
+   "why": "The made-up name is a recorded query that matches no organization."
+  }
+ ]
+}
