@@ -21,7 +21,9 @@ import {
   formatFetchError,
   freshnessLimit,
   verifyCheckbook,
+  verifyCsv,
   verifyHtml,
+  verifyLiveContract,
   verifySocrata,
 } from "../tools/verify_source_contracts.mjs";
 
@@ -975,5 +977,122 @@ test("event-driven sources pass at their measured publisher clocks but still fai
       return true;
     });
     now = Date.parse("2026-11-03T10:23:00Z");
+  }
+});
+
+function csvResponse(body, { status = 200, headers = {} } = {}) {
+  return new Response(body, {
+    status,
+    headers: { "Content-Type": "text/csv", ...headers },
+  });
+}
+
+test("csv live verifier checks declared columns, a sample row, and publisher freshness", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  let now = Date.parse("2026-11-13T12:00:00Z");
+  t.mock.method(Date, "now", () => now);
+  const contract = {
+    id: "csv-field-case",
+    kind: "csv",
+    endpoint: "https://publisher.example/eo.csv",
+    required_fields: ["EIN", "NAME"],
+    max_stale_days: 30,
+    freshness_contract: { mode: "periodic", max_stale_days: 30, clock_basis: "checked_acquired" },
+  };
+  const freshHeader = { "Last-Modified": "Mon, 09 Nov 2026 05:11:37 GMT" };
+  globalThis.fetch = async () => csvResponse('EIN,NAME,CITY\n"12","Smith, Jr","New York"\n', { headers: freshHeader });
+  let observation = null;
+  const detail = await verifyCsv(contract, { onObservation: (value) => { observation = value; } });
+  assert.match(detail, /csv · 3 columns · sample row · \d+d old \(Last-Modified\)/);
+  assert.equal(observation.publisher_clock_basis, "Last-Modified");
+  assert.equal(observation.publisher_updated_at, "2026-11-09T05:11:37.000Z");
+
+  globalThis.fetch = async () => csvResponse("EIN,CITY\n12,New York\n", { headers: freshHeader });
+  await assert.rejects(verifyCsv(contract), /missing fields NAME/);
+
+  globalThis.fetch = async () => csvResponse("EIN,NAME\n", { headers: freshHeader });
+  await assert.rejects(verifyCsv(contract), /no parsable sample row/);
+
+  globalThis.fetch = async () => new Response("<html><body>gone</body></html>", {
+    status: 200,
+    headers: { "Content-Type": "text/html" },
+  });
+  await assert.rejects(verifyCsv(contract), /returned text\/html/);
+
+  globalThis.fetch = async () => csvResponse("nope", { status: 404 });
+  await assert.rejects(verifyCsv(contract), /csv endpoint HTTP 404/);
+
+  globalThis.fetch = async () => csvResponse("EIN,NAME\n12,Org\n", {
+    headers: { "Last-Modified": "Tue, 01 Sep 2026 00:00:00 GMT" },
+  });
+  const stale = await verifyCsv(contract).catch((error) => error);
+  assert.match(stale.message, /csv is stale \(publisher Last-Modified 2026-09-01/);
+  assert.equal(stale.finding.classification, "stale");
+  assert.equal(stale.finding.publisher_clock_basis, "Last-Modified");
+  assert.equal(stale.finding.limit_days, 30);
+  assert.equal(stale.finding.publisher_updated_at, "2026-09-01T00:00:00.000Z");
+
+  globalThis.fetch = async () => csvResponse("EIN,NAME\n12,Org\n");
+  const undeclaredClock = await verifyCsv(contract);
+  assert.match(undeclaredClock, /publisher freshness not published/);
+
+  const publisherClock = {
+    ...contract,
+    freshness_contract: { mode: "periodic", max_stale_days: 30, clock_basis: "publisher_updated" },
+  };
+  await assert.rejects(verifyCsv(publisherClock), /no Last-Modified freshness timestamp/);
+
+  let pulled = 0;
+  let cancelled = false;
+  const encoder = new TextEncoder();
+  const prefix = encoder.encode("EIN,NAME\n12,Org\n");
+  const chunk = encoder.encode("x".repeat(64 * 1024));
+  const stream = new ReadableStream({
+    pull(controller) {
+      if (pulled === 0) {
+        controller.enqueue(prefix);
+        pulled += prefix.byteLength;
+        return;
+      }
+      if (cancelled || pulled > 8 * 1024 * 1024) {
+        controller.close();
+        return;
+      }
+      controller.enqueue(chunk);
+      pulled += chunk.byteLength;
+    },
+    cancel() { cancelled = true; },
+  });
+  globalThis.fetch = async () => new Response(stream, { status: 200, headers: { "Content-Type": "text/csv", ...freshHeader } });
+  assert.match(await verifyCsv(contract), /sample row/);
+  assert.equal(cancelled, true);
+  assert.ok(pulled < 512 * 1024, `bounded sample pulled ${pulled} bytes`);
+});
+
+test("every csv source contract is checked by the csv live verifier", async (t) => {
+  const registry = loadSourceContracts();
+  const fixtures = loadSourceContractFixtures();
+  const csvs = registry.contracts.filter((contract) => contract.kind === "csv");
+  assert.ok(csvs.length >= 1);
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const now = Date.parse("2026-11-13T12:00:00Z");
+  t.mock.method(Date, "now", () => now);
+  for (const contract of csvs) {
+    const fixture = fixtures.sources.find((row) => row.id === contract.id);
+    assert.equal(fixture.response_type, "text/csv");
+    assert.ok(Array.isArray(fixture.headers) && fixture.headers.length > 0);
+    for (const field of contract.required_fields) {
+      assert.ok(fixture.headers.includes(field), `${contract.id} fixture header lacks ${field}`);
+    }
+    const body = `${fixture.headers.join(",")}\n${fixture.headers.map((_, index) => `v${index}`).join(",")}\n`;
+    globalThis.fetch = async (url) => {
+      assert.equal(String(url), contract.endpoint);
+      return csvResponse(body, { headers: { "Last-Modified": "Thu, 12 Nov 2026 00:00:00 GMT" } });
+    };
+    const detail = await verifyLiveContract(contract);
+    assert.match(detail, /csv · \d+ columns · sample row · \d+d old \(Last-Modified\)/, contract.id);
+    assert.doesNotMatch(detail, /no live verifier/);
   }
 });

@@ -24,6 +24,9 @@ const DAY_MS = 86_400_000;
 const LIVE_CONCURRENCY = 4;
 const NETWORK_RETRY = 1;
 const DEFAULT_UA = "CityScrollSourceContracts/1.0 (+https://cityscroll.org; source-contract monitor)";
+// Publishers often ignore Range and would otherwise send the whole file.
+// A header plus one complete row fits well inside this prefix.
+const CSV_SAMPLE_BYTE_CAP = 256 * 1024;
 
 export function freshnessLimit(contract) {
   return Number(
@@ -729,6 +732,157 @@ async function verifyDisabledMocs(contract) {
   return "disabled field case confirmed";
 }
 
+/** Complete CSV records only. A prefix cut mid-row is left unparsed. */
+function parseCompleteCsvRecords(text, needed) {
+  const records = [];
+  let row = [];
+  let cell = "";
+  let inQuotes = false;
+  for (let i = 0; i < text.length && records.length < needed; i += 1) {
+    const ch = text[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (text[i + 1] === '"') {
+          cell += '"';
+          i += 1;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        cell += ch;
+      }
+      continue;
+    }
+    if (ch === '"') {
+      inQuotes = true;
+      continue;
+    }
+    if (ch === ",") {
+      row.push(cell);
+      cell = "";
+      continue;
+    }
+    if (ch === "\n" || ch === "\r") {
+      if (ch === "\r" && text[i + 1] === "\n") i += 1;
+      row.push(cell);
+      cell = "";
+      if (row.some((value) => value.trim() !== "")) {
+        records.push(row.map((value) => value.trim()));
+      }
+      row = [];
+      continue;
+    }
+    cell += ch;
+  }
+  return records;
+}
+
+async function readBoundedUtf8(response, maxBytes) {
+  const reader = response.body?.getReader?.();
+  if (!reader) {
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    return new TextDecoder("utf-8").decode(bytes.subarray(0, maxBytes));
+  }
+  const chunks = [];
+  let total = 0;
+  while (total < maxBytes) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    if (!value?.byteLength) continue;
+    const remain = maxBytes - total;
+    if (value.byteLength > remain) {
+      chunks.push(value.subarray(0, remain));
+      total += remain;
+      break;
+    }
+    chunks.push(value);
+    total += value.byteLength;
+  }
+  try { await reader.cancel(); } catch { /* the prefix is already in hand */ }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder("utf-8").decode(bytes);
+}
+
+/**
+ * Live check for a published CSV. Reads a bounded prefix, requires every
+ * declared column in the header, and requires one complete sample row.
+ * Publisher freshness is the Last-Modified header, gated only when the
+ * contract declares a positive staleness limit.
+ */
+export async function verifyCsv(contract, options = {}) {
+  const probeUrl = resolveProbeEndpoint(contract) || contract.endpoint;
+  if (!probeUrl) throw new Error(`${contract.id}: missing csv endpoint`);
+  const response = await labeledFetch(contract.id, "csv", probeUrl, {
+    redirect: "follow",
+    headers: { Accept: "text/csv, text/plain, */*" },
+  });
+  if (!response.ok) {
+    await response.body?.cancel?.().catch(() => {});
+    throw new Error(`${contract.id}: csv endpoint HTTP ${response.status}`);
+  }
+  const type = (response.headers.get("content-type") || "").toLowerCase();
+  if (/text\/html|application\/(json|xml|pdf)|image\//.test(type)) {
+    await response.body?.cancel?.().catch(() => {});
+    const media = type.split(";")[0].trim() || "an unexpected content type";
+    throw new Error(`${contract.id}: csv endpoint returned ${media}`);
+  }
+  let text;
+  try {
+    text = await readBoundedUtf8(response, CSV_SAMPLE_BYTE_CAP);
+  } catch (error) {
+    throw new Error(`${contract.id}: csv sample fetch failed: ${error?.message || error}`);
+  }
+  if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
+  if (!text.trim()) throw new Error(`${contract.id}: csv body is empty`);
+  if (/^\uFEFF?\s*<!doctype html|^\s*<html[\s>]/i.test(text)) {
+    throw new Error(`${contract.id}: csv endpoint returned text/html`);
+  }
+  const records = parseCompleteCsvRecords(text, 2);
+  const header = records[0];
+  if (!header?.length) throw new Error(`${contract.id}: csv has no header row`);
+  const fields = new Set(header.filter(Boolean));
+  const required = Array.isArray(contract.required_fields) ? contract.required_fields : [];
+  if (!required.length) throw new Error(`${contract.id}: csv contract declares no columns`);
+  const missing = required.filter((field) => !fields.has(field));
+  if (missing.length) throw new Error(`${contract.id}: missing fields ${missing.join(", ")}`);
+  const sample = records[1];
+  if (!sample?.some((value) => value !== "")) {
+    throw new Error(`${contract.id}: csv has no parsable sample row`);
+  }
+
+  const limit = freshnessLimit(contract);
+  const declared = limit > 0;
+  const publisherAt = Date.parse(response.headers.get("last-modified") || "");
+  const clockBasis = contract.freshness_contract?.clock_basis;
+  if (Number.isFinite(publisherAt)) {
+    const age = ageDays(publisherAt);
+    if (age < -2) throw new Error(`${contract.id}: Last-Modified is unexpectedly in the future`);
+    options.onObservation?.({
+      publisher_clock_basis: "Last-Modified",
+      publisher_updated_at: new Date(publisherAt).toISOString(),
+    });
+    if (declared && age > limit) {
+      throw staleFinding(contract, {
+        clockField: "Last-Modified",
+        publisherAt,
+        limitDays: limit,
+        kind: "csv",
+      });
+    }
+    const ageText = `${Math.max(0, Math.floor(age))}d old (Last-Modified)`;
+    return `csv · ${header.length} columns · sample row · ${ageText}`;
+  }
+  if (declared && clockBasis === "publisher_updated") {
+    throw new Error(`${contract.id}: no Last-Modified freshness timestamp`);
+  }
+  return `csv · ${header.length} columns · sample row · publisher freshness not published`;
+}
+
 async function verifyXlsx(contract) {
   const probeUrl = resolveProbeEndpoint(contract) || contract.endpoint;
   if (!probeUrl) throw new Error(`${contract.id}: missing xlsx endpoint`);
@@ -763,6 +917,7 @@ export async function verifyLiveContract(contract, options = {}) {
   if (contract.kind === "html") return verifyHtml(contract);
   if (contract.kind === "rss") return verifyRss(contract);
   if (contract.kind === "xlsx") return verifyXlsx(contract);
+  if (contract.kind === "csv") return verifyCsv(contract, options);
   if (contract.kind === "mocs-disabled") return verifyDisabledMocs(contract);
   throw new Error(`${contract.id}: no live verifier for ${contract.kind}`);
 }
