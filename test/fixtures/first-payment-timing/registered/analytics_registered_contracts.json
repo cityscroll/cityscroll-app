@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.analytics_registered_contracts.v1",
+  "projection_contract": "cityscroll.analytical_projection.v1",
+  "generated_at": "2026-11-10T15:17:39.651Z",
+  "snapshot_date": "2026-11-10",
+  "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
+  "note": "26 rows copied verbatim from the committed registered-contract projection (snapshot 2026-11-10).",
+  "representation": "sharded",
+  "shard_schema": "cityscroll.analytics_registered_contracts_shard.v1",
+  "row_count": 26,
+  "shards": [
+    {
+      "path": "shard-000.json",
+      "row_count": 26
+    }
+  ]
+}
