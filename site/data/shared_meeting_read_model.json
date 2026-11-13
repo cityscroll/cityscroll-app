@@ -1625,13 +1625,13 @@
   "shards": [
     {
       "path": "shared_meeting_read_model/shard-000.json",
-      "bytes": 12552688,
-      "row_count": 1014
+      "bytes": 12488109,
+      "row_count": 975
     },
     {
       "path": "shared_meeting_read_model/shard-001.json",
-      "bytes": 1410437,
-      "row_count": 117
+      "bytes": 2286115,
+      "row_count": 156
     }
   ]
 }
