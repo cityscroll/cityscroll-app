@@ -1,0 +1,2155 @@
+{
+  "schema": "cityscroll.dos_entities_vendor_lookup.v1",
+  "collected_at": "2026-11-12T12:51:05.125Z",
+  "source_url": "https://data.ny.gov/resource/n9v6-gdp6.json",
+  "dataset_id": "n9v6-gdp6",
+  "coverage": {
+    "mode": "fixture_seeded",
+    "vendor_names_considered": 300,
+    "matched_stems": 4,
+    "sample_one_match": 143,
+    "sample_several_matches": 0,
+    "sample_candidates_only": 30,
+    "sample_truncated": 13,
+    "note": "Initial committed artifact seeded from recorded fixtures and the 300-name sample counts; live --from-soda fills matched records for the full vendor stem set."
+  },
+  "spacing_ms": 1100,
+  "link_policy": "candidate_only",
+  "matches": [
+    {
+      "stem": "C GLOBAL CONSULTING",
+      "input": "C GLOBAL CONSULTING LLC",
+      "status": "several_matches",
+      "records": [
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "2904725",
+          "name": "C GLOBAL CONSULTING, LLC",
+          "name_stem": "C GLOBAL CONSULTING",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "41 CENTRAL PARK WEST",
+            "street_2": "STE 1G",
+            "city": "NEW YORK",
+            "state": "NY",
+            "zip": "10023",
+            "text": "41 CENTRAL PARK WEST STE 1G, NEW YORK, NY 10023",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "New York",
+            "initial_dos_filing_date": "2003-05-09T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "C GLOBAL CONSULTING, LLC",
+                "address": {
+                  "street": "41 CENTRAL PARK WEST",
+                  "street_2": "STE 1G",
+                  "city": "NEW YORK",
+                  "state": "NY",
+                  "zip": "10023",
+                  "text": "41 CENTRAL PARK WEST STE 1G, NEW YORK, NY 10023",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": "ANTONY G. HACKING",
+                "address": {
+                  "street": "253 WEST 73RD ST., APT. 17E",
+                  "street_2": null,
+                  "city": "NEW YORK",
+                  "state": "NEW YORK",
+                  "zip": "10023",
+                  "text": "253 WEST 73RD ST., APT. 17E, NEW YORK, NEW YORK 10023",
+                  "role": "registered_agent"
+                }
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "2904725",
+            "current_entity_name": "C GLOBAL CONSULTING, LLC",
+            "initial_dos_filing_date": "2003-05-09T00:00:00.000",
+            "county": "New York",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "C GLOBAL CONSULTING, LLC",
+            "dos_process_address_1": "41 CENTRAL PARK WEST",
+            "dos_process_address_2": "STE 1G",
+            "dos_process_city": "NEW YORK",
+            "dos_process_state": "NY",
+            "dos_process_zip": "10023",
+            "registered_agent_name": "ANTONY G. HACKING",
+            "registered_agent_address_1": "253 WEST 73RD ST., APT. 17E",
+            "registered_agent_city": "NEW YORK",
+            "registered_agent_state": "NEW YORK",
+            "registered_agent_zip": "10023"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "3686413",
+          "name": "C2 GLOBAL CONSULTING, INC.",
+          "name_stem": "C2 GLOBAL CONSULTING",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "36 SPRUCE STREET",
+            "street_2": null,
+            "city": "GARDEN CITY",
+            "state": "NY",
+            "zip": "11530",
+            "text": "36 SPRUCE STREET, GARDEN CITY, NY 11530",
+            "role": "location"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Nassau",
+            "initial_dos_filing_date": "2008-06-19T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "C2 GLOBAL CONSULTING, INC.",
+                "address": {
+                  "street": "36 SPRUCE STREET",
+                  "street_2": null,
+                  "city": "GARDEN CITY",
+                  "state": "NY",
+                  "zip": "11530",
+                  "text": "36 SPRUCE STREET, GARDEN CITY, NY 11530",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": "CHRISTOPHER CONRY",
+                "address": {
+                  "street": "CHRISTOPHER CONRY",
+                  "street_2": null,
+                  "city": "GARDEN CITY",
+                  "state": "NY",
+                  "zip": "11530",
+                  "text": "CHRISTOPHER CONRY, GARDEN CITY, NY 11530",
+                  "role": "chairman"
+                }
+              },
+              "registered_agent": {
+                "name": "CHRISTOPHER T CONRY",
+                "address": {
+                  "street": "36 SPRUCE STREET",
+                  "street_2": null,
+                  "city": "GARDEN CITY",
+                  "state": "NEW YORK",
+                  "zip": "11530",
+                  "text": "36 SPRUCE STREET, GARDEN CITY, NEW YORK 11530",
+                  "role": "registered_agent"
+                }
+              },
+              "location": {
+                "name": "C2 GLOBAL CONSULTING, INC.",
+                "address": {
+                  "street": "36 SPRUCE STREET",
+                  "street_2": null,
+                  "city": "GARDEN CITY",
+                  "state": "NY",
+                  "zip": "11530",
+                  "text": "36 SPRUCE STREET, GARDEN CITY, NY 11530",
+                  "role": "location"
+                }
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "3686413",
+            "current_entity_name": "C2 GLOBAL CONSULTING, INC.",
+            "initial_dos_filing_date": "2008-06-19T00:00:00.000",
+            "county": "Nassau",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "C2 GLOBAL CONSULTING, INC.",
+            "dos_process_address_1": "36 SPRUCE STREET",
+            "dos_process_city": "GARDEN CITY",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11530",
+            "chairman_name": "CHRISTOPHER CONRY",
+            "chairman_address_1": "CHRISTOPHER CONRY",
+            "chairman_city": "GARDEN CITY",
+            "chairman_state": "NY",
+            "chairman_zip": "11530",
+            "registered_agent_name": "CHRISTOPHER T CONRY",
+            "registered_agent_address_1": "36 SPRUCE STREET",
+            "registered_agent_city": "GARDEN CITY",
+            "registered_agent_state": "NEW YORK",
+            "registered_agent_zip": "11530",
+            "location_name": "C2 GLOBAL CONSULTING, INC.",
+            "location_address_1": "36 SPRUCE STREET",
+            "location_city": "GARDEN CITY",
+            "location_state": "NY",
+            "location_zip": "11530"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "4533779",
+          "name": "CA GLOBAL CONSULTING INC",
+          "name_stem": "CA GLOBAL CONSULTING",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "4729 158TH STREET",
+            "street_2": null,
+            "city": "FLUSHING",
+            "state": "NY",
+            "zip": "11358",
+            "text": "4729 158TH STREET, FLUSHING, NY 11358",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Queens",
+            "initial_dos_filing_date": "2014-02-24T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "CA GLOBAL CONSULTING INC",
+                "address": {
+                  "street": "4729 158TH STREET",
+                  "street_2": null,
+                  "city": "FLUSHING",
+                  "state": "NY",
+                  "zip": "11358",
+                  "text": "4729 158TH STREET, FLUSHING, NY 11358",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "4533779",
+            "current_entity_name": "CA GLOBAL CONSULTING INC",
+            "initial_dos_filing_date": "2014-02-24T00:00:00.000",
+            "county": "Queens",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "CA GLOBAL CONSULTING INC",
+            "dos_process_address_1": "4729 158TH STREET",
+            "dos_process_city": "FLUSHING",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11358"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "7662540",
+          "name": "CAMS GLOBAL CONSULTING SERVICES INC.",
+          "name_stem": "CAMS GLOBAL CONSULTING SERVICES",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "243 32ND ST",
+            "street_2": null,
+            "city": "LINDENHURST",
+            "state": "NY",
+            "zip": "11757",
+            "text": "243 32ND ST, LINDENHURST, NY 11757",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Suffolk",
+            "initial_dos_filing_date": "2025-07-17T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "CARLOS JIMENEZ",
+                "address": {
+                  "street": "243 32ND ST",
+                  "street_2": null,
+                  "city": "LINDENHURST",
+                  "state": "NY",
+                  "zip": "11757",
+                  "text": "243 32ND ST, LINDENHURST, NY 11757",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": "CARLOS JIMENEZ",
+                "address": {
+                  "street": "243 32ND ST",
+                  "street_2": null,
+                  "city": "LINDENHURST",
+                  "state": "NEW YORK",
+                  "zip": "11757",
+                  "text": "243 32ND ST, LINDENHURST, NEW YORK 11757",
+                  "role": "registered_agent"
+                }
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "7662540",
+            "current_entity_name": "CAMS GLOBAL CONSULTING SERVICES INC.",
+            "initial_dos_filing_date": "2025-07-17T00:00:00.000",
+            "county": "Suffolk",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "CARLOS JIMENEZ",
+            "dos_process_address_1": "243 32ND ST",
+            "dos_process_city": "LINDENHURST",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11757",
+            "registered_agent_name": "CARLOS JIMENEZ",
+            "registered_agent_address_1": "243 32ND ST",
+            "registered_agent_city": "LINDENHURST",
+            "registered_agent_state": "NEW YORK",
+            "registered_agent_zip": "11757"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "4088912",
+          "name": "CAOSUN GLOBAL CONSULTING GROUP LLC",
+          "name_stem": "CAOSUN GLOBAL CONSULTING GROUP",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "111 WEST 57TH STREET",
+            "street_2": null,
+            "city": "NEW YORK",
+            "state": "NY",
+            "zip": "10019",
+            "text": "111 WEST 57TH STREET, NEW YORK, NY 10019",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "New York",
+            "initial_dos_filing_date": "2011-05-03T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "HUINING CAO, CKGSB",
+                "address": {
+                  "street": "111 WEST 57TH STREET",
+                  "street_2": null,
+                  "city": "NEW YORK",
+                  "state": "NY",
+                  "zip": "10019",
+                  "text": "111 WEST 57TH STREET, NEW YORK, NY 10019",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "4088912",
+            "current_entity_name": "CAOSUN GLOBAL CONSULTING GROUP LLC",
+            "initial_dos_filing_date": "2011-05-03T00:00:00.000",
+            "county": "New York",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "HUINING CAO, CKGSB",
+            "dos_process_address_1": "111 WEST 57TH STREET",
+            "dos_process_city": "NEW YORK",
+            "dos_process_state": "NY",
+            "dos_process_zip": "10019"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "4750716",
+          "name": "CATALYST GLOBAL CONSULTING, LLC",
+          "name_stem": "CATALYST GLOBAL CONSULTING",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "5125 97TH ST.",
+            "street_2": null,
+            "city": "CORONA",
+            "state": "NY",
+            "zip": "11368",
+            "text": "5125 97TH ST., CORONA, NY 11368",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Queens",
+            "initial_dos_filing_date": "2015-04-29T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "CATALYST GLOBAL CONSULTING, LLC",
+                "address": {
+                  "street": "5125 97TH ST.",
+                  "street_2": null,
+                  "city": "CORONA",
+                  "state": "NY",
+                  "zip": "11368",
+                  "text": "5125 97TH ST., CORONA, NY 11368",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": "RENO RAFLY",
+                "address": {
+                  "street": "5125 97TH ST.",
+                  "street_2": "APT.2",
+                  "city": "CORONA",
+                  "state": "NEW YORK",
+                  "zip": "11368",
+                  "text": "5125 97TH ST. APT.2, CORONA, NEW YORK 11368",
+                  "role": "registered_agent"
+                }
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "4750716",
+            "current_entity_name": "CATALYST GLOBAL CONSULTING, LLC",
+            "initial_dos_filing_date": "2015-04-29T00:00:00.000",
+            "county": "Queens",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "CATALYST GLOBAL CONSULTING, LLC",
+            "dos_process_address_1": "5125 97TH ST.",
+            "dos_process_city": "CORONA",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11368",
+            "registered_agent_name": "RENO RAFLY",
+            "registered_agent_address_1": "5125 97TH ST.",
+            "registered_agent_address_2": "APT.2",
+            "registered_agent_city": "CORONA",
+            "registered_agent_state": "NEW YORK",
+            "registered_agent_zip": "11368"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "7354183",
+          "name": "CERTEZA GLOBAL RESEARCH + CONSULTING, LLC",
+          "name_stem": "CERTEZA GLOBAL RESEARCH + CONSULTING",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "418 Broadway STE N",
+            "street_2": null,
+            "city": "Albany",
+            "state": "NY",
+            "zip": "12207",
+            "text": "418 Broadway STE N, Albany, NY 12207",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Albany",
+            "initial_dos_filing_date": "2024-06-17T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "NORTHWEST REGISTERED AGENT LLC",
+                "address": {
+                  "street": "418 Broadway STE N",
+                  "street_2": null,
+                  "city": "Albany",
+                  "state": "NY",
+                  "zip": "12207",
+                  "text": "418 Broadway STE N, Albany, NY 12207",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": "NORTHWEST REGISTERED AGENT LLC",
+                "address": {
+                  "street": "418 BROADWAY",
+                  "street_2": "STE N",
+                  "city": "ALBANY",
+                  "state": "NEW YORK",
+                  "zip": "12207",
+                  "text": "418 BROADWAY STE N, ALBANY, NEW YORK 12207",
+                  "role": "registered_agent"
+                }
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "7354183",
+            "current_entity_name": "CERTEZA GLOBAL RESEARCH + CONSULTING, LLC",
+            "initial_dos_filing_date": "2024-06-17T00:00:00.000",
+            "county": "Albany",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "NORTHWEST REGISTERED AGENT LLC",
+            "dos_process_address_1": "418 Broadway STE N",
+            "dos_process_city": "Albany",
+            "dos_process_state": "NY",
+            "dos_process_zip": "12207",
+            "registered_agent_name": "NORTHWEST REGISTERED AGENT LLC",
+            "registered_agent_address_1": "418 BROADWAY",
+            "registered_agent_address_2": "STE N",
+            "registered_agent_city": "ALBANY",
+            "registered_agent_state": "NEW YORK",
+            "registered_agent_zip": "12207"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "4194304",
+          "name": "CHADWICK GLOBAL RESEARCH AND CONSULTING, LLC",
+          "name_stem": "CHADWICK GLOBAL RESEARCH AND CONSULTING",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "7014 13TH AVENUE, SUITE 202",
+            "street_2": null,
+            "city": "BROOKLYN",
+            "state": "NY",
+            "zip": "11228",
+            "text": "7014 13TH AVENUE, SUITE 202, BROOKLYN, NY 11228",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "New York",
+            "initial_dos_filing_date": "2012-01-26T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "C/O UNITED STATES CORPORATION AGENTS, INC.",
+                "address": {
+                  "street": "7014 13TH AVENUE, SUITE 202",
+                  "street_2": null,
+                  "city": "BROOKLYN",
+                  "state": "NY",
+                  "zip": "11228",
+                  "text": "7014 13TH AVENUE, SUITE 202, BROOKLYN, NY 11228",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "4194304",
+            "current_entity_name": "CHADWICK GLOBAL RESEARCH AND CONSULTING, LLC",
+            "initial_dos_filing_date": "2012-01-26T00:00:00.000",
+            "county": "New York",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "C/O UNITED STATES CORPORATION AGENTS, INC.",
+            "dos_process_address_1": "7014 13TH AVENUE, SUITE 202",
+            "dos_process_city": "BROOKLYN",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11228"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "5928499",
+          "name": "CHARLESTONHILL GLOBAL CONSULTING SERVICES LLC",
+          "name_stem": "CHARLESTONHILL GLOBAL CONSULTING SERVICES",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "727 ADEE AVE APT 2",
+            "street_2": null,
+            "city": "BRONX",
+            "state": "NY",
+            "zip": "10467",
+            "text": "727 ADEE AVE APT 2, BRONX, NY 10467",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "New York",
+            "initial_dos_filing_date": "2021-01-28T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "CHARLESTONHILL GLOBAL CONSULTING SERVICES LLC",
+                "address": {
+                  "street": "727 ADEE AVE APT 2",
+                  "street_2": null,
+                  "city": "BRONX",
+                  "state": "NY",
+                  "zip": "10467",
+                  "text": "727 ADEE AVE APT 2, BRONX, NY 10467",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "5928499",
+            "current_entity_name": "CHARLESTONHILL GLOBAL CONSULTING SERVICES LLC",
+            "initial_dos_filing_date": "2021-01-28T00:00:00.000",
+            "county": "New York",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "CHARLESTONHILL GLOBAL CONSULTING SERVICES LLC",
+            "dos_process_address_1": "727 ADEE AVE APT 2",
+            "dos_process_city": "BRONX",
+            "dos_process_state": "NY",
+            "dos_process_zip": "10467"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "7544059",
+          "name": "CIRCULATE GLOBAL CONSULTING INC.",
+          "name_stem": "CIRCULATE GLOBAL CONSULTING",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "48-12 60TH ST #2",
+            "street_2": null,
+            "city": "WOODSIDE",
+            "state": "NY",
+            "zip": "11377",
+            "text": "48-12 60TH ST #2, WOODSIDE, NY 11377",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Queens",
+            "initial_dos_filing_date": "2025-02-26T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "BRANDON MARTINEZ",
+                "address": {
+                  "street": "48-12 60TH ST #2",
+                  "street_2": null,
+                  "city": "WOODSIDE",
+                  "state": "NY",
+                  "zip": "11377",
+                  "text": "48-12 60TH ST #2, WOODSIDE, NY 11377",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "7544059",
+            "current_entity_name": "CIRCULATE GLOBAL CONSULTING INC.",
+            "initial_dos_filing_date": "2025-02-26T00:00:00.000",
+            "county": "Queens",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "BRANDON MARTINEZ",
+            "dos_process_address_1": "48-12 60TH ST #2",
+            "dos_process_city": "WOODSIDE",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11377"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "5191777",
+          "name": "CIRE GLOBAL CONSULTING ASSOCIATES, LLC",
+          "name_stem": "CIRE GLOBAL CONSULTING ASSOCIATES",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "7014 13TH AVENUE, SUITE 202",
+            "street_2": null,
+            "city": "BROOKLYN",
+            "state": "NY",
+            "zip": "11228",
+            "text": "7014 13TH AVENUE, SUITE 202, BROOKLYN, NY 11228",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "New York",
+            "initial_dos_filing_date": "2017-08-24T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "UNITED STATES CORPORATION AGENTS, INC.",
+                "address": {
+                  "street": "7014 13TH AVENUE, SUITE 202",
+                  "street_2": null,
+                  "city": "BROOKLYN",
+                  "state": "NY",
+                  "zip": "11228",
+                  "text": "7014 13TH AVENUE, SUITE 202, BROOKLYN, NY 11228",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": "UNITED STATES CORPORATION AGENTS, INC.",
+                "address": {
+                  "street": "7014 13TH AVENUE, SUITE 202",
+                  "street_2": null,
+                  "city": "BROOKLYN",
+                  "state": "NEW YORK",
+                  "zip": "11228",
+                  "text": "7014 13TH AVENUE, SUITE 202, BROOKLYN, NEW YORK 11228",
+                  "role": "registered_agent"
+                }
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "5191777",
+            "current_entity_name": "CIRE GLOBAL CONSULTING ASSOCIATES, LLC",
+            "initial_dos_filing_date": "2017-08-24T00:00:00.000",
+            "county": "New York",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "UNITED STATES CORPORATION AGENTS, INC.",
+            "dos_process_address_1": "7014 13TH AVENUE, SUITE 202",
+            "dos_process_city": "BROOKLYN",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11228",
+            "registered_agent_name": "UNITED STATES CORPORATION AGENTS, INC.",
+            "registered_agent_address_1": "7014 13TH AVENUE, SUITE 202",
+            "registered_agent_city": "BROOKLYN",
+            "registered_agent_state": "NEW YORK",
+            "registered_agent_zip": "11228"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "4293615",
+          "name": "CORNERSTONE GLOBAL CONSULTING LLC",
+          "name_stem": "CORNERSTONE GLOBAL CONSULTING",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "61-48 219 STREET 2ND FLOOR",
+            "street_2": null,
+            "city": "BAYSIDE",
+            "state": "NY",
+            "zip": "11364",
+            "text": "61-48 219 STREET 2ND FLOOR, BAYSIDE, NY 11364",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Queens",
+            "initial_dos_filing_date": "2012-09-10T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "CORNERSTONE GLOBAL CONSULTING LLC",
+                "address": {
+                  "street": "61-48 219 STREET 2ND FLOOR",
+                  "street_2": null,
+                  "city": "BAYSIDE",
+                  "state": "NY",
+                  "zip": "11364",
+                  "text": "61-48 219 STREET 2ND FLOOR, BAYSIDE, NY 11364",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "4293615",
+            "current_entity_name": "CORNERSTONE GLOBAL CONSULTING LLC",
+            "initial_dos_filing_date": "2012-09-10T00:00:00.000",
+            "county": "Queens",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "CORNERSTONE GLOBAL CONSULTING LLC",
+            "dos_process_address_1": "61-48 219 STREET 2ND FLOOR",
+            "dos_process_city": "BAYSIDE",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11364"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "7701886",
+          "name": "CRH GLOBAL CONSULTING LLC",
+          "name_stem": "CRH GLOBAL CONSULTING",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "80 Riverdale Road",
+            "street_2": null,
+            "city": "Valley Stream",
+            "state": "NY",
+            "zip": "11581",
+            "text": "80 Riverdale Road, Valley Stream, NY 11581",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Nassau",
+            "initial_dos_filing_date": "2025-09-04T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "CRH Global Consulting LLC",
+                "address": {
+                  "street": "80 Riverdale Road",
+                  "street_2": null,
+                  "city": "Valley Stream",
+                  "state": "NY",
+                  "zip": "11581",
+                  "text": "80 Riverdale Road, Valley Stream, NY 11581",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "7701886",
+            "current_entity_name": "CRH GLOBAL CONSULTING LLC",
+            "initial_dos_filing_date": "2025-09-04T00:00:00.000",
+            "county": "Nassau",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "CRH Global Consulting LLC",
+            "dos_process_address_1": "80 Riverdale Road",
+            "dos_process_city": "Valley Stream",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11581"
+          }
+        }
+      ]
+    },
+    {
+      "stem": "CHINATOWN MANPOWER PROJECT",
+      "input": "Chinatown Manpower Project Inc",
+      "status": "one_match",
+      "records": [
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "268736",
+          "name": "CHINATOWN MANPOWER PROJECT, INC.",
+          "name_stem": "CHINATOWN MANPOWER PROJECT",
+          "entity_class": "not_for_profit",
+          "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+          "address": {
+            "street": "55 chrystie street, suite 209",
+            "street_2": null,
+            "city": "NEW YORK",
+            "state": "NY",
+            "zip": "10002",
+            "text": "55 chrystie street, suite 209, NEW YORK, NY 10002",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "New York",
+            "initial_dos_filing_date": "1973-08-22T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "CHINATOWN MANPOWER PROJECT, INC.",
+                "address": {
+                  "street": "55 chrystie street, suite 209",
+                  "street_2": null,
+                  "city": "NEW YORK",
+                  "state": "NY",
+                  "zip": "10002",
+                  "text": "55 chrystie street, suite 209, NEW YORK, NY 10002",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": "CHINATOWN MANPOWER PROJECT, INC.",
+                "address": {
+                  "street": "46 HENRY ST.",
+                  "street_2": null,
+                  "city": "NEW YORK",
+                  "state": "NEW YORK",
+                  "zip": null,
+                  "text": "46 HENRY ST., NEW YORK, NEW YORK",
+                  "role": "registered_agent"
+                }
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "268736",
+            "current_entity_name": "CHINATOWN MANPOWER PROJECT, INC.",
+            "initial_dos_filing_date": "1973-08-22T00:00:00.000",
+            "county": "New York",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+            "dos_process_name": "CHINATOWN MANPOWER PROJECT, INC.",
+            "dos_process_address_1": "55 chrystie street, suite 209",
+            "dos_process_city": "NEW YORK",
+            "dos_process_state": "NY",
+            "dos_process_zip": "10002",
+            "registered_agent_name": "CHINATOWN MANPOWER PROJECT, INC.",
+            "registered_agent_address_1": "46 HENRY ST.",
+            "registered_agent_city": "NEW YORK",
+            "registered_agent_state": "NEW YORK"
+          }
+        }
+      ]
+    },
+    {
+      "stem": "PARISI LANDSCAPE AND MAINTENANCE",
+      "input": "Parisi Landscape and Maintenance, Inc",
+      "status": "one_match",
+      "records": [
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "5233625",
+          "name": "PARISI LANDSCAPE & MAINTENANCE INC.",
+          "name_stem": "PARISI LANDSCAPE MAINTENANCE",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "642 DENISE RD",
+            "street_2": null,
+            "city": "ROCHESTER",
+            "state": "NY",
+            "zip": "14616",
+            "text": "642 DENISE RD, ROCHESTER, NY 14616",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Monroe",
+            "initial_dos_filing_date": "2017-11-13T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "PARISI LANDSCAPE & MAINTENANCE INC.",
+                "address": {
+                  "street": "642 DENISE RD",
+                  "street_2": null,
+                  "city": "ROCHESTER",
+                  "state": "NY",
+                  "zip": "14616",
+                  "text": "642 DENISE RD, ROCHESTER, NY 14616",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": "JAY PARISI",
+                "address": {
+                  "street": "642 DENISE RD",
+                  "street_2": null,
+                  "city": "ROCHESTER",
+                  "state": "NEW YORK",
+                  "zip": "14616",
+                  "text": "642 DENISE RD, ROCHESTER, NEW YORK 14616",
+                  "role": "registered_agent"
+                }
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "5233625",
+            "current_entity_name": "PARISI LANDSCAPE & MAINTENANCE INC.",
+            "initial_dos_filing_date": "2017-11-13T00:00:00.000",
+            "county": "Monroe",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "PARISI LANDSCAPE & MAINTENANCE INC.",
+            "dos_process_address_1": "642 DENISE RD",
+            "dos_process_city": "ROCHESTER",
+            "dos_process_state": "NY",
+            "dos_process_zip": "14616",
+            "registered_agent_name": "JAY PARISI",
+            "registered_agent_address_1": "642 DENISE RD",
+            "registered_agent_city": "ROCHESTER",
+            "registered_agent_state": "NEW YORK",
+            "registered_agent_zip": "14616"
+          }
+        }
+      ]
+    },
+    {
+      "stem": "SKYLINE BUILDERS",
+      "input": "Skyline Builders",
+      "status": "several_matches",
+      "records": [
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "6547969",
+          "name": "SKYLINE BUILDERS & CONTRACTORS LLC",
+          "name_stem": "SKYLINE BUILDERS CONTRACTORS",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "53 Northview Drive",
+            "street_2": null,
+            "city": "Mahopac",
+            "state": "NY",
+            "zip": "10541",
+            "text": "53 Northview Drive, Mahopac, NY 10541",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Westchester",
+            "initial_dos_filing_date": "2022-07-29T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "VINJOL VACAJ",
+                "address": {
+                  "street": "53 Northview Drive",
+                  "street_2": null,
+                  "city": "Mahopac",
+                  "state": "NY",
+                  "zip": "10541",
+                  "text": "53 Northview Drive, Mahopac, NY 10541",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "6547969",
+            "current_entity_name": "SKYLINE BUILDERS & CONTRACTORS LLC",
+            "initial_dos_filing_date": "2022-07-29T00:00:00.000",
+            "county": "Westchester",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "VINJOL VACAJ",
+            "dos_process_address_1": "53 Northview Drive",
+            "dos_process_city": "Mahopac",
+            "dos_process_state": "NY",
+            "dos_process_zip": "10541"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "5693270",
+          "name": "SKYLINE BUILDERS & DEVELOPERS INC.",
+          "name_stem": "SKYLINE BUILDERS DEVELOPERS",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "4403 15 AVENUE",
+            "street_2": "SUITE 207",
+            "city": "BROOKLYN",
+            "state": "NY",
+            "zip": "11219",
+            "text": "4403 15 AVENUE SUITE 207, BROOKLYN, NY 11219",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Kings",
+            "initial_dos_filing_date": "2020-01-21T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "SKYLINE BUILDERS & DEVELOPERS INC.",
+                "address": {
+                  "street": "4403 15 AVENUE",
+                  "street_2": "SUITE 207",
+                  "city": "BROOKLYN",
+                  "state": "NY",
+                  "zip": "11219",
+                  "text": "4403 15 AVENUE SUITE 207, BROOKLYN, NY 11219",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "5693270",
+            "current_entity_name": "SKYLINE BUILDERS & DEVELOPERS INC.",
+            "initial_dos_filing_date": "2020-01-21T00:00:00.000",
+            "county": "Kings",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "SKYLINE BUILDERS & DEVELOPERS INC.",
+            "dos_process_address_1": "4403 15 AVENUE",
+            "dos_process_address_2": "SUITE 207",
+            "dos_process_city": "BROOKLYN",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11219"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "5873162",
+          "name": "SKYLINE BUILDERS 1 CORP",
+          "name_stem": "SKYLINE BUILDERS 1",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "565 KIRKMAN AVENUE",
+            "street_2": null,
+            "city": "ELMONT",
+            "state": "NY",
+            "zip": "11003",
+            "text": "565 KIRKMAN AVENUE, ELMONT, NY 11003",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Nassau",
+            "initial_dos_filing_date": "2020-11-06T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "SKYLINE BUILDERS 1 CORP",
+                "address": {
+                  "street": "565 KIRKMAN AVENUE",
+                  "street_2": null,
+                  "city": "ELMONT",
+                  "state": "NY",
+                  "zip": "11003",
+                  "text": "565 KIRKMAN AVENUE, ELMONT, NY 11003",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "5873162",
+            "current_entity_name": "SKYLINE BUILDERS 1 CORP",
+            "initial_dos_filing_date": "2020-11-06T00:00:00.000",
+            "county": "Nassau",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "SKYLINE BUILDERS 1 CORP",
+            "dos_process_address_1": "565 KIRKMAN AVENUE",
+            "dos_process_city": "ELMONT",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11003"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "7422499",
+          "name": "SKYLINE BUILDERS CONSTRUCTION CORP.",
+          "name_stem": "SKYLINE BUILDERS CONSTRUCTION",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "6516 Grand Central Parkway Apt# 2A",
+            "street_2": null,
+            "city": "Forest Hills",
+            "state": "NY",
+            "zip": "11375",
+            "text": "6516 Grand Central Parkway Apt# 2A, Forest Hills, NY 11375",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Queens",
+            "initial_dos_filing_date": "2024-09-18T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "Mohammad Saliq",
+                "address": {
+                  "street": "6516 Grand Central Parkway Apt# 2A",
+                  "street_2": null,
+                  "city": "Forest Hills",
+                  "state": "NY",
+                  "zip": "11375",
+                  "text": "6516 Grand Central Parkway Apt# 2A, Forest Hills, NY 11375",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "7422499",
+            "current_entity_name": "SKYLINE BUILDERS CONSTRUCTION CORP.",
+            "initial_dos_filing_date": "2024-09-18T00:00:00.000",
+            "county": "Queens",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "Mohammad Saliq",
+            "dos_process_address_1": "6516 Grand Central Parkway Apt# 2A",
+            "dos_process_city": "Forest Hills",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11375"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "5699162",
+          "name": "SKYLINE BUILDERS CONTRACTING, INC.",
+          "name_stem": "SKYLINE BUILDERS CONTRACTING",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "90-02 107TH AVENUE",
+            "street_2": null,
+            "city": "OZONE PARK",
+            "state": "NY",
+            "zip": "11417",
+            "text": "90-02 107TH AVENUE, OZONE PARK, NY 11417",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Queens",
+            "initial_dos_filing_date": "2020-01-30T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "SKYLINE BUILDERS CONTRACTING, INC.",
+                "address": {
+                  "street": "90-02 107TH AVENUE",
+                  "street_2": null,
+                  "city": "OZONE PARK",
+                  "state": "NY",
+                  "zip": "11417",
+                  "text": "90-02 107TH AVENUE, OZONE PARK, NY 11417",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": "SPIEGEL & UTRERA P.A., P.C.",
+                "address": {
+                  "street": "1 MAIDEN LANE",
+                  "street_2": "5TH FLOOR",
+                  "city": "NEW YORK",
+                  "state": "NEW YORK",
+                  "zip": "10038",
+                  "text": "1 MAIDEN LANE 5TH FLOOR, NEW YORK, NEW YORK 10038",
+                  "role": "registered_agent"
+                }
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "5699162",
+            "current_entity_name": "SKYLINE BUILDERS CONTRACTING, INC.",
+            "initial_dos_filing_date": "2020-01-30T00:00:00.000",
+            "county": "Queens",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "SKYLINE BUILDERS CONTRACTING, INC.",
+            "dos_process_address_1": "90-02 107TH AVENUE",
+            "dos_process_city": "OZONE PARK",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11417",
+            "registered_agent_name": "SPIEGEL & UTRERA P.A., P.C.",
+            "registered_agent_address_1": "1 MAIDEN LANE",
+            "registered_agent_address_2": "5TH FLOOR",
+            "registered_agent_city": "NEW YORK",
+            "registered_agent_state": "NEW YORK",
+            "registered_agent_zip": "10038"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "5200317",
+          "name": "SKYLINE BUILDERS GROUP LLC",
+          "name_stem": "SKYLINE BUILDERS GROUP",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "418 Broadway STE N",
+            "street_2": null,
+            "city": "Albany",
+            "state": "NY",
+            "zip": "12207",
+            "text": "418 Broadway STE N, Albany, NY 12207",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Albany",
+            "initial_dos_filing_date": "2017-09-12T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "NORTHWEST REGISTERED AGENT LLC",
+                "address": {
+                  "street": "418 Broadway STE N",
+                  "street_2": null,
+                  "city": "Albany",
+                  "state": "NY",
+                  "zip": "12207",
+                  "text": "418 Broadway STE N, Albany, NY 12207",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": "REGISTERED AGENTS INC.",
+                "address": {
+                  "street": "418 BROADWAY",
+                  "street_2": "STE R",
+                  "city": "ALBANY",
+                  "state": "NEW YORK",
+                  "zip": "12207",
+                  "text": "418 BROADWAY STE R, ALBANY, NEW YORK 12207",
+                  "role": "registered_agent"
+                }
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "5200317",
+            "current_entity_name": "SKYLINE BUILDERS GROUP LLC",
+            "initial_dos_filing_date": "2017-09-12T00:00:00.000",
+            "county": "Albany",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "NORTHWEST REGISTERED AGENT LLC",
+            "dos_process_address_1": "418 Broadway STE N",
+            "dos_process_city": "Albany",
+            "dos_process_state": "NY",
+            "dos_process_zip": "12207",
+            "registered_agent_name": "REGISTERED AGENTS INC.",
+            "registered_agent_address_1": "418 BROADWAY",
+            "registered_agent_address_2": "STE R",
+            "registered_agent_city": "ALBANY",
+            "registered_agent_state": "NEW YORK",
+            "registered_agent_zip": "12207"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "2907135",
+          "name": "SKYLINE BUILDERS INC.",
+          "name_stem": "SKYLINE BUILDERS",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "114-12 LIBERTY AVE",
+            "street_2": null,
+            "city": "RICHMOND HILL",
+            "state": "NY",
+            "zip": "11419",
+            "text": "114-12 LIBERTY AVE, RICHMOND HILL, NY 11419",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Queens",
+            "initial_dos_filing_date": "2003-05-15T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "SKYLINE BUILDERS INC.",
+                "address": {
+                  "street": "114-12 LIBERTY AVE",
+                  "street_2": null,
+                  "city": "RICHMOND HILL",
+                  "state": "NY",
+                  "zip": "11419",
+                  "text": "114-12 LIBERTY AVE, RICHMOND HILL, NY 11419",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "2907135",
+            "current_entity_name": "SKYLINE BUILDERS INC.",
+            "initial_dos_filing_date": "2003-05-15T00:00:00.000",
+            "county": "Queens",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "SKYLINE BUILDERS INC.",
+            "dos_process_address_1": "114-12 LIBERTY AVE",
+            "dos_process_city": "RICHMOND HILL",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11419"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "7799998",
+          "name": "SKYLINE BUILDERS NY LLC",
+          "name_stem": "SKYLINE BUILDERS NY",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "119-11 103RD AVENUE",
+            "street_2": null,
+            "city": "SOUTH RICHMOND HILL",
+            "state": "NY",
+            "zip": "11419",
+            "text": "119-11 103RD AVENUE, SOUTH RICHMOND HILL, NY 11419",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Queens",
+            "initial_dos_filing_date": "2026-01-07T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "SKYLINE BUILDERS NY LLC",
+                "address": {
+                  "street": "119-11 103RD AVENUE",
+                  "street_2": null,
+                  "city": "SOUTH RICHMOND HILL",
+                  "state": "NY",
+                  "zip": "11419",
+                  "text": "119-11 103RD AVENUE, SOUTH RICHMOND HILL, NY 11419",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "7799998",
+            "current_entity_name": "SKYLINE BUILDERS NY LLC",
+            "initial_dos_filing_date": "2026-01-07T00:00:00.000",
+            "county": "Queens",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "SKYLINE BUILDERS NY LLC",
+            "dos_process_address_1": "119-11 103RD AVENUE",
+            "dos_process_city": "SOUTH RICHMOND HILL",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11419"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "4713568",
+          "name": "SKYLINE BUILDERS NYC CORP",
+          "name_stem": "SKYLINE BUILDERS NYC",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "4403-15TH AVENUE",
+            "street_2": "SUITE 204",
+            "city": "BROOKLYN",
+            "state": "NY",
+            "zip": "11219",
+            "text": "4403-15TH AVENUE SUITE 204, BROOKLYN, NY 11219",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Kings",
+            "initial_dos_filing_date": "2015-02-20T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "SKYLINE BUILDERS NYC CORP",
+                "address": {
+                  "street": "4403-15TH AVENUE",
+                  "street_2": "SUITE 204",
+                  "city": "BROOKLYN",
+                  "state": "NY",
+                  "zip": "11219",
+                  "text": "4403-15TH AVENUE SUITE 204, BROOKLYN, NY 11219",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "4713568",
+            "current_entity_name": "SKYLINE BUILDERS NYC CORP",
+            "initial_dos_filing_date": "2015-02-20T00:00:00.000",
+            "county": "Kings",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "SKYLINE BUILDERS NYC CORP",
+            "dos_process_address_1": "4403-15TH AVENUE",
+            "dos_process_address_2": "SUITE 204",
+            "dos_process_city": "BROOKLYN",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11219"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "5940081",
+          "name": "SKYLINE BUILDERS PRO CORP",
+          "name_stem": "SKYLINE BUILDERS PRO",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "13 DINEV RD",
+            "street_2": "UNIT 203",
+            "city": "MONROE",
+            "state": "NY",
+            "zip": "10950",
+            "text": "13 DINEV RD UNIT 203, MONROE, NY 10950",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Orange",
+            "initial_dos_filing_date": "2021-02-11T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "SKYLINE BUILDERS PRO CORP",
+                "address": {
+                  "street": "13 DINEV RD",
+                  "street_2": "UNIT 203",
+                  "city": "MONROE",
+                  "state": "NY",
+                  "zip": "10950",
+                  "text": "13 DINEV RD UNIT 203, MONROE, NY 10950",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "5940081",
+            "current_entity_name": "SKYLINE BUILDERS PRO CORP",
+            "initial_dos_filing_date": "2021-02-11T00:00:00.000",
+            "county": "Orange",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "SKYLINE BUILDERS PRO CORP",
+            "dos_process_address_1": "13 DINEV RD",
+            "dos_process_address_2": "UNIT 203",
+            "dos_process_city": "MONROE",
+            "dos_process_state": "NY",
+            "dos_process_zip": "10950"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "7441206",
+          "name": "SKYLINE BUILDERS SERVICES INC.",
+          "name_stem": "SKYLINE BUILDERS SERVICES",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "48 HOMELAND DR",
+            "street_2": null,
+            "city": "HUNTINGTON",
+            "state": "NY",
+            "zip": "11743",
+            "text": "48 HOMELAND DR, HUNTINGTON, NY 11743",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Suffolk",
+            "initial_dos_filing_date": "2024-10-14T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "SKYLINE BUILDERS SERVICES INC.",
+                "address": {
+                  "street": "48 HOMELAND DR",
+                  "street_2": null,
+                  "city": "HUNTINGTON",
+                  "state": "NY",
+                  "zip": "11743",
+                  "text": "48 HOMELAND DR, HUNTINGTON, NY 11743",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "7441206",
+            "current_entity_name": "SKYLINE BUILDERS SERVICES INC.",
+            "initial_dos_filing_date": "2024-10-14T00:00:00.000",
+            "county": "Suffolk",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "SKYLINE BUILDERS SERVICES INC.",
+            "dos_process_address_1": "48 HOMELAND DR",
+            "dos_process_city": "HUNTINGTON",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11743"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "4723075",
+          "name": "SKYLINE BUILDERS USA, INC.",
+          "name_stem": "SKYLINE BUILDERS",
+          "entity_class": "business_corporation",
+          "entity_type": "DOMESTIC BUSINESS CORPORATION",
+          "address": {
+            "street": "107-29 78TH STREET",
+            "street_2": null,
+            "city": "OZONE PARK",
+            "state": "NY",
+            "zip": "11417",
+            "text": "107-29 78TH STREET, OZONE PARK, NY 11417",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Queens",
+            "initial_dos_filing_date": "2015-03-10T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "SKYLINE BUILDERS USA, INC.",
+                "address": {
+                  "street": "107-29 78TH STREET",
+                  "street_2": null,
+                  "city": "OZONE PARK",
+                  "state": "NY",
+                  "zip": "11417",
+                  "text": "107-29 78TH STREET, OZONE PARK, NY 11417",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "4723075",
+            "current_entity_name": "SKYLINE BUILDERS USA, INC.",
+            "initial_dos_filing_date": "2015-03-10T00:00:00.000",
+            "county": "Queens",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC BUSINESS CORPORATION",
+            "dos_process_name": "SKYLINE BUILDERS USA, INC.",
+            "dos_process_address_1": "107-29 78TH STREET",
+            "dos_process_city": "OZONE PARK",
+            "dos_process_state": "NY",
+            "dos_process_zip": "11417"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "2360270",
+          "name": "SKYLINE BUILDERS, LLC",
+          "name_stem": "SKYLINE BUILDERS",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "1115 EAST MAIN STREET",
+            "street_2": "BOX 41",
+            "city": "ROCHESTER",
+            "state": "NY",
+            "zip": "14609",
+            "text": "1115 EAST MAIN STREET BOX 41, ROCHESTER, NY 14609",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Monroe",
+            "initial_dos_filing_date": "1999-03-25T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "SKYLINE BUILDERS, LLC",
+                "address": {
+                  "street": "1115 EAST MAIN STREET",
+                  "street_2": "BOX 41",
+                  "city": "ROCHESTER",
+                  "state": "NY",
+                  "zip": "14609",
+                  "text": "1115 EAST MAIN STREET BOX 41, ROCHESTER, NY 14609",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "2360270",
+            "current_entity_name": "SKYLINE BUILDERS, LLC",
+            "initial_dos_filing_date": "1999-03-25T00:00:00.000",
+            "county": "Monroe",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "SKYLINE BUILDERS, LLC",
+            "dos_process_address_1": "1115 EAST MAIN STREET",
+            "dos_process_address_2": "BOX 41",
+            "dos_process_city": "ROCHESTER",
+            "dos_process_state": "NY",
+            "dos_process_zip": "14609"
+          }
+        },
+        {
+          "register": "ny_dos_entities",
+          "register_record_id": "3210890",
+          "name": "SKYLINE CONTRACTORS/BUILDERS, LLC",
+          "name_stem": "SKYLINE CONTRACTORS/BUILDERS",
+          "entity_class": "llc",
+          "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+          "address": {
+            "street": "561 LAKE RD",
+            "street_2": null,
+            "city": "WEBSTER",
+            "state": "NY",
+            "zip": "14580",
+            "text": "561 LAKE RD, WEBSTER, NY 14580",
+            "role": "dos_process"
+          },
+          "status": "ACTIVE",
+          "status_basis": "dataset_scope_active_corporations",
+          "source_url": "https://data.ny.gov/d/n9v6-gdp6",
+          "collected_at": null,
+          "queried_at": "2026-11-12T12:51:05.125Z",
+          "flags": [],
+          "published": {
+            "jurisdiction": "New York",
+            "county": "Monroe",
+            "initial_dos_filing_date": "2005-05-26T00:00:00.000",
+            "blocks": {
+              "dos_process": {
+                "name": "ANDREW B KAPTEIN",
+                "address": {
+                  "street": "561 LAKE RD",
+                  "street_2": null,
+                  "city": "WEBSTER",
+                  "state": "NY",
+                  "zip": "14580",
+                  "text": "561 LAKE RD, WEBSTER, NY 14580",
+                  "role": "dos_process"
+                }
+              },
+              "chairman": {
+                "name": null,
+                "address": null
+              },
+              "registered_agent": {
+                "name": null,
+                "address": null
+              },
+              "location": {
+                "name": null,
+                "address": null
+              }
+            }
+          },
+          "raw": {
+            "dos_id": "3210890",
+            "current_entity_name": "SKYLINE CONTRACTORS/BUILDERS, LLC",
+            "initial_dos_filing_date": "2005-05-26T00:00:00.000",
+            "county": "Monroe",
+            "jurisdiction": "New York",
+            "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+            "dos_process_name": "ANDREW B KAPTEIN",
+            "dos_process_address_1": "561 LAKE RD",
+            "dos_process_city": "WEBSTER",
+            "dos_process_state": "NY",
+            "dos_process_zip": "14580"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -212,6 +212,7 @@ entity_resolution/publication/index.mjs
 entity_resolution/publication/link_confidence.mjs
 entity_resolution/publication/relationship_graph.mjs
 entity_resolution/referents/index.mjs
+entity_resolution/registers/dos_entities.mjs
 entity_resolution/review/active_review.mjs
 entity_resolution/review/alias_registry.json
 entity_resolution/review/assertion_evidence.mjs
@@ -2105,6 +2106,7 @@ worker/src/digest_backfill.mjs
 worker/src/digest_shadow.mjs
 worker/src/digest_shadow_hold.mjs
 worker/src/digest_shadow_rebuild.mjs
+worker/src/dos_entity_lookup.mjs
 worker/src/entity_dossier.mjs
 worker/src/entity_intelligence.mjs
 worker/src/events.mjs

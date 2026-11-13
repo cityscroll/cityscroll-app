@@ -58,6 +58,10 @@ These datasets refresh on the machine that holds the warehouse:
 | `site/data/zap_bbl_warehouse_lookup.json` | `tools/build_zap_bbl_warehouse_lookup.mjs` |
 | `site/data/doing_business_warehouse_lookup.json` | `tools/build_doing_business_warehouse_lookup.mjs` |
 | `site/data/city_record_pin_chain_warehouse_lookup.json` | `tools/build_city_record_pin_chain_lookup.mjs` |
+| `site/data/irs_eo_bmf_ny/manifest.json` | `tools/build_register_shards.mjs` (after `tools/acquire_irs_eo_bmf.mjs`) |
+| `site/data/nys_dol_contractor_registry/manifest.json` | `tools/build_register_shards.mjs` |
+| `site/data/nyc_sca_prequalified_firms/manifest.json` | `tools/build_register_shards.mjs` |
+| `site/data/dos_entities_vendor_lookup.json` | `tools/build_dos_entities_vendor_lookup.mjs` |
 | `site/data/e_designation_project_digest.json` | `tools/build_e_designation_digest.mjs` |
 | `site/data/later_housing_activity.json` | `tools/build_later_housing_activity.mjs` |
 

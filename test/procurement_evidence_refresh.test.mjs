@@ -78,7 +78,7 @@ test('source contracts keep schema_version 1 and the full contracts array; only 
   const contracts = readJson(CONTRACTS_PATH);
   assert.equal(contracts.schema_version, 1);
   const ids = (contracts.contracts || []).map((row) => row.id).sort();
-  assert.equal(ids.length, 71);
+  assert.equal(ids.length, 75);
   assert.ok(ids.includes('checkbook-contracts'));
   assert.ok(ids.includes('omb-community-board-budget-requests'));
   assert.ok(ids.includes('dycd-program-sites'));

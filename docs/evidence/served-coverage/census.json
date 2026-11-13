@@ -2,8 +2,8 @@
   "schema": "cityscroll.served_coverage_census.v1",
   "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
   "registry": {
-    "reviewed_registry_size": 71,
-    "observed_registry_size": 71,
+    "reviewed_registry_size": 75,
+    "observed_registry_size": 75,
     "changed": false
   },
   "disposition_vocabulary": [
@@ -14,7 +14,7 @@
   ],
   "disposition_counts": {
     "publicly_represented": 19,
-    "context_only": 33,
+    "context_only": 37,
     "not_served": 8,
     "unresolved": 11
   },
@@ -837,6 +837,19 @@
       }
     },
     {
+      "source_id": "dos-active-entities",
+      "name": "NYS Department of State Active Corporations",
+      "disposition": "context_only",
+      "reason": "On-demand organization entity-class and officer evidence for supplier directories; answers stay candidate_only and do not form an independent served record population.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "live-only",
+          "used_for": "Organization entity-class and officer/agent evidence for supplier directories; answers are candidate_only and never assert identity."
+        }
+      }
+    },
+    {
       "source_id": "dsny-district-boundaries",
       "name": "DSNY Districts",
       "disposition": "not_served",
@@ -885,6 +898,19 @@
           "status": "build-time",
           "delivery_tier": "inline-at-build",
           "used_for": "Authoritative IBO agency-expenditure and fiscal-year-end staffing context in the agency fiscal context projection."
+        }
+      }
+    },
+    {
+      "source_id": "irs-eo-bmf-ny",
+      "name": "IRS Exempt Organizations Business Master File (New York)",
+      "disposition": "context_only",
+      "reason": "Tax-exempt organization evidence for supplier directories; answers stay candidate_only and do not form an independent served record population.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Tax-exempt organization evidence (EIN, NTEE, status) for supplier directories; answers are candidate_only."
         }
       }
     },
@@ -1134,6 +1160,19 @@
       }
     },
     {
+      "source_id": "nyc-sca-prequalified-firms",
+      "name": "NYC School Construction Authority Prequalified Firms",
+      "disposition": "context_only",
+      "reason": "School Construction Authority prequalification and trade evidence for supplier directories; answers stay candidate_only and do not form an independent served record population.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "SCA prequalification and trade coverage for supplier directories."
+        }
+      }
+    },
+    {
       "source_id": "nycida-build-nyc-projects",
       "name": "NYCIDA/Build NYC subsidy project records",
       "disposition": "unresolved",
@@ -1161,6 +1200,19 @@
             "procurement_id": "procurement:contract_reporter_number:2138505",
             "canonical_route": "/procurements/procurement%3Acontract_reporter_number%3A2138505"
           }
+        }
+      }
+    },
+    {
+      "source_id": "nys-dol-contractor-registry",
+      "name": "NYS Department of Labor Contractor Registry",
+      "disposition": "context_only",
+      "reason": "Contractor registry, debarment, and MWBE evidence for supplier directories; answers stay candidate_only and do not form an independent served record population.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Contractor registry, debarment and MWBE fields for supplier directories."
         }
       }
     },

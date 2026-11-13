@@ -67,6 +67,44 @@ export const SERVE_LOOKUP_CONTRACTS = Object.freeze({
       Object.freeze({ field: "title_description", value: "FIREFIGHTER" }),
     ]),
   }),
+  irs_eo_bmf_ny: Object.freeze({
+    id: "irs_eo_bmf_ny",
+    label: "IRS EO BMF New York",
+    timestamp_field: "collected_at",
+    max_age_days: 180,
+    canaries: Object.freeze([
+      Object.freeze({ field: "EIN", value: "263419217" }),
+      Object.freeze({ field: "NAME", value: "VINCENT NASTA FOUNDATION INC" }),
+    ]),
+  }),
+  nys_dol_contractor_registry: Object.freeze({
+    id: "nys_dol_contractor_registry",
+    label: "NYS DOL contractor registry",
+    timestamp_field: "collected_at",
+    max_age_days: 180,
+    canaries: Object.freeze([
+      Object.freeze({ field: "certificate_number", value: "24-637Y9-CR" }),
+      Object.freeze({ field: "business_name", value: "ZHN CONTRACTING CORPORATION" }),
+    ]),
+  }),
+  nyc_sca_prequalified_firms: Object.freeze({
+    id: "nyc_sca_prequalified_firms",
+    label: "NYC SCA prequalified firms",
+    timestamp_field: "collected_at",
+    max_age_days: 180,
+    canaries: Object.freeze([
+      Object.freeze({ field: "prequalified_vendor_name", value: "A + Choice Construction Inc." }),
+    ]),
+  }),
+  dos_entities: Object.freeze({
+    id: "dos_entities",
+    label: "NYS DOS active entities vendor lookup",
+    timestamp_field: "collected_at",
+    max_age_days: 180,
+    canaries: Object.freeze([
+      Object.freeze({ field: "name", value: "CHINATOWN MANPOWER PROJECT, INC." }),
+    ]),
+  }),
 });
 
 function normalized(value) {
@@ -75,6 +113,16 @@ function normalized(value) {
 
 function canaryLabel(canary) {
   return `${canary.field}=${JSON.stringify(canary.value)}`;
+}
+
+/** Rows used for canary presence: standard serve rows, register canary_rows, or DOS matches. */
+export function extractServeRows(doc) {
+  if (Array.isArray(doc?.rows)) return doc.rows;
+  if (Array.isArray(doc?.canary_rows)) return doc.canary_rows;
+  if (Array.isArray(doc?.matches)) {
+    return doc.matches.flatMap((match) => (Array.isArray(match?.records) ? match.records : []));
+  }
+  return [];
 }
 
 /**
@@ -88,7 +136,7 @@ function canaryLabel(canary) {
 export function servePublishFindings(doc, contract, opts = {}) {
   const label = contract?.label || contract?.id || "warehouse serve lookup";
   const findings = [];
-  const rows = Array.isArray(doc?.rows) ? doc.rows : [];
+  const rows = extractServeRows(doc);
 
   if (!contract || !Number.isFinite(Number(contract.max_age_days))) {
     findings.push(`${label} has no finite max_age_days contract`);

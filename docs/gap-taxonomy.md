@@ -75,6 +75,8 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `dob-certificate-of-occupancy` | landed | BBL | — | — |
 | `dob-now-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `doing-business-entities` | landed | organization_name, vendor_name | medium | 70.4% (modern_awards_stem_notices) |
+| `dos-active-entities` | live-only | current_entity_name, vendor_name | — | 47.7% (one_match) |
+| `irs-eo-bmf-ny` | landed | NAME, vendor_name | — | 14% (random_found) |
 | `legacy-dob-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `mandatory-inclusionary-housing` | landed | project_id | — | 97.8% (exact_project_id) |
 | `mappluto` | landed | BBL | — | — |
@@ -203,4 +205,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `ca35cd434523…` · materialized 11 · candidates 93 · class changes 0.
+Last refresh fingerprint: `b4a50af6c5d4…` · materialized 11 · candidates 100 · class changes 0.

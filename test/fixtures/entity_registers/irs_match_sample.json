@@ -1,0 +1,1967 @@
+{
+ "schema": "cityscroll.entity_register.irs_match_sample.v1",
+ "observed_on": "2026-11-11",
+ "register": "irs_eo_bmf_ny",
+ "source": "https://www.irs.gov/pub/irs-soi/eo_ny.csv",
+ "file_rows": 125622,
+ "method": "lookupByStem (engine vendorStem equality) against all 125,622 rows, name only; no EIN exists on the engine side to look up by",
+ "nonprofit_looking": {
+  "size": 100,
+  "found": 34,
+  "several": 3,
+  "miss": 63,
+  "refused": 0,
+  "names": [
+   {
+    "raw": "Faith Mission Alcohol Crisis Center, Inc.",
+    "stem": "FAITH MISSION ALCOHOL CRISIS CENTER",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "FORTUNE SOCIETY",
+    "stem": "FORTUNE SOCIETY",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Community Association of Progressive Dominicans",
+    "stem": "COMMUNITY ASSOCIATION OF PROGRESSIVE DOMINICANS",
+    "status": "found",
+    "eins": [
+     "133266145"
+    ],
+    "irs_names": [
+     "COMMUNITY ASSOCIATION OF PROGRESSIVE DOMINICANS INC"
+    ]
+   },
+   {
+    "raw": "LOLLY'S EARLY CHILDHOOD CENTER INC.",
+    "stem": "LOLLY S EARLY CHILDHOOD CENTER",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "BROOKLYN YOUTH CHORUS ACADEMY INC",
+    "stem": "BROOKLYN YOUTH CHORUS ACADEMY",
+    "status": "found",
+    "eins": [
+     "113129249"
+    ],
+    "irs_names": [
+     "BROOKLYN YOUTH CHORUS ACADEMY INC"
+    ]
+   },
+   {
+    "raw": "COMMUNITY RESOURCE EXCHANGE INC",
+    "stem": "COMMUNITY RESOURCE EXCHANGE",
+    "status": "found",
+    "eins": [
+     "133048638"
+    ],
+    "irs_names": [
+     "COMMUNITY RESOURCE EXCHANGE"
+    ]
+   },
+   {
+    "raw": "Childrens Museum of Manhattan",
+    "stem": "CHILDRENS MUSEUM OF MANHATTAN",
+    "status": "found",
+    "eins": [
+     "132761376"
+    ],
+    "irs_names": [
+     "CHILDRENS MUSEUM OF MANHATTAN"
+    ]
+   },
+   {
+    "raw": "HEALTH INDUSTRY RESOURCES ENTERPRISES, INC.",
+    "stem": "HEALTH INDUSTRY RESOURCES ENTERPRISES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Council for Human Services Home Care Services Corp.",
+    "stem": "COUNCIL FOR HUMAN SERVICES HOME CARE SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Med-tox Health Services",
+    "stem": "MED-TOX HEALTH SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Brookdale Hospital Medical Center",
+    "stem": "BROOKDALE HOSPITAL MEDICAL CENTER",
+    "status": "found",
+    "eins": [
+     "111631746"
+    ],
+    "irs_names": [
+     "BROOKDALE HOSPITAL MEDICAL CENTER"
+    ]
+   },
+   {
+    "raw": "Manhattan Football Club Ltd",
+    "stem": "MANHATTAN FOOTBALL CLUB",
+    "status": "found",
+    "eins": [
+     "922766784"
+    ],
+    "irs_names": [
+     "MANHATTAN FOOTBALL CLUB LTD"
+    ]
+   },
+   {
+    "raw": "The Partnership for The Homeless Inc",
+    "stem": "THE PARTNERSHIP FOR THE HOMELESS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "ANNA LEFKOWITZ DAY CARE CENTER, INC",
+    "stem": "ANNA LEFKOWITZ DAY CARE CENTER",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "BUDDHIST TZU CHI MEDICAL FOUNDATION",
+    "stem": "BUDDHIST TZU CHI MEDICAL FOUNDATION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "ASIAN & PACIFIC ITALIAN COALITION ON HIV/AIDS",
+    "stem": "ASIAN PACIFIC ITALIAN COALITION ON HIV/AIDS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "SKY HIGH YOUTH SERVICES LLC",
+    "stem": "SKY HIGH YOUTH SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Practising Law Institute",
+    "stem": "PRACTISING LAW INSTITUTE",
+    "status": "found",
+    "eins": [
+     "135562321"
+    ],
+    "irs_names": [
+     "PRACTISING LAW INSTITUTE"
+    ]
+   },
+   {
+    "raw": "Common Ground Community II, HDFC",
+    "stem": "COMMON GROUND COMMUNITY II HDFC",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "CENTER FOR RACIAL JUSTICE IN EDUCATION INC",
+    "stem": "CENTER FOR RACIAL JUSTICE IN EDUCATION",
+    "status": "found",
+    "eins": [
+     "262671377"
+    ],
+    "irs_names": [
+     "CENTER FOR RACIAL JUSTICE IN EDUCATION INC"
+    ]
+   },
+   {
+    "raw": "CHILD DEVELOPMENT CENTER OF THE MOSHOLU-MONTEFIORE COMM CTR",
+    "stem": "CHILD DEVELOPMENT CENTER OF THE MOSHOLU-MONTEFIORE COMM CTR",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Moshulu Montefiore  Community Center Inc",
+    "stem": "MOSHULU MONTEFIORE COMMUNITY CENTER",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Environmental Systems Research Institute Inc.",
+    "stem": "ENVIRONMENTAL SYSTEMS RESEARCH INSTITUTE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "SCAN (SUPPORTIVE CHILDREN`S ADVOCACY NETWORK) - NY - VOLUN",
+    "stem": "SCAN (SUPPORTIVE CHILDREN`S ADVOCACY NETWORK) - NY - VOLUN",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Saint Marks Family Services Council",
+    "stem": "SAINT MARKS FAMILY SERVICES COUNCIL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "ART For CHARITY ASSOCIATION INC",
+    "stem": "ART FOR CHARITY ASSOCIATION",
+    "status": "found",
+    "eins": [
+     "822103220"
+    ],
+    "irs_names": [
+     "ART FOR CHARITY ASSOCIATION INC"
+    ]
+   },
+   {
+    "raw": "Hope Senior Center Inc",
+    "stem": "HOPE SENIOR CENTER",
+    "status": "found",
+    "eins": [
+     "132749857"
+    ],
+    "irs_names": [
+     "HOPE SENIOR CENTER INC"
+    ]
+   },
+   {
+    "raw": "INSTITUTE FOR REPRODUCTIVE HEALTH ACCESS INC.",
+    "stem": "INSTITUTE FOR REPRODUCTIVE HEALTH ACCESS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Upper Manhattan Mental Health Center, Inc.",
+    "stem": "UPPER MANHATTAN MENTAL HEALTH CENTER",
+    "status": "found",
+    "eins": [
+     "133389470"
+    ],
+    "irs_names": [
+     "UPPER MANHATTAN MENTAL HEALTH CENTER"
+    ]
+   },
+   {
+    "raw": "New York County Health Services Review Organization",
+    "stem": "NEW YORK COUNTY HEALTH SERVICES REVIEW ORGANIZATION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "MID- BRONX SENIOR CITIZENS COUNCIL INC",
+    "stem": "MID- BRONX SENIOR CITIZENS COUNCIL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "OKLAHOMA STATE UNIVERSITY",
+    "stem": "OKLAHOMA STATE UNIVERSITY",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "KWANG YA CHURCH",
+    "stem": "KWANG YA CHURCH",
+    "status": "found",
+    "eins": [
+     "542069116"
+    ],
+    "irs_names": [
+     "KWANG YA CHURCH"
+    ]
+   },
+   {
+    "raw": "THE CHRIS S. OWENS FOUNDATION",
+    "stem": "THE CHRIS S OWENS FOUNDATION",
+    "status": "found",
+    "eins": [
+     "271794499"
+    ],
+    "irs_names": [
+     "THE CHRIS S OWENS FOUNDATION INC"
+    ]
+   },
+   {
+    "raw": "Riverside Hawks Hope Health and Hoops Corporation",
+    "stem": "RIVERSIDE HAWKS HOPE HEALTH AND HOOPS",
+    "status": "found",
+    "eins": [
+     "061750000"
+    ],
+    "irs_names": [
+     "RIVERSIDE HAWKS HOPE HEALTH AND HOOPS CORPORATION"
+    ]
+   },
+   {
+    "raw": "All American School Bus Corp.",
+    "stem": "ALL AMERICAN SCHOOL BUS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "HEW YORK FOUNDLING HOSPITAL",
+    "stem": "HEW YORK FOUNDLING HOSPITAL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Mental Health Association of New York",
+    "stem": "MENTAL HEALTH ASSOCIATION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "HEALTH METRICS, INC",
+    "stem": "HEALTH METRICS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "AMERICAN ARBITRATION ASSOCIATION",
+    "stem": "AMERICAN ARBITRATION ASSOCIATION",
+    "status": "found",
+    "eins": [
+     "130429745"
+    ],
+    "irs_names": [
+     "AMERICAN ARBITRATION ASSOCIATION INC"
+    ]
+   },
+   {
+    "raw": "CHILDREN OF PARENTS WITH AIDS",
+    "stem": "CHILDREN OF PARENTS WITH AIDS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "The Metropolitan Museum of Art",
+    "stem": "THE METROPOLITAN MUSEUM OF ART",
+    "status": "found",
+    "eins": [
+     "131624086"
+    ],
+    "irs_names": [
+     "THE METROPOLITAN MUSEUM OF ART"
+    ]
+   },
+   {
+    "raw": "Chinese - American Planning Council, Inc.",
+    "stem": "CHINESE - AMERICAN PLANNING COUNCIL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "NYS Department Of Correction and Community Supervision",
+    "stem": "NYS DEPARTMENT OF CORRECTION AND COMMUNITY SUPERVISION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "PRACTICE OF PEACE FOUNDATION INC",
+    "stem": "PRACTICE OF PEACE FOUNDATION",
+    "status": "found",
+    "eins": [
+     "823574941"
+    ],
+    "irs_names": [
+     "PRACTICE OF PEACE FOUNDATION INC"
+    ]
+   },
+   {
+    "raw": "SIC FILM SCHOOL LLC",
+    "stem": "SIC FILM SCHOOL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "CORPORATE COUNSELING ASSOC INC",
+    "stem": "CORPORATE COUNSELING ASSOC",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "NYC Gay and Lesbian Anti-Violence Project",
+    "stem": "NYC GAY AND LESBIAN ANTI-VIOLENCE PROJECT",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Neighborhood Housing Services of Brooklyn Bedford-Stuyvesant Brooklyn Neighborhood Services",
+    "stem": "NEIGHBORHOOD HOUSING SERVICES OF BROOKLYN BEDFORD-STUYVESANT BROOKLYN NEIGHBORHOOD SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "CHINESE COMMUNITY CONCERNS CORP",
+    "stem": "CHINESE COMMUNITY CONCERNS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Association For Services For The Aged",
+    "stem": "ASSOCIATION FOR SERVICES FOR THE AGED",
+    "status": "found",
+    "eins": [
+     "132951640"
+    ],
+    "irs_names": [
+     "ASSOCIATION FOR SERVICES FOR THE AGED INC"
+    ]
+   },
+   {
+    "raw": "Young Mens and Womens Hebrew Association of Washington Heights",
+    "stem": "YOUNG MENS AND WOMENS HEBREW ASSOCIATION OF WASHINGTON HEIGHTS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "EVANGELICAL LUTHERAN CHURCH OF THE REDEEMER",
+    "stem": "EVANGELICAL LUTHERAN CHURCH OF THE REDEEMER",
+    "status": "several",
+    "eins": [
+     "111666234",
+     "160806887"
+    ],
+    "irs_names": [
+     "EVANGELICAL LUTHERAN CHURCH OF THE REDEEMER",
+     "EVANGELICAL LUTHERAN CHURCH OF THE REDEEMER"
+    ]
+   },
+   {
+    "raw": "N.Y. County Health Services Review Org.",
+    "stem": "N Y COUNTY HEALTH SERVICES REVIEW ORG",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "SUNSHINE CENTER OF CONEY ISLAND LLC",
+    "stem": "SUNSHINE CENTER OF CONEY ISLAND",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Vera Institute of Justice, Inc.",
+    "stem": "VERA INSTITUTE OF JUSTICE",
+    "status": "found",
+    "eins": [
+     "131941627"
+    ],
+    "irs_names": [
+     "VERA INSTITUTE OF JUSTICE INC"
+    ]
+   },
+   {
+    "raw": "Lesbian  and  Gay Community Center",
+    "stem": "LESBIAN AND GAY COMMUNITY CENTER",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "CARIBBEAN AMERICAN SOCIETY OF NEW YORK",
+    "stem": "CARIBBEAN AMERICAN SOCIETY",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "RIDGEWOOD NEPALESE SOCIETY INC",
+    "stem": "RIDGEWOOD NEPALESE SOCIETY",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "YOUTH REFERRAL & PLACEMENT UNIT INC",
+    "stem": "YOUTH REFERRAL PLACEMENT UNIT",
+    "status": "found",
+    "eins": [
+     "020674289"
+    ],
+    "irs_names": [
+     "YOUTH REFERRAL & PLACEMENT UNIT INC"
+    ]
+   },
+   {
+    "raw": "Addicts Rehabilitation Center Foundation Center, Inc.",
+    "stem": "ADDICTS REHABILITATION CENTER FOUNDATION CENTER",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "American Cancer Society, Eastern Division, Inc.",
+    "stem": "AMERICAN CANCER SOCIETY EASTERN DIVISION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Stein Senior Center, Inc.",
+    "stem": "STEIN SENIOR CENTER",
+    "status": "found",
+    "eins": [
+     "237378342"
+    ],
+    "irs_names": [
+     "STEIN SENIOR CENTER INC"
+    ]
+   },
+   {
+    "raw": "The Child Center of NY Inc.",
+    "stem": "THE CHILD CENTER",
+    "status": "found",
+    "eins": [
+     "111733454"
+    ],
+    "irs_names": [
+     "THE CHILD CENTER OF NY INC"
+    ]
+   },
+   {
+    "raw": "Door- A Center Of Alternatives Inc",
+    "stem": "DOOR- A CENTER OF ALTERNATIVES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Morris Park Community Association",
+    "stem": "MORRIS PARK COMMUNITY ASSOCIATION",
+    "status": "found",
+    "eins": [
+     "237429900"
+    ],
+    "irs_names": [
+     "MORRIS PARK COMMUNITY ASSOCIATION INC"
+    ]
+   },
+   {
+    "raw": "MORNINGSIDE RETIREMENT & HEALTH SERVICES INC.",
+    "stem": "MORNINGSIDE RETIREMENT HEALTH SERVICES",
+    "status": "found",
+    "eins": [
+     "136206256"
+    ],
+    "irs_names": [
+     "MORNINGSIDE RETIREMENT & HEALTH SERVICES INC"
+    ]
+   },
+   {
+    "raw": "MERCY COLLEGE",
+    "stem": "MERCY COLLEGE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Stevens Institute of Technology",
+    "stem": "STEVENS INSTITUTE OF TECHNOLOGY",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Summit Home Health Care Inc",
+    "stem": "SUMMIT HOME HEALTH CARE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Brooklyn-Chinese American Association",
+    "stem": "BROOKLYN-CHINESE AMERICAN ASSOCIATION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "NYU DOWNTOWN HOSPITAL",
+    "stem": "NYU DOWNTOWN HOSPITAL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "HOLY CROSS GREEK ORTHODOX CHURCH, INC.",
+    "stem": "HOLY CROSS GREEK ORTHODOX CHURCH",
+    "status": "several",
+    "eins": [
+     "116046464",
+     "222602696"
+    ],
+    "irs_names": [
+     "HOLY CROSS GREEK ORTHODOX CHURCH",
+     "HOLY CROSS GREEK ORTHODOX CHURCH"
+    ]
+   },
+   {
+    "raw": "Pile Foundation Construction Co. Inc.",
+    "stem": "PILE FOUNDATION CONSTRUCTION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "IMOGEN ROCHE FOUNDATION INC",
+    "stem": "IMOGEN ROCHE FOUNDATION",
+    "status": "found",
+    "eins": [
+     "831897911"
+    ],
+    "irs_names": [
+     "IMOGEN ROCHE FOUNDATION INC"
+    ]
+   },
+   {
+    "raw": "MULTICULTURE CENTER KALEIDOSCOPE INC",
+    "stem": "MULTICULTURE CENTER KALEIDOSCOPE",
+    "status": "found",
+    "eins": [
+     "820754173"
+    ],
+    "irs_names": [
+     "MULTICULTURE CENTER KALEIDOSCOPE INC"
+    ]
+   },
+   {
+    "raw": "Northeast Brooklyn Housing Development",
+    "stem": "NORTHEAST BROOKLYN HOUSING DEVELOPMENT",
+    "status": "found",
+    "eins": [
+     "112737223"
+    ],
+    "irs_names": [
+     "NORTHEAST BROOKLYN HOUSING DEVELOPMENT CORPORATION"
+    ]
+   },
+   {
+    "raw": "INWOOD-MANHATTAN LITTLE LEAGUE BASEBALL INC",
+    "stem": "INWOOD-MANHATTAN LITTLE LEAGUE BASEBALL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Community Health Project, Inc Callen-lorde Comnty.health Ctr",
+    "stem": "COMMUNITY HEALTH PROJECT INC CALLEN-LORDE COMNTY HEALTH CTR",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Cardinal Health 110 Inc. DBA Cardinal Health Pharm Dist.",
+    "stem": "CARDINAL HEALTH 110 INC DBA CARDINAL HEALTH PHARM DIST",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Children`s Community Services, Inc.",
+    "stem": "CHILDREN`S COMMUNITY SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Baychester Payment Center LLC",
+    "stem": "BAYCHESTER PAYMENT CENTER",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "NEIGHBORHOOD CHARTER SCHOOL OF HARLEM",
+    "stem": "NEIGHBORHOOD CHARTER SCHOOL OF HARLEM",
+    "status": "found",
+    "eins": [
+     "453355866"
+    ],
+    "irs_names": [
+     "NEIGHBORHOOD CHARTER SCHOOL OF HARLEM"
+    ]
+   },
+   {
+    "raw": "Services for the Underserved Inc.",
+    "stem": "SERVICES FOR THE UNDERSERVED",
+    "status": "several",
+    "eins": [
+     "112650543",
+     "113322756",
+     "133250383",
+     "133463392",
+     "133586129",
+     "202549482",
+     "237089380",
+     "320353562",
+     "510165030",
+     "911918247",
+     "912071511"
+    ],
+    "irs_names": [
+     "SERVICES FOR THE UNDERSERVED INC",
+     "SERVICES FOR THE UNDERSERVED INC",
+     "SERVICES FOR THE UNDERSERVED INC"
+    ]
+   },
+   {
+    "raw": "Beth Abraham Health Services,",
+    "stem": "BETH ABRAHAM HEALTH SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Just Equity For Health",
+    "stem": "JUST EQUITY FOR HEALTH",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Big Russ Barber Training and Youth Development Program",
+    "stem": "BIG RUSS BARBER TRAINING AND YOUTH DEVELOPMENT PROGRAM",
+    "status": "found",
+    "eins": [
+     "923791091"
+    ],
+    "irs_names": [
+     "BIG RUSS BARBER TRAINING AND YOUTH DEVELOPMENT PROGRAM INC"
+    ]
+   },
+   {
+    "raw": "NOHO NY DISTRICT MANAGEMENT ASSOCIATION INC",
+    "stem": "NOHO NY DISTRICT MANAGEMENT ASSOCIATION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "WEST INDIAN AMERICAN DAY CARNIVAL ASSOCIATION INC",
+    "stem": "WEST INDIAN AMERICAN DAY CARNIVAL ASSOCIATION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "ALL MY CHILDREN DAYCARE AND NURSERY SCHOOL",
+    "stem": "ALL MY CHILDREN DAYCARE AND NURSERY SCHOOL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "LOUIS ARMSTRONG HOUSE MUSEUM",
+    "stem": "LOUIS ARMSTRONG HOUSE MUSEUM",
+    "status": "found",
+    "eins": [
+     "264178283"
+    ],
+    "irs_names": [
+     "LOUIS ARMSTRONG HOUSE MUSEUM"
+    ]
+   },
+   {
+    "raw": "COOPER SQUARE HOUSING DEVELOPM FUND CO COMMUNITY LAND TR INC",
+    "stem": "COOPER SQUARE HOUSING DEVELOPM FUND CO COMMUNITY LAND TR",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Lenox Hill Neighborhood House Inc.",
+    "stem": "LENOX HILL NEIGHBORHOOD HOUSE",
+    "status": "found",
+    "eins": [
+     "131628180"
+    ],
+    "irs_names": [
+     "LENOX HILL NEIGHBORHOOD HOUSE INC"
+    ]
+   },
+   {
+    "raw": "New York City Health and Hospital",
+    "stem": "NEW YORK CITY HEALTH AND HOSPITAL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "SPORTS AND HEALTH IN THE CITY",
+    "stem": "SPORTS AND HEALTH IN THE CITY",
+    "status": "found",
+    "eins": [
+     "832547786"
+    ],
+    "irs_names": [
+     "SPORTS AND HEALTH IN THE CITY INC"
+    ]
+   },
+   {
+    "raw": "COUNCIL FOR AID TO EDUCATION INC",
+    "stem": "COUNCIL FOR AID TO EDUCATION",
+    "status": "found",
+    "eins": [
+     "954570253"
+    ],
+    "irs_names": [
+     "COUNCIL FOR AID TO EDUCATION INC"
+    ]
+   },
+   {
+    "raw": "LEARNERS' HAVEN  DAY CARE CENTER, INC.",
+    "stem": "LEARNERS HAVEN DAY CARE CENTER",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "SNUG HARBOR CULTURAL CENTER AND BOTANICAL GARDEN I",
+    "stem": "SNUG HARBOR CULTURAL CENTER AND BOTANICAL GARDEN I",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "JOSEPHINE HERRICK PROJECT INC",
+    "stem": "JOSEPHINE HERRICK PROJECT",
+    "status": "found",
+    "eins": [
+     "131659632"
+    ],
+    "irs_names": [
+     "JOSEPHINE HERRICK PROJECT"
+    ]
+   },
+   {
+    "raw": "VILLA MARIA ACADEMY INC",
+    "stem": "VILLA MARIA ACADEMY",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   }
+  ],
+  "selection": "seeded random 100 (seed 20261112) of the 3,486 vendor stems whose text contains a nonprofit word (FOUNDATION, ASSOCIATION, CENTER, CHURCH, HOSPITAL, COMMUNITY, YOUTH, ...); the word list is the regex in this file's method note and is a heuristic, not a classification",
+  "rate_found_single": 0.34,
+  "rate_any": 0.37
+ },
+ "seeded_random": {
+  "size": 100,
+  "found": 13,
+  "several": 1,
+  "miss": 86,
+  "refused": 0,
+  "names": [
+   {
+    "raw": "THE RESEARCH FOUNDATION",
+    "stem": "THE RESEARCH FOUNDATION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "DelgraciaCorp",
+    "stem": "DELGRACIACORP",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "RONS TRUCKING CORPORATION",
+    "stem": "RONS TRUCKING",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "United Medical Imaging, Inc.",
+    "stem": "UNITED MEDICAL IMAGING",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "CLIMATE MUSEUM",
+    "stem": "CLIMATE MUSEUM",
+    "status": "found",
+    "eins": [
+     "475518278"
+    ],
+    "irs_names": [
+     "CLIMATE MUSEUM"
+    ]
+   },
+   {
+    "raw": "William Hodson Community Center Inc",
+    "stem": "WILLIAM HODSON COMMUNITY CENTER",
+    "status": "found",
+    "eins": [
+     "131660334"
+    ],
+    "irs_names": [
+     "WILLIAM HODSON COMMUNITY CENTER INC"
+    ]
+   },
+   {
+    "raw": "Bell Helicopter Textron Inc. - Bell Training Academy",
+    "stem": "BELL HELICOPTER TEXTRON INC - BELL TRAINING ACADEMY",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Bronx Parent Network",
+    "stem": "BRONX PARENT NETWORK",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Traction  and  Scale LLC.",
+    "stem": "TRACTION AND SCALE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "LOCOROBO INNOVATIONS INC",
+    "stem": "LOCOROBO INNOVATIONS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "GOCAMPUSING, INC.",
+    "stem": "GOCAMPUSING",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "BERGEN BEACH YOUTH ORGANIZ- ATION INC",
+    "stem": "BERGEN BEACH YOUTH ORGANIZ- ATION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "PS Marcato Elevator Co Inc",
+    "stem": "PS MARCATO ELEVATOR",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "COUNTY OF BERGEN COMMUNITY DEVELOPMENT",
+    "stem": "COUNTY OF BERGEN COMMUNITY DEVELOPMENT",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Leake & Watts Services, Inc.",
+    "stem": "LEAKE WATTS SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Pyramis Global Advisors",
+    "stem": "PYRAMIS GLOBAL ADVISORS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "KIWANIS CLUB OF HOWARD BEACH FOUNDATION INC",
+    "stem": "KIWANIS CLUB OF HOWARD BEACH FOUNDATION",
+    "status": "found",
+    "eins": [
+     "352638008"
+    ],
+    "irs_names": [
+     "KIWANIS CLUB OF HOWARD BEACH FOUNDATION INC"
+    ]
+   },
+   {
+    "raw": "CENTURY MOVING & STORAGE CO INC",
+    "stem": "CENTURY MOVING STORAGE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "MAGIC KINGDOM OF SHEEPSHEAD BAY LLC",
+    "stem": "MAGIC KINGDOM OF SHEEPSHEAD BAY",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "ALBA SERVICES INC",
+    "stem": "ALBA SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Balady Promotions Inc",
+    "stem": "BALADY PROMOTIONS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Med - Eng LLC",
+    "stem": "MED - ENG",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "XEROX STATE  and  LOCAL SOLUTIONS, INC",
+    "stem": "XEROX STATE AND LOCAL SOLUTIONS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "National Sorority Of Phi Delta Kappa",
+    "stem": "NATIONAL SORORITY OF PHI DELTA KAPPA",
+    "status": "several",
+    "eins": [
+     "510189621",
+     "510189625",
+     "753244965",
+     "871588984",
+     "872130213",
+     "942555747"
+    ],
+    "irs_names": [
+     "NATIONAL SORORITY OF PHI DELTA KAPPA INC",
+     "NATIONAL SORORITY OF PHI DELTA KAPPA INC",
+     "NATIONAL SORORITY OF PHI DELTA KAPPA INC"
+    ]
+   },
+   {
+    "raw": "MID- BRONX SENIOR CITIZENS COUNCIL INC",
+    "stem": "MID- BRONX SENIOR CITIZENS COUNCIL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "WE ARE RETURNING INC",
+    "stem": "WE ARE RETURNING",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "New York Staffing, Inc./New York Temps",
+    "stem": "NEW YORK STAFFING INC /NEW YORK TEMPS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Out Of The Walls Ministries Inc",
+    "stem": "OUT OF THE WALLS MINISTRIES",
+    "status": "found",
+    "eins": [
+     "833165623"
+    ],
+    "irs_names": [
+     "OUT OF THE WALLS MINISTRIES INC"
+    ]
+   },
+   {
+    "raw": "JEFREY RUDELL",
+    "stem": "JEFREY RUDELL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Milder Office Incorporated",
+    "stem": "MILDER OFFICE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Feigi Taub Halberstam Audiology and Speech Pathology",
+    "stem": "FEIGI TAUB HALBERSTAM AUDIOLOGY AND SPEECH PATHOLOGY",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "RNH Electric Co., Inc.",
+    "stem": "RNH ELECTRIC",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "SANA REYNOLDS DBA REYNOLDS COMMUNICATION INC.",
+    "stem": "SANA REYNOLDS DBA REYNOLDS COMMUNICATION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "MADAM IP LLC",
+    "stem": "MADAM IP",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "MIRACLE CAKES LLC",
+    "stem": "MIRACLE CAKES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "MOMMY`S HOPE LINE",
+    "stem": "MOMMY`S HOPE LINE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "SYMBAL INC",
+    "stem": "SYMBAL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "WORKING IN SUPPORT OF EDUCATION",
+    "stem": "WORKING IN SUPPORT OF EDUCATION",
+    "status": "found",
+    "eins": [
+     "134024627"
+    ],
+    "irs_names": [
+     "WORKING IN SUPPORT OF EDUCATION"
+    ]
+   },
+   {
+    "raw": "AMSEC LLC",
+    "stem": "AMSEC",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Motors Fleet",
+    "stem": "MOTORS FLEET",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Library Interiors Inc.",
+    "stem": "LIBRARY INTERIORS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "CHILDREN`S HOPE IN LEARNING AND DEV INC.",
+    "stem": "CHILDREN`S HOPE IN LEARNING AND DEV",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "BAIS TZIPORAH INC",
+    "stem": "BAIS TZIPORAH",
+    "status": "found",
+    "eins": [
+     "133044171"
+    ],
+    "irs_names": [
+     "BAIS TZIPORAH INC"
+    ]
+   },
+   {
+    "raw": "Ali Forney Center",
+    "stem": "ALI FORNEY CENTER",
+    "status": "found",
+    "eins": [
+     "300104507"
+    ],
+    "irs_names": [
+     "ALI FORNEY CENTER"
+    ]
+   },
+   {
+    "raw": "ANATOMAGE INC",
+    "stem": "ANATOMAGE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Point Security Inc",
+    "stem": "POINT SECURITY",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Melbourne Venture Group LLC",
+    "stem": "MELBOURNE VENTURE GROUP",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "EarthTech, Inc. / Earth Tech Northeast, Inc.",
+    "stem": "EARTHTECH INC / EARTH TECH NORTHEAST",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "APC Supplies and Services LLC",
+    "stem": "APC SUPPLIES AND SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "PJS MONTESANO WELKIN JV LLC",
+    "stem": "PJS MONTESANO WELKIN JV",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "FORECAST CONSOLES INC",
+    "stem": "FORECAST CONSOLES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Bronx Aids Services",
+    "stem": "BRONX AIDS SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Garda Cl Atlantic Inc",
+    "stem": "GARDA CL ATLANTIC",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "RJ INDUSTRIES, INC",
+    "stem": "RJ INDUSTRIES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Lucille Maud Corporation",
+    "stem": "LUCILLE MAUD",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Consolidated Trailers Inc",
+    "stem": "CONSOLIDATED TRAILERS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "CITY STORE GATES MFG CORP",
+    "stem": "CITY STORE GATES MFG",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "TEACHING MATTERS, INC.",
+    "stem": "TEACHING MATTERS",
+    "status": "found",
+    "eins": [
+     "133770472"
+    ],
+    "irs_names": [
+     "TEACHING MATTERS INC"
+    ]
+   },
+   {
+    "raw": "THE FAMILY CENTER, INC.",
+    "stem": "THE FAMILY CENTER",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Clearview Golf, LLC.",
+    "stem": "CLEARVIEW GOLF",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "COMUNILIFE-HIRE",
+    "stem": "COMUNILIFE-HIRE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Downtown Community Television Center, Inc.",
+    "stem": "DOWNTOWN COMMUNITY TELEVISION CENTER",
+    "status": "found",
+    "eins": [
+     "132742777"
+    ],
+    "irs_names": [
+     "DOWNTOWN COMMUNITY TELEVISION CENTER INC"
+    ]
+   },
+   {
+    "raw": "LIC COM LLC",
+    "stem": "LIC COM",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "FUN BRICKS LLC",
+    "stem": "FUN BRICKS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Center for Human Development and Family Services",
+    "stem": "CENTER FOR HUMAN DEVELOPMENT AND FAMILY SERVICES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "BKBNK INC",
+    "stem": "BKBNK",
+    "status": "found",
+    "eins": [
+     "821420342"
+    ],
+    "irs_names": [
+     "BKBNK INC"
+    ]
+   },
+   {
+    "raw": "LOUZOUN ENTERPRISES INC DBA",
+    "stem": "LOUZOUN ENTERPRISES INC DBA",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "PROGRESS SOFTWARE CORP",
+    "stem": "PROGRESS SOFTWARE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Bivium Capital Partners LLC",
+    "stem": "BIVIUM CAPITAL PARTNERS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "FRESH  AND  TASTY BAKED PRODUCTS L",
+    "stem": "FRESH AND TASTY BAKED PRODUCTS L",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Becton Dickinson & Company",
+    "stem": "BECTON DICKINSON",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "NYTG, Inc.",
+    "stem": "NYTG",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Community Partners",
+    "stem": "COMMUNITY PARTNERS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "J.R. CONTRACTING  and  ENVIRONMENTAL CONSULTING INC,",
+    "stem": "J R CONTRACTING AND ENVIRONMENTAL CONSULTING",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Progress of People`s Management Corp.",
+    "stem": "PROGRESS OF PEOPLE`S MANAGEMENT",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "WHEDCO-WOMENS HOUSING & ECONOMIC DEV.",
+    "stem": "WHEDCO-WOMENS HOUSING ECONOMIC DEV",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "NEW YORK SUN WORKS INC.",
+    "stem": "NEW YORK SUN WORKS",
+    "status": "found",
+    "eins": [
+     "200670312"
+    ],
+    "irs_names": [
+     "NEW YORK SUN WORKS INC"
+    ]
+   },
+   {
+    "raw": "Abaline Paper Prod., Inc.",
+    "stem": "ABALINE PAPER PROD",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "CREATIVE CLASSROOM SOLUTIONS INC",
+    "stem": "CREATIVE CLASSROOM SOLUTIONS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "SERVCO INDUSTRIES",
+    "stem": "SERVCO INDUSTRIES",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Brooklyn Legal Services Corp. A",
+    "stem": "BROOKLYN LEGAL SERVICES CORP A",
+    "status": "found",
+    "eins": [
+     "132605599"
+    ],
+    "irs_names": [
+     "BROOKLYN LEGAL SERVICES CORP A"
+    ]
+   },
+   {
+    "raw": "Operating System Service, Inc.",
+    "stem": "OPERATING SYSTEM SERVICE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "NALANE GREEN SOLUTIONS NYC LLC",
+    "stem": "NALANE GREEN SOLUTIONS NYC",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "CHASE WATERPROOFING CO.",
+    "stem": "CHASE WATERPROOFING",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "TLG PUBLICATIONS D/B/A TONI L. GOLDFARB",
+    "stem": "TLG PUBLICATIONS D/B/A TONI L GOLDFARB",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "BOLT ARCHITECTURE PLLC",
+    "stem": "BOLT ARCHITECTURE",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Applied Bio Systems",
+    "stem": "APPLIED BIO SYSTEMS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "J.C.C. CONSTRUCTION CORP.",
+    "stem": "J C C CONSTRUCTION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Gotham Refining Chemical Corp.",
+    "stem": "GOTHAM REFINING CHEMICAL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Herman Construction Inc.",
+    "stem": "HERMAN CONSTRUCTION",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "A-Tronix and P.M. Electrical J.V.",
+    "stem": "A-TRONIX AND P M ELECTRICAL J V",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "BNB 111 LLC",
+    "stem": "BNB 111",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Accend Networks",
+    "stem": "ACCEND NETWORKS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "SUNDANCE/NEWBRIDGE EDUCATIONAL PUBLISHING LLC",
+    "stem": "SUNDANCE/NEWBRIDGE EDUCATIONAL PUBLISHING",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Michael A. Serrano, Inc",
+    "stem": "MICHAEL A SERRANO",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "BROOKLYN YOUTH CHORUS ACADEMY INC",
+    "stem": "BROOKLYN YOUTH CHORUS ACADEMY",
+    "status": "found",
+    "eins": [
+     "113129249"
+    ],
+    "irs_names": [
+     "BROOKLYN YOUTH CHORUS ACADEMY INC"
+    ]
+   },
+   {
+    "raw": "A  and  L Cesspool Service, Corp. A and L Recycling",
+    "stem": "A AND L CESSPOOL SERVICE CORP A AND L RECYCLING",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "Innovative Construction  and  Management Co. Inc.",
+    "stem": "INNOVATIVE CONSTRUCTION AND MANAGEMENT",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "ST JOHNS LUTHERAN SCHOOL",
+    "stem": "ST JOHNS LUTHERAN SCHOOL",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   },
+   {
+    "raw": "MEGA BUSINESS SYSTEMS",
+    "stem": "MEGA BUSINESS SYSTEMS",
+    "status": "miss",
+    "eins": [],
+    "irs_names": []
+   }
+  ],
+  "selection": "seeded random 100 (seed 20261113) of the 19,506 vendor stems",
+  "rate_found_single": 0.13,
+  "rate_any": 0.14
+ },
+ "full_universe": {
+  "size": 19506,
+  "found": 2132,
+  "several": 33,
+  "miss": 17341,
+  "refused": 0
+ },
+ "review": {
+  "reviewer": "the slice author, by reading each pair; not a second reviewer",
+  "selection": "the first 20 single-match pairs of the nonprofit-looking group and the first 10 of the random group, in sample order",
+  "pairs": [
+   {
+    "n": 1,
+    "vendor_name": "Community Association of Progressive Dominicans",
+    "ein": "133266145",
+    "irs_name": "COMMUNITY ASSOCIATION OF PROGRESSIVE DOMINICANS INC",
+    "irs_city": "BRONX",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 2,
+    "vendor_name": "BROOKLYN YOUTH CHORUS ACADEMY INC",
+    "ein": "113129249",
+    "irs_name": "BROOKLYN YOUTH CHORUS ACADEMY INC",
+    "irs_city": "BROOKLYN",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 3,
+    "vendor_name": "COMMUNITY RESOURCE EXCHANGE INC",
+    "ein": "133048638",
+    "irs_name": "COMMUNITY RESOURCE EXCHANGE",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 4,
+    "vendor_name": "Childrens Museum of Manhattan",
+    "ein": "132761376",
+    "irs_name": "CHILDRENS MUSEUM OF MANHATTAN",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 5,
+    "vendor_name": "Brookdale Hospital Medical Center",
+    "ein": "111631746",
+    "irs_name": "BROOKDALE HOSPITAL MEDICAL CENTER",
+    "irs_city": "BROOKLYN",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 6,
+    "vendor_name": "Manhattan Football Club Ltd",
+    "ein": "922766784",
+    "irs_name": "MANHATTAN FOOTBALL CLUB LTD",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 7,
+    "vendor_name": "Practising Law Institute",
+    "ein": "135562321",
+    "irs_name": "PRACTISING LAW INSTITUTE",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 8,
+    "vendor_name": "CENTER FOR RACIAL JUSTICE IN EDUCATION INC",
+    "ein": "262671377",
+    "irs_name": "CENTER FOR RACIAL JUSTICE IN EDUCATION INC",
+    "irs_city": "BRONX",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 9,
+    "vendor_name": "ART For CHARITY ASSOCIATION INC",
+    "ein": "822103220",
+    "irs_name": "ART FOR CHARITY ASSOCIATION INC",
+    "irs_city": "BROOKLYN",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 10,
+    "vendor_name": "Hope Senior Center Inc",
+    "ein": "132749857",
+    "irs_name": "HOPE SENIOR CENTER INC",
+    "irs_city": "BRONX",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 11,
+    "vendor_name": "Upper Manhattan Mental Health Center, Inc.",
+    "ein": "133389470",
+    "irs_name": "UPPER MANHATTAN MENTAL HEALTH CENTER",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 12,
+    "vendor_name": "KWANG YA CHURCH",
+    "ein": "542069116",
+    "irs_name": "KWANG YA CHURCH",
+    "irs_city": "FLUSHING",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 13,
+    "vendor_name": "THE CHRIS S. OWENS FOUNDATION",
+    "ein": "271794499",
+    "irs_name": "THE CHRIS S OWENS FOUNDATION INC",
+    "irs_city": "BROOKLYN",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 14,
+    "vendor_name": "Riverside Hawks Hope Health and Hoops Corporation",
+    "ein": "061750000",
+    "irs_name": "RIVERSIDE HAWKS HOPE HEALTH AND HOOPS CORPORATION",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 15,
+    "vendor_name": "AMERICAN ARBITRATION ASSOCIATION",
+    "ein": "130429745",
+    "irs_name": "AMERICAN ARBITRATION ASSOCIATION INC",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 16,
+    "vendor_name": "The Metropolitan Museum of Art",
+    "ein": "131624086",
+    "irs_name": "THE METROPOLITAN MUSEUM OF ART",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 17,
+    "vendor_name": "PRACTICE OF PEACE FOUNDATION INC",
+    "ein": "823574941",
+    "irs_name": "PRACTICE OF PEACE FOUNDATION INC",
+    "irs_city": "BRONX",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 18,
+    "vendor_name": "Association For Services For The Aged",
+    "ein": "132951640",
+    "irs_name": "ASSOCIATION FOR SERVICES FOR THE AGED INC",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 19,
+    "vendor_name": "Vera Institute of Justice, Inc.",
+    "ein": "131941627",
+    "irs_name": "VERA INSTITUTE OF JUSTICE INC",
+    "irs_city": "BROOKLYN",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 20,
+    "vendor_name": "YOUTH REFERRAL & PLACEMENT UNIT INC",
+    "ein": "020674289",
+    "irs_name": "YOUTH REFERRAL & PLACEMENT UNIT INC",
+    "irs_city": "JAMAICA",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 21,
+    "vendor_name": "CLIMATE MUSEUM",
+    "ein": "475518278",
+    "irs_name": "CLIMATE MUSEUM",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 22,
+    "vendor_name": "William Hodson Community Center Inc",
+    "ein": "131660334",
+    "irs_name": "WILLIAM HODSON COMMUNITY CENTER INC",
+    "irs_city": "BRONX",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 23,
+    "vendor_name": "KIWANIS CLUB OF HOWARD BEACH FOUNDATION INC",
+    "ein": "352638008",
+    "irs_name": "KIWANIS CLUB OF HOWARD BEACH FOUNDATION INC",
+    "irs_city": "BROOKLYN",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 24,
+    "vendor_name": "Out Of The Walls Ministries Inc",
+    "ein": "833165623",
+    "irs_name": "OUT OF THE WALLS MINISTRIES INC",
+    "irs_city": "BROOKLYN",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 25,
+    "vendor_name": "WORKING IN SUPPORT OF EDUCATION",
+    "ein": "134024627",
+    "irs_name": "WORKING IN SUPPORT OF EDUCATION",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 26,
+    "vendor_name": "BAIS TZIPORAH INC",
+    "ein": "133044171",
+    "irs_name": "BAIS TZIPORAH INC",
+    "irs_city": "BROOKLYN",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 27,
+    "vendor_name": "Ali Forney Center",
+    "ein": "300104507",
+    "irs_name": "ALI FORNEY CENTER",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 28,
+    "vendor_name": "TEACHING MATTERS, INC.",
+    "ein": "133770472",
+    "irs_name": "TEACHING MATTERS INC",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 29,
+    "vendor_name": "Downtown Community Television Center, Inc.",
+    "ein": "132742777",
+    "irs_name": "DOWNTOWN COMMUNITY TELEVISION CENTER INC",
+    "irs_city": "NEW YORK",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   },
+   {
+    "n": 30,
+    "vendor_name": "BKBNK INC",
+    "ein": "821420342",
+    "irs_name": "BKBNK INC",
+    "irs_city": "BROOKLYN",
+    "verdict": "same",
+    "reason": "names equal after punctuation and legal-suffix folding; the IRS spelling commonly omits INC; one EIN carries the stem; the vendor side has no address, so location could not be compared"
+   }
+  ],
+  "counts": {
+   "same": 30,
+   "different": 0,
+   "cannot_tell": 0
+  },
+  "address_comparison_possible": 0,
+  "note": "all 30 are name-level agreements; none could be checked by address. 'same' here means the same name; it does not prove the same legal entity."
+ },
+ "join_gate": {
+  "seeded_random": {
+   "usefulness": 0.13,
+   "precision": 1,
+   "tier": "review",
+   "materialize": false
+  },
+  "nonprofit_looking": {
+   "usefulness": 0.34,
+   "precision": 1,
+   "tier": "auto_join",
+   "materialize": true,
+   "wilson_95_lower_bound_of_30_of_30": 0.886,
+   "note": "the point estimate reaches auto_join, but the group is selected by a name heuristic, the review is 30 name-only pairs (95% lower bound 0.886) and the same register's several-EIN cases (3 of 100 nonprofit-looking, 1 of 100 random) show a name can belong to several EINs"
+  },
+  "automatic_link_allowed": false,
+  "decision": "Not allowed. The rule applies to the whole vendor population, where usefulness is 0.14 (tier review, not materialized). EIN matches are published as candidates with their name evidence."
+ }
+}

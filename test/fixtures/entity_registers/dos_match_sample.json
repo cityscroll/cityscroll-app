@@ -1,0 +1,5502 @@
+{
+ "schema": "cityscroll.entity_register.dos_match_sample.v1",
+ "observed_on": "2026-11-11",
+ "dataset": "n9v6-gdp6",
+ "host": "data.ny.gov",
+ "sample": {
+  "size": 300,
+  "seed": 20261111,
+  "method": "mulberry32 Fisher-Yates over the 19,506 distinct vendor stems (sorted) found in site/data/ocp_awards_warehouse_lookup.json (53,992 rows) and site/data/analytics_registered_contracts/shard-000.json and shard-001.json; each stem is represented by its most frequent raw spelling",
+  "universe_distinct_stems": 19506
+ },
+ "strategy": {
+  "step_1_exact_upper_raw": "upper(current_entity_name) in (<10 upper-cased raw names>) , one request per 10 names, LIMIT 500",
+  "step_2_token_prefix": "for names without a step 1 hit: vendorStem -> alphanumeric tokens, AND dropped -> upper(current_entity_name) like 'T1%T2%...%' LIMIT 26 (25 + 1 to detect the cap); returned rows are compared client-side by exact name, vendorStem equality, or vendorStem equality with AND removed",
+  "note": "vendorStem cannot run server-side, so the stem is applied on the 26 returned candidates, not in the query."
+ },
+ "steps": {
+  "exact_upper_raw": {
+   "names_entering": 300,
+   "hits": 41,
+   "one_match": 41,
+   "several": 0,
+   "hit_rate": 0.1367
+  },
+  "token_prefix_stem_equal": {
+   "names_entering": 259,
+   "requests_made": 256,
+   "refused_before_request": 3,
+   "one_match": 102,
+   "one_match_via_and_fold": 9,
+   "truncated": 13,
+   "candidates_only": 30,
+   "no_match": 111,
+   "incremental_hit_rate": 0.3938
+  }
+ },
+ "outcomes": {
+  "one_match": 143,
+  "several_matches": 0,
+  "truncated": 13,
+  "candidates_only": 30,
+  "no_match": 111,
+  "refused": 3,
+  "source_unavailable": 0
+ },
+ "rates": {
+  "any_single_match": 0.4767,
+  "no_match_or_candidates_only": 0.47
+ },
+ "one_match_by_entity_class": {
+  "business_corporation": 82,
+  "not_for_profit": 31,
+  "llc": 25,
+  "llp": 2,
+  "limited_partnership": 1,
+  "professional": 2
+ },
+ "requests": {
+  "exact_batches": 30,
+  "token_queries": 256,
+  "total": 286,
+  "superseded_first_pass_token_queries": 167,
+  "note": "A first pass without AND handling issued 256 token queries; 167 were re-issued after the AND/& rule was added and their results replaced. 'total' counts only requests behind the final per-name results. All requests: 1.1 s spacing, 0 failures, 0 timeouts above 30 s.",
+  "step_2_latency_ms": {
+   "median": 152,
+   "p95": 417,
+   "max": 6052,
+   "note": "one 6052 ms outlier among 256 queries; this is why the route budget is 5000 ms with a source-unavailable answer, never a hang"
+  }
+ },
+ "full_universe_estimate": {
+  "stems": 19506,
+  "exact_batches": 1951,
+  "token_queries_estimate": 16645,
+  "basis": "scaled from the sample's measured step rates; an estimate, labelled as such",
+  "wall_time_hours_at_1_1s": 5.7
+ },
+ "names": [
+  {
+   "raw": "Catholic Charities/Neighborhood Services",
+   "stem": "CATHOLIC CHARITIES/NEIGHBORHOOD SERVICES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "NEW YORK STATE ASSOCIATION",
+   "stem": "NEW YORK STATE ASSOCIATION",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "THE LION ELECTRIC CO USA INC",
+   "stem": "THE LION ELECTRIC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5773966",
+     "name": "THE LION ELECTRIC CO. USA INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "AS THE TWIG IS BENT CHILDREN`S CENTER",
+   "stem": "AS THE TWIG IS BENT CHILDREN`S CENTER",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Immaculata Hall, HDFC c/o St. Vincent`s Medical Center",
+   "stem": "IMMACULATA HALL HDFC C/O ST VINCENT`S MEDICAL CENTER",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Arcola Sales & Service Corp.D/B/A Arcola Bus Sales",
+   "stem": "ARCOLA SALES SERVICE CORP D/B/A ARCOLA BUS SALES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "New York Foundation for Senior Citizens Home Attendant Services",
+   "stem": "NEW YORK FOUNDATION FOR SENIOR CITIZENS HOME ATTENDANT SERVICES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "676497",
+     "name": "NEW YORK FOUNDATION FOR SENIOR CITIZENS HOME ATTENDANT SERVICES, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Young Men`s and women Hebrew Association, Washington Heights Inwood",
+   "stem": "YOUNG MEN`S AND WOMEN HEBREW ASSOCIATION WASHINGTON HEIGHTS INWOOD",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "J&G Industrial Installation, Inc.",
+   "stem": "J G INDUSTRIAL INSTALLATION",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1406304",
+     "name": "J & G INDUSTRIAL INSTALLATION INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Nassau"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Parisi Landscape  and  Maintenance, Inc",
+   "stem": "PARISI LANDSCAPE AND MAINTENANCE",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5233625",
+     "name": "PARISI LANDSCAPE & MAINTENANCE INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Monroe"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Vizocom ICT LLC.",
+   "stem": "VIZOCOM ICT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Anixter Inc.",
+   "stem": "ANIXTER",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "232472",
+     "name": "ANIXTER INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "North Side Power Transmission Corp.",
+   "stem": "NORTH SIDE POWER TRANSMISSION",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "1893200",
+     "name": "NORTH SIDE POWER TRANSMISSION CORP.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "SEYFUSTORIES INC",
+   "stem": "SEYFUSTORIES",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "EARLY BIRDS STUDENTS LLC",
+   "stem": "EARLY BIRDS STUDENTS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "ROCKAWAY FILM FESTIVAL INC",
+   "stem": "ROCKAWAY FILM FESTIVAL",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5432734",
+     "name": "ROCKAWAY FILM FESTIVAL, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "We Transport",
+   "stem": "WE TRANSPORT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "N H&A",
+   "stem": "N H A",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "refused",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "ARISTA PLUMBING  and  HEATING  and  PIPING CORP.",
+   "stem": "ARISTA PLUMBING AND HEATING AND PIPING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "647669",
+     "name": "ARISTA PLUMBING HEATING AND PIPING CORP.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "College Community Child Care Center, Inc.",
+   "stem": "COLLEGE COMMUNITY CHILD CARE CENTER",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "1889146",
+     "name": "COLLEGE COMMUNITY CHILD CARE CENTER, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Sabor Borinqueno 2 Inc.",
+   "stem": "SABOR BORINQUENO 2",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "J.F. Contracting Corp.",
+   "stem": "J F CONTRACTING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "Safe Boats International, L L C",
+   "stem": "SAFE BOATS INTERNATIONAL L L C",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4255233",
+     "name": "SAFE BOATS INTERNATIONAL L.L.C.",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Tour Central Park INC D/B/A Bike Rent",
+   "stem": "TOUR CENTRAL PARK INC D/B/A BIKE RENT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "AgreeYa Solutions  Inc",
+   "stem": "AGREEYA SOLUTIONS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4947050",
+     "name": "AGREEYA SOLUTIONS, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Advanced Lighting Corp of NY",
+   "stem": "ADVANCED LIGHTING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1616715",
+     "name": "ADVANCED LIGHTING CORPORATION OF NEW YORK",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Suffolk"
+    }
+   ],
+   "candidates_returned": 10,
+   "truncated": false
+  },
+  {
+   "raw": "SUMMIT OFFSET SERVICES, LTD.",
+   "stem": "SUMMIT OFFSET SERVICES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Smith Breeden Associates Inc",
+   "stem": "SMITH BREEDEN ASSOCIATES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "LYNCH EISINGER DESIGN ARCHITECTS PC",
+   "stem": "LYNCH EISINGER DESIGN ARCHITECTS",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4671536",
+     "name": "LYNCH EISINGER DESIGN ARCHITECTS LLP",
+     "entity_type": "DOMESTIC REGISTERED LIMITED LIABILITY PARTNERSHIP",
+     "entity_class": "llp",
+     "county": null
+    }
+   ],
+   "candidates_returned": 2,
+   "truncated": false
+  },
+  {
+   "raw": "CORRECTIONAL DENTAL ASSOCIATES OF NEW YORK PC",
+   "stem": "CORRECTIONAL DENTAL ASSOCIATES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 2,
+   "truncated": false
+  },
+  {
+   "raw": "DKA TOOLKIT INC",
+   "stem": "DKA TOOLKIT",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5519024",
+     "name": "DKA TOOLKIT, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "NEW YORK CITY BREASTFEEDING ALLIANCES",
+   "stem": "NEW YORK CITY BREASTFEEDING ALLIANCES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "LC Whitford Equipment Co.,Inc.",
+   "stem": "LC WHITFORD EQUIPMENT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Technical Career Institute - TCI",
+   "stem": "TECHNICAL CAREER INSTITUTE - TCI",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "ROCK LEADERSHIP CONSULTING LLC",
+   "stem": "ROCK LEADERSHIP CONSULTING",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "7220953",
+     "name": "ROCK LEADERSHIP CONSULTING LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Caribbean Womens Health Association Inc.",
+   "stem": "CARIBBEAN WOMENS HEALTH ASSOCIATION",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "I. C. System, Inc",
+   "stem": "I C SYSTEM",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "Crystal Info Systems",
+   "stem": "CRYSTAL INFO SYSTEMS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "C GLOBAL CONSULTING LLC",
+   "stem": "C GLOBAL CONSULTING",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2904725",
+     "name": "C GLOBAL CONSULTING, LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 13,
+   "truncated": false
+  },
+  {
+   "raw": "Ysrael A. Seinuk, PC",
+   "stem": "YSRAEL A SEINUK",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "CITYSPAN TECHNOLOGIES INC",
+   "stem": "CITYSPAN TECHNOLOGIES",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "7839080",
+     "name": "CITYSPAN TECHNOLOGIES, LLC",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "ZEEL NETWORKS INC",
+   "stem": "ZEEL NETWORKS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4018503",
+     "name": "ZEEL NETWORKS, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "RMT Tracking Corporation",
+   "stem": "RMT TRACKING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "2309034",
+     "name": "RMT TRACKING CORPORATION",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Village of New Paltz",
+   "stem": "VILLAGE OF NEW PALTZ",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Staten Island Little League, Inc.",
+   "stem": "STATEN ISLAND LITTLE LEAGUE",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "87556",
+     "name": "STATEN ISLAND LITTLE LEAGUE, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Richmond"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "DELOITTE CONSULTING, LLP",
+   "stem": "DELOITTE CONSULTING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "3018149",
+     "name": "DELOITTE CONSULTING LLP",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 3,
+   "truncated": false
+  },
+  {
+   "raw": "Buster's Marine Bronx Marina LLC",
+   "stem": "BUSTER S MARINE BRONX MARINA",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "6700433",
+     "name": "BUSTER'S MARINE BRONX MARINA LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "Nassau"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "MELISSA DATA CORPORATION",
+   "stem": "MELISSA DATA",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Astoria Queens Shareing  and  Caring, Inc..",
+   "stem": "ASTORIA QUEENS SHAREING AND CARING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "PART OF THE SOLUTION",
+   "stem": "PART OF THE SOLUTION",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "1118404",
+     "name": "PART OF THE SOLUTION",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Bronx"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "SAVVAS LEARNING COMPANY LLC",
+   "stem": "SAVVAS LEARNING",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "5496909",
+     "name": "SAVVAS LEARNING COMPANY LLC",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Encell Technology, Inc.",
+   "stem": "ENCELL TECHNOLOGY",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "VIVID IMAGINATION INC",
+   "stem": "VIVID IMAGINATION",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "4703198",
+     "name": "VIVID IMAGINATION INC",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "P.W. GROSSER CONSULTING, INC",
+   "stem": "P W GROSSER CONSULTING",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2640982",
+     "name": "P.W. GROSSER CONSULTING, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Suffolk"
+    }
+   ],
+   "candidates_returned": 2,
+   "truncated": false
+  },
+  {
+   "raw": "Fleet Pump  and  Service Group Inc",
+   "stem": "FLEET PUMP AND SERVICE GROUP",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "356031",
+     "name": "FLEET PUMP & SERVICE GROUP INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Westchester"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "GOTHAM CITY MUSIC GROUP INC",
+   "stem": "GOTHAM CITY MUSIC GROUP",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "SOCIETY OF THE THIRD STREET MUSIC SCHOOL SETTLEMENT INC",
+   "stem": "SOCIETY OF THE THIRD STREET MUSIC SCHOOL SETTLEMENT",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "28250",
+     "name": "SOCIETY OF THE THIRD STREET MUSIC SCHOOL SETTLEMENT",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "ROCON PLUMBING AND HEATING CORP.",
+   "stem": "ROCON PLUMBING AND HEATING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "UNITED AG & TURF NE LLC",
+   "stem": "UNITED AG TURF NE",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5724928",
+     "name": "UNITED AG & TURF NE, LLC",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "The Puerto Rican Organization to Motivate, Enlight",
+   "stem": "THE PUERTO RICAN ORGANIZATION TO MOTIVATE ENLIGHT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "MAJOR WORLD CDJR LLC DBA MAJOR",
+   "stem": "MAJOR WORLD CDJR LLC DBA MAJOR",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Advanced Energy  and  Lighting Inc.",
+   "stem": "ADVANCED ENERGY AND LIGHTING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1658592",
+     "name": "ADVANCED ENERGY & LIGHTING, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "AECOM/TAMS AMERICAN SAFETY CONSULTANTS/TAMS/EARTHTECH ALLIED JV",
+   "stem": "AECOM/TAMS AMERICAN SAFETY CONSULTANTS/TAMS/EARTHTECH ALLIED JV",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Institutes of Applied Human Dynamics",
+   "stem": "INSTITUTES OF APPLIED HUMAN DYNAMICS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Bestco General Electric",
+   "stem": "BESTCO GENERAL ELECTRIC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "3828374",
+     "name": "BESTCO GENERAL ELECTRIC INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Bronx"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "THE MIDTOWN MANAGEMENT GROUP INC",
+   "stem": "THE MIDTOWN MANAGEMENT GROUP",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "869158",
+     "name": "THE MIDTOWN MANAGEMENT GROUP, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "NYC Supply Company, LLC",
+   "stem": "NYC SUPPLY",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "4481737",
+     "name": "NYC SUPPLY COMPANY, LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Metro Tire Service Inc.",
+   "stem": "METRO TIRE SERVICE",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Videosonic Systems Inc",
+   "stem": "VIDEOSONIC SYSTEMS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2007146",
+     "name": "VIDEOSONIC SYSTEMS INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "CENTER FOR INTEGRATED TEACHER EDUCATION INC",
+   "stem": "CENTER FOR INTEGRATED TEACHER EDUCATION",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1657543",
+     "name": "CENTER FOR INTEGRATED TEACHER EDUCATION, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Suffolk"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "POLYSTAR INC",
+   "stem": "POLYSTAR",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "349805",
+     "name": "POLYSTAR CORPORATION",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 3,
+   "truncated": false
+  },
+  {
+   "raw": "James Schriber dba James Schriber Furniture",
+   "stem": "JAMES SCHRIBER DBA JAMES SCHRIBER FURNITURE",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Optima Global Solutions Inc.",
+   "stem": "OPTIMA GLOBAL SOLUTIONS",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5330709",
+     "name": "OPTIMA GLOBAL SOLUTIONS, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 2,
+   "truncated": false
+  },
+  {
+   "raw": "BRACE LIFE FITNESS SOLUTIONS LLC",
+   "stem": "BRACE LIFE FITNESS SOLUTIONS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "3968695",
+     "name": "BRACE LIFE FITNESS SOLUTIONS LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "ASHNU INTERNATIONAL INC",
+   "stem": "ASHNU INTERNATIONAL",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2225219",
+     "name": "ASHNU INTERNATIONAL INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Airgas Safety Inc.",
+   "stem": "AIRGAS SAFETY",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2373277",
+     "name": "AIRGAS SAFETY, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Young Men's and Young Women's Hebrew Association of Boro Park",
+   "stem": "YOUNG MEN S AND YOUNG WOMEN S HEBREW ASSOCIATION OF BORO PARK",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "13274",
+     "name": "YOUNG MEN'S AND YOUNG WOMEN'S HEBREW ASSOCIATION OF BORO PARK, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Verint Americas Inc.",
+   "stem": "VERINT AMERICAS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "4261792",
+     "name": "VERINT AMERICAS INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Suffolk"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "King Teleservices L.L.C.",
+   "stem": "KING TELESERVICES L L C",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "1924264",
+     "name": "KING TELESERVICES L.L.C.",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Kimberleigh Graphics Inc",
+   "stem": "KIMBERLEIGH GRAPHICS",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1813649",
+     "name": "KIMBERLEIGH GRAPHICS INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Nassau"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "TEACHER CREATED MATERIALS INC",
+   "stem": "TEACHER CREATED MATERIALS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4837092",
+     "name": "TEACHER CREATED MATERIALS, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "CDM SOUND STUDIOS, INC.",
+   "stem": "CDM SOUND STUDIOS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "2249559",
+     "name": "CDM SOUND STUDIOS, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "THE COMMITTEE AGAINST ANTI ASIAN VIOLENCE INC",
+   "stem": "THE COMMITTEE AGAINST ANTI ASIAN VIOLENCE",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "FUN EXPRESS LLC",
+   "stem": "FUN EXPRESS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 6,
+   "truncated": false
+  },
+  {
+   "raw": "Dewberry-Techno JV",
+   "stem": "DEWBERRY-TECHNO JV",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Eppy`s Tool  and  Equipment Warehouse",
+   "stem": "EPPY`S TOOL AND EQUIPMENT WAREHOUSE",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Steve Duncanson Enterprises LLC",
+   "stem": "STEVE DUNCANSON ENTERPRISES",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "3142759",
+     "name": "STEVE DUNCANSON ENTERPRISES, LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "JEWISH ORTHODOX WOMENS MEDICAL ASSOCIATION",
+   "stem": "JEWISH ORTHODOX WOMENS MEDICAL ASSOCIATION",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Express Abstract Services, Inc.",
+   "stem": "EXPRESS ABSTRACT SERVICES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "2592142",
+     "name": "EXPRESS ABSTRACT SERVICES, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Richmond"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "GENUINE PARTS COMPANY",
+   "stem": "GENUINE PARTS",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "67901",
+     "name": "GENUINE PARTS COMPANY",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "R J Sherman Assoc Inc",
+   "stem": "R J SHERMAN ASSOC",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Bellweather Agency",
+   "stem": "BELLWEATHER AGENCY",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "UNI ASSOCIATES INC",
+   "stem": "UNI ASSOCIATES",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "Infinite Wave Inc.",
+   "stem": "INFINITE WAVE",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "5221831",
+     "name": "INFINITE WAVE INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "TCB ACCOUNTING SOLUTIONS LLC",
+   "stem": "TCB ACCOUNTING SOLUTIONS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "6398124",
+     "name": "TCB ACCOUNTING SOLUTIONS LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "BancTec, Inc.",
+   "stem": "BANCTEC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "2498631",
+     "name": "BANCTEC, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Suffolk"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Kenmore Hdfc",
+   "stem": "KENMORE HDFC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "G.V.P. CATERERS INC. EL CARIBE COUNTRY CLUB CATERER",
+   "stem": "G V P CATERERS INC EL CARIBE COUNTRY CLUB CATERER",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "BARROW, HANLEY, MEWHINNEY  and  STRAUS LLC",
+   "stem": "BARROW HANLEY MEWHINNEY AND STRAUS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "American Lung Association of The Northeast",
+   "stem": "AMERICAN LUNG ASSOCIATION OF THE NORTHEAST",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4211898",
+     "name": "AMERICAN LUNG ASSOCIATION OF THE NORTHEAST, INC.",
+     "entity_type": "FOREIGN NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "BLACK MALE EDUCATORS ALLIANCE",
+   "stem": "BLACK MALE EDUCATORS ALLIANCE",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "7835682",
+     "name": "BLACK MALE EDUCATORS ALLIANCE",
+     "entity_type": "FOREIGN NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "EVERY DAY IS A MIRACLE INC",
+   "stem": "EVERY DAY IS A MIRACLE",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4049444",
+     "name": "EVERY DAY IS A MIRACLE, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Bronx"
+    }
+   ],
+   "candidates_returned": 2,
+   "truncated": false
+  },
+  {
+   "raw": "Auster Rubber Co.,Inc.",
+   "stem": "AUSTER RUBBER",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "167237",
+     "name": "AUSTER RUBBER CO.,INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Intl Business Machines Corp.",
+   "stem": "INTL BUSINESS MACHINES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Carousel Works, Inc.",
+   "stem": "CAROUSEL WORKS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2177648",
+     "name": "CAROUSEL WORKS INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Broome"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "LANDS' END INC",
+   "stem": "LANDS END",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2536801",
+     "name": "LANDS' END, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Monroe"
+    }
+   ],
+   "candidates_returned": 24,
+   "truncated": false
+  },
+  {
+   "raw": "CERES NANOSCIENCES INC",
+   "stem": "CERES NANOSCIENCES",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "St. John`s Community HDFC",
+   "stem": "ST JOHN`S COMMUNITY HDFC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Sparklean Janitorial Services Inc.",
+   "stem": "SPARKLEAN JANITORIAL SERVICES",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "5711624",
+     "name": "SPARKLEAN JANITORIAL SERVICES INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Vinegar Hill Food Pantry Inc",
+   "stem": "VINEGAR HILL FOOD PANTRY",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "6352440",
+     "name": "VINEGAR HILL FOOD PANTRY INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "William P. Sutherland",
+   "stem": "WILLIAM P SUTHERLAND",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "QED National",
+   "stem": "QED NATIONAL",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "University Consutation",
+   "stem": "UNIVERSITY CONSUTATION",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Service Program for Older People Inc.",
+   "stem": "SERVICE PROGRAM FOR OLDER PEOPLE",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "534821",
+     "name": "SERVICE PROGRAM FOR OLDER PEOPLE, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "DB GRANT ASSOCIATES INC",
+   "stem": "DB GRANT ASSOCIATES",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2161013",
+     "name": "DB GRANT ASSOCIATES, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "APS ELECTRIC INC",
+   "stem": "APS ELECTRIC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2908105",
+     "name": "APS ELECTRIC INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Manchester Tech. Inc.",
+   "stem": "MANCHESTER TECH",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "K  and  G ELECTRIC MOTOR  and  PUMP CORP. DBA K  and  G POWER SY",
+   "stem": "K AND G ELECTRIC MOTOR AND PUMP CORP DBA K AND G POWER SY",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "GATEWAY CATHEDRAL INC",
+   "stem": "GATEWAY CATHEDRAL",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "MAMAVA INC",
+   "stem": "MAMAVA",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5017462",
+     "name": "MAMAVA, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Monroe"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Advance Technology Solutions dba ATEC Group",
+   "stem": "ADVANCE TECHNOLOGY SOLUTIONS DBA ATEC GROUP",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "EMX Inc.",
+   "stem": "EMX",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1743939",
+     "name": "EMX CORPORATION",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 14,
+   "truncated": false
+  },
+  {
+   "raw": "Richmond Home Need",
+   "stem": "RICHMOND HOME NEED",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 2,
+   "truncated": false
+  },
+  {
+   "raw": "MAXIMUM EVOLUTION LLC",
+   "stem": "MAXIMUM EVOLUTION",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "5244303",
+     "name": "MAXIMUM EVOLUTION LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Fox  Electrical  Incorporated",
+   "stem": "FOX ELECTRICAL",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "ANSELL HEALTHCARE PRODUCTS LLC",
+   "stem": "ANSELL HEALTHCARE PRODUCTS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Chef`s Choice Cash  and  Carry Food Dist. Inc.",
+   "stem": "CHEF`S CHOICE CASH AND CARRY FOOD DIST",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "ROOM INC",
+   "stem": "ROOM",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "SHEED EDUCATIONAL INSTITUTE INC",
+   "stem": "SHEED EDUCATIONAL INSTITUTE",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Sun River Health Inc.",
+   "stem": "SUN RIVER HEALTH",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "376551",
+     "name": "SUN RIVER HEALTH, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Westchester"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Camp Dresser McKee  and  Smith",
+   "stem": "CAMP DRESSER MCKEE AND SMITH",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "CARR BUSINESS SYSTEMS",
+   "stem": "CARR BUSINESS SYSTEMS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "ERNST CONSERVATION SEEDS INC",
+   "stem": "ERNST CONSERVATION SEEDS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Typenex Medical LLC.",
+   "stem": "TYPENEX MEDICAL",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Boynton Family LLC",
+   "stem": "BOYNTON FAMILY",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "4618591",
+     "name": "BOYNTON FAMILY LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "FITZSIMMONS HYDRAULICS INC",
+   "stem": "FITZSIMMONS HYDRAULICS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "CMC Distributors Inc dba Truemedix Diagnostics",
+   "stem": "CMC DISTRIBUTORS INC DBA TRUEMEDIX DIAGNOSTICS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "GOLDEN RULE SIGNS",
+   "stem": "GOLDEN RULE SIGNS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "F.A.T.S. Inc.",
+   "stem": "F A T S",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "refused",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "A to Z Mailroom  and  Shipping Supplies",
+   "stem": "A TO Z MAILROOM AND SHIPPING SUPPLIES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Amazonas Painting Corp",
+   "stem": "AMAZONAS PAINTING",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2682192",
+     "name": "AMAZONAS PAINTING CORP.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "PROMESA HOUSING DEVELOPMENT FUND CORP",
+   "stem": "PROMESA HOUSING DEVELOPMENT FUND",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Health Care Equip  and  Parts Company, Inc dba MED Part",
+   "stem": "HEALTH CARE EQUIP AND PARTS COMPANY INC DBA MED PART",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "PAGE VAULT INC",
+   "stem": "PAGE VAULT",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "7457692",
+     "name": "PAGE VAULT INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "S&S WORLDWIDE INC",
+   "stem": "S S WORLDWIDE",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "LITEHOUSE BUILDERS, INC.",
+   "stem": "LITEHOUSE BUILDERS",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2728458",
+     "name": "LITEHOUSE BUILDERS INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Nassau"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Hill Rom Company Inc",
+   "stem": "HILL ROM",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 9,
+   "truncated": false
+  },
+  {
+   "raw": "Milbank Housing Develop./ Children`s Aid Society",
+   "stem": "MILBANK HOUSING DEVELOP / CHILDREN`S AID SOCIETY",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "NHS Of Jamaica, Incorp.",
+   "stem": "NHS OF JAMAICA INCORP",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "STV/Grosfeld Partnership Joint Venture",
+   "stem": "STV/GROSFELD PARTNERSHIP JOINT VENTURE",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "ARTS HORIZONS NEW YORK INC",
+   "stem": "ARTS HORIZONS NEW YORK",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4400896",
+     "name": "ARTS HORIZONS NEW YORK, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "ORION SYSTEMS INTEGRATORS LLC",
+   "stem": "ORION SYSTEMS INTEGRATORS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5778694",
+     "name": "ORION SYSTEMS INTEGRATORS, LLC",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "ALEGRA LEARNING INC",
+   "stem": "ALEGRA LEARNING",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "6773722",
+     "name": "ALEGRA LEARNING, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Debra D. Johnson",
+   "stem": "DEBRA D JOHNSON",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "STUDY SMART TUTORS INC",
+   "stem": "STUDY SMART TUTORS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "7647311",
+     "name": "STUDY SMART TUTORS, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "FEV TUTOR INC",
+   "stem": "FEV TUTOR",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "3673009",
+     "name": "FEV TUTOR, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "R G  Industries , Inc  dba  RG    Group",
+   "stem": "R G INDUSTRIES INC DBA RG GROUP",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Brooklyn Center for the Urban Environment",
+   "stem": "BROOKLYN CENTER FOR THE URBAN ENVIRONMENT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "522555",
+     "name": "BROOKLYN CENTER FOR THE URBAN ENVIRONMENT, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Franklin Farms East Inc.",
+   "stem": "FRANKLIN FARMS EAST",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "MAESTRO TECHNOLOGIES INC",
+   "stem": "MAESTRO TECHNOLOGIES",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4084376",
+     "name": "MAESTRO TECHNOLOGIES, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Beyer Blinder Belle Architects  and  Planners",
+   "stem": "BEYER BLINDER BELLE ARCHITECTS AND PLANNERS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1918982",
+     "name": "BEYER BLINDER BELLE, ARCHITECTS AND PLANNERS, LLP",
+     "entity_type": "DOMESTIC REGISTERED LIMITED LIABILITY PARTNERSHIP",
+     "entity_class": "llp",
+     "county": null
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "ESCO FASTENERS CO INC",
+   "stem": "ESCO FASTENERS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "141663",
+     "name": "ESCO FASTENERS CO., INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "BELL AND HOWELL, LLC",
+   "stem": "BELL AND HOWELL",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1387518",
+     "name": "BELL & HOWELL COMPANY",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 3,
+   "truncated": false
+  },
+  {
+   "raw": "Maramont Corporation",
+   "stem": "MARAMONT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Delric Construction Co. Inc",
+   "stem": "DELRIC CONSTRUCTION",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "3561270",
+     "name": "DELRIC CONSTRUCTION CO., INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Rockland"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "JT & A INC",
+   "stem": "JT A",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "refused",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "CHILDCARE LLC",
+   "stem": "CHILDCARE",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "Enherent Corporation",
+   "stem": "ENHERENT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2070842",
+     "name": "ENHERENT CORP.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "LSNY BRONX CORPORATION",
+   "stem": "LSNY BRONX",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "JOSHUA LAND",
+   "stem": "JOSHUA LAND",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 7,
+   "truncated": false
+  },
+  {
+   "raw": "REGIONAL MANAGEMENT  and  CONSULTING, INC.",
+   "stem": "REGIONAL MANAGEMENT AND CONSULTING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1641769",
+     "name": "REGIONAL MANAGEMENT & CONSULTING, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "UNIQUE ENTERTAINMENT",
+   "stem": "UNIQUE ENTERTAINMENT",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2741329",
+     "name": "UNIQUE ENTERTAINMENT INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Nassau"
+    }
+   ],
+   "candidates_returned": 7,
+   "truncated": false
+  },
+  {
+   "raw": "Public Financial Management, Inc.",
+   "stem": "PUBLIC FINANCIAL MANAGEMENT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "1095942",
+     "name": "PUBLIC FINANCIAL MANAGEMENT, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "UNITED FIRE PROTECTION CORP",
+   "stem": "UNITED FIRE PROTECTION",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1191069",
+     "name": "UNITED FIRE PROTECTION INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Island Computer Products Inc Icp Inc",
+   "stem": "ISLAND COMPUTER PRODUCTS INC ICP",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "US Water Alliance",
+   "stem": "US WATER ALLIANCE",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Meadowbrook Ford Inc, dba, Syosset Ford",
+   "stem": "MEADOWBROOK FORD INC DBA SYOSSET FORD",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "See list of 2 vendors below",
+   "stem": "SEE LIST OF 2 VENDORS BELOW",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "D & K Construction Co., Inc.",
+   "stem": "D K CONSTRUCTION",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "SKYLINE CRUISE LINES SKYLINE CRUISES",
+   "stem": "SKYLINE CRUISE LINES SKYLINE CRUISES",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Cardinal McCloskey School  and  Home for Children",
+   "stem": "CARDINAL MCCLOSKEY SCHOOL AND HOME FOR CHILDREN",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "47061",
+     "name": "CARDINAL MCCLOSKEY SCHOOL AND HOME FOR CHILDREN",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Westchester"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "NATIONAL JEWISH HEALTH",
+   "stem": "NATIONAL JEWISH HEALTH",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "SBH Community Service Network Inc Sephardic Bikur Holim",
+   "stem": "SBH COMMUNITY SERVICE NETWORK INC SEPHARDIC BIKUR HOLIM",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Delsar Inc.",
+   "stem": "DELSAR",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "EXERCISE BUDDY LLC",
+   "stem": "EXERCISE BUDDY",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "PERSAK & WURMFELD ENGINEERING DPC",
+   "stem": "PERSAK WURMFELD ENGINEERING DPC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Real Land Improvement Inc.",
+   "stem": "REAL LAND IMPROVEMENT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Linea Solutions",
+   "stem": "LINEA SOLUTIONS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5120332",
+     "name": "LINEA SOLUTIONS, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 6,
+   "truncated": false
+  },
+  {
+   "raw": "NV5",
+   "stem": "NV5",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5033286",
+     "name": "NV5, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 5,
+   "truncated": false
+  },
+  {
+   "raw": "HALLET COVE CHILD DEVELOPMENT CENTER, INC.",
+   "stem": "HALLET COVE CHILD DEVELOPMENT CENTER",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "478022",
+     "name": "HALLET COVE CHILD DEVELOPMENT CENTER, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "B  and  H Foto  and  Electronics Corp",
+   "stem": "B AND H FOTO AND ELECTRONICS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "265140",
+     "name": "B & H FOTO & ELECTRONICS CORP.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "URBAN STREAM MEDIA LLC",
+   "stem": "URBAN STREAM MEDIA",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "5280995",
+     "name": "URBAN STREAM MEDIA LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "CHILDREN'S ARTS & SCIENCE WORKSHOPS INC",
+   "stem": "CHILDREN S ARTS SCIENCE WORKSHOPS",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "327143",
+     "name": "CHILDREN'S ARTS & SCIENCE WORKSHOPS, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "INSPIRING MINDS OF NEW YORK CITY INC",
+   "stem": "INSPIRING MINDS OF NEW YORK CITY",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5446136",
+     "name": "INSPIRING MINDS OF NEW YORK CITY, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "GO TO MS SAMS INC",
+   "stem": "GO TO MS SAMS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "6273089",
+     "name": "GO TO MS. SAMS INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Information Builders Inc.",
+   "stem": "INFORMATION BUILDERS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "WORKERS DEFENSE LEAGUE, INC",
+   "stem": "WORKERS DEFENSE LEAGUE",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "288698",
+     "name": "WORKERS DEFENSE LEAGUE, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "ANIMAL CARE  and  CONTROL OF NEW YORK CITY, INC.",
+   "stem": "ANIMAL CARE AND CONTROL OF NEW YORK CITY",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1846490",
+     "name": "ANIMAL CARE AND CONTROL OF NEW YORK CITY, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "CORONA INDUSTRIES CORP",
+   "stem": "CORONA INDUSTRIES",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2886542",
+     "name": "CORONA INDUSTRIES CORP.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Doul Construction Corporation",
+   "stem": "DOUL CONSTRUCTION",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "G8 CONSULTING GROUP INC",
+   "stem": "G8 CONSULTING GROUP",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "4904268",
+     "name": "G8 CONSULTING GROUP INC",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Regina Caterers",
+   "stem": "REGINA CATERERS",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "3270305",
+     "name": "REGINA CATERERS, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "FARMERS` MARKET FEDERATION OF NEW YORK, INC.",
+   "stem": "FARMERS` MARKET FEDERATION",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "COMPUTER CORP OF AMERICA",
+   "stem": "COMPUTER CORP OF AMERICA",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Atlas Environmental Lab, Corp",
+   "stem": "ATLAS ENVIRONMENTAL LAB",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4184483",
+     "name": "ATLAS ENVIRONMENTAL LAB CORP.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Nassau"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Gotham City General Contracting Corp",
+   "stem": "GOTHAM CITY GENERAL CONTRACTING",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "6644476",
+     "name": "GOTHAM CITY GENERAL CONTRACTING CORP.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "REDWING INDUSTRIES INC.",
+   "stem": "REDWING INDUSTRIES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "163rd Improvement Council, Inc. Ogden House",
+   "stem": "163RD IMPROVEMENT COUNCIL INC OGDEN HOUSE",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "PRIMARY ELECTRICAL SUPPLY",
+   "stem": "PRIMARY ELECTRICAL SUPPLY",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "WEI WEI & CO LLP",
+   "stem": "WEI WEI",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "FIS GROUP INC",
+   "stem": "FIS GROUP",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "SAMARITAN SOFTWARE, LLC. (dba Samaritan Technologies)",
+   "stem": "SAMARITAN SOFTWARE LLC (DBA SAMARITAN TECHNOLOGIES)",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "DIXON-SHANE LLC DBA",
+   "stem": "DIXON-SHANE LLC DBA",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "1PHO Inc.",
+   "stem": "1PHO",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "YM & YWHA OF WILLIAMSBURG INC.",
+   "stem": "YM YWHA OF WILLIAMSBURG",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "GOMEZ LEGACY DEVELOPMENT INC",
+   "stem": "GOMEZ LEGACY DEVELOPMENT",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "6420212",
+     "name": "GOMEZ LEGACY DEVELOPMENT INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Bronx"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Loomis Sayles  and  Company, L.P.",
+   "stem": "LOOMIS SAYLES AND COMPANY L P",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1773322",
+     "name": "LOOMIS, SAYLES & COMPANY, L.P.",
+     "entity_type": "FOREIGN LIMITED PARTNERSHIP",
+     "entity_class": "limited_partnership",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "AMERICAN LAFRANCE CORP",
+   "stem": "AMERICAN LAFRANCE",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "DHS Systems LLC",
+   "stem": "DHS SYSTEMS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "1980166",
+     "name": "DHS SYSTEMS LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "Rockland"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Mustafa T Uke  and  Alan K Uke Partners dba Underwater Kinetics",
+   "stem": "MUSTAFA T UKE AND ALAN K UKE PARTNERS DBA UNDERWATER KINETICS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "S  and  L Plumbing  and  Heating Corp.",
+   "stem": "S AND L PLUMBING AND HEATING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "SAKHI FOR SOUTH ASIAN SURVIVORS INC",
+   "stem": "SAKHI FOR SOUTH ASIAN SURVIVORS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1475118",
+     "name": "SAKHI FOR SOUTH ASIAN SURVIVORS, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "NEW YORK WOMENS CHAMBER OF COMMERCE INC",
+   "stem": "NEW YORK WOMENS CHAMBER OF COMMERCE",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "STORAGE ENGINE INC",
+   "stem": "STORAGE ENGINE",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1923036",
+     "name": "STORAGE ENGINE, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "IML NORTH AMERICA LLC",
+   "stem": "IML NORTH AMERICA",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "State Of NY Dept Of Corrections  and  Community Supervis",
+   "stem": "STATE OF NY DEPT OF CORRECTIONS AND COMMUNITY SUPERVIS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Weiss Instruments Inc.",
+   "stem": "WEISS INSTRUMENTS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5302751",
+     "name": "WEISS INSTRUMENTS LLC",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "Suffolk"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "HISPANIC INFORMATION & TELECOMMUNICATIONS NETWORK INC",
+   "stem": "HISPANIC INFORMATION TELECOMMUNICATIONS NETWORK",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "735801",
+     "name": "HISPANIC INFORMATION AND TELECOMMUNICATIONS NETWORK, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "TECHNO CONSULT INC",
+   "stem": "TECHNO CONSULT",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "truncated",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 25,
+   "truncated": true
+  },
+  {
+   "raw": "GOD`S LOVE WE DELIVER",
+   "stem": "GOD`S LOVE WE DELIVER",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "George Daly HDFC Inc.",
+   "stem": "GEORGE DALY HDFC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "JOSLYN LEVY & ASSOCIATES LLC",
+   "stem": "JOSLYN LEVY ASSOCIATES",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "3753241",
+     "name": "JOSLYN LEVY & ASSOCIATES LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "HOME SWEET HOME CHILDREN'S SCHOOL, INC.",
+   "stem": "HOME SWEET HOME CHILDREN S SCHOOL",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2371825",
+     "name": "HOME SWEET HOME CHILDREN'S SCHOOL INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "PROACT SERVICES CORPORATION",
+   "stem": "PROACT SERVICES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 9,
+   "truncated": false
+  },
+  {
+   "raw": "Ramsay-Bliese Corp./Alias/DBA: Leete Generators",
+   "stem": "RAMSAY-BLIESE CORP /ALIAS/DBA: LEETE GENERATORS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "VANDERHEYDEN HALL, INC.",
+   "stem": "VANDERHEYDEN HALL",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "97310",
+     "name": "VANDERHEYDEN HALL, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Rensselaer"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Live Through Rec LLC",
+   "stem": "LIVE THROUGH REC",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5253577",
+     "name": "LIVE THROUGH REC, LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "1100: Architect, P.C.",
+   "stem": "1100: ARCHITECT P C",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "National BLACA",
+   "stem": "NATIONAL BLACA",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Bank of America Merrill Lynch",
+   "stem": "BANK OF AMERICA MERRILL LYNCH",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Computer Associates International, Inc.",
+   "stem": "COMPUTER ASSOCIATES INTERNATIONAL",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "The Sylvia Center Inc",
+   "stem": "THE SYLVIA CENTER",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "3311948",
+     "name": "THE SYLVIA CENTER, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "CHEMBIO DIAGNOSTIC SYSTEMS INC",
+   "stem": "CHEMBIO DIAGNOSTIC SYSTEMS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1691110",
+     "name": "CHEMBIO DIAGNOSTIC SYSTEMS INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Suffolk"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "BRIDGE PREPARATORY CHARTER SCHOOL",
+   "stem": "BRIDGE PREPARATORY CHARTER SCHOOL",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Occam Video Solutions LLC",
+   "stem": "OCCAM VIDEO SOLUTIONS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "DRIVE RITE ACADEMY",
+   "stem": "DRIVE RITE ACADEMY",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4547155",
+     "name": "DRIVE RITE ACADEMY INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "AVALANCHE ENTERPRISES INC",
+   "stem": "AVALANCHE ENTERPRISES",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1772077",
+     "name": "AVALANCHE ENTERPRISES INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": 3,
+   "truncated": false
+  },
+  {
+   "raw": "MOCTAR KONATE GROUP LTD",
+   "stem": "MOCTAR KONATE GROUP",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Timken Gears & Services Inc",
+   "stem": "TIMKEN GEARS SERVICES",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "FRONTIER CAPITAL MANAGEMENT COMPANY LLC",
+   "stem": "FRONTIER CAPITAL MANAGEMENT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "ROYALE SPORTING GOODS COMPANY INC",
+   "stem": "ROYALE SPORTING GOODS",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "184814",
+     "name": "ROYALE SPORTING GOODS CO., INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 2,
+   "truncated": false
+  },
+  {
+   "raw": "ACCELERAISE CORPORATION",
+   "stem": "ACCELERAISE",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "RKTB Architects, P.C.",
+   "stem": "RKTB ARCHITECTS P C",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "390931",
+     "name": "RKTB ARCHITECTS, P.C.",
+     "entity_type": "DOMESTIC PROFESSIONAL SERVICE CORPORATION",
+     "entity_class": "professional",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "IWS Transfer Systems of N.J. Inc.",
+   "stem": "IWS TRANSFER SYSTEMS OF N J",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Audubon Partnership for Economic Development LDC",
+   "stem": "AUDUBON PARTNERSHIP FOR ECONOMIC DEVELOPMENT LDC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Metropolitan Construction Corp.",
+   "stem": "METROPOLITAN CONSTRUCTION",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "892055",
+     "name": "METROPOLITAN CONSTRUCTION CORP.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "MANHATTAN CONTRACTING CORP",
+   "stem": "MANHATTAN CONTRACTING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "2479423",
+     "name": "MANHATTAN CONTRACTING CORP.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Suffolk"
+    }
+   ],
+   "candidates_returned": 13,
+   "truncated": false
+  },
+  {
+   "raw": "MINI 88 TRUCKING CORP",
+   "stem": "MINI 88 TRUCKING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Thorn Electric, Inc.",
+   "stem": "THORN ELECTRIC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1487901",
+     "name": "THORN ELECTRIC INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Bronx"
+    }
+   ],
+   "candidates_returned": 4,
+   "truncated": false
+  },
+  {
+   "raw": "SPORTS AND ARTS IN SCHOOL FOUNDATION, INC.",
+   "stem": "SPORTS AND ARTS IN SCHOOL FOUNDATION",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "DMR SERVICES",
+   "stem": "DMR SERVICES",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4950411",
+     "name": "DMR SERVICES CORP",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Suffolk"
+    }
+   ],
+   "candidates_returned": 7,
+   "truncated": false
+  },
+  {
+   "raw": "KAYODE AGUNBIADE  and  CO. KAYODE AGUNBIADE",
+   "stem": "KAYODE AGUNBIADE AND CO KAYODE AGUNBIADE",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "ROCKAWAY HOME ATTENDANT SERVICES INC",
+   "stem": "ROCKAWAY HOME ATTENDANT SERVICES",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "North American Lifting Equipment, LLC",
+   "stem": "NORTH AMERICAN LIFTING EQUIPMENT",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Arbil Industries, Inc.",
+   "stem": "ARBIL INDUSTRIES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "DOWNTOWN FLUSHING TRANSIT HUB DISTRICT MANAGEMENT ASSOC INC",
+   "stem": "DOWNTOWN FLUSHING TRANSIT HUB DISTRICT MANAGEMENT ASSOC",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "EVERO CORPORATION",
+   "stem": "EVERO",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "2572008",
+     "name": "EVERO CORPORATION",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Nassau"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Coffman Consulting, Inc. d/b/a The Palisade Group",
+   "stem": "COFFMAN CONSULTING INC D/B/A THE PALISADE GROUP",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "THE SENSORY KLUB LLC",
+   "stem": "THE SENSORY KLUB",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "7589467",
+     "name": "THE SENSORY KLUB LLC",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "MCT PRO Tools Inc.",
+   "stem": "MCT PRO TOOLS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "THE JPI GROUP LLC",
+   "stem": "THE JPI GROUP",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "4971176",
+     "name": "THE JPI GROUP LLC",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "CORPORATE COURIER NY INC",
+   "stem": "CORPORATE COURIER NY",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Caddell Drydock & Repair, Co.",
+   "stem": "CADDELL DRYDOCK REPAIR",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "MARQUIS STUDIOS LTD",
+   "stem": "MARQUIS STUDIOS",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "652670",
+     "name": "MARQUIS STUDIOS, LTD.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Laws Construction Corp.",
+   "stem": "LAWS CONSTRUCTION",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "879221",
+     "name": "LAWS CONSTRUCTION CORP.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Westchester"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "BROADWAY COMMUNITY INC",
+   "stem": "BROADWAY COMMUNITY",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "1608390",
+     "name": "BROADWAY COMMUNITY, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 8,
+   "truncated": false
+  },
+  {
+   "raw": "STATE STREET BANK & TRUST",
+   "stem": "STATE STREET BANK TRUST",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "RADIANT PATHWAYS CONSULTING",
+   "stem": "RADIANT PATHWAYS CONSULTING",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "6212163",
+     "name": "RADIANT PATHWAYS CONSULTING INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Westchester"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "AGC EDUCATION INC",
+   "stem": "AGC EDUCATION",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "ALION SCIENCE  and  TECHNOLOGY CORP.",
+   "stem": "ALION SCIENCE AND TECHNOLOGY",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Chinatown Manpower Project Inc",
+   "stem": "CHINATOWN MANPOWER PROJECT",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "268736",
+     "name": "CHINATOWN MANPOWER PROJECT, INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "ODYSSEY HDFC",
+   "stem": "ODYSSEY HDFC",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "VICTORY CAPITAL MANAGEMENT INC",
+   "stem": "VICTORY CAPITAL MANAGEMENT",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "324189",
+     "name": "VICTORY CAPITAL MANAGEMENT INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "A & A PLUMBING SYSTEMS INC",
+   "stem": "A A PLUMBING SYSTEMS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "3376488",
+     "name": "A & A PLUMBING SYSTEMS, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": 2,
+   "truncated": false
+  },
+  {
+   "raw": "Eileen C Treacy PHD LLC",
+   "stem": "EILEEN C TREACY PHD",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "PERIMETER SPORTS INC",
+   "stem": "PERIMETER SPORTS",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4617953",
+     "name": "PERIMETER SPORTS INC.",
+     "entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+     "entity_class": "not_for_profit",
+     "county": "Kings"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "I JANVEY & SONS INC",
+   "stem": "I JANVEY SONS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "165327",
+     "name": "I. JANVEY & SONS, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Nassau"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Transnational Villages Network-Red de Pueblos Trasnacionales",
+   "stem": "TRANSNATIONAL VILLAGES NETWORK-RED DE PUEBLOS TRASNACIONALES",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "PARTY PERFECT RENTALS LLC",
+   "stem": "PARTY PERFECT RENTALS",
+   "sources": [
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "3963853",
+     "name": "PARTY PERFECT RENTALS LLC",
+     "entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "Donohue Engineering, LLC",
+   "stem": "DONOHUE ENGINEERING",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "5153539",
+     "name": "DONOHUE ENGINEERING, LLC",
+     "entity_type": "FOREIGN PROFESSIONAL SERVICE LIMITED LIABILITY COMPANY",
+     "entity_class": "professional",
+     "county": "Rockland"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  },
+  {
+   "raw": "PCV INC.",
+   "stem": "PCV",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "3219162",
+     "name": "PCV, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Queens"
+    }
+   ],
+   "candidates_returned": 16,
+   "truncated": false
+  },
+  {
+   "raw": "Compstak Inc.",
+   "stem": "COMPSTAK",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "4263842",
+     "name": "COMPSTAK, INC.",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Summer PBC",
+   "stem": "SUMMER PBC",
+   "sources": [
+    "ocp_awards",
+    "registered_contracts"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "5275933",
+     "name": "SUMMER, PBC",
+     "entity_type": "FOREIGN BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "New York"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Arco Electrical Const. Corp.",
+   "stem": "ARCO ELECTRICAL CONST",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "candidates_only",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Bushwick Economic Development Corp. (BEDCO)",
+   "stem": "BUSHWICK ECONOMIC DEVELOPMENT CORP (BEDCO)",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Fanelli Sanitation Waste Equip.Corp. DBA Fanelli Industries",
+   "stem": "FANELLI SANITATION WASTE EQUIP CORP DBA FANELLI INDUSTRIES",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "UNIFIRE INC.",
+   "stem": "UNIFIRE",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "token_prefix",
+   "matches": [
+    {
+     "dos_id": "7561467",
+     "name": "UNIFIRE LLC",
+     "entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+     "entity_class": "llc",
+     "county": "Albany"
+    }
+   ],
+   "candidates_returned": 1,
+   "truncated": false
+  },
+  {
+   "raw": "Thermo Elemental Inc.",
+   "stem": "THERMO ELEMENTAL",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "Hilo Maintenance Systems Inc DBA Hilo Material Handling Group",
+   "stem": "HILO MAINTENANCE SYSTEMS INC DBA HILO MATERIAL HANDLING GROUP",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "no_match",
+   "step": "token_prefix",
+   "matches": [],
+   "candidates_returned": 0,
+   "truncated": false
+  },
+  {
+   "raw": "APPROVED ELECTRICAL CONTRACTORS, INC.",
+   "stem": "APPROVED ELECTRICAL CONTRACTORS",
+   "sources": [
+    "ocp_awards"
+   ],
+   "outcome": "one_match",
+   "step": "exact_upper_raw",
+   "matches": [
+    {
+     "dos_id": "1412032",
+     "name": "APPROVED ELECTRICAL CONTRACTORS, INC.",
+     "entity_type": "DOMESTIC BUSINESS CORPORATION",
+     "entity_class": "business_corporation",
+     "county": "Richmond"
+    }
+   ],
+   "candidates_returned": null,
+   "truncated": false
+  }
+ ],
+ "review": {
+  "reviewer": "the slice author, by reading each pair; not a second reviewer",
+  "selection": "seeded random 50 of the 143 single-match pairs (seed 20261114)",
+  "criteria": {
+   "same": "names equal after punctuation, '&'/and and legal-suffix folding AND the same legal form on both sides AND nothing in the engine contract context (agency, title) contradicts the state record",
+   "different": "the legal form differs between vendor and state record, or the context contradicts",
+   "cannot_tell": "vendor name carries no legal form and is generic, or the state record's type does not fit the vendor's apparent kind"
+  },
+  "address_comparison_possible": 0,
+  "address_note": "Neither engine artifact (ocp_awards_warehouse_lookup.json: request_id,start_date,agency_name,type_of_notice_description,short_title,pin,contract_amount,vendor_name; analytics_registered_contracts shards: no vendor address field) carries a vendor address, so city and zip could not be compared for any of the 50 pairs. The state-side address is not a reliable location anyway: for many foreign entities it is the Secretary of State process address in Albany 12207.",
+  "pairs": [
+   {
+    "n": 1,
+    "vendor_name": "ALEGRA LEARNING INC",
+    "vendor_stem": "ALEGRA LEARNING",
+    "match_step": "token_prefix",
+    "dos_id": "6773722",
+    "dos_name": "ALEGRA LEARNING, INC.",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 2,
+    "vendor_name": "Enherent Corporation",
+    "vendor_stem": "ENHERENT",
+    "match_step": "token_prefix",
+    "dos_id": "2070842",
+    "dos_name": "ENHERENT CORP.",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 3,
+    "vendor_name": "North Side Power Transmission Corp.",
+    "vendor_stem": "NORTH SIDE POWER TRANSMISSION",
+    "match_step": "exact_upper_raw",
+    "dos_id": "1893200",
+    "dos_name": "NORTH SIDE POWER TRANSMISSION CORP.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Kings",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 4,
+    "vendor_name": "CENTER FOR INTEGRATED TEACHER EDUCATION INC",
+    "vendor_stem": "CENTER FOR INTEGRATED TEACHER EDUCATION",
+    "match_step": "token_prefix",
+    "dos_id": "1657543",
+    "dos_name": "CENTER FOR INTEGRATED TEACHER EDUCATION, INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Suffolk",
+    "verdict": "cannot_tell",
+    "reason": "vendor is a teacher-education center; the state record is a business corporation in Suffolk County with no other evidence"
+   },
+   {
+    "n": 5,
+    "vendor_name": "Verint Americas Inc.",
+    "vendor_stem": "VERINT AMERICAS",
+    "match_step": "exact_upper_raw",
+    "dos_id": "4261792",
+    "dos_name": "VERINT AMERICAS INC.",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "Suffolk",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 6,
+    "vendor_name": "Parisi Landscape  and  Maintenance, Inc",
+    "vendor_stem": "PARISI LANDSCAPE AND MAINTENANCE",
+    "match_step": "token_prefix",
+    "dos_id": "5233625",
+    "dos_name": "PARISI LANDSCAPE & MAINTENANCE INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Monroe",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 7,
+    "vendor_name": "Public Financial Management, Inc.",
+    "vendor_stem": "PUBLIC FINANCIAL MANAGEMENT",
+    "match_step": "exact_upper_raw",
+    "dos_id": "1095942",
+    "dos_name": "PUBLIC FINANCIAL MANAGEMENT, INC.",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "Albany",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 8,
+    "vendor_name": "PART OF THE SOLUTION",
+    "vendor_stem": "PART OF THE SOLUTION",
+    "match_step": "exact_upper_raw",
+    "dos_id": "1118404",
+    "dos_name": "PART OF THE SOLUTION",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "Bronx",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 9,
+    "vendor_name": "Fleet Pump  and  Service Group Inc",
+    "vendor_stem": "FLEET PUMP AND SERVICE GROUP",
+    "match_step": "token_prefix",
+    "dos_id": "356031",
+    "dos_name": "FLEET PUMP & SERVICE GROUP INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Westchester",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 10,
+    "vendor_name": "Brooklyn Center for the Urban Environment",
+    "vendor_stem": "BROOKLYN CENTER FOR THE URBAN ENVIRONMENT",
+    "match_step": "token_prefix",
+    "dos_id": "522555",
+    "dos_name": "BROOKLYN CENTER FOR THE URBAN ENVIRONMENT, INC.",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "Kings",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 11,
+    "vendor_name": "Steve Duncanson Enterprises LLC",
+    "vendor_stem": "STEVE DUNCANSON ENTERPRISES",
+    "match_step": "token_prefix",
+    "dos_id": "3142759",
+    "dos_name": "STEVE DUNCANSON ENTERPRISES, LLC",
+    "dos_entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+    "dos_county": "Kings",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 12,
+    "vendor_name": "BELL AND HOWELL, LLC",
+    "vendor_stem": "BELL AND HOWELL",
+    "match_step": "token_prefix",
+    "dos_id": "1387518",
+    "dos_name": "BELL & HOWELL COMPANY",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "New York",
+    "verdict": "different",
+    "reason": "legal form differs: vendor says LLC, state record is BELL & HOWELL COMPANY"
+   },
+   {
+    "n": 13,
+    "vendor_name": "Cardinal McCloskey School  and  Home for Children",
+    "vendor_stem": "CARDINAL MCCLOSKEY SCHOOL AND HOME FOR CHILDREN",
+    "match_step": "token_prefix",
+    "dos_id": "47061",
+    "dos_name": "CARDINAL MCCLOSKEY SCHOOL AND HOME FOR CHILDREN",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "Westchester",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 14,
+    "vendor_name": "UNIFIRE INC.",
+    "vendor_stem": "UNIFIRE",
+    "match_step": "token_prefix",
+    "dos_id": "7561467",
+    "dos_name": "UNIFIRE LLC",
+    "dos_entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+    "dos_county": "Albany",
+    "verdict": "different",
+    "reason": "legal form differs: vendor says INC., state record is UNIFIRE LLC"
+   },
+   {
+    "n": 15,
+    "vendor_name": "ANIMAL CARE  and  CONTROL OF NEW YORK CITY, INC.",
+    "vendor_stem": "ANIMAL CARE AND CONTROL OF NEW YORK CITY",
+    "match_step": "token_prefix",
+    "dos_id": "1846490",
+    "dos_name": "ANIMAL CARE AND CONTROL OF NEW YORK CITY, INC.",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 16,
+    "vendor_name": "G8 CONSULTING GROUP INC",
+    "vendor_stem": "G8 CONSULTING GROUP",
+    "match_step": "exact_upper_raw",
+    "dos_id": "4904268",
+    "dos_name": "G8 CONSULTING GROUP INC",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 17,
+    "vendor_name": "ARTS HORIZONS NEW YORK INC",
+    "vendor_stem": "ARTS HORIZONS NEW YORK",
+    "match_step": "token_prefix",
+    "dos_id": "4400896",
+    "dos_name": "ARTS HORIZONS NEW YORK, INC.",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 18,
+    "vendor_name": "ROCK LEADERSHIP CONSULTING LLC",
+    "vendor_stem": "ROCK LEADERSHIP CONSULTING",
+    "match_step": "exact_upper_raw",
+    "dos_id": "7220953",
+    "dos_name": "ROCK LEADERSHIP CONSULTING LLC",
+    "dos_entity_type": "DOMESTIC LIMITED LIABILITY COMPANY",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 19,
+    "vendor_name": "APS ELECTRIC INC",
+    "vendor_stem": "APS ELECTRIC",
+    "match_step": "token_prefix",
+    "dos_id": "2908105",
+    "dos_name": "APS ELECTRIC INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Kings",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 20,
+    "vendor_name": "Auster Rubber Co.,Inc.",
+    "vendor_stem": "AUSTER RUBBER",
+    "match_step": "exact_upper_raw",
+    "dos_id": "167237",
+    "dos_name": "AUSTER RUBBER CO.,INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Queens",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 21,
+    "vendor_name": "Sun River Health Inc.",
+    "vendor_stem": "SUN RIVER HEALTH",
+    "match_step": "token_prefix",
+    "dos_id": "376551",
+    "dos_name": "SUN RIVER HEALTH, INC.",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "Westchester",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 22,
+    "vendor_name": "STUDY SMART TUTORS INC",
+    "vendor_stem": "STUDY SMART TUTORS",
+    "match_step": "token_prefix",
+    "dos_id": "7647311",
+    "dos_name": "STUDY SMART TUTORS, INC.",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "Kings",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 23,
+    "vendor_name": "LANDS' END INC",
+    "vendor_stem": "LANDS END",
+    "match_step": "token_prefix",
+    "dos_id": "2536801",
+    "dos_name": "LANDS' END, INC.",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "Monroe",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 24,
+    "vendor_name": "ORION SYSTEMS INTEGRATORS LLC",
+    "vendor_stem": "ORION SYSTEMS INTEGRATORS",
+    "match_step": "token_prefix",
+    "dos_id": "5778694",
+    "dos_name": "ORION SYSTEMS INTEGRATORS, LLC",
+    "dos_entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 25,
+    "vendor_name": "Delric Construction Co. Inc",
+    "vendor_stem": "DELRIC CONSTRUCTION",
+    "match_step": "token_prefix",
+    "dos_id": "3561270",
+    "dos_name": "DELRIC CONSTRUCTION CO., INC.",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "Rockland",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 26,
+    "vendor_name": "Express Abstract Services, Inc.",
+    "vendor_stem": "EXPRESS ABSTRACT SERVICES",
+    "match_step": "exact_upper_raw",
+    "dos_id": "2592142",
+    "dos_name": "EXPRESS ABSTRACT SERVICES, INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Richmond",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 27,
+    "vendor_name": "DKA TOOLKIT INC",
+    "vendor_stem": "DKA TOOLKIT",
+    "match_step": "token_prefix",
+    "dos_id": "5519024",
+    "dos_name": "DKA TOOLKIT, INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Kings",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 28,
+    "vendor_name": "MARQUIS STUDIOS LTD",
+    "vendor_stem": "MARQUIS STUDIOS",
+    "match_step": "token_prefix",
+    "dos_id": "652670",
+    "dos_name": "MARQUIS STUDIOS, LTD.",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 29,
+    "vendor_name": "Weiss Instruments Inc.",
+    "vendor_stem": "WEISS INSTRUMENTS",
+    "match_step": "token_prefix",
+    "dos_id": "5302751",
+    "dos_name": "WEISS INSTRUMENTS LLC",
+    "dos_entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+    "dos_county": "Suffolk",
+    "verdict": "different",
+    "reason": "legal form differs: vendor says Inc., state record is WEISS INSTRUMENTS LLC"
+   },
+   {
+    "n": 30,
+    "vendor_name": "Anixter Inc.",
+    "vendor_stem": "ANIXTER",
+    "match_step": "exact_upper_raw",
+    "dos_id": "232472",
+    "dos_name": "ANIXTER INC.",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "Queens",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 31,
+    "vendor_name": "ZEEL NETWORKS INC",
+    "vendor_stem": "ZEEL NETWORKS",
+    "match_step": "token_prefix",
+    "dos_id": "4018503",
+    "dos_name": "ZEEL NETWORKS, INC.",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 32,
+    "vendor_name": "DRIVE RITE ACADEMY",
+    "vendor_stem": "DRIVE RITE ACADEMY",
+    "match_step": "token_prefix",
+    "dos_id": "4547155",
+    "dos_name": "DRIVE RITE ACADEMY INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Kings",
+    "verdict": "cannot_tell",
+    "reason": "vendor name carries no legal form and is a short common phrase"
+   },
+   {
+    "n": 33,
+    "vendor_name": "VANDERHEYDEN HALL, INC.",
+    "vendor_stem": "VANDERHEYDEN HALL",
+    "match_step": "exact_upper_raw",
+    "dos_id": "97310",
+    "dos_name": "VANDERHEYDEN HALL, INC.",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "Rensselaer",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 34,
+    "vendor_name": "A & A PLUMBING SYSTEMS INC",
+    "vendor_stem": "A A PLUMBING SYSTEMS",
+    "match_step": "token_prefix",
+    "dos_id": "3376488",
+    "dos_name": "A & A PLUMBING SYSTEMS, INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Queens",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 35,
+    "vendor_name": "THE SENSORY KLUB LLC",
+    "vendor_stem": "THE SENSORY KLUB",
+    "match_step": "exact_upper_raw",
+    "dos_id": "7589467",
+    "dos_name": "THE SENSORY KLUB LLC",
+    "dos_entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 36,
+    "vendor_name": "ROCKAWAY FILM FESTIVAL INC",
+    "vendor_stem": "ROCKAWAY FILM FESTIVAL",
+    "match_step": "token_prefix",
+    "dos_id": "5432734",
+    "dos_name": "ROCKAWAY FILM FESTIVAL, INC.",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "Queens",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 37,
+    "vendor_name": "MAMAVA INC",
+    "vendor_stem": "MAMAVA",
+    "match_step": "token_prefix",
+    "dos_id": "5017462",
+    "dos_name": "MAMAVA, INC.",
+    "dos_entity_type": "FOREIGN BUSINESS CORPORATION",
+    "dos_county": "Monroe",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 38,
+    "vendor_name": "CDM SOUND STUDIOS, INC.",
+    "vendor_stem": "CDM SOUND STUDIOS",
+    "match_step": "exact_upper_raw",
+    "dos_id": "2249559",
+    "dos_name": "CDM SOUND STUDIOS, INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 39,
+    "vendor_name": "Kimberleigh Graphics Inc",
+    "vendor_stem": "KIMBERLEIGH GRAPHICS",
+    "match_step": "token_prefix",
+    "dos_id": "1813649",
+    "dos_name": "KIMBERLEIGH GRAPHICS INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Nassau",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 40,
+    "vendor_name": "THE JPI GROUP LLC",
+    "vendor_stem": "THE JPI GROUP",
+    "match_step": "exact_upper_raw",
+    "dos_id": "4971176",
+    "dos_name": "THE JPI GROUP LLC",
+    "dos_entity_type": "FOREIGN LIMITED LIABILITY COMPANY",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 41,
+    "vendor_name": "Sparklean Janitorial Services Inc.",
+    "vendor_stem": "SPARKLEAN JANITORIAL SERVICES",
+    "match_step": "exact_upper_raw",
+    "dos_id": "5711624",
+    "dos_name": "SPARKLEAN JANITORIAL SERVICES INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 42,
+    "vendor_name": "HALLET COVE CHILD DEVELOPMENT CENTER, INC.",
+    "vendor_stem": "HALLET COVE CHILD DEVELOPMENT CENTER",
+    "match_step": "exact_upper_raw",
+    "dos_id": "478022",
+    "dos_name": "HALLET COVE CHILD DEVELOPMENT CENTER, INC.",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "Queens",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 43,
+    "vendor_name": "B  and  H Foto  and  Electronics Corp",
+    "vendor_stem": "B AND H FOTO AND ELECTRONICS",
+    "match_step": "token_prefix",
+    "dos_id": "265140",
+    "dos_name": "B & H FOTO & ELECTRONICS CORP.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 44,
+    "vendor_name": "UNIQUE ENTERTAINMENT",
+    "vendor_stem": "UNIQUE ENTERTAINMENT",
+    "match_step": "token_prefix",
+    "dos_id": "2741329",
+    "dos_name": "UNIQUE ENTERTAINMENT INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Nassau",
+    "verdict": "cannot_tell",
+    "reason": "vendor name carries no legal form and is generic"
+   },
+   {
+    "n": 45,
+    "vendor_name": "DMR SERVICES",
+    "vendor_stem": "DMR SERVICES",
+    "match_step": "token_prefix",
+    "dos_id": "4950411",
+    "dos_name": "DMR SERVICES CORP",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Suffolk",
+    "verdict": "cannot_tell",
+    "reason": "vendor name carries no legal form and no contract context"
+   },
+   {
+    "n": 46,
+    "vendor_name": "Advanced Lighting Corp of NY",
+    "vendor_stem": "ADVANCED LIGHTING",
+    "match_step": "token_prefix",
+    "dos_id": "1616715",
+    "dos_name": "ADVANCED LIGHTING CORPORATION OF NEW YORK",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Suffolk",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 47,
+    "vendor_name": "THE MIDTOWN MANAGEMENT GROUP INC",
+    "vendor_stem": "THE MIDTOWN MANAGEMENT GROUP",
+    "match_step": "token_prefix",
+    "dos_id": "869158",
+    "dos_name": "THE MIDTOWN MANAGEMENT GROUP, INC.",
+    "dos_entity_type": "DOMESTIC NOT-FOR-PROFIT CORPORATION",
+    "dos_county": "New York",
+    "verdict": "cannot_tell",
+    "reason": "state record is a not-for-profit corporation; a management group of that name is plausible either way"
+   },
+   {
+    "n": 48,
+    "vendor_name": "Amazonas Painting Corp",
+    "vendor_stem": "AMAZONAS PAINTING",
+    "match_step": "token_prefix",
+    "dos_id": "2682192",
+    "dos_name": "AMAZONAS PAINTING CORP.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Queens",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 49,
+    "vendor_name": "MANHATTAN CONTRACTING CORP",
+    "vendor_stem": "MANHATTAN CONTRACTING",
+    "match_step": "token_prefix",
+    "dos_id": "2479423",
+    "dos_name": "MANHATTAN CONTRACTING CORP.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "Suffolk",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   },
+   {
+    "n": 50,
+    "vendor_name": "DB GRANT ASSOCIATES INC",
+    "vendor_stem": "DB GRANT ASSOCIATES",
+    "match_step": "token_prefix",
+    "dos_id": "2161013",
+    "dos_name": "DB GRANT ASSOCIATES, INC.",
+    "dos_entity_type": "DOMESTIC BUSINESS CORPORATION",
+    "dos_county": "New York",
+    "verdict": "same",
+    "reason": "names equal after punctuation, '&'/and and legal-suffix folding; same legal form on both sides; nothing in the contract context contradicts"
+   }
+  ],
+  "counts": {
+   "same": 42,
+   "different": 3,
+   "cannot_tell": 5
+  }
+ },
+ "join_gate": {
+  "policy": "ontology/join_gate_policy.mjs resolveJoinGateTier",
+  "usefulness": 0.4767,
+  "precision_conservative": 0.84,
+  "precision_excluding_cannot_tell": 0.9333,
+  "precision_wilson_95_lower_bound": 0.715,
+  "tier": "shadow",
+  "materialize": false,
+  "automatic_link_allowed": false,
+  "decision": "Not allowed. Usefulness clears 0.30 but reviewed precision is below 0.95 on either reading, and the failures are structural: vendorStem deletes legal-form words, so INC./LLC/COMPANY siblings collapse. State matches are published as candidates with their match basis, never as automatic links."
+ }
+}

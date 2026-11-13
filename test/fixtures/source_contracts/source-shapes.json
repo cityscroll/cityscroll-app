@@ -1082,6 +1082,109 @@
       "headers": [
         "L5 Category (NIGP Code and Description)"
       ]
+    },
+    {
+      "id": "dos-active-entities",
+      "kind": "socrata",
+      "identifier": "n9v6-gdp6",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "dos_id",
+        "current_entity_name",
+        "entity_type",
+        "dos_process_name",
+        "dos_process_address_1",
+        "dos_process_city",
+        "dos_process_state",
+        "dos_process_zip",
+        "registered_agent_name",
+        "registered_agent_address_1",
+        "county",
+        "jurisdiction",
+        "initial_dos_filing_date"
+      ]
+    },
+    {
+      "id": "irs-eo-bmf-ny",
+      "kind": "csv",
+      "identifier": "pub/irs-soi/eo_ny.csv",
+      "response_type": "text/csv",
+      "fields": [
+        "EIN",
+        "NAME",
+        "STREET",
+        "CITY",
+        "STATE",
+        "ZIP",
+        "SUBSECTION",
+        "STATUS",
+        "NTEE_CD"
+      ],
+      "headers": [
+        "EIN",
+        "NAME",
+        "ICO",
+        "STREET",
+        "CITY",
+        "STATE",
+        "ZIP",
+        "GROUP",
+        "SUBSECTION",
+        "AFFILIATION",
+        "CLASSIFICATION",
+        "RULING",
+        "DEDUCTIBILITY",
+        "FOUNDATION",
+        "ACTIVITY",
+        "ORGANIZATION",
+        "STATUS",
+        "TAX_PERIOD",
+        "ASSET_CD",
+        "INCOME_CD",
+        "FILING_REQ_CD",
+        "PF_FILING_REQ_CD",
+        "ACCT_PD",
+        "ASSET_AMT",
+        "INCOME_AMT",
+        "REVENUE_AMT",
+        "NTEE_CD",
+        "SORT_NAME"
+      ]
+    },
+    {
+      "id": "nys-dol-contractor-registry",
+      "kind": "socrata",
+      "identifier": "i4jv-zkey",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "certificate_number",
+        "business_name",
+        "business_type",
+        "business_has_been_debarred",
+        "business_is_mwbe_owned",
+        "city",
+        "address",
+        "expiration_date"
+      ]
+    },
+    {
+      "id": "nyc-sca-prequalified-firms",
+      "kind": "socrata",
+      "identifier": "szkz-syh6",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "prequalified_vendor_name",
+        "prequalified_vendor_trade_description",
+        "prequalified_vendor_address",
+        "prequalified_vendor_city_name",
+        "prequalified_vendor_state_code",
+        "prequalified_vendor_zip_code",
+        "prequalified_vendor_contact_person",
+        "prequalified_vendor_phone_number"
+      ]
     }
   ]
 }

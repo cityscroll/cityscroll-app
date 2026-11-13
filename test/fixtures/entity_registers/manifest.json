@@ -1,0 +1,218 @@
+{
+ "schema": "cityscroll.entity_register.entity_registers_manifest.v1",
+ "generated_on": "2026-11-11",
+ "baseline": {
+  "repository": "cityscroll-app",
+  "revision": "ded9a9d2eddde6232162d30774c759bf3be4e054"
+ },
+ "network_use": {
+  "data.ny.gov": "about 580 requests in total (544 logged by the 1.1 s spaced client, plus 9 fixture recordings and about 25 metadata, count, terms and full-table pulls), under the 700 ceiling; robots.txt Crawl-delay 1 honoured",
+  "irs.gov": "1 CSV download plus the page, info sheet and policy pages",
+  "data.cityofnewyork.us": "metadata, 2 counts, 2 full-table pulls",
+  "other_hosts": "one to three GETs each for the register-availability checks"
+ },
+ "vintages": {
+  "n9v6-gdp6": "rowsUpdatedAt 2026-11-11T14:20:02Z",
+  "eo_ny.csv": "Last-Modified Mon, 09 Nov 2026 05:11:37 GMT, sha256 59cd4d7ef5966fafdf655b4b6f566f3321a032fd0692b891e9f8c61ebb56f6f8",
+  "i4jv-zkey": "rowsUpdatedAt 2026-11-11T10:01:22Z, full pull sha256 fceb67cbb13a3feee0813c7cffba4412085e1dc18459194748bfadb8ada202f8",
+  "szkz-syh6": "rowsUpdatedAt 2026-11-06T20:15:24Z, full pull sha256 d1a9c92a2a05eb531e88c03595273b71f900e902207a750b32307762dd4dde47",
+  "w7w3-xahh": "rowsUpdatedAt 2026-11-06T20:31:31Z, full pull sha256 cee26b0587f3912e6e9366506f87ec6a827765b954902ed0055630e46c1c4c40 (not included)"
+ },
+ "files": [
+  {
+   "path": "README.md",
+   "bytes": 3860,
+   "sha256": "fad87e55d0a48a739fa1c3ef76a3ce3e8ca8803086f91049e045dbc03343301b"
+  },
+  {
+   "path": "build_entity_class_map.mjs",
+   "bytes": 4398,
+   "sha256": "957434ceb7e2d3f6d3d9ce5ad1cb295289b049816f0368a2717da0b8c193c377"
+  },
+  {
+   "path": "build_irs_fixture.mjs",
+   "bytes": 3183,
+   "sha256": "7438914b6d24624656cae79afbfea4c10af7b81d41964a61d6c1af4cdcf00dc4"
+  },
+  {
+   "path": "build_table_fixtures.mjs",
+   "bytes": 4644,
+   "sha256": "ed5032176d6ad452ded7f8ac2a500dfd0ec341195e2fa0ebdede84b8490dd9e1"
+  },
+  {
+   "path": "csv.mjs",
+   "bytes": 1799,
+   "sha256": "b669f9e7ae7d04a9229fb6fb5a25d3c8ab9722dbd4f5c4bc09a0d93f70e939ca"
+  },
+  {
+   "path": "dos_entities.mjs",
+   "bytes": 13339,
+   "sha256": "b51a2fb06a438858993b55e4e2f0f988a2136ef66031352396899943f8ca134f"
+  },
+  {
+   "path": "dos_match_sample.json",
+   "bytes": 136308,
+   "sha256": "9c14e200cf3399488b3174e48cc2cf290747b0f7d1f8f217cc23855d74d2f311"
+  },
+  {
+   "path": "dos_query_timings.json",
+   "bytes": 48011,
+   "sha256": "743cfadf57788d4d5686661bb7317fa1008a87a7be765e82ef9884c346d66d63"
+  },
+  {
+   "path": "engine_soda_helper.mjs",
+   "bytes": 1981,
+   "sha256": "9530e6c2d0fd87c407c14bbd95c8271a9be9a2b06e64966247e772fd073d0505"
+  },
+  {
+   "path": "entity_class.mjs",
+   "bytes": 945,
+   "sha256": "843037f948b657235123d913c4cc3c592f940469e7d40e42cffaa2793d383779"
+  },
+  {
+   "path": "entity_registers.test.mjs",
+   "bytes": 42039,
+   "sha256": "0ab25685500d6db2f85c9e796934b77856b28131b438ba9c5f22a9f8cb25b97d"
+  },
+  {
+   "path": "entity_type_class_map.json",
+   "bytes": 11159,
+   "sha256": "ca81439a3e592063efa452648ebc36350ca8ff9b2ea6871f4fc0dd2adb8a998d"
+  },
+  {
+   "path": "fixtures/dol_contractor_registry.receipt.json",
+   "bytes": 1971,
+   "sha256": "637fee7e7781f92ea2fe46dc650fce4d13e3b41704e32ef1c0d376382ffe2ae7"
+  },
+  {
+   "path": "fixtures/dol_contractor_registry.sample.json",
+   "bytes": 319516,
+   "sha256": "54b6f40fed5b4249dffb19f63db8d48b1bf041294863a7b87f9f17954c2e1913"
+  },
+  {
+   "path": "fixtures/dos/and_vs_ampersand.response.json",
+   "bytes": 589,
+   "sha256": "d103682449b2e464a50976b64a7dc8fe21b770850b0f059c31cd6051954febc4"
+  },
+  {
+   "path": "fixtures/dos/candidates_only.response.json",
+   "bytes": 435,
+   "sha256": "9d982a977e5f0fe5577140ad2ea2bbb193ad2d85e3a1cd970ba6188f5943f29c"
+  },
+  {
+   "path": "fixtures/dos/dos_id_nonprofit.response.json",
+   "bytes": 594,
+   "sha256": "a45e206249fda548e3629bc237f4700292a3a5cb24b69aeb5ee470b2948c8d69"
+  },
+  {
+   "path": "fixtures/dos/exact_batch.response.json",
+   "bytes": 684,
+   "sha256": "7caf75f9d05e65e4af88969d3c7f604068e214a7c271736f326024a9f0029245"
+  },
+  {
+   "path": "fixtures/dos/llc_single.response.json",
+   "bytes": 6873,
+   "sha256": "b6cb36874e763ae21c12e626b77ed2706164b48a6a2073141e21fc1c4816b643"
+  },
+  {
+   "path": "fixtures/dos/manifest.json",
+   "bytes": 10324,
+   "sha256": "73541cae7a22b0907247006a75d437ed808ffdf4309a110dc3622ec6843a9ad8"
+  },
+  {
+   "path": "fixtures/dos/no_match.response.json",
+   "bytes": 3,
+   "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  {
+   "path": "fixtures/dos/nonprofit_single.response.json",
+   "bytes": 594,
+   "sha256": "a45e206249fda548e3629bc237f4700292a3a5cb24b69aeb5ee470b2948c8d69"
+  },
+  {
+   "path": "fixtures/dos/several_same_stem.response.json",
+   "bytes": 6099,
+   "sha256": "cde4f1d7e2cd873f96328bde17c12f3249bd670ee0240f27c349b199d29c199d"
+  },
+  {
+   "path": "fixtures/dos/truncated_generic.response.json",
+   "bytes": 11202,
+   "sha256": "7b7e1429292beda81be4b41aca2e9e48fec38002cb5a7890b39589c41549bc54"
+  },
+  {
+   "path": "fixtures/dos_dataset_metadata.json",
+   "bytes": 3752,
+   "sha256": "9e6d8388e5e42b03e8d4742dd67656c1b2bd0c98606646629a1ddedc6b0f9390"
+  },
+  {
+   "path": "fixtures/dos_entity_type_counts.response.json",
+   "bytes": 3956,
+   "sha256": "fef3fdec5eca34ca3bea615756721827ac307973ef72e38582c200f63cd3f736"
+  },
+  {
+   "path": "fixtures/irs_eo_bmf_ny.receipt.json",
+   "bytes": 1562,
+   "sha256": "7b13285ac4457319e534ce44e90d020bae1797703583f0fe0d51456061f01b8a"
+  },
+  {
+   "path": "fixtures/irs_eo_bmf_ny.sample.json",
+   "bytes": 492721,
+   "sha256": "a0132a518d55ae81b7ff57123f9a6ace14662edfc649edcb10060d196c37f167"
+  },
+  {
+   "path": "fixtures/sca_prequalified_firms.receipt.json",
+   "bytes": 1352,
+   "sha256": "3b4293e80c75e984d0c4af00e2059e5f737e6713c38a4b683e470a0833e114b3"
+  },
+  {
+   "path": "fixtures/sca_prequalified_firms.sample.json",
+   "bytes": 236980,
+   "sha256": "2c53ac4069ebf3064088bdc4f1ed1c6ce6867c6251e53e23ad3b94c60ae39390"
+  },
+  {
+   "path": "irs_eo_bmf.mjs",
+   "bytes": 4743,
+   "sha256": "f796fe19af3b1aac287a16cc49a8c32dd553d1fce1a3c62116f8c796ca824d3b"
+  },
+  {
+   "path": "irs_match_sample.json",
+   "bytes": 50470,
+   "sha256": "b923ad94f0b4565dc4e6111e5a037de2f779b9e7a2965aecea2cd2324be53264"
+  },
+  {
+   "path": "read_contract.mjs",
+   "bytes": 4558,
+   "sha256": "5a4e37724da5e0c28dabe316a7a4321ffe5352eee263b8b1003c73e9f4637a02"
+  },
+  {
+   "path": "record_dos_fixtures.mjs",
+   "bytes": 3844,
+   "sha256": "287a156824d638ba8781bd87e735ec5b2ed0fbd947b240f68ed83470096180f3"
+  },
+  {
+   "path": "register-decisions.json",
+   "bytes": 15044,
+   "sha256": "835fcea7494bf262e78ece3fcecae4ee2dfeecdca0d361ff3d5187282140927f"
+  },
+  {
+   "path": "register_index.mjs",
+   "bytes": 4409,
+   "sha256": "afaf8a5a3cbcf884686da7ec24a5e7dd424ee0070ffbc25bc3ddd5a7eb1d6367"
+  },
+  {
+   "path": "table_registers.mjs",
+   "bytes": 6779,
+   "sha256": "d17580cdf46c8252bc2d01faca310bb9145ef64923adcd6169754c7ac0035a6a"
+  },
+  {
+   "path": "terms-observations.json",
+   "bytes": 10277,
+   "sha256": "29fd6d89d12e01f98c03792d4b657e7b7f038a17038bc2023fd7bd4d46feed47"
+  },
+  {
+   "path": "vendor_stem.mjs",
+   "bytes": 1450,
+   "sha256": "aedaf81bce9a1d2902d06b3005de7dc249425e49102acf8d045b6a97479835ef"
+  }
+ ]
+}

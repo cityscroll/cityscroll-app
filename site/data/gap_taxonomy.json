@@ -744,6 +744,31 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "dos-active-entities",
+      "name": "NYS Department of State Active Corporations",
+      "source_contract_id": "dos-active-entities",
+      "status": "live-only",
+      "join_keys": [
+        "current_entity_name",
+        "vendor_name"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 0.4767,
+          "joined": 143,
+          "total": 300,
+          "metric": "one_match",
+          "observed_on": "2026-11-11",
+          "universe": "300 seeded engine vendor names against the active-corporations extract",
+          "strategy": "Exact upper(current_entity_name) then token-prefix LIKE on the vendor stem; '&'/'and' folded. Automatic linking refused.",
+          "verdict": "Join gate tier shadow (usefulness 0.4767, precision 0.84); publish candidates only.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.ny.gov/d/n9v6-gdp6",
+      "delivery_tier": "live-only"
+    },
+    {
       "id": "dsny-district-boundaries",
       "name": "DSNY Districts",
       "source_contract_id": "dsny-district-boundaries",
@@ -781,6 +806,31 @@
       "join_keys": [],
       "join_coverage": {},
       "landing_page": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "irs-eo-bmf-ny",
+      "name": "IRS Exempt Organizations Business Master File (New York)",
+      "source_contract_id": "irs-eo-bmf-ny",
+      "status": "landed",
+      "join_keys": [
+        "NAME",
+        "vendor_name"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 0.14,
+          "joined": 14,
+          "total": 100,
+          "metric": "random_found",
+          "observed_on": "2026-11-11",
+          "universe": "100 random engine vendor names and 100 nonprofit-looking names against eo_ny.csv",
+          "strategy": "Exact vendorStem equality on NAME; automatic linking refused.",
+          "verdict": "Join gate tier review on the random population (usefulness 0.14); publish candidates only.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-file-extract-eo-bmf",
       "delivery_tier": "inline-at-build"
     },
     {
@@ -1033,6 +1083,16 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "nyc-sca-prequalified-firms",
+      "name": "NYC School Construction Authority Prequalified Firms",
+      "source_contract_id": "nyc-sca-prequalified-firms",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/szkz-syh6",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "nycida-build-nyc-projects",
       "name": "NYCIDA/Build NYC public documents",
       "source_contract_id": "nycida-build-nyc-projects",
@@ -1060,6 +1120,16 @@
       "join_coverage": {},
       "landing_page": "https://www.nyscr.ny.gov/Ads/Search",
       "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "nys-dol-contractor-registry",
+      "name": "NYS Department of Labor Contractor Registry",
+      "source_contract_id": "nys-dol-contractor-registry",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.ny.gov/d/i4jv-zkey",
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "oath-trial-calendar",
@@ -2358,6 +2428,38 @@
       "evidence": "Shared keys vendor_name; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "abo-local-authorities-x-dos-active-entities-via-vendor_name",
+      "source_a": "abo-local-authorities",
+      "source_b": "dos-active-entities",
+      "key_path": [
+        "vendor_name"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "external-awards-abo-none"
+      ],
+      "score": 1,
+      "evidence": "Shared keys vendor_name; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "abo-local-authorities-x-irs-eo-bmf-ny-via-vendor_name",
+      "source_a": "abo-local-authorities",
+      "source_b": "irs-eo-bmf-ny",
+      "key_path": [
+        "vendor_name"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "external-awards-abo-none"
+      ],
+      "score": 1,
+      "evidence": "Shared keys vendor_name; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "abo-local-authorities-x-sbs-certified-business-list-via-vendor_name",
       "source_a": "abo-local-authorities",
       "source_b": "sbs-certified-business-list",
@@ -3180,8 +3282,78 @@
       "evidence": "Shared keys PIN; 0 taxonomy gap(s) could close."
     },
     {
+      "id": "doing-business-entities-x-dos-active-entities-via-vendor_name",
+      "source_a": "doing-business-entities",
+      "source_b": "dos-active-entities",
+      "key_path": [
+        "vendor_name"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys vendor_name; 0 taxonomy gap(s) could close."
+    },
+    {
+      "id": "doing-business-entities-x-irs-eo-bmf-ny-via-vendor_name",
+      "source_a": "doing-business-entities",
+      "source_b": "irs-eo-bmf-ny",
+      "key_path": [
+        "vendor_name"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys vendor_name; 0 taxonomy gap(s) could close."
+    },
+    {
       "id": "doing-business-entities-x-sbs-certified-business-list-via-vendor_name",
       "source_a": "doing-business-entities",
+      "source_b": "sbs-certified-business-list",
+      "key_path": [
+        "vendor_name"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys vendor_name; 0 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dos-active-entities-x-irs-eo-bmf-ny-via-vendor_name",
+      "source_a": "dos-active-entities",
+      "source_b": "irs-eo-bmf-ny",
+      "key_path": [
+        "vendor_name"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys vendor_name; 0 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dos-active-entities-x-sbs-certified-business-list-via-vendor_name",
+      "source_a": "dos-active-entities",
+      "source_b": "sbs-certified-business-list",
+      "key_path": [
+        "vendor_name"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys vendor_name; 0 taxonomy gap(s) could close."
+    },
+    {
+      "id": "irs-eo-bmf-ny-x-sbs-certified-business-list-via-vendor_name",
+      "source_a": "irs-eo-bmf-ny",
       "source_b": "sbs-certified-business-list",
       "key_path": [
         "vendor_name"
@@ -3891,10 +4063,10 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-11-12",
-    "source_contracts_fingerprint": "ca35cd434523e3cf312fdbc10c03ba64e6f273a28d56bf98c22a373dee3c61d8",
+    "observed_on": "2026-11-13",
+    "source_contracts_fingerprint": "b4a50af6c5d42eaaff70355aff0fbcf374c486f276c6f7b59f75577b5368d084",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 93,
+    "candidate_crosswalks": 100,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

@@ -959,6 +959,7 @@ const STRINGS = {
     guide_text_9044f2c0f4a88307: "Open the finished two-step trail",
         guide_text_9d6194195e73dee7: "The 66 public sources behind these records, by how often each one changes",
         guide_text_3fbb8c75fe8cc71f: "The 67 public sources behind these records, by how often each one changes",
+        guide_text_2619d0595c363394: 'The 71 public sources behind these records, by how often each one changes',
     guide_text_30dfc11c63559ad9: "Ask with AI",
 // END GUIDE TRANSLATIONS
 

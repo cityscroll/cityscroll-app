@@ -1,0 +1,129 @@
+{
+ "schema": "cityscroll.entity_register.dos_fixture_manifest.v1",
+ "recorded_on": "2026-11-11",
+ "host": "data.ny.gov",
+ "dataset_id": "n9v6-gdp6",
+ "entries": [
+  {
+   "id": "nonprofit_single",
+   "kind": "name_token_prefix",
+   "input": "Chinatown Manpower Project Inc",
+   "why": "a real New York not-for-profit",
+   "url": "https://data.ny.gov/resource/n9v6-gdp6.json?%24select=dos_id%2Ccurrent_entity_name%2Cinitial_dos_filing_date%2Ccounty%2Cjurisdiction%2Centity_type%2Cdos_process_name%2Cdos_process_address_1%2Cdos_process_address_2%2Cdos_process_city%2Cdos_process_state%2Cdos_process_zip%2Cchairman_name%2Cchairman_address_1%2Cchairman_address_2%2Cchairman_city%2Cchairman_state%2Cchairman_zip%2Cregistered_agent_name%2Cregistered_agent_address_1%2Cregistered_agent_address_2%2Cregistered_agent_city%2Cregistered_agent_state%2Cregistered_agent_zip%2Clocation_name%2Clocation_address_1%2Clocation_address_2%2Clocation_city%2Clocation_state%2Clocation_zip&%24where=upper%28current_entity_name%29%20like%20%27CHINATOWN%25MANPOWER%25PROJECT%25%27&%24limit=26",
+   "limit": 25,
+   "http_status": 200,
+   "ms": 223,
+   "bytes": 594,
+   "sha256": "a45e206249fda548e3629bc237f4700292a3a5cb24b69aeb5ee470b2948c8d69",
+   "file": "dos/nonprofit_single.response.json"
+  },
+  {
+   "id": "llc_single",
+   "kind": "name_token_prefix",
+   "input": "C GLOBAL CONSULTING LLC",
+   "why": "a real LLC",
+   "url": "https://data.ny.gov/resource/n9v6-gdp6.json?%24select=dos_id%2Ccurrent_entity_name%2Cinitial_dos_filing_date%2Ccounty%2Cjurisdiction%2Centity_type%2Cdos_process_name%2Cdos_process_address_1%2Cdos_process_address_2%2Cdos_process_city%2Cdos_process_state%2Cdos_process_zip%2Cchairman_name%2Cchairman_address_1%2Cchairman_address_2%2Cchairman_city%2Cchairman_state%2Cchairman_zip%2Cregistered_agent_name%2Cregistered_agent_address_1%2Cregistered_agent_address_2%2Cregistered_agent_city%2Cregistered_agent_state%2Cregistered_agent_zip%2Clocation_name%2Clocation_address_1%2Clocation_address_2%2Clocation_city%2Clocation_state%2Clocation_zip&%24where=upper%28current_entity_name%29%20like%20%27C%25GLOBAL%25CONSULTING%25%27&%24limit=26",
+   "limit": 25,
+   "http_status": 200,
+   "ms": 502,
+   "bytes": 6873,
+   "sha256": "b6cb36874e763ae21c12e626b77ed2706164b48a6a2073141e21fc1c4816b643",
+   "file": "dos/llc_single.response.json"
+  },
+  {
+   "id": "several_same_stem",
+   "kind": "name_token_prefix",
+   "input": "Skyline Builders",
+   "why": "three active records share the stem (INC., LLC, USA INC.)",
+   "url": "https://data.ny.gov/resource/n9v6-gdp6.json?%24select=dos_id%2Ccurrent_entity_name%2Cinitial_dos_filing_date%2Ccounty%2Cjurisdiction%2Centity_type%2Cdos_process_name%2Cdos_process_address_1%2Cdos_process_address_2%2Cdos_process_city%2Cdos_process_state%2Cdos_process_zip%2Cchairman_name%2Cchairman_address_1%2Cchairman_address_2%2Cchairman_city%2Cchairman_state%2Cchairman_zip%2Cregistered_agent_name%2Cregistered_agent_address_1%2Cregistered_agent_address_2%2Cregistered_agent_city%2Cregistered_agent_state%2Cregistered_agent_zip%2Clocation_name%2Clocation_address_1%2Clocation_address_2%2Clocation_city%2Clocation_state%2Clocation_zip&%24where=upper%28current_entity_name%29%20like%20%27SKYLINE%25BUILDERS%25%27&%24limit=26",
+   "limit": 25,
+   "http_status": 200,
+   "ms": 118,
+   "bytes": 6099,
+   "sha256": "cde4f1d7e2cd873f96328bde17c12f3249bd670ee0240f27c349b199d29c199d",
+   "file": "dos/several_same_stem.response.json"
+  },
+  {
+   "id": "truncated_generic",
+   "kind": "name_token_prefix",
+   "input": "New York State Association",
+   "why": "generic name; cap reached",
+   "url": "https://data.ny.gov/resource/n9v6-gdp6.json?%24select=dos_id%2Ccurrent_entity_name%2Cinitial_dos_filing_date%2Ccounty%2Cjurisdiction%2Centity_type%2Cdos_process_name%2Cdos_process_address_1%2Cdos_process_address_2%2Cdos_process_city%2Cdos_process_state%2Cdos_process_zip%2Cchairman_name%2Cchairman_address_1%2Cchairman_address_2%2Cchairman_city%2Cchairman_state%2Cchairman_zip%2Cregistered_agent_name%2Cregistered_agent_address_1%2Cregistered_agent_address_2%2Cregistered_agent_city%2Cregistered_agent_state%2Cregistered_agent_zip%2Clocation_name%2Clocation_address_1%2Clocation_address_2%2Clocation_city%2Clocation_state%2Clocation_zip&%24where=upper%28current_entity_name%29%20like%20%27NEW%25YORK%25STATE%25ASSOCIATION%25%27&%24limit=26",
+   "limit": 25,
+   "http_status": 200,
+   "ms": 160,
+   "bytes": 11202,
+   "sha256": "7b7e1429292beda81be4b41aca2e9e48fec38002cb5a7890b39589c41549bc54",
+   "file": "dos/truncated_generic.response.json"
+  },
+  {
+   "id": "candidates_only",
+   "kind": "name_token_prefix",
+   "input": "Catholic Charities/Neighborhood Services",
+   "why": "register spells it without the slash; no stem-equal row",
+   "url": "https://data.ny.gov/resource/n9v6-gdp6.json?%24select=dos_id%2Ccurrent_entity_name%2Cinitial_dos_filing_date%2Ccounty%2Cjurisdiction%2Centity_type%2Cdos_process_name%2Cdos_process_address_1%2Cdos_process_address_2%2Cdos_process_city%2Cdos_process_state%2Cdos_process_zip%2Cchairman_name%2Cchairman_address_1%2Cchairman_address_2%2Cchairman_city%2Cchairman_state%2Cchairman_zip%2Cregistered_agent_name%2Cregistered_agent_address_1%2Cregistered_agent_address_2%2Cregistered_agent_city%2Cregistered_agent_state%2Cregistered_agent_zip%2Clocation_name%2Clocation_address_1%2Clocation_address_2%2Clocation_city%2Clocation_state%2Clocation_zip&%24where=upper%28current_entity_name%29%20like%20%27CATHOLIC%25CHARITIES%25NEIGHBORHOOD%25SERVICES%25%27&%24limit=26",
+   "limit": 25,
+   "http_status": 200,
+   "ms": 116,
+   "bytes": 435,
+   "sha256": "9d982a977e5f0fe5577140ad2ea2bbb193ad2d85e3a1cd970ba6188f5943f29c",
+   "file": "dos/candidates_only.response.json"
+  },
+  {
+   "id": "and_vs_ampersand",
+   "kind": "name_token_prefix",
+   "input": "Parisi Landscape and Maintenance, Inc",
+   "why": "vendor writes and, register writes &",
+   "url": "https://data.ny.gov/resource/n9v6-gdp6.json?%24select=dos_id%2Ccurrent_entity_name%2Cinitial_dos_filing_date%2Ccounty%2Cjurisdiction%2Centity_type%2Cdos_process_name%2Cdos_process_address_1%2Cdos_process_address_2%2Cdos_process_city%2Cdos_process_state%2Cdos_process_zip%2Cchairman_name%2Cchairman_address_1%2Cchairman_address_2%2Cchairman_city%2Cchairman_state%2Cchairman_zip%2Cregistered_agent_name%2Cregistered_agent_address_1%2Cregistered_agent_address_2%2Cregistered_agent_city%2Cregistered_agent_state%2Cregistered_agent_zip%2Clocation_name%2Clocation_address_1%2Clocation_address_2%2Clocation_city%2Clocation_state%2Clocation_zip&%24where=upper%28current_entity_name%29%20like%20%27PARISI%25LANDSCAPE%25MAINTENANCE%25%27&%24limit=26",
+   "limit": 25,
+   "http_status": 200,
+   "ms": 124,
+   "bytes": 589,
+   "sha256": "d103682449b2e464a50976b64a7dc8fe21b770850b0f059c31cd6051954febc4",
+   "file": "dos/and_vs_ampersand.response.json"
+  },
+  {
+   "id": "no_match",
+   "kind": "name_token_prefix",
+   "input": "Zxqvbk Quillfeather Holdings LLC",
+   "why": "absent from the register",
+   "url": "https://data.ny.gov/resource/n9v6-gdp6.json?%24select=dos_id%2Ccurrent_entity_name%2Cinitial_dos_filing_date%2Ccounty%2Cjurisdiction%2Centity_type%2Cdos_process_name%2Cdos_process_address_1%2Cdos_process_address_2%2Cdos_process_city%2Cdos_process_state%2Cdos_process_zip%2Cchairman_name%2Cchairman_address_1%2Cchairman_address_2%2Cchairman_city%2Cchairman_state%2Cchairman_zip%2Cregistered_agent_name%2Cregistered_agent_address_1%2Cregistered_agent_address_2%2Cregistered_agent_city%2Cregistered_agent_state%2Cregistered_agent_zip%2Clocation_name%2Clocation_address_1%2Clocation_address_2%2Clocation_city%2Clocation_state%2Clocation_zip&%24where=upper%28current_entity_name%29%20like%20%27ZXQVBK%25QUILLFEATHER%25HOLDINGS%25%27&%24limit=26",
+   "limit": 25,
+   "http_status": 200,
+   "ms": 148,
+   "bytes": 3,
+   "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+   "file": "dos/no_match.response.json"
+  },
+  {
+   "id": "dos_id_nonprofit",
+   "kind": "dos_id",
+   "input": "268736",
+   "why": "dos_id lookup of the nonprofit above",
+   "url": "https://data.ny.gov/resource/n9v6-gdp6.json?%24select=dos_id%2Ccurrent_entity_name%2Cinitial_dos_filing_date%2Ccounty%2Cjurisdiction%2Centity_type%2Cdos_process_name%2Cdos_process_address_1%2Cdos_process_address_2%2Cdos_process_city%2Cdos_process_state%2Cdos_process_zip%2Cchairman_name%2Cchairman_address_1%2Cchairman_address_2%2Cchairman_city%2Cchairman_state%2Cchairman_zip%2Cregistered_agent_name%2Cregistered_agent_address_1%2Cregistered_agent_address_2%2Cregistered_agent_city%2Cregistered_agent_state%2Cregistered_agent_zip%2Clocation_name%2Clocation_address_1%2Clocation_address_2%2Clocation_city%2Clocation_state%2Clocation_zip&%24where=dos_id%3D%27268736%27&%24limit=2",
+   "limit": 1,
+   "http_status": 200,
+   "ms": 116,
+   "bytes": 594,
+   "sha256": "a45e206249fda548e3629bc237f4700292a3a5cb24b69aeb5ee470b2948c8d69",
+   "file": "dos/dos_id_nonprofit.response.json"
+  },
+  {
+   "id": "exact_batch",
+   "kind": "exact_upper_batch",
+   "input": [
+    "HOME SWEET HOME CHILDREN'S SCHOOL, INC.",
+    "King Teleservices L.L.C.",
+    "NO SUCH ENTITY ZXQVBK"
+   ],
+   "why": "batch path with an apostrophe in a name",
+   "url": "https://data.ny.gov/resource/n9v6-gdp6.json?%24select=dos_id%2Ccurrent_entity_name%2Cinitial_dos_filing_date%2Ccounty%2Cjurisdiction%2Centity_type%2Cdos_process_name%2Cdos_process_address_1%2Cdos_process_address_2%2Cdos_process_city%2Cdos_process_state%2Cdos_process_zip%2Cchairman_name%2Cchairman_address_1%2Cchairman_address_2%2Cchairman_city%2Cchairman_state%2Cchairman_zip%2Cregistered_agent_name%2Cregistered_agent_address_1%2Cregistered_agent_address_2%2Cregistered_agent_city%2Cregistered_agent_state%2Cregistered_agent_zip%2Clocation_name%2Clocation_address_1%2Clocation_address_2%2Clocation_city%2Clocation_state%2Clocation_zip&%24where=upper%28current_entity_name%29%20in%20%28%27HOME%20SWEET%20HOME%20CHILDREN%27%27S%20SCHOOL%2C%20INC.%27%2C%27KING%20TELESERVICES%20L.L.C.%27%2C%27NO%20SUCH%20ENTITY%20ZXQVBK%27%29&%24limit=500",
+   "limit": 500,
+   "http_status": 200,
+   "ms": 243,
+   "bytes": 684,
+   "sha256": "7caf75f9d05e65e4af88969d3c7f604068e214a7c271736f326024a9f0029245",
+   "file": "dos/exact_batch.response.json"
+  }
+ ]
+}

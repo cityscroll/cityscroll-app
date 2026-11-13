@@ -21,12 +21,18 @@ const COMMITTED_SERVES = Object.freeze({
 });
 const COMMITTED_CANONICAL_SERVES = Object.freeze({
   ocp_awards: "ocp_awards_warehouse_lookup.json",
+  irs_eo_bmf_ny: "irs_eo_bmf_ny/manifest.json",
+  nys_dol_contractor_registry: "nys_dol_contractor_registry/manifest.json",
+  nyc_sca_prequalified_firms: "nyc_sca_prequalified_firms/manifest.json",
+  dos_entities: "dos_entities_vendor_lookup.json",
 });
 
 function canaryDoc(contract, stamped = "2026-08-18T00:00:00.000Z") {
+  const timestampField = contract.timestamp_field || "materialized_at";
   return {
     schema_version: 1,
     materialized_at: stamped,
+    [timestampField]: stamped,
     rows: contract.canaries.map((canary) => ({ [canary.field]: canary.value })),
   };
 }
@@ -111,6 +117,22 @@ describe("warehouse serve publish contract", () => {
     assertServePublishLookup(site, SERVE_LOOKUP_CONTRACTS.ocp_awards, {
       now: site.materialized_at,
     });
+  });
+
+  it("accepts committed register serve artifacts within their age windows", () => {
+    for (const id of [
+      "irs_eo_bmf_ny",
+      "nys_dol_contractor_registry",
+      "nyc_sca_prequalified_firms",
+      "dos_entities",
+    ]) {
+      const site = JSON.parse(
+        readFileSync(join(ROOT, "site/data", COMMITTED_CANONICAL_SERVES[id]), "utf8"),
+      );
+      const contract = SERVE_LOOKUP_CONTRACTS[id];
+      const stamp = site[contract.timestamp_field] || site.collected_at || site.materialized_at;
+      assertServePublishLookup(site, contract, { now: stamp });
+    }
   });
 
   it("fails a twin stamped truly in the future or older than max_age_days relative to derived now", () => {

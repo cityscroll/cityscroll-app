@@ -2,7 +2,7 @@
   "schema": "cityscroll.public_source_health.v1",
   "generated_at": "2026-11-12T12:39:57.269Z",
   "available": true,
-  "source_count": 67,
+  "source_count": 71,
   "sources": [
     {
       "source_id": "abo-local-authorities",
@@ -1525,6 +1525,57 @@
       }
     },
     {
+      "source_id": "dos-active-entities",
+      "name": "NYS Department of State Active Corporations",
+      "publisher": "New York State Department of State",
+      "official_url": "https://data.ny.gov/d/n9v6-gdp6",
+      "expected_cadence": "Frequent OPEN-NY updates of the active-corporations extract",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 14,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
       "source_id": "dycd-program-sites",
       "name": "DYCD Program Sites",
       "publisher": "New York City Department of Youth and Community Development",
@@ -1686,6 +1737,57 @@
           "publisher_vintage": "FY2025",
           "scope_note": "official citywide financial statements; contextual to IBO staffing and expenditure history"
         }
+      }
+    },
+    {
+      "source_id": "irs-eo-bmf-ny",
+      "name": "IRS Exempt Organizations Business Master File (New York)",
+      "publisher": "Internal Revenue Service",
+      "official_url": "https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-file-extract-eo-bmf",
+      "expected_cadence": "Periodic EO BMF state-file republication",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 30,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -2504,6 +2606,57 @@
       }
     },
     {
+      "source_id": "nyc-sca-prequalified-firms",
+      "name": "NYC School Construction Authority Prequalified Firms",
+      "publisher": "New York City School Construction Authority",
+      "official_url": "https://data.cityofnewyork.us/d/szkz-syh6",
+      "expected_cadence": "Periodic Open Data refresh of the prequalified list",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 30,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
       "source_id": "nycida-build-nyc-projects",
       "name": "NYCIDA/Build NYC subsidy project records",
       "publisher": "NYC Economic Development Corporation",
@@ -2597,6 +2750,57 @@
         "publisher_vintage": null,
         "retrieved_at": null,
         "expected_lag_tolerance_days": 7,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
+      "source_id": "nys-dol-contractor-registry",
+      "name": "NYS Department of Labor Contractor Registry",
+      "publisher": "New York State Department of Labor",
+      "official_url": "https://data.ny.gov/d/i4jv-zkey",
+      "expected_cadence": "Daily OPEN-NY refresh",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 14,
         "current_lag": {
           "value": null,
           "unit": null
