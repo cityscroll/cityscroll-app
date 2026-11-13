@@ -732,8 +732,17 @@ async function verifyDisabledMocs(contract) {
   return "disabled field case confirmed";
 }
 
-/** Complete CSV records only. A prefix cut mid-row is left unparsed. */
-function parseCompleteCsvRecords(text, needed) {
+function takeCsvRecord(records, row) {
+  if (row.some((value) => value.trim() !== "")) {
+    records.push(row.map((value) => value.trim()));
+  }
+}
+
+/**
+ * Complete CSV records only. A prefix cut mid-row is left unparsed.
+ * When the body ended for real, the final row counts even without a trailing newline.
+ */
+function parseCompleteCsvRecords(text, needed, { finalize = false } = {}) {
   const records = [];
   let row = [];
   let cell = "";
@@ -766,13 +775,15 @@ function parseCompleteCsvRecords(text, needed) {
       if (ch === "\r" && text[i + 1] === "\n") i += 1;
       row.push(cell);
       cell = "";
-      if (row.some((value) => value.trim() !== "")) {
-        records.push(row.map((value) => value.trim()));
-      }
+      takeCsvRecord(records, row);
       row = [];
       continue;
     }
     cell += ch;
+  }
+  if (finalize && !inQuotes && records.length < needed && (cell !== "" || row.length > 0)) {
+    row.push(cell);
+    takeCsvRecord(records, row);
   }
   return records;
 }
@@ -781,10 +792,14 @@ async function readBoundedUtf8(response, maxBytes) {
   const reader = response.body?.getReader?.();
   if (!reader) {
     const bytes = new Uint8Array(await response.arrayBuffer());
-    return new TextDecoder("utf-8").decode(bytes.subarray(0, maxBytes));
+    return {
+      text: new TextDecoder("utf-8").decode(bytes.subarray(0, maxBytes)),
+      truncated: bytes.byteLength > maxBytes,
+    };
   }
   const chunks = [];
   let total = 0;
+  let truncated = false;
   while (total < maxBytes) {
     const { done, value } = await reader.read();
     if (done) break;
@@ -793,19 +808,23 @@ async function readBoundedUtf8(response, maxBytes) {
     if (value.byteLength > remain) {
       chunks.push(value.subarray(0, remain));
       total += remain;
+      truncated = true;
       break;
     }
     chunks.push(value);
     total += value.byteLength;
   }
-  try { await reader.cancel(); } catch { /* the prefix is already in hand */ }
+  if (total >= maxBytes) truncated = true;
+  if (truncated) {
+    try { await reader.cancel(); } catch { /* the prefix is already in hand */ }
+  }
   const bytes = new Uint8Array(total);
   let offset = 0;
   for (const chunk of chunks) {
     bytes.set(chunk, offset);
     offset += chunk.byteLength;
   }
-  return new TextDecoder("utf-8").decode(bytes);
+  return { text: new TextDecoder("utf-8").decode(bytes), truncated };
 }
 
 /**
@@ -832,8 +851,11 @@ export async function verifyCsv(contract, options = {}) {
     throw new Error(`${contract.id}: csv endpoint returned ${media}`);
   }
   let text;
+  let truncated = false;
   try {
-    text = await readBoundedUtf8(response, CSV_SAMPLE_BYTE_CAP);
+    const sample = await readBoundedUtf8(response, CSV_SAMPLE_BYTE_CAP);
+    text = sample.text;
+    truncated = sample.truncated;
   } catch (error) {
     throw new Error(`${contract.id}: csv sample fetch failed: ${error?.message || error}`);
   }
@@ -842,7 +864,7 @@ export async function verifyCsv(contract, options = {}) {
   if (/^\uFEFF?\s*<!doctype html|^\s*<html[\s>]/i.test(text)) {
     throw new Error(`${contract.id}: csv endpoint returned text/html`);
   }
-  const records = parseCompleteCsvRecords(text, 2);
+  const records = parseCompleteCsvRecords(text, 2, { finalize: !truncated });
   const header = records[0];
   if (!header?.length) throw new Error(`${contract.id}: csv has no header row`);
   const fields = new Set(header.filter(Boolean));

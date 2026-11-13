@@ -1037,10 +1037,14 @@ test("csv live verifier checks declared columns, a sample row, and publisher fre
   const undeclaredClock = await verifyCsv(contract);
   assert.match(undeclaredClock, /publisher freshness not published/);
 
+  globalThis.fetch = async () => csvResponse("EIN,NAME\n12,Org", { headers: freshHeader });
+  assert.match(await verifyCsv(contract), /sample row · \d+d old \(Last-Modified\)/);
+
   const publisherClock = {
     ...contract,
     freshness_contract: { mode: "periodic", max_stale_days: 30, clock_basis: "publisher_updated" },
   };
+  globalThis.fetch = async () => csvResponse("EIN,NAME\n12,Org\n");
   await assert.rejects(verifyCsv(publisherClock), /no Last-Modified freshness timestamp/);
 
   let pulled = 0;
