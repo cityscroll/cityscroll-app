@@ -14,6 +14,11 @@ const PUBLIC_LOOKUP = /(?:^|\/)\w+_warehouse_lookup\.json$/;
 // directory never drops or masks published fields, so these shards are not scanned for test markers.
 // The builder only writes them from a live pull, and the manifest is still scanned.
 const PUBLISHER_RECORD_SHARDS = /(?:^|\/)site\/data\/sbs_certified_businesses\/rows-\d{3}\.json$/;
+// Entity-register publisher shards (IRS EO BMF NY, NYS DOL contractor registry, NYC SCA
+// prequalified firms) keep verbatim org names. Spaced English stems that begin with FIX
+// (FIXED / FIXING / FIX-IT …) are publisher display text there, not synthetic FIX ids.
+// Outside these directories FIX_ID still matches spaced values so the privacy guard stays strict.
+const REGISTER_PUBLISHER_DATA = /(?:^|\/)site\/data\/(?:irs_eo_bmf_ny|nys_dol_contractor_registry|nyc_sca_prequalified_firms)\//;
 
 function pathText(parts) {
   return parts.map(String).join(".");
@@ -45,9 +50,13 @@ export function publicPayloadFindings(value, { source = "document" } = {}) {
     if (typeof node !== "string") return;
 
     const key = String(parts.at(-1) ?? "");
-    // FIX_ID targets synthetic identifiers (FIX-ABC / FIX_01), not publisher
-    // display names that happen to contain English words like FIXED or FIXING.
-    if (((FIX_ID.test(node) && !/\s/.test(node)) || (ID_KEY.test(key) && (FIXTURE_KEY.test(node) || SYNTHETIC_KEY.test(node))))) {
+    const sourcePath = String(source).replaceAll("\\", "/");
+    const spacedRegisterPublisherName =
+      REGISTER_PUBLISHER_DATA.test(sourcePath) && /\s/.test(node) && FIX_ID.test(node);
+    if (
+      (!spacedRegisterPublisherName && FIX_ID.test(node)) ||
+      (ID_KEY.test(key) && (FIXTURE_KEY.test(node) || SYNTHETIC_KEY.test(node)))
+    ) {
       findings.push(finding(source, parts, "test identifier", node));
       return;
     }

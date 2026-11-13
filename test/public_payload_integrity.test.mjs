@@ -55,19 +55,34 @@ test("all shipped payload trees are free of test records", () => {
 });
 
 test("SBS directory shards are verbatim publisher records, not scanned for test markers", () => {
-  // Spaced publisher display names (FIXED…) are not FIX_ID markers; compact FIX ids still are.
-  const rows = [
-    {
-      account_number: "5085",
-      telephone: "5555555555",
-      name_stem: "FIXED BY MORGAN ME",
-      pin: "FIXABC01",
-    },
-  ];
+  const rows = [{ account_number: "5085", telephone: "5555555555", name_stem: "FIXED BY MORGAN ME" }];
   assert.deepEqual(publicPayloadFindings(rows, { source: "site/data/sbs_certified_businesses/rows-006.json" }), []);
   assert.equal(publicPayloadFindings(rows, { source: "site/data/other_lookup/rows-006.json" }).length, 2);
+});
+
+test("register publisher shards ignore spaced FIX display names without weakening FIX_ID elsewhere", () => {
+  const spaced = [{ name: "FIXED INCOME ANALYSTS SOCIETY", name_stem: "FIXED INCOME ANALYSTS SOCIETY" }];
+  const compact = [{ pin: "FIXABC01" }];
+  assert.deepEqual(
+    publicPayloadFindings(spaced, { source: "site/data/irs_eo_bmf_ny/stem-05.json" }),
+    [],
+  );
+  assert.deepEqual(
+    publicPayloadFindings(spaced, { source: "site/data/nys_dol_contractor_registry/id-03.json" }),
+    [],
+  );
+  assert.deepEqual(
+    publicPayloadFindings(spaced, { source: "site/data/nyc_sca_prequalified_firms/stem-c.json" }),
+    [],
+  );
+  // Same spaced stem still fails outside register publisher datasets.
   assert.equal(
-    publicPayloadFindings([{ name_stem: "FIXED BY MORGAN ME" }], { source: "site/data/other_lookup/rows-006.json" }).length,
-    0,
+    publicPayloadFindings(spaced, { source: "site/data/other_lookup/rows-006.json" }).length,
+    2,
+  );
+  // Compact FIX ids still fail inside register publisher datasets.
+  assert.equal(
+    publicPayloadFindings(compact, { source: "site/data/irs_eo_bmf_ny/stem-05.json" }).length,
+    1,
   );
 });
