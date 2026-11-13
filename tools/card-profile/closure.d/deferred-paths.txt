@@ -121,6 +121,7 @@ site/data/franchise_concession_sources/verification_receipts/franchise_mocs_plan
 site/data/gap_taxonomy.json
 site/data/geography/crosswalks/manifest.json
 site/data/governing_body_proceedings.json
+site/data/irs_eo_bmf_ny/stem-05.json
 site/data/land_authority_summary.json
 site/data/land_authority_summary_receipt.json
 site/data/land_outcomes_seed.json
@@ -155,9 +156,11 @@ site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_
 site/data/notice_context_lookup.json
 site/data/notice_mandate_backlinks_lookup.json
 site/data/notice_procurement_subjects_lookup.json
+site/data/nyc_sca_prequalified_firms/stem-c.json
 site/data/nycedc_sources/verification_receipts/nycedc_project_documents_2026-08-04.json
 site/data/nycedc_sources/verification_receipts/rc2_dependent_field_coverage_2026-08-11.json
 site/data/nycha_award_sources/verification_receipts/nycha_awards_2026-08-01.json
+site/data/nys_dol_contractor_registry/id-03.json
 site/data/official_cfb_influence_lookup.json
 site/data/official_committee_memberships_lookup.json
 site/data/official_lobby_influence_lookup.json
@@ -179,7 +182,7 @@ site/data/procurement_contract_substance.json
 site/data/procurement_contract_substance_access.json
 site/data/procurement_contract_substance_role_corpus.json
 site/data/procurement_place_facts.json
-site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-11.json
+site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-11-12.json
 site/data/procurement_planning_payload.json
 site/data/procurement_planning_payload.schema.json
 site/data/procurement_planning_thread_lookup.json
