@@ -82,11 +82,12 @@ export function unreachableStemCount(contributions, stemSet) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const check = process.argv.includes("--check");
   const built = buildFromRepository();
   const stemSet = new Set(JSON.parse(built.files.get(STEMS_PATH)).stems.map((row) => row[0]));
   const reach = unreachableStemCount(built.contributions, stemSet);
   const sizeProblems = oversized(built.files);
-  if (process.argv.includes("--check")) {
+  if (check) {
     const problems = checkFiles((p) => readFileSync(join(SITE, p), "utf8"));
     if (reach) problems.push(`${reach} stemmed names are not in the index`);
     problems.push(...sizeProblems);
@@ -99,13 +100,22 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     for (const f of existsSync(join(SITE, DIR)) ? readdirSync(join(SITE, DIR)) : []) if (!expected.has(f)) problems.push(`unexpected ${DIR}/${f}`);
     if (problems.length) { console.error(problems.slice(0, 20).join("\n")); process.exit(1); }
     console.log(`organization index current: ${built.manifest.entry_count} entries, generation ${built.manifest.generation}`);
-  } else {
+  }
+  if (!check) {
     if (reach || sizeProblems.length) {
       console.error([reach ? `${reach} stemmed names are not in the index` : null, ...sizeProblems].filter(Boolean).join("\n"));
       process.exit(1);
     }
     rmSync(join(SITE, DIR), { recursive: true, force: true });
-    for (const [p, t] of built.files) { const f = join(SITE, p); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, t); }
+  }
+  for (const [p, t] of built.files) {
+    if (!check) {
+      const f = join(SITE, p);
+      mkdirSync(dirname(f), { recursive: true });
+      writeFileSync(f, t);
+    }
+  }
+  if (!check) {
     console.log(`wrote ${built.files.size} files: ${built.manifest.entry_count} entries, generation ${built.manifest.generation} (${MANIFEST_PATH})`);
   }
 }

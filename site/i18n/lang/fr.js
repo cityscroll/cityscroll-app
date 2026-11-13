@@ -4832,7 +4832,7 @@
     org_block_date: "Collecté {date}",
     org_block_record_id: "Fiche {id}",
     org_block_awards_counts: "{n} fiches · total {total} · plus récente {date}",
-    org_state_lookup_btn: "Consulter la fiche de l'État de New York",
+    org_state_lookup_btn: "Consulter la fiche",
     which_variants_btn: "lesquelles ?",
     index_title: "CityScroll · suivez les RFP, rezonages, réunions",
     about_title: "À propos · CityScroll",

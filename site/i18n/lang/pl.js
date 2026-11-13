@@ -4755,7 +4755,7 @@
     org_block_date: "Zebrano {date}",
     org_block_record_id: "Wpis {id}",
     org_block_awards_counts: "{n} wpisów · razem {total} · ostatni {date}",
-    org_state_lookup_btn: "Sprawdź wpis stanu Nowy Jork",
+    org_state_lookup_btn: "Sprawdź wpis stanu",
     which_variants_btn: "jakie?",
     index_title: "CityScroll · śledź Zapytania ofertowe (RFP), zmiany stref, posiedzenia",
     about_title: "O projekcie · CityScroll",

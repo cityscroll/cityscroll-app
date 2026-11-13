@@ -4744,7 +4744,7 @@
     org_block_date: "Собрано {date}",
     org_block_record_id: "Запись {id}",
     org_block_awards_counts: "{n} записей · всего {total} · последняя {date}",
-    org_state_lookup_btn: "Найти запись штата Нью-Йорк",
+    org_state_lookup_btn: "Найти запись штата",
     which_variants_btn: "какие?",
     index_title: "CityScroll · отслеживайте Запросы предложений (RFP), изменения зонирования, собрания",
     about_title: "О проекте · CityScroll",

@@ -4729,7 +4729,7 @@
     org_block_date: "جمع {date}",
     org_block_record_id: "ریکارڈ {id}",
     org_block_awards_counts: "{n} ریکارڈ · کل {total} · تازہ ترین {date}",
-    org_state_lookup_btn: "نیو یارک ریاست کا ریکارڈ دیکھیں",
+    org_state_lookup_btn: "ریاستی ریکارڈ دیکھیں",
     which_variants_btn: "کون سی؟",
     index_title: "CityScroll · RFP، دوبارہ زوننگ، اجلاس ٹریک کریں",
     about_title: "تعارف · CityScroll",

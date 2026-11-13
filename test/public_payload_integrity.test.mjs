@@ -86,3 +86,24 @@ test("register publisher shards ignore spaced FIX display names without weakenin
     1,
   );
 });
+
+test("organization index keeps spaced publisher display names and still rejects compact FIX ids", () => {
+  const spaced = [{ s: "FIXED INCOME ANALYSTS SOCIETY", n: [["FIXED INCOME ANALYSTS SOCIETY INC", 1]] }];
+  const compact = [{ s: "FIXABC01" }];
+  assert.deepEqual(
+    publicPayloadFindings(spaced, { source: "site/data/organization_index/entries-031.json" }),
+    [],
+  );
+  assert.deepEqual(
+    publicPayloadFindings(spaced, { source: "site/data/organization_index/stems.json" }),
+    [],
+  );
+  assert.equal(
+    publicPayloadFindings(compact, { source: "site/data/organization_index/entries-031.json" }).length,
+    1,
+  );
+  assert.equal(
+    publicPayloadFindings(spaced, { source: "site/data/other_lookup/rows-006.json" }).length,
+    2,
+  );
+});

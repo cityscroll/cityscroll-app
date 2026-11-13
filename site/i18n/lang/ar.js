@@ -4729,7 +4729,7 @@
     org_block_date: "جُمع {date}",
     org_block_record_id: "سجل {id}",
     org_block_awards_counts: "{n} سجلات · المجموع {total} · الأحدث {date}",
-    org_state_lookup_btn: "ابحث عن سجل ولاية نيويورك",
+    org_state_lookup_btn: "اعرض سجل الولاية",
     which_variants_btn: "أيها؟",
     index_title: "CityScroll · تتبّع طلبات تقديم العروض، وإعادة تقسيم المناطق، والاجتماعات",
     about_title: "حول · CityScroll",

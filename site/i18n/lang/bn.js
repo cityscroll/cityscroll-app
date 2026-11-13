@@ -4716,7 +4716,7 @@
     org_block_date: "সংগ্রহ {date}",
     org_block_record_id: "রেকর্ড {id}",
     org_block_awards_counts: "{n}টি রেকর্ড · মোট {total} · সর্বশেষ {date}",
-    org_state_lookup_btn: "নিউ ইয়র্ক রাজ্যের রেকর্ড খুঁজুন",
+    org_state_lookup_btn: "রেকর্ড খুঁজুন",
     which_variants_btn: "কোনগুলি?",
     index_title: "CityScroll · RFP, অঞ্চল পুনর্বিন্যাস, সভা ট্র্যাক করুন",
     about_title: "সম্পর্কে · CityScroll",

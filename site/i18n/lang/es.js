@@ -3936,7 +3936,7 @@
     org_block_date: "Recopilado {date}",
     org_block_record_id: "Registro {id}",
     org_block_awards_counts: "{n} registros · total {total} · más reciente {date}",
-    org_state_lookup_btn: "Consultar el registro del Estado de Nueva York",
+    org_state_lookup_btn: "Consultar registro estatal",
     which_variants_btn: "¿cuáles?",
     index_title: "CityScroll · rastree RFP, rezonificaciones, reuniones",
     about_title: "Acerca de · CityScroll",

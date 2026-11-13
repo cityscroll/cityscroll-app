@@ -4714,7 +4714,7 @@
     org_block_date: "Ranmase {date}",
     org_block_record_id: "Dosye {id}",
     org_block_awards_counts: "{n} dosye · total {total} · dènye {date}",
-    org_state_lookup_btn: "Chèche dosye Eta New York la",
+    org_state_lookup_btn: "Chèche dosye eta",
     which_variants_btn: "kiyès?",
     index_title: "CityScroll · swiv RFP, chanjman zonaj, reyinyon",
     about_title: "Konsènan · CityScroll",

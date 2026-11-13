@@ -4639,7 +4639,7 @@ const STRINGS = {
     org_block_date: "Collected {date}",
     org_block_record_id: "Record {id}",
     org_block_awards_counts: "{n} records · total {total} · latest {date}",
-    org_state_lookup_btn: "Look up the New York State record",
+    org_state_lookup_btn: "Look up state record",
     which_variants_btn: "which?",
     index_title: "CityScroll · track RFPs, rezonings, meetings",
     about_title: "About · CityScroll",
