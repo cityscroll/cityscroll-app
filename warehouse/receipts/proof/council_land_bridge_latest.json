@@ -4387,7 +4387,7 @@
       "present_count": 15,
       "record_count": 299
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-11-10T08:00:54.972Z",
-    "zap_projects_warehouse_lookup_materialized_at": "2026-11-09T21:47:09.965Z"
+    "meeting_outcomes_snapshot_generated_at": "2026-11-13T10:00:40.561Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-11-13T14:46:37.747Z"
   }
 }

@@ -1,10 +1,10 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-11-10",
-  "sources_retrieved_as_of": "2026-11-10",
+  "generated_at": "2026-11-13",
+  "sources_retrieved_as_of": "2026-11-13",
   "data_current_as_of": "2026-11-04",
   "list_current_as_of": "2026-11-04",
-  "open_window_as_of": "2026-11-10",
+  "open_window_as_of": "2026-11-13",
   "annual_schedule_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
@@ -580,11 +580,11 @@
       "id": "dcas-open-competitive",
       "name": "DCAS Open Competitive Exams for Anyone",
       "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-      "verified_at": "2026-11-10",
+      "verified_at": "2026-11-13",
       "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
       "stale_after_days": 35,
       "method": "The published schedule table is read directly and cross-checked against the OASys active-exam listing. Reviewed Notice of Examination prose from the previous snapshot is carried forward only while the exam and its filing window are unchanged.",
-      "fetched_at": "2026-11-10"
+      "fetched_at": "2026-11-13"
     },
     {
       "id": "dcas-annual-schedule",
@@ -678,7 +678,7 @@
       "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
       "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
       "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-      "fetched_at": "2026-11-10",
+      "fetched_at": "2026-11-13",
       "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
       "stale_after_days": 3,
       "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."

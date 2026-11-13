@@ -1,0 +1,1721 @@
+{
+  "schema": "cityscroll.analytics_first_payment_timing.v1",
+  "generated_at": "2026-11-13T14:08:23.774Z",
+  "snapshot_date": "2026-11-13T14:08:23.774Z",
+  "contracts_snapshot_date": "2026-11-13",
+  "population_definition": "Registered Checkbook expense contracts whose start date falls inside the retained payment years (2025-07-01 to 2026-06-30), one row per exact prime contract id.",
+  "first_payment_definition": "The earliest issue date of a positive check amount recorded against the exact contract id. Reversals and zero amounts are not payments.",
+  "measured_from": "The contract start date published by Checkbook, not the date work began.",
+  "payment_years": {
+    "fiscal_years": [
+      2026
+    ],
+    "from": "2025-07-01",
+    "through": "2026-06-30"
+  },
+  "horizon_rule": "Within N months means first paid before the same calendar date N months after the start date. A contract counts toward a horizon only when that whole period lies inside the retained payment years.",
+  "median_rule": "Median days from start to first payment over contracts observable for six months, with contracts not first paid within six months ranked after every measured wait; shown only for 10 or more such contracts and only when the middle value is a measured wait.",
+  "limits": [
+    "Payments recorded under another contract id (for example a master agreement) are not joined to this contract.",
+    "A contract with no payment in the retained payment years may have been paid later; later payments are not retained here."
+  ],
+  "horizons": [
+    {
+      "id": "within_1_month",
+      "months": 1
+    },
+    {
+      "id": "within_6_months",
+      "months": 6
+    },
+    {
+      "id": "within_12_months",
+      "months": 12
+    }
+  ],
+  "min_contracts_for_median": 10,
+  "population": {
+    "registered_contracts_read": 29689,
+    "measured_contracts": 10560,
+    "excluded": {
+      "start_before_payment_years": 14064,
+      "start_after_payment_years": 5065,
+      "missing_start_date": 0,
+      "missing_contract_id": 0,
+      "duplicate_contract_id": 0
+    },
+    "payment_rows": {
+      "payment_rows": 1785886,
+      "positive_rows": 1781365,
+      "reversal_or_zero_rows": 4521,
+      "undated_rows": 0,
+      "rows_for_measured_contracts": 97770
+    }
+  },
+  "all_agencies": {
+    "contracts": 10560,
+    "first_paid_in_payment_years": 6139,
+    "no_payment_in_payment_years": 4421,
+    "horizons": {
+      "within_1_month": {
+        "observable_contracts": 10279,
+        "first_paid_within": 1453,
+        "not_observable_contracts": 281
+      },
+      "within_6_months": {
+        "observable_contracts": 6252,
+        "first_paid_within": 3650,
+        "not_observable_contracts": 4308
+      },
+      "within_12_months": {
+        "observable_contracts": 2049,
+        "first_paid_within": 1474,
+        "not_observable_contracts": 8511
+      }
+    },
+    "median_basis_contracts": 6252,
+    "median_days_to_first_payment": 131,
+    "median_state": "measured"
+  },
+  "agencies": [
+    {
+      "agency": "Administration for Children's Services",
+      "contracts": 188,
+      "first_paid_in_payment_years": 135,
+      "no_payment_in_payment_years": 53,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 184,
+          "first_paid_within": 31,
+          "not_observable_contracts": 4
+        },
+        "within_6_months": {
+          "observable_contracts": 126,
+          "first_paid_within": 105,
+          "not_observable_contracts": 62
+        },
+        "within_12_months": {
+          "observable_contracts": 47,
+          "first_paid_within": 42,
+          "not_observable_contracts": 141
+        }
+      },
+      "median_basis_contracts": 126,
+      "median_days_to_first_payment": 72,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Board of Correction",
+      "contracts": 1,
+      "first_paid_in_payment_years": 1,
+      "no_payment_in_payment_years": 0,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 1,
+          "not_observable_contracts": 0
+        }
+      },
+      "median_basis_contracts": 1,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Board of Elections",
+      "contracts": 31,
+      "first_paid_in_payment_years": 25,
+      "no_payment_in_payment_years": 6,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 30,
+          "first_paid_within": 6,
+          "not_observable_contracts": 1
+        },
+        "within_6_months": {
+          "observable_contracts": 19,
+          "first_paid_within": 15,
+          "not_observable_contracts": 12
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 31
+        }
+      },
+      "median_basis_contracts": 19,
+      "median_days_to_first_payment": 125,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Borough President - Brooklyn",
+      "contracts": 3,
+      "first_paid_in_payment_years": 3,
+      "no_payment_in_payment_years": 0,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 3,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 2,
+          "first_paid_within": 2,
+          "not_observable_contracts": 1
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 3
+        }
+      },
+      "median_basis_contracts": 2,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Borough President - Queens",
+      "contracts": 95,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 95,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 95,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 95,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 95,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        }
+      },
+      "median_basis_contracts": 95,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Borough President - Staten Island",
+      "contracts": 1,
+      "first_paid_in_payment_years": 1,
+      "no_payment_in_payment_years": 0,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 1,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 1,
+          "not_observable_contracts": 0
+        }
+      },
+      "median_basis_contracts": 1,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Brooklyn Community Board # 14",
+      "contracts": 1,
+      "first_paid_in_payment_years": 1,
+      "no_payment_in_payment_years": 0,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 1,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        }
+      },
+      "median_basis_contracts": 1,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Brooklyn Public Library",
+      "contracts": 3,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 3,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 3,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 3,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 3
+        }
+      },
+      "median_basis_contracts": 3,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Business Integrity Commission",
+      "contracts": 1,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 1,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        }
+      },
+      "median_basis_contracts": 0,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Campaign Finance Board",
+      "contracts": 14,
+      "first_paid_in_payment_years": 9,
+      "no_payment_in_payment_years": 5,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 14,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 10,
+          "first_paid_within": 7,
+          "not_observable_contracts": 4
+        },
+        "within_12_months": {
+          "observable_contracts": 3,
+          "first_paid_within": 3,
+          "not_observable_contracts": 11
+        }
+      },
+      "median_basis_contracts": 10,
+      "median_days_to_first_payment": 148.5,
+      "median_state": "measured"
+    },
+    {
+      "agency": "City Council",
+      "contracts": 92,
+      "first_paid_in_payment_years": 75,
+      "no_payment_in_payment_years": 17,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 91,
+          "first_paid_within": 21,
+          "not_observable_contracts": 1
+        },
+        "within_6_months": {
+          "observable_contracts": 72,
+          "first_paid_within": 60,
+          "not_observable_contracts": 20
+        },
+        "within_12_months": {
+          "observable_contracts": 19,
+          "first_paid_within": 18,
+          "not_observable_contracts": 73
+        }
+      },
+      "median_basis_contracts": 72,
+      "median_days_to_first_payment": 79.5,
+      "median_state": "measured"
+    },
+    {
+      "agency": "City University Construction Fund",
+      "contracts": 98,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 98,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 91,
+          "first_paid_within": 0,
+          "not_observable_contracts": 7
+        },
+        "within_6_months": {
+          "observable_contracts": 57,
+          "first_paid_within": 0,
+          "not_observable_contracts": 41
+        },
+        "within_12_months": {
+          "observable_contracts": 4,
+          "first_paid_within": 0,
+          "not_observable_contracts": 94
+        }
+      },
+      "median_basis_contracts": 57,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "City University of New York",
+      "contracts": 53,
+      "first_paid_in_payment_years": 1,
+      "no_payment_in_payment_years": 52,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 53,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 37,
+          "first_paid_within": 1,
+          "not_observable_contracts": 16
+        },
+        "within_12_months": {
+          "observable_contracts": 3,
+          "first_paid_within": 1,
+          "not_observable_contracts": 50
+        }
+      },
+      "median_basis_contracts": 37,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Civilian Complaint Review Board",
+      "contracts": 9,
+      "first_paid_in_payment_years": 6,
+      "no_payment_in_payment_years": 3,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 9,
+          "first_paid_within": 1,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 8,
+          "first_paid_within": 6,
+          "not_observable_contracts": 1
+        },
+        "within_12_months": {
+          "observable_contracts": 7,
+          "first_paid_within": 5,
+          "not_observable_contracts": 2
+        }
+      },
+      "median_basis_contracts": 8,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Commission on Human Rights",
+      "contracts": 5,
+      "first_paid_in_payment_years": 1,
+      "no_payment_in_payment_years": 4,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 5,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 3,
+          "first_paid_within": 0,
+          "not_observable_contracts": 2
+        },
+        "within_12_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 1,
+          "not_observable_contracts": 4
+        }
+      },
+      "median_basis_contracts": 3,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "COMMISSION ON RACIAL EQUITY",
+      "contracts": 1,
+      "first_paid_in_payment_years": 1,
+      "no_payment_in_payment_years": 0,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        }
+      },
+      "median_basis_contracts": 0,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Conflicts of Interest Board",
+      "contracts": 3,
+      "first_paid_in_payment_years": 1,
+      "no_payment_in_payment_years": 2,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 3,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 1,
+          "not_observable_contracts": 2
+        },
+        "within_12_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 1,
+          "not_observable_contracts": 2
+        }
+      },
+      "median_basis_contracts": 1,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "contracts": 176,
+      "first_paid_in_payment_years": 14,
+      "no_payment_in_payment_years": 162,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 174,
+          "first_paid_within": 1,
+          "not_observable_contracts": 2
+        },
+        "within_6_months": {
+          "observable_contracts": 108,
+          "first_paid_within": 8,
+          "not_observable_contracts": 68
+        },
+        "within_12_months": {
+          "observable_contracts": 53,
+          "first_paid_within": 3,
+          "not_observable_contracts": 123
+        }
+      },
+      "median_basis_contracts": 108,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Department for the Aging",
+      "contracts": 121,
+      "first_paid_in_payment_years": 87,
+      "no_payment_in_payment_years": 34,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 119,
+          "first_paid_within": 16,
+          "not_observable_contracts": 2
+        },
+        "within_6_months": {
+          "observable_contracts": 95,
+          "first_paid_within": 55,
+          "not_observable_contracts": 26
+        },
+        "within_12_months": {
+          "observable_contracts": 44,
+          "first_paid_within": 32,
+          "not_observable_contracts": 77
+        }
+      },
+      "median_basis_contracts": 95,
+      "median_days_to_first_payment": 113,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Buildings",
+      "contracts": 15,
+      "first_paid_in_payment_years": 11,
+      "no_payment_in_payment_years": 4,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 15,
+          "first_paid_within": 2,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 7,
+          "first_paid_within": 6,
+          "not_observable_contracts": 8
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 15
+        }
+      },
+      "median_basis_contracts": 7,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Department of City Planning",
+      "contracts": 16,
+      "first_paid_in_payment_years": 11,
+      "no_payment_in_payment_years": 5,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 15,
+          "first_paid_within": 4,
+          "not_observable_contracts": 1
+        },
+        "within_6_months": {
+          "observable_contracts": 7,
+          "first_paid_within": 6,
+          "not_observable_contracts": 9
+        },
+        "within_12_months": {
+          "observable_contracts": 2,
+          "first_paid_within": 2,
+          "not_observable_contracts": 14
+        }
+      },
+      "median_basis_contracts": 7,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Department of Citywide Administrative Services",
+      "contracts": 238,
+      "first_paid_in_payment_years": 140,
+      "no_payment_in_payment_years": 98,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 226,
+          "first_paid_within": 16,
+          "not_observable_contracts": 12
+        },
+        "within_6_months": {
+          "observable_contracts": 143,
+          "first_paid_within": 89,
+          "not_observable_contracts": 95
+        },
+        "within_12_months": {
+          "observable_contracts": 65,
+          "first_paid_within": 58,
+          "not_observable_contracts": 173
+        }
+      },
+      "median_basis_contracts": 143,
+      "median_days_to_first_payment": 127,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Consumer & Worker Protection",
+      "contracts": 20,
+      "first_paid_in_payment_years": 16,
+      "no_payment_in_payment_years": 4,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 19,
+          "first_paid_within": 2,
+          "not_observable_contracts": 1
+        },
+        "within_6_months": {
+          "observable_contracts": 16,
+          "first_paid_within": 14,
+          "not_observable_contracts": 4
+        },
+        "within_12_months": {
+          "observable_contracts": 7,
+          "first_paid_within": 6,
+          "not_observable_contracts": 13
+        }
+      },
+      "median_basis_contracts": 16,
+      "median_days_to_first_payment": 100,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Correction",
+      "contracts": 111,
+      "first_paid_in_payment_years": 63,
+      "no_payment_in_payment_years": 48,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 107,
+          "first_paid_within": 3,
+          "not_observable_contracts": 4
+        },
+        "within_6_months": {
+          "observable_contracts": 65,
+          "first_paid_within": 44,
+          "not_observable_contracts": 46
+        },
+        "within_12_months": {
+          "observable_contracts": 7,
+          "first_paid_within": 7,
+          "not_observable_contracts": 104
+        }
+      },
+      "median_basis_contracts": 65,
+      "median_days_to_first_payment": 122,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Cultural Affairs",
+      "contracts": 11,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 11,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 11,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 9,
+          "first_paid_within": 0,
+          "not_observable_contracts": 2
+        },
+        "within_12_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 10
+        }
+      },
+      "median_basis_contracts": 9,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Department of Design and Construction",
+      "contracts": 345,
+      "first_paid_in_payment_years": 18,
+      "no_payment_in_payment_years": 327,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 290,
+          "first_paid_within": 4,
+          "not_observable_contracts": 55
+        },
+        "within_6_months": {
+          "observable_contracts": 163,
+          "first_paid_within": 12,
+          "not_observable_contracts": 182
+        },
+        "within_12_months": {
+          "observable_contracts": 14,
+          "first_paid_within": 6,
+          "not_observable_contracts": 331
+        }
+      },
+      "median_basis_contracts": 163,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Department of Education",
+      "contracts": 3512,
+      "first_paid_in_payment_years": 2407,
+      "no_payment_in_payment_years": 1105,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 3468,
+          "first_paid_within": 472,
+          "not_observable_contracts": 44
+        },
+        "within_6_months": {
+          "observable_contracts": 1813,
+          "first_paid_within": 1160,
+          "not_observable_contracts": 1699
+        },
+        "within_12_months": {
+          "observable_contracts": 283,
+          "first_paid_within": 162,
+          "not_observable_contracts": 3229
+        }
+      },
+      "median_basis_contracts": 1813,
+      "median_days_to_first_payment": 112,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Emergency Management",
+      "contracts": 28,
+      "first_paid_in_payment_years": 19,
+      "no_payment_in_payment_years": 9,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 27,
+          "first_paid_within": 2,
+          "not_observable_contracts": 1
+        },
+        "within_6_months": {
+          "observable_contracts": 16,
+          "first_paid_within": 12,
+          "not_observable_contracts": 12
+        },
+        "within_12_months": {
+          "observable_contracts": 7,
+          "first_paid_within": 7,
+          "not_observable_contracts": 21
+        }
+      },
+      "median_basis_contracts": 16,
+      "median_days_to_first_payment": 114,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Environmental Protection",
+      "contracts": 242,
+      "first_paid_in_payment_years": 111,
+      "no_payment_in_payment_years": 131,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 224,
+          "first_paid_within": 10,
+          "not_observable_contracts": 18
+        },
+        "within_6_months": {
+          "observable_contracts": 130,
+          "first_paid_within": 61,
+          "not_observable_contracts": 112
+        },
+        "within_12_months": {
+          "observable_contracts": 12,
+          "first_paid_within": 10,
+          "not_observable_contracts": 230
+        }
+      },
+      "median_basis_contracts": 130,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Department of Finance",
+      "contracts": 44,
+      "first_paid_in_payment_years": 31,
+      "no_payment_in_payment_years": 13,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 43,
+          "first_paid_within": 13,
+          "not_observable_contracts": 1
+        },
+        "within_6_months": {
+          "observable_contracts": 26,
+          "first_paid_within": 20,
+          "not_observable_contracts": 18
+        },
+        "within_12_months": {
+          "observable_contracts": 5,
+          "first_paid_within": 4,
+          "not_observable_contracts": 39
+        }
+      },
+      "median_basis_contracts": 26,
+      "median_days_to_first_payment": 44,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Health and Mental Hygiene",
+      "contracts": 737,
+      "first_paid_in_payment_years": 499,
+      "no_payment_in_payment_years": 238,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 725,
+          "first_paid_within": 91,
+          "not_observable_contracts": 12
+        },
+        "within_6_months": {
+          "observable_contracts": 509,
+          "first_paid_within": 333,
+          "not_observable_contracts": 228
+        },
+        "within_12_months": {
+          "observable_contracts": 233,
+          "first_paid_within": 189,
+          "not_observable_contracts": 504
+        }
+      },
+      "median_basis_contracts": 509,
+      "median_days_to_first_payment": 119,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Homeless Services",
+      "contracts": 114,
+      "first_paid_in_payment_years": 78,
+      "no_payment_in_payment_years": 36,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 113,
+          "first_paid_within": 36,
+          "not_observable_contracts": 1
+        },
+        "within_6_months": {
+          "observable_contracts": 86,
+          "first_paid_within": 66,
+          "not_observable_contracts": 28
+        },
+        "within_12_months": {
+          "observable_contracts": 60,
+          "first_paid_within": 57,
+          "not_observable_contracts": 54
+        }
+      },
+      "median_basis_contracts": 86,
+      "median_days_to_first_payment": 42.5,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Information Technology and Telecommunications",
+      "contracts": 186,
+      "first_paid_in_payment_years": 68,
+      "no_payment_in_payment_years": 118,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 181,
+          "first_paid_within": 3,
+          "not_observable_contracts": 5
+        },
+        "within_6_months": {
+          "observable_contracts": 102,
+          "first_paid_within": 45,
+          "not_observable_contracts": 84
+        },
+        "within_12_months": {
+          "observable_contracts": 21,
+          "first_paid_within": 16,
+          "not_observable_contracts": 165
+        }
+      },
+      "median_basis_contracts": 102,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "contracts": 1146,
+      "first_paid_in_payment_years": 713,
+      "no_payment_in_payment_years": 433,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1126,
+          "first_paid_within": 116,
+          "not_observable_contracts": 20
+        },
+        "within_6_months": {
+          "observable_contracts": 540,
+          "first_paid_within": 402,
+          "not_observable_contracts": 606
+        },
+        "within_12_months": {
+          "observable_contracts": 12,
+          "first_paid_within": 11,
+          "not_observable_contracts": 1134
+        }
+      },
+      "median_basis_contracts": 540,
+      "median_days_to_first_payment": 73,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Probation",
+      "contracts": 21,
+      "first_paid_in_payment_years": 17,
+      "no_payment_in_payment_years": 4,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 21,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 18,
+          "first_paid_within": 11,
+          "not_observable_contracts": 3
+        },
+        "within_12_months": {
+          "observable_contracts": 15,
+          "first_paid_within": 12,
+          "not_observable_contracts": 6
+        }
+      },
+      "median_basis_contracts": 18,
+      "median_days_to_first_payment": 146.5,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Records and Information Services",
+      "contracts": 1,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 1,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        }
+      },
+      "median_basis_contracts": 0,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Department of Sanitation",
+      "contracts": 145,
+      "first_paid_in_payment_years": 59,
+      "no_payment_in_payment_years": 86,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 140,
+          "first_paid_within": 3,
+          "not_observable_contracts": 5
+        },
+        "within_6_months": {
+          "observable_contracts": 101,
+          "first_paid_within": 32,
+          "not_observable_contracts": 44
+        },
+        "within_12_months": {
+          "observable_contracts": 58,
+          "first_paid_within": 11,
+          "not_observable_contracts": 87
+        }
+      },
+      "median_basis_contracts": 101,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Department of Small Business Services",
+      "contracts": 134,
+      "first_paid_in_payment_years": 45,
+      "no_payment_in_payment_years": 89,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 128,
+          "first_paid_within": 0,
+          "not_observable_contracts": 6
+        },
+        "within_6_months": {
+          "observable_contracts": 100,
+          "first_paid_within": 12,
+          "not_observable_contracts": 34
+        },
+        "within_12_months": {
+          "observable_contracts": 67,
+          "first_paid_within": 31,
+          "not_observable_contracts": 67
+        }
+      },
+      "median_basis_contracts": 100,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Department of Social Services",
+      "contracts": 347,
+      "first_paid_in_payment_years": 196,
+      "no_payment_in_payment_years": 151,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 346,
+          "first_paid_within": 38,
+          "not_observable_contracts": 1
+        },
+        "within_6_months": {
+          "observable_contracts": 294,
+          "first_paid_within": 122,
+          "not_observable_contracts": 53
+        },
+        "within_12_months": {
+          "observable_contracts": 182,
+          "first_paid_within": 128,
+          "not_observable_contracts": 165
+        }
+      },
+      "median_basis_contracts": 294,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Department of Transportation",
+      "contracts": 202,
+      "first_paid_in_payment_years": 94,
+      "no_payment_in_payment_years": 108,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 186,
+          "first_paid_within": 6,
+          "not_observable_contracts": 16
+        },
+        "within_6_months": {
+          "observable_contracts": 98,
+          "first_paid_within": 50,
+          "not_observable_contracts": 104
+        },
+        "within_12_months": {
+          "observable_contracts": 9,
+          "first_paid_within": 9,
+          "not_observable_contracts": 193
+        }
+      },
+      "median_basis_contracts": 98,
+      "median_days_to_first_payment": 177.5,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Department of Veterans' Services",
+      "contracts": 2,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 2,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 2,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 2,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 2
+        }
+      },
+      "median_basis_contracts": 2,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Department of Youth and Community Development",
+      "contracts": 805,
+      "first_paid_in_payment_years": 704,
+      "no_payment_in_payment_years": 101,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 799,
+          "first_paid_within": 482,
+          "not_observable_contracts": 6
+        },
+        "within_6_months": {
+          "observable_contracts": 608,
+          "first_paid_within": 573,
+          "not_observable_contracts": 197
+        },
+        "within_12_months": {
+          "observable_contracts": 558,
+          "first_paid_within": 542,
+          "not_observable_contracts": 247
+        }
+      },
+      "median_basis_contracts": 608,
+      "median_days_to_first_payment": 0,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Financial Information Services Agency",
+      "contracts": 39,
+      "first_paid_in_payment_years": 29,
+      "no_payment_in_payment_years": 10,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 37,
+          "first_paid_within": 20,
+          "not_observable_contracts": 2
+        },
+        "within_6_months": {
+          "observable_contracts": 30,
+          "first_paid_within": 24,
+          "not_observable_contracts": 9
+        },
+        "within_12_months": {
+          "observable_contracts": 9,
+          "first_paid_within": 9,
+          "not_observable_contracts": 30
+        }
+      },
+      "median_basis_contracts": 30,
+      "median_days_to_first_payment": 26.5,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Fire Department",
+      "contracts": 127,
+      "first_paid_in_payment_years": 59,
+      "no_payment_in_payment_years": 68,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 116,
+          "first_paid_within": 5,
+          "not_observable_contracts": 11
+        },
+        "within_6_months": {
+          "observable_contracts": 79,
+          "first_paid_within": 40,
+          "not_observable_contracts": 48
+        },
+        "within_12_months": {
+          "observable_contracts": 22,
+          "first_paid_within": 18,
+          "not_observable_contracts": 105
+        }
+      },
+      "median_basis_contracts": 79,
+      "median_days_to_first_payment": 182,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Health and Hospitals Corporation",
+      "contracts": 109,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 109,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 107,
+          "first_paid_within": 0,
+          "not_observable_contracts": 2
+        },
+        "within_6_months": {
+          "observable_contracts": 78,
+          "first_paid_within": 0,
+          "not_observable_contracts": 31
+        },
+        "within_12_months": {
+          "observable_contracts": 6,
+          "first_paid_within": 0,
+          "not_observable_contracts": 103
+        }
+      },
+      "median_basis_contracts": 78,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Housing Preservation and Development",
+      "contracts": 404,
+      "first_paid_in_payment_years": 48,
+      "no_payment_in_payment_years": 356,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 382,
+          "first_paid_within": 2,
+          "not_observable_contracts": 22
+        },
+        "within_6_months": {
+          "observable_contracts": 214,
+          "first_paid_within": 27,
+          "not_observable_contracts": 190
+        },
+        "within_12_months": {
+          "observable_contracts": 40,
+          "first_paid_within": 12,
+          "not_observable_contracts": 364
+        }
+      },
+      "median_basis_contracts": 214,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Independent Budget Office",
+      "contracts": 10,
+      "first_paid_in_payment_years": 7,
+      "no_payment_in_payment_years": 3,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 7,
+          "first_paid_within": 1,
+          "not_observable_contracts": 3
+        },
+        "within_6_months": {
+          "observable_contracts": 6,
+          "first_paid_within": 5,
+          "not_observable_contracts": 4
+        },
+        "within_12_months": {
+          "observable_contracts": 3,
+          "first_paid_within": 3,
+          "not_observable_contracts": 7
+        }
+      },
+      "median_basis_contracts": 6,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Landmarks Preservation Commission",
+      "contracts": 5,
+      "first_paid_in_payment_years": 5,
+      "no_payment_in_payment_years": 0,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 5,
+          "first_paid_within": 2,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 5,
+          "first_paid_within": 3,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 5
+        }
+      },
+      "median_basis_contracts": 5,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Law Department",
+      "contracts": 57,
+      "first_paid_in_payment_years": 13,
+      "no_payment_in_payment_years": 44,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 57,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 32,
+          "first_paid_within": 6,
+          "not_observable_contracts": 25
+        },
+        "within_12_months": {
+          "observable_contracts": 6,
+          "first_paid_within": 2,
+          "not_observable_contracts": 51
+        }
+      },
+      "median_basis_contracts": 32,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Manhattan Community Board # 4",
+      "contracts": 1,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 1,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        }
+      },
+      "median_basis_contracts": 0,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Mayoralty",
+      "contracts": 79,
+      "first_paid_in_payment_years": 53,
+      "no_payment_in_payment_years": 26,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 77,
+          "first_paid_within": 12,
+          "not_observable_contracts": 2
+        },
+        "within_6_months": {
+          "observable_contracts": 51,
+          "first_paid_within": 33,
+          "not_observable_contracts": 28
+        },
+        "within_12_months": {
+          "observable_contracts": 18,
+          "first_paid_within": 12,
+          "not_observable_contracts": 61
+        }
+      },
+      "median_basis_contracts": 51,
+      "median_days_to_first_payment": 104,
+      "median_state": "measured"
+    },
+    {
+      "agency": "New York Research Libraries",
+      "contracts": 13,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 13,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 13,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 8,
+          "first_paid_within": 0,
+          "not_observable_contracts": 5
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 13
+        }
+      },
+      "median_basis_contracts": 8,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "NYC Taxi and Limousine Commission",
+      "contracts": 11,
+      "first_paid_in_payment_years": 9,
+      "no_payment_in_payment_years": 2,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 11,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 9,
+          "first_paid_within": 5,
+          "not_observable_contracts": 2
+        },
+        "within_12_months": {
+          "observable_contracts": 2,
+          "first_paid_within": 2,
+          "not_observable_contracts": 9
+        }
+      },
+      "median_basis_contracts": 9,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Office of Administrative Tax Appeals",
+      "contracts": 1,
+      "first_paid_in_payment_years": 1,
+      "no_payment_in_payment_years": 0,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 1,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        }
+      },
+      "median_basis_contracts": 1,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Office of Administrative Trials and Hearings",
+      "contracts": 15,
+      "first_paid_in_payment_years": 6,
+      "no_payment_in_payment_years": 9,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 15,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 5,
+          "first_paid_within": 5,
+          "not_observable_contracts": 10
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 15
+        }
+      },
+      "median_basis_contracts": 5,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "OFFICE OF CRIMINAL JUSTICE",
+      "contracts": 37,
+      "first_paid_in_payment_years": 29,
+      "no_payment_in_payment_years": 8,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 31,
+          "first_paid_within": 7,
+          "not_observable_contracts": 6
+        },
+        "within_6_months": {
+          "observable_contracts": 30,
+          "first_paid_within": 24,
+          "not_observable_contracts": 7
+        },
+        "within_12_months": {
+          "observable_contracts": 25,
+          "first_paid_within": 24,
+          "not_observable_contracts": 12
+        }
+      },
+      "median_basis_contracts": 30,
+      "median_days_to_first_payment": 112,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Office of Payroll Administration",
+      "contracts": 1,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 1,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        }
+      },
+      "median_basis_contracts": 0,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Office of the Actuary",
+      "contracts": 2,
+      "first_paid_in_payment_years": 1,
+      "no_payment_in_payment_years": 1,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 2,
+          "first_paid_within": 1,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 2,
+          "first_paid_within": 1,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 2,
+          "first_paid_within": 1,
+          "not_observable_contracts": 0
+        }
+      },
+      "median_basis_contracts": 2,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Office of the Comptroller",
+      "contracts": 81,
+      "first_paid_in_payment_years": 33,
+      "no_payment_in_payment_years": 48,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 79,
+          "first_paid_within": 2,
+          "not_observable_contracts": 2
+        },
+        "within_6_months": {
+          "observable_contracts": 56,
+          "first_paid_within": 20,
+          "not_observable_contracts": 25
+        },
+        "within_12_months": {
+          "observable_contracts": 6,
+          "first_paid_within": 6,
+          "not_observable_contracts": 75
+        }
+      },
+      "median_basis_contracts": 56,
+      "median_days_to_first_payment": null,
+      "median_state": "over_6_months"
+    },
+    {
+      "agency": "Police Department",
+      "contracts": 246,
+      "first_paid_in_payment_years": 184,
+      "no_payment_in_payment_years": 62,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 241,
+          "first_paid_within": 22,
+          "not_observable_contracts": 5
+        },
+        "within_6_months": {
+          "observable_contracts": 152,
+          "first_paid_within": 123,
+          "not_observable_contracts": 94
+        },
+        "within_12_months": {
+          "observable_contracts": 13,
+          "first_paid_within": 9,
+          "not_observable_contracts": 233
+        }
+      },
+      "median_basis_contracts": 152,
+      "median_days_to_first_payment": 92,
+      "median_state": "measured"
+    },
+    {
+      "agency": "Queens Borough Public Library",
+      "contracts": 2,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 2,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 2,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 2
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 2
+        }
+      },
+      "median_basis_contracts": 0,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Staten Island Community Board # 1",
+      "contracts": 1,
+      "first_paid_in_payment_years": 1,
+      "no_payment_in_payment_years": 0,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 1,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        }
+      },
+      "median_basis_contracts": 1,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    },
+    {
+      "agency": "Transit Authority",
+      "contracts": 1,
+      "first_paid_in_payment_years": 0,
+      "no_payment_in_payment_years": 1,
+      "horizons": {
+        "within_1_month": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_6_months": {
+          "observable_contracts": 1,
+          "first_paid_within": 0,
+          "not_observable_contracts": 0
+        },
+        "within_12_months": {
+          "observable_contracts": 0,
+          "first_paid_within": 0,
+          "not_observable_contracts": 1
+        }
+      },
+      "median_basis_contracts": 1,
+      "median_days_to_first_payment": null,
+      "median_state": "too_few_contracts"
+    }
+  ],
+  "contracts_path": "data/analytics_first_payment_timing/contracts.json"
+}

@@ -2,21 +2,21 @@
   "schema_version": 1,
   "version": "pin_family_mismatch_review_v1",
   "title": "PIN-family Checkbook ↔ PASSPort contract-id mismatches",
-  "observed_on": "2026-11-10",
-  "generated_at": "2026-11-10T15:17:39.651Z",
+  "observed_on": "2026-11-13",
+  "generated_at": "2026-11-13T14:08:16.404Z",
   "sources": {
     "crosswalk": "site/data/passport_checkbook_crosswalk.json",
     "spine": "site/data/procurement_spine_sources.json"
   },
   "metrics": {
-    "pin_family_id_mismatches": 147,
-    "auto_related_instrument": 138,
+    "pin_family_id_mismatches": 146,
+    "auto_related_instrument": 137,
     "needs_review": 9,
     "auto_same_contract": 0,
     "by_rule": {
       "successor_term": 67,
       "later_term_renewal": 12,
-      "fms_document_type_mismatch": 59
+      "fms_document_type_mismatch": 58
     },
     "public_same_contract_rule": "contract_id_exact only; PIN-family id mismatches are not sold as the same contract"
   },
@@ -216,7 +216,7 @@
           "agency": "Department of Education",
           "current_amount": 484272,
           "original_amount": 484272,
-          "spent_amount": 78350.55,
+          "spent_amount": 126051.44,
           "start": "2026-07-01",
           "end": "2028-06-30",
           "registered": "2026-09-18",
@@ -1986,7 +1986,7 @@
           "agency": "Department for the Aging",
           "current_amount": 1129389,
           "original_amount": 1129389,
-          "spent_amount": 108085.33,
+          "spent_amount": 163709.1,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-07-17",
@@ -2812,7 +2812,7 @@
           "agency": "Department of Youth and Community Development",
           "current_amount": 5500000,
           "original_amount": 5500000,
-          "spent_amount": 1271175.95,
+          "spent_amount": 1359838.8,
           "start": "2026-07-01",
           "end": "2027-06-30",
           "registered": "2026-09-14",
@@ -4169,7 +4169,7 @@
           "agency": "Department of Information Technology and Telecommunications",
           "current_amount": 32745510,
           "original_amount": 32745510,
-          "spent_amount": 9078887.68,
+          "spent_amount": 9829294.36,
           "start": "2026-01-01",
           "end": "2027-12-31",
           "registered": "2026-06-30",
@@ -4759,7 +4759,7 @@
           "agency": "Police Department",
           "current_amount": 360000,
           "original_amount": 360000,
-          "spent_amount": 74493.48,
+          "spent_amount": 75646.88,
           "start": "2025-12-01",
           "end": "2030-11-30",
           "registered": "2025-12-22",
@@ -4818,7 +4818,7 @@
           "agency": "Police Department",
           "current_amount": 110000,
           "original_amount": 110000,
-          "spent_amount": 0,
+          "spent_amount": 221.75,
           "start": "2025-12-01",
           "end": "2030-11-30",
           "registered": "2026-03-06",
@@ -5686,65 +5686,6 @@
       }
     },
     {
-      "pair_id": "pf:CTA184620267200616::MMA1-846-20258807055",
-      "identity_class": "related_instrument",
-      "label_source": "rule",
-      "rule": "fms_document_type_mismatch",
-      "rationale": "Checkbook CTA1 and PASSPort MMA1 are different FMS document types sharing a PIN (requirement contract / task order vs master agreement, or another instrument pair). They are related, not the same registered contract.",
-      "evidence": {
-        "pin": "84622P0006009R001",
-        "epin": "84622P0006009R001",
-        "join_method": "pin_epin_exact",
-        "checkbook": {
-          "contract_id": "CTA184620267200616",
-          "subject_ref": "contract:CTA184620267200616",
-          "source_record_id": "checkbook:contract:CTA184620267200616",
-          "vendor": "LALAND BAPTISTE LLC",
-          "agency": "Department of Parks and Recreation",
-          "current_amount": 1418126.4,
-          "original_amount": 1418126.4,
-          "spent_amount": 342263.36,
-          "start": "2025-11-10",
-          "end": "2028-02-08",
-          "registered": "2025-09-18",
-          "status": "registered",
-          "fms": {
-            "type": "CTA1",
-            "agency": "846",
-            "form": "compact"
-          }
-        },
-        "passport": {
-          "contract_id": "MMA1-846-20258807055",
-          "subject_ref": "contract:MMA1-846-20258807055",
-          "source_record_id": "passport:contract:MMA1-846-20258807055",
-          "vendor": "LALAND BAPTISTE LLC",
-          "agency": "DEPARTMENT OF PARKS AND RECREATION",
-          "current_amount": 15000000,
-          "award_amount": 15000000,
-          "paid_amount": 0,
-          "start": "2025-04-26",
-          "end": "2027-04-25",
-          "registered": "2025-04-30",
-          "status": "Registered",
-          "title": "CNYG-3222MR-Construction Management Services Renewal",
-          "procurement_method": "Renewal",
-          "fms": {
-            "type": "MMA1",
-            "agency": "846",
-            "form": "hyphen"
-          }
-        },
-        "vendor_same": true,
-        "vendor_stems": {
-          "checkbook": "LALAND BAPTISTE",
-          "passport": "LALAND BAPTISTE"
-        },
-        "amount_ratio": 0.09454175999999999,
-        "term_gap_days": -531
-      }
-    },
-    {
       "pair_id": "pf:CTA184620267201681::MMA1-846-20248805432",
       "identity_class": "related_instrument",
       "label_source": "rule",
@@ -6293,7 +6234,7 @@
           "agency": "Department of Parks and Recreation",
           "current_amount": 38050,
           "original_amount": 38050,
-          "spent_amount": 3272.25,
+          "spent_amount": 4538.27,
           "start": "2026-03-10",
           "end": "2027-03-10",
           "registered": "2026-03-09",
@@ -7945,7 +7886,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 37720544.89,
           "original_amount": 37720544.89,
-          "spent_amount": 9218500.99,
+          "spent_amount": 9622024.92,
           "start": "2026-05-01",
           "end": "2028-04-30",
           "registered": "2026-03-09",
@@ -8004,7 +7945,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 15934967.31,
           "original_amount": 15934967.31,
-          "spent_amount": 3265288.71,
+          "spent_amount": 3449663.86,
           "start": "2026-06-01",
           "end": "2028-05-31",
           "registered": "2026-03-09",

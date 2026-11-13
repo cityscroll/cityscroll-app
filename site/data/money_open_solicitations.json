@@ -2,8 +2,8 @@
   "schema": "cityscroll.money_open_solicitations.v1",
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-12T18:44:04.165Z",
-  "open_as_of": "2026-11-12",
+  "generated_at": "2026-11-13T14:29:24.495Z",
+  "open_as_of": "2026-11-13",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -11,7 +11,7 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-12'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-13'",
     "$order": "due_date ASC, request_id ASC",
     "$limit": "501",
     "note": "Every open solicitation (same predicate as money_default_open, without its 40-row strip limit). Contact fields stay on the notice detail read."
@@ -23,36 +23,14 @@
   "population": {
     "state": "complete",
     "reasons": [],
-    "source_count": 199,
-    "published_count": 199,
+    "source_count": 202,
+    "published_count": 202,
     "rejected_rows": 0,
-    "distinct_pins": 140,
+    "distinct_pins": 143,
     "rows_without_pin": 6
   },
-  "count": 199,
+  "count": 202,
   "notices": [
-    {
-      "request_id": "20260917021",
-      "start_date": "2026-09-24T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "NYC H+H/Queens - Dialysis Space Construction",
-      "pin": "34202301_Queens Dial",
-      "due_date": "2026-11-12T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260924021",
-      "start_date": "2026-09-30T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Correction: Community Pharmacy at Lincoln Hospital - GC Work (MISC) MEP Trades",
-      "pin": "25202504",
-      "due_date": "2026-11-12T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
     {
       "request_id": "20261002034",
       "start_date": "2026-10-09T00:00:00.000",
@@ -316,17 +294,6 @@
       "pin": "NCB-02201602-Upgrade",
       "due_date": "2026-11-19T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260422026",
-      "start_date": "2026-04-29T00:00:00.000",
-      "agency_name": "Education",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Bid Extension: Payroll Managed Services",
-      "pin": "R1861040",
-      "due_date": "2026-11-19T16:00:00.000",
-      "selection_method_description": "Request for Proposals"
     },
     {
       "request_id": "20261027032",
@@ -656,6 +623,17 @@
       "selection_method_description": "Competitive Sealed Bids/Pre-Qualified List"
     },
     {
+      "request_id": "20260917021",
+      "start_date": "2026-09-24T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: NYC H+H/Queens - Dialysis Space Construction",
+      "pin": "34202301_Queens Dial",
+      "due_date": "2026-12-09T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260826038",
       "start_date": "2026-09-02T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -707,6 +685,17 @@
       "category_description": "Construction/Construction Services",
       "short_title": "82627B0013-BEPA: GI-CONS-9: Installation of green infrastructure along North and South Conduit in Queens",
       "pin": "82627B0013",
+      "due_date": "2026-12-10T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261106026",
+      "start_date": "2026-11-13T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "FMC-ROLLUP DOOR-2027 - Installation and Repair of overhead roll up doors, Citywide",
+      "pin": "82627B0008",
       "due_date": "2026-12-10T10:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
@@ -777,6 +766,17 @@
       "selection_method_description": "Request for Information"
     },
     {
+      "request_id": "20261106019",
+      "start_date": "2026-11-13T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Request for Bids (\u001aRFB\u001a) for the Sale of Food from Mobile Food Units at Various Parks Citywide",
+      "pin": "CWB-2026-A",
+      "due_date": "2026-12-11T15:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20261027025",
       "start_date": "2026-11-04T00:00:00.000",
       "agency_name": "Environmental Protection",
@@ -786,6 +786,17 @@
       "pin": "82627B0009",
       "due_date": "2026-12-15T10:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260422026",
+      "start_date": "2026-04-29T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Bid Extension: Payroll Managed Services",
+      "pin": "R1861040",
+      "due_date": "2026-12-15T16:00:00.000",
+      "selection_method_description": "Request for Proposals"
     },
     {
       "request_id": "20260916015",
@@ -1004,6 +1015,28 @@
       "short_title": "82627B0011-BEPA: GI-CONS-6: Installation of green infrastructure at various NYC Parks in Queens and Brooklyn",
       "pin": "82627B0011",
       "due_date": "2027-01-06T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261106018",
+      "start_date": "2026-11-13T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Jacobi Patient Account Decanting",
+      "pin": "21202303",
+      "due_date": "2027-01-07T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261106020",
+      "start_date": "2026-11-13T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Jacobi Building 1 Roof 2",
+      "pin": "21202604",
+      "due_date": "2027-01-07T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {

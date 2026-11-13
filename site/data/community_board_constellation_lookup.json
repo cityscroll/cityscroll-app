@@ -1551,7 +1551,7 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11-2/",
           "target_name": "Upcoming & recent proceedings",
-          "count": 23,
+          "count": 27,
           "state": "matched",
           "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fgeneral-board-meeting-11-2%2F",
           "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fgeneral-board-meeting-11-2%2F",
@@ -2101,7 +2101,7 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/aging/2026-10-12/",
           "target_name": "Upcoming & recent proceedings",
-          "count": 15,
+          "count": 20,
           "state": "matched",
           "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Faging%2F2026-10-12%2F",
           "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Faging%2F2026-10-12%2F",
@@ -9960,7 +9960,7 @@
           },
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-11-04",
+            "source_record_id": "cb6-board-members-and-staff-2026-11-13",
             "source_fields": [
               "board_id",
               "person_name",
@@ -9972,7 +9972,7 @@
             ],
             "join_method": "exact_publisher_identity_date_document",
             "source_href": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-11-04T18:48:50.978Z",
+            "observed_at": "2026-11-13T14:46:39.366Z",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -10260,7 +10260,7 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:2u8l1fdhuo0sfodtolunrthb60@google.com::2026-07-09",
           "target_name": "Upcoming & recent proceedings",
-          "count": 40,
+          "count": 49,
           "state": "matched",
           "href": "/meetings/meeting%3Acommunity_board%3A2u8l1fdhuo0sfodtolunrthb60%40google.com%3A%3A2026-07-09",
           "canonical_href": "/meetings/meeting%3Acommunity_board%3A2u8l1fdhuo0sfodtolunrthb60%40google.com%3A%3A2026-07-09",
@@ -13315,7 +13315,7 @@
           "target_kind": "meeting",
           "target_id": "meeting:community_board:5bc2hb9u70cp4cmroqm0hja98d@google.com::2026-06-25",
           "target_name": "Upcoming & recent proceedings",
-          "count": 26,
+          "count": 27,
           "state": "matched",
           "href": "/meetings/meeting%3Acommunity_board%3A5bc2hb9u70cp4cmroqm0hja98d%40google.com%3A%3A2026-06-25",
           "canonical_href": "/meetings/meeting%3Acommunity_board%3A5bc2hb9u70cp4cmroqm0hja98d%40google.com%3A%3A2026-06-25",
@@ -16003,7 +16003,7 @@
       "display_name": "Staten Island Community Board 2",
       "path": "/community-boards/staten-island-cb-02/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 6,
         "generated_at": "2026-09-06",
         "method": "community_board_constellation_v1"
@@ -16150,12 +16150,12 @@
           "relation_label": "Upcoming & recent proceedings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:pdf-calendar:staten-island-cb-02:2026-11-17:full-board",
           "target_name": "Upcoming & recent proceedings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Astaten-island-cb-02%3A2026-11-17%3Afull-board",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Astaten-island-cb-02%3A2026-11-17%3Afull-board",
           "scope": {
             "board": "staten-island-cb-02"
           },
@@ -16168,17 +16168,11 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "pdf-calendar:staten-island-cb-02:2026-11-17:full-board",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "source_href": "https://www.nyc.gov/site/statenislandcb2/meetings/full-board-agendas.page",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },

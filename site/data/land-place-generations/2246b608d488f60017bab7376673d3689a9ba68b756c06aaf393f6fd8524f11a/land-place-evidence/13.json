@@ -1,0 +1,28 @@
+{
+  "schema": "cityscroll.land_place_evidence_shard.v1",
+  "key": "13",
+  "association_kind": "published_project_lot",
+  "generation_id": "2246b608d488f60017bab7376673d3689a9ba68b756c06aaf393f6fd8524f11a",
+  "project_count": 1,
+  "projects": {
+    "2025K0417": {
+      "association_kind": "published_project_lot",
+      "bbl_association_state": "absent_from_index",
+      "valid_bbls": [],
+      "invalid_bbls": [],
+      "bbls": {},
+      "places": {
+        "borough": {},
+        "community_district": {},
+        "council_district": {},
+        "nta2020": {},
+        "police_precinct": {}
+      },
+      "publisher_geography": {
+        "borough": "Brooklyn",
+        "community_district": "K06",
+        "council_district": "39"
+      }
+    }
+  }
+}
