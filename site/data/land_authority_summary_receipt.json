@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_authority_summary_receipt.v1",
   "join_version": "ldp06_authority_summary_v1",
-  "generated_at": "2026-11-09T21:29:48.126Z",
+  "generated_at": "2026-11-13T04:35:46.689Z",
   "counts": {
     "universe": 40,
     "resolved": 17,
@@ -122,7 +122,7 @@
       "procedure_resolution": "mixed",
       "current_stage_id": null,
       "observed_status": "no_observation",
-      "published_next_status": "published"
+      "published_next_status": "none"
     },
     {
       "project_id": "2025M0399",
@@ -418,17 +418,17 @@
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-11-09T21:29:48.126Z"
+        "generated_at": "2026-11-13T04:35:46.689Z"
       },
-      "sha256": "6d7ecac70e953325cab95f0fd408726ca8061f05519d960b183aecdb0e635493"
+      "sha256": "741e2f8c0a888264f8693125fa0118d0169a7784d03ace79c22579f5fd6d8b41"
     },
     "land_outcomes_seed": {
       "path": "site/data/land_outcomes_seed.json",
       "count": 28,
       "vintage": {
-        "generated_at": "2026-11-09T21:29:48.126Z"
+        "generated_at": "2026-11-13T04:35:46.689Z"
       },
-      "sha256": "2b1dc4537d49e0008faa7a7bccb0f89aaa185d167b741788797cecccc01f9dfa"
+      "sha256": "34dea1e2e7cfc89a32a134c233958a410e8e7edb6663bbf2d7d8fdefb99fc6e3"
     },
     "geography": {
       "path": "site/data/community_board_geography_lookup.json",
@@ -439,11 +439,11 @@
     },
     "upcoming_hearings": {
       "path": "site/data/land_upcoming_hearings.json",
-      "count": 162,
+      "count": 161,
       "vintage": {
-        "generated_at": "2026-11-09T21:37:42.088Z"
+        "generated_at": "2026-11-13T04:40:50.244Z"
       },
-      "sha256": "d3ca774f1606f56302bb9e36495bac0d61e496ee3f2212d478b8a74c0458e3a7"
+      "sha256": "8019984567ecb98a10e0e581936b4fab5e9d845f06f90991a9dc52754430914c"
     },
     "join_keys": [
       "project_id"
@@ -452,7 +452,7 @@
   "generation": {
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
-    "payload_bytes": 87276,
-    "payload_sha256": "e0072e64ced5f8a559fbdabd92dde9db5ba9e1c55b8e186ca4f072225e9dc1f4"
+    "payload_bytes": 86977,
+    "payload_sha256": "1abdde7e22af3b0cca8144b84edaeb49dc9d5b680bcc3aee98823756569683f5"
   }
 }

@@ -21,7 +21,7 @@
   "source": {
     "publisher": "Office of the New York City Comptroller",
     "acquisition_mode": "live-publisher",
-    "pulled_at": "2026-11-09T21:14:00.178Z",
+    "pulled_at": "2026-11-13T04:22:19.861Z",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
     "type_of_data": "Spending",
@@ -33,15 +33,15 @@
     "page_size": 20000,
     "pages": 90,
     "count_drift_policy": "fail without publishing",
-    "page_manifest_sha256": "c83bf85747674a625160e738d89cb2b23f6f281fa7a5967ac7147af6b485eb3a"
+    "page_manifest_sha256": "dee1c9299d745aaa09ad3628a428ccde1040dcea5099d5ceeca0f690389c290a"
   },
   "population": {
-    "publisher_record_count": 1785209,
-    "source_xml_rows": 1785209,
-    "normalized_rows": 1785209,
-    "unique_transaction_ids": 1635478,
-    "duplicate_transaction_rows": 149731,
-    "reversal_rows": 1703,
+    "publisher_record_count": 1785875,
+    "source_xml_rows": 1785875,
+    "normalized_rows": 1785875,
+    "unique_transaction_ids": 1636018,
+    "duplicate_transaction_rows": 149857,
+    "reversal_rows": 1705,
     "null_amount_rows": 0,
     "agency_grouping": [
       {
@@ -91,8 +91,8 @@
       },
       {
         "agency": "Department of Environmental Protection",
-        "transaction_count": 56831,
-        "net_check_amount": 1016500237.35
+        "transaction_count": 57496,
+        "net_check_amount": 1030840202.11
       },
       {
         "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -301,8 +301,8 @@
       },
       {
         "agency": "Office of Payroll Administration",
-        "transaction_count": 167,
-        "net_check_amount": 1435443.37
+        "transaction_count": 168,
+        "net_check_amount": 1479727.54
       },
       {
         "agency": "Independent Budget Office",
@@ -703,12 +703,12 @@
     "by_fiscal_year": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1785209,
-        "source_xml_rows": 1785209,
-        "normalized_rows": 1785209,
-        "source_net_check_amount": 52385486554.48,
-        "normalized_net_check_amount": 52385486554.48,
-        "reversal_rows": 1703,
+        "source_record_count": 1785875,
+        "source_xml_rows": 1785875,
+        "normalized_rows": 1785875,
+        "source_net_check_amount": 52399870803.41,
+        "normalized_net_check_amount": 52399870803.41,
+        "reversal_rows": 1705,
         "agency_grouping": [
           {
             "agency": "Department of Education",
@@ -757,8 +757,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 56831,
-            "net_check_amount": 1016500237.35
+            "transaction_count": 57496,
+            "net_check_amount": 1030840202.11
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -967,8 +967,8 @@
           },
           {
             "agency": "Office of Payroll Administration",
-            "transaction_count": 167,
-            "net_check_amount": 1435443.37
+            "transaction_count": 168,
+            "net_check_amount": 1479727.54
           },
           {
             "agency": "Independent Budget Office",
@@ -1375,12 +1375,12 @@
     "partitions": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1785209,
-        "source_xml_rows": 1785209,
-        "normalized_rows": 1785209,
-        "source_net_check_amount": 52385486554.48,
-        "normalized_net_check_amount": 52385486554.48,
-        "reversal_rows": 1703,
+        "source_record_count": 1785875,
+        "source_xml_rows": 1785875,
+        "normalized_rows": 1785875,
+        "source_net_check_amount": 52399870803.41,
+        "normalized_net_check_amount": 52399870803.41,
+        "reversal_rows": 1705,
         "agency_grouping": [
           {
             "agency": "Department of Education",
@@ -1429,8 +1429,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 56831,
-            "net_check_amount": 1016500237.35
+            "transaction_count": 57496,
+            "net_check_amount": 1030840202.11
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -1639,8 +1639,8 @@
           },
           {
             "agency": "Office of Payroll Administration",
-            "transaction_count": 167,
-            "net_check_amount": 1435443.37
+            "transaction_count": 168,
+            "net_check_amount": 1479727.54
           },
           {
             "agency": "Independent Budget Office",
@@ -2042,17 +2042,17 @@
         "reconciled": true
       }
     ],
-    "source_xml_rows": 1785209,
-    "normalized_rows": 1785209,
-    "source_net_check_amount": 52385486554.48,
-    "normalized_net_check_amount": 52385486554.48,
+    "source_xml_rows": 1785875,
+    "normalized_rows": 1785875,
+    "source_net_check_amount": 52399870803.41,
+    "normalized_net_check_amount": 52399870803.41,
     "reconciled": true
   },
   "conversion": {
     "csv": {
       "path": "warehouse/raw/checkbook-payment-population/payments.csv",
-      "row_count": 1785209,
-      "sha256": "c97167c096f43410cf7671e037cd2bebce97661b94143e27bc6910607355bbba"
+      "row_count": 1785875,
+      "sha256": "ba5e17df28c09157509ce5134adaac858893c1d101160bed1b5b238316aad510"
     },
     "receipt": "warehouse/receipts/proof/checkbook_payment_population_conversion_latest.json",
     "next_step": "warehouse/scripts/convert_checkbook_payment_population.py --csv <payments.csv> --parquet <payments.parquet> --source-receipt warehouse/receipts/proof/checkbook_payment_population_latest.json",
@@ -2081,7 +2081,7 @@
     ]
   },
   "checksums": {
-    "normalized_csv_sha256": "c97167c096f43410cf7671e037cd2bebce97661b94143e27bc6910607355bbba"
+    "normalized_csv_sha256": "ba5e17df28c09157509ce5134adaac858893c1d101160bed1b5b238316aad510"
   },
   "coverage_statement": "This receipt covers only the declared fiscal-year contract-spending partitions. It must not be used to infer payment coverage for other fiscal years or spending categories."
 }

@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.zap_environmental_projection.v1",
   "dataset_id": "hgx4-8ukb",
-  "generated_at": "2026-11-09T21:47:09.965Z",
-  "lookup_materialized_at": "2026-11-09T21:47:09.965Z",
-  "overlay_as_of": "2026-11-09T21:47:09.965Z",
+  "generated_at": "2026-11-13T04:54:43.447Z",
+  "lookup_materialized_at": "2026-11-13T04:54:43.447Z",
+  "overlay_as_of": "2026-11-13T04:54:43.447Z",
   "mode": "soda_sell_facing",
   "coverage": {
     "schema": "cityscroll.zap_environmental_projection.v1",

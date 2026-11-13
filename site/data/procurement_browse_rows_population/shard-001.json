@@ -4,6 +4,605 @@
   "shard_id": "001",
   "rows": [
     {
+      "procurement_id": "procurement:contract:CT181620258800151",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800151",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240611104",
+        "passport_public_contracts:contract:81624N0013003:5154493"
+      ],
+      "request_id": "20240611104",
+      "start_date": "2024-07-01",
+      "end_date": "2024-12-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population A)",
+      "pin": "81624N0013003",
+      "contract_id": "CT181620258800151",
+      "contract_amount": 363837,
+      "vendor_name": "Project Hospitality Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Project Hospitality Inc. · $363,837",
+      "notice_evidence": [
+        {
+          "request_id": "20240611104",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population A)",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-17",
+          "href": "/notices/20240611104"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800152",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800152",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240607103",
+        "passport_public_contracts:contract:81624N0012015:5160277"
+      ],
+      "request_id": "20240607103",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population B) #1SC",
+      "pin": "81624N0012015",
+      "contract_id": "CT181620258800152",
+      "contract_amount": 745518,
+      "vendor_name": "Project Hospitality Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Project Hospitality Inc. · $745,518",
+      "notice_evidence": [
+        {
+          "request_id": "20240607103",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population B) #1SC",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-13",
+          "href": "/notices/20240607103"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800153",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800153",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240603106",
+        "passport_public_contracts:contract:81623P0013001:5102765"
+      ],
+      "request_id": "20240603106",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Respite Services for Specialized Care",
+      "pin": "81623P0013001",
+      "contract_id": "CT181620258800153",
+      "contract_amount": 1826438.5,
+      "vendor_name": "REHOBOTH CARE INC",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · REHOBOTH CARE INC · $1,826,438.5",
+      "notice_evidence": [
+        {
+          "request_id": "20240603106",
+          "type_of_notice_description": "Award",
+          "short_title": "Respite Services for Specialized Care",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-07",
+          "href": "/notices/20240603106"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800154",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800154",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240603105",
+        "passport_public_contracts:contract:81623P0013002:5101724"
+      ],
+      "request_id": "20240603105",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Early Intervention Respite Service, in Home Services",
+      "pin": "81623P0013002",
+      "contract_id": "CT181620258800154",
+      "contract_amount": 1660500,
+      "vendor_name": "REHOBOTH CARE INC",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · REHOBOTH CARE INC · $1,660,500",
+      "notice_evidence": [
+        {
+          "request_id": "20240603105",
+          "type_of_notice_description": "Award",
+          "short_title": "Early Intervention Respite Service, in Home Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-07",
+          "href": "/notices/20240603105"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800155",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800155",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240703111",
+        "passport_public_contracts:contract:81624N0012016:5160278"
+      ],
+      "request_id": "20240703111",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population G) #1S",
+      "pin": "81624N0012016",
+      "contract_id": "CT181620258800155",
+      "contract_amount": 649009,
+      "vendor_name": "Services for the Underserved Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Services for the Underserved Inc. · $649,009",
+      "notice_evidence": [
+        {
+          "request_id": "20240703111",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population G) #1S",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-10",
+          "href": "/notices/20240703111"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800156",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800156",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240717103",
+        "passport_public_contracts:contract:81624N0012017:5160279"
+      ],
+      "request_id": "20240717103",
+      "start_date": "2024-07-01",
+      "end_date": "2025-01-01",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing",
+      "pin": "81624N0012017",
+      "contract_id": "CT181620258800156",
+      "contract_amount": 596461.5,
+      "vendor_name": "St. Nicks Alliance Corp.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · St. Nicks Alliance Corp. · $596,461.5",
+      "notice_evidence": [
+        {
+          "request_id": "20240717103",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-23",
+          "href": "/notices/20240717103"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800157",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800157",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240620110",
+        "passport_public_contracts:contract:81624N0012018:5160280"
+      ],
+      "request_id": "20240620110",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population E)",
+      "pin": "81624N0012018",
+      "contract_id": "CT181620258800157",
+      "contract_amount": 631076,
+      "vendor_name": "Unique People Services, Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Unique People Services, Inc. · $631,076",
+      "notice_evidence": [
+        {
+          "request_id": "20240620110",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population E)",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-26",
+          "href": "/notices/20240620110"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800158",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800158",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240703110",
+        "passport_public_contracts:contract:81624N0012019:5160281"
+      ],
+      "request_id": "20240703110",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population B)",
+      "pin": "81624N0012019",
+      "contract_id": "CT181620258800158",
+      "contract_amount": 695379,
+      "vendor_name": "Volunteers Of America Greater New York Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Volunteers Of America Greater New York Inc. · $695,379",
+      "notice_evidence": [
+        {
+          "request_id": "20240703110",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population B)",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-10",
+          "href": "/notices/20240703110"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800159",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800159",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240621101",
+        "passport_public_contracts:contract:81623P0013004:5101726"
+      ],
+      "request_id": "20240621101",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Early Intervention Respite Services",
+      "pin": "81623P0013004",
+      "contract_id": "CT181620258800159",
+      "contract_amount": 1660500,
+      "vendor_name": "YES I CAN SERVICES INC",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · YES I CAN SERVICES INC · $1,660,500",
+      "notice_evidence": [
+        {
+          "request_id": "20240621101",
+          "type_of_notice_description": "Award",
+          "short_title": "Early Intervention Respite Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-27",
+          "href": "/notices/20240621101"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800167",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800167",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240604112",
+        "passport_public_contracts:contract:81624N0012003:5160265"
+      ],
+      "request_id": "20240604112",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Extension",
+      "pin": "81624N0012003",
+      "contract_id": "CT181620258800167",
+      "contract_amount": 635573,
+      "vendor_name": "Aids Center of Queens County Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Aids Center of Queens County Inc. · $635,573",
+      "notice_evidence": [
+        {
+          "request_id": "20240604112",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Extension",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-10",
+          "href": "/notices/20240604112"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800168",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800168",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240627122",
+        "passport_public_contracts:contract:81624W0058001:5161486"
+      ],
+      "request_id": "20240627122",
+      "start_date": "2024-07-11",
+      "end_date": "2025-07-10",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "SOFTWARE RENEWAL OF EXISTING SOLARWINDS MAINTENANCE AND TECHNICAL SUPPORT",
+      "pin": "81624W0058001",
+      "contract_id": "CT181620258800168",
+      "contract_amount": 20710.47,
+      "vendor_name": "Kambrian Corporation",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Kambrian Corporation · $20,710.47",
+      "notice_evidence": [
+        {
+          "request_id": "20240627122",
+          "type_of_notice_description": "Award",
+          "short_title": "SOFTWARE RENEWAL OF EXISTING SOLARWINDS MAINTENANCE AND TECHNICAL SUPPORT",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-05",
+          "href": "/notices/20240627122"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800170",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800170",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240610106",
+        "passport_public_contracts:contract:81624M0015019:5184549"
+      ],
+      "request_id": "20240610106",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Supportive Housing",
+      "pin": "81624M0015019",
+      "contract_id": "CT181620258800170",
+      "contract_amount": 8628131,
+      "vendor_name": "Comunilife Inc.",
+      "official_url": null,
+      "selection_method_description": "Required Method",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Comunilife Inc. · $8,628,131",
+      "notice_evidence": [
+        {
+          "request_id": "20240610106",
+          "type_of_notice_description": "Award",
+          "short_title": "Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-14",
+          "href": "/notices/20240610106"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800171",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800171",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240613113",
+        "passport_public_contracts:contract:81624N0009001:5124794"
+      ],
+      "request_id": "20240613113",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Advertising agencies",
+      "pin": "81624N0009001",
+      "contract_id": "CT181620258800171",
+      "contract_amount": 2000000,
+      "vendor_name": "Bandujo Advertising and Design, Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Bandujo Advertising and Design, Inc. · $2,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240613113",
+          "type_of_notice_description": "Award",
+          "short_title": "Advertising agencies",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-20",
+          "href": "/notices/20240613113"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT181620258800177",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800177",
       "procurement_stages": [
@@ -7458,38 +8057,6 @@
       ]
     },
     {
-      "procurement_id": "procurement:contract:CT181620261407338",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620261407338",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181620261407338:BYR INC:prime-vendor:2025-11-21"
-      ],
-      "start_date": "2025-11-11",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Health and Mental Hygiene",
-      "short_title": "Thermal Cameras with Warranty for Environmental Health _ EDP",
-      "pin": null,
-      "contract_id": "CT181620261407338",
-      "contract_amount": 7339.2,
-      "vendor_name": "BYR INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Health and Mental Hygiene · BYR INC · $7,339.2",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
       "procurement_id": "procurement:contract:CT181620261407578",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620261407578",
       "procurement_stages": [
@@ -7966,38 +8533,6 @@
       "method_family": "ordinary_micropurchase"
     },
     {
-      "procurement_id": "procurement:contract:CT181620261408405",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620261408405",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181620261408405:COLLEGE OF AMERICAN PATH:prime-vendor:2025-12-12"
-      ],
-      "start_date": "2025-11-10",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Health and Mental Hygiene",
-      "short_title": "TESTING SAMPLES FOR PROFICIENCY",
-      "pin": null,
-      "contract_id": "CT181620261408405",
-      "contract_amount": 18943.92,
-      "vendor_name": "COLLEGE OF AMERICAN PATH",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Health and Mental Hygiene · COLLEGE OF AMERICAN PATH · $18,943.92",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
       "procurement_id": "procurement:contract:CT181620261408462",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620261408462",
       "procurement_stages": [
@@ -8150,38 +8685,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Health and Mental Hygiene · WOODSIDE ON THE MOVE, INC. · $3,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620261408539",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620261408539",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181620261408539:LEARNING TREE INTERNATIONAL USA INC:prime-vendor:2025-12-16"
-      ],
-      "start_date": "2025-11-12",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Health and Mental Hygiene",
-      "short_title": "Agile Fundamentals Training.",
-      "pin": null,
-      "contract_id": "CT181620261408539",
-      "contract_amount": 11848,
-      "vendor_name": "LEARNING TREE INTERNATIONAL USA INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Health and Mental Hygiene · LEARNING TREE INTERNATIONAL USA INC · $11,848",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -9492,38 +9995,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Health and Mental Hygiene · SIMPLY FORMS AND COMPUTERS INC · $736",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620261410804",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620261410804",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181620261410804:TRUESCREEN, INC.:prime-vendor:2026-02-03"
-      ],
-      "start_date": "2025-11-10",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Health and Mental Hygiene",
-      "short_title": "FINGER PRINTING BACKGROUND CHECK FOR BADUPCT",
-      "pin": null,
-      "contract_id": "CT181620261410804",
-      "contract_amount": 2170,
-      "vendor_name": "TRUESCREEN, INC.",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Health and Mental Hygiene · TRUESCREEN, INC. · $2,170",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -24965,14 +25436,14 @@
       "short_title": "Carbonless paper",
       "pin": null,
       "contract_id": "CT181620271400756",
-      "contract_amount": 11550,
+      "contract_amount": 17350,
       "vendor_name": "SHARDA PAPER INC",
       "official_url": null,
       "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
       "process_states": [
         "registered"
       ],
-      "additional_description_1": "Department of Health and Mental Hygiene · SHARDA PAPER INC · $11,550",
+      "additional_description_1": "Department of Health and Mental Hygiene · SHARDA PAPER INC · $17,350",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -26242,14 +26713,14 @@
       "short_title": "Webcams, Headsets, office supplies and equipment for Environ",
       "pin": null,
       "contract_id": "CT181620271402208",
-      "contract_amount": 15560.17,
+      "contract_amount": 16007.87,
       "vendor_name": "EBONY OFFICE PRODUCTS INC",
       "official_url": null,
       "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
       "process_states": [
         "registered"
       ],
-      "additional_description_1": "Department of Health and Mental Hygiene · EBONY OFFICE PRODUCTS INC · $15,560.17",
+      "additional_description_1": "Department of Health and Mental Hygiene · EBONY OFFICE PRODUCTS INC · $16,007.87",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -26672,6 +27143,37 @@
         "checkbook_contracts"
       ],
       "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271402536",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271402536",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271402536:APPROVED STORAGE & WASTE HAULING INC:prime-vendor:2026-11-10"
+      ],
+      "start_date": "2026-10-01",
+      "end_date": "2028-09-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "REGULATED MEDICAL WASTE REMOVAL AND DISPOSAL SVCS",
+      "pin": null,
+      "contract_id": "CT181620271402536",
+      "contract_amount": 100000,
+      "vendor_name": "APPROVED STORAGE & WASTE HAULING INC",
+      "official_url": null,
+      "selection_method_description": "SM PURCH GOODS SERVICES 100K",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · APPROVED STORAGE & WASTE HAULING INC · $100,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
     },
     {
       "procurement_id": "procurement:contract:CT181620271402611",
@@ -34732,6 +35234,37 @@
         "registered"
       ],
       "additional_description_1": "Office of Administrative Trials and Hearings · NEW YORK STATE INDUSTRIES FOR THE DISABLED INC · $984,862.7",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT182020278803637",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT182020278803637",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT182020278803637:NEW YORK STATE INDUSTRIES FOR THE DISABLED INC:prime-vendor:2026-11-10"
+      ],
+      "start_date": "2026-08-12",
+      "end_date": "2029-08-11",
+      "agency_id": null,
+      "agency_name": "Office of Administrative Trials and Hearings",
+      "short_title": "NYSID Data Capture Services",
+      "pin": "82024M8002KXLR001",
+      "contract_id": "CT182020278803637",
+      "contract_amount": 531909.81,
+      "vendor_name": "NEW YORK STATE INDUSTRIES FOR THE DISABLED INC",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Office of Administrative Trials and Hearings · NEW YORK STATE INDUSTRIES FOR THE DISABLED INC · $531,909.81",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -64968,7 +65501,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT182620268803365:P&T II CONTRACTING CORP:prime-vendor:2025-11-25",
         "city_record:20251126005",
         "passport_public_contracts:contract:82624B0050001:5544769"
       ],
@@ -65003,8 +65535,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ]
     },
     {
@@ -80602,7 +81133,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT182720268801245:PARAMOUNT SERVICES GROUP INC:prime-vendor:2025-12-17",
         "city_record:20251217031",
         "passport_public_contracts:contract:82725W0036001:5476007"
       ],
@@ -80637,8 +81167,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ],
       "method_family": "mwbe_small_purchase"
     },
@@ -90680,6 +91209,7 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT183620278800628:FIRST DATA GOVERNMENT SOLUTIONS LP:prime-vendor:2026-06-09",
         "city_record:20260610013",
         "passport_public_contracts:contract:83623P8002KXLR001:5656967"
       ],
@@ -90714,7 +91244,8 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts"
+        "passport_public_contracts",
+        "checkbook_contracts"
       ]
     },
     {
@@ -111901,38 +112432,6 @@
       ]
     },
     {
-      "procurement_id": "procurement:contract:CT184120268803808",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184120268803808",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184120268803808:COMPULINK TECHNOLOGIES INC:prime-vendor:2025-11-19"
-      ],
-      "start_date": "2025-11-12",
-      "end_date": "2026-11-11",
-      "agency_id": null,
-      "agency_name": "Department of Transportation",
-      "short_title": "F5 Support Services",
-      "pin": "84126W0023001",
-      "contract_id": "CT184120268803808",
-      "contract_amount": 31448.55,
-      "vendor_name": "COMPULINK TECHNOLOGIES INC",
-      "official_url": null,
-      "selection_method_description": "M/WBE SMALL PURCHASE",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Transportation · COMPULINK TECHNOLOGIES INC · $31,448.55",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "mwbe_small_purchase"
-    },
-    {
       "procurement_id": "procurement:contract:CT184120268803811",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184120268803811",
       "procurement_stages": [
@@ -112470,7 +112969,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184120268804056:ALDORAY & ASSOCIATES CORP:prime-vendor:2025-12-03",
         "city_record:20251204041",
         "passport_public_contracts:contract:84126W0008001:5504230"
       ],
@@ -112505,8 +113003,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ],
       "method_family": "mwbe_small_purchase"
     },
@@ -112519,7 +113016,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184120268804125:ARGENT ASSOCIATES INC:prime-vendor:2025-12-09",
         "city_record:20251211015",
         "passport_public_contracts:contract:84126W0026001:5556850"
       ],
@@ -112554,8 +113050,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ],
       "method_family": "mwbe_small_purchase"
     },
@@ -116207,6 +116702,37 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
+      "procurement_id": "procurement:contract:CT184120271403781",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184120271403781",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184120271403781:INPRODUCTION INC:prime-vendor:2026-10-06"
+      ],
+      "start_date": "2026-11-11",
+      "end_date": "2027-11-30",
+      "agency_id": null,
+      "agency_name": "Department of Transportation",
+      "short_title": "RENTAL OF BLEACHERS FOR THE MACY'S THANKSGIVING DAY PARADE",
+      "pin": "84127PO001CS",
+      "contract_id": "CT184120271403781",
+      "contract_amount": 77840,
+      "vendor_name": "INPRODUCTION INC",
+      "official_url": null,
+      "selection_method_description": "SM PURCH GOODS SERVICES 100K",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Transportation · INPRODUCTION INC · $77,840",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT184120278800847",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184120278800847",
       "procurement_stages": [
@@ -116785,6 +117311,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CT184120278803364",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184120278803364",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184120278803364:NAVILLUS TILE INC:prime-vendor:2026-11-09"
+      ],
+      "start_date": "2026-11-02",
+      "end_date": "2028-05-15",
+      "agency_id": null,
+      "agency_name": "Department of Transportation",
+      "short_title": "Vehicle Access Ramps",
+      "pin": "84125B0009001",
+      "contract_id": "CT184120278803364",
+      "contract_amount": 13443000,
+      "vendor_name": "NAVILLUS TILE INC",
+      "official_url": null,
+      "selection_method_description": "COMPETITIVE SEALED BIDDING",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Transportation · NAVILLUS TILE INC · $13,443,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT184120278803604",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184120278803604",
       "procurement_stages": [
@@ -116841,6 +117398,38 @@
         "registered"
       ],
       "additional_description_1": "Department of Transportation · Dependable Office Supplies, Inc. · $500,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184120278803733",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184120278803733",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184120278803733:COMPULINK TECHNOLOGIES INC:prime-vendor:2026-11-09"
+      ],
+      "start_date": "2026-11-09",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Transportation",
+      "short_title": "Laptops",
+      "pin": "84127W0026001",
+      "contract_id": "CT184120278803733",
+      "contract_amount": 81577.58,
+      "vendor_name": "COMPULINK TECHNOLOGIES INC",
+      "official_url": null,
+      "selection_method_description": "M/WBE SMALL PURCHASE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Transportation · COMPULINK TECHNOLOGIES INC · $81,577.58",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -133586,7 +134175,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620258809340:ENL MECHANICAL INCORPORATED:prime-vendor:2025-08-08",
         "city_record:20250811003",
         "passport_public_contracts:contract:84624B0150001:5475499"
       ],
@@ -133621,8 +134209,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ]
     },
     {
@@ -135946,7 +136533,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268802225:DELL-TECH ENTERPRISES INC:prime-vendor:2025-10-01",
         "city_record:20251002009",
         "passport_public_contracts:contract:84624B0155001:5502906"
       ],
@@ -135981,8 +136567,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ]
     },
     {
@@ -136137,7 +136722,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268802696:PMY CONSTRUCTION CORP.:prime-vendor:2025-10-01",
         "city_record:20251002008",
         "passport_public_contracts:contract:84625B0121001:5506012"
       ],
@@ -136172,8 +136756,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ]
     },
     {
@@ -136774,102 +137357,6 @@
       ]
     },
     {
-      "procurement_id": "procurement:contract:CT184620268803703",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803703",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803703:JOANNE FRANKLIN INC:prime-vendor:2025-11-10"
-      ],
-      "start_date": "2025-11-10",
-      "end_date": "2025-12-30",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "EDWILD-PROGRAM SUPPLIES FOR RANGERS.",
-      "pin": "84626C0344001",
-      "contract_id": "CT184620268803703",
-      "contract_amount": 6011.03,
-      "vendor_name": "JOANNE FRANKLIN INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · JOANNE FRANKLIN INC · $6,011.03",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803721",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803721",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803721:AMAF SUPPLY INC:prime-vendor:2025-11-12"
-      ],
-      "start_date": "2025-11-12",
-      "end_date": "2025-12-17",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "MNREC- Parts for Boiler",
-      "pin": "84626C0352001",
-      "contract_id": "CT184620268803721",
-      "contract_amount": 6907.5,
-      "vendor_name": "AMAF SUPPLY INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · AMAF SUPPLY INC · $6,907.5",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803729",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803729",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803729:SHI INTERNATIONAL CORP:prime-vendor:2025-11-12"
-      ],
-      "start_date": "2025-11-12",
-      "end_date": "2026-01-02",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "CPOP-Microsoft Office Professional Plus Licenses",
-      "pin": "84626C0338001",
-      "contract_id": "CT184620268803729",
-      "contract_amount": 17574,
-      "vendor_name": "SHI INTERNATIONAL CORP",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · SHI INTERNATIONAL CORP · $17,574",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
       "procurement_id": "procurement:contract:CT184620268803736",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803736",
       "procurement_stages": [
@@ -136894,38 +137381,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Parks and Recreation · LANDSCAPING BY COUNTRY GARDENS INC · $537",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803737",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803737",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803737:ALTER LEV INC:prime-vendor:2025-11-13"
-      ],
-      "start_date": "2025-11-12",
-      "end_date": "2026-04-30",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "CLIFEG-LIFEGUARD BEACH UMBRELLAS",
-      "pin": "84626C0348001",
-      "contract_id": "CT184620268803737",
-      "contract_amount": 18200,
-      "vendor_name": "ALTER LEV INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · ALTER LEV INC · $18,200",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -159121,8 +159576,8 @@
       "source_observation_refs": [
         "checkbook_contracts:contract:registered:CT184620278802120:TBO SITESCAPES, INC.:prime-vendor:2026-08-26"
       ],
-      "start_date": "2026-08-31",
-      "end_date": "2027-10-24",
+      "start_date": "2026-10-05",
+      "end_date": "2027-11-28",
       "agency_id": null,
       "agency_name": "Department of Parks and Recreation",
       "short_title": "North Rochdale Playground Reconstruction, Queens",
@@ -165989,6 +166444,38 @@
       "method_family": "ordinary_micropurchase"
     },
     {
+      "procurement_id": "procurement:contract:CT184620278803711",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803711",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803711:ABC SUPPLY INTERIORS INC:prime-vendor:2026-11-10"
+      ],
+      "start_date": "2026-11-10",
+      "end_date": "2027-01-25",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "SIOPS- Lumber for The Staten Island Boardwalk Project",
+      "pin": "84627C0294001",
+      "contract_id": "CT184620278803711",
+      "contract_amount": 12309.1,
+      "vendor_name": "ABC SUPPLY INTERIORS INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · ABC SUPPLY INTERIORS INC · $12,309.1",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
       "procurement_id": "procurement:contract:CT184620278803716",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803716",
       "procurement_stages": [
@@ -166109,6 +166596,166 @@
         "registered"
       ],
       "additional_description_1": "Department of Parks and Recreation · PLAYSITES PLUS SURFACES INC · $7,335",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803738",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803738",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803738:A.M. LEONARD, INC.:prime-vendor:2026-11-09"
+      ],
+      "start_date": "2026-11-12",
+      "end_date": "2027-02-10",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "QNOPS-Various Hand Tools for Queens Operations",
+      "pin": "84627C0290001",
+      "contract_id": "CT184620278803738",
+      "contract_amount": 9993,
+      "vendor_name": "A.M. LEONARD, INC.",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · A.M. LEONARD, INC. · $9,993",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803742",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803742",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803742:JOANNE FRANKLIN INC:prime-vendor:2026-11-09"
+      ],
+      "start_date": "2026-11-12",
+      "end_date": "2027-02-08",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "To Purchase Caps for PEP and PSS Uniform",
+      "pin": "84627C0296001",
+      "contract_id": "CT184620278803742",
+      "contract_amount": 12917.22,
+      "vendor_name": "JOANNE FRANKLIN INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · JOANNE FRANKLIN INC · $12,917.22",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803751",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803751",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803751:A.M. LEONARD, INC.:prime-vendor:2026-11-09"
+      ],
+      "start_date": "2026-11-12",
+      "end_date": "2027-02-26",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "CPOP-Various Tools for Gardener Training Program",
+      "pin": "84627C0305001",
+      "contract_id": "CT184620278803751",
+      "contract_amount": 6236.81,
+      "vendor_name": "A.M. LEONARD, INC.",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · A.M. LEONARD, INC. · $6,236.81",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803768",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803768",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803768:UNIVERSAL FIREPROOF DOOR CO INC:prime-vendor:2026-11-10"
+      ],
+      "start_date": "2026-11-12",
+      "end_date": "2026-12-31",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "BKOPS-Parts to Repair Door At Sunset Recreation",
+      "pin": "84627C0292001",
+      "contract_id": "CT184620278803768",
+      "contract_amount": 18750,
+      "vendor_name": "UNIVERSAL FIREPROOF DOOR CO INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · UNIVERSAL FIREPROOF DOOR CO INC · $18,750",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803781",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803781",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803781:FORRESTER FENCE CO INC:prime-vendor:2026-11-10"
+      ],
+      "start_date": "2026-11-13",
+      "end_date": "2027-01-04",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "CGRTB-Tree Guards For Community GardenÂ Â",
+      "pin": "84627C0289001",
+      "contract_id": "CT184620278803781",
+      "contract_amount": 8448.75,
+      "vendor_name": "Forrester fence co inc",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · Forrester fence co inc · $8,448.75",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -185272,6 +185919,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CT185020278803243",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185020278803243",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT185020278803243:P&T II CONTRACTING CORP:prime-vendor:2026-11-10"
+      ],
+      "start_date": "2026-11-01",
+      "end_date": "2028-10-30",
+      "agency_id": null,
+      "agency_name": "Department of Design and Construction",
+      "short_title": "NON-STANDARD PEDESTRIAN RAMP",
+      "pin": "85026B0061001",
+      "contract_id": "CT185020278803243",
+      "contract_amount": 26893319.69,
+      "vendor_name": "P&T II CONTRACTING CORP",
+      "official_url": null,
+      "selection_method_description": "COMPETITIVE SEALED BIDDING",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Design and Construction · P&T II CONTRACTING CORP · $26,893,319.69",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT185620218800032",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185620218800032",
       "procurement_stages": [
@@ -202165,38 +202843,6 @@
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT185620268804257",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT185620268804257",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT185620268804257:CPAT DISTRIBUTION INC:prime-vendor:2025-12-18"
-      ],
-      "start_date": "2025-11-10",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Citywide Administrative Services",
-      "short_title": "Â Small weighted vests for fire fighters exam.",
-      "pin": "85626C0047001",
-      "contract_id": "CT185620268804257",
-      "contract_amount": 8827.92,
-      "vendor_name": "CPAT DISTRIBUTION INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Citywide Administrative Services · CPAT DISTRIBUTION INC · $8,827.92",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
     },
     {
       "procurement_id": "procurement:contract:CT185620268804573",
@@ -233325,6 +233971,37 @@
       "method_family": "mwbe_small_purchase"
     },
     {
+      "procurement_id": "procurement:contract:CT185820271403286",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185820271403286",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT185820271403286:NYI-SIRIUS LLC:prime-vendor:2026-11-09"
+      ],
+      "start_date": "2026-05-01",
+      "end_date": "2036-04-30",
+      "agency_id": null,
+      "agency_name": "Department of Information Technology and Telecommunications",
+      "short_title": "SIRIUS-60 HUDSON COLO LICENSE AND SVC AGRMNT-CT1-20231407876",
+      "pin": "20260151245",
+      "contract_id": "CT185820271403286",
+      "contract_amount": 13735579.8,
+      "vendor_name": "NYI-SIRIUS LLC",
+      "official_url": null,
+      "selection_method_description": "LESSEE NEGOTIATION",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Information Technology and Telecommunications · NYI-SIRIUS LLC · $13,735,579.8",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT185820278801356",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185820278801356",
       "procurement_stages": [
@@ -240689,37 +241366,6 @@
       ]
     },
     {
-      "procurement_id": "procurement:contract:CTA112720267202071",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACTA112720267202071",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CTA112720267202071:QED INC:prime-vendor:2025-11-18"
-      ],
-      "start_date": "2025-11-12",
-      "end_date": "2026-08-12",
-      "agency_id": null,
-      "agency_name": "Financial Information Services Agency",
-      "short_title": "FISA-OPA CONSULTANT POOL-TOR#180--SECURITY SPECIALIST",
-      "pin": "127FY2300031",
-      "contract_id": "CTA112720267202071",
-      "contract_amount": 155610,
-      "vendor_name": "QED INC",
-      "official_url": null,
-      "selection_method_description": "EMERGENCY",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Financial Information Services Agency · QED INC · $155,610",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ]
-    },
-    {
       "procurement_id": "procurement:contract:CTA112720267202086",
       "canonical_href": "/procurements/procurement%3Acontract%3ACTA112720267202086",
       "procurement_stages": [
@@ -241488,37 +242134,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Small Business Services · NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION · $29,233,410",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CTA180120267202821",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACTA180120267202821",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CTA180120267202821:NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION:prime-vendor:2026-02-27"
-      ],
-      "start_date": "2025-11-10",
-      "end_date": "2027-11-10",
-      "agency_id": null,
-      "agency_name": "Department of Small Business Services",
-      "short_title": "West New Brighton NYPL - 105630001",
-      "pin": "12913WNBNYPL",
-      "contract_id": "CTA180120267202821",
-      "contract_amount": 1210597,
-      "vendor_name": "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION",
-      "official_url": null,
-      "selection_method_description": "REQUEST FOR PROPOSAL (RFP)",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Small Business Services · NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION · $1,210,597",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -246805,6 +247420,68 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CTA180620277201876",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACTA180620277201876",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CTA180620277201876:NEW YORK CITY HOUSING AUTHORITY:prime-vendor:2026-11-09"
+      ],
+      "start_date": "2026-06-23",
+      "end_date": "2027-08-21",
+      "agency_id": null,
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "Waste Yards 18B (WY1) @ Various in Citywide",
+      "pin": null,
+      "contract_id": "CTA180620277201876",
+      "contract_amount": 5370,
+      "vendor_name": "NEW YORK CITY HOUSING AUTHORITY",
+      "official_url": null,
+      "selection_method_description": "MULTIPLE AWARDS",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Housing Preservation and Development · NEW YORK CITY HOUSING AUTHORITY · $5,370",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CTA180620277201877",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACTA180620277201877",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CTA180620277201877:NEW YORK CITY HOUSING AUTHORITY:prime-vendor:2026-11-10"
+      ],
+      "start_date": "2026-06-23",
+      "end_date": "2027-09-01",
+      "agency_id": null,
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "Waste Yards 18D @ Various Development in Citywide",
+      "pin": null,
+      "contract_id": "CTA180620277201877",
+      "contract_amount": 8040,
+      "vendor_name": "NEW YORK CITY HOUSING AUTHORITY",
+      "official_url": null,
+      "selection_method_description": "MULTIPLE AWARDS",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Housing Preservation and Development · NEW YORK CITY HOUSING AUTHORITY · $8,040",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CTA180620277201878",
       "canonical_href": "/procurements/procurement%3Acontract%3ACTA180620277201878",
       "procurement_stages": [
@@ -246836,6 +247513,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CTA180620277201906",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACTA180620277201906",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CTA180620277201906:NEW YORK CITY HOUSING AUTHORITY:prime-vendor:2026-11-10"
+      ],
+      "start_date": "2026-10-05",
+      "end_date": "2027-10-05",
+      "agency_id": null,
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "Waste Yards 18C Construction @ Various in Citywide",
+      "pin": null,
+      "contract_id": "CTA180620277201906",
+      "contract_amount": 377430,
+      "vendor_name": "NEW YORK CITY HOUSING AUTHORITY",
+      "official_url": null,
+      "selection_method_description": "MULTIPLE AWARDS",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Housing Preservation and Development · NEW YORK CITY HOUSING AUTHORITY · $377,430",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CTA180620277201907",
       "canonical_href": "/procurements/procurement%3Acontract%3ACTA180620277201907",
       "procurement_stages": [
@@ -246860,6 +247568,68 @@
         "registered"
       ],
       "additional_description_1": "Housing Preservation and Development · NEW YORK CITY HOUSING AUTHORITY · $1,785.8",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CTA180620277201981",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACTA180620277201981",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CTA180620277201981:NEW YORK CITY HOUSING AUTHORITY:prime-vendor:2026-11-10"
+      ],
+      "start_date": "2026-09-01",
+      "end_date": "2027-09-01",
+      "agency_id": null,
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "Waste Yards 18D Construction @ Various in Citywide",
+      "pin": null,
+      "contract_id": "CTA180620277201981",
+      "contract_amount": 465602.64,
+      "vendor_name": "NEW YORK CITY HOUSING AUTHORITY",
+      "official_url": null,
+      "selection_method_description": "MULTIPLE AWARDS",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Housing Preservation and Development · NEW YORK CITY HOUSING AUTHORITY · $465,602.64",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CTA180620277202073",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACTA180620277202073",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CTA180620277202073:NEW YORK CITY HOUSING AUTHORITY:prime-vendor:2026-11-10"
+      ],
+      "start_date": "2026-10-01",
+      "end_date": "2029-03-31",
+      "agency_id": null,
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "Waste Yards Construction at Albany II.",
+      "pin": null,
+      "contract_id": "CTA180620277202073",
+      "contract_amount": 55460,
+      "vendor_name": "NEW YORK CITY HOUSING AUTHORITY",
+      "official_url": null,
+      "selection_method_description": "MULTIPLE AWARDS",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Housing Preservation and Development · NEW YORK CITY HOUSING AUTHORITY · $55,460",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -249681,37 +250451,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Parks and Recreation · M&J ENGINEERING DPC · $602,600",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CTA184620267200616",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACTA184620267200616",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CTA184620267200616:LALAND BAPTISTE LLC:prime-vendor:2025-09-18"
-      ],
-      "start_date": "2025-11-10",
-      "end_date": "2028-02-08",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "M071-120M Riverside Drainage System WO# 1R",
-      "pin": "84622P0006009R001",
-      "contract_id": "CTA184620267200616",
-      "contract_amount": 1418126.4,
-      "vendor_name": "LALAND BAPTISTE LLC",
-      "official_url": null,
-      "selection_method_description": "MULTIPLE AWARDS",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · LALAND BAPTISTE LLC · $1,418,126.4",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -264238,6 +264977,37 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · MIRACLE CARE INC · $270,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:MA104020279776595",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA104020279776595",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:MA104020279776595:RICHMOND COUNTY AMBULANCE SERVICE INC:prime-vendor:2026-11-09"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Education",
+      "short_title": "Ambulance Transportation of Students with Disabilities",
+      "pin": null,
+      "contract_id": "MA104020279776595",
+      "contract_amount": 1242810.87,
+      "vendor_name": "RICHMOND COUNTY AMBULANCE SERVICE INC",
+      "official_url": null,
+      "selection_method_description": "RENEWAL OF CONTRACT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Education · RICHMOND COUNTY AMBULANCE SERVICE INC · $1,242,810.87",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -293832,6 +294602,68 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:MA185720278803173",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720278803173",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:MA185720278803173:DOBBS MALVESE EQUIPMENT LLC:prime-vendor:2026-11-09"
+      ],
+      "start_date": "2026-11-01",
+      "end_date": "2027-06-29",
+      "agency_id": null,
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "short_title": "Equipment II, Rental of Various - Assignment of Contract.",
+      "pin": "85727X0166001",
+      "contract_id": "MA185720278803173",
+      "contract_amount": 1498000,
+      "vendor_name": "Dobbs Malvese Equipment LLC",
+      "official_url": null,
+      "selection_method_description": "ASSIGNMENT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE · Dobbs Malvese Equipment LLC · $1,498,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720278803278",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720278803278",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:MA185720278803278:DOBBS MALVESE EQUIPMENT LLC:prime-vendor:2026-11-09"
+      ],
+      "start_date": "2026-11-01",
+      "end_date": "2028-10-31",
+      "agency_id": null,
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "short_title": "To procure rental equipment for The City of New York.",
+      "pin": "85727X0025001",
+      "contract_id": "MA185720278803278",
+      "contract_amount": 1648360,
+      "vendor_name": "Dobbs Malvese Equipment LLC",
+      "official_url": null,
+      "selection_method_description": "ASSIGNMENT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE · Dobbs Malvese Equipment LLC · $1,648,360",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:MA185820228807878",
       "canonical_href": "/procurements/procurement%3Acontract%3AMA185820228807878",
       "procurement_stages": [
@@ -307522,17 +308354,20 @@
       "procurement_id": "procurement:contract:MMA184620258807055",
       "canonical_href": "/procurements/procurement%3Acontract%3AMMA184620258807055",
       "procurement_stages": [
+        "award",
         "registered"
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
+        "city_record:20250501009",
         "passport_public_contracts:contract:84622P0006009R001:5398137"
       ],
+      "request_id": "20250501009",
       "start_date": "2025-04-26",
       "end_date": "2027-04-25",
       "agency_id": null,
-      "agency_name": "DEPARTMENT OF PARKS AND RECREATION",
-      "short_title": "CNYG-3222MR-Construction Management Services Renewal",
+      "agency_name": "Parks and Recreation",
+      "short_title": "CNYG-3222MR - Construction Management Services",
       "pin": "84622P0006009R001",
       "contract_id": "MMA184620258807055",
       "contract_amount": 15000000,
@@ -307540,12 +308375,24 @@
       "official_url": null,
       "selection_method_description": "Renewal",
       "process_states": [
+        "award",
         "registered"
       ],
-      "additional_description_1": "DEPARTMENT OF PARKS AND RECREATION · LALAND BAPTISTE LLC · $15,000,000",
-      "notice_evidence": [],
+      "additional_description_1": "Parks and Recreation · LALAND BAPTISTE LLC · $15,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20250501009",
+          "type_of_notice_description": "Award",
+          "short_title": "CNYG-3222MR - Construction Management Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2025-05-07",
+          "href": "/notices/20250501009"
+        }
+      ],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
+        "city_record",
         "passport_public_contracts"
       ]
     },

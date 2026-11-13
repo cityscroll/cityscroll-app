@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_health_observations.v1",
-  "generated_at": "2026-11-12T12:39:57.269Z",
+  "generated_at": "2026-11-13T04:54:43.570Z",
   "contract_count": 71,
   "observations": [
     {
@@ -56,7 +56,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "abo-local-authorities",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -67,15 +67,15 @@
         "acquisition": {
           "observed_at": "2026-08-04T11:26:00.000Z",
           "cadence_days": null,
-          "age_days": 100.05135728009259
+          "age_days": 100.72828206018518
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "abo-local-authorities",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:abo-local-authorities:2026-11-12T12-39",
+            "run_id": "missing:abo-local-authorities:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -183,7 +183,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "abo-local-development-corporations",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -194,15 +194,15 @@
         "acquisition": {
           "observed_at": "2026-08-04T11:26:00.000Z",
           "cadence_days": null,
-          "age_days": 100.05135728009259
+          "age_days": 100.72828206018518
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "abo-local-development-corporations",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:abo-local-development-corporations:2026-11-12T12-39",
+            "run_id": "missing:abo-local-development-corporations:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -308,7 +308,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "abo-state-authorities",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -319,15 +319,15 @@
         "acquisition": {
           "observed_at": "2026-08-04T11:26:00.000Z",
           "cadence_days": null,
-          "age_days": 100.05135728009259
+          "age_days": 100.72828206018518
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "abo-state-authorities",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:abo-state-authorities:2026-11-12T12-39",
+            "run_id": "missing:abo-state-authorities:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -422,7 +422,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "active-civil-service-list",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -439,9 +439,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "active-civil-service-list",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:active-civil-service-list:2026-11-12T12-39",
+            "run_id": "missing:active-civil-service-list:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -509,7 +509,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "annual-examination-schedule",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -526,9 +526,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "annual-examination-schedule",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:annual-examination-schedule:2026-11-12T12-39",
+            "run_id": "missing:annual-examination-schedule:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -596,7 +596,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "bid-tabulations-historical",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -613,9 +613,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "bid-tabulations-historical",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:bid-tabulations-historical:2026-11-12T12-39",
+            "run_id": "missing:bid-tabulations-historical:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -690,7 +690,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "business-improvement-district-boundaries",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -701,15 +701,15 @@
         "acquisition": {
           "observed_at": "2026-10-15T18:00:47.211Z",
           "cadence_days": null,
-          "age_days": 27.77719974537037
+          "age_days": 28.454124525462962
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "business-improvement-district-boundaries",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:business-improvement-district-boundaries:2026-11-12T12-39",
+            "run_id": "missing:business-improvement-district-boundaries:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -799,7 +799,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "capital-projects",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -816,9 +816,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "capital-projects",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:capital-projects:2026-11-12T12-39",
+            "run_id": "missing:capital-projects:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -886,7 +886,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "capital-projects-dashboard",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -903,9 +903,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "capital-projects-dashboard",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:capital-projects-dashboard:2026-11-12T12-39",
+            "run_id": "missing:capital-projects-dashboard:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -978,7 +978,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "cfb-campaign-contributions",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -989,15 +989,15 @@
         "acquisition": {
           "observed_at": "2026-09-07T21:21:17.547Z",
           "cadence_days": null,
-          "age_days": 65.63795974537037
+          "age_days": 66.31488452546296
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "cfb-campaign-contributions",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:cfb-campaign-contributions:2026-11-12T12-39",
+            "run_id": "missing:cfb-campaign-contributions:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -1065,12 +1065,12 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": "2026-11-10T15:17:39.651Z",
+            "at": "2026-11-13T04:22:12.463Z",
             "state": "KNOWN",
             "basis": "acquired_at"
           },
           "cityscroll_serving": {
-            "at": "2026-11-10T15:17:39.651Z",
+            "at": "2026-11-13T04:22:12.463Z",
             "state": "KNOWN",
             "basis": "warehouse_materialization"
           }
@@ -1087,13 +1087,13 @@
         {
           "kind": "serving-receipt",
           "path": "site/data/procurement_spine_sources.json",
-          "at": "2026-11-10T15:17:39.651Z",
+          "at": "2026-11-13T04:22:12.463Z",
           "status": "current"
         },
         {
           "kind": "warehouse-acquisition-receipt",
           "path": "warehouse/receipts/proof/checkbook_contracts_population_latest.json",
-          "at": "2026-11-10T15:17:39.651Z",
+          "at": "2026-11-13T04:22:12.463Z",
           "status": "succeeded"
         }
       ],
@@ -1103,7 +1103,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "checkbook-contracts",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -1112,17 +1112,17 @@
           "expected_slots": 2
         },
         "acquisition": {
-          "observed_at": "2026-11-10T15:17:39.651Z",
+          "observed_at": "2026-11-13T04:22:12.463Z",
           "cadence_days": null,
-          "age_days": 1.890481689814815
+          "age_days": 0.022582256944444445
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "checkbook-contracts",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:checkbook-contracts:2026-11-12T12-39",
+            "run_id": "missing:checkbook-contracts:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -1135,37 +1135,37 @@
           {
             "adapter": "warehouse-acquisition-receipt",
             "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json",
-            "at": "2026-11-10T15:17:39.651Z",
+            "at": "2026-11-13T04:22:12.463Z",
             "status": "succeeded",
             "receipt_ref": "warehouse/receipts/proof/checkbook_contracts_population_latest.json",
             "exact_error": null,
-            "attempt_at": "2026-11-10T15:17:39.651Z",
-            "result_at": "2026-11-10T15:17:39.651Z"
+            "attempt_at": "2026-11-13T04:22:12.463Z",
+            "result_at": "2026-11-13T04:22:12.463Z"
           }
         ],
         "acquisition_receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "checkbook-contracts",
-            "observed_at": "2026-11-10T15:17:39.651Z",
+            "observed_at": "2026-11-13T04:22:12.463Z",
             "status": "succeeded",
             "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "clock_kind": "acquisition",
-            "attempt_at": "2026-11-10T15:17:39.651Z",
-            "result_at": "2026-11-10T15:17:39.651Z",
-            "input_vintage": "2026-11-10T15:17:39.651Z"
+            "attempt_at": "2026-11-13T04:22:12.463Z",
+            "result_at": "2026-11-13T04:22:12.463Z",
+            "input_vintage": "2026-11-13T04:22:12.463Z"
           }
         ],
         "clocks": {
           "checked": {
-            "at": "2026-11-10T15:17:39.651Z",
+            "at": "2026-11-13T04:22:12.463Z",
             "state": "KNOWN",
             "basis": "checked_at"
           },
           "acquired": {
-            "at": "2026-11-10T15:17:39.651Z",
+            "at": "2026-11-13T04:22:12.463Z",
             "state": "KNOWN",
             "basis": "acquired_at"
           },
@@ -1217,7 +1217,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "checkbook-nycha-contracts",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -1234,9 +1234,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "checkbook-nycha-contracts",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:checkbook-nycha-contracts:2026-11-12T12-39",
+            "run_id": "missing:checkbook-nycha-contracts:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -1284,7 +1284,7 @@
             "basis": "acquired_at"
           },
           "cityscroll_serving": {
-            "at": "2026-11-09T21:14:00.178Z",
+            "at": "2026-11-13T04:22:19.861Z",
             "state": "KNOWN",
             "basis": "warehouse_materialization"
           }
@@ -1301,7 +1301,7 @@
         {
           "kind": "serving-receipt",
           "path": "site/data/analytics_payments.json",
-          "at": "2026-11-09T21:14:00.178Z",
+          "at": "2026-11-13T04:22:19.861Z",
           "status": "current"
         },
         {
@@ -1317,7 +1317,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "checkbook-spending",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -1328,15 +1328,15 @@
         "acquisition": {
           "observed_at": "2026-08-11T19:25:33.574Z",
           "cadence_days": null,
-          "age_days": 92.71832980324074
+          "age_days": 93.39525458333334
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "checkbook-spending",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:checkbook-spending:2026-11-12T12-39",
+            "run_id": "missing:checkbook-spending:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -1431,7 +1431,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "city-clerk-elobbyist",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -1448,9 +1448,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "city-clerk-elobbyist",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:city-clerk-elobbyist:2026-11-12T12-39",
+            "run_id": "missing:city-clerk-elobbyist:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -1525,7 +1525,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "city-council-committee-membership",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -1542,9 +1542,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "city-council-committee-membership",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:city-council-committee-membership:2026-11-12T12-39",
+            "run_id": "missing:city-council-committee-membership:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -1612,7 +1612,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "city-council-district-boundaries",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -1629,9 +1629,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "city-council-district-boundaries",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:city-council-district-boundaries:2026-11-12T12-39",
+            "run_id": "missing:city-council-district-boundaries:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -1699,7 +1699,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "city-council-meetings-open-data",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -1716,9 +1716,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "city-council-meetings-open-data",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:city-council-meetings-open-data:2026-11-12T12-39",
+            "run_id": "missing:city-council-meetings-open-data:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -1766,7 +1766,7 @@
             "basis": "acquired_at"
           },
           "cityscroll_serving": {
-            "at": "2026-11-05T15:11:09.870Z",
+            "at": "2026-11-13T04:54:43.570Z",
             "state": "KNOWN",
             "basis": "serve_contract:city_record_pin_chain"
           }
@@ -1783,7 +1783,7 @@
         {
           "kind": "serving-receipt",
           "path": "site/data/city_record_pin_chain_warehouse_lookup.json",
-          "at": "2026-11-05T15:11:09.870Z",
+          "at": "2026-11-13T04:54:43.570Z",
           "status": "current"
         },
         {
@@ -1799,7 +1799,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "city-record",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -1810,15 +1810,15 @@
         "acquisition": {
           "observed_at": "2026-08-05T10:41:44.000Z",
           "cadence_days": null,
-          "age_days": 99.08209802083333
+          "age_days": 99.75902280092592
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "city-record",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:city-record:2026-11-12T12-39",
+            "run_id": "missing:city-record:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -1920,7 +1920,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "citywide-payroll",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -1937,9 +1937,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "citywide-payroll",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:citywide-payroll:2026-11-12T12-39",
+            "run_id": "missing:citywide-payroll:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2007,7 +2007,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "civil-service-list-certification",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2024,9 +2024,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "civil-service-list-certification",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:civil-service-list-certification:2026-11-12T12-39",
+            "run_id": "missing:civil-service-list-certification:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2094,7 +2094,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "civil-service-titles",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2111,9 +2111,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "civil-service-titles",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:civil-service-titles:2026-11-12T12-39",
+            "run_id": "missing:civil-service-titles:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2181,7 +2181,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "community-district-boundaries",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2198,9 +2198,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "community-district-boundaries",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:community-district-boundaries:2026-11-12T12-39",
+            "run_id": "missing:community-district-boundaries:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2268,7 +2268,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dcas-annual-exam-outcomes",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2285,9 +2285,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dcas-annual-exam-outcomes",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dcas-annual-exam-outcomes:2026-11-12T12-39",
+            "run_id": "missing:dcas-annual-exam-outcomes:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2355,7 +2355,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dcas-eligible-list-utilization",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2372,9 +2372,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dcas-eligible-list-utilization",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dcas-eligible-list-utilization:2026-11-12T12-39",
+            "run_id": "missing:dcas-eligible-list-utilization:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2442,7 +2442,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dcas-exam-notices",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2459,9 +2459,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dcas-exam-notices",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dcas-exam-notices:2026-11-12T12-39",
+            "run_id": "missing:dcas-exam-notices:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2529,7 +2529,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dcas-vehicle-auction-list",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2546,9 +2546,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dcas-vehicle-auction-list",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dcas-vehicle-auction-list:2026-11-12T12-39",
+            "run_id": "missing:dcas-vehicle-auction-list:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2623,7 +2623,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dcp-nta2020-boundaries",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2634,15 +2634,15 @@
         "acquisition": {
           "observed_at": "2026-08-18T16:00:00.000Z",
           "cadence_days": null,
-          "age_days": 85.86107950231481
+          "age_days": 86.53800428240741
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dcp-nta2020-boundaries",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dcp-nta2020-boundaries:2026-11-12T12-39",
+            "run_id": "missing:dcp-nta2020-boundaries:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2739,7 +2739,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dcp-police-precinct-boundaries",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2750,15 +2750,15 @@
         "acquisition": {
           "observed_at": "2026-08-18T16:00:00.000Z",
           "cadence_days": null,
-          "age_days": 85.86107950231481
+          "age_days": 86.53800428240741
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dcp-police-precinct-boundaries",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dcp-police-precinct-boundaries:2026-11-12T12-39",
+            "run_id": "missing:dcp-police-precinct-boundaries:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2848,7 +2848,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dob-certificate-of-occupancy",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2865,9 +2865,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dob-certificate-of-occupancy",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dob-certificate-of-occupancy:2026-11-12T12-39",
+            "run_id": "missing:dob-certificate-of-occupancy:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -2935,7 +2935,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dob-now-job-filings",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -2952,9 +2952,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dob-now-job-filings",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dob-now-job-filings:2026-11-12T12-39",
+            "run_id": "missing:dob-now-job-filings:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3027,7 +3027,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dof-tax-lien-sale-lists",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3038,15 +3038,15 @@
         "acquisition": {
           "observed_at": "2026-08-03T04:27:32.000Z",
           "cadence_days": null,
-          "age_days": 101.34195913194445
+          "age_days": 102.01888391203704
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dof-tax-lien-sale-lists",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dof-tax-lien-sale-lists:2026-11-12T12-39",
+            "run_id": "missing:dof-tax-lien-sale-lists:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3165,7 +3165,7 @@
           "acquisition-missing"
         ],
         "source_contract_id": "doing-business-entities",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3176,15 +3176,15 @@
         "acquisition": {
           "observed_at": "2026-11-03T19:29:08.996Z",
           "cadence_days": 7,
-          "age_days": 8.715836493055555
+          "age_days": 9.392761273148148
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "doing-business-entities",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:doing-business-entities:2026-11-12T12-39",
+            "run_id": "missing:doing-business-entities:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3193,9 +3193,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "doing-business-entities",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "held",
-            "run_id": "missing:doing-business-entities:2026-11-12T12-39",
+            "run_id": "missing:doing-business-entities:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "acquisition-cadence",
@@ -3365,7 +3365,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dsny-district-boundaries",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3376,15 +3376,15 @@
         "acquisition": {
           "observed_at": "2026-09-16T10:06:14.000Z",
           "cadence_days": null,
-          "age_days": 57.10675079861111
+          "age_days": 57.7836755787037
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dsny-district-boundaries",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dsny-district-boundaries:2026-11-12T12-39",
+            "run_id": "missing:dsny-district-boundaries:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3553,7 +3553,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dycd-program-sites",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3570,9 +3570,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dycd-program-sites",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:dycd-program-sites:2026-11-12T12-39",
+            "run_id": "missing:dycd-program-sites:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3640,7 +3640,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "expense-budget",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3657,9 +3657,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "expense-budget",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:expense-budget:2026-11-12T12-39",
+            "run_id": "missing:expense-budget:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3732,7 +3732,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "ibo-fiscal-history",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3743,15 +3743,15 @@
         "acquisition": {
           "observed_at": "2026-08-27T17:59:48.000Z",
           "cadence_days": null,
-          "age_days": 76.77788505787036
+          "age_days": 77.45480983796297
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "ibo-fiscal-history",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:ibo-fiscal-history:2026-11-12T12-39",
+            "run_id": "missing:ibo-fiscal-history:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3841,7 +3841,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "legacy-dob-job-filings",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3858,9 +3858,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "legacy-dob-job-filings",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:legacy-dob-job-filings:2026-11-12T12-39",
+            "run_id": "missing:legacy-dob-job-filings:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3935,7 +3935,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "mandatory-inclusionary-housing",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3952,9 +3952,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "mandatory-inclusionary-housing",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:mandatory-inclusionary-housing:2026-11-12T12-39",
+            "run_id": "missing:mandatory-inclusionary-housing:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -4022,7 +4022,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "mappluto",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -4039,9 +4039,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "mappluto",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:mappluto:2026-11-12T12-39",
+            "run_id": "missing:mappluto:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -4109,7 +4109,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "mocs-ll1-plans",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -4126,9 +4126,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "mocs-ll1-plans",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:mocs-ll1-plans:2026-11-12T12-39",
+            "run_id": "missing:mocs-ll1-plans:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -4196,7 +4196,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "mocs-ll63-plans",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -4213,9 +4213,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "mocs-ll63-plans",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:mocs-ll63-plans:2026-11-12T12-39",
+            "run_id": "missing:mocs-ll63-plans:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -4283,7 +4283,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "mta-bid-results",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -4300,9 +4300,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "mta-bid-results",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:mta-bid-results:2026-11-12T12-39",
+            "run_id": "missing:mta-bid-results:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -4370,7 +4370,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "mta-current-opportunities",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -4387,9 +4387,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "mta-current-opportunities",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:mta-current-opportunities:2026-11-12T12-39",
+            "run_id": "missing:mta-current-opportunities:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -4476,7 +4476,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "non-council-board-minutes",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -4487,15 +4487,15 @@
         "acquisition": {
           "observed_at": "2026-09-23T05:09:59.711Z",
           "cadence_days": null,
-          "age_days": 50.312471736111114
+          "age_days": 50.989396516203705
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "non-council-board-minutes",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:non-council-board-minutes:2026-11-12T12-39",
+            "run_id": "missing:non-council-board-minutes:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -4616,7 +4616,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nyc-administrative-code",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -4627,15 +4627,15 @@
         "acquisition": {
           "observed_at": "2026-08-24T08:25:03.900Z",
           "cadence_days": null,
-          "age_days": 80.17700658564814
+          "age_days": 80.85393136574073
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nyc-administrative-code",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:nyc-administrative-code:2026-11-12T12-39",
+            "run_id": "missing:nyc-administrative-code:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -4730,7 +4730,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nyc-agencies",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -4747,9 +4747,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nyc-agencies",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:nyc-agencies:2026-11-12T12-39",
+            "run_id": "missing:nyc-agencies:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -4825,7 +4825,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nyc-council-legistar",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -4836,15 +4836,15 @@
         "acquisition": {
           "observed_at": "2026-10-16T19:00:51.262Z",
           "cadence_days": null,
-          "age_days": 26.73548619212963
+          "age_days": 27.412410972222222
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nyc-council-legistar",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:nyc-council-legistar:2026-11-12T12-39",
+            "run_id": "missing:nyc-council-legistar:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -4981,7 +4981,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nyc-council-members",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -4998,9 +4998,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nyc-council-members",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:nyc-council-members:2026-11-12T12-39",
+            "run_id": "missing:nyc-council-members:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -5068,7 +5068,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nyc-geosearch",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5085,9 +5085,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nyc-geosearch",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:nyc-geosearch:2026-11-12T12-39",
+            "run_id": "missing:nyc-geosearch:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -5155,7 +5155,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nyc-jobs-postings",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5172,9 +5172,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nyc-jobs-postings",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:nyc-jobs-postings:2026-11-12T12-39",
+            "run_id": "missing:nyc-jobs-postings:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -5242,7 +5242,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nyc-property-address-directory",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5259,9 +5259,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nyc-property-address-directory",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:nyc-property-address-directory:2026-11-12T12-39",
+            "run_id": "missing:nyc-property-address-directory:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -5334,7 +5334,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nyc-rules-rss",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5345,15 +5345,15 @@
         "acquisition": {
           "observed_at": "2026-10-16T19:00:51.184Z",
           "cadence_days": null,
-          "age_days": 26.73548709490741
+          "age_days": 27.412411875
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nyc-rules-rss",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:nyc-rules-rss:2026-11-12T12-39",
+            "run_id": "missing:nyc-rules-rss:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -5484,7 +5484,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nycida-build-nyc-projects",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5501,9 +5501,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nycida-build-nyc-projects",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:nycida-build-nyc-projects:2026-11-12T12-39",
+            "run_id": "missing:nycida-build-nyc-projects:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -5571,7 +5571,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nys-contract-reporter",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5588,9 +5588,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nys-contract-reporter",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:nys-contract-reporter:2026-11-12T12-39",
+            "run_id": "missing:nys-contract-reporter:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -5659,7 +5659,7 @@
           "acquisition-missing"
         ],
         "source_contract_id": "oath-trial-calendar",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5676,9 +5676,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "oath-trial-calendar",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:oath-trial-calendar:2026-11-12T12-39",
+            "run_id": "missing:oath-trial-calendar:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -5687,9 +5687,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "oath-trial-calendar",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "held",
-            "run_id": "missing:oath-trial-calendar:2026-11-12T12-39",
+            "run_id": "missing:oath-trial-calendar:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "acquisition-cadence",
@@ -5757,7 +5757,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "ocp-current-solicitations",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5774,9 +5774,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "ocp-current-solicitations",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:ocp-current-solicitations:2026-11-12T12-39",
+            "run_id": "missing:ocp-current-solicitations:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -5861,7 +5861,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "ocp-recent-contract-awards",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5872,15 +5872,15 @@
         "acquisition": {
           "observed_at": "2026-11-04T04:21:39.000Z",
           "cadence_days": null,
-          "age_days": 8.346044780092592
+          "age_days": 9.022969560185185
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "ocp-recent-contract-awards",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:ocp-recent-contract-awards:2026-11-12T12-39",
+            "run_id": "missing:ocp-recent-contract-awards:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -6009,7 +6009,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "omb-community-board-budget-requests",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -6020,15 +6020,15 @@
         "acquisition": {
           "observed_at": "2026-10-17T01:53:34.458Z",
           "cadence_days": null,
-          "age_days": 26.448875127314814
+          "age_days": 27.12579990740741
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "omb-community-board-budget-requests",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:omb-community-board-budget-requests:2026-11-12T12-39",
+            "run_id": "missing:omb-community-board-budget-requests:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -6142,7 +6142,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "passport-public-contracts",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -6153,15 +6153,15 @@
         "acquisition": {
           "observed_at": "2026-09-13T13:01:59.965Z",
           "cadence_days": null,
-          "age_days": 59.98469101851852
+          "age_days": 60.66161579861111
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "passport-public-contracts",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:passport-public-contracts:2026-11-12T12-39",
+            "run_id": "missing:passport-public-contracts:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -6304,7 +6304,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "passport-public-rfx",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -6315,15 +6315,15 @@
         "acquisition": {
           "observed_at": "2026-09-13T13:01:59.965Z",
           "cadence_days": null,
-          "age_days": 59.98469101851852
+          "age_days": 60.66161579861111
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "passport-public-rfx",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:passport-public-rfx:2026-11-12T12-39",
+            "run_id": "missing:passport-public-rfx:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -6453,7 +6453,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "pdc-calendar",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -6470,9 +6470,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "pdc-calendar",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:pdc-calendar:2026-11-12T12-39",
+            "run_id": "missing:pdc-calendar:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -6541,7 +6541,7 @@
           "acquisition-missing"
         ],
         "source_contract_id": "procurement-codes-naics-2022",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -6558,9 +6558,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "procurement-codes-naics-2022",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:procurement-codes-naics-2022:2026-11-12T12-39",
+            "run_id": "missing:procurement-codes-naics-2022:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -6569,9 +6569,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "procurement-codes-naics-2022",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "held",
-            "run_id": "missing:procurement-codes-naics-2022:2026-11-12T12-39",
+            "run_id": "missing:procurement-codes-naics-2022:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "acquisition-cadence",
@@ -6640,7 +6640,7 @@
           "acquisition-missing"
         ],
         "source_contract_id": "procurement-codes-nyc-commodity-directory",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -6657,9 +6657,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "procurement-codes-nyc-commodity-directory",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:procurement-codes-nyc-commodity-directory:2026-11-12T12-39",
+            "run_id": "missing:procurement-codes-nyc-commodity-directory:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -6668,9 +6668,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "procurement-codes-nyc-commodity-directory",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "held",
-            "run_id": "missing:procurement-codes-nyc-commodity-directory:2026-11-12T12-39",
+            "run_id": "missing:procurement-codes-nyc-commodity-directory:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "acquisition-cadence",
@@ -6738,7 +6738,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "public-consultations",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -6755,9 +6755,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "public-consultations",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:public-consultations:2026-11-12T12-39",
+            "run_id": "missing:public-consultations:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -6830,7 +6830,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "sbs-certified-business-list",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -6841,15 +6841,15 @@
         "acquisition": {
           "observed_at": "2026-11-12T12:39:57.269Z",
           "cadence_days": 14,
-          "age_days": 0
+          "age_days": 0.6769247800925926
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "sbs-certified-business-list",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:sbs-certified-business-list:2026-11-12T12-39",
+            "run_id": "missing:sbs-certified-business-list:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -6951,7 +6951,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "suitability-city-owned-leased-property-ll48",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -6968,9 +6968,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "suitability-city-owned-leased-property-ll48",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:suitability-city-owned-leased-property-ll48:2026-11-12T12-39",
+            "run_id": "missing:suitability-city-owned-leased-property-ll48:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -7038,7 +7038,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "ulurp-recommendation-pdfs",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -7055,9 +7055,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "ulurp-recommendation-pdfs",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:ulurp-recommendation-pdfs:2026-11-12T12-39",
+            "run_id": "missing:ulurp-recommendation-pdfs:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -7125,7 +7125,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "ulurp-recommendations",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -7142,9 +7142,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "ulurp-recommendations",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:ulurp-recommendations:2026-11-12T12-39",
+            "run_id": "missing:ulurp-recommendations:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -7212,7 +7212,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "zap-api-outcomes",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -7229,9 +7229,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "zap-api-outcomes",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:zap-api-outcomes:2026-11-12T12-39",
+            "run_id": "missing:zap-api-outcomes:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -7316,7 +7316,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "zap-bbl",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -7327,15 +7327,15 @@
         "acquisition": {
           "observed_at": "2026-10-05T17:34:21.000Z",
           "cadence_days": null,
-          "age_days": 37.79555866898148
+          "age_days": 38.472483449074076
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "zap-bbl",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:zap-bbl:2026-11-12T12-39",
+            "run_id": "missing:zap-bbl:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -7431,7 +7431,7 @@
             "basis": "acquired_at"
           },
           "cityscroll_serving": {
-            "at": "2026-11-09T21:47:09.965Z",
+            "at": "2026-11-13T04:54:43.447Z",
             "state": "KNOWN",
             "basis": "serve_contract:zap_projects"
           }
@@ -7448,7 +7448,7 @@
         {
           "kind": "serving-receipt",
           "path": "site/data/zap_projects_warehouse_lookup.json",
-          "at": "2026-11-09T21:47:09.965Z",
+          "at": "2026-11-13T04:54:43.447Z",
           "status": "current"
         },
         {
@@ -7470,7 +7470,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "zap-projects",
-        "observed_at": "2026-11-12T12:39:57.269Z",
+        "observed_at": "2026-11-13T04:54:43.570Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -7481,15 +7481,15 @@
         "acquisition": {
           "observed_at": "2026-10-05T17:34:45.000Z",
           "cadence_days": null,
-          "age_days": 37.7952808912037
+          "age_days": 38.472205671296294
         },
         "receipts": [
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "zap-projects",
-            "observed_at": "2026-11-12T12:39:57.269Z",
+            "observed_at": "2026-11-13T04:54:43.570Z",
             "status": "failed",
-            "run_id": "missing:zap-projects:2026-11-12T12-39",
+            "run_id": "missing:zap-projects:2026-11-13T04-54",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",

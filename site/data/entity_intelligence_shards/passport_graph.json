@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.passport_ei_graph.v1",
   "method": "passport_ei_graph_v1",
-  "observed_on": "2026-11-10",
-  "generated_at": "2026-11-10T15:17:39.651Z",
+  "observed_on": "2026-11-13",
+  "generated_at": "2026-11-13T04:22:12.463Z",
   "source": {
     "path": "site/data/procurement_spine_sources.json#rows.passport_contracts",
     "census_rows": 12795,

@@ -2,8 +2,8 @@
   "schema": "cityscroll.money_open_solicitations.v1",
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-12T18:44:04.165Z",
-  "open_as_of": "2026-11-12",
+  "generated_at": "2026-11-13T04:41:27.750Z",
+  "open_as_of": "2026-11-13",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -11,7 +11,7 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-12'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-13'",
     "$order": "due_date ASC, request_id ASC",
     "$limit": "501",
     "note": "Every open solicitation (same predicate as money_default_open, without its 40-row strip limit). Contact fields stay on the notice detail read."
@@ -23,36 +23,14 @@
   "population": {
     "state": "complete",
     "reasons": [],
-    "source_count": 199,
-    "published_count": 199,
+    "source_count": 197,
+    "published_count": 197,
     "rejected_rows": 0,
-    "distinct_pins": 140,
+    "distinct_pins": 138,
     "rows_without_pin": 6
   },
-  "count": 199,
+  "count": 197,
   "notices": [
-    {
-      "request_id": "20260917021",
-      "start_date": "2026-09-24T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "NYC H+H/Queens - Dialysis Space Construction",
-      "pin": "34202301_Queens Dial",
-      "due_date": "2026-11-12T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260924021",
-      "start_date": "2026-09-30T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Correction: Community Pharmacy at Lincoln Hospital - GC Work (MISC) MEP Trades",
-      "pin": "25202504",
-      "due_date": "2026-11-12T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
     {
       "request_id": "20261002034",
       "start_date": "2026-10-09T00:00:00.000",

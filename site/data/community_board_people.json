@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.community_board_people.v1",
-  "observed_on": "2026-11-04",
+  "observed_on": "2026-11-13",
   "policy": {
     "identity": "community-board-person:{board_id}:{publisher_person_id|reviewed_local_id}",
     "same_name_never_merges_identity": true,
@@ -15,16 +15,16 @@
           "person_name": "Sandra McKee",
           "relation": "member_of",
           "role": "board_chair",
-          "relation_date": "2026-11-04",
-          "valid_from": "2026-11-04",
+          "relation_date": "2026-11-13",
+          "valid_from": "2026-11-13",
           "source_document": {
-            "publisher_document_id": "cb6-board-members-and-staff-2026-11-04",
+            "publisher_document_id": "cb6-board-members-and-staff-2026-11-13",
             "document_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "date": "2026-11-04",
+            "date": "2026-11-13",
             "observed_receipt": {
               "status": "ok",
-              "observed_at": "2026-11-04T18:48:50.978Z",
-              "content_sha256": "aded35e5fb47f2affdd7d395f4e235b4534d6329de4a480cfa8d83616343bac3"
+              "observed_at": "2026-11-13T04:54:54.966Z",
+              "content_sha256": "7aa6d0fe4477a013396e629c69e6e7c938abee3d853c8805ba6a8c2868c5b467"
             }
           }
         },
@@ -33,16 +33,16 @@
           "person_name": "Sandra McKee",
           "relation": "chairs",
           "role": "board_chair",
-          "relation_date": "2026-11-04",
-          "valid_from": "2026-11-04",
+          "relation_date": "2026-11-13",
+          "valid_from": "2026-11-13",
           "source_document": {
-            "publisher_document_id": "cb6-board-members-and-staff-2026-11-04",
+            "publisher_document_id": "cb6-board-members-and-staff-2026-11-13",
             "document_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "date": "2026-11-04",
+            "date": "2026-11-13",
             "observed_receipt": {
               "status": "ok",
-              "observed_at": "2026-11-04T18:48:50.978Z",
-              "content_sha256": "aded35e5fb47f2affdd7d395f4e235b4534d6329de4a480cfa8d83616343bac3"
+              "observed_at": "2026-11-13T04:54:54.966Z",
+              "content_sha256": "7aa6d0fe4477a013396e629c69e6e7c938abee3d853c8805ba6a8c2868c5b467"
             }
           }
         },
@@ -52,16 +52,16 @@
           "relation": "chairs",
           "role": "committee_chair",
           "committee_ref": "community-board-committee:manhattan-cb-06:transportation",
-          "relation_date": "2026-11-04",
-          "valid_from": "2026-11-04",
+          "relation_date": "2026-11-13",
+          "valid_from": "2026-11-13",
           "source_document": {
-            "publisher_document_id": "cb6-board-members-and-staff-2026-11-04",
+            "publisher_document_id": "cb6-board-members-and-staff-2026-11-13",
             "document_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "date": "2026-11-04",
+            "date": "2026-11-13",
             "observed_receipt": {
               "status": "ok",
-              "observed_at": "2026-11-04T18:48:50.978Z",
-              "content_sha256": "aded35e5fb47f2affdd7d395f4e235b4534d6329de4a480cfa8d83616343bac3"
+              "observed_at": "2026-11-13T04:54:54.966Z",
+              "content_sha256": "7aa6d0fe4477a013396e629c69e6e7c938abee3d853c8805ba6a8c2868c5b467"
             }
           }
         },
@@ -71,16 +71,16 @@
           "relation": "member_of",
           "role": "public_committee_member",
           "committee_ref": "community-board-committee:manhattan-cb-06:transportation",
-          "relation_date": "2026-11-04",
-          "valid_from": "2026-11-04",
+          "relation_date": "2026-11-13",
+          "valid_from": "2026-11-13",
           "source_document": {
-            "publisher_document_id": "cb6-board-members-and-staff-2026-11-04",
+            "publisher_document_id": "cb6-board-members-and-staff-2026-11-13",
             "document_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "date": "2026-11-04",
+            "date": "2026-11-13",
             "observed_receipt": {
               "status": "ok",
-              "observed_at": "2026-11-04T18:48:50.978Z",
-              "content_sha256": "aded35e5fb47f2affdd7d395f4e235b4534d6329de4a480cfa8d83616343bac3"
+              "observed_at": "2026-11-13T04:54:54.966Z",
+              "content_sha256": "7aa6d0fe4477a013396e629c69e6e7c938abee3d853c8805ba6a8c2868c5b467"
             }
           }
         },
@@ -89,16 +89,16 @@
           "person_name": "Jesús Pérez",
           "relation": "staffed_by",
           "role": "district_manager",
-          "relation_date": "2026-11-04",
-          "valid_from": "2026-11-04",
+          "relation_date": "2026-11-13",
+          "valid_from": "2026-11-13",
           "source_document": {
-            "publisher_document_id": "cb6-board-members-and-staff-2026-11-04",
+            "publisher_document_id": "cb6-board-members-and-staff-2026-11-13",
             "document_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "date": "2026-11-04",
+            "date": "2026-11-13",
             "observed_receipt": {
               "status": "ok",
-              "observed_at": "2026-11-04T18:48:50.978Z",
-              "content_sha256": "aded35e5fb47f2affdd7d395f4e235b4534d6329de4a480cfa8d83616343bac3"
+              "observed_at": "2026-11-13T04:54:54.966Z",
+              "content_sha256": "7aa6d0fe4477a013396e629c69e6e7c938abee3d853c8805ba6a8c2868c5b467"
             }
           }
         }
