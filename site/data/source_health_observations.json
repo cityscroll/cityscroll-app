@@ -3324,7 +3324,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "dos-active-entities",
-        "observed_at": "2026-11-11T01:40:22.368Z",
+        "observed_at": "2026-11-12T12:39:57.269Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3341,9 +3341,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "dos-active-entities",
-            "observed_at": "2026-11-11T01:40:22.368Z",
+            "observed_at": "2026-11-12T12:39:57.269Z",
             "status": "failed",
-            "run_id": "missing:dos-active-entities:2026-11-11T01-40",
+            "run_id": "missing:dos-active-entities:2026-11-12T12-39",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3917,7 +3917,7 @@
           "acquisition-missing"
         ],
         "source_contract_id": "irs-eo-bmf-ny",
-        "observed_at": "2026-11-11T01:40:22.368Z",
+        "observed_at": "2026-11-12T12:39:57.269Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -3934,9 +3934,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "irs-eo-bmf-ny",
-            "observed_at": "2026-11-11T01:40:22.368Z",
+            "observed_at": "2026-11-12T12:39:57.269Z",
             "status": "failed",
-            "run_id": "missing:irs-eo-bmf-ny:2026-11-11T01-40",
+            "run_id": "missing:irs-eo-bmf-ny:2026-11-12T12-39",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -3945,9 +3945,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "irs-eo-bmf-ny",
-            "observed_at": "2026-11-11T01:40:22.368Z",
+            "observed_at": "2026-11-12T12:39:57.269Z",
             "status": "held",
-            "run_id": "missing:irs-eo-bmf-ny:2026-11-11T01-40",
+            "run_id": "missing:irs-eo-bmf-ny:2026-11-12T12-39",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "acquisition-cadence",
@@ -5658,7 +5658,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nyc-sca-prequalified-firms",
-        "observed_at": "2026-11-11T01:40:22.368Z",
+        "observed_at": "2026-11-12T12:39:57.269Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5675,9 +5675,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nyc-sca-prequalified-firms",
-            "observed_at": "2026-11-11T01:40:22.368Z",
+            "observed_at": "2026-11-12T12:39:57.269Z",
             "status": "failed",
-            "run_id": "missing:nyc-sca-prequalified-firms:2026-11-11T01-40",
+            "run_id": "missing:nyc-sca-prequalified-firms:2026-11-12T12-39",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
@@ -5919,7 +5919,7 @@
           "monitor-missing"
         ],
         "source_contract_id": "nys-dol-contractor-registry",
-        "observed_at": "2026-11-11T01:40:22.368Z",
+        "observed_at": "2026-11-12T12:39:57.269Z",
         "scheduler_heartbeat": {
           "observed_at": null,
           "status": "monitor-missing",
@@ -5936,9 +5936,9 @@
           {
             "schema": "cityscroll.source_acquisition_receipt.v1",
             "source_contract_id": "nys-dol-contractor-registry",
-            "observed_at": "2026-11-11T01:40:22.368Z",
+            "observed_at": "2026-11-12T12:39:57.269Z",
             "status": "failed",
-            "run_id": "missing:nys-dol-contractor-registry:2026-11-11T01-40",
+            "run_id": "missing:nys-dol-contractor-registry:2026-11-12T12-39",
             "publisher_clock_basis": null,
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
