@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_payments.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "payment",
-  "generated_at": "2026-11-09T21:14:00.178Z",
-  "snapshot_date": "2026-11-09T21:14:00.178Z",
+  "generated_at": "2026-11-13T15:40:53.141Z",
+  "snapshot_date": "2026-11-13T15:40:53.141Z",
   "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
   "dimensions": [
     "agency",
@@ -21,19 +21,19 @@
     "fiscal_years": [
       2026
     ],
-    "publisher_record_count": 1785209,
-    "source_net_check_amount": 52385486554.48,
+    "publisher_record_count": 1785886,
+    "source_net_check_amount": 52399983822.17,
     "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
     "input": "payments.csv"
   },
   "population": {
-    "source_rows": 1785209,
-    "grouped_rows": 28547,
-    "transaction_count": 1785209,
-    "unique_transaction_count": 1635478,
-    "actual_payment_amount": 52385486554.48,
-    "duplicate_transaction_rows": 149731,
-    "reversal_rows": 1703
+    "source_rows": 1785886,
+    "grouped_rows": 28559,
+    "transaction_count": 1785886,
+    "unique_transaction_count": 1636029,
+    "actual_payment_amount": 52399983822.17,
+    "duplicate_transaction_rows": 149857,
+    "reversal_rows": 1705
   },
   "rows": [
     {
@@ -165750,9 +165750,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "4HOLDERS LLC",
       "fiscal_year": 2026,
-      "transaction_count": 16,
-      "unique_transaction_count": 16,
-      "actual_payment_amount": 464324.16,
+      "transaction_count": 18,
+      "unique_transaction_count": 18,
+      "actual_payment_amount": 715177.48,
       "contract_count": 3,
       "contract_id": null
     },
@@ -165850,9 +165850,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "A List Cleaning Service LLC",
       "fiscal_year": 2026,
-      "transaction_count": 10,
-      "unique_transaction_count": 10,
-      "actual_payment_amount": 56389.32,
+      "transaction_count": 12,
+      "unique_transaction_count": 12,
+      "actual_payment_amount": 62053.06,
       "contract_count": 2,
       "contract_id": null
     },
@@ -166260,10 +166260,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "AKRF INC",
       "fiscal_year": 2026,
-      "transaction_count": 75,
-      "unique_transaction_count": 75,
-      "actual_payment_amount": 1221189.42,
-      "contract_count": 8,
+      "transaction_count": 81,
+      "unique_transaction_count": 81,
+      "actual_payment_amount": 1239080.94,
+      "contract_count": 9,
       "contract_id": null
     },
     {
@@ -166440,9 +166440,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "AMC ENGINEERING PLLC",
       "fiscal_year": 2026,
-      "transaction_count": 18,
-      "unique_transaction_count": 18,
-      "actual_payment_amount": 243286.49,
+      "transaction_count": 19,
+      "unique_transaction_count": 19,
+      "actual_payment_amount": 257606.49,
       "contract_count": 5,
       "contract_id": null
     },
@@ -166840,10 +166840,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "ARCADIS OF NEW YORK INC",
       "fiscal_year": 2026,
-      "transaction_count": 238,
-      "unique_transaction_count": 238,
-      "actual_payment_amount": 26740623.65,
-      "contract_count": 63,
+      "transaction_count": 241,
+      "unique_transaction_count": 241,
+      "actual_payment_amount": 26756406.45,
+      "contract_count": 64,
       "contract_id": null
     },
     {
@@ -166955,6 +166955,16 @@
       "actual_payment_amount": 10098.75,
       "contract_count": 4,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Environmental Protection",
+      "payee_name": "ASH CONTRACTING CORP",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 136527.73,
+      "contract_count": 1,
+      "contract_id": "CT182620201417478"
     },
     {
       "agency": "Department of Environmental Protection",
@@ -167510,10 +167520,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "BIDWELL ENVIRONMENTAL LLC",
       "fiscal_year": 2026,
-      "transaction_count": 353,
-      "unique_transaction_count": 353,
-      "actual_payment_amount": 2608961.31,
-      "contract_count": 56,
+      "transaction_count": 362,
+      "unique_transaction_count": 362,
+      "actual_payment_amount": 2668108.41,
+      "contract_count": 57,
       "contract_id": null
     },
     {
@@ -167880,10 +167890,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "C.FRANCIS CONSTRUCTION, CORP",
       "fiscal_year": 2026,
-      "transaction_count": 12,
-      "unique_transaction_count": 12,
-      "actual_payment_amount": 55007.29,
-      "contract_count": 3,
+      "transaction_count": 13,
+      "unique_transaction_count": 13,
+      "actual_payment_amount": 57887.29,
+      "contract_count": 4,
       "contract_id": null
     },
     {
@@ -168110,9 +168120,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "CASSONE LEASING INC",
       "fiscal_year": 2026,
-      "transaction_count": 202,
-      "unique_transaction_count": 202,
-      "actual_payment_amount": 2197120.25,
+      "transaction_count": 203,
+      "unique_transaction_count": 203,
+      "actual_payment_amount": 2198234.96,
       "contract_count": 21,
       "contract_id": null
     },
@@ -168328,6 +168338,16 @@
     },
     {
       "agency": "Department of Environmental Protection",
+      "payee_name": "Champion Painting Specialty Services Corp.",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 35938.58,
+      "contract_count": 1,
+      "contract_id": "CT182620211416952"
+    },
+    {
+      "agency": "Department of Environmental Protection",
       "payee_name": "CHARDONAS KEY LOCK SERVICE INC",
       "fiscal_year": 2026,
       "transaction_count": 11,
@@ -168340,9 +168360,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "CHARLES A MANGANARO CONSULTING ENG PC",
       "fiscal_year": 2026,
-      "transaction_count": 48,
-      "unique_transaction_count": 48,
-      "actual_payment_amount": 899929.4,
+      "transaction_count": 56,
+      "unique_transaction_count": 56,
+      "actual_payment_amount": 912476.84,
       "contract_count": 6,
       "contract_id": null
     },
@@ -168680,11 +168700,11 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "COLE TECHNOLOGIES GROUP",
       "fiscal_year": 2026,
-      "transaction_count": 1,
-      "unique_transaction_count": 1,
-      "actual_payment_amount": 1305.6,
-      "contract_count": 1,
-      "contract_id": "CT182620171400007"
+      "transaction_count": 5,
+      "unique_transaction_count": 5,
+      "actual_payment_amount": 93801.6,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Environmental Protection",
@@ -168805,6 +168825,16 @@
       "actual_payment_amount": 291380.16,
       "contract_count": 3,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Environmental Protection",
+      "payee_name": "CONTRACTOR'S LAYOUT INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 28000,
+      "contract_count": 1,
+      "contract_id": "CT182620258806199"
     },
     {
       "agency": "Department of Environmental Protection",
@@ -168930,9 +168960,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "CORROSION PROBE INC",
       "fiscal_year": 2026,
-      "transaction_count": 43,
-      "unique_transaction_count": 43,
-      "actual_payment_amount": 159022.21,
+      "transaction_count": 54,
+      "unique_transaction_count": 54,
+      "actual_payment_amount": 213548.39,
       "contract_count": 9,
       "contract_id": null
     },
@@ -169080,9 +169110,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "CROSSROADS JV, LLC.",
       "fiscal_year": 2026,
-      "transaction_count": 88,
-      "unique_transaction_count": 88,
-      "actual_payment_amount": 2950789.56,
+      "transaction_count": 90,
+      "unique_transaction_count": 90,
+      "actual_payment_amount": 2956489.56,
       "contract_count": 11,
       "contract_id": null
     },
@@ -169220,10 +169250,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "DAG SECURITY SERVICE INC.",
       "fiscal_year": 2026,
-      "transaction_count": 60,
-      "unique_transaction_count": 60,
-      "actual_payment_amount": 1279364.91,
-      "contract_count": 7,
+      "transaction_count": 67,
+      "unique_transaction_count": 67,
+      "actual_payment_amount": 1352886.36,
+      "contract_count": 8,
       "contract_id": null
     },
     {
@@ -169320,9 +169350,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "DELAWARE VALLEY CUTTING SERVICES CUTTING TECHNOLOG",
       "fiscal_year": 2026,
-      "transaction_count": 2,
-      "unique_transaction_count": 2,
-      "actual_payment_amount": 63800,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 72600,
       "contract_count": 1,
       "contract_id": "CT182620238802753"
     },
@@ -169510,9 +169540,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "DIRECT DIGITAL PHOTOGRAPHY INC",
       "fiscal_year": 2026,
-      "transaction_count": 31,
-      "unique_transaction_count": 31,
-      "actual_payment_amount": 32068.5,
+      "transaction_count": 32,
+      "unique_transaction_count": 32,
+      "actual_payment_amount": 33018.5,
       "contract_count": 4,
       "contract_id": null
     },
@@ -169790,10 +169820,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "ECOTERRA CONSULTING LLC",
       "fiscal_year": 2026,
-      "transaction_count": 64,
-      "unique_transaction_count": 64,
-      "actual_payment_amount": 10318184.84,
-      "contract_count": 3,
+      "transaction_count": 68,
+      "unique_transaction_count": 68,
+      "actual_payment_amount": 10341841.08,
+      "contract_count": 4,
       "contract_id": null
     },
     {
@@ -169840,10 +169870,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "ELECSYS ENGINEERING GROUP PLLC",
       "fiscal_year": 2026,
-      "transaction_count": 320,
-      "unique_transaction_count": 320,
-      "actual_payment_amount": 5262511.78,
-      "contract_count": 20,
+      "transaction_count": 334,
+      "unique_transaction_count": 334,
+      "actual_payment_amount": 5517418.18,
+      "contract_count": 21,
       "contract_id": null
     },
     {
@@ -170090,10 +170120,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "ENOVATE ENGINEERING LLC",
       "fiscal_year": 2026,
-      "transaction_count": 4,
-      "unique_transaction_count": 4,
-      "actual_payment_amount": 9153,
-      "contract_count": 2,
+      "transaction_count": 11,
+      "unique_transaction_count": 11,
+      "actual_payment_amount": 38550,
+      "contract_count": 3,
       "contract_id": null
     },
     {
@@ -170130,9 +170160,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "ENTECH ENGINEERING, P.C.",
       "fiscal_year": 2026,
-      "transaction_count": 273,
-      "unique_transaction_count": 273,
-      "actual_payment_amount": 4549149.99,
+      "transaction_count": 275,
+      "unique_transaction_count": 275,
+      "actual_payment_amount": 4551237.69,
       "contract_count": 41,
       "contract_id": null
     },
@@ -170160,20 +170190,20 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "ENVIROMENTAL PLANNING & MGMT INC",
       "fiscal_year": 2026,
-      "transaction_count": 24,
-      "unique_transaction_count": 24,
-      "actual_payment_amount": 165689.32,
-      "contract_count": 4,
+      "transaction_count": 23,
+      "unique_transaction_count": 23,
+      "actual_payment_amount": 160383.1,
+      "contract_count": 3,
       "contract_id": null
     },
     {
       "agency": "Department of Environmental Protection",
       "payee_name": "ENVIRONMENTAL DESIGN & RESEARCH P.C.",
       "fiscal_year": 2026,
-      "transaction_count": 114,
-      "unique_transaction_count": 114,
-      "actual_payment_amount": 1181197.27,
-      "contract_count": 16,
+      "transaction_count": 149,
+      "unique_transaction_count": 149,
+      "actual_payment_amount": 1582808.17,
+      "contract_count": 18,
       "contract_id": null
     },
     {
@@ -170910,10 +170940,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "GILSTON ELECTRICAL CONTRACTING CORP",
       "fiscal_year": 2026,
-      "transaction_count": 33,
-      "unique_transaction_count": 33,
-      "actual_payment_amount": 7565887.97,
-      "contract_count": 6,
+      "transaction_count": 34,
+      "unique_transaction_count": 34,
+      "actual_payment_amount": 7602568.13,
+      "contract_count": 7,
       "contract_id": null
     },
     {
@@ -171140,9 +171170,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "GRB ENVIRONMENTAL SERVICES INC",
       "fiscal_year": 2026,
-      "transaction_count": 6,
-      "unique_transaction_count": 6,
-      "actual_payment_amount": 113129.35,
+      "transaction_count": 10,
+      "unique_transaction_count": 10,
+      "actual_payment_amount": 186154.53,
       "contract_count": 1,
       "contract_id": "CT182620248803462"
     },
@@ -171378,6 +171408,16 @@
     },
     {
       "agency": "Department of Environmental Protection",
+      "payee_name": "Haydan Consultants Inc",
+      "fiscal_year": 2026,
+      "transaction_count": 11,
+      "unique_transaction_count": 11,
+      "actual_payment_amount": 606775.6,
+      "contract_count": 1,
+      "contract_id": "CT182620171400007"
+    },
+    {
+      "agency": "Department of Environmental Protection",
       "payee_name": "Hayduk Engineering, LLC",
       "fiscal_year": 2026,
       "transaction_count": 2,
@@ -171570,10 +171610,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "HIRANI ENGINEERING & LAND SURVEYING DPC",
       "fiscal_year": 2026,
-      "transaction_count": 20,
-      "unique_transaction_count": 20,
-      "actual_payment_amount": 253849.12,
-      "contract_count": 3,
+      "transaction_count": 30,
+      "unique_transaction_count": 30,
+      "actual_payment_amount": 338546.12,
+      "contract_count": 6,
       "contract_id": null
     },
     {
@@ -171900,9 +171940,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "Infinite Consulting Corp",
       "fiscal_year": 2026,
-      "transaction_count": 64,
-      "unique_transaction_count": 64,
-      "actual_payment_amount": 969298.72,
+      "transaction_count": 70,
+      "unique_transaction_count": 70,
+      "actual_payment_amount": 1087099.26,
       "contract_count": 7,
       "contract_id": null
     },
@@ -171940,9 +171980,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "INFRASTRUCTURE ENGINEERING INC",
       "fiscal_year": 2026,
-      "transaction_count": 59,
-      "unique_transaction_count": 59,
-      "actual_payment_amount": 1113899.38,
+      "transaction_count": 60,
+      "unique_transaction_count": 60,
+      "actual_payment_amount": 1126237.21,
       "contract_count": 6,
       "contract_id": null
     },
@@ -172055,6 +172095,16 @@
       "actual_payment_amount": 226620.74,
       "contract_count": 27,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Environmental Protection",
+      "payee_name": "INTROBA ENGINEERING DPC",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 9396.15,
+      "contract_count": 1,
+      "contract_id": "CT182620171419278"
     },
     {
       "agency": "Department of Environmental Protection",
@@ -172180,9 +172230,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "Jacobs Civil Consultants",
       "fiscal_year": 2026,
-      "transaction_count": 58,
-      "unique_transaction_count": 58,
-      "actual_payment_amount": 373779.54,
+      "transaction_count": 70,
+      "unique_transaction_count": 70,
+      "actual_payment_amount": 420458.85,
       "contract_count": 23,
       "contract_id": null
     },
@@ -172340,20 +172390,20 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "JMC STONE CORP.",
       "fiscal_year": 2026,
-      "transaction_count": 1,
-      "unique_transaction_count": 1,
-      "actual_payment_amount": 16055,
-      "contract_count": 1,
-      "contract_id": "CT182620238808401"
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 82140.8,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Environmental Protection",
       "payee_name": "Joadem Corporation",
       "fiscal_year": 2026,
-      "transaction_count": 20,
-      "unique_transaction_count": 20,
-      "actual_payment_amount": 51641.1,
-      "contract_count": 3,
+      "transaction_count": 32,
+      "unique_transaction_count": 32,
+      "actual_payment_amount": 61036.6,
+      "contract_count": 4,
       "contract_id": null
     },
     {
@@ -172460,10 +172510,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "JPC LOGISTICS LLC",
       "fiscal_year": 2026,
-      "transaction_count": 104,
-      "unique_transaction_count": 104,
-      "actual_payment_amount": 2458385.89,
-      "contract_count": 10,
+      "transaction_count": 130,
+      "unique_transaction_count": 130,
+      "actual_payment_amount": 3056134.59,
+      "contract_count": 12,
       "contract_id": null
     },
     {
@@ -172750,10 +172800,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "KLAIRGAR INC",
       "fiscal_year": 2026,
-      "transaction_count": 21,
-      "unique_transaction_count": 21,
-      "actual_payment_amount": 1893819.76,
-      "contract_count": 5,
+      "transaction_count": 26,
+      "unique_transaction_count": 26,
+      "actual_payment_amount": 2034734.36,
+      "contract_count": 6,
       "contract_id": null
     },
     {
@@ -173010,9 +173060,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "LAKHANI & JORDAN ENGINEERS, P.C.",
       "fiscal_year": 2026,
-      "transaction_count": 8,
-      "unique_transaction_count": 8,
-      "actual_payment_amount": 61839.54,
+      "transaction_count": 32,
+      "unique_transaction_count": 32,
+      "actual_payment_amount": 465330.6,
       "contract_count": 2,
       "contract_id": null
     },
@@ -173480,9 +173530,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "M&J ENGINEERING DPC",
       "fiscal_year": 2026,
-      "transaction_count": 86,
-      "unique_transaction_count": 86,
-      "actual_payment_amount": 2458090.14,
+      "transaction_count": 112,
+      "unique_transaction_count": 112,
+      "actual_payment_amount": 3413456.1,
       "contract_count": 8,
       "contract_id": null
     },
@@ -173930,9 +173980,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "MDS Construction Management LLC",
       "fiscal_year": 2026,
-      "transaction_count": 30,
-      "unique_transaction_count": 30,
-      "actual_payment_amount": 208862.86,
+      "transaction_count": 31,
+      "unique_transaction_count": 31,
+      "actual_payment_amount": 212458.06,
       "contract_count": 3,
       "contract_id": null
     },
@@ -174250,10 +174300,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "MIRMAX ENGINEERING AND LAND SURVEYING PC",
       "fiscal_year": 2026,
-      "transaction_count": 19,
-      "unique_transaction_count": 19,
-      "actual_payment_amount": 525090,
-      "contract_count": 3,
+      "transaction_count": 21,
+      "unique_transaction_count": 21,
+      "actual_payment_amount": 529840,
+      "contract_count": 4,
       "contract_id": null
     },
     {
@@ -174270,9 +174320,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "MJR TRUCKING CORP",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 15494.56,
+      "transaction_count": 83,
+      "unique_transaction_count": 83,
+      "actual_payment_amount": 558172.8,
       "contract_count": 2,
       "contract_id": null
     },
@@ -174490,10 +174540,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "MUESER RUTLEDGE CONSULTING ENGINEERS",
       "fiscal_year": 2026,
-      "transaction_count": 119,
-      "unique_transaction_count": 119,
-      "actual_payment_amount": 2706402.87,
-      "contract_count": 18,
+      "transaction_count": 147,
+      "unique_transaction_count": 147,
+      "actual_payment_amount": 3554554.39,
+      "contract_count": 20,
       "contract_id": null
     },
     {
@@ -174530,10 +174580,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "MUNOZ TRUCKING CORPORATION",
       "fiscal_year": 2026,
-      "transaction_count": 13,
-      "unique_transaction_count": 13,
-      "actual_payment_amount": 717989.86,
-      "contract_count": 3,
+      "transaction_count": 16,
+      "unique_transaction_count": 16,
+      "actual_payment_amount": 726444.86,
+      "contract_count": 4,
       "contract_id": null
     },
     {
@@ -174588,12 +174638,22 @@
     },
     {
       "agency": "Department of Environmental Protection",
+      "payee_name": "NAIK Consulting Group PC",
+      "fiscal_year": 2026,
+      "transaction_count": 18,
+      "unique_transaction_count": 18,
+      "actual_payment_amount": 396427.26,
+      "contract_count": 1,
+      "contract_id": "CT182620211422280"
+    },
+    {
+      "agency": "Department of Environmental Protection",
       "payee_name": "NASCO CONSTRUCTION SERVICES, INC.",
       "fiscal_year": 2026,
-      "transaction_count": 192,
-      "unique_transaction_count": 192,
-      "actual_payment_amount": 649267.28,
-      "contract_count": 30,
+      "transaction_count": 214,
+      "unique_transaction_count": 214,
+      "actual_payment_amount": 732549.9,
+      "contract_count": 32,
       "contract_id": null
     },
     {
@@ -174888,6 +174948,16 @@
     },
     {
       "agency": "Department of Environmental Protection",
+      "payee_name": "NIC Systems Corporation",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 748.76,
+      "contract_count": 1,
+      "contract_id": "CT182620171419278"
+    },
+    {
+      "agency": "Department of Environmental Protection",
       "payee_name": "NICHE ANALYSIS INC",
       "fiscal_year": 2026,
       "transaction_count": 160,
@@ -174930,10 +175000,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "NJ & C ASSOCIATES INC",
       "fiscal_year": 2026,
-      "transaction_count": 248,
-      "unique_transaction_count": 248,
-      "actual_payment_amount": 227276.28,
-      "contract_count": 5,
+      "transaction_count": 262,
+      "unique_transaction_count": 262,
+      "actual_payment_amount": 232556.72,
+      "contract_count": 6,
       "contract_id": null
     },
     {
@@ -175040,9 +175110,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "NOVA CONSULTING & ENGINEERING LLC",
       "fiscal_year": 2026,
-      "transaction_count": 111,
-      "unique_transaction_count": 111,
-      "actual_payment_amount": 994873.06,
+      "transaction_count": 169,
+      "unique_transaction_count": 169,
+      "actual_payment_amount": 1715442.68,
       "contract_count": 6,
       "contract_id": null
     },
@@ -175700,10 +175770,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "PERMADUR INDUSTRIES, INC.",
       "fiscal_year": 2026,
-      "transaction_count": 40,
-      "unique_transaction_count": 40,
-      "actual_payment_amount": 2319341.91,
-      "contract_count": 19,
+      "transaction_count": 42,
+      "unique_transaction_count": 42,
+      "actual_payment_amount": 2404758.91,
+      "contract_count": 20,
       "contract_id": null
     },
     {
@@ -176288,6 +176358,16 @@
     },
     {
       "agency": "Department of Environmental Protection",
+      "payee_name": "R & N TRANSPORTATION INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 3664,
+      "contract_count": 1,
+      "contract_id": "CT182620248808894"
+    },
+    {
+      "agency": "Department of Environmental Protection",
       "payee_name": "R A Mitchell Co Inc",
       "fiscal_year": 2026,
       "transaction_count": 1,
@@ -176535,6 +176615,16 @@
       "actual_payment_amount": 93503.34,
       "contract_count": 1,
       "contract_id": "CT182620238802274"
+    },
+    {
+      "agency": "Department of Environmental Protection",
+      "payee_name": "RESPLANDECER INC",
+      "fiscal_year": 2026,
+      "transaction_count": 16,
+      "unique_transaction_count": 16,
+      "actual_payment_amount": 15990,
+      "contract_count": 1,
+      "contract_id": "CT182620171400007"
     },
     {
       "agency": "Department of Environmental Protection",
@@ -176900,10 +176990,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "SAFETY AND QUALITY PLUS INC",
       "fiscal_year": 2026,
-      "transaction_count": 120,
-      "unique_transaction_count": 120,
-      "actual_payment_amount": 1137937.79,
-      "contract_count": 12,
+      "transaction_count": 122,
+      "unique_transaction_count": 122,
+      "actual_payment_amount": 1139077.79,
+      "contract_count": 13,
       "contract_id": null
     },
     {
@@ -177070,10 +177160,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "SAVIN ENGINEERS PC",
       "fiscal_year": 2026,
-      "transaction_count": 208,
-      "unique_transaction_count": 208,
-      "actual_payment_amount": 4043629.48,
-      "contract_count": 12,
+      "transaction_count": 264,
+      "unique_transaction_count": 264,
+      "actual_payment_amount": 6092702.42,
+      "contract_count": 13,
       "contract_id": null
     },
     {
@@ -177090,11 +177180,11 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "SC ENGINEERS PC",
       "fiscal_year": 2026,
-      "transaction_count": 16,
-      "unique_transaction_count": 16,
-      "actual_payment_amount": 334316.4,
-      "contract_count": 1,
-      "contract_id": "CT182620248804378"
+      "transaction_count": 40,
+      "unique_transaction_count": 40,
+      "actual_payment_amount": 2978318.26,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Environmental Protection",
@@ -177120,10 +177210,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "SCAPE LANDSCAPE ARCHITECTURE DPC",
       "fiscal_year": 2026,
-      "transaction_count": 15,
-      "unique_transaction_count": 15,
-      "actual_payment_amount": 402837.19,
-      "contract_count": 2,
+      "transaction_count": 19,
+      "unique_transaction_count": 19,
+      "actual_payment_amount": 499694.7,
+      "contract_count": 3,
       "contract_id": null
     },
     {
@@ -177280,11 +177370,11 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "SELLDORF ARCHITECTS LLC SELLDORF ARCHITECT",
       "fiscal_year": 2026,
-      "transaction_count": 5,
-      "unique_transaction_count": 5,
-      "actual_payment_amount": 106833.12,
-      "contract_count": 1,
-      "contract_id": "CT182620161426659"
+      "transaction_count": 11,
+      "unique_transaction_count": 11,
+      "actual_payment_amount": 117039.92,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Environmental Protection",
@@ -177435,6 +177525,16 @@
       "actual_payment_amount": 196602.54,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Environmental Protection",
+      "payee_name": "SIGNS & DECAL CORP",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 23588.5,
+      "contract_count": 1,
+      "contract_id": "CT182620258804797"
     },
     {
       "agency": "Department of Environmental Protection",
@@ -177658,6 +177758,16 @@
     },
     {
       "agency": "Department of Environmental Protection",
+      "payee_name": "South Bay Industries Inc",
+      "fiscal_year": 2026,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 21912.45,
+      "contract_count": 1,
+      "contract_id": "CT182620248808891"
+    },
+    {
+      "agency": "Department of Environmental Protection",
       "payee_name": "SPACELY SPROCKETS INC",
       "fiscal_year": 2026,
       "transaction_count": 21,
@@ -177670,9 +177780,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "SPARC FIRE PROTECTION ENGINEERING LLC",
       "fiscal_year": 2026,
-      "transaction_count": 24,
-      "unique_transaction_count": 24,
-      "actual_payment_amount": 37529.42,
+      "transaction_count": 34,
+      "unique_transaction_count": 34,
+      "actual_payment_amount": 51583.3,
       "contract_count": 6,
       "contract_id": null
     },
@@ -177760,9 +177870,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "STANTEC CONSULTING SERVICES INC",
       "fiscal_year": 2026,
-      "transaction_count": 45,
-      "unique_transaction_count": 45,
-      "actual_payment_amount": 647184.33,
+      "transaction_count": 46,
+      "unique_transaction_count": 46,
+      "actual_payment_amount": 673719.37,
       "contract_count": 22,
       "contract_id": null
     },
@@ -177940,11 +178050,11 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "Stokes Creative Group, Inc.",
       "fiscal_year": 2026,
-      "transaction_count": 5,
-      "unique_transaction_count": 5,
-      "actual_payment_amount": 70584.25,
-      "contract_count": 1,
-      "contract_id": "CT182620151425458"
+      "transaction_count": 10,
+      "unique_transaction_count": 10,
+      "actual_payment_amount": 79569.01,
+      "contract_count": 3,
+      "contract_id": null
     },
     {
       "agency": "Department of Environmental Protection",
@@ -177980,10 +178090,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "STRATEGIC SAFETY SOLUTIONS LLC",
       "fiscal_year": 2026,
-      "transaction_count": 45,
-      "unique_transaction_count": 45,
-      "actual_payment_amount": 818899.81,
-      "contract_count": 5,
+      "transaction_count": 53,
+      "unique_transaction_count": 53,
+      "actual_payment_amount": 985390.17,
+      "contract_count": 6,
       "contract_id": null
     },
     {
@@ -178660,9 +178770,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "TOSCANO CLEMENTS TAYLOR LLC",
       "fiscal_year": 2026,
-      "transaction_count": 117,
-      "unique_transaction_count": 117,
-      "actual_payment_amount": 1629366.5,
+      "transaction_count": 120,
+      "unique_transaction_count": 120,
+      "actual_payment_amount": 1659946.1,
       "contract_count": 16,
       "contract_id": null
     },
@@ -179210,11 +179320,11 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "Type R Trucking INC",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 47148,
-      "contract_count": 1,
-      "contract_id": "CT182620258804904"
+      "transaction_count": 6,
+      "unique_transaction_count": 6,
+      "actual_payment_amount": 85748,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Environmental Protection",
@@ -179675,6 +179785,16 @@
       "actual_payment_amount": 5864.08,
       "contract_count": 3,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Environmental Protection",
+      "payee_name": "VIBRANALYSIS, INC.",
+      "fiscal_year": 2026,
+      "transaction_count": 9,
+      "unique_transaction_count": 9,
+      "actual_payment_amount": 6412.5,
+      "contract_count": 1,
+      "contract_id": "CT182620211416952"
     },
     {
       "agency": "Department of Environmental Protection",
@@ -180160,10 +180280,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "WELSBACH ELECTRIC CORP",
       "fiscal_year": 2026,
-      "transaction_count": 17,
-      "unique_transaction_count": 17,
-      "actual_payment_amount": 5195499.27,
-      "contract_count": 4,
+      "transaction_count": 24,
+      "unique_transaction_count": 24,
+      "actual_payment_amount": 5993979.41,
+      "contract_count": 5,
       "contract_id": null
     },
     {
@@ -180460,10 +180580,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "YABOO FENCE COMPANY INC",
       "fiscal_year": 2026,
-      "transaction_count": 9,
-      "unique_transaction_count": 9,
-      "actual_payment_amount": 1065772.64,
-      "contract_count": 5,
+      "transaction_count": 10,
+      "unique_transaction_count": 10,
+      "actual_payment_amount": 1168471.44,
+      "contract_count": 6,
       "contract_id": null
     },
     {
@@ -180560,10 +180680,10 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "YU & ASSOCIATES INC",
       "fiscal_year": 2026,
-      "transaction_count": 60,
-      "unique_transaction_count": 60,
-      "actual_payment_amount": 686236.26,
-      "contract_count": 3,
+      "transaction_count": 82,
+      "unique_transaction_count": 82,
+      "actual_payment_amount": 1697189,
+      "contract_count": 4,
       "contract_id": null
     },
     {
@@ -268500,9 +268620,9 @@
       "agency": "Office of Payroll Administration",
       "payee_name": "THE BANCORP INC",
       "fiscal_year": 2026,
-      "transaction_count": 2,
-      "unique_transaction_count": 2,
-      "actual_payment_amount": 87296.7,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 131580.87,
       "contract_count": 1,
       "contract_id": "CT113120241407442"
     },

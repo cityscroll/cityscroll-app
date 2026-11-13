@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-09T21:37:42.088Z",
+  "generated_at": "2026-11-13T16:01:59.692Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,15 +9,15 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-11-09",
+    "today": "2026-11-13",
     "projects_listed": 234,
     "projects_fetched": 234,
     "projects_failed": 0,
     "unavailable_project_ids": [],
-    "hearings_extracted": 380,
-    "disposition_hearings_extracted": 68,
+    "hearings_extracted": 382,
+    "disposition_hearings_extracted": 70,
     "milestone_hearings_extracted": 312,
-    "disposition_upcoming_count": 1,
+    "disposition_upcoming_count": 0,
     "milestone_upcoming_count": 161,
     "incremental_milestone_count": 161,
     "accepted_milestone_classes": {
@@ -26,7 +26,7 @@
     },
     "published_meeting_dates_evaluated": 823,
     "hearing_shaped_candidates_reviewed": 799,
-    "upcoming_count": 162,
+    "upcoming_count": 161,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -36,55 +36,6 @@
     "polite_delay_ms": 350
   },
   "hearings": [
-    {
-      "schema_version": 1,
-      "source": "zap-api-dispositions",
-      "project_id": "2026X0180",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2026X0180",
-      "borough": "Bronx",
-      "disposition_id": "746415a4-2e81-f111-ab0f-001dd80ed938",
-      "disposition_name": "2026X0180_ZM_BX CB3",
-      "representing": "Community Board",
-      "phase_id": "community_board",
-      "hearing_date": "2026-11-10",
-      "hearing_at": "2026-11-10T23:00:00.000Z",
-      "hearing_location_raw": "1332 Fulton Avenue, BRONX NY",
-      "venue_address": "1332 Fulton Avenue, BRONX NY",
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [
-        "in_person"
-      ],
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=1332%20Fulton%20Avenue%2C%20BRONX%20NY%2C%20New%20York%2C%20NY",
-      "parse_status": "partial",
-      "provenance": {
-        "field": "dcp-publichearinglocation",
-        "source": "zap-api-dispositions",
-        "derived": [
-          {
-            "field": "venue_address",
-            "method": "address_shaped_raw",
-            "excerpt": "1332 Fulton Avenue, BRONX NY"
-          }
-        ],
-        "hearing_at": {
-          "field": "dcp-dateofpublichearing",
-          "source": "zap-api-dispositions",
-          "value": "2026-11-10T23:00:00.000Z"
-        },
-        "representing": {
-          "field": "dcp-representing",
-          "source": "zap-api-dispositions",
-          "value": "Community Board"
-        }
-      },
-      "project_name": "1701 Boone Avenue Rezoning",
-      "public_status": "In Public Review",
-      "community_district": "X03",
-      "cc_district": "17",
-      "latitude": null,
-      "longitude": null
-    },
     {
       "schema_version": 1,
       "source": "zap-api-milestones",

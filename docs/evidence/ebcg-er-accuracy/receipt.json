@@ -144,7 +144,7 @@
       "project_participates_in_procedure"
     ],
     "provisional_cross_spine_candidates": {
-      "public_inferred": 4,
+      "public_inferred": 5,
       "evidence_only": 69,
       "evidence_only_by_relation": {
         "mandate_meeting": 61,

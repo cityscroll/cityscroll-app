@@ -42,7 +42,7 @@ Projects with no retained WH-06 BBL: 2026X0180, 2025M0399, 2024X0217, 2024M0148,
 
 | Artifact | Vintage / identity | SHA-256 |
 | --- | --- | --- |
-| `site/data/land_default_ulurp.json` | 2026-11-09T21:29:48.126Z | `6d7ecac70e953325cab95f0fd408726ca8061f05519d960b183aecdb0e635493` |
+| `site/data/land_default_ulurp.json` | 2026-11-13T15:55:07.067Z | `9ec9a44632308b8dbf4d4983fc56e773210cc85b5bd8dca1ddb60a0769cf24b3` |
 | `site/data/zap_bbl_warehouse_lookup.json` | 2026-11-04T21:51:58.033Z (WH-06, 2iga-a6mk) | `715333f7271ac80079f2d3a4d0ac58b64c30256c7d4f84562855920441197410` |
 | `site/data/bbl_mappluto_centroids_lookup.json` | 2026-10-09T18:54:04.150Z (mappluto_pluto_csv) | `d81945e19d2549be8ff619912c1c051238ee50ad6da4df677c93875dc35781c5` |
 
