@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":4,"first_ordinal":6860,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":4,"first_ordinal":6856,"entries":[
+{"s":"ALLURE WIGS","n":[["Allure Wigs Inc.",1]],"x":{"sbs":{"r":1,"i":["287182"],"z":["11233"],"p":["MBE","WBE"]}}},
+{"s":"ALLWAY TOOLS","n":[["ALLWAY TOOLS INC",1]],"x":{"dbe":{"r":1,"i":["ALLWAY TOOLS INC"]}}},
+{"s":"ALLWAYS FORWARD","n":[["ALLWAYS FORWARD INC",1]],"x":{"irs":{"r":1,"i":["422664019"],"z":["14031"]}}},
+{"s":"ALLWYN","n":[["ALLWYN CORPORATION",1],["Allwyn Corporation",1]],"x":{"ocp":{"r":1,"a":300854,"l":"2021-05-06","i":["20210430103"]},"dbe":{"r":1,"i":["ALLWYN CORPORATION"]}}},
+{"s":"ALLYN FOUNDATION","n":[["ALLYN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["156017723"],"z":["13152"]}}},
 {"s":"ALLYN P UDELL HELLO DOLLY FOUNDATION","n":[["ALLYN P UDELL HELLO DOLLY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["825345432"],"z":["11501"]}}},
 {"s":"ALLYNS CREEK FOUNDATION","n":[["ALLYNS CREEK FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["912092057"],"z":["14625"]}}},
 {"s":"ALLYNS CREEK GARDEN CLUB","n":[["ALLYNS CREEK GARDEN CLUB INC",1]],"x":{"irs":{"r":1,"i":["166042210"],"z":["14472"]}}},
@@ -260,7 +265,7 @@
 {"s":"ALTER DISTRIBUTORS","n":[["Alter Distributors Inc.",5],["Alter Distributors, Inc.",5],["ALTER DISTRIBUTORS INC",1]],"x":{"ocp":{"r":11,"a":943245.21,"l":"2009-12-09","c":11,"i":["20091202013","20090212014","20080627042","20080312021","20071213014"]}}},
 {"s":"ALTER HAITI NEW YORK FOUNDATION","n":[["ALTER HAITI NEW YORK FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["393589382"],"z":["11210"]}}},
 {"s":"ALTER ISSAC AND CHARLOTTE GROSS IRREVOCABLE CHARITABLE TRUST","n":[["ALTER ISSAC AND CHARLOTTE GROSS IRREVOCABLE CHARITABLE TRUST",1]],"x":{"irs":{"r":1,"i":["133694308"],"z":["10022"]}}},
-{"s":"ALTER LEV","n":[["ALTER LEV INC",23],["Alter Lev Inc.",6],["Alter Lev, Inc.",1]],"x":{"ocp":{"r":22,"a":3839253.29,"l":"2019-06-13","c":22,"i":["20190606014","20181031004","20180620007","20180111016","20170222006"]},"cbr":{"r":4,"a":110296.5,"l":"2025-12-16","i":["CT184620268804256","CT184620268803737","CT184120251412286","CT184620251409871"]},"cbv":{"r":2,"l":"2025-12-16","i":["CT184620268804256","CT184620268803737"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["ALTER LEV INC"]},"sbs":{"r":1,"i":["10459"],"z":["11218"],"p":["WBE"]}}},
+{"s":"ALTER LEV","n":[["ALTER LEV INC",22],["Alter Lev Inc.",6],["Alter Lev, Inc.",1]],"x":{"ocp":{"r":22,"a":3839253.29,"l":"2019-06-13","c":22,"i":["20190606014","20181031004","20180620007","20180111016","20170222006"]},"cbr":{"r":4,"a":110296.5,"l":"2025-12-16","i":["CT184620268804256","CT184620268803737","CT184120251412286","CT184620251409871"]},"cbv":{"r":1,"l":"2025-12-16","i":["CT184620268804256"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["ALTER LEV INC"]},"sbs":{"r":1,"i":["10459"],"z":["11218"],"p":["WBE"]}}},
 {"s":"ALTER SYSTEMS GROUP","n":[["Alter Systems Group, Inc.",1]],"x":{"ocp":{"r":1,"a":259200,"l":"2007-07-26","i":["20070719019"]}}},
 {"s":"ALTER YITU KLEIN SIMCHA FUND","n":[["ALTER & YITU KLEIN SIMCHA FUND INC",1]],"x":{"irs":{"r":1,"i":["832198584"],"z":["10956"]}}},
 {"s":"ALTERNABIZ","n":[["Alternabiz LLC",1]],"x":{"dbe":{"r":1,"i":["Alternabiz LLC"]}}},
@@ -457,7 +462,7 @@
 {"s":"AMADOU DIALLO FOUNDATION","n":[["AMADOU DIALLO FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["134059083"],"z":["11215"]}}},
 {"s":"AMADOU LY FOUNDATION","n":[["AMADOU LY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["394965900"],"z":["10023"]}}},
 {"s":"AMAE HEALTH NEW YORK","n":[["AMAE HEALTH NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["392879405"],"z":["10128"]}}},
-{"s":"AMAF SUPPLY","n":[["AMAF SUPPLY INC",12]],"x":{"cbr":{"r":7,"a":42022.31,"l":"2026-08-25","c":7,"i":["CT184620278802529","CT184620268806811","CT184620268805899","CT184620268804647","CT184620268803721"]},"cbv":{"r":5,"l":"2026-08-25","i":["CT184620278802529","CT184620268806811","CT184620268805899","CT184620268804647","CT184620268803721"],"m":["Non-M/WBE"]}}},
+{"s":"AMAF SUPPLY","n":[["AMAF SUPPLY INC",11]],"x":{"cbr":{"r":7,"a":42022.31,"l":"2026-08-25","c":7,"i":["CT184620278802529","CT184620268806811","CT184620268805899","CT184620268804647","CT184620268803721"]},"cbv":{"r":4,"l":"2026-08-25","i":["CT184620278802529","CT184620268806811","CT184620268805899","CT184620268804647"],"m":["Non-M/WBE"]}}},
 {"s":"AMAGANSETT","n":[["AMAGANSETT",1]],"x":{"irs":{"r":1,"i":["050611666"],"z":["11930"]}}},
 {"s":"AMAGANSETT BEACH ASSOCIATION","n":[["AMAGANSETT BEACH ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["135644397"],"z":["11930"]}}},
 {"s":"AMAGANSETT FREE LIBRARY","n":[["AMAGANSETT FREE LIBRARY",1]],"x":{"irs":{"r":1,"i":["116028314"],"z":["11930"]}}},
@@ -1480,9 +1485,5 @@
 {"s":"AMERICAN FRIENDS OF SIMCHA LEISH","n":[["AMERICAN FRIENDS OF SIMCHA LEISH INC",1]],"x":{"irs":{"r":1,"i":["811077943"],"z":["11223"]}}},
 {"s":"AMERICAN FRIENDS OF SMALL JEWISH COMMUNITIES OF WESTERN UKRAINE","n":[["AMERICAN FRIENDS OF SMALL JEWISH COMMUNITIES OF WESTERN UKRAINE INC",1]],"x":{"irs":{"r":1,"i":["861781401"],"z":["11225"]}}},
 {"s":"AMERICAN FRIENDS OF SOROKA MEDICAL CENTER","n":[["AMERICAN FRIENDS OF SOROKA MEDICAL CENTER INC",1]],"x":{"irs":{"r":1,"i":["135866593"],"z":["10583"]}}},
-{"s":"AMERICAN FRIENDS OF ST GEORGES CHURCH HANOVER SQUARE","n":[["AMERICAN FRIENDS OF ST GEORGES CHURCH HANOVER SQUARE",1]],"x":{"irs":{"r":1,"i":["276419912"],"z":["10022"]}}},
-{"s":"AMERICAN FRIENDS OF ST GEORGES CHURCH IN VENICE ITALY","n":[["AMERICAN FRIENDS OF ST GEORGES CHURCH IN VENICE ITALY",1]],"x":{"irs":{"r":1,"i":["861154599"],"z":["10022"]}}},
-{"s":"AMERICAN FRIENDS OF STC","n":[["AMERICAN FRIENDS OF STC",1]],"x":{"irs":{"r":1,"i":["844636174"],"z":["11230"]}}},
-{"s":"AMERICAN FRIENDS OF STOWE","n":[["AMERICAN FRIENDS OF STOWE INC",1]],"x":{"irs":{"r":1,"i":["161672980"],"z":["11215"]}}},
-{"s":"AMERICAN FRIENDS OF SUCATH DAVID","n":[["AMERICAN FRIENDS OF SUCATH DAVID INC",1]],"x":{"irs":{"r":1,"i":["112422207"],"z":["11223"]}}}
+{"s":"AMERICAN FRIENDS OF ST GEORGES CHURCH HANOVER SQUARE","n":[["AMERICAN FRIENDS OF ST GEORGES CHURCH HANOVER SQUARE",1]],"x":{"irs":{"r":1,"i":["276419912"],"z":["10022"]}}}
 ]}

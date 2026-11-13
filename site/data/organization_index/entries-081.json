@@ -1,4 +1,12 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":81,"first_ordinal":137690,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":81,"first_ordinal":137690,"entries":[
+{"s":"SUNSET BAY CAMPERS ASSOCIATION","n":[["SUNSET BAY CAMPERS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["146023215"],"z":["12306"]}}},
+{"s":"SUNSET BAY COMMUNITY SERVICES","n":[["SUNSET BAY COMMUNITY SERVICES INC.",1],["Sunset Bay Community Services, Inc.",1]],"x":{"ocp":{"r":2,"a":6607403.18,"l":"2016-10-12","i":["20161004018","20060627026"]}}},
+{"s":"SUNSET BAY VOLUNTEER FIRE CO NO 1","n":[["SUNSET BAY VOLUNTEER FIRE CO NO 1 INC",1]],"x":{"irs":{"r":1,"i":["222566089"],"z":["14081"]}}},
+{"s":"SUNSET FOUNDATION","n":[["SUNSET FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["824687727"],"z":["11697"]}}},
+{"s":"SUNSET HILL CEMETERY ASSN","n":[["SUNSET HILL CEMETERY ASSN INC",1]],"x":{"irs":{"r":1,"i":["160654920"],"z":["14750"]}}},
+{"s":"SUNSET HOME MANAGEMENT","n":[["SUNSET HOME MANAGEMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["161562926"],"z":["13413"]}}},
+{"s":"SUNSET HOME OF UTICA","n":[["SUNSET HOME OF UTICA",1]],"x":{"irs":{"r":1,"i":["150539097"],"z":["13413"]}}},
+{"s":"SUNSET HOME OF UTICA FOUNDATION","n":[["SUNSET HOME OF UTICA FOUNDATION",1]],"x":{"irs":{"r":1,"i":["161562929"],"z":["13413"]}}},
 {"s":"SUNSET HOUSE","n":[["SUNSET HOUSE INC",1]],"x":{"irs":{"r":1,"i":["223070946"],"z":["14617"]}}},
 {"s":"SUNSET HUSTLE FOUNDATION","n":[["SUNSET HUSTLE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["334260903"],"z":["10031"]}}},
 {"s":"SUNSET ISLAMIC WORSHIP","n":[["SUNSET ISLAMIC WORSHIP INC",1]],"x":{"irs":{"r":1,"i":["453177051"],"z":["11220"]}}},
@@ -1155,7 +1163,7 @@
 {"s":"T3 SPORTS","n":[["T3 SPORTS INC",1]],"x":{"irs":{"r":1,"i":["472408164"],"z":["10023"]}}},
 {"s":"T3 TEAM TRIPLE THREAT","n":[["T3 TEAM TRIPLE THREAT INC",1]],"x":{"irs":{"r":1,"i":["822414772"],"z":["10573"]}}},
 {"s":"T3I ENRICHMENT","d":[["T3i Enrichment",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["375873"],"z":["07208"],"p":["MBE"]}}},
-{"s":"T3I SPORTS","n":[["T3I SPORTS INC",25],["T3i Sports Inc.",1]],"x":{"cbr":{"r":14,"a":350000,"l":"2026-04-15","c":14,"i":["CT104020263162750","CT104020263149574","CT104020263145391","CT104020263136761","CT104020263141606"]},"cbv":{"r":11,"l":"2026-04-15","c":11,"i":["CT104020263162750","CT104020263149574","CT104020263145391","CT104020263136761","CT104020263141606"],"m":["Black American"]},"sbs":{"r":1,"i":["375873"],"z":["07208"],"p":["MBE"]}}},
+{"s":"T3I SPORTS","n":[["T3I SPORTS INC",27],["T3i Sports Inc.",1]],"x":{"cbr":{"r":15,"a":375000,"l":"2026-11-10","c":15,"i":["CT104020273046697","CT104020263162750","CT104020263149574","CT104020263145391","CT104020263136761"]},"cbv":{"r":12,"l":"2026-11-10","c":12,"i":["CT104020273046697","CT104020263162750","CT104020263149574","CT104020263145391","CT104020263136761"],"m":["Black American"]},"sbs":{"r":1,"i":["375873"],"z":["07208"],"p":["MBE"]}}},
 {"s":"TA CALHOUN OPEN ARMS","n":[["TA CALHOUN OPEN ARMS INC",1]],"x":{"irs":{"r":1,"i":["822786087"],"z":["11435"]}}},
 {"s":"TA COMMERCIAL SERVICE","n":[["TA Commercial Service Inc.",1]],"x":{"dol":{"r":1,"i":["26-69AUA-CR"],"z":["11788"]}}},
 {"s":"TA HA MASJID","n":[["TA HA MASJID INC",1]],"x":{"irs":{"r":1,"i":["112892487"],"z":["11575"]}}},
@@ -1742,10 +1750,5 @@
 {"s":"TATTLETALES IMPACT","n":[["TATTLETALES IMPACT INC",1]],"x":{"irs":{"r":1,"i":["331657229"],"z":["10023"]}}},
 {"s":"TATTON BROWN RAHMAN SYNDROME COMMUNITY","n":[["TATTON BROWN RAHMAN SYNDROME COMMUNITY INC",1]],"x":{"irs":{"r":1,"i":["812216511"],"z":["12581"]}}},
 {"s":"TATYANA DESIGN","n":[["Tatyana Design LLC",1]],"x":{"sbs":{"r":1,"i":["16480"],"z":["10011"],"p":["WBE"]}}},
-{"s":"TATZ FUND","n":[["TATZ FUND",1]],"x":{"irs":{"r":1,"i":["842881647"],"z":["10023"]}}},
-{"s":"TAU","n":[["TAU INC",1]],"x":{"irs":{"r":1,"i":["873371650"],"z":["11205"]}}},
-{"s":"TAU BETA PI ASSOCIATION","n":[["TAU BETA PI ASSOCIATION INC",16]],"x":{"irs":{"r":16,"i":["136163164","136163165","136165654","136272060","146032412","146048768","161404255","166053216","166058394","166094151","166094152","166094155","223111078","237075741","237092242","237368662"],"z":["10003","10027","10031","10471","11201","11794","12180","12308","13210","13699","13902","14228","14623","14627","14843","14853"]}}},
-{"s":"TAU CHAPTER OF ALPHA CHI SIGMA","n":[["TAU CHAPTER OF ALPHA CHI SIGMA INC",1]],"x":{"irs":{"r":1,"i":["150466748"],"z":["14850"]}}},
-{"s":"TAU CHAPTER SIGMA LAMBDA NU","n":[["TAU CHAPTER SIGMA LAMBDA NU INC",1]],"x":{"irs":{"r":1,"i":["205811000"],"z":["12550"]}}},
-{"s":"TAU ENDOWMENT FUND","n":[["TAU ENDOWMENT FUND INC",1]],"x":{"irs":{"r":1,"i":["300186027"],"z":["14850"]}}}
+{"s":"TATZ FUND","n":[["TATZ FUND",1]],"x":{"irs":{"r":1,"i":["842881647"],"z":["10023"]}}}
 ]}

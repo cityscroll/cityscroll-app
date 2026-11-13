@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":80,"first_ordinal":136014,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":80,"first_ordinal":136018,"entries":[
+{"s":"STEPHANIE AND FRED SHUMAN FAMILY FOUNDATION","n":[["STEPHANIE AND FRED SHUMAN FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["202026907"],"z":["11937"]}}},
+{"s":"STEPHANIE AND LAWRENCE FLINN JR CHARITABLE TRUST","n":[["STEPHANIE AND LAWRENCE FLINN JR CHARITABLE TRUST",1]],"x":{"irs":{"r":1,"i":["266135172"],"z":["10580"]}}},
+{"s":"STEPHANIE L TWIN PH D","n":[["STEPHANIE L. TWIN, PH.D.,",1],["Stephanie L. Twin Ph.D.",1],["Stephanie L. Twin, PH.D.",1],["Stephanie L. Twin, Ph.D.",1]],"x":{"ocp":{"r":3,"a":417100,"l":"2006-09-07","i":["20060831018","20031017014","20031007005"]},"sbs":{"r":1,"i":["5982"],"z":["11215"],"p":["WBE"]}}},
+{"s":"STEPHANIE L TWIN PHD","n":[["STEPHANIE L. TWIN  PHD",1]],"x":{"dbe":{"r":1,"i":["STEPHANIE L. TWIN  PHD"]}}},
 {"s":"STEPHANIE LEE TWIN","n":[["STEPHANIE LEE TWIN",3],["Stephanie Lee Twin",3]],"x":{"ocp":{"r":3,"a":555639.29,"l":"2026-07-24","i":["20260720003","20230408105","20210809104"]},"ppt":{"r":3,"a":591639.29,"l":"2026-07-17","i":["CT1-856-20278801180","CT1-856-20238804611","CT1-856-20228801534"]}}},
 {"s":"STEPHANIE MARIE BURGOS SCHOLARSHIP","n":[["STEPHANIE MARIE BURGOS SCHOLARSHIP INC",1]],"x":{"irs":{"r":1,"i":["272965950"],"z":["11237"]}}},
 {"s":"STEPHANIE PUREHEART","n":[["Stephanie Pureheart",1]],"x":{"dol":{"r":1,"i":["25-64K3V-CR"],"z":["74857"]}}},
@@ -534,7 +538,7 @@
 {"s":"STORY IMPACT COLLECTIVE","n":[["STORY IMPACT COLLECTIVE INC",1]],"x":{"irs":{"r":1,"i":["334005134"],"z":["10022"]}}},
 {"s":"STORY OF HOPE COMFORT CARE HOME","n":[["STORY OF HOPE COMFORT CARE HOME INC",1]],"x":{"irs":{"r":1,"i":["471373390"],"z":["14624"]}}},
 {"s":"STORYCORPS","n":[["STORYCORPS INC",1]],"x":{"irs":{"r":1,"i":["133753011"],"z":["11217"]}}},
-{"s":"STORYLAND BOOK LOUNGE","n":[["STORYLAND BOOK LOUNGE INC",1]],"x":{"irs":{"r":1,"i":["334524684"],"z":["10451"]}}},
+{"s":"STORYLAND BOOK LOUNGE","n":[["STORYLAND BOOK LOUNGE INC",3]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-11-10","i":["CT104020273047153"]},"cbv":{"r":1,"l":"2026-11-10","i":["CT104020273047153"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["334524684"],"z":["10451"]}}},
 {"s":"STORYLINE","n":[["STORYLINE",1]],"x":{"irs":{"r":1,"i":["900933703"],"z":["11237"]}}},
 {"s":"STORYMAKERS NYC","n":[["STORYMAKERS NYC INC",1]],"x":{"irs":{"r":1,"i":["881593126"],"z":["10010"]}}},
 {"s":"STORYMARQ PRODUCTIONS","d":[["StoryMarq Productions",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["386911"],"z":["11221"],"p":["MBE"]}}},
@@ -1012,7 +1016,7 @@
 {"s":"STUYVESANT FALLS VOLUNTEER FIRE COMPANY NO 2","n":[["STUYVESANT FALLS VOLUNTEER FIRE COMPANY NO 2 INC",1]],"x":{"irs":{"r":1,"i":["383831698"],"z":["12174"]}}},
 {"s":"STUYVESANT FIRE DISTRICT NO 1","n":[["STUYVESANT FIRE DISTRICT NO 1 INC",1]],"x":{"irs":{"r":1,"i":["352725169"],"z":["12173"]}}},
 {"s":"STUYVESANT FUEL SERVICE","n":[["STUYVESANT FUEL SERVICE CORP",1],["Stuyvesant Fuel Service Corp.",1]],"x":{"ocp":{"r":2,"a":12059184,"l":"2005-11-28","i":["20051118010","20031023011"]}}},
-{"s":"STUYVESANT HEIGHTS CHRISTIAN CHURCH","n":[["STUYVESANT HEIGHTS CHRISTIAN CHURCH INC.",1]],"x":{"dbe":{"r":1,"i":["STUYVESANT HEIGHTS CHRISTIAN CHURCH INC."]}}},
+{"s":"STUYVESANT HEIGHTS CHRISTIAN CHURCH","n":[["STUYVESANT HEIGHTS CHRISTIAN CHURCH INC",2],["STUYVESANT HEIGHTS CHRISTIAN CHURCH INC.",1]],"x":{"cbr":{"r":1,"a":1305108,"l":"2026-11-10","i":["CT104020279761912"]},"cbv":{"r":1,"l":"2026-11-10","i":["CT104020279761912"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["STUYVESANT HEIGHTS CHRISTIAN CHURCH INC."]}}},
 {"s":"STUYVESANT HIGH SCHOOL ALUMNI ASSOCIATION","n":[["STUYVESANT HIGH SCHOOL ALUMNI ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["133509279"],"z":["10282"]}}},
 {"s":"STUYVESANT HIGH SCHOOL PARENTS ASSOCIATION","n":[["STUYVESANT HIGH SCHOOL PARENTS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["136108649"],"z":["10282"]}}},
 {"s":"STUYVESANT PARK NEIGHBORHOOD ASSOCIATION","n":[["STUYVESANT PARK NEIGHBORHOOD ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["132899445"],"z":["10276"]}}},
@@ -1101,7 +1105,7 @@
 {"s":"SUCCESS FOR GENEVAS YOUNG CHILDREN","n":[["SUCCESS FOR GENEVAS YOUNG CHILDREN INC",1]],"x":{"irs":{"r":1,"i":["161601726"],"z":["14456"]}}},
 {"s":"SUCCESS IN ENGLISH","n":[["Success in English, LLC",1]],"x":{"sbs":{"r":1,"i":["328086"],"z":["11434"],"p":["MBE","WBE"]}}},
 {"s":"SUCCESS IN KAPIRI","n":[["SUCCESS IN KAPIRI INC",1]],"x":{"irs":{"r":1,"i":["461336198"],"z":["12009"]}}},
-{"s":"SUCCESS IN MOTION 4U","n":[["SUCCESS IN MOTION 4U LLC",101],["Success In Motion 4U, LLC",1]],"x":{"cbr":{"r":67,"a":1675000,"l":"2026-10-23","c":67,"i":["CT104020273034277","CT104020273027628","CT104020273015171","CT104020273025353","CT104020273027178"]},"cbv":{"r":33,"l":"2026-10-23","c":33,"i":["CT104020273034277","CT104020273027628","CT104020273015171","CT104020273025353","CT104020273027178"],"m":["Black American"]},"dbe":{"r":1,"i":["SUCCESS IN MOTION 4U LLC"]},"sbs":{"r":1,"i":["357358"],"z":["10960"],"p":["MBE"]}}},
+{"s":"SUCCESS IN MOTION 4U","n":[["SUCCESS IN MOTION 4U LLC",100],["Success In Motion 4U, LLC",1]],"x":{"cbr":{"r":68,"a":1700000,"l":"2026-11-09","c":68,"i":["CT104020273039981","CT104020273034277","CT104020273027628","CT104020273015171","CT104020273025353"]},"cbv":{"r":31,"l":"2026-11-09","c":31,"i":["CT104020273039981","CT104020273034277","CT104020273027628","CT104020273015171","CT104020273025353"],"m":["Black American"]},"dbe":{"r":1,"i":["SUCCESS IN MOTION 4U LLC"]},"sbs":{"r":1,"i":["357358"],"z":["10960"],"p":["MBE"]}}},
 {"s":"SUCCESS IN READING","d":[["Success in Reading",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["328086"],"z":["11434"],"p":["MBE","WBE"]}}},
 {"s":"SUCCESS IN THE ARTS","n":[["SUCCESS IN THE ARTS INC",1]],"x":{"irs":{"r":1,"i":["834403285"],"z":["11422"]}}},
 {"s":"SUCCESS LEVEL VENTURES","n":[["SUCCESS LEVEL VENTURES CORP",2],["SUCCESS LEVEL VENTURES CORP.",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-01-06","i":["CT104020263074986"]},"cbv":{"r":1,"l":"2026-01-06","i":["CT104020263074986"],"m":["Black American"]},"sbs":{"r":1,"i":["359323"],"z":["11581"],"p":["MBE","WBE"]}}},
@@ -1666,13 +1670,5 @@
 {"s":"SUNRUN","n":[["SUNRUN INC.",1]],"x":{"dbe":{"r":1,"i":["SUNRUN INC."]}}},
 {"s":"SUNSALUTER","n":[["SUNSALUTER",1]],"x":{"irs":{"r":1,"i":["464629815"],"z":["10016"]}}},
 {"s":"SUNSET 203K HOUSING DEVELOPMENT FUND","n":[["SUNSET 203K HOUSING DEVELOPMENT FUND COMPANY INC.",1]],"x":{"dbe":{"r":1,"i":["SUNSET 203K HOUSING DEVELOPMENT FUND COMPANY INC."]}}},
-{"s":"SUNSET ARTS FOUNDATION","n":[["SUNSET ARTS FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["920557128"],"z":["10009"]}}},
-{"s":"SUNSET BAY CAMPERS ASSOCIATION","n":[["SUNSET BAY CAMPERS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["146023215"],"z":["12306"]}}},
-{"s":"SUNSET BAY COMMUNITY SERVICES","n":[["SUNSET BAY COMMUNITY SERVICES INC.",1],["Sunset Bay Community Services, Inc.",1]],"x":{"ocp":{"r":2,"a":6607403.18,"l":"2016-10-12","i":["20161004018","20060627026"]}}},
-{"s":"SUNSET BAY VOLUNTEER FIRE CO NO 1","n":[["SUNSET BAY VOLUNTEER FIRE CO NO 1 INC",1]],"x":{"irs":{"r":1,"i":["222566089"],"z":["14081"]}}},
-{"s":"SUNSET FOUNDATION","n":[["SUNSET FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["824687727"],"z":["11697"]}}},
-{"s":"SUNSET HILL CEMETERY ASSN","n":[["SUNSET HILL CEMETERY ASSN INC",1]],"x":{"irs":{"r":1,"i":["160654920"],"z":["14750"]}}},
-{"s":"SUNSET HOME MANAGEMENT","n":[["SUNSET HOME MANAGEMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["161562926"],"z":["13413"]}}},
-{"s":"SUNSET HOME OF UTICA","n":[["SUNSET HOME OF UTICA",1]],"x":{"irs":{"r":1,"i":["150539097"],"z":["13413"]}}},
-{"s":"SUNSET HOME OF UTICA FOUNDATION","n":[["SUNSET HOME OF UTICA FOUNDATION",1]],"x":{"irs":{"r":1,"i":["161562929"],"z":["13413"]}}}
+{"s":"SUNSET ARTS FOUNDATION","n":[["SUNSET ARTS FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["920557128"],"z":["10009"]}}}
 ]}

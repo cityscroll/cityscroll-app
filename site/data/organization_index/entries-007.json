@@ -1,4 +1,10 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":7,"first_ordinal":11591,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":7,"first_ordinal":11586,"entries":[
+{"s":"ARTHUR LEE PRIVATE FOUNDATION CHARITABLE TRUST","n":[["ARTHUR LEE PRIVATE FOUNDATION CHARITABLE TRUST",1]],"x":{"irs":{"r":1,"i":["461884228"],"z":["11719"]}}},
+{"s":"ARTHUR M SACKLER FOUNDATION","n":[["ARTHUR M SACKLER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["521074954"],"z":["10010"]}}},
+{"s":"ARTHUR MILLER FOUNDATION","n":[["ARTHUR MILLER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["223661214"],"z":["10011"]}}},
+{"s":"ARTHUR P KELLER FOUNDATION","n":[["ARTHUR P KELLER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["161590699"],"z":["14217"]}}},
+{"s":"ARTHUR PROJECT","n":[["ARTHUR PROJECT INC",1]],"x":{"irs":{"r":1,"i":["812797329"],"z":["10016"]}}},
+{"s":"ARTHUR S MARILYN PENN CHARITABLE TRUST","n":[["ARTHUR S & MARILYN PENN CHARITABLE TRUST",1]],"x":{"irs":{"r":1,"i":["133386164"],"z":["10075"]}}},
 {"s":"ARTHUR SKODNEK FOUNDATION","n":[["ARTHUR SKODNEK FOUNDATION",1]],"x":{"irs":{"r":1,"i":["311795435"],"z":["11768"]}}},
 {"s":"ARTHURS ACRES ANIMAL SANCTUARY","n":[["ARTHURS ACRES ANIMAL SANCTUARY CORPORATION",1]],"x":{"irs":{"r":1,"i":["823507701"],"z":["12768"]}}},
 {"s":"ARTIC METAL PRODUCTS","n":[["Artic Metal Products",1]],"x":{"ocp":{"r":1,"a":104832,"l":"2003-12-18","i":["20031211017"]}}},
@@ -34,7 +40,7 @@
 {"s":"ARTISIAN SCHOOL TRUST UA FBO JOHN SWEET LECTURE FUND","n":[["ARTISIAN SCHOOL TRUST UA FBO JOHN SWEET LECTURE FUND",1]],"x":{"irs":{"r":1,"i":["156016293"],"z":["13815"]}}},
 {"s":"ARTIST ARMORY","n":[["ARTIST ARMORY INC",1]],"x":{"irs":{"r":1,"i":["852534058"],"z":["10304"]}}},
 {"s":"ARTIST AS CITIZEN","n":[["ARTIST AS CITIZEN INC",1]],"x":{"irs":{"r":1,"i":["203856596"],"z":["12409"]}}},
-{"s":"ARTIST CONNECT","n":[["ARTIST CONNECT INC",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-11-10","i":["CT104020263047558"]},"cbv":{"r":1,"l":"2025-11-10","i":["CT104020263047558"],"m":["Non-M/WBE"]}}},
+{"s":"ARTIST CONNECT","n":[["ARTIST CONNECT INC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-11-10","i":["CT104020263047558"]}}},
 {"s":"ARTIST EXPERIMENT","n":[["ARTIST EXPERIMENT INC",1]],"x":{"irs":{"r":1,"i":["850575718"],"z":["11105"]}}},
 {"s":"ARTIST MANAGEMENT ASSOCIATION","n":[["ARTIST MANAGEMENT ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["853078756"],"z":["11205"]}}},
 {"s":"ARTIST ORGANIZED ART","n":[["ARTIST ORGANIZED ART INC",1]],"x":{"irs":{"r":1,"i":["262126105"],"z":["10011"]}}},
@@ -133,7 +139,7 @@
 {"s":"ARTS IGNITE","n":[["ARTS IGNITE INC",1]],"x":{"irs":{"r":1,"i":["204532991"],"z":["10018"]}}},
 {"s":"ARTS IN ACTION V A P","n":[["ARTS IN ACTION V A P INC",1]],"x":{"irs":{"r":1,"i":["562322737"],"z":["10025"]}}},
 {"s":"ARTS IN ACTION VAP","n":[["ARTS IN ACTION VAP INC",1]],"x":{"cbr":{"r":1,"a":18750,"l":"2025-11-12","i":["CT126020268803708"]}}},
-{"s":"ARTS IN BLUE","n":[["ARTS IN BLUE",12]],"x":{"cbr":{"r":7,"a":175000,"l":"2026-10-16","c":7,"i":["CT104020273028589","CT104020263100215","CT104020263065978","CT104020263047803","CT104020263012067"]},"cbv":{"r":4,"l":"2026-10-16","i":["CT104020273028589","CT104020263100215","CT104020263065978","CT104020263047803"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ARTS IN BLUE"]}}},
+{"s":"ARTS IN BLUE","n":[["ARTS IN BLUE",11]],"x":{"cbr":{"r":7,"a":175000,"l":"2026-10-16","c":7,"i":["CT104020273028589","CT104020263100215","CT104020263065978","CT104020263047803","CT104020263012067"]},"cbv":{"r":3,"l":"2026-10-16","i":["CT104020273028589","CT104020263100215","CT104020263065978"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ARTS IN BLUE"]}}},
 {"s":"ARTS IN CHRISTIAN THEATRE","n":[["ARTS IN CHRISTIAN THEATRE INC",1]],"x":{"irs":{"r":1,"i":["202689650"],"z":["11433"]}}},
 {"s":"ARTS IN MOUNT PLEASANT BOOSTER CLUB","n":[["ARTS IN MOUNT PLEASANT BOOSTER CLUB INC",1]],"x":{"irs":{"r":1,"i":["392479005"],"z":["10570"]}}},
 {"s":"ARTS INDONESIA","n":[["ARTS INDONESIA INC",1]],"x":{"irs":{"r":1,"i":["133155786"],"z":["11385"]}}},
@@ -593,7 +599,7 @@
 {"s":"ASPEN AERIALS","n":[["ASPEN AERIALS INC",2]],"x":{"ocp":{"r":1,"a":100000,"l":"2022-05-24","i":["20220518109"]},"ppt":{"r":1,"a":100000,"l":"2022-05-17","i":["CT1-841-20228806966"]}}},
 {"s":"ASPEN LANDSCAPING CONTRACTING","n":[["Aspen Landscaping Contracting Inc.",5],["ASPEN LANDSCAPING  CONTRACTING. INC.",4],["Aspen Landscaping Contracting, Inc.",3]],"d":[["Aspen Landscaping Contracting",1]],"x":{"ocp":{"r":10,"a":12963015.18,"l":"2018-06-12","c":10,"i":["20180604017","20170908010","20170807017","20170530009","20150624032"]},"sbs":{"r":1,"i":["1395"],"z":["08876"],"p":["MBE","WBE"]},"dol":{"r":2,"v":["dba","name"],"i":["25-64KQ9-CR"],"z":["08807"]}}},
 {"s":"ASPEN LICENSING INTL","n":[["Aspen Licensing Intl.,Inc.",1]],"x":{"ocp":{"r":1,"a":83001,"l":"2004-05-06","i":["20040429011"]}}},
-{"s":"ASPHALT GREEN","n":[["ASPHALT GREEN, INC.",11],["Asphalt Green Inc.",6],["ASPHALT GREEN INC",1],["ASPHALT GREEN INC.",1],["Asphalt Green, Inc.",1]],"x":{"ocp":{"r":7,"a":19413616,"l":"2026-07-23","c":7,"i":["20260717006","20250912008","20240926106","20230603101","20140820012"]},"cbr":{"r":6,"a":5817233,"l":"2026-07-16","c":6,"i":["MMA184620278801499","CT126020268804115","CT126020268802024","CT184620258801804","CT181620251407730"]},"ppt":{"r":4,"a":10074983,"l":"2026-07-16","i":["MMA1-846-20278801499","CT1-260-20268802024","CT1-260-20258802858","MMA1-846-20238808109"]},"cbv":{"r":1,"l":"2026-07-16","i":["MMA184620278801499"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ASPHALT GREEN INC."]},"irs":{"r":1,"i":["136533158"],"z":["10128"]}}},
+{"s":"ASPHALT GREEN","n":[["ASPHALT GREEN, INC.",12],["Asphalt Green Inc.",6],["ASPHALT GREEN INC",1],["ASPHALT GREEN INC.",1],["Asphalt Green, Inc.",1]],"x":{"ocp":{"r":7,"a":19413616,"l":"2026-07-23","c":7,"i":["20260717006","20250912008","20240926106","20230603101","20140820012"]},"cbr":{"r":7,"a":5835983,"l":"2026-11-10","c":7,"i":["CT126020278803717","MMA184620278801499","CT126020268804115","CT126020268802024","CT184620258801804"]},"ppt":{"r":4,"a":10074983,"l":"2026-07-16","i":["MMA1-846-20278801499","CT1-260-20268802024","CT1-260-20258802858","MMA1-846-20238808109"]},"cbv":{"r":1,"l":"2026-07-16","i":["MMA184620278801499"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ASPHALT GREEN INC."]},"irs":{"r":1,"i":["136533158"],"z":["10128"]}}},
 {"s":"ASPHALT HOOPS","n":[["asphalt hoops inc",2]],"x":{"cbr":{"r":2,"a":98000,"l":"2025-02-27","i":["CT184620251407983","CT184620258802610"]}}},
 {"s":"ASPHALT MAINTENANCE SYSTEMS","n":[["Asphalt Maintenance Systems LLC",1]],"x":{"dol":{"r":1,"i":["26-9YR1P-CR"],"z":["10552"]}}},
 {"s":"ASPHALT REHABILITATION TECHNOLOGIES","d":[["Asphalt Rehabilitation Technologies",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-69VA8-CR"],"z":["14559"]}}},
@@ -1626,7 +1632,5 @@
 {"s":"AUGUST WEST FOUNDATION FOR SUSTAINABLE AGRICULTURE","n":[["AUGUST WEST FOUNDATION FOR SUSTAINABLE AGRICULTURE INC",1]],"x":{"irs":{"r":1,"i":["463734141"],"z":["12816"]}}},
 {"s":"AUGUSTA CEMETERY ASSOC","n":[["AUGUSTA CEMETERY ASSOC INC",1]],"x":{"irs":{"r":1,"i":["150235678"],"z":["13425"]}}},
 {"s":"AUGUSTA FIRST PRESBYTERIAN CHURCH","n":[["AUGUSTA FIRST PRESBYTERIAN CHURCH",1]],"x":{"irs":{"r":1,"i":["510149423"],"z":["13425"]}}},
-{"s":"AUGUSTA SAVAGE HDFC","n":[["AUGUSTA SAVAGE HDFC INC",1]],"x":{"dbe":{"r":1,"i":["AUGUSTA SAVAGE HDFC INC"]}}},
-{"s":"AUGUSTAWESTLAND PHILADELPHIA","n":[["AugustaWestland Philadelphia Corporation",2]],"x":{"ocp":{"r":2,"a":3040200,"l":"2026-01-16","i":["20260112007","20240604108"]}}},
-{"s":"AUGUSTE CONSULTING GROUP","n":[["AUGUSTE CONSULTING GROUP LLC",19],["Auguste Consulting Group LLC",1]],"x":{"cbr":{"r":11,"a":275000,"l":"2026-10-21","c":11,"i":["CT104020273033732","CT104020263107867","CT104020263088095","CT104020263077084","CT104020263078146"]},"cbv":{"r":7,"l":"2026-10-21","c":7,"i":["CT104020273033732","CT104020263107867","CT104020263088095","CT104020263077084","CT104020263078146"],"m":["Black American"]},"dbe":{"r":1,"i":["AUGUSTE CONSULTING GROUP LLC"]},"sbs":{"r":1,"i":["377461"],"z":["10510"],"p":["MBE"]}}}
+{"s":"AUGUSTA SAVAGE HDFC","n":[["AUGUSTA SAVAGE HDFC INC",1]],"x":{"dbe":{"r":1,"i":["AUGUSTA SAVAGE HDFC INC"]}}}
 ]}

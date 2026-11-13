@@ -1,4 +1,10 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":85,"first_ordinal":144280,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":85,"first_ordinal":144282,"entries":[
+{"s":"THE WILKINSON MEMORIAL BOOK STATION","n":[["THE WILKINSON MEMORIAL BOOK STATION INCORPORATED",1]],"x":{"irs":{"r":1,"i":["222628770"],"z":["12025"]}}},
+{"s":"THE WILLIAM AND ANITA NEWMAN FOUNDATION","n":[["THE WILLIAM AND ANITA NEWMAN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133352983"],"z":["11721"]}}},
+{"s":"THE WILLIAM AND HELEN LITTLE FAMILY FOUNDATION","n":[["THE WILLIAM AND HELEN LITTLE FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["134199578"],"z":["10128"]}}},
+{"s":"THE WILLIAM ECK CHARITABLE TRUST","n":[["THE WILLIAM ECK CHARITABLE TRUST",1]],"x":{"irs":{"r":1,"i":["116342002"],"z":["11220"]}}},
+{"s":"THE WILLIAM F KERBY AND ROBERT S POTTER FUND","n":[["THE WILLIAM F KERBY AND ROBERT S POTTER FUND",1]],"x":{"irs":{"r":1,"i":["223021227"],"z":["10013"]}}},
+{"s":"THE WILLIAM GEORGE AGENCY FOR CHILDRENS SERVICES","n":[["THE WILLIAM GEORGE AGENCY FOR CHILDRENS SERVICES INC",1]],"x":{"irs":{"r":1,"i":["131857994"],"z":["13068"]}}},
 {"s":"THE WILLIAM H MINER AGRICULTURAL RESEARCH INSTITUTE","n":[["THE WILLIAM H MINER AGRICULTURAL RESEARCH INSTITUTE",1]],"x":{"irs":{"r":1,"i":["141414736"],"z":["12921"]}}},
 {"s":"THE WILLIAM J JENNINGS II AND PAULA J JENNINGS FAMILY FOUNDATION","n":[["THE WILLIAM J JENNINGS II AND PAULA J JENNINGS FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["116562298"],"z":["11530"]}}},
 {"s":"THE WILLIAM L CARTER FOUNDATION","n":[["THE WILLIAM L CARTER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["811952593"],"z":["10602"]}}},
@@ -1760,11 +1766,5 @@
 {"s":"TOP OF THE HILL SEAL COATING","d":[["Top of the Hill Seal Coating",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-9YBLL-CR"],"z":["13654"]}}},
 {"s":"TOP ONE MAINTENANCE","n":[["Top One Maintenance Corp",2]],"x":{"ocp":{"r":2,"a":22331045,"l":"2017-07-11","i":["20170703025","20170703029"]}}},
 {"s":"TOP PRESTIGE SOCCER ACADEMY","n":[["TOP PRESTIGE SOCCER ACADEMY INC",1]],"x":{"irs":{"r":1,"i":["413885936"],"z":["11106"]}}},
-{"s":"TOP REPAIRS","n":[["Top Repairs Inc.",1]],"x":{"dol":{"r":1,"i":["24-6488P-CR"],"z":["10977"]}}},
-{"s":"TOP ROCK DEVELOPMENT AND CONSTRUCTION","n":[["TOP ROCK DEVELOPMENT AND CONSTRUCTION CORP.",1]],"x":{"dol":{"r":1,"i":["25-67GRN-CR"],"z":["10001"]}}},
-{"s":"TOP SATELLITE SHOP","n":[["TOP SATELLITE SHOP INC",1]],"x":{"irs":{"r":1,"i":["300334509"],"z":["14422"]}}},
-{"s":"TOP SET TRUCKING","n":[["Top Set Trucking Corp",1],["Top Set Trucking Corp.",1]],"x":{"sbs":{"r":1,"i":["343779"],"z":["10804"],"p":["WBE"]},"dol":{"r":1,"i":["25-65NYR-CR"],"z":["10804"]}}},
-{"s":"TOP SHELF AMATEUR HOCKEY ASSOCIATION","n":[["TOP SHELF AMATEUR HOCKEY ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["883227897"],"z":["11791"]}}},
-{"s":"TOP SOCCER","n":[["TOP SOCCER INC",1]],"x":{"irs":{"r":1,"i":["800953706"],"z":["10466"]}}},
-{"s":"TOP SOURCE INTERNATIONAL","n":[["Top Source International Inc.",1]],"x":{"sbs":{"r":1,"i":["16778"],"z":["11801"],"p":["MBE","WBE"]}}}
+{"s":"TOP REPAIRS","n":[["Top Repairs Inc.",1]],"x":{"dol":{"r":1,"i":["24-6488P-CR"],"z":["10977"]}}}
 ]}

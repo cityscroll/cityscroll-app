@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":73,"first_ordinal":124028,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":73,"first_ordinal":124034,"entries":[
+{"s":"ROTARY CLUB OF ALEXANDRIA BAY FOUND ATION","n":[["ROTARY CLUB OF ALEXANDRIA BAY FOUND ATION INC",1]],"x":{"irs":{"r":1,"i":["424834096"],"z":["13607"]}}},
+{"s":"ROTARY CLUB OF AMHERST EAST FOUNDATION","n":[["ROTARY CLUB OF AMHERST EAST FOUNDATION",1]],"x":{"irs":{"r":1,"i":["161526534"],"z":["14051"]}}},
 {"s":"ROTARY CLUB OF AMITYVILLE","n":[["ROTARY CLUB OF AMITYVILLE LTD",1]],"x":{"irs":{"r":1,"i":["113160391"],"z":["11701"]}}},
 {"s":"ROTARY CLUB OF BAY SHORE NEW YORK","n":[["ROTARY CLUB OF BAY SHORE NEW YORK INCORPORATED",1]],"x":{"irs":{"r":1,"i":["116037042"],"z":["11706"]}}},
 {"s":"ROTARY CLUB OF BELLPORT NY","n":[["ROTARY CLUB OF BELLPORT NY USA INC",1]],"x":{"irs":{"r":1,"i":["463237542"],"z":["11713"]}}},
@@ -1711,7 +1713,5 @@
 {"s":"SAKA CONSULTING","n":[["Saka Consulting LLC",1]],"x":{"sbs":{"r":1,"i":["328260"],"z":["07305"],"p":["MBE","WBE"]}}},
 {"s":"SAKE CONTRACTING","n":[["Sake Contracting Inc.",1]],"x":{"dol":{"r":1,"i":["25-64PTH-CR"],"z":["11961"]}}},
 {"s":"SAKHA NY ASSOCIATION","n":[["SAKHA NY ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["994158710"],"z":["10032"]}}},
-{"s":"SAKHA UVELWANO","n":[["SAKHA UVELWANO",1]],"x":{"irs":{"r":1,"i":["920946604"],"z":["10023"]}}},
-{"s":"SAKHAI FAMILY FOUNDATION","n":[["SAKHAI FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["264728895"],"z":["11590"]}}},
-{"s":"SAKHI FOR SOUTH ASIAN SURVIVORS","n":[["SAKHI FOR SOUTH ASIAN SURVIVORS INC",3]],"x":{"cbr":{"r":2,"a":468750,"l":"2026-05-30","i":["CT106920268805315","CT106920268801604"]},"irs":{"r":1,"i":["133593806"],"z":["10008"]}}}
+{"s":"SAKHA UVELWANO","n":[["SAKHA UVELWANO",1]],"x":{"irs":{"r":1,"i":["920946604"],"z":["10023"]}}}
 ]}

@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":2,"first_ordinal":3459,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":2,"first_ordinal":3459,"entries":[
+{"s":"ACTION TO CURE KIDNEY CANCER","n":[["ACTION TO CURE KIDNEY CANCER",1]],"x":{"irs":{"r":1,"i":["200441399"],"z":["10023"]}}},
 {"s":"ACTION TOWARD INDEPENDENCE","n":[["ACTION TOWARD INDEPENDENCE INC",1]],"x":{"irs":{"r":1,"i":["141703075"],"z":["12701"]}}},
 {"s":"ACTION TRUCKING","n":[["ACTION TRUCKING CO, INC",2],["ACTION TRUCKING CO., INC.",1]],"x":{"ocp":{"r":1,"a":101308.5,"l":"2023-02-13","i":["20230207108"]},"ppt":{"r":1,"a":101308.5,"l":"2023-02-06","i":["CT1-826-20238805799"]},"dol":{"r":1,"i":["24-64GJ5-CR"],"z":["11793"]}}},
 {"s":"ACTION/REACTION TECHNIQUES","n":[["Action/Reaction Techniques, Inc.",1]],"x":{"ocp":{"r":1,"a":59950,"l":"2005-04-20","i":["20050413013"]}}},
@@ -657,7 +658,7 @@
 {"s":"ADVANCED CONTRACTING SERVICES","n":[["Advanced Contracting Services, Inc.",1]],"x":{"dol":{"r":1,"i":["24-636QD-CR"],"z":["14072"]}}},
 {"s":"ADVANCED CORING AND CUTTING","n":[["ADVANCED CORING AND CUTTING CORP.",1]],"x":{"dol":{"r":1,"i":["25-659UZ-CR"],"z":["07727"]}}},
 {"s":"ADVANCED CORING CUTTING","n":[["Advanced Coring & Cutting Corp.",1]],"x":{"sca":{"r":1,"i":["ADVANCED CORING & CUTTING CORP."],"z":["07727"]}}},
-{"s":"ADVANCED DETECTION TECHNOLOGY","n":[["ADVANCED DETECTION TECHNOLOGY LLC",7]],"x":{"cbr":{"r":4,"a":218305,"l":"2026-11-06","i":["CT105620271405934","CT105620270001111","CT105620261413366","CT105620261413246"]},"cbv":{"r":3,"l":"2026-07-20","i":["CT105620270001111","CT105620261413366","CT105620261413246"],"m":["Non-M/WBE"]}}},
+{"s":"ADVANCED DETECTION TECHNOLOGY","n":[["ADVANCED DETECTION TECHNOLOGY LLC",8]],"x":{"cbr":{"r":4,"a":218305,"l":"2026-11-06","i":["CT105620271405934","CT105620270001111","CT105620261413366","CT105620261413246"]},"cbv":{"r":4,"l":"2026-11-06","i":["CT105620271405934","CT105620270001111","CT105620261413366","CT105620261413246"],"m":["Non-M/WBE"]}}},
 {"s":"ADVANCED DISTRIBUTORS","n":[["Advanced Distributors, Inc.",2]],"x":{"ocp":{"r":2,"a":264440,"l":"2006-09-18","i":["20060911016","20060804002"]}}},
 {"s":"ADVANCED DOOR SOLUTIONS","n":[["Advanced Door Solutions Inc.",1]],"x":{"dol":{"r":1,"i":["25-64X8P-CR"],"z":["11779"]}}},
 {"s":"ADVANCED DRAINAGE SYSTEMS","n":[["Advanced Drainage Systems, Inc.",1]],"x":{"dol":{"r":1,"i":["25-64X8K-CR"],"z":["43026"]}}},
@@ -1362,7 +1363,7 @@
 {"s":"AGING IN PLACE-GLENS FALLS","n":[["AGING IN PLACE-GLENS FALLS",1]],"x":{"irs":{"r":1,"i":["264629906"],"z":["12801"]}}},
 {"s":"AGIOS ATHANASIOS ASSOCIATION PERISTA","n":[["AGIOS ATHANASIOS ASSOCIATION PERISTA",1]],"x":{"irs":{"r":1,"i":["541995594"],"z":["10023"]}}},
 {"s":"AGIOS WORLD WIDE","n":[["AGIOS WORLD WIDE INC",1],["Agios World Wide Inc.",1]],"x":{"cbr":{"r":1,"a":38197.23,"l":"2025-05-20","i":["CT106920251411011"]},"sbs":{"r":1,"i":["104108"],"z":["11787"],"p":["WBE"]}}},
-{"s":"AGIRI LEARNING CONSULTANTS","n":[["AGIRI LEARNING CONSULTANTS INC",37],["Agiri Learning Consultants Inc",1]],"x":{"cbr":{"r":25,"a":625000,"l":"2026-10-13","c":25,"i":["CT104020273029847","CT104020273024474","CT104020273013766","CT104020263162093","CT104020263116189"]},"cbv":{"r":11,"l":"2026-10-13","c":11,"i":["CT104020273029847","CT104020273024474","CT104020273013766","CT104020263162093","CT104020263116189"],"m":["Black American"]},"dbe":{"r":1,"i":["AGIRI LEARNING CONSULTANTS INC"]},"sbs":{"r":1,"i":["370903"],"z":["10037"],"p":["MBE","WBE"]}}},
+{"s":"AGIRI LEARNING CONSULTANTS","n":[["AGIRI LEARNING CONSULTANTS INC",36],["Agiri Learning Consultants Inc",1]],"x":{"cbr":{"r":25,"a":625000,"l":"2026-10-13","c":25,"i":["CT104020273029847","CT104020273024474","CT104020273013766","CT104020263162093","CT104020263116189"]},"cbv":{"r":10,"l":"2026-10-13","c":10,"i":["CT104020273029847","CT104020273024474","CT104020273013766","CT104020263162093","CT104020263116189"],"m":["Black American"]},"dbe":{"r":1,"i":["AGIRI LEARNING CONSULTANTS INC"]},"sbs":{"r":1,"i":["370903"],"z":["10037"],"p":["MBE","WBE"]}}},
 {"s":"AGIYSIS","n":[["Agiysis Inc.",1]],"x":{"ocp":{"r":1,"a":184503.62,"l":"2004-10-14","i":["20041006012"]}}},
 {"s":"AGLER-RICE FAMILY FOUNDATION","n":[["AGLER-RICE FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["311600167"],"z":["11719"]}}},
 {"s":"AGLOW INTERNATIONAL","n":[["AGLOW INTERNATIONAL",25]],"x":{"irs":{"r":25,"i":["141797845","161489149","161559235","161582828","202197887","237454987","260253190","270983879","274271515","463333859","510184737","510203036","510217271","812752506","832127411","930769776","930773802","930776087","930792920","930798090","930800063","930873249","930920288","930991108","931057817"],"z":["10452","11565","12401","12477","12791","12912","13214","13760","13827","14004","14006","14009","14011","14020","14055","14225","14502","14701","14735","14779"]}}},
@@ -1691,6 +1692,5 @@
 {"s":"AIR PURIFIERS","n":[["AIR PURIFIERS INC",5],["AIR PURIFIERS, INC.",1],["AIR PURIFIERS, INCORPORATED",1],["Air Purifiers, Inc.",1]],"d":[["Air Purifiers Inc.",1]],"x":{"ocp":{"r":3,"a":1661930.55,"l":"2012-05-15","i":["20120508013","20110708012","20061115020"]},"cbr":{"r":3,"a":48460.6,"l":"2026-07-16","i":["CT181620271400738","CT181620261404775","CT181620251401957"]},"cbv":{"r":1,"l":"2026-07-16","i":["CT181620271400738"],"m":["Non-M/WBE"]},"dol":{"r":2,"v":["dba","name"],"i":["25-64631-CR"],"z":["07866"]}}},
 {"s":"AIR QUALITY INNOVATIVE SOLUTIONS","n":[["AIR QUALITY INNOVATIVE SOLUTIONS LLC",1]],"x":{"dol":{"r":1,"i":["26-69VRY-CR"],"z":["32809"]}}},
 {"s":"AIR ROUND CONSTRUCTION","n":[["Air Round Construction Corp.",1]],"x":{"sbs":{"r":1,"i":["10347"],"z":["11422"],"p":["MBE"]}}},
-{"s":"AIR SOURCE","n":[["AIR SOURCE, LLC",1]],"x":{"dol":{"r":1,"i":["26-693J7-CR"],"z":["13778"]}}},
-{"s":"AIR SOURCE MECHANICAL","n":[["Air Source Mechanical, Inc.",2],["AIR SOURCE MECHANICAL INC",1],["AIR SOURCE MECHANICAL, INC.",1],["Air Source Mechanical Inc",1]],"x":{"cbr":{"r":1,"a":100000,"l":"2024-10-04","i":["CT182720251401517"]},"dbe":{"r":1,"i":["AIR SOURCE MECHANICAL INC"]},"sbs":{"r":1,"i":["361257"],"z":["10550"],"p":["MBE"]},"dol":{"r":1,"i":["25-6H8AF-CR"],"z":["10550"]},"sca":{"r":1,"i":["AIR SOURCE MECHANICAL, INC."],"z":["10550"]}}}
+{"s":"AIR SOURCE","n":[["AIR SOURCE, LLC",1]],"x":{"dol":{"r":1,"i":["26-693J7-CR"],"z":["13778"]}}}
 ]}

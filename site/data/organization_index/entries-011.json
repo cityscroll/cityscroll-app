@@ -1,4 +1,13 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":11,"first_ordinal":18447,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":11,"first_ordinal":18440,"entries":[
+{"s":"BLACKYARD COLLECTIVE NYC","n":[["BLACKYARD COLLECTIVE NYC INC",1]],"x":{"irs":{"r":1,"i":["883641425"],"z":["11225"]}}},
+{"s":"BLACQUE ACRES","n":[["BLACQUE ACRES",1]],"x":{"irs":{"r":1,"i":["923827554"],"z":["13502"]}}},
+{"s":"BLADE","n":[["Blade LLC",1]],"x":{"dol":{"r":1,"i":["25-65Q31-CR"],"z":["13634"]}}},
+{"s":"BLADE CONTRACTING","n":[["Blade Contracting Inc.",2]],"x":{"ocp":{"r":1,"a":3213175,"l":"2011-06-08","i":["20110602007"]},"sbs":{"r":1,"i":["4819"],"z":["10301"],"p":["MBE"]}}},
+{"s":"BLADED BODY","n":[["Bladed Body LLC",1]],"x":{"sbs":{"r":1,"i":["397295"],"z":["11208"],"p":["MBE"]}}},
+{"s":"BLADYKAS ENGINEERING P C","n":[["BLADYKAS ENGINEERING P.C.",1],["BLADYKAS ENGINEERING, P.C.",1],["Bladykas Engineering P.c.",1]],"x":{"ocp":{"r":1,"a":3000000,"l":"2018-01-19","i":["20180111026"]},"dbe":{"r":1,"i":["BLADYKAS ENGINEERING P.C."]},"sca":{"r":1,"i":["BLADYKAS ENGINEERING, P.C."],"z":["11791"]}}},
+{"s":"BLAIR BLOOM","n":[["Blair & Bloom, LLC",1]],"x":{"sbs":{"r":1,"i":["365402"],"z":["10027"],"p":["MBE","WBE"]}}},
+{"s":"BLAIR CONSTRUCTION OF AUBURN NEW YORK","n":[["Blair Construction of Auburn, New York, Inc.",1]],"x":{"dol":{"r":1,"i":["26-64OC5-CR"],"z":["13021"]}}},
+{"s":"BLAIR MUI DOWD ARCHITECTS","n":[["Blair Mui Dowd Architects PC",1]],"x":{"cbr":{"r":1,"a":1519050,"l":"2025-10-21","i":["CT104320261405009"]}}},
 {"s":"BLAKA COOL","n":[["BLAKA COOL INC",7],["Blaka Cool, Inc.",1]],"x":{"cbr":{"r":4,"a":148500,"l":"2026-08-27","i":["CT181620271403258","CT186620278802028","CT181620261404908","CT181620251408852"]},"cbv":{"r":2,"l":"2026-08-27","i":["CT181620271403258","CT186620278802028"],"m":["Asian American"]},"sbs":{"r":1,"i":["100376"],"z":["11428"],"p":["MBE","WBE"]},"dol":{"r":1,"i":["25-6HHJT-CR"],"z":["11428"]}}},
 {"s":"BLAKA HVAC ELECTRICAL","d":[["BLAKA HVAC & ELECTRICAL",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["100376"],"z":["11428"],"p":["MBE","WBE"]}}},
 {"s":"BLAKE ANNEX","n":[["BLAKE ANNEX INC",1]],"x":{"irs":{"r":1,"i":["871007976"],"z":["12207"]}}},
@@ -379,7 +388,7 @@
 {"s":"BLUE POINT FIRE DEPARTMENT","n":[["BLUE POINT FIRE DEPARTMENT",1]],"x":{"irs":{"r":1,"i":["412220328"],"z":["11715"]}}},
 {"s":"BLUE POINT VOLUNTEER EXEMPT FIREMENS BENEVOLENT ASSOC","n":[["BLUE POINT VOLUNTEER EXEMPT FIREMENS BENEVOLENT ASSOC INC",1]],"x":{"irs":{"r":1,"i":["112444000"],"z":["11715"]}}},
 {"s":"BLUE RAVEN MINISTRY","n":[["BLUE RAVEN MINISTRY INC",1]],"x":{"irs":{"r":1,"i":["394046649"],"z":["11507"]}}},
-{"s":"BLUE RIBBON FARRIER SUPPLIES","n":[["BLUE RIBBON FARRIER SUPPLIES INC",2]],"x":{"cbr":{"r":1,"a":29040.55,"l":"2025-11-21","i":["CT105620261405641"]},"cbv":{"r":1,"l":"2025-11-21","i":["CT105620261405641"],"m":["Women (Non-Minority)"]}}},
+{"s":"BLUE RIBBON FARRIER SUPPLIES","n":[["BLUE RIBBON FARRIER SUPPLIES INC",1]],"x":{"cbr":{"r":1,"a":29040.55,"l":"2025-11-21","i":["CT105620261405641"]}}},
 {"s":"BLUE RIBBON FOUNDATION","n":[["BLUE RIBBON FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["272488610"],"z":["10708"]}}},
 {"s":"BLUE RIDER BUILDERS","n":[["Blue Rider Builders Corp.",1]],"x":{"dol":{"r":1,"i":["25-65R8C-CR"],"z":["11501"]}}},
 {"s":"BLUE RIDGE CONSTRUCTION","n":[["BLUE RIDGE CONSTRUCTION INC",5],["Blue Ridge Construction Inc",1],["Blue Ridge Construction Inc.",1]],"x":{"ocp":{"r":1,"a":3000000,"l":"2026-07-10","i":["20260706011"]},"cbr":{"r":2,"a":6000000,"l":"2026-07-02","i":["CT182620268807760","CT182620258807592"]},"ppt":{"r":1,"a":3000000,"l":"2026-07-02","i":["CT1-826-20268807760"]},"cbv":{"r":1,"l":"2026-07-02","i":["CT182620268807760"],"m":["Asian American"]},"sbs":{"r":1,"i":["363817"],"z":["11369"],"p":["MBE"]},"dol":{"r":1,"i":["25-6491O-CR"],"z":["11369"]}}},
@@ -1231,7 +1240,7 @@
 {"s":"BOWERY RESIDENT`S COMMITTEE","n":[["Bowery Resident`s Committee, Inc.",9],["Bowery  Resident`s Committee, Inc.",2],["Bowery Resident`s Committee",1]],"x":{"ocp":{"r":12,"a":163625965,"l":"2022-08-08","c":12,"i":["20220802102","20110520012","20110301011","20100923008","20100924001"]}}},
 {"s":"BOWERY RESIDENT`S COMMITTEE INC BRC HUMAN SERVICES","n":[["Bowery Resident`s Committee Inc. BRC Human Services Corp.",3]],"x":{"ocp":{"r":3,"a":71951432,"l":"2021-08-24","i":["20210816117","20201020108","20191025016"]}}},
 {"s":"BOWHALL TRUCKING","n":[["BOWHALL TRUCKING LLC",1]],"x":{"dol":{"r":1,"i":["26-69TFN-CR"],"z":["13681"]}}},
-{"s":"BOWLERS BAR","n":[["BOWLERS BAR CORP.",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-12-02","i":["CT104020263059165"]},"cbv":{"r":1,"l":"2025-12-02","i":["CT104020263059165"],"m":["Non-M/WBE"]}}},
+{"s":"BOWLERS BAR","n":[["BOWLERS BAR CORP.",4]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-11-10","i":["CT104020273045678","CT104020263059165"]},"cbv":{"r":2,"l":"2026-11-10","i":["CT104020273045678","CT104020263059165"],"m":["Non-M/WBE"]}}},
 {"s":"BOWLING GREEN ASSOCIATION","n":[["BOWLING GREEN ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["133496442"],"z":["10004"]}}},
 {"s":"BOWMAN CONSULTING GROUP","n":[["Bowman Consulting Group Ltd.",1]],"x":{"dol":{"r":1,"i":["25-64CCX-CR"],"z":["20191"]}}},
 {"s":"BOWMAN6","n":[["BOWMAN6 INC",1]],"x":{"irs":{"r":1,"i":["471739708"],"z":["10027"]}}},
@@ -1726,14 +1735,5 @@
 {"s":"BRENTLAND WOODS","n":[["BRENTLAND WOODS INC",1]],"x":{"irs":{"r":1,"i":["161551639"],"z":["14620"]}}},
 {"s":"BRENTON JACOB MEMORIAL FUND","n":[["BRENTON JACOB MEMORIAL FUND INC",1]],"x":{"irs":{"r":1,"i":["841944645"],"z":["14445"]}}},
 {"s":"BRENTWOOD BUILDING RESTORATION","n":[["BRENTWOOD BUILDING RESTORATION INC",3],["Brentwood Building Restoration, Inc",2],["Brentwood Building Restoration, Inc.",1]],"x":{"ocp":{"r":1,"a":1000000,"l":"2024-03-11","i":["20240305115"]},"ppt":{"r":1,"a":1500000,"l":"2024-03-04","i":["CT1-816-20248806069"]},"dbe":{"r":1,"i":["BRENTWOOD BUILDING RESTORATION INC"]},"sbs":{"r":1,"i":["11103"],"z":["11220"],"p":["MBE"]},"dol":{"r":1,"i":["26-639DZ-CR"],"z":["11223"]},"sca":{"r":1,"i":["BRENTWOOD BUILDING RESTORATION, INC"],"z":["11220"]}}},
-{"s":"BRENTWOOD CHAMBER OF COMMERCE FOUNDATION","n":[["BRENTWOOD CHAMBER OF COMMERCE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["270529780"],"z":["11717"]}}},
-{"s":"BRENTWOOD CHEERLEADING FOOTBALL","n":[["BRENTWOOD CHEERLEADING & FOOTBALL",1]],"x":{"irs":{"r":1,"i":["821781493"],"z":["11706"]}}},
-{"s":"BRENTWOOD CHRISTIAN FELLOWSHIP","n":[["BRENTWOOD CHRISTIAN FELLOWSHIP",1]],"x":{"irs":{"r":1,"i":["237419414"],"z":["11717"]}}},
-{"s":"BRENTWOOD DOOR","d":[["Brentwood Door Co",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-64TVR-CR"],"z":["11716"]}}},
-{"s":"BRENTWOOD EMPOWERMENT FOUNDATION","n":[["BRENTWOOD EMPOWERMENT FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["993546542"],"z":["11717"]}}},
-{"s":"BRENTWOOD EXERCISE SPORTS TRAINING","n":[["BRENTWOOD EXERCISE & SPORTS TRAINING INC",1]],"x":{"irs":{"r":1,"i":["933208980"],"z":["11706"]}}},
-{"s":"BRENTWOOD GREEN MACHINE BAND PARENTS ASSOCIATION","n":[["BRENTWOOD GREEN MACHINE BAND PARENTS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["112601936"],"z":["11717"]}}},
-{"s":"BRENTWOOD HISTORICAL SOCIETY","n":[["BRENTWOOD HISTORICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["113093491"],"z":["11717"]}}},
-{"s":"BRENTWOOD LEGION AMBULANCE SERVICE","n":[["BRENTWOOD LEGION AMBULANCE SERVICE INC",1]],"x":{"irs":{"r":1,"i":["116080443"],"z":["11717"]}}},
-{"s":"BRENTWOOD MEADOWS","n":[["BRENTWOOD MEADOWS INC",1]],"x":{"irs":{"r":1,"i":["371958498"],"z":["14450"]}}}
+{"s":"BRENTWOOD CHAMBER OF COMMERCE FOUNDATION","n":[["BRENTWOOD CHAMBER OF COMMERCE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["270529780"],"z":["11717"]}}}
 ]}

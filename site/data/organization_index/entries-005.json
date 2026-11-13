@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":5,"first_ordinal":8346,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":5,"first_ordinal":8343,"entries":[
+{"s":"AMERICAN FRIENDS OF ST GEORGES CHURCH IN VENICE ITALY","n":[["AMERICAN FRIENDS OF ST GEORGES CHURCH IN VENICE ITALY",1]],"x":{"irs":{"r":1,"i":["861154599"],"z":["10022"]}}},
+{"s":"AMERICAN FRIENDS OF STC","n":[["AMERICAN FRIENDS OF STC",1]],"x":{"irs":{"r":1,"i":["844636174"],"z":["11230"]}}},
+{"s":"AMERICAN FRIENDS OF STOWE","n":[["AMERICAN FRIENDS OF STOWE INC",1]],"x":{"irs":{"r":1,"i":["161672980"],"z":["11215"]}}},
+{"s":"AMERICAN FRIENDS OF SUCATH DAVID","n":[["AMERICAN FRIENDS OF SUCATH DAVID INC",1]],"x":{"irs":{"r":1,"i":["112422207"],"z":["11223"]}}},
 {"s":"AMERICAN FRIENDS OF SULAM","n":[["AMERICAN FRIENDS OF SULAM INC",1]],"x":{"irs":{"r":1,"i":["134133458"],"z":["10952"]}}},
 {"s":"AMERICAN FRIENDS OF T HE BNEI BRAK DEVELOPMENT FUND","n":[["AMERICAN FRIENDS OF T HE BNEI BRAK DEVELOPMENT FUND INC",1]],"x":{"irs":{"r":1,"i":["272386780"],"z":["10018"]}}},
 {"s":"AMERICAN FRIENDS OF TAFELMUSIK","n":[["AMERICAN FRIENDS OF TAFELMUSIK INC",1]],"x":{"irs":{"r":1,"i":["413032148"],"z":["10026"]}}},
@@ -789,7 +793,7 @@
 {"s":"AMERICANS UNITED FOR SEPARATION OF CHURCH AND STATE","n":[["AMERICANS UNITED FOR SEPARATION OF CHURCH AND STATE",1]],"x":{"irs":{"r":1,"i":["222316695"],"z":["14467"]}}},
 {"s":"AMERICANS WE ARE A FAMILY FOUNDATION","n":[["AMERICANS WE ARE A FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["010756152"],"z":["10016"]}}},
 {"s":"AMERICARE","n":[["AMERICARE INC",4],["Americare Inc",1]],"x":{"ocp":{"r":1,"a":1,"l":"2026-05-29","i":["20260522009"]},"cbr":{"r":1,"a":1,"l":"2026-05-21","i":["CT106920268807624"]},"ppt":{"r":1,"a":1,"l":"2026-05-21","i":["CT1-069-20268807624"]},"cbv":{"r":1,"l":"2026-05-21","i":["CT106920268807624"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["AMERICARE INC"]}}},
-{"s":"AMERICARE APPLIANCE REPAIR","n":[["Americare Appliance Repair LLC",18],["AMERICARE APPLIANCE REPAIR LLC",1],["Americare Appliance Repair",1]],"x":{"ocp":{"r":8,"a":3127150.12,"l":"2026-10-16","c":8,"i":["20261006001","20260608069","20250304040","20231212109","20201113122"]},"cbr":{"r":4,"a":2288821.39,"l":"2026-07-30","i":["CT107120268807902","CT185620268808260","CT184620251413292","CT185820258805915"]},"ppt":{"r":3,"a":1988934.81,"l":"2026-06-08","i":["CT1-856-20268808260","CT1-858-20258805915","CT1-071-20248801231"]},"cbv":{"r":2,"l":"2026-07-30","i":["CT107120268807902","CT185620268808260"],"m":["Black American"]},"dbe":{"r":1,"i":["AMERICARE APPLIANCE REPAIR LLC"]},"sbs":{"r":1,"i":["10504"],"z":["10037"],"p":["MBE"]},"dol":{"r":1,"i":["25-64CLT-CR"],"z":["10466"]}}},
+{"s":"AMERICARE APPLIANCE REPAIR","n":[["Americare Appliance Repair LLC",20],["AMERICARE APPLIANCE REPAIR LLC",1],["Americare Appliance Repair",1]],"x":{"ocp":{"r":8,"a":3127150.12,"l":"2026-10-16","c":8,"i":["20261006001","20260608069","20250304040","20231212109","20201113122"]},"cbr":{"r":5,"a":2588821.39,"l":"2026-11-09","i":["CT126020278802823","CT107120268807902","CT185620268808260","CT184620251413292","CT185820258805915"]},"ppt":{"r":3,"a":1988934.81,"l":"2026-06-08","i":["CT1-856-20268808260","CT1-858-20258805915","CT1-071-20248801231"]},"cbv":{"r":3,"l":"2026-11-09","i":["CT126020278802823","CT107120268807902","CT185620268808260"],"m":["Black American"]},"dbe":{"r":1,"i":["AMERICARE APPLIANCE REPAIR LLC"]},"sbs":{"r":1,"i":["10504"],"z":["10037"],"p":["MBE"]},"dol":{"r":1,"i":["25-64CLT-CR"],"z":["10466"]}}},
 {"s":"AMERICARE PRODUCTS","n":[["Americare Products Inc.",1]],"x":{"ocp":{"r":1,"a":93750,"l":"2004-06-09","i":["20040602017"]}}},
 {"s":"AMERICAS CHOICE VETERANS CONSTRUCTION","n":[["Americas Choice Veterans Construction Inc",1]],"x":{"dol":{"r":1,"i":["25-65V4N-CR"],"z":["11949"]}}},
 {"s":"AMERICAS FAMILY HEALTH AND WELFARE FUND","n":[["AMERICAS FAMILY HEALTH AND WELFARE FUND",1]],"x":{"irs":{"r":1,"i":["160840561"],"z":["14221"]}}},
@@ -1560,10 +1564,5 @@
 {"s":"ANIMAL RESCUE AND CARE","n":[["ANIMAL RESCUE AND CARE INC",1]],"x":{"irs":{"r":1,"i":["862351515"],"z":["10970"]}}},
 {"s":"ANIMAL RESCUE AND SANCTUARY","n":[["ANIMAL RESCUE AND SANCTUARY",1]],"x":{"irs":{"r":1,"i":["414170244"],"z":["11791"]}}},
 {"s":"ANIMAL RESCUE ANGELS","n":[["ANIMAL RESCUE ANGELS",1]],"x":{"irs":{"r":1,"i":["994815367"],"z":["10455"]}}},
-{"s":"ANIMAL RESCUE CONSORTIUM","n":[["ANIMAL RESCUE CONSORTIUM INC",1]],"x":{"irs":{"r":1,"i":["334203273"],"z":["10003"]}}},
-{"s":"ANIMAL RESCUE FORCE","n":[["ANIMAL RESCUE FORCE INC",1]],"x":{"irs":{"r":1,"i":["112549668"],"z":["11738"]}}},
-{"s":"ANIMAL RESCUE FOUNDATION","n":[["ANIMAL RESCUE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["141730869"],"z":["12508"]}}},
-{"s":"ANIMAL RESCUE FUND OF THE HAMPTONS","n":[["ANIMAL RESCUE FUND OF THE HAMPTONS INC",1]],"x":{"irs":{"r":1,"i":["237400663"],"z":["11937"]}}},
-{"s":"ANIMAL RESCUE INTERNATIONAL","n":[["ANIMAL RESCUE INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["995014755"],"z":["11572"]}}},
-{"s":"ANIMAL RESCUE LI","n":[["ANIMAL RESCUE LI INC",1]],"x":{"irs":{"r":1,"i":["994294314"],"z":["11746"]}}}
+{"s":"ANIMAL RESCUE CONSORTIUM","n":[["ANIMAL RESCUE CONSORTIUM INC",1]],"x":{"irs":{"r":1,"i":["334203273"],"z":["10003"]}}}
 ]}

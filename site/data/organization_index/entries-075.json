@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":75,"first_ordinal":127481,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":75,"first_ordinal":127489,"entries":[
 {"s":"SCO FAMILY OF SERVICES","n":[["SCO Family of Services",109],["SCO FAMILY OF SERVICES",99],["SCO Family of Services, Inc.",6],["SCO Family  of Services",3],["SCO Family of  Services",2],["SCO Family of Services Inc.",2],["SCO Family of Services, Inc",1]],"x":{"ocp":{"r":123,"a":1588425148.33,"l":"2026-08-06","c":123,"i":["20260731007","20260724020","20260722020","20260626015","20260618027"]},"cbr":{"r":36,"a":529690237.74,"l":"2026-09-18","c":36,"i":["CT104020279758986","CT104020279757366","CT104020279757410","CT104020279757188","CT104020279757365"]},"ppt":{"r":46,"a":1072263916.27,"l":"2026-07-23","c":46,"i":["CT1-068-20278800571","CT1-068-20278800054","CT1-068-20278800057","CT1-068-20278800399","CT1-068-20278800447"]},"cbv":{"r":15,"l":"2026-09-18","c":15,"i":["CT104020279758986","CT104020279757366","CT104020279757410","CT104020279757188","CT104020279757365"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["SCO FAMILY OF SERVICES"]},"irs":{"r":1,"i":["112777066"],"z":["11530"]}}},
 {"s":"SCO FAMILY OF SERVICES (ST CHRISTOPHER-OTTILIE)","n":[["SCO FAMILY OF SERVICES (ST. CHRISTOPHER-OTTILIE)",1]],"x":{"ocp":{"r":1,"a":210618,"l":"2012-07-27","i":["20120720015"]}}},
 {"s":"SCO FAMILY OF SERVICES MADONNA HEIGHTS SVCS","n":[["SCO FAMILY OF SERVICES MADONNA HEIGHTS SVCS.",1]],"x":{"ocp":{"r":1,"a":150000,"l":"2008-03-07","i":["20080229005"]}}},
@@ -685,7 +685,7 @@
 {"s":"SEKWANG KOREAN PRESBYTERIAN CHURCH","n":[["SEKWANG KOREAN PRESBYTERIAN CHURCH",1]],"x":{"irs":{"r":1,"i":["113604150"],"z":["10570"]}}},
 {"s":"SEL S SWIFT SERVICE","n":[["SEL'S SWIFT SERVICE INCORPORATED",1]],"x":{"dbe":{"r":1,"i":["SEL'S SWIFT SERVICE INCORPORATED"]}}},
 {"s":"SEL TALKZWITHDIANNE","n":[["SEL TALKZWITHDIANNE LLC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2024-09-17","i":["CT104020253015456"]}}},
-{"s":"SEL-DM","n":[["SEL-DM LLC",59],["Sel-DM LLC",1]],"x":{"cbr":{"r":38,"a":950000,"l":"2026-10-30","c":38,"i":["CT104020273041182","CT104020273041581","CT104020273031088","CT104020273036122","CT104020273035604"]},"cbv":{"r":21,"l":"2026-10-30","c":21,"i":["CT104020273041182","CT104020273041581","CT104020273031088","CT104020273036122","CT104020273035604"],"m":["Hispanic American","Non-M/WBE"]},"sbs":{"r":1,"i":["396894"],"z":["10956"],"p":["MBE"]}}},
+{"s":"SEL-DM","n":[["SEL-DM LLC",61],["Sel-DM LLC",1]],"x":{"cbr":{"r":39,"a":975000,"l":"2026-11-09","c":39,"i":["CT104020273042001","CT104020273041182","CT104020273041581","CT104020273031088","CT104020273036122"]},"cbv":{"r":22,"l":"2026-11-09","c":22,"i":["CT104020273042001","CT104020273041182","CT104020273041581","CT104020273031088","CT104020273036122"],"m":["Hispanic American","Non-M/WBE"]},"sbs":{"r":1,"i":["396894"],"z":["10956"],"p":["MBE"]}}},
 {"s":"SELAH CITY CHURCH","n":[["SELAH CITY CHURCH INC",1]],"x":{"irs":{"r":1,"i":["844956852"],"z":["11756"]}}},
 {"s":"SELAH MINISTRIES","n":[["SELAH MINISTRIES",1],["SELAH MINISTRIES INC",1]],"x":{"irs":{"r":2,"i":["113625412","200826716"],"z":["10801","11693"]}}},
 {"s":"SELANDER FAMILY FOUNDATION","n":[["SELANDER FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["271444344"],"z":["12578"]}}},
@@ -1665,7 +1665,7 @@
 {"s":"SHARAN CONSTRUCTION","n":[["SHARAN CONSTRUCTION, INC.",2]],"x":{"sbs":{"r":1,"i":["375596"],"z":["11004"],"p":["MBE"]},"dol":{"r":1,"i":["26-679CL-CR"],"z":["11004"]}}},
 {"s":"SHARANA GATTIE RAMAYAN KIRTAN MANDIR","n":[["SHARANA GATTIE RAMAYAN & KIRTAN MANDIR INC",1]],"x":{"irs":{"r":1,"i":["261190922"],"z":["11434"]}}},
 {"s":"SHARBANI ROY","n":[["SHARBANI ROY INC",3]],"x":{"cbr":{"r":1,"a":2660428,"l":"2026-09-08","i":["CT104020279758107"]},"cbv":{"r":1,"l":"2026-09-08","i":["CT104020279758107"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["SHARBANI ROY INC"]}}},
-{"s":"SHARDA PAPER","n":[["SHARDA PAPER INC",4],["Sharda Paper Inc.",1],["Sharda Paper, Inc.",1]],"x":{"ocp":{"r":1,"a":28000,"l":"2018-06-11","i":["20180604029"]},"cbr":{"r":2,"a":31100,"l":"2026-07-16","i":["CT181620271400756","CT181620261401247"]},"cbv":{"r":1,"l":"2026-07-16","i":["CT181620271400756"],"m":["Asian American"]},"dbe":{"r":1,"i":["SHARDA PAPER INC"]},"sbs":{"r":1,"i":["15984"],"z":["11237"],"p":["MBE"]}}},
+{"s":"SHARDA PAPER","n":[["SHARDA PAPER INC",4],["Sharda Paper Inc.",1],["Sharda Paper, Inc.",1]],"x":{"ocp":{"r":1,"a":28000,"l":"2018-06-11","i":["20180604029"]},"cbr":{"r":2,"a":36900,"l":"2026-07-16","i":["CT181620271400756","CT181620261401247"]},"cbv":{"r":1,"l":"2026-07-16","i":["CT181620271400756"],"m":["Asian American"]},"dbe":{"r":1,"i":["SHARDA PAPER INC"]},"sbs":{"r":1,"i":["15984"],"z":["11237"],"p":["MBE"]}}},
 {"s":"SHARE","n":[["SHARE",4],["SHARE Inc.",1],["SHARE, INC.",1]],"x":{"ocp":{"r":6,"a":895062,"l":"2017-05-08","c":6,"i":["20170501019","20080211020","20060321009","20050608028","20040305041"]}}},
 {"s":"SHARE AND CARE SENIOR CENTER","n":[["SHARE AND CARE SENIOR CENTER INC",1]],"x":{"irs":{"r":1,"i":["161452299"],"z":["14063"]}}},
 {"s":"SHARE CANCER SUPPORT","n":[["SHARE CANCER SUPPORT INC",1]],"x":{"irs":{"r":1,"i":["133131914"],"z":["10018"]}}},
@@ -1708,7 +1708,7 @@
 {"s":"SHARED RETURN COLLABORATIVE","n":[["SHARED RETURN COLLABORATIVE",1]],"x":{"irs":{"r":1,"i":["414202128"],"z":["12590"]}}},
 {"s":"SHARED ROOTS FOUNDATION","n":[["SHARED ROOTS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["422948453"],"z":["10990"]}}},
 {"s":"SHARED SPACE PROFESSIONAL DEVELOPMENT","n":[["SHARED SPACE PROFESSIONAL DEVELOPMENT",8]],"x":{"cbr":{"r":5,"a":125000,"l":"2026-09-22","i":["CT104020273017350","CT104020263095499","CT104020263078849","CT104020263025088","CT104020253017745"]},"cbv":{"r":3,"l":"2026-09-22","i":["CT104020273017350","CT104020263095499","CT104020263078849"],"m":["Non-M/WBE"]}}},
-{"s":"SHARED TALENT","n":[["SHARED TALENT LLC",6],["Shared Talent LLC",1]],"x":{"cbr":{"r":5,"a":125000,"l":"2025-11-03","i":["CT104020263043920","CT104020253120622","CT104020253059753","CT104020253042691","CT104020253031375"]},"dbe":{"r":1,"i":["SHARED TALENT LLC"]},"sbs":{"r":1,"i":["306248"],"z":["11369"],"p":["MBE","WBE"]}}},
+{"s":"SHARED TALENT","n":[["SHARED TALENT LLC",8],["Shared Talent LLC",1]],"x":{"cbr":{"r":6,"a":150000,"l":"2026-11-09","c":6,"i":["CT104020273041276","CT104020263043920","CT104020253120622","CT104020253059753","CT104020253042691"]},"cbv":{"r":1,"l":"2026-11-09","i":["CT104020273041276"],"m":["Black American"]},"dbe":{"r":1,"i":["SHARED TALENT LLC"]},"sbs":{"r":1,"i":["306248"],"z":["11369"],"p":["MBE","WBE"]}}},
 {"s":"SHAREEF CLAYTON MUSIC FOUNDATION IN C","n":[["SHAREEF CLAYTON MUSIC FOUNDATION IN C",1]],"x":{"irs":{"r":1,"i":["414627186"],"z":["10031"]}}},
 {"s":"SHAREI BENZION","n":[["SHAREI BENZION",1]],"x":{"irs":{"r":1,"i":["113585214"],"z":["11211"]}}},
 {"s":"SHAREI BINAH VCHESED","n":[["SHAREI BINAH VCHESED",1]],"x":{"irs":{"r":1,"i":["113523566"],"z":["11219"]}}},
@@ -1751,6 +1751,5 @@
 {"s":"SHARING POINT PANTRY","n":[["SHARING POINT PANTRY INC",1]],"x":{"irs":{"r":1,"i":["413213181"],"z":["13862"]}}},
 {"s":"SHARING PRESBYTERIAN CHURCH","n":[["SHARING PRESBYTERIAN CHURCH",1],["SHARING PRESBYTERIAN CHURCH OF NEW YORK INC",1]],"x":{"irs":{"r":2,"i":["113515639","113545055"],"z":["11354"]}}},
 {"s":"SHARING WITH YOU FOUNDATION","n":[["SHARING WITH YOU FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["871845184"],"z":["11357"]}}},
-{"s":"SHARING YOUR SHARES","n":[["SHARING YOUR SHARES INC",1]],"x":{"irs":{"r":1,"i":["392545314"],"z":["11435"]}}},
-{"s":"SHARK ANGELS","n":[["SHARK ANGELS INC",1]],"x":{"irs":{"r":1,"i":["421603535"],"z":["10128"]}}}
+{"s":"SHARING YOUR SHARES","n":[["SHARING YOUR SHARES INC",1]],"x":{"irs":{"r":1,"i":["392545314"],"z":["11435"]}}}
 ]}

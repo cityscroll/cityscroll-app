@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":1,"first_ordinal":1808,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":1,"first_ordinal":1808,"entries":[
 {"s":"A B LIGHT HEAT AND POWER","n":[["A&B Light Heat and Power Corporation",1]],"x":{"dol":{"r":1,"i":["26-69AOQ-CR"],"z":["14120"]}}},
 {"s":"A B MANIAR SON","n":[["A B MANIAR & SON LLC",1]],"x":{"dol":{"r":1,"i":["26-64N71-CR"],"z":["08848"]}}},
 {"s":"A B P R LOGISTICS","n":[["A.B.P.R. LOGISTICS LLC",1]],"x":{"sbs":{"r":1,"i":["370716"],"z":["11237"],"p":["MBE"]}}},
@@ -292,7 +292,7 @@
 {"s":"A M J ELECTRIC","n":[["A.M.J Electric Corp",2],["A.M.J ELECTRIC CORP.",1]],"x":{"sbs":{"r":1,"i":["344854"],"z":["11225"],"p":["MBE"]},"dol":{"r":1,"i":["24-639AG-CR"],"z":["11225"]},"sca":{"r":1,"i":["A.M.J ELECTRIC CORP"],"z":["11225"]}}},
 {"s":"A M KLEEMAN SCHOLARSHIP FUND","n":[["A M KLEEMAN SCHOLARSHIP FUND",1]],"x":{"irs":{"r":1,"i":["133586537"],"z":["10924"]}}},
 {"s":"A M LABORATORY INSTALLATIONS","n":[["A&M Laboratory Installations LLC",1]],"x":{"dol":{"r":1,"i":["26-64QC3-CR"],"z":["10305"]}}},
-{"s":"A M LEONARD","n":[["A.M. LEONARD, INC.",30]],"x":{"cbr":{"r":20,"a":254593.27,"l":"2026-10-14","c":20,"i":["CT184620278803388","CT184620278802868","CT184620268807453","CT184620268807302","CT184620268805715"]},"cbv":{"r":10,"l":"2026-10-14","c":10,"i":["CT184620278803388","CT184620278802868","CT184620268807453","CT184620268807302","CT184620268805715"],"m":["Non-M/WBE"]}}},
+{"s":"A M LEONARD","n":[["A.M. LEONARD, INC.",35]],"x":{"cbr":{"r":23,"a":276865.66,"l":"2026-11-10","c":23,"i":["CT184620278803767","CT184620278803738","CT184620278803751","CT184620278803388","CT184620278802868"]},"cbv":{"r":12,"l":"2026-11-09","c":12,"i":["CT184620278803738","CT184620278803751","CT184620278803388","CT184620278802868","CT184620268807453"],"m":["Non-M/WBE"]}}},
 {"s":"A M MARCA","n":[["A.M. Marca, Inc.",1]],"x":{"dol":{"r":1,"i":["25-64X6D-CR"],"z":["11554"]}}},
 {"s":"A M MENARD","n":[["A M MENARD INC",1]],"x":{"irs":{"r":1,"i":["030600958"],"z":["11691"]}}},
 {"s":"A M MOTOR AND REFRIGERATION SERVICE","n":[["A.M Motor  and  Refrigeration Service Corp.",2]],"x":{"ocp":{"r":2,"a":846119,"l":"2007-08-31","i":["20070823011","20060522016"]}}},
@@ -836,6 +836,7 @@
 {"s":"ABC PROJECT","n":[["ABC PROJECT INC",1]],"x":{"irs":{"r":1,"i":["993453286"],"z":["14614"]}}},
 {"s":"ABC REFRIGERATION HVAC","d":[["ABC Refrigeration & HVAC",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-64ZJD-CR"],"z":["13057"]}}},
 {"s":"ABC STREETS NEIGHBORHOOD ASSOCIATION","n":[["ABC STREETS NEIGHBORHOOD ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["454579637"],"z":["14610"]}}},
+{"s":"ABC SUPPLY INTERIORS","n":[["ABC SUPPLY INTERIORS INC",2]],"x":{"cbr":{"r":1,"a":12309.1,"l":"2026-11-10","i":["CT184620278803711"]},"cbv":{"r":1,"l":"2026-11-10","i":["CT184620278803711"],"m":["Non-M/WBE"]}}},
 {"s":"ABC TECHNOLOGY SERVICES","n":[["ABC Technology Services, LLC",1]],"x":{"sbs":{"r":1,"i":["10176"],"z":["14215"],"p":["MBE"]}}},
 {"s":"ABCAT ASSOCIATES","n":[["Abcat Associates Inc.",1],["Abcat Associates, Inc.",1]],"x":{"sbs":{"r":1,"i":["378513"],"z":["11238"],"p":["MBE"]},"dol":{"r":1,"i":["25-65OCA-CR"],"z":["11238"]}}},
 {"s":"ABCD CONSTRUCTION","n":[["ABCD CONSTRUCTION CORP",2],["ABCD CONSTRUCTION",1],["ABCD Construction Corp.",1]],"d":[["ABCD Construction Corp",1]],"x":{"ocp":{"r":3,"a":9188916.63,"l":"2023-07-18","i":["20230712102","20160922013","20040915013"]},"ppt":{"r":1,"a":6390256.63,"l":"2023-07-11","i":["CT1-850-20238808644"]},"dol":{"r":1,"v":["dba"],"i":["25-64KH3-CR"],"z":["11220"]}}},
@@ -1465,7 +1466,7 @@
 {"s":"ACHIEVEMENT LAB ENRICHMENT","n":[["ACHIEVEMENT LAB ENRICHMENT INC",1]],"x":{"irs":{"r":1,"i":["823194646"],"z":["10029"]}}},
 {"s":"ACHIEVEMENT MASTERS","n":[["ACHIEVEMENT MASTERS INC",1]],"x":{"irs":{"r":1,"i":["453514174"],"z":["10952"]}}},
 {"s":"ACHIEVEMENT THROUGH ATHLETICS","n":[["ACHIEVEMENT THROUGH ATHLETICS INC",1]],"x":{"irs":{"r":1,"i":["473193743"],"z":["10075"]}}},
-{"s":"ACHIEVING INNOVATIVE MINDS","n":[["ACHIEVING INNOVATIVE MINDS CORP",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-11-10","i":["CT104020263047745","CT104020253134455"]},"cbv":{"r":1,"l":"2025-11-10","i":["CT104020263047745"],"m":["Non-M/WBE"]}}},
+{"s":"ACHIEVING INNOVATIVE MINDS","n":[["ACHIEVING INNOVATIVE MINDS CORP",2]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-11-10","i":["CT104020263047745","CT104020253134455"]}}},
 {"s":"ACHIEVING LEADERSHIPS PURPOSE","n":[["ACHIEVING LEADERSHIPS PURPOSE INC",1]],"x":{"irs":{"r":1,"i":["202930413"],"z":["10034"]}}},
 {"s":"ACHIEVING THE IMPOSSIBLE","n":[["ACHIEVING THE IMPOSSIBLE INC",1]],"x":{"irs":{"r":1,"i":["990988137"],"z":["11413"]}}},
 {"s":"ACHIEVING YOUTH UNITY AND BRILLIANC E AYUB FOUNDATION","n":[["ACHIEVING YOUTH UNITY AND BRILLIANC E AYUB FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["993788578"],"z":["11235"]}}},
@@ -1648,6 +1649,5 @@
 {"s":"ACTION SECURITY GROUP","d":[["Action Security Group",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-66IUF-CR"],"z":["14607"]}}},
 {"s":"ACTION STORE FRONTS","n":[["Action Store Fronts Inc.",1],["Action store Fronts, Inc.",1]],"d":[["Action Store Fronts Inc.",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["25-64CSG-CR"],"z":["11795"]},"sca":{"r":1,"i":["ACTION STORE FRONTS, INC."],"z":["11795"]}}},
 {"s":"ACTION TARGET","n":[["Action Target Inc.",1]],"x":{"dol":{"r":1,"i":["25-64K6Y-CR"],"z":["84097"]}}},
-{"s":"ACTION THREE CHRISTIAN MINISTRY","n":[["ACTION THREE CHRISTIAN MINISTRY INC",1]],"x":{"irs":{"r":1,"i":["113505818"],"z":["10457"]}}},
-{"s":"ACTION TO CURE KIDNEY CANCER","n":[["ACTION TO CURE KIDNEY CANCER",1]],"x":{"irs":{"r":1,"i":["200441399"],"z":["10023"]}}}
+{"s":"ACTION THREE CHRISTIAN MINISTRY","n":[["ACTION THREE CHRISTIAN MINISTRY INC",1]],"x":{"irs":{"r":1,"i":["113505818"],"z":["10457"]}}}
 ]}

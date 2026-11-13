@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":3,"first_ordinal":5153,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":3,"first_ordinal":5153,"entries":[
+{"s":"AIR SOURCE MECHANICAL","n":[["Air Source Mechanical, Inc.",2],["AIR SOURCE MECHANICAL INC",1],["AIR SOURCE MECHANICAL, INC.",1],["Air Source Mechanical Inc",1]],"x":{"cbr":{"r":1,"a":100000,"l":"2024-10-04","i":["CT182720251401517"]},"dbe":{"r":1,"i":["AIR SOURCE MECHANICAL INC"]},"sbs":{"r":1,"i":["361257"],"z":["10550"],"p":["MBE"]},"dol":{"r":1,"i":["25-6H8AF-CR"],"z":["10550"]},"sca":{"r":1,"i":["AIR SOURCE MECHANICAL, INC."],"z":["10550"]}}},
 {"s":"AIR SYSTEM MAINTENANCE","n":[["Air System Maintenance, LLC",1]],"x":{"dol":{"r":1,"i":["25-6H9SZ-CR"],"z":["07033"]}}},
 {"s":"AIR SYSTEMS BALANCING AND TESTING SERVICE","n":[["AIR SYSTEMS BALANCING AND TESTING SERVICE, INC.",1]],"x":{"dol":{"r":1,"i":["26-6351G-CR"],"z":["14543"]}}},
 {"s":"AIR SYSTEMS MAINTENANCE","n":[["AIR SYSTEMS MAINTENANCE, INC.",1]],"x":{"dol":{"r":1,"i":["25-65811-CR"],"z":["07033"]}}},
@@ -696,7 +697,7 @@
 {"s":"ALDONA FIRE SECURITY","n":[["Aldona Fire Security",1]],"x":{"ocp":{"r":1,"a":437700,"l":"2005-08-24","i":["20050818011"]}}},
 {"s":"ALDORAY AND ASSOCIATES","n":[["Aldoray  and  Associates Corp.",2],["Aldoray And Associates Corp",2],["Aldoray  and  Associates Corp",1]],"x":{"ocp":{"r":5,"a":1320119,"l":"2020-10-23","i":["20201016106","20180531029","20161004028","20150908007","20150825011"]}}},
 {"s":"ALDORAY AND ASSOCIATES CORP DBA ALDORAY INDUSTRIES","n":[["Aldoray  and  Associates Corp DBA Aldoray Industries",2],["Aldoray  and  Associates Corp. DBA Aldoray Industries",1],["Aldoray and Associates Corp DBA Aldoray Industries",1]],"x":{"ocp":{"r":4,"a":2683965,"l":"2018-07-11","i":["20180703014","20170405016","20170321026","20160727012"]}}},
-{"s":"ALDORAY ASSOCIATES","n":[["ALDORAY & ASSOCIATES CORP",69],["Aldoray & Associates Corp.",33],["Aldoray & Associates Corp",8],["AldoRay & Associates Corp.",1]],"x":{"ocp":{"r":41,"a":12314205.57,"l":"2026-11-02","c":41,"i":["20261026030","20261009008","20261008010","20261001016","20260911015"]},"cbr":{"r":26,"a":7512605.49,"l":"2026-10-23","c":26,"i":["CT184120278803512","CT184120278803260","CT107220278803177","CT184120278803090","CT182620278802824"]},"ppt":{"r":35,"a":10049606,"l":"2026-05-12","c":35,"i":["CT1-841-20268807574","CT1-841-20268804578","CT1-841-20268804056","CT1-069-20268803059","CT1-826-20268803443"]},"cbv":{"r":7,"l":"2026-10-23","c":7,"i":["CT184120278803512","CT184120278803260","CT107220278803177","CT184120278803090","CT182620278802824"],"m":["Black American"]},"dbe":{"r":1,"i":["ALDORAY & ASSOCIATES CORP"]},"sbs":{"r":1,"i":["10376"],"z":["11213"],"p":["MBE"]}}},
+{"s":"ALDORAY ASSOCIATES","n":[["ALDORAY & ASSOCIATES CORP",68],["Aldoray & Associates Corp.",33],["Aldoray & Associates Corp",8],["AldoRay & Associates Corp.",1]],"x":{"ocp":{"r":41,"a":12314205.57,"l":"2026-11-02","c":41,"i":["20261026030","20261009008","20261008010","20261001016","20260911015"]},"cbr":{"r":26,"a":7512605.49,"l":"2026-10-23","c":26,"i":["CT184120278803512","CT184120278803260","CT107220278803177","CT184120278803090","CT182620278802824"]},"ppt":{"r":35,"a":10049606,"l":"2026-05-12","c":35,"i":["CT1-841-20268807574","CT1-841-20268804578","CT1-841-20268804056","CT1-069-20268803059","CT1-826-20268803443"]},"cbv":{"r":6,"l":"2026-10-23","c":6,"i":["CT184120278803512","CT184120278803260","CT107220278803177","CT184120278803090","CT182620278802824"],"m":["Black American"]},"dbe":{"r":1,"i":["ALDORAY & ASSOCIATES CORP"]},"sbs":{"r":1,"i":["10376"],"z":["11213"],"p":["MBE"]}}},
 {"s":"ALDORAY INDUSTRIES","d":[["AldoRay Industries",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["10376"],"z":["11213"],"p":["MBE"]}}},
 {"s":"ALDOS MASONRY","n":[["ALDOS MASONRY INC",1]],"x":{"dol":{"r":1,"i":["25-6HNIS-CR"],"z":["10308"]}}},
 {"s":"ALDRICH FAMILY CHARITABLE FOUNDATION","n":[["ALDRICH FAMILY CHARITABLE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["472365658"],"z":["12212"]}}},
@@ -723,7 +724,7 @@
 {"s":"ALENA MAHAS SPEECH LANGUAGE PATHOLOGY","n":[["ALENA MAHAS SPEECH LANGUAGE PATHOLOGY PC",1],["Alena Mahas Speech Language Pathology PC",1]],"x":{"cbr":{"r":1,"a":4000000,"l":"2025-08-13","i":["MA104020269674921"]},"sbs":{"r":1,"i":["361213"],"z":["11771"],"p":["WBE"]}}},
 {"s":"ALENA MAHAS SPEECH-LANGUAGE PATHOLOGY","n":[["ALENA MAHAS  SPEECH-LANGUAGE PATHOLOGY  PC",1]],"x":{"dbe":{"r":1,"i":["ALENA MAHAS  SPEECH-LANGUAGE PATHOLOGY  PC"]}}},
 {"s":"ALEPH AID","n":[["ALEPH AID INC",1]],"x":{"irs":{"r":1,"i":["413600296"],"z":["10950"]}}},
-{"s":"ALEPH DAYCARE","n":[["ALEPH DAYCARE INC",1]],"x":{"dbe":{"r":1,"i":["ALEPH DAYCARE INC"]}}},
+{"s":"ALEPH DAYCARE","n":[["ALEPH DAYCARE INC",3]],"x":{"cbr":{"r":1,"a":5562640,"l":"2026-11-09","i":["CT104020279761566"]},"cbv":{"r":1,"l":"2026-11-09","i":["CT104020279761566"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ALEPH DAYCARE INC"]}}},
 {"s":"ALEPH DAYCARE 1","n":[["ALEPH DAYCARE 1 INC",1]],"x":{"dbe":{"r":1,"i":["ALEPH DAYCARE 1 INC"]}}},
 {"s":"ALEPH FOUNDATION","n":[["ALEPH FOUNDATION",1]],"x":{"irs":{"r":1,"i":["272082561"],"z":["11205"]}}},
 {"s":"ALEPH FROM THE BEGINNING","n":[["ALEPH FROM THE BEGINNING",1]],"x":{"irs":{"r":1,"i":["932008139"],"z":["11210"]}}},
@@ -1700,10 +1701,5 @@
 {"s":"ALLTENNA","n":[["ALLTENNA INC",1]],"x":{"irs":{"r":1,"i":["842360029"],"z":["10003"]}}},
 {"s":"ALLUEL","n":[["Alluel Inc",1]],"d":[["Alluel",1]],"x":{"sbs":{"r":2,"v":["dba","name"],"i":["16586","379186"],"z":["07079","11215"],"p":["MBE"]}}},
 {"s":"ALLURE LOGISTICS TRANSPORTATION","n":[["Allure Logistics & Transportation Inc",1]],"x":{"sbs":{"r":1,"i":["365778"],"z":["07631"],"p":["MBE","WBE"]}}},
-{"s":"ALLURE MGMT DEV","n":[["ALLURE MGMT & DEV INC",1],["Allure Mgmt & Dev, Inc.",1]],"x":{"dbe":{"r":1,"i":["ALLURE MGMT & DEV INC"]},"sbs":{"r":1,"i":["333333"],"z":["11416"],"p":["MBE","WBE"]}}},
-{"s":"ALLURE WIGS","n":[["Allure Wigs Inc.",1]],"x":{"sbs":{"r":1,"i":["287182"],"z":["11233"],"p":["MBE","WBE"]}}},
-{"s":"ALLWAY TOOLS","n":[["ALLWAY TOOLS INC",1]],"x":{"dbe":{"r":1,"i":["ALLWAY TOOLS INC"]}}},
-{"s":"ALLWAYS FORWARD","n":[["ALLWAYS FORWARD INC",1]],"x":{"irs":{"r":1,"i":["422664019"],"z":["14031"]}}},
-{"s":"ALLWYN","n":[["ALLWYN CORPORATION",1],["Allwyn Corporation",1]],"x":{"ocp":{"r":1,"a":300854,"l":"2021-05-06","i":["20210430103"]},"dbe":{"r":1,"i":["ALLWYN CORPORATION"]}}},
-{"s":"ALLYN FOUNDATION","n":[["ALLYN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["156017723"],"z":["13152"]}}}
+{"s":"ALLURE MGMT DEV","n":[["ALLURE MGMT & DEV INC",1],["Allure Mgmt & Dev, Inc.",1]],"x":{"dbe":{"r":1,"i":["ALLURE MGMT & DEV INC"]},"sbs":{"r":1,"i":["333333"],"z":["11416"],"p":["MBE","WBE"]}}}
 ]}

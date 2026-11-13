@@ -1,4 +1,11 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":14,"first_ordinal":23508,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":14,"first_ordinal":23503,"entries":[
+{"s":"CALLAH BENUE ASSOCIATES","n":[["Callah Benue Associates, Inc.",1]],"x":{"sbs":{"r":1,"i":["5485"],"z":["11225"],"p":["MBE"]}}},
+{"s":"CALLAHAN CLEANING","d":[["CALLAHAN CLEANING COMPANY",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-695AP-CR"],"z":["14621"]}}},
+{"s":"CALLAHAN DEE FAMILY FOUNDATION","n":[["CALLAHAN DEE FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["475474035"],"z":["12212"]}}},
+{"s":"CALLAHAN NANNINI QUARRY","n":[["Callahan & Nannini Quarry, Inc.",1]],"x":{"dol":{"r":1,"i":["26-637EO-CR"],"z":["12577"]}}},
+{"s":"CALLAHANS CLEANING SERVICES","n":[["CALLAHANS CLEANING SERVICES LLC",1]],"x":{"dol":{"r":1,"i":["26-695AP-CR"],"z":["14621"]}}},
+{"s":"CALLAN","n":[["CALLAN LLC",2],["Callan LLC,",1]],"x":{"ocp":{"r":1,"a":2060000,"l":"2019-07-15","i":["20190709003"]},"cbr":{"r":1,"a":2575000,"l":"2025-05-14","i":["CT101520251408173"]},"dbe":{"r":1,"i":["CALLAN LLC"]}}},
+{"s":"CALLAN ASSOCIATES","n":[["Callan Associates Inc",3],["Callan Associates Inc.",2]],"x":{"ocp":{"r":5,"a":5488000,"l":"2016-03-25","i":["20160318004","20150804012","20111107018","20090303009","20060531004"]}}},
 {"s":"CALLANAN INDUSTRIES","n":[["CALLANAN INDUSTRIES, INC.",1]],"x":{"dol":{"r":1,"i":["24-63HPJ-CR"],"z":["12212"]}}},
 {"s":"CALLE OUVERT ICE","n":[["CALLE OUVERT ICE INC",1]],"x":{"irs":{"r":1,"i":["843631729"],"z":["12482"]}}},
 {"s":"CALLEA","n":[["Callea LLC",1]],"x":{"sbs":{"r":1,"i":["375008"],"z":["10312"],"p":["WBE"]}}},
@@ -1741,14 +1748,5 @@
 {"s":"CASPER TECHNOLOGY","n":[["CASPER TECHNOLOGY INC",1]],"x":{"irs":{"r":1,"i":["871603215"],"z":["11418"]}}},
 {"s":"CASPERKILL GAME CLUB","n":[["CASPERKILL GAME CLUB INC",1]],"x":{"irs":{"r":1,"i":["146030242"],"z":["12581"]}}},
 {"s":"CASPI PAINTING","n":[["Caspi Painting Co., Inc.",1]],"x":{"dol":{"r":1,"i":["26-69S3C-CR"],"z":["10588"]}}},
-{"s":"CASPIAN CAPITAL","n":[["CASPIAN CAPITAL LP",1]],"x":{"dbe":{"r":1,"i":["CASPIAN CAPITAL LP"]}}},
-{"s":"CASPIAN RESEARCH INSTITUTE","n":[["CASPIAN RESEARCH INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["861672137"],"z":["14850"]}}},
-{"s":"CASS","d":[["CASS Inc",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-69OC9-CR"],"z":["11050"]}}},
-{"s":"CASS DOANE DOZING","n":[["CASS DOANE DOZING, LLC",1]],"x":{"dol":{"r":1,"i":["26-9YKB8-CR"],"z":["14892"]}}},
-{"s":"CASS SON S II","n":[["Cass & Son's II, LLC",1]],"x":{"dol":{"r":1,"i":["24-64RSC-CR"],"z":["12028"]}}},
-{"s":"CASSA ELECTRIC","n":[["CASSA ELECTRIC CORP.",1]],"x":{"dol":{"r":1,"i":["26-69LHN-CR"],"z":["11729"]}}},
-{"s":"CASSADAGA CEMETERY","n":[["CASSADAGA CEMETERY CORP",1]],"x":{"irs":{"r":1,"i":["160795281"],"z":["14718"]}}},
-{"s":"CASSADAGA COMMUNITY BAPTIST CHURCH","n":[["CASSADAGA COMMUNITY BAPTIST CHURCH",1]],"x":{"irs":{"r":1,"i":["237356684"],"z":["14718"]}}},
-{"s":"CASSADAGA JOB CORPS ACADEMY STUDENT GOVERNMENT ASS","n":[["CASSADAGA JOB CORPS ACADEMY STUDENT GOVERNMENT ASS",1]],"x":{"irs":{"r":1,"i":["800789466"],"z":["14718"]}}},
-{"s":"CASSADAGA LAKES ASSOCIATION","n":[["CASSADAGA LAKES ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["161296827"],"z":["14718"]}}}
+{"s":"CASPIAN CAPITAL","n":[["CASPIAN CAPITAL LP",1]],"x":{"dbe":{"r":1,"i":["CASPIAN CAPITAL LP"]}}}
 ]}

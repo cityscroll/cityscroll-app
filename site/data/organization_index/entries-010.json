@@ -1,4 +1,14 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":10,"first_ordinal":16683,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":10,"first_ordinal":16675,"entries":[
+{"s":"BERRY INDUSTRIAL GROUP","n":[["BERRY INDUSTRIAL GROUP",2]],"x":{"ocp":{"r":2,"a":945295.07,"l":"2020-12-01","i":["20201123107","20160105015"]}}},
+{"s":"BERRY ROCVIL ENTERPRISES","n":[["Berry Rocvil Enterprises, LLC",1]],"x":{"sbs":{"r":1,"i":["373142"],"z":["10004"],"p":["MBE","WBE"]}}},
+{"s":"BERSHAD FAMILY FOUNDATION","n":[["BERSHAD FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["461514034"],"z":["10028"]}}},
+{"s":"BERT AND EMMA LAMONTE@WOOD TRUST","n":[["BERT AND EMMA LAMONTE@WOOD TRUST",1]],"x":{"irs":{"r":1,"i":["206795348"],"z":["14240"]}}},
+{"s":"BERT AND SANDRA WASSERMAN FOUNDATION","n":[["BERT AND SANDRA WASSERMAN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133961422"],"z":["10017"]}}},
+{"s":"BERT N MITCHELL FAMILY FOUNDATION","n":[["BERT N MITCHELL FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133617553"],"z":["10069"]}}},
+{"s":"BERT SANTORA CHARITABLE TR UW","n":[["BERT SANTORA CHARITABLE TR UW",1]],"x":{"irs":{"r":1,"i":["266094914"],"z":["13820"]}}},
+{"s":"BERT SAPERSTEIN COMMUNICATION SCHOLARSHIP FUND","n":[["BERT SAPERSTEIN COMMUNICATION SCHOLARSHIP FUND INC",1]],"x":{"irs":{"r":1,"i":["133243805"],"z":["10804"]}}},
+{"s":"BERTELSMANN PUBLISHING GROUP","n":[["BERTELSMANN PUBLISHING GROUP INC",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-04-23","i":["CT104020263176011"]},"cbv":{"r":1,"l":"2026-04-23","i":["CT104020263176011"],"m":["Non-M/WBE"]}}},
+{"s":"BERTHA AGOR MEMORIAL NURSERY SCHOOL","n":[["BERTHA AGOR MEMORIAL NURSERY SCHOOL INC",1]],"x":{"irs":{"r":1,"i":["160917448"],"z":["14526"]}}},
 {"s":"BERTHA AND ISAAC LIBERMAN FOUNDATION","n":[["BERTHA AND ISAAC LIBERMAN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["136119056"],"z":["10022"]}}},
 {"s":"BERTHA AND JACOB ROSENBERG FOUNDATION","n":[["BERTHA AND JACOB ROSENBERG FOUNDATION",1]],"x":{"irs":{"r":1,"i":["472492753"],"z":["10016"]}}},
 {"s":"BERTHA CAPEN REYNOLDS SOCIETY","n":[["BERTHA CAPEN REYNOLDS SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["141675210"],"z":["14607"]}}},
@@ -1753,14 +1763,5 @@
 {"s":"BLACKTOP MAINTENANCE","n":[["Blacktop Maintenance Corp",1]],"x":{"dol":{"r":1,"i":["26-6331c-cr"],"z":["12603"]}}},
 {"s":"BLACKTOWER SPORTS","n":[["BLACKTOWER SPORTS INC",1]],"x":{"irs":{"r":1,"i":["333734826"],"z":["11377"]}}},
 {"s":"BLACKWATCH SOCCER CLUB","n":[["BLACKWATCH SOCCER CLUB INC",1]],"x":{"irs":{"r":1,"i":["141826613"],"z":["12205"]}}},
-{"s":"BLACKWOOD ASSOCIATES","n":[["BLACKWOOD ASSOCIATES INC.",1]],"x":{"ocp":{"r":1,"a":124984.66,"l":"2014-05-27","i":["20140519010"]}}},
-{"s":"BLACKYARD COLLECTIVE NYC","n":[["BLACKYARD COLLECTIVE NYC INC",1]],"x":{"irs":{"r":1,"i":["883641425"],"z":["11225"]}}},
-{"s":"BLACQUE ACRES","n":[["BLACQUE ACRES",1]],"x":{"irs":{"r":1,"i":["923827554"],"z":["13502"]}}},
-{"s":"BLADE","n":[["Blade LLC",1]],"x":{"dol":{"r":1,"i":["25-65Q31-CR"],"z":["13634"]}}},
-{"s":"BLADE CONTRACTING","n":[["Blade Contracting Inc.",2]],"x":{"ocp":{"r":1,"a":3213175,"l":"2011-06-08","i":["20110602007"]},"sbs":{"r":1,"i":["4819"],"z":["10301"],"p":["MBE"]}}},
-{"s":"BLADED BODY","n":[["Bladed Body LLC",1]],"x":{"sbs":{"r":1,"i":["397295"],"z":["11208"],"p":["MBE"]}}},
-{"s":"BLADYKAS ENGINEERING P C","n":[["BLADYKAS ENGINEERING P.C.",1],["BLADYKAS ENGINEERING, P.C.",1],["Bladykas Engineering P.c.",1]],"x":{"ocp":{"r":1,"a":3000000,"l":"2018-01-19","i":["20180111026"]},"dbe":{"r":1,"i":["BLADYKAS ENGINEERING P.C."]},"sca":{"r":1,"i":["BLADYKAS ENGINEERING, P.C."],"z":["11791"]}}},
-{"s":"BLAIR BLOOM","n":[["Blair & Bloom, LLC",1]],"x":{"sbs":{"r":1,"i":["365402"],"z":["10027"],"p":["MBE","WBE"]}}},
-{"s":"BLAIR CONSTRUCTION OF AUBURN NEW YORK","n":[["Blair Construction of Auburn, New York, Inc.",1]],"x":{"dol":{"r":1,"i":["26-64OC5-CR"],"z":["13021"]}}},
-{"s":"BLAIR MUI DOWD ARCHITECTS","n":[["Blair Mui Dowd Architects PC",1]],"x":{"cbr":{"r":1,"a":1519050,"l":"2025-10-21","i":["CT104320261405009"]}}}
+{"s":"BLACKWOOD ASSOCIATES","n":[["BLACKWOOD ASSOCIATES INC.",1]],"x":{"ocp":{"r":1,"a":124984.66,"l":"2014-05-27","i":["20140519010"]}}}
 ]}

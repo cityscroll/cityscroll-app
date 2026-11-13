@@ -1,4 +1,10 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":87,"first_ordinal":147755,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":87,"first_ordinal":147757,"entries":[
+{"s":"TRUE DISCIPLES OF JESUS CHRIST INTERNATIONAL UNITED COUNCIL OF","n":[["TRUE DISCIPLES OF JESUS CHRIST INTERNATIONAL UNITED COUNCIL OF",1]],"x":{"irs":{"r":1,"i":["161518388"],"z":["14222"]}}},
+{"s":"TRUE DIVINITY CHURCH OF CHRIST","n":[["TRUE DIVINITY CHURCH OF CHRIST",1]],"x":{"irs":{"r":1,"i":["262802824"],"z":["10456"]}}},
+{"s":"TRUE DIVINITY HOOPS","n":[["TRUE DIVINITY HOOPS INC",1]],"x":{"irs":{"r":1,"i":["422318910"],"z":["11226"]}}},
+{"s":"TRUE EATS LOCAL FOOD EDUCATION","n":[["TRUE EATS LOCAL FOOD EDUCATION INC",1]],"x":{"irs":{"r":1,"i":["844723047"],"z":["10025"]}}},
+{"s":"TRUE EYE DESIGN","n":[["TRUE EYE DESIGN LLC",2],["True Eye Design LLC",1]],"x":{"ocp":{"r":1,"a":175000,"l":"2024-02-22","i":["20240214115"]},"ppt":{"r":1,"a":175000,"l":"2024-02-14","i":["CT1-841-20248805709"]},"sbs":{"r":1,"i":["16886"],"z":["11225"],"p":["MBE"]}}},
+{"s":"TRUE FAITH CHRISTIAN FELLOWSHIP","n":[["TRUE FAITH CHRISTIAN FELLOWSHIP",1]],"x":{"irs":{"r":1,"i":["273401982"],"z":["14608"]}}},
 {"s":"TRUE FAITH FELLOWSHIP CHURCH","n":[["TRUE FAITH FELLOWSHIP CHURCH",1]],"x":{"irs":{"r":1,"i":["113125659"],"z":["10472"]}}},
 {"s":"TRUE FAITH MISSIONARY BAPTIST CHURCH","n":[["TRUE FAITH MISSIONARY BAPTIST CHURCH",1]],"x":{"irs":{"r":1,"i":["161361324"],"z":["14212"]}}},
 {"s":"TRUE FORM CONTRACTING","n":[["True Form Contracting, Inc.",1]],"x":{"dol":{"r":1,"i":["26-669YP-CR"],"z":["12528"]}}},
@@ -89,7 +95,7 @@
 {"s":"TRUELOVE SEEDS","n":[["Truelove Seeds LLC",4]],"x":{"cbr":{"r":2,"a":39240,"l":"2026-07-27","i":["CT184620278801924","CT184620268803755"]},"cbv":{"r":2,"l":"2026-07-27","i":["CT184620278801924","CT184620268803755"],"m":["Non-M/WBE"]}}},
 {"s":"TRUEPHASE ELECTRICAL CONTRACTORS","n":[["Truephase Electrical Contractors Inc.",1]],"x":{"dol":{"r":1,"i":["26-694VX-CR"],"z":["10001"]}}},
 {"s":"TRUER","n":[["TRUER INC",1]],"x":{"irs":{"r":1,"i":["333482753"],"z":["11772"]}}},
-{"s":"TRUESCREEN","n":[["TRUESCREEN, INC.",4]],"x":{"ocp":{"r":1,"a":95100,"l":"2023-11-09","i":["20231102105"]},"cbr":{"r":1,"a":2170,"l":"2026-02-03","i":["CT181620261410804"]},"ppt":{"r":1,"a":115526.5,"l":"2023-11-01","i":["CT1-125-20248803598"]},"cbv":{"r":1,"l":"2026-02-03","i":["CT181620261410804"],"m":["Non-M/WBE"]}}},
+{"s":"TRUESCREEN","n":[["TRUESCREEN, INC.",3]],"x":{"ocp":{"r":1,"a":95100,"l":"2023-11-09","i":["20231102105"]},"cbr":{"r":1,"a":2170,"l":"2026-02-03","i":["CT181620261410804"]},"ppt":{"r":1,"a":115526.5,"l":"2023-11-01","i":["CT1-125-20248803598"]}}},
 {"s":"TRUESDALE LAKE PROPERTY OWNERS ASSOCIATION","n":[["TRUESDALE LAKE PROPERTY OWNERS ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["237379395"],"z":["10590"]}}},
 {"s":"TRUFUND FINANCIAL SERVICES","n":[["TRUFUND FINANCIAL SERVICES  INC.",1],["TRUFUND FINANCIAL SERVICES INC",1]],"x":{"dbe":{"r":1,"i":["TRUFUND FINANCIAL SERVICES  INC."]},"irs":{"r":1,"i":["593814814"],"z":["10016"]}}},
 {"s":"TRUGRADE PAVING","n":[["TruGrade Paving LLC",1]],"x":{"dol":{"r":1,"i":["26-69CD6-CR"],"z":["13148"]}}},
@@ -1704,12 +1710,5 @@
 {"s":"UNITED CHARTER HIGH SCHOOL FOR THE HUMANITIES","n":[["UNITED CHARTER HIGH SCHOOL FOR THE HUMANITIES",1]],"x":{"irs":{"r":1,"i":["451559526"],"z":["10463"]}}},
 {"s":"UNITED CHARTER HIGH SCHOOL FOR THE HUMANITIES II","n":[["UNITED CHARTER HIGH SCHOOL FOR THE HUMANITIES II",1]],"x":{"irs":{"r":1,"i":["454667733"],"z":["10455"]}}},
 {"s":"UNITED CHARTER HIGH SCHOOLS","n":[["UNITED CHARTER HIGH SCHOOLS",1]],"x":{"irs":{"r":1,"i":["462339783"],"z":["10115"]}}},
-{"s":"UNITED CHILDRENS EDUCATION FOUNDATION","n":[["UNITED CHILDRENS EDUCATION FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["814560853"],"z":["11223"]}}},
-{"s":"UNITED CHINESE ASSOCIATION OF BROOKLYN","n":[["United Chinese Association Of Brooklyn Inc",3],["UNITED CHINESE ASSOCIATION OF BROOKLYN INC",2],["UNITED CHINESE ASSOCIATION OF BROOKLYN  INC.",1]],"x":{"ocp":{"r":3,"a":335912,"l":"2020-03-20","i":["20200313023","20191211036","20190404014"]},"cbr":{"r":1,"a":387112.5,"l":"2024-08-19","i":["CT181620258801494"]},"dbe":{"r":1,"i":["UNITED CHINESE ASSOCIATION OF BROOKLYN  INC."]},"irs":{"r":1,"i":["371469112"],"z":["11223"]}}},
-{"s":"UNITED CHINESE HEALTH FOUNDATION","n":[["UNITED CHINESE HEALTH FOUNDATION",1]],"x":{"irs":{"r":1,"i":["311566483"],"z":["10583"]}}},
-{"s":"UNITED CHRISTAN LEADERSHIP MINISTRY","n":[["UNITED CHRISTAN LEADERSHIP MINISTRY",1]],"x":{"irs":{"r":1,"i":["463765295"],"z":["14608"]}}},
-{"s":"UNITED CHRISTIAN ADVOCACY NETWORK","n":[["UNITED CHRISTIAN ADVOCACY NETWORK",1]],"x":{"irs":{"r":1,"i":["383793917"],"z":["14701"]}}},
-{"s":"UNITED CHRISTIAN ASSEMBLY","n":[["UNITED CHRISTIAN ASSEMBLY",2]],"x":{"irs":{"r":2,"i":["112600580","510180778"],"z":["11233","11420"]}}},
-{"s":"UNITED CHRISTIAN CHURCH","n":[["UNITED CHRISTIAN CHURCH",1]],"x":{"irs":{"r":1,"i":["522146325"],"z":["11236"]}}},
-{"s":"UNITED CHRISTIAN CHURCH AND MINISTERIAL ASSOCIATION","n":[["UNITED CHRISTIAN CHURCH AND MINISTERIAL ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["113198400"],"z":["11225"]}}}
+{"s":"UNITED CHILDRENS EDUCATION FOUNDATION","n":[["UNITED CHILDRENS EDUCATION FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["814560853"],"z":["11223"]}}}
 ]}

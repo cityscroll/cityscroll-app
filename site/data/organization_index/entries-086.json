@@ -1,4 +1,10 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":86,"first_ordinal":146048,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":86,"first_ordinal":146050,"entries":[
+{"s":"TOP ROCK DEVELOPMENT AND CONSTRUCTION","n":[["TOP ROCK DEVELOPMENT AND CONSTRUCTION CORP.",1]],"x":{"dol":{"r":1,"i":["25-67GRN-CR"],"z":["10001"]}}},
+{"s":"TOP SATELLITE SHOP","n":[["TOP SATELLITE SHOP INC",1]],"x":{"irs":{"r":1,"i":["300334509"],"z":["14422"]}}},
+{"s":"TOP SET TRUCKING","n":[["Top Set Trucking Corp",1],["Top Set Trucking Corp.",1]],"x":{"sbs":{"r":1,"i":["343779"],"z":["10804"],"p":["WBE"]},"dol":{"r":1,"i":["25-65NYR-CR"],"z":["10804"]}}},
+{"s":"TOP SHELF AMATEUR HOCKEY ASSOCIATION","n":[["TOP SHELF AMATEUR HOCKEY ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["883227897"],"z":["11791"]}}},
+{"s":"TOP SOCCER","n":[["TOP SOCCER INC",1]],"x":{"irs":{"r":1,"i":["800953706"],"z":["10466"]}}},
+{"s":"TOP SOURCE INTERNATIONAL","n":[["Top Source International Inc.",1]],"x":{"sbs":{"r":1,"i":["16778"],"z":["11801"],"p":["MBE","WBE"]}}},
 {"s":"TOP TEMPORARIES","n":[["TOP TEMPORARIES INC",6],["Top Temporaries, Inc.",2],["TOP TEMPORARIES  INC.",1],["Top Temporaries Inc.",1]],"x":{"ocp":{"r":5,"a":7895200.87,"l":"2025-03-05","i":["20250227002","20240313101","20190219019","20180323021","20060221001"]},"cbr":{"r":1,"a":800002,"l":"2025-02-26","i":["CT185820258805715"]},"ppt":{"r":2,"a":2150151.5,"l":"2025-02-26","i":["CT1-858-20258805715","CT1-858-20248805707"]},"dbe":{"r":1,"i":["TOP TEMPORARIES  INC."]},"sbs":{"r":1,"i":["1688"],"z":["10011"],"p":["MBE","WBE"]}}},
 {"s":"TOP TIER GRIT","n":[["TOP TIER GRIT INC",1]],"x":{"irs":{"r":1,"i":["334222793"],"z":["13142"]}}},
 {"s":"TOP TIER OFFICIALS","n":[["Top Tier Officials, LLC",1]],"x":{"sbs":{"r":1,"i":["357012"],"z":["11358"],"p":["MBE"]}}},
@@ -1699,11 +1705,5 @@
 {"s":"TRUE DESTINY LEADERSHIP GROUP","d":[["True Destiny Leadership Group LLC",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["16298"],"z":["11552"],"p":["MBE"]}}},
 {"s":"TRUE DESTINY LEADERSHIP LEGACY PROJECT","n":[["TRUE DESTINY LEADERSHIP LEGACY PROJECT INC",1]],"x":{"irs":{"r":1,"i":["934528955"],"z":["10005"]}}},
 {"s":"TRUE DEVELOPMENT NEW YORK","n":[["True Development New York, LLC",1]],"x":{"sbs":{"r":1,"i":["330632"],"z":["10471"],"p":["WBE"]}}},
-{"s":"TRUE DISCIPLES OF JESUS CHRIST ASSEMBLIES OF GOD","n":[["TRUE DISCIPLES OF JESUS CHRIST ASSEMBLIES OF GOD",1]],"x":{"irs":{"r":1,"i":["161500408"],"z":["14213"]}}},
-{"s":"TRUE DISCIPLES OF JESUS CHRIST INTERNATIONAL UNITED COUNCIL OF","n":[["TRUE DISCIPLES OF JESUS CHRIST INTERNATIONAL UNITED COUNCIL OF",1]],"x":{"irs":{"r":1,"i":["161518388"],"z":["14222"]}}},
-{"s":"TRUE DIVINITY CHURCH OF CHRIST","n":[["TRUE DIVINITY CHURCH OF CHRIST",1]],"x":{"irs":{"r":1,"i":["262802824"],"z":["10456"]}}},
-{"s":"TRUE DIVINITY HOOPS","n":[["TRUE DIVINITY HOOPS INC",1]],"x":{"irs":{"r":1,"i":["422318910"],"z":["11226"]}}},
-{"s":"TRUE EATS LOCAL FOOD EDUCATION","n":[["TRUE EATS LOCAL FOOD EDUCATION INC",1]],"x":{"irs":{"r":1,"i":["844723047"],"z":["10025"]}}},
-{"s":"TRUE EYE DESIGN","n":[["TRUE EYE DESIGN LLC",2],["True Eye Design LLC",1]],"x":{"ocp":{"r":1,"a":175000,"l":"2024-02-22","i":["20240214115"]},"ppt":{"r":1,"a":175000,"l":"2024-02-14","i":["CT1-841-20248805709"]},"sbs":{"r":1,"i":["16886"],"z":["11225"],"p":["MBE"]}}},
-{"s":"TRUE FAITH CHRISTIAN FELLOWSHIP","n":[["TRUE FAITH CHRISTIAN FELLOWSHIP",1]],"x":{"irs":{"r":1,"i":["273401982"],"z":["14608"]}}}
+{"s":"TRUE DISCIPLES OF JESUS CHRIST ASSEMBLIES OF GOD","n":[["TRUE DISCIPLES OF JESUS CHRIST ASSEMBLIES OF GOD",1]],"x":{"irs":{"r":1,"i":["161500408"],"z":["14213"]}}}
 ]}

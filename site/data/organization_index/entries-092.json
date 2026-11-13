@@ -1,4 +1,14 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":92,"first_ordinal":156049,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":92,"first_ordinal":156047,"entries":[
+{"s":"WESTSIDE FEDERATION FOR SENIOR HOUSING","n":[["Westside Federation for Senior Housing, Inc.",2],["Westside Federation for Senior Housing",1]],"x":{"ocp":{"r":3,"a":6462918.4,"l":"2008-05-28","i":["20080522071","20060315022","20051013027"]}}},
+{"s":"WESTSIDE FEDERATION OF NEIGHBORHOODS BLOCK ASSOCS","n":[["WESTSIDE FEDERATION OF NEIGHBORHOODS & BLOCK ASSOCS INC",1]],"x":{"irs":{"r":1,"i":["133683171"],"z":["10023"]}}},
+{"s":"WESTSIDE INTERNATIONAL SOCCER","n":[["WESTSIDE INTERNATIONAL SOCCER",1]],"x":{"irs":{"r":1,"i":["383880608"],"z":["14240"]}}},
+{"s":"WESTSIDE MINISTRIES","n":[["WESTSIDE MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["300045548"],"z":["14213"]}}},
+{"s":"WESTSIDE NEW COVENANT CHURCH","n":[["WESTSIDE NEW COVENANT CHURCH",1]],"x":{"irs":{"r":1,"i":["132946606"],"z":["10025"]}}},
+{"s":"WESTSIDE TECHNICAL SOLUTIONS","n":[["WESTSIDE TECHNICAL SOLUTIONS, INC.",1]],"x":{"dol":{"r":1,"i":["25-6HXBP-CR"],"z":["14428"]}}},
+{"s":"WESTSIDE WARRIORS ATHLETIC","n":[["WESTSIDE WARRIORS ATHLETIC",1]],"x":{"irs":{"r":1,"i":["203731399"],"z":["10025"]}}},
+{"s":"WESTSIDE WOOD REFINISHING","n":[["Westside Wood Refinishing Corp.",1]],"x":{"sbs":{"r":1,"i":["1880"],"z":["10020"],"p":["MBE"]}}},
+{"s":"WESTSIDERS FOR PUBLIC PARTICIPATION","n":[["WESTSIDERS FOR PUBLIC PARTICIPATION INC",1]],"x":{"irs":{"r":1,"i":["371594004"],"z":["10025"]}}},
+{"s":"WESTVILLE HISTORICAL ORGANIZATION","n":[["WESTVILLE HISTORICAL ORGANIZATION",1]],"x":{"irs":{"r":1,"i":["141835584"],"z":["12926"]}}},
 {"s":"WESTVILLE VOLUNTEER FIREMANS ASSOCIATION","n":[["WESTVILLE VOLUNTEER FIREMANS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["141685505"],"z":["12926"]}}},
 {"s":"WESTWOOD COMPUTER","n":[["Westwood Computer Corp.",9],["Westwood Computer Corporation",6]],"x":{"ocp":{"r":15,"a":2664020.98,"l":"2008-04-24","c":15,"i":["20080417050","20080320003","20070720011","20051102005","20050812007"]}}},
 {"s":"WESTWOOD MANAGEMENT","n":[["WESTWOOD MANAGEMENT CORP",1]],"x":{"dbe":{"r":1,"i":["WESTWOOD MANAGEMENT CORP"]}}},
@@ -1765,16 +1775,5 @@
 {"s":"WOODLAWN APARTMENTS","n":[["WOODLAWN APARTMENTS INC",1]],"x":{"irs":{"r":1,"i":["223376407"],"z":["12866"]}}},
 {"s":"WOODLAWN CEMETERY","n":[["WOODLAWN CEMETERY",1]],"x":{"irs":{"r":1,"i":["150496700"],"z":["13203"]}}},
 {"s":"WOODLAWN CEMETERY ASSOC","n":[["WOODLAWN CEMETERY ASSOC INC",1]],"x":{"irs":{"r":1,"i":["160694938"],"z":["14127"]}}},
-{"s":"WOODLAWN CEMETERY ASSOCIATION","n":[["WOODLAWN CEMETERY ASSOCIATION",3],["WOODLAWN CEMETERY ASSOCIATION INC",1]],"x":{"irs":{"r":4,"i":["150497485","160694940","160877391","394263464"],"z":["12023","13346","14804","14895"]}}},
-{"s":"WOODLAWN CONSERVANCY","n":[["WOODLAWN CONSERVANCY INC",2]],"x":{"cbr":{"r":1,"a":63750,"l":"2024-07-31","i":["CT126020258800864"]},"irs":{"r":1,"i":["311695037"],"z":["10470"]}}},
-{"s":"WOODLAWN FOUNDATION","n":[["WOODLAWN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133055729"],"z":["10801"]}}},
-{"s":"WOODLAWN NEIGHBORHOOD ASSOCIATION","n":[["WOODLAWN NEIGHBORHOOD ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["020637876"],"z":["12304"]}}},
-{"s":"WOODLAWN REFORMED CHURCH","n":[["WOODLAWN REFORMED CHURCH",1]],"x":{"irs":{"r":1,"i":["141367704"],"z":["12302"]}}},
-{"s":"WOODLAWN SENIOR LIVING","n":[["WOODLAWN SENIOR LIVING LLC",1]],"x":{"dbe":{"r":1,"i":["WOODLAWN SENIOR LIVING LLC"]}}},
-{"s":"WOODLAWN SPORTSMENS CLUB","n":[["WOODLAWN SPORTSMENS CLUB INC",1]],"x":{"irs":{"r":1,"i":["146033825"],"z":["12303"]}}},
-{"s":"WOODLAWN VOLUNTEER FIRE","n":[["WOODLAWN VOLUNTEER FIRE COMPANY INC",1]],"x":{"irs":{"r":1,"i":["160960372"],"z":["14219"]}}},
-{"s":"WOODLEA FOUNDATION","n":[["WOODLEA FOUNDATION",1]],"x":{"irs":{"r":1,"i":["863988377"],"z":["10510"]}}},
-{"s":"WOODLOCH PINES","n":[["WOODLOCH PINES, INC.",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-04-08","i":["CT104020263135424","CT104020253157205"]},"cbv":{"r":1,"l":"2026-04-08","i":["CT104020263135424"],"m":["Non-M/WBE"]}}},
-{"s":"WOODMAN CONSULTING","n":[["WOODMAN CONSULTING INC",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-10-07","i":["CT104020273027310"]},"cbv":{"r":1,"l":"2026-10-07","i":["CT104020273027310"],"m":["Non-M/WBE"]}}},
-{"s":"WOODMAN FAMILY FOUNDATION","n":[["WOODMAN FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["846271462"],"z":["10011"]}}}
+{"s":"WOODLAWN CEMETERY ASSOCIATION","n":[["WOODLAWN CEMETERY ASSOCIATION",3],["WOODLAWN CEMETERY ASSOCIATION INC",1]],"x":{"irs":{"r":4,"i":["150497485","160694940","160877391","394263464"],"z":["12023","13346","14804","14895"]}}}
 ]}

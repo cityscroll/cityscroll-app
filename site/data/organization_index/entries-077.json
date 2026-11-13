@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":77,"first_ordinal":130971,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":77,"first_ordinal":130978,"entries":[
+{"s":"SK IMPROVEMENTS","n":[["SK Improvements Corp",1]],"x":{"dol":{"r":1,"i":["26-63H8G-CR"],"z":["07004"]}}},
 {"s":"SK LEARNING CENTER","n":[["SK Learning Center, LLC",1]],"x":{"sbs":{"r":1,"i":["376036"],"z":["11235"],"p":["WBE"]}}},
 {"s":"SK SEALCOATING","n":[["SK Sealcoating LLC",1]],"x":{"dol":{"r":1,"i":["26-69P9P-CR"],"z":["12935"]}}},
 {"s":"SK SENIOR HOUSING","n":[["SK SENIOR HOUSING LLC",1]],"x":{"dbe":{"r":1,"i":["SK SENIOR HOUSING LLC"]}}},
@@ -466,7 +467,7 @@
 {"s":"SMARTRAUMA","n":[["SMARTRAUMA INC",1]],"x":{"irs":{"r":1,"i":["423598913"],"z":["11223"]}}},
 {"s":"SMARTSHEET COM","n":[["SMARTSHEET.COM INC",3]],"x":{"cbr":{"r":2,"a":30058.9,"l":"2026-09-25","i":["CT104020273016493","CT184620258802545"]},"cbv":{"r":1,"l":"2026-09-25","i":["CT104020273016493"],"m":["Non-M/WBE"]}}},
 {"s":"SMARTSHORE SERVICES","n":[["Smartshore Services LLC",1]],"x":{"sbs":{"r":1,"i":["371393"],"z":["11040"],"p":["MBE"]}}},
-{"s":"SMARTSTART EDUCATION","n":[["SMARTSTART EDUCATION, LLC",6],["SMARTSTART EDUCATION  LLC",1]],"x":{"cbr":{"r":3,"a":200000,"l":"2026-11-05","i":["CT104020273044360","CT104020273036071","MA104020279775620"]},"cbv":{"r":3,"l":"2026-11-05","i":["CT104020273044360","CT104020273036071","MA104020279775620"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["SMARTSTART EDUCATION  LLC"]}}},
+{"s":"SMARTSTART EDUCATION","n":[["SMARTSTART EDUCATION, LLC",8],["SMARTSTART EDUCATION  LLC",1]],"x":{"cbr":{"r":4,"a":225000,"l":"2026-11-10","i":["CT104020273036607","CT104020273044360","CT104020273036071","MA104020279775620"]},"cbv":{"r":4,"l":"2026-11-10","i":["CT104020273036607","CT104020273044360","CT104020273036071","MA104020279775620"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["SMARTSTART EDUCATION  LLC"]}}},
 {"s":"SMARTWORKS","n":[["SMARTWORKS INC.",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-02-12","i":["CT104020253085013","CT104020253063987"]},"sbs":{"r":1,"i":["367558"],"z":["10011"],"p":["MBE"]}}},
 {"s":"SMARTYR ART","n":[["SMARTYR ART INC",1]],"x":{"irs":{"r":1,"i":["861982516"],"z":["14213"]}}},
 {"s":"SMASH SELF-DEFENSE","n":[["SMASH SELF-DEFENSE INC",1]],"x":{"irs":{"r":1,"i":["823860405"],"z":["10451"]}}},
@@ -625,7 +626,7 @@
 {"s":"SMOOTH CONSTRUCTION SERVICES (SCS)","d":[["Smooth Construction Services (SCS)",2]],"x":{"sbs":{"r":1,"v":["dba"],"i":["367608"],"z":["11231"],"p":["MBE"]},"dol":{"r":1,"v":["dba"],"i":["25-6H6FE-CR"],"z":["11231"]}}},
 {"s":"SMOOTH PLASTERING","n":[["Smooth Plastering LLC",2]],"x":{"sbs":{"r":1,"i":["367608"],"z":["11231"],"p":["MBE"]},"dol":{"r":1,"i":["25-6H6FE-CR"],"z":["11231"]}}},
 {"s":"SMOOTH SOLUTIONS","n":[["Smooth Solutions, Inc.",1]],"x":{"ocp":{"r":1,"a":220000,"l":"2007-02-07","i":["20070131004"]}}},
-{"s":"SMOOTH SPORTSWEAR","n":[["SMOOTH SPORTSWEAR, LLC",5],["SMOOTH SPORTSWEAR LLC",1]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-02-12","i":["CT104020263104048","CT104020263048184","CT104020253093047"]},"cbv":{"r":2,"l":"2026-02-12","i":["CT104020263104048","CT104020263048184"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["SMOOTH SPORTSWEAR LLC"]}}},
+{"s":"SMOOTH SPORTSWEAR","n":[["SMOOTH SPORTSWEAR, LLC",4],["SMOOTH SPORTSWEAR LLC",1]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-02-12","i":["CT104020263104048","CT104020263048184","CT104020253093047"]},"cbv":{"r":1,"l":"2026-02-12","i":["CT104020263104048"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["SMOOTH SPORTSWEAR LLC"]}}},
 {"s":"SMP INSTALLATIONS","n":[["SMP Installations, LLC",1]],"x":{"dol":{"r":1,"i":["24-648TR-CR"],"z":["07305"]}}},
 {"s":"SMS SYSTEMS MAINTENANCE SERVICES","n":[["SMS SYSTEMS MAINTENANCE SERVICES, INC.",1]],"x":{"ocp":{"r":1,"a":241791.5,"l":"2012-06-29","i":["20120619034"]}}},
 {"s":"SMSM HOLDINGS 1","n":[["SMSM HOLDINGS 1 LLC",4]],"x":{"cbr":{"r":2,"a":925655.72,"l":"2026-03-10","i":["CT110220261409753","CT110220251414451"]},"cbv":{"r":1,"l":"2026-03-10","i":["CT110220261409753"],"m":["Individuals and Others"]},"dbe":{"r":1,"i":["SMSM HOLDINGS 1 LLC"]}}},
@@ -786,7 +787,7 @@
 {"s":"SOCIAL CREATURES","n":[["SOCIAL CREATURES INC",1]],"x":{"irs":{"r":1,"i":["851248669"],"z":["11211"]}}},
 {"s":"SOCIAL DEVELOPMENT INSTITUTE","n":[["SOCIAL DEVELOPMENT INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["208918511"],"z":["11214"]}}},
 {"s":"SOCIAL ECONOMIC ACTION FOR LEBANON","n":[["SOCIAL & ECONOMIC ACTION FOR LEBANON INC",1]],"x":{"irs":{"r":1,"i":["133953466"],"z":["10065"]}}},
-{"s":"SOCIAL EMOTIONAL WELLNESS ALLIANCE","n":[["SOCIAL EMOTIONAL WELLNESS ALLIANCE LLC",61]],"x":{"cbr":{"r":38,"a":950000,"l":"2026-11-02","c":38,"i":["CT104020273042250","CT104020273031030","CT104020273027419","CT104020273025693","CT104020273019306"]},"cbv":{"r":22,"l":"2026-11-02","c":22,"i":["CT104020273042250","CT104020273031030","CT104020273027419","CT104020273025693","CT104020273019306"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["SOCIAL EMOTIONAL WELLNESS ALLIANCE LLC"]}}},
+{"s":"SOCIAL EMOTIONAL WELLNESS ALLIANCE","n":[["SOCIAL EMOTIONAL WELLNESS ALLIANCE LLC",60]],"x":{"cbr":{"r":38,"a":950000,"l":"2026-11-02","c":38,"i":["CT104020273042250","CT104020273031030","CT104020273027419","CT104020273025693","CT104020273019306"]},"cbv":{"r":21,"l":"2026-11-02","c":21,"i":["CT104020273042250","CT104020273031030","CT104020273027419","CT104020273025693","CT104020273019306"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["SOCIAL EMOTIONAL WELLNESS ALLIANCE LLC"]}}},
 {"s":"SOCIAL EMPACT","n":[["SOCIAL EMPACT CORPORATION",1]],"x":{"irs":{"r":1,"i":["331538090"],"z":["14216"]}}},
 {"s":"SOCIAL ENTERPRISE AND TRAINING CENTER","n":[["SOCIAL ENTERPRISE AND TRAINING CENTER",1]],"x":{"irs":{"r":1,"i":["473946521"],"z":["12305"]}}},
 {"s":"SOCIAL FORCES","n":[["SOCIAL FORCES LLC",1]],"x":{"cbr":{"r":1,"a":20000,"l":"2025-03-14","i":["CT101520251411732"]}}},
@@ -1011,7 +1012,7 @@
 {"s":"SOCIETY OF THE SECOND WAR WITH GREAT BRITAIN IN THE STATE","n":[["SOCIETY OF THE SECOND WAR WITH GREAT BRITAIN IN THE STATE OF NY",1]],"x":{"irs":{"r":1,"i":["270914789"],"z":["12601"]}}},
 {"s":"SOCIETY OF THE SISTERS OF ST","n":[["SOCIETY OF THE SISTERS OF ST",1]],"x":{"irs":{"r":1,"i":["141340108"],"z":["12110"]}}},
 {"s":"SOCIETY OF THE SISTERS OF ST JOSEPH","n":[["SOCIETY OF THE SISTERS OF ST JOSEPH INC",1]],"x":{"irs":{"r":1,"i":["150536618"],"z":["13601"]}}},
-{"s":"SOCIETY OF THE THIRD STREET MUSIC SCHOOL SETTLEMENT","n":[["SOCIETY OF THE THIRD STREET MUSIC SCHOOL SETTLEMENT INC",8]],"x":{"cbr":{"r":6,"a":1428750,"l":"2026-03-05","c":6,"i":["CT126020268804743","CT104020263048084","MA104020259578465","MA104020259577521","CT104020253103068"]},"cbv":{"r":1,"l":"2025-11-10","i":["CT104020263048084"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["135596825"],"z":["10003"]}}},
+{"s":"SOCIETY OF THE THIRD STREET MUSIC SCHOOL SETTLEMENT","n":[["SOCIETY OF THE THIRD STREET MUSIC SCHOOL SETTLEMENT INC",7]],"x":{"cbr":{"r":6,"a":1428750,"l":"2026-03-05","c":6,"i":["CT126020268804743","CT104020263048084","MA104020259578465","MA104020259577521","CT104020253103068"]},"irs":{"r":1,"i":["135596825"],"z":["10003"]}}},
 {"s":"SOCIETY OF THE WHITE CROSS","n":[["SOCIETY OF THE WHITE CROSS",1]],"x":{"irs":{"r":1,"i":["993720219"],"z":["11793"]}}},
 {"s":"SOCIETY OF UNIQUE ARTISTS","n":[["SOCIETY OF UNIQUE ARTISTS INC",1]],"x":{"irs":{"r":1,"i":["134276921"],"z":["10016"]}}},
 {"s":"SOCIETY OF UNITY LOVE FOUNDATION","n":[["SOCIETY OF UNITY LOVE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["464186075"],"z":["11238"]}}},
@@ -1624,7 +1625,7 @@
 {"s":"SOURCE OF LIFE MINISTRY INTERNATIONAL","n":[["SOURCE OF LIFE MINISTRY INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["812943547"],"z":["11203"]}}},
 {"s":"SOURCE OF SYNERGY FOUNDATION","n":[["SOURCE OF SYNERGY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["261592942"],"z":["11937"]}}},
 {"s":"SOURCEBLUE","n":[["SourceBlue, LLC",1]],"x":{"dol":{"r":1,"i":["25-65681-CR"],"z":["07663"]}}},
-{"s":"SOURCECORP BPS","n":[["SOURCECORP BPS INC.",4],["Sourcecorp BPS Inc.",2],["SOURCECORP BPS, INC.",1]],"x":{"ocp":{"r":3,"a":9432748,"l":"2026-09-11","i":["20260904011","20251031004","20070718023"]},"cbr":{"r":2,"a":7272724.18,"l":"2026-09-03","i":["CT183620278802212","CT183620268801418"]},"ppt":{"r":1,"a":6745524.18,"l":"2025-10-30","i":["CT1-836-20268801418"]},"cbv":{"r":1,"l":"2025-10-30","i":["CT183620268801418"],"m":["Non-M/WBE"]}}},
+{"s":"SOURCECORP BPS","n":[["SOURCECORP BPS INC.",5],["Sourcecorp BPS Inc.",2],["SOURCECORP BPS, INC.",1]],"x":{"ocp":{"r":3,"a":9432748,"l":"2026-09-11","i":["20260904011","20251031004","20070718023"]},"cbr":{"r":2,"a":7272724.18,"l":"2026-09-03","i":["CT183620278802212","CT183620268801418"]},"ppt":{"r":1,"a":6745524.18,"l":"2025-10-30","i":["CT1-836-20268801418"]},"cbv":{"r":2,"l":"2026-09-03","i":["CT183620278802212","CT183620268801418"],"m":["Non-M/WBE"]}}},
 {"s":"SOURCEIT TECHNOLOGIES","n":[["SourceIT Technologies",1],["SourceIT Technologies, LLC",1]],"x":{"ocp":{"r":2,"a":212137.26,"l":"2019-06-14","i":["20190606029","20190520019"]}}},
 {"s":"SOURCENEXT","n":[["SOURCENEXT INC",1]],"x":{"dbe":{"r":1,"i":["SOURCENEXT INC"]}}},
 {"s":"SOURCEPASS CONTEMPORARY","n":[["Sourcepass Contemporary, LLC",1]],"x":{"dol":{"r":1,"i":["26-69SLK-CR"],"z":["11747"]}}},
@@ -1708,6 +1709,5 @@
 {"s":"SOUTH BRONX MENTLA HEALTH COUNCIL","n":[["South Bronx Mentla Health Council, Inc.",1]],"x":{"ocp":{"r":1,"a":2218968,"l":"2005-10-18","i":["20051012012"]}}},
 {"s":"SOUTH BRONX OVERALL ECONOMIC DEV","n":[["South Bronx Overall Economic Dev. Corp.",1]],"x":{"ocp":{"r":1,"a":58695,"l":"2004-04-27","i":["20040420054"]}}},
 {"s":"SOUTH BRONX OVERALL ECONOMIC DEVELOP","n":[["South Bronx Overall Economic Develop. Corp.",1]],"x":{"ocp":{"r":1,"a":40000,"l":"2004-03-02","i":["20040223020"]}}},
-{"s":"SOUTH BRONX OVERALL ECONOMIC DEVELOPEMENT","n":[["South Bronx Overall Economic Developement Corp., Inc.",1]],"x":{"ocp":{"r":1,"a":2029500,"l":"2005-07-15","i":["20050712008"]}}},
-{"s":"SOUTH BRONX OVERALL ECONOMIC DEVELOPMENT","n":[["South Bronx Overall Economic Development Corporation",10],["SOUTH BRONX OVERALL ECONOMIC DEVELOPMENT CORPORATION",6],["South Bronx Overall Economic Development",1],["South Bronx Overall Economic Development Corp.",1]],"x":{"ocp":{"r":12,"a":35761335,"l":"2021-09-20","c":12,"i":["20210913109","20200507037","20190207042","20180821009","20180131030"]},"cbr":{"r":4,"a":1170758,"l":"2025-05-30","i":["CT104020259558070","CT126020258807800","CT126020258807829","CT104020253064668"]},"dbe":{"r":1,"i":["SOUTH BRONX OVERALL ECONOMIC DEVELOPMENT CORPORATION"]},"irs":{"r":1,"i":["132736022"],"z":["10455"]}}}
+{"s":"SOUTH BRONX OVERALL ECONOMIC DEVELOPEMENT","n":[["South Bronx Overall Economic Developement Corp., Inc.",1]],"x":{"ocp":{"r":1,"a":2029500,"l":"2005-07-15","i":["20050712008"]}}}
 ]}

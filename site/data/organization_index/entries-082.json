@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":82,"first_ordinal":139439,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":82,"first_ordinal":139442,"entries":[
+{"s":"TAU","n":[["TAU INC",1]],"x":{"irs":{"r":1,"i":["873371650"],"z":["11205"]}}},
+{"s":"TAU BETA PI ASSOCIATION","n":[["TAU BETA PI ASSOCIATION INC",16]],"x":{"irs":{"r":16,"i":["136163164","136163165","136165654","136272060","146032412","146048768","161404255","166053216","166058394","166094151","166094152","166094155","223111078","237075741","237092242","237368662"],"z":["10003","10027","10031","10471","11201","11794","12180","12308","13210","13699","13902","14228","14623","14627","14843","14853"]}}},
+{"s":"TAU CHAPTER OF ALPHA CHI SIGMA","n":[["TAU CHAPTER OF ALPHA CHI SIGMA INC",1]],"x":{"irs":{"r":1,"i":["150466748"],"z":["14850"]}}},
+{"s":"TAU CHAPTER SIGMA LAMBDA NU","n":[["TAU CHAPTER SIGMA LAMBDA NU INC",1]],"x":{"irs":{"r":1,"i":["205811000"],"z":["12550"]}}},
+{"s":"TAU ENDOWMENT FUND","n":[["TAU ENDOWMENT FUND INC",1]],"x":{"irs":{"r":1,"i":["300186027"],"z":["14850"]}}},
 {"s":"TAU EPSILON PHI FRATERNITY","n":[["TAU EPSILON PHI FRATERNITY",14],["TAU EPSILON PHI FRATERNITY INC",6]],"x":{"irs":{"r":20,"i":["050298871","131368460","161535669","226108305","232212199","237147435","301409497","301427572","365076316","365124440","372148043","451480869","472384115","521944572","612219579","612313177","850883056","850897778","884032882","901253562"],"z":["12181"]}}},
 {"s":"TAU EPSILON PHI FRATERNITY EPSILON PHI CHAPTER","n":[["TAU EPSILON PHI FRATERNITY EPSILON PHI CHAPTER",1]],"x":{"irs":{"r":1,"i":["822646234"],"z":["12181"]}}},
 {"s":"TAU FOUNDATION","n":[["TAU FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["450571259"],"z":["10122"]}}},
@@ -588,7 +593,7 @@
 {"s":"TELECOM CONSTRUCTION GROUP","n":[["Telecom Construction Group, Inc.",1]],"x":{"dol":{"r":1,"i":["25-64OCN-CR"],"z":["11780"]}}},
 {"s":"TELECOMMUNICATION ELECTRICAL CONTRACTORS","n":[["Telecommunication Electrical Contractors LLC",3]],"x":{"sbs":{"r":1,"i":["341807"],"z":["11377"],"p":["MBE"]},"dol":{"r":1,"i":["26-64R99-CR"],"z":["11377"]},"sca":{"r":1,"i":["TELECOMMUNICATION ELECTRICAL CONTRACTORS LLC"],"z":["11377"]}}},
 {"s":"TELECOMMUNICATIONS DEVELOPMENT","n":[["TELECOMMUNICATIONS DEVELOPMENT CORP.",1],["Telecommunications Development Corp.",1]],"x":{"cbr":{"r":1,"a":1235439,"l":"2025-12-08","i":["CT104020269657610"]},"sbs":{"r":1,"i":["364291"],"z":["20009"],"p":["MBE"]}}},
-{"s":"TELEDYNE FLIR DETECTION","n":[["TELEDYNE FLIR DETECTION INC",2],["Teledyne FLIR Detection, Inc.",1]],"x":{"ocp":{"r":1,"a":3685199,"l":"2022-03-24","i":["20220317123"]},"cbr":{"r":1,"a":22800,"l":"2025-11-13","i":["CT105620261406769"]},"cbv":{"r":1,"l":"2025-11-13","i":["CT105620261406769"],"m":["Non-M/WBE"]}}},
+{"s":"TELEDYNE FLIR DETECTION","n":[["TELEDYNE FLIR DETECTION INC",1],["Teledyne FLIR Detection, Inc.",1]],"x":{"ocp":{"r":1,"a":3685199,"l":"2022-03-24","i":["20220317123"]},"cbr":{"r":1,"a":22800,"l":"2025-11-13","i":["CT105620261406769"]}}},
 {"s":"TELEDYNE ISCO","n":[["Teledyne Isco Inc.",1]],"x":{"ocp":{"r":1,"a":139247.32,"l":"2010-04-07","i":["20100330005"]}}},
 {"s":"TELEFLEX","n":[["TELEFLEX INCORPORATED",2]],"x":{"ocp":{"r":1,"a":17564750,"l":"2023-03-21","i":["20230315107"]},"ppt":{"r":1,"a":17564750,"l":"2023-03-14","i":["MA1-857-20238803978"]}}},
 {"s":"TELEMEDIA","n":[["TELEMEDIA LLC",2]],"x":{"cbr":{"r":1,"a":19990,"l":"2026-01-09","i":["CT181620261409621"]},"cbv":{"r":1,"l":"2026-01-09","i":["CT181620261409621"],"m":["Non-M/WBE"]}}},
@@ -833,7 +838,7 @@
 {"s":"TEP EDUCATIONAL FOUNDATION","n":[["TEP EDUCATIONAL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["991516530"],"z":["12180"]}}},
 {"s":"TEPPERMAN FOUNDATION","n":[["TEPPERMAN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["222470548"],"z":["10024"]}}},
 {"s":"TEQ","n":[["TEQ INC.",1]],"x":{"dbe":{"r":1,"i":["TEQ INC."]}}},
-{"s":"TEQUIPMENT","n":[["TEQUIPMENT INCORPORATED",9],["TEQUIPMENT  INC",1],["Tequipment, Inc.",1]],"x":{"cbr":{"r":7,"a":240000,"l":"2026-03-06","c":7,"i":["CT104020263118963","MA104020269675415","CT104020263048794","CT104020263031685","CT104020253147314"]},"cbv":{"r":2,"l":"2026-03-06","i":["CT104020263118963","CT104020263048794"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["TEQUIPMENT  INC"]},"dol":{"r":1,"i":["24-64DSN-CR"],"z":["11746"]}}},
+{"s":"TEQUIPMENT","n":[["TEQUIPMENT INCORPORATED",8],["TEQUIPMENT  INC",1],["Tequipment, Inc.",1]],"x":{"cbr":{"r":7,"a":240000,"l":"2026-03-06","c":7,"i":["CT104020263118963","MA104020269675415","CT104020263048794","CT104020263031685","CT104020253147314"]},"cbv":{"r":1,"l":"2026-03-06","i":["CT104020263118963"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["TEQUIPMENT  INC"]},"dol":{"r":1,"i":["24-64DSN-CR"],"z":["11746"]}}},
 {"s":"TERA CONSULTING","n":[["Tera Consulting, Inc.",1]],"x":{"sbs":{"r":1,"i":["3955"],"z":["11756"],"p":["MBE","WBE"]}}},
 {"s":"TERCERA IGLESIA ALIANZA CRISTIANA Y MISIONERA","n":[["TERCERA IGLESIA ALIANZA CRISTIANA Y MISIONERA",1]],"x":{"irs":{"r":1,"i":["132945676"],"z":["10454"]}}},
 {"s":"TEREMOK DAY CARE","n":[["TEREMOK DAY CARE LLC",2]],"x":{"cbr":{"r":1,"a":1038892.86,"l":"2026-10-03","i":["CT104020279759990"]},"cbv":{"r":1,"l":"2026-10-03","i":["CT104020279759990"],"m":["Non-M/WBE"]}}},
@@ -1122,7 +1127,7 @@
 {"s":"THE AFRIKAN POETRY THEATRE","n":[["THE AFRIKAN POETRY THEATRE, INC.",3],["THE AFRIKAN POETRY THEATRE  INC.",1]],"x":{"ocp":{"r":1,"a":12750,"l":"2003-08-27","i":["20030821025"]},"cbr":{"r":2,"a":328750,"l":"2024-10-30","i":["CT126020258802798","CT126020258802418"]},"dbe":{"r":1,"i":["THE AFRIKAN POETRY THEATRE  INC."]}}},
 {"s":"THE AFTER THREE THEATRE","n":[["THE AFTER THREE THEATRE COMPANY INC",1]],"x":{"irs":{"r":1,"i":["222900501"],"z":["11946"]}}},
 {"s":"THE AFTERSCHOOLCOLLECTIVE","n":[["THE AFTERSCHOOLCOLLECTIVE CORPORATION",1]],"x":{"irs":{"r":1,"i":["873343405"],"z":["11101"]}}},
-{"s":"THE AGENCY COMMUNITY YOUTH DEVELOPMENT","n":[["THE AGENCY COMMUNITY & YOUTH DEVELOPMENT LLC",5]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-01-08","i":["CT104020263076631","CT104020263049466","CT104020253048838"]},"cbv":{"r":2,"l":"2026-01-08","i":["CT104020263076631","CT104020263049466"],"m":["Non-M/WBE"]}}},
+{"s":"THE AGENCY COMMUNITY YOUTH DEVELOPMENT","n":[["THE AGENCY COMMUNITY & YOUTH DEVELOPMENT LLC",4]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-01-08","i":["CT104020263076631","CT104020263049466","CT104020253048838"]},"cbv":{"r":1,"l":"2026-01-08","i":["CT104020263076631"],"m":["Non-M/WBE"]}}},
 {"s":"THE AGNONE FAMILY FOUNDATION","n":[["THE AGNONE FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["412871269"],"z":["11590"]}}},
 {"s":"THE AHMAD AND ELIZABETH EL-HINDI FOUNDATION","n":[["THE AHMAD AND ELIZABETH EL-HINDI FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["161199638"],"z":["13104"]}}},
 {"s":"THE AHUJA FOUNDATION","n":[["THE AHUJA FOUNDATION",1]],"x":{"irs":{"r":1,"i":["266330184"],"z":["10023"]}}},
@@ -1657,10 +1662,5 @@
 {"s":"THE CAT COLLECTIVE RESCUE","n":[["THE CAT COLLECTIVE RESCUE INC",1]],"x":{"irs":{"r":1,"i":["394127513"],"z":["10032"]}}},
 {"s":"THE CAT SANCTUARY IN BROADABIN","n":[["THE CAT SANCTUARY IN BROADABIN INC",1]],"x":{"irs":{"r":1,"i":["472226068"],"z":["12025"]}}},
 {"s":"THE CATHEDRAL AT THE HOUSE","n":[["THE CATHEDRAL AT THE HOUSE",1]],"x":{"irs":{"r":1,"i":["141831427"],"z":["12550"]}}},
-{"s":"THE CATHEDRAL CHURCH OF ST JOHN THE DIVINE","n":[["THE CATHEDRAL CHURCH OF ST. JOHN THE DIVINE",1]],"x":{"dbe":{"r":1,"i":["THE CATHEDRAL CHURCH OF ST. JOHN THE DIVINE"]}}},
-{"s":"THE CATHERINE AND JOSEPH ARESTY FOUNDATION","n":[["THE CATHERINE AND JOSEPH ARESTY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133962647"],"z":["10018"]}}},
-{"s":"THE CATHOLIC ARTISTS SOCIETY","n":[["THE CATHOLIC ARTISTS SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["454736022"],"z":["10019"]}}},
-{"s":"THE CATHOLIC CHARITIES FOOD BANK OF THE SOUTHERN TIER","n":[["THE CATHOLIC CHARITIES FOOD BANK OF THE SOUTHERN TIER",1]],"x":{"irs":{"r":1,"i":["208808059"],"z":["14903"]}}},
-{"s":"THE CATHOLIC SCHOOLS OF BROOME COUNTY FOUNDATION","n":[["THE CATHOLIC SCHOOLS OF BROOME COUNTY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["161058555"],"z":["13905"]}}},
-{"s":"THE CAUSEWAY FOUNDATION","n":[["THE CAUSEWAY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["222551158"],"z":["14464"]}}}
+{"s":"THE CATHEDRAL CHURCH OF ST JOHN THE DIVINE","n":[["THE CATHEDRAL CHURCH OF ST. JOHN THE DIVINE",1]],"x":{"dbe":{"r":1,"i":["THE CATHEDRAL CHURCH OF ST. JOHN THE DIVINE"]}}}
 ]}

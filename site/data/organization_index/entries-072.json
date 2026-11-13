@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":72,"first_ordinal":122303,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":72,"first_ordinal":122309,"entries":[
+{"s":"RM JANITORIAL","n":[["RM Janitorial Corp.",1]],"x":{"sbs":{"r":1,"i":["15683"],"z":["11210"],"p":["WBE"]}}},
+{"s":"RM SOCCER STATEN ISLAND","n":[["RM SOCCER STATEN ISLAND",1]],"x":{"irs":{"r":1,"i":["332393479"],"z":["10310"]}}},
 {"s":"RM SOLUTIONS GROUP","n":[["RM SOLUTIONS GROUP INCORPORATED",6],["RM Solutions Group Incorporated",1],["RM Solutions Group, Inc.",1]],"x":{"ocp":{"r":1,"a":99500,"l":"2025-12-12","i":["20251208015"]},"cbr":{"r":4,"a":178300,"l":"2026-08-05","i":["CT113620271401756","CT113620268803934","CT113620261401817","CT113620251400526"]},"ppt":{"r":1,"a":99500,"l":"2025-12-05","i":["CT1-136-20268803934"]},"cbv":{"r":1,"l":"2026-08-05","i":["CT113620271401756"],"m":["Asian American"]},"sbs":{"r":1,"i":["15685"],"z":["06902"],"p":["MBE"]}}},
 {"s":"RMA GROUP","n":[["RMA Group, Inc.",1]],"x":{"sca":{"r":1,"i":["RMA GROUP, INC."],"z":["11801"]}}},
 {"s":"RMA HOUSING DEVELOPMENT","n":[["RMA HOUSING DEVELOPMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["990778399"],"z":["13202"]}}},
@@ -1721,7 +1723,5 @@
 {"s":"ROTARACT CLUB OF ENVIRONMENTAL NC L I NEW YORK","n":[["ROTARACT CLUB OF ENVIRONMENTAL NC L I NEW YORK USA INC",1]],"x":{"irs":{"r":1,"i":["392703990"],"z":["11520"]}}},
 {"s":"ROTARIANS FOR HEARING ROTARIAN ACTION GROUP","n":[["ROTARIANS FOR HEARING ROTARIAN ACTION GROUP",1]],"x":{"irs":{"r":1,"i":["463673367"],"z":["12601"]}}},
 {"s":"ROTARY CLUB OF AKRON-NEWSTEAD","n":[["ROTARY CLUB OF AKRON-NEWSTEAD",1]],"x":{"irs":{"r":1,"i":["161353899"],"z":["14001"]}}},
-{"s":"ROTARY CLUB OF ALEXANDRIA BAY","n":[["ROTARY CLUB OF ALEXANDRIA BAY",1]],"x":{"irs":{"r":1,"i":["166093658"],"z":["13607"]}}},
-{"s":"ROTARY CLUB OF ALEXANDRIA BAY FOUND ATION","n":[["ROTARY CLUB OF ALEXANDRIA BAY FOUND ATION INC",1]],"x":{"irs":{"r":1,"i":["424834096"],"z":["13607"]}}},
-{"s":"ROTARY CLUB OF AMHERST EAST FOUNDATION","n":[["ROTARY CLUB OF AMHERST EAST FOUNDATION",1]],"x":{"irs":{"r":1,"i":["161526534"],"z":["14051"]}}}
+{"s":"ROTARY CLUB OF ALEXANDRIA BAY","n":[["ROTARY CLUB OF ALEXANDRIA BAY",1]],"x":{"irs":{"r":1,"i":["166093658"],"z":["13607"]}}}
 ]}

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":70,"first_ordinal":118835,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":70,"first_ordinal":118842,"entries":[
 {"s":"RAILROAD-GRAMERCY JOINT VENTURE","n":[["Railroad-Gramercy Joint Venture LLC",1]],"x":{"dol":{"r":1,"i":["25-67DPG-CR"],"z":["07503"]}}},
 {"s":"RAILWAY HISTORICAL SOCIETY OF NORTHERN N Y","n":[["RAILWAY HISTORICAL SOCIETY OF NORTHERN N Y INC",1]],"x":{"irs":{"r":1,"i":["237106601"],"z":["13327"]}}},
 {"s":"RAILWORKS TRACK SERVICES","n":[["RailWorks Track Services LLC",1]],"x":{"dol":{"r":1,"i":["25-644SZ-CR"],"z":["10001"]}}},
@@ -796,7 +796,7 @@
 {"s":"REAL RENOVATIONS ROOFING","d":[["Real Renovations & Roofing",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-9YY6D-CR"],"z":["14416"]}}},
 {"s":"REAL ROCK FOUNDATION","n":[["REAL ROCK FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["852937809"],"z":["11434"]}}},
 {"s":"REAL STORIES GALLERY FOUNDATION","n":[["REAL STORIES GALLERY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["800575894"],"z":["10035"]}}},
-{"s":"REAL WELLNESS","n":[["REAL WELLNESS INC",19],["Real Wellness Inc.",1]],"x":{"cbr":{"r":14,"a":350000,"l":"2026-10-28","c":14,"i":["CT104020273039165","CT104020263173704","CT104020263075531","CT104020263043548","CT104020263033361"]},"cbv":{"r":4,"l":"2026-10-28","i":["CT104020273039165","CT104020263173704","CT104020263075531","CT104020263043548"],"m":["Black American"]},"dbe":{"r":1,"i":["REAL WELLNESS INC"]},"sbs":{"r":1,"i":["346654"],"z":["11434"],"p":["MBE","WBE"]}}},
+{"s":"REAL WELLNESS","n":[["REAL WELLNESS INC",21],["Real Wellness Inc.",1]],"x":{"cbr":{"r":15,"a":375000,"l":"2026-11-09","c":15,"i":["CT104020273043966","CT104020273039165","CT104020263173704","CT104020263075531","CT104020263043548"]},"cbv":{"r":5,"l":"2026-11-09","i":["CT104020273043966","CT104020273039165","CT104020263173704","CT104020263075531","CT104020263043548"],"m":["Black American"]},"dbe":{"r":1,"i":["REAL WELLNESS INC"]},"sbs":{"r":1,"i":["346654"],"z":["11434"],"p":["MBE","WBE"]}}},
 {"s":"REAL WELLNESS CARES","n":[["REAL WELLNESS CARES INC",1]],"x":{"irs":{"r":1,"i":["921187307"],"z":["11366"]}}},
 {"s":"REAL WORD MINISTRIES","n":[["REAL WORD MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["822845682"],"z":["11236"]}}},
 {"s":"REAL WORLD FOUNDATION","n":[["REAL WORLD FOUNDATION, INC.",2],["REAL WORLD FOUNDATION INC",1]],"x":{"ocp":{"r":2,"a":109400,"l":"2006-12-04","i":["20061127009","20041214015"]},"irs":{"r":1,"i":["571147217"],"z":["12484"]}}},

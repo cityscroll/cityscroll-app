@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":83,"first_ordinal":141103,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":83,"first_ordinal":141106,"entries":[
+{"s":"THE CATHERINE AND JOSEPH ARESTY FOUNDATION","n":[["THE CATHERINE AND JOSEPH ARESTY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133962647"],"z":["10018"]}}},
+{"s":"THE CATHOLIC ARTISTS SOCIETY","n":[["THE CATHOLIC ARTISTS SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["454736022"],"z":["10019"]}}},
+{"s":"THE CATHOLIC CHARITIES FOOD BANK OF THE SOUTHERN TIER","n":[["THE CATHOLIC CHARITIES FOOD BANK OF THE SOUTHERN TIER",1]],"x":{"irs":{"r":1,"i":["208808059"],"z":["14903"]}}},
+{"s":"THE CATHOLIC SCHOOLS OF BROOME COUNTY FOUNDATION","n":[["THE CATHOLIC SCHOOLS OF BROOME COUNTY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["161058555"],"z":["13905"]}}},
+{"s":"THE CAUSEWAY FOUNDATION","n":[["THE CAUSEWAY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["222551158"],"z":["14464"]}}},
 {"s":"THE CAVU GROUP","d":[["The Cavu Group",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["103268"],"z":["11221"],"p":["MBE","WBE"]}}},
 {"s":"THE CAYEMITTE GROUP","n":[["The Cayemitte Group, Inc.",1]],"x":{"sbs":{"r":1,"i":["851"],"z":["08550"],"p":["MBE"]}}},
 {"s":"THE CAYUGA BIRD CLUB","n":[["THE CAYUGA BIRD CLUB INC",1]],"x":{"irs":{"r":1,"i":["222543227"],"z":["14850"]}}},
@@ -157,7 +162,7 @@
 {"s":"THE CHURCH OF THE REMNANT","n":[["THE CHURCH OF THE REMNANT INC",1]],"x":{"irs":{"r":1,"i":["134163799"],"z":["10550"]}}},
 {"s":"THE CHURCH ON THE HILL-REFORMED","n":[["THE CHURCH ON THE HILL-REFORMED",1]],"x":{"dbe":{"r":1,"i":["THE CHURCH ON THE HILL-REFORMED"]}}},
 {"s":"THE CHURCHES OF JESUS CHRIST OF QUEENS NEW YORK","n":[["THE CHURCHES OF JESUS CHRIST OF QUEENS NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["421528377"],"z":["11412"]}}},
-{"s":"THE CIPHER GROUP","n":[["THE CIPHER GROUP INC",19],["The Cipher Group, Inc.",1]],"x":{"cbr":{"r":14,"a":350000,"l":"2026-10-19","c":14,"i":["CT104020273018111","CT104020273033361","CT104020263059416","CT104020263046787","CT104020263040978"]},"cbv":{"r":4,"l":"2026-10-19","i":["CT104020273018111","CT104020273033361","CT104020263059416","CT104020263046787"],"m":["Black American"]},"dbe":{"r":1,"i":["THE CIPHER GROUP INC"]},"sbs":{"r":1,"i":["100212"],"z":["10006"],"p":["MBE"]}}},
+{"s":"THE CIPHER GROUP","n":[["THE CIPHER GROUP INC",18],["The Cipher Group, Inc.",1]],"x":{"cbr":{"r":14,"a":350000,"l":"2026-10-19","c":14,"i":["CT104020273018111","CT104020273033361","CT104020263059416","CT104020263046787","CT104020263040978"]},"cbv":{"r":3,"l":"2026-10-19","i":["CT104020273018111","CT104020273033361","CT104020263059416"],"m":["Black American"]},"dbe":{"r":1,"i":["THE CIPHER GROUP INC"]},"sbs":{"r":1,"i":["100212"],"z":["10006"],"p":["MBE"]}}},
 {"s":"THE CIR POLICY AND EDUCATION INITIATIVE","n":[["THE CIR POLICY AND EDUCATION INITIATIVE",1]],"x":{"irs":{"r":1,"i":["710998514"],"z":["11101"]}}},
 {"s":"THE CIRCLE KEEPERS","n":[["THE CIRCLE KEEPERS INC",1]],"x":{"irs":{"r":1,"i":["991296105"],"z":["10013"]}}},
 {"s":"THE CIRCLE OF LIBERTY","n":[["THE CIRCLE OF LIBERTY",1]],"x":{"irs":{"r":1,"i":["921691184"],"z":["12207"]}}},
@@ -1555,10 +1560,5 @@
 {"s":"THE LIVING WORD CHRISTIAN CHURCH","n":[["THE LIVING WORD CHRISTIAN CHURCH INC",1]],"x":{"irs":{"r":1,"i":["161200794"],"z":["14892"]}}},
 {"s":"THE LOBSTER PLACE","n":[["THE LOBSTER PLACE INC",1]],"x":{"dbe":{"r":1,"i":["THE LOBSTER PLACE INC"]}}},
 {"s":"THE LOCKER LADY","d":[["The Locker Lady",2]],"x":{"sbs":{"r":1,"v":["dba"],"i":["5897"],"z":["10962"],"p":["MBE","WBE"]},"dol":{"r":1,"v":["dba"],"i":["24-64EJY-CR"],"z":["10962"]}}},
-{"s":"THE LOHRFINK FOUNDATION","n":[["THE LOHRFINK FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133919765"],"z":["10019"]}}},
-{"s":"THE LONDON COMPANY OF VIRGINIA","n":[["THE LONDON COMPANY OF VIRGINIA LLC",1]],"x":{"dbe":{"r":1,"i":["THE LONDON COMPANY OF VIRGINIA LLC"]}}},
-{"s":"THE LONG ISLAND ALZHEIMERS AND DEMENTIA CENTER","n":[["THE LONG ISLAND ALZHEIMERS AND DEMENTIA CENTER",1]],"x":{"irs":{"r":1,"i":["112926958"],"z":["11590"]}}},
-{"s":"THE LONG ISLAND BARBER INSTITUTE","n":[["The Long Island Barber Institute, Inc.",1]],"x":{"sbs":{"r":1,"i":["372494"],"z":["11550"],"p":["MBE"]}}},
-{"s":"THE LONG ISLAND CITY PARTNERSHIP","n":[["THE LONG ISLAND CITY PARTNERSHIP INC",1]],"x":{"irs":{"r":1,"i":["112651377"],"z":["11101"]}}},
-{"s":"THE LONG ISLAND COLLEGE","n":[["THE LONG ISLAND COLLEGE",1]],"x":{"ocp":{"r":1,"a":5000,"l":"2006-01-19","i":["20060112047"]}}}
+{"s":"THE LOHRFINK FOUNDATION","n":[["THE LOHRFINK FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133919765"],"z":["10019"]}}}
 ]}

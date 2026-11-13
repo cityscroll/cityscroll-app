@@ -1,4 +1,11 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":13,"first_ordinal":21778,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":13,"first_ordinal":21773,"entries":[
+{"s":"BROUGHTON CHARITABLE FOUNDATION","n":[["BROUGHTON CHARITABLE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["223186876"],"z":["10010"]}}},
+{"s":"BROWER POWER","n":[["Brower Power LLC",1]],"x":{"dol":{"r":1,"i":["25-651CE-CR"],"z":["12446"]}}},
+{"s":"BROWERY RESIDENTS COMMITTEE","n":[["Browery Residents Committee",1]],"x":{"ocp":{"r":1,"a":0,"l":"2004-03-02","i":["20040227011"]}}},
+{"s":"BROWN ALUMNI ASSOCIATION","n":[["BROWN ALUMNI ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["136221645"],"z":["10017"]}}},
+{"s":"BROWN AND CALDWELL ASSOCIATES","n":[["Brown and Caldwell Associates",2],["BROWN AND CALDWELL ASSOCIATES",1]],"x":{"ocp":{"r":2,"a":10562250,"l":"2019-08-15","i":["20190808024","20190802016"]},"dbe":{"r":1,"i":["BROWN AND CALDWELL ASSOCIATES"]}}},
+{"s":"BROWN BROTHERS HARRIMAN CO UNDERGRADUATE FUND","n":[["BROWN BROTHERS HARRIMAN & CO UNDERGRADUATE FUND",1]],"x":{"irs":{"r":1,"i":["136169140"],"z":["10005"]}}},
+{"s":"BROWN BROWN DEVELOPMENT CONSTRUCTION GROUP","d":[["BROWN & BROWN DEVELOPMENT & CONSTRUCTION GROUP",1],["Brown & Brown Development & Construction Group",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["12539"],"z":["11004"],"p":["MBE"]},"dol":{"r":1,"v":["dba"],"i":["26-63HEK-CR"],"z":["11004"]}}},
 {"s":"BROWN CAPITAL MANAGEMENT","n":[["Brown Capital Management LLC",4],["BROWN CAPITAL MANAGEMENT LLC",2],["Brown Capital Management, LLC",2],["BROWN CAPITAL MANAGEMENT INC",1],["Brown Capital Management Inc",1]],"x":{"ocp":{"r":7,"a":118884000,"l":"2023-04-13","c":7,"i":["20230406113","20191204009","20181213004","20151224011","20121226003"]},"cbr":{"r":1,"a":1102590.75,"l":"2026-05-13","i":["CT101520261409917"]},"dbe":{"r":2,"i":["BROWN CAPITAL MANAGEMENT INC","BROWN CAPITAL MANAGEMENT LLC"]}}},
 {"s":"BROWN CHARITY","n":[["BROWN CHARITY INC",1]],"x":{"irs":{"r":1,"i":["463282717"],"z":["11021"]}}},
 {"s":"BROWN COMMUNITY DEVELOPMENT","n":[["BROWN COMMUNITY DEVELOPMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["562629114"],"z":["11238"]}}},
@@ -249,7 +256,7 @@
 {"s":"BUCK FAMILY FOUNDATION","n":[["BUCK FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133797578"],"z":["10601"]}}},
 {"s":"BUCK GLOBAL","n":[["BUCK GLOBAL LLC",3]],"x":{"cbr":{"r":2,"a":3854939,"l":"2025-10-08","i":["CT101520261403992","CT100820241418331"]},"dbe":{"r":1,"i":["BUCK GLOBAL LLC"]}}},
 {"s":"BUCK HORN SPORTSMENS CLUB","n":[["BUCK HORN SPORTSMENS CLUB INC",1]],"x":{"irs":{"r":1,"i":["160996175"],"z":["14532"]}}},
-{"s":"BUCK INSTITUTE FOR EDUCATION","n":[["BUCK INSTITUTE FOR EDUCATION",11]],"x":{"cbr":{"r":7,"a":175000,"l":"2026-11-03","c":7,"i":["CT104020273040913","CT104020273007626","CT104020263042538","CT104020253109378","CT104020253075244"]},"cbv":{"r":3,"l":"2026-11-03","i":["CT104020273040913","CT104020273007626","CT104020263042538"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["BUCK INSTITUTE FOR EDUCATION"]}}},
+{"s":"BUCK INSTITUTE FOR EDUCATION","n":[["BUCK INSTITUTE FOR EDUCATION",10]],"x":{"cbr":{"r":7,"a":175000,"l":"2026-11-03","c":7,"i":["CT104020273040913","CT104020273007626","CT104020263042538","CT104020253109378","CT104020253075244"]},"cbv":{"r":2,"l":"2026-11-03","i":["CT104020273040913","CT104020273007626"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["BUCK INSTITUTE FOR EDUCATION"]}}},
 {"s":"BUCK KNOLL GAME CLUB","n":[["BUCK KNOLL GAME CLUB INC",1]],"x":{"irs":{"r":1,"i":["562537343"],"z":["12117"]}}},
 {"s":"BUCKET ENTERPRISES","n":[["BUCKET ENTERPRISES LLC",1]],"x":{"dol":{"r":1,"i":["26-67Z9K-CR"],"z":["10950"]}}},
 {"s":"BUCKEYE TRI-STATE PIPELINE UNION","n":[["BUCKEYE TRI-STATE PIPELINE UNION",1]],"x":{"irs":{"r":1,"i":["300036890"],"z":["14564"]}}},
@@ -1255,7 +1262,7 @@
 {"s":"BYFIELD ROAD","n":[["BYFIELD ROAD",1]],"x":{"irs":{"r":1,"i":["413536557"],"z":["10549"]}}},
 {"s":"BYLER BUILDERS","n":[["BYLER BUILDERS LLC",1]],"d":[["BYLER BUILDERS LLC",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["25-65GVJ-CR"],"z":["19938"]}}},
 {"s":"BYLER EXCAVATING","n":[["Byler Excavating LLC",1]],"x":{"dol":{"r":1,"i":["26-64RA8-CR"],"z":["13787"]}}},
-{"s":"BYR","n":[["BYR INC",29],["BYR Inc.",6],["BYR INC.",1],["BYR, Inc",1],["BYR, Inc.",1]],"x":{"ocp":{"r":10,"a":631341.18,"l":"2025-01-28","c":10,"i":["20250121039","20240528112","20201229101","20191114012","20190613019"]},"cbr":{"r":18,"a":296252.22,"l":"2026-10-21","c":18,"i":["CT184620278803490","CT181620271403841","CT184620268806965","CT184620268805625","CT104020263086396"]},"ppt":{"r":2,"a":164438.71,"l":"2025-01-17","i":["CT1-816-20258805378","CT1-856-20248808460"]},"cbv":{"r":6,"l":"2026-10-21","c":6,"i":["CT184620278803490","CT181620271403841","CT184620268806965","CT184620268805625","CT104020263086396"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["BYR INC."]},"sbs":{"r":1,"i":["7382"],"z":["11211"],"p":["WBE"]}}},
+{"s":"BYR","n":[["BYR INC",28],["BYR Inc.",6],["BYR INC.",1],["BYR, Inc",1],["BYR, Inc.",1]],"x":{"ocp":{"r":10,"a":631341.18,"l":"2025-01-28","c":10,"i":["20250121039","20240528112","20201229101","20191114012","20190613019"]},"cbr":{"r":18,"a":296252.22,"l":"2026-10-21","c":18,"i":["CT184620278803490","CT181620271403841","CT184620268806965","CT184620268805625","CT104020263086396"]},"ppt":{"r":2,"a":164438.71,"l":"2025-01-17","i":["CT1-816-20258805378","CT1-856-20248808460"]},"cbv":{"r":5,"l":"2026-10-21","i":["CT184620278803490","CT181620271403841","CT184620268806965","CT184620268805625","CT104020263086396"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["BYR INC."]},"sbs":{"r":1,"i":["7382"],"z":["11211"],"p":["WBE"]}}},
 {"s":"BYRAM HILLS BOBCAT BOOSTERS","n":[["BYRAM HILLS BOBCAT BOOSTERS INC",1]],"x":{"irs":{"r":1,"i":["743093844"],"z":["10504"]}}},
 {"s":"BYRAM HILLS EDUCATION FOUNDATION","n":[["BYRAM HILLS EDUCATION FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133791156"],"z":["10504"]}}},
 {"s":"BYRAM HILLS PRESCHOOL ASSOCIATION","n":[["BYRAM HILLS PRESCHOOL ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["133532269"],"z":["10504"]}}},
@@ -1721,12 +1728,5 @@
 {"s":"CALL-A- HEAD","n":[["Call-A- Head Corp.",1]],"x":{"ocp":{"r":1,"a":19600,"l":"2008-06-23","i":["20080616016"]}}},
 {"s":"CALL-A-HEAD","n":[["CALL-A-HEAD CORP",6],["CALL-A-HEAD CORP.",1]],"x":{"ocp":{"r":2,"a":1548500,"l":"2022-11-03","i":["20221027119","20171010012"]},"cbr":{"r":3,"a":27578,"l":"2025-05-27","i":["CT184620251417086","CT184620258806357","CT184620251400497"]},"ppt":{"r":1,"a":1048800,"l":"2022-10-26","i":["MA1-857-20228808731"]},"dbe":{"r":1,"i":["CALL-A-HEAD CORP."]}}},
 {"s":"CALLAGHAN NAWROACKI","n":[["Callaghan Nawroacki LLP",1]],"x":{"ocp":{"r":1,"a":98330,"l":"2003-11-07","i":["20031030008"]}}},
-{"s":"CALLAGHAN-PIEROG FAMILY FOUNDATION","n":[["CALLAGHAN-PIEROG FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["861067334"],"z":["11209"]}}},
-{"s":"CALLAH BENUE ASSOCIATES","n":[["Callah Benue Associates, Inc.",1]],"x":{"sbs":{"r":1,"i":["5485"],"z":["11225"],"p":["MBE"]}}},
-{"s":"CALLAHAN CLEANING","d":[["CALLAHAN CLEANING COMPANY",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-695AP-CR"],"z":["14621"]}}},
-{"s":"CALLAHAN DEE FAMILY FOUNDATION","n":[["CALLAHAN DEE FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["475474035"],"z":["12212"]}}},
-{"s":"CALLAHAN NANNINI QUARRY","n":[["Callahan & Nannini Quarry, Inc.",1]],"x":{"dol":{"r":1,"i":["26-637EO-CR"],"z":["12577"]}}},
-{"s":"CALLAHANS CLEANING SERVICES","n":[["CALLAHANS CLEANING SERVICES LLC",1]],"x":{"dol":{"r":1,"i":["26-695AP-CR"],"z":["14621"]}}},
-{"s":"CALLAN","n":[["CALLAN LLC",2],["Callan LLC,",1]],"x":{"ocp":{"r":1,"a":2060000,"l":"2019-07-15","i":["20190709003"]},"cbr":{"r":1,"a":2575000,"l":"2025-05-14","i":["CT101520251408173"]},"dbe":{"r":1,"i":["CALLAN LLC"]}}},
-{"s":"CALLAN ASSOCIATES","n":[["Callan Associates Inc",3],["Callan Associates Inc.",2]],"x":{"ocp":{"r":5,"a":5488000,"l":"2016-03-25","i":["20160318004","20150804012","20111107018","20090303009","20060531004"]}}}
+{"s":"CALLAGHAN-PIEROG FAMILY FOUNDATION","n":[["CALLAGHAN-PIEROG FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["861067334"],"z":["11209"]}}}
 ]}

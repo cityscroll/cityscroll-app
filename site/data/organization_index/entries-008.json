@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":8,"first_ordinal":13221,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":8,"first_ordinal":13220,"entries":[
+{"s":"AUGUSTAWESTLAND PHILADELPHIA","n":[["AugustaWestland Philadelphia Corporation",2]],"x":{"ocp":{"r":2,"a":3040200,"l":"2026-01-16","i":["20260112007","20240604108"]}}},
+{"s":"AUGUSTE CONSULTING GROUP","n":[["AUGUSTE CONSULTING GROUP LLC",19],["Auguste Consulting Group LLC",1]],"x":{"cbr":{"r":11,"a":275000,"l":"2026-10-21","c":11,"i":["CT104020273033732","CT104020263107867","CT104020263088095","CT104020263077084","CT104020263078146"]},"cbv":{"r":7,"l":"2026-10-21","c":7,"i":["CT104020273033732","CT104020263107867","CT104020263088095","CT104020263077084","CT104020263078146"],"m":["Black American"]},"dbe":{"r":1,"i":["AUGUSTE CONSULTING GROUP LLC"]},"sbs":{"r":1,"i":["377461"],"z":["10510"],"p":["MBE"]}}},
 {"s":"AUGUSTIN PUCO OLIVENCIA COMMUNITY CENTER","n":[["AUGUSTIN PUCO OLIVENCIA COMMUNITY CENTER INC",1]],"x":{"irs":{"r":1,"i":["223050995"],"z":["14204"]}}},
 {"s":"AUGUSTINE BROS","n":[["Augustine Bros., Corp.",1]],"x":{"dol":{"r":1,"i":["25-65PIE-CR"],"z":["12401"]}}},
 {"s":"AUGUSTINE CLASSICAL ACADEMY","n":[["AUGUSTINE CLASSICAL ACADEMY",1]],"x":{"irs":{"r":1,"i":["264416457"],"z":["12118"]}}},
@@ -87,7 +89,7 @@
 {"s":"AUSABLE VALLEY CENTRAL SCHOOL BOOSTER CLUB","n":[["AUSABLE VALLEY CENTRAL SCHOOL BOOSTER CLUB",1]],"x":{"irs":{"r":1,"i":["205117365"],"z":["12944"]}}},
 {"s":"AUSANGATE CREATIONS","n":[["AUSANGATE CREATIONS INC",1]],"x":{"irs":{"r":1,"i":["161529391"],"z":["14586"]}}},
 {"s":"AUSCHWITZ INSTITUTE FOR THE PREVENTION OF GENOCIDE AND MASS AT","n":[["AUSCHWITZ INSTITUTE FOR THE PREVENTION OF GENOCIDE AND MASS AT",1]],"x":{"irs":{"r":1,"i":["204714242"],"z":["10036"]}}},
-{"s":"AUSCHWITZ JEWISH CENTER FOUNDATION","n":[["AUSCHWITZ JEWISH CENTER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133857441"],"z":["10022"]}}},
+{"s":"AUSCHWITZ JEWISH CENTER FOUNDATION","n":[["AUSCHWITZ JEWISH CENTER FOUNDATION INC",2]],"x":{"cbr":{"r":1,"a":745000,"l":"2026-11-10","i":["CT126020278802703"]},"irs":{"r":1,"i":["133857441"],"z":["10022"]}}},
 {"s":"AUSCHWITZ MEMORIAL HOUSE OF PRAYER","n":[["AUSCHWITZ MEMORIAL HOUSE OF PRAYER",1]],"x":{"irs":{"r":1,"i":["862097948"],"z":["11501"]}}},
 {"s":"AUSCHWITZ-BIRKENAU MEMORIAL FOUNDATION","n":[["AUSCHWITZ-BIRKENAU MEMORIAL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["461411164"],"z":["10018"]}}},
 {"s":"AUSOME BMX","n":[["AUSOME BMX CORPORATION",1]],"x":{"irs":{"r":1,"i":["333907919"],"z":["14845"]}}},
@@ -678,7 +680,7 @@
 {"s":"B G SILBERSTEIN FOUNDATION","n":[["B&G SILBERSTEIN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["273368389"],"z":["11249"]}}},
 {"s":"B H ART-IN-ARCHITECTURE","n":[["B&H Art-in-Architecture Ltd.",1]],"x":{"sbs":{"r":1,"i":["854"],"z":["11215"],"p":["MBE"]}}},
 {"s":"B H BULLS BASEBALL CLUB","n":[["B H BULLS BASEBALL CLUB",1]],"x":{"irs":{"r":1,"i":["833685771"],"z":["13661"]}}},
-{"s":"B H EMERGENCY MEDICAL TRAINING","n":[["B&H EMERGENCY MEDICAL TRAINING INC",10]],"x":{"cbr":{"r":7,"a":175000,"l":"2026-10-20","c":7,"i":["CT104020273031890","CT104020263110565","CT104020263053048","CT104020253088100","CT104020253056577"]},"cbv":{"r":3,"l":"2026-10-20","i":["CT104020273031890","CT104020263110565","CT104020263053048"],"m":["Non-M/WBE"]}}},
+{"s":"B H EMERGENCY MEDICAL TRAINING","n":[["B&H EMERGENCY MEDICAL TRAINING INC",12]],"x":{"cbr":{"r":8,"a":200000,"l":"2026-11-10","c":8,"i":["CT104020273046210","CT104020273031890","CT104020263110565","CT104020263053048","CT104020253088100"]},"cbv":{"r":4,"l":"2026-11-10","i":["CT104020273046210","CT104020273031890","CT104020263110565","CT104020263053048"],"m":["Non-M/WBE"]}}},
 {"s":"B H ENGINEERING","n":[["B & H ENGINEERING PC",1]],"x":{"dbe":{"r":1,"i":["B & H ENGINEERING PC"]}}},
 {"s":"B H FOTO ELECTRONICS","n":[["B & H FOTO & ELECTRONICS CORP",12],["B&H FOTO & ELECTRONICS CORP.",1]],"x":{"cbr":{"r":10,"a":121898.41,"l":"2026-05-26","c":10,"i":["CT100220261415527","CT184620268806347","CT104220261400227","CT184620258808424","CT184620258806114"]},"cbv":{"r":2,"l":"2026-05-26","i":["CT100220261415527","CT184620268806347"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["B&H FOTO & ELECTRONICS CORP."]}}},
 {"s":"B H R A G S HOMECARE","n":[["B H R A G S HOMECARE INC",1]],"x":{"irs":{"r":1,"i":["112579798"],"z":["11210"]}}},
@@ -1725,11 +1727,5 @@
 {"s":"BARNEY SKANSKA","n":[["BARNEY SKANSKA, INC.",1]],"x":{"ocp":{"r":1,"a":15226435,"l":"2005-12-15","i":["20051208005"]}}},
 {"s":"BARNEY ZIPKIN TREE SERVICE","n":[["BARNEY ZIPKIN TREE SERVICE, INC.",1]],"x":{"dol":{"r":1,"i":["25-65PD3-CR"],"z":["12549"]}}},
 {"s":"BARNHART ENERGY","n":[["Barnhart Energy Co, LLC",1]],"x":{"dol":{"r":1,"i":["25-65ADE-CR"],"z":["38114"]}}},
-{"s":"BARNSTORM PLAYERS","n":[["BARNSTORM PLAYERS INC",1]],"x":{"irs":{"r":1,"i":["161568622"],"z":["13754"]}}},
-{"s":"BARNWELL HOUSE OF TIRES","n":[["Barnwell House of Tires Inc.",7],["Barnwell House of Tires Inc",6],["BARNWELL HOUSE OF TIRES INC",4],["BARNWELL HOUSE OF TIRES",2],["Barnwell House Of Tires, Inc.",1],["Barnwell House of Tires , Inc.",1]],"x":{"ocp":{"r":17,"a":31704116.33,"l":"2026-03-05","c":17,"i":["20260227011","20230413103","20220912101","20191002026","20170428006"]},"cbr":{"r":1,"a":849690,"l":"2026-02-26","i":["MA185720268804785"]},"ppt":{"r":2,"a":3642444.95,"l":"2026-02-26","i":["MA1-857-20268804785","MA1-857-20238806900"]},"cbv":{"r":1,"l":"2026-02-26","i":["MA185720268804785"],"m":["Non-M/WBE"]}}},
-{"s":"BARNWELL TIRES","n":[["Barnwell Tires",1]],"x":{"ocp":{"r":1,"a":300000,"l":"2008-08-15","i":["20080808010"]}}},
-{"s":"BARNWOOD FOUNDATION","n":[["BARNWOOD FOUNDATION",1]],"x":{"irs":{"r":1,"i":["207409517"],"z":["10536"]}}},
-{"s":"BARON CAPITAL FOUNDATION","n":[["BARON CAPITAL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["142004657"],"z":["10153"]}}},
-{"s":"BARON CAPITAL MANAGEMENT","n":[["BARON CAPITAL MANAGEMENT INC",1]],"x":{"dbe":{"r":1,"i":["BARON CAPITAL MANAGEMENT INC"]}}},
-{"s":"BARON DE HIRSCH FUND","n":[["BARON DE HIRSCH FUND",1]],"x":{"irs":{"r":1,"i":["135562971"],"z":["10022"]}}}
+{"s":"BARNSTORM PLAYERS","n":[["BARNSTORM PLAYERS INC",1]],"x":{"irs":{"r":1,"i":["161568622"],"z":["13754"]}}}
 ]}

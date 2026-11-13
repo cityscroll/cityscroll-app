@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":78,"first_ordinal":132682,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":78,"first_ordinal":132689,"entries":[
+{"s":"SOUTH BRONX OVERALL ECONOMIC DEVELOPMENT","n":[["South Bronx Overall Economic Development Corporation",10],["SOUTH BRONX OVERALL ECONOMIC DEVELOPMENT CORPORATION",6],["South Bronx Overall Economic Development",1],["South Bronx Overall Economic Development Corp.",1]],"x":{"ocp":{"r":12,"a":35761335,"l":"2021-09-20","c":12,"i":["20210913109","20200507037","20190207042","20180821009","20180131030"]},"cbr":{"r":4,"a":1170758,"l":"2025-05-30","i":["CT104020259558070","CT126020258807800","CT126020258807829","CT104020253064668"]},"dbe":{"r":1,"i":["SOUTH BRONX OVERALL ECONOMIC DEVELOPMENT CORPORATION"]},"irs":{"r":1,"i":["132736022"],"z":["10455"]}}},
 {"s":"SOUTH BRONX OVERALL ECONOMIC DEVELOPMENT CORPORATI","n":[["SOUTH BRONX OVERALL ECONOMIC DEVELOPMENT CORPORATI",9]],"x":{"ocp":{"r":9,"a":12573283,"l":"2023-08-03","c":9,"i":["20230728105","20230719121","20230719122","20230125106","20220720123"]}}},
 {"s":"SOUTH BRONX RESTORATION","n":[["South Bronx Restoration, LLC",2]],"x":{"sbs":{"r":1,"i":["388392"],"z":["11771"],"p":["WBE"]},"dol":{"r":1,"i":["25-67FU8-CR"],"z":["11771"]}}},
 {"s":"SOUTH BRONX UNITED","n":[["South Bronx United Inc",5],["SOUTH BRONX UNITED INC",1]],"x":{"ocp":{"r":1,"a":50000,"l":"2024-10-03","i":["20240927107"]},"cbr":{"r":3,"a":137500,"l":"2025-08-25","i":["CT126020268802129","CT126020258806176","CT126020258802369"]},"ppt":{"r":1,"a":50000,"l":"2024-09-26","i":["CT1-260-20258802369"]},"irs":{"r":1,"i":["264064041"],"z":["10451"]}}},
@@ -1730,10 +1731,5 @@
 {"s":"ST GEORGE SYRIAN ORTHODOX CHURCH MALANKARA","n":[["ST GEORGE SYRIAN ORTHODOX CHURCH MALANKARA INC",1]],"x":{"irs":{"r":1,"i":["133651468"],"z":["10956"]}}},
 {"s":"ST GEORGE TAVERN","d":[["St. George Tavern",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["367685"],"z":["10006"],"p":["MBE","WBE"]}}},
 {"s":"ST GEORGE THEATRE RESTORATION","n":[["ST. GEORGE THEATRE RESTORATION INC",3],["ST GEORGE THEATRE RESTORATION INC",1]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-01-22","i":["CT104020263085348","CT104020253092579"]},"cbv":{"r":1,"l":"2026-01-22","i":["CT104020263085348"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["200985637"],"z":["10301"]}}},
-{"s":"ST GEORGE TROPEOFOROS GREEK ORTHODOX COMMUNITY CHURCH","n":[["ST GEORGE TROPEOFOROS GREEK ORTHODOX COMMUNITY CHURCH INC",1]],"x":{"irs":{"r":1,"i":["414451092"],"z":["10019"]}}},
-{"s":"ST GEORGES CHORAL SOCIETY SINCE 1817","n":[["ST GEORGES CHORAL SOCIETY SINCE 1817",1]],"x":{"irs":{"r":1,"i":["263457322"],"z":["10163"]}}},
-{"s":"ST GEORGES CHURCH","n":[["ST GEORGES CHURCH",5]],"x":{"irs":{"r":5,"i":["111667615","111696959","111821131","112710584","141367360"],"z":["11102","11216","11354","11550","12305"]}}},
-{"s":"ST GEORGES COLLEGE OLD BOYS ASSOCIATION OF THE NORTH EAST","n":[["ST GEORGES COLLEGE OLD BOYS ASSOCIATION OF THE NORTH EAST INC",1]],"x":{"irs":{"r":1,"i":["814712225"],"z":["11691"]}}},
-{"s":"ST GEORGES COUNCIL NO 74","n":[["ST GEORGES COUNCIL NO 74",1]],"x":{"irs":{"r":1,"i":["146023474"],"z":["12019"]}}},
-{"s":"ST GEORGES GOLF COUNTRY CLUB","n":[["ST GEORGES GOLF & COUNTRY CLUB INC",1]],"x":{"irs":{"r":1,"i":["111279195"],"z":["11733"]}}}
+{"s":"ST GEORGE TROPEOFOROS GREEK ORTHODOX COMMUNITY CHURCH","n":[["ST GEORGE TROPEOFOROS GREEK ORTHODOX COMMUNITY CHURCH INC",1]],"x":{"irs":{"r":1,"i":["414451092"],"z":["10019"]}}}
 ]}

@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":84,"first_ordinal":142665,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4d960d2cfbf9d81d","shard":84,"first_ordinal":142668,"entries":[
+{"s":"THE LONDON COMPANY OF VIRGINIA","n":[["THE LONDON COMPANY OF VIRGINIA LLC",1]],"x":{"dbe":{"r":1,"i":["THE LONDON COMPANY OF VIRGINIA LLC"]}}},
+{"s":"THE LONG ISLAND ALZHEIMERS AND DEMENTIA CENTER","n":[["THE LONG ISLAND ALZHEIMERS AND DEMENTIA CENTER",1]],"x":{"irs":{"r":1,"i":["112926958"],"z":["11590"]}}},
+{"s":"THE LONG ISLAND BARBER INSTITUTE","n":[["The Long Island Barber Institute, Inc.",1]],"x":{"sbs":{"r":1,"i":["372494"],"z":["11550"],"p":["MBE"]}}},
+{"s":"THE LONG ISLAND CITY PARTNERSHIP","n":[["THE LONG ISLAND CITY PARTNERSHIP INC",1]],"x":{"irs":{"r":1,"i":["112651377"],"z":["11101"]}}},
+{"s":"THE LONG ISLAND COLLEGE","n":[["THE LONG ISLAND COLLEGE",1]],"x":{"ocp":{"r":1,"a":5000,"l":"2006-01-19","i":["20060112047"]}}},
 {"s":"THE LONG ISLAND COLLEGE HOSPITAL","n":[["THE LONG ISLAND COLLEGE HOSPITAL",1]],"x":{"ocp":{"r":1,"a":119565,"l":"2012-03-09","i":["20120302019"]}}},
 {"s":"THE LONG ISLAND DERMATOLOGICAL SOCIETY","n":[["THE LONG ISLAND DERMATOLOGICAL SOCIETY LTD",1]],"x":{"irs":{"r":1,"i":["112905749"],"z":["11598"]}}},
 {"s":"THE LONG ISLAND DOULA ASSOCIATION","n":[["THE LONG ISLAND DOULA ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["680626859"],"z":["11730"]}}},
@@ -134,7 +139,7 @@
 {"s":"THE MASTERMIND CONNECT","n":[["The Mastermind Connect, LLC",1]],"x":{"sbs":{"r":1,"i":["100459"],"z":["33444"],"p":["MBE"]}}},
 {"s":"THE MASTERS TOUCH CHORALE","n":[["THE MASTERS TOUCH CHORALE",1]],"x":{"irs":{"r":1,"i":["161507806"],"z":["13037"]}}},
 {"s":"THE MATH HIVE","n":[["THE MATH HIVE INC",1]],"x":{"irs":{"r":1,"i":["424513179"],"z":["10003"]}}},
-{"s":"THE MATH LEARNING CENTER","n":[["THE MATH LEARNING CENTER",3]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-08-25","i":["CT104020273008379"]},"cbv":{"r":1,"l":"2026-08-25","i":["CT104020273008379"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["THE MATH LEARNING CENTER"]}}},
+{"s":"THE MATH LEARNING CENTER","n":[["THE MATH LEARNING CENTER",5]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-11-09","i":["CT104020273045232","CT104020273008379"]},"cbv":{"r":2,"l":"2026-11-09","i":["CT104020273045232","CT104020273008379"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["THE MATH LEARNING CENTER"]}}},
 {"s":"THE MATRIARCH THEATRE","n":[["THE MATRIARCH THEATRE INC",1]],"x":{"irs":{"r":1,"i":["422356409"],"z":["10036"]}}},
 {"s":"THE MATTHEW G VIANNA MEMORIAL FUND 10-17-01","n":[["THE MATTHEW G VIANNA MEMORIAL FUND 10-17-01",1]],"x":{"irs":{"r":1,"i":["113633067"],"z":["11030"]}}},
 {"s":"THE MATTHEW P RUSSELL SCHOLARSHIP F OUNDATION","n":[["THE MATTHEW P RUSSELL SCHOLARSHIP F OUNDATION INC",1]],"x":{"irs":{"r":1,"i":["412509555"],"z":["13316"]}}},
@@ -859,7 +864,7 @@
 {"s":"THE REFORMERS MINISTRIES","n":[["THE REFORMERS MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["824877641"],"z":["11003"]}}},
 {"s":"THE REFUGE CENTER","n":[["THE REFUGE CENTER INC",1]],"x":{"irs":{"r":1,"i":["383825523"],"z":["12306"]}}},
 {"s":"THE REFUGE TEMPLE OF JESUS CHRIST APOSTOLIC","n":[["THE REFUGE TEMPLE OF JESUS CHRIST APOSTOLIC INC",1]],"x":{"irs":{"r":1,"i":["112766742"],"z":["11236"]}}},
-{"s":"THE REGGIO EMILIA MONTESSORI CENTER","n":[["THE REGGIO EMILIA MONTESSORI CENTER  LLC",4],["The Reggio Emilia Montessori Center  LLC",1],["The Reggio Emilia Montessori Center, LLC",1]],"x":{"ocp":{"r":2,"a":6913300,"l":"2024-06-11","i":["20240605114","20220609113"]},"ppt":{"r":2,"a":2458942.29,"l":"2024-06-04","i":["CT1-068-20258800079","CT1-068-20238800062"]},"dbe":{"r":1,"i":["The Reggio Emilia Montessori Center  LLC"]},"sbs":{"r":1,"i":["357026"],"z":["11226"],"p":["MBE","WBE"]}}},
+{"s":"THE REGGIO EMILIA MONTESSORI CENTER","n":[["THE REGGIO EMILIA MONTESSORI CENTER  LLC",4],["THE REGGIO EMILIA MONTESSORI CENTER LLC",2],["The Reggio Emilia Montessori Center  LLC",1],["The Reggio Emilia Montessori Center, LLC",1]],"x":{"ocp":{"r":2,"a":6913300,"l":"2024-06-11","i":["20240605114","20220609113"]},"cbr":{"r":1,"a":897624,"l":"2026-11-10","i":["CT104020279761865"]},"ppt":{"r":2,"a":2458942.29,"l":"2024-06-04","i":["CT1-068-20258800079","CT1-068-20238800062"]},"cbv":{"r":1,"l":"2026-11-10","i":["CT104020279761865"],"m":["Black American"]},"dbe":{"r":1,"i":["The Reggio Emilia Montessori Center  LLC"]},"sbs":{"r":1,"i":["357026"],"z":["11226"],"p":["MBE","WBE"]}}},
 {"s":"THE REGINA OPERA","n":[["THE REGINA OPERA COMPANY INC",1]],"x":{"irs":{"r":1,"i":["112734261"],"z":["11218"]}}},
 {"s":"THE REGINALD F LEWIS FOUNDATION","n":[["THE REGINALD F LEWIS FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133429965"],"z":["10022"]}}},
 {"s":"THE REGIONAL SYNOD OF ALBANY REFORMED CHURCH IN AMERICA","n":[["THE REGIONAL SYNOD OF ALBANY REFORMED CHURCH IN AMERICA INC",1]],"x":{"irs":{"r":1,"i":["156020445"],"z":["12309"]}}},
@@ -1526,7 +1531,7 @@
 {"s":"THE VISCARDI CENTER","n":[["THE VISCARDI CENTER INC",1]],"x":{"irs":{"r":1,"i":["111814883"],"z":["11507"]}}},
 {"s":"THE VITALIANO FOUNDATION","n":[["THE VITALIANO FOUNDATION",1]],"x":{"irs":{"r":1,"i":["900055160"],"z":["10016"]}}},
 {"s":"THE VIVE GROUP","n":[["THE VIVE GROUP INC",1]],"x":{"irs":{"r":1,"i":["814132606"],"z":["10462"]}}},
-{"s":"THE VIVID VOICE ENDEAVOR","n":[["THE VIVID VOICE ENDEAVOR LLC",8]],"x":{"cbr":{"r":6,"a":150000,"l":"2025-11-26","c":6,"i":["CT104020263057575","CT104020263025859","CT104020263018690","CT104020253096038","CT104020253065934"]},"cbv":{"r":1,"l":"2025-11-26","i":["CT104020263057575"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["THE VIVID VOICE ENDEAVOR LLC"]}}},
+{"s":"THE VIVID VOICE ENDEAVOR","n":[["THE VIVID VOICE ENDEAVOR LLC",10]],"x":{"cbr":{"r":7,"a":175000,"l":"2026-11-09","c":7,"i":["CT104020273035048","CT104020263057575","CT104020263025859","CT104020263018690","CT104020253096038"]},"cbv":{"r":2,"l":"2026-11-09","i":["CT104020273035048","CT104020263057575"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["THE VIVID VOICE ENDEAVOR LLC"]}}},
 {"s":"THE VOCAL POINT SPEECH AND SWALLOW SERVICES","n":[["The Vocal Point Speech and Swallow Services PLLC",1]],"x":{"sbs":{"r":1,"i":["392481"],"z":["11235"],"p":["MBE","WBE"]}}},
 {"s":"THE VOICE OF GONAIBO LA VOIX DE GONAIBO","n":[["THE VOICE OF GONAIBO LA VOIX DE GONAIBO CORPORATION",1]],"x":{"irs":{"r":1,"i":["413598816"],"z":["11373"]}}},
 {"s":"THE VOICE OF NATURE NETWORK","n":[["THE VOICE OF NATURE NETWORK INC",1]],"x":{"irs":{"r":1,"i":["061208587"],"z":["10509"]}}},
@@ -1607,11 +1612,5 @@
 {"s":"THE WILBUR PROJECT","n":[["THE WILBUR PROJECT INC",1]],"x":{"irs":{"r":1,"i":["414775756"],"z":["11776"]}}},
 {"s":"THE WILDENSTEIN PLATTNER INSTITUTE","n":[["THE WILDENSTEIN PLATTNER INSTITUTE",1]],"x":{"irs":{"r":1,"i":["812756135"],"z":["10010"]}}},
 {"s":"THE WILDFLOWER FOUNDATION","n":[["THE WILDFLOWER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["995145260"],"z":["11223"]}}},
-{"s":"THE WILKINS","n":[["THE WILKINS COMPANY, LLC",1]],"x":{"dol":{"r":1,"i":["25-65C9C-CR"],"z":["16505"]}}},
-{"s":"THE WILKINSON MEMORIAL BOOK STATION","n":[["THE WILKINSON MEMORIAL BOOK STATION INCORPORATED",1]],"x":{"irs":{"r":1,"i":["222628770"],"z":["12025"]}}},
-{"s":"THE WILLIAM AND ANITA NEWMAN FOUNDATION","n":[["THE WILLIAM AND ANITA NEWMAN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133352983"],"z":["11721"]}}},
-{"s":"THE WILLIAM AND HELEN LITTLE FAMILY FOUNDATION","n":[["THE WILLIAM AND HELEN LITTLE FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["134199578"],"z":["10128"]}}},
-{"s":"THE WILLIAM ECK CHARITABLE TRUST","n":[["THE WILLIAM ECK CHARITABLE TRUST",1]],"x":{"irs":{"r":1,"i":["116342002"],"z":["11220"]}}},
-{"s":"THE WILLIAM F KERBY AND ROBERT S POTTER FUND","n":[["THE WILLIAM F KERBY AND ROBERT S POTTER FUND",1]],"x":{"irs":{"r":1,"i":["223021227"],"z":["10013"]}}},
-{"s":"THE WILLIAM GEORGE AGENCY FOR CHILDRENS SERVICES","n":[["THE WILLIAM GEORGE AGENCY FOR CHILDRENS SERVICES INC",1]],"x":{"irs":{"r":1,"i":["131857994"],"z":["13068"]}}}
+{"s":"THE WILKINS","n":[["THE WILKINS COMPANY, LLC",1]],"x":{"dol":{"r":1,"i":["25-65C9C-CR"],"z":["16505"]}}}
 ]}
