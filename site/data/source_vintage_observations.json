@@ -985,8 +985,8 @@
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "doing-business-entities:2026-11-03T19:29:08.996Z"
       },
-      "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
-      "expected_lag_tolerance_days": 400,
+      "expected_cadence": "Monthly Open Data refresh (publisher Update Frequency: Monthly, Automation: Yes; rowsUpdatedAt 2026-10-18T19:05:16Z at recon 2026-11-13)",
+      "expected_lag_tolerance_days": 45,
       "current_lag": {
         "value": null,
         "unit": null,

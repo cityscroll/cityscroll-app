@@ -3972,11 +3972,10 @@
         "organization_phone",
         "doing_business_start_date"
       ],
-      "max_stale_days": 400,
-      "publisher_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
-      "acquisition_cadence": "Weekly",
-      "acquisition_cadence_days": 7,
-      "product_freshness": "Worker re-fetches the full entity list during the daily vendor-profile rebuild and attaches stem-joined rows to matching profiles. Schema probes tolerate multi-month publisher lag via max_stale_days.",
+      "max_stale_days": 45,
+      "publisher_cadence": "Monthly Open Data refresh (publisher Update Frequency: Monthly, Automation: Yes; rowsUpdatedAt 2026-10-18T19:05:16Z at recon 2026-11-13)",
+      "acquisition_cadence": "Live edge: Worker vendor-profile rebuild re-fetches the catalog; warehouse rematerialization is on demand. No scheduled acquisition-receipt publication path — freshness is the live source-contract check against publisher rowsUpdatedAt and fetch health.",
+      "product_freshness": "Worker re-fetches the full entity list during the daily vendor-profile rebuild and attaches stem-joined rows to matching profiles. The live source-contract check probes metadata, schema, and a sample row, and alerts when publisher rowsUpdatedAt is older than 45 days (monthly cycle plus margin) or when the live fetch fails.",
       "used_for": "Vendor identity enrichment on vendor profiles: Doing Business Search listing, ownership structure, organization phone, and doing-business start date when organization_name stems match a City Record award vendor.",
       "join_keys": [
         "organization_name",
@@ -4050,7 +4049,7 @@
       "delivery_tier": "edge-materialized",
       "freshness_contract": {
         "mode": "periodic",
-        "max_stale_days": 400,
+        "max_stale_days": 45,
         "clock_basis": "publisher_updated",
         "serving_max_age_days": 180,
         "serve_contract_id": "doing_business"

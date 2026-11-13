@@ -4,9 +4,11 @@ import test from "node:test";
 import {
   ACQUISITION_RECEIPT_SCHEMA,
   buildSourceHealthObservations,
+  evaluateFreshnessWatchdog,
   externalScheduleReceiptRows,
   validateAcquisitionReceipt,
 } from "../tools/source_health_observations.mjs";
+import { loadSourceContracts } from "../tools/source_contracts.mjs";
 import { buildDataSourceGraph } from "../tools/data_source_graph.mjs";
 import { sourceAcquisitionReceipt } from "../worker/src/lib/source_acquisition_receipt.mjs";
 
@@ -140,4 +142,38 @@ test("Worker runtime adapter emits the same canonical fields", () => {
     "publisher_updated_at",
   ]);
   assert.equal(receipt.schema, ACQUISITION_RECEIPT_SCHEMA);
+});
+
+test("doing-business-entities is monitored by live publisher age and fetch health, not a false owned acquisition cadence", () => {
+  // Edge-materialized runtime source: Worker re-fetches during vendor-profile
+  // rebuild. There is no scheduled job that publishes acquisition receipts, so
+  // acquisition_cadence_days must not invent an owned weekly/monthly acquisition
+  // promise the freshness watchdog cannot clear. Freshness stays on the live
+  // source-contract check: metadata/schema/sample fetch health, and publisher
+  // rowsUpdatedAt against max_stale_days (monthly cycle plus margin ≈ 45 days).
+  const registry = loadSourceContracts();
+  const contract = (registry.contracts || []).find((row) => row.id === "doing-business-entities");
+  assert.ok(contract, "doing-business-entities must remain a registered source contract");
+  assert.equal(contract.delivery_tier, "edge-materialized");
+  assert.equal(contract.acquisition_cadence_days, undefined);
+  assert.equal(contract.freshness_contract?.acquisition_cadence_days, undefined);
+  assert.equal(contract.max_stale_days, 45);
+  assert.equal(contract.freshness_contract?.max_stale_days, 45);
+  assert.equal(contract.freshness_contract?.clock_basis, "publisher_updated");
+
+  const watchdog = evaluateFreshnessWatchdog(
+    contract,
+    { acquired_at: "2026-11-03T19:29:08.996Z" },
+    {
+      now: "2026-11-13T10:30:00.000Z",
+      schedulerHeartbeat: {
+        observed_at: "2026-11-13T10:30:00.000Z",
+        status: "succeeded",
+        run_id: "source-freshness-watchdog:fixture",
+      },
+    },
+  );
+  assert.equal(watchdog.status, "CURRENT");
+  assert.deepEqual(watchdog.reason_codes, []);
+  assert.equal(watchdog.acquisition.cadence_days, null);
 });
