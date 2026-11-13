@@ -506,6 +506,52 @@ test("exact-record publisher allowance: the same literal in a non-SBS public fil
   });
 });
 
+test("exact-record publisher allowance: an organization-index copy of the same published name passes", () => {
+  withScratch((directory) => {
+    const stem = `ACME ${SENTINEL} COLLISION`;
+    const formal = `Acme ${SENTINEL} Auto & Collision, Inc.`;
+    const entry = JSON.stringify({ s: stem, n: [[formal, 1]], x: { sbs: { r: 1, i: ["387393"], z: ["11779"] } } });
+    const stemLine = JSON.stringify([stem, 128]);
+    scratchRepo(directory, {
+      [PUBLISHER_ALLOWANCES_RELATIVE_PATH]: `${JSON.stringify({
+        schema: PUBLISHER_ALLOWANCES_SCHEMA,
+        allowances: [
+          { id: "stem", publisher: "nyc-open-data", dataset: "ci93-uc8s", account_number: "387393", field: "name_stem", value_sha256: sha256Hex(stem), artifact_kinds: ["organization_index_entry", "organization_index_stems"] },
+          { id: "formal", publisher: "nyc-open-data", dataset: "ci93-uc8s", account_number: "387393", field: "vendor_formal_name", value_sha256: sha256Hex(formal), artifact_kinds: ["organization_index_entry"] },
+        ],
+      }, null, 2)}\n`,
+      "site/data/organization_index/entries-048.json": `{"schema":"cityscroll.organization_index.entries.v1","entries":[\n${entry}\n]}\n`,
+      "site/data/organization_index/stems.json": `{"schema":"cityscroll.organization_index.stems.v1","stems":[\n${stemLine}\n]}\n`,
+    });
+    assert.equal(classifyPublisherArtifact("site/data/organization_index/entries-048.json")?.kind, "organization_index_entry");
+    assert.equal(classifyPublisherArtifact("site/data/organization_index/stems.json")?.kind, "organization_index_stems");
+    const result = scanPrivateIdentifiers({ root: directory, terms: [SENTINEL] });
+    assert.equal(result.status, "PASS");
+    assert.deepEqual(result.findings, []);
+    assert.equal(result.allowance_suppressions, 2);
+  });
+});
+
+test("exact-record publisher allowance: the same organization-index name on another account fails", () => {
+  withScratch((directory) => {
+    const stem = `ACME ${SENTINEL} COLLISION`;
+    const entry = JSON.stringify({ s: stem, n: [[`Acme ${SENTINEL} Auto`, 1]], x: { sbs: { r: 1, i: ["999001"] } } });
+    scratchRepo(directory, {
+      [PUBLISHER_ALLOWANCES_RELATIVE_PATH]: `${JSON.stringify(publisherAllowanceFixture({
+        account: "387393",
+        field: "name_stem",
+        value: stem,
+        kinds: ["organization_index_entry"],
+      }), null, 2)}\n`,
+      "site/data/organization_index/entries-001.json": `{"schema":"cityscroll.organization_index.entries.v1","entries":[\n${entry}\n]}\n`,
+    });
+    const result = scanPrivateIdentifiers({ root: directory, terms: [SENTINEL] });
+    assert.equal(result.status, "FAIL");
+    assert.equal(result.findings.length, 1);
+    assert.equal(result.allowance_suppressions, 0);
+  });
+});
+
 test("exact-record publisher allowance: the owner-controlled codename list is unchanged", () => {
   const loaded = loadPublisherAllowances({ root: ROOT });
   assert.equal(loaded.error, null);

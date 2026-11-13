@@ -404,6 +404,30 @@
       "output_paths": [
         "site/data/community_board_payroll_staff_count.json"
       ]
+    },
+    {
+      "id": "organization-index",
+      "generator": "tools/build_organization_index.mjs",
+      "source_paths": [
+        "site/data/ocp_awards_warehouse_lookup.json",
+        "site/data/analytics_registered_contracts.json",
+        "site/data/procurement_spine_sources.json",
+        "site/data/doing_business_warehouse_lookup.json",
+        "site/data/sbs_certified_businesses.json",
+        "site/data/irs_eo_bmf_ny/manifest.json",
+        "site/data/nys_dol_contractor_registry/manifest.json",
+        "site/data/nyc_sca_prequalified_firms/manifest.json",
+        "site/organization_index_contract.mjs",
+        "tools/lib/organization_index_sources.mjs",
+        "tools/lib/organization_index_build.mjs",
+        "entity_resolution/registers/shard_records.mjs",
+        "entity_resolution/registers/irs_eo_bmf.mjs",
+        "entity_resolution/normalizers/vendor_stem.mjs"
+      ],
+      "output_paths": [
+        "site/data/organization_index.json",
+        "site/data/organization_index"
+      ]
     }
   ]
 }

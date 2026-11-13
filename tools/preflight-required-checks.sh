@@ -433,6 +433,7 @@ family_static_standards() {
   run_and_fail node tools/build_dos_entities_vendor_lookup.mjs --check
   run_and_fail node tools/build_city_record_pin_chain_lookup.mjs --check
   run_and_fail node tools/build_keyword_search_index.mjs --check
+  run_and_fail node tools/build_organization_index.mjs --check
   run_and_fail node tools/build_agency_constellation_documents.mjs --check
   run_and_fail node tools/determinism_lint.mjs --check --fixture test/fixtures/determinism-lint
   run_and_fail node tools/depot_rederive.mjs --check

@@ -91,6 +91,8 @@ export function normalizeAnalyticalContractRow(row) {
       ? Number(registrationFiscalYearValue) : null,
     contract_amount_band: row?.contract_amount_band || contractAmountBand(current),
     award_method: row?.award_method || row?.awardMethod || null,
+    // Checkbook's prime_vendor_mwbe_category, kept as Checkbook records it (organization record M/WBE block).
+    prime_vendor_mwbe_category: row?.prime_vendor_mwbe_category ?? row?.mwbe_category ?? row?.mwbe ?? null,
     industry: row?.industry || row?.prime_contract_industry || null,
     contract_purpose: row?.contract_purpose || row?.purpose || row?.prime_contract_purpose || null,
     document_code: row?.document_code || row?.documentCode || null,

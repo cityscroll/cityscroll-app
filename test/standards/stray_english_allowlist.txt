@@ -145,10 +145,11 @@ property.css
 compact_calendar.css
 procurement_pursuit_controls.css
 
-# Versioned machine contract checked before a suggestion receipt is admitted; never rendered.
+# Versioned machine contracts checked before a receipt is shown; never rendered.
 cityscroll.land_map_shell.v1
 cityscroll.money_suggestion_destination.v1
 cityscroll.land_filing_evidence_report_detail.v1
+cityscroll.organization_record.v1
 
 # Route-lazy fetch path for the per-document filing-report JSON; never rendered chrome.
 data/land_filing_reports

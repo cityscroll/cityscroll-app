@@ -9,7 +9,7 @@
       "account_number": "387393",
       "field": "vendor_formal_name",
       "value_sha256": "588ec272445b43cfb891d987b509f0d0e05f15ced562c26f92a772daf42f7b9e",
-      "artifact_kinds": ["sbs_row_shard"]
+      "artifact_kinds": ["sbs_row_shard", "organization_index_entry"]
     },
     {
       "id": "nyc-open-data-sbs-ci93-uc8s-387393-business_description",
@@ -36,7 +36,7 @@
       "account_number": "387393",
       "field": "name_stem",
       "value_sha256": "200834a90e950296bc17b0181cba0f17f6c4a402184679d2837d45a1bbd47117",
-      "artifact_kinds": ["sbs_row_shard", "sbs_names_index"]
+      "artifact_kinds": ["sbs_row_shard", "sbs_names_index", "organization_index_entry", "organization_index_stems"]
     }
   ]
 }

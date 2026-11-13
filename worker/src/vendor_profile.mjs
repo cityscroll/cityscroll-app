@@ -18,6 +18,7 @@ import {
 import { attachDoingBusinessFromWarehouse } from "./lib/doing_business_warehouse_lookup.mjs";
 import { resolveWarehouseRouteScopedLookup } from "./lib/warehouse_route_scoped_shards.mjs";
 import { precomputedVendorFootprint } from "./entity_intelligence.mjs";
+import { handleOrganizationRecord } from "./organization_search_route.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const MONEY_HONESTY_CAP = 10_000_000_000;
@@ -458,6 +459,11 @@ export async function handleVendorProfile(req, env, options = {}) {
   };
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "GET") return json({ ok: false, reason: "method" }, 405, cors);
+  // ?ref=org:{stem}[#kind:id] answers the organization record (site/organization_record.mjs). The KV
+  // profile below becomes its city_record_vendor_profile block.
+  if (new URL(req.url).searchParams.has("ref")) {
+    return handleOrganizationRecord(req, env, { cors, nowMs: options.nowMs, storedVendorProfile: (stem) => storedVendorProfile(env, stem, options.nowMs ?? Date.now()) });
+  }
   if (!env.ALERT_STATE) return json({ ok: false, reason: "not-configured" }, 503, cors);
 
   const name = new URL(req.url).searchParams.get("name") || "";
@@ -515,6 +521,20 @@ export async function handleVendorProfile(req, env, options = {}) {
     if (options?.waitUntil) options.waitUntil(put); else await put.catch(() => {});
   }
   return res;
+}
+
+/** The stored KV profile for one stem, as the organization record's city_record_vendor_profile block reads it. */
+export async function storedVendorProfile(env, stem, nowMs = Date.now()) {
+  if (!env?.ALERT_STATE) return { status: "not_available", reason: "not-configured" };
+  let manifest;
+  try { manifest = JSON.parse(await env.ALERT_STATE.get(MANIFEST_KEY) || "null"); } catch { return { status: "not_available", reason: "missing-index" }; }
+  if (!manifest?.generated || !manifest?.version) return { status: "not_available", reason: "missing-index" };
+  const ageMs = nowMs - Date.parse(manifest.generated);
+  if (!Number.isFinite(ageMs) || ageMs < 0 || ageMs > MAX_AGE_MS) return { status: "not_available", reason: "stale-index" };
+  let bucket;
+  try { bucket = JSON.parse(await env.ALERT_STATE.get(vendorProfileBucketKey(manifest.version, vendorProfileBucket(stem))) || "null"); } catch { return { status: "not_available", reason: "missing-index" }; }
+  const stored = bucket?.profiles?.[stem];
+  return stored ? { status: "present", generated: manifest.generated, profile: withoutDisabledPlanRows(stored) } : { status: "no_match", reason: "not-found" };
 }
 
 function json(value, status, headers) {

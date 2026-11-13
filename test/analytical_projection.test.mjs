@@ -419,4 +419,10 @@ describe("public performance-evidence coverage projection", () => {
     assert.equal(projection.rows[0].evidence_state, PERFORMANCE_EVIDENCE_STATES.NONE);
     assert.equal(projection.rows[0].unresolved, true);
   });
+
+  it("normalizeAnalyticalContractRow keeps Checkbook's prime vendor M/WBE category as published", () => {
+    assert.equal(normalizeAnalyticalContractRow({ id: "CT-M", vendor: "V", mwbe_category: "Asian American" }).prime_vendor_mwbe_category, "Asian American");
+    assert.equal(normalizeAnalyticalContractRow({ id: "CT-X", vendor: "V", mwbe: "Non-M/WBE" }).prime_vendor_mwbe_category, "Non-M/WBE");
+    assert.equal(normalizeAnalyticalContractRow({ id: "CT-N", vendor: "V" }).prime_vendor_mwbe_category, null);
+  });
 });

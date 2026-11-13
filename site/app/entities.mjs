@@ -1225,7 +1225,7 @@ async function showVendor(name, initialTab){
   if(stem.length < 3){ box.innerHTML = `<div class="empty">${t("vendor_name_too_short",{name:safe})} ${routeBackHTML("#money")}</div>`; applyActiveHistoryRouteScroll(); return; }
   box.innerHTML = `<div style="max-width:880px;margin:0 auto"><div class="panel" style="padding:22px 24px"><h2 class="rolename" lang="en" dir="ltr">${safe}</h2><div class="agencybar" aria-hidden="true"><div><div class="big">—</div></div><div><div class="big">—</div></div><div><div class="big">—</div></div></div></div></div>`;
   const profile = await loadVendorProfileRecord(name);
-  if(!profile) return showVendorLive(name, initialTab, box);
+  if(!profile){ await showVendorLive(name, initialTab, box); return hydrateOrganizationRecord(box, stem); }
   renderVendorProfile(box, profile, {
     agencies:profile.topAgencies||[],
     rows:profile.recentNotices,
@@ -1234,7 +1234,7 @@ async function showVendor(name, initialTab){
   }, initialTab, false);
   announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
   focusItemRouteTarget(box.querySelector(".route-item"));
-  applyActiveHistoryRouteScroll();
+  applyActiveHistoryRouteScroll(); await hydrateOrganizationRecord(box, stem);
 }
 
 function vendorRecordLinkHTML(record, label){
@@ -1295,3 +1295,60 @@ globalThis.vendorProfileHeaderHTML = vendorProfileHeaderHTML;
 globalThis.vendorStem = vendorStem;
 globalThis.vendorTimelineFlatHTML = vendorTimelineFlatHTML;
 Object.defineProperty(globalThis, "vendorPhaseSpineToolsPromise", { configurable: true, get: () => vendorPhaseSpineToolsPromise, set: value => { vendorPhaseSpineToolsPromise = value; } });
+
+// Organization record (GET /vendor-profile?ref=org:STEM): every source that carries this name, side by
+// side, each block with its source, record id and date. Nothing here says two sources are one organization.
+function organizationBlockHTML(b){
+  const date = b.collected_at || b.queried_at;
+  const when = date ? t("org_block_date",{date: fdate(String(date).slice(0,10))}) : "";
+  const id = b.record_id ? t("org_block_record_id",{id: escUiHtml(String(b.record_id))}) : "";
+  const status = b.status === "present" ? "" : `<div class="sub">${t("org_block_status_"+b.status)}</div>`;
+  const fields = b.fields || b.record?.published || b.profile || null;
+  const rows = fields && typeof fields === "object"
+    ? Object.entries(fields).filter(([,v])=>v!==null && v!=="" && !(Array.isArray(v)&&!v.length))
+      .map(([k,v])=>`<div class="sub"><span class="ftype">${escUiHtml(k)}</span> ${escUiHtml(Array.isArray(v)?v.join(", "):typeof v==="object"?JSON.stringify(v):String(v))}</div>`).join("")
+    : "";
+  const counts = b.block === "city_awards"
+    ? `<div class="sub">${t("org_block_awards_counts",{n:String(b.record_count||b.rows||0), total: money(b.amount_total)||"—", date: b.latest_date?fdate(b.latest_date):"—"})}</div>`
+    : b.block === "checkbook_mwbe_category" ? `<div class="sub">${escUiHtml((b.prime_vendor_mwbe_category||[]).join(", "))}</div>` : "";
+  return `<div class="org-block" style="margin:10px 0 0;padding:10px 12px;border:1px solid #dde1e7;border-radius:8px">
+    <div class="chain-h" style="margin:0 0 4px">${t("org_block_"+b.block)}</div>${status}${counts}${rows}
+    <div class="rmeta" style="margin-top:6px"><a class="pivot" href="${escUiHtml(b.source_url)}" target="_blank" rel="noopener noreferrer">${escUiHtml(b.source_label||b.source)}<span class="sr-only"> ${t("ext_link_new_tab_sr")}</span></a> ${id} ${when}</div>
+  </div>`;
+}
+
+function organizationRecordHTML(rec){
+  if(!rec || rec.status !== "found") return "";
+  const links = (rec.links||[]).map(l=>`<li>${escUiHtml(l.between.join(" + "))}: ${t("org_link_"+l.label)}</li>`).join("");
+  return `<section class="org-record" style="margin:18px 0 0">
+    <h3 class="chain-h">${t("org_record_heading")}</h3>
+    <p class="rmeta">${t("org_identity_note")}</p>
+    ${links ? `<ul class="rmeta">${links}</ul>` : ""}
+    ${rec.blocks.map(organizationBlockHTML).join("")}
+    ${rec.display_name ? `<button type="button" class="org-state-lookup" data-org-name="${escUiHtml(rec.display_name)}">${t("org_state_lookup_btn")}</button>` : ""}
+  </section>`;
+}
+
+async function hydrateOrganizationRecord(box, stem){
+  try{
+    const response = await workerFetch("/vendor-profile?ref="+encodeURIComponent("org:"+stem), null, 900);
+    if(!response.ok) return;
+    const rec = await response.json();
+    if(rec?.schema !== "cityscroll.organization_record.v1" || rec.stem !== stem) return;
+    const host = box.querySelector(".route-item") || box;
+    host.insertAdjacentHTML("beforeend", organizationRecordHTML(rec));
+    const btn = host.querySelector(".org-state-lookup");
+    if(btn) btn.addEventListener("click", async () => {
+      btn.disabled = true;
+      let body = null;
+      try{
+        const r = await workerFetch("/org-register/dos?name="+encodeURIComponent(btn.dataset.orgName), null, 6000);
+        body = await r.json();
+      }catch{ body = null; }
+      // The state route answers one of its statuses. No answer at all is provider_unavailable.
+      const { stateRegisterBlocks } = await import("../organization_record.mjs");
+      const blocks = stateRegisterBlocks(body);
+      btn.insertAdjacentHTML("afterend", blocks.map(organizationBlockHTML).join(""));
+    });
+  }catch{ /* the vendor page stands without the organization record */ }
+}

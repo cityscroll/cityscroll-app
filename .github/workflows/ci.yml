@@ -336,6 +336,11 @@ jobs:
         # reconstructs all registered data inputs and producer projections and fails closed when
         # either compressed family transport or the committed manifest is not synchronized.
         run: node tools/build_keyword_search_index.mjs --check
+      - name: Committed organization index freshness
+        if: matrix.family == 'static-standards'
+        # Required PR gate: rebuilds the organization index from committed artifacts and fails closed on
+        # any byte difference, missing shard, or generation mismatch.
+        run: node tools/build_organization_index.mjs --check
       - name: Committed agency constellation document freshness
         if: matrix.family == 'static-standards'
         # Required PR gate for the generated agency constellation read model. Re-derives the

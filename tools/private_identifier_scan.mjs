@@ -328,8 +328,10 @@ export function loadPublisherAllowances({ root = ROOT, allowancesPath = null } =
 }
 
 /**
- * Classify a tracked path as a known SBS publisher artifact, or null.
- * Only these layouts may use exact-record allowances.
+ * Classify a tracked path as a publisher artifact that may carry an exact-record
+ * allowance, or null. Organization-index files are included only because they copy
+ * the same published certified-business strings (stem and formal name) next to the
+ * same account number. They are not a path-wide exemption.
  */
 export function classifyPublisherArtifact(path) {
   const normalized = String(path || "").replace(/\\/g, "/");
@@ -338,6 +340,12 @@ export function classifyPublisherArtifact(path) {
   }
   if (/(?:^|\/)site\/data\/sbs_certified_businesses\/names\.json$/.test(normalized)) {
     return { publisher: "nyc-open-data", dataset: "ci93-uc8s", kind: "sbs_names_index" };
+  }
+  if (/(?:^|\/)site\/data\/organization_index\/entries-\d+\.json$/.test(normalized)) {
+    return { publisher: "nyc-open-data", dataset: "ci93-uc8s", kind: "organization_index_entry" };
+  }
+  if (/(?:^|\/)site\/data\/organization_index\/stems\.json$/.test(normalized)) {
+    return { publisher: "nyc-open-data", dataset: "ci93-uc8s", kind: "organization_index_stems" };
   }
   return null;
 }
@@ -403,6 +411,52 @@ export function residualPublisherText(line, artifact, allowances) {
       if (!accountSet.has(allowance.account_number)) continue;
       if (sha256Hex(stem) !== allowance.value_sha256) continue;
       return { residual: JSON.stringify({ [allowance.account_number]: accounts }), changed: true };
+    }
+    return { residual: line, changed: false };
+  }
+
+  if (artifact.kind === "organization_index_entry") {
+    let entry;
+    try {
+      entry = JSON.parse(stripTrailingComma(line));
+    } catch {
+      return { residual: line, changed: false };
+    }
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) return { residual: line, changed: false };
+    const accounts = new Set((entry.x?.sbs?.i || []).map((value) => String(value)));
+    const residual = { ...entry, n: Array.isArray(entry.n) ? entry.n.map((pair) => (Array.isArray(pair) ? [...pair] : pair)) : entry.n };
+    let changed = false;
+    for (const allowance of applicable) {
+      if (!accounts.has(allowance.account_number)) continue;
+      if (allowance.field === "name_stem" && typeof residual.s === "string" && sha256Hex(residual.s) === allowance.value_sha256) {
+        delete residual.s;
+        changed = true;
+      }
+      if (allowance.field === "vendor_formal_name" && Array.isArray(residual.n)) {
+        const next = residual.n.filter((pair) => !(Array.isArray(pair) && typeof pair[0] === "string" && sha256Hex(pair[0]) === allowance.value_sha256));
+        if (next.length !== residual.n.length) {
+          residual.n = next;
+          changed = true;
+        }
+      }
+    }
+    return { residual: changed ? JSON.stringify(residual) : line, changed };
+  }
+
+  if (artifact.kind === "organization_index_stems") {
+    let pair;
+    try {
+      pair = JSON.parse(stripTrailingComma(line));
+    } catch {
+      return { residual: line, changed: false };
+    }
+    if (!Array.isArray(pair) || typeof pair[0] !== "string") return { residual: line, changed: false };
+    for (const allowance of applicable) {
+      if (allowance.field !== "name_stem") continue;
+      if (sha256Hex(pair[0]) !== allowance.value_sha256) continue;
+      // The stem line has no account. The allowance record already binds this exact
+      // published stem to one account; the residual keeps that account, not the stem.
+      return { residual: JSON.stringify([allowance.account_number, pair[1]]), changed: true };
     }
     return { residual: line, changed: false };
   }

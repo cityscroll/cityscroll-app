@@ -17,8 +17,10 @@ const PUBLISHER_RECORD_SHARDS = /(?:^|\/)site\/data\/sbs_certified_businesses\/r
 // Entity-register publisher shards (IRS EO BMF NY, NYS DOL contractor registry, NYC SCA
 // prequalified firms) keep verbatim org names. Spaced English stems that begin with FIX
 // (FIXED / FIXING / FIX-IT …) are publisher display text there, not synthetic FIX ids.
-// Outside these directories FIX_ID still matches spaced values so the privacy guard stays strict.
+// The organization index copies those same published display names. Compact FIX ids
+// still fail in every directory, and spaced values still fail outside these paths.
 const REGISTER_PUBLISHER_DATA = /(?:^|\/)site\/data\/(?:irs_eo_bmf_ny|nys_dol_contractor_registry|nyc_sca_prequalified_firms)\//;
+const ORGANIZATION_INDEX_DATA = /(?:^|\/)site\/data\/organization_index\//;
 
 function pathText(parts) {
   return parts.map(String).join(".");
@@ -52,7 +54,8 @@ export function publicPayloadFindings(value, { source = "document" } = {}) {
     const key = String(parts.at(-1) ?? "");
     const sourcePath = String(source).replaceAll("\\", "/");
     const spacedRegisterPublisherName =
-      REGISTER_PUBLISHER_DATA.test(sourcePath) && /\s/.test(node) && FIX_ID.test(node);
+      (REGISTER_PUBLISHER_DATA.test(sourcePath) || ORGANIZATION_INDEX_DATA.test(sourcePath))
+      && /\s/.test(node) && FIX_ID.test(node);
     if (
       (!spacedRegisterPublisherName && FIX_ID.test(node)) ||
       (ID_KEY.test(key) && (FIXTURE_KEY.test(node) || SYNTHETIC_KEY.test(node)))
