@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":80,"first_ordinal":136015,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":80,"first_ordinal":136014,"entries":[
 {"s":"STEPHANIE LEE TWIN","n":[["STEPHANIE LEE TWIN",3],["Stephanie Lee Twin",3]],"x":{"ocp":{"r":3,"a":555639.29,"l":"2026-07-24","i":["20260720003","20230408105","20210809104"]},"ppt":{"r":3,"a":591639.29,"l":"2026-07-17","i":["CT1-856-20278801180","CT1-856-20238804611","CT1-856-20228801534"]}}},
 {"s":"STEPHANIE MARIE BURGOS SCHOLARSHIP","n":[["STEPHANIE MARIE BURGOS SCHOLARSHIP INC",1]],"x":{"irs":{"r":1,"i":["272965950"],"z":["11237"]}}},
 {"s":"STEPHANIE PUREHEART","n":[["Stephanie Pureheart",1]],"x":{"dol":{"r":1,"i":["25-64K3V-CR"],"z":["74857"]}}},

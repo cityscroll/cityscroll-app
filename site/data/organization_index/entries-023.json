@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":23,"first_ordinal":38817,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":23,"first_ordinal":38817,"entries":[
 {"s":"CROSBY STREET ASSOCIATION","n":[["CROSBY STREET ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["874798382"],"z":["10019"]}}},
 {"s":"CROSBY-BROWNLIE","n":[["Crosby-Brownlie, Inc.",1]],"x":{"dol":{"r":1,"i":["26-636EO-CR"],"z":["14605"]}}},
 {"s":"CROSS BANNER","n":[["CROSS BANNER INC",1]],"x":{"irs":{"r":1,"i":["472305874"],"z":["10451"]}}},

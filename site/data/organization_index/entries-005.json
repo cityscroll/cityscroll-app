@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":5,"first_ordinal":8346,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":5,"first_ordinal":8346,"entries":[
 {"s":"AMERICAN FRIENDS OF SULAM","n":[["AMERICAN FRIENDS OF SULAM INC",1]],"x":{"irs":{"r":1,"i":["134133458"],"z":["10952"]}}},
 {"s":"AMERICAN FRIENDS OF T HE BNEI BRAK DEVELOPMENT FUND","n":[["AMERICAN FRIENDS OF T HE BNEI BRAK DEVELOPMENT FUND INC",1]],"x":{"irs":{"r":1,"i":["272386780"],"z":["10018"]}}},
 {"s":"AMERICAN FRIENDS OF TAFELMUSIK","n":[["AMERICAN FRIENDS OF TAFELMUSIK INC",1]],"x":{"irs":{"r":1,"i":["413032148"],"z":["10026"]}}},

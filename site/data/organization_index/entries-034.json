@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":34,"first_ordinal":57618,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":34,"first_ordinal":57618,"entries":[
 {"s":"GAIL GODWIN FOUNDATION","n":[["GAIL GODWIN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["161520147"],"z":["14075"]}}},
 {"s":"GAIL MAURICE SETTON FOUNDATION","n":[["GAIL & MAURICE SETTON FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["843368157"],"z":["11021"]}}},
 {"s":"GAIL P GOLDSTEIN","n":[["GAIL P. GOLDSTEIN",1]],"x":{"ocp":{"r":1,"a":20000,"l":"2004-11-10","i":["20041103007"]}}},

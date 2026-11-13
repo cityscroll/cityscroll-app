@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":82,"first_ordinal":139440,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":82,"first_ordinal":139439,"entries":[
 {"s":"TAU EPSILON PHI FRATERNITY","n":[["TAU EPSILON PHI FRATERNITY",14],["TAU EPSILON PHI FRATERNITY INC",6]],"x":{"irs":{"r":20,"i":["050298871","131368460","161535669","226108305","232212199","237147435","301409497","301427572","365076316","365124440","372148043","451480869","472384115","521944572","612219579","612313177","850883056","850897778","884032882","901253562"],"z":["12181"]}}},
 {"s":"TAU EPSILON PHI FRATERNITY EPSILON PHI CHAPTER","n":[["TAU EPSILON PHI FRATERNITY EPSILON PHI CHAPTER",1]],"x":{"irs":{"r":1,"i":["822646234"],"z":["12181"]}}},
 {"s":"TAU FOUNDATION","n":[["TAU FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["450571259"],"z":["10122"]}}},

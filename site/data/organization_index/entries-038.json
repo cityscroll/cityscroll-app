@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":38,"first_ordinal":64504,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":38,"first_ordinal":64504,"entries":[
 {"s":"HARBOR WELDING AND FABRICATION","n":[["Harbor Welding and Fabrication Corp.",1]],"x":{"sbs":{"r":1,"i":["3377"],"z":["11726"],"p":["MBE"]}}},
 {"s":"HARBOR WELDING FABRICATION","n":[["HARBOR WELDING & FABRICATION CORP.",1]],"x":{"dol":{"r":1,"i":["24-648G5-CR"],"z":["11726"]}}},
 {"s":"HARBORFIELD BOOSTER CLUB","n":[["HARBORFIELD BOOSTER CLUB INC",1]],"x":{"irs":{"r":1,"i":["112616263"],"z":["11740"]}}},

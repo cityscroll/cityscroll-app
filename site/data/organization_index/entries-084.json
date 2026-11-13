@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":84,"first_ordinal":142666,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":84,"first_ordinal":142665,"entries":[
 {"s":"THE LONG ISLAND COLLEGE HOSPITAL","n":[["THE LONG ISLAND COLLEGE HOSPITAL",1]],"x":{"ocp":{"r":1,"a":119565,"l":"2012-03-09","i":["20120302019"]}}},
 {"s":"THE LONG ISLAND DERMATOLOGICAL SOCIETY","n":[["THE LONG ISLAND DERMATOLOGICAL SOCIETY LTD",1]],"x":{"irs":{"r":1,"i":["112905749"],"z":["11598"]}}},
 {"s":"THE LONG ISLAND DOULA ASSOCIATION","n":[["THE LONG ISLAND DOULA ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["680626859"],"z":["11730"]}}},

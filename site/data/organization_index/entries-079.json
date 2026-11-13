@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":79,"first_ordinal":134420,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":79,"first_ordinal":134419,"entries":[
 {"s":"ST GEORGES INDEPENDENT ANGLICAN CHURCH","n":[["ST GEORGES INDEPENDENT ANGLICAN CHURCH",1]],"x":{"irs":{"r":1,"i":["980687087"],"z":["14303"]}}},
 {"s":"ST GEORGES ROMAN CATHOLIC LITHUANIAN CHURCH","n":[["ST GEORGES ROMAN CATHOLIC LITHUANIAN CHURCH INC",1]],"x":{"irs":{"r":1,"i":["160755838"],"z":["14618"]}}},
 {"s":"ST GEORGES SOCIETY","n":[["ST GEORGES SOCIETY OF NEW YORK",1]],"x":{"irs":{"r":1,"i":["237426425"],"z":["10017"]}}},

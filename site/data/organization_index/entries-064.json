@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":64,"first_ordinal":108829,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":64,"first_ordinal":108828,"entries":[
 {"s":"ONONDAGA COUNTY HOLSTEIN-FRIESIAN CLUB","n":[["ONONDAGA COUNTY HOLSTEIN-FRIESIAN CLUB INC",1]],"x":{"irs":{"r":1,"i":["222583427"],"z":["13108"]}}},
 {"s":"ONONDAGA COUNTY HOUSING DEVELOPMENT FUND","n":[["ONONDAGA COUNTY HOUSING DEVELOPMENT FUND COMPANY",1]],"x":{"irs":{"r":1,"i":["161434280"],"z":["13202"]}}},
 {"s":"ONONDAGA COUNTY MEDICAL SOCIETY","n":[["ONONDAGA COUNTY MEDICAL SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["150406588"],"z":["13202"]}}},

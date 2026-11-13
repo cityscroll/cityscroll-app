@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":60,"first_ordinal":102077,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":60,"first_ordinal":102076,"entries":[
 {"s":"NEW PALTZ RESCUE SQUAD","n":[["NEW PALTZ RESCUE SQUAD INC",1]],"x":{"irs":{"r":1,"i":["237261243"],"z":["12561"]}}},
 {"s":"NEW PALTZ ROD GUN CLUB","n":[["NEW PALTZ ROD & GUN CLUB INC",1]],"x":{"irs":{"r":1,"i":["141755943"],"z":["12561"]}}},
 {"s":"NEW PALTZ ROTARY FOUNDATION","n":[["NEW PALTZ ROTARY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["821815250"],"z":["12561"]}}},

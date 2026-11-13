@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":10,"first_ordinal":16683,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":10,"first_ordinal":16683,"entries":[
 {"s":"BERTHA AND ISAAC LIBERMAN FOUNDATION","n":[["BERTHA AND ISAAC LIBERMAN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["136119056"],"z":["10022"]}}},
 {"s":"BERTHA AND JACOB ROSENBERG FOUNDATION","n":[["BERTHA AND JACOB ROSENBERG FOUNDATION",1]],"x":{"irs":{"r":1,"i":["472492753"],"z":["10016"]}}},
 {"s":"BERTHA CAPEN REYNOLDS SOCIETY","n":[["BERTHA CAPEN REYNOLDS SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["141675210"],"z":["14607"]}}},

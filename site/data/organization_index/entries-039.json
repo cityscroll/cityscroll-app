@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":39,"first_ordinal":66226,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":39,"first_ordinal":66226,"entries":[
 {"s":"HELLO INCLUSION L L C","n":[["Hello Inclusion, L.L.C.",1]],"x":{"sbs":{"r":1,"i":["360688"],"z":["10801"],"p":["MBE","WBE"]}}},
 {"s":"HELLO INSIGHT","d":[["Hello Insight",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["103502"],"z":["21230"],"p":["WBE"]}}},
 {"s":"HELLO KIND SOUL FOUNDATION","n":[["HELLO KIND SOUL FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["332493806"],"z":["12508"]}}},

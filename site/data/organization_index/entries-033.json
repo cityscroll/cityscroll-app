@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":33,"first_ordinal":55873,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":33,"first_ordinal":55873,"entries":[
 {"s":"FRIENDS OF NEWBURGH CREW","n":[["FRIENDS OF NEWBURGH CREW INC",1]],"x":{"irs":{"r":1,"i":["141797750"],"z":["12550"]}}},
 {"s":"FRIENDS OF NEWBURGH FREE LIBRARY","n":[["FRIENDS OF NEWBURGH FREE LIBRARY INC",1]],"x":{"irs":{"r":1,"i":["452880770"],"z":["12550"]}}},
 {"s":"FRIENDS OF NEWMAN GOLF COURSE","n":[["FRIENDS OF NEWMAN GOLF COURSE INC",1]],"x":{"irs":{"r":1,"i":["833685583"],"z":["14850"]}}},

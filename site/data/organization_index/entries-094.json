@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":94,"first_ordinal":159656,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":94,"first_ordinal":159655,"entries":[
 {"s":"YONKERS INTERNATIONAL CHURCH OF GOD","n":[["YONKERS INTERNATIONAL CHURCH OF GOD",1]],"x":{"irs":{"r":1,"i":["134134289"],"z":["10710"]}}},
 {"s":"YONKERS ISLAMIC CENTER","n":[["YONKERS ISLAMIC CENTER INC",1]],"x":{"irs":{"r":1,"i":["133890980"],"z":["10701"]}}},
 {"s":"YONKERS LAND CONSERVANCY","n":[["YONKERS LAND CONSERVANCY INC",1]],"x":{"irs":{"r":1,"i":["133947005"],"z":["10705"]}}},
@@ -1202,5 +1202,6 @@
 {"s":"ZYPHOR GOODS LOCAL","n":[["ZYPHOR GOODS LOCAL",1]],"x":{"irs":{"r":1,"i":["423744929"],"z":["11749"]}}},
 {"s":"ZYQUAN SMILES PATHWAYS TO PROGRESS","n":[["ZYQUAN SMILES PATHWAYS TO PROGRESS INCORPORATED",1]],"x":{"irs":{"r":1,"i":["393839241"],"z":["10029"]}}},
 {"s":"ZYSMAN FAMILY FOUNDATION","n":[["ZYSMAN FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["844366535"],"z":["11021"]}}},
+{"s":"sbs:387393","w":1,"x":{"sbs":{"r":1,"i":["387393"],"z":["11779"],"p":["MBE"]}}},
 {"s":"“I AM” EHS MANAGEMENT","n":[["“I AM” EHS Management LLC",1]],"d":[["“I AM” EHS Management LLC",1]],"x":{"sbs":{"r":2,"v":["dba","name"],"i":["373634"],"z":["10980"],"p":["MBE"]}}}
 ]}

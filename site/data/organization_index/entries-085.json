@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":85,"first_ordinal":144281,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":85,"first_ordinal":144280,"entries":[
 {"s":"THE WILLIAM H MINER AGRICULTURAL RESEARCH INSTITUTE","n":[["THE WILLIAM H MINER AGRICULTURAL RESEARCH INSTITUTE",1]],"x":{"irs":{"r":1,"i":["141414736"],"z":["12921"]}}},
 {"s":"THE WILLIAM J JENNINGS II AND PAULA J JENNINGS FAMILY FOUNDATION","n":[["THE WILLIAM J JENNINGS II AND PAULA J JENNINGS FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["116562298"],"z":["11530"]}}},
 {"s":"THE WILLIAM L CARTER FOUNDATION","n":[["THE WILLIAM L CARTER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["811952593"],"z":["10602"]}}},

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":22,"first_ordinal":37223,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":22,"first_ordinal":37223,"entries":[
 {"s":"CONWAY-PHILLIPS HOLDING","n":[["CONWAY-PHILLIPS HOLDING, LLC",1]],"x":{"dol":{"r":1,"i":["26-66SKG-CR"],"z":["15104"]}}},
 {"s":"CONYERS SOLUTIONS","n":[["CONYERS SOLUTIONS LLC",5]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-10-06","i":["CT104020273025414","CT104020263067823","CT104020253074068"]},"cbv":{"r":2,"l":"2026-10-06","i":["CT104020273025414","CT104020263067823"],"m":["Non-M/WBE"]}}},
 {"s":"CONZERGE","n":[["Conzerge LLC",1]],"x":{"sbs":{"r":1,"i":["329233"],"z":["07746"],"p":["MBE","WBE"]}}},

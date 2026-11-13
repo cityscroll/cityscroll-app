@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":46,"first_ordinal":77972,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":46,"first_ordinal":77972,"entries":[
 {"s":"JOINED ARTISTS MUSICIANS SINGERS","n":[["JOINED ARTISTS MUSICIANS & SINGERS INC",1]],"x":{"irs":{"r":1,"i":["474313888"],"z":["13207"]}}},
 {"s":"JOINT APPRENTICE AND TRAINING COMMITTEE OF THE ELEVATOR INDUSTRY","n":[["JOINT APPRENTICE AND TRAINING COMMITTEE OF THE ELEVATOR INDUSTRY",1]],"x":{"irs":{"r":1,"i":["222188264"],"z":["11106"]}}},
 {"s":"JOINT APPRENTICESHIP TRAINING COMM","n":[["JOINT APPRENTICESHIP & TRAINING COMM",1]],"x":{"irs":{"r":1,"i":["116000935"],"z":["11788"]}}},

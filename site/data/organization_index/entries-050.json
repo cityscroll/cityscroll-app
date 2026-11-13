@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":50,"first_ordinal":84991,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":50,"first_ordinal":84990,"entries":[
 {"s":"LEHASKIL","n":[["LEHASKIL",1]],"x":{"irs":{"r":1,"i":["873031203"],"z":["10950"]}}},
 {"s":"LEHAVA-RCTT REVIVING COMMUNITIES THROUGH TORAH","n":[["LEHAVA-RCTT REVIVING COMMUNITIES THROUGH TORAH INC",1]],"x":{"irs":{"r":1,"i":["203537201"],"z":["10901"]}}},
 {"s":"LEHEITIV","n":[["LEHEITIV INC",1]],"x":{"irs":{"r":1,"i":["843788375"],"z":["11218"]}}},

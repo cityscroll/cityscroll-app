@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":27,"first_ordinal":45636,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":27,"first_ordinal":45636,"entries":[
 {"s":"EBA FOUNDATION","n":[["EBA FOUNDATION",1]],"x":{"irs":{"r":1,"i":["134098940"],"z":["10022"]}}},
 {"s":"EBANKS LAW FIRM","n":[["Ebanks Law Firm, PLLC",1]],"x":{"sbs":{"r":1,"i":["342488"],"z":["10007"],"p":["MBE"]}}},
 {"s":"EBATIZ AND ASSOCIATES","n":[["Ebatiz and Associates, Inc.",1]],"x":{"sbs":{"r":1,"i":["12101"],"z":["10035"],"p":["MBE"]}}},

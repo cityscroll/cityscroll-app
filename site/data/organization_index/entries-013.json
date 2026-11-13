@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":13,"first_ordinal":21778,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":13,"first_ordinal":21778,"entries":[
 {"s":"BROWN CAPITAL MANAGEMENT","n":[["Brown Capital Management LLC",4],["BROWN CAPITAL MANAGEMENT LLC",2],["Brown Capital Management, LLC",2],["BROWN CAPITAL MANAGEMENT INC",1],["Brown Capital Management Inc",1]],"x":{"ocp":{"r":7,"a":118884000,"l":"2023-04-13","c":7,"i":["20230406113","20191204009","20181213004","20151224011","20121226003"]},"cbr":{"r":1,"a":1102590.75,"l":"2026-05-13","i":["CT101520261409917"]},"dbe":{"r":2,"i":["BROWN CAPITAL MANAGEMENT INC","BROWN CAPITAL MANAGEMENT LLC"]}}},
 {"s":"BROWN CHARITY","n":[["BROWN CHARITY INC",1]],"x":{"irs":{"r":1,"i":["463282717"],"z":["11021"]}}},
 {"s":"BROWN COMMUNITY DEVELOPMENT","n":[["BROWN COMMUNITY DEVELOPMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["562629114"],"z":["11238"]}}},

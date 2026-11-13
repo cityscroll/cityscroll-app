@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":91,"first_ordinal":154379,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":91,"first_ordinal":154378,"entries":[
 {"s":"WATERS TECHNOLOGIES DBA WATERS","n":[["Waters Technologies DBA Waters Corp.",1]],"x":{"ocp":{"r":1,"a":164290.45,"l":"2006-10-30","i":["20061023022"]}}},
 {"s":"WATERSHED AGRICULTURAL CONSERVATION EASEMENT STEWARDSHIP ENDOWMENT FU","n":[["WATERSHED AGRICULTURAL CONSERVATION EASEMENT STEWARDSHIP ENDOWMENT FU",1]],"x":{"irs":{"r":1,"i":["276951127"],"z":["13856"]}}},
 {"s":"WATERSHED AGRICULTURAL COUNCIL","n":[["WATERSHED AGRICULTURAL COUNCIL INC",1],["Watershed Agricultural Council",1]],"x":{"ocp":{"r":1,"a":53900000,"l":"2025-01-31","i":["20250124025"]},"dbe":{"r":1,"i":["WATERSHED AGRICULTURAL COUNCIL INC"]}}},

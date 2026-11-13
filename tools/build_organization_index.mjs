@@ -54,7 +54,11 @@ export function buildFromRepository(root = ROOT) {
     for (const c of registerContributions(r.records)) contributions.push(c);
     receipts[reg] = r.receipt;
   }
-  const built = buildIndex(contributions, { built_from: "committed artifacts", receipts });
+  const built = buildIndex(contributions, {
+    built_from: "committed artifacts",
+    receipts,
+    withheld_published_names: sbs.withheld_published_names || 0,
+  });
   return { ...built, contributions };
 }
 

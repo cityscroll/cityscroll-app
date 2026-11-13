@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":56,"first_ordinal":95374,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":56,"first_ordinal":95373,"entries":[
 {"s":"MILAN EVENT EXPERIENCE","n":[["Milan Event Experience LLC",5]],"x":{"ocp":{"r":1,"a":180000,"l":"2026-02-19","i":["20260212013"]},"cbr":{"r":1,"a":180000,"l":"2026-02-11","i":["CT106820268805121"]},"ppt":{"r":1,"a":180000,"l":"2026-02-11","i":["CT1-068-20268805121"]},"cbv":{"r":1,"l":"2026-02-11","i":["CT106820268805121"],"m":["Black American"]},"sbs":{"r":1,"i":["371842"],"z":["11793"],"p":["MBE","WBE"]}}},
 {"s":"MILAN SENIORS FOUNDATION","n":[["MILAN SENIORS FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["823392397"],"z":["11040"]}}},
 {"s":"MILAN UNION CEMETERY ASSOCIATION","n":[["MILAN UNION CEMETERY ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["146024358"],"z":["12572"]}}},

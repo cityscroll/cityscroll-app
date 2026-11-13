@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":55,"first_ordinal":93687,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":55,"first_ordinal":93686,"entries":[
 {"s":"MENCHE FAMILY CHARITABLE TR","n":[["MENCHE FAMILY CHARITABLE TR",1]],"x":{"irs":{"r":1,"i":["137224566"],"z":["10952"]}}},
 {"s":"MENCHE FOUNDATION","n":[["MENCHE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["113546426"],"z":["10006"]}}},
 {"s":"MENCIUS SOCIETY FOR THE ARTS","n":[["MENCIUS SOCIETY FOR THE ARTS INC",1],["Mencius Society for the Arts",1]],"x":{"cbr":{"r":1,"a":18750,"l":"2025-01-16","i":["CT126020258805409"]},"irs":{"r":1,"i":["562343092"],"z":["10002"]}}},

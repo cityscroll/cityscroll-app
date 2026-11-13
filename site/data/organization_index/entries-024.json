@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":24,"first_ordinal":40578,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":24,"first_ordinal":40578,"entries":[
 {"s":"DAS MECHANICAL SERVICES","n":[["DAS MECHANICAL SERVICES INC",4],["DAS Mechanical Services, Inc.",3],["DAS Mechanical Services Inc",2],["DAS MECHANICAL SERVICES",1]],"x":{"ocp":{"r":6,"a":9960656,"l":"2026-06-23","c":6,"i":["20260616035","20230705140","20200715113","20150526013","20140811010"]},"cbr":{"r":1,"a":2850225,"l":"2026-06-15","i":["CT107220268807472"]},"ppt":{"r":2,"a":6921975,"l":"2026-06-15","i":["CT1-072-20268807472","CT1-072-20238808268"]},"cbv":{"r":1,"l":"2026-06-15","i":["CT107220268807472"],"m":["Non-M/WBE"]}}},
 {"s":"DASAP","n":[["DASAP INC",1]],"x":{"irs":{"r":1,"i":["882056542"],"z":["14607"]}}},
 {"s":"DASH ATHLETICS GROUP NY CHAPTER","n":[["DASH ATHLETICS GROUP NY CHAPTER INC",1]],"x":{"irs":{"r":1,"i":["821198034"],"z":["10710"]}}},

@@ -17,6 +17,7 @@ import {
   INDEX_SCHEMA, ENTRY_SHARD_SCHEMA, ID_SHARD_SCHEMA, STEMS_SCHEMA, MANIFEST_PATH, DIR, STEMS_PATH, DEFAULT_LIMITS,
   IDENTIFIER_SOURCES, keyBucket, stemTokens, decodeEntry, sourceMask,
 } from "../../site/organization_index_contract.mjs";
+import { withheldNameNote } from "./organization_name_withholding.mjs";
 
 export * from "../../site/organization_index_contract.mjs";
 
@@ -28,18 +29,11 @@ const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 export function buildEntries(contributions, limits = DEFAULT_LIMITS) {
   const byStem = new Map();
   let unstemmed = 0;
-  for (const c of contributions) {
-    if (!SOURCE_BY_ID[c.source]) throw new Error(`unknown source ${c.source}`);
-    const stem = vendorStem(c.name);
-    if (!stem) { unstemmed += 1; continue; }
-    let e = byStem.get(stem);
-    if (!e) { e = { stem, names: new Map(), sources: new Map() }; byStem.set(stem, e); }
-    const nk = `${c.via}\u0000${c.name}`;
-    e.names.set(nk, (e.names.get(nk) || 0) + 1);
+  const attach = (e, c) => {
     let s = e.sources.get(c.source);
     if (!s) { s = { records: 0, via: new Set(), amount_total: 0, has_amount: false, last_date: null, refs: new Map(), zips: new Set(), programmes: new Set(), mwbe: new Map() }; e.sources.set(c.source, s); }
     s.records += 1;
-    s.via.add(c.via);
+    if (!c.name_withheld) s.via.add(c.via);
     if (typeof c.amount === "number") { s.amount_total += c.amount; s.has_amount = true; }
     if (c.date && (!s.last_date || c.date > s.last_date)) s.last_date = c.date;
     if (c.ref != null) { const prev = s.refs.get(c.ref); if (prev === undefined || (c.date || "") > prev) s.refs.set(c.ref, c.date || ""); }
@@ -47,6 +41,27 @@ export function buildEntries(contributions, limits = DEFAULT_LIMITS) {
     for (const p of c.extra?.certification || []) s.programmes.add(p);
     const m = c.extra?.mwbe_category ?? c.extra?.prime_vendor_mwbe_category;
     if (m) s.mwbe.set(m, (s.mwbe.get(m) || 0) + 1);
+  };
+  for (const c of contributions) {
+    if (!SOURCE_BY_ID[c.source]) throw new Error(`unknown source ${c.source}`);
+    if (c.name_withheld) {
+      const stem = c.index_key;
+      if (!stem) throw new Error("withheld organization name is missing its published identifier");
+      let e = byStem.get(stem);
+      if (!e) { e = { stem, names: new Map(), sources: new Map(), name_withheld: true }; byStem.set(stem, e); }
+      if (e.names.size) throw new Error("withheld organization entry collided with a published name");
+      e.name_withheld = true;
+      attach(e, c);
+      continue;
+    }
+    const stem = vendorStem(c.name);
+    if (!stem) { unstemmed += 1; continue; }
+    let e = byStem.get(stem);
+    if (e?.name_withheld) throw new Error("published name collided with a withheld organization entry");
+    if (!e) { e = { stem, names: new Map(), sources: new Map() }; byStem.set(stem, e); }
+    const nk = `${c.via}\u0000${c.name}`;
+    e.names.set(nk, (e.names.get(nk) || 0) + 1);
+    attach(e, c);
   }
   const entries = [...byStem.values()].map((e) => encodeEntry(e, limits)).sort((a, b) => cmp(a.s, b.s));
   return { entries, unstemmed };
@@ -60,9 +75,14 @@ function encodeEntry(e, limits) {
   const n = all.filter((x) => x.via === "name");
   const d = all.filter((x) => x.via === "dba");
   const out = { s: e.stem };
-  if (n.length) out.n = n.slice(0, limits.max_name_variants).map((x) => [x.name, x.count]);
-  if (d.length) out.d = d.slice(0, limits.max_name_variants).map((x) => [x.name, x.count]);
-  if (n.length > limits.max_name_variants || d.length > limits.max_name_variants) out.N = all.length;
+  if (e.name_withheld) {
+    if (all.length) throw new Error("withheld organization entry still has a name");
+    out.w = 1;
+  } else {
+    if (n.length) out.n = n.slice(0, limits.max_name_variants).map((x) => [x.name, x.count]);
+    if (d.length) out.d = d.slice(0, limits.max_name_variants).map((x) => [x.name, x.count]);
+    if (n.length > limits.max_name_variants || d.length > limits.max_name_variants) out.N = all.length;
+  }
   out.x = {};
   for (const id of SOURCE_IDS) {
     const s = e.sources.get(id);
@@ -74,7 +94,7 @@ function encodeEntry(e, limits) {
       : [...s.refs.entries()].sort((a, b) => cmp(b[1], a[1]) || cmp(a[0], b[0])).map(([r]) => r).slice(0, limits.max_transaction_refs);
     const blk = { r: s.records };
     const via = [...s.via].sort();
-    if (!(via.length === 1 && via[0] === "name")) blk.v = via;
+    if (via.length && !(via.length === 1 && via[0] === "name")) blk.v = via;
     if (src.has_amounts && s.has_amount) blk.a = Math.round(s.amount_total * 100) / 100;
     if (s.last_date) blk.l = s.last_date;
     if (s.refs.size !== refs.length) blk.c = s.refs.size;
@@ -105,7 +125,8 @@ export function buildIndex(contributions, meta = {}, limits = DEFAULT_LIMITS) {
   const lines = entries.map((e) => JSON.stringify(e));
   const generation = sha256Hex(lines.join("\n")).slice(0, 16);
   const files = new Map();
-  const stemsText = `{"schema":"${STEMS_SCHEMA}","generation":"${generation}","count":${entries.length},"stems":[\n${entries.map((e) => JSON.stringify([e.s, sourceMask(e)])).join(",\n")}\n]}\n`;
+  const stemRow = (e) => JSON.stringify(e.w ? [e.s, sourceMask(e), 1] : [e.s, sourceMask(e)]);
+  const stemsText = `{"schema":"${STEMS_SCHEMA}","generation":"${generation}","count":${entries.length},"stems":[\n${entries.map(stemRow).join(",\n")}\n]}\n`;
   files.set(STEMS_PATH, stemsText);
   const entryShards = [];
   let start = 0; let shardIndex = 0;
@@ -150,6 +171,8 @@ export function buildIndex(contributions, meta = {}, limits = DEFAULT_LIMITS) {
     stem_method: "vendor_stem_v1",
     built_from: meta.built_from ?? null,
     entry_count: entries.length,
+    withheld_published_names: meta.withheld_published_names ?? 0,
+    notes: withheldNameNote(meta.withheld_published_names ?? 0),
     contributions: contributions.length,
     contributions_without_stem: unstemmed,
     identifier_count: idCount,
@@ -196,7 +219,13 @@ export function checkFiles(readText) {
     if (d.entries[0]?.s !== s.first_stem || d.entries.at(-1)?.s !== s.last_stem) problems.push(`range ${s.path}`);
     for (const e of d.entries) {
       if (prevLast !== null && !(e.s > prevLast)) problems.push(`order ${s.path} at ${e.s}`);
-      if (vendorStem((e.n && e.n[0][0]) || e.d[0][0]) !== e.s) problems.push(`stem ${e.s} does not equal vendorStem of its first name`);
+      if (e.w) {
+        if (e.n || e.d) problems.push("withheld entry still has a name");
+        if (!/^sbs:\d{1,9}$/.test(e.s)) problems.push("withheld entry key is not its published account id");
+      } else {
+        const first = (e.n && e.n[0] && e.n[0][0]) || (e.d && e.d[0] && e.d[0][0]);
+        if (!first || vendorStem(first) !== e.s) problems.push(`stem ${e.s} does not equal vendorStem of its first name`);
+      }
       prevLast = e.s;
     }
     total += d.entries.length;

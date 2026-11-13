@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":78,"first_ordinal":132683,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":78,"first_ordinal":132682,"entries":[
 {"s":"SOUTH BRONX OVERALL ECONOMIC DEVELOPMENT CORPORATI","n":[["SOUTH BRONX OVERALL ECONOMIC DEVELOPMENT CORPORATI",9]],"x":{"ocp":{"r":9,"a":12573283,"l":"2023-08-03","c":9,"i":["20230728105","20230719121","20230719122","20230125106","20220720123"]}}},
 {"s":"SOUTH BRONX RESTORATION","n":[["South Bronx Restoration, LLC",2]],"x":{"sbs":{"r":1,"i":["388392"],"z":["11771"],"p":["WBE"]},"dol":{"r":1,"i":["25-67FU8-CR"],"z":["11771"]}}},
 {"s":"SOUTH BRONX UNITED","n":[["South Bronx United Inc",5],["SOUTH BRONX UNITED INC",1]],"x":{"ocp":{"r":1,"a":50000,"l":"2024-10-03","i":["20240927107"]},"cbr":{"r":3,"a":137500,"l":"2025-08-25","i":["CT126020268802129","CT126020258806176","CT126020258802369"]},"ppt":{"r":1,"a":50000,"l":"2024-09-26","i":["CT1-260-20258802369"]},"irs":{"r":1,"i":["264064041"],"z":["10451"]}}},

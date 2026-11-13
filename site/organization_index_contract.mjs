@@ -68,7 +68,7 @@ export function decodeEntry(raw, ordinal = null) {
     if (kind) ids[kind] = b.i || [];
     sources[src.id] = {
       records: b.r,
-      via: b.v || ["name"],
+      via: raw.w ? [] : (b.v || ["name"]),
       amount_total: src.has_amounts ? (b.a ?? null) : null,
       last_date: b.l ?? null,
       ref_count: b.c ?? (b.i ? b.i.length : 0),
@@ -78,12 +78,14 @@ export function decodeEntry(raw, ordinal = null) {
       ...(b.m ? { mwbe_categories: b.m } : {}),
     };
   }
-  const names = [...(raw.n || []).map(([name, count]) => ({ name, count, via: "name" })), ...(raw.d || []).map(([name, count]) => ({ name, count, via: "dba" }))];
+  const names = raw.w ? [] : [...(raw.n || []).map(([name, count]) => ({ name, count, via: "name" })), ...(raw.d || []).map(([name, count]) => ({ name, count, via: "dba" }))];
   const source_ids = SOURCE_IDS.filter((id) => sources[id]);
+  const display_name = raw.w ? null : (raw.n?.[0]?.[0] || raw.d?.[0]?.[0] || null);
   return {
     ordinal,
     stem: raw.s,
-    display_name: (raw.n && raw.n[0][0]) || raw.d[0][0],
+    display_name,
+    name_withheld: raw.w === 1,
     names,
     names_total: raw.N ?? names.length,
     source_ids,

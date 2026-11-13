@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":62,"first_ordinal":105294,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":62,"first_ordinal":105293,"entries":[
 {"s":"NORCON COMMUNICATIONS","n":[["Norcon Communications Inc",4],["Norcon Communications, Inc.",2]],"x":{"cbr":{"r":3,"a":47706,"l":"2026-05-21","i":["CT181620270000138","CT181620251414971","CT184620258805254"]},"cbv":{"r":1,"l":"2026-05-21","i":["CT181620270000138"],"m":["Women (Non-Minority)"]},"sbs":{"r":1,"i":["358372"],"z":["11096"],"p":["WBE"]},"dol":{"r":1,"i":["24-64DLT-CR"],"z":["11096"]}}},
 {"s":"NORCON ELECTRONICS","n":[["Norcon Electronics, Inc.",1]],"x":{"dol":{"r":1,"i":["24-64GU5-CR"],"z":["11096"]}}},
 {"s":"NORCORP","n":[["NORCORP INC",1]],"x":{"irs":{"r":1,"i":["133366748"],"z":["11590"]}}},

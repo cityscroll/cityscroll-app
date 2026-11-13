@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":11,"first_ordinal":18447,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":11,"first_ordinal":18447,"entries":[
 {"s":"BLAKA COOL","n":[["BLAKA COOL INC",7],["Blaka Cool, Inc.",1]],"x":{"cbr":{"r":4,"a":148500,"l":"2026-08-27","i":["CT181620271403258","CT186620278802028","CT181620261404908","CT181620251408852"]},"cbv":{"r":2,"l":"2026-08-27","i":["CT181620271403258","CT186620278802028"],"m":["Asian American"]},"sbs":{"r":1,"i":["100376"],"z":["11428"],"p":["MBE","WBE"]},"dol":{"r":1,"i":["25-6HHJT-CR"],"z":["11428"]}}},
 {"s":"BLAKA HVAC ELECTRICAL","d":[["BLAKA HVAC & ELECTRICAL",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["100376"],"z":["11428"],"p":["MBE","WBE"]}}},
 {"s":"BLAKE ANNEX","n":[["BLAKE ANNEX INC",1]],"x":{"irs":{"r":1,"i":["871007976"],"z":["12207"]}}},

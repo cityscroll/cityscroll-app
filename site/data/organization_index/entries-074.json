@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":74,"first_ordinal":125744,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":74,"first_ordinal":125743,"entries":[
 {"s":"SAKHI FOR SOUTH ASIAN WOMEN","n":[["SAKHI FOR SOUTH ASIAN WOMEN",1],["SAKHI FOR SOUTH ASIAN WOMEN, INC.",1]],"x":{"ocp":{"r":1,"a":47000,"l":"2005-06-10","i":["20050603013"]},"dbe":{"r":1,"i":["SAKHI FOR SOUTH ASIAN WOMEN"]}}},
 {"s":"SAKON CONSTRUCTION","n":[["SAKON CONSTRUCTION INC.",1]],"x":{"ocp":{"r":1,"a":486384.25,"l":"2006-08-24","i":["20060818007"]}}},
 {"s":"SAKS FIFTH AVENUE FOUNDATION","n":[["SAKS FIFTH AVENUE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["631207483"],"z":["10281"]}}},

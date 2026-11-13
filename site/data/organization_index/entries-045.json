@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":45,"first_ordinal":76279,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":45,"first_ordinal":76279,"entries":[
 {"s":"JD CONSTRUCTION OF ORANGE COUNTY","n":[["JD Construction of Orange County Inc.",1]],"x":{"dol":{"r":1,"i":["25-64TZH-CR"],"z":["10973"]}}},
 {"s":"JD CONSULTING","n":[["JD Consulting LLC",2],["JD Consulting, LLC",1]],"x":{"sbs":{"r":1,"i":["346"],"z":["11776"],"p":["WBE"]},"dol":{"r":1,"i":["24-64Y9Q-CR"],"z":["11779"]},"sca":{"r":1,"i":["JD CONSULTING LLC"],"z":["11779"]}}},
 {"s":"JD ELECTRICAL ENTERPRISE","n":[["JD Electrical Enterprise, Inc.",1]],"x":{"sbs":{"r":1,"i":["390422"],"z":["11377"],"p":["MBE"]}}},

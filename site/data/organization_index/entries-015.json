@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":15,"first_ordinal":25260,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":15,"first_ordinal":25260,"entries":[
 {"s":"CASSADAGA VALLEY MIDGET FOOTBALL","n":[["CASSADAGA VALLEY MIDGET FOOTBALL",1]],"x":{"irs":{"r":1,"i":["800507865"],"z":["14782"]}}},
 {"s":"CASSADAGA YOUTH ATHLETICS","n":[["CASSADAGA YOUTH ATHLETICS",1]],"x":{"irs":{"r":1,"i":["922601326"],"z":["14718"]}}},
 {"s":"CASSANDRA AWARD FOUNDATION","n":[["CASSANDRA AWARD FOUNDATION",1]],"x":{"irs":{"r":1,"i":["821566277"],"z":["10016"]}}},

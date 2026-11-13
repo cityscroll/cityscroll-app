@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":93,"first_ordinal":157828,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":93,"first_ordinal":157827,"entries":[
 {"s":"WOODMAN RESIDENCY FOUNDATION","n":[["WOODMAN RESIDENCY FOUNDATION LTD",1]],"x":{"irs":{"r":1,"i":["920343417"],"z":["10011"]}}},
 {"s":"WOODMEN OF THE WORLD LIFE INSURANCE SOCIETY","n":[["WOODMEN OF THE WORLD LIFE INSURANCE SOCIETY",9]],"x":{"irs":{"r":9,"i":["237629425","237629426","237629706","237629709","364778884","510591586","561551517","593794144","810571920"],"z":["10940","11520","11590","12147","12803","12919","12944","12986","13440"]}}},
 {"s":"WOODMERE BAY YACHT CLUB","n":[["WOODMERE BAY YACHT CLUB INC",1]],"x":{"irs":{"r":1,"i":["111798897"],"z":["11518"]}}},

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":35,"first_ordinal":59328,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":35,"first_ordinal":59328,"entries":[
 {"s":"GIGI ENVIRONMENTAL","n":[["GiGi Environmental LLC",1]],"x":{"dol":{"r":1,"i":["26-64G4Y-CR"],"z":["11379"]}}},
 {"s":"GIGIS PLAYHOUSE","n":[["GIGIS PLAYHOUSE INC",7]],"x":{"irs":{"r":7,"i":["272919866","320601376","383877315","471993324","812764361","841992875","853874715"],"z":["10026","10502","11772","13039","13790","14223","14607"]}}},
 {"s":"GIGLIFE APPAREL","n":[["Giglife Apparel LLC",1]],"x":{"sbs":{"r":1,"i":["363856"],"z":["11203"],"p":["MBE"]}}},

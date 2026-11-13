@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":16,"first_ordinal":26811,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":16,"first_ordinal":26811,"entries":[
 {"s":"CENTRAL WINDS","n":[["CENTRAL WINDS",1]],"x":{"irs":{"r":1,"i":["454025494"],"z":["13027"]}}},
 {"s":"CENTRAL YESHIVA BETH JOSEPH","n":[["CENTRAL YESHIVA BETH JOSEPH",1]],"x":{"irs":{"r":1,"i":["111715786"],"z":["10901"]}}},
 {"s":"CENTRAL YESHIVA TOMCHEI TIMIMIM LUBAVITZ OF THE U S A","n":[["CENTRAL YESHIVA TOMCHEI TIMIMIM LUBAVITZ OF THE U S A",1]],"x":{"irs":{"r":1,"i":["111797166"],"z":["11213"]}}},

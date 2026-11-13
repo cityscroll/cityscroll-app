@@ -9,6 +9,7 @@ import { createHash } from "node:crypto";
 import { vendorStem } from "../entity_resolution/normalizers/vendor_stem.mjs";
 import { vendorStem as siteVendorStem } from "../site/vendor_stem.mjs";
 import { readEngineSources, sbsContributions, registerContributions } from "../tools/lib/organization_index_sources.mjs";
+import { loadOrganizationNameWithholdings, sha256Hex } from "../tools/lib/organization_name_withholding.mjs";
 import { buildIndex, checkFiles } from "../tools/lib/organization_index_build.mjs";
 import { measureTypos } from "../tools/lib/organization_typo_measurement.mjs";
 import {
@@ -164,4 +165,205 @@ test("close spelling: recall@5 >= 0.99 and wrong-first <= 0.01 on 600 one-letter
   assert.equal(m.queries, 600);
   assert.ok(m.recall_at_5 >= 0.99, String(m.recall_at_5));
   assert.ok(m.wrong_first <= 0.01, String(m.wrong_first));
+});
+
+const WITHHELD_NOTE = "1 published record name is withheld for a privacy rule.";
+const PLACEHOLDER_NAMES = ["Unknown", "Withheld", "Redacted"];
+
+function syntheticSbsRow(fields) {
+  return {
+    account_number: "880001",
+    vendor_formal_name: "NORTHWIND TRADING COMPANY",
+    name_stem: "NORTHWIND TRADING",
+    vendor_dba: null,
+    dba_stem: null,
+    zip: "10001",
+    certification: ["MBE"],
+    borough: "Manhattan",
+    id6_digit_naics_code: "541611",
+    nigp_codes: ["91800"],
+    business_description: "published description stays",
+    website: "https://example.test/northwind",
+    address1: "1 Example Street",
+    ...fields,
+  };
+}
+
+function nameRulesFor(row) {
+  return [
+    {
+      publisher: "nyc-open-data", dataset: "ci93-uc8s", account_number: String(row.account_number),
+      field: "vendor_formal_name", value_sha256: sha256Hex(row.vendor_formal_name),
+    },
+    {
+      publisher: "nyc-open-data", dataset: "ci93-uc8s", account_number: String(row.account_number),
+      field: "name_stem", value_sha256: sha256Hex(row.name_stem),
+    },
+  ];
+}
+
+test("exact-record withholding omits one published name and keeps other fields", async () => {
+  const manifest = { collected_at: "2026-01-01T00:00:00Z", rows_updated_at: "2026-01-01", content_sha256: "abc" };
+  const row = syntheticSbsRow();
+  const rules = nameRulesFor(row);
+  const withheld = sbsContributions(manifest, [row], rules);
+  assert.equal(withheld.withheld_published_names, 1);
+  assert.equal(withheld.contributions.length, 1);
+  assert.equal(withheld.contributions[0].name_withheld, true);
+  assert.equal(withheld.contributions[0].name, "");
+  assert.equal(withheld.contributions[0].index_key, "sbs:880001");
+  assert.equal(withheld.contributions[0].ref, "880001");
+  assert.equal(withheld.contributions[0].zip, "10001");
+
+  const built = buildIndex(withheld.contributions, { withheld_published_names: withheld.withheld_published_names });
+  assert.equal(built.manifest.withheld_published_names, 1);
+  assert.deepEqual(built.manifest.notes, [WITHHELD_NOTE]);
+  assert.equal(built.entries.length, 1);
+  const entry = built.entries[0];
+  assert.equal(entry.display_name, null);
+  assert.equal(entry.name_withheld, true);
+  assert.deepEqual(entry.names, []);
+  assert.equal(entry.stem, "sbs:880001");
+  assert.deepEqual(entry.ids.sbs, ["880001"]);
+  assert.deepEqual(entry.sources.sbs_certified_businesses.zips, ["10001"]);
+  const serialized = [...built.files.values()].join("\n");
+  assert.equal(serialized.includes(row.vendor_formal_name), false);
+  assert.equal(serialized.includes(row.name_stem), false);
+  for (const bad of PLACEHOLDER_NAMES) assert.equal(serialized.includes(bad), false);
+
+  const openedWithheld = await openOrganizationIndex(async (p) => JSON.parse(built.files.get(p)));
+  assert.equal((await searchOrganizations(openedWithheld, row.vendor_formal_name)).status, "no_match");
+  assert.equal((await searchOrganizations(openedWithheld, row.name_stem)).status, "no_match");
+  const byAccount = await searchOrganizations(openedWithheld, "sbs:880001");
+  assert.equal(byAccount.status, "matched");
+  assert.equal(byAccount.results[0].display_name, null);
+  assert.equal(byAccount.results[0].stem, "sbs:880001");
+  assert.equal(byAccount.results[0].matched_text, "sbs:880001");
+  assert.deepEqual(byAccount.results[0].names, []);
+  assert.equal(parseEntityRef("org:sbs:880001").ok, true);
+  assert.equal(parseEntityRef("org:sbs:880001").stem, "sbs:880001");
+
+  const record = await assembleOrganizationRecord(openedWithheld, "org:sbs:880001", {
+    sbs: {
+      directory: null,
+      getByAccount: () => ({
+        status: "found",
+        results: [{
+          source_url: "https://data.cityofnewyork.us/d/ci93-uc8s",
+          dataset_url: "https://data.cityofnewyork.us/d/ci93-uc8s",
+          collected_at: "2026-01-01T00:00:00Z",
+          rows_updated_at: "2026-01-01T00:00:00Z",
+          row,
+        }],
+      }),
+    },
+    dosCommitted: { byStem: new Map(), byId: new Map() },
+  });
+  assert.equal(record.status, "found");
+  assert.equal(record.display_name, null);
+  assert.deepEqual(record.names, []);
+  const sbsBlock = record.blocks.find((b) => b.block === "sbs_certified_business");
+  assert.equal(Object.hasOwn(sbsBlock.fields, "vendor_formal_name"), false);
+  assert.equal(Object.hasOwn(sbsBlock.fields, "name_stem"), false);
+  assert.equal(sbsBlock.fields.account_number, "880001");
+  assert.equal(sbsBlock.fields.zip, "10001");
+  assert.equal(sbsBlock.fields.business_description, "published description stays");
+  assert.equal(sbsBlock.fields.address1, "1 Example Street");
+  const state = record.blocks.find((b) => b.block === "state_register");
+  assert.equal(Object.hasOwn(state, "on_demand"), false);
+  const recordText = JSON.stringify(record);
+  assert.equal(recordText.includes(row.vendor_formal_name), false);
+  assert.equal(recordText.includes(row.name_stem), false);
+  for (const bad of PLACEHOLDER_NAMES) assert.equal(recordText.includes(bad), false);
+
+  const otherAccount = sbsContributions(manifest, [syntheticSbsRow({ account_number: "880002" })], rules);
+  assert.equal(otherAccount.withheld_published_names, 0);
+  assert.equal(otherAccount.contributions[0].name, row.vendor_formal_name);
+  assert.equal(otherAccount.contributions[0].name_withheld, false);
+
+  const renamed = syntheticSbsRow({ vendor_formal_name: "NORTHWIND OTHER NAME", name_stem: "NORTHWIND OTHER" });
+  const differentValue = sbsContributions(manifest, [renamed], rules);
+  assert.equal(differentValue.withheld_published_names, 0);
+  assert.equal(differentValue.contributions[0].name, "NORTHWIND OTHER NAME");
+
+  const descriptionOnly = [{
+    publisher: "nyc-open-data", dataset: "ci93-uc8s", account_number: "880001",
+    field: "business_description", value_sha256: sha256Hex(row.business_description),
+  }];
+  const described = sbsContributions(manifest, [row], descriptionOnly);
+  assert.equal(described.withheld_published_names, 0);
+  assert.equal(described.contributions[0].name, row.vendor_formal_name);
+
+  const dba = "NORTHWIND SUPPLY";
+  const withDba = sbsContributions(manifest, [syntheticSbsRow({ vendor_dba: dba, dba_stem: vendorStem(dba) })], rules);
+  assert.equal(withDba.withheld_published_names, 1);
+  assert.equal(withDba.contributions.length, 1);
+  assert.equal(withDba.contributions[0].name, dba);
+  assert.equal(withDba.contributions[0].name_withheld, false);
+  assert.equal(withDba.contributions[0].ref, "880001");
+  assert.equal(withDba.contributions[0].zip, "10001");
+  const builtDba = buildIndex(withDba.contributions, { withheld_published_names: withDba.withheld_published_names });
+  const dbaText = [...builtDba.files.values()].join("\n");
+  assert.equal(dbaText.includes(row.vendor_formal_name), false);
+  assert.equal(dbaText.includes(dba), true);
+  const openedDba = await openOrganizationIndex(async (p) => JSON.parse(builtDba.files.get(p)));
+  const dbaHit = await searchOrganizations(openedDba, dba);
+  assert.equal(dbaHit.results[0].stem, vendorStem(dba));
+  assert.equal(dbaHit.results[0].display_name, dba);
+  const byDbaAccount = await searchOrganizations(openedDba, "sbs:880001");
+  assert.equal(byDbaAccount.results[0].stem, vendorStem(dba));
+
+  const second = syntheticSbsRow({ account_number: "880003", vendor_formal_name: "CONTOSO FABRICATION", name_stem: "CONTOSO FABRICATION" });
+  const two = sbsContributions(manifest, [row, second], [...rules, ...nameRulesFor(second)]);
+  assert.equal(two.withheld_published_names, 2);
+  const builtTwo = buildIndex(two.contributions, { withheld_published_names: two.withheld_published_names });
+  assert.deepEqual(builtTwo.manifest.notes, ["2 published record names are withheld for a privacy rule."]);
+  assert.equal(builtTwo.entries.filter((e) => e.name_withheld).length, 2);
+});
+
+function walkStrings(value, visit) {
+  if (typeof value === "string") visit(value);
+  else if (Array.isArray(value)) for (const item of value) walkStrings(item, visit);
+  else if (value && typeof value === "object") for (const item of Object.values(value)) walkStrings(item, visit);
+}
+
+test("committed organization index withholds one published record name", () => {
+  const account = "387393";
+  const rules = loadOrganizationNameWithholdings().filter((rule) => String(rule.account_number) === account && (rule.field === "vendor_formal_name" || rule.field === "name_stem"));
+  assert.equal(rules.length, 2);
+  const sbsManifest = json("site/data/sbs_certified_businesses.json");
+  let row = null;
+  for (const shard of sbsManifest.shards) {
+    const found = json(`site/${shard.path}`).rows.find((candidate) => String(candidate.account_number) === account);
+    if (found) { row = found; break; }
+  }
+  assert.ok(row);
+  const banned = new Set([sha256Hex(row.vendor_formal_name), sha256Hex(row.name_stem)]);
+  assert.equal(rules.some((rule) => rule.field === "vendor_formal_name" && rule.value_sha256 === sha256Hex(row.vendor_formal_name)), true);
+  assert.equal(rules.some((rule) => rule.field === "name_stem" && rule.value_sha256 === sha256Hex(row.name_stem)), true);
+  const indexManifest = json("site/data/organization_index.json");
+  assert.equal(indexManifest.withheld_published_names, 1);
+  assert.deepEqual(indexManifest.notes, [WITHHELD_NOTE]);
+  const paths = [indexManifest.stems.path, ...indexManifest.entry_shards.map((shard) => shard.path), ...indexManifest.id_shards.map((shard) => shard.path)];
+  let hashHits = 0;
+  const flagged = [];
+  for (const path of paths) {
+    const doc = json(`site/${path}`);
+    walkStrings(doc, (value) => { if (banned.has(sha256Hex(value))) hashHits += 1; });
+    if (Array.isArray(doc.entries)) for (const candidate of doc.entries) if (candidate.w === 1) flagged.push(candidate);
+  }
+  assert.equal(hashHits, 0);
+  assert.equal(flagged.length, 1);
+  const entry = flagged[0];
+  assert.equal(entry.s, `sbs:${account}`);
+  assert.equal(Object.hasOwn(entry, "n"), false);
+  assert.equal(Object.hasOwn(entry, "d"), false);
+  assert.deepEqual(entry.x.sbs.i, [account]);
+  assert.ok(entry.x.sbs.z.length > 0);
+  const rendered = JSON.stringify(entry);
+  assert.equal(rendered.includes(row.vendor_formal_name), false);
+  assert.equal(rendered.includes(row.name_stem), false);
+  for (const bad of PLACEHOLDER_NAMES) assert.equal(rendered.includes(bad), false);
+  const stemRow = json(`site/${indexManifest.stems.path}`).stems.find((candidate) => candidate[0] === `sbs:${account}`);
+  assert.equal(stemRow[2], 1);
 });

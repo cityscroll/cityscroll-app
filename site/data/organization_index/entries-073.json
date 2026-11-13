@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":73,"first_ordinal":124029,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":73,"first_ordinal":124028,"entries":[
 {"s":"ROTARY CLUB OF AMITYVILLE","n":[["ROTARY CLUB OF AMITYVILLE LTD",1]],"x":{"irs":{"r":1,"i":["113160391"],"z":["11701"]}}},
 {"s":"ROTARY CLUB OF BAY SHORE NEW YORK","n":[["ROTARY CLUB OF BAY SHORE NEW YORK INCORPORATED",1]],"x":{"irs":{"r":1,"i":["116037042"],"z":["11706"]}}},
 {"s":"ROTARY CLUB OF BELLPORT NY","n":[["ROTARY CLUB OF BELLPORT NY USA INC",1]],"x":{"irs":{"r":1,"i":["463237542"],"z":["11713"]}}},

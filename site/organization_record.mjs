@@ -59,6 +59,23 @@ export function withLiveStateRegister(record, lookupResult) {
 
 const collectedAt = (index, id) => index.manifest.sources.find((s) => s.id === id)?.receipt?.collected_at ?? null;
 
+/**
+ * Published SBS fields for one organization record. A name-withheld entry keeps every other
+ * published field and omits the formal name and stem. A DBA is omitted only when it is that
+ * same value. Nothing is written in their place.
+ */
+export function sbsFieldsForRecord(row, entry) {
+  if (!entry?.name_withheld || !row || typeof row !== "object") return row;
+  const fields = { ...row };
+  const formal = fields.vendor_formal_name;
+  const stem = fields.name_stem;
+  delete fields.vendor_formal_name;
+  delete fields.name_stem;
+  if (fields.vendor_dba != null && (fields.vendor_dba === formal || fields.vendor_dba === stem)) delete fields.vendor_dba;
+  if (fields.dba_stem != null && (fields.dba_stem === formal || fields.dba_stem === stem)) delete fields.dba_stem;
+  return fields;
+}
+
 function block(kind, fields) {
   return { block: kind, heading: BLOCK_HEADINGS[kind], status: "present", ...fields };
 }
@@ -89,7 +106,7 @@ export async function assembleOrganizationRecord(opened, ref, deps = {}) {
         source_url: hit.source_url, dataset_url: hit.dataset_url, record_id: acct,
         collected_at: hit.collected_at, publisher_updated_at: hit.rows_updated_at,
         listed_under_this_name_as: entry.sources.sbs_certified_businesses.via,
-        fields: hit.row,
+        fields: sbsFieldsForRecord(hit.row, entry),
       }));
     } else {
       blocks.push(block("sbs_certified_business", { status: r.status === "not_found" ? "no_match" : "not_available", source: "sbs_certified_businesses", source_label: SOURCE_BY_ID.sbs_certified_businesses.label, source_url: SOURCE_BY_ID.sbs_certified_businesses.url, record_id: acct, collected_at: collectedAt(index, "sbs_certified_businesses"), reason: r.reason ?? null }));
@@ -144,7 +161,7 @@ export async function assembleOrganizationRecord(opened, ref, deps = {}) {
   if (deps.dosCommitted) {
     const hit = deps.dosCommitted.byStem.get(entry.stem) || [];
     if (hit.length) for (const rec of hit) blocks.push(block("state_register", { ...STATE_COMMON, record_id: rec.register_record_id, queried_at: rec.queried_at, lookup_status: hit.length === 1 ? "one_match" : "several_matches", match_basis: "stem_equal", link_policy: "candidate_only", record: rec }));
-    else blocks.push(block("state_register", { ...STATE_COMMON, status: "not_available", record_id: null, queried_at: null, reason: "not_in_committed_state_lookup", on_demand: `/org-register/dos?name=${encodeURIComponent(entry.display_name)}`, status_text: BLOCK_STATUS_TEXT.not_available }));
+    else blocks.push(block("state_register", { ...STATE_COMMON, status: "not_available", record_id: null, queried_at: null, reason: "not_in_committed_state_lookup", ...(entry.display_name ? { on_demand: `/org-register/dos?name=${encodeURIComponent(entry.display_name)}` } : {}), status_text: BLOCK_STATUS_TEXT.not_available }));
   }
 
   return {

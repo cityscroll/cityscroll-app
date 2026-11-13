@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":36,"first_ordinal":61076,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":36,"first_ordinal":61076,"entries":[
 {"s":"GOSPEL MISSION FELLOWSHIP","n":[["GOSPEL MISSION FELLOWSHIP",1]],"x":{"irs":{"r":1,"i":["161429904"],"z":["13691"]}}},
 {"s":"GOSPEL MISSION MINISTRIES","n":[["GOSPEL MISSION MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["237425524"],"z":["10918"]}}},
 {"s":"GOSPEL MISSIONARY CHURCH","n":[["GOSPEL MISSIONARY CHURCH",1]],"x":{"irs":{"r":1,"i":["113800607"],"z":["11221"]}}},

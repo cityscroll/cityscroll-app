@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":1,"first_ordinal":1808,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":1,"first_ordinal":1808,"entries":[
 {"s":"A B LIGHT HEAT AND POWER","n":[["A&B Light Heat and Power Corporation",1]],"x":{"dol":{"r":1,"i":["26-69AOQ-CR"],"z":["14120"]}}},
 {"s":"A B MANIAR SON","n":[["A B MANIAR & SON LLC",1]],"x":{"dol":{"r":1,"i":["26-64N71-CR"],"z":["08848"]}}},
 {"s":"A B P R LOGISTICS","n":[["A.B.P.R. LOGISTICS LLC",1]],"x":{"sbs":{"r":1,"i":["370716"],"z":["11237"],"p":["MBE"]}}},

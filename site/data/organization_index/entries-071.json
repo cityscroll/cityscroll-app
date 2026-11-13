@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":71,"first_ordinal":120590,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":71,"first_ordinal":120589,"entries":[
 {"s":"RENAISSANCE CHARTER SCHOOL","n":[["RENAISSANCE CHARTER SCHOOL",3]],"x":{"cbr":{"r":2,"a":625104,"l":"2025-05-02","i":["CT104020259558700","CT104020259556540"]},"irs":{"r":1,"i":["113550391"],"z":["11372"]}}},
 {"s":"RENAISSANCE CHARTER SCHOOL 2","n":[["RENAISSANCE CHARTER SCHOOL 2",1]],"x":{"irs":{"r":1,"i":["824420335"],"z":["11373"]}}},
 {"s":"RENAISSANCE CHORUS ASSOCIATION","n":[["RENAISSANCE CHORUS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["900435271"],"z":["10033"]}}},

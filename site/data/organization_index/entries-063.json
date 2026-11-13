@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":63,"first_ordinal":106983,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":63,"first_ordinal":106982,"entries":[
 {"s":"NY SPECIAL CARE","n":[["NY SPECIAL CARE INC",1]],"x":{"irs":{"r":1,"i":["332152310"],"z":["11374"]}}},
 {"s":"NY SPYDER RIDERS","n":[["NY SPYDER RIDERS INC",1]],"x":{"irs":{"r":1,"i":["464574812"],"z":["12404"]}}},
 {"s":"NY STATE BAND DIRECTORS ASSOCIATION SUNY FREDONIA SCHOOL OF MUSIC","n":[["NY STATE BAND DIRECTORS ASSOCIATION SUNY FREDONIA SCHOOL OF MUSIC",1]],"x":{"irs":{"r":1,"i":["222996388"],"z":["14580"]}}},

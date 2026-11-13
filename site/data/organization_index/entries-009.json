@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":9,"first_ordinal":14954,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":9,"first_ordinal":14954,"entries":[
 {"s":"BARON HIRSCH CEMETERY ASSOCIATION","n":[["BARON HIRSCH CEMETERY ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["135576827"],"z":["10314"]}}},
 {"s":"BARON STEUBEN LODGE NO 264 FREE AND ACCEPTED MASONS STATE","n":[["BARON STEUBEN LODGE NO 264 FREE AND ACCEPTED MASONS STATE OF NEW YORK",1]],"x":{"irs":{"r":1,"i":["150628594"],"z":["13363"]}}},
 {"s":"BARONE CONSTRUCTION GROUP","n":[["Barone Construction Group, Inc.",1]],"x":{"dol":{"r":1,"i":["26-63H8V-CR"],"z":["12528"]}}},

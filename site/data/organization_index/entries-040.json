@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":40,"first_ordinal":67942,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":40,"first_ordinal":67942,"entries":[
 {"s":"HOLLIS PUBLIC AFFAIRS","n":[["HOLLIS PUBLIC AFFAIRS INC.",1]],"x":{"dbe":{"r":1,"i":["HOLLIS PUBLIC AFFAIRS INC."]}}},
 {"s":"HOLLISWOOD CIVIC ASSOCIATION","n":[["HOLLISWOOD CIVIC ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["237268670"],"z":["11423"]}}},
 {"s":"HOLLOW METAL PENSION FUND","n":[["HOLLOW METAL PENSION FUND",1]],"x":{"irs":{"r":1,"i":["112758544"],"z":["10014"]}}},

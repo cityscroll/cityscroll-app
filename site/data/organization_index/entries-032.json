@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":32,"first_ordinal":54134,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":32,"first_ordinal":54134,"entries":[
 {"s":"FOUNDATION FOR THE FIGHT FOR HUMAN SURVIVAL","n":[["FOUNDATION FOR THE FIGHT FOR HUMAN SURVIVAL",1]],"x":{"irs":{"r":1,"i":["844134383"],"z":["10020"]}}},
 {"s":"FOUNDATION FOR THE FUTURE","n":[["FOUNDATION FOR THE FUTURE INC",1]],"x":{"irs":{"r":1,"i":["274092499"],"z":["14564"]}}},
 {"s":"FOUNDATION FOR THE GLOBAL COMPACT","n":[["FOUNDATION FOR THE GLOBAL COMPACT",1]],"x":{"irs":{"r":1,"i":["161756484"],"z":["10017"]}}},

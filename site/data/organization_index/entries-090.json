@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":90,"first_ordinal":152690,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":90,"first_ordinal":152689,"entries":[
 {"s":"VILLAGE OF MONTGOMERY POLICE BENEVOLENT ASSOCIATION","n":[["VILLAGE OF MONTGOMERY POLICE BENEVOLENT ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["223173371"],"z":["12549"]}}},
 {"s":"VILLAGE OF NEW PALTZ","n":[["Village of New Paltz",1]],"x":{"ocp":{"r":1,"a":72250000,"l":"2019-04-22","i":["20190412013"]}}},
 {"s":"VILLAGE OF NEW SQUARE EMERGENCY SERVICES HATZOLOH OF NEW SQUARE","n":[["VILLAGE OF NEW SQUARE EMERGENCY SERVICES HATZOLOH OF NEW SQUARE",1]],"x":{"irs":{"r":1,"i":["133866816"],"z":["10977"]}}},

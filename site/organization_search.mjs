@@ -118,17 +118,19 @@ export async function openOrganizationIndex(readFile) {
   if (stemsDoc.generation !== manifest.generation) return notIndexed("generation_mismatch", `stems ${stemsDoc.generation} != manifest ${manifest.generation}`);
   if (!Array.isArray(stemsDoc.stems) || stemsDoc.stems.length !== manifest.entry_count) return notIndexed("stems_count");
   const stems = new Array(stemsDoc.stems.length); const masks = new Uint32Array(stemsDoc.stems.length);
+  const nameWithheld = new Uint8Array(stemsDoc.stems.length);
   const postings = new Map();
   for (let i = 0; i < stemsDoc.stems.length; i++) {
-    const [s, m] = stemsDoc.stems[i];
+    const [s, m, withheld] = stemsDoc.stems[i];
     if (i > 0 && !(s > stems[i - 1])) return notIndexed("stems_order", s);
-    stems[i] = s; masks[i] = m;
+    stems[i] = s; masks[i] = m; nameWithheld[i] = withheld ? 1 : 0;
+    if (withheld) continue;
     for (const t of new Set(stemTokens(s))) {
       let p = postings.get(t); if (!p) { p = []; postings.set(t, p); } p.push(i);
     }
   }
   for (const [t, p] of postings) postings.set(t, Int32Array.from(p));
-  const index = { manifest, stems, masks, postings, blocks: null, readFile, shardCache: new Map() };
+  const index = { manifest, stems, masks, nameWithheld, postings, blocks: null, readFile, shardCache: new Map() };
   vocabularyBlocks(index);
   return { status: "ok", index };
 }
@@ -254,8 +256,9 @@ export function matchName(index, q, { limit = LIMITS.default_results } = {}) {
   const prefixText = normalizedText(clean);
   const tokens = [...new Set(stemTokens(stem))];
   const hits = new Map();
-  const add = (o, reason, score) => { if (!hits.has(o)) hits.set(o, { ordinal: o, reason, score }); };
-  // exact (reason refined to dba after the entry is loaded)
+  const named = (o) => !index.nameWithheld[o];
+  const add = (o, reason, score) => { if (named(o) && !hits.has(o)) hits.set(o, { ordinal: o, reason, score }); };
+  // exact (reason refined to dba after the entry is loaded). A withheld name is not a name match.
   const e = lowerBound(index.stems, stem);
   if (index.stems[e] === stem) add(e, "exact_name", [0]);
   // prefix: stems that begin with the typed text (legal endings not removed, so "ACME CO" is a prefix of "ACME CONSTRUCTION")
@@ -264,7 +267,7 @@ export function matchName(index, q, { limit = LIMITS.default_results } = {}) {
     if (alnumCount(p) < LIMITS.min_alnum_chars) continue;
     let i = lowerBound(index.stems, p);
     while (i < index.stems.length && index.stems[i].startsWith(p)) {
-      if (!hits.has(i)) { prefixTotal += 1; if (prefixTotal > LIMITS.max_prefix_candidates) { prefixTruncated = true; break; } add(i, "prefix", [index.stems[i].length]); }
+      if (!index.nameWithheld[i] && !hits.has(i)) { prefixTotal += 1; if (prefixTotal > LIMITS.max_prefix_candidates) { prefixTruncated = true; break; } add(i, "prefix", [index.stems[i].length]); }
       i += 1;
     }
   }
@@ -347,7 +350,10 @@ export function resultRow(index, hit, entry, q) {
     const formal = entry.names.filter((n) => n.via === "name");
     const dbaHit = entry.names.find((n) => n.via === "dba" && n.name.trim().toUpperCase() === upper);
     const formalHit = formal.find((n) => n.name.trim().toUpperCase() === upper);
-    if (!formal.length || (dbaHit && !formalHit)) { reason = "dba"; matched = (dbaHit || entry.names[0]).name; } else matched = (formalHit || formal[0]).name;
+    if (!formal.length || (dbaHit && !formalHit)) {
+      const fallback = dbaHit || entry.names[0];
+      if (fallback) { reason = "dba"; matched = fallback.name; }
+    } else matched = (formalHit || formal[0]).name;
   } else if (reason === "identifier") matched = hit.matched;
   else matched = entry.display_name;
   const sources = entry.source_ids.map((id) => {
@@ -512,7 +518,10 @@ export function parseEntityRef(ref) {
   const m = ENTITY_REF_PATTERN.exec(String(ref ?? ""));
   if (!m) return { ok: false, reason: "invalid_entity_ref" };
   const stem = m[1];
-  if (vendorStem(stem) !== stem || stem.length < 3) return { ok: false, reason: "invalid_entity_ref_stem" };
+  // A withheld name is stored under its published account key (`sbs:` + digits), which is not a
+  // vendor stem. Every other ref must already be a vendor stem.
+  const accountKey = /^sbs:\d{1,9}$/.test(stem);
+  if (!accountKey && (vendorStem(stem) !== stem || stem.length < 3)) return { ok: false, reason: "invalid_entity_ref_stem" };
   return { ok: true, stem, source_record: m[2] ? { kind: m[2], id: m[3] } : null };
 }
 export function entityRef(stem, kind = null, id = null) {

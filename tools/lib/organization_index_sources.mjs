@@ -1,6 +1,8 @@
 // Source readers for the organization index. Each reader turns one committed artifact into
 // "contributions": { source, name, via, ref, amount, date, agency, zip, extra } where `name` is
 // exactly the published string and `via` is "name" (the formal or only name) or "dba".
+// An exact-record withheld name is omitted (`name_withheld`); the account, ZIP, and other
+// published fields stay on an identifier key and are not given a replacement name.
 // Nothing is merged here; aggregation by vendor stem happens in organization_index.mjs.
 //
 // Engine artifacts are read from the repository root. The certified-business directory is the
@@ -8,7 +10,11 @@
 
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { vendorStem } from "../../entity_resolution/normalizers/vendor_stem.mjs";
 import { SOURCES, SOURCE_IDS, SOURCE_BY_ID, SOURCE_BY_CODE, CITY_AWARD_SOURCES } from "../../site/organization_index_contract.mjs";
+import {
+  SBS_NAME_DATASET, SBS_NAME_PUBLISHER, exactNameWithheld, loadOrganizationNameWithholdings,
+} from "./organization_name_withholding.mjs";
 
 export { SOURCES, SOURCE_IDS, SOURCE_BY_ID, SOURCE_BY_CODE, CITY_AWARD_SOURCES };
 
@@ -39,7 +45,7 @@ const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
 function contribution(source, fields) {
   return {
     source,
-    name: text(fields.name),
+    name: fields.name_withheld ? "" : text(fields.name),
     via: fields.via || "name",
     ref: fields.ref == null ? null : text(fields.ref),
     amount: fields.amount ?? null,
@@ -47,6 +53,8 @@ function contribution(source, fields) {
     agency: fields.agency ?? null,
     zip: fields.zip ?? null,
     extra: fields.extra ?? null,
+    name_withheld: Boolean(fields.name_withheld),
+    index_key: fields.index_key || null,
   };
 }
 
@@ -107,15 +115,50 @@ export function readSbsDirectory(rootDir) {
   return sbsContributions(manifest, rows);
 }
 
-/** Normalized certified-business rows. Formal name and DBA each count. */
-export function sbsContributions(manifest, rows) {
+/**
+ * True when publishing `name` would copy a withheld string: the name itself, or the
+ * stem the index would store for it. Other fields and other accounts stay.
+ */
+function dropPublishedName(rules, account, name, publishedStem) {
+  if (!name) return false;
+  const identity = { publisher: SBS_NAME_PUBLISHER, dataset: SBS_NAME_DATASET, account };
+  if (exactNameWithheld(rules, { ...identity, value: name })) return true;
+  const derived = vendorStem(name);
+  if (derived && exactNameWithheld(rules, { ...identity, value: derived })) return true;
+  if (publishedStem && publishedStem === derived && exactNameWithheld(rules, { ...identity, value: publishedStem })) return true;
+  return false;
+}
+
+/** Normalized certified-business rows. Formal name and DBA each count. One exact-record name may be withheld. */
+export function sbsContributions(manifest, rows, rules = undefined) {
+  const active = rules === undefined ? loadOrganizationNameWithholdings() : rules;
   const out = [];
+  let withheldPublishedNames = 0;
   for (const r of rows) {
     const extra = { certification: r.certification || [], borough: r.borough ?? null, naics6: r.id6_digit_naics_code ?? null, nigp: r.nigp_codes || [] };
-    if (r.name_stem) out.push(contribution("sbs_certified_businesses", { name: r.vendor_formal_name, via: "name", ref: r.account_number, zip: r.zip ?? null, extra }));
-    if (r.dba_stem) out.push(contribution("sbs_certified_businesses", { name: r.vendor_dba, via: "dba", ref: r.account_number, zip: r.zip ?? null, extra }));
+    const account = r.account_number == null ? "" : String(r.account_number);
+    const dropFormal = dropPublishedName(active, account, r.vendor_formal_name, r.name_stem);
+    const dropDba = dropPublishedName(active, account, r.vendor_dba, r.dba_stem);
+    if (dropFormal || dropDba) withheldPublishedNames += 1;
+    if (r.name_stem && r.vendor_formal_name && !dropFormal) {
+      out.push(contribution("sbs_certified_businesses", { name: r.vendor_formal_name, via: "name", ref: account, zip: r.zip ?? null, extra }));
+    }
+    if (r.dba_stem && r.vendor_dba && !dropDba) {
+      out.push(contribution("sbs_certified_businesses", { name: r.vendor_dba, via: "dba", ref: account, zip: r.zip ?? null, extra }));
+    }
+    const keptName = (r.name_stem && r.vendor_formal_name && !dropFormal) || (r.dba_stem && r.vendor_dba && !dropDba);
+    if ((dropFormal || dropDba) && !keptName && account) {
+      out.push(contribution("sbs_certified_businesses", {
+        name_withheld: true, index_key: `sbs:${account}`, via: "name", ref: account, zip: r.zip ?? null, extra,
+      }));
+    }
   }
-  return { contributions: out, receipt: { path: "site/data/sbs_certified_businesses.json", rows: rows.length, collected_at: manifest.collected_at, rows_updated_at: manifest.rows_updated_at, content_sha256: manifest.content_sha256 }, manifest };
+  return {
+    contributions: out,
+    withheld_published_names: withheldPublishedNames,
+    receipt: { path: "site/data/sbs_certified_businesses.json", rows: rows.length, collected_at: manifest.collected_at, rows_updated_at: manifest.rows_updated_at, content_sha256: manifest.content_sha256 },
+    manifest,
+  };
 }
 
 /**

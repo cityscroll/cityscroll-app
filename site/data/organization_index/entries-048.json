@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":48,"first_ordinal":81601,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":48,"first_ordinal":81601,"entries":[
 {"s":"KIWANIS CLUB OF PLATTSBURGH BREAKFAST FOUNDATION","n":[["KIWANIS CLUB OF PLATTSBURGH BREAKFAST FOUNDATION",1]],"x":{"irs":{"r":1,"i":["474470701"],"z":["12901"]}}},
 {"s":"KIWANIS CLUB OF SAND LAKE NY INC FOUNDATION","n":[["KIWANIS CLUB OF SAND LAKE NY INC FOUNDATION",1]],"x":{"irs":{"r":1,"i":["862329894"],"z":["12018"]}}},
 {"s":"KIWANIS CLUB OF SARANAC LAKE FOUNDATION","n":[["KIWANIS CLUB OF SARANAC LAKE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["141816149"],"z":["12983"]}}},
@@ -943,7 +943,6 @@
 {"s":"KRAJA ASSOCIATION","n":[["KRAJA ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["814587164"],"z":["10301"]}}},
 {"s":"KRAJISNIK FOOTBALL CLUB","n":[["KRAJISNIK FOOTBALL CLUB INC",1]],"x":{"irs":{"r":1,"i":["822971127"],"z":["13501"]}}},
 {"s":"KRAJISNIK SOCCER CLUB","n":[["KRAJISNIK SOCCER CLUB INC",1]],"x":{"irs":{"r":1,"i":["271956258"],"z":["13504"]}}},
-{"s":"KRAKEN AUTO COLLISION","n":[["Kraken Auto & Collision, Inc.",1]],"x":{"sbs":{"r":1,"i":["387393"],"z":["11779"],"p":["MBE"]}}},
 {"s":"KRALIK TIKTIN KIDS IN NEED INCORPOR ATED","n":[["KRALIK TIKTIN KIDS IN NEED INCORPOR ATED",1]],"x":{"irs":{"r":1,"i":["394178790"],"z":["10974"]}}},
 {"s":"KRAMAN IRON WORKS","n":[["KRAMAN IRON WORKS, INC.",1]],"x":{"dol":{"r":1,"i":["25-64Z5Y-CR"],"z":["10009"]}}},
 {"s":"KRAMER FOUNDATION","n":[["KRAMER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["221713053"],"z":["11797"]}}},

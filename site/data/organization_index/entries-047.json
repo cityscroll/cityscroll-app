@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":47,"first_ordinal":79741,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":47,"first_ordinal":79741,"entries":[
 {"s":"KAYE MEDIA PARTNERS","n":[["Kaye Media Partners, LLC",1]],"x":{"sbs":{"r":1,"i":["361997"],"z":["10541"],"p":["MBE","WBE"]}}},
 {"s":"KAYE PRESERVATION FOUNDATION","n":[["KAYE PRESERVATION FOUNDATION",1]],"x":{"irs":{"r":1,"i":["861936223"],"z":["11210"]}}},
 {"s":"KAYEMAKEUP GLAMSTARS","n":[["KAYEMAKEUP GLAMSTARS INC",1]],"x":{"irs":{"r":1,"i":["991776363"],"z":["10036"]}}},

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":17,"first_ordinal":28623,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":17,"first_ordinal":28623,"entries":[
 {"s":"CHEVRAH MEZOYNOS JERUSALEM","n":[["CHEVRAH MEZOYNOS JERUSALEM INC",1]],"x":{"irs":{"r":1,"i":["112995741"],"z":["11219"]}}},
 {"s":"CHEVRAS BNEI YEHOSHUA","n":[["CHEVRAS BNEI YEHOSHUA",1]],"x":{"irs":{"r":1,"i":["463777232"],"z":["11230"]}}},
 {"s":"CHEVRAS HAMASMIDIM","n":[["CHEVRAS HAMASMIDIM",1]],"x":{"irs":{"r":1,"i":["562323395"],"z":["10901"]}}},

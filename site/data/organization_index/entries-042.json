@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":42,"first_ordinal":71430,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":42,"first_ordinal":71430,"entries":[
 {"s":"IGUD YEDIDIM","n":[["IGUD YEDIDIM INC",1]],"x":{"irs":{"r":1,"i":["872425412"],"z":["11559"]}}},
 {"s":"IGUD YEHUDEI ZHITOMIR","n":[["IGUD YEHUDEI ZHITOMIR",1]],"x":{"irs":{"r":1,"i":["043605223"],"z":["11219"]}}},
 {"s":"IGW CHARITABLE FOUNDATION TR","n":[["IGW CHARITABLE FOUNDATION TR",1]],"x":{"irs":{"r":1,"i":["376392153"],"z":["11204"]}}},

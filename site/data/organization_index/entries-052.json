@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":52,"first_ordinal":88409,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":52,"first_ordinal":88408,"entries":[
 {"s":"LORI S TROPHY SPORTING CROWN TROPHY","n":[["LORI'S TROPHY & SPORTING CROWN TROPHY, INC.",5]],"x":{"cbr":{"r":3,"a":16839.05,"l":"2026-04-21","i":["CT184620268807098","CT184620268804001","CT184620258808392"]},"cbv":{"r":2,"l":"2026-04-21","i":["CT184620268807098","CT184620268804001"],"m":["Non-M/WBE"]}}},
 {"s":"LORI-GIRL CREATIONS","n":[["Lori-Girl Creations, Inc",1]],"x":{"sbs":{"r":1,"i":["101511"],"z":["11746"],"p":["WBE"]}}},
 {"s":"LORICOM","n":[["Loricom Inc.",1]],"x":{"sbs":{"r":1,"i":["387802"],"z":["10022"],"p":["WBE"]}}},

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":61,"first_ordinal":103610,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":61,"first_ordinal":103609,"entries":[
 {"s":"NEW YORK STATE ASSOCIATION OF CREMATORIES","n":[["NEW YORK STATE ASSOCIATION OF CREMATORIES INC",1]],"x":{"irs":{"r":1,"i":["473203757"],"z":["13053"]}}},
 {"s":"NEW YORK STATE ASSOCIATION OF CRIMINAL DEFENSE LAWYERS","n":[["New York State Association of Criminal Defense Lawyers",2]],"x":{"cbr":{"r":1,"a":32570,"l":"2026-07-10","i":["CT112820261417555"]},"cbv":{"r":1,"l":"2026-07-10","i":["CT112820261417555"],"m":["Non-M/WBE"]}}},
 {"s":"NEW YORK STATE ASSOCIATION OF DAY TREATMENT PROVIDERS","n":[["NEW YORK STATE ASSOCIATION OF DAY TREATMENT PROVIDERS INCORPORATED",1]],"x":{"irs":{"r":1,"i":["222978292"],"z":["10532"]}}},

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":51,"first_ordinal":86725,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":51,"first_ordinal":86724,"entries":[
 {"s":"LISA BETH GERSTMAN FOUNDATION","n":[["LISA BETH GERSTMAN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["200704257"],"z":["11530"]}}},
 {"s":"LISA FONSSAGRIVES-PENN TR","n":[["LISA FONSSAGRIVES-PENN TR",1]],"x":{"irs":{"r":1,"i":["137024539"],"z":["10020"]}}},
 {"s":"LISA HANDLEY","n":[["LISA HANDLEY",2]],"x":{"ocp":{"r":1,"a":70000,"l":"2022-08-16","i":["20220809135"]},"ppt":{"r":1,"a":70000,"l":"2022-08-09","i":["CT1-856-20238801398"]}}},

@@ -1325,7 +1325,7 @@ function organizationRecordHTML(rec){
     <p class="rmeta">${t("org_identity_note")}</p>
     ${links ? `<ul class="rmeta">${links}</ul>` : ""}
     ${rec.blocks.map(organizationBlockHTML).join("")}
-    <button type="button" class="org-state-lookup" data-org-name="${escUiHtml(rec.display_name)}">${t("org_state_lookup_btn")}</button>
+    ${rec.display_name ? `<button type="button" class="org-state-lookup" data-org-name="${escUiHtml(rec.display_name)}">${t("org_state_lookup_btn")}</button>` : ""}
   </section>`;
 }
 

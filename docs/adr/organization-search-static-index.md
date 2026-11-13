@@ -16,8 +16,11 @@ vendor roots) to `worker/src/data/keyword_search_index_shards`, `tools/build_wor
 publishes it into `keyword_search_documents` and the FTS5 table `keyword_search_fts`, and
 `searchKeywordFamilyFromD1` queries it.
 
-The organization population is 160,860 name stems (engine award sources, Doing Business, the SBS
-certified business list, and the IRS, DOL and SCA registers; measured 2026-11-11).
+The organization population is 160,860 entries (engine award sources, Doing Business, the SBS
+certified business list, and the IRS, DOL and SCA registers; measured 2026-11-11). One published
+certified-business name is withheld for a privacy rule. That entry stays in the index without a
+name and without a substitute name, and it remains reachable by its other published fields. The
+index manifest records that count.
 
 ## Decision
 
@@ -40,7 +43,7 @@ answers `not_indexed`.
 
 ## Consequences
 
-- Pages per-file limit 24 MiB (headroom mark 18 MiB): the largest file is the stems file, 5,847,888 bytes.
+- Pages per-file limit 24 MiB (headroom mark 18 MiB): the largest file is the stems file, 5,847,879 bytes.
 - Cold isolate: one manifest and one stems file (1.42 MB gzip), 134 ms to open on the measurement
   machine, 31.5 MB heap; warm query p50 2.7 ms, p95 8.2 ms over 1,000 queries.
 - The universal `/search` vendors lane is unchanged: its documents assert reviewed vendor-stem identity

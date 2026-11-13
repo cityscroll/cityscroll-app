@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":41,"first_ordinal":69695,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":41,"first_ordinal":69695,"entries":[
 {"s":"HUDSON YARDS HELL S KITCHEN BUS IMPROVE DISTRICT","n":[["HUDSON YARDS HELL'S KITCHEN BUS IMPROVE DISTRICT",5]],"x":{"ocp":{"r":1,"a":10000,"l":"2021-03-12","i":["20210306105"]},"cbr":{"r":3,"a":679435,"l":"2026-04-16","i":["CT182720268806339","CT180120258801336","CT180120248809361"]},"ppt":{"r":1,"a":10000,"l":"2021-03-05","i":["CT1-801-20218800859"]}}},
 {"s":"HUDSON YARDS HELLS KITCHEN BUSINESS IMPROVEMENT DISTRICT","n":[["HUDSON YARDS HELLS KITCHEN BUSINESS IMPROVEMENT DISTRICT INC",1]],"x":{"irs":{"r":1,"i":["471247857"],"z":["10018"]}}},
 {"s":"HUDSON YARDS NORTH TOWER TENANT","n":[["HUDSON YARDS NORTH TOWER TENANT LLC",1]],"x":{"dbe":{"r":1,"i":["HUDSON YARDS NORTH TOWER TENANT LLC"]}}},

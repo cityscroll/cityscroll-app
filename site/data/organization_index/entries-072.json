@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":72,"first_ordinal":122304,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":72,"first_ordinal":122303,"entries":[
 {"s":"RM SOLUTIONS GROUP","n":[["RM SOLUTIONS GROUP INCORPORATED",6],["RM Solutions Group Incorporated",1],["RM Solutions Group, Inc.",1]],"x":{"ocp":{"r":1,"a":99500,"l":"2025-12-12","i":["20251208015"]},"cbr":{"r":4,"a":178300,"l":"2026-08-05","i":["CT113620271401756","CT113620268803934","CT113620261401817","CT113620251400526"]},"ppt":{"r":1,"a":99500,"l":"2025-12-05","i":["CT1-136-20268803934"]},"cbv":{"r":1,"l":"2026-08-05","i":["CT113620271401756"],"m":["Asian American"]},"sbs":{"r":1,"i":["15685"],"z":["06902"],"p":["MBE"]}}},
 {"s":"RMA GROUP","n":[["RMA Group, Inc.",1]],"x":{"sca":{"r":1,"i":["RMA GROUP, INC."],"z":["11801"]}}},
 {"s":"RMA HOUSING DEVELOPMENT","n":[["RMA HOUSING DEVELOPMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["990778399"],"z":["13202"]}}},

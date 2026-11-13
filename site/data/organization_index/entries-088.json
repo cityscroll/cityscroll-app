@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"23939d232bcf868e","shard":88,"first_ordinal":149469,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"6b073b104410a9c6","shard":88,"first_ordinal":149468,"entries":[
 {"s":"UNITED CHRISTIAN CHURCH INC ALBANY","n":[["UNITED CHRISTIAN CHURCH INC ALBANY",1]],"x":{"irs":{"r":1,"i":["842415967"],"z":["12205"]}}},
 {"s":"UNITED CHRISTIAN CHURCH OF GOD","n":[["UNITED CHRISTIAN CHURCH OF GOD INC",1]],"x":{"irs":{"r":1,"i":["113347753"],"z":["11436"]}}},
 {"s":"UNITED CHRISTIAN COALITION","n":[["UNITED CHRISTIAN COALITION",1]],"x":{"irs":{"r":1,"i":["113570539"],"z":["11225"]}}},
