@@ -1,0 +1,49 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-engineering/supplier-directory-entity-registers",
+  "status": "implemented",
+  "fingerprint": "supplier-directory-entity-registers.v1",
+  "updated_at": "2026-11-13T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "entity-registers-index",
+      "path": "entity_resolution/registers/index.mjs"
+    },
+    {
+      "id": "entity-registers-read-contract",
+      "path": "entity_resolution/registers/read_contract.mjs"
+    },
+    {
+      "id": "dos-entities-register",
+      "path": "entity_resolution/registers/dos_entities.mjs"
+    },
+    {
+      "id": "irs-eo-bmf-register",
+      "path": "entity_resolution/registers/irs_eo_bmf.mjs"
+    },
+    {
+      "id": "register-shards-builder",
+      "path": "tools/build_register_shards.mjs"
+    },
+    {
+      "id": "dos-vendor-lookup-builder",
+      "path": "tools/build_dos_entities_vendor_lookup.mjs"
+    },
+    {
+      "id": "worker-dos-entity-lookup",
+      "path": "worker/src/dos_entity_lookup.mjs"
+    },
+    {
+      "id": "entity-registers-test",
+      "path": "test/entity_registers.test.mjs"
+    },
+    {
+      "id": "public-payload-integrity-lib",
+      "path": "tools/lib/public_payload_integrity.mjs"
+    },
+    {
+      "id": "observer-coverage-watermark",
+      "path": "architecture/watermark.d/observer-coverage.json"
+    }
+  ]
+}
