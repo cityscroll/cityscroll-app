@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-10T15:18:12.084Z",
-  "open_as_of": "2026-11-10",
+  "generated_at": "2026-11-13T14:29:17.057Z",
+  "open_as_of": "2026-11-13",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,78 +10,13 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-10'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-13'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
   },
   "count": 40,
   "notices": [
-    {
-      "request_id": "20261006020",
-      "start_date": "2026-10-14T00:00:00.000",
-      "agency_name": "Environmental Protection",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "82626B0051-MFP-2025 Preventative Maintenance, Inspection, Testing and Repair of Fire Protection Systems and Fire Alarm Systems at Various DEP Facilities",
-      "pin": "82626B0051",
-      "due_date": "2026-11-10T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20261008021",
-      "start_date": "2026-10-16T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "VISUAL INSPECTION OF FIRE STANDPIPE AND SPRINKLER SYSTEMS",
-      "due_date": "2026-11-10T14:00:00.000",
-      "selection_method_description": "Request for Quote"
-    },
-    {
-      "request_id": "20261002023",
-      "start_date": "2026-10-14T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "SMPD_PS_RFP 523229 - The Development and Implementation of Department of Housing and Urban Development Required Training for National Standards for the Physical Inspection of Real Estate (NSPIRE) and Housing Opportunity Through Modernization Act (HOTMA)",
-      "pin": "523229",
-      "due_date": "2026-11-10T14:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
-      "request_id": "20260917021",
-      "start_date": "2026-09-24T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "NYC H+H/Queens - Dialysis Space Construction",
-      "pin": "34202301_Queens Dial",
-      "due_date": "2026-11-12T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260924021",
-      "start_date": "2026-09-30T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Correction: Community Pharmacy at Lincoln Hospital - GC Work (MISC) MEP Trades",
-      "pin": "25202504",
-      "due_date": "2026-11-12T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260105018",
-      "start_date": "2026-01-13T00:00:00.000",
-      "agency_name": "Education",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Bid Extension: Request for Bids for Transportation of Goods and Equipment",
-      "pin": "B5929040",
-      "due_date": "2026-11-12T16:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
     {
       "request_id": "20261002034",
       "start_date": "2026-10-09T00:00:00.000",
@@ -105,17 +40,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20260908026",
-      "start_date": "2026-09-18T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Request for Expressions of Interest (\u001aRFEI\u001a) for permanent or temporary and seasonal implementation of programming, amenities, events, and development that will enhance Ocean Breeze Park, Staten Island",
-      "pin": "R149-EX-2026",
-      "due_date": "2026-11-13T15:00:00.000",
-      "selection_method_description": "Request for Information"
-    },
-    {
       "request_id": "20260921012",
       "start_date": "2026-10-02T00:00:00.000",
       "agency_name": "Parks and Recreation",
@@ -125,6 +49,17 @@
       "pin": "B368-O-2026",
       "due_date": "2026-11-13T15:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20260908026",
+      "start_date": "2026-09-18T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Request for Expressions of Interest (\u001aRFEI\u001a) for permanent or temporary and seasonal implementation of programming, amenities, events, and development that will enhance Ocean Breeze Park, Staten Island",
+      "pin": "R149-EX-2026",
+      "due_date": "2026-11-13T15:00:00.000",
+      "selection_method_description": "Request for Information"
     },
     {
       "request_id": "20261016012",
@@ -193,28 +128,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20260810055",
-      "start_date": "2026-08-17T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: RFP Civil Service Examination",
-      "pin": "85625P0005",
-      "due_date": "2026-11-17T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20261009002",
-      "start_date": "2026-10-16T00:00:00.000",
-      "agency_name": "Information Technology and Telecommunications",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Temporary Personnel Services",
-      "pin": "85827B0001",
-      "due_date": "2026-11-17T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
       "request_id": "20260923006",
       "start_date": "2026-09-29T00:00:00.000",
       "agency_name": "Housing Authority",
@@ -235,6 +148,28 @@
       "pin": "523414",
       "due_date": "2026-11-17T14:00:00.000",
       "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20260810055",
+      "start_date": "2026-08-17T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Bid Extension: RFP Civil Service Examination",
+      "pin": "85625P0005",
+      "due_date": "2026-11-17T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20261009002",
+      "start_date": "2026-10-16T00:00:00.000",
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Temporary Personnel Services",
+      "pin": "85827B0001",
+      "due_date": "2026-11-17T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260929029",
@@ -347,28 +282,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20261021030",
-      "start_date": "2026-10-28T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "85727B0004-Citywide Moving Services",
-      "pin": "85727B0004",
-      "due_date": "2026-11-19T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260422026",
-      "start_date": "2026-04-29T00:00:00.000",
-      "agency_name": "Education",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Bid Extension: Payroll Managed Services",
-      "pin": "R1861040",
-      "due_date": "2026-11-19T16:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
       "request_id": "20261027032",
       "start_date": "2026-11-06T00:00:00.000",
       "agency_name": "Housing Authority",
@@ -377,16 +290,6 @@
       "short_title": "SMD_MATERIAL JANITORIAL CLEANING PRODUCTS, FIVE BOROUGHS OF NEW YORK CITY",
       "pin": "528370",
       "due_date": "2026-11-20T12:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20261014034",
-      "start_date": "2026-10-26T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "Bid Extension: Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located Brooklyn Neighborhood (BK08) and (BK09), Brooklyn.",
-      "due_date": "2026-11-20T14:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -401,13 +304,13 @@
       "selection_method_description": "Competitive Sealed Proposals"
     },
     {
-      "request_id": "20261019033",
-      "start_date": "2026-10-23T00:00:00.000",
+      "request_id": "20261014034",
+      "start_date": "2026-10-26T00:00:00.000",
       "agency_name": "Housing Authority",
       "type_of_notice_description": "Solicitation",
       "category_description": "Construction Related Services",
-      "short_title": "Bid Extension: Requirement Contract for Installation of V/C Floor Tile in Apartments, Development Specific pursuant to RFQ#s: 528467 to 528474 Located in Manhattan Neighborhood (MN06), and (MN07)",
-      "due_date": "2026-11-23T14:00:00.000",
+      "short_title": "Bid Extension: Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located Brooklyn Neighborhood (BK08) and (BK09), Brooklyn.",
+      "due_date": "2026-11-20T14:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -433,6 +336,16 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20261019033",
+      "start_date": "2026-10-23T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Bid Extension: Requirement Contract for Installation of V/C Floor Tile in Apartments, Development Specific pursuant to RFQ#s: 528467 to 528474 Located in Manhattan Neighborhood (MN06), and (MN07)",
+      "due_date": "2026-11-23T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20261006031",
       "start_date": "2026-10-13T00:00:00.000",
       "agency_name": "NYC Health + Hospitals",
@@ -453,6 +366,93 @@
       "pin": "2027NNRFP001",
       "due_date": "2026-11-24T15:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20261026031",
+      "start_date": "2026-11-04T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "BG-426M Brooklyn Street Tree Planting FY27 - CBs 6, 13",
+      "pin": "84627B0014",
+      "due_date": "2026-11-27T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261020018",
+      "start_date": "2026-10-28T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: SMD-Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located in Manhattan Neighborhood (MN08), and (MN09), Manhattan.",
+      "due_date": "2026-11-27T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261027023",
+      "start_date": "2026-11-04T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Pre-Solicitation - Bid# 2700028 - Truck, BEV Utility - DSNY",
+      "pin": "8572700028",
+      "due_date": "2026-11-30T09:00:00.000",
+      "selection_method_description": "Other"
+    },
+    {
+      "request_id": "20260814014",
+      "start_date": "2026-08-18T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: 85625B0009-CSB 151-20 Jamaica Roof Rep & WP",
+      "pin": "85625B0009",
+      "due_date": "2026-12-02T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261014020",
+      "start_date": "2026-10-21T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "82626B0015-BWT-TI-181 Replacement of the Multi-Rake Climber Screen & Degritting System Installation",
+      "pin": "82626B0015",
+      "due_date": "2026-12-02T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261015017",
+      "start_date": "2026-10-22T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "85727B0027-2600091 APPARATUS, 100 FT TRACTOR DRAWN AERIEL -FDNY",
+      "pin": "85727B0027",
+      "due_date": "2026-12-02T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261027012",
+      "start_date": "2026-11-04T00:00:00.000",
+      "agency_name": "Teachers' Retirement System",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Cost Allocation Assessment and Advisory Services",
+      "pin": "2158",
+      "due_date": "2026-12-02T17:00:00.000",
+      "selection_method_description": "Request for Quote"
+    },
+    {
+      "request_id": "20260821028",
+      "start_date": "2026-08-26T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: CSB 161 ST Elevator Modernization Rebid",
+      "pin": "85626B0010",
+      "due_date": "2026-12-03T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     }
   ]
 }

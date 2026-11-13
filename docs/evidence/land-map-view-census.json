@@ -10,9 +10,9 @@
     "land_default": {
       "path": "site/data/land_default_ulurp.json",
       "count_field": 40,
-      "generated_at": "2026-11-09T21:29:48.126Z",
+      "generated_at": "2026-11-13T14:23:02.330Z",
       "bytes": 72409,
-      "sha256": "6d7ecac70e953325cab95f0fd408726ca8061f05519d960b183aecdb0e635493"
+      "sha256": "88eaf9b37d54aa956e473cab774877dce8ee32c02ee28ba8140b7f36a0a68ed3"
     },
     "zap_bbl": {
       "path": "site/data/zap_bbl_warehouse_lookup.json",

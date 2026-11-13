@@ -1,0 +1,431 @@
+{
+  "schema_version": 1,
+  "source_contract_id": "dcas-exam-notices",
+  "authoritative_feed": {
+    "name": "DCAS Open Competitive Exams for Anyone",
+    "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+    "role": "Authoritative public schedule table for currently open application windows and linked Notices of Examination (NOE) PDFs."
+  },
+  "cross_check": {
+    "id": "oasys-active-exams",
+    "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
+    "rows": 17,
+    "role": "Independent structured listing of open filing windows and application fees; disagreements are recorded, and the published schedule page wins."
+  },
+  "verified_at": "2026-11-13",
+  "http_status": 200,
+  "page_bytes": 27817,
+  "page_sha256": "86d85f230c1a126b14b9f8c06250a01d28987bcdd75b0f395db427b3b3307f89",
+  "observed_exams": [
+    {
+      "exam_number": "7000",
+      "title": "Addiction Counselor (NYC H+H)",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-12-22",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277000000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-12-22",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-12-22",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7001",
+      "title": "Administrative Accountant",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277001000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7009",
+      "title": "Associate Fingerprint Technician",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277009000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7015",
+      "title": "Bridge Operator",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277015000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7017",
+      "title": "Cashier",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277017000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7030",
+      "title": "Elevator Mechanic's Helper",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277030000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7131",
+      "title": "Emergency Medical Specialist - EMT",
+      "present_on_page": true,
+      "live_application_start": "2026-10-07",
+      "live_application_end": "2026-11-18",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277131000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-10-07",
+      "oasys_filing_end": "2026-11-18",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-10-07",
+      "previous_application_end": "2026-11-18",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7032",
+      "title": "Emergency Medical Specialist Trainee",
+      "present_on_page": true,
+      "live_application_start": "2026-10-07",
+      "live_application_end": "2026-11-18",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277032000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-10-07",
+      "oasys_filing_end": "2026-11-18",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-10-07",
+      "previous_application_end": "2026-11-18",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7040",
+      "title": "Inspector (Construction)",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277040000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7050",
+      "title": "Metal Work Mechanic",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277050000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7315",
+      "title": "Police Officer",
+      "present_on_page": true,
+      "live_application_start": "2026-11-02",
+      "live_application_end": "2026-11-16",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277315000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-02",
+      "oasys_filing_end": "2026-11-16",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-02",
+      "previous_application_end": "2026-11-16",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7058",
+      "title": "Probation Officer Trainee",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277058000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7324",
+      "title": "School Safety Agent",
+      "present_on_page": true,
+      "live_application_start": "2026-10-07",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277324000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-10-07",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-10-07",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7332",
+      "title": "Traffic Enforcement Agent",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-12-22",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277332000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-12-22",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-12-22",
+      "changed_since_previous": false
+    },
+    {
+      "exam_number": "7074",
+      "title": "Youth Development Specialist",
+      "present_on_page": true,
+      "live_application_start": "2026-11-05",
+      "live_application_end": "2026-11-25",
+      "schedule_status": "scheduled",
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277074000.pdf",
+      "oasys_present": true,
+      "oasys_filing_start": "2026-11-05",
+      "oasys_filing_end": "2026-11-25",
+      "oasys_agrees": true,
+      "previous_application_start": "2026-11-05",
+      "previous_application_end": "2026-11-25",
+      "changed_since_previous": false
+    }
+  ],
+  "carried_detail_fields": [
+    {
+      "exam_number": "7000",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7001",
+      "fields": [
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7009",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7015",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7017",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7030",
+      "fields": [
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7131",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7032",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7040",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7050",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7315",
+      "fields": [
+        "salary_max",
+        "salary_min",
+        "salary_note"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7058",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7324",
+      "fields": [
+        "salary_max",
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7332",
+      "fields": [
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    },
+    {
+      "exam_number": "7074",
+      "fields": [
+        "salary_max",
+        "salary_min",
+        "salary_note",
+        "test_method"
+      ],
+      "same_cycle": true
+    }
+  ],
+  "added_exam_numbers": [],
+  "dropped_exam_numbers": [],
+  "unstated_annual_salary": [
+    {
+      "exam_number": "7001",
+      "title": "Administrative Accountant",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277001000.pdf",
+      "fee": 82,
+      "reason": "The notice does not state a minimum annual salary for this title."
+    },
+    {
+      "exam_number": "7030",
+      "title": "Elevator Mechanic's Helper",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277030000.pdf",
+      "fee": 91,
+      "reason": "The notice states a rate for this title rather than a yearly minimum salary."
+    }
+  ],
+  "notices_read": 17,
+  "oasys_disagreements": []
+}
