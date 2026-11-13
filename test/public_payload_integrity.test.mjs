@@ -55,7 +55,19 @@ test("all shipped payload trees are free of test records", () => {
 });
 
 test("SBS directory shards are verbatim publisher records, not scanned for test markers", () => {
-  const rows = [{ account_number: "5085", telephone: "5555555555", name_stem: "FIXED BY MORGAN ME" }];
+  // Spaced publisher display names (FIXED…) are not FIX_ID markers; compact FIX ids still are.
+  const rows = [
+    {
+      account_number: "5085",
+      telephone: "5555555555",
+      name_stem: "FIXED BY MORGAN ME",
+      pin: "FIXABC01",
+    },
+  ];
   assert.deepEqual(publicPayloadFindings(rows, { source: "site/data/sbs_certified_businesses/rows-006.json" }), []);
   assert.equal(publicPayloadFindings(rows, { source: "site/data/other_lookup/rows-006.json" }).length, 2);
+  assert.equal(
+    publicPayloadFindings([{ name_stem: "FIXED BY MORGAN ME" }], { source: "site/data/other_lookup/rows-006.json" }).length,
+    0,
+  );
 });
