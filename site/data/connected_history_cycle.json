@@ -8,13 +8,13 @@
     "served_path": "/data/connected_history_cycle.json"
   },
   "run": {
-    "run_id": "github-actions:43253282387:1",
-    "github_run_id": 43253282387,
-    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/43253282387",
+    "run_id": "github-actions:43451538028:1",
+    "github_run_id": 43451538028,
+    "run_url": "https://github.com/cityscroll/cityscroll-app/actions/runs/43451538028",
     "trigger": "schedule",
-    "code_revision": "5df5df3399e32eac073e0af01c4c744867ed4c08",
-    "started_at": "2026-11-12T15:57:32.945Z",
-    "finished_at": "2026-11-12T15:57:39.333Z",
+    "code_revision": "cc3ca8067d554fc07b41987aa87ecc9961256266",
+    "started_at": "2026-11-13T15:20:43.311Z",
+    "finished_at": "2026-11-13T15:20:51.236Z",
     "status": "succeeded",
     "outcome": "held",
     "failed_stage": null,
@@ -22,52 +22,52 @@
     "served": {
       "status": "observed",
       "origin": "https://cityscroll.org",
-      "observed_at": "2026-11-12T15:57:32.945Z",
-      "revision": "5df5df3399e32eac073e0af01c4c744867ed4c08",
-      "deployment_at": "2026-11-12T13:33:50.478Z",
-      "manifest_sha256": "sha256:6a45b3ef80f00fa948d5bc1de0a647bb091d104e4c997c35f0ec1f4228257ea2",
+      "observed_at": "2026-11-13T15:20:43.311Z",
+      "revision": "cc3ca8067d554fc07b41987aa87ecc9961256266",
+      "deployment_at": "2026-11-13T15:01:46.852Z",
+      "manifest_sha256": "sha256:2a0da464097defca5f873c30fa85194dc5499310531ad64a33baffc23e7e3997",
       "previous_receipt": {
         "status": "observed",
-        "run_id": "github-actions:43045168453:1",
+        "run_id": "github-actions:43253282387:1",
         "outcome": "held",
-        "finished_at": "2026-11-11T15:08:14.450Z",
-        "sha256": "sha256:ea7fdf0e015c2576d8375480bc858b0e7ffa0b6261590979eab48ada3840080f",
+        "finished_at": "2026-11-12T15:57:39.333Z",
+        "sha256": "sha256:a087e37e93d79e54cdc47e03b3b751bed145212230c62335a3cc18f4a7b8d10e",
         "matches_committed_receipt": true
       },
       "after": {
         "status": "observed",
         "origin": "https://cityscroll.org",
-        "observed_at": "2026-11-12T15:57:39.333Z",
-        "revision": "5df5df3399e32eac073e0af01c4c744867ed4c08",
-        "deployment_at": "2026-11-12T13:33:50.478Z",
-        "manifest_sha256": "sha256:6a45b3ef80f00fa948d5bc1de0a647bb091d104e4c997c35f0ec1f4228257ea2"
+        "observed_at": "2026-11-13T15:20:51.236Z",
+        "revision": "cc3ca8067d554fc07b41987aa87ecc9961256266",
+        "deployment_at": "2026-11-13T15:01:46.852Z",
+        "manifest_sha256": "sha256:2a0da464097defca5f873c30fa85194dc5499310531ad64a33baffc23e7e3997"
       }
     }
   },
   "stages": [
     {
       "stage": "acquisition",
-      "started_at": "2026-11-12T15:57:33.669Z",
+      "started_at": "2026-11-13T15:20:43.807Z",
       "status": "succeeded",
-      "finished_at": "2026-11-12T15:57:38.879Z"
+      "finished_at": "2026-11-13T15:20:50.834Z"
     },
     {
       "stage": "materialization",
-      "started_at": "2026-11-12T15:57:38.879Z",
+      "started_at": "2026-11-13T15:20:50.834Z",
       "status": "succeeded",
-      "finished_at": "2026-11-12T15:57:38.951Z"
+      "finished_at": "2026-11-13T15:20:50.899Z"
     },
     {
       "stage": "publication",
-      "started_at": "2026-11-12T15:57:38.951Z",
+      "started_at": "2026-11-13T15:20:50.899Z",
       "status": "succeeded",
-      "finished_at": "2026-11-12T15:57:38.994Z"
+      "finished_at": "2026-11-13T15:20:50.958Z"
     },
     {
       "stage": "verification",
-      "started_at": "2026-11-12T15:57:38.994Z",
+      "started_at": "2026-11-13T15:20:50.958Z",
       "status": "succeeded",
-      "finished_at": "2026-11-12T15:57:39.333Z"
+      "finished_at": "2026-11-13T15:20:51.236Z"
     }
   ],
   "acquisition": {
@@ -75,7 +75,7 @@
       "attempted": true,
       "source_policy": "fixed-six-case-dossier-ceqr-dot-edc-only",
       "parser_version": "connected_history_documents.v1",
-      "observed_at": "2026-11-12T15:57:32.945Z",
+      "observed_at": "2026-11-13T15:20:43.311Z",
       "request_count": 8,
       "requests": [
         {
@@ -83,8 +83,8 @@
           "url": "https://www.nyc.gov/html/dot/html/about/current-projects.shtml",
           "http_status": 200,
           "content_type": "text/html; charset=utf-8",
-          "byte_count": 377534,
-          "content_hash": "sha256:5ab4c00528c13c405e601a895be2990e810f34f3dd2c1935b9f0a306fa0deea9",
+          "byte_count": 377536,
+          "content_hash": "sha256:b9f0cde576044cec47e4a34da45693bcffdf0a7a0ffe2ce74a9c7bd10a0685fd",
           "content_fingerprint": "sha256:443e69827990de9149cd4b3b1d88aee3cc40e0d295b09967dedf8a0684308432",
           "per_response_markup_removed": true,
           "outcome": "response"
@@ -94,9 +94,9 @@
           "url": "https://www.nyc.gov/site/oec/environmental-quality-review/13DME013X.page",
           "http_status": 200,
           "content_type": "text/html;charset=UTF-8",
-          "byte_count": 27305,
-          "content_hash": "sha256:7e5084b6c2dabab6ff07353873ff457e718ddcadd3b432f3e041d198bb468c17",
-          "content_fingerprint": "sha256:d4a450e3f0e7f1f8c7bbea9566050c62073de6b22488f968e5a0d4a49792c891",
+          "byte_count": 27287,
+          "content_hash": "sha256:25975a3192220f71bdff76980483c52833f92c8315df2d42c63ffdd8ec2e7dc3",
+          "content_fingerprint": "sha256:472580b3a6c1f9e2c82f752a1868e0d00ef5cf8601c30b12f0d3dc4a41c966ec",
           "per_response_markup_removed": true,
           "outcome": "response"
         },
@@ -117,7 +117,7 @@
           "http_status": 200,
           "content_type": "text/html; charset=utf-8",
           "byte_count": 72902,
-          "content_hash": "sha256:dde3d0cd00748245d1d748c1c03a217ae872d5d7f9cf5fb8ae47352b8c121506",
+          "content_hash": "sha256:f99193ef45c5267cc7c141f9b62c009dce822b72956488a6f7716401fd90f67f",
           "content_fingerprint": "sha256:cf58768784b9b537661082d6be133b4976672616de626fe2fd53ed3b875befc4",
           "per_response_markup_removed": true,
           "outcome": "response"
@@ -149,8 +149,8 @@
           "url": "https://edc.nyc/project/lighthouse-point",
           "http_status": 200,
           "content_type": "text/html; charset=UTF-8",
-          "byte_count": 105418,
-          "content_hash": "sha256:1eeb8f6bc7bfdbc6805fd0ccac1c00fadea07b12fbe3e6a273377af15988c498",
+          "byte_count": 105435,
+          "content_hash": "sha256:4c710d119b98368d59732da29b1c254c822c1239d6a1da87ee9b2a466010ab85",
           "content_fingerprint": "sha256:9833a60b6acc7d908de818a7f6670f111cd245c55707eff69e2224e85b55175f",
           "per_response_markup_removed": true,
           "outcome": "response"
@@ -160,14 +160,14 @@
           "url": "https://edc.nyc/press-release/mixed-use-housing-complex-opens-lighthouse-point",
           "http_status": 200,
           "content_type": "text/html; charset=UTF-8",
-          "byte_count": 14536,
-          "content_hash": "sha256:244e3411e86bd9b5672ba9780ad9d2c0cc2ccf844dfe5c926990600acb7e684b",
-          "content_fingerprint": "sha256:74f6e5ccb8d4c3fffe92e06f1a50c60b994b93bb9c48829df832c30e4fa005e9",
+          "byte_count": 14539,
+          "content_hash": "sha256:a50186b922d7a0963bf6b2d7dc1409f61ca235a0c4778a57166c2f848a8c364a",
+          "content_fingerprint": "sha256:d9f2a9430fb9cfd518f26b624c2d7a63a24302ee5a0e69b00bfc6364e0884d94",
           "per_response_markup_removed": true,
           "outcome": "response"
         }
       ],
-      "acquired_selection_hash": "659b410c3beb26dc35cea1322be20986377b860598706300e059b8462d67cea0",
+      "acquired_selection_hash": "0074e0a48c88a01e67574b8515af4101a156251a5f0a7ed48c0fea3488531154",
       "committed_selection_hash": "8af9223d8e45f005087b0ea3c7d920d6ae4c9ecd2bcd35cb90d1f788346d1f23",
       "content_fingerprint_rule": "connected_history_content_fingerprint.v1",
       "sources": [
@@ -179,18 +179,18 @@
           "http_status": 200,
           "status": "retained",
           "reason": null,
-          "fetched_content_hash": "sha256:7e5084b6c2dabab6ff07353873ff457e718ddcadd3b432f3e041d198bb468c17",
-          "byte_count": 27305,
-          "content_fingerprint": "sha256:d4a450e3f0e7f1f8c7bbea9566050c62073de6b22488f968e5a0d4a49792c891",
+          "fetched_content_hash": "sha256:25975a3192220f71bdff76980483c52833f92c8315df2d42c63ffdd8ec2e7dc3",
+          "byte_count": 27287,
+          "content_fingerprint": "sha256:472580b3a6c1f9e2c82f752a1868e0d00ef5cf8601c30b12f0d3dc4a41c966ec",
           "committed": {
             "status": "retained",
             "reason": null,
             "content_hash": "sha256:8571a1563656d571737bba9669b206391987f2b55674610c00ddafd8ac3256a9"
           },
-          "comparison": "reconfirmed",
-          "basis": "facts re-confirmed; per-response markup changed the digest and no fingerprint baseline existed, so this run records one",
+          "comparison": "changed",
+          "basis": "content fingerprint differs from the baseline recorded for the committed observation",
           "committed_content_hash": "sha256:8571a1563656d571737bba9669b206391987f2b55674610c00ddafd8ac3256a9",
-          "committed_content_fingerprint": "sha256:d4a450e3f0e7f1f8c7bbea9566050c62073de6b22488f968e5a0d4a49792c891"
+          "committed_content_fingerprint": null
         },
         {
           "source_id": "kingsbridge-ceqr-25dme006x-details",
@@ -200,7 +200,7 @@
           "http_status": 200,
           "status": "retained",
           "reason": null,
-          "fetched_content_hash": "sha256:dde3d0cd00748245d1d748c1c03a217ae872d5d7f9cf5fb8ae47352b8c121506",
+          "fetched_content_hash": "sha256:f99193ef45c5267cc7c141f9b62c009dce822b72956488a6f7716401fd90f67f",
           "byte_count": 72902,
           "content_fingerprint": "sha256:cf58768784b9b537661082d6be133b4976672616de626fe2fd53ed3b875befc4",
           "committed": {
@@ -284,8 +284,8 @@
           "http_status": 200,
           "status": "retained",
           "reason": null,
-          "fetched_content_hash": "sha256:1eeb8f6bc7bfdbc6805fd0ccac1c00fadea07b12fbe3e6a273377af15988c498",
-          "byte_count": 105418,
+          "fetched_content_hash": "sha256:4c710d119b98368d59732da29b1c254c822c1239d6a1da87ee9b2a466010ab85",
+          "byte_count": 105435,
           "content_fingerprint": "sha256:9833a60b6acc7d908de818a7f6670f111cd245c55707eff69e2224e85b55175f",
           "committed": {
             "status": "acquisition_failure",
@@ -482,7 +482,7 @@
         "committed_sha256": "sha256:81e163facdaadca706d152e88850d86f2c245786759ea1b4f9da1f968b670a0b",
         "materialized_sha256": "sha256:81e163facdaadca706d152e88850d86f2c245786759ea1b4f9da1f968b670a0b"
       },
-      "confirmed_current_at": "2026-11-12T15:57:39.333Z"
+      "confirmed_current_at": "2026-11-13T15:20:51.236Z"
     },
     {
       "id": "documents",
@@ -490,17 +490,17 @@
       "mode": "acquired",
       "action": "rematerialized",
       "committed_sha256": "sha256:51c54a94466b8d2b77630c621dbaa83802355eea2a0bceb314a9f312615ba161",
-      "materialized_sha256": "sha256:33ced881b995e3442c6976556e7faf90444b93432df7ab72ed009e8e68194971",
+      "materialized_sha256": "sha256:c4e593b2ce30acbf6aab5cc3f7f32c7483cd6567adf8b8945b244df9f44fcfeb",
       "byte_identical": false,
       "generated_at": {
         "committed": "2026-09-21T20:19:01.507Z",
-        "materialized": "2026-11-12T15:57:32.945Z"
+        "materialized": "2026-11-13T15:20:43.311Z"
       },
       "stamp_source": "acquisition instant of the published observation set",
       "verification_receipt": {
         "path": "site/data/connected_history_sources/verification_receipts/connected_history_documents_latest.json",
         "committed_sha256": "sha256:44eb1e4848f53691afa5ef4462648b2ad3f434ff38d20e7fa5e0498f10376530",
-        "materialized_sha256": "sha256:d54a13fc92b9192d4f701a6e89d70dcf4059fa1ff853e724800f5133920d5bf1"
+        "materialized_sha256": "sha256:1380f24900b7e667bf190614b15dc9a2163ebe6108c069c41e256c36a8a4c954"
       },
       "confirmed_current_at": null
     },
@@ -522,7 +522,7 @@
         "committed_sha256": "sha256:854fded9838bea03b5bb129a472cc97274cde1e123c9948e4ebe8bf9f1e6c959",
         "materialized_sha256": "sha256:854fded9838bea03b5bb129a472cc97274cde1e123c9948e4ebe8bf9f1e6c959"
       },
-      "confirmed_current_at": "2026-11-12T15:57:39.333Z"
+      "confirmed_current_at": "2026-11-13T15:20:51.236Z"
     },
     {
       "id": "roles",
@@ -542,7 +542,7 @@
         "committed_sha256": "sha256:a1b8babf54f9a234abc7bf86606fe73625057adbfb88a469aade535a073ed941",
         "materialized_sha256": "sha256:a1b8babf54f9a234abc7bf86606fe73625057adbfb88a469aade535a073ed941"
       },
-      "confirmed_current_at": "2026-11-12T15:57:39.333Z"
+      "confirmed_current_at": "2026-11-13T15:20:51.236Z"
     },
     {
       "id": "time",
@@ -562,7 +562,7 @@
         "committed_sha256": "sha256:cb891e09e0d18312ed291630a35eb3d83c5a8b2b2f9017e5e90f7e678c3a38b5",
         "materialized_sha256": "sha256:cb891e09e0d18312ed291630a35eb3d83c5a8b2b2f9017e5e90f7e678c3a38b5"
       },
-      "confirmed_current_at": "2026-11-12T15:57:39.333Z"
+      "confirmed_current_at": "2026-11-13T15:20:51.236Z"
     },
     {
       "id": "coverage",
@@ -570,17 +570,17 @@
       "mode": "derived",
       "action": "rematerialized",
       "committed_sha256": "sha256:3201eecccc0dd445ffd7a5534d30c4cff47b530fc298edd229fa1991d46562ed",
-      "materialized_sha256": "sha256:f8276c1ef9ec4d815a6a6e2089e92f21b7fe29055a0295a5b84ebceff84f7957",
+      "materialized_sha256": "sha256:dc6897a35ece9add77179771bc34354657f57fe26ece83db176862e9a630d721",
       "byte_identical": false,
       "generated_at": {
         "committed": "2026-09-21T20:19:01.507Z",
-        "materialized": "2026-11-12T15:57:32.945Z"
+        "materialized": "2026-11-13T15:20:43.311Z"
       },
       "stamp_source": "input stamps of the other materializations",
       "verification_receipt": {
         "path": "site/data/connected_history_sources/verification_receipts/connected_history_coverage_latest.json",
         "committed_sha256": "sha256:0b38fd9e17f99655976d62c851d9382e3693fdefba6c5bef1f2cfcc0d098a79f",
-        "materialized_sha256": "sha256:4558343102df4bcc7414f7fe1b3b7fc675c78d888e7a0b729531ce6c7a487695"
+        "materialized_sha256": "sha256:487c23c31c91203d1dc7f10cea49797affbf31ed531395fb527408581ce1474f"
       },
       "confirmed_current_at": null
     }
@@ -641,6 +641,15 @@
     }
   },
   "prior_runs": [
+    {
+      "run_id": "github-actions:43253282387:1",
+      "trigger": "schedule",
+      "started_at": "2026-11-12T15:57:32.945Z",
+      "finished_at": "2026-11-12T15:57:39.333Z",
+      "outcome": "held",
+      "served_revision": "5df5df3399e32eac073e0af01c4c744867ed4c08",
+      "receipt_sha256": "sha256:a087e37e93d79e54cdc47e03b3b751bed145212230c62335a3cc18f4a7b8d10e"
+    },
     {
       "run_id": "github-actions:43045168453:1",
       "trigger": "schedule",
@@ -874,15 +883,6 @@
       "outcome": "held",
       "served_revision": "b2e01af12f062cbdd4250666f40c12c327529cff",
       "receipt_sha256": "sha256:bd5199c57095bc31e68e8c42ac6c827ffbedbcba0f6373efaee2c10123871f5b"
-    },
-    {
-      "run_id": "github-actions:38900013575:1",
-      "trigger": "schedule",
-      "started_at": "2026-10-16T12:22:34.592Z",
-      "finished_at": "2026-10-16T12:22:41.861Z",
-      "outcome": "unchanged",
-      "served_revision": "3b8a77ddcb758f86ed9eb19bf307bf4089e291c1",
-      "receipt_sha256": "sha256:21a921be442e0438f6a1b33d53f5af068d98b926a14fc8da84c4f06a2e5c3bcd"
     },
     {
       "run_id": "github-actions:36755699826:1",
