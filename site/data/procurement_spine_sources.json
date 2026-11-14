@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "title": "Population-backed procurement spine observations for entity intelligence",
-  "observed_on": "2026-11-13",
-  "generated_at": "2026-11-13T14:08:16.404Z",
+  "observed_on": "2026-11-14",
+  "generated_at": "2026-11-14T13:54:05.893Z",
   "receipts": {
     "passport_join": "site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json",
     "source_coverage": "entity_resolution/source_coverage.json",
@@ -54,53 +54,53 @@
       "coverage_status": "measured",
       "population_backed": true,
       "source_url": "https://www.checkbooknyc.com/api",
-      "pulled_at": "2026-11-13T14:08:16.404Z",
+      "pulled_at": "2026-11-14T13:54:05.893Z",
       "population": {
-        "api_transaction_rows": 40517,
-        "normalized_unique_contracts": 29689,
+        "api_transaction_rows": 40580,
+        "normalized_unique_contracts": 29731,
         "fiscal_years": [
           2025,
           2026,
           2027
         ],
-        "sha256": "95d92adb6ec7f7599a916e89801bbc87dcb404811b02d8e5c0333a73b0383eb4"
+        "sha256": "b1a1d04171e3c456afa3d77516713d87f7add4043b5bc0a93e2d22005c03a43d"
       },
       "overlap": {
-        "checkbook_contracts": 29689,
+        "checkbook_contracts": 29731,
         "exact_overlap_buckets": {
-          "passport_and_city_record": 3844,
-          "passport_only": 1850,
-          "city_record_only": 1357,
-          "new_unique": 22638
+          "passport_and_city_record": 3843,
+          "passport_only": 1851,
+          "city_record_only": 1355,
+          "new_unique": 22682
         },
         "passport": {
           "matched_contracts": 5694,
           "by_contract_id": 5562,
-          "by_pin_epin": 4970,
-          "rate": 0.19178820438546262,
+          "by_pin_epin": 4969,
+          "rate": 0.1915172715347617,
           "denominator": "normalized Checkbook contracts in the collected fiscal-year window"
         },
         "city_record": {
-          "matched_checkbook_contracts": 5201,
-          "checkbook_rate": 0.17518272760955236,
-          "matched_modern_awards": 5148,
+          "matched_checkbook_contracts": 5198,
+          "checkbook_rate": 0.17483434798694966,
+          "matched_modern_awards": 5145,
           "modern_awards_with_pin": 5966,
-          "modern_award_rate": 0.8628897083473014,
+          "modern_award_rate": 0.8623868588669125,
           "denominator": "City Record Recent Contract Awards since 2025-01-01 with an exact PIN"
         },
-        "new_unique_contract_ids": 22638,
+        "new_unique_contract_ids": 22682,
         "acceptance_rule": "normalized exact contract_id or exact PIN/EPIN only; names are not join keys"
       },
       "section_denominator": {
         "status": "measured",
         "denominator": "normalized unique Checkbook contracts in the collected fiscal-year population",
-        "rows": 29689,
-        "source_population": 40517
+        "rows": 29731,
+        "source_population": 40580
       },
       "modern_awards": {
-        "joined": 5148,
+        "joined": 5145,
         "total": 5966,
-        "rate": 0.8628897083473014,
+        "rate": 0.8623868588669125,
         "basis": "City Record Recent Contract Awards since 2025-01-01 with an exact PIN"
       },
       "failure_state": null
@@ -255346,6 +255346,1656 @@
     ],
     "checkbook_contracts": [
       {
+        "prime_contract_id": "CT104020273042918",
+        "contract_id": "CT104020273042918",
+        "prime_vendor": "MINDBUILDERS CREATIVE ARTS INC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "3 BIDS-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273043093",
+        "contract_id": "CT104020273043093",
+        "prime_vendor": "ALPHA DRONES USA",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "NEGOTIATED SERVICES-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273043577",
+        "contract_id": "CT104020273043577",
+        "prime_vendor": "O & M VENTURE CAPITAL CORPORATION",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Asian American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "REQUIREMENTS-SERVICES",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273043652",
+        "contract_id": "CT104020273043652",
+        "prime_vendor": "VISION PROJECT CONSULTING LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "NEGOTIATED SERVICES-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273044686",
+        "contract_id": "CT104020273044686",
+        "prime_vendor": "VYYNL VENTURES LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Black American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273045239",
+        "contract_id": "CT104020273045239",
+        "prime_vendor": "Boxingology LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "3 BIDS-SERVICES-1",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273045573",
+        "contract_id": "CT104020273045573",
+        "prime_vendor": "WORKED INC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "3 BIDS-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273045679",
+        "contract_id": "CT104020273045679",
+        "prime_vendor": "Educational Solutions Company Inc",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "3 BIDS-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "REQUIREMENTS-SERVICES",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273045878",
+        "contract_id": "CT104020273045878",
+        "prime_vendor": "THE MEDIA SPOT LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "3 BIDS-SERVICES-NUMBER 1",
+        "document_code": "CT1",
+        "contract_type": "REQUIREMENTS-SERVICES",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273045903",
+        "contract_id": "CT104020273045903",
+        "prime_vendor": "Toolkit Tutors Inc",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "3 BIDS-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273046266",
+        "contract_id": "CT104020273046266",
+        "prime_vendor": "ELITE TOURS INC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Asian American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "OTHERS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273046749",
+        "contract_id": "CT104020273046749",
+        "prime_vendor": "CAPTION AMERICA LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "NEGOTIATED SERVICES-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273046859",
+        "contract_id": "CT104020273046859",
+        "prime_vendor": "TUTORED BY TEACHERS INC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "3 BIDS-SERVICES-NDMS26-27",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273047118",
+        "contract_id": "CT104020273047118",
+        "prime_vendor": "CSGM CONSULTING LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Hispanic American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273047594",
+        "contract_id": "CT104020273047594",
+        "prime_vendor": "Salsa Professional Apparel LLC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Hispanic American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020273047967",
+        "contract_id": "CT104020273047967",
+        "prime_vendor": "PORTABLE MEDITATION INC",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "SMALL PURCHASE - WRITTEN",
+        "mwbe_category": "Women (Non-Minority)",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "MWBE-SERVICES",
+        "document_code": "CT1",
+        "contract_type": "REQUIREMENTS-SERVICES",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 25000,
+        "original": 25000,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2027-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020279761074",
+        "contract_id": "CT104020279761074",
+        "prime_vendor": "Aim High Leadership Center Inc",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "RENEWAL OF CONTRACT",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-07-01",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-07-01"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "UPK-BTF",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 529944,
+        "original": 529944,
+        "spent": 0,
+        "start": "2026-07-01",
+        "end": "2028-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020279761838",
+        "contract_id": "CT104020279761838",
+        "prime_vendor": "ST ROSE OF LIMA CATHOLIC ACADEMY",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "RENEWAL OF CONTRACT",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-07-01",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-07-01"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "UPK-CIN",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 2278894,
+        "original": 2278894,
+        "spent": 0,
+        "start": "2026-07-01",
+        "end": "2028-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT104020279761853",
+        "contract_id": "CT104020279761853",
+        "prime_vendor": "Heavenly Hands Nurturing Daycare",
+        "agency": "Department of Education",
+        "pin": null,
+        "award_method": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-07-01",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-07-01"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "UPK-FCCN",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 4903500,
+        "original": 4903500,
+        "spent": 0,
+        "start": "2026-07-01",
+        "end": "2028-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT126020278803503",
+        "contract_id": "CT126020278803503",
+        "prime_vendor": "NYC MUSLIM CENTER",
+        "agency": "Department of Youth and Community Development",
+        "pin": "26026P0004082",
+        "award_method": "REQUEST FOR PROPOSAL (RFP)",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-08-01",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-08-01"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "COMPASS Center-Based CD - Queens 12 Elementary School",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 5472000,
+        "original": 5472000,
+        "spent": 0,
+        "start": "2026-08-01",
+        "end": "2032-08-31",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT126020278803504",
+        "contract_id": "CT126020278803504",
+        "prime_vendor": "NYC MUSLIM CENTER",
+        "agency": "Department of Youth and Community Development",
+        "pin": "26026P0004097",
+        "award_method": "REQUEST FOR PROPOSAL (RFP)",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-08-01",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-08-01"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Human Services",
+        "purpose": "COMPASS Center Based CD - Queens 12 Middle School",
+        "document_code": "CT1",
+        "contract_type": "PROGRAMS",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 1188000,
+        "original": 1188000,
+        "spent": 0,
+        "start": "2026-08-01",
+        "end": "2032-08-31",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT180620278803639",
+        "contract_id": "CT180620278803639",
+        "prime_vendor": "GRANITE ENVIRONMENTAL LLC",
+        "agency": "Housing Preservation and Development",
+        "pin": "80627E0011001",
+        "award_method": "EMERGENCY",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-09-04",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-09-04"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Construction Services",
+        "purpose": "Emerg Demo 1760 Anthony Av BX",
+        "document_code": "CT1",
+        "contract_type": "CONSTRUCTION",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 598356,
+        "original": 598356,
+        "spent": 0,
+        "start": "2026-09-04",
+        "end": "2027-09-03",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT181920271405866",
+        "contract_id": "CT181920271405866",
+        "prime_vendor": "PATTERSON DENTAL SUPPLY INC",
+        "agency": "Health and Hospitals Corporation",
+        "pin": null,
+        "award_method": "INTERGOVERNMENTAL PROCUREMENT",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-01-13",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-01-13"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "3D DENTAL PANORAMIC X-RAY SYSTEM PJ#42202601",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 121190,
+        "original": 121190,
+        "spent": 0,
+        "start": "2026-01-13",
+        "end": "2027-07-31",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT182620271405041",
+        "contract_id": "CT182620271405041",
+        "prime_vendor": "USALCO LLC",
+        "agency": "Department of Environmental Protection",
+        "pin": null,
+        "award_method": "SM PURCH GOODS SERVICES 100K",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-09",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-09"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Standardized Services",
+        "purpose": "Dry-filtered Aluminum Sulfate",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 99846,
+        "original": 99846,
+        "spent": 0,
+        "start": "2026-11-09",
+        "end": "2027-11-09",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT182620278803545",
+        "contract_id": "CT182620278803545",
+        "prime_vendor": "J PIZZIRUSSO LANDSCAPING CORP",
+        "agency": "Department of Environmental Protection",
+        "pin": "82626B0038001",
+        "award_method": "COMPETITIVE SEALED BIDDING",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-09",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-09"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Construction Services",
+        "purpose": "CB-QE25: Catch Basins Modernization the borough of Queens",
+        "document_code": "CT1",
+        "contract_type": "CONSTRUCTION",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 6538862.5,
+        "original": 6538862.5,
+        "spent": 0,
+        "start": "2026-11-09",
+        "end": "2028-05-10",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT184620278803533",
+        "contract_id": "CT184620278803533",
+        "prime_vendor": "NYC IT INC",
+        "agency": "Department of Parks and Recreation",
+        "pin": "84627W0009001",
+        "award_method": "M/WBE SMALL PURCHASE",
+        "mwbe_category": "Asian American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-12",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-12"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "CGRTB-Outpost Model 50 Display Boards",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 23980,
+        "original": 23980,
+        "spent": 0,
+        "start": "2026-11-12",
+        "end": "2026-12-11",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT185820278803795",
+        "contract_id": "CT185820278803795",
+        "prime_vendor": "PORTLAND WILLIAMS LLC",
+        "agency": "Department of Information Technology and Telecommunications",
+        "pin": "85827W0020001",
+        "award_method": "M/WBE SMALL PURCHASE",
+        "mwbe_category": "Black American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-07-01",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-07-01"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Goods",
+        "purpose": "VIAVI SUPPORT RENEWAL",
+        "document_code": "CT1",
+        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 131441.73,
+        "original": 131441.73,
+        "spent": 0,
+        "start": "2026-07-01",
+        "end": "2029-06-30",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CTA103020278803744",
+        "contract_id": "CTA103020278803744",
+        "prime_vendor": "STV INC.",
+        "agency": "Department of City Planning",
+        "pin": "03027Z0004001",
+        "award_method": "MULTIPLE AWARDS",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-10-01",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-10-01"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Professional Services",
+        "purpose": "On-Call Environmental Consulting & Engineering - White Plain",
+        "document_code": "CTA1",
+        "contract_type": "CONSULTANT",
+        "contract_version": "1",
+        "parent_contract_id": "MMA103020278802897",
+        "status": "registered",
+        "current": 419000,
+        "original": 419000,
+        "spent": 0,
+        "start": "2026-10-01",
+        "end": "2029-07-31",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CTA112720277202131",
+        "contract_id": "CTA112720277202131",
+        "prime_vendor": "22ND CENTURY TECHNOLOGIES INC",
+        "agency": "Financial Information Services Agency",
+        "pin": "127FY2300031",
+        "award_method": "MULTIPLE AWARDS",
+        "mwbe_category": "Asian American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-11-02",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-02"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Professional Services",
+        "purpose": "Consultant Pool-TOR#188 - Payroll Integration System Develop",
+        "document_code": "CTA1",
+        "contract_type": "CONSULTANT",
+        "contract_version": "1",
+        "parent_contract_id": "MMA112720236200541",
+        "status": "registered",
+        "current": 138320,
+        "original": 138320,
+        "spent": 0,
+        "start": "2026-11-02",
+        "end": "2027-07-02",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CTA185020278803452",
+        "contract_id": "CTA185020278803452",
+        "prime_vendor": "WSP USA BUILDINGS INC",
+        "agency": "Department of Design and Construction",
+        "pin": "85026Z0114001",
+        "award_method": "MULTIPLE AWARDS",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-11-12",
+        "start_date": "2026-07-29",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-07-29"
+          ],
+          "registration_date_observations": [
+            "2026-11-12"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Professional Services",
+        "purpose": "LBC22JBIF-Commissioning Services",
+        "document_code": "CTA1",
+        "contract_type": "REQUIREMENTS-SERVICES",
+        "contract_version": "1",
+        "parent_contract_id": "MMA185020268803199",
+        "status": "registered",
+        "current": 104131.74,
+        "original": 104131.74,
+        "spent": 0,
+        "start": "2026-07-29",
+        "end": "2032-04-14",
+        "registered": "2026-11-12",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
         "prime_contract_id": "CT104020273045418",
         "contract_id": "CT104020273045418",
         "prime_vendor": "ENRICHEDNYC LLC",
@@ -255356,11 +257006,11 @@
         "duration": null,
         "includes_subvendors": "Not Required",
         "registration_date": "2026-11-11",
-        "start_date": "2026-11-11",
+        "start_date": "2026-11-12",
         "date_ownership": {
           "owner": "prime_vendor_slice",
           "start_date_observations": [
-            "2026-11-11"
+            "2026-11-12"
           ],
           "registration_date_observations": [
             "2026-11-11"
@@ -255369,16 +257019,16 @@
           "conflicting_registration_date_observations": false
         },
         "industry": "Human Services",
-        "purpose": "MWBE-SERVICES",
+        "purpose": "CANCEL PO",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 25000,
         "original": 25000,
         "spent": 0,
-        "start": "2026-11-11",
+        "start": "2026-11-12",
         "end": "2027-06-30",
         "registered": "2026-11-11",
         "received": null,
@@ -256637,7 +258287,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 6641412,
@@ -256692,7 +258342,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 897624,
@@ -256802,7 +258452,7 @@
         "purpose": "FY27 CTL Renewal",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1257514.8,
@@ -256857,7 +258507,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1494984,
@@ -259227,7 +260877,7 @@
         "status": "registered",
         "current": 17386,
         "original": 17386,
-        "spent": 0,
+        "spent": 4518.27,
         "start": "2026-07-01",
         "end": "2027-12-31",
         "registered": "2026-11-09",
@@ -259282,7 +260932,7 @@
         "status": "registered",
         "current": 5019300,
         "original": 5019300,
-        "spent": 0,
+        "spent": 278850,
         "start": "2026-08-01",
         "end": "2032-08-31",
         "registered": "2026-11-09",
@@ -259338,7 +260988,7 @@
         "status": "registered",
         "current": 6466905,
         "original": 6466905,
-        "spent": 0,
+        "spent": 260000,
         "start": "2026-08-01",
         "end": "2032-08-31",
         "registered": "2026-11-09",
@@ -261263,7 +262913,7 @@
         "status": "registered",
         "current": 928816,
         "original": 928816,
-        "spent": 0,
+        "spent": 165793.66,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-11-06",
@@ -261483,7 +263133,7 @@
         "status": "registered",
         "current": 1584972,
         "original": 1584972,
-        "spent": 0,
+        "spent": 282917.5,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-11-06",
@@ -261640,10 +263290,10 @@
           "conflicting_registration_date_observations": false
         },
         "industry": "Human Services",
-        "purpose": "UPK",
+        "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1394404,
@@ -264343,7 +265993,7 @@
         "status": "registered",
         "current": 1476002,
         "original": 1476002,
-        "spent": 0,
+        "spent": 1476001,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-11-05",
@@ -265828,7 +267478,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 0,
+        "spent": 8554.95,
         "start": "2026-11-04",
         "end": "2027-06-30",
         "registered": "2026-11-04",
@@ -266378,7 +268028,7 @@
         "status": "registered",
         "current": 27889015,
         "original": 27889015,
-        "spent": 2363476,
+        "spent": 2839742,
         "start": "2026-07-01",
         "end": "2031-06-30",
         "registered": "2026-11-04",
@@ -268963,7 +270613,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 1625,
+        "spent": 2437.5,
         "start": "2026-11-02",
         "end": "2027-06-30",
         "registered": "2026-11-02",
@@ -269128,7 +270778,7 @@
         "status": "registered",
         "current": 4051800,
         "original": 4051800,
-        "spent": 0,
+        "spent": 723246.3,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-11-02",
@@ -269238,7 +270888,7 @@
         "status": "registered",
         "current": 2496180,
         "original": 2496180,
-        "spent": 0,
+        "spent": 445568.13,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-11-02",
@@ -273969,7 +275619,7 @@
         "status": "registered",
         "current": 75000,
         "original": 75000,
-        "spent": 0,
+        "spent": 25000,
         "start": "2026-07-29",
         "end": "2027-07-29",
         "registered": "2026-10-29",
@@ -274244,7 +275894,7 @@
         "status": "registered",
         "current": 130000,
         "original": 130000,
-        "spent": 4512.65,
+        "spent": 5560.14,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-10-29",
@@ -275894,7 +277544,7 @@
         "status": "registered",
         "current": 3203466,
         "original": 3203466,
-        "spent": 0,
+        "spent": 245100.56,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-28",
@@ -280759,6 +282409,61 @@
         "selection_bucket": "new_unique"
       },
       {
+        "prime_contract_id": "CT182720278802252",
+        "contract_id": "CT182720278802252",
+        "prime_vendor": "ALLIED WASTE SYSTEMS INC",
+        "agency": "Department of Sanitation",
+        "pin": "82707P8630KXLR001",
+        "award_method": "RENEWAL OF CONTRACT",
+        "mwbe_category": "Non-M/WBE",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-10-26",
+        "start_date": "2026-11-14",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-14"
+          ],
+          "registration_date_observations": [
+            "2026-10-26"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Not Classified",
+        "purpose": "EXPORT MUNICIPAL SOLID WASTE RENEWAL 1",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 176557337.9,
+        "original": 176557337.9,
+        "spent": 0,
+        "start": "2026-11-14",
+        "end": "2031-11-13",
+        "registered": "2026-10-26",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "city_record_only"
+      },
+      {
         "prime_contract_id": "CT184620278803058",
         "contract_id": "CT184620278803058",
         "prime_vendor": "HERC RENTALS INC",
@@ -281615,7 +283320,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 0,
+        "spent": 2499.9,
         "start": "2026-10-23",
         "end": "2027-06-30",
         "registered": "2026-10-23",
@@ -281945,7 +283650,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 5000,
+        "spent": 6250,
         "start": "2026-10-23",
         "end": "2027-06-30",
         "registered": "2026-10-23",
@@ -282000,7 +283705,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 1874.87,
+        "spent": 3749.74,
         "start": "2026-10-23",
         "end": "2027-06-30",
         "registered": "2026-10-23",
@@ -282165,7 +283870,7 @@
         "status": "registered",
         "current": 3072496,
         "original": 3072496,
-        "spent": 481670.54,
+        "spent": 753118.92,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-23",
@@ -285324,6 +287029,61 @@
         "selection_bucket": "new_unique"
       },
       {
+        "prime_contract_id": "CT105620271405521",
+        "contract_id": "CT105620271405521",
+        "prime_vendor": "K SYSTEMS SOLUTIONS LLC",
+        "agency": "Police Department",
+        "pin": null,
+        "award_method": "SM PURCH GOODS SERVICES 100K",
+        "mwbe_category": "Black American",
+        "duration": null,
+        "includes_subvendors": "Not Required",
+        "registration_date": "2026-10-22",
+        "start_date": "2026-11-14",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-14"
+          ],
+          "registration_date_observations": [
+            "2026-10-22"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Professional Services",
+        "purpose": "276220131-CALABRIO RENEWAL",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 97597.11,
+        "original": 97597.11,
+        "spent": 0,
+        "start": "2026-11-14",
+        "end": "2027-06-30",
+        "registered": "2026-10-22",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "unusable"
+        },
+        "selection_bucket": "new_unique"
+      },
+      {
         "prime_contract_id": "CT105620271405614",
         "contract_id": "CT105620271405614",
         "prime_vendor": "JEK ASSOCIATES LLC",
@@ -286621,7 +288381,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 0,
+        "spent": 3125,
         "start": "2026-10-21",
         "end": "2027-06-30",
         "registered": "2026-10-21",
@@ -287776,7 +289536,7 @@
         "status": "registered",
         "current": 4129680,
         "original": 4129680,
-        "spent": 0,
+        "spent": 737147.88,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-21",
@@ -287886,7 +289646,7 @@
         "status": "registered",
         "current": 1379432,
         "original": 1379432,
-        "spent": 190116.21,
+        "spent": 315607.79,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-21",
@@ -288106,7 +289866,7 @@
         "status": "registered",
         "current": 1593960,
         "original": 1593960,
-        "spent": 0,
+        "spent": 284521.86,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-21",
@@ -293056,7 +294816,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 2000,
+        "spent": 3000,
         "start": "2026-10-19",
         "end": "2027-06-30",
         "registered": "2026-10-19",
@@ -295971,7 +297731,7 @@
         "status": "registered",
         "current": 1609986,
         "original": 1609986,
-        "spent": 0,
+        "spent": 145053.39,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-10-16",
@@ -296356,7 +298116,7 @@
         "status": "registered",
         "current": 2698518,
         "original": 2698518,
-        "spent": 0,
+        "spent": 253345.74,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-10-16",
@@ -300756,7 +302516,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 4400,
+        "spent": 5600,
         "start": "2026-10-14",
         "end": "2027-06-30",
         "registered": "2026-10-14",
@@ -302131,7 +303891,7 @@
         "status": "registered",
         "current": 311220,
         "original": 311220,
-        "spent": 9148.5,
+        "spent": 36765,
         "start": "2026-09-22",
         "end": "2027-09-20",
         "registered": "2026-10-14",
@@ -306641,7 +308401,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 12499.95,
+        "spent": 16666.6,
         "start": "2026-10-09",
         "end": "2027-06-30",
         "registered": "2026-10-09",
@@ -311973,7 +313733,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 5014800,
@@ -314068,7 +315828,7 @@
         "status": "registered",
         "current": 7026125,
         "original": 7026125,
-        "spent": 17166.27,
+        "spent": 19271.03,
         "start": "2026-07-01",
         "end": "2031-06-30",
         "registered": "2026-10-08",
@@ -315553,7 +317313,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 5400,
+        "spent": 9000,
         "start": "2026-10-07",
         "end": "2027-06-30",
         "registered": "2026-10-07",
@@ -315933,7 +317693,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "5",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2809968,
@@ -316153,7 +317913,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 4578540,
@@ -317535,7 +319295,7 @@
         "status": "registered",
         "current": 52058997.74,
         "original": 52058997.74,
-        "spent": 695575.32,
+        "spent": 990163.02,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-10-07",
@@ -319240,7 +321000,7 @@
         "status": "registered",
         "current": 2624600,
         "original": 2624600,
-        "spent": 449751.44,
+        "spent": 575428.03,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-10-06",
@@ -323694,7 +325454,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 418440,
@@ -331730,7 +333490,7 @@
         "status": "registered",
         "current": 3500000,
         "original": 3500000,
-        "spent": 0,
+        "spent": 136400,
         "start": "2026-07-25",
         "end": "2027-07-24",
         "registered": "2026-10-01",
@@ -333435,7 +335195,7 @@
         "status": "registered",
         "current": 921550,
         "original": 921550,
-        "spent": 144496.68,
+        "spent": 176787.25,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-30",
@@ -334805,7 +336565,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 452136,
@@ -334915,7 +336675,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1538088,
@@ -335085,7 +336845,7 @@
         "status": "registered",
         "current": 2243094,
         "original": 2243094,
-        "spent": 450476,
+        "spent": 512157.44,
         "start": "2026-03-11",
         "end": "2028-03-10",
         "registered": "2026-09-30",
@@ -337170,7 +338930,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 539434.08,
@@ -337610,7 +339370,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 962736,
@@ -337670,7 +339430,7 @@
         "status": "registered",
         "current": 1710768,
         "original": 1710768,
-        "spent": 327045.39,
+        "spent": 400859.11,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-29",
@@ -338275,7 +340035,7 @@
         "status": "registered",
         "current": 1571731.2,
         "original": 1571731.2,
-        "spent": 345510.72,
+        "spent": 554860.72,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-09-29",
@@ -341246,7 +343006,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 5000,
+        "spent": 6500,
         "start": "2026-09-28",
         "end": "2027-06-30",
         "registered": "2026-09-28",
@@ -342841,7 +344601,7 @@
         "status": "registered",
         "current": 1350630,
         "original": 1350630,
-        "spent": 0,
+        "spent": 172205,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-09-26",
@@ -343226,7 +344986,7 @@
         "status": "registered",
         "current": 2124032,
         "original": 2124032,
-        "spent": 405598.61,
+        "spent": 513315.05,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-26",
@@ -343771,7 +345531,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 696648,
@@ -344046,7 +345806,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 528864,
@@ -345751,7 +347511,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 952480,
@@ -346746,7 +348506,7 @@
         "status": "registered",
         "current": 19998222,
         "original": 19998222,
-        "spent": 0,
+        "spent": 1137679.83,
         "start": "2026-04-15",
         "end": "2031-04-15",
         "registered": "2026-09-25",
@@ -348507,7 +350267,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 18500,
+        "spent": 23500,
         "start": "2026-09-24",
         "end": "2027-06-30",
         "registered": "2026-09-24",
@@ -348782,7 +350542,7 @@
         "status": "registered",
         "current": 2660060,
         "original": 2660060,
-        "spent": 233347.5,
+        "spent": 263350.27,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-24",
@@ -349052,7 +350812,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1270260,
@@ -349992,7 +351752,7 @@
         "status": "registered",
         "current": 125000,
         "original": 125000,
-        "spent": 18002.3,
+        "spent": 18675.92,
         "start": "2026-07-24",
         "end": "2027-06-30",
         "registered": "2026-09-24",
@@ -351313,7 +353073,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 3112.5,
+        "spent": 6225,
         "start": "2026-09-23",
         "end": "2027-06-30",
         "registered": "2026-09-23",
@@ -351478,7 +353238,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 0,
+        "spent": 24500,
         "start": "2026-09-23",
         "end": "2027-06-30",
         "registered": "2026-09-23",
@@ -352298,7 +354058,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1630560,
@@ -352518,7 +354278,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2472776,
@@ -352738,7 +354498,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2133576,
@@ -353403,7 +355163,7 @@
         "status": "registered",
         "current": 2476656,
         "original": 2476656,
-        "spent": 78345.86,
+        "spent": 272359.73,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-23",
@@ -354223,7 +355983,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1065510,
@@ -359014,7 +360774,7 @@
         "status": "registered",
         "current": 3147030,
         "original": 3147030,
-        "spent": 681306.13,
+        "spent": 828680.86,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-21",
@@ -359119,7 +360879,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2018436,
@@ -359174,7 +360934,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1206284,
@@ -359234,7 +360994,7 @@
         "status": "registered",
         "current": 353070,
         "original": 353070,
-        "spent": 63023,
+        "spent": 79110.94,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-21",
@@ -359339,7 +361099,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2890098,
@@ -361984,7 +363744,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 2500,
+        "spent": 3750,
         "start": "2026-09-18",
         "end": "2027-06-30",
         "registered": "2026-09-18",
@@ -362149,7 +363909,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 4999.8,
+        "spent": 6249.75,
         "start": "2026-09-18",
         "end": "2027-06-30",
         "registered": "2026-09-18",
@@ -362969,7 +364729,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1081932,
@@ -363359,7 +365119,7 @@
         "status": "registered",
         "current": 513096,
         "original": 513096,
-        "spent": 95538.53,
+        "spent": 121358.42,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-18",
@@ -364074,7 +365834,7 @@
         "status": "registered",
         "current": 507576,
         "original": 507576,
-        "spent": 90602.32,
+        "spent": 134918.33,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-18",
@@ -364124,7 +365884,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 484272,
@@ -364239,7 +365999,7 @@
         "status": "registered",
         "current": 4232712,
         "original": 4232712,
-        "spent": 755539.09,
+        "spent": 971407.49,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-18",
@@ -364399,7 +366159,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 3469928,
@@ -364454,7 +366214,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 737400,
@@ -364729,7 +366489,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 4585230,
@@ -364839,7 +366599,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 3403670,
@@ -364949,7 +366709,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1380744,
@@ -365114,7 +366874,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1865340,
@@ -365829,7 +367589,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1944774,
@@ -365999,7 +367759,7 @@
         "status": "registered",
         "current": 29900,
         "original": 29900,
-        "spent": 0,
+        "spent": 29900,
         "start": "2026-10-02",
         "end": "2027-06-30",
         "registered": "2026-09-18",
@@ -366440,7 +368200,7 @@
         "status": "registered",
         "current": 620658,
         "original": 620658,
-        "spent": 12000,
+        "spent": 24000,
         "start": "2026-09-01",
         "end": "2030-08-31",
         "registered": "2026-09-18",
@@ -366605,7 +368365,7 @@
         "status": "registered",
         "current": 96500000,
         "original": 96500000,
-        "spent": 8038642.44,
+        "spent": 8093208.2,
         "start": "2026-07-01",
         "end": "2030-06-30",
         "registered": "2026-09-18",
@@ -366990,7 +368750,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 10724.77,
+        "spent": 15099.7,
         "start": "2026-09-17",
         "end": "2027-06-30",
         "registered": "2026-09-17",
@@ -367650,7 +369410,7 @@
         "status": "registered",
         "current": 655110,
         "original": 655110,
-        "spent": 116937.14,
+        "spent": 146276.28,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-17",
@@ -368090,7 +369850,7 @@
         "status": "registered",
         "current": 2277096,
         "original": 2277096,
-        "spent": 406461.64,
+        "spent": 465702.03,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-17",
@@ -368140,7 +369900,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1087120,
@@ -368250,7 +370010,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1630560,
@@ -369080,7 +370840,7 @@
         "status": "registered",
         "current": 3544962,
         "original": 3544962,
-        "spent": 461415.72,
+        "spent": 541415.64,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-17",
@@ -372045,7 +373805,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2626032,
@@ -372100,7 +373860,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2696580,
@@ -372375,7 +374135,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1198658,
@@ -372815,7 +374575,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 4174036,
@@ -373645,7 +375405,7 @@
         "status": "registered",
         "current": 4500000,
         "original": 4500000,
-        "spent": 57393.25,
+        "spent": 66667.5,
         "start": "2026-07-30",
         "end": "2031-07-29",
         "registered": "2026-09-16",
@@ -374635,7 +376395,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 5999,
+        "spent": 7499,
         "start": "2026-09-15",
         "end": "2027-06-30",
         "registered": "2026-09-15",
@@ -375125,7 +376885,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "4",
+        "contract_version": "5",
         "parent_contract_id": null,
         "status": "registered",
         "current": 4259184,
@@ -375185,7 +376945,7 @@
         "status": "registered",
         "current": 4395636,
         "original": 4395636,
-        "spent": 560443.59,
+        "spent": 651680.34,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-15",
@@ -375240,7 +377000,7 @@
         "status": "registered",
         "current": 518784,
         "original": 518784,
-        "spent": 92602.94,
+        "spent": 143703.12,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-15",
@@ -375455,12 +377215,12 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1858368,
         "original": 1858368,
-        "spent": 325214.4,
+        "spent": 414916.66,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-15",
@@ -375785,7 +377545,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1638444,
@@ -377826,7 +379586,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 7350,
+        "spent": 19250,
         "start": "2026-09-14",
         "end": "2027-06-30",
         "registered": "2026-09-14",
@@ -378756,7 +380516,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1896156,
@@ -379086,7 +380846,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2671788,
@@ -379636,7 +381396,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 5168556,
@@ -381727,7 +383487,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "5",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2116140,
@@ -383657,7 +385417,7 @@
         "status": "registered",
         "current": 2289144,
         "original": 2289144,
-        "spent": 500257.96,
+        "spent": 593526.51,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-11",
@@ -383877,7 +385637,7 @@
         "status": "registered",
         "current": 3074748,
         "original": 3074748,
-        "spent": 384343.5,
+        "spent": 562867.71,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-11",
@@ -383927,7 +385687,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 5876850,
@@ -384372,7 +386132,7 @@
         "status": "registered",
         "current": 2788140,
         "original": 2788140,
-        "spent": 348517.5,
+        "spent": 533993.49,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-11",
@@ -384422,7 +386182,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2554240,
@@ -384482,7 +386242,7 @@
         "status": "registered",
         "current": 1326796,
         "original": 1326796,
-        "spent": 168001.6,
+        "spent": 224390.52,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-11",
@@ -384587,7 +386347,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2385284,
@@ -386953,7 +388713,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 806548,
@@ -387453,7 +389213,7 @@
         "status": "registered",
         "current": 4318044,
         "original": 4318044,
-        "spent": 543004.14,
+        "spent": 866701.38,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-10",
@@ -388004,7 +389764,7 @@
         "status": "registered",
         "current": 320000,
         "original": 320000,
-        "spent": 99575.12,
+        "spent": 101765.74,
         "start": "2026-09-16",
         "end": "2027-09-15",
         "registered": "2026-09-10",
@@ -390090,7 +391850,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2326260,
@@ -390585,7 +392345,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2086264,
@@ -392621,7 +394381,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 3081936,
@@ -394221,7 +395981,7 @@
         "status": "registered",
         "current": 728208,
         "original": 728208,
-        "spent": 127436.4,
+        "spent": 154690.57,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-07",
@@ -394386,7 +396146,7 @@
         "status": "registered",
         "current": 1776078,
         "original": 1776078,
-        "spent": 209679.75,
+        "spent": 303945.85,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-09-07",
@@ -394821,7 +396581,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 5985308,
@@ -395481,7 +397241,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2454858,
@@ -395591,7 +397351,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1443968,
@@ -395981,7 +397741,7 @@
         "status": "registered",
         "current": 1578570,
         "original": 1578570,
-        "spent": 197321.25,
+        "spent": 272424.76,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-05",
@@ -396256,7 +398016,7 @@
         "status": "registered",
         "current": 1776078,
         "original": 1776078,
-        "spent": 222009.75,
+        "spent": 314667.54,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-05",
@@ -397467,7 +399227,7 @@
         "status": "registered",
         "current": 3776308,
         "original": 3776308,
-        "spent": 660853.9,
+        "spent": 967796.44,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-09-04",
@@ -397847,7 +399607,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2367090,
@@ -398397,7 +400157,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2309424,
@@ -399777,7 +401537,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 0,
+        "spent": 24999,
         "start": "2026-09-03",
         "end": "2027-06-30",
         "registered": "2026-09-03",
@@ -400377,7 +402137,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 3173280,
@@ -400432,7 +402192,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1527780,
@@ -402579,7 +404339,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1081080,
@@ -402909,7 +404669,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1670200,
@@ -403184,7 +404944,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1307044,
@@ -406704,7 +408464,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2748160,
@@ -406869,7 +408629,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2748240,
@@ -407309,7 +409069,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "4",
+        "contract_version": "5",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2343208,
@@ -408909,7 +410669,7 @@
         "status": "registered",
         "current": 900000,
         "original": 900000,
-        "spent": 0,
+        "spent": 125,
         "start": "2026-08-01",
         "end": "2031-08-01",
         "registered": "2026-09-01",
@@ -410175,7 +411935,7 @@
         "status": "registered",
         "current": 22358.59,
         "original": 22358.59,
-        "spent": 10342.06,
+        "spent": 22358.59,
         "start": "2026-09-01",
         "end": "2031-08-31",
         "registered": "2026-08-31",
@@ -410720,7 +412480,7 @@
         "purpose": "FY26 - NA Non-Profit Partner for Federally Funded Projects",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "39",
+        "contract_version": "40",
         "parent_contract_id": null,
         "status": "registered",
         "current": 35000000,
@@ -411550,7 +413310,7 @@
         "status": "registered",
         "current": 487814,
         "original": 487814,
-        "spent": 0,
+        "spent": 487814,
         "start": "2026-09-24",
         "end": "2031-09-22",
         "registered": "2026-08-29",
@@ -412261,7 +414021,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 705648,
@@ -412316,7 +414076,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1669944,
@@ -412426,7 +414186,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 3662830,
@@ -413582,7 +415342,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "5",
+        "contract_version": "6",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1378578,
@@ -414412,7 +416172,7 @@
         "status": "registered",
         "current": 20000,
         "original": 20000,
-        "spent": 0,
+        "spent": 3377.1,
         "start": "2026-07-21",
         "end": "2027-06-30",
         "registered": "2026-08-27",
@@ -415294,7 +417054,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 0,
+        "spent": 5000,
         "start": "2026-08-26",
         "end": "2027-06-30",
         "registered": "2026-08-26",
@@ -415399,7 +417159,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "5",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2185704,
@@ -415509,7 +417269,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 5750178,
@@ -415564,7 +417324,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2337120,
@@ -415679,7 +417439,7 @@
         "status": "registered",
         "current": 28261.6,
         "original": 28261.6,
-        "spent": 7660.8,
+        "spent": 10451,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-08-26",
@@ -418430,7 +420190,7 @@
         "status": "registered",
         "current": 98215,
         "original": 98215,
-        "spent": 0,
+        "spent": 98215,
         "start": "2026-08-13",
         "end": "2027-06-30",
         "registered": "2026-08-25",
@@ -419367,7 +421127,7 @@
         "status": "registered",
         "current": 7344000,
         "original": 7344000,
-        "spent": 352021.68,
+        "spent": 377124.44,
         "start": "2026-08-01",
         "end": "2032-08-31",
         "registered": "2026-08-25",
@@ -420412,7 +422172,7 @@
         "status": "registered",
         "current": 600000,
         "original": 600000,
-        "spent": 6600,
+        "spent": 14600,
         "start": "2026-07-01",
         "end": "2031-06-30",
         "registered": "2026-08-25",
@@ -420522,7 +422282,7 @@
         "status": "registered",
         "current": 2225000,
         "original": 2225000,
-        "spent": 10240.07,
+        "spent": 10532.28,
         "start": "2026-10-01",
         "end": "2031-09-30",
         "registered": "2026-08-25",
@@ -423821,7 +425581,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "5",
+        "contract_version": "6",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2721696,
@@ -423986,7 +425746,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "3",
+        "contract_version": "4",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1694224,
@@ -427100,7 +428860,7 @@
         "contract_id": "CT182620278802000",
         "prime_vendor": "Northeast-Western Energy Systems USA LLC",
         "agency": "Department of Environmental Protection",
-        "pin": "82626U0022001",
+        "pin": "82626U0022001A001",
         "award_method": "SUBSCRIPTION ETC PER PPB",
         "mwbe_category": "Non-M/WBE",
         "duration": null,
@@ -427122,14 +428882,14 @@
         "purpose": "BWT Machinist Jenbacher CoGeneration Engine training7030037X",
         "document_code": "CT1",
         "contract_type": "SUBSCRIPTIONS",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": null,
         "status": "registered",
         "current": 25430,
         "original": 25430,
         "spent": 0,
         "start": "2026-08-04",
-        "end": "2026-08-07",
+        "end": "2027-06-30",
         "registered": "2026-08-20",
         "received": null,
         "source_fiscal_years": [
@@ -427148,7 +428908,7 @@
           "contract_id": "exact",
           "pin": "exact"
         },
-        "selection_bucket": "city_record_only"
+        "selection_bucket": "new_unique"
       },
       {
         "prime_contract_id": "CT182720278802434",
@@ -427237,7 +428997,7 @@
         "status": "registered",
         "current": 1500000,
         "original": 1500000,
-        "spent": 0,
+        "spent": 48378.04,
         "start": "2026-08-27",
         "end": "2029-08-26",
         "registered": "2026-08-20",
@@ -428278,7 +430038,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "5",
+        "contract_version": "6",
         "parent_contract_id": null,
         "status": "registered",
         "current": 2839986,
@@ -431799,7 +433559,7 @@
         "purpose": "UPK-BTF",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "4",
+        "contract_version": "5",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1340770,
@@ -432239,7 +433999,7 @@
         "purpose": "Prov of Emergency Shelter services at Liberty House",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 18384654.17,
@@ -435055,7 +436815,7 @@
         "status": "registered",
         "current": 6000000,
         "original": 6000000,
-        "spent": 7850,
+        "spent": 14130,
         "start": "2026-09-01",
         "end": "2031-08-31",
         "registered": "2026-08-14",
@@ -435990,7 +437750,7 @@
         "status": "registered",
         "current": 8012628,
         "original": 8012628,
-        "spent": 456689.34,
+        "spent": 478232.25,
         "start": "2026-08-01",
         "end": "2032-08-31",
         "registered": "2026-08-13",
@@ -437802,7 +439562,7 @@
         "purpose": "Prov. of Emergency Shelter Services at Hope House 57 beds",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 15685742.86,
@@ -439183,7 +440943,7 @@
         "status": "registered",
         "current": 1598274,
         "original": 1598274,
-        "spent": 0,
+        "spent": 1598274,
         "start": "2026-08-17",
         "end": "2029-08-15",
         "registered": "2026-08-12",
@@ -440228,7 +441988,7 @@
         "status": "registered",
         "current": 19761042.5,
         "original": 19761042.5,
-        "spent": 1976104.25,
+        "spent": 2496994.95,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-08-11",
@@ -440338,7 +442098,7 @@
         "status": "registered",
         "current": 2505180,
         "original": 2505180,
-        "spent": 729115.11,
+        "spent": 981862.45,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-08-11",
@@ -440393,7 +442153,7 @@
         "status": "registered",
         "current": 2215914,
         "original": 2215914,
-        "spent": 685323.91,
+        "spent": 946948.45,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-08-11",
@@ -440448,7 +442208,7 @@
         "status": "registered",
         "current": 4278164,
         "original": 4278164,
-        "spent": 1253900.47,
+        "spent": 1961145.84,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-08-11",
@@ -440671,61 +442431,6 @@
         "spent": 0,
         "start": "2026-07-01",
         "end": "2031-06-30",
-        "registered": "2026-08-11",
-        "received": null,
-        "source_fiscal_years": [
-          "2027"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "city_record_only"
-      },
-      {
-        "prime_contract_id": "CT106920278801799",
-        "contract_id": "CT106920278801799",
-        "prime_vendor": "HELP SOCIAL SERVICE CORPORATION",
-        "agency": "Department of Social Services",
-        "pin": "06923P0027014",
-        "award_method": "RFP FROM A PQVL",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "No Data Entered",
-        "registration_date": "2026-08-11",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2026-08-11"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "Affordable Housing DSS Referred Households Hollis Garden",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 20169810,
-        "original": 20169810,
-        "spent": 2666352.88,
-        "start": "2025-11-13",
-        "end": "2030-11-12",
         "registered": "2026-08-11",
         "received": null,
         "source_fiscal_years": [
@@ -441548,7 +443253,7 @@
         "status": "registered",
         "current": 500000,
         "original": 500000,
-        "spent": 94248,
+        "spent": 102942,
         "start": "2026-08-17",
         "end": "2028-08-16",
         "registered": "2026-08-11",
@@ -443699,7 +445404,7 @@
         "status": "registered",
         "current": 6000,
         "original": 6000,
-        "spent": 0,
+        "spent": 6000,
         "start": "2026-08-11",
         "end": "2026-09-25",
         "registered": "2026-08-10",
@@ -447330,7 +449035,7 @@
         "status": "registered",
         "current": 99999,
         "original": 99999,
-        "spent": 8064,
+        "spent": 12129,
         "start": "2026-11-01",
         "end": "2029-10-31",
         "registered": "2026-08-06",
@@ -451953,7 +453658,7 @@
         "status": "registered",
         "current": 250000,
         "original": 250000,
-        "spent": 60212.79,
+        "spent": 64456.59,
         "start": "2026-08-01",
         "end": "2028-06-30",
         "registered": "2026-08-04",
@@ -453277,7 +454982,7 @@
         "status": "registered",
         "current": 1000000,
         "original": 1000000,
-        "spent": 0,
+        "spent": 56898.43,
         "start": "2026-08-17",
         "end": "2028-08-16",
         "registered": "2026-08-04",
@@ -453827,7 +455532,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 6600,
+        "spent": 12550,
         "start": "2026-09-14",
         "end": "2027-06-30",
         "registered": "2026-08-03",
@@ -454207,7 +455912,7 @@
         "purpose": "Prov of Emergency Shelter Svcs-Urban Women Retreat 112 beds",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 30821108.78,
@@ -454323,7 +456028,7 @@
         "status": "registered",
         "current": 8152305,
         "original": 8152305,
-        "spent": 428711.02,
+        "spent": 543590.22,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-08-03",
@@ -454782,10 +456487,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 3,
+          "subvendor": 5,
           "other": 0
         },
-        "subvendor_count": 2,
+        "subvendor_count": 4,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -456535,7 +458240,7 @@
         "status": "registered",
         "current": 1480626.45,
         "original": 480624.45,
-        "spent": 131618.58,
+        "spent": 132128.58,
         "start": "2026-08-01",
         "end": "2029-06-30",
         "registered": "2026-07-31",
@@ -456604,10 +458309,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 1,
+          "subvendor": 2,
           "other": 0
         },
-        "subvendor_count": 1,
+        "subvendor_count": 2,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -457306,7 +459011,7 @@
         "status": "registered",
         "current": 22463475,
         "original": 22463475,
-        "spent": 658765.29,
+        "spent": 659228.8,
         "start": "2026-07-01",
         "end": "2031-06-30",
         "registered": "2026-07-31",
@@ -457526,7 +459231,7 @@
         "status": "registered",
         "current": 186041,
         "original": 186041,
-        "spent": 32131.49,
+        "spent": 38156.73,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-07-31",
@@ -458236,7 +459941,7 @@
         "purpose": "Prov of Emergency Shelter Svcs-Restoration Residence 132 Bed",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 36324878.21,
@@ -459723,7 +461428,7 @@
         "purpose": "Provision of Emergency Shelter services Peace House 20 beds",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 6790483.15,
@@ -461486,7 +463191,7 @@
         "purpose": "To provide unarmed security guard services to OCME.",
         "document_code": "CTA1",
         "contract_type": "REQUIREMENTS-SERVICES",
-        "contract_version": "1",
+        "contract_version": "2",
         "parent_contract_id": "MMA185720268804924",
         "status": "registered",
         "current": 14829082.4,
@@ -462041,7 +463746,7 @@
         "status": "registered",
         "current": 24831640.75,
         "original": 24831640.75,
-        "spent": 2483164.08,
+        "spent": 2852557.31,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-07-28",
@@ -462151,7 +463856,7 @@
         "status": "registered",
         "current": 100000,
         "original": 100000,
-        "spent": 6072.88,
+        "spent": 9799.42,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-07-28",
@@ -462311,7 +464016,7 @@
         "purpose": "Prov of Emergency Shelter Svcs at WomenNew Beginning 89 beds",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 24491773.94,
@@ -462868,7 +464573,7 @@
         "status": "registered",
         "current": 2766315,
         "original": 2766315,
-        "spent": 477553.84,
+        "spent": 515599.07,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-07-28",
@@ -463275,6 +464980,61 @@
           "pin": "exact"
         },
         "selection_bucket": "new_unique"
+      },
+      {
+        "prime_contract_id": "CT182620278801323",
+        "contract_id": "CT182620278801323",
+        "prime_vendor": "U ARIAS CORPORATION",
+        "agency": "Department of Environmental Protection",
+        "pin": "82621B0108001R001",
+        "award_method": "RENEWAL OF CONTRACT",
+        "mwbe_category": "Hispanic American",
+        "duration": null,
+        "includes_subvendors": "No Data Entered",
+        "registration_date": "2026-07-28",
+        "start_date": "2026-11-14",
+        "date_ownership": {
+          "owner": "prime_vendor_slice",
+          "start_date_observations": [
+            "2026-11-14"
+          ],
+          "registration_date_observations": [
+            "2026-07-28"
+          ],
+          "conflicting_start_date_observations": false,
+          "conflicting_registration_date_observations": false
+        },
+        "industry": "Standardized Services",
+        "purpose": "LS-22 Cutting, Removing Grass and Shrubs, Citywide.",
+        "document_code": "CT1",
+        "contract_type": "WORK/LABOR",
+        "contract_version": "1",
+        "parent_contract_id": null,
+        "status": "registered",
+        "current": 250000,
+        "original": 250000,
+        "spent": 0,
+        "start": "2026-11-14",
+        "end": "2027-11-13",
+        "registered": "2026-07-28",
+        "received": null,
+        "source_fiscal_years": [
+          "2027"
+        ],
+        "vendor_record_types": [
+          "Prime Vendor"
+        ],
+        "slice_counts": {
+          "prime": 1,
+          "subvendor": 0,
+          "other": 0
+        },
+        "subvendor_count": 0,
+        "exact_key_status": {
+          "contract_id": "exact",
+          "pin": "exact"
+        },
+        "selection_bucket": "passport_and_city_record"
       },
       {
         "prime_contract_id": "CT182620278801514",
@@ -463969,7 +465729,7 @@
         "status": "registered",
         "current": 66867092.43,
         "original": 66867092.43,
-        "spent": 1463906.66,
+        "spent": 1554730.16,
         "start": "2026-08-01",
         "end": "2027-07-31",
         "registered": "2026-07-28",
@@ -464570,7 +466330,7 @@
         "purpose": "Prov of Emergency Shelter Svcs Women Survival Space 48Beds",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 14007355.56,
@@ -464680,7 +466440,7 @@
         "purpose": "Prov of Emergency Shelter Services Genesis",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 13484235.1,
@@ -464740,7 +466500,7 @@
         "status": "registered",
         "current": 116843236,
         "original": 116843236,
-        "spent": 12897082.65,
+        "spent": 14526828.6,
         "start": "2026-07-01",
         "end": "2030-06-30",
         "registered": "2026-07-27",
@@ -466287,7 +468047,7 @@
         "status": "registered",
         "current": 5646384,
         "original": 5646384,
-        "spent": 804860.85,
+        "spent": 815284.65,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-07-27",
@@ -467277,7 +469037,7 @@
         "status": "registered",
         "current": 1981503,
         "original": 1981503,
-        "spent": 768689.92,
+        "spent": 793232.83,
         "start": "2026-03-11",
         "end": "2028-03-10",
         "registered": "2026-07-24",
@@ -467332,7 +469092,7 @@
         "status": "registered",
         "current": 1880625,
         "original": 1880625,
-        "spent": 654756.33,
+        "spent": 671396.62,
         "start": "2026-03-11",
         "end": "2028-03-10",
         "registered": "2026-07-24",
@@ -468819,7 +470579,7 @@
         "status": "registered",
         "current": 2025131,
         "original": 2025131,
-        "spent": 406415,
+        "spent": 634241.06,
         "start": "2026-03-11",
         "end": "2028-03-10",
         "registered": "2026-07-23",
@@ -470524,7 +472284,7 @@
         "status": "registered",
         "current": 20000,
         "original": 20000,
-        "spent": 1388.5,
+        "spent": 3175.5,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-07-22",
@@ -471790,7 +473550,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 10000,
+        "spent": 12500,
         "start": "2026-07-21",
         "end": "2027-06-30",
         "registered": "2026-07-21",
@@ -473504,7 +475264,7 @@
         "status": "registered",
         "current": 423259.2,
         "original": 423259.2,
-        "spent": 34186.32,
+        "spent": 51279.48,
         "start": "2026-07-08",
         "end": "2028-07-05",
         "registered": "2026-07-21",
@@ -474379,7 +476139,7 @@
         "purpose": "Prov of Emergency Shelter Services (Food Add-on)",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
-        "contract_version": "2",
+        "contract_version": "3",
         "parent_contract_id": null,
         "status": "registered",
         "current": 1423842.19,
@@ -474771,7 +476531,7 @@
         "status": "registered",
         "current": 5160439,
         "original": 5160439,
-        "spent": 948417.66,
+        "spent": 988286.31,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-07-20",
@@ -474826,7 +476586,7 @@
         "status": "registered",
         "current": 23366201,
         "original": 23366201,
-        "spent": 3698295.05,
+        "spent": 3893344.5,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-07-20",
@@ -477855,7 +479615,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 6898,
+        "spent": 7226,
         "start": "2026-07-16",
         "end": "2027-06-30",
         "registered": "2026-07-16",
@@ -477910,7 +479670,7 @@
         "status": "registered",
         "current": 10863.98,
         "original": 10863.98,
-        "spent": 0,
+        "spent": 10863.98,
         "start": "2026-07-16",
         "end": "2027-06-30",
         "registered": "2026-07-16",
@@ -481382,7 +483142,7 @@
         "status": "registered",
         "current": 57928898,
         "original": 57928898,
-        "spent": 24562694.4,
+        "spent": 25953478.81,
         "start": "2026-01-01",
         "end": "2029-12-31",
         "registered": "2026-07-15",
@@ -483047,10 +484807,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 18,
+          "subvendor": 20,
           "other": 0
         },
-        "subvendor_count": 14,
+        "subvendor_count": 15,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -483144,7 +484904,7 @@
         "status": "registered",
         "current": 1500000,
         "original": 1500000,
-        "spent": 110640,
+        "spent": 123170,
         "start": "2026-07-01",
         "end": "2031-06-30",
         "registered": "2026-07-14",
@@ -485602,7 +487362,7 @@
         "award_method": "MULTIPLE AWARDS",
         "mwbe_category": "Women (Non-Minority)",
         "duration": null,
-        "includes_subvendors": "No Data Entered",
+        "includes_subvendors": "Yes",
         "registration_date": "2026-07-13",
         "start_date": "2026-07-01",
         "date_ownership": {
@@ -485634,14 +487394,15 @@
           "2027"
         ],
         "vendor_record_types": [
-          "Prime Vendor"
+          "Prime Vendor",
+          "Sub Vendor"
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 0,
+          "subvendor": 1,
           "other": 0
         },
-        "subvendor_count": 0,
+        "subvendor_count": 1,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -485735,7 +487496,7 @@
         "status": "registered",
         "current": 13440000,
         "original": 13440000,
-        "spent": 137328,
+        "spent": 149328,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-07-13",
@@ -487731,10 +489492,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 1,
+          "subvendor": 2,
           "other": 0
         },
-        "subvendor_count": 1,
+        "subvendor_count": 2,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -488048,7 +489809,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 1500,
+        "spent": 7499,
         "start": "2026-07-09",
         "end": "2027-06-30",
         "registered": "2026-07-09",
@@ -489039,7 +490800,7 @@
         "status": "registered",
         "current": 464500,
         "original": 464500,
-        "spent": 2545.92,
+        "spent": 4152.96,
         "start": "2026-07-01",
         "end": "2032-06-30",
         "registered": "2026-07-09",
@@ -489811,7 +491572,7 @@
         "status": "registered",
         "current": 1500000000,
         "original": 1500000000,
-        "spent": 26294903.28,
+        "spent": 26537631.78,
         "start": "2026-07-01",
         "end": "2031-06-30",
         "registered": "2026-07-09",
@@ -494660,7 +496421,7 @@
         "status": "registered",
         "current": 3000000,
         "original": 3000000,
-        "spent": 1005573.01,
+        "spent": 1065510.16,
         "start": "2026-07-07",
         "end": "2027-07-06",
         "registered": "2026-07-06",
@@ -495542,7 +497303,7 @@
         "status": "registered",
         "current": 19247143.17,
         "original": 19247143.17,
-        "spent": 545637.3,
+        "spent": 548723.54,
         "start": "2026-09-15",
         "end": "2029-09-14",
         "registered": "2026-07-06",
@@ -496093,7 +497854,7 @@
         "status": "registered",
         "current": 300000,
         "original": 300000,
-        "spent": 25250,
+        "spent": 31250,
         "start": "2026-05-01",
         "end": "2031-04-30",
         "registered": "2026-07-04",
@@ -496368,7 +498129,7 @@
         "status": "registered",
         "current": 247154460,
         "original": 247154460,
-        "spent": 28430474.64,
+        "spent": 29247657.71,
         "start": "2026-07-01",
         "end": "2030-06-30",
         "registered": "2026-07-02",
@@ -497304,7 +499065,7 @@
         "status": "registered",
         "current": 819431.71,
         "original": 819431.71,
-        "spent": 13500,
+        "spent": 81795.12,
         "start": "2026-07-01",
         "end": "2029-02-28",
         "registered": "2026-07-02",
@@ -498077,7 +499838,7 @@
         "status": "registered",
         "current": 3000000,
         "original": 3000000,
-        "spent": 53756.86,
+        "spent": 96832.56,
         "start": "2026-07-01",
         "end": "2031-04-30",
         "registered": "2026-07-02",
@@ -499290,7 +501051,7 @@
         "status": "registered",
         "current": 7258283,
         "original": 7258283,
-        "spent": 1177126.27,
+        "spent": 1344501.84,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-30",
@@ -500941,7 +502702,7 @@
         "status": "registered",
         "current": 317677,
         "original": 317677,
-        "spent": 62381.38,
+        "spent": 65140.78,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-06-30",
@@ -501436,7 +503197,7 @@
         "status": "registered",
         "current": 8957179.5,
         "original": 8957179.5,
-        "spent": 232173.06,
+        "spent": 272429.81,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-29",
@@ -501656,7 +503417,7 @@
         "status": "registered",
         "current": 3669831,
         "original": 3669831,
-        "spent": 1683942.52,
+        "spent": 1788174.08,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-29",
@@ -501987,7 +503748,7 @@
         "status": "registered",
         "current": 364640,
         "original": 364640,
-        "spent": 14244.5,
+        "spent": 24644.5,
         "start": "2026-04-01",
         "end": "2028-03-31",
         "registered": "2026-06-29",
@@ -502929,7 +504690,7 @@
         "status": "registered",
         "current": 191187.2,
         "original": 191187.2,
-        "spent": 138571.4,
+        "spent": 139201.4,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-06-29",
@@ -503603,10 +505364,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 3,
+          "subvendor": 4,
           "other": 0
         },
-        "subvendor_count": 3,
+        "subvendor_count": 4,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -504086,7 +505847,7 @@
         "status": "registered",
         "current": 136435078,
         "original": 136435078,
-        "spent": 15031453.79,
+        "spent": 15862722.79,
         "start": "2026-07-01",
         "end": "2030-06-30",
         "registered": "2026-06-26",
@@ -505739,7 +507500,7 @@
         "status": "registered",
         "current": 484418.1,
         "original": 484418.1,
-        "spent": 254937.59,
+        "spent": 255244.47,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-06-26",
@@ -505794,7 +507555,7 @@
         "status": "registered",
         "current": 287455.3,
         "original": 287455.3,
-        "spent": 31957.13,
+        "spent": 35479.03,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-06-26",
@@ -505904,7 +507665,7 @@
         "status": "registered",
         "current": 489948.2,
         "original": 489948.2,
-        "spent": 99173.77,
+        "spent": 99201.72,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-06-26",
@@ -506839,7 +508600,7 @@
         "status": "registered",
         "current": 20000,
         "original": 20000,
-        "spent": 4404.5,
+        "spent": 4442.27,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-25",
@@ -507392,7 +509153,7 @@
         "status": "registered",
         "current": 2481000,
         "original": 2481000,
-        "spent": 405638.05,
+        "spent": 424956.4,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-25",
@@ -507832,7 +509593,7 @@
         "status": "registered",
         "current": 418600,
         "original": 418600,
-        "spent": 10134,
+        "spent": 10234,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-06-25",
@@ -507887,7 +509648,7 @@
         "status": "registered",
         "current": 357240.6,
         "original": 357240.6,
-        "spent": 29057.98,
+        "spent": 29467.12,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-06-25",
@@ -507942,7 +509703,7 @@
         "status": "registered",
         "current": 47579.5,
         "original": 47579.5,
-        "spent": 38469.54,
+        "spent": 38509.49,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-06-25",
@@ -507997,7 +509758,7 @@
         "status": "registered",
         "current": 114348.14,
         "original": 114348.14,
-        "spent": 25133.35,
+        "spent": 26269.52,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-06-25",
@@ -508052,7 +509813,7 @@
         "status": "registered",
         "current": 99999,
         "original": 99999,
-        "spent": 11321.75,
+        "spent": 18486.75,
         "start": "2026-07-01",
         "end": "2026-12-31",
         "registered": "2026-06-24",
@@ -508492,7 +510253,7 @@
         "status": "registered",
         "current": 147789600,
         "original": 147789600,
-        "spent": 10718400.47,
+        "spent": 10802640.47,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-24",
@@ -508932,7 +510693,7 @@
         "status": "registered",
         "current": 40000,
         "original": 40000,
-        "spent": 6769.88,
+        "spent": 6879.95,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-24",
@@ -511409,7 +513170,7 @@
         "status": "registered",
         "current": 862551,
         "original": 862551,
-        "spent": 10764.05,
+        "spent": 16562.05,
         "start": "2026-09-01",
         "end": "2029-08-31",
         "registered": "2026-06-23",
@@ -513945,7 +515706,7 @@
         "status": "registered",
         "current": 37412377,
         "original": 37412377,
-        "spent": 3927194.18,
+        "spent": 4418750.26,
         "start": "2026-07-01",
         "end": "2030-06-30",
         "registered": "2026-06-22",
@@ -514993,7 +516754,7 @@
         "status": "registered",
         "current": 282828,
         "original": 282828,
-        "spent": 56566,
+        "spent": 68006.07,
         "start": "2026-07-01",
         "end": "2028-06-30",
         "registered": "2026-06-22",
@@ -516368,7 +518129,7 @@
         "status": "registered",
         "current": 6941326.24,
         "original": 6941326.24,
-        "spent": 1034611.57,
+        "spent": 1086780.8,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-20",
@@ -517413,7 +519174,7 @@
         "status": "registered",
         "current": 11610000,
         "original": 11610000,
-        "spent": 1013858,
+        "spent": 1063651.62,
         "start": "2026-06-21",
         "end": "2029-06-20",
         "registered": "2026-06-20",
@@ -517468,7 +519229,7 @@
         "status": "registered",
         "current": 7151416,
         "original": 7151416,
-        "spent": 2790817.5,
+        "spent": 3451568.41,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-19",
@@ -517578,7 +519339,7 @@
         "status": "registered",
         "current": 260000,
         "original": 260000,
-        "spent": 76747.21,
+        "spent": 78143.96,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-19",
@@ -519010,7 +520771,7 @@
         "status": "registered",
         "current": 72332925,
         "original": 72332925,
-        "spent": 4382982.56,
+        "spent": 4403382.56,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-18",
@@ -519945,7 +521706,7 @@
         "status": "registered",
         "current": 2601870,
         "original": 2601870,
-        "spent": 419567.51,
+        "spent": 420504.57,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-18",
@@ -520440,7 +522201,7 @@
         "status": "registered",
         "current": 19800,
         "original": 19800,
-        "spent": 2775,
+        "spent": 3270,
         "start": "2026-09-01",
         "end": "2027-06-30",
         "registered": "2026-06-18",
@@ -521819,7 +523580,7 @@
         "status": "registered",
         "current": 12085841,
         "original": 12085841,
-        "spent": 6285525.47,
+        "spent": 6480705.12,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-17",
@@ -522371,7 +524132,7 @@
         "status": "registered",
         "current": 2684359,
         "original": 2684359,
-        "spent": 365132.78,
+        "spent": 490214.97,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-17",
@@ -523984,10 +525745,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 1,
+          "subvendor": 2,
           "other": 0
         },
-        "subvendor_count": 1,
+        "subvendor_count": 2,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -525681,7 +527442,7 @@
         "status": "registered",
         "current": 738202,
         "original": 738202,
-        "spent": 395734.26,
+        "spent": 416524.11,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-16",
@@ -528600,7 +530361,7 @@
         "status": "registered",
         "current": 2170470,
         "original": 2170470,
-        "spent": 996609.03,
+        "spent": 1009794.55,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-15",
@@ -529209,7 +530970,7 @@
         "status": "registered",
         "current": 2506531,
         "original": 2506531,
-        "spent": 1268204.1,
+        "spent": 1335602.66,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-15",
@@ -531411,7 +533172,7 @@
         "status": "registered",
         "current": 495337,
         "original": 495337,
-        "spent": 251255.2,
+        "spent": 258869.66,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-13",
@@ -531577,7 +533338,7 @@
         "status": "registered",
         "current": 314035,
         "original": 314035,
-        "spent": 117659,
+        "spent": 135245.21,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-13",
@@ -533065,7 +534826,7 @@
         "status": "registered",
         "current": 672009,
         "original": 672009,
-        "spent": 359247.18,
+        "spent": 380284.07,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-12",
@@ -533231,7 +534992,7 @@
         "status": "registered",
         "current": 19666472,
         "original": 19666472,
-        "spent": 9647373.54,
+        "spent": 9971573.74,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-12",
@@ -534885,7 +536646,7 @@
         "status": "registered",
         "current": 220240676,
         "original": 220240676,
-        "spent": 1025059,
+        "spent": 2050118,
         "start": "2026-08-01",
         "end": "2036-07-31",
         "registered": "2026-06-12",
@@ -537636,7 +539397,7 @@
         "status": "registered",
         "current": 15753810.83,
         "original": 15753810.83,
-        "spent": 2318732,
+        "spent": 2424012.91,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-10",
@@ -537856,7 +539617,7 @@
         "status": "registered",
         "current": 12679528.65,
         "original": 12679528.65,
-        "spent": 1884704.26,
+        "spent": 1991934.64,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-10",
@@ -538021,7 +539782,7 @@
         "status": "registered",
         "current": 6468468.56,
         "original": 6468468.56,
-        "spent": 899995.19,
+        "spent": 1025706.11,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-10",
@@ -538959,7 +540720,7 @@
         "status": "registered",
         "current": 4646414,
         "original": 4646414,
-        "spent": 2614900.33,
+        "spent": 2718285.22,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-10",
@@ -539622,7 +541383,7 @@
         "status": "registered",
         "current": 864696,
         "original": 864696,
-        "spent": 477335.64,
+        "spent": 498611.8,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-10",
@@ -541769,7 +543530,7 @@
         "status": "registered",
         "current": 6695939.4,
         "original": 6695939.4,
-        "spent": 894040.48,
+        "spent": 1011565.96,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-09",
@@ -543327,10 +545088,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 28,
+          "subvendor": 29,
           "other": 0
         },
-        "subvendor_count": 28,
+        "subvendor_count": 29,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -543702,7 +545463,7 @@
         "status": "registered",
         "current": 719767,
         "original": 719767,
-        "spent": 373402.18,
+        "spent": 400558.98,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-09",
@@ -544087,7 +545848,7 @@
         "status": "registered",
         "current": 2308876,
         "original": 2308876,
-        "spent": 692662,
+        "spent": 834383.55,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-09",
@@ -546012,7 +547773,7 @@
         "status": "registered",
         "current": 21043917,
         "original": 21043917,
-        "spent": 3211702.75,
+        "spent": 3449060.01,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-08",
@@ -549925,7 +551686,7 @@
         "status": "registered",
         "current": 1312500,
         "original": 1312500,
-        "spent": 175000,
+        "spent": 175002,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-05",
@@ -550312,7 +552073,7 @@
         "status": "registered",
         "current": 1928902,
         "original": 1928902,
-        "spent": 949168.11,
+        "spent": 966944.92,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-05",
@@ -550534,7 +552295,7 @@
         "status": "registered",
         "current": 5612377,
         "original": 5612377,
-        "spent": 2742346.83,
+        "spent": 2893276.6,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-05",
@@ -550755,7 +552516,7 @@
         "status": "registered",
         "current": 769931,
         "original": 769931,
-        "spent": 307973,
+        "spent": 353351.93,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-05",
@@ -550810,7 +552571,7 @@
         "status": "registered",
         "current": 848827,
         "original": 848827,
-        "spent": 379316.99,
+        "spent": 430765.92,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-05",
@@ -550977,7 +552738,7 @@
         "status": "registered",
         "current": 8231030,
         "original": 8231030,
-        "spent": 4000434.74,
+        "spent": 4204577.21,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-05",
@@ -551032,7 +552793,7 @@
         "status": "registered",
         "current": 2496281,
         "original": 2496281,
-        "spent": 1250735.94,
+        "spent": 1296109.12,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-05",
@@ -551142,7 +552903,7 @@
         "status": "registered",
         "current": 1053736,
         "original": 1053736,
-        "spent": 562242.16,
+        "spent": 584918.46,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-05",
@@ -552243,7 +554004,7 @@
         "status": "registered",
         "current": 19185165,
         "original": 19185165,
-        "spent": 1090958.1,
+        "spent": 1100355.7,
         "start": "2026-07-01",
         "end": "2035-06-30",
         "registered": "2026-06-05",
@@ -555720,7 +557481,7 @@
         "status": "registered",
         "current": 52641.8,
         "original": 52641.8,
-        "spent": 0,
+        "spent": 52641.8,
         "start": "2026-04-01",
         "end": "2026-06-30",
         "registered": "2026-06-03",
@@ -556160,7 +557921,7 @@
         "status": "registered",
         "current": 1184835,
         "original": 1184835,
-        "spent": 640492.47,
+        "spent": 666462.13,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-03",
@@ -556215,7 +557976,7 @@
         "status": "registered",
         "current": 503442,
         "original": 503442,
-        "spent": 0,
+        "spent": 35452.99,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-03",
@@ -557755,7 +559516,7 @@
         "status": "registered",
         "current": 2128160,
         "original": 2128160,
-        "spent": 238813,
+        "spent": 279756,
         "start": "2026-05-14",
         "end": "2028-05-12",
         "registered": "2026-06-03",
@@ -558745,7 +560506,7 @@
         "status": "registered",
         "current": 7166674,
         "original": 7166674,
-        "spent": 3361388.13,
+        "spent": 3458825.08,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-02",
@@ -558967,7 +560728,7 @@
         "status": "registered",
         "current": 3387855,
         "original": 3387855,
-        "spent": 1743212.35,
+        "spent": 1787491.31,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-06-02",
@@ -560841,7 +562602,7 @@
         "status": "registered",
         "current": 6900000,
         "original": 6900000,
-        "spent": 491325,
+        "spent": 506780,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-06-02",
@@ -566075,7 +567836,7 @@
         "status": "registered",
         "current": 6870753.56,
         "original": 6870753.56,
-        "spent": 917429.27,
+        "spent": 917430.27,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-05-28",
@@ -567563,7 +569324,7 @@
         "status": "registered",
         "current": 6707921.25,
         "original": 6707921.25,
-        "spent": 895609.71,
+        "spent": 1087287.86,
         "start": "2026-07-01",
         "end": "2029-06-30",
         "registered": "2026-05-27",
@@ -567728,7 +569489,7 @@
         "status": "registered",
         "current": 315000,
         "original": 315000,
-        "spent": 110480,
+        "spent": 154318,
         "start": "2026-04-01",
         "end": "2028-03-31",
         "registered": "2026-05-27",
@@ -568182,10 +569943,10 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 13,
+          "subvendor": 14,
           "other": 0
         },
-        "subvendor_count": 12,
+        "subvendor_count": 13,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -570926,7 +572687,7 @@
         "status": "registered",
         "current": 19990,
         "original": 19990,
-        "spent": 7596.2,
+        "spent": 8495.75,
         "start": "2026-07-01",
         "end": "2027-06-30",
         "registered": "2026-05-22",
@@ -571421,7 +573182,7 @@
         "status": "registered",
         "current": 7113493,
         "original": 7113493,
-        "spent": 1236298.77,
+        "spent": 1274619.14,
         "start": "2026-03-01",
         "end": "2027-02-28",
         "registered": "2026-05-22",
@@ -571476,7 +573237,7 @@
         "status": "registered",
         "current": 13971443.35,
         "original": 13971443.35,
-        "spent": 7766462.51,
+        "spent": 8066648.93,
         "start": "2026-06-01",
         "end": "2027-05-31",
         "registered": "2026-05-22",
@@ -572796,7 +574557,7 @@
         "status": "registered",
         "current": 100000,
         "original": 100000,
-        "spent": 18499.62,
+        "spent": 23659.07,
         "start": "2026-06-01",
         "end": "2027-05-31",
         "registered": "2026-05-21",
@@ -574725,7 +576486,7 @@
         "status": "registered",
         "current": 12777000,
         "original": 12777000,
-        "spent": 2538597.23,
+        "spent": 2561950,
         "start": "2026-06-08",
         "end": "2027-06-07",
         "registered": "2026-05-20",
@@ -578798,7 +580559,7 @@
         "status": "registered",
         "current": 11975416.6,
         "original": 11975416.6,
-        "spent": 2426779.55,
+        "spent": 2576547.38,
         "start": "2026-02-07",
         "end": "2028-02-06",
         "registered": "2026-05-18",
@@ -579129,7 +580890,7 @@
         "status": "registered",
         "current": 941195.65,
         "original": 941195.65,
-        "spent": 70750.27,
+        "spent": 76246.45,
         "start": "2026-04-13",
         "end": "2029-07-25",
         "registered": "2026-05-18",
@@ -579405,7 +581166,7 @@
         "status": "registered",
         "current": 11991675.5,
         "original": 11991675.5,
-        "spent": 5224442.13,
+        "spent": 5456475.7,
         "start": "2026-06-01",
         "end": "2027-05-31",
         "registered": "2026-05-18",
@@ -591689,7 +593450,7 @@
         "status": "registered",
         "current": 993646,
         "original": 993646,
-        "spent": 340453.94,
+        "spent": 358341.09,
         "start": "2026-03-11",
         "end": "2028-03-10",
         "registered": "2026-05-06",
@@ -593433,7 +595194,7 @@
         "award_method": "COMPETITIVE SEALED BIDDING",
         "mwbe_category": "Non-M/WBE",
         "duration": null,
-        "includes_subvendors": "No Data Entered",
+        "includes_subvendors": "Yes",
         "registration_date": "2026-05-05",
         "start_date": "2026-06-01",
         "date_ownership": {
@@ -593465,14 +595226,15 @@
           "2026"
         ],
         "vendor_record_types": [
-          "Prime Vendor"
+          "Prime Vendor",
+          "Sub Vendor"
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 0,
+          "subvendor": 1,
           "other": 0
         },
-        "subvendor_count": 0,
+        "subvendor_count": 1,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -601168,7 +602930,7 @@
         "status": "registered",
         "current": 1219390,
         "original": 1219390,
-        "spent": 153960,
+        "spent": 199930,
         "start": "2026-05-13",
         "end": "2027-07-10",
         "registered": "2026-04-29",
@@ -618401,7 +620163,7 @@
         "status": "registered",
         "current": 2004773,
         "original": 2004773,
-        "spent": 357733.86,
+        "spent": 398848.73,
         "start": "2026-01-01",
         "end": "2029-06-30",
         "registered": "2026-04-17",
@@ -622034,7 +623796,7 @@
         "status": "registered",
         "current": 25000,
         "original": 25000,
-        "spent": 17074.8,
+        "spent": 22550.4,
         "start": "2026-04-16",
         "end": "2026-06-30",
         "registered": "2026-04-16",
@@ -626874,7 +628636,7 @@
         "status": "registered",
         "current": 1628200,
         "original": 1628200,
-        "spent": 76758,
+        "spent": 324011.8,
         "start": "2026-05-16",
         "end": "2031-05-15",
         "registered": "2026-04-16",
@@ -643763,7 +645525,7 @@
           "conflicting_registration_date_observations": false
         },
         "industry": "Human Services",
-        "purpose": "MWBE-SERVICES",
+        "purpose": "CANCEL BALANCE",
         "document_code": "CT1",
         "contract_type": "PROGRAMS",
         "contract_version": "1",
@@ -645421,7 +647183,7 @@
         "status": "registered",
         "current": 374400,
         "original": 374400,
-        "spent": 163665,
+        "spent": 193905,
         "start": "2026-04-21",
         "end": "2027-04-20",
         "registered": "2026-04-03",
@@ -647458,7 +649220,7 @@
         "status": "registered",
         "current": 67369329.19,
         "original": 67369329.19,
-        "spent": 0,
+        "spent": 4983554.77,
         "start": "2026-07-13",
         "end": "2030-01-10",
         "registered": "2026-04-02",
@@ -653734,7 +655496,7 @@
         "status": "registered",
         "current": 948271374.88,
         "original": 948271374.88,
-        "spent": 3873311.61,
+        "spent": 4167899.31,
         "start": "2026-04-01",
         "end": "2031-03-31",
         "registered": "2026-03-31",
@@ -653844,7 +655606,7 @@
         "status": "registered",
         "current": 399671340.26,
         "original": 399671340.26,
-        "spent": 786330.24,
+        "spent": 829405.94,
         "start": "2026-04-01",
         "end": "2031-03-31",
         "registered": "2026-03-31",
@@ -656155,7 +657917,7 @@
         "status": "registered",
         "current": 102649149.63,
         "original": 102649149.63,
-        "spent": 24450057.89,
+        "spent": 24457349.24,
         "start": "2025-12-01",
         "end": "2029-11-30",
         "registered": "2026-03-30",
@@ -661931,7 +663693,7 @@
         "status": "registered",
         "current": 250000,
         "original": 250000,
-        "spent": 62410,
+        "spent": 64005,
         "start": "2026-04-01",
         "end": "2027-03-31",
         "registered": "2026-03-26",
@@ -676741,7 +678503,7 @@
         "status": "registered",
         "current": 5267500,
         "original": 5267500,
-        "spent": 255884.99,
+        "spent": 257058.39,
         "start": "2026-03-01",
         "end": "2030-02-28",
         "registered": "2026-03-18",
@@ -680867,7 +682629,7 @@
         "status": "registered",
         "current": 13197033.7,
         "original": 13197033.7,
-        "spent": 1144156.49,
+        "spent": 2406045.02,
         "start": "2026-03-23",
         "end": "2027-03-22",
         "registered": "2026-03-16",
@@ -695754,7 +697516,7 @@
         "contract_id": "CT184120268805706",
         "prime_vendor": "SUMMIT OFFSET SERVICE LTD",
         "agency": "Department of Transportation",
-        "pin": "84126W0050001",
+        "pin": "84126W0050001A001",
         "award_method": "M/WBE SMALL PURCHASE",
         "mwbe_category": "Women (Non-Minority)",
         "duration": null,
@@ -695802,7 +697564,7 @@
           "contract_id": "exact",
           "pin": "exact"
         },
-        "selection_bucket": "passport_and_city_record"
+        "selection_bucket": "passport_only"
       },
       {
         "prime_contract_id": "CT184620261410681",
@@ -703654,7 +705416,7 @@
         "status": "registered",
         "current": 2500000,
         "original": 2500000,
-        "spent": 46591,
+        "spent": 46891,
         "start": "2026-04-01",
         "end": "2028-03-31",
         "registered": "2026-03-04",
@@ -704370,7 +706132,7 @@
         "status": "registered",
         "current": 300000,
         "original": 300000,
-        "spent": 9360,
+        "spent": 12420,
         "start": "2026-01-01",
         "end": "2030-12-31",
         "registered": "2026-03-04",
@@ -704425,7 +706187,7 @@
         "status": "registered",
         "current": 11047530,
         "original": 11047530,
-        "spent": 454260.76,
+        "spent": 476968.95,
         "start": "2026-04-01",
         "end": "2031-03-31",
         "registered": "2026-03-04",
@@ -708605,7 +710367,7 @@
         "status": "registered",
         "current": 2500000,
         "original": 2500000,
-        "spent": 129071,
+        "spent": 133071,
         "start": "2026-03-18",
         "end": "2028-03-17",
         "registered": "2026-03-02",
@@ -717105,7 +718867,7 @@
         "contract_id": "CT185020268804799",
         "prime_vendor": "KAM CONSULTANTS CORP.",
         "agency": "Department of Design and Construction",
-        "pin": "85025B0063002C005",
+        "pin": "85025B0063002C006",
         "award_method": "COMPETITIVE SEALED BIDDING",
         "mwbe_category": "Non-M/WBE",
         "duration": null,
@@ -719720,7 +721482,7 @@
         "status": "registered",
         "current": 1800000,
         "original": 1800000,
-        "spent": 12107.86,
+        "spent": 12407.86,
         "start": "2026-02-21",
         "end": "2028-02-20",
         "registered": "2026-02-19",
@@ -719775,7 +721537,7 @@
         "status": "registered",
         "current": 2500000,
         "original": 2500000,
-        "spent": 98288,
+        "spent": 107683,
         "start": "2026-03-01",
         "end": "2028-02-29",
         "registered": "2026-02-19",
@@ -738435,7 +740197,7 @@
         "status": "registered",
         "current": 11000000,
         "original": 11000000,
-        "spent": 933562.82,
+        "spent": 953356.76,
         "start": "2026-03-01",
         "end": "2029-02-28",
         "registered": "2026-02-05",
@@ -749441,7 +751203,7 @@
         "status": "registered",
         "current": 236491.2,
         "original": 236491.2,
-        "spent": 78830.4,
+        "spent": 157660.8,
         "start": "2026-04-01",
         "end": "2029-03-31",
         "registered": "2026-01-28",
@@ -764247,7 +766009,7 @@
         "status": "registered",
         "current": 3737560,
         "original": 3737560,
-        "spent": 780060,
+        "spent": 795510,
         "start": "2026-02-01",
         "end": "2028-01-31",
         "registered": "2026-01-16",
@@ -772067,7 +773829,7 @@
         "status": "registered",
         "current": 100000,
         "original": 100000,
-        "spent": 62284.21,
+        "spent": 68059.21,
         "start": "2026-01-09",
         "end": "2027-01-08",
         "registered": "2026-01-09",
@@ -784122,7 +785884,7 @@
         "status": "registered",
         "current": 500000,
         "original": 500000,
-        "spent": 32861.57,
+        "spent": 60769.13,
         "start": "2025-12-22",
         "end": "2027-12-21",
         "registered": "2025-12-29",
@@ -786929,7 +788691,7 @@
         "status": "registered",
         "current": 7020000,
         "original": 7020000,
-        "spent": 1665992.11,
+        "spent": 1788631.46,
         "start": "2026-01-01",
         "end": "2028-12-31",
         "registered": "2025-12-23",
@@ -795813,61 +797575,6 @@
         "selection_bucket": "new_unique"
       },
       {
-        "prime_contract_id": "CT104220261406828",
-        "contract_id": "CT104220261406828",
-        "prime_vendor": "DORMITORY AUTHORITY STATE OF NY",
-        "agency": "City University of New York",
-        "pin": null,
-        "award_method": "GOVERNMENT TO GOVERNMENT",
-        "mwbe_category": "Individuals and Others",
-        "duration": null,
-        "includes_subvendors": "No Data Entered",
-        "registration_date": "2025-12-16",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-12-16"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Construction Services",
-        "purpose": "LM003-022 LEHMAN COLL GILLET AND CARMAN LECTURE HALLS",
-        "document_code": "CT1",
-        "contract_type": "CONSTRUCTION",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 5776620,
-        "original": 5776620,
-        "spent": 0,
-        "start": "2025-11-13",
-        "end": "2026-12-01",
-        "registered": "2025-12-16",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
         "prime_contract_id": "CT106920268803515",
         "contract_id": "CT106920268803515",
         "prime_vendor": "PRUTECH SOLUTIONS, INC",
@@ -795899,7 +797606,7 @@
         "status": "registered",
         "current": 2560000,
         "original": 2560000,
-        "spent": 497757.5,
+        "spent": 737997.5,
         "start": "2026-01-01",
         "end": "2027-12-31",
         "registered": "2025-12-16",
@@ -796560,7 +798267,7 @@
         "status": "registered",
         "current": 4441816.8,
         "original": 4441816.8,
-        "spent": 367598.56,
+        "spent": 486163.02,
         "start": "2026-02-23",
         "end": "2027-08-21",
         "registered": "2025-12-16",
@@ -801237,7 +802944,7 @@
         "status": "registered",
         "current": 6987856,
         "original": 6987856,
-        "spent": 516143.08,
+        "spent": 526835.53,
         "start": "2025-12-01",
         "end": "2026-11-30",
         "registered": "2025-12-11",
@@ -802832,7 +804539,7 @@
         "status": "registered",
         "current": 20850269,
         "original": 20850269,
-        "spent": 452135,
+        "spent": 989709,
         "start": "2026-01-01",
         "end": "2028-12-31",
         "registered": "2025-12-10",
@@ -820828,7 +822535,7 @@
         "status": "registered",
         "current": 13467706.31,
         "original": 13467706.31,
-        "spent": 3461856.46,
+        "spent": 3461857.46,
         "start": "2025-12-01",
         "end": "2028-11-30",
         "registered": "2025-11-21",
@@ -822703,61 +824410,6 @@
         "spent": 30275.52,
         "start": "2025-11-29",
         "end": "2027-11-28",
-        "registered": "2025-11-20",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CTA112720267202086",
-        "contract_id": "CTA112720267202086",
-        "prime_vendor": "SVAM INTERNATIONAL INC",
-        "agency": "Financial Information Services Agency",
-        "pin": "127FY2300031",
-        "award_method": "MULTIPLE AWARDS",
-        "mwbe_category": "Asian American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-20",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-20"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Professional Services",
-        "purpose": "FISA CONSULTANT POOL TOR179 - Mainframe System Programmer",
-        "document_code": "CTA1",
-        "contract_type": "CONSULTANT",
-        "contract_version": "1",
-        "parent_contract_id": "MMA112720236200568",
-        "status": "registered",
-        "current": 99000,
-        "original": 99000,
-        "spent": 133687.5,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
         "registered": "2025-11-20",
         "received": null,
         "source_fiscal_years": [
@@ -829659,226 +831311,6 @@
         "selection_bucket": "city_record_only"
       },
       {
-        "prime_contract_id": "CT104020263035096",
-        "contract_id": "CT104020263035096",
-        "prime_vendor": "SOLVED CONSULTANCY LLC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Goods",
-        "purpose": "SOLE VENDOR-COMMODITIES",
-        "document_code": "CT1",
-        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 21999.96,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263040052",
-        "contract_id": "CT104020263040052",
-        "prime_vendor": "THE WRITING REVOLUTION INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "NEGOTIATED SERVICES-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "REQUIREMENTS-SERVICES",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24900,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263044923",
-        "contract_id": "CT104020263044923",
-        "prime_vendor": "BROOKLYN ADVISORY 6",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "3 BIDS-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "WORK/LABOR",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24999,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263045041",
-        "contract_id": "CT104020263045041",
-        "prime_vendor": "CRUZ BUSINESS SOLUTIONS LLC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Hispanic American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "MWBE-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "REQUIREMENTS-SERVICES",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 25000,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
         "prime_contract_id": "CT104020263046664",
         "contract_id": "CT104020263046664",
         "prime_vendor": "TUTORED BY TEACHERS INC",
@@ -829912,446 +831344,6 @@
         "original": 25000,
         "spent": 0,
         "start": "2026-01-21",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263047562",
-        "contract_id": "CT104020263047562",
-        "prime_vendor": "BRIDGES FROM SCHOOL TO WORK INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "BALANCE NOT NEEDED.",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 10000,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263047796",
-        "contract_id": "CT104020263047796",
-        "prime_vendor": "START LIGHTHOUSE INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "NEGOTIATED SERVICES-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24999.99,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263048886",
-        "contract_id": "CT104020263048886",
-        "prime_vendor": "AGIRI LEARNING CONSULTANTS INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Black American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "MWBE-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "REQUIREMENTS-SERVICES",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24300,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263048986",
-        "contract_id": "CT104020263048986",
-        "prime_vendor": "UNIQUE COMP INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Asian American",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Not Classified",
-        "purpose": "NEGOTIATED SERVICES-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "REQUIREMENTS-SERVICES",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 21120,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263049510",
-        "contract_id": "CT104020263049510",
-        "prime_vendor": "THEBLACKMANCAN INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "NEGOTIATED SERVICES-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24999,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263049618",
-        "contract_id": "CT104020263049618",
-        "prime_vendor": "SIMPLY ED",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "3 BIDS-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 24984,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263050110",
-        "contract_id": "CT104020263050110",
-        "prime_vendor": "DEVORE DANCE CENTER INC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "3 BIDS-SERVICES-INV0000111",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 25000,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT104020263050318",
-        "contract_id": "CT104020263050318",
-        "prime_vendor": "YOUNG EXEKUTIVE LLC",
-        "agency": "Department of Education",
-        "pin": null,
-        "award_method": "SMALL PURCHASE - WRITTEN",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Human Services",
-        "purpose": "3 BIDS-SERVICES",
-        "document_code": "CT1",
-        "contract_type": "PROGRAMS",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000,
-        "original": 25000,
-        "spent": 25000,
-        "start": "2025-11-13",
         "end": "2026-06-30",
         "registered": "2025-11-13",
         "received": null,
@@ -830738,116 +831730,6 @@
         "spent": 45765,
         "start": "2025-11-19",
         "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT184620268803755",
-        "contract_id": "CT184620268803755",
-        "prime_vendor": "Truelove Seeds LLC",
-        "agency": "Department of Parks and Recreation",
-        "pin": "84626C0345001",
-        "award_method": "SMALL PURCHASE - UNDER $5,000",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Goods",
-        "purpose": "CGRTB-SEEDS FOR GREENTHUMB",
-        "document_code": "CT1",
-        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 19540,
-        "original": 19540,
-        "spent": 19540,
-        "start": "2025-11-13",
-        "end": "2026-06-30",
-        "registered": "2025-11-13",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT184620268803759",
-        "contract_id": "CT184620268803759",
-        "prime_vendor": "MULTI MEDIA PROMOS LLC",
-        "agency": "Department of Parks and Recreation",
-        "pin": "84626C0355001",
-        "award_method": "SMALL PURCHASE - UNDER $5,000",
-        "mwbe_category": "Women (Non-Minority)",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-13",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-11-13"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Goods",
-        "purpose": "CNRG-TO PURCHASE BASEBALL CAPS",
-        "document_code": "CT1",
-        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 1715,
-        "original": 1715,
-        "spent": 1715,
-        "start": "2025-11-13",
-        "end": "2025-12-31",
         "registered": "2025-11-13",
         "received": null,
         "source_fiscal_years": [
@@ -832387,7 +833269,7 @@
         "status": "registered",
         "current": 6745524.18,
         "original": 6745524.18,
-        "spent": 82970.24,
+        "spent": 151010.6,
         "start": "2026-09-01",
         "end": "2032-08-31",
         "registered": "2025-10-30",
@@ -834268,7 +835150,7 @@
         "status": "registered",
         "current": 2500000,
         "original": 2500000,
-        "spent": 17876,
+        "spent": 25552,
         "start": "2026-03-01",
         "end": "2028-02-29",
         "registered": "2025-10-08",
@@ -835289,7 +836171,7 @@
         "contract_id": "CT184620268801766",
         "prime_vendor": "AAH CONSTRUCTION CORP",
         "agency": "Department of Parks and Recreation",
-        "pin": "84624B0131001C010",
+        "pin": "84624B0131001C012",
         "award_method": "COMPETITIVE SEALED BIDDING",
         "mwbe_category": "Non-M/WBE",
         "duration": null,
@@ -838266,61 +839148,6 @@
         "selection_bucket": "passport_and_city_record"
       },
       {
-        "prime_contract_id": "CT183620268800893",
-        "contract_id": "CT183620268800893",
-        "prime_vendor": "Excelsior Business Development Associates LLC",
-        "agency": "Department of Finance",
-        "pin": "83625B0001001",
-        "award_method": "COMPETITIVE SEALED BIDDING",
-        "mwbe_category": "Hispanic American",
-        "duration": null,
-        "includes_subvendors": "No Data Entered",
-        "registration_date": "2025-06-27",
-        "start_date": "2025-11-13",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-13"
-          ],
-          "registration_date_observations": [
-            "2025-06-27"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Professional Services",
-        "purpose": "MSC Payment & Receivables Processing",
-        "document_code": "CT1",
-        "contract_type": "WORK/LABOR",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 405020,
-        "original": 405020,
-        "spent": 0,
-        "start": "2025-11-13",
-        "end": "2031-11-12",
-        "registered": "2025-06-27",
-        "received": null,
-        "source_fiscal_years": [
-          "2025"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
         "prime_contract_id": "CT106820268800687",
         "contract_id": "CT106820268800687",
         "prime_vendor": "DELUXE DELIVERY SYSTEMS INC",
@@ -839001,12 +839828,12 @@
     "checkbook_contracts": {
       "graph_cap": null,
       "graph_source": "rows.checkbook_contracts",
-      "graph_rows": 10594,
+      "graph_rows": 10609,
       "selected_buckets": {
         "passport_and_city_record": 1672,
-        "passport_only": 83,
-        "city_record_only": 1050,
-        "new_unique": 7789
+        "passport_only": 84,
+        "city_record_only": 1049,
+        "new_unique": 7804
       },
       "strategy": "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap",
       "receipt": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"

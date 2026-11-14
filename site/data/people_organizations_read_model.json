@@ -51379,7 +51379,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 16,
+          "count": 17,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -51609,7 +51609,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 6,
+          "count": 7,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -52970,7 +52970,7 @@
       "href": "/agencies/management-and-budget/",
       "entity_ref": "agency:id:management-and-budget",
       "relation_state": "published",
-      "detail": "4 linked record categories",
+      "detail": "3 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -52988,8 +52988,8 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -53715,7 +53715,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 4,
+          "count": 6,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -54645,7 +54645,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 3,
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {

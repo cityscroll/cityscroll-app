@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.shared_meeting_read_model.v1",
   "version": 1,
-  "generated_at": "2026-11-13T14:29:04.818Z",
+  "generated_at": "2026-11-14T13:54:10.820Z",
   "freshness": {
-    "generated_at": "2026-11-13T14:29:04.818Z",
+    "generated_at": "2026-11-14T13:54:10.820Z",
     "checked_at": "2026-11-13T14:16:52.895Z",
     "sources": {
       "city_record": "available",
@@ -18,7 +18,7 @@
       "source_system": "city_record",
       "status": "available",
       "available": true,
-      "generated_at": "2026-11-13T14:29:04.818Z",
+      "generated_at": "2026-11-14T13:54:10.820Z",
       "max_age_ms": null,
       "row_count": 120,
       "reason": null,
@@ -1625,13 +1625,13 @@
   "shards": [
     {
       "path": "shared_meeting_read_model/shard-000.json",
-      "bytes": 12488109,
-      "row_count": 975
+      "bytes": 12553632,
+      "row_count": 1014
     },
     {
       "path": "shared_meeting_read_model/shard-001.json",
-      "bytes": 2286115,
-      "row_count": 156
+      "bytes": 1410437,
+      "row_count": 117
     }
   ]
 }
