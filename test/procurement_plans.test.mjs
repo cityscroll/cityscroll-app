@@ -350,7 +350,7 @@ test("RC-1 public materialization uses receipt-backed Pages-safe shards", () => 
     "utf8",
   ));
   const receipt = JSON.parse(readFileSync(
-    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-11-12.json"),
+    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-11-14.json"),
     "utf8",
   ));
   assert.equal(manifest.schema, "cityscroll.procurement_planning.manifest.v1");

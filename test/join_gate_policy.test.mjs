@@ -156,7 +156,7 @@ test("2026-08-11 ULURP receipt records shipped gate on recommendation rows", () 
 
 test("RC-1 current receipt clears identifier-bearing prefix gate", () => {
   const receipt = JSON.parse(readFileSync(
-    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-11-12.json"),
+    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-11-14.json"),
     "utf8",
   ));
   const path = receipt.join_measurement.paths.mocs_ll63_to_passport;
