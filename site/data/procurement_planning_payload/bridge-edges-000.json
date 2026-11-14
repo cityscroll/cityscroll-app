@@ -3009,6 +3009,19 @@
     {
       "plan_source_record_id": "mocs_ll63:FY27RNDOT53",
       "plan_source": "mocs_ll63",
+      "target_source": "passport_contract",
+      "target_id": "5232340",
+      "method": "pin_prefix_of_epin",
+      "identifier": "84121B0051001R001",
+      "score": 1.0,
+      "provenance": {
+        "plan_url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+        "target_url": "https://a0333-passportpublic.nyc.gov/contracts.html"
+      }
+    },
+    {
+      "plan_source_record_id": "mocs_ll63:FY27RNDOT53",
+      "plan_source": "mocs_ll63",
       "target_source": "passport_rfx",
       "target_id": "5691",
       "method": "deterministic_identifier",

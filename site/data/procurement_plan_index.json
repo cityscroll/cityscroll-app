@@ -3,9 +3,9 @@
   "fiscal_year": 2027,
   "source_manifest": {
     "path": "site/data/procurement_planning_payload.json",
-    "sha256": "18aa8202146d53ccfe204299d04445bd4fd9316a6d2c98d3dc4cf4900b824bb0",
-    "generated_at": "2026-11-12T13:01:37Z",
-    "plans_rows": 11785
+    "sha256": "655acce072941cdbc7fc82d22b1066425f78140f2adcd03da4658d18db9a042d",
+    "generated_at": "2026-11-14T13:03:09Z",
+    "plans_rows": 11794
   },
   "rule": {
     "agency_code": "publisher workbook file-name prefix, upper-cased (ACS_LL1_FY27.xlsx -> ACS)",
@@ -13,8 +13,8 @@
     "agency_id": "exactAgency() over worker/src/data/agency_crosswalk.json, by code then by Local Law 1 workbook label; ambiguous or absent stays null"
   },
   "totals": {
-    "rows_held": 11785,
-    "rows_listable": 11785,
+    "rows_held": 11794,
+    "rows_listable": 11794,
     "withheld": {
       "workbook_list_row": 0
     },
@@ -25,9 +25,9 @@
         "workbooks": 32
       },
       "ll63": {
-        "rows_held": 8953,
-        "rows_listable": 8953,
-        "workbooks": 101
+        "rows_held": 8962,
+        "rows_listable": 8962,
+        "workbooks": 102
       }
     }
   },
@@ -37,7 +37,7 @@
   "shards": [
     {
       "path": "site/data/procurement_planning_payload/plans-000.json",
-      "sha256": "569ea04cc7dc4c2c328aaf856df2a56bb6752565cf3d1019e63bc0823df23b4a",
+      "sha256": "81a3bfb64155ebe41af17d07f6adbb609841097422b5e3f391ffef92850a8b99",
       "rows": 10000,
       "agency_codes": [
         "ACS",
@@ -86,8 +86,8 @@
     },
     {
       "path": "site/data/procurement_planning_payload/plans-001.json",
-      "sha256": "5f0dd77fd2fd1b9838d9e3526925c1b819e1716c20eee5b77adf70f839046f74",
-      "rows": 1785,
+      "sha256": "65edef4cce58c51c7264f38911485f57b5d70189504c8eb08c98843efc296f8c",
+      "rows": 1794,
       "agency_codes": [
         "DPR",
         "DSNY",
@@ -587,8 +587,8 @@
         "DDC",
         "DEPARTMENT OF DESIGN AND CONSTRUCTION"
       ],
-      "rows_held": 1106,
-      "rows_listable": 1106,
+      "rows_held": 1109,
+      "rows_listable": 1109,
       "withheld": {
         "workbook_list_row": 0
       },
@@ -600,7 +600,7 @@
           ]
         },
         "ll63": {
-          "rows_listable": 956,
+          "rows_listable": 959,
           "workbooks": [
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DDC_FY27LL63_NP_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DDC_FY27LL63_RE_ADFY.xlsx",
@@ -614,16 +614,16 @@
         "2": 327,
         "3": 130,
         "4": 260,
-        "not_published": 168
+        "not_published": 171
       },
       "industries": {
         "Construction Services": 120,
         "Professional Services": 30,
-        "not_published": 956
+        "not_published": 959
       },
       "estimated_amount": {
         "published": 59,
-        "not_published": 1047
+        "not_published": 1050
       },
       "quality_flags": {
         "published_term_end_before_start": 1
@@ -1104,8 +1104,8 @@
         "DEPARTMENT OF TRANSPORTATION",
         "DOT"
       ],
-      "rows_held": 2734,
-      "rows_listable": 2734,
+      "rows_held": 2736,
+      "rows_listable": 2736,
       "withheld": {
         "workbook_list_row": 0
       },
@@ -1117,7 +1117,7 @@
           ]
         },
         "ll63": {
-          "rows_listable": 2646,
+          "rows_listable": 2648,
           "workbooks": [
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_FY27LL63_NP_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_FY27LL63_RE_ADFY.xlsx",
@@ -1131,18 +1131,18 @@
         "2": 945,
         "3": 341,
         "4": 377,
-        "not_published": 115
+        "not_published": 117
       },
       "industries": {
         "Construction Services": 7,
         "Goods <$1 million": 1,
         "Professional Services": 53,
         "Standard Services": 27,
-        "not_published": 2646
+        "not_published": 2648
       },
       "estimated_amount": {
         "published": 85,
-        "not_published": 2649
+        "not_published": 2651
       },
       "quality_flags": {},
       "shards": [
@@ -1205,14 +1205,14 @@
         "DPR C",
         "DPR CAPITAL"
       ],
-      "rows_held": 1591,
-      "rows_listable": 1591,
+      "rows_held": 1593,
+      "rows_listable": 1593,
       "withheld": {
         "workbook_list_row": 0
       },
       "by_source": {
         "ll63": {
-          "rows_listable": 1591,
+          "rows_listable": 1593,
           "workbooks": [
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRC_FY27LL63_NP_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRC_FY27LL63_RE_ADFY.xlsx",
@@ -1226,14 +1226,14 @@
         "2": 30,
         "3": 93,
         "4": 76,
-        "not_published": 83
+        "not_published": 85
       },
       "industries": {
-        "not_published": 1591
+        "not_published": 1593
       },
       "estimated_amount": {
         "published": 0,
-        "not_published": 1591
+        "not_published": 1593
       },
       "quality_flags": {
         "published_term_end_before_start": 6
@@ -2045,8 +2045,8 @@
         "MAYOR S OFFICE OF MANAGEMENT AND BUDGET",
         "OMB"
       ],
-      "rows_held": 101,
-      "rows_listable": 101,
+      "rows_held": 103,
+      "rows_listable": 103,
       "withheld": {
         "workbook_list_row": 0
       },
@@ -2058,9 +2058,10 @@
           ]
         },
         "ll63": {
-          "rows_listable": 59,
+          "rows_listable": 61,
           "workbooks": [
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_FY27LL63_NP_ADFY.xlsx",
+            "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_FY27LL63_RE_ADFY.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_LL63_FY27_New.xlsx",
             "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_LL63_FY27_RE.xlsx"
           ]
@@ -2071,16 +2072,16 @@
         "2": 23,
         "3": 22,
         "4": 18,
-        "not_published": 16
+        "not_published": 18
       },
       "industries": {
         "Professional Services": 40,
         "Standard Services": 2,
-        "not_published": 59
+        "not_published": 61
       },
       "estimated_amount": {
         "published": 2,
-        "not_published": 99
+        "not_published": 101
       },
       "quality_flags": {},
       "shards": [

@@ -38,7 +38,7 @@ test("(viii) unchanged link set is unchanged when recorded notes match the page"
   assert.equal(r.indexes[0].notes_not_recorded, 0);
   assert.equal(r.indexes[1].notes_not_recorded, 0);
   assert.equal(r.indexes[0].recorded_workbooks, 32);
-  assert.equal(r.indexes[1].recorded_workbooks, 101);
+  assert.equal(r.indexes[1].recorded_workbooks, 102);
   assert.equal(exitCodeFor(r), EXIT.clean);
 });
 
@@ -70,7 +70,7 @@ test("(viii) removed or added link, changed note and a new fiscal-year folder ar
   assert.equal(fiscalYearOfUrl("https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2028fy/X.xlsx"), 2028);
 });
 
-test("(viii) the retained 2026-11-11 pages match the refreshed FY2027 collection", () => {
+test("(viii) the retained index pages match the refreshed FY2027 collection", () => {
   const ll1 = readFileSync(join(FIXTURES, "index-pages/m-wbe-ll1.2026-11-11.html"), "utf8");
   const ll63 = readFileSync(join(FIXTURES, "index-pages/standard-prof-services-ll63.2026-11-11.html"), "utf8");
   const r = comparePlanIndexes(manifest, { mocs_ll1: { ok: true, html: ll1 }, mocs_ll63: { ok: true, html: ll63 } });
@@ -78,8 +78,8 @@ test("(viii) the retained 2026-11-11 pages match the refreshed FY2027 collection
   assert.equal(r.indexes[1].status, "unchanged");
   assert.equal(r.indexes[1].added.length, 0);
   assert.equal(r.indexes[1].removed.length, 0);
-  assert.equal(r.indexes[1].recorded_workbooks, 101);
-  assert.equal(r.indexes[1].observed_workbooks, 101);
+  assert.equal(r.indexes[1].recorded_workbooks, 102);
+  assert.equal(r.indexes[1].observed_workbooks, 102);
   const links = extractIndexLinks(ll1, "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page");
   assert.equal(links.find((l) => l.url.endsWith("/HPD_LL1_FY27.xlsx")).note, "(updated 7/20/2026)");
   assert.ok(extractIndexLinks(ll63, "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page")

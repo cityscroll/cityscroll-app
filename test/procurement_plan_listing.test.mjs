@@ -53,24 +53,24 @@ function tempCopyOfPayload() {
 
 test("payload is the committed planning population", () => {
   assert.equal(manifest.schema, "cityscroll.procurement_planning.manifest.v1");
-  assert.equal(manifest.generated_at, "2026-11-12T13:01:37Z");
+  assert.equal(manifest.generated_at, "2026-11-14T13:03:09Z");
   assert.equal(population.status, "ok");
 });
 
-test("(i) totals: 2,832 LL1 + 8,953 LL63 = 11,785 rows held; drop-down list rows stay out of the payload", () => {
+test("(i) totals: 2,832 LL1 + 8,962 LL63 = 11,794 rows held; drop-down list rows stay out of the payload", () => {
   const count = (src) => rawRows.filter((r) => r.row.source === src).length;
   assert.equal(count("mocs_ll1"), 2832);
-  assert.equal(count("mocs_ll63"), 8953);
-  assert.equal(population.rows.length, 11785);
+  assert.equal(count("mocs_ll63"), 8962);
+  assert.equal(population.rows.length, 11794);
   assert.equal(new Set(manifest.sources.filter((s) => s.source === "mocs_ll1").map((s) => s.url)).size, 32);
-  assert.equal(new Set(manifest.sources.filter((s) => s.source === "mocs_ll63").map((s) => s.url)).size, 101);
+  assert.equal(new Set(manifest.sources.filter((s) => s.source === "mocs_ll63").map((s) => s.url)).size, 102);
   const withheld = rawRows.filter((r) => isWorkbookListRow(r.row));
   assert.equal(withheld.length, 0);
   const all = listAll();
-  assert.equal(all.first.total, 11785);
+  assert.equal(all.first.total, 11794);
   assert.deepEqual(all.first.withheld, { workbook_list_row: 0 });
   assert.equal(listAll({ source: "ll1" }).first.total, 2832);
-  assert.equal(listAll({ source: "ll63" }).first.total, 8953);
+  assert.equal(listAll({ source: "ll63" }).first.total, 8962);
 });
 
 test("(i) per-agency counts equal an independent recount, and every listed row resolves to its shard row", () => {
@@ -166,8 +166,8 @@ test("(iii) every sort pages through the whole listable population without loss 
   for (const sort of SORTS) {
     const a = listAll({ sort }).rows.map(provenanceKey);
     const b = listAll({ sort }).rows.map(provenanceKey);
-    assert.equal(a.length, 11785, sort);
-    assert.equal(new Set(a).size, 11785, sort);
+    assert.equal(a.length, 11794, sort);
+    assert.equal(new Set(a).size, 11794, sort);
     assert.deepEqual(a, b, sort);
   }
   const byAmount = listAll({ sort: "amount_desc" }).rows;
@@ -188,7 +188,7 @@ test("(iii) filters equal independent recounts and report rows excluded only for
   assert.equal(band.first.total, listable.filter((r) => r.budget && r.budget.amount >= 500000 && r.budget.amount <= 1000000).length);
   const ll63Industry = listPlans(population, { source: "ll63", industry: "Professional Services" }, { index });
   assert.equal(ll63Industry.total, 0);
-  assert.equal(ll63Industry.excluded_for_missing_value.industry, 8953);
+  assert.equal(ll63Industry.excluded_for_missing_value.industry, 8962);
   const p1 = listPlans(population, { agency_code: "ACS", limit: 10 }, { index });
   assert.equal(listPlans(population, { agency_code: "DOT", cursor: p1.next_cursor }, { index }).status, "invalid_query");
   assert.equal(listPlans(population, { limit: 101 }, { index }).status, "invalid_query");
@@ -232,8 +232,8 @@ test("(v) the generated index equals a rebuild and a recount; a one-row change i
   assert.equal(index.schema, PLAN_INDEX_SCHEMA);
   assert.equal(index.source_manifest.sha256, sha256(manifestBytes));
   assert.deepEqual(index.totals, {
-    rows_held: 11785, rows_listable: 11785, withheld: { workbook_list_row: 0 },
-    by_source: { ll1: { rows_held: 2832, rows_listable: 2832, workbooks: 32 }, ll63: { rows_held: 8953, rows_listable: 8953, workbooks: 101 } },
+    rows_held: 11794, rows_listable: 11794, withheld: { workbook_list_row: 0 },
+    by_source: { ll1: { rows_held: 2832, rows_listable: 2832, workbooks: 32 }, ll63: { rows_held: 8962, rows_listable: 8962, workbooks: 102 } },
   });
   assert.ok(Buffer.byteLength(rebuilt) < 128 * 1024);
   for (const agency of index.agencies) {
@@ -270,7 +270,7 @@ test("(v) the plan families register in the existing v3 capability registry with
   const [ll1, ll63] = planCapabilityFamilies(index);
   assert.equal(ll1.id, "agency-plans-ll1");
   assert.equal(ll63.id, "agency-plans-ll63");
-  assert.equal(ll1.source_as_of, "2026-11-12");
+  assert.equal(ll1.source_as_of, "2026-11-14");
   assert.equal(ll1.agency_ids.length, 32);
   assert.equal(ll63.agency_ids.length, 36);
   const registryHasPlans = current.families.some((f) => f.id === "agency-plans-ll1" || f.id === "agency-plans-ll63");
