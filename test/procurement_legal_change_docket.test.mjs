@@ -340,6 +340,87 @@ test("(vi) CLI: wrong offset hints fall back to one capped full stream per aggre
   assert.ok(Object.values(receipt.acquisition).some((a) => a.method === "full_stream"));
 });
 
+test("(vi) CLI: a mirror that answers 501 to Range falls back to one full read and still checks every section", async () => {
+  const { aggregates, stubTargets } = buildAggregates();
+  const calls = [];
+  const fetchImpl = async (url, init = {}) => {
+    calls.push({ method: init.method || "GET", range: init.headers?.Range || null });
+    const key = new URL(url).pathname.split("/data/index/")[1];
+    const body = aggregates[key];
+    const headers = { etag: `"e501-${key}"`, "content-length": String(body.length) };
+    if ((init.method || "GET") === "HEAD") return new Response(null, { status: 200, headers });
+    if (init.headers?.Range) return new Response("range not implemented", { status: 501 });
+    return new Response(body, { status: 200, headers });
+  };
+  const receipt = await runSourceWatch({
+    register, targets: stubTargets, fetchImpl, stateDir: null, now: new Date("2026-11-14T12:17:00Z"),
+  });
+  assert.deepEqual(receipt.summary, { unchanged: 10, changed: 0, fetch_failed: 0, not_checked: 0 });
+  assert.equal(exitCodeFor(receipt), EXIT.CLEAN);
+  assert.ok(calls.some((call) => call.range), "the watch still tries a bounded range");
+  assert.ok(calls.some((call) => call.method === "GET" && !call.range), "a refused range is followed by a full read");
+  assert.ok(Object.values(receipt.acquisition).every((row) => row.method === "full_stream"), JSON.stringify(receipt.acquisition));
+});
+
+test("(vi) CLI: a refused range whose full read also fails is never reported unchanged", async () => {
+  const { aggregates, stubTargets } = buildAggregates();
+  const fetchImpl = async (url, init = {}) => {
+    const key = new URL(url).pathname.split("/data/index/")[1];
+    const body = aggregates[key];
+    const headers = { etag: `"e501-${key}"`, "content-length": String(body.length) };
+    if ((init.method || "GET") === "HEAD") return new Response(null, { status: 200, headers });
+    if (init.headers?.Range) return new Response("range not implemented", { status: 501 });
+    return new Response("unavailable", { status: 503 });
+  };
+  const receipt = await runSourceWatch({
+    register, targets: stubTargets, fetchImpl, stateDir: null, now: new Date("2026-11-14T12:17:00Z"), limits: { attempts: 1 },
+  });
+  assert.equal(receipt.summary.unchanged, 0);
+  assert.equal(receipt.summary.fetch_failed, 10);
+  assert.ok(receipt.sources.every((row) => row.status === "fetch_failed"));
+  assert.equal(exitCodeFor(receipt), EXIT.COULD_NOT_CHECK);
+});
+
+test("(vi) CLI: HEAD measures the identity byte length so a deep hint stays a satisfiable range", async () => {
+  const { aggregates, stubTargets } = buildAggregates();
+  const calls = [];
+  const fetchImpl = async (url, init = {}) => {
+    const key = new URL(url).pathname.split("/data/index/")[1];
+    const body = aggregates[key];
+    const identity = init.headers?.["Accept-Encoding"] === "identity";
+    calls.push({ method: init.method || "GET", range: init.headers?.Range || null, identity });
+    if ((init.method || "GET") === "HEAD") {
+      // A default HEAD is gzip. Its content-length is not the byte space hint_offset uses.
+      const length = identity ? body.length : 1024;
+      const headers = { etag: `"eid-${key}"`, "content-length": String(length) };
+      if (!identity) headers["content-encoding"] = "gzip";
+      return new Response(null, { status: 200, headers });
+    }
+    const range = init.headers?.Range?.match(/^bytes=(\d+)-(\d+)$/);
+    if (range) {
+      const start = Number(range[1]);
+      const end = Number(range[2]);
+      if (start > end) return new Response("inverted range", { status: 501 });
+      const slice = body.subarray(start, Math.min(end, body.length - 1) + 1);
+      return new Response(slice, {
+        status: 206,
+        headers: { etag: `"eid-${key}"`, "content-length": String(slice.length), "content-range": `bytes ${start}-${end}/${body.length}` },
+      });
+    }
+    return new Response(body, { status: 200, headers: { etag: `"eid-${key}"`, "content-length": String(body.length) } });
+  };
+  const receipt = await runSourceWatch({
+    register, targets: stubTargets, fetchImpl, stateDir: null, now: new Date("2026-11-14T12:17:00Z"),
+  });
+  assert.equal(receipt.summary.unchanged, 10);
+  assert.ok(calls.filter((call) => call.method === "HEAD").every((call) => call.identity), "HEAD asks for the identity encoding");
+  assert.ok(Object.values(receipt.acquisition).every((row) => row.method === "range"), JSON.stringify(receipt.acquisition));
+  assert.ok(calls.filter((call) => call.range).every((call) => {
+    const match = call.range.match(/^bytes=(\d+)-(\d+)$/);
+    return match && Number(match[1]) <= Number(match[2]);
+  }), "no inverted range is sent");
+});
+
 test("(vi) CLI: a changed section exits 3, records the change, and leaves last-good at the last matching text", async () => {
   const { aggregates, stubTargets } = buildAggregates();
   const stateDir = tempDir();

@@ -6,10 +6,14 @@
 // "../ontology/procurement_legal_source_watch.mjs"; the register and targets default to
 // ontology/procurement_legal_register.v1.json and ontology/procurement_legal_source_targets.v1.json.
 //
-// Acquisition (see acquisition-observations.json): per aggregate file one HEAD (ETag gate), then a
-// bounded Range request around the last-known byte offset of each section; only if the section heading
-// is not inside the window does it fall back to one capped full stream. Fetching is injected so tests
-// never touch the network. The register is only read. Failures never touch the last-good state.
+// Acquisition (see acquisition-observations.json): per aggregate file one HEAD (ETag gate) with
+// Accept-Encoding: identity, so content-length is the same byte space as hint_offset. A default
+// HEAD is gzip, and clamping a deep offset to that shorter length builds an inverted Range, which
+// the mirror answers with 501. Then a bounded Range around the last-known offset; a refused range
+// (or a window that would be inverted) is not a final failure. One capped full stream locates the
+// heading instead. A source that still cannot be read is never reported unchanged. Fetching is
+// injected so tests never touch the network. The register is only read. Failures never touch the
+// last-good state.
 import { mkdirSync, readFileSync, renameSync, writeFileSync, existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -184,14 +188,24 @@ export async function observeTargets({ targets, fetchImpl, state, limits = DEFAU
     const url = `${targets.mirror.raw_base}${aggregate}`;
     let head;
     try {
-      head = await withRetry(() => boundedRequest(fetchImpl, url, { method: "HEAD", cap: 0, limits }), limits);
+      // Identity encoding: hint_offset is a byte offset into the uncompressed aggregate.
+      // A gzip HEAD reports the compressed length, and a deep offset then becomes an
+      // inverted Range (start past end), which this mirror answers with HTTP 501.
+      head = await withRetry(() => boundedRequest(fetchImpl, url, {
+        method: "HEAD",
+        headers: { "Accept-Encoding": "identity" },
+        cap: 0,
+        limits,
+      }), limits);
     } catch (error) {
       failAll(items, error.reason || "network_error", error.status ?? null);
       continue;
     }
     if (head.status !== 200) { failAll(items, `http_${head.status}`, head.status); continue; }
     const etag = head.headers.get("etag");
+    const encoding = String(head.headers.get("content-encoding") || "").toLowerCase();
     const size = Number(head.headers.get("content-length"));
+    const identityLength = (encoding === "" || encoding === "identity") && Number.isFinite(size) && size > 0;
     const need = [];
     for (const target of items) {
       const prior = state.index[target.source_file];
@@ -204,7 +218,6 @@ export async function observeTargets({ targets, fetchImpl, state, limits = DEFAU
       }
     }
     if (need.length === 0) continue;
-    if (!Number.isFinite(size) || size <= 0) { failAll(need.map((n) => n.target), "no_content_length"); continue; }
 
     const pending = new Map(need.map((n) => [n.target.source_file, n]));
     let bytesFetched = 0;
@@ -216,7 +229,11 @@ export async function observeTargets({ targets, fetchImpl, state, limits = DEFAU
       pending.delete(file);
     };
 
-    for (const window of groupWindows(need, size, limits)) {
+    // A missing or compressed length is not the byte space hint_offset names. Skip the
+    // range attempt and let the capped full read locate the heading.
+    const windows = identityLength ? groupWindows(need, size, limits) : [];
+    for (const window of windows) {
+      if (window.start > window.end) continue;
       let response;
       try {
         response = await withRetry(() => boundedRequest(fetchImpl, url, {
@@ -234,11 +251,10 @@ export async function observeTargets({ targets, fetchImpl, state, limits = DEFAU
         continue;
       }
       if (response.status !== 206 && response.status !== 200) {
-        for (const item of window.items) {
-          pending.delete(item.target.source_file);
-          observations.push({ source_file: item.target.source_file, fetched: false, status: response.status, reason: `http_${response.status}` });
-          acquisition[item.target.source_file] = { method: "none", reason: `http_${response.status}` };
-        }
+        // Range refused (501 when the mirror rejects the range). Leave the sections
+        // pending so the full read can still locate the heading. Do not record a
+        // failure yet: the first observation wins, and a refusal must not shadow a
+        // later successful read or be reported as unchanged.
         continue;
       }
       bytesFetched += response.body.length;
@@ -263,6 +279,13 @@ export async function observeTargets({ targets, fetchImpl, state, limits = DEFAU
         for (const [file] of pending) {
           observations.push({ source_file: file, fetched: false, status: error.status ?? null, reason: error.reason || "network_error" });
           acquisition[file] = { method: "none", reason: error.reason || "network_error" };
+        }
+        continue;
+      }
+      if (full.status !== 200) {
+        for (const [file] of pending) {
+          observations.push({ source_file: file, fetched: false, status: full.status, reason: `http_${full.status}` });
+          acquisition[file] = { method: "none", reason: `http_${full.status}` };
         }
         continue;
       }
