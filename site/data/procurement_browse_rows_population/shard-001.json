@@ -4,6 +4,328 @@
   "shard_id": "001",
   "rows": [
     {
+      "procurement_id": "procurement:contract:CT181620258800142",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800142",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240620112",
+        "passport_public_contracts:contract:81624N0012008:5160270"
+      ],
+      "request_id": "20240620112",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing",
+      "pin": "81624N0012008",
+      "contract_id": "CT181620258800142",
+      "contract_amount": 636361,
+      "vendor_name": "Camba Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Camba Inc. · $636,361",
+      "notice_evidence": [
+        {
+          "request_id": "20240620112",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-26",
+          "href": "/notices/20240620112"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800143",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800143",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240610108",
+        "passport_public_contracts:contract:81624N0012009:5160271"
+      ],
+      "request_id": "20240610108",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOWPA EXTENSION",
+      "pin": "81624N0012009",
+      "contract_id": "CT181620258800143",
+      "contract_amount": 525421,
+      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $525,421",
+      "notice_evidence": [
+        {
+          "request_id": "20240610108",
+          "type_of_notice_description": "Award",
+          "short_title": "HOWPA EXTENSION",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-14",
+          "href": "/notices/20240610108"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800144",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800144",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240610107",
+        "passport_public_contracts:contract:81624N0012010:5160272"
+      ],
+      "request_id": "20240610107",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOWPA EXTENSION",
+      "pin": "81624N0012010",
+      "contract_id": "CT181620258800144",
+      "contract_amount": 632080,
+      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $632,080",
+      "notice_evidence": [
+        {
+          "request_id": "20240610107",
+          "type_of_notice_description": "Award",
+          "short_title": "HOWPA EXTENSION",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-14",
+          "href": "/notices/20240610107"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800145",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800145",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240603107",
+        "passport_public_contracts:contract:81624N0012011:5160273"
+      ],
+      "request_id": "20240603107",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOWPA EXTENSION",
+      "pin": "81624N0012011",
+      "contract_id": "CT181620258800145",
+      "contract_amount": 276412,
+      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $276,412",
+      "notice_evidence": [
+        {
+          "request_id": "20240603107",
+          "type_of_notice_description": "Award",
+          "short_title": "HOWPA EXTENSION",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-07",
+          "href": "/notices/20240603107"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800147",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800147",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240618110",
+        "passport_public_contracts:contract:81624N0012012:5160274"
+      ],
+      "request_id": "20240618110",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population A) #1S",
+      "pin": "81624N0012012",
+      "contract_id": "CT181620258800147",
+      "contract_amount": 647675,
+      "vendor_name": "Institute for Community Living Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Institute for Community Living Inc. · $647,675",
+      "notice_evidence": [
+        {
+          "request_id": "20240618110",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population A) #1S",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-25",
+          "href": "/notices/20240618110"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800148",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800148",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240620111",
+        "passport_public_contracts:contract:81624N0012013:5160275"
+      ],
+      "request_id": "20240620111",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing",
+      "pin": "81624N0012013",
+      "contract_id": "CT181620258800148",
+      "contract_amount": 1197379,
+      "vendor_name": "Iris House: A Center for Women Living With HIV, Inc",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Iris House: A Center for Women Living With HIV, Inc · $1,197,379",
+      "notice_evidence": [
+        {
+          "request_id": "20240620111",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-26",
+          "href": "/notices/20240620111"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800149",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800149",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240613114",
+        "passport_public_contracts:contract:81623P0013003:5102764"
+      ],
+      "request_id": "20240613114",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Early Intervention Respite Services",
+      "pin": "81623P0013003",
+      "contract_id": "CT181620258800149",
+      "contract_amount": 1826438.5,
+      "vendor_name": "LETS START WITH PLAY LLC",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · LETS START WITH PLAY LLC · $1,826,438.5",
+      "notice_evidence": [
+        {
+          "request_id": "20240613114",
+          "type_of_notice_description": "Award",
+          "short_title": "Early Intervention Respite Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-20",
+          "href": "/notices/20240613114"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT181620258800150",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800150",
       "procurement_stages": [
@@ -33270,6 +33592,37 @@
         "registered"
       ],
       "additional_description_1": "Health and Hospitals Corporation · ZOLL MEDICAL CORPORATION · $47,544.56",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181920271405866",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181920271405866",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181920271405866:PATTERSON DENTAL SUPPLY INC:prime-vendor:2026-11-12"
+      ],
+      "start_date": "2026-01-13",
+      "end_date": "2027-07-31",
+      "agency_id": null,
+      "agency_name": "Health and Hospitals Corporation",
+      "short_title": "3D DENTAL PANORAMIC X-RAY SYSTEM PJ#42202601",
+      "pin": null,
+      "contract_id": "CT181920271405866",
+      "contract_amount": 121190,
+      "vendor_name": "PATTERSON DENTAL SUPPLY INC",
+      "official_url": null,
+      "selection_method_description": "INTERGOVERNMENTAL PROCUREMENT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Health and Hospitals Corporation · PATTERSON DENTAL SUPPLY INC · $121,190",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -72321,6 +72674,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CT182620271405041",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT182620271405041",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT182620271405041:USALCO LLC:prime-vendor:2026-11-12"
+      ],
+      "start_date": "2026-11-09",
+      "end_date": "2027-11-09",
+      "agency_id": null,
+      "agency_name": "Department of Environmental Protection",
+      "short_title": "Dry-filtered Aluminum Sulfate",
+      "pin": null,
+      "contract_id": "CT182620271405041",
+      "contract_amount": 99846,
+      "vendor_name": "USALCO LLC",
+      "official_url": null,
+      "selection_method_description": "SM PURCH GOODS SERVICES 100K",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Environmental Protection · USALCO LLC · $99,846",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT182620278800751",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT182620278800751",
       "procurement_stages": [
@@ -72825,6 +73209,7 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT182620278801323:U ARIAS CORPORATION:prime-vendor:2026-07-28",
         "city_record:20260729010",
         "passport_public_contracts:contract:82621B0108001R001:5768735"
       ],
@@ -72859,7 +73244,8 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts"
+        "passport_public_contracts",
+        "checkbook_contracts"
       ]
     },
     {
@@ -73051,6 +73437,37 @@
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT182620278802000",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT182620278802000",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT182620278802000:NORTHEAST-WESTERN ENERGY SYSTEMS USA LLC:prime-vendor:2026-08-20"
+      ],
+      "start_date": "2026-08-04",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Environmental Protection",
+      "short_title": "BWT Machinist Jenbacher CoGeneration Engine training7030037X",
+      "pin": "82626U0022001A001",
+      "contract_id": "CT182620278802000",
+      "contract_amount": 25430,
+      "vendor_name": "Northeast-Western Energy Systems USA LLC",
+      "official_url": null,
+      "selection_method_description": "SUBSCRIPTION ETC PER PPB",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Environmental Protection · Northeast-Western Energy Systems USA LLC · $25,430",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
     },
     {
       "procurement_id": "procurement:contract:CT182620278802012",
@@ -73424,6 +73841,37 @@
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT182620278803545",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT182620278803545",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT182620278803545:J PIZZIRUSSO LANDSCAPING CORP:prime-vendor:2026-11-12"
+      ],
+      "start_date": "2026-11-09",
+      "end_date": "2028-05-10",
+      "agency_id": null,
+      "agency_name": "Department of Environmental Protection",
+      "short_title": "CB-QE25: Catch Basins Modernization the borough of Queens",
+      "pin": "82626B0038001",
+      "contract_id": "CT182620278803545",
+      "contract_amount": 6538862.5,
+      "vendor_name": "J PIZZIRUSSO LANDSCAPING CORP",
+      "official_url": null,
+      "selection_method_description": "COMPETITIVE SEALED BIDDING",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Environmental Protection · J PIZZIRUSSO LANDSCAPING CORP · $6,538,862.5",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
     },
     {
       "procurement_id": "procurement:contract:CT182620278803696",
@@ -89989,37 +90437,6 @@
       "source_systems": [
         "city_record",
         "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT183620268800893",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT183620268800893",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT183620268800893:EXCELSIOR BUSINESS DEVELOPMENT ASSOCIATES LLC:prime-vendor:2025-06-27"
-      ],
-      "start_date": "2025-11-13",
-      "end_date": "2031-11-12",
-      "agency_id": null,
-      "agency_name": "Department of Finance",
-      "short_title": "MSC Payment & Receivables Processing",
-      "pin": "83625B0001001",
-      "contract_id": "CT183620268800893",
-      "contract_amount": 405020,
-      "vendor_name": "Excelsior Business Development Associates LLC",
-      "official_url": null,
-      "selection_method_description": "COMPETITIVE SEALED BIDDING",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Finance · Excelsior Business Development Associates LLC · $405,020",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
       ]
     },
     {
@@ -137435,70 +137852,6 @@
       "method_family": "ordinary_micropurchase"
     },
     {
-      "procurement_id": "procurement:contract:CT184620268803755",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803755",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803755:TRUELOVE SEEDS LLC:prime-vendor:2025-11-13"
-      ],
-      "start_date": "2025-11-13",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "CGRTB-SEEDS FOR GREENTHUMB",
-      "pin": "84626C0345001",
-      "contract_id": "CT184620268803755",
-      "contract_amount": 19540,
-      "vendor_name": "Truelove Seeds LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · Truelove Seeds LLC · $19,540",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803759",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803759",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803759:MULTI MEDIA PROMOS LLC:prime-vendor:2025-11-13"
-      ],
-      "start_date": "2025-11-13",
-      "end_date": "2025-12-31",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "CNRG-TO PURCHASE BASEBALL CAPS",
-      "pin": "84626C0355001",
-      "contract_id": "CT184620268803759",
-      "contract_amount": 1715,
-      "vendor_name": "MULTI MEDIA PROMOS LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · MULTI MEDIA PROMOS LLC · $1,715",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
       "procurement_id": "procurement:contract:CT184620268803786",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803786",
       "procurement_stages": [
@@ -165688,6 +166041,38 @@
         "checkbook_contracts"
       ],
       "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT184620278803533",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803533",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803533:NYC IT INC:prime-vendor:2026-11-12"
+      ],
+      "start_date": "2026-11-12",
+      "end_date": "2026-12-11",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "CGRTB-Outpost Model 50 Display Boards",
+      "pin": "84627W0009001",
+      "contract_id": "CT184620278803533",
+      "contract_amount": 23980,
+      "vendor_name": "NYC IT INC",
+      "official_url": null,
+      "selection_method_description": "M/WBE SMALL PURCHASE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · NYC IT INC · $23,980",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
     },
     {
       "procurement_id": "procurement:contract:CT184620278803540",
@@ -234673,6 +235058,38 @@
       "method_family": "mwbe_small_purchase"
     },
     {
+      "procurement_id": "procurement:contract:CT185820278803795",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185820278803795",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT185820278803795:PORTLAND WILLIAMS LLC:prime-vendor:2026-11-12"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2029-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Information Technology and Telecommunications",
+      "short_title": "VIAVI SUPPORT RENEWAL",
+      "pin": "85827W0020001",
+      "contract_id": "CT185820278803795",
+      "contract_amount": 131441.73,
+      "vendor_name": "PORTLAND WILLIAMS LLC",
+      "official_url": null,
+      "selection_method_description": "M/WBE SMALL PURCHASE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Information Technology and Telecommunications · PORTLAND WILLIAMS LLC · $131,441.73",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
       "procurement_id": "procurement:contract:CT186020228807200",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT186020228807200",
       "procurement_stages": [
@@ -239149,6 +239566,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CTA103020278803744",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACTA103020278803744",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CTA103020278803744:STV INC.:prime-vendor:2026-11-12"
+      ],
+      "start_date": "2026-10-01",
+      "end_date": "2029-07-31",
+      "agency_id": null,
+      "agency_name": "Department of City Planning",
+      "short_title": "On-Call Environmental Consulting & Engineering - White Plain",
+      "pin": "03027Z0004001",
+      "contract_id": "CTA103020278803744",
+      "contract_amount": 419000,
+      "vendor_name": "STV INC.",
+      "official_url": null,
+      "selection_method_description": "MULTIPLE AWARDS",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of City Planning · STV INC. · $419,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CTA104020279786515",
       "canonical_href": "/procurements/procurement%3Acontract%3ACTA104020279786515",
       "procurement_stages": [
@@ -241412,37 +241860,6 @@
       ]
     },
     {
-      "procurement_id": "procurement:contract:CTA112720267202086",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACTA112720267202086",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CTA112720267202086:SVAM INTERNATIONAL INC:prime-vendor:2025-11-20"
-      ],
-      "start_date": "2025-11-13",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Financial Information Services Agency",
-      "short_title": "FISA CONSULTANT POOL TOR179 - Mainframe System Programmer",
-      "pin": "127FY2300031",
-      "contract_id": "CTA112720267202086",
-      "contract_amount": 99000,
-      "vendor_name": "SVAM INTERNATIONAL INC",
-      "official_url": null,
-      "selection_method_description": "MULTIPLE AWARDS",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Financial Information Services Agency · SVAM INTERNATIONAL INC · $99,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ]
-    },
-    {
       "procurement_id": "procurement:contract:CTA112720267202446",
       "canonical_href": "/procurements/procurement%3Acontract%3ACTA112720267202446",
       "procurement_stages": [
@@ -241746,6 +242163,37 @@
         "registered"
       ],
       "additional_description_1": "Financial Information Services Agency · TRIGYN TECHNOLOGIES INC · $240,240",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CTA112720277202131",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACTA112720277202131",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CTA112720277202131:22ND CENTURY TECHNOLOGIES INC:prime-vendor:2026-11-12"
+      ],
+      "start_date": "2026-11-02",
+      "end_date": "2027-07-02",
+      "agency_id": null,
+      "agency_name": "Financial Information Services Agency",
+      "short_title": "Consultant Pool-TOR#188 - Payroll Integration System Develop",
+      "pin": "127FY2300031",
+      "contract_id": "CTA112720277202131",
+      "contract_amount": 138320,
+      "vendor_name": "22ND CENTURY TECHNOLOGIES INC",
+      "official_url": null,
+      "selection_method_description": "MULTIPLE AWARDS",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Financial Information Services Agency · 22ND CENTURY TECHNOLOGIES INC · $138,320",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -256572,6 +257020,37 @@
         "registered"
       ],
       "additional_description_1": "Department of Design and Construction · WSP USA BUILDINGS INC · $26,318.6",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CTA185020278803452",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACTA185020278803452",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CTA185020278803452:WSP USA BUILDINGS INC:prime-vendor:2026-11-12"
+      ],
+      "start_date": "2026-07-29",
+      "end_date": "2032-04-14",
+      "agency_id": null,
+      "agency_name": "Department of Design and Construction",
+      "short_title": "LBC22JBIF-Commissioning Services",
+      "pin": "85026Z0114001",
+      "contract_id": "CTA185020278803452",
+      "contract_amount": 104131.74,
+      "vendor_name": "WSP USA BUILDINGS INC",
+      "official_url": null,
+      "selection_method_description": "MULTIPLE AWARDS",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Design and Construction · WSP USA BUILDINGS INC · $104,131.74",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [

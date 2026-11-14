@@ -2,8 +2,8 @@
   "schema": "cityscroll.money_open_solicitations.v1",
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-13T14:29:24.495Z",
-  "open_as_of": "2026-11-13",
+  "generated_at": "2026-11-14T13:54:30.045Z",
+  "open_as_of": "2026-11-14",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -11,7 +11,7 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-13'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-14'",
     "$order": "due_date ASC, request_id ASC",
     "$limit": "501",
     "note": "Every open solicitation (same predicate as money_default_open, without its 40-row strip limit). Contact fields stay on the notice detail read."
@@ -23,58 +23,14 @@
   "population": {
     "state": "complete",
     "reasons": [],
-    "source_count": 202,
-    "published_count": 202,
+    "source_count": 199,
+    "published_count": 199,
     "rejected_rows": 0,
-    "distinct_pins": 143,
+    "distinct_pins": 140,
     "rows_without_pin": 6
   },
-  "count": 202,
+  "count": 199,
   "notices": [
-    {
-      "request_id": "20261002034",
-      "start_date": "2026-10-09T00:00:00.000",
-      "agency_name": "Brooklyn Navy Yard Development Corp.",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "On-Call Environmental Services",
-      "pin": "000352",
-      "due_date": "2026-11-13T12:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
-      "request_id": "20260921005",
-      "start_date": "2026-09-28T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: SMD_PS_RFP_523249 - Lead Abatement Program Services",
-      "pin": "523249",
-      "due_date": "2026-11-13T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260908026",
-      "start_date": "2026-09-18T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Request for Expressions of Interest (\u001aRFEI\u001a) for permanent or temporary and seasonal implementation of programming, amenities, events, and development that will enhance Ocean Breeze Park, Staten Island",
-      "pin": "R149-EX-2026",
-      "due_date": "2026-11-13T15:00:00.000",
-      "selection_method_description": "Request for Information"
-    },
-    {
-      "request_id": "20260921012",
-      "start_date": "2026-10-02T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Coney Island Cyclone roller coaster and Coney Island Parachute Jump RFP",
-      "pin": "B368-O-2026",
-      "due_date": "2026-11-13T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
     {
       "request_id": "20261016012",
       "start_date": "2026-10-23T00:00:00.000",
@@ -140,17 +96,6 @@
       "pin": "528369,1",
       "due_date": "2026-11-17T12:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260810055",
-      "start_date": "2026-08-17T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: RFP Civil Service Examination",
-      "pin": "85625P0005",
-      "due_date": "2026-11-17T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
     },
     {
       "request_id": "20260923006",
@@ -371,6 +316,17 @@
       "selection_method_description": "Request for Proposals"
     },
     {
+      "request_id": "20260921005",
+      "start_date": "2026-09-28T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Bid Extension: SMD_PS_RFP_523249 - Lead Abatement Program Services",
+      "pin": "523249",
+      "due_date": "2026-11-24T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260930015",
       "start_date": "2026-10-07T00:00:00.000",
       "agency_name": "District Attorney - New York County",
@@ -496,7 +452,7 @@
       "agency_name": "NYC Health + Hospitals",
       "type_of_notice_description": "Solicitation",
       "category_description": "Construction/Construction Services",
-      "short_title": "22202201- NYC H+H - Gotham/ East New York - ADA Restroom, Office Storage and Lounge Renovation",
+      "short_title": "Correction: 22202201- NYC H+H - Gotham/ East New York - ADA Restroom, Office Storage and Lounge Renovation",
       "pin": "22202201- ENY- ADA-",
       "due_date": "2026-12-03T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
@@ -837,7 +793,7 @@
       "agency_name": "NYC Health + Hospitals",
       "type_of_notice_description": "Solicitation",
       "category_description": "Construction/Construction Services",
-      "short_title": "CT Scanner Suite Renovation - GC & MISC MEP Trades",
+      "short_title": "Correction: CT Scanner Suite Renovation - GC & MISC MEP Trades",
       "pin": "37202341",
       "due_date": "2026-12-16T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
@@ -885,6 +841,17 @@
       "pin": "84126B0029",
       "due_date": "2026-12-16T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260810055",
+      "start_date": "2026-08-17T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Bid Extension: RFP Civil Service Examination",
+      "pin": "85625P0005",
+      "due_date": "2026-12-16T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
     },
     {
       "request_id": "20261001018",
@@ -1023,7 +990,7 @@
       "agency_name": "NYC Health + Hospitals",
       "type_of_notice_description": "Solicitation",
       "category_description": "Construction Related Services",
-      "short_title": "Jacobi Patient Account Decanting",
+      "short_title": "Correction: Jacobi Patient Account Decanting",
       "pin": "21202303",
       "due_date": "2027-01-07T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
@@ -1034,7 +1001,7 @@
       "agency_name": "NYC Health + Hospitals",
       "type_of_notice_description": "Solicitation",
       "category_description": "Construction/Construction Services",
-      "short_title": "Jacobi Building 1 Roof 2",
+      "short_title": "Correction: Jacobi Building 1 Roof 2",
       "pin": "21202604",
       "due_date": "2027-01-07T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"

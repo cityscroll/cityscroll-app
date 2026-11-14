@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-11-13T14:29:17.057Z",
+  "generated_at": "2026-11-14T13:54:18.581Z",
   "source_vintages": {
-    "default_open": "2026-11-13T14:29:17.057Z",
+    "default_open": "2026-11-14T13:54:18.581Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-11-04T04:22:02.123Z"
   },
@@ -161,6 +161,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20261013013",
+      "start_date": "2026-10-21T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Correction: 22202201- NYC H+H - Gotham/ East New York - ADA Restroom, Office Storage and Lounge Renovation",
+      "pin": "22202201- ENY- ADA-",
+      "due_date": "2026-12-03T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20261014020",
       "start_date": "2026-10-21T00:00:00.000",
       "agency_name": "Environmental Protection",
@@ -191,6 +202,17 @@
       "short_title": "85027I0001-PV291-QM2, Construction Management - Build Services for Queens Museum Renovation",
       "pin": "85027I0001",
       "due_date": "2026-11-20T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20261009021",
+      "start_date": "2026-10-19T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "85027P0001-PW348-91,-94_RC for CM/Design/Build for Petroleum Storage Tank Sumps, Citywide",
+      "pin": "85027P0001",
+      "due_date": "2026-12-03T12:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
     },
     {
@@ -260,15 +282,15 @@
       "selection_method_description": "Request for Proposals"
     },
     {
-      "request_id": "20261002034",
-      "start_date": "2026-10-09T00:00:00.000",
-      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "request_id": "20261002033",
+      "start_date": "2026-10-08T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
       "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "On-Call Environmental Services",
-      "pin": "000352",
-      "due_date": "2026-11-13T12:00:00.000",
-      "selection_method_description": "Request for Proposals"
+      "category_description": "Goods",
+      "short_title": "Bid Extension: 85727B0025-2600092 - Apparatus, 2000GPM Pumper - FDNY",
+      "pin": "85727B0025",
+      "due_date": "2026-12-03T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260929029",
@@ -304,17 +326,6 @@
       "selection_method_description": "Competitive Sealed Proposals"
     },
     {
-      "request_id": "20260921012",
-      "start_date": "2026-10-02T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Coney Island Cyclone roller coaster and Coney Island Parachute Jump RFP",
-      "pin": "B368-O-2026",
-      "due_date": "2026-11-13T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
       "request_id": "20260922020",
       "start_date": "2026-09-30T00:00:00.000",
       "agency_name": "Environmental Protection",
@@ -344,19 +355,8 @@
       "category_description": "Services (other than human services)",
       "short_title": "Bid Extension: SMD_PS_RFP_523249 - Lead Abatement Program Services",
       "pin": "523249",
-      "due_date": "2026-11-13T14:00:00.000",
+      "due_date": "2026-11-24T14:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260908026",
-      "start_date": "2026-09-18T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Request for Expressions of Interest (\u001aRFEI\u001a) for permanent or temporary and seasonal implementation of programming, amenities, events, and development that will enhance Ocean Breeze Park, Staten Island",
-      "pin": "R149-EX-2026",
-      "due_date": "2026-11-13T15:00:00.000",
-      "selection_method_description": "Request for Information"
     },
     {
       "request_id": "20260901018",
@@ -368,6 +368,17 @@
       "pin": "85827Y1399",
       "due_date": "2026-11-16T23:45:00.000",
       "selection_method_description": "Request for Information"
+    },
+    {
+      "request_id": "20260825035",
+      "start_date": "2026-09-02T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Bid Extension: Loading Dock + Morgue at South Brooklyn Health, Brooklyn, NY",
+      "pin": "26202503",
+      "due_date": "2026-12-03T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260821028",
@@ -390,17 +401,6 @@
       "pin": "85625B0009",
       "due_date": "2026-12-02T10:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260810055",
-      "start_date": "2026-08-17T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: RFP Civil Service Examination",
-      "pin": "85625P0005",
-      "due_date": "2026-11-17T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
     },
     {
       "request_id": "20260806027",
