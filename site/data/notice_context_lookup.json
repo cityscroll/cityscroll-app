@@ -2,7 +2,7 @@
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
   "source": "site/data/money_resident_snapshot.json",
-  "source_generated_at": "2026-11-14T13:54:18.581Z",
+  "source_generated_at": "2026-11-15T14:39:14.054Z",
   "count": 378,
   "by_notice": {
     "20261027032": {

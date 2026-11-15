@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":74,"first_ordinal":124974,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":74,"first_ordinal":124973,"entries":[
+{"s":"S H A W C HOUSING DEVELOPMENT FUND","n":[["S H A W C HOUSING DEVELOPMENT FUND CORPORATION",1]],"x":{"irs":{"r":1,"i":["030505123"],"z":["10004"]}}},
 {"s":"S H E L FOUNDATION","n":[["S H E L FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["201437417"],"z":["11204"]}}},
 {"s":"S H EQUITIES","n":[["S & H EQUITIES",1]],"x":{"dbe":{"r":1,"i":["S & H EQUITIES"]}}},
 {"s":"S H HOUSING DEVELOPMENT FUND","n":[["S H HOUSING DEVELOPMENT FUND CORP",1]],"x":{"irs":{"r":1,"i":["132998607"],"z":["10018"]}}},
@@ -1706,6 +1707,5 @@
 {"s":"SAUL ELLEN BRUCKNER FOUNDATION","n":[["SAUL & ELLEN BRUCKNER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["273276768"],"z":["11234"]}}},
 {"s":"SAUL LEITER FOUNDATION","n":[["SAUL LEITER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["474413338"],"z":["10003"]}}},
 {"s":"SAUL N SILBERT CHARITABLE TRUST","n":[["SAUL N SILBERT CHARITABLE TRUST",1]],"x":{"irs":{"r":1,"i":["866228031"],"z":["10706"]}}},
-{"s":"SAUL STEINBERG FOUNDATION","n":[["SAUL STEINBERG FOUNDATION",1]],"x":{"irs":{"r":1,"i":["134115047"],"z":["10017"]}}},
-{"s":"SAUNDERS FOUNDATION","n":[["SAUNDERS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["161289330"],"z":["14619"]}}}
+{"s":"SAUL STEINBERG FOUNDATION","n":[["SAUL STEINBERG FOUNDATION",1]],"x":{"irs":{"r":1,"i":["134115047"],"z":["10017"]}}}
 ]}

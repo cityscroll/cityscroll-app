@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":59,"first_ordinal":99909,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":59,"first_ordinal":99908,"entries":[
+{"s":"NATHAN ENTERPRISES","n":[["Nathan Enterprises LLC",10],["NATHAN ENTERPRISES LLC",1]],"x":{"ocp":{"r":3,"a":191262.92,"l":"2024-09-17","i":["20240911112","20240313116","20210311112"]},"cbr":{"r":2,"a":54756.42,"l":"2025-02-21","i":["CT184620258806076","CT184620258802607"],"m":["Black American"]},"ppt":{"r":3,"a":191262.92,"l":"2024-09-06","i":["CT1-846-20258802607","CT1-846-20248806314","CT1-846-20218801390"]},"sbs":{"r":1,"i":["14702"],"z":["10466"],"p":["MBE"]},"dol":{"r":1,"i":["25-64A9O-CR"],"z":["10553"]},"sca":{"r":1,"i":["NATHAN ENTERPRISES LLC"],"z":["10553"]}}},
 {"s":"NATHAN EVA TREITEL FOUNDATION","n":[["NATHAN & EVA TREITEL FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["136219640"],"z":["10001"]}}},
 {"s":"NATHAN H KELMAN","n":[["Nathan H. Kelman Inc.",1]],"x":{"dol":{"r":1,"i":["26-69B9T-CR"],"z":["12047"]}}},
 {"s":"NATHAN HALE BEACH CLUB","n":[["NATHAN HALE BEACH CLUB INC",1]],"x":{"irs":{"r":1,"i":["111870047"],"z":["11743"]}}},
@@ -1458,6 +1459,5 @@
 {"s":"NEW AGE SPIRITUAL BAPTIST CHURCH","n":[["NEW AGE SPIRITUAL BAPTIST CHURCH",1]],"x":{"irs":{"r":1,"i":["112404465"],"z":["11213"]}}},
 {"s":"NEW AGE TRAINING - 1","n":[["NEW AGE TRAINING - 1 INC.",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2024-09-05","i":["CT104020253009136"],"m":["Non-M/WBE"]}}},
 {"s":"NEW AGENDA","n":[["NEW AGENDA INC",1]],"x":{"irs":{"r":1,"i":["264242171"],"z":["10538"]}}},
-{"s":"NEW AGENDA FOUNDATION","n":[["NEW AGENDA FOUNDATION",1]],"x":{"irs":{"r":1,"i":["264242288"],"z":["10538"]}}},
-{"s":"NEW ALLIANCE ADONAI CHURCH","n":[["NEW ALLIANCE ADONAI CHURCH INC",1]],"x":{"irs":{"r":1,"i":["810989599"],"z":["11285"]}}}
+{"s":"NEW AGENDA FOUNDATION","n":[["NEW AGENDA FOUNDATION",1]],"x":{"irs":{"r":1,"i":["264242288"],"z":["10538"]}}}
 ]}

@@ -4,650 +4,6 @@
   "shard_id": "001",
   "rows": [
     {
-      "procurement_id": "procurement:contract:CT181620258800142",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800142",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240620112",
-        "passport_public_contracts:contract:81624N0012008:5160270"
-      ],
-      "request_id": "20240620112",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA Permanent Supportive Housing",
-      "pin": "81624N0012008",
-      "contract_id": "CT181620258800142",
-      "contract_amount": 636361,
-      "vendor_name": "Camba Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Camba Inc. · $636,361",
-      "notice_evidence": [
-        {
-          "request_id": "20240620112",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA Permanent Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-26",
-          "href": "/notices/20240620112"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800143",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800143",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240610108",
-        "passport_public_contracts:contract:81624N0012009:5160271"
-      ],
-      "request_id": "20240610108",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOWPA EXTENSION",
-      "pin": "81624N0012009",
-      "contract_id": "CT181620258800143",
-      "contract_amount": 525421,
-      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $525,421",
-      "notice_evidence": [
-        {
-          "request_id": "20240610108",
-          "type_of_notice_description": "Award",
-          "short_title": "HOWPA EXTENSION",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-14",
-          "href": "/notices/20240610108"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800144",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800144",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240610107",
-        "passport_public_contracts:contract:81624N0012010:5160272"
-      ],
-      "request_id": "20240610107",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOWPA EXTENSION",
-      "pin": "81624N0012010",
-      "contract_id": "CT181620258800144",
-      "contract_amount": 632080,
-      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $632,080",
-      "notice_evidence": [
-        {
-          "request_id": "20240610107",
-          "type_of_notice_description": "Award",
-          "short_title": "HOWPA EXTENSION",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-14",
-          "href": "/notices/20240610107"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800145",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800145",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240603107",
-        "passport_public_contracts:contract:81624N0012011:5160273"
-      ],
-      "request_id": "20240603107",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOWPA EXTENSION",
-      "pin": "81624N0012011",
-      "contract_id": "CT181620258800145",
-      "contract_amount": 276412,
-      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $276,412",
-      "notice_evidence": [
-        {
-          "request_id": "20240603107",
-          "type_of_notice_description": "Award",
-          "short_title": "HOWPA EXTENSION",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-07",
-          "href": "/notices/20240603107"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800147",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800147",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240618110",
-        "passport_public_contracts:contract:81624N0012012:5160274"
-      ],
-      "request_id": "20240618110",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA Permanent Supportive Housing (Population A) #1S",
-      "pin": "81624N0012012",
-      "contract_id": "CT181620258800147",
-      "contract_amount": 647675,
-      "vendor_name": "Institute for Community Living Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Institute for Community Living Inc. · $647,675",
-      "notice_evidence": [
-        {
-          "request_id": "20240618110",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA Permanent Supportive Housing (Population A) #1S",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-25",
-          "href": "/notices/20240618110"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800148",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800148",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240620111",
-        "passport_public_contracts:contract:81624N0012013:5160275"
-      ],
-      "request_id": "20240620111",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA Permanent Supportive Housing",
-      "pin": "81624N0012013",
-      "contract_id": "CT181620258800148",
-      "contract_amount": 1197379,
-      "vendor_name": "Iris House: A Center for Women Living With HIV, Inc",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Iris House: A Center for Women Living With HIV, Inc · $1,197,379",
-      "notice_evidence": [
-        {
-          "request_id": "20240620111",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA Permanent Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-26",
-          "href": "/notices/20240620111"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800149",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800149",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240613114",
-        "passport_public_contracts:contract:81623P0013003:5102764"
-      ],
-      "request_id": "20240613114",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Early Intervention Respite Services",
-      "pin": "81623P0013003",
-      "contract_id": "CT181620258800149",
-      "contract_amount": 1826438.5,
-      "vendor_name": "LETS START WITH PLAY LLC",
-      "official_url": null,
-      "selection_method_description": "Competitive Sealed Proposal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · LETS START WITH PLAY LLC · $1,826,438.5",
-      "notice_evidence": [
-        {
-          "request_id": "20240613114",
-          "type_of_notice_description": "Award",
-          "short_title": "Early Intervention Respite Services",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-20",
-          "href": "/notices/20240613114"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800150",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800150",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240627108",
-        "passport_public_contracts:contract:81624N0012014:5160276"
-      ],
-      "request_id": "20240627108",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA Permanent Supportive Housing (Population A) #1S",
-      "pin": "81624N0012014",
-      "contract_id": "CT181620258800150",
-      "contract_amount": 642477,
-      "vendor_name": "Praxis Housing Initiatives, Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Praxis Housing Initiatives, Inc. · $642,477",
-      "notice_evidence": [
-        {
-          "request_id": "20240627108",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA Permanent Supportive Housing (Population A) #1S",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-07-03",
-          "href": "/notices/20240627108"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800151",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800151",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240611104",
-        "passport_public_contracts:contract:81624N0013003:5154493"
-      ],
-      "request_id": "20240611104",
-      "start_date": "2024-07-01",
-      "end_date": "2024-12-31",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA Permanent Supportive Housing (Population A)",
-      "pin": "81624N0013003",
-      "contract_id": "CT181620258800151",
-      "contract_amount": 363837,
-      "vendor_name": "Project Hospitality Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Project Hospitality Inc. · $363,837",
-      "notice_evidence": [
-        {
-          "request_id": "20240611104",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA Permanent Supportive Housing (Population A)",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-17",
-          "href": "/notices/20240611104"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800152",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800152",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240607103",
-        "passport_public_contracts:contract:81624N0012015:5160277"
-      ],
-      "request_id": "20240607103",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA Permanent Supportive Housing (Population B) #1SC",
-      "pin": "81624N0012015",
-      "contract_id": "CT181620258800152",
-      "contract_amount": 745518,
-      "vendor_name": "Project Hospitality Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Project Hospitality Inc. · $745,518",
-      "notice_evidence": [
-        {
-          "request_id": "20240607103",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA Permanent Supportive Housing (Population B) #1SC",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-13",
-          "href": "/notices/20240607103"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800153",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800153",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240603106",
-        "passport_public_contracts:contract:81623P0013001:5102765"
-      ],
-      "request_id": "20240603106",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Respite Services for Specialized Care",
-      "pin": "81623P0013001",
-      "contract_id": "CT181620258800153",
-      "contract_amount": 1826438.5,
-      "vendor_name": "REHOBOTH CARE INC",
-      "official_url": null,
-      "selection_method_description": "Competitive Sealed Proposal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · REHOBOTH CARE INC · $1,826,438.5",
-      "notice_evidence": [
-        {
-          "request_id": "20240603106",
-          "type_of_notice_description": "Award",
-          "short_title": "Respite Services for Specialized Care",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-07",
-          "href": "/notices/20240603106"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800154",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800154",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240603105",
-        "passport_public_contracts:contract:81623P0013002:5101724"
-      ],
-      "request_id": "20240603105",
-      "start_date": "2024-07-01",
-      "end_date": "2033-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Early Intervention Respite Service, in Home Services",
-      "pin": "81623P0013002",
-      "contract_id": "CT181620258800154",
-      "contract_amount": 1660500,
-      "vendor_name": "REHOBOTH CARE INC",
-      "official_url": null,
-      "selection_method_description": "Competitive Sealed Proposal",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · REHOBOTH CARE INC · $1,660,500",
-      "notice_evidence": [
-        {
-          "request_id": "20240603105",
-          "type_of_notice_description": "Award",
-          "short_title": "Early Intervention Respite Service, in Home Services",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-06-07",
-          "href": "/notices/20240603105"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800155",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800155",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240703111",
-        "passport_public_contracts:contract:81624N0012016:5160278"
-      ],
-      "request_id": "20240703111",
-      "start_date": "2024-07-01",
-      "end_date": "2025-06-30",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA Permanent Supportive Housing (Population G) #1S",
-      "pin": "81624N0012016",
-      "contract_id": "CT181620258800155",
-      "contract_amount": 649009,
-      "vendor_name": "Services for the Underserved Inc.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · Services for the Underserved Inc. · $649,009",
-      "notice_evidence": [
-        {
-          "request_id": "20240703111",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA Permanent Supportive Housing (Population G) #1S",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-07-10",
-          "href": "/notices/20240703111"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620258800156",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800156",
-      "procurement_stages": [
-        "award",
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "city_record:20240717103",
-        "passport_public_contracts:contract:81624N0012017:5160279"
-      ],
-      "request_id": "20240717103",
-      "start_date": "2024-07-01",
-      "end_date": "2025-01-01",
-      "agency_id": null,
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "HOPWA Permanent Supportive Housing",
-      "pin": "81624N0012017",
-      "contract_id": "CT181620258800156",
-      "contract_amount": 596461.5,
-      "vendor_name": "St. Nicks Alliance Corp.",
-      "official_url": null,
-      "selection_method_description": "Negotiated Acquisition Extension",
-      "process_states": [
-        "award",
-        "registered"
-      ],
-      "additional_description_1": "Health and Mental Hygiene · St. Nicks Alliance Corp. · $596,461.5",
-      "notice_evidence": [
-        {
-          "request_id": "20240717103",
-          "type_of_notice_description": "Award",
-          "short_title": "HOPWA Permanent Supportive Housing",
-          "additional_description_1": null,
-          "contact_name": null,
-          "start_date": "2024-07-23",
-          "href": "/notices/20240717103"
-        }
-      ],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "city_record",
-        "passport_public_contracts"
-      ]
-    },
-    {
       "procurement_id": "procurement:contract:CT181620258800157",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800157",
       "procurement_stages": [
@@ -9053,38 +8409,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Health and Mental Hygiene · WOODSIDE ON THE MOVE, INC. · $3,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT181620261408718",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620261408718",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT181620261408718:BARUPON LLC:prime-vendor:2025-12-18"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Health and Mental Hygiene",
-      "short_title": "STOOL TESTING KIT",
-      "pin": null,
-      "contract_id": "CT181620261408718",
-      "contract_amount": 5301,
-      "vendor_name": "Barupon LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Health and Mental Hygiene · Barupon LLC · $5,301",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -33623,6 +32947,37 @@
         "registered"
       ],
       "additional_description_1": "Health and Hospitals Corporation · PATTERSON DENTAL SUPPLY INC · $121,190",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181920271405868",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181920271405868",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181920271405868:PRISMATIC DEVELOPMENT CORP.:prime-vendor:2026-10-28"
+      ],
+      "start_date": "2026-11-15",
+      "end_date": "2028-04-10",
+      "agency_id": null,
+      "agency_name": "Health and Hospitals Corporation",
+      "short_title": "PJ#48202205-OTXHU EARLY WORK ELEVATOR, COOLING TOWER",
+      "pin": null,
+      "contract_id": "CT181920271405868",
+      "contract_amount": 52913000,
+      "vendor_name": "PRISMATIC DEVELOPMENT CORP.",
+      "official_url": null,
+      "selection_method_description": "COMPETITIVE SEALED BIDDING",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Health and Hospitals Corporation · PRISMATIC DEVELOPMENT CORP. · $52,913,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -64235,7 +63590,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT182620268801800:THE FRANKLIN COMPANY CONTRACTOR INC:prime-vendor:2025-09-22",
         "city_record:20250923008",
         "passport_public_contracts:contract:82621B0095001R001:5485032"
       ],
@@ -64270,8 +63624,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ]
     },
     {
@@ -64599,37 +63952,6 @@
       "source_systems": [
         "city_record",
         "passport_public_contracts",
-        "checkbook_contracts"
-      ]
-    },
-    {
-      "procurement_id": "procurement:contract:CT182620268802066",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT182620268802066",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT182620268802066:LADY LIBERTY CONTRACTING CORP:prime-vendor:2025-09-17"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2028-11-13",
-      "agency_id": null,
-      "agency_name": "Department of Environmental Protection",
-      "short_title": "82625B0001-BHOE-25-5R (Staten Island, BHOE Services)",
-      "pin": "82625B0001001",
-      "contract_id": "CT182620268802066",
-      "contract_amount": 1409940,
-      "vendor_name": "LADY LIBERTY CONTRACTING CORP",
-      "official_url": null,
-      "selection_method_description": "COMPETITIVE SEALED BIDDING",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Environmental Protection · LADY LIBERTY CONTRACTING CORP · $1,409,940",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
         "checkbook_contracts"
       ]
     },
@@ -85061,6 +84383,38 @@
       "source_systems": [
         "city_record",
         "passport_public_contracts",
+        "checkbook_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT182720278803377",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT182720278803377",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT182720278803377:CRAFTY CLOTH INC:prime-vendor:2026-10-29"
+      ],
+      "start_date": "2026-11-15",
+      "end_date": "2031-11-14",
+      "agency_id": null,
+      "agency_name": "Department of Sanitation",
+      "short_title": "Exterminating Supplies",
+      "pin": "82727W0011001",
+      "contract_id": "CT182720278803377",
+      "contract_amount": 500000,
+      "vendor_name": "Crafty Cloth Inc",
+      "official_url": null,
+      "selection_method_description": "M/WBE SMALL PURCHASE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Sanitation · Crafty Cloth Inc · $500,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
@@ -137844,38 +137198,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Parks and Recreation · LANDSCAPING BY COUNTRY GARDENS INC · $537",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT184620268803786",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620268803786",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT184620268803786:EASTERN STEEL CORP:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2025-12-12",
-      "agency_id": null,
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "TO PURCHASE STEEL PANELS FOR IHTP SHED",
-      "pin": "84626C0354001",
-      "contract_id": "CT184620268803786",
-      "contract_amount": 4375,
-      "vendor_name": "EASTERN STEEL CORP",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Parks and Recreation · EASTERN STEEL CORP · $4,375",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -205552,37 +204874,6 @@
         "checkbook_contracts"
       ],
       "method_family": "ordinary_micropurchase"
-    },
-    {
-      "procurement_id": "procurement:contract:CT185620268807322",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT185620268807322",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT185620268807322:RONNETTE RILEY ARCHITECT:prime-vendor:2026-05-26"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2027-05-13",
-      "agency_id": null,
-      "agency_name": "Department of Citywide Administrative Services",
-      "short_title": "1.5 year NAE ADA Compliance",
-      "pin": "85626N0007001",
-      "contract_id": "CT185620268807322",
-      "contract_amount": 1500000,
-      "vendor_name": "RONNETTE RILEY ARCHITECT",
-      "official_url": null,
-      "selection_method_description": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Citywide Administrative Services · RONNETTE RILEY ARCHITECT · $1,500,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ]
     },
     {
       "procurement_id": "procurement:contract:CT185620268807419",

@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":60,"first_ordinal":101370,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":60,"first_ordinal":101369,"entries":[
+{"s":"NEW ALLIANCE ADONAI CHURCH","n":[["NEW ALLIANCE ADONAI CHURCH INC",1]],"x":{"irs":{"r":1,"i":["810989599"],"z":["11285"]}}},
 {"s":"NEW ALTERNATIVES FOR CHILDREN","n":[["NEW ALTERNATIVES FOR CHILDREN INC",18],["New Alternatives for Children Inc",14],["New Alternatives for Children, Inc.",8],["NEW ALTERNATIVES FOR CHILDREN INC.",3],["NEW ALTERNATIVES FOR CHILDREN  INC.",1],["New Alternatives for Children, Inc.,",1]],"x":{"ocp":{"r":26,"a":235149813.62,"l":"2026-06-30","c":26,"i":["20260624016","20260609047","20260601021","20230614146","20230609114"]},"cbr":{"r":5,"a":77498947.21,"l":"2026-06-23","i":["CT106820278800468","CT106820278800104","CT181620278800240","CT104020253067128","CT126020248807942"],"m":["Non-M/WBE"]},"ppt":{"r":9,"a":170889611.86,"l":"2026-06-23","c":9,"i":["CT1-068-20278800468","CT1-068-20278800104","CT1-068-20248800236","CT1-068-20248800090","CT1-068-20238800124"]},"cbv":{"r":3,"l":"2026-06-23","i":["CT106820278800468","CT106820278800104","CT181620278800240"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["NEW ALTERNATIVES FOR CHILDREN  INC."]},"irs":{"r":1,"i":["133149298"],"z":["10019"]}}},
 {"s":"NEW ALTERNATIVES FOR LGBT HOMELESS YOUTH","n":[["NEW ALTERNATIVES FOR LGBT HOMELESS YOUTH INC",1]],"x":{"irs":{"r":1,"i":["272151000"],"z":["10018"]}}},
 {"s":"NEW AMBASSADORS","n":[["NEW AMBASSADORS CORP",1]],"x":{"irs":{"r":1,"i":["823182665"],"z":["11218"]}}},
@@ -1575,6 +1576,5 @@
 {"s":"NEW YORK FARM VIABILITY INSTITUTE","n":[["NEW YORK FARM VIABILITY INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["134295807"],"z":["13209"]}}},
 {"s":"NEW YORK FARMERS","n":[["NEW YORK FARMERS INC",1]],"x":{"irs":{"r":1,"i":["136165656"],"z":["12545"]}}},
 {"s":"NEW YORK FEDERATION OF LAKE ASSOCIATION","n":[["NEW YORK FEDERATION OF LAKE ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["222529936"],"z":["13224"]}}},
-{"s":"NEW YORK FEDERATION OF SCHOOL","n":[["NEW YORK FEDERATION OF SCHOOL",1]],"x":{"irs":{"r":1,"i":["043702829"],"z":["10006"]}}},
-{"s":"NEW YORK FEMINIST ART INSTITUTE","n":[["NEW YORK FEMINIST ART INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["132975193"],"z":["10001"]}}}
+{"s":"NEW YORK FEDERATION OF SCHOOL","n":[["NEW YORK FEDERATION OF SCHOOL",1]],"x":{"irs":{"r":1,"i":["043702829"],"z":["10006"]}}}
 ]}

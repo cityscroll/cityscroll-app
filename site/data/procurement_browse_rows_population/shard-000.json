@@ -46484,38 +46484,6 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
-      "procurement_id": "procurement:contract:CT104020263034412",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263034412",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263034412:FUSING MARKETING SOLUTIONS INC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263034412",
-      "contract_amount": 25000,
-      "vendor_name": "FUSING MARKETING SOLUTIONS INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · FUSING MARKETING SOLUTIONS INC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263037013",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263037013",
       "procurement_stages": [
@@ -47188,70 +47156,6 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
-      "procurement_id": "procurement:contract:CT104020263045196",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263045196",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263045196:HIRE CAUSE INC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "NEGOTIATED SERVICES-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263045196",
-      "contract_amount": 25000,
-      "vendor_name": "HIRE CAUSE INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · HIRE CAUSE INC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263045552",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263045552",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263045552:CRITICAL SUPPLY LLC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263045552",
-      "contract_amount": 25000,
-      "vendor_name": "CRITICAL SUPPLY LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · CRITICAL SUPPLY LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263045575",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263045575",
       "procurement_stages": [
@@ -47316,70 +47220,6 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
-      "procurement_id": "procurement:contract:CT104020263046023",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046023",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263046023:P RAINEY CAREER AND WORKFORCE SOLUTIONS LLC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "COMPETITIVE GRANT-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263046023",
-      "contract_amount": 25000,
-      "vendor_name": "P RAINEY CAREER AND WORKFORCE SOLUTIONS LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · P RAINEY CAREER AND WORKFORCE SOLUTIONS LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263046057",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046057",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263046057:AGIRI LEARNING CONSULTANTS INC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263046057",
-      "contract_amount": 25000,
-      "vendor_name": "AGIRI LEARNING CONSULTANTS INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · AGIRI LEARNING CONSULTANTS INC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263046407",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046407",
       "procurement_stages": [
@@ -47404,38 +47244,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · BED OF NAILS-NAIL BAR LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263046415",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263046415",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263046415:EDUCATE LLC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "SOLE VENDOR-COMMODITIES",
-      "pin": null,
-      "contract_id": "CT104020263046415",
-      "contract_amount": 25000,
-      "vendor_name": "EDUCATE LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · EDUCATE LLC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -48180,102 +47988,6 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
-      "procurement_id": "procurement:contract:CT104020263049704",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263049704",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263049704:COLLABORATIVE FOR BETTER URBAN HEALTH LLC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263049704",
-      "contract_amount": 25000,
-      "vendor_name": "Collaborative For Better Urban Health LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · Collaborative For Better Urban Health LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263049705",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263049705",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263049705:SUCCESS IN MOTION 4U LLC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263049705",
-      "contract_amount": 25000,
-      "vendor_name": "SUCCESS IN MOTION 4U LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · SUCCESS IN MOTION 4U LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263049771",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263049771",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263049771:PER DEV PERCEPTUAL DEVELOPMENT CENTER:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "3 BIDS-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263049771",
-      "contract_amount": 25000,
-      "vendor_name": "PER DEV PERCEPTUAL DEVELOPMENT CENTER",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · PER DEV PERCEPTUAL DEVELOPMENT CENTER · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263049787",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263049787",
       "procurement_stages": [
@@ -48332,38 +48044,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · Urban Hope Inc · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263050046",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263050046",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263050046:FANTASTIC TOURS & TRAVEL:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263050046",
-      "contract_amount": 25000,
-      "vendor_name": "FANTASTIC TOURS & TRAVEL",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · FANTASTIC TOURS & TRAVEL · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -48500,134 +48180,6 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
-      "procurement_id": "procurement:contract:CT104020263050271",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263050271",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263050271:CARNEGIE HALL CORP:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "SOLE VENDOR-COMMODITIES",
-      "pin": null,
-      "contract_id": "CT104020263050271",
-      "contract_amount": 25000,
-      "vendor_name": "CARNEGIE HALL CORP",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · CARNEGIE HALL CORP · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263050623",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263050623",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263050623:KELEIDOSCOPE MULTI MEDIA LLC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263050623",
-      "contract_amount": 25000,
-      "vendor_name": "KELEIDOSCOPE MULTI MEDIA LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · KELEIDOSCOPE MULTI MEDIA LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263050731",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263050731",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263050731:IVEHEN MANAGEMENT INC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "MWBE-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263050731",
-      "contract_amount": 25000,
-      "vendor_name": "IVEHEN MANAGEMENT INC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · IVEHEN MANAGEMENT INC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263050733",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263050733",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263050733:COLLEGE BOARD:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "SOLE VENDOR-COMMODITIES",
-      "pin": null,
-      "contract_id": "CT104020263050733",
-      "contract_amount": 25000,
-      "vendor_name": "COLLEGE BOARD",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · COLLEGE BOARD · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263050757",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263050757",
       "procurement_stages": [
@@ -48716,38 +48268,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · ACCEPTOURTHANKS LLC · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263051021",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263051021",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263051021:EPS OPERATIONS LLC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "SOLE VENDOR-COMMODITIES",
-      "pin": null,
-      "contract_id": "CT104020263051021",
-      "contract_amount": 25000,
-      "vendor_name": "EPS OPERATIONS LLC",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · EPS OPERATIONS LLC · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -48852,70 +48372,6 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
-      "procurement_id": "procurement:contract:CT104020263051149",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263051149",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263051149:SONOVA USA INC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "NO PENDING INVOICES",
-      "pin": null,
-      "contract_id": "CT104020263051149",
-      "contract_amount": 25000,
-      "vendor_name": "Sonova USA Inc",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · Sonova USA Inc · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263051159",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263051159",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263051159:SONOVA USA INC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "NO PENDING INVOICES",
-      "pin": null,
-      "contract_id": "CT104020263051159",
-      "contract_amount": 25000,
-      "vendor_name": "Sonova USA Inc",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · Sonova USA Inc · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263051165",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263051165",
       "procurement_stages": [
@@ -48948,102 +48404,6 @@
       "method_family": "ordinary_5_plus_10"
     },
     {
-      "procurement_id": "procurement:contract:CT104020263051173",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263051173",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263051173:SONOVA USA INC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "NO PENDING INVOICES",
-      "pin": null,
-      "contract_id": "CT104020263051173",
-      "contract_amount": 25000,
-      "vendor_name": "Sonova USA Inc",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · Sonova USA Inc · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263051205",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263051205",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263051205:SONOVA USA INC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "SOLE VENDOR-COMMODITIES",
-      "pin": null,
-      "contract_id": "CT104020263051205",
-      "contract_amount": 25000,
-      "vendor_name": "Sonova USA Inc",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · Sonova USA Inc · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263051227",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263051227",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263051227:SONOVA USA INC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "SOLE VENDOR-COMMODITIES",
-      "pin": null,
-      "contract_id": "CT104020263051227",
-      "contract_amount": 25000,
-      "vendor_name": "Sonova USA Inc",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · Sonova USA Inc · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
       "procurement_id": "procurement:contract:CT104020263051314",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263051314",
       "procurement_stages": [
@@ -49068,38 +48428,6 @@
         "registered"
       ],
       "additional_description_1": "Department of Education · CWK NETWORK, INC. · $25,000",
-      "notice_evidence": [],
-      "source_system": "shared_procurement_read_model",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "method_family": "ordinary_5_plus_10"
-    },
-    {
-      "procurement_id": "procurement:contract:CT104020263051375",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020263051375",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT104020263051375:TOOLKIT TUTORS INC:prime-vendor:2025-11-14"
-      ],
-      "start_date": "2025-11-14",
-      "end_date": "2026-06-30",
-      "agency_id": null,
-      "agency_name": "Department of Education",
-      "short_title": "3 BIDS-SERVICES",
-      "pin": null,
-      "contract_id": "CT104020263051375",
-      "contract_amount": 25000,
-      "vendor_name": "Toolkit Tutors Inc",
-      "official_url": null,
-      "selection_method_description": "SMALL PURCHASE - WRITTEN",
-      "process_states": [
-        "registered"
-      ],
-      "additional_description_1": "Department of Education · Toolkit Tutors Inc · $25,000",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -250652,6 +249980,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CT106820278800570",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106820278800570",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT106820278800570:SCO FAMILY OF SERVICES:prime-vendor:2026-07-10"
+      ],
+      "start_date": "2026-11-15",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Administration for Children's Services",
+      "short_title": "Negotiated Acquisition Extension for Alternative to Placemen",
+      "pin": "06826N0027001",
+      "contract_id": "CT106820278800570",
+      "contract_amount": 741461.03,
+      "vendor_name": "SCO FAMILY OF SERVICES",
+      "official_url": null,
+      "selection_method_description": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Administration for Children's Services · SCO FAMILY OF SERVICES · $741,461.03",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT106820278800571",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT106820278800571",
       "procurement_stages": [
@@ -250660,6 +250019,7 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT106820278800571:SCO FAMILY OF SERVICES:prime-vendor:2026-07-23",
         "city_record:20260724020",
         "passport_public_contracts:contract:06826N0026001:5721602"
       ],
@@ -250694,7 +250054,8 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts"
+        "passport_public_contracts",
+        "checkbook_contracts"
       ]
     },
     {
@@ -250706,6 +250067,7 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT106820278800572:JEWISH BOARD OF FAMILY AND CHILDREN'S SERVICES INC:prime-vendor:2026-06-20",
         "city_record:20260622056",
         "passport_public_contracts:contract:06826N0028001:5721605"
       ],
@@ -250740,7 +250102,8 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts"
+        "passport_public_contracts",
+        "checkbook_contracts"
       ]
     },
     {
@@ -346605,7 +345968,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT107220268801547:EL DIARIO LLC:prime-vendor:2026-01-28",
         "city_record:20260129008",
         "passport_public_contracts:contract:07225U0008001:5474413"
       ],
@@ -346640,8 +346002,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ]
     },
     {
@@ -346653,7 +346014,6 @@
       ],
       "primary_stage": "registered",
       "source_observation_refs": [
-        "checkbook_contracts:contract:registered:CT107220268801679:ALPERTS NEWSPAPER DELIVERY SERVICE:prime-vendor:2026-03-13",
         "city_record:20260316010",
         "passport_public_contracts:contract:07226U0002001:5491509"
       ],
@@ -346688,8 +346048,7 @@
       "source_system": "shared_procurement_read_model",
       "source_systems": [
         "city_record",
-        "passport_public_contracts",
-        "checkbook_contracts"
+        "passport_public_contracts"
       ]
     },
     {
@@ -516735,6 +516094,650 @@
           "contact_name": null,
           "start_date": "2024-06-24",
           "href": "/notices/20240615109"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800142",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800142",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240620112",
+        "passport_public_contracts:contract:81624N0012008:5160270"
+      ],
+      "request_id": "20240620112",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing",
+      "pin": "81624N0012008",
+      "contract_id": "CT181620258800142",
+      "contract_amount": 636361,
+      "vendor_name": "Camba Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Camba Inc. · $636,361",
+      "notice_evidence": [
+        {
+          "request_id": "20240620112",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-26",
+          "href": "/notices/20240620112"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800143",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800143",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240610108",
+        "passport_public_contracts:contract:81624N0012009:5160271"
+      ],
+      "request_id": "20240610108",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOWPA EXTENSION",
+      "pin": "81624N0012009",
+      "contract_id": "CT181620258800143",
+      "contract_amount": 525421,
+      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $525,421",
+      "notice_evidence": [
+        {
+          "request_id": "20240610108",
+          "type_of_notice_description": "Award",
+          "short_title": "HOWPA EXTENSION",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-14",
+          "href": "/notices/20240610108"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800144",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800144",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240610107",
+        "passport_public_contracts:contract:81624N0012010:5160272"
+      ],
+      "request_id": "20240610107",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOWPA EXTENSION",
+      "pin": "81624N0012010",
+      "contract_id": "CT181620258800144",
+      "contract_amount": 632080,
+      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $632,080",
+      "notice_evidence": [
+        {
+          "request_id": "20240610107",
+          "type_of_notice_description": "Award",
+          "short_title": "HOWPA EXTENSION",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-14",
+          "href": "/notices/20240610107"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800145",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800145",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240603107",
+        "passport_public_contracts:contract:81624N0012011:5160273"
+      ],
+      "request_id": "20240603107",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOWPA EXTENSION",
+      "pin": "81624N0012011",
+      "contract_id": "CT181620258800145",
+      "contract_amount": 276412,
+      "vendor_name": "Catholic Charities Neighborhood Services Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Catholic Charities Neighborhood Services Inc. · $276,412",
+      "notice_evidence": [
+        {
+          "request_id": "20240603107",
+          "type_of_notice_description": "Award",
+          "short_title": "HOWPA EXTENSION",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-07",
+          "href": "/notices/20240603107"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800147",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800147",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240618110",
+        "passport_public_contracts:contract:81624N0012012:5160274"
+      ],
+      "request_id": "20240618110",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population A) #1S",
+      "pin": "81624N0012012",
+      "contract_id": "CT181620258800147",
+      "contract_amount": 647675,
+      "vendor_name": "Institute for Community Living Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Institute for Community Living Inc. · $647,675",
+      "notice_evidence": [
+        {
+          "request_id": "20240618110",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population A) #1S",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-25",
+          "href": "/notices/20240618110"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800148",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800148",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240620111",
+        "passport_public_contracts:contract:81624N0012013:5160275"
+      ],
+      "request_id": "20240620111",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing",
+      "pin": "81624N0012013",
+      "contract_id": "CT181620258800148",
+      "contract_amount": 1197379,
+      "vendor_name": "Iris House: A Center for Women Living With HIV, Inc",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Iris House: A Center for Women Living With HIV, Inc · $1,197,379",
+      "notice_evidence": [
+        {
+          "request_id": "20240620111",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-26",
+          "href": "/notices/20240620111"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800149",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800149",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240613114",
+        "passport_public_contracts:contract:81623P0013003:5102764"
+      ],
+      "request_id": "20240613114",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Early Intervention Respite Services",
+      "pin": "81623P0013003",
+      "contract_id": "CT181620258800149",
+      "contract_amount": 1826438.5,
+      "vendor_name": "LETS START WITH PLAY LLC",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · LETS START WITH PLAY LLC · $1,826,438.5",
+      "notice_evidence": [
+        {
+          "request_id": "20240613114",
+          "type_of_notice_description": "Award",
+          "short_title": "Early Intervention Respite Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-20",
+          "href": "/notices/20240613114"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800150",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800150",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240627108",
+        "passport_public_contracts:contract:81624N0012014:5160276"
+      ],
+      "request_id": "20240627108",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population A) #1S",
+      "pin": "81624N0012014",
+      "contract_id": "CT181620258800150",
+      "contract_amount": 642477,
+      "vendor_name": "Praxis Housing Initiatives, Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Praxis Housing Initiatives, Inc. · $642,477",
+      "notice_evidence": [
+        {
+          "request_id": "20240627108",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population A) #1S",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-03",
+          "href": "/notices/20240627108"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800151",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800151",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240611104",
+        "passport_public_contracts:contract:81624N0013003:5154493"
+      ],
+      "request_id": "20240611104",
+      "start_date": "2024-07-01",
+      "end_date": "2024-12-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population A)",
+      "pin": "81624N0013003",
+      "contract_id": "CT181620258800151",
+      "contract_amount": 363837,
+      "vendor_name": "Project Hospitality Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Project Hospitality Inc. · $363,837",
+      "notice_evidence": [
+        {
+          "request_id": "20240611104",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population A)",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-17",
+          "href": "/notices/20240611104"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800152",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800152",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240607103",
+        "passport_public_contracts:contract:81624N0012015:5160277"
+      ],
+      "request_id": "20240607103",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population B) #1SC",
+      "pin": "81624N0012015",
+      "contract_id": "CT181620258800152",
+      "contract_amount": 745518,
+      "vendor_name": "Project Hospitality Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Project Hospitality Inc. · $745,518",
+      "notice_evidence": [
+        {
+          "request_id": "20240607103",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population B) #1SC",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-13",
+          "href": "/notices/20240607103"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800153",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800153",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240603106",
+        "passport_public_contracts:contract:81623P0013001:5102765"
+      ],
+      "request_id": "20240603106",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Respite Services for Specialized Care",
+      "pin": "81623P0013001",
+      "contract_id": "CT181620258800153",
+      "contract_amount": 1826438.5,
+      "vendor_name": "REHOBOTH CARE INC",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · REHOBOTH CARE INC · $1,826,438.5",
+      "notice_evidence": [
+        {
+          "request_id": "20240603106",
+          "type_of_notice_description": "Award",
+          "short_title": "Respite Services for Specialized Care",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-07",
+          "href": "/notices/20240603106"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800154",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800154",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240603105",
+        "passport_public_contracts:contract:81623P0013002:5101724"
+      ],
+      "request_id": "20240603105",
+      "start_date": "2024-07-01",
+      "end_date": "2033-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Early Intervention Respite Service, in Home Services",
+      "pin": "81623P0013002",
+      "contract_id": "CT181620258800154",
+      "contract_amount": 1660500,
+      "vendor_name": "REHOBOTH CARE INC",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · REHOBOTH CARE INC · $1,660,500",
+      "notice_evidence": [
+        {
+          "request_id": "20240603105",
+          "type_of_notice_description": "Award",
+          "short_title": "Early Intervention Respite Service, in Home Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-07",
+          "href": "/notices/20240603105"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800155",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800155",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240703111",
+        "passport_public_contracts:contract:81624N0012016:5160278"
+      ],
+      "request_id": "20240703111",
+      "start_date": "2024-07-01",
+      "end_date": "2025-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing (Population G) #1S",
+      "pin": "81624N0012016",
+      "contract_id": "CT181620258800155",
+      "contract_amount": 649009,
+      "vendor_name": "Services for the Underserved Inc.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Services for the Underserved Inc. · $649,009",
+      "notice_evidence": [
+        {
+          "request_id": "20240703111",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing (Population G) #1S",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-10",
+          "href": "/notices/20240703111"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620258800156",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620258800156",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240717103",
+        "passport_public_contracts:contract:81624N0012017:5160279"
+      ],
+      "request_id": "20240717103",
+      "start_date": "2024-07-01",
+      "end_date": "2025-01-01",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "HOPWA Permanent Supportive Housing",
+      "pin": "81624N0012017",
+      "contract_id": "CT181620258800156",
+      "contract_amount": 596461.5,
+      "vendor_name": "St. Nicks Alliance Corp.",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition Extension",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · St. Nicks Alliance Corp. · $596,461.5",
+      "notice_evidence": [
+        {
+          "request_id": "20240717103",
+          "type_of_notice_description": "Award",
+          "short_title": "HOPWA Permanent Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-23",
+          "href": "/notices/20240717103"
         }
       ],
       "source_system": "shared_procurement_read_model",

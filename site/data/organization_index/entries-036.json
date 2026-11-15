@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":36,"first_ordinal":60638,"entries":[
-{"s":"GOLDEN PLATTER","n":[["GOLDEN PLATTER",1]],"x":{"ocp":{"r":1,"a":236388.1,"l":"2012-06-14","i":["20120607017"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":36,"first_ordinal":60639,"entries":[
 {"s":"GOLDEN PLATTER FOODS","n":[["GOLDEN PLATTER FOODS INC",41],["Golden Platter Foods, Inc.",28],["Golden Platter Foods Inc.",12],["Golden  Platter Foods, Inc.",3],["Golden Platter Foods Inc,",1]],"x":{"ocp":{"r":79,"a":44937166.03,"l":"2025-01-22","c":79,"i":["20250114016","20230719120","20230718104","20210712172","20210628137"]},"cbr":{"r":3,"a":202503,"l":"2025-07-15","i":["MA104020269670710","MA104020259577431","MA185720258804827"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":766900,"l":"2025-01-09","i":["MA1-857-20258804827","MA1-857-20248801282"]},"dbe":{"r":1,"i":["GOLDEN PLATTER FOODS INC"]}}},
 {"s":"GOLDEN PLATTER FOODS INC C/O PLATINUM FUNDING","n":[["Golden Platter Foods Inc. c/o Platinum Funding Corp.",8],["Golden Platter Foods Inc.,C/O Platinum Funding Corp.",3],["Golden Platter Foods Inc.C/O Platinum Funding Corp.",2],["Golden Platter Foods Inc., C/O Platinum Funding Corp.",1]],"x":{"ocp":{"r":14,"a":3553293.67,"l":"2005-07-05","c":14,"i":["20050627030","20050609016","20050517019","20040622020","20040616005"]}}},
 {"s":"GOLDEN PROJECT RESCUE","n":[["GOLDEN PROJECT RESCUE INC",1]],"x":{"irs":{"r":1,"i":["994884720"],"z":["10507"]}}},
@@ -1652,5 +1651,6 @@
 {"s":"GREATER SOY PENTECOSTAL OUTREACH MINISTRIES","n":[["GREATER SOY PENTECOSTAL OUTREACH MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["113345348"],"z":["11206"]}}},
 {"s":"GREATER SPRINGFIELD COMMUNITY CHURCH","n":[["GREATER SPRINGFIELD COMMUNITY CHURCH INC",1]],"x":{"irs":{"r":1,"i":["112299728"],"z":["11434"]}}},
 {"s":"GREATER SPRINGFIELD DEVELOPMENT","n":[["GREATER SPRINGFIELD DEVELOPMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["811668759"],"z":["11434"]}}},
-{"s":"GREATER ST JOHNS BAPTIST CHURCH","n":[["GREATER ST JOHNS BAPTIST CHURCH",1]],"x":{"irs":{"r":1,"i":["113107075"],"z":["11412"]}}}
+{"s":"GREATER ST JOHNS BAPTIST CHURCH","n":[["GREATER ST JOHNS BAPTIST CHURCH",1]],"x":{"irs":{"r":1,"i":["113107075"],"z":["11412"]}}},
+{"s":"GREATER ST JOHNS COMMUNITY CHURCH","n":[["GREATER ST JOHNS COMMUNITY CHURCH",1]],"x":{"irs":{"r":1,"i":["510189415"],"z":["11207"]}}}
 ]}

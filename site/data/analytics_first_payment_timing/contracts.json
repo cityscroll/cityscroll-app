@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.analytics_first_payment_timing_contracts.v1",
-  "snapshot_date": "2026-11-13T14:08:23.774Z",
-  "contracts_snapshot_date": "2026-11-13",
-  "row_count": 10560,
+  "snapshot_date": "2026-11-15T14:19:36.637Z",
+  "contracts_snapshot_date": "2026-11-15",
+  "row_count": 10561,
   "rows": [
     {
       "prime_contract_id": "CT106820260000121",
@@ -85743,6 +85743,15 @@
       "agency": "Health and Hospitals Corporation",
       "start_date": "2026-03-31",
       "registration_date": "2026-10-19",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CT181920271405866",
+      "agency": "Health and Hospitals Corporation",
+      "start_date": "2026-01-13",
+      "registration_date": "2026-11-12",
       "first_payment_date": null,
       "days_to_first_payment": null,
       "state": "no_payment_in_payment_years"

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":16,"first_ordinal":26616,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":16,"first_ordinal":26616,"entries":[
 {"s":"CENTRAL HOUSING DEVELOPMENT FUND","n":[["CENTRAL HOUSING DEVELOPMENT FUND COMPANY INC",1]],"x":{"irs":{"r":1,"i":["141756748"],"z":["12203"]}}},
 {"s":"CENTRAL HUDSON BAPTIST ASSOCIATION","n":[["CENTRAL HUDSON BAPTIST ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["300122210"],"z":["12550"]}}},
 {"s":"CENTRAL HUDSON GAS AND ELECTRIC","n":[["CENTRAL HUDSON GAS AND ELECTRIC CORP",4],["Central Hudson Gas and Electric Corp.",2]],"x":{"ocp":{"r":2,"a":2545082,"l":"2019-08-13","i":["20190806016","20161006025"]},"cbr":{"r":3,"a":8696000,"l":"2026-07-08","i":["CT185620275000002","CT185620265000066","CT185620255000034"],"m":["Individuals and Others"]},"cbv":{"r":1,"l":"2026-07-08","i":["CT185620275000002"],"m":["Individuals and Others"]}}},

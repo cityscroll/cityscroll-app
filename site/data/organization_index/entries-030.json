@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":30,"first_ordinal":50338,"entries":[
-{"s":"FACES OF CHANGE FOUNDATION","n":[["FACES OF CHANGE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["853305435"],"z":["11434"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":30,"first_ordinal":50339,"entries":[
 {"s":"FACES OF HARLEM","n":[["FACES OF HARLEM",1]],"x":{"irs":{"r":1,"i":["871808328"],"z":["10026"]}}},
 {"s":"FACES OF NOTTINGHAM","n":[["FACES OF NOTTINGHAM INC",1]],"x":{"irs":{"r":1,"i":["463212173"],"z":["13224"]}}},
 {"s":"FACES OF THE FUTURE EARLY LEARNING CENTER","n":[["FACES OF THE FUTURE EARLY LEARNING CENTER LLC",5]],"x":{"cbr":{"r":2,"a":3061974,"l":"2026-10-06","i":["CT104020279759652","CT104020279759797"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-10-06","i":["CT104020279759652","CT104020279759797"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["FACES OF THE FUTURE EARLY LEARNING CENTER LLC"]}}},
@@ -728,7 +727,7 @@
 {"s":"FANTASTIC FINISHES","n":[["Fantastic Finishes of New York, Inc.",1]],"x":{"dol":{"r":1,"i":["25-65TDG-CR"],"z":["11507"]}}},
 {"s":"FANTASTIC FRIENDS OF WNY","n":[["FANTASTIC FRIENDS OF WNY INC",1]],"x":{"irs":{"r":1,"i":["823413187"],"z":["14127"]}}},
 {"s":"FANTASTIC RENOVATION CONSTRUCTION","n":[["Fantastic Renovation & Construction Inc.",1]],"x":{"sbs":{"r":1,"i":["372306"],"z":["11208"],"p":["MBE","WBE"]}}},
-{"s":"FANTASTIC TOURS TRAVEL","n":[["FANTASTIC TOURS & TRAVEL",12],["FANTASTIC TOURS & TRAVEL  INC.",1],["Fantastic Tours & Travel, Inc.",1]],"x":{"cbr":{"r":8,"a":200000,"l":"2026-02-02","c":8,"i":["CT104020263091152","CT104020263090369","CT104020263059858","CT104020263050046","CT104020253129230"],"m":["Women (Non-Minority)"]},"cbv":{"r":4,"l":"2026-02-02","i":["CT104020263091152","CT104020263090369","CT104020263059858","CT104020263050046"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["FANTASTIC TOURS & TRAVEL  INC."]},"sbs":{"r":1,"i":["12413"],"z":["11725"],"p":["WBE"]}}},
+{"s":"FANTASTIC TOURS TRAVEL","n":[["FANTASTIC TOURS & TRAVEL",11],["FANTASTIC TOURS & TRAVEL  INC.",1],["Fantastic Tours & Travel, Inc.",1]],"x":{"cbr":{"r":8,"a":200000,"l":"2026-02-02","c":8,"i":["CT104020263091152","CT104020263090369","CT104020263059858","CT104020263050046","CT104020253129230"],"m":["Women (Non-Minority)"]},"cbv":{"r":3,"l":"2026-02-02","i":["CT104020263091152","CT104020263090369","CT104020263059858"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["FANTASTIC TOURS & TRAVEL  INC."]},"sbs":{"r":1,"i":["12413"],"z":["11725"],"p":["WBE"]}}},
 {"s":"FANTASY DREAM LIFE","n":[["FANTASY DREAM LIFE LLC",1]],"x":{"sbs":{"r":1,"i":["390618"],"z":["11421"],"p":["MBE","WBE"]}}},
 {"s":"FANTASY FOUNTAIN FUND","n":[["FANTASY FOUNTAIN FUND INC",1]],"x":{"irs":{"r":1,"i":["133356903"],"z":["10023"]}}},
 {"s":"FANTIN CONSTRUCTION GROUP","n":[["Fantin Construction Group LLC",1]],"x":{"dol":{"r":1,"i":["25-6HLDR-CR"],"z":["18040"]}}},
@@ -1692,5 +1691,6 @@
 {"s":"FINERMAN FOUNDATION","n":[["FINERMAN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["237024610"],"z":["10023"]}}},
 {"s":"FINES AND FEES JUSTICE CENTER","n":[["FINES AND FEES JUSTICE CENTER INC",1]],"x":{"irs":{"r":1,"i":["920642786"],"z":["10013"]}}},
 {"s":"FINESSE CREATIONS","n":[["FINESSE CREATIONS INC",114],["Finesse Creations, Inc.",51],["Finesse Creations Inc.",36],["Finesse Creations Inc",7],["Finesse Creations",5],["Finesse Creations Inc,",3],["Finesse Creations, Inc",2],["Finesse Creations, Inc.,",1]],"x":{"ocp":{"r":104,"a":28266659.01,"l":"2026-10-21","c":104,"i":["20261015012","20260625045","20260602049","20260519045","20260422014"]},"cbr":{"r":52,"a":8265418.43,"l":"2026-11-09","c":52,"i":["CT182620278803741","CT105720278803547","CT181620278803217","CT105620271404216","CT105620271402057"],"m":["Women (Non-Minority)"]},"ppt":{"r":39,"a":10970765.82,"l":"2026-06-25","c":39,"i":["MA1-857-20278801250","CT1-826-20268808157","CT1-827-20268807712","CT1-056-20268806619","CT1-826-20268806687"]},"cbv":{"r":22,"l":"2026-11-05","c":22,"i":["CT105720278803547","CT181620278803217","CT105620271404216","CT105620271402057","MA185720278801250"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["FINESSE CREATIONS INC"]},"sbs":{"r":1,"i":["82"],"z":["11210"],"p":["WBE"]}}},
-{"s":"FINEST CESSPOOL SEWER DRAIN","n":[["FINEST CESSPOOL SEWER & DRAIN INC",1]],"x":{"dol":{"r":1,"i":["24-648NH-CR"],"z":["11763"]}}}
+{"s":"FINEST CESSPOOL SEWER DRAIN","n":[["FINEST CESSPOOL SEWER & DRAIN INC",1]],"x":{"dol":{"r":1,"i":["24-648NH-CR"],"z":["11763"]}}},
+{"s":"FINEST CHRISTIAN FOUNDATION","n":[["FINEST CHRISTIAN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["995062621"],"z":["11354"]}}}
 ]}

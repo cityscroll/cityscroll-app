@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":13,"first_ordinal":21601,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":13,"first_ordinal":21601,"entries":[
 {"s":"BROOKLYN USA ATHLETIC ASSOCIATION","n":[["Brooklyn USA Athletic Association",1]],"x":{"ocp":{"r":1,"a":0,"l":"2004-10-08","i":["20041012028"]}}},
 {"s":"BROOKLYN USA SPORTS ASSN","n":[["BROOKLYN USA SPORTS ASSN INC",1]],"x":{"irs":{"r":1,"i":["811070700"],"z":["11217"]}}},
 {"s":"BROOKLYN VETS 4 KIDS","n":[["BROOKLYN VETS 4 KIDS INC",1]],"x":{"irs":{"r":1,"i":["823080186"],"z":["11784"]}}},

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":85,"first_ordinal":143382,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":85,"first_ordinal":143382,"entries":[
 {"s":"THE POETS HOUSE","n":[["The Poets House, Inc.",1]],"x":{"ocp":{"r":1,"a":2250000,"l":"2008-12-19","i":["20081211027"]}}},
 {"s":"THE POHLY TURAJ FAMILY FOUNDATION","n":[["THE POHLY TURAJ FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["900113039"],"z":["10036"]}}},
 {"s":"THE POINT COMMUNITY DEVELOP- MENT","n":[["THE POINT COMMUNITY DEVELOP- MENT CORP",3]],"x":{"cbr":{"r":2,"a":40000,"l":"2026-04-30","i":["CT181620261415063","CT181620251409781"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-04-30","i":["CT181620261415063"],"m":["Non-M/WBE"]}}},

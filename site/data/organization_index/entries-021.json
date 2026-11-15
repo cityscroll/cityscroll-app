@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":21,"first_ordinal":35140,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":21,"first_ordinal":35140,"entries":[
 {"s":"CONGREGATION BETH YECHIL","n":[["CONGREGATION BETH YECHIL INC",1]],"x":{"irs":{"r":1,"i":["133976721"],"z":["10952"]}}},
 {"s":"CONGREGATION BETH YEHUDA","n":[["CONGREGATION BETH YEHUDA",1]],"x":{"irs":{"r":1,"i":["133007845"],"z":["10314"]}}},
 {"s":"CONGREGATION BETH YESHAYE","n":[["CONGREGATION BETH YESHAYE",1]],"x":{"irs":{"r":1,"i":["510188129"],"z":["11211"]}}},

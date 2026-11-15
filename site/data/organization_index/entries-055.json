@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":55,"first_ordinal":93026,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":55,"first_ordinal":93026,"entries":[
 {"s":"MCNEIL SALES SERVICE","n":[["MCNEIL SALES & SERVICE INC",1],["MCNEIL SALES & SERVICE INC.",1]],"x":{"cbr":{"r":1,"a":229000,"l":"2024-09-24","i":["CT181920251403182"],"m":["Non-M/WBE"]},"dol":{"r":1,"i":["25-641R7-CR"],"z":["08691"]}}},
 {"s":"MCNEILUS FINANCIAL INC DBA MCNEILUS TRUCK AND MANUFACTURING","n":[["McNeilus Financial Inc DBA McNeilus Truck and Manufacturing",2]],"x":{"ocp":{"r":2,"a":1375000,"l":"2023-04-06","i":["20230331103","20171016006"]}}},
 {"s":"MCNEILUS FINANCIAL INC DBA MCNEILUS TRUCK AND MFG","n":[["MCNEILUS FINANCIAL INC. DBA MCNEILUS TRUCK  and  MFG COMPANY",1]],"x":{"ocp":{"r":1,"a":547500,"l":"2012-10-01","i":["20120924001"]}}},

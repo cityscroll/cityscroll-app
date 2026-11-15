@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":62,"first_ordinal":104522,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":62,"first_ordinal":104521,"entries":[
+{"s":"NGWA NATIONAL ASSOCIATION INC NORTH NEW YORK CHAPTER","n":[["NGWA NATIONAL ASSOCIATION INC NORTH NEW YORK CHAPTER",1]],"x":{"irs":{"r":1,"i":["562283274"],"z":["10573"]}}},
 {"s":"NGWA YOUNG PROFESSIONALS","n":[["NGWA YOUNG PROFESSIONALS INCORPORATED",1]],"x":{"irs":{"r":1,"i":["454535958"],"z":["10469"]}}},
 {"s":"NH NETWORKING CONCEPTS","n":[["Nh Networking Concepts, LLC",1]],"x":{"sbs":{"r":1,"i":["368608"],"z":["11434"],"p":["MBE","WBE"]}}},
 {"s":"NHC FOUNDATION","n":[["NHC FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["141730634"],"z":["12759"]}}},
@@ -1721,6 +1722,5 @@
 {"s":"NORTHERN WESTCHESTER KOREAN CHURCH","n":[["NORTHERN WESTCHESTER KOREAN CHURCH INC",1]],"x":{"irs":{"r":1,"i":["133385110"],"z":["11354"]}}},
 {"s":"NORTHERN WESTCHESTER REALTY HOLDING","n":[["NORTHERN WESTCHESTER REALTY HOLDING CORP",1]],"x":{"irs":{"r":1,"i":["912134215"],"z":["11590"]}}},
 {"s":"NORTHERN WESTCHESTER SWIM CONFERENCE","n":[["NORTHERN WESTCHESTER SWIM CONFERENCE INC",1]],"x":{"irs":{"r":1,"i":["133715386"],"z":["10570"]}}},
-{"s":"NORTHERN WOODSIDE COALITION","n":[["NORTHERN WOODSIDE COALITION INC",1]],"x":{"irs":{"r":1,"i":["113029912"],"z":["11377"]}}},
-{"s":"NORTHERN ZONE ASSOCIATION FOR COUNSELORS AND DEVELOPMENT","n":[["NORTHERN ZONE ASSOCIATION FOR COUNSELORS AND DEVELOPMENT INC",1]],"x":{"irs":{"r":1,"i":["273035299"],"z":["13617"]}}}
+{"s":"NORTHERN WOODSIDE COALITION","n":[["NORTHERN WOODSIDE COALITION INC",1]],"x":{"irs":{"r":1,"i":["113029912"],"z":["11377"]}}}
 ]}

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":49,"first_ordinal":82734,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":49,"first_ordinal":82734,"entries":[
 {"s":"KUNDLAS CONSULTING GROUP","n":[["Kundlas Consulting Group LLC",1]],"x":{"sbs":{"r":1,"i":["397185"],"z":["11420"],"p":["MBE"]}}},
 {"s":"KUNDUP DHARMA CENTER","n":[["KUNDUP DHARMA CENTER INC",1]],"x":{"irs":{"r":1,"i":["332119246"],"z":["11379"]}}},
 {"s":"KUNG FU FOR A BETTER LIFE","n":[["KUNG FU FOR A BETTER LIFE INC",1]],"x":{"irs":{"r":1,"i":["201374560"],"z":["10954"]}}},
@@ -649,7 +649,7 @@
 {"s":"LADY JACKS SWIM BOOSTER","n":[["LADY JACKS SWIM BOOSTER",1]],"x":{"irs":{"r":1,"i":["863685277"],"z":["14120"]}}},
 {"s":"LADY LANCER BASKETBALL BOOSTER CLUB","n":[["LADY LANCER BASKETBALL BOOSTER CLUB",1]],"x":{"irs":{"r":1,"i":["423919172"],"z":["13039"]}}},
 {"s":"LADY LEGENDS LEAGUE","n":[["LADY LEGENDS LEAGUE INC",1]],"x":{"irs":{"r":1,"i":["333703685"],"z":["10309"]}}},
-{"s":"LADY LIBERTY CONTRACTING","n":[["LADY LIBERTY CONTRACTING CORP",9],["Lady Liberty Contracting Corp.",3],["Lady Liberty Contracting, Corp.",1]],"x":{"ocp":{"r":2,"a":4058720,"l":"2025-09-19","i":["20250915011","20250605029"]},"cbr":{"r":5,"a":5668660,"l":"2025-09-30","i":["CT105620261402971","CT182620268802066","CT182620268802145","CT181620268800443","CT105620251404546"],"m":["Women (Non-Minority)"]},"ppt":{"r":2,"a":4058720,"l":"2025-09-12","i":["CT1-826-20268802145","CT1-816-20268800443"]},"cbv":{"r":1,"l":"2025-09-17","i":["CT182620268802066"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["LADY LIBERTY CONTRACTING CORP"]},"sbs":{"r":1,"i":["13849"],"z":["11232"],"p":["WBE"]},"dol":{"r":1,"i":["24-64NQ1-CR"],"z":["11232"]}}},
+{"s":"LADY LIBERTY CONTRACTING","n":[["LADY LIBERTY CONTRACTING CORP",8],["Lady Liberty Contracting Corp.",3],["Lady Liberty Contracting, Corp.",1]],"x":{"ocp":{"r":2,"a":4058720,"l":"2025-09-19","i":["20250915011","20250605029"]},"cbr":{"r":5,"a":5668660,"l":"2025-09-30","i":["CT105620261402971","CT182620268802066","CT182620268802145","CT181620268800443","CT105620251404546"],"m":["Women (Non-Minority)"]},"ppt":{"r":2,"a":4058720,"l":"2025-09-12","i":["CT1-826-20268802145","CT1-816-20268800443"]},"dbe":{"r":1,"i":["LADY LIBERTY CONTRACTING CORP"]},"sbs":{"r":1,"i":["13849"],"z":["11232"],"p":["WBE"]},"dol":{"r":1,"i":["24-64NQ1-CR"],"z":["11232"]}}},
 {"s":"LADY LION S LACROSSE CLUB","n":[["LADY LION S LACROSSE CLUB INC",1]],"x":{"irs":{"r":1,"i":["932244575"],"z":["13634"]}}},
 {"s":"LADY MITZ FOUNDATION","n":[["LADY MITZ FOUNDATION",1]],"x":{"irs":{"r":1,"i":["202930696"],"z":["11743"]}}},
 {"s":"LADY ON A MISSION","n":[["Lady on a Mission LLC.",1]],"x":{"sbs":{"r":1,"i":["13852"],"z":["11216"],"p":["MBE","WBE"]}}},

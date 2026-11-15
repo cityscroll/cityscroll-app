@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":70,"first_ordinal":118099,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":70,"first_ordinal":118098,"entries":[
+{"s":"QUEENS COUNTY ST PATRICKS DAY PARADE AND CULTURAL COMMITTEE","n":[["QUEENS COUNTY ST PATRICKS DAY PARADE AND CULTURAL COMMITTEE INC",1]],"x":{"irs":{"r":1,"i":["550852671"],"z":["11693"]}}},
 {"s":"QUEENS CREW PRODUCTIONS","n":[["QUEENS CREW PRODUCTIONS",1]],"x":{"irs":{"r":1,"i":["421800726"],"z":["11432"]}}},
 {"s":"QUEENS DAUGHTERS DAY CARE CENTER","n":[["QUEENS DAUGHTERS DAY CARE CENTER INCORPORATED",1]],"x":{"irs":{"r":1,"i":["132735891"],"z":["10701"]}}},
 {"s":"QUEENS DEVELOPMENT GROUP","n":[["QUEENS DEVELOPMENT GROUP LLC",1]],"x":{"dbe":{"r":1,"i":["QUEENS DEVELOPMENT GROUP LLC"]}}},
@@ -1731,6 +1732,5 @@
 {"s":"RECYCLING EQUIPMENT SERVICE","n":[["Recycling Equipment Service Corp.",2]],"x":{"ocp":{"r":2,"a":825000,"l":"2014-08-04","i":["20140728023","20061103022"]}}},
 {"s":"RECYCLING EQUIPMENT SERVICES","n":[["RECYCLING EQUIPMENT SERVICES CORPORATION",1]],"x":{"dbe":{"r":1,"i":["RECYCLING EQUIPMENT SERVICES CORPORATION"]}}},
 {"s":"RECYCLING EQUIPMENT SVC","n":[["RECYCLING EQUIPMENT SVC CORP",2],["Recycling Equipment Svc Corp",1]],"x":{"ocp":{"r":1,"a":251612,"l":"2004-04-22","i":["20040415011"]},"cbr":{"r":1,"a":100000,"l":"2026-02-06","i":["CT182720261410486"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-02-06","i":["CT182720261410486"],"m":["Non-M/WBE"]}}},
-{"s":"RECYCLING THE HAMPTONS","n":[["RECYCLING THE HAMPTONS INC",1]],"x":{"irs":{"r":1,"i":["464049900"],"z":["11937"]}}},
-{"s":"RED APPLE CHILD DEVELOPMENT CENTER","n":[["Red Apple Child Development Center",2]],"x":{"ocp":{"r":2,"a":3372395,"l":"2006-05-04","i":["20060427007","20030127001"]}}}
+{"s":"RECYCLING THE HAMPTONS","n":[["RECYCLING THE HAMPTONS INC",1]],"x":{"irs":{"r":1,"i":["464049900"],"z":["11937"]}}}
 ]}

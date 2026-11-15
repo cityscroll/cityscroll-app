@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":61,"first_ordinal":102948,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":61,"first_ordinal":102947,"entries":[
+{"s":"NEW YORK FEMINIST ART INSTITUTE","n":[["NEW YORK FEMINIST ART INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["132975193"],"z":["10001"]}}},
 {"s":"NEW YORK FERTILITY RESEARCH FOUNDATION","n":[["NEW YORK FERTILITY RESEARCH FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["132588008"],"z":["10075"]}}},
 {"s":"NEW YORK FESTIVAL OF SONG","n":[["NEW YORK FESTIVAL OF SONG INC",1]],"x":{"irs":{"r":1,"i":["133570387"],"z":["10001"]}}},
 {"s":"NEW YORK FESTIVAL SINGERS","n":[["NEW YORK FESTIVAL SINGERS",1]],"x":{"irs":{"r":1,"i":["274467148"],"z":["10033"]}}},
@@ -1571,6 +1572,5 @@
 {"s":"NGV OSW HOLDINGS LLC WITH RWE CLEAN ENERGY","n":[["NGV OSW HOLDINGS LLC WITH RWE CLEAN ENERGY LLC",1]],"x":{"dbe":{"r":1,"i":["NGV OSW HOLDINGS LLC WITH RWE CLEAN ENERGY LLC"]}}},
 {"s":"NGWA CULTURAL ORGANIZATION-NORTH AMERICA","n":[["NGWA CULTURAL ORGANIZATION-NORTH AMERICA INC",1]],"x":{"irs":{"r":1,"i":["263517097"],"z":["10466"]}}},
 {"s":"NGWA DEVELOPMENT UNION OF AMERICA","n":[["NGWA DEVELOPMENT UNION OF AMERICA INC",1]],"x":{"irs":{"r":1,"i":["611620544"],"z":["10467"]}}},
-{"s":"NGWA NATIONAL ASSOCIATION","n":[["NGWA NATIONAL ASSOCIATION USA INC",1]],"x":{"irs":{"r":1,"i":["954409207"],"z":["11234"]}}},
-{"s":"NGWA NATIONAL ASSOCIATION INC NORTH NEW YORK CHAPTER","n":[["NGWA NATIONAL ASSOCIATION INC NORTH NEW YORK CHAPTER",1]],"x":{"irs":{"r":1,"i":["562283274"],"z":["10573"]}}}
+{"s":"NGWA NATIONAL ASSOCIATION","n":[["NGWA NATIONAL ASSOCIATION USA INC",1]],"x":{"irs":{"r":1,"i":["954409207"],"z":["11234"]}}}
 ]}

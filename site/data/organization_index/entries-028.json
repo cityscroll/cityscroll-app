@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":28,"first_ordinal":47000,"entries":[
-{"s":"ELIM SENIOR DAY","n":[["ELIM SENIOR DAY INC",1]],"x":{"irs":{"r":1,"i":["462757926"],"z":["11427"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":28,"first_ordinal":47001,"entries":[
 {"s":"ELIM TABERNACLE","n":[["ELIM TABERNACLE",1],["ELIM TABERNACLE CORPORATION",1]],"x":{"irs":{"r":2,"i":["133265252","222143009"],"z":["11361","13760"]}}},
 {"s":"ELIM TABERNACLE CHURCH OF CHRISTIAN AND MISSIONARY ALLIANCE","n":[["ELIM TABERNACLE CHURCH OF CHRISTIAN AND MISSIONARY ALLIANCE INC",1]],"x":{"irs":{"r":1,"i":["510170348"],"z":["10989"]}}},
 {"s":"ELIMINATE ALL PEST CONTROL","n":[["Eliminate All Pest Control, Inc.",1]],"x":{"sbs":{"r":1,"i":["318267"],"z":["11422"],"p":["MBE"]}}},

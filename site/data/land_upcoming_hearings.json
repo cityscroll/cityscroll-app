@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-13T14:28:59.648Z",
+  "generated_at": "2026-11-15T14:39:08.600Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,7 +9,7 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-11-13",
+    "today": "2026-11-15",
     "projects_listed": 234,
     "projects_fetched": 234,
     "projects_failed": 0,
@@ -3001,7 +3001,7 @@
       "source": "zap-api-milestones",
       "project_id": "2022K0419",
       "project_name": "7502 New Utrecht Avenue Rezoning",
-      "public_status": "Filed",
+      "public_status": "Noticed",
       "portal_url": "https://zap.planning.nyc.gov/projects/2022K0419",
       "borough": "Brooklyn",
       "community_district": "K11",
@@ -4761,7 +4761,7 @@
       "source": "zap-api-milestones",
       "project_id": "2022K0419",
       "project_name": "7502 New Utrecht Avenue Rezoning",
-      "public_status": "Filed",
+      "public_status": "Noticed",
       "portal_url": "https://zap.planning.nyc.gov/projects/2022K0419",
       "borough": "Brooklyn",
       "community_district": "K11",

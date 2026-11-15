@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-14T13:54:18.581Z",
-  "open_as_of": "2026-11-14",
+  "generated_at": "2026-11-15T14:39:14.054Z",
+  "open_as_of": "2026-11-15",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,7 +10,7 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-14'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-15'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
@@ -84,17 +84,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20261009002",
-      "start_date": "2026-10-16T00:00:00.000",
-      "agency_name": "Information Technology and Telecommunications",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Temporary Personnel Services",
-      "pin": "85827B0001",
-      "due_date": "2026-11-17T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
       "request_id": "20260923006",
       "start_date": "2026-09-29T00:00:00.000",
       "agency_name": "Housing Authority",
@@ -115,6 +104,17 @@
       "pin": "523414",
       "due_date": "2026-11-17T14:00:00.000",
       "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20261009002",
+      "start_date": "2026-10-16T00:00:00.000",
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Temporary Personnel Services",
+      "pin": "85827B0001",
+      "due_date": "2026-11-17T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260929029",
@@ -238,16 +238,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20261014034",
-      "start_date": "2026-10-26T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "Bid Extension: Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located Brooklyn Neighborhood (BK08) and (BK09), Brooklyn.",
-      "due_date": "2026-11-20T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
       "request_id": "20261014021",
       "start_date": "2026-10-20T00:00:00.000",
       "agency_name": "Design and Construction",
@@ -259,13 +249,13 @@
       "selection_method_description": "Competitive Sealed Proposals"
     },
     {
-      "request_id": "20261019033",
-      "start_date": "2026-10-23T00:00:00.000",
+      "request_id": "20261014034",
+      "start_date": "2026-10-26T00:00:00.000",
       "agency_name": "Housing Authority",
       "type_of_notice_description": "Solicitation",
       "category_description": "Construction Related Services",
-      "short_title": "Bid Extension: Requirement Contract for Installation of V/C Floor Tile in Apartments, Development Specific pursuant to RFQ#s: 528467 to 528474 Located in Manhattan Neighborhood (MN06), and (MN07)",
-      "due_date": "2026-11-23T14:00:00.000",
+      "short_title": "Bid Extension: Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located Brooklyn Neighborhood (BK08) and (BK09), Brooklyn.",
+      "due_date": "2026-11-20T14:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -287,6 +277,16 @@
       "category_description": "Construction Related Services",
       "short_title": "HWCB27QXM: REPLACEMENT OF CONCRETE, STEEL FACED AND GRANITE CURBS AND RELATED SIDEWALK AND ROADWAY RESTORATION",
       "pin": "85027B0025",
+      "due_date": "2026-11-23T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261019033",
+      "start_date": "2026-10-23T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Bid Extension: Requirement Contract for Installation of V/C Floor Tile in Apartments, Development Specific pursuant to RFQ#s: 528467 to 528474 Located in Manhattan Neighborhood (MN06), and (MN07)",
       "due_date": "2026-11-23T14:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
@@ -422,17 +422,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20260825035",
-      "start_date": "2026-09-02T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "Bid Extension: Loading Dock + Morgue at South Brooklyn Health, Brooklyn, NY",
-      "pin": "26202503",
-      "due_date": "2026-12-03T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
       "request_id": "20261013013",
       "start_date": "2026-10-21T00:00:00.000",
       "agency_name": "NYC Health + Hospitals",
@@ -440,6 +429,17 @@
       "category_description": "Construction/Construction Services",
       "short_title": "Correction: 22202201- NYC H+H - Gotham/ East New York - ADA Restroom, Office Storage and Lounge Renovation",
       "pin": "22202201- ENY- ADA-",
+      "due_date": "2026-12-03T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260825035",
+      "start_date": "2026-09-02T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Bid Extension: Loading Dock + Morgue at South Brooklyn Health, Brooklyn, NY",
+      "pin": "26202503",
       "due_date": "2026-12-03T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },

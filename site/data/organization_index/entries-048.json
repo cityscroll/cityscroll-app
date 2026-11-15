@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":48,"first_ordinal":81024,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":48,"first_ordinal":81024,"entries":[
 {"s":"KIM S MAINTENANCE SERVICES","n":[["Kim's Maintenance Services Corp.",1]],"x":{"sbs":{"r":1,"i":["372813"],"z":["11358"],"p":["MBE"]}}},
 {"s":"KIM THE OG TEACHER","n":[["Kim the OG Teacher LLC",1]],"x":{"sbs":{"r":1,"i":["402345"],"z":["11787"],"p":["WBE"]}}},
 {"s":"KIMA NETWORK","n":[["KIMA NETWORK INC",1]],"x":{"irs":{"r":1,"i":["394350034"],"z":["11373"]}}},

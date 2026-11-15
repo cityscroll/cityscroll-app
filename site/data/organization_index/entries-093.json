@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":93,"first_ordinal":156746,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":93,"first_ordinal":156746,"entries":[
 {"s":"WILLIAM HUMPHREY III","n":[["William Humphrey III",3]],"x":{"cbr":{"r":2,"a":2200,"l":"2026-03-23","i":["CT181620261413262","CT181620251414284"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-03-23","i":["CT181620261413262"],"m":["Non-M/WBE"]}}},
 {"s":"WILLIAM J BRENNAN JR CENTER FOR JUSTICE","n":[["WILLIAM J BRENNAN JR CENTER FOR JUSTICE INC",1]],"x":{"irs":{"r":1,"i":["133839293"],"z":["10271"]}}},
 {"s":"WILLIAM J BURNS FOUNDATION","n":[["WILLIAM J BURNS FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133374325"],"z":["12989"]}}},

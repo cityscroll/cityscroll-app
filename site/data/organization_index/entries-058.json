@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":58,"first_ordinal":98173,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"76867c7b6b633bc1","shard":58,"first_ordinal":98173,"entries":[
 {"s":"MPACT STRATEGIC CONSULTING","n":[["MPACT Strategic Consulting",1],["MPACT Strategic Consulting LLC",1],["MPact Strategic Consulting LLC",1]],"x":{"ocp":{"r":2,"a":299950,"l":"2019-11-01","i":["20191025033","20181126015"]},"sbs":{"r":1,"i":["3029"],"z":["77027"],"p":["MBE"]}}},
 {"s":"MPC CONSTRUCTION SERVICES","n":[["MPC Construction Services, LLC",1]],"x":{"dol":{"r":1,"i":["26-64FD9-CR"],"z":["12308"]}}},
 {"s":"MPC PLUMBING HEATING","n":[["MPC Plumbing & Heating, Inc.",1]],"x":{"dol":{"r":1,"i":["25-64J5S-CR"],"z":["10310"]}}},
@@ -567,7 +567,7 @@
 {"s":"MURRAY-HOLLEY HISTORICAL SOCIETY","n":[["MURRAY-HOLLEY HISTORICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["161394060"],"z":["14470"]}}},
 {"s":"MURRY BERGTRAUM HIGH SCHOOL BUSINESS ADVISORY COUNCIL","n":[["MURRY BERGTRAUM HIGH SCHOOL BUSINESS ADVISORY COUNCIL",1]],"x":{"irs":{"r":1,"i":["133093969"],"z":["10018"]}}},
 {"s":"MURTAUGH RESTORATIONS","n":[["Murtaugh Restorations, Inc",1]],"x":{"dol":{"r":1,"i":["24-64D7A-CR"],"z":["13057"]}}},
-{"s":"MURTAZA KHOKHAR CONSULTING","n":[["MURTAZA & KHOKHAR CONSULTING INC",5],["Murtaza & Khokhar Consulting Inc",3],["MURTAZA & KHOKHAR CONSULTING INC.",1]],"x":{"ocp":{"r":2,"a":3000000,"l":"2026-09-25","i":["20260918017","20241115045"]},"cbr":{"r":3,"a":3020000,"l":"2026-09-17","i":["CT181620278802789","CT181620258804234","CT181620251403319"],"m":["Asian American"]},"ppt":{"r":1,"a":1500000,"l":"2024-11-15","i":["CT1-816-20258804234"]},"dbe":{"r":1,"i":["MURTAZA & KHOKHAR CONSULTING INC"]},"sbs":{"r":1,"i":["346422"],"z":["11710"],"p":["MBE"]},"dol":{"r":1,"i":["26-691T3-CR"],"z":["11710"]}}},
+{"s":"MURTAZA KHOKHAR CONSULTING","n":[["MURTAZA & KHOKHAR CONSULTING INC",6],["Murtaza & Khokhar Consulting Inc",3],["MURTAZA & KHOKHAR CONSULTING INC.",1]],"x":{"ocp":{"r":2,"a":3000000,"l":"2026-09-25","i":["20260918017","20241115045"]},"cbr":{"r":3,"a":3020000,"l":"2026-09-17","i":["CT181620278802789","CT181620258804234","CT181620251403319"],"m":["Asian American"]},"ppt":{"r":1,"a":1500000,"l":"2024-11-15","i":["CT1-816-20258804234"]},"cbv":{"r":1,"l":"2026-09-17","i":["CT181620278802789"],"m":["Asian American"]},"dbe":{"r":1,"i":["MURTAZA & KHOKHAR CONSULTING INC"]},"sbs":{"r":1,"i":["346422"],"z":["11710"],"p":["MBE"]},"dol":{"r":1,"i":["26-691T3-CR"],"z":["11710"]}}},
 {"s":"MURTAZA KHOKHAR ENGINEERING CONSULTANTS","n":[["MURTAZA & KHOKHAR ENGINEERING CONSULTANTS PLLC",3],["MURTAZA & KHOKHAR ENGINEERING CONSULTANTS, PLLC",1]],"x":{"ocp":{"r":1,"a":19691244.29,"l":"2024-06-12","i":["20240606117"]},"cbr":{"r":1,"a":13000,"l":"2025-09-26","i":["CT181620261404534"],"m":["Asian American"]},"ppt":{"r":1,"a":24331244.29,"l":"2024-06-05","i":["CT1-068-20258800222"]},"dol":{"r":1,"i":["25-65DIX-CR"],"z":["11710"]}}},
 {"s":"MURTECH STAFFING AND SOLUTIONS","n":[["Murtech Staffing and Solutions LLC",1]],"x":{"dol":{"r":1,"i":["26-66N6P-CR"],"z":["44131"]}}},
 {"s":"MURTHY MINISTRIES","n":[["MURTHY MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["270924753"],"z":["11735"]}}},
@@ -1733,6 +1733,5 @@
 {"s":"NATHAN C BRACCI KURTZ","n":[["Nathan C. Bracci Kurtz",1]],"x":{"dol":{"r":1,"i":["25-6HAFN-CR"],"z":["14043"]}}},
 {"s":"NATHAN D ALLSBROOK FOUNDATION","n":[["NATHAN D ALLSBROOK FOUNDATION",1]],"x":{"irs":{"r":1,"i":["263492339"],"z":["10027"]}}},
 {"s":"NATHAN DAN CONCRETE","n":[["Nathan Dan Concrete LLC",1]],"x":{"dol":{"r":1,"i":["25-65K44-CR"],"z":["14132"]}}},
-{"s":"NATHAN ENTERPRISE","d":[["Nathan Enterprise LLC",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-64A9O-CR"],"z":["10553"]}}},
-{"s":"NATHAN ENTERPRISES","n":[["Nathan Enterprises LLC",10],["NATHAN ENTERPRISES LLC",1]],"x":{"ocp":{"r":3,"a":191262.92,"l":"2024-09-17","i":["20240911112","20240313116","20210311112"]},"cbr":{"r":2,"a":54756.42,"l":"2025-02-21","i":["CT184620258806076","CT184620258802607"],"m":["Black American"]},"ppt":{"r":3,"a":191262.92,"l":"2024-09-06","i":["CT1-846-20258802607","CT1-846-20248806314","CT1-846-20218801390"]},"sbs":{"r":1,"i":["14702"],"z":["10466"],"p":["MBE"]},"dol":{"r":1,"i":["25-64A9O-CR"],"z":["10553"]},"sca":{"r":1,"i":["NATHAN ENTERPRISES LLC"],"z":["10553"]}}}
+{"s":"NATHAN ENTERPRISE","d":[["Nathan Enterprise LLC",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-64A9O-CR"],"z":["10553"]}}}
 ]}
