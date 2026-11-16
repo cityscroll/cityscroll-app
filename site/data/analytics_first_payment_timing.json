@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.analytics_first_payment_timing.v1",
-  "generated_at": "2026-11-13T14:08:23.774Z",
-  "snapshot_date": "2026-11-13T14:08:23.774Z",
-  "contracts_snapshot_date": "2026-11-13",
+  "generated_at": "2026-11-16T16:26:47.984Z",
+  "snapshot_date": "2026-11-16T16:26:47.984Z",
+  "contracts_snapshot_date": "2026-11-16",
   "population_definition": "Registered Checkbook expense contracts whose start date falls inside the retained payment years (2025-07-01 to 2026-06-30), one row per exact prime contract id.",
   "first_payment_definition": "The earliest issue date of a positive check amount recorded against the exact contract id. Reversals and zero amounts are not payments.",
   "measured_from": "The contract start date published by Checkbook, not the date work began.",
@@ -35,42 +35,42 @@
   ],
   "min_contracts_for_median": 10,
   "population": {
-    "registered_contracts_read": 29689,
-    "measured_contracts": 10560,
+    "registered_contracts_read": 29731,
+    "measured_contracts": 10561,
     "excluded": {
-      "start_before_payment_years": 14064,
-      "start_after_payment_years": 5065,
+      "start_before_payment_years": 14066,
+      "start_after_payment_years": 5104,
       "missing_start_date": 0,
       "missing_contract_id": 0,
       "duplicate_contract_id": 0
     },
     "payment_rows": {
-      "payment_rows": 1785886,
+      "payment_rows": 1785889,
       "positive_rows": 1781365,
-      "reversal_or_zero_rows": 4521,
+      "reversal_or_zero_rows": 4524,
       "undated_rows": 0,
       "rows_for_measured_contracts": 97770
     }
   },
   "all_agencies": {
-    "contracts": 10560,
+    "contracts": 10561,
     "first_paid_in_payment_years": 6139,
-    "no_payment_in_payment_years": 4421,
+    "no_payment_in_payment_years": 4422,
     "horizons": {
       "within_1_month": {
-        "observable_contracts": 10279,
+        "observable_contracts": 10280,
         "first_paid_within": 1453,
         "not_observable_contracts": 281
       },
       "within_6_months": {
         "observable_contracts": 6252,
         "first_paid_within": 3650,
-        "not_observable_contracts": 4308
+        "not_observable_contracts": 4309
       },
       "within_12_months": {
         "observable_contracts": 2049,
         "first_paid_within": 1474,
-        "not_observable_contracts": 8511
+        "not_observable_contracts": 8512
       }
     },
     "median_basis_contracts": 6252,
@@ -1224,24 +1224,24 @@
     },
     {
       "agency": "Health and Hospitals Corporation",
-      "contracts": 109,
+      "contracts": 110,
       "first_paid_in_payment_years": 0,
-      "no_payment_in_payment_years": 109,
+      "no_payment_in_payment_years": 110,
       "horizons": {
         "within_1_month": {
-          "observable_contracts": 107,
+          "observable_contracts": 108,
           "first_paid_within": 0,
           "not_observable_contracts": 2
         },
         "within_6_months": {
           "observable_contracts": 78,
           "first_paid_within": 0,
-          "not_observable_contracts": 31
+          "not_observable_contracts": 32
         },
         "within_12_months": {
           "observable_contracts": 6,
           "first_paid_within": 0,
-          "not_observable_contracts": 103
+          "not_observable_contracts": 104
         }
       },
       "median_basis_contracts": 78,

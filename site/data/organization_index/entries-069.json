@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":69,"first_ordinal":116557,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":69,"first_ordinal":116555,"entries":[
+{"s":"PROJECT 5000","n":[["PROJECT 5000 INC",1]],"x":{"irs":{"r":1,"i":["331545877"],"z":["11237"]}}},
+{"s":"PROJECT 59","n":[["PROJECT 59 INC",1]],"x":{"irs":{"r":1,"i":["943437351"],"z":["11218"]}}},
 {"s":"PROJECT 8 YOUTH ATHLETIC SPORTS FOU NDATION","n":[["PROJECT 8 YOUTH ATHLETIC SPORTS FOU NDATION INC",1]],"x":{"irs":{"r":1,"i":["872371008"],"z":["10473"]}}},
 {"s":"PROJECT 8P FOUNDATION","n":[["PROJECT 8P FOUNDATION",1]],"x":{"irs":{"r":1,"i":["832545342"],"z":["10019"]}}},
 {"s":"PROJECT ABIGAIL","n":[["PROJECT ABIGAIL CORP",1]],"x":{"irs":{"r":1,"i":["844320920"],"z":["10461"]}}},
@@ -1539,6 +1541,5 @@
 {"s":"QUEENS COUNTY CRIMINAL BAR ASSOCIATION","n":[["QUEENS COUNTY CRIMINAL BAR ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["991115126"],"z":["11415"]}}},
 {"s":"QUEENS COUNTY DENTAL SOCIETY","n":[["QUEENS COUNTY DENTAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["112014838"],"z":["11423"]}}},
 {"s":"QUEENS COUNTY EDUCATORS FOR TOMORROW","n":[["QUEENS COUNTY EDUCATORS FOR TOMORROW INC",5],["QUEENS COUNTY EDUCATORS FOR TOMORROW INC.",1],["Queens County Educators for Tomorrow, Inc.",1]],"x":{"ocp":{"r":1,"a":4265842.26,"l":"2016-12-06","i":["20161129006"]},"cbr":{"r":2,"a":7021006.01,"l":"2026-09-01","i":["CT104020279757773","CT104020279757789"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-09-01","i":["CT104020279757773","CT104020279757789"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["QUEENS COUNTY EDUCATORS FOR TOMORROW INC."]},"irs":{"r":1,"i":["112475654"],"z":["11429"]}}},
-{"s":"QUEENS COUNTY MENTAL HEALTH SOCIETY","n":[["QUEENS COUNTY MENTAL HEALTH SOCIETY,INC",1]],"x":{"irs":{"r":1,"i":["111776036"],"z":["11366"]}}},
-{"s":"QUEENS COUNTY ST PATRICKS DAY PARADE AND CULTURAL COMMITTEE","n":[["QUEENS COUNTY ST PATRICKS DAY PARADE AND CULTURAL COMMITTEE INC",1]],"x":{"irs":{"r":1,"i":["550852671"],"z":["11693"]}}}
+{"s":"QUEENS COUNTY MENTAL HEALTH SOCIETY","n":[["QUEENS COUNTY MENTAL HEALTH SOCIETY,INC",1]],"x":{"irs":{"r":1,"i":["111776036"],"z":["11366"]}}}
 ]}

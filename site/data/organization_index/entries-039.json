@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":39,"first_ordinal":65749,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":39,"first_ordinal":65749,"entries":[
 {"s":"HEARING LOSS ASSOCIATION OF AMERICA","n":[["HEARING LOSS ASSOCIATION OF AMERICA INC",3]],"x":{"irs":{"r":3,"i":["020794572","134156506","222533860"],"z":["10101","12309","12515"]}}},
 {"s":"HEARING LOSS ASSOCIATION OF AMERICA ROCHESTER CHAPTER","n":[["HEARING LOSS ASSOCIATION OF AMERICA ROCHESTER CHAPTER INC",1]],"x":{"irs":{"r":1,"i":["471286360"],"z":["14625"]}}},
 {"s":"HEARING LOSS ASSOCIATION OF AMERICA WESTCHESTER CHAPTER","n":[["HEARING LOSS ASSOCIATION OF AMERICA WESTCHESTER CHAPTER",1]],"x":{"irs":{"r":1,"i":["020671802"],"z":["10989"]}}},

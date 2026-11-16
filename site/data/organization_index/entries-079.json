@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":79,"first_ordinal":133564,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":79,"first_ordinal":133564,"entries":[
 {"s":"SPES NOVA","n":[["SPES NOVA INC",1]],"x":{"irs":{"r":1,"i":["273251795"],"z":["10458"]}}},
 {"s":"SPETNER FAMILY CHARITABLE FOUNDATION","n":[["SPETNER FAMILY CHARITABLE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["113540386"],"z":["11559"]}}},
 {"s":"SPEWARE","n":[["SPEWARE CORPORATION",2],["SPEWARE CORPORATION.",1]],"x":{"ocp":{"r":3,"a":569385.2,"l":"2013-04-18","i":["20130411009","20110826008","20070201002"]}}},

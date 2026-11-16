@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":56,"first_ordinal":94704,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":56,"first_ordinal":94704,"entries":[
 {"s":"MICHAEL AND RUTH SLADE FOUNDATION","n":[["MICHAEL AND RUTH SLADE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["113478088"],"z":["11560"]}}},
 {"s":"MICHAEL AND SHIRLEY CAYRE FOUNDATION","n":[["MICHAEL AND SHIRLEY CAYRE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["134109353"],"z":["10010"]}}},
 {"s":"MICHAEL ANTONOV CHARITABLE FOUNDATION","n":[["MICHAEL ANTONOV CHARITABLE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["471849235"],"z":["11797"]}}},

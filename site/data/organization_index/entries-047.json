@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":47,"first_ordinal":79148,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":47,"first_ordinal":79148,"entries":[
 {"s":"K-MAC ELECTRIC","n":[["K-Mac Electric.",1]],"x":{"dol":{"r":1,"i":["26-69FPI-CR"],"z":["11715"]}}},
 {"s":"K-PAC KHAN-POOR AMERICAN CHARITY","n":[["K-PAC KHAN-POOR AMERICAN CHARITY CORP",1]],"x":{"irs":{"r":1,"i":["844283661"],"z":["11201"]}}},
 {"s":"K-RADIO","n":[["K-Radio LLC",1]],"x":{"sbs":{"r":1,"i":["368229"],"z":["11361"],"p":["MBE"]}}},
@@ -848,7 +848,7 @@
 {"s":"KELBERMAN FAMILY FOUNDATION","n":[["KELBERMAN FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["873821474"],"z":["13413"]}}},
 {"s":"KELCO CONSTRUCTION","n":[["Kelco Construction Inc.",7],["KELCO CONSTRUCTION INC",3],["KELCO CONSTRUCTION, INC.",1]],"x":{"ocp":{"r":8,"a":81365397.8,"l":"2025-06-03","c":8,"i":["20250528006","20230727108","20220906106","20211118127","20200424032"]},"cbr":{"r":1,"a":2703654.89,"l":"2025-05-27","i":["CT182620258806201"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":9624551.79,"l":"2025-05-27","i":["CT1-826-20258806201","CT1-846-20238808853"]}}},
 {"s":"KELCO CONTRACTING","n":[["KELCO CONTRACTING CORP.",1]],"x":{"ocp":{"r":1,"a":2595684,"l":"2011-07-05","i":["20110628005"]}}},
-{"s":"KELEIDOSCOPE MULTI MEDIA","n":[["KELEIDOSCOPE MULTI MEDIA LLC",33]],"x":{"cbr":{"r":21,"a":525000,"l":"2026-08-05","c":21,"i":["CT104020273005151","CT104020263172826","CT104020263171637","CT104020263148293","CT104020263114912"],"m":["Black American"]},"cbv":{"r":11,"l":"2026-08-05","c":11,"i":["CT104020273005151","CT104020263172826","CT104020263171637","CT104020263148293","CT104020263114912"],"m":["Black American"]},"dbe":{"r":1,"i":["KELEIDOSCOPE MULTI MEDIA LLC"]}}},
+{"s":"KELEIDOSCOPE MULTI MEDIA","n":[["KELEIDOSCOPE MULTI MEDIA LLC",32]],"x":{"cbr":{"r":21,"a":525000,"l":"2026-08-05","c":21,"i":["CT104020273005151","CT104020263172826","CT104020263171637","CT104020263148293","CT104020263114912"],"m":["Black American"]},"cbv":{"r":10,"l":"2026-08-05","c":10,"i":["CT104020273005151","CT104020263172826","CT104020263171637","CT104020263148293","CT104020263114912"],"m":["Black American"]},"dbe":{"r":1,"i":["KELEIDOSCOPE MULTI MEDIA LLC"]}}},
 {"s":"KELEIDOSCOPE MULTIMEDIA","n":[["KELEiDOSCOPE MULTIMEDIA LLC",1]],"x":{"sbs":{"r":1,"i":["339582"],"z":["11727"],"p":["MBE"]}}},
 {"s":"KELEV DOG RESCUE GROUP","n":[["KELEV DOG RESCUE GROUP INC",1]],"x":{"irs":{"r":1,"i":["991981215"],"z":["10302"]}}},
 {"s":"KELI HOUSE COMMUNITY SERVICES","n":[["KELI HOUSE COMMUNITY SERVICES INC",1]],"x":{"irs":{"r":1,"i":["810680293"],"z":["12582"]}}},

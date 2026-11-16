@@ -21,7 +21,7 @@
   "source": {
     "publisher": "Office of the New York City Comptroller",
     "acquisition_mode": "live-publisher",
-    "pulled_at": "2026-11-13T14:08:23.774Z",
+    "pulled_at": "2026-11-16T16:26:47.984Z",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
     "type_of_data": "Spending",
@@ -33,21 +33,21 @@
     "page_size": 20000,
     "pages": 90,
     "count_drift_policy": "fail without publishing",
-    "page_manifest_sha256": "d67ede558e09e38098778205f75617c1472ae7971f3419080e0437e3a7986647"
+    "page_manifest_sha256": "7fdace0d28e63389a6b2a0667f8ec16ed2f254a9f2a7bf5768e92146f37a43a5"
   },
   "population": {
-    "publisher_record_count": 1785886,
-    "source_xml_rows": 1785886,
-    "normalized_rows": 1785886,
-    "unique_transaction_ids": 1636029,
+    "publisher_record_count": 1785889,
+    "source_xml_rows": 1785889,
+    "normalized_rows": 1785889,
+    "unique_transaction_ids": 1636032,
     "duplicate_transaction_rows": 149857,
-    "reversal_rows": 1705,
+    "reversal_rows": 1708,
     "null_amount_rows": 0,
     "agency_grouping": [
       {
         "agency": "Department of Education",
-        "transaction_count": 1211779,
-        "net_check_amount": 13250597878.6
+        "transaction_count": 1211782,
+        "net_check_amount": 13250589955.42
       },
       {
         "agency": "Pension Contributions",
@@ -703,17 +703,17 @@
     "by_fiscal_year": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1785886,
-        "source_xml_rows": 1785886,
-        "normalized_rows": 1785886,
-        "source_net_check_amount": 52399983822.17,
-        "normalized_net_check_amount": 52399983822.17,
-        "reversal_rows": 1705,
+        "source_record_count": 1785889,
+        "source_xml_rows": 1785889,
+        "normalized_rows": 1785889,
+        "source_net_check_amount": 52399975898.99,
+        "normalized_net_check_amount": 52399975898.99,
+        "reversal_rows": 1708,
         "agency_grouping": [
           {
             "agency": "Department of Education",
-            "transaction_count": 1211779,
-            "net_check_amount": 13250597878.6
+            "transaction_count": 1211782,
+            "net_check_amount": 13250589955.42
           },
           {
             "agency": "Pension Contributions",
@@ -1375,17 +1375,17 @@
     "partitions": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1785886,
-        "source_xml_rows": 1785886,
-        "normalized_rows": 1785886,
-        "source_net_check_amount": 52399983822.17,
-        "normalized_net_check_amount": 52399983822.17,
-        "reversal_rows": 1705,
+        "source_record_count": 1785889,
+        "source_xml_rows": 1785889,
+        "normalized_rows": 1785889,
+        "source_net_check_amount": 52399975898.99,
+        "normalized_net_check_amount": 52399975898.99,
+        "reversal_rows": 1708,
         "agency_grouping": [
           {
             "agency": "Department of Education",
-            "transaction_count": 1211779,
-            "net_check_amount": 13250597878.6
+            "transaction_count": 1211782,
+            "net_check_amount": 13250589955.42
           },
           {
             "agency": "Pension Contributions",
@@ -2042,17 +2042,17 @@
         "reconciled": true
       }
     ],
-    "source_xml_rows": 1785886,
-    "normalized_rows": 1785886,
-    "source_net_check_amount": 52399983822.17,
-    "normalized_net_check_amount": 52399983822.17,
+    "source_xml_rows": 1785889,
+    "normalized_rows": 1785889,
+    "source_net_check_amount": 52399975898.99,
+    "normalized_net_check_amount": 52399975898.99,
     "reconciled": true
   },
   "conversion": {
     "csv": {
       "path": "warehouse/raw/checkbook-payment-population/payments.csv",
-      "row_count": 1785886,
-      "sha256": "e8e05deb3a24b892dc8d12382604c58e62c4ef95c369c8892046d21e8ba8b127"
+      "row_count": 1785889,
+      "sha256": "05b7c9bb9d333fac238486a5758c72a69ccf9e82834e591f25e21128a2579b04"
     },
     "receipt": "warehouse/receipts/proof/checkbook_payment_population_conversion_latest.json",
     "next_step": "warehouse/scripts/convert_checkbook_payment_population.py --csv <payments.csv> --parquet <payments.parquet> --source-receipt warehouse/receipts/proof/checkbook_payment_population_latest.json",
@@ -2081,7 +2081,7 @@
     ]
   },
   "checksums": {
-    "normalized_csv_sha256": "e8e05deb3a24b892dc8d12382604c58e62c4ef95c369c8892046d21e8ba8b127"
+    "normalized_csv_sha256": "05b7c9bb9d333fac238486a5758c72a69ccf9e82834e591f25e21128a2579b04"
   },
   "coverage_statement": "This receipt covers only the declared fiscal-year contract-spending partitions. It must not be used to infer payment coverage for other fiscal years or spending categories."
 }

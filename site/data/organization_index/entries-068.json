@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":68,"first_ordinal":114913,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":68,"first_ordinal":114911,"entries":[
+{"s":"POMPEY CONSTRUCTION SERVICES","n":[["Pompey Construction Services LLC",1]],"x":{"dol":{"r":1,"i":["24-648CD-CR"],"z":["13210"]}}},
+{"s":"POMPEY HILL CEMETERY","n":[["POMPEY HILL CEMETERY",1]],"x":{"irs":{"r":1,"i":["372089011"],"z":["13138"]}}},
 {"s":"POMPEY HILL VOL FIRE DEPT","n":[["POMPEY HILL VOL FIRE DEPT",1]],"x":{"irs":{"r":1,"i":["161096145"],"z":["13138"]}}},
 {"s":"PONCE DE LEON FOUNDATION","n":[["PONCE DE LEON FOUNDATION",1]],"x":{"irs":{"r":1,"i":["821738716"],"z":["10462"]}}},
 {"s":"PONCHOS LIBRES","n":[["PONCHOS LIBRES",1]],"x":{"irs":{"r":1,"i":["824939856"],"z":["11238"]}}},
@@ -1334,7 +1336,7 @@
 {"s":"PRISM STAGE","n":[["PRISM STAGE COMPANY INC",1]],"x":{"irs":{"r":1,"i":["471934614"],"z":["10018"]}}},
 {"s":"PRISMA CAPITAL","n":[["PRISMA CAPITAL LP",1]],"x":{"dbe":{"r":1,"i":["PRISMA CAPITAL LP"]}}},
 {"s":"PRISMA CONSTRUCTION","n":[["Prisma Construction, Inc.",2]],"d":[["Prisma Construction, Inc.",1]],"x":{"sbs":{"r":1,"i":["330075"],"z":["11102"],"p":["WBE"]},"dol":{"r":2,"v":["dba","name"],"i":["26-66CHF-CR"],"z":["11105"]}}},
-{"s":"PRISMATIC DEVELOPMENT","n":[["PRISMATIC DEVELOPMENT CORP.",6],["Prismatic Development Corp.",2],["Prismatic Development Corporation",2],["PRISMATIC DEVELOPMENT CORPORATION",1],["Prismatic Development Corp.,",1]],"x":{"ocp":{"r":4,"a":421018798,"l":"2026-09-02","i":["20260831006","20251021005","20140219024","20091015017"]},"cbr":{"r":3,"a":172936800,"l":"2026-10-28","i":["CT181920271405868","CT185620268807910","CT182720258809284"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":46144800,"l":"2025-10-20","i":["CT1-827-20258809284"]},"cbv":{"r":2,"l":"2026-08-03","i":["CT185620268807910","CT182720258809284"],"m":["Non-M/WBE"]},"dol":{"r":1,"i":["26-639FZ-CR"],"z":["07936"]},"sca":{"r":1,"i":["PRISMATIC DEVELOPMENT CORPORATION"],"z":["07004"]}}},
+{"s":"PRISMATIC DEVELOPMENT","n":[["PRISMATIC DEVELOPMENT CORP.",7],["Prismatic Development Corp.",2],["Prismatic Development Corporation",2],["PRISMATIC DEVELOPMENT CORPORATION",1],["Prismatic Development Corp.,",1]],"x":{"ocp":{"r":4,"a":421018798,"l":"2026-09-02","i":["20260831006","20251021005","20140219024","20091015017"]},"cbr":{"r":3,"a":172936800,"l":"2026-10-28","i":["CT181920271405868","CT185620268807910","CT182720258809284"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":46144800,"l":"2025-10-20","i":["CT1-827-20258809284"]},"cbv":{"r":3,"l":"2026-10-28","i":["CT181920271405868","CT185620268807910","CT182720258809284"],"m":["Non-M/WBE"]},"dol":{"r":1,"i":["26-639FZ-CR"],"z":["07936"]},"sca":{"r":1,"i":["PRISMATIC DEVELOPMENT CORPORATION"],"z":["07004"]}}},
 {"s":"PRISMATIC DEVELOPMENT CORPORATION AND J H REID GENERAL CONTRA","n":[["Prismatic Development Corporation  and  J.H. Reid General Contra",1]],"x":{"ocp":{"r":1,"a":142700000,"l":"2010-04-06","i":["20100331019"]}}},
 {"s":"PRISMATIC PRODUCTIONS","n":[["PRISMATIC PRODUCTIONS INC",1]],"x":{"irs":{"r":1,"i":["200023339"],"z":["10034"]}}},
 {"s":"PRISMS OF REALITY","n":[["PRISMS OF REALITY INC",36],["Prisms of Reality Inc.",1]],"x":{"cbr":{"r":25,"a":625000,"l":"2026-08-07","c":25,"i":["CT104020273005585","CT104020263151472","CT104020263141461","CT104020263117834","CT104020263123183"],"m":["Asian American"]},"cbv":{"r":10,"l":"2026-08-07","c":10,"i":["CT104020273005585","CT104020263151472","CT104020263141461","CT104020263117834","CT104020263123183"],"m":["Asian American"]},"dbe":{"r":1,"i":["PRISMS OF REALITY INC"]},"sbs":{"r":1,"i":["368606"],"z":["94107"],"p":["MBE","WBE"]}}},
@@ -1640,7 +1642,5 @@
 {"s":"PROJECT 120 MOS","n":[["PROJECT 120 MOS INC",1]],"x":{"irs":{"r":1,"i":["881432081"],"z":["11213"]}}},
 {"s":"PROJECT 33","n":[["PROJECT 33",1]],"x":{"irs":{"r":1,"i":["825301445"],"z":["14075"]}}},
 {"s":"PROJECT 40","n":[["PROJECT 40",1]],"x":{"irs":{"r":1,"i":["113174995"],"z":["10601"]}}},
-{"s":"PROJECT 444","n":[["PROJECT 444 INC",1]],"x":{"irs":{"r":1,"i":["842003822"],"z":["14428"]}}},
-{"s":"PROJECT 5000","n":[["PROJECT 5000 INC",1]],"x":{"irs":{"r":1,"i":["331545877"],"z":["11237"]}}},
-{"s":"PROJECT 59","n":[["PROJECT 59 INC",1]],"x":{"irs":{"r":1,"i":["943437351"],"z":["11218"]}}}
+{"s":"PROJECT 444","n":[["PROJECT 444 INC",1]],"x":{"irs":{"r":1,"i":["842003822"],"z":["14428"]}}}
 ]}

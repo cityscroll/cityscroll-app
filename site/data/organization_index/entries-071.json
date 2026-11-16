@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":71,"first_ordinal":119833,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":71,"first_ordinal":119832,"entries":[
+{"s":"RED APPLE CHILD DEVELOPMENT CENTER","n":[["Red Apple Child Development Center",2]],"x":{"ocp":{"r":2,"a":3372395,"l":"2006-05-04","i":["20060427007","20030127001"]}}},
 {"s":"RED APPLE CHILD DEVELOPMENT CENTER CHINATOWN INC A CHINESE SCHOOL","n":[["RED APPLE CHILD DEVELOPMENT CENTER CHINATOWN INC A CHINESE SCHOOL",1]],"x":{"irs":{"r":1,"i":["133933851"],"z":["10002"]}}},
 {"s":"RED ARMOR","n":[["Red Armor LLC",1]],"x":{"dol":{"r":1,"i":["25-65E4A-CR"],"z":["13045"]}}},
 {"s":"RED BALLOON 4 HEART DEFECTS","n":[["RED BALLOON 4 HEART DEFECTS INC",1]],"x":{"irs":{"r":1,"i":["384025277"],"z":["13901"]}}},
@@ -1724,6 +1725,5 @@
 {"s":"RICHMOND COUNTY BLACK MINORITY CHAMBER OF COMMERCE","n":[["RICHMOND COUNTY BLACK & MINORITY CHAMBER OF COMMERCE INC",1]],"x":{"irs":{"r":1,"i":["474178194"],"z":["10314"]}}},
 {"s":"RICHMOND COUNTY BOARD OF ADVOCATES FOR MENTAL HEALTH","n":[["RICHMOND COUNTY BOARD OF ADVOCATES FOR MENTAL HEALTH",1]],"x":{"irs":{"r":1,"i":["271115602"],"z":["10305"]}}},
 {"s":"RICHMOND COUNTY CORUETTE CLUB","n":[["RICHMOND COUNTY CORUETTE CLUB INC",1]],"x":{"irs":{"r":1,"i":["133881818"],"z":["10306"]}}},
-{"s":"RICHMOND COUNTY COUNTRY CLUB","n":[["RICHMOND COUNTY COUNTRY CLUB",1]],"x":{"irs":{"r":1,"i":["135578768"],"z":["10304"]}}},
-{"s":"RICHMOND COUNTY GRANDMOTHERS CLUB","n":[["RICHMOND COUNTY GRANDMOTHERS CLUB INC",1]],"x":{"irs":{"r":1,"i":["923729553"],"z":["10303"]}}}
+{"s":"RICHMOND COUNTY COUNTRY CLUB","n":[["RICHMOND COUNTY COUNTRY CLUB",1]],"x":{"irs":{"r":1,"i":["135578768"],"z":["10304"]}}}
 ]}

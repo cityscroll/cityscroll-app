@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":66,"first_ordinal":111492,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":66,"first_ordinal":111491,"entries":[
+{"s":"PARTS AUTHORITY","n":[["PARTS AUTHORITY LLC",5],["Parts Authority, Inc.",1]],"x":{"ocp":{"r":4,"a":1244200,"l":"2023-12-14","i":["20231208102","20200214010","20180509013","20060911001"]},"ppt":{"r":1,"a":450000,"l":"2023-12-07","i":["MA1-857-20248804100"]},"dbe":{"r":1,"i":["PARTS AUTHORITY LLC"]}}},
 {"s":"PARTS AUTHORITY INC DBA AUTOMOTIVE","n":[["Parts Authority Inc dba Automotive Inc",1]],"x":{"ocp":{"r":1,"a":525000,"l":"2012-03-01","i":["20120223011"]}}},
 {"s":"PARTS AUTHORITY INC DBA CLEARWAY AUTOMOTIVE","n":[["PARTS AUTHORITY INC DBA CLEARWAY AUTOMOTIVE INC.",1],["Parts Authority Inc. dba Clearway Automotive, Inc.",1],["Parts Authority Inc.DBA Clearway Automotive Inc.",1]],"x":{"ocp":{"r":3,"a":387700,"l":"2014-01-14","i":["20140107006","20071001020","20030805003"]}}},
 {"s":"PARTS DISTRIBUTORS","n":[["PARTS DISTRIBUTORS LLC",4]],"x":{"ocp":{"r":4,"a":1229024.25,"l":"2005-02-22","i":["20050214007","20040521012","20031204016","20030612005"]}}},
@@ -1311,7 +1312,7 @@
 {"s":"PEQUOT CAPITAL MANAGEMENT","n":[["PEQUOT CAPITAL MANAGEMENT INC",1]],"x":{"dbe":{"r":1,"i":["PEQUOT CAPITAL MANAGEMENT INC"]}}},
 {"s":"PER ARTES FOUNDATION","n":[["PER ARTES FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["993782806"],"z":["10956"]}}},
 {"s":"PER ASPERA FUND","n":[["PER ASPERA FUND",1]],"x":{"irs":{"r":1,"i":["334047685"],"z":["10128"]}}},
-{"s":"PER DEV PERCEPTUAL DEVELOPMENT CENTER","n":[["PER DEV PERCEPTUAL DEVELOPMENT CENTER",20]],"x":{"cbr":{"r":13,"a":325000,"l":"2026-09-28","c":13,"i":["CT104020273020027","CT104020273012884","CT104020263165086","CT104020263111077","CT104020263051668"],"m":["Non-M/WBE"]},"cbv":{"r":6,"l":"2026-09-28","c":6,"i":["CT104020273020027","CT104020273012884","CT104020263165086","CT104020263111077","CT104020263051668"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["PER DEV PERCEPTUAL DEVELOPMENT CENTER"]}}},
+{"s":"PER DEV PERCEPTUAL DEVELOPMENT CENTER","n":[["PER DEV PERCEPTUAL DEVELOPMENT CENTER",19]],"x":{"cbr":{"r":13,"a":325000,"l":"2026-09-28","c":13,"i":["CT104020273020027","CT104020273012884","CT104020263165086","CT104020263111077","CT104020263051668"],"m":["Non-M/WBE"]},"cbv":{"r":5,"l":"2026-09-28","i":["CT104020273020027","CT104020273012884","CT104020263165086","CT104020263111077","CT104020263051668"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["PER DEV PERCEPTUAL DEVELOPMENT CENTER"]}}},
 {"s":"PER HATORAH","n":[["PER HATORAH INC",1]],"x":{"irs":{"r":1,"i":["412049754"],"z":["11418"]}}},
 {"s":"PER NIENTE","n":[["PER NIENTE INC",1]],"x":{"irs":{"r":1,"i":["813679904"],"z":["14216"]}}},
 {"s":"PER SCHOLAS","n":[["PER SCHOLAS INCORPORATED",2],["PER SCHOLAS INC",1]],"x":{"cbr":{"r":2,"a":1780481.5,"l":"2025-10-16","i":["CT126020268802734","CT185020268801289"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["043252955"],"z":["10454"]}}},
@@ -1728,7 +1729,5 @@
 {"s":"PETOLA COMMERCIAL CLEANING","n":[["Petola Commercial Cleaning LLC",1]],"x":{"sbs":{"r":1,"i":["393922"],"z":["11411"],"p":["MBE","WBE"]}}},
 {"s":"PETRA AGU DBA UNIVERSAL EXPRESS","n":[["Petra Agu dba Universal Express",1]],"x":{"ocp":{"r":1,"a":167040,"l":"2011-04-08","i":["20110401012"]}}},
 {"s":"PETRA MINISTRIES","n":[["PETRA MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["204850732"],"z":["11003"]}}},
-{"s":"PETRA TECHNOLOGY","n":[["PETRA TECHNOLOGY INC.",1]],"x":{"sbs":{"r":1,"i":["363664"],"z":["11530"],"p":["MBE"]}}},
-{"s":"PETRA180","n":[["PETRA180 INC",1]],"x":{"irs":{"r":1,"i":["931373408"],"z":["12302"]}}},
-{"s":"PETRACO CONSULTING","n":[["Petraco Consulting",2],["Petraco Consulting Inc.",1]],"x":{"ocp":{"r":3,"a":851500,"l":"2014-09-17","i":["20140910002","20120326007","20090420015"]}}}
+{"s":"PETRA TECHNOLOGY","n":[["PETRA TECHNOLOGY INC.",1]],"x":{"sbs":{"r":1,"i":["363664"],"z":["11530"],"p":["MBE"]}}}
 ]}

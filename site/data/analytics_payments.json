@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_payments.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "payment",
-  "generated_at": "2026-11-13T14:08:23.774Z",
-  "snapshot_date": "2026-11-13T14:08:23.774Z",
+  "generated_at": "2026-11-16T16:26:47.984Z",
+  "snapshot_date": "2026-11-16T16:26:47.984Z",
   "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
   "dimensions": [
     "agency",
@@ -21,19 +21,19 @@
     "fiscal_years": [
       2026
     ],
-    "publisher_record_count": 1785886,
-    "source_net_check_amount": 52399983822.17,
+    "publisher_record_count": 1785889,
+    "source_net_check_amount": 52399975898.99,
     "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
     "input": "payments.csv"
   },
   "population": {
-    "source_rows": 1785886,
+    "source_rows": 1785889,
     "grouped_rows": 28559,
-    "transaction_count": 1785886,
-    "unique_transaction_count": 1636029,
-    "actual_payment_amount": 52399983822.17,
+    "transaction_count": 1785889,
+    "unique_transaction_count": 1636032,
+    "actual_payment_amount": 52399975898.99,
     "duplicate_transaction_rows": 149857,
-    "reversal_rows": 1705
+    "reversal_rows": 1708
   },
   "rows": [
     {
@@ -143190,9 +143190,9 @@
       "agency": "Department of Education",
       "payee_name": "SCHWANIERI ENTERTAINMENT CORP",
       "fiscal_year": 2026,
-      "transaction_count": 87,
-      "unique_transaction_count": 87,
-      "actual_payment_amount": 235618.74,
+      "transaction_count": 90,
+      "unique_transaction_count": 90,
+      "actual_payment_amount": 227695.56,
       "contract_count": 73,
       "contract_id": null
     },

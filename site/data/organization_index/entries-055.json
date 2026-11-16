@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":55,"first_ordinal":93026,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":55,"first_ordinal":93026,"entries":[
 {"s":"MCNEIL SALES SERVICE","n":[["MCNEIL SALES & SERVICE INC",1],["MCNEIL SALES & SERVICE INC.",1]],"x":{"cbr":{"r":1,"a":229000,"l":"2024-09-24","i":["CT181920251403182"],"m":["Non-M/WBE"]},"dol":{"r":1,"i":["25-641R7-CR"],"z":["08691"]}}},
 {"s":"MCNEILUS FINANCIAL INC DBA MCNEILUS TRUCK AND MANUFACTURING","n":[["McNeilus Financial Inc DBA McNeilus Truck and Manufacturing",2]],"x":{"ocp":{"r":2,"a":1375000,"l":"2023-04-06","i":["20230331103","20171016006"]}}},
 {"s":"MCNEILUS FINANCIAL INC DBA MCNEILUS TRUCK AND MFG","n":[["MCNEILUS FINANCIAL INC. DBA MCNEILUS TRUCK  and  MFG COMPANY",1]],"x":{"ocp":{"r":1,"a":547500,"l":"2012-10-01","i":["20120924001"]}}},
@@ -278,7 +278,7 @@
 {"s":"MEDICAL AND HEALTH RESEARCH ASSOCIATION OF NYC","n":[["MEDICAL  and  HEALTH RESEARCH ASSOCIATION OF NYC, INC.",1],["MEDICAL AND HEALTH RESEARCH ASSOCIATION OF NYC, INC.",1]],"x":{"ocp":{"r":2,"a":155000,"l":"2007-06-06","i":["20070530024","20050504023"]}}},
 {"s":"MEDICAL APPLICATIONS SPECIALISTS INC DBA MAS SECURITY SOLUTIONS","n":[["MEDICAL APPLICATIONS SPECIALISTS INC DBA MAS SECURITY SOLUTIONS",1],["Medical Applications Specialists Inc. dba MAS Security Solutions",1]],"x":{"ocp":{"r":2,"a":4789800,"l":"2013-06-05","i":["20130529003","20120323037"]}}},
 {"s":"MEDICAL ASSOCIATE OF WALL STREET","n":[["Medical Associate of Wall Street, PC",1]],"x":{"ocp":{"r":1,"a":1863000,"l":"2017-08-28","i":["20170822001"]}}},
-{"s":"MEDICAL ASSOCIATES OF WALL STREET","n":[["MEDICAL ASSOCIATES OF  WALL STREET",2],["MEDICAL ASSOCIATES OF WALL STREET",2]],"x":{"ocp":{"r":1,"a":619220,"l":"2023-08-14","i":["20230808112"]},"cbr":{"r":1,"a":209150,"l":"2026-05-19","i":["MA104020269676645"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":619220,"l":"2023-08-07","i":["CT1-057-20248801695"]},"cbv":{"r":1,"l":"2026-05-19","i":["MA104020269676645"],"m":["Non-M/WBE"]}}},
+{"s":"MEDICAL ASSOCIATES OF WALL STREET","n":[["MEDICAL ASSOCIATES OF  WALL STREET",2],["MEDICAL ASSOCIATES OF WALL STREET",1]],"x":{"ocp":{"r":1,"a":619220,"l":"2023-08-14","i":["20230808112"]},"cbr":{"r":1,"a":209150,"l":"2026-05-19","i":["MA104020269676645"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":619220,"l":"2023-08-07","i":["CT1-057-20248801695"]}}},
 {"s":"MEDICAL BOARD OF NYP BMH","n":[["MEDICAL BOARD OF NYP BMH CORP",1]],"x":{"irs":{"r":1,"i":["833147577"],"z":["11215"]}}},
 {"s":"MEDICAL BUSINESS ASSOCIATES","n":[["Medical Business Associates Inc.",1]],"x":{"sbs":{"r":1,"i":["14387"],"z":["60559"],"p":["MBE","WBE"]}}},
 {"s":"MEDICAL CARE OF QUEENS","n":[["MEDICAL CARE OF QUEENS PC",1]],"x":{"irs":{"r":1,"i":["474377679"],"z":["11590"]}}},
@@ -1015,7 +1015,7 @@
 {"s":"MERYL CHARLES WITMER CHARITABLE FOUNDATION","n":[["MERYL & CHARLES WITMER CHARITABLE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["134129627"],"z":["10016"]}}},
 {"s":"MERZ METAL MACHINE","n":[["MERZ METAL & MACHINE CORPORATION",1]],"x":{"dol":{"r":1,"i":["25-65XDG-CR"],"z":["14211"]}}},
 {"s":"MES","d":[["MES",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-69ESE-CR"],"z":["10303"]}}},
-{"s":"MES SERVICE","n":[["MES SERVICE COMPANY LLC",1]],"x":{"cbr":{"r":1,"a":45000,"l":"2026-11-09","i":["CT105720278803458"],"m":["Non-M/WBE"]}}},
+{"s":"MES SERVICE","n":[["MES SERVICE COMPANY LLC",2]],"x":{"cbr":{"r":1,"a":45000,"l":"2026-11-09","i":["CT105720278803458"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-09","i":["CT105720278803458"],"m":["Non-M/WBE"]}}},
 {"s":"MESA INSTITUTE FOR GLOBAL IMPACT IN C","n":[["MESA INSTITUTE FOR GLOBAL IMPACT IN C",1]],"x":{"irs":{"r":1,"i":["412909875"],"z":["10013"]}}},
 {"s":"MESA LINKS","n":[["MESA LINKS INC",1]],"x":{"irs":{"r":1,"i":["923118835"],"z":["11221"]}}},
 {"s":"MESA OF N Y","n":[["MESA OF N Y INC",1]],"x":{"irs":{"r":1,"i":["222714094"],"z":["13203"]}}},

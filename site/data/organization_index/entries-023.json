@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":23,"first_ordinal":38548,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":23,"first_ordinal":38548,"entries":[
 {"s":"CREATIVE FORM DEVELOPMENT","n":[["Creative Form Development, LLC",2],["Creative Form Development",1]],"d":[["Creative Form Development, LLC",1]],"x":{"sbs":{"r":1,"i":["344394"],"z":["10016"],"p":["MBE","WBE"]},"dol":{"r":2,"v":["dba","name"],"i":["25-641JO-CR"],"z":["10016"]},"sca":{"r":1,"i":["CREATIVE FORM DEVELOPMENT, LLC"],"z":["10120"]}}},
 {"s":"CREATIVE GRAIN","n":[["CREATIVE GRAIN, LLC",1]],"x":{"dol":{"r":1,"i":["25-64UEK-CR"],"z":["07834"]}}},
 {"s":"CREATIVE GROUP HOME","n":[["CREATIVE GROUP HOME INC",1]],"x":{"irs":{"r":1,"i":["331260101"],"z":["10466"]}}},
@@ -221,7 +221,7 @@
 {"s":"CRITICAL PRACTICES","n":[["CRITICAL PRACTICES INC",1]],"x":{"irs":{"r":1,"i":["462807840"],"z":["10011"]}}},
 {"s":"CRITICAL SOCIOLOGY","n":[["CRITICAL SOCIOLOGY",1]],"x":{"irs":{"r":1,"i":["930691622"],"z":["10128"]}}},
 {"s":"CRITICAL SOLUTIONS AND TECHNOLOGIES","n":[["Critical Solutions and Technologies, LLC",1]],"x":{"sbs":{"r":1,"i":["11709"],"z":["11021"],"p":["MBE"]}}},
-{"s":"CRITICAL SUPPLY","n":[["CRITICAL SUPPLY LLC",9],["Critical Supply Company LLC",1]],"x":{"cbr":{"r":6,"a":150000,"l":"2025-11-21","c":6,"i":["CT104020263050158","CT104020263045552","CT104020263027497","CT104020253098198","CT104020253073741"],"m":["Black American"]},"cbv":{"r":2,"l":"2025-11-21","i":["CT104020263050158","CT104020263045552"],"m":["Black American"]},"dbe":{"r":1,"i":["CRITICAL SUPPLY LLC"]},"sbs":{"r":1,"i":["365158"],"z":["10005"],"p":["MBE"]}}},
+{"s":"CRITICAL SUPPLY","n":[["CRITICAL SUPPLY LLC",8],["Critical Supply Company LLC",1]],"x":{"cbr":{"r":6,"a":150000,"l":"2025-11-21","c":6,"i":["CT104020263050158","CT104020263045552","CT104020263027497","CT104020253098198","CT104020253073741"],"m":["Black American"]},"cbv":{"r":1,"l":"2025-11-21","i":["CT104020263050158"],"m":["Black American"]},"dbe":{"r":1,"i":["CRITICAL SUPPLY LLC"]},"sbs":{"r":1,"i":["365158"],"z":["10005"],"p":["MBE"]}}},
 {"s":"CRITICAL VICTORIES","n":[["CRITICAL VICTORIES LLC",3]],"x":{"cbr":{"r":2,"a":34525,"l":"2026-02-25","i":["CT105620261410981","CT105620251412917"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-02-25","i":["CT105620261410981"],"m":["Non-M/WBE"]}}},
 {"s":"CRITIGEN","n":[["Critigen LLC",1],["Critigen, LLC",1]],"x":{"ocp":{"r":2,"a":2000000,"l":"2016-11-29","i":["20161121014","20121026005"]}}},
 {"s":"CRITTENDEN VOLUNTARY FIRE DEPT","n":[["CRITTENDEN VOLUNTARY FIRE DEPT INC",1]],"x":{"irs":{"r":1,"i":["161466207"],"z":["14038"]}}},

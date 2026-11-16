@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":5,"first_ordinal":8270,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":5,"first_ordinal":8270,"entries":[
 {"s":"AMERICAN FRIENDS OF OHEV YISRAEL","n":[["AMERICAN FRIENDS OF OHEV YISRAEL",1]],"x":{"irs":{"r":1,"i":["112457980"],"z":["11204"]}}},
 {"s":"AMERICAN FRIENDS OF OHEV YISRAEL KAPISHNYTZ","n":[["AMERICAN FRIENDS OF OHEV YISRAEL KAPISHNYTZ",1]],"x":{"irs":{"r":1,"i":["862030319"],"z":["11204"]}}},
 {"s":"AMERICAN FRIENDS OF OHR CHADASH","n":[["AMERICAN FRIENDS OF OHR CHADASH INC",1]],"x":{"irs":{"r":1,"i":["862007837"],"z":["11204"]}}},

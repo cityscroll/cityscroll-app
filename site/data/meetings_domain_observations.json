@@ -14,7 +14,7 @@
   "domain": "meetings",
   "title": "Meetings domain observations for entity intelligence",
   "description": "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline meeting and entity-intelligence materialization. Meeting notice fields are retained for the canonical read model; bounded person-level votes live in the people domain snapshot (by_person from meeting-outcomes).",
-  "retrieved_at": "2026-11-14T14:18:25.812Z",
+  "retrieved_at": "2026-11-16T17:14:24.639Z",
   "window_days": 180,
   "source": {
     "system": "city_record",
@@ -25,6 +25,76 @@
   "row_count": 120,
   "agency_count": 36,
   "rows": [
+    {
+      "request_id": "20260819014",
+      "meeting_id": "meeting:city_record:20260819014",
+      "agency_name": "Board Meetings",
+      "short_title": "BOARD MEETINGS",
+      "start_date": "2026-11-16T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819014",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "external_board_page_needed",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20261102015",
+      "meeting_id": "meeting:city_record:20261102015",
+      "agency_name": "Environmental Control Board",
+      "short_title": "New York City Environmental Control Board Meeting December 3, 2026",
+      "start_date": "2026-11-16T00:00:00.000",
+      "event_date": "2026-12-03T09:30:00.000",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "100 Church Street",
+      "street_address_2": "12th Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261102015",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "100 Church Street",
+          "100 Church Street, 12th Floor, New York, NY, 10007"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line",
+            "venue_column"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "100 Church Street",
+            "100 Church Street, 12th Floor, New York, NY, 10007"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
+      }
+    },
     {
       "request_id": "20261027031",
       "meeting_id": "meeting:city_record:20261027031",
@@ -100,6 +170,53 @@
       }
     },
     {
+      "request_id": "20261106002",
+      "meeting_id": "meeting:city_record:20261106002",
+      "agency_name": "Transportation",
+      "short_title": "A notice of a FCRC hearing on a proposed coordinated street furniture franchise agreement between the City of New York and JCDecaux Street Furniture New York, LLC.",
+      "start_date": "2026-11-13T00:00:00.000",
+      "event_date": "2026-12-07T14:30:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "255 Greenwich Street",
+      "street_address_2": "8th Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261106002",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "30 P.M. at 255 Greenwich Street",
+          "255 Greenwich Street, 8th Floor, New York, NY, 10007"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line",
+            "venue_column"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "30 P.M. at 255 Greenwich Street",
+            "255 Greenwich Street, 8th Floor, New York, NY, 10007"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
+      }
+    },
+    {
       "request_id": "20261104022",
       "meeting_id": "meeting:city_record:20261104022",
       "agency_name": "Information Technology and Telecommunications",
@@ -159,53 +276,6 @@
           "role": "venue",
           "evidence": [
             "PUBLIC HEARING to be held on 12/7/2026, at 2:30PM at 255 Greenwich Street, 8 th Floor, New York, NY 10007 relativ",
-            "255 Greenwich Street, 8th Floor, New York, NY, 10007"
-          ]
-        },
-        "confidence_tier": "derived",
-        "source": "venue"
-      }
-    },
-    {
-      "request_id": "20261106002",
-      "meeting_id": "meeting:city_record:20261106002",
-      "agency_name": "Transportation",
-      "short_title": "A notice of a FCRC hearing on a proposed coordinated street furniture franchise agreement between the City of New York and JCDecaux Street Furniture New York, LLC.",
-      "start_date": "2026-11-13T00:00:00.000",
-      "event_date": "2026-12-07T14:30:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "street_address_1": "255 Greenwich Street",
-      "street_address_2": "8th Floor",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10007",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261106002",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "30 P.M. at 255 Greenwich Street",
-          "255 Greenwich Street, 8th Floor, New York, NY, 10007"
-        ],
-        "derivation": {
-          "methods": [
-            "venue_line",
-            "venue_column"
-          ],
-          "confidence": 0.7,
-          "role": "venue",
-          "evidence": [
-            "30 P.M. at 255 Greenwich Street",
             "255 Greenwich Street, 8th Floor, New York, NY, 10007"
           ]
         },
@@ -482,6 +552,80 @@
       }
     },
     {
+      "request_id": "20261104007",
+      "meeting_id": "meeting:city_record:20261104007",
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "Spring Creek Phase 5 B",
+      "start_date": "2026-11-09T00:00:00.000",
+      "event_date": "2026-12-09T10:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261104007",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "please",
+          "soon",
+          "thereafter",
+          "reached",
+          "which",
+          "wishing",
+          "heard",
+          "opportunity",
+          "disposition",
+          "real",
+          "property",
+          "identified",
+          "below",
+          "access",
+          "code",
+          "general",
+          "municipal",
+          "charter",
+          "housing",
+          "preservation",
+          "development",
+          "sale",
+          "owned",
+          "collectively",
+          "area",
+          "borough",
+          "brooklyn",
+          "address",
+          "block",
+          "locke",
+          "street",
+          "ashford"
+        ],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "addresses": [
+          "435 Locke Street",
+          "50 1050 Ashford Street",
+          "1 1 Gateway Dr"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough"
+          ],
+          "confidence": 0.9,
+          "role": "matter",
+          "evidence": [
+            "Borough of Brooklyn"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
+      }
+    },
+    {
       "request_id": "20261106003",
       "meeting_id": "meeting:city_record:20261106003",
       "agency_name": "Housing Preservation and Development",
@@ -541,80 +685,6 @@
           "1 474 Egan Street",
           "295 450 Egan Street",
           "130 1090 Ashford Street"
-        ],
-        "derivation": {
-          "methods": [
-            "matter_body_borough"
-          ],
-          "confidence": 0.9,
-          "role": "matter",
-          "evidence": [
-            "Borough of Brooklyn"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "matter"
-      }
-    },
-    {
-      "request_id": "20261104007",
-      "meeting_id": "meeting:city_record:20261104007",
-      "agency_name": "Housing Preservation and Development",
-      "short_title": "Spring Creek Phase 5 B",
-      "start_date": "2026-11-09T00:00:00.000",
-      "event_date": "2026-12-09T10:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261104007",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [
-          "please",
-          "soon",
-          "thereafter",
-          "reached",
-          "which",
-          "wishing",
-          "heard",
-          "opportunity",
-          "disposition",
-          "real",
-          "property",
-          "identified",
-          "below",
-          "access",
-          "code",
-          "general",
-          "municipal",
-          "charter",
-          "housing",
-          "preservation",
-          "development",
-          "sale",
-          "owned",
-          "collectively",
-          "area",
-          "borough",
-          "brooklyn",
-          "address",
-          "block",
-          "locke",
-          "street",
-          "ashford"
-        ],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Brooklyn"
-        ],
-        "addresses": [
-          "435 Locke Street",
-          "50 1050 Ashford Street",
-          "1 1 Gateway Dr"
         ],
         "derivation": {
           "methods": [
@@ -899,125 +969,6 @@
       }
     },
     {
-      "request_id": "20261019007",
-      "meeting_id": "meeting:city_record:20261019007",
-      "agency_name": "Housing Authority",
-      "short_title": "New York City Housing Authority Board Meeting",
-      "start_date": "2026-11-04T00:00:00.000",
-      "event_date": "2026-11-18T10:00:00.000",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261019007",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "90 Church Street"
-        ],
-        "derivation": {
-          "methods": [
-            "venue_line"
-          ],
-          "confidence": 0.7,
-          "role": "venue",
-          "evidence": [
-            "90 Church Street"
-          ]
-        },
-        "confidence_tier": "derived",
-        "source": "venue"
-      }
-    },
-    {
-      "request_id": "20261026022",
-      "meeting_id": "meeting:city_record:20261026022",
-      "agency_name": "Housing Preservation and Development",
-      "short_title": "El Barrio",
-      "start_date": "2026-11-04T00:00:00.000",
-      "event_date": "2026-11-19T11:30:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261026022",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [
-          "street",
-          "library",
-          "east",
-          "manhattan",
-          "soon",
-          "thereafter",
-          "reached",
-          "which",
-          "place",
-          "wishing",
-          "heard",
-          "opportunity",
-          "amendments",
-          "deed",
-          "land",
-          "disposition",
-          "agreement",
-          "identified",
-          "below",
-          "general",
-          "municipal",
-          "charter",
-          "housing",
-          "preservation",
-          "development",
-          "terms",
-          "conditions",
-          "sale",
-          "certain",
-          "real",
-          "property",
-          "previously"
-        ],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "community_districts": [
-          "53"
-        ],
-        "addresses": [
-          "53 East 110 th Street",
-          "123 11 304 East 126 th Street",
-          "47 11 201 East 120 th Street",
-          "1 11 204 West 121 st"
-        ],
-        "derivation": {
-          "methods": [
-            "matter_body_borough",
-            "matter_title_place"
-          ],
-          "confidence": 0.9,
-          "role": "matter",
-          "evidence": [
-            "Borough of Manhattan",
-            "Harlem"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "matter"
-      }
-    },
-    {
       "request_id": "20261027029",
       "meeting_id": "meeting:city_record:20261027029",
       "agency_name": "Board of Education Retirement System",
@@ -1057,6 +1008,45 @@
           "evidence": [
             "Meeting will be held in-person at 55 Water Street, 50th Floor on Tuesday, November 10, 20",
             "55 Water Street, New York, NY, 10041"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
+      }
+    },
+    {
+      "request_id": "20261019007",
+      "meeting_id": "meeting:city_record:20261019007",
+      "agency_name": "Housing Authority",
+      "short_title": "New York City Housing Authority Board Meeting",
+      "start_date": "2026-11-04T00:00:00.000",
+      "event_date": "2026-11-18T10:00:00.000",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261019007",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "90 Church Street"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "90 Church Street"
           ]
         },
         "confidence_tier": "derived",
@@ -1148,6 +1138,86 @@
             "Brooklyn Borough President ULURP Hearing",
             "Coney Island",
             "Bushwick"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
+      }
+    },
+    {
+      "request_id": "20261026022",
+      "meeting_id": "meeting:city_record:20261026022",
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "El Barrio",
+      "start_date": "2026-11-04T00:00:00.000",
+      "event_date": "2026-11-19T11:30:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261026022",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "street",
+          "library",
+          "east",
+          "manhattan",
+          "soon",
+          "thereafter",
+          "reached",
+          "which",
+          "place",
+          "wishing",
+          "heard",
+          "opportunity",
+          "amendments",
+          "deed",
+          "land",
+          "disposition",
+          "agreement",
+          "identified",
+          "below",
+          "general",
+          "municipal",
+          "charter",
+          "housing",
+          "preservation",
+          "development",
+          "terms",
+          "conditions",
+          "sale",
+          "certain",
+          "real",
+          "property",
+          "previously"
+        ],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "community_districts": [
+          "53"
+        ],
+        "addresses": [
+          "53 East 110 th Street",
+          "123 11 304 East 126 th Street",
+          "47 11 201 East 120 th Street",
+          "1 11 204 West 121 st"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough",
+            "matter_title_place"
+          ],
+          "confidence": 0.9,
+          "role": "matter",
+          "evidence": [
+            "Borough of Manhattan",
+            "Harlem"
           ]
         },
         "confidence_tier": "strong",
@@ -1268,26 +1338,161 @@
       }
     },
     {
-      "request_id": "20261028015",
-      "meeting_id": "meeting:city_record:20261028015",
-      "agency_name": "Office of the Mayor",
-      "short_title": "Mayoral Pubic Hearing",
+      "request_id": "20261015024",
+      "meeting_id": "meeting:city_record:20261015024",
+      "agency_name": "Transportation",
+      "short_title": "Dining Out NYC Public Hearings",
       "start_date": "2026-10-30T00:00:00.000",
-      "event_date": null,
+      "event_date": "2026-11-19T11:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261028015",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261015024",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
+        "subject_tokens": [
+          "draft",
+          "copy",
+          "revocable",
+          "consent",
+          "agreement",
+          "obtained",
+          "cost",
+          "submitting",
+          "request",
+          "diningoutnyc",
+          "info",
+          "requestcopy",
+          "zoom",
+          "commencing",
+          "19th",
+          "authorizing",
+          "saint",
+          "marks",
+          "maintain",
+          "operate",
+          "year",
+          "round",
+          "roadway",
+          "cafe",
+          "term",
+          "four",
+          "years",
+          "adjacent",
+          "place",
+          "borough",
+          "manhattan",
+          "linda"
+        ],
         "matter_ids": []
       },
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan",
+          "Brooklyn"
+        ],
+        "addresses": [
+          "97 Saint Marks Place",
+          "44 East 92 Street",
+          "90 South 4 Street",
+          "534 East 9 Street"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough"
+          ],
+          "confidence": 0.9,
+          "role": "matter",
+          "evidence": [
+            "Borough of Manhattan",
+            "Borough of Brooklyn"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
+      }
+    },
+    {
+      "request_id": "20261021010",
+      "meeting_id": "meeting:city_record:20261021010",
+      "agency_name": "Citywide Administrative Services",
+      "short_title": "FOR LEASE - 31 - 00 47th Avenue",
+      "start_date": "2026-10-30T00:00:00.000",
+      "event_date": "2026-11-10T10:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021010",
+      "ulurp_keys": [
+        "140215PXQ",
+        "N140215PXQ"
+      ],
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "lease",
+          "tenant",
+          "partial",
+          "ground",
+          "second",
+          "third",
+          "floors",
+          "building",
+          "located",
+          "47th",
+          "avenue",
+          "block",
+          "borough",
+          "queens",
+          "general",
+          "support",
+          "staff",
+          "human",
+          "resources",
+          "administration",
+          "office",
+          "such",
+          "commissioner",
+          "citywide",
+          "administrative",
+          "services",
+          "determine",
+          "period",
+          "twenty",
+          "years",
+          "substantial",
+          "completion"
+        ],
+        "matter_ids": [
+          "ulurp:140215PXQ",
+          "ulurp:N140215PXQ"
+        ]
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "addresses": [
+          "31-00 47th Avenue"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough",
+            "matter_address"
+          ],
+          "confidence": 0.9,
+          "role": "matter",
+          "evidence": [
+            "Borough of Queens",
+            "00 47th Avenue"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
       }
     },
     {
@@ -1379,6 +1584,29 @@
       }
     },
     {
+      "request_id": "20261028015",
+      "meeting_id": "meeting:city_record:20261028015",
+      "agency_name": "Office of the Mayor",
+      "short_title": "Mayoral Pubic Hearing",
+      "start_date": "2026-10-30T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261028015",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "body_place_omitted",
+        "virtual_only": false
+      }
+    },
+    {
       "request_id": "20261019018",
       "meeting_id": "meeting:city_record:20261019018",
       "agency_name": "Citywide Administrative Services",
@@ -1453,164 +1681,6 @@
           "evidence": [
             "Borough of Queens",
             "11 165th Street"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "matter"
-      }
-    },
-    {
-      "request_id": "20261021010",
-      "meeting_id": "meeting:city_record:20261021010",
-      "agency_name": "Citywide Administrative Services",
-      "short_title": "FOR LEASE - 31 - 00 47th Avenue",
-      "start_date": "2026-10-30T00:00:00.000",
-      "event_date": "2026-11-10T10:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021010",
-      "ulurp_keys": [
-        "140215PXQ",
-        "N140215PXQ"
-      ],
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [
-          "lease",
-          "tenant",
-          "partial",
-          "ground",
-          "second",
-          "third",
-          "floors",
-          "building",
-          "located",
-          "47th",
-          "avenue",
-          "block",
-          "borough",
-          "queens",
-          "general",
-          "support",
-          "staff",
-          "human",
-          "resources",
-          "administration",
-          "office",
-          "such",
-          "commissioner",
-          "citywide",
-          "administrative",
-          "services",
-          "determine",
-          "period",
-          "twenty",
-          "years",
-          "substantial",
-          "completion"
-        ],
-        "matter_ids": [
-          "ulurp:140215PXQ",
-          "ulurp:N140215PXQ"
-        ]
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Queens"
-        ],
-        "addresses": [
-          "31-00 47th Avenue"
-        ],
-        "derivation": {
-          "methods": [
-            "matter_body_borough",
-            "matter_address"
-          ],
-          "confidence": 0.9,
-          "role": "matter",
-          "evidence": [
-            "Borough of Queens",
-            "00 47th Avenue"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "matter"
-      }
-    },
-    {
-      "request_id": "20261015024",
-      "meeting_id": "meeting:city_record:20261015024",
-      "agency_name": "Transportation",
-      "short_title": "Dining Out NYC Public Hearings",
-      "start_date": "2026-10-30T00:00:00.000",
-      "event_date": "2026-11-19T11:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261015024",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [
-          "draft",
-          "copy",
-          "revocable",
-          "consent",
-          "agreement",
-          "obtained",
-          "cost",
-          "submitting",
-          "request",
-          "diningoutnyc",
-          "info",
-          "requestcopy",
-          "zoom",
-          "commencing",
-          "19th",
-          "authorizing",
-          "saint",
-          "marks",
-          "maintain",
-          "operate",
-          "year",
-          "round",
-          "roadway",
-          "cafe",
-          "term",
-          "four",
-          "years",
-          "adjacent",
-          "place",
-          "borough",
-          "manhattan",
-          "linda"
-        ],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan",
-          "Brooklyn"
-        ],
-        "addresses": [
-          "97 Saint Marks Place",
-          "44 East 92 Street",
-          "90 South 4 Street",
-          "534 East 9 Street"
-        ],
-        "derivation": {
-          "methods": [
-            "matter_body_borough"
-          ],
-          "confidence": 0.9,
-          "role": "matter",
-          "evidence": [
-            "Borough of Manhattan",
-            "Borough of Brooklyn"
           ]
         },
         "confidence_tier": "strong",
@@ -1757,52 +1827,59 @@
       }
     },
     {
-      "request_id": "20261020021",
-      "meeting_id": "meeting:city_record:20261020021",
+      "request_id": "20261021009",
+      "meeting_id": "meeting:city_record:20261021009",
       "agency_name": "Community Boards",
-      "short_title": "Bronx CB7 FY2028 Statement of Needs and Budget Requests.",
+      "short_title": "November 2, 2026 Public Hearing",
       "start_date": "2026-10-27T00:00:00.000",
-      "event_date": "2026-10-27T17:30:00.000",
+      "event_date": "2026-11-02T19:30:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261020021",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021009",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [
-          "overview",
+          "monday",
+          "bayside",
+          "high",
+          "school",
+          "corporal",
+          "kennedy",
+          "street",
+          "capital",
+          "expense",
+          "budget",
+          "adoption",
           "fiscal",
           "year",
-          "statement",
-          "needs",
-          "budget",
-          "requests",
-          "bronx",
-          "community"
+          "review",
+          "priorities",
+          "queens",
+          "cd11"
         ],
         "matter_ids": []
       },
       "affected_area": {
         "scope": "local",
         "boroughs": [
-          "Bronx"
+          "Queens",
+          "QUEENS"
         ],
         "community_boards": [
-          "Community Board 7, Bronx"
+          "Community Board 11, Queens"
         ],
         "derivation": {
           "methods": [
             "matter_body_borough",
-            "matter_title_place",
             "community_board"
           ],
           "confidence": 0.9,
           "role": "matter",
           "evidence": [
-            "BOROUGH OF THE BRONX",
-            "Bronx CB7 FY2028 Statement of Needs and Budget Requests.",
-            "Community Board 7, Bronx"
+            "BOROUGH OF QUEENS",
+            "Community Board 11, Queens"
           ]
         },
         "confidence_tier": "strong",
@@ -1890,59 +1967,52 @@
       }
     },
     {
-      "request_id": "20261021009",
-      "meeting_id": "meeting:city_record:20261021009",
+      "request_id": "20261020021",
+      "meeting_id": "meeting:city_record:20261020021",
       "agency_name": "Community Boards",
-      "short_title": "November 2, 2026 Public Hearing",
+      "short_title": "Bronx CB7 FY2028 Statement of Needs and Budget Requests.",
       "start_date": "2026-10-27T00:00:00.000",
-      "event_date": "2026-11-02T19:30:00.000",
+      "event_date": "2026-10-27T17:30:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261021009",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261020021",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [
-          "monday",
-          "bayside",
-          "high",
-          "school",
-          "corporal",
-          "kennedy",
-          "street",
-          "capital",
-          "expense",
-          "budget",
-          "adoption",
+          "overview",
           "fiscal",
           "year",
-          "review",
-          "priorities",
-          "queens",
-          "cd11"
+          "statement",
+          "needs",
+          "budget",
+          "requests",
+          "bronx",
+          "community"
         ],
         "matter_ids": []
       },
       "affected_area": {
         "scope": "local",
         "boroughs": [
-          "Queens",
-          "QUEENS"
+          "Bronx"
         ],
         "community_boards": [
-          "Community Board 11, Queens"
+          "Community Board 7, Bronx"
         ],
         "derivation": {
           "methods": [
             "matter_body_borough",
+            "matter_title_place",
             "community_board"
           ],
           "confidence": 0.9,
           "role": "matter",
           "evidence": [
-            "BOROUGH OF QUEENS",
-            "Community Board 11, Queens"
+            "BOROUGH OF THE BRONX",
+            "Bronx CB7 FY2028 Statement of Needs and Budget Requests.",
+            "Community Board 7, Bronx"
           ]
         },
         "confidence_tier": "strong",
@@ -2015,6 +2085,29 @@
       }
     },
     {
+      "request_id": "20260701035",
+      "meeting_id": "meeting:city_record:20260701035",
+      "agency_name": "Board Meetings",
+      "short_title": "BOARD MEETINGS",
+      "start_date": "2026-10-26T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701035",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "external_board_page_needed",
+        "virtual_only": false
+      }
+    },
+    {
       "request_id": "20261020005",
       "meeting_id": "meeting:city_record:20261020005",
       "agency_name": "Landmarks Preservation Commission",
@@ -2059,29 +2152,6 @@
       }
     },
     {
-      "request_id": "20260701035",
-      "meeting_id": "meeting:city_record:20260701035",
-      "agency_name": "Board Meetings",
-      "short_title": "BOARD MEETINGS",
-      "start_date": "2026-10-26T00:00:00.000",
-      "event_date": null,
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701035",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
-        "virtual_only": false
-      }
-    },
-    {
       "request_id": "20261014024",
       "meeting_id": "meeting:city_record:20261014024",
       "agency_name": "Office of the Mayor",
@@ -2105,71 +2175,61 @@
       }
     },
     {
-      "request_id": "20261019006",
-      "meeting_id": "meeting:city_record:20261019006",
-      "agency_name": "Transportation",
-      "short_title": "DINING OUT NYC PUBLIC HEARINGS",
+      "request_id": "20261014026",
+      "meeting_id": "meeting:city_record:20261014026",
+      "agency_name": "Parks and Recreation",
+      "short_title": "Notice of Joint Public Hearing: 11/9/2026; for the Renovation, Operation and Maintenance of two (2) Parking Facilities at Maimonides Park, Coney Island, Brooklyn (Solicitation # B369-PL1,B369-PL2)",
       "start_date": "2026-10-23T00:00:00.000",
-      "event_date": "2026-11-12T11:00:00.000",
+      "event_date": "2026-10-23T14:30:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
+      "street_address_1": "255 Greenwich Street",
+      "street_address_2": "8th Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261019006",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014026",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [
-          "draft",
-          "copy",
-          "revocable",
-          "consent",
-          "agreement",
-          "obtained",
-          "cost",
-          "submitting",
-          "request",
-          "diningoutnyc",
-          "info",
-          "requestcopy",
-          "zoom",
-          "commencing",
-          "22nd",
-          "authorizing",
-          "ideal",
-          "coffee",
-          "shop",
-          "corp",
-          "maintain",
-          "operate",
-          "seasonal",
-          "roadway",
-          "cafe",
+          "permitee",
+          "renovation",
+          "operation",
+          "maintenance",
+          "parking",
+          "facilities",
+          "maimonides",
+          "park",
+          "coney",
+          "island",
+          "brooklyn",
+          "solicitation",
+          "b369",
+          "permit",
+          "provide",
+          "year",
           "term",
-          "four",
-          "years",
-          "adjacent",
-          "east",
-          "59th",
-          "street"
+          "renewal",
+          "options"
         ],
         "matter_ids": []
       },
       "affected_area": {
         "scope": "local",
         "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "346 East 59th Street"
+          "Brooklyn"
         ],
         "derivation": {
           "methods": [
-            "matter_body_borough"
+            "matter_title_place"
           ],
-          "confidence": 0.9,
+          "confidence": 0.88,
           "role": "matter",
           "evidence": [
-            "Borough of Manhattan"
+            "Notice of Joint Public Hearing: 11/9/2026; for the Renovation, Operation and Maintenance of two (2) Parking Facilities at Maimonides Park, Coney Island, Brookly",
+            "Coney Island"
           ]
         },
         "confidence_tier": "strong",
@@ -2239,61 +2299,71 @@
       }
     },
     {
-      "request_id": "20261014026",
-      "meeting_id": "meeting:city_record:20261014026",
-      "agency_name": "Parks and Recreation",
-      "short_title": "Notice of Joint Public Hearing: 11/9/2026; for the Renovation, Operation and Maintenance of two (2) Parking Facilities at Maimonides Park, Coney Island, Brooklyn (Solicitation # B369-PL1,B369-PL2)",
+      "request_id": "20261019006",
+      "meeting_id": "meeting:city_record:20261019006",
+      "agency_name": "Transportation",
+      "short_title": "DINING OUT NYC PUBLIC HEARINGS",
       "start_date": "2026-10-23T00:00:00.000",
-      "event_date": "2026-10-23T14:30:00.000",
+      "event_date": "2026-11-12T11:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "street_address_1": "255 Greenwich Street",
-      "street_address_2": "8th Floor",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10007",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261014026",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261019006",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [
-          "permitee",
-          "renovation",
-          "operation",
-          "maintenance",
-          "parking",
-          "facilities",
-          "maimonides",
-          "park",
-          "coney",
-          "island",
-          "brooklyn",
-          "solicitation",
-          "b369",
-          "permit",
-          "provide",
-          "year",
+          "draft",
+          "copy",
+          "revocable",
+          "consent",
+          "agreement",
+          "obtained",
+          "cost",
+          "submitting",
+          "request",
+          "diningoutnyc",
+          "info",
+          "requestcopy",
+          "zoom",
+          "commencing",
+          "22nd",
+          "authorizing",
+          "ideal",
+          "coffee",
+          "shop",
+          "corp",
+          "maintain",
+          "operate",
+          "seasonal",
+          "roadway",
+          "cafe",
           "term",
-          "renewal",
-          "options"
+          "four",
+          "years",
+          "adjacent",
+          "east",
+          "59th",
+          "street"
         ],
         "matter_ids": []
       },
       "affected_area": {
         "scope": "local",
         "boroughs": [
-          "Brooklyn"
+          "Manhattan"
+        ],
+        "addresses": [
+          "346 East 59th Street"
         ],
         "derivation": {
           "methods": [
-            "matter_title_place"
+            "matter_body_borough"
           ],
-          "confidence": 0.88,
+          "confidence": 0.9,
           "role": "matter",
           "evidence": [
-            "Notice of Joint Public Hearing: 11/9/2026; for the Renovation, Operation and Maintenance of two (2) Parking Facilities at Maimonides Park, Coney Island, Brookly",
-            "Coney Island"
+            "Borough of Manhattan"
           ]
         },
         "confidence_tier": "strong",
@@ -2407,6 +2477,48 @@
       }
     },
     {
+      "request_id": "20261015027",
+      "meeting_id": "meeting:city_record:20261015027",
+      "agency_name": "Community Boards",
+      "short_title": "October 27, 2026 PUBLIC HEARING",
+      "start_date": "2026-10-21T00:00:00.000",
+      "event_date": "2026-10-27T19:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261015027",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn",
+          "BROOKLYN"
+        ],
+        "community_boards": [
+          "Community Board 16, Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough",
+            "community_board"
+          ],
+          "confidence": 0.9,
+          "role": "matter",
+          "evidence": [
+            "BOROUGH OF BROOKLYN",
+            "Community Board 16, Brooklyn"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
+      }
+    },
+    {
       "request_id": "20261013025",
       "meeting_id": "meeting:city_record:20261013025",
       "agency_name": "Housing Preservation and Development",
@@ -2481,48 +2593,6 @@
       }
     },
     {
-      "request_id": "20261015027",
-      "meeting_id": "meeting:city_record:20261015027",
-      "agency_name": "Community Boards",
-      "short_title": "October 27, 2026 PUBLIC HEARING",
-      "start_date": "2026-10-21T00:00:00.000",
-      "event_date": "2026-10-27T19:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261015027",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Brooklyn",
-          "BROOKLYN"
-        ],
-        "community_boards": [
-          "Community Board 16, Brooklyn"
-        ],
-        "derivation": {
-          "methods": [
-            "matter_body_borough",
-            "community_board"
-          ],
-          "confidence": 0.9,
-          "role": "matter",
-          "evidence": [
-            "BOROUGH OF BROOKLYN",
-            "Community Board 16, Brooklyn"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "matter"
-      }
-    },
-    {
       "request_id": "20261014002",
       "meeting_id": "meeting:city_record:20261014002",
       "agency_name": "Housing Preservation and Development",
@@ -2592,6 +2662,29 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      }
+    },
+    {
+      "request_id": "20261009014",
+      "meeting_id": "meeting:city_record:20261009014",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Rules Relating to Automated Customer Service Systems",
+      "start_date": "2026-10-20T00:00:00.000",
+      "event_date": "2026-11-19T11:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009014",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "body_place_omitted",
+        "virtual_only": false
       }
     },
     {
@@ -2782,26 +2875,46 @@
       }
     },
     {
-      "request_id": "20261009014",
-      "meeting_id": "meeting:city_record:20261009014",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOH Rules Relating to Automated Customer Service Systems",
-      "start_date": "2026-10-20T00:00:00.000",
-      "event_date": "2026-11-19T11:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
+      "request_id": "20261013004",
+      "meeting_id": "meeting:city_record:20261013004",
+      "agency_name": "Business Integrity Commission",
+      "short_title": "BUSINESS INTEGRITY COMMISSION MEETING",
+      "start_date": "2026-10-19T00:00:00.000",
+      "event_date": "2026-10-20T11:00:00.000",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "100 Church Street",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261009014",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013004",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
       },
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "100 Church Street, New York, NY, 10007"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_column"
+          ],
+          "confidence": 0.65,
+          "role": "venue",
+          "evidence": [
+            "100 Church Street, New York, NY, 10007"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -2848,6 +2961,29 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      }
+    },
+    {
+      "request_id": "20260701034",
+      "meeting_id": "meeting:city_record:20260701034",
+      "agency_name": "Board Meetings",
+      "short_title": "BOARD MEETINGS",
+      "start_date": "2026-10-19T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701034",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "external_board_page_needed",
+        "virtual_only": false
       }
     },
     {
@@ -2949,72 +3085,6 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
-      }
-    },
-    {
-      "request_id": "20260701034",
-      "meeting_id": "meeting:city_record:20260701034",
-      "agency_name": "Board Meetings",
-      "short_title": "BOARD MEETINGS",
-      "start_date": "2026-10-19T00:00:00.000",
-      "event_date": null,
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701034",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
-        "virtual_only": false
-      }
-    },
-    {
-      "request_id": "20261013004",
-      "meeting_id": "meeting:city_record:20261013004",
-      "agency_name": "Business Integrity Commission",
-      "short_title": "BUSINESS INTEGRITY COMMISSION MEETING",
-      "start_date": "2026-10-19T00:00:00.000",
-      "event_date": "2026-10-20T11:00:00.000",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "street_address_1": "100 Church Street",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10007",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261013004",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "100 Church Street, New York, NY, 10007"
-        ],
-        "derivation": {
-          "methods": [
-            "venue_column"
-          ],
-          "confidence": 0.65,
-          "role": "venue",
-          "evidence": [
-            "100 Church Street, New York, NY, 10007"
-          ]
-        },
-        "confidence_tier": "derived",
-        "source": "venue"
       }
     },
     {
@@ -3345,14 +3415,14 @@
       }
     },
     {
-      "request_id": "20261006022",
-      "meeting_id": "meeting:city_record:20261006022",
-      "agency_name": "City Planning Commission",
-      "short_title": "City Planning Commission Public Hearing",
+      "request_id": "20261008005",
+      "meeting_id": "meeting:city_record:20261008005",
+      "agency_name": "City Planning",
+      "short_title": "Department of City Planning Proposed Street Number Rulemaking",
       "start_date": "2026-10-14T00:00:00.000",
-      "event_date": "2026-10-28T10:00:00.000",
+      "event_date": "2026-11-17T10:00:00.000",
       "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
+      "section_name": "Agency Rules",
       "street_address_1": "120 Broadway",
       "street_address_2": "Lower Level",
       "city": "New York",
@@ -3360,7 +3430,7 @@
       "zip_code": "10271",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006022",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261008005",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
@@ -3382,98 +3452,6 @@
           "role": "venue",
           "evidence": [
             "120 Broadway, Lower Level, New York, NY, 10271"
-          ]
-        },
-        "confidence_tier": "derived",
-        "source": "venue"
-      }
-    },
-    {
-      "request_id": "20260909022",
-      "meeting_id": "meeting:city_record:20260909022",
-      "agency_name": "Board of Education Retirement System",
-      "short_title": "DISABILITY COMMITTEE MEETING",
-      "start_date": "2026-10-14T00:00:00.000",
-      "event_date": "2026-10-22T13:00:00.000",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "street_address_1": "55 Water Street",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10041",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260909022",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "55 Water Street",
-          "55 Water Street, New York, NY, 10041"
-        ],
-        "derivation": {
-          "methods": [
-            "venue_line",
-            "venue_column"
-          ],
-          "confidence": 0.7,
-          "role": "venue",
-          "evidence": [
-            "55 Water Street",
-            "55 Water Street, New York, NY, 10041"
-          ]
-        },
-        "confidence_tier": "derived",
-        "source": "venue"
-      }
-    },
-    {
-      "request_id": "20260917001",
-      "meeting_id": "meeting:city_record:20260917001",
-      "agency_name": "Board of Education Retirement System",
-      "short_title": "Board of Education Retirement System Board of Trustees Meeting",
-      "start_date": "2026-10-14T00:00:00.000",
-      "event_date": "2026-10-22T16:00:00.000",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "street_address_1": "55 Water Street",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10041",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260917001",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "55 Water Street",
-          "55 Water Street, New York, NY, 10041"
-        ],
-        "derivation": {
-          "methods": [
-            "venue_line",
-            "venue_column"
-          ],
-          "confidence": 0.7,
-          "role": "venue",
-          "evidence": [
-            "55 Water Street",
-            "55 Water Street, New York, NY, 10041"
           ]
         },
         "confidence_tier": "derived",
@@ -3557,6 +3535,96 @@
       }
     },
     {
+      "request_id": "20260917001",
+      "meeting_id": "meeting:city_record:20260917001",
+      "agency_name": "Board of Education Retirement System",
+      "short_title": "Board of Education Retirement System Board of Trustees Meeting",
+      "start_date": "2026-10-14T00:00:00.000",
+      "event_date": "2026-10-22T16:00:00.000",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "55 Water Street",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10041",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260917001",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "55 Water Street",
+          "55 Water Street, New York, NY, 10041"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line",
+            "venue_column"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "55 Water Street",
+            "55 Water Street, New York, NY, 10041"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
+      }
+    },
+    {
+      "request_id": "20261006004",
+      "meeting_id": "meeting:city_record:20261006004",
+      "agency_name": "City Council",
+      "short_title": "10-20-26 Subcommittee on Zoning and Franchises meeting",
+      "start_date": "2026-10-14T00:00:00.000",
+      "event_date": "2026-10-20T11:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "250 Broadway",
+      "street_address_2": "Conference Room 3, 8th Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006004",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "250 Broadway, Conference Room 3, 8th Floor, New York, NY, 10007"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_column"
+          ],
+          "confidence": 0.65,
+          "role": "venue",
+          "evidence": [
+            "250 Broadway, Conference Room 3, 8th Floor, New York, NY, 10007"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
+      }
+    },
+    {
       "request_id": "20261007005",
       "meeting_id": "meeting:city_record:20261007005",
       "agency_name": "Environmental Protection",
@@ -3627,22 +3695,21 @@
       }
     },
     {
-      "request_id": "20261006004",
-      "meeting_id": "meeting:city_record:20261006004",
-      "agency_name": "City Council",
-      "short_title": "10-20-26 Subcommittee on Zoning and Franchises meeting",
+      "request_id": "20260909022",
+      "meeting_id": "meeting:city_record:20260909022",
+      "agency_name": "Board of Education Retirement System",
+      "short_title": "DISABILITY COMMITTEE MEETING",
       "start_date": "2026-10-14T00:00:00.000",
-      "event_date": "2026-10-20T11:00:00.000",
-      "type_of_notice_description": "Public Hearings",
+      "event_date": "2026-10-22T13:00:00.000",
+      "type_of_notice_description": "Meeting",
       "section_name": "Public Hearings and Meetings",
-      "street_address_1": "250 Broadway",
-      "street_address_2": "Conference Room 3, 8th Floor",
+      "street_address_1": "55 Water Street",
       "city": "New York",
       "state": "NY",
-      "zip_code": "10007",
+      "zip_code": "10041",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006004",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260909022",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
@@ -3654,16 +3721,19 @@
           "Manhattan"
         ],
         "addresses": [
-          "250 Broadway, Conference Room 3, 8th Floor, New York, NY, 10007"
+          "55 Water Street",
+          "55 Water Street, New York, NY, 10041"
         ],
         "derivation": {
           "methods": [
+            "venue_line",
             "venue_column"
           ],
-          "confidence": 0.65,
+          "confidence": 0.7,
           "role": "venue",
           "evidence": [
-            "250 Broadway, Conference Room 3, 8th Floor, New York, NY, 10007"
+            "55 Water Street",
+            "55 Water Street, New York, NY, 10041"
           ]
         },
         "confidence_tier": "derived",
@@ -3788,14 +3858,14 @@
       }
     },
     {
-      "request_id": "20261008005",
-      "meeting_id": "meeting:city_record:20261008005",
-      "agency_name": "City Planning",
-      "short_title": "Department of City Planning Proposed Street Number Rulemaking",
+      "request_id": "20261006022",
+      "meeting_id": "meeting:city_record:20261006022",
+      "agency_name": "City Planning Commission",
+      "short_title": "City Planning Commission Public Hearing",
       "start_date": "2026-10-14T00:00:00.000",
-      "event_date": "2026-11-17T10:00:00.000",
+      "event_date": "2026-10-28T10:00:00.000",
       "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
+      "section_name": "Public Hearings and Meetings",
       "street_address_1": "120 Broadway",
       "street_address_2": "Lower Level",
       "city": "New York",
@@ -3803,7 +3873,7 @@
       "zip_code": "10271",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261008005",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006022",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
@@ -3829,6 +3899,57 @@
         },
         "confidence_tier": "derived",
         "source": "venue"
+      }
+    },
+    {
+      "request_id": "20261007003",
+      "meeting_id": "meeting:city_record:20261007003",
+      "agency_name": "Community Boards",
+      "short_title": "October 14, 2026 PUBLIC HEARING",
+      "start_date": "2026-10-13T00:00:00.000",
+      "event_date": "2026-10-14T18:30:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261007003",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "review",
+          "discussion",
+          "fiscal",
+          "year",
+          "capital",
+          "expense",
+          "budget",
+          "priorities"
+        ],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn",
+          "BROOKLYN"
+        ],
+        "community_boards": [
+          "Community Board 7, Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough",
+            "community_board"
+          ],
+          "confidence": 0.9,
+          "role": "matter",
+          "evidence": [
+            "BOROUGH OF BROOKLYN",
+            "Community Board 7, Brooklyn"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "matter"
       }
     },
     {
@@ -3888,80 +4009,6 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
-      }
-    },
-    {
-      "request_id": "20261007003",
-      "meeting_id": "meeting:city_record:20261007003",
-      "agency_name": "Community Boards",
-      "short_title": "October 14, 2026 PUBLIC HEARING",
-      "start_date": "2026-10-13T00:00:00.000",
-      "event_date": "2026-10-14T18:30:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261007003",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [
-          "review",
-          "discussion",
-          "fiscal",
-          "year",
-          "capital",
-          "expense",
-          "budget",
-          "priorities"
-        ],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Brooklyn",
-          "BROOKLYN"
-        ],
-        "community_boards": [
-          "Community Board 7, Brooklyn"
-        ],
-        "derivation": {
-          "methods": [
-            "matter_body_borough",
-            "community_board"
-          ],
-          "confidence": 0.9,
-          "role": "matter",
-          "evidence": [
-            "BOROUGH OF BROOKLYN",
-            "Community Board 7, Brooklyn"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "matter"
-      }
-    },
-    {
-      "request_id": "20261006029",
-      "meeting_id": "meeting:city_record:20261006029",
-      "agency_name": "Transportation",
-      "short_title": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program",
-      "start_date": "2026-10-09T00:00:00.000",
-      "event_date": "2026-11-09T10:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006029",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
       }
     },
     {
@@ -4037,6 +4084,29 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      }
+    },
+    {
+      "request_id": "20261006029",
+      "meeting_id": "meeting:city_record:20261006029",
+      "agency_name": "Transportation",
+      "short_title": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules relating to amendments for the Dining Out NYC program",
+      "start_date": "2026-10-09T00:00:00.000",
+      "event_date": "2026-11-09T10:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261006029",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "body_place_omitted",
+        "virtual_only": false
       }
     },
     {
@@ -4202,59 +4272,6 @@
       }
     },
     {
-      "request_id": "20260106035",
-      "meeting_id": "meeting:city_record:20260106035",
-      "agency_name": "Board of Correction",
-      "short_title": "Board of Correction Public Meeting",
-      "start_date": "2026-10-07T00:00:00.000",
-      "event_date": "2026-10-14T13:00:00.000",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "street_address_1": "125 Worth Street",
-      "street_address_2": "2nd Floor Auditorium",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10013",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106035",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [
-          "discuss",
-          "issues",
-          "impacting",
-          "jail",
-          "system"
-        ],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "125 Worth Street",
-          "125 Worth Street, 2nd Floor Auditorium, New York, NY, 10013"
-        ],
-        "derivation": {
-          "methods": [
-            "venue_line",
-            "venue_column"
-          ],
-          "confidence": 0.7,
-          "role": "venue",
-          "evidence": [
-            "125 Worth Street",
-            "125 Worth Street, 2nd Floor Auditorium, New York, NY, 10013"
-          ]
-        },
-        "confidence_tier": "derived",
-        "source": "venue"
-      }
-    },
-    {
       "request_id": "20261001008",
       "meeting_id": "meeting:city_record:20261001008",
       "agency_name": "Community Boards",
@@ -4337,6 +4354,59 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      }
+    },
+    {
+      "request_id": "20260106035",
+      "meeting_id": "meeting:city_record:20260106035",
+      "agency_name": "Board of Correction",
+      "short_title": "Board of Correction Public Meeting",
+      "start_date": "2026-10-07T00:00:00.000",
+      "event_date": "2026-10-14T13:00:00.000",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "125 Worth Street",
+      "street_address_2": "2nd Floor Auditorium",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10013",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260106035",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [
+          "discuss",
+          "issues",
+          "impacting",
+          "jail",
+          "system"
+        ],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "125 Worth Street",
+          "125 Worth Street, 2nd Floor Auditorium, New York, NY, 10013"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line",
+            "venue_column"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "125 Worth Street",
+            "125 Worth Street, 2nd Floor Auditorium, New York, NY, 10013"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -4469,52 +4539,6 @@
       }
     },
     {
-      "request_id": "20260924007",
-      "meeting_id": "meeting:city_record:20260924007",
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Amendment of Rules Relating to Medical Room Standards in Schools",
-      "start_date": "2026-10-02T00:00:00.000",
-      "event_date": "2026-11-02T10:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924007",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
-      }
-    },
-    {
-      "request_id": "20260925024",
-      "meeting_id": "meeting:city_record:20260925024",
-      "agency_name": "Buildings",
-      "short_title": "Proposed Rule - Amendment of Rules relating to Ancillary Dwelling Units",
-      "start_date": "2026-10-02T00:00:00.000",
-      "event_date": "2026-11-04T23:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260925024",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
-      }
-    },
-    {
       "request_id": "20260923002",
       "meeting_id": "meeting:city_record:20260923002",
       "agency_name": "Transportation",
@@ -4590,6 +4614,29 @@
       }
     },
     {
+      "request_id": "20260924007",
+      "meeting_id": "meeting:city_record:20260924007",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Relating to Medical Room Standards in Schools",
+      "start_date": "2026-10-02T00:00:00.000",
+      "event_date": "2026-11-02T10:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260924007",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "body_place_omitted",
+        "virtual_only": false
+      }
+    },
+    {
       "request_id": "20261001007",
       "meeting_id": "meeting:city_record:20261001007",
       "agency_name": "Transportation",
@@ -4625,6 +4672,29 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
+      }
+    },
+    {
+      "request_id": "20260925024",
+      "meeting_id": "meeting:city_record:20260925024",
+      "agency_name": "Buildings",
+      "short_title": "Proposed Rule - Amendment of Rules relating to Ancillary Dwelling Units",
+      "start_date": "2026-10-02T00:00:00.000",
+      "event_date": "2026-11-04T23:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260925024",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "body_place_omitted",
+        "virtual_only": false
       }
     },
     {
@@ -4717,29 +4787,6 @@
       }
     },
     {
-      "request_id": "20260929023",
-      "meeting_id": "meeting:city_record:20260929023",
-      "agency_name": "Housing Preservation and Development",
-      "short_title": "Proposed Rule - City Housing Assistance Program",
-      "start_date": "2026-10-01T00:00:00.000",
-      "event_date": "2026-11-02T10:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929023",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
-      }
-    },
-    {
       "request_id": "20260922022",
       "meeting_id": "meeting:city_record:20260922022",
       "agency_name": "Landmarks Preservation Commission",
@@ -4784,6 +4831,29 @@
       }
     },
     {
+      "request_id": "20260929023",
+      "meeting_id": "meeting:city_record:20260929023",
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "Proposed Rule - City Housing Assistance Program",
+      "start_date": "2026-10-01T00:00:00.000",
+      "event_date": "2026-11-02T10:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260929023",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "body_place_omitted",
+        "virtual_only": false
+      }
+    },
+    {
       "request_id": "20260929011",
       "meeting_id": "meeting:city_record:20260929011",
       "agency_name": "Finance",
@@ -4800,6 +4870,50 @@
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
+      }
+    },
+    {
+      "request_id": "20260922032",
+      "meeting_id": "meeting:city_record:20260922032",
+      "agency_name": "Transportation",
+      "short_title": "NEW YORK CITY DEPARTMENT OF TRANSPORTATION",
+      "start_date": "2026-09-30T00:00:00.000",
+      "event_date": "2026-10-21T11:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "street_address_1": "55 Water Street",
+      "street_address_2": "9th Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10041",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922032",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "55 Water Street, 9th Floor, New York, NY, 10041"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_column"
+          ],
+          "confidence": 0.65,
+          "role": "venue",
+          "evidence": [
+            "55 Water Street, 9th Floor, New York, NY, 10041"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -4885,47 +4999,26 @@
       }
     },
     {
-      "request_id": "20260922032",
-      "meeting_id": "meeting:city_record:20260922032",
-      "agency_name": "Transportation",
-      "short_title": "NEW YORK CITY DEPARTMENT OF TRANSPORTATION",
-      "start_date": "2026-09-30T00:00:00.000",
-      "event_date": "2026-10-21T11:00:00.000",
+      "request_id": "20260921011",
+      "meeting_id": "meeting:city_record:20260921011",
+      "agency_name": "Sanitation",
+      "short_title": "DSNY Proposed Rule Relating to the Violation Amount for the Failure to Maintain Vacant Lots",
+      "start_date": "2026-09-28T00:00:00.000",
+      "event_date": "2026-10-30T10:00:00.000",
       "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "street_address_1": "55 Water Street",
-      "street_address_2": "9th Floor",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10041",
+      "section_name": "Agency Rules",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260922032",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260921011",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [],
         "matter_ids": []
       },
       "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "addresses": [
-          "55 Water Street, 9th Floor, New York, NY, 10041"
-        ],
-        "derivation": {
-          "methods": [
-            "venue_column"
-          ],
-          "confidence": 0.65,
-          "role": "venue",
-          "evidence": [
-            "55 Water Street, 9th Floor, New York, NY, 10041"
-          ]
-        },
-        "confidence_tier": "derived",
-        "source": "venue"
+        "scope": "unlocated",
+        "unlocated_reason": "body_place_omitted",
+        "virtual_only": false
       }
     },
     {
@@ -5058,29 +5151,6 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
-      }
-    },
-    {
-      "request_id": "20260921011",
-      "meeting_id": "meeting:city_record:20260921011",
-      "agency_name": "Sanitation",
-      "short_title": "DSNY Proposed Rule Relating to the Violation Amount for the Failure to Maintain Vacant Lots",
-      "start_date": "2026-09-28T00:00:00.000",
-      "event_date": "2026-10-30T10:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260921011",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
       }
     },
     {
@@ -5906,6 +5976,29 @@
       }
     },
     {
+      "request_id": "20260911005",
+      "meeting_id": "meeting:city_record:20260911005",
+      "agency_name": "Human Resources Administration",
+      "short_title": "Notice of Public Hearing and Opportunity to Comment on Proposed Amendments to Chapter 12 of Title 68 of the Rules of the City of New York Regarding the Fair Fares NYC Program",
+      "start_date": "2026-09-15T00:00:00.000",
+      "event_date": "2026-10-19T11:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "meeting_origin": "city_record_notice",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260911005",
+      "matter_subject": {
+        "schema": "cityscroll.meeting_matter_stamp.v1",
+        "subject_tokens": [],
+        "matter_ids": []
+      },
+      "affected_area": {
+        "scope": "unlocated",
+        "unlocated_reason": "body_place_omitted",
+        "virtual_only": false
+      }
+    },
+    {
       "request_id": "20260909002",
       "meeting_id": "meeting:city_record:20260909002",
       "agency_name": "Landmarks Preservation Commission",
@@ -6027,29 +6120,6 @@
         },
         "confidence_tier": "strong",
         "source": "matter"
-      }
-    },
-    {
-      "request_id": "20260911005",
-      "meeting_id": "meeting:city_record:20260911005",
-      "agency_name": "Human Resources Administration",
-      "short_title": "Notice of Public Hearing and Opportunity to Comment on Proposed Amendments to Chapter 12 of Title 68 of the Rules of the City of New York Regarding the Fair Fares NYC Program",
-      "start_date": "2026-09-15T00:00:00.000",
-      "event_date": "2026-10-19T11:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260911005",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
       }
     },
     {
@@ -6189,103 +6259,6 @@
       }
     },
     {
-      "request_id": "20260908027",
-      "meeting_id": "meeting:city_record:20260908027",
-      "agency_name": "Community Boards",
-      "short_title": "September 16, 2026 Public Hearing",
-      "start_date": "2026-09-14T00:00:00.000",
-      "event_date": "2026-09-16T19:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260908027",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [
-          "marty",
-          "regional",
-          "manager",
-          "representing",
-          "gateway",
-          "hospitality",
-          "floyd",
-          "bennett",
-          "sports",
-          "entertainment",
-          "complex",
-          "operator",
-          "awarded",
-          "contract",
-          "aviator",
-          "events",
-          "center",
-          "located",
-          "flatbush",
-          "avenue",
-          "brooklyn",
-          "together",
-          "attorney",
-          "pesetsky",
-          "bookman",
-          "provide",
-          "floor",
-          "plans",
-          "menu",
-          "method",
-          "operation"
-        ],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Brooklyn",
-          "BROOKLYN"
-        ],
-        "community_boards": [
-          "Community Board 18, Brooklyn"
-        ],
-        "derivation": {
-          "methods": [
-            "matter_body_borough",
-            "community_board"
-          ],
-          "confidence": 0.9,
-          "role": "matter",
-          "evidence": [
-            "BOROUGH OF BROOKLYN",
-            "Community Board 18, Brooklyn"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "matter"
-      }
-    },
-    {
-      "request_id": "20260701028",
-      "meeting_id": "meeting:city_record:20260701028",
-      "agency_name": "Board Meetings",
-      "short_title": "BOARD MEETINGS",
-      "start_date": "2026-09-14T00:00:00.000",
-      "event_date": null,
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record",
-      "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701028",
-      "matter_subject": {
-        "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [],
-        "matter_ids": []
-      },
-      "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
-        "virtual_only": false
-      }
-    },
-    {
       "request_id": "20260904019",
       "meeting_id": "meeting:city_record:20260904019",
       "agency_name": "Board of Standards and Appeals",
@@ -6394,140 +6367,76 @@
       }
     },
     {
-      "request_id": "20260902022",
-      "meeting_id": "meeting:city_record:20260902022",
-      "agency_name": "Citywide Administrative Services",
-      "short_title": "FOR LEASE - 1664 PARK AVENUE",
-      "start_date": "2026-09-11T00:00:00.000",
-      "event_date": "2026-09-23T10:00:00.000",
-      "type_of_notice_description": "Public Hearings",
+      "request_id": "20260701028",
+      "meeting_id": "meeting:city_record:20260701028",
+      "agency_name": "Board Meetings",
+      "short_title": "BOARD MEETINGS",
+      "start_date": "2026-09-14T00:00:00.000",
+      "event_date": null,
+      "type_of_notice_description": "Meeting",
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260902022",
-      "ulurp_keys": [
-        "110075PXM",
-        "N110075PXM"
-      ],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701028",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
-        "subject_tokens": [
-          "renewal",
-          "lease",
-          "tenant",
-          "ground",
-          "floor",
-          "building",
-          "located",
-          "park",
-          "avenue",
-          "block",
-          "lots",
-          "borough",
-          "manhattan",
-          "community",
-          "walk",
-          "service",
-          "center",
-          "such",
-          "commissioner",
-          "citywide",
-          "administrative",
-          "services",
-          "determine",
-          "term",
-          "commence",
-          "full",
-          "execution",
-          "expire",
-          "years",
-          "date",
-          "substantial",
-          "completion"
-        ],
-        "matter_ids": [
-          "ulurp:110075PXM",
-          "ulurp:N110075PXM"
-        ]
+        "subject_tokens": [],
+        "matter_ids": []
       },
       "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "community_boards": [
-          "Community Board 11, Manhattan"
-        ],
-        "addresses": [
-          "1664 Park Avenue"
-        ],
-        "derivation": {
-          "methods": [
-            "matter_body_borough",
-            "community_board",
-            "matter_address"
-          ],
-          "confidence": 0.9,
-          "role": "matter",
-          "evidence": [
-            "Borough of Manhattan",
-            "Community Board 11, Manhattan",
-            "1664 PARK AVENUE"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "matter"
+        "scope": "unlocated",
+        "unlocated_reason": "external_board_page_needed",
+        "virtual_only": false
       }
     },
     {
-      "request_id": "20260723027",
-      "meeting_id": "meeting:city_record:20260723027",
+      "request_id": "20260908027",
+      "meeting_id": "meeting:city_record:20260908027",
       "agency_name": "Community Boards",
-      "short_title": "September 17, 2026 PUBLIC HEARING",
-      "start_date": "2026-09-11T00:00:00.000",
-      "event_date": "2026-09-17T19:00:00.000",
+      "short_title": "September 16, 2026 Public Hearing",
+      "start_date": "2026-09-14T00:00:00.000",
+      "event_date": "2026-09-16T19:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "street_address_1": "9941 Ft. Hamilton Parkway",
-      "city": "Brooklyn",
-      "state": "NY",
-      "zip_code": "11209",
-      "building_name": "Fort Hamilton Senior Center",
       "source_system": "city_record",
       "meeting_origin": "city_record_notice",
-      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723027",
-      "ulurp_keys": [
-        "260115ZMK",
-        "260116ZRK",
-        "D260116ZRK"
-      ],
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260908027",
       "matter_subject": {
         "schema": "cityscroll.meeting_matter_stamp.v1",
         "subject_tokens": [
-          "submitted",
-          "planning",
-          "zoning",
-          "amendment",
-          "text",
-          "appendix",
-          "facilitate",
-          "four",
-          "story",
-          "square",
-          "foot",
-          "community",
-          "facility",
-          "building",
-          "sought",
-          "ridge",
-          "development",
-          "center"
+          "marty",
+          "regional",
+          "manager",
+          "representing",
+          "gateway",
+          "hospitality",
+          "floyd",
+          "bennett",
+          "sports",
+          "entertainment",
+          "complex",
+          "operator",
+          "awarded",
+          "contract",
+          "aviator",
+          "events",
+          "center",
+          "located",
+          "flatbush",
+          "avenue",
+          "brooklyn",
+          "together",
+          "attorney",
+          "pesetsky",
+          "bookman",
+          "provide",
+          "floor",
+          "plans",
+          "menu",
+          "method",
+          "operation"
         ],
-        "matter_ids": [
-          "ulurp:260115ZMK",
-          "ulurp:260116ZRK",
-          "ulurp:D260116ZRK"
-        ]
+        "matter_ids": []
       },
       "affected_area": {
         "scope": "local",
@@ -6536,13 +6445,7 @@
           "BROOKLYN"
         ],
         "community_boards": [
-          "Community Board 10, Brooklyn"
-        ],
-        "neighborhoods": [
-          "Bay Ridge"
-        ],
-        "addresses": [
-          "9818 Fort Hamilton Parkway"
+          "Community Board 18, Brooklyn"
         ],
         "derivation": {
           "methods": [
@@ -6553,7 +6456,7 @@
           "role": "matter",
           "evidence": [
             "BOROUGH OF BROOKLYN",
-            "Community Board 10, Brooklyn"
+            "Community Board 18, Brooklyn"
           ]
         },
         "confidence_tier": "strong",

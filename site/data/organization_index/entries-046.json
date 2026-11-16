@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":46,"first_ordinal":77419,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":46,"first_ordinal":77419,"entries":[
 {"s":"JN ELECTRICAL","n":[["JN ELECTRICAL CORP.",1],["JN Electrical Corp.",1]],"x":{"sbs":{"r":1,"i":["342310"],"z":["10462"],"p":["MBE"]},"dol":{"r":1,"i":["25-67TYO-CR"],"z":["10462"]}}},
 {"s":"JN FOUNDATION","n":[["JN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["392426250"],"z":["12545"]}}},
 {"s":"JNANA MANDIR","n":[["JNANA MANDIR",1]],"x":{"irs":{"r":1,"i":["834228894"],"z":["13104"]}}},
@@ -23,7 +23,7 @@
 {"s":"JO SCHIFTER SCHOLARSHIP FUND","n":[["JO SCHIFTER SCHOLARSHIP FUND",1]],"x":{"irs":{"r":1,"i":["861063032"],"z":["11590"]}}},
 {"s":"JO-MARK INSTALLATIONS","n":[["Jo-Mark Installations Inc.",1]],"x":{"dol":{"r":1,"i":["24-64DHK-CR"],"z":["11779"]}}},
 {"s":"JO3 OLIVO FOUNDATION","n":[["JO3 OLIVO FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["871506256"],"z":["11704"]}}},
-{"s":"JOADEM","n":[["Joadem Corporation",10],["JOADEM Corporation",3]],"d":[["JOADEM Corporation",1]],"x":{"ocp":{"r":3,"a":426996,"l":"2026-10-20","i":["20261013032","20260826027","20260817009"]},"cbr":{"r":4,"a":881289.57,"l":"2026-10-13","i":["CT185020278802962","CT185020278802079","CT185020278802078","CT185020268803311"],"m":["Black American"]},"cbv":{"r":3,"l":"2026-08-25","i":["CT185020278802079","CT185020278802078","CT185020268803311"],"m":["Black American"]},"sbs":{"r":1,"i":["5293"],"z":["11552"],"p":["MBE","WBE"]},"dol":{"r":2,"v":["dba","name"],"i":["24-64RSD-CR"],"z":["11552"]},"sca":{"r":1,"i":["JOADEM CORPORATION"],"z":["11552"]}}},
+{"s":"JOADEM","n":[["Joadem Corporation",11],["JOADEM Corporation",3]],"d":[["JOADEM Corporation",1]],"x":{"ocp":{"r":3,"a":426996,"l":"2026-10-20","i":["20261013032","20260826027","20260817009"]},"cbr":{"r":4,"a":881289.57,"l":"2026-10-13","i":["CT185020278802962","CT185020278802079","CT185020278802078","CT185020268803311"],"m":["Black American"]},"cbv":{"r":4,"l":"2026-10-13","i":["CT185020278802962","CT185020278802079","CT185020278802078","CT185020268803311"],"m":["Black American"]},"sbs":{"r":1,"i":["5293"],"z":["11552"],"p":["MBE","WBE"]},"dol":{"r":2,"v":["dba","name"],"i":["24-64RSD-CR"],"z":["11552"]},"sca":{"r":1,"i":["JOADEM CORPORATION"],"z":["11552"]}}},
 {"s":"JOALLYS FAMILY GROUP DAYCARE","n":[["Joallys Family Group Daycare Inc",1]],"x":{"sbs":{"r":1,"i":["356978"],"z":["10457"],"p":["MBE","WBE"]}}},
 {"s":"JOAN A MALE FAMILY SUPPORT CENTER FOUNDATION","n":[["JOAN A MALE FAMILY SUPPORT CENTER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["010765675"],"z":["14206"]}}},
 {"s":"JOAN AND ALAN ADES-TAUB FAMILY FOUNDATION","n":[["JOAN AND ALAN ADES-TAUB FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["113293314"],"z":["11577"]}}},

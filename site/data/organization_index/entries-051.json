@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":51,"first_ordinal":86129,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":51,"first_ordinal":86129,"entries":[
 {"s":"LIFT UP HEMI-INC","n":[["LIFT UP HEMI-INC",1]],"x":{"irs":{"r":1,"i":["463391554"],"z":["13045"]}}},
 {"s":"LIFT UP LAB","n":[["LIFT UP LAB INC",1]],"x":{"irs":{"r":1,"i":["990933267"],"z":["10035"]}}},
 {"s":"LIFTBRAND AI","d":[["LiftBrand.ai",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["396524"],"z":["11435"],"p":["MBE"]}}},

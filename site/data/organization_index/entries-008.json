@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":8,"first_ordinal":13113,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":8,"first_ordinal":13113,"entries":[
 {"s":"ATTRI ENTERPRISES","n":[["ATTRI ENTERPRISES INC.",2],["Attri Enterprises, Inc.",2],["ATTRI ENTERPRISES, INC.",1]],"x":{"ocp":{"r":2,"a":10417270,"l":"2019-07-10","i":["20190628014","20030703025"]},"sbs":{"r":1,"i":["208"],"z":["11211"],"p":["MBE"]},"dol":{"r":1,"i":["24-637TI-CR"],"z":["11211"]},"sca":{"r":1,"i":["ATTRI ENTERPRISES, INC."],"z":["11211"]}}},
 {"s":"ATTRIBUTES OF CHRIST MINISTRIES","n":[["ATTRIBUTES OF CHRIST MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["020566239"],"z":["11213"]}}},
 {"s":"ATTUCKS ASSET MANAGEMENT","n":[["ATTUCKS ASSET MANAGEMENT LLC",6]],"x":{"ocp":{"r":5,"a":22577000,"l":"2015-08-12","i":["20150804024","20130430008","20120629012","20110906011","20071203004"]},"dbe":{"r":1,"i":["ATTUCKS ASSET MANAGEMENT LLC"]}}},

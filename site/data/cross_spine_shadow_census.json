@@ -1705,8 +1705,8 @@
       },
       "denominators": {
         "eligible_left_rows": 272,
-        "source_rows": 5247,
-        "pre_route_pairs": 26928
+        "source_rows": 4929,
+        "pre_route_pairs": 25296
       },
       "by_tier": {
         "public_inferred": 1
@@ -1718,8 +1718,8 @@
         "administration-for-childrens-services": {
           "denominators": {
             "eligible_left_rows": 1,
-            "source_rows": 99,
-            "pre_route_pairs": 99
+            "source_rows": 93,
+            "pre_route_pairs": 93
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1728,7 +1728,7 @@
         "aging": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1738,8 +1738,8 @@
         "board-of-correction": {
           "denominators": {
             "eligible_left_rows": 3,
-            "source_rows": 99,
-            "pre_route_pairs": 297
+            "source_rows": 93,
+            "pre_route_pairs": 279
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1748,8 +1748,8 @@
         "board-of-elections": {
           "denominators": {
             "eligible_left_rows": 2,
-            "source_rows": 99,
-            "pre_route_pairs": 198
+            "source_rows": 93,
+            "pre_route_pairs": 186
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1758,8 +1758,8 @@
         "buildings": {
           "denominators": {
             "eligible_left_rows": 66,
-            "source_rows": 99,
-            "pre_route_pairs": 6534
+            "source_rows": 93,
+            "pre_route_pairs": 6138
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1768,8 +1768,8 @@
         "business-integrity-commission": {
           "denominators": {
             "eligible_left_rows": 3,
-            "source_rows": 99,
-            "pre_route_pairs": 297
+            "source_rows": 93,
+            "pre_route_pairs": 279
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1778,8 +1778,8 @@
         "campaign-finance-board": {
           "denominators": {
             "eligible_left_rows": 7,
-            "source_rows": 99,
-            "pre_route_pairs": 693
+            "source_rows": 93,
+            "pre_route_pairs": 651
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1788,7 +1788,7 @@
         "city-clerk": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1798,7 +1798,7 @@
         "city-council": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1808,8 +1808,8 @@
         "city-planning": {
           "denominators": {
             "eligible_left_rows": 1,
-            "source_rows": 99,
-            "pre_route_pairs": 99
+            "source_rows": 93,
+            "pre_route_pairs": 93
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1818,8 +1818,8 @@
         "citywide-administrative-services": {
           "denominators": {
             "eligible_left_rows": 4,
-            "source_rows": 99,
-            "pre_route_pairs": 396
+            "source_rows": 93,
+            "pre_route_pairs": 372
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1828,8 +1828,8 @@
         "civilian-complaint-review-board": {
           "denominators": {
             "eligible_left_rows": 1,
-            "source_rows": 99,
-            "pre_route_pairs": 99
+            "source_rows": 93,
+            "pre_route_pairs": 93
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1838,8 +1838,8 @@
         "commission-on-human-rights": {
           "denominators": {
             "eligible_left_rows": 3,
-            "source_rows": 99,
-            "pre_route_pairs": 297
+            "source_rows": 93,
+            "pre_route_pairs": 279
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1848,8 +1848,8 @@
         "commission-on-racial-equity": {
           "denominators": {
             "eligible_left_rows": 1,
-            "source_rows": 99,
-            "pre_route_pairs": 99
+            "source_rows": 93,
+            "pre_route_pairs": 93
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1858,7 +1858,7 @@
         "comptroller": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1868,8 +1868,8 @@
         "consumer-and-worker-protection": {
           "denominators": {
             "eligible_left_rows": 24,
-            "source_rows": 99,
-            "pre_route_pairs": 2376
+            "source_rows": 93,
+            "pre_route_pairs": 2232
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1878,8 +1878,8 @@
         "correction": {
           "denominators": {
             "eligible_left_rows": 2,
-            "source_rows": 99,
-            "pre_route_pairs": 198
+            "source_rows": 93,
+            "pre_route_pairs": 186
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1888,7 +1888,7 @@
         "criminal-justice-coordinator": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1898,7 +1898,7 @@
         "cultural-affairs": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1908,8 +1908,8 @@
         "department-of-social-services": {
           "denominators": {
             "eligible_left_rows": 4,
-            "source_rows": 99,
-            "pre_route_pairs": 396
+            "source_rows": 93,
+            "pre_route_pairs": 372
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1918,7 +1918,7 @@
         "education": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1928,8 +1928,8 @@
         "emergency-management": {
           "denominators": {
             "eligible_left_rows": 1,
-            "source_rows": 99,
-            "pre_route_pairs": 99
+            "source_rows": 93,
+            "pre_route_pairs": 93
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1938,8 +1938,8 @@
         "environmental-protection": {
           "denominators": {
             "eligible_left_rows": 34,
-            "source_rows": 99,
-            "pre_route_pairs": 3366
+            "source_rows": 93,
+            "pre_route_pairs": 3162
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1948,8 +1948,8 @@
         "finance": {
           "denominators": {
             "eligible_left_rows": 8,
-            "source_rows": 99,
-            "pre_route_pairs": 792
+            "source_rows": 93,
+            "pre_route_pairs": 744
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1958,8 +1958,8 @@
         "fire-department": {
           "denominators": {
             "eligible_left_rows": 1,
-            "source_rows": 99,
-            "pre_route_pairs": 99
+            "source_rows": 93,
+            "pre_route_pairs": 93
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1968,8 +1968,8 @@
         "health-and-mental-hygiene": {
           "denominators": {
             "eligible_left_rows": 25,
-            "source_rows": 99,
-            "pre_route_pairs": 2475
+            "source_rows": 93,
+            "pre_route_pairs": 2325
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1978,8 +1978,8 @@
         "homeless-services": {
           "denominators": {
             "eligible_left_rows": 3,
-            "source_rows": 99,
-            "pre_route_pairs": 297
+            "source_rows": 93,
+            "pre_route_pairs": 279
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -1988,7 +1988,7 @@
         "housing-authority": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -1998,8 +1998,8 @@
         "housing-preservation-and-development": {
           "denominators": {
             "eligible_left_rows": 27,
-            "source_rows": 99,
-            "pre_route_pairs": 2673
+            "source_rows": 93,
+            "pre_route_pairs": 2511
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -2008,8 +2008,8 @@
         "human-resources-administration": {
           "denominators": {
             "eligible_left_rows": 1,
-            "source_rows": 99,
-            "pre_route_pairs": 99
+            "source_rows": 93,
+            "pre_route_pairs": 93
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -2018,7 +2018,7 @@
         "independent-budget-office": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2028,8 +2028,8 @@
         "information-technology-and-telecommunications": {
           "denominators": {
             "eligible_left_rows": 1,
-            "source_rows": 99,
-            "pre_route_pairs": 99
+            "source_rows": 93,
+            "pre_route_pairs": 93
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -2038,7 +2038,7 @@
         "investigation": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2048,7 +2048,7 @@
         "landmarks-preservation-commission": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2058,7 +2058,7 @@
         "law-department": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2068,7 +2068,7 @@
         "management-and-budget": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2078,7 +2078,7 @@
         "mayors-office-of-contract-services": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2088,7 +2088,7 @@
         "mayors-office-of-criminal-justice": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2098,7 +2098,7 @@
         "mayors-office-to-end-domestic-and-gender-based-violence": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2108,7 +2108,7 @@
         "nyc-department-of-veterans-services": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2118,8 +2118,8 @@
         "office-of-the-mayor": {
           "denominators": {
             "eligible_left_rows": 6,
-            "source_rows": 99,
-            "pre_route_pairs": 594
+            "source_rows": 93,
+            "pre_route_pairs": 558
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -2128,8 +2128,8 @@
         "parks-and-recreation": {
           "denominators": {
             "eligible_left_rows": 7,
-            "source_rows": 99,
-            "pre_route_pairs": 693
+            "source_rows": 93,
+            "pre_route_pairs": 651
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -2138,8 +2138,8 @@
         "police-department": {
           "denominators": {
             "eligible_left_rows": 3,
-            "source_rows": 99,
-            "pre_route_pairs": 297
+            "source_rows": 93,
+            "pre_route_pairs": 279
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -2148,7 +2148,7 @@
         "probation": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2158,7 +2158,7 @@
         "public-advocate": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2168,8 +2168,8 @@
         "public-design-commission": {
           "denominators": {
             "eligible_left_rows": 1,
-            "source_rows": 99,
-            "pre_route_pairs": 99
+            "source_rows": 93,
+            "pre_route_pairs": 93
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -2178,7 +2178,7 @@
         "records-and-information-services": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2188,8 +2188,8 @@
         "sanitation": {
           "denominators": {
             "eligible_left_rows": 6,
-            "source_rows": 99,
-            "pre_route_pairs": 594
+            "source_rows": 93,
+            "pre_route_pairs": 558
           },
           "public_inferred": 1,
           "evidence_only": 0,
@@ -2200,8 +2200,8 @@
         "small-business-services": {
           "denominators": {
             "eligible_left_rows": 6,
-            "source_rows": 99,
-            "pre_route_pairs": 594
+            "source_rows": 93,
+            "pre_route_pairs": 558
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -2210,7 +2210,7 @@
         "tax-commission": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,
@@ -2220,8 +2220,8 @@
         "taxi-and-limousine-commission": {
           "denominators": {
             "eligible_left_rows": 9,
-            "source_rows": 99,
-            "pre_route_pairs": 891
+            "source_rows": 93,
+            "pre_route_pairs": 837
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -2230,8 +2230,8 @@
         "transportation": {
           "denominators": {
             "eligible_left_rows": 11,
-            "source_rows": 99,
-            "pre_route_pairs": 1089
+            "source_rows": 93,
+            "pre_route_pairs": 1023
           },
           "public_inferred": 0,
           "evidence_only": 0,
@@ -2240,7 +2240,7 @@
         "youth-and-community-development": {
           "denominators": {
             "eligible_left_rows": 0,
-            "source_rows": 99,
+            "source_rows": 93,
             "pre_route_pairs": 0
           },
           "public_inferred": 0,

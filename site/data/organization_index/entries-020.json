@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":20,"first_ordinal":33297,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":20,"first_ordinal":33297,"entries":[
 {"s":"COMMUNITY OF FAITH FAMILY WORSHIPCENTER","n":[["COMMUNITY OF FAITH FAMILY WORSHIPCENTER INC",1]],"x":{"irs":{"r":1,"i":["205917654"],"z":["11207"]}}},
 {"s":"COMMUNITY OF GOOD NEIGHBORS","n":[["COMMUNITY OF GOOD NEIGHBORS",1]],"x":{"irs":{"r":1,"i":["850748027"],"z":["14209"]}}},
 {"s":"COMMUNITY OF GRACE FELLOWSHIP","n":[["COMMUNITY OF GRACE FELLOWSHIP",1]],"x":{"irs":{"r":1,"i":["161397457"],"z":["14221"]}}},

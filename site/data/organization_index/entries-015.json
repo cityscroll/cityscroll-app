@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":15,"first_ordinal":25050,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":15,"first_ordinal":25050,"entries":[
 {"s":"CARROLL GARDENS ASSOC","n":[["CARROLL GARDENS ASSOC INC",2]],"x":{"cbr":{"r":2,"a":47500,"l":"2026-02-27","i":["CT180620268803689","CT180620268802600"],"m":["Non-M/WBE"]}}},
 {"s":"CARROLL GARDENS ASSOCIATION","n":[["CARROLL GARDENS ASSOCIATION INC",1],["CARROLL GARDENS ASSOCIATION INCORPORATED",1]],"x":{"dbe":{"r":1,"i":["CARROLL GARDENS ASSOCIATION INC"]},"irs":{"r":1,"i":["112573432"],"z":["11231"]}}},
 {"s":"CARROLL HISTORICAL SOCIETY","n":[["CARROLL HISTORICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["161576461"],"z":["14738"]}}},

@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":64,"first_ordinal":107992,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":64,"first_ordinal":107990,"entries":[
+{"s":"OHR AVNER FOUNDATION","n":[["OHR AVNER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["134099223"],"z":["11373"]}}},
+{"s":"OHR AVROHOM AND MOSHE","n":[["OHR AVROHOM AND MOSHE INC",1]],"x":{"irs":{"r":1,"i":["884072704"],"z":["11219"]}}},
 {"s":"OHR BECHOR HALEVI","n":[["OHR BECHOR HALEVI INC",1]],"x":{"irs":{"r":1,"i":["831274934"],"z":["11415"]}}},
 {"s":"OHR BINYAMIN","n":[["OHR BINYAMIN",1]],"x":{"irs":{"r":1,"i":["260068809"],"z":["11691"]}}},
 {"s":"OHR CHAIM","n":[["OHR CHAIM INC",1]],"x":{"irs":{"r":1,"i":["851241753"],"z":["10952"]}}},
@@ -1817,7 +1819,5 @@
 {"s":"OSWEGO HARBOR FESTIVALS","n":[["OSWEGO HARBOR FESTIVALS INC",1]],"x":{"irs":{"r":1,"i":["161348741"],"z":["13126"]}}},
 {"s":"OSWEGO HEALTH","n":[["OSWEGO HEALTH INC",1]],"x":{"irs":{"r":1,"i":["161555936"],"z":["13126"]}}},
 {"s":"OSWEGO HEALTH FOUNDATION","n":[["OSWEGO HEALTH FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["800822020"],"z":["13126"]}}},
-{"s":"OSWEGO HIGH SCHOOL BAND PARENTS ASSOCIATION","n":[["OSWEGO HIGH SCHOOL BAND PARENTS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["222370372"],"z":["13126"]}}},
-{"s":"OSWEGO HISTORICAL SOCIETY","n":[["OSWEGO HISTORICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["156024641"],"z":["13126"]}}},
-{"s":"OSWEGO HISTORY RECORDS CENTER","n":[["OSWEGO HISTORY RECORDS CENTER INC",1]],"x":{"irs":{"r":1,"i":["832765432"],"z":["13126"]}}}
+{"s":"OSWEGO HIGH SCHOOL BAND PARENTS ASSOCIATION","n":[["OSWEGO HIGH SCHOOL BAND PARENTS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["222370372"],"z":["13126"]}}}
 ]}

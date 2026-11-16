@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":57,"first_ordinal":96423,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":57,"first_ordinal":96423,"entries":[
 {"s":"MJSA EDUCATION FOUNDATION FORMERLY KNOWN AS THE JEWELRY FOUNDATION","n":[["MJSA EDUCATION FOUNDATION FORMERLY KNOWN AS THE JEWELRY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["050368334"],"z":["10271"]}}},
 {"s":"MJT BUS","n":[["MJT Bus Company Inc",1],["MJT Bus Company Inc.",1]],"x":{"ocp":{"r":2,"a":7645328.6,"l":"2020-05-07","i":["20200430016","20050804010"]}}},
 {"s":"MJT CHARITABLE FOUNDATION","n":[["MJT CHARITABLE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["202041147"],"z":["11229"]}}},

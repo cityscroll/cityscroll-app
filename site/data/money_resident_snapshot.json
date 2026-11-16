@@ -1,14 +1,25 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-11-14T13:54:18.581Z",
+  "generated_at": "2026-11-16T16:50:07.099Z",
   "source_vintages": {
-    "default_open": "2026-11-14T13:54:18.581Z",
+    "default_open": "2026-11-16T16:50:07.099Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-11-04T04:22:02.123Z"
   },
   "count": 378,
   "rows": [
+    {
+      "request_id": "20261106025",
+      "start_date": "2026-11-16T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Electrical System Replacement - 156 South 9th Street, Brooklyn",
+      "pin": "80626B0039",
+      "due_date": "2026-12-02T13:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
     {
       "request_id": "20261027032",
       "start_date": "2026-11-06T00:00:00.000",
@@ -202,17 +213,6 @@
       "short_title": "85027I0001-PV291-QM2, Construction Management - Build Services for Queens Museum Renovation",
       "pin": "85027I0001",
       "due_date": "2026-11-20T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20261009021",
-      "start_date": "2026-10-19T00:00:00.000",
-      "agency_name": "Design and Construction",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "85027P0001-PW348-91,-94_RC for CM/Design/Build for Petroleum Storage Tank Sumps, Citywide",
-      "pin": "85027P0001",
-      "due_date": "2026-12-03T12:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
     },
     {

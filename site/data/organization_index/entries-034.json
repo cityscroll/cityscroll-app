@@ -1,7 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":34,"first_ordinal":57206,"entries":[
-{"s":"FUNDACION OJOS UNIDOS","n":[["FUNDACION OJOS UNIDOS INC",1]],"x":{"irs":{"r":1,"i":["332129389"],"z":["10468"]}}},
-{"s":"FUNDACION POR AMOR MUNDIAL","n":[["FUNDACION POR AMOR MUNDIAL INC",1]],"x":{"irs":{"r":1,"i":["934028689"],"z":["10462"]}}},
-{"s":"FUNDACION PROFESOR JUAN BOSCH","n":[["FUNDACION PROFESOR JUAN BOSCH",1]],"x":{"irs":{"r":1,"i":["261239777"],"z":["10452"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":34,"first_ordinal":57209,"entries":[
 {"s":"FUNDACION REFUGIO MAMI CLEMENCITA I NC","n":[["FUNDACION REFUGIO MAMI CLEMENCITA I NC",1]],"x":{"irs":{"r":1,"i":["394271262"],"z":["11542"]}}},
 {"s":"FUNDACION SAN FELIPE FUDSAFE","n":[["FUNDACION SAN FELIPE FUDSAFE",1]],"x":{"irs":{"r":1,"i":["843257698"],"z":["10034"]}}},
 {"s":"FUNDACION SANTA LA MILAGROSA","n":[["FUNDACION SANTA LA MILAGROSA INC",1]],"x":{"irs":{"r":1,"i":["993695496"],"z":["10460"]}}},
@@ -74,7 +71,7 @@
 {"s":"FUSED CONSULTING","n":[["FUSED CONSULTING LLC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2024-10-07","i":["CT104020253022619"],"m":["Non-M/WBE"]}}},
 {"s":"FUSEMACHINES","n":[["FUSEMACHINES INC.",1],["Fusemachines Inc.",1]],"x":{"cbr":{"r":1,"a":1000000,"l":"2024-11-15","i":["CT100420251401669"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["FUSEMACHINES INC."]}}},
 {"s":"FUSIA COMMUNICATIONS","n":[["Fusia Communications, Inc.",1]],"x":{"sbs":{"r":1,"i":["5454"],"z":["11360"],"p":["WBE"]}}},
-{"s":"FUSING MARKETING SOLUTIONS","n":[["FUSING MARKETING SOLUTIONS INC",267]],"x":{"cbr":{"r":180,"a":4500000,"l":"2026-10-28","c":180,"i":["CT104020273039019","CT104020273030501","CT104020273022877","CT104020273011927","CT104020273010965"],"m":["Hispanic American","Non-M/WBE"]},"cbv":{"r":86,"l":"2026-10-28","c":86,"i":["CT104020273039019","CT104020273030501","CT104020273022877","CT104020273011927","CT104020273010965"],"m":["Hispanic American","Non-M/WBE"]},"dbe":{"r":1,"i":["FUSING MARKETING SOLUTIONS INC"]}}},
+{"s":"FUSING MARKETING SOLUTIONS","n":[["FUSING MARKETING SOLUTIONS INC",266]],"x":{"cbr":{"r":180,"a":4500000,"l":"2026-10-28","c":180,"i":["CT104020273039019","CT104020273030501","CT104020273022877","CT104020273011927","CT104020273010965"],"m":["Hispanic American","Non-M/WBE"]},"cbv":{"r":85,"l":"2026-10-28","c":85,"i":["CT104020273039019","CT104020273030501","CT104020273022877","CT104020273011927","CT104020273010965"],"m":["Hispanic American","Non-M/WBE"]},"dbe":{"r":1,"i":["FUSING MARKETING SOLUTIONS INC"]}}},
 {"s":"FUSION ARCHITECTURE","n":[["Fusion Architecture PLLC",1]],"x":{"sbs":{"r":1,"i":["102177"],"z":["11803"],"p":["MBE"]}}},
 {"s":"FUSION CHURCH","n":[["FUSION CHURCH",1]],"x":{"irs":{"r":1,"i":["141751754"],"z":["12524"]}}},
 {"s":"FUSION COMMUNITY CHURCH","n":[["FUSION COMMUNITY CHURCH",1]],"x":{"irs":{"r":1,"i":["141715196"],"z":["12043"]}}},
@@ -1684,5 +1681,9 @@
 {"s":"GEORGE G KRIVOSTA","n":[["GEORGE G KRIVOSTA",1]],"x":{"ocp":{"r":1,"a":15000,"l":"2022-03-02","i":["20220224124"]}}},
 {"s":"GEORGE H FEARONS III CHARITABLE TRUST","n":[["GEORGE H FEARONS III CHARITABLE TRUST",1]],"x":{"irs":{"r":1,"i":["452899447"],"z":["10008"]}}},
 {"s":"GEORGE H HARTSHORN JR SONS","n":[["GEORGE H. HARTSHORN, JR. & SONS, INC.",1]],"x":{"dol":{"r":1,"i":["26-69X1B-CR"],"z":["12564"]}}},
-{"s":"GEORGE HARDY APARTMENTS","n":[["GEORGE HARDY APARTMENTS LLC",1]],"x":{"dbe":{"r":1,"i":["GEORGE HARDY APARTMENTS LLC"]}}}
+{"s":"GEORGE HARDY APARTMENTS","n":[["GEORGE HARDY APARTMENTS LLC",1]],"x":{"dbe":{"r":1,"i":["GEORGE HARDY APARTMENTS LLC"]}}},
+{"s":"GEORGE HARTSHORN PAVING","d":[["George Hartshorn Paving",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-69X1B-CR"],"z":["12564"]}}},
+{"s":"GEORGE HERBERT WALKER FOUNDATION","n":[["GEORGE HERBERT WALKER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["136084806"],"z":["10008"]}}},
+{"s":"GEORGE HIRSCH FOUNDATION","n":[["GEORGE HIRSCH FOUNDATION",1]],"x":{"irs":{"r":1,"i":["222790167"],"z":["10011"]}}},
+{"s":"GEORGE J HALLER TR FD","n":[["GEORGE J HALLER TR FD",1]],"x":{"irs":{"r":1,"i":["166088537"],"z":["14240"]}}}
 ]}

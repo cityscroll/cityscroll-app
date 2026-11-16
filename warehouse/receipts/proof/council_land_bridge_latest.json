@@ -1,16 +1,16 @@
 {
   "coverage": {
-    "eligible_rows": 113,
+    "eligible_rows": 109,
     "matched": 49,
     "rejected": 0,
     "rejected_reasons": {},
-    "unresolved": 64,
+    "unresolved": 60,
     "unresolved_reasons": {
-      "no_exact_land_key": 64
+      "no_exact_land_key": 60
     }
   },
   "gate": {
-    "rationale": "49 of 113 eligible Council matter appearances (43.36%) carry a retained exact land identifier.",
+    "rationale": "49 of 109 eligible Council matter appearances (44.95%) carry a retained exact land identifier.",
     "resident_ingestion_committed": false,
     "result": "GO",
     "thresholds": {
@@ -24,8 +24,8 @@
     "rates": {
       "exact_land_identifier": {
         "joined": 49,
-        "rate": 0.433628,
-        "total": 113
+        "rate": 0.449541,
+        "total": 109
       }
     },
     "strategy": "exact_ulurp_token | exact_zap_project_id",
@@ -4383,11 +4383,11 @@
   "schema": "cityscroll.council_land_bridge_measurement.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 287,
-      "present_count": 15,
-      "record_count": 302
+      "absent_count": 281,
+      "present_count": 14,
+      "record_count": 295
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-11-14T10:01:03.273Z",
-    "zap_projects_warehouse_lookup_materialized_at": "2026-11-13T14:46:37.747Z"
+    "meeting_outcomes_snapshot_generated_at": "2026-11-16T08:00:44.881Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-11-16T17:02:06.203Z"
   }
 }

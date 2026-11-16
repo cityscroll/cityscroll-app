@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":72,"first_ordinal":121560,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":72,"first_ordinal":121559,"entries":[
+{"s":"RICHMOND COUNTY GRANDMOTHERS CLUB","n":[["RICHMOND COUNTY GRANDMOTHERS CLUB INC",1]],"x":{"irs":{"r":1,"i":["923729553"],"z":["10303"]}}},
 {"s":"RICHMOND COUNTY MEDIA","n":[["RICHMOND COUNTY MEDIA LLC",1],["Richmond County Media LLC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2024-12-05","i":["CT104020253050578"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["358330"],"z":["10310"],"p":["MBE"]}}},
 {"s":"RICHMOND COUNTY MEDICAL SOCIETY","n":[["RICHMOND COUNTY MEDICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["135578770"],"z":["10314"]}}},
 {"s":"RICHMOND COUNTY NURSES HONOR GUARD","n":[["RICHMOND COUNTY NURSES HONOR GUARD INC",1]],"x":{"irs":{"r":1,"i":["990448085"],"z":["10314"]}}},
@@ -1692,6 +1693,5 @@
 {"s":"ROCKLAND INSTITUTE FOR SPECIAL ED","n":[["ROCKLAND INSTITUTE FOR SPECIAL ED",1]],"x":{"irs":{"r":1,"i":["133601849"],"z":["10977"]}}},
 {"s":"ROCKLAND IRISH AMERICAN CULTURALCENTER","n":[["ROCKLAND IRISH AMERICAN CULTURALCENTER INC",1]],"x":{"irs":{"r":1,"i":["133036351"],"z":["10913"]}}},
 {"s":"ROCKLAND JAZZ AND BLUES SOCIETY","n":[["ROCKLAND JAZZ AND BLUES SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["133182272"],"z":["10960"]}}},
-{"s":"ROCKLAND JEWISH COMMUNITY CENTER","n":[["ROCKLAND JEWISH COMMUNITY CENTER CORPORATION",1]],"x":{"irs":{"r":1,"i":["133914074"],"z":["10994"]}}},
-{"s":"ROCKLAND KOREAN PRESBYTERIAN CHURCH","n":[["ROCKLAND KOREAN PRESBYTERIAN CHURCH",1]],"x":{"irs":{"r":1,"i":["133978490"],"z":["10920"]}}}
+{"s":"ROCKLAND JEWISH COMMUNITY CENTER","n":[["ROCKLAND JEWISH COMMUNITY CENTER CORPORATION",1]],"x":{"irs":{"r":1,"i":["133914074"],"z":["10994"]}}}
 ]}

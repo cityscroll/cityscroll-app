@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.upcoming_council_meetings.v1",
   "schema_version": 1,
-  "generated_at": "2026-11-13T14:45:44.555Z",
+  "generated_at": "2026-11-16T17:01:14.106Z",
   "source": {
     "name": "NYC Council Legistar (authenticated Web API)",
     "dataset": "Events",
@@ -15,40 +15,40 @@
   "discovery": {
     "basis": "shared authenticated Events acquisition of the daily refresh (no additional Events request)",
     "horizon_days": 120,
-    "window_start": "2026-11-13",
-    "window_end": "2027-03-13",
+    "window_start": "2026-11-16",
+    "window_end": "2027-03-16",
     "events_pages": 2,
     "events_page_truncated": false,
     "item_events_max": 60,
     "item_concurrency": 6,
     "agenda_items_per_event_max": 20,
-    "item_events_attempted": 55,
+    "item_events_attempted": 60,
     "item_events_deferred": 0,
     "item_discovery_truncated": false
   },
   "source_health": {
     "status": "healthy",
     "basis": "authenticated-events-acquisition",
-    "observed_at": "2026-11-13T14:45:44.555Z",
-    "events_observed": 394,
-    "last_successful_observation": "2026-11-13T14:45:44.555Z",
-    "upcoming": 55,
-    "standalone": 55,
+    "observed_at": "2026-11-16T17:01:14.106Z",
+    "events_observed": 389,
+    "last_successful_observation": "2026-11-16T17:01:14.106Z",
+    "upcoming": 60,
+    "standalone": 60,
     "exactly_joined": 0,
     "collection_suppressed": 0,
     "truncated": 0
   },
   "counts": {
-    "eligible_events": 55,
-    "meetings": 55,
-    "agenda_items": 144,
-    "agenda_items_observed": 144,
-    "events_with_items": 54,
+    "eligible_events": 60,
+    "meetings": 60,
+    "agenda_items": 169,
+    "agenda_items_observed": 169,
+    "events_with_items": 59,
     "events_no_published_items": 1,
     "events_items_deferred": 0,
     "events_items_unavailable": 0,
     "events_items_truncated": 0,
-    "standalone": 55,
+    "standalone": 60,
     "exactly_joined": 0
   },
   "meetings": [
@@ -104,7 +104,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaCR0=",
         "last_modified_utc": "2026-11-11T16:36:32.243",
         "agenda_last_published_utc": "2026-11-11T16:36:32.193"
@@ -162,7 +162,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaCOE=",
         "last_modified_utc": "2026-11-11T16:34:37.54",
         "agenda_last_published_utc": "2026-11-11T16:34:37.477"
@@ -243,7 +243,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaCFQ=",
         "last_modified_utc": "2026-11-11T16:29:42.227",
         "agenda_last_published_utc": "2026-11-11T16:29:42.193"
@@ -301,7 +301,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaCLI=",
         "last_modified_utc": "2026-11-11T16:33:35.76",
         "agenda_last_published_utc": "2026-11-11T16:33:35.667"
@@ -359,7 +359,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaCIM=",
         "last_modified_utc": "2026-11-11T16:32:42.32",
         "agenda_last_published_utc": "2026-11-11T16:32:42.257"
@@ -417,7 +417,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhYlP8=",
         "last_modified_utc": "2026-11-02T15:53:20.353",
         "agenda_last_published_utc": "2026-11-02T15:53:20.2"
@@ -475,7 +475,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaB+g=",
         "last_modified_utc": "2026-11-11T16:20:58.727",
         "agenda_last_published_utc": "2026-11-11T16:20:58.573"
@@ -533,7 +533,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOg7rKU=",
         "last_modified_utc": "2026-06-01T17:28:30.67",
         "agenda_last_published_utc": "2026-06-01T17:28:30.657"
@@ -597,7 +597,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhY3dQ=",
         "last_modified_utc": "2026-11-05T14:31:16.23",
         "agenda_last_published_utc": "2026-11-05T14:31:16.073"
@@ -661,7 +661,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhZFz0=",
         "last_modified_utc": "2026-11-06T16:20:45.217",
         "agenda_last_published_utc": "2026-11-06T16:20:45.087"
@@ -701,10 +701,228 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhZ04M=",
         "last_modified_utc": "2026-11-10T19:02:13.97",
         "agenda_last_published_utc": "2026-11-10T19:01:11.54"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22888",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22888",
+        "event_guid": "65DD06AE-8B67-48BA-9CEF-59FC30A894AB"
+      },
+      "governing_body": {
+        "name": "Committee on Public Safety",
+        "body_id": "19"
+      },
+      "date": "2026-12-15",
+      "wall_time": "2026-12-15T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22888&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22888_A_Committee_on_Public_Safety_26-12-15_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444331",
+            "agenda_number": null,
+            "title": "Jointly with Committee on Transportation and Infrastructure",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444332",
+            "agenda_number": null,
+            "title": "Oversight - Dangerous Misuse of Public Space: Teen Takeovers, Car Meetups, and Drag Racing.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79786",
+              "matter_file": "T2026-2833",
+              "matter_name": "Oversight - Dangerous Misuse of Public Space: Teen Takeovers, Car Meetups, and Drag Racing.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444333",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to resources for victims of motor vehicle collisions",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77848",
+              "matter_file": "Int 0334-2026",
+              "matter_name": "Resources for victims of motor vehicle collisions.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444334",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to increasing the fines for the unlawful use of all-terrain vehicles and dirt bikes",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77468",
+              "matter_file": "Int 0528-2026",
+              "matter_name": "Increasing the fines for the unlawful use of all-terrain vehicles and dirt bikes.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 4,
+        "published_items": 4,
+        "search_text": "Jointly with Committee on Transportation and Infrastructure | Oversight - Dangerous Misuse of Public Space: Teen Takeovers, Car Meetups, and Drag Racing. | T2026-2833 | A Local Law to amend the administrative code of the city of New York, in relation to resources for victims of motor vehicle collisions | Resources for victims of motor vehicle collisions. | Int 0334-2026 | A Local Law to amend the administrative code of the city of New York, in relation to increasing the fines for the unlawful use of all-terrain vehicles and dirt bikes | Increasing the fines for the unlawful use of all-terrain vehicles and dirt bikes. | Int 0528-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhajx4=",
+        "last_modified_utc": "2026-11-13T16:20:25.597",
+        "agenda_last_published_utc": "2026-11-13T16:20:25.473"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22889",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22889",
+        "event_guid": "6B73F896-098C-4067-8DD3-85A53C8AAF7E"
+      },
+      "governing_body": {
+        "name": "Committee on Transportation and Infrastructure",
+        "body_id": "5268"
+      },
+      "date": "2026-12-15",
+      "wall_time": "2026-12-15T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22889&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22889_A_Committee_on_Transportation_and_Infrastructure_26-12-15_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444335",
+            "agenda_number": null,
+            "title": "Jointly with the Committee on Public Safety",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444336",
+            "agenda_number": null,
+            "title": "Oversight - Dangerous Misuse of Public Space: Teen Takeovers, Car Meetups, and Drag Racing.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79787",
+              "matter_file": "T2026-2834",
+              "matter_name": "Oversight - Dangerous Misuse of Public Space: Teen Takeovers, Car Meetups, and Drag Racing.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444337",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to resources for victims of motor vehicle collisions",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77848",
+              "matter_file": "Int 0334-2026",
+              "matter_name": "Resources for victims of motor vehicle collisions.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444338",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to increasing the fines for the unlawful use of all-terrain vehicles and dirt bikes",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77468",
+              "matter_file": "Int 0528-2026",
+              "matter_name": "Increasing the fines for the unlawful use of all-terrain vehicles and dirt bikes.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 4,
+        "published_items": 4,
+        "search_text": "Jointly with the Committee on Public Safety | Oversight - Dangerous Misuse of Public Space: Teen Takeovers, Car Meetups, and Drag Racing. | T2026-2834 | A Local Law to amend the administrative code of the city of New York, in relation to resources for victims of motor vehicle collisions | Resources for victims of motor vehicle collisions. | Int 0334-2026 | A Local Law to amend the administrative code of the city of New York, in relation to increasing the fines for the unlawful use of all-terrain vehicles and dirt bikes | Increasing the fines for the unlawful use of all-terrain vehicles and dirt bikes. | Int 0528-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhaj68=",
+        "last_modified_utc": "2026-11-13T16:21:55.877",
+        "agenda_last_published_utc": "2026-11-13T16:21:55.8"
       }
     },
     {
@@ -776,7 +994,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhYmGY=",
         "last_modified_utc": "2026-11-02T16:56:51.7",
         "agenda_last_published_utc": "2026-11-02T16:56:51.553"
@@ -851,7 +1069,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhYmKw=",
         "last_modified_utc": "2026-11-02T16:57:34.15",
         "agenda_last_published_utc": "2026-11-02T16:57:34.087"
@@ -915,7 +1133,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhY3co=",
         "last_modified_utc": "2026-11-05T14:38:55.797",
         "agenda_last_published_utc": "2026-11-05T14:38:55.763"
@@ -990,7 +1208,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhZFZU=",
         "last_modified_utc": "2026-11-06T15:48:56.497",
         "agenda_last_published_utc": "2026-11-06T15:48:56.403"
@@ -1065,7 +1283,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhZFbY=",
         "last_modified_utc": "2026-11-06T15:49:32.437",
         "agenda_last_published_utc": "2026-11-06T15:49:32.42"
@@ -1146,7 +1364,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhYqwc=",
         "last_modified_utc": "2026-11-02T20:02:11.367",
         "agenda_last_published_utc": "2026-11-02T20:02:11.223"
@@ -1238,7 +1456,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaL3o=",
         "last_modified_utc": "2026-11-12T15:37:54.963",
         "agenda_last_published_utc": "2026-11-12T15:37:54.95"
@@ -1330,7 +1548,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaL60=",
         "last_modified_utc": "2026-11-12T15:38:22.993",
         "agenda_last_published_utc": "2026-11-12T15:38:22.947"
@@ -1422,10 +1640,74 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaL88=",
         "last_modified_utc": "2026-11-12T15:38:50.94",
         "agenda_last_published_utc": "2026-11-12T15:38:50.91"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22892",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22892",
+        "event_guid": "548EA9BA-4A4F-4C36-B3C4-82A7A261883A"
+      },
+      "governing_body": {
+        "name": "Committee on Civil and Human Rights",
+        "body_id": "5235"
+      },
+      "date": "2026-12-10",
+      "wall_time": "2026-12-10T10:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "Council Chambers - City Hall"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22892&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22892_A_Committee_on_Civil_and_Human_Rights_26-12-10_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444352",
+            "agenda_number": null,
+            "title": "Oversight - Citywide Racial Equity Planning.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79624",
+              "matter_file": "T2026-2671",
+              "matter_name": "Oversight - Citywide Racial Equity Planning.",
+              "matter_type": "Oversight",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 1,
+        "published_items": 1,
+        "search_text": "Oversight - Citywide Racial Equity Planning. | T2026-2671"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhapkc=",
+        "last_modified_utc": "2026-11-13T20:02:18.647",
+        "agenda_last_published_utc": "2026-11-13T20:02:18.633"
       }
     },
     {
@@ -1446,7 +1728,7 @@
         "address": "Council Chambers - City Hall"
       },
       "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22854&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-      "agenda_status": "Final",
+      "agenda_status": "Deferred",
       "documents": [
         {
           "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22854_A_Committee_on_Civil_and_Human_Rights_26-12-09_Committee_Agenda.pdf",
@@ -1486,10 +1768,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhZB60=",
-        "last_modified_utc": "2026-11-05T21:01:25.88",
-        "agenda_last_published_utc": "2026-11-05T21:01:25.837"
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhaqdw=",
+        "last_modified_utc": "2026-11-13T19:58:55.743",
+        "agenda_last_published_utc": "2026-11-13T19:58:55.657"
       }
     },
     {
@@ -1544,7 +1826,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhYlRY=",
         "last_modified_utc": "2026-11-02T15:54:15.93",
         "agenda_last_published_utc": "2026-11-02T15:54:15.86"
@@ -1608,7 +1890,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaZ3s=",
         "last_modified_utc": "2026-11-12T20:29:37.31",
         "agenda_last_published_utc": "2026-11-12T20:29:37.263"
@@ -1666,7 +1948,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOg7rHY=",
         "last_modified_utc": "2026-06-01T17:27:54.433",
         "agenda_last_published_utc": "2026-06-01T17:27:54.357"
@@ -1730,7 +2012,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhZt/o=",
         "last_modified_utc": "2026-11-10T16:55:03.11",
         "agenda_last_published_utc": "2026-11-10T16:55:02.597"
@@ -1809,11 +2091,62 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "444341",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for public school students aged 16 or older",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77556",
+              "matter_file": "Int 0294-2026",
+              "matter_name": "Discounted bike share rate for public school students aged 16 or older.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444342",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for seniors",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77565",
+              "matter_file": "Int 0309-2026",
+              "matter_name": "Discounted bike share rate for seniors.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444343",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for CUNY students",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78777",
+              "matter_file": "Int 0944-2026",
+              "matter_name": "Discounted bike share rate for CUNY students.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "observed_items": 3,
-        "published_items": 3,
-        "search_text": "Oversight - Monitoring Compliance with the DOT’s Citibike Contract. | T2026-2743 | Jointly with the Committee on Transportation and Infrastructure | A Local Law to amend the administrative code of the city of New York, in relation to setting maximum amounts for certain member usage fees charged by a bike share operator | Setting maximum amounts for certain member usage fees charged by a bike share operator. | Int 0656-2026"
+        "observed_items": 6,
+        "published_items": 6,
+        "search_text": "Oversight - Monitoring Compliance with the DOT’s Citibike Contract. | T2026-2743 | Jointly with the Committee on Transportation and Infrastructure | A Local Law to amend the administrative code of the city of New York, in relation to setting maximum amounts for certain member usage fees charged by a bike share operator | Setting maximum amounts for certain member usage fees charged by a bike share operator. | Int 0656-2026 | A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for public school students aged 16 or older | Discounted bike share rate for public school students aged 16 or older. | Int 0294-2026 | A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for seniors | Discounted bike share rate for seniors. | Int 0309-2026 | A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for CUNY students | Discounted bike share rate for CUNY students. | Int 0944-2026"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -1822,10 +2155,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhZpSM=",
-        "last_modified_utc": "2026-11-10T14:08:56.133",
-        "agenda_last_published_utc": "2026-11-10T14:08:56.103"
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhamSc=",
+        "last_modified_utc": "2026-11-13T17:59:57.127",
+        "agenda_last_published_utc": "2026-11-13T17:59:56.98"
       }
     },
     {
@@ -1901,11 +2234,62 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "444344",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for public school students aged 16 or older",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77556",
+              "matter_file": "Int 0294-2026",
+              "matter_name": "Discounted bike share rate for public school students aged 16 or older.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444345",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for seniors",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77565",
+              "matter_file": "Int 0309-2026",
+              "matter_name": "Discounted bike share rate for seniors.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444346",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for CUNY students",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78777",
+              "matter_file": "Int 0944-2026",
+              "matter_name": "Discounted bike share rate for CUNY students.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "observed_items": 3,
-        "published_items": 3,
-        "search_text": "Oversight - Monitoring Compliance with the DOT’s Citibike Contract. | T2026-2744 | Jointly with the Committee on Contracts | A Local Law to amend the administrative code of the city of New York, in relation to setting maximum amounts for certain member usage fees charged by a bike share operator | Setting maximum amounts for certain member usage fees charged by a bike share operator. | Int 0656-2026"
+        "observed_items": 6,
+        "published_items": 6,
+        "search_text": "Oversight - Monitoring Compliance with the DOT’s Citibike Contract. | T2026-2744 | Jointly with the Committee on Contracts | A Local Law to amend the administrative code of the city of New York, in relation to setting maximum amounts for certain member usage fees charged by a bike share operator | Setting maximum amounts for certain member usage fees charged by a bike share operator. | Int 0656-2026 | A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for public school students aged 16 or older | Discounted bike share rate for public school students aged 16 or older. | Int 0294-2026 | A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for seniors | Discounted bike share rate for seniors. | Int 0309-2026 | A Local Law to amend the administrative code of the city of New York, in relation to a discounted bike share rate for CUNY students | Discounted bike share rate for CUNY students. | Int 0944-2026"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -1914,10 +2298,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhZpOk=",
-        "last_modified_utc": "2026-11-10T14:07:48.507",
-        "agenda_last_published_utc": "2026-11-10T14:07:48.37"
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhama4=",
+        "last_modified_utc": "2026-11-13T18:00:55.27",
+        "agenda_last_published_utc": "2026-11-13T18:00:55.21"
       }
     },
     {
@@ -1978,7 +2362,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhVT4M=",
         "last_modified_utc": "2026-10-28T15:11:11.837",
         "agenda_last_published_utc": "2026-10-28T15:11:11.667"
@@ -2076,7 +2460,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhYscs=",
         "last_modified_utc": "2026-11-02T20:59:39.533",
         "agenda_last_published_utc": "2026-11-02T20:59:39.407"
@@ -2134,7 +2518,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaReQ=",
         "last_modified_utc": "2026-11-12T16:38:37.88",
         "agenda_last_published_utc": "2026-11-12T16:38:37.8"
@@ -2192,7 +2576,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaRbw=",
         "last_modified_utc": "2026-11-12T16:38:09.6",
         "agenda_last_published_utc": "2026-11-12T16:38:09.43"
@@ -2267,7 +2651,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhUx9A=",
         "last_modified_utc": "2026-10-26T19:52:09.397",
         "agenda_last_published_utc": "2026-10-26T19:52:09.27"
@@ -2342,7 +2726,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhUyCw=",
         "last_modified_utc": "2026-10-26T19:53:34.407",
         "agenda_last_published_utc": "2026-10-26T19:53:34.377"
@@ -2417,7 +2801,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhUyHw=",
         "last_modified_utc": "2026-10-26T19:54:51.517",
         "agenda_last_published_utc": "2026-10-26T19:54:51.447"
@@ -2475,7 +2859,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhSDLg=",
         "last_modified_utc": "2026-10-13T21:03:42.353",
         "agenda_last_published_utc": "2026-10-13T21:03:42.263"
@@ -2554,11 +2938,28 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "444340",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79743",
+              "matter_file": "Int 1177-2026",
+              "matter_name": "Requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "observed_items": 3,
-        "published_items": 3,
-        "search_text": "Oversight - Accessibility of City Parks, Playgrounds, and Recreation Centers. | T2026-2748 | Jointly with the Committee on Parks and Recreation | A Local Law to amend the administrative code of the city of New York, in relation to an annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York | An annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York. | Int 0212-2026"
+        "observed_items": 4,
+        "published_items": 4,
+        "search_text": "Oversight - Accessibility of City Parks, Playgrounds, and Recreation Centers. | T2026-2748 | Jointly with the Committee on Parks and Recreation | A Local Law to amend the administrative code of the city of New York, in relation to an annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York | An annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York. | Int 0212-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities | Requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities. | Int 1177-2026"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -2567,10 +2968,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhYyec=",
-        "last_modified_utc": "2026-11-04T17:37:55.787",
-        "agenda_last_published_utc": "2026-11-04T17:37:55.74"
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhakBg=",
+        "last_modified_utc": "2026-11-13T16:24:51.373",
+        "agenda_last_published_utc": "2026-11-13T16:24:51.31"
       }
     },
     {
@@ -2646,11 +3047,28 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "444339",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79743",
+              "matter_file": "Int 1177-2026",
+              "matter_name": "Requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities.",
+              "matter_type": "Introduction",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "observed_items": 3,
-        "published_items": 3,
-        "search_text": "Oversight - Accessibility of City Parks, Playgrounds, and Recreation Centers. | T2026-2749 | Jointly with the Committee on Disabilities | A Local Law to amend the administrative code of the city of New York, in relation to an annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York | An annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York. | Int 0212-2026"
+        "observed_items": 4,
+        "published_items": 4,
+        "search_text": "Oversight - Accessibility of City Parks, Playgrounds, and Recreation Centers. | T2026-2749 | Jointly with the Committee on Disabilities | A Local Law to amend the administrative code of the city of New York, in relation to an annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York | An annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York. | Int 0212-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities | Requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities. | Int 1177-2026"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -2659,7 +3077,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhYyeg=",
         "last_modified_utc": "2026-11-04T17:36:27.607",
         "agenda_last_published_utc": "2026-11-04T17:36:27.53"
@@ -2723,7 +3141,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhZFbc=",
         "last_modified_utc": "2026-11-04T20:09:13.56",
         "agenda_last_published_utc": "2026-11-04T20:09:13.46"
@@ -2855,7 +3273,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhZUcQ=",
         "last_modified_utc": "2026-11-09T15:48:44.633",
         "agenda_last_published_utc": "2026-11-09T15:48:44.593"
@@ -2947,7 +3365,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhZBig=",
         "last_modified_utc": "2026-11-05T20:44:27.54",
         "agenda_last_published_utc": "2026-11-05T20:44:27.513"
@@ -3039,7 +3457,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhZBlE=",
         "last_modified_utc": "2026-11-05T20:45:20.31",
         "agenda_last_published_utc": "2026-11-05T20:45:20.283"
@@ -3203,11 +3621,28 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "444329",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York and the New York city fire code, in relation to penalties for the possession, sale, lease, or rental of unsafe powered bicycles, powered mobility devices, and storage batteries and the assembly or sale of second-use lithium-ion batteries",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79785",
+              "matter_file": "T2026-2832",
+              "matter_name": "Penalties for the possession, sale, lease, or rental of unsafe powered bicycles, powered mobility devices, and storage batteries and the assembly or sale of second-use lithium-ion batteries.",
+              "matter_type": "Introduction",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "observed_items": 8,
-        "published_items": 8,
-        "search_text": "Oversight - Residential Fires and the Dangers of Lithium-Ion Batteries. | T2026-2801 | Jointly with the Committee on Housing and Buildings | A Local Law to amend the administrative code of the city of New York, in relation to requiring businesses using bicycles for commercial purposes to provide bicycle operators with fireproof or fire-resistant containers for removable storage batteries used to power motor-assisted bicycles | Requiring businesses using bicycles for commercial purposes to provide bicycle operators with fireproof or fire-resistant containers for removable storage batteries used to power motor-assisted bicycles. | Int 0582-2026 | A Local Law to amend the New York city fire code, in relation to storing and charging mobility devices | Storing and charging mobility devices. | Int 0920-2026 | A Local Law to amend the administrative code of the city of New York, in relation to department of consumer and worker protection and fire department authority to seal the premises of retailers of powered bicycles, powered mobility devices, or storage batteries | Department of consumer and worker protection and fire department authority to seal the premises of retailers of powered bicycles, powered mobility devices, or storage batteries. | T2026-2721 | A Local Law to amend the administrative code of the city of New York, in relation to establishing an outreach, inspection, and enforcement plan for reducing the fire risks posed by certain powered bicycles, powered mobility devices, and storage batteries used by such devices | Establishing an outreach, inspection, and enforcement plan for reducing the fire risks posed by certain powered bicycles, powered mobility devices, and storage batteries used by such devices. | T2026-2830 | A Local Law to amend the administrative code of the city of New York, in relation to the creation of an FDNY fire emergency dashboard | Creation of an FDNY fire emergency dashboard. | Int 1174-2026 | A Local Law to amend the administrative code of the city of New York, in relation to a study and report on electrical capacity in certain residential buildings | A study and report on electrical capacity in certain residential buildings. | Int 1175-2026"
+        "observed_items": 9,
+        "published_items": 9,
+        "search_text": "Oversight - Residential Fires and the Dangers of Lithium-Ion Batteries. | T2026-2801 | Jointly with the Committee on Housing and Buildings | A Local Law to amend the administrative code of the city of New York, in relation to requiring businesses using bicycles for commercial purposes to provide bicycle operators with fireproof or fire-resistant containers for removable storage batteries used to power motor-assisted bicycles | Requiring businesses using bicycles for commercial purposes to provide bicycle operators with fireproof or fire-resistant containers for removable storage batteries used to power motor-assisted bicycles. | Int 0582-2026 | A Local Law to amend the New York city fire code, in relation to storing and charging mobility devices | Storing and charging mobility devices. | Int 0920-2026 | A Local Law to amend the administrative code of the city of New York, in relation to department of consumer and worker protection and fire department authority to seal the premises of retailers of powered bicycles, powered mobility devices, or storage batteries | Department of consumer and worker protection and fire department authority to seal the premises of retailers of powered bicycles, powered mobility devices, or storage batteries. | T2026-2721 | A Local Law to amend the administrative code of the city of New York, in relation to establishing an outreach, inspection, and enforcement plan for reducing the fire risks posed by certain powered bicycles, powered mobility devices, and storage batteries used by such devices | Establishing an outreach, inspection, and enforcement plan for reducing the fire risks posed by certain powered bicycles, powered mobility devices, and storage batteries used by such devices. | T2026-2830 | A Local Law to amend the administrative code of the city of New York, in relation to the creation of an FDNY fire emergency dashboard | Creation of an FDNY fire emergency dashboard. | Int 1174-2026 | A Local Law to amend the administrative code of the city of New York, in relation to a study and report on electrical capacity in certain residential buildings | A study and report on electrical capacity in certain residential buildings. | Int 1175-2026 | A Local Law to amend the administrative code of the city of New York and the New York city fire code, in relation to penalties for the possession, sale, lease, or rental of unsafe powered bicycles, powered mobility devices, and storage batteries and the assembly or sale of second-use lithium-ion batteries | Penalties for the possession, sale, lease, or rental of unsafe powered bicycles, powered mobility devices, and storage batteries and the assembly or sale of second-use lithium-ion batteries. | T2026-2832"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -3216,10 +3651,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhabvc=",
-        "last_modified_utc": "2026-11-12T20:56:54.053",
-        "agenda_last_published_utc": "2026-11-12T20:56:53.893"
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhagpc=",
+        "last_modified_utc": "2026-11-13T14:54:52.373",
+        "agenda_last_published_utc": "2026-11-13T14:54:52.313"
       }
     },
     {
@@ -3380,11 +3815,28 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "444328",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York and the New York city fire code, in relation to penalties for the possession, sale, lease, or rental of unsafe powered bicycles, powered mobility devices, and storage batteries and the assembly or sale of second-use lithium-ion batteries",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79785",
+              "matter_file": "T2026-2832",
+              "matter_name": "Penalties for the possession, sale, lease, or rental of unsafe powered bicycles, powered mobility devices, and storage batteries and the assembly or sale of second-use lithium-ion batteries.",
+              "matter_type": "Introduction",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "observed_items": 8,
-        "published_items": 8,
-        "search_text": "Oversight - Residential Fires and the Dangers of Lithium-Ion Batteries. | T2026-2802 | Jointly with the Committee on Fire and Emergency Management | A Local Law to amend the administrative code of the city of New York, in relation to requiring businesses using bicycles for commercial purposes to provide bicycle operators with fireproof or fire-resistant containers for removable storage batteries used to power motor-assisted bicycles | Requiring businesses using bicycles for commercial purposes to provide bicycle operators with fireproof or fire-resistant containers for removable storage batteries used to power motor-assisted bicycles. | Int 0582-2026 | A Local Law to amend the New York city fire code, in relation to storing and charging mobility devices | Storing and charging mobility devices. | Int 0920-2026 | A Local Law to amend the administrative code of the city of New York, in relation to the creation of an FDNY fire emergency dashboard | Creation of an FDNY fire emergency dashboard. | Int 1174-2026 | A Local Law to amend the administrative code of the city of New York, in relation to a study and report on electrical capacity in certain residential buildings | A study and report on electrical capacity in certain residential buildings. | Int 1175-2026 | A Local Law to amend the administrative code of the city of New York, in relation to establishing an outreach, inspection, and enforcement plan for reducing the fire risks posed by certain powered bicycles, powered mobility devices, and storage batteries used by such devices | Establishing an outreach, inspection, and enforcement plan for reducing the fire risks posed by certain powered bicycles, powered mobility devices, and storage batteries used by such devices. | T2026-2830 | A Local Law to amend the administrative code of the city of New York, in relation to department of consumer and worker protection and fire department authority to seal the premises of retailers of powered bicycles, powered mobility devices, or storage batteries | Department of consumer and worker protection and fire department authority to seal the premises of retailers of powered bicycles, powered mobility devices, or storage batteries. | T2026-2721"
+        "observed_items": 9,
+        "published_items": 9,
+        "search_text": "Oversight - Residential Fires and the Dangers of Lithium-Ion Batteries. | T2026-2802 | Jointly with the Committee on Fire and Emergency Management | A Local Law to amend the administrative code of the city of New York, in relation to requiring businesses using bicycles for commercial purposes to provide bicycle operators with fireproof or fire-resistant containers for removable storage batteries used to power motor-assisted bicycles | Requiring businesses using bicycles for commercial purposes to provide bicycle operators with fireproof or fire-resistant containers for removable storage batteries used to power motor-assisted bicycles. | Int 0582-2026 | A Local Law to amend the New York city fire code, in relation to storing and charging mobility devices | Storing and charging mobility devices. | Int 0920-2026 | A Local Law to amend the administrative code of the city of New York, in relation to the creation of an FDNY fire emergency dashboard | Creation of an FDNY fire emergency dashboard. | Int 1174-2026 | A Local Law to amend the administrative code of the city of New York, in relation to a study and report on electrical capacity in certain residential buildings | A study and report on electrical capacity in certain residential buildings. | Int 1175-2026 | A Local Law to amend the administrative code of the city of New York, in relation to establishing an outreach, inspection, and enforcement plan for reducing the fire risks posed by certain powered bicycles, powered mobility devices, and storage batteries used by such devices | Establishing an outreach, inspection, and enforcement plan for reducing the fire risks posed by certain powered bicycles, powered mobility devices, and storage batteries used by such devices. | T2026-2830 | A Local Law to amend the administrative code of the city of New York, in relation to department of consumer and worker protection and fire department authority to seal the premises of retailers of powered bicycles, powered mobility devices, or storage batteries | Department of consumer and worker protection and fire department authority to seal the premises of retailers of powered bicycles, powered mobility devices, or storage batteries. | T2026-2721 | A Local Law to amend the administrative code of the city of New York and the New York city fire code, in relation to penalties for the possession, sale, lease, or rental of unsafe powered bicycles, powered mobility devices, and storage batteries and the assembly or sale of second-use lithium-ion batteries | Penalties for the possession, sale, lease, or rental of unsafe powered bicycles, powered mobility devices, and storage batteries and the assembly or sale of second-use lithium-ion batteries. | T2026-2832"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -3393,10 +3845,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhabxw=",
-        "last_modified_utc": "2026-11-12T20:58:10.377",
-        "agenda_last_published_utc": "2026-11-12T20:58:10.327"
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhagks=",
+        "last_modified_utc": "2026-11-13T14:54:19.33",
+        "agenda_last_published_utc": "2026-11-13T14:54:19.26"
       }
     },
     {
@@ -3451,7 +3903,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOg7rEc=",
         "last_modified_utc": "2026-06-01T17:26:53.917",
         "agenda_last_published_utc": "2026-06-01T17:26:53.87"
@@ -3583,7 +4035,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaAIQ=",
         "last_modified_utc": "2026-11-10T21:16:47.987",
         "agenda_last_published_utc": "2026-11-10T21:16:47.847"
@@ -3732,10 +4184,321 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhaA5M=",
         "last_modified_utc": "2026-11-11T04:05:28.547",
         "agenda_last_published_utc": "2026-11-11T04:05:28.46"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22876",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22876",
+        "event_guid": "5F6EBBDB-B5EF-410E-9DC5-BD70B91FDD91"
+      },
+      "governing_body": {
+        "name": "Committee on Education",
+        "body_id": "9"
+      },
+      "date": "2026-11-19",
+      "wall_time": "2026-11-19T11:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22876&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22876_A_Committee_on_Education_26-11-19_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444246",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of education to distribute information about the importance of dental care",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77519",
+              "matter_file": "Int 0259-2026",
+              "matter_name": "Requiring the department of education to distribute information about the importance of dental care.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 1,
+        "published_items": 1,
+        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of education to distribute information about the importance of dental care | Requiring the department of education to distribute information about the importance of dental care. | Int 0259-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhakuw=",
+        "last_modified_utc": "2026-11-13T16:43:23.787",
+        "agenda_last_published_utc": "2026-11-13T16:43:23.74"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22877",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22877",
+        "event_guid": "C5251D29-8AC8-4F9A-99CD-DAD47C2FA5FC"
+      },
+      "governing_body": {
+        "name": "Committee on Governmental Operations, State & Federal Legislation",
+        "body_id": "5293"
+      },
+      "date": "2026-11-19",
+      "wall_time": "2026-11-19T10:30:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22877&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22877_A_Committee_on_Governmental_Operations%2C_State___Federal_Legislation_26-11-19_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444247",
+            "agenda_number": null,
+            "title": "A Local Law to amend the New York city charter and the administrative code of the city of New York, in relation to changing the dates by when certain reports are to be transmitted to council, and to repeal the following provisions of the New York city charter: section 17, in relation to the strategic policy statement; section 20-e, in relation to the committee on city healthcare services; and also to repeal section 14-175 of the administrative code of the city of New York, in relation to a marijuana enforcement report and other incidental technical amendments",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78280",
+              "matter_file": "Int 1127-2026",
+              "matter_name": "Changing the dates by when certain reports are to be transmitted to council; repeal the following provisions of the New York city charter: section 17; section 20-e; and also to repeal section 14-175 of the administrative code of the city of New York.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444248",
+            "agenda_number": null,
+            "title": "A Local Law to amend the New York city charter, in relation to the due dates of agency reports to the council",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79190",
+              "matter_file": "Int 1128-2026",
+              "matter_name": "The due dates of agency reports to the council.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444249",
+            "agenda_number": null,
+            "title": "A Local Law to amend the New York city charter, in relation to agency transmissions of reports and attestations of compliance with operational requirements",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78228",
+              "matter_file": "Int 1129-2026",
+              "matter_name": "Agency transmissions of reports and attestations of compliance with operational requirements.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 3,
+        "published_items": 3,
+        "search_text": "A Local Law to amend the New York city charter and the administrative code of the city of New York, in relation to changing the dates by when certain reports are to be transmitted to council, and to repeal the following provisions of the New York city charter: section 17, in relation to the strategic policy statement; section 20-e, in relation to the committee on city healthcare services; and also to repeal section 14-175 of the administrative code of the city of New York, in relation to a marijuana enforcement report and other incidental technical amendments | Changing the dates by when certain reports are to be transmitted to council; repeal the following provisions of the New York city charter: section 17; section 20-e; and also to repeal section 14-175 of the administrative code of the city of New York. | Int 1127-2026 | A Local Law to amend the New York city charter, in relation to the due dates of agency reports to the council | The due dates of agency reports to the council. | Int 1128-2026 | A Local Law to amend the New York city charter, in relation to agency transmissions of reports and attestations of compliance with operational requirements | Agency transmissions of reports and attestations of compliance with operational requirements. | Int 1129-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhamlY=",
+        "last_modified_utc": "2026-11-13T18:06:44.86",
+        "agenda_last_published_utc": "2026-11-13T18:06:44.813"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22879",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22879",
+        "event_guid": "A69C95E1-12BC-45B4-AE65-BACE90A25F4B"
+      },
+      "governing_body": {
+        "name": "Committee on Health",
+        "body_id": "14"
+      },
+      "date": "2026-11-19",
+      "wall_time": "2026-11-19T11:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22879&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22879_A_Committee_on_Health_26-11-19_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444306",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to creating resources for access to doulas and a doula advisory council",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77742",
+              "matter_file": "Int 0200-2026",
+              "matter_name": "Creating resources for access to doulas and a doula advisory council.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444307",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of health and mental hygiene to provide information regarding fertility treatment, including insurance coverage of fertility treatment",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77120",
+              "matter_file": "Int 0211-2026",
+              "matter_name": "Requiring the department of health and mental hygiene to provide information regarding fertility treatment, including insurance coverage of fertility treatment.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444308",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of health and mental hygiene to make medication abortion available at no cost to a patient at all of its sexual health clinics",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79041",
+              "matter_file": "Int 0953-2026",
+              "matter_name": "Requiring the department of health and mental hygiene to make medication abortion available at no cost to a patient at all of its sexual health clinics.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444309",
+            "agenda_number": null,
+            "title": "Resolution calling on the New York State Assembly to pass A.9175, and the Governor to sign S.2058/A.9175, legislation to require each institution within the State University of New York and the City University of New York to have at least one vending machine making emergency contraception available for purchase",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77751",
+              "matter_file": "Res 0089-2026",
+              "matter_name": "Require each institution within the State University of New York and the City University of New York to have at least one vending machine making emergency contraception available for purchase. (S.2058/A.9175)",
+              "matter_type": "Resolution",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444310",
+            "agenda_number": null,
+            "title": "Resolution calling on the New York State legislature to pass, and the Governor to sign, S.5262/A.3051, legislation creating a refundable tax credit for up to three cycles of in vitro fertilization not covered by insurance",
+            "body_text": null,
+            "matter": {
+              "matter_id": "77579",
+              "matter_file": "Res 0108-2026",
+              "matter_name": "Creating a refundable tax credit for up to three cycles of in vitro fertilization not covered by insurance. (S.5262/A.3051)",
+              "matter_type": "Resolution",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444311",
+            "agenda_number": null,
+            "title": "A resolution calling on the New York State Legislature to introduce and pass, and the Governor to sign, legislation to ensure insurance companies cover the cost of Preimplantation Genetic Testing for Aneuploidies",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78461",
+              "matter_file": "Res 0447-2026",
+              "matter_name": "Ensure insurance companies cover the cost of Preimplantation Genetic Testing for Aneuploidies.",
+              "matter_type": "Resolution",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 6,
+        "published_items": 6,
+        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to creating resources for access to doulas and a doula advisory council | Creating resources for access to doulas and a doula advisory council. | Int 0200-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of health and mental hygiene to provide information regarding fertility treatment, including insurance coverage of fertility treatment | Requiring the department of health and mental hygiene to provide information regarding fertility treatment, including insurance coverage of fertility treatment. | Int 0211-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of health and mental hygiene to make medication abortion available at no cost to a patient at all of its sexual health clinics | Requiring the department of health and mental hygiene to make medication abortion available at no cost to a patient at all of its sexual health clinics. | Int 0953-2026 | Resolution calling on the New York State Assembly to pass A.9175, and the Governor to sign S.2058/A.9175, legislation to require each institution within the State University of New York and the City University of New York to have at least one vending machine making emergency contraception available for purchase | Require each institution within the State University of New York and the City University of New York to have at least one vending machine making emergency contraception available for purchase. (S.2058/A.9175) | Res 0089-2026 | Resolution calling on the New York State legislature to pass, and the Governor to sign, S.5262/A.3051, legislation creating a refundable tax credit for up to three cycles of in vitro fertilization not covered by insurance | Creating a refundable tax credit for up to three cycles of in vitro fertilization not covered by insurance. (S.5262/A.3051) | Res 0108-2026 | A resolution calling on the New York State Legislature to introduce and pass, and the Governor to sign, legislation to ensure insurance companies cover the cost of Preimplantation Genetic Testing for Aneuploidies | Ensure insurance companies cover the cost of Preimplantation Genetic Testing for Aneuploidies. | Res 0447-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhaf/o=",
+        "last_modified_utc": "2026-11-13T14:50:54.037",
+        "agenda_last_published_utc": "2026-11-13T14:50:53.993"
       }
     },
     {
@@ -3813,7 +4576,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhafuo=",
         "last_modified_utc": "2026-11-13T14:42:40.52",
         "agenda_last_published_utc": "2026-11-13T14:42:40.45"
@@ -3831,7 +4594,7 @@
         "body_id": "5119"
       },
       "date": "2026-11-19",
-      "wall_time": "2026-11-19T10:30:00",
+      "wall_time": "2026-11-19T10:00:00",
       "time_zone": "America/New_York",
       "venue": {
         "address": "250 Broadway - 8th Floor - Hearing Room 2"
@@ -3877,10 +4640,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhaSHI=",
-        "last_modified_utc": "2026-11-12T16:45:07.437",
-        "agenda_last_published_utc": "2026-11-12T16:45:07.377"
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhaf9Q=",
+        "last_modified_utc": "2026-11-13T14:50:00.8",
+        "agenda_last_published_utc": "2026-11-13T14:50:00.623"
       }
     },
     {
@@ -3945,11 +4708,28 @@
               "name": null,
               "passed_flag": null
             }
+          },
+          {
+            "agenda_item_id": "444350",
+            "agenda_number": null,
+            "title": "Resolution calling on the New York State Legislature to pass, and the Governor to sign, S.1018/A.8440, to amend the education law, in relation to contracts for the transportation of school children",
+            "body_text": null,
+            "matter": {
+              "matter_id": "75269",
+              "matter_file": "Res 0735-2026",
+              "matter_name": "Amend the education law. (S.1018/A.8440)",
+              "matter_type": "Resolution",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
           }
         ],
-        "observed_items": 2,
-        "published_items": 2,
-        "search_text": "Oversight - Examining School Bus Transportation Services in NYC. | T2026-2677 | A Local Law to amend the administrative code of the city of New York, in relation to the establishment and maintenance of a school bus performance dashboard | Establishment and maintenance of a school bus performance dashboard. | Int 0835-2026"
+        "observed_items": 3,
+        "published_items": 3,
+        "search_text": "Oversight - Examining School Bus Transportation Services in NYC. | T2026-2677 | A Local Law to amend the administrative code of the city of New York, in relation to the establishment and maintenance of a school bus performance dashboard | Establishment and maintenance of a school bus performance dashboard. | Int 0835-2026 | Resolution calling on the New York State Legislature to pass, and the Governor to sign, S.1018/A.8440, to amend the education law, in relation to contracts for the transportation of school children | Amend the education law. (S.1018/A.8440) | Res 0735-2026"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -3958,10 +4738,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhYwak=",
-        "last_modified_utc": "2026-11-04T16:40:28.947",
-        "agenda_last_published_utc": "2026-11-04T16:40:28.883"
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhao8s=",
+        "last_modified_utc": "2026-11-13T19:37:21.95",
+        "agenda_last_published_utc": "2026-11-13T19:37:21.8"
       }
     },
     {
@@ -4022,7 +4802,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhYlTc=",
         "last_modified_utc": "2026-11-02T15:55:57.52",
         "agenda_last_published_utc": "2026-11-02T15:55:57.473"
@@ -4301,10 +5081,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhY1So=",
-        "last_modified_utc": "2026-11-04T20:33:39.213",
-        "agenda_last_published_utc": "2026-11-04T20:33:39.2"
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhalq0=",
+        "last_modified_utc": "2026-11-13T17:21:36.567",
+        "agenda_last_published_utc": "2026-11-13T17:21:36.537"
       }
     },
     {
@@ -4580,10 +5360,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhY1V0=",
-        "last_modified_utc": "2026-11-04T20:34:07.923",
-        "agenda_last_published_utc": "2026-11-04T20:34:07.89"
+        "observed_at": "2026-11-16T17:01:14.106Z",
+        "row_version": "AAAAAOhalmk=",
+        "last_modified_utc": "2026-11-13T17:21:19.993",
+        "agenda_last_published_utc": "2026-11-13T17:21:19.857"
       }
     },
     {
@@ -4655,7 +5435,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhVhXM=",
         "last_modified_utc": "2026-10-29T18:48:49.15",
         "agenda_last_published_utc": "2026-10-29T18:48:49.007"
@@ -4730,142 +5510,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
+        "observed_at": "2026-11-16T17:01:14.106Z",
         "row_version": "AAAAAOhVhXQ=",
         "last_modified_utc": "2026-10-29T18:51:58.91",
         "agenda_last_published_utc": "2026-10-29T18:51:58.747"
-      }
-    },
-    {
-      "meeting_id": "meeting:nyc_legistar_events:22840",
-      "identity": {
-        "source_system": "nyc_legistar_events",
-        "event_id": "22840",
-        "event_guid": "12AECE47-F0F3-40B0-8044-1EBA5731E3E3"
-      },
-      "governing_body": {
-        "name": "Committee on Parks and Recreation",
-        "body_id": "5106"
-      },
-      "date": "2026-11-13",
-      "wall_time": "2026-11-13T13:00:00",
-      "time_zone": "America/New_York",
-      "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
-      },
-      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22840&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-      "agenda_status": "Final",
-      "documents": [
-        {
-          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22840_A_Committee_on_Parks_and_Recreation_26-11-13_Committee_Agenda.pdf",
-          "name": "Agenda",
-          "category": "Agenda"
-        }
-      ],
-      "agenda": {
-        "status": "items",
-        "items": [
-          {
-            "agenda_item_id": "443908",
-            "agenda_number": null,
-            "title": "Oversight - The State of Water Safety at the City’s Beaches and Pools.",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79731",
-              "matter_file": "T2026-2778",
-              "matter_name": "Oversight - The State of Water Safety at the City’s Beaches and Pools.",
-              "matter_type": "Oversight",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443909",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to the length of the season and operating hours for city beaches and pools",
-            "body_text": null,
-            "matter": {
-              "matter_id": "77521",
-              "matter_file": "Int 0262-2026",
-              "matter_name": "Length of the season and operating hours for city beaches and pools.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443910",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to digital signage at public beaches to provide public safety information about rip currents and other water safety hazards",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79667",
-              "matter_file": "Int 1163-2026",
-              "matter_name": "Digital signage at public beaches to provide public safety information about rip currents and other water safety hazards.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443964",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to an interactive map of information regarding access to publicly owned swimming pools",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79737",
-              "matter_file": "Int 1164-2026",
-              "matter_name": "Interactive map of information regarding access to publicly owned swimming pools.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443989",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to rip current signs at beaches under the jurisdiction of the department of parks and recreation",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79074",
-              "matter_file": "Int 0957-2026",
-              "matter_name": "Rip current signs at beaches under the jurisdiction of the department of parks and recreation.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          }
-        ],
-        "observed_items": 5,
-        "published_items": 5,
-        "search_text": "Oversight - The State of Water Safety at the City’s Beaches and Pools. | T2026-2778 | A Local Law to amend the administrative code of the city of New York, in relation to the length of the season and operating hours for city beaches and pools | Length of the season and operating hours for city beaches and pools. | Int 0262-2026 | A Local Law to amend the administrative code of the city of New York, in relation to digital signage at public beaches to provide public safety information about rip currents and other water safety hazards | Digital signage at public beaches to provide public safety information about rip currents and other water safety hazards. | Int 1163-2026 | A Local Law to amend the administrative code of the city of New York, in relation to an interactive map of information regarding access to publicly owned swimming pools | Interactive map of information regarding access to publicly owned swimming pools. | Int 1164-2026 | A Local Law to amend the administrative code of the city of New York, in relation to rip current signs at beaches under the jurisdiction of the department of parks and recreation | Rip current signs at beaches under the jurisdiction of the department of parks and recreation. | Int 0957-2026"
-      },
-      "city_record_notice": {
-        "matched_in_window": false,
-        "request_id": null,
-        "method": null
-      },
-      "source_receipt": {
-        "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-13T14:45:44.555Z",
-        "row_version": "AAAAAOhZNI0=",
-        "last_modified_utc": "2026-11-06T21:06:05.353",
-        "agenda_last_published_utc": "2026-11-06T21:06:05.253"
       }
     }
   ]

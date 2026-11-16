@@ -2,8 +2,8 @@
   "schema": "cityscroll.money_open_solicitations.v1",
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-14T13:54:30.045Z",
-  "open_as_of": "2026-11-14",
+  "generated_at": "2026-11-16T16:50:12.022Z",
+  "open_as_of": "2026-11-16",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -11,7 +11,7 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-14'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-16'",
     "$order": "due_date ASC, request_id ASC",
     "$limit": "501",
     "note": "Every open solicitation (same predicate as money_default_open, without its 40-row strip limit). Contact fields stay on the notice detail read."
@@ -23,13 +23,13 @@
   "population": {
     "state": "complete",
     "reasons": [],
-    "source_count": 199,
-    "published_count": 199,
+    "source_count": 202,
+    "published_count": 202,
     "rejected_rows": 0,
-    "distinct_pins": 140,
+    "distinct_pins": 143,
     "rows_without_pin": 6
   },
-  "count": 199,
+  "count": 202,
   "notices": [
     {
       "request_id": "20261016012",
@@ -403,6 +403,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20261106025",
+      "start_date": "2026-11-16T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Electrical System Replacement - 156 South 9th Street, Brooklyn",
+      "pin": "80626B0039",
+      "due_date": "2026-12-02T13:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20261027012",
       "start_date": "2026-11-04T00:00:00.000",
       "agency_name": "Teachers' Retirement System",
@@ -543,6 +554,28 @@
       "short_title": "82627B0010-BEPA: GI-CONS-7: Installation of Green Infrastructure at Various NYC Parks in Queens and The Bronx",
       "pin": "82627B0010",
       "due_date": "2026-12-08T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261106014",
+      "start_date": "2026-11-16T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Antifreeze",
+      "pin": "85727B0026",
+      "due_date": "2026-12-08T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261106015",
+      "start_date": "2026-11-16T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "85727B0003: Oil Products - Lubricating, Automotive",
+      "pin": "85727B0003",
+      "due_date": "2026-12-08T11:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {

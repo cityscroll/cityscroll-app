@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":52,"first_ordinal":87790,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":52,"first_ordinal":87790,"entries":[
 {"s":"LOMBARDIA CAPITAL PARTNERS","n":[["LOMBARDIA CAPITAL PARTNERS LLC",1],["Lombardia Capital Partners LLC",1]],"x":{"ocp":{"r":1,"a":1735000,"l":"2009-10-14","i":["20091002009"]},"dbe":{"r":1,"i":["LOMBARDIA CAPITAL PARTNERS LLC"]}}},
 {"s":"LOMDEI TORAH","n":[["LOMDEI TORAH",1]],"x":{"irs":{"r":1,"i":["200055903"],"z":["11204"]}}},
 {"s":"LOMDEI TORAH DCHASIDI BELZ MACHNIFKA","n":[["LOMDEI TORAH DCHASIDI BELZ MACHNIFKA",1]],"x":{"irs":{"r":1,"i":["113394228"],"z":["11211"]}}},

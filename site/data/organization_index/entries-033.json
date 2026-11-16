@@ -1,6 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":33,"first_ordinal":55437,"entries":[
-{"s":"FRIENDS OF COLUMBIA CROSS COUNTRY TRACK AND FIELD","n":[["FRIENDS OF COLUMBIA CROSS COUNTRY TRACK AND FIELD",1]],"x":{"irs":{"r":1,"i":["991338342"],"z":["12061"]}}},
-{"s":"FRIENDS OF COLUMBIA SECONDARY SCHOOL FOR MATH SCIENCE AND","n":[["FRIENDS OF COLUMBIA SECONDARY SCHOOL FOR MATH SCIENCE AND",1]],"x":{"irs":{"r":1,"i":["261146491"],"z":["10025"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":33,"first_ordinal":55439,"entries":[
 {"s":"FRIENDS OF COLUMBUS PARK","n":[["FRIENDS OF COLUMBUS PARK",1]],"x":{"irs":{"r":1,"i":["100008069"],"z":["11354"]}}},
 {"s":"FRIENDS OF COMETA","n":[["FRIENDS OF COMETA INC",1]],"x":{"irs":{"r":1,"i":["991996901"],"z":["10017"]}}},
 {"s":"FRIENDS OF COMMUNITY BOARD 11","n":[["FRIENDS OF COMMUNITY BOARD 11 INC",1]],"x":{"irs":{"r":1,"i":["832185681"],"z":["10462"]}}},
@@ -1767,5 +1765,8 @@
 {"s":"FUNDACION MBRD","n":[["FUNDACION MBRD INC",1]],"x":{"irs":{"r":1,"i":["851680409"],"z":["11374"]}}},
 {"s":"FUNDACION MINISTERIO DE RESTAURACION ARCA DEL PACTO","n":[["FUNDACION MINISTERIO DE RESTAURACION ARCA DEL PACTO INC",1]],"x":{"irs":{"r":1,"i":["463428041"],"z":["10027"]}}},
 {"s":"FUNDACION MISION SANCHEZ RAMIREZ","n":[["FUNDACION MISION SANCHEZ RAMIREZ INC",1]],"x":{"irs":{"r":1,"i":["821497784"],"z":["10034"]}}},
-{"s":"FUNDACION MONUMENTO VIVIENTE DE NUEVA YORK","n":[["FUNDACION MONUMENTO VIVIENTE DE NUEVA YORK",1]],"x":{"irs":{"r":1,"i":["481308764"],"z":["10034"]}}}
+{"s":"FUNDACION MONUMENTO VIVIENTE DE NUEVA YORK","n":[["FUNDACION MONUMENTO VIVIENTE DE NUEVA YORK",1]],"x":{"irs":{"r":1,"i":["481308764"],"z":["10034"]}}},
+{"s":"FUNDACION OJOS UNIDOS","n":[["FUNDACION OJOS UNIDOS INC",1]],"x":{"irs":{"r":1,"i":["332129389"],"z":["10468"]}}},
+{"s":"FUNDACION POR AMOR MUNDIAL","n":[["FUNDACION POR AMOR MUNDIAL INC",1]],"x":{"irs":{"r":1,"i":["934028689"],"z":["10462"]}}},
+{"s":"FUNDACION PROFESOR JUAN BOSCH","n":[["FUNDACION PROFESOR JUAN BOSCH",1]],"x":{"irs":{"r":1,"i":["261239777"],"z":["10452"]}}}
 ]}

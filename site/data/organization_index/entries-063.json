@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":63,"first_ordinal":106246,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":63,"first_ordinal":106245,"entries":[
+{"s":"NORTHERN ZONE ASSOCIATION FOR COUNSELORS AND DEVELOPMENT","n":[["NORTHERN ZONE ASSOCIATION FOR COUNSELORS AND DEVELOPMENT INC",1]],"x":{"irs":{"r":1,"i":["273035299"],"z":["13617"]}}},
 {"s":"NORTHERN-CENTRAL NEW YORK VOLUNTEER FIREMENS ASSOCIATION","n":[["NORTHERN-CENTRAL NEW YORK VOLUNTEER FIREMENS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["300311254"],"z":["14526"]}}},
 {"s":"NORTHERNSTAR YOUTH INITIATIVE","n":[["NORTHERNSTAR YOUTH INITIATIVE",1]],"x":{"irs":{"r":1,"i":["352370578"],"z":["11207"]}}},
 {"s":"NORTHFIELD COMMUNITY CHURCH","n":[["NORTHFIELD COMMUNITY CHURCH",1]],"x":{"irs":{"r":1,"i":["161431480"],"z":["13856"]}}},
@@ -1742,7 +1743,5 @@
 {"s":"OHOOPEE MATCH CLUB FOUNDATION","n":[["OHOOPEE MATCH CLUB FOUNDATION",1]],"x":{"irs":{"r":1,"i":["992647722"],"z":["10036"]}}},
 {"s":"OHPUL","d":[["OHPUL",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["388805"],"z":["11225"],"p":["MBE","WBE"]}}},
 {"s":"OHR ASHER","n":[["OHR ASHER",1]],"x":{"irs":{"r":1,"i":["994358062"],"z":["11223"]}}},
-{"s":"OHR AVNER COLORADO","n":[["OHR AVNER COLORADO",1]],"x":{"irs":{"r":1,"i":["394542473"],"z":["11373"]}}},
-{"s":"OHR AVNER FOUNDATION","n":[["OHR AVNER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["134099223"],"z":["11373"]}}},
-{"s":"OHR AVROHOM AND MOSHE","n":[["OHR AVROHOM AND MOSHE INC",1]],"x":{"irs":{"r":1,"i":["884072704"],"z":["11219"]}}}
+{"s":"OHR AVNER COLORADO","n":[["OHR AVNER COLORADO",1]],"x":{"irs":{"r":1,"i":["394542473"],"z":["11373"]}}}
 ]}

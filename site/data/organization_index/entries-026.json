@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":26,"first_ordinal":43622,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":26,"first_ordinal":43622,"entries":[
 {"s":"DOVER ENVIRONMENTAL GROUP","n":[["DOVER ENVIRONMENTAL GROUP INCORPORATED",1],["Dover Environmental Group, Inc.",1]],"d":[["Dover Environmental Group Inc",1]],"x":{"sbs":{"r":1,"i":["309061"],"z":["07821"],"p":["WBE"]},"dol":{"r":2,"v":["dba","name"],"i":["26-64EHV-CR"],"z":["07821"]}}},
 {"s":"DOVER LIONS CLUB FOUNDATION","n":[["DOVER LIONS CLUB FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["874230868"],"z":["12522"]}}},
 {"s":"DOVER MUSIC BOOSTERS","n":[["DOVER MUSIC BOOSTERS",1]],"x":{"irs":{"r":1,"i":["510488020"],"z":["12594"]}}},

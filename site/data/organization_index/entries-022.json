@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":22,"first_ordinal":36986,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"95e5c10a9f8ab85e","shard":22,"first_ordinal":36986,"entries":[
 {"s":"CONSTABLE VOLUNTEER FIREMEN","n":[["CONSTABLE VOLUNTEER FIREMEN INC",1]],"x":{"irs":{"r":1,"i":["141594863"],"z":["12926"]}}},
 {"s":"CONSTABLEVILLE AMBULANCE","n":[["CONSTABLEVILLE AMBULANCE INC",1]],"x":{"irs":{"r":1,"i":["844069879"],"z":["13325"]}}},
 {"s":"CONSTABLEVILLE FISH AND GAME CLUB","n":[["CONSTABLEVILLE FISH AND GAME CLUB",1]],"x":{"irs":{"r":1,"i":["453043686"],"z":["13325"]}}},
@@ -1375,7 +1375,7 @@
 {"s":"CRAFTS ALLIANCE","n":[["CRAFTS ALLIANCE INC",1]],"x":{"irs":{"r":1,"i":["272076868"],"z":["14201"]}}},
 {"s":"CRAFTSMAN FENCE","n":[["Craftsman Fence Corp.",1]],"x":{"dol":{"r":1,"i":["25-65IOU-CR"],"z":["11940"]}}},
 {"s":"CRAFTWORK MINISTRY","n":[["CRAFTWORK MINISTRY",1]],"x":{"irs":{"r":1,"i":["932927231"],"z":["14094"]}}},
-{"s":"CRAFTY CLOTH","n":[["Crafty Cloth Inc",5],["Crafty Cloth Inc.",1]],"x":{"cbr":{"r":3,"a":515522.74,"l":"2026-10-29","i":["CT182720278803377","CT181620271403438","CT181620261415183"],"m":["Black American"]},"cbv":{"r":2,"l":"2026-09-01","i":["CT181620271403438","CT181620261415183"],"m":["Black American"]},"sbs":{"r":1,"i":["341868"],"z":["11510"],"p":["MBE"]}}},
+{"s":"CRAFTY CLOTH","n":[["Crafty Cloth Inc",6],["Crafty Cloth Inc.",1]],"x":{"cbr":{"r":3,"a":515522.74,"l":"2026-10-29","i":["CT182720278803377","CT181620271403438","CT181620261415183"],"m":["Black American"]},"cbv":{"r":3,"l":"2026-10-29","i":["CT182720278803377","CT181620271403438","CT181620261415183"],"m":["Black American"]},"sbs":{"r":1,"i":["341868"],"z":["11510"],"p":["MBE"]}}},
 {"s":"CRAFTY GETAWAYS CARES","n":[["CRAFTY GETAWAYS CARES INC",1]],"x":{"irs":{"r":1,"i":["920827856"],"z":["11764"]}}},
 {"s":"CRAFTY TECHNOLOGIES","n":[["Crafty Technologies, Inc",2]],"x":{"sbs":{"r":1,"i":["368400"],"z":["10019"],"p":["MBE"]},"sca":{"r":1,"i":["CRAFTY TECHNOLOGIES, INC"],"z":["10019"]}}},
 {"s":"CRAG BURN GOLF CLUB","n":[["CRAG BURN GOLF CLUB INC",1]],"x":{"irs":{"r":1,"i":["161165877"],"z":["14052"]}}},

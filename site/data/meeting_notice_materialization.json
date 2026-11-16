@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.city_record_meeting_notice_materialization.v1",
-  "generated_at": "2026-11-14T13:54:10.820Z",
-  "as_of": "2026-11-14",
+  "generated_at": "2026-11-16T16:49:56.316Z",
+  "as_of": "2026-11-16",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",
@@ -17,7 +17,7 @@
     "agency_rules_type": "Public Hearings",
     "requires_event_date": true
   },
-  "row_count": 28,
+  "row_count": 29,
   "rows": [
     {
       "request_id": "20261008001",
@@ -353,6 +353,21 @@
       "document_links": [
         "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261027004&requestStatus=Archived&documentId=44814"
       ]
+    },
+    {
+      "request_id": "20261102015",
+      "start_date": "2026-11-16T00:00:00.000",
+      "event_date": "2026-12-03T09:30:00.000",
+      "agency_name": "Environmental Control Board",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "New York City Environmental Control Board Meeting December 3, 2026",
+      "street_address_1": "100 Church Street",
+      "street_address_2": "12th Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "additional_description_1": "<p><span style='font-size:16px'><span style='font-family:Times New Roman,Times,serif'>The New York City Environmental Control Board (\u001aBoard\u001a) meeting scheduled for Thursday, December 3, 2026<u>,</u> at 9:30 A.M., will be accessible both in person and remotely. The meeting will be held in person at the Office of Administrative Trials and Hearings (\u001aOATH\u001a), 100 Church Street, 12th Floor, multipurpose training room.  Members of the public may alternatively view the Board meeting electronically by connecting through Webex with meeting number (access code) 2347 913 6932 and password PYdriTt7t65. Minutes of the Board meeting will be transcribed and posted on the OATH website.</span></span></p>"
     },
     {
       "request_id": "20261027031",
