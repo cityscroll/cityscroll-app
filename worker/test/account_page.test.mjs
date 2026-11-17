@@ -4,6 +4,7 @@
 // -Policy scoped to the same provider origin (no new third parties).
 import test from "node:test";
 import assert from "node:assert/strict";
+import { JSDOM } from "jsdom";
 
 import { handleAccountPage } from "../src/account-page.mjs";
 
@@ -38,6 +39,27 @@ test("the sign-in shell renders the managed Turnstile widget with the login acti
   // Browsers publish element ids as window properties. id="turnstile" would make
   // window.turnstile the holder div, and the loader would never fetch the API.
   assert.doesNotMatch(html, /id=["']turnstile["']/);
+});
+
+test("the account page requests the browser-check script when no API is present", async () => {
+  const res = await get("/account");
+  const html = await res.text();
+  const dom = new JSDOM(html, {
+    runScripts: "dangerously",
+    url: "https://cityscroll.org/account",
+  });
+  const { window } = dom;
+  try {
+    // An element id of "turnstile" would publish the holder as window.turnstile.
+    assert.equal(window.turnstile instanceof window.Element, false);
+    window.document.getElementById("email").value = "person@example.invalid";
+    window.document.getElementById("continue").click();
+    const requested = [...window.document.scripts].some((script) =>
+      String(script.src).includes("https://challenges.cloudflare.com/turnstile/v0/api.js"));
+    assert.equal(requested, true);
+  } finally {
+    window.close();
+  }
 });
 
 test("the sign-in loader does not treat a DOM node as the Turnstile API", async () => {

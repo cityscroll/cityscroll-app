@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",
+    "jsdom": "26.1.0",
     "wrangler": "^4.0.0"
   },
   "pnpm": {
