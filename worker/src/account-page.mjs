@@ -67,7 +67,7 @@ function signInShell(scriptNonce) {
 <div class="card">
   <label for="email">Email address</label>
   <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="Your email address">
-  <div id="turnstile"></div>
+  <div id="account-bot-check"></div>
   <button id="continue" type="button">Continue</button>
   <p id="status" class="status" role="status" aria-live="polite"></p>
 </div>
@@ -79,16 +79,25 @@ function signInShell(scriptNonce) {
     // Worker still validates every token, so this never weakens the check.
     var SITEKEY='0x4AAAAAADtj-Mskk_RnVd5K';
     var btn=document.getElementById('continue'),status=document.getElementById('status'),
-        email=document.getElementById('email'),holder=document.getElementById('turnstile');
+        email=document.getElementById('email'),holder=document.getElementById('account-bot-check');
     var scriptPromise;
+    // Browsers expose element ids as window properties. The holder must not be
+    // named "turnstile", and a truthy window.turnstile is not the API unless
+    // it can render: otherwise the loader treats the holder div as the widget
+    // and never requests the challenge script.
+    function turnstileApi(){
+      var api=window.turnstile;
+      return api&&typeof api.render==='function'?api:null;
+    }
     function loadTurnstile(){
-      if(window.turnstile)return Promise.resolve(window.turnstile);
+      var api=turnstileApi();
+      if(api)return Promise.resolve(api);
       if(!scriptPromise){
         scriptPromise=new Promise(function(resolve,reject){
           var s=document.createElement('script');
           s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
           s.async=true;
-          s.onload=function(){window.turnstile?resolve(window.turnstile):reject(new Error('bot-check-unavailable'));};
+          s.onload=function(){var ready=turnstileApi();ready?resolve(ready):reject(new Error('bot-check-unavailable'));};
           s.onerror=function(){reject(new Error('bot-check-unavailable'));};
           document.head.appendChild(s);
         }).catch(function(e){scriptPromise=null;throw e;});
