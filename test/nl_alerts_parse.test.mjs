@@ -14,7 +14,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseNL, NL_CATEGORY_DICT, NL_AGENCY_ALIASES } from "../site/nl_parse.js";
+import { parseNL, extractAgency, NL_CATEGORY_DICT, NL_AGENCY_ALIASES } from "../site/nl_parse.js";
 
 test("parseNL: category + amount + deadline extracted TOGETHER, not one-at-a-time", () => {
   const f = parseNL("education contracts over $200K due in 3 months");
@@ -125,4 +125,38 @@ test("parseNL: keywords cap at 4 and de-duplicate", () => {
   const f = parseNL("education schools parks recreation sanitation contracts");
   assert.ok(f.keywords.length <= 4, `keywords: ${JSON.stringify(f.keywords)}`);
   assert.equal(new Set(f.keywords).size, f.keywords.length, "no duplicates");
+});
+
+test("bodies on the open solicitation list are reachable by the short name they publish for themselves", () => {
+  const cases = [
+    ["dycd", "Youth and Community Development"],
+    ["dhs", "Homeless Services"],
+    ["nycha", "Housing Authority"],
+    ["hhc", "NYC Health + Hospitals"],
+    ["health and hospitals", "NYC Health + Hospitals"],
+    ["nyc health and hospitals", "NYC Health + Hospitals"],
+    ["department of health", "Health and Mental Hygiene"],
+    ["oti", "Information Technology and Telecommunications"],
+    ["doitt", "Information Technology and Telecommunications"],
+    ["trs", "Teachers' Retirement System"],
+    ["dss", "Human Resources Administration"],
+    ["cuny", "City University"],
+    ["nycedc", "Economic Development Corporation"],
+    ["navy yard", "Brooklyn Navy Yard Development Corp."],
+    ["manhattan district attorney", "District Attorney - New York County"],
+  ];
+  for (const [typed, canonical] of cases) {
+    assert.equal(extractAgency(` ${typed} `), canonical, typed);
+  }
+  // Each canonical form is listed once, so a body never has two rows that could disagree.
+  const names = NL_AGENCY_ALIASES.map(([canonical]) => canonical);
+  assert.equal(new Set(names).size, names.length);
+  // An alias never appears under two bodies.
+  const seen = new Map();
+  for (const [canonical, aliases] of NL_AGENCY_ALIASES) {
+    for (const alias of aliases) {
+      assert.ok(!seen.has(alias) || seen.get(alias) === canonical, `${alias} is listed under ${seen.get(alias)} and ${canonical}`);
+      seen.set(alias, canonical);
+    }
+  }
 });
