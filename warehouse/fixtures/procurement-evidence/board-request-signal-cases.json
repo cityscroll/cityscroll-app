@@ -1,0 +1,1683 @@
+{
+ "schema": "cityscroll.procurement_evidence.board_request_signal_cases.v1",
+ "as_of": "2026-11-14",
+ "register_pinned": {
+  "acquired_at": "2026-10-17T01:53:34.458Z",
+  "publication_selection": {
+   "as_of": "2026-10-17",
+   "servable": [
+    "20260512",
+    "20260630"
+   ],
+   "diagnostic_only": [
+    "20270217"
+   ],
+   "latest": "20260630"
+  },
+  "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t"
+ },
+ "note": "Per-board documents in the shape of site/data/community_board_budget_register/<board>.json. Cases marked real are copied unchanged from that register at the acquisition above; cases marked synthetic change one named property of a real request so a failure path has a fixture. Used by test/community_board_request_signals.test.mjs only.",
+ "cases": {
+  "with_response": {
+   "board_id": "queens-cb-12",
+   "tracking_code": "412202701C",
+   "origin": "real: queens-cb-12 412202701C as retained",
+   "expected_outcome": "published",
+   "what": "DOE capital request with the answer published in both servable publications; a later diagnostic-only publication carries a different answer and must not be read"
+  },
+  "nycha_manhattan": {
+   "board_id": "manhattan-cb-08",
+   "tracking_code": "308202732E",
+   "origin": "real: manhattan-cb-08 308202732E as retained",
+   "expected_outcome": "published",
+   "what": "NYCHA expense request outside Queens"
+  },
+  "dycd_staten_island": {
+   "board_id": "staten-island-cb-01",
+   "tracking_code": "501202713E",
+   "origin": "real: staten-island-cb-01 501202713E as retained",
+   "expected_outcome": "published",
+   "what": "DYCD expense request in the smallest borough"
+  },
+  "dep_bronx": {
+   "board_id": "bronx-cb-02",
+   "tracking_code": "102202701E",
+   "origin": "real: bronx-cb-02 102202701E as retained",
+   "expected_outcome": "published",
+   "what": "DEP expense request in the Bronx"
+  },
+  "agency_unbound": {
+   "board_id": "brooklyn-cb-07",
+   "tracking_code": "207202701C",
+   "origin": "real: brooklyn-cb-07 207202701C as retained",
+   "expected_outcome": "agency_unbound",
+   "what": "the responsible agency is a public library the register cannot bind to an agency id, so no signal and no guess"
+  },
+  "agency_not_published": {
+   "board_id": "queens-cb-03",
+   "tracking_code": "403202721E",
+   "origin": "real: queens-cb-03 403202721E as retained",
+   "expected_outcome": "agency_not_published",
+   "what": "a Parks request: a bound agency the product does not publish; counted, not published"
+  },
+  "request_text_missing": {
+   "board_id": "manhattan-cb-04",
+   "tracking_code": "304202704CS",
+   "origin": "real: manhattan-cb-04 304202704CS as retained",
+   "expected_outcome": "request_text_missing",
+   "what": "a Sanitation request whose request text the publisher left empty; no text to carry, so no signal"
+  },
+  "explanation_null": {
+   "board_id": "brooklyn-cb-09",
+   "tracking_code": "209202706C",
+   "origin": "real: brooklyn-cb-09 209202706C as retained",
+   "expected_outcome": "published",
+   "what": "a DEP request whose explanation is null; the row omits the field instead of carrying null"
+  },
+  "without_response": {
+   "board_id": "queens-cb-12",
+   "tracking_code": "412202799C",
+   "origin": "synthetic: 412202701C with a new tracking code and the servable response emptied",
+   "expected_outcome": "published",
+   "what": "a DOE request whose servable publications carry no response text: the row says response_state not_published and carries no response"
+  },
+  "board_out_of_range": {
+   "board_id": "queens-cb-15",
+   "tracking_code": "412202798C",
+   "origin": "synthetic: 412202701C with a malformed board id",
+   "expected_outcome": "board_id_malformed",
+   "what": "board_id 'queens-cb-15' is not one of the 59 community board ids; the request is excluded and counted, never repaired"
+  },
+  "board_zero": {
+   "board_id": "queens-cb-00",
+   "tracking_code": "412202797C",
+   "origin": "synthetic: 412202701C with a malformed board id",
+   "expected_outcome": "board_id_malformed",
+   "what": "board_id 'queens-cb-00' is not one of the 59 community board ids; the request is excluded and counted, never repaired"
+  },
+  "board_case": {
+   "board_id": "Queens-CB-12",
+   "tracking_code": "412202796C",
+   "origin": "synthetic: 412202701C with a malformed board id",
+   "expected_outcome": "board_id_malformed",
+   "what": "board_id 'Queens-CB-12' is not one of the 59 community board ids; the request is excluded and counted, never repaired"
+  },
+  "board_wrong_borough_range": {
+   "board_id": "brooklyn-cb-19",
+   "tracking_code": "412202795C",
+   "origin": "synthetic: 412202701C with a malformed board id",
+   "expected_outcome": "board_id_malformed",
+   "what": "board_id 'brooklyn-cb-19' is not one of the 59 community board ids; the request is excluded and counted, never repaired"
+  },
+  "board_unknown_borough": {
+   "board_id": "newark-cb-01",
+   "tracking_code": "412202794C",
+   "origin": "synthetic: 412202701C with a malformed board id",
+   "expected_outcome": "board_id_malformed",
+   "what": "board_id 'newark-cb-01' is not one of the 59 community board ids; the request is excluded and counted, never repaired"
+  },
+  "board_null": {
+   "board_id": null,
+   "tracking_code": "412202793C",
+   "origin": "synthetic: 412202701C with a malformed board id",
+   "expected_outcome": "board_id_malformed",
+   "what": "board_id None is not one of the 59 community board ids; the request is excluded and counted, never repaired"
+  },
+  "board_not_bound": {
+   "board_id": "queens-cb-12",
+   "tracking_code": "412202792C",
+   "origin": "synthetic: board_binding unbound",
+   "expected_outcome": "board_not_bound",
+   "what": "the register did not bind a board; excluded and counted"
+  },
+  "latest_servable_unbound": {
+   "board_id": "queens-cb-12",
+   "tracking_code": "412202791C",
+   "origin": "synthetic: the older servable version names DOE, the latest servable version names an unbound institution",
+   "expected_outcome": "agency_unbound",
+   "what": "the latest servable publication decides; the older bound version is not borrowed"
+  },
+  "diagnostic_only": {
+   "board_id": "queens-cb-12",
+   "tracking_code": "412202790C",
+   "origin": "synthetic: only the diagnostic-only publication remains",
+   "expected_outcome": "no_servable_publication",
+   "what": "a publication dated after the read day is never the current answer"
+  }
+ },
+ "documents": [
+  {
+   "schema": "cityscroll.community_board_budget_register.v1",
+   "board_id": "bronx-cb-02",
+   "request_count": 1,
+   "requests": [
+    {
+     "tracking_code": "102202701E",
+     "fiscal_year": 2027,
+     "request_type": "E",
+     "request_class": "expense",
+     "board_id": "bronx-cb-02",
+     "board_binding": "bound",
+     "publisher_boro": "1",
+     "publisher_board": "02",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Environmental Protection",
+        "agency_id": "environmental-protection",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Clean catch basins",
+       "explanation": "Clean out catch basins to prevent improve drainage.",
+       "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Environmental Protection",
+        "agency_id": "environmental-protection",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Clean catch basins",
+       "explanation": "Clean out catch basins to prevent improve drainage.",
+       "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Environmental Protection",
+        "agency_id": "environmental-protection",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "826",
+       "request": "Clean catch basins",
+       "explanation": "Clean out catch basins to prevent improve drainage.",
+       "response": "Agency does not support and cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "schema": "cityscroll.community_board_budget_register.v1",
+   "board_id": "brooklyn-cb-07",
+   "request_count": 1,
+   "requests": [
+    {
+     "tracking_code": "207202701C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "brooklyn-cb-07",
+     "board_binding": "bound",
+     "publisher_boro": "2",
+     "publisher_board": "07",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Brooklyn Public Library",
+        "agency_id": null,
+        "binding": "unbound",
+        "method": null,
+        "review": "no_existing_institution"
+       },
+       "responded_by": "OMB",
+       "request": "Create a new, or renovate or upgrade an existing public library",
+       "explanation": "Allocate for acquisition, design and construction of an additional library in Sunset Park adjacent to 7th or 8th Avenues",
+       "response": "Further investigation of this request is needed. Contact the agency.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Brooklyn Public Library",
+        "agency_id": null,
+        "binding": "unbound",
+        "method": null,
+        "review": "no_existing_institution"
+       },
+       "responded_by": "OMB",
+       "request": "Create a new, or renovate or upgrade an existing public library",
+       "explanation": "Allocate for acquisition, design and construction of an additional library in Sunset Park adjacent to 7th or 8th Avenues",
+       "response": "Further investigation of this request is needed. Contact the agency.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Brooklyn Public Library",
+        "agency_id": null,
+        "binding": "unbound",
+        "method": null,
+        "review": "no_existing_institution"
+       },
+       "responded_by": "038",
+       "request": "Create a new, or renovate or upgrade an existing public library",
+       "explanation": "Allocate for acquisition, design and construction of an additional library in Sunset Park adjacent to 7th or 8th Avenues",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "schema": "cityscroll.community_board_budget_register.v1",
+   "board_id": "brooklyn-cb-09",
+   "request_count": 1,
+   "requests": [
+    {
+     "tracking_code": "209202706C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "brooklyn-cb-09",
+     "board_binding": "bound",
+     "publisher_boro": "2",
+     "publisher_board": "09",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Environmental Protection",
+        "agency_id": "environmental-protection",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+       "explanation": null,
+       "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Environmental Protection",
+        "agency_id": "environmental-protection",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+       "explanation": null,
+       "response": "OMB supports the agency's position as follows: Agency does not support and cannot accommodate Explanation: PLEASE CONTACT THE AGENCY DIRECTLY AND PROMPTLY FOR MORE INFORMATION.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Environmental Protection",
+        "agency_id": "environmental-protection",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "826",
+       "request": "Develop a capital project for specific street segments currently lacking sanitary sewers",
+       "explanation": null,
+       "response": "Agency does not support and cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "schema": "cityscroll.community_board_budget_register.v1",
+   "board_id": "manhattan-cb-04",
+   "request_count": 1,
+   "requests": [
+    {
+     "tracking_code": "304202704CS",
+     "fiscal_year": 2027,
+     "request_type": "CS",
+     "request_class": "continued-support",
+     "board_id": "manhattan-cb-04",
+     "board_binding": "bound",
+     "publisher_boro": "3",
+     "publisher_board": "04",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Sanitation",
+        "agency_id": "sanitation",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": null,
+       "request_title_derived": "Complete funding to DSNY to develop and release of a RFP for the recently landmarked DSNY building at 128 West 17th S...",
+       "title_is_derived": true,
+       "explanation": "Complete funding to DSNY to develop and release of a RFP for the recently landmarked DSNY building at 128 West 17th Street, aka, Former Colored School No 4. The recently landmarked building at 128 West 17th Street is a communal asset, and the way to commemorate its legacy is to bring life back to the building. We request that DSNY, with input from CB4 and other stakeholders, issue an RFP with the goal of soliciting proposals for the space that, among other things, commit to telling the story of Former Colored School No 4.",
+       "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY will continue moving forward with this project.",
+       "rank": {
+        "value": "02",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": {
+        "street": "128 WEST 17 STREET, New York, NY, USA"
+       },
+       "support_by": [
+        "Council Member Erik Bottcher"
+       ]
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Sanitation",
+        "agency_id": "sanitation",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": null,
+       "request_title_derived": "Complete funding to DSNY to develop and release of a RFP for the recently landmarked DSNY building at 128 West 17th S...",
+       "title_is_derived": true,
+       "explanation": "Complete funding to DSNY to develop and release of a RFP for the recently landmarked DSNY building at 128 West 17th Street, aka, Former Colored School No 4. The recently landmarked building at 128 West 17th Street is a communal asset, and the way to commemorate its legacy is to bring life back to the building. We request that DSNY, with input from CB4 and other stakeholders, issue an RFP with the goal of soliciting proposals for the space that, among other things, commit to telling the story of Former Colored School No 4.",
+       "response": "OMB supports the agency's position as follows: Agency supports and can accommodate Explanation: DSNY will continue moving forward with this project.",
+       "rank": {
+        "value": "02",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": {
+        "street": "128 WEST 17 STREET, New York, NY, USA"
+       },
+       "support_by": [
+        "Council Member Erik Bottcher"
+       ]
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Sanitation",
+        "agency_id": "sanitation",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "827",
+       "request": null,
+       "request_title_derived": "Complete funding to DSNY to develop and release of a RFP for the recently landmarked DSNY building at 128 West 17th S...",
+       "title_is_derived": true,
+       "explanation": "Complete funding to DSNY to develop and release of a RFP for the recently landmarked DSNY building at 128 West 17th Street, aka, Former Colored School No 4. The recently landmarked building at 128 West 17th Street is a communal asset, and the way to commemorate its legacy is to bring life back to the building. We request that DSNY, with input from CB4 and other stakeholders, issue an RFP with the goal of soliciting proposals for the space that, among other things, commit to telling the story of Former Colored School No 4.",
+       "response": "Agency supports and can accommodate",
+       "rank": {
+        "value": "02",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": {
+        "street": "128 WEST 17 STREET, New York, NY, USA"
+       },
+       "support_by": [
+        "Council Member Erik Bottcher"
+       ]
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "schema": "cityscroll.community_board_budget_register.v1",
+   "board_id": "manhattan-cb-08",
+   "request_count": 1,
+   "requests": [
+    {
+     "tracking_code": "308202732E",
+     "fiscal_year": 2027,
+     "request_type": "E",
+     "request_class": "expense",
+     "board_id": "manhattan-cb-08",
+     "board_binding": "bound",
+     "publisher_boro": "3",
+     "publisher_board": "08",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Housing Authority",
+        "agency_id": "housing-authority",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Improve public housing maintenance and cleanliness",
+       "explanation": "Provide more rodent extermination in the Isaacs Houses and Holmes Tower.",
+       "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Housing Authority",
+        "agency_id": "housing-authority",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Improve public housing maintenance and cleanliness",
+       "explanation": "Provide more rodent extermination in the Isaacs Houses and Holmes Tower.",
+       "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Housing Authority",
+        "agency_id": "housing-authority",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "996",
+       "request": "Improve public housing maintenance and cleanliness",
+       "explanation": "Provide more rodent extermination in the Isaacs Houses and Holmes Tower.",
+       "response": "Agency supports and can accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "schema": "cityscroll.community_board_budget_register.v1",
+   "board_id": "queens-cb-03",
+   "request_count": 1,
+   "requests": [
+    {
+     "tracking_code": "403202721E",
+     "fiscal_year": 2027,
+     "request_type": "E",
+     "request_class": "expense",
+     "board_id": "queens-cb-03",
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "03",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Parks and Recreation",
+        "agency_id": "parks-and-recreation",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other expense budget request for DPR",
+       "explanation": "Regrade basketball court in Travers Park",
+       "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+       "rank": {
+        "value": "10",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Parks and Recreation",
+        "agency_id": "parks-and-recreation",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other expense budget request for DPR",
+       "explanation": "Regrade basketball court in Travers Park",
+       "response": "The agency has stated that they will try to accommodate this request with existing resources. OMB supports this.",
+       "rank": {
+        "value": "10",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Parks and Recreation",
+        "agency_id": "parks-and-recreation",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "846",
+       "request": "Other expense budget request for DPR",
+       "explanation": "Regrade basketball court in Travers Park",
+       "response": "Agency supports and can accommodate",
+       "rank": {
+        "value": "10",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "schema": "cityscroll.community_board_budget_register.v1",
+   "board_id": "queens-cb-12",
+   "request_count": 11,
+   "requests": [
+    {
+     "tracking_code": "412202701C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "queens-cb-12",
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    },
+    {
+     "tracking_code": "412202799C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "queens-cb-12",
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    },
+    {
+     "tracking_code": "412202798C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "queens-cb-15",
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    },
+    {
+     "tracking_code": "412202797C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "queens-cb-00",
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    },
+    {
+     "tracking_code": "412202796C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "Queens-CB-12",
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    },
+    {
+     "tracking_code": "412202795C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "brooklyn-cb-19",
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    },
+    {
+     "tracking_code": "412202794C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "newark-cb-01",
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    },
+    {
+     "tracking_code": "412202793C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": null,
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    },
+    {
+     "tracking_code": "412202792C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "queens-cb-12",
+     "board_binding": "unbound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    },
+    {
+     "tracking_code": "412202791C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "queens-cb-12",
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Brooklyn Public Library",
+        "agency_id": null,
+        "binding": "unbound",
+        "method": null,
+        "review": "no_existing_institution"
+       },
+       "responded_by": "OMB",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "This item is not eligible for capital funding.",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    },
+    {
+     "tracking_code": "412202790C",
+     "fiscal_year": 2027,
+     "request_type": "C",
+     "request_class": "capital",
+     "board_id": "queens-cb-12",
+     "board_binding": "bound",
+     "publisher_boro": "4",
+     "publisher_board": "12",
+     "versions": [
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Education",
+        "agency_id": "education",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "040",
+       "request": "Other capital budget request for DOE",
+       "explanation": "Boys and Girls Youth Center - A facility where boys and girls can attend with skilled instructors to teach them different skills, trades. Help them with afterschool work, etc. Prepare them for the work force. Increase youth and Community services. Increase funding for afterschool programs Additional afterschool programs",
+       "response": "Agency supports but cannot accommodate",
+       "rank": {
+        "value": "01",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": false,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "schema": "cityscroll.community_board_budget_register.v1",
+   "board_id": "staten-island-cb-01",
+   "request_count": 1,
+   "requests": [
+    {
+     "tracking_code": "501202713E",
+     "fiscal_year": 2027,
+     "request_type": "E",
+     "request_class": "expense",
+     "board_id": "staten-island-cb-01",
+     "board_binding": "bound",
+     "publisher_boro": "5",
+     "publisher_board": "01",
+     "versions": [
+      {
+       "publication": "20260512",
+       "publication_date": "2026-05-12",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Youth & Community Development",
+        "agency_id": "youth-and-community-development",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Provide, expand, or enhance adult literacy programs services",
+       "explanation": "Expand, or enhance adult literacy programs services - Adult literacy is critical to employment and the high unemployment rate in some Board areas due to lack of Adult Literacy Programs. This is a crucial skill and these literacy programs need immediate and sufficient funding.",
+       "response": "OMB supports the agency's position as follows: This request has already been completed. Explanation: DYCD funds several adult and adolescent literacy programs in the district.",
+       "rank": {
+        "value": "03",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20260630",
+       "publication_date": "2026-06-30",
+       "servable": true,
+       "responsible_agency": {
+        "source_label": "Department of Youth & Community Development",
+        "agency_id": "youth-and-community-development",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "OMB",
+       "request": "Provide, expand, or enhance adult literacy programs services",
+       "explanation": "Expand, or enhance adult literacy programs services - Adult literacy is critical to employment and the high unemployment rate in some Board areas due to lack of Adult Literacy Programs. This is a crucial skill and these literacy programs need immediate and sufficient funding.",
+       "response": "This request has already been completed. Explanation: DYCD funds several adult and adolescent literacy programs in the district.",
+       "rank": {
+        "value": "03",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      },
+      {
+       "publication": "20270217",
+       "publication_date": "2027-02-17",
+       "servable": false,
+       "responsible_agency": {
+        "source_label": "Department of Youth & Community Development",
+        "agency_id": "youth-and-community-development",
+        "binding": "bound",
+        "method": "shared_agency_alias_register"
+       },
+       "responded_by": "260",
+       "request": "Provide, expand, or enhance adult literacy programs services",
+       "explanation": "Expand, or enhance adult literacy programs services - Adult literacy is critical to employment and the high unemployment rate in some Board areas due to lack of Adult Literacy Programs. This is a crucial skill and these literacy programs need immediate and sufficient funding.",
+       "response": "This request has already been completed.",
+       "rank": {
+        "value": "03",
+        "scope": "agency_and_request_class",
+        "district_wide": false
+       },
+       "location": null
+      }
+     ],
+     "response_comparisons": [
+      {
+       "from_publication": "20260512",
+       "to_publication": "20260630",
+       "source_text_differs": true,
+       "differs_after_boilerplate_removed": false
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
