@@ -1,0 +1,1 @@
+Synthetic. Real 2024 and 2025 feed rows from ../nycha/ with the shape changed the way a back-end change might change it (amount column renamed; the data array renamed), and a challenge-style page. Used by test/nycha_awards_link.test.mjs.

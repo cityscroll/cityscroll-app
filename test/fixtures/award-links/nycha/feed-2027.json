@@ -1,0 +1,26 @@
+{
+ "data": [
+  {
+   "ContractNumber": "2608926",
+   "StartDate": "/Date(1798779600000)/",
+   "EndDate": "/Date(1956459600000)/",
+   "Description": "",
+   "StartDateDisplay": "01/01/2027",
+   "ContractYear": "2027",
+   "EndDateDisplay": "12/31/2031",
+   "VendorName": "E-BUILDER, INC. A TRIMBLE COMPANY",
+   "TotalAmount": 3874524,
+   "AmountSpent": 0,
+   "TotalAmountDisplay": "$3,874,524.00",
+   "AmountSpentDisplay": "$0.00",
+   "ProcurementMethod": "NON-COMP \u2013 Single Source",
+   "TradeType": "Service",
+   "Category": "PS-PROFESSIONAL SVS - ASSET CAPITAL MGMT.1CM",
+   "Location": "CHIEF ASSET & CAPITAL MGT OFFICER (0920)",
+   "ContractStatus": "Active",
+   "RFQTitle": "Trimble Unity Construct (former e-Builder system) Project Management Subscription fee & Support Services (SCTASK0196987)",
+   "RFQNumber": "N/A",
+   "ContractTerm": "5 years"
+  }
+ ]
+}

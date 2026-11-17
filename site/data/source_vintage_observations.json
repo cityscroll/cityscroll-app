@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
   "generated_at": "2026-11-14T13:54:05.893Z",
-  "contract_count": 75,
+  "contract_count": 76,
   "observations": [
     {
       "source_id": "abo-local-authorities",
@@ -1710,6 +1710,37 @@
       },
       "expected_cadence": "Periodic Open Data refresh of the prequalified list",
       "expected_lag_tolerance_days": 30,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "nycha-awarded-contracts",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Not stated; a contract appears after it starts. The list covers contract years 2011 to the present; the engine reads 2023 onward.",
+      "expected_lag_tolerance_days": 7,
       "current_lag": {
         "value": null,
         "unit": null,
