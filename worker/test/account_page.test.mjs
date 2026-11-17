@@ -34,7 +34,19 @@ test("the sign-in shell renders the managed Turnstile widget with the login acti
   assert.match(html, /turnstile\.execute\(/);
   // The token is sent only on an explicit click, never on load.
   assert.match(html, /turnstileToken:\s*token/);
-  assert.ok(html.includes('id="turnstile"') && html.includes('id="email"') && html.includes('id="continue"'));
+  assert.ok(html.includes('id="account-bot-check"') && html.includes('id="email"') && html.includes('id="continue"'));
+  // Browsers publish element ids as window properties. id="turnstile" would make
+  // window.turnstile the holder div, and the loader would never fetch the API.
+  assert.doesNotMatch(html, /id=["']turnstile["']/);
+});
+
+test("the sign-in loader does not treat a DOM node as the Turnstile API", async () => {
+  const res = await get("/account");
+  const html = await res.text();
+  // A truthy window.turnstile is not enough: the holder element, or any other
+  // non-API value, must fall through to the script load.
+  assert.match(html, /typeof\s+\w+\.render\s*===\s*['"]function['"]/);
+  assert.doesNotMatch(html, /if\s*\(\s*window\.turnstile\s*\)\s*return/);
 });
 
 test("the sign-in shell CSP allows exactly the Turnstile provider origin", async () => {
