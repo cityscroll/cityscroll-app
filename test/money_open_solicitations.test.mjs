@@ -158,7 +158,7 @@ test("failure: a missing or malformed publisher count is refused", () => {
   assert.throws(() => buildMoneyOpenSolicitationsSnapshot({ rows: RAW, sourceCount: "many" }, { now: NOW }), /publisher count/);
 });
 
-test("measured bound: the real 194-row artifact uses about a quarter of the byte bound", () => {
+test("measured bound: the 194-row artifact without a commodity category stays under 100 KiB", () => {
   const snap = buildMoneyOpenSolicitationsSnapshot({ rows: RAW, sourceCount: COUNT }, { now: NOW });
   const bytes = Buffer.byteLength(`${JSON.stringify(snap, null, 2)}\n`);
   assert.ok(bytes < 100 * 1024, `${bytes} bytes`);
@@ -215,6 +215,89 @@ test("builder fixture mode builds the committed shape from the retained capture"
   assert.deepEqual(Object.keys(built), ["money_open_solicitations"]);
   assert.equal(built.money_open_solicitations.population.state, "complete");
   assert.equal(built.money_open_solicitations.count, 194);
+  assert.equal(built.money_open_solicitations.commodity_category_coverage.state, "measured");
+  assert.equal(built.money_open_solicitations.commodity_category_coverage.available, 1);
+  assert.equal(built.money_open_solicitations.commodity_category_coverage.missing, 193);
+});
+
+test("commodity category: the joined cohort is marked and everyone else names the gap", () => {
+  const rfxRows = read(join(FIXTURE, "open_notice_commodity_rfx.json"));
+  const snap = buildMoneyOpenSolicitationsSnapshot(
+    { rows: RAW, sourceCount: COUNT, commodity: { rfxRows, observedAt: NOW.toISOString() } },
+    { now: NOW },
+  );
+  assert.equal(snap.population.state, "complete");
+  assert.equal(snap.commodity_category_coverage.state, "measured");
+  assert.equal(snap.commodity_category_coverage.open_notices, 194);
+  assert.equal(snap.commodity_category_coverage.available, 1);
+  assert.equal(snap.commodity_category_coverage.missing, 193);
+  assert.equal(snap.commodity_category_coverage.by_reason.no_pin, 6);
+  assert.equal(snap.commodity_category_coverage.by_reason.joined_l3, 1);
+  assert.equal(snap.commodity_category_coverage.by_reason.pin_not_joined, 187);
+  assert.match(snap.commodity_category_coverage.join_rule, /category not published/);
+
+  const joined = snap.notices.find((row) => row.pin === "34202301_Queens Dial");
+  assert.equal(joined.main_commodity_category.status, "matched");
+  assert.equal(joined.main_commodity_category.label, "IT Consulting");
+  assert.equal(joined.main_commodity_category.join.method, "exact");
+  assert.equal(joined.coverage.category.state, "available");
+  assert.equal(joined.coverage.category.reason, "joined_l3");
+
+  const unjoined = snap.notices.find((row) => row.pin === "MHP-1124");
+  assert.equal(unjoined.main_commodity_category.status, "not_published");
+  assert.equal(unjoined.main_commodity_category.reason, "pin_not_joined");
+  assert.equal(unjoined.coverage.category.state, "missing");
+
+  const noPin = snap.notices.find((row) => !row.pin);
+  assert.equal(noPin.main_commodity_category.reason, "no_pin");
+
+  for (const row of snap.notices) {
+    for (const key of Object.keys(row)) {
+      assert.ok(MONEY_DEFAULT_LIST_FIELDS.includes(key) || key === "main_commodity_category" || key === "coverage", key);
+    }
+    assert.equal(row.contact_name, undefined);
+    assert.equal(row.email, undefined);
+    assert.equal(row.additional_description_1, undefined);
+  }
+  const strip = buildMoneyDefaultOpenSnapshot(RAW, { now: NOW });
+  assert.equal(strip.notices[0].main_commodity_category, undefined);
+  assert.equal(strip.commodity_category_coverage, undefined);
+});
+
+test("commodity category: an unavailable RFx read still publishes the notices and says so", () => {
+  const snap = buildMoneyOpenSolicitationsSnapshot(
+    { rows: RAW, sourceCount: COUNT, commodity: { unavailable: "rfx-http-503", observedAt: NOW.toISOString() } },
+    { now: NOW },
+  );
+  assert.equal(snap.count, 194);
+  assert.equal(snap.commodity_category_coverage.state, "unavailable");
+  assert.equal(snap.commodity_category_coverage.unavailable_reason, "rfx-http-503");
+  assert.equal(snap.commodity_category_coverage.available, 0);
+  assert.equal(snap.notices.every((row) => row.coverage.category.reason === "rfx_unavailable"), true);
+});
+
+test("commodity category: 500 rows that all carry a matched category stay inside the byte bound", () => {
+  const seen = new Set();
+  const rfxRows = [];
+  for (const row of RAW) {
+    const pin = typeof row.pin === "string" ? row.pin.trim() : "";
+    if (!pin || seen.has(pin)) continue;
+    seen.add(pin);
+    rfxRows.push({ epin: pin, main_commodity: "IT Consulting" });
+  }
+  const snap = buildMoneyOpenSolicitationsSnapshot(
+    { rows: RAW, sourceCount: COUNT, commodity: { rfxRows, observedAt: NOW.toISOString() } },
+    { now: NOW },
+  );
+  const bytes = Buffer.byteLength(`${JSON.stringify(snap, null, 2)}\n`);
+  assert.ok(bytes <= MONEY_OPEN_SOLICITATIONS_MAX_BYTES, `${bytes} bytes`);
+  const perRow = bytes / snap.count;
+  assert.ok(
+    perRow * MONEY_OPEN_SOLICITATIONS_MAX_ROWS < MONEY_OPEN_SOLICITATIONS_MAX_BYTES,
+    `${Math.round(perRow)} bytes per row would not fit 500 rows`,
+  );
+  assert.equal(snap.commodity_category_coverage.by_reason.joined_l3, 188);
+  assert.equal(snap.commodity_category_coverage.by_reason.no_pin, 6);
 });
 
 test("committed artifact: parses, states its count against the source count, and is within its bounds", () => {
