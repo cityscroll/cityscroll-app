@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.analytics_first_payment_timing_contracts.v1",
-  "snapshot_date": "2026-11-13T14:08:23.774Z",
-  "contracts_snapshot_date": "2026-11-13",
-  "row_count": 10560,
+  "snapshot_date": "2026-11-17T16:29:33.397Z",
+  "contracts_snapshot_date": "2026-11-17",
+  "row_count": 10565,
   "rows": [
     {
       "prime_contract_id": "CT106820260000121",
@@ -45077,6 +45077,15 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CT104020279761430",
+      "agency": "Department of Education",
+      "start_date": "2025-07-01",
+      "registration_date": "2026-11-13",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CT104020279761777",
       "agency": "Department of Education",
       "start_date": "2025-07-01",
@@ -46476,6 +46485,15 @@
       "agency": "Department of Education",
       "start_date": "2026-05-01",
       "registration_date": "2026-08-29",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "MA104020279776340",
+      "agency": "Department of Education",
+      "start_date": "2025-07-01",
+      "registration_date": "2026-11-13",
       "first_payment_date": null,
       "days_to_first_payment": null,
       "state": "no_payment_in_payment_years"
@@ -74462,6 +74480,15 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CT106920278801044",
+      "agency": "Department of Social Services",
+      "start_date": "2025-07-01",
+      "registration_date": "2026-11-13",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CT106920278801081",
       "agency": "Department of Social Services",
       "start_date": "2025-07-01",
@@ -76221,6 +76248,15 @@
       "agency": "Department of Transportation",
       "start_date": "2025-11-14",
       "registration_date": "2026-09-09",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CT184120278803379",
+      "agency": "Department of Transportation",
+      "start_date": "2026-04-01",
+      "registration_date": "2026-11-13",
       "first_payment_date": null,
       "days_to_first_payment": null,
       "state": "no_payment_in_payment_years"
@@ -85743,6 +85779,15 @@
       "agency": "Health and Hospitals Corporation",
       "start_date": "2026-03-31",
       "registration_date": "2026-10-19",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CT181920271405866",
+      "agency": "Health and Hospitals Corporation",
+      "start_date": "2026-01-13",
+      "registration_date": "2026-11-12",
       "first_payment_date": null,
       "days_to_first_payment": null,
       "state": "no_payment_in_payment_years"

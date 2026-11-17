@@ -1,11 +1,11 @@
 {
   "bridge": {
-    "eligible_appearances": 113,
+    "eligible_appearances": 109,
     "gate": "GO",
     "linked_matters": 27,
     "linked_projects": 14,
     "matched_appearances": 49,
-    "matched_rate": 0.433628
+    "matched_rate": 0.449541
   },
   "generated_at": "2026-09-05T00:00:00.000Z",
   "matters": {
@@ -992,11 +992,11 @@
   "schema": "cityscroll.council_land_matter_links.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 287,
-      "present_count": 15,
-      "record_count": 302
+      "absent_count": 281,
+      "present_count": 14,
+      "record_count": 295
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-11-14T10:01:03.273Z",
-    "zap_projects_warehouse_lookup_materialized_at": "2026-11-13T14:46:37.747Z"
+    "meeting_outcomes_snapshot_generated_at": "2026-11-16T08:00:44.881Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-11-17T17:02:04.884Z"
   }
 }

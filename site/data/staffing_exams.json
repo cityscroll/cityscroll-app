@@ -1,10 +1,10 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-11-14",
-  "sources_retrieved_as_of": "2026-11-14",
+  "generated_at": "2026-11-17",
+  "sources_retrieved_as_of": "2026-11-17",
   "data_current_as_of": "2026-11-04",
   "list_current_as_of": "2026-11-04",
-  "open_window_as_of": "2026-11-14",
+  "open_window_as_of": "2026-11-17",
   "annual_schedule_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
@@ -93,18 +93,17 @@
       "public-safety": {
         "id": "public-safety",
         "exam_count": 60,
-        "open_count": 5,
+        "open_count": 4,
         "upcoming_count": 28,
-        "closed_count": 27,
+        "closed_count": 28,
         "canceled_count": 0,
         "postponed_count": 0,
         "unscheduled_count": 0,
         "continuous_count": 0,
-        "actionable_count": 33,
+        "actionable_count": 32,
         "open_exam_numbers": [
           "7009",
           "7058",
-          "7315",
           "7324",
           "7332"
         ],
@@ -571,7 +570,7 @@
       "exam_count": 227,
       "area_count": 8,
       "tagged_non_other": 227,
-      "open_count": 18,
+      "open_count": 17,
       "upcoming_count": 83
     }
   },
@@ -580,11 +579,11 @@
       "id": "dcas-open-competitive",
       "name": "DCAS Open Competitive Exams for Anyone",
       "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
-      "verified_at": "2026-11-14",
+      "verified_at": "2026-11-17",
       "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
       "stale_after_days": 35,
       "method": "The published schedule table is read directly and cross-checked against the OASys active-exam listing. Reviewed Notice of Examination prose from the previous snapshot is carried forward only while the exam and its filing window are unchanged.",
-      "fetched_at": "2026-11-14"
+      "fetched_at": "2026-11-17"
     },
     {
       "id": "dcas-annual-schedule",
@@ -592,7 +591,7 @@
       "dataset_id": "4ptz-hmtc",
       "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
       "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-      "fetched_at": "2026-11-14",
+      "fetched_at": "2026-11-17",
       "data_current_as_of": "2026-07-22",
       "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
       "stale_after_days": 500
@@ -602,7 +601,7 @@
       "name": "Civil Service List (Active)",
       "dataset_id": "vx8i-nprf",
       "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
-      "fetched_at": "2026-11-14",
+      "fetched_at": "2026-11-17",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "privacy": "Only aggregate counts are retained; candidate records and names are not copied."
@@ -613,7 +612,7 @@
       "dataset_id": "dg92-zbpx",
       "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
       "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
-      "fetched_at": "2026-11-14",
+      "fetched_at": "2026-11-17",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."
@@ -678,7 +677,7 @@
       "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
       "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
       "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-      "fetched_at": "2026-11-14",
+      "fetched_at": "2026-11-17",
       "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
       "stale_after_days": 3,
       "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
@@ -697,7 +696,7 @@
   ],
   "source_checks": {
     "active_list": {
-      "candidate_rows": "406678",
+      "candidate_rows": "406681",
       "distinct_exams": "875",
       "distinct_titles": "441",
       "latest_established": "2026-11-04T00:00:00.000",
@@ -710,7 +709,7 @@
     },
     "list_aggregates": {
       "distinct_exams": 875,
-      "total_list_rows_sum": 406678,
+      "total_list_rows_sum": 406681,
       "latest_established": "2026-11-04"
     },
     "list_depth_closed": {
@@ -879,12 +878,12 @@
       "name": "Civil Service List (Active) — exam-level aggregates only",
       "dataset_id": "vx8i-nprf",
       "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-      "fetched_at": "2026-11-14",
+      "fetched_at": "2026-11-17",
       "privacy": "Only exam-level counts and list dates are retained; candidate records and names are not copied."
     },
     "summary": {
       "distinct_exams": 875,
-      "total_list_rows_sum": 406678,
+      "total_list_rows_sum": 406681,
       "latest_established": "2026-11-04",
       "exams_with_list_aggregate": 78
     }
@@ -29388,7 +29387,7 @@
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
-        "list_count": 189,
+        "list_count": 190,
         "established_date": "2026-06-24",
         "extension_date": null,
         "title_count": 1,
@@ -29836,7 +29835,7 @@
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
-        "list_count": 678,
+        "list_count": 679,
         "established_date": "2026-04-08",
         "extension_date": null,
         "title_count": 1,

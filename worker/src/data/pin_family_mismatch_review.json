@@ -2,20 +2,20 @@
   "schema_version": 1,
   "version": "pin_family_mismatch_review_v1",
   "title": "PIN-family Checkbook ↔ PASSPort contract-id mismatches",
-  "observed_on": "2026-11-14",
-  "generated_at": "2026-11-14T13:54:05.893Z",
+  "observed_on": "2026-11-17",
+  "generated_at": "2026-11-17T16:29:26.656Z",
   "sources": {
     "crosswalk": "site/data/passport_checkbook_crosswalk.json",
     "spine": "site/data/procurement_spine_sources.json"
   },
   "metrics": {
-    "pin_family_id_mismatches": 146,
-    "auto_related_instrument": 137,
+    "pin_family_id_mismatches": 147,
+    "auto_related_instrument": 138,
     "needs_review": 9,
     "auto_same_contract": 0,
     "by_rule": {
       "successor_term": 67,
-      "later_term_renewal": 12,
+      "later_term_renewal": 13,
       "fms_document_type_mismatch": 58
     },
     "public_same_contract_rule": "contract_id_exact only; PIN-family id mismatches are not sold as the same contract"
@@ -3461,7 +3461,7 @@
           "agency": "Department of Transportation",
           "current_amount": 3500000,
           "original_amount": 3500000,
-          "spent_amount": 136400,
+          "spent_amount": 380600,
           "start": "2026-07-25",
           "end": "2027-07-24",
           "registered": "2026-10-01",
@@ -3500,6 +3500,65 @@
         },
         "amount_ratio": 0.3890531557768836,
         "term_gap_days": 1
+      }
+    },
+    {
+      "pair_id": "pf:CT184120278803379::CT1-841-20238802310",
+      "identity_class": "related_instrument",
+      "label_source": "rule",
+      "rule": "later_term_renewal",
+      "rationale": "Same vendor and same FMS document type, with Checkbook starting 366 days after the PASSPort end date. Distinct FMS serials make this a later-term renewal, not the same contract.",
+      "evidence": {
+        "pin": "84122U0004001R002",
+        "epin": "84122U0004001",
+        "join_method": "pin_strip_suffix",
+        "checkbook": {
+          "contract_id": "CT184120278803379",
+          "subject_ref": "contract:CT184120278803379",
+          "source_record_id": "checkbook:contract:CT184120278803379",
+          "vendor": "DALE CARNEGIE & ASSOCIATES INC DALE CARNEGIE TRAINING",
+          "agency": "Department of Transportation",
+          "current_amount": 97500,
+          "original_amount": 97500,
+          "spent_amount": 0,
+          "start": "2026-04-01",
+          "end": "2027-03-31",
+          "registered": "2026-11-13",
+          "status": "registered",
+          "fms": {
+            "type": "CT1",
+            "agency": "841",
+            "form": "compact"
+          }
+        },
+        "passport": {
+          "contract_id": "CT1-841-20238802310",
+          "subject_ref": "contract:CT1-841-20238802310",
+          "source_record_id": "passport:contract:CT1-841-20238802310",
+          "vendor": "DALE CARNEGIE & ASSOCIATES INC DALE CARNEGIE TRAINING",
+          "agency": "DEPARTMENT OF TRANSPORTATION",
+          "current_amount": 380000,
+          "award_amount": 200000,
+          "paid_amount": 228750,
+          "start": "2023-04-01",
+          "end": "2025-03-31",
+          "registered": "2023-03-28",
+          "status": "Registered",
+          "title": "Public Sector Leadership Development Training.",
+          "procurement_method": "Subscription",
+          "fms": {
+            "type": "CT1",
+            "agency": "841",
+            "form": "hyphen"
+          }
+        },
+        "vendor_same": true,
+        "vendor_stems": {
+          "checkbook": "DALE CARNEGIE ASSOCIATES INC DALE CARNEGIE TRAINING",
+          "passport": "DALE CARNEGIE ASSOCIATES INC DALE CARNEGIE TRAINING"
+        },
+        "amount_ratio": 0.2565789473684211,
+        "term_gap_days": 366
       }
     },
     {
@@ -4228,7 +4287,7 @@
           "agency": "Department of Information Technology and Telecommunications",
           "current_amount": 57928898,
           "original_amount": 57928898,
-          "spent_amount": 25953478.81,
+          "spent_amount": 25953622.33,
           "start": "2026-01-01",
           "end": "2029-12-31",
           "registered": "2026-07-15",
@@ -4287,7 +4346,7 @@
           "agency": "Department of Information Technology and Telecommunications",
           "current_amount": 96500000,
           "original_amount": 96500000,
-          "spent_amount": 8093208.2,
+          "spent_amount": 9876492.04,
           "start": "2026-07-01",
           "end": "2030-06-30",
           "registered": "2026-09-18",
@@ -4759,7 +4818,7 @@
           "agency": "Police Department",
           "current_amount": 360000,
           "original_amount": 360000,
-          "spent_amount": 75646.88,
+          "spent_amount": 104161.68,
           "start": "2025-12-01",
           "end": "2030-11-30",
           "registered": "2025-12-22",
@@ -7945,7 +8004,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 15934967.31,
           "original_amount": 15934967.31,
-          "spent_amount": 3449663.86,
+          "spent_amount": 3568350.41,
           "start": "2026-06-01",
           "end": "2028-05-31",
           "registered": "2026-03-09",
@@ -8004,7 +8063,7 @@
           "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
           "current_amount": 66867092.43,
           "original_amount": 66867092.43,
-          "spent_amount": 1554730.16,
+          "spent_amount": 2102328.07,
           "start": "2026-08-01",
           "end": "2027-07-31",
           "registered": "2026-07-28",

@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":12,"first_ordinal":20020,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":12,"first_ordinal":20019,"entries":[
+{"s":"BRC LANDING ROAD I HOUSING DEVELOPMENT FUND","n":[["BRC LANDING ROAD I HOUSING DEVELOPMENT FUND CORPORATION",1]],"x":{"irs":{"r":1,"i":["473985343"],"z":["10001"]}}},
 {"s":"BRC LANDING ROAD II","n":[["BRC LANDING ROAD II LP",1]],"x":{"dbe":{"r":1,"i":["BRC LANDING ROAD II LP"]}}},
 {"s":"BRD FAMILY FOUNDATION","n":[["BRD FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["475668207"],"z":["10154"]}}},
 {"s":"BREAD AND BEYOND","n":[["BREAD AND BEYOND INC",1]],"x":{"irs":{"r":1,"i":["421982183"],"z":["11216"]}}},
@@ -540,6 +541,7 @@
 {"s":"BRIGHT START EARLY LEARNING ACADEMY","n":[["BRIGHT START EARLY LEARNING ACADEMY LLC",5]],"x":{"ocp":{"r":1,"a":4753120,"l":"2022-10-21","i":["20221017122"]},"cbr":{"r":1,"a":2290560,"l":"2026-10-30","i":["CT104020279761778"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":4825010,"l":"2022-10-14","i":["CT1-040-20238803530"]},"cbv":{"r":1,"l":"2026-10-30","i":["CT104020279761778"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["BRIGHT START EARLY LEARNING ACADEMY LLC"]}}},
 {"s":"BRIGHT START SPEECH PATHOLOGY AND LANGUAGE","n":[["Bright Start Speech Pathology and Language PC",1]],"x":{"sbs":{"r":1,"i":["366827"],"z":["10312"],"p":["WBE"]}}},
 {"s":"BRIGHT START SPEECH PATHOLOGY AND LANGUAGE P C","n":[["BRIGHT START SPEECH PATHOLOGY AND LANGUAGE P.C.",1]],"x":{"dbe":{"r":1,"i":["BRIGHT START SPEECH PATHOLOGY AND LANGUAGE P.C."]}}},
+{"s":"BRIGHT START SPEECH PATHOLOGY LANGUAGE","n":[["BRIGHT START SPEECH PATHOLOGY LANGUAGE PC",2]],"x":{"cbr":{"r":1,"a":4327506,"l":"2026-11-13","i":["MA104020279776505"],"m":["Women (Non-Minority)"]},"cbv":{"r":1,"l":"2026-11-13","i":["MA104020279776505"],"m":["Women (Non-Minority)"]}}},
 {"s":"BRIGHT TEMPLE AME CHURCH","n":[["BRIGHT TEMPLE AME CHURCH",1]],"x":{"irs":{"r":1,"i":["133141241"],"z":["10474"]}}},
 {"s":"BRIGHT VENTURES FUND II","n":[["BRIGHT VENTURES FUND II LP",1]],"x":{"dbe":{"r":1,"i":["BRIGHT VENTURES FUND II LP"]}}},
 {"s":"BRIGHT-BYTE FOUNDATION","n":[["BRIGHT-BYTE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["332774296"],"z":["14437"]}}},
@@ -1576,8 +1578,5 @@
 {"s":"BROOKLYN UNITED METHODIST CHURCH HOME","n":[["BROOKLYN UNITED METHODIST CHURCH HOME",2]],"x":{"dbe":{"r":1,"i":["BROOKLYN UNITED METHODIST CHURCH HOME"]},"irs":{"r":1,"i":["111661349"],"z":["11208"]}}},
 {"s":"BROOKLYN UNITED METHODIST CONTINUUM SERVICES","n":[["BROOKLYN UNITED METHODIST CONTINUUM SERVICES INC",1]],"x":{"irs":{"r":1,"i":["473517959"],"z":["11208"]}}},
 {"s":"BROOKLYN UNITED METHODIST HEALTH SERVICES FOUNDATION","n":[["BROOKLYN UNITED METHODIST HEALTH SERVICES FOUNDATION",1]],"x":{"irs":{"r":1,"i":["113423295"],"z":["11208"]}}},
-{"s":"BROOKLYN UNITED MUSIC AND ARTS DEVELOPMENT","n":[["BROOKLYN UNITED MUSIC AND ARTS DEVELOPMENT INC",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-02-09","i":["CT104020263092778","CT104020263035863"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-02-09","i":["CT104020263092778"],"m":["Non-M/WBE"]}}},
-{"s":"BROOKLYN UNITED SCHOLARSHIP ASSOCIATION","n":[["BROOKLYN UNITED SCHOLARSHIP ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["830663555"],"z":["11226"]}}},
-{"s":"BROOKLYN URBAN GARDEN CHARTER SCHOOL","n":[["BROOKLYN URBAN GARDEN CHARTER SCHOOL",1]],"x":{"irs":{"r":1,"i":["453453383"],"z":["11215"]}}},
-{"s":"BROOKLYN URBAN GARDEN CHARTER SCHOOL PTA","n":[["BROOKLYN URBAN GARDEN CHARTER SCHOOL PTA INC",1]],"x":{"irs":{"r":1,"i":["473077480"],"z":["11215"]}}}
+{"s":"BROOKLYN UNITED MUSIC AND ARTS DEVELOPMENT","n":[["BROOKLYN UNITED MUSIC AND ARTS DEVELOPMENT INC",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-02-09","i":["CT104020263092778","CT104020263035863"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-02-09","i":["CT104020263092778"],"m":["Non-M/WBE"]}}}
 ]}

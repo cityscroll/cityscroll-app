@@ -1,4 +1,13 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":26,"first_ordinal":43622,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":26,"first_ordinal":43615,"entries":[
+{"s":"DOVE GIVINGS FOUNDATION II","n":[["DOVE GIVINGS FOUNDATION II",1]],"x":{"irs":{"r":1,"i":["134188889"],"z":["10577"]}}},
+{"s":"DOVE HOLDINGS","n":[["DOVE HOLDINGS",1]],"x":{"irs":{"r":1,"i":["851879411"],"z":["10977"]}}},
+{"s":"DOVE MINISTRIES GOOD NEWS TO THE POOR NEEDY","n":[["DOVE MINISTRIES GOOD NEWS TO THE POOR & NEEDY INC",1]],"x":{"irs":{"r":1,"i":["833061327"],"z":["11412"]}}},
+{"s":"DOVE OF PEACE GLOBAL NETWORK","n":[["DOVE OF PEACE GLOBAL NETWORK INC",1]],"x":{"irs":{"r":1,"i":["880674346"],"z":["10453"]}}},
+{"s":"DOVEIR SHULOM","n":[["DOVEIR SHULOM",1]],"x":{"irs":{"r":1,"i":["822632182"],"z":["10950"]}}},
+{"s":"DOVELIN ENTERPRISES","n":[["DoveLin Enterprises, Inc.",1]],"x":{"dol":{"r":1,"i":["26-66UR4-CR"],"z":["08091"]}}},
+{"s":"DOVER ATHLETIC BOOSTERS","n":[["DOVER ATHLETIC BOOSTERS INC",1]],"x":{"irs":{"r":1,"i":["991507803"],"z":["12594"]}}},
+{"s":"DOVER DAIRIES","n":[["Dover Dairies, Inc.",1]],"x":{"ocp":{"r":1,"a":1353197.4,"l":"2003-06-18","i":["20030611008"]}}},
+{"s":"DOVER DRAGONS CLAY TARGET TEAM","n":[["DOVER DRAGONS CLAY TARGET TEAM INC",1]],"x":{"irs":{"r":1,"i":["421800384"],"z":["12594"]}}},
 {"s":"DOVER ENVIRONMENTAL GROUP","n":[["DOVER ENVIRONMENTAL GROUP INCORPORATED",1],["Dover Environmental Group, Inc.",1]],"d":[["Dover Environmental Group Inc",1]],"x":{"sbs":{"r":1,"i":["309061"],"z":["07821"],"p":["WBE"]},"dol":{"r":2,"v":["dba","name"],"i":["26-64EHV-CR"],"z":["07821"]}}},
 {"s":"DOVER LIONS CLUB FOUNDATION","n":[["DOVER LIONS CLUB FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["874230868"],"z":["12522"]}}},
 {"s":"DOVER MUSIC BOOSTERS","n":[["DOVER MUSIC BOOSTERS",1]],"x":{"irs":{"r":1,"i":["510488020"],"z":["12594"]}}},
@@ -1688,13 +1697,5 @@
 {"s":"EAST RIVER V SHARK","n":[["EAST RIVER V SHARK CORP",1]],"x":{"irs":{"r":1,"i":["301276085"],"z":["10128"]}}},
 {"s":"EAST RIVER WATERFRONT PARKS ALLIANCE","n":[["EAST RIVER WATERFRONT PARKS ALLIANCE INC",1]],"x":{"irs":{"r":1,"i":["882177013"],"z":["10009"]}}},
 {"s":"EAST ROCHESTER ALUMNI FOUNDATIONINC","n":[["EAST ROCHESTER ALUMNI FOUNDATIONINC",1]],"x":{"irs":{"r":1,"i":["205519573"],"z":["14445"]}}},
-{"s":"EAST ROCHESTER COMMUNITY RESOURCE CENTER","n":[["EAST ROCHESTER COMMUNITY RESOURCE CENTER INC",1]],"x":{"irs":{"r":1,"i":["161462088"],"z":["14445"]}}},
-{"s":"EAST ROCHESTER MEOWSCUE","n":[["EAST ROCHESTER MEOWSCUE INC",1]],"x":{"irs":{"r":1,"i":["333314683"],"z":["14445"]}}},
-{"s":"EAST ROCHESTER PARENT TEACHER ORGANIZATION","n":[["EAST ROCHESTER PARENT TEACHER ORGANIZATION INC",1]],"x":{"irs":{"r":1,"i":["871971167"],"z":["14445"]}}},
-{"s":"EAST ROCHESTER PARKS AND TREE COMMITTEE","n":[["EAST ROCHESTER PARKS AND TREE COMMITTEE",1]],"x":{"irs":{"r":1,"i":["993157432"],"z":["14445"]}}},
-{"s":"EAST ROCHESTER YOUTH ACTIVITY CENTER","n":[["EAST ROCHESTER YOUTH ACTIVITY CENTER INC",1]],"x":{"irs":{"r":1,"i":["161549228"],"z":["14445"]}}},
-{"s":"EAST ROCHESTER YOUTH FOOTBALL AND C HEERLEADING","n":[["EAST ROCHESTER YOUTH FOOTBALL AND C HEERLEADING INC",1]],"x":{"irs":{"r":1,"i":["415074963"],"z":["14445"]}}},
-{"s":"EAST ROCHESTER YOUTH SOCCER","n":[["EAST ROCHESTER YOUTH SOCCER",1]],"x":{"irs":{"r":1,"i":["260626883"],"z":["14445"]}}},
-{"s":"EAST ROCKAWAY EDUCATION FOUNDATION","n":[["EAST ROCKAWAY EDUCATION FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["113431872"],"z":["11518"]}}},
-{"s":"EAST ROCKAWAY FIRE DEPARTMENT","n":[["EAST ROCKAWAY FIRE DEPARTMENT",1]],"x":{"irs":{"r":1,"i":["264658838"],"z":["11518"]}}}
+{"s":"EAST ROCHESTER COMMUNITY RESOURCE CENTER","n":[["EAST ROCHESTER COMMUNITY RESOURCE CENTER INC",1]],"x":{"irs":{"r":1,"i":["161462088"],"z":["14445"]}}}
 ]}

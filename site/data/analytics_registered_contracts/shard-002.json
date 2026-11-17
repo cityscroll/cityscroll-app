@@ -4,6 +4,1967 @@
   "shard_id": "002",
   "rows": [
     {
+      "prime_contract_id": "CT106920258800804",
+      "agency": "Department of Social Services",
+      "prime_vendor": "GEEL COMMUNITY SERVICES INC",
+      "pin": "06924R0003011",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "DETERMINED BY GOV'T MANDATE",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "SRO Supportive Housing @706-08 Union Ave Bx 29 Units",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": 29,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 634235.63,
+      "original_registered_amount": 634235.63,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106920258801135",
+      "agency": "Department of Social Services",
+      "prime_vendor": "THE LEGAL AID SOCIETY",
+      "pin": "06924P0001003",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "REQUEST FOR PROPOSAL (RFP)",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Prov of Anti-Harassment Tenant Protection Legal Svcs Program",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": 29,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 39169496.25,
+      "original_registered_amount": 39169496.25,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106920258801357",
+      "agency": "Department of Social Services",
+      "prime_vendor": "JEG INC",
+      "pin": "06923W0035001A001",
+      "registration_date": "2024-07-30",
+      "start_date": "2023-10-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": null,
+      "prime_vendor_mwbe_category": "Hispanic American",
+      "industry": "Goods",
+      "contract_purpose": "Rental of Refuse Containers",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 303,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 181800,
+      "original_registered_amount": 181800,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-10-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT107220258801702",
+      "agency": "Department of Correction",
+      "prime_vendor": "MICO COOLING CORPORATION",
+      "pin": "07224W0040001A001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-04-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": null,
+      "prime_vendor_mwbe_category": "Women (Non-Minority)",
+      "industry": "Human Services",
+      "contract_purpose": "On Call Repairs to Refrigerated Equipment at DOC Facilities",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 120,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1500000,
+      "original_registered_amount": 953800,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-04-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT110220241419292",
+      "agency": "City Council",
+      "prime_vendor": "EPIQ EDISCOVERY SOLUTIONS INC",
+      "pin": "10220242033391",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-04-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "NEGOTIATED ACQUISITION AND DOE NEGOTIATED SERVICES",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Goods",
+      "contract_purpose": "PURCHASE OF EDISCOVERY SOLUTION SOFTWARE",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 120,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 91000,
+      "original_registered_amount": 90000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-04-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT110220250000935",
+      "agency": "City Council",
+      "prime_vendor": "CHARTER COMMUNICATIONS HOLDINGS LLC",
+      "pin": "10220250003215",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "PUBLIC UTILITY",
+      "prime_vendor_mwbe_category": "Individuals and Others",
+      "industry": "Not Classified",
+      "contract_purpose": "VARIOUS COUNCIL MEMBER OFFICES THROUGHOUT THE FIVE (5) BOROU",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 29,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 55000,
+      "original_registered_amount": 55000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112520258801000",
+      "agency": "Department for the Aging",
+      "prime_vendor": "MERRILL PARK CIVIC ASSOCIATION OF SPRINGFIELD GARDENS INC",
+      "pin": "12524L0263001",
+      "registration_date": "2024-07-30",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "4UN - support senior programming",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 395,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 534375,
+      "original_registered_amount": 534375,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112520258801005",
+      "agency": "Department for the Aging",
+      "prime_vendor": "WASHINGTON HEIGHTS INWOOD PRESERVATION AND RESTORATION CORP",
+      "pin": "12524L0374001",
+      "registration_date": "2024-07-30",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "3AU - To support district based senior services.",
+      "document_code": "CT1",
+      "contract_version": "7",
+      "parent_contract_id": null,
+      "registration_lag_days": 395,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 573750,
+      "original_registered_amount": 573750,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112520258801102",
+      "agency": "Department for the Aging",
+      "prime_vendor": "ST. NICKS ALLIANCE CORP.",
+      "pin": "12524L0338001A001",
+      "registration_date": "2024-07-30",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "2DQ - educational, recreational programs",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 395,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 609375,
+      "original_registered_amount": 609375,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112820248809500",
+      "agency": "OFFICE OF CRIMINAL JUSTICE",
+      "prime_vendor": "JUSTICE INNOVATION INC",
+      "pin": "12824L1332001A001",
+      "registration_date": "2024-07-30",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Funding will support alternative-to-incarceration (ATI)",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 395,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 4406250,
+      "original_registered_amount": 4406250,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020248806430",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "WOMEN FOR AFGHAN WOMEN INC",
+      "pin": "26022L1578001",
+      "registration_date": "2024-07-30",
+      "start_date": "2021-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SM PURCHASE COUNCIL & BP NEEDS",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Funding to support basic literacy for non-English Speakers.",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 1125,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 10000,
+      "original_registered_amount": 10000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2021-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020258800859",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "CHILD DEVELOPMENT CENTER OF THE MOSHOLU-MONTEFIORE COMM CTR",
+      "pin": "26024N0511002",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Cornerstone Program",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": 29,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1230815,
+      "original_registered_amount": 1230815,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020258800896",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "RIVERDALE NEIGHBORHOOD HOUSE INC",
+      "pin": "26024L0921001",
+      "registration_date": "2024-07-30",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Funding to support outdoor concert series",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 395,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 318750,
+      "original_registered_amount": 318750,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020258800982",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "JACKSON HEIGHTS BEAUTIFICATION GROUP LTD",
+      "pin": "26024L1059001",
+      "registration_date": "2024-07-30",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "To fund musical programs, newsletter",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 395,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 37500,
+      "original_registered_amount": 37500,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020258801026",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "HOUR CHILDREN, INC",
+      "pin": "26023L1769001",
+      "registration_date": "2024-07-30",
+      "start_date": "2022-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Funds to support Hour Children's Community Food Pantry",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": 760,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 32000,
+      "original_registered_amount": 32000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2022-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020258801037",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": null,
+      "pin": "26024N0504039A001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Beacon Program",
+      "document_code": "CT1",
+      "contract_version": "8",
+      "parent_contract_id": null,
+      "registration_lag_days": 29,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 5206050,
+      "original_registered_amount": 5206050,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020258801079",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "CRIME VICTIMS TREATMENT CENTER INC",
+      "pin": "26023L1723001",
+      "registration_date": "2024-07-30",
+      "start_date": "2022-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Funds to support community to provide physical",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 760,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 415000,
+      "original_registered_amount": 415000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2022-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020258801106",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "ST VINCENT'S SERVICES INC",
+      "pin": "26024N0504037",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Beacon Program",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 29,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1604035,
+      "original_registered_amount": 1604035,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020258801364",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "CHILDREN'S ARTS & SCIENCE WORKSHOPS INC",
+      "pin": "26024L0882001",
+      "registration_date": "2024-07-30",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "To provide programming support for their WLG program",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": 395,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 217500,
+      "original_registered_amount": 217500,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT181620258800226",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "Dataminr, Inc.",
+      "pin": "81624O0006001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "INTERGOVERNMENTAL PROCUREMENT",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Continued use of the Dataminr licenses",
+      "document_code": "CT1",
+      "contract_version": "2",
+      "parent_contract_id": null,
+      "registration_lag_days": 29,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 31400,
+      "original_registered_amount": 31400,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT181620258801340",
+      "agency": "Department of Health and Mental Hygiene",
+      "prime_vendor": "COMMUNITY HEALTH CENTER OF RICHMOND INC",
+      "pin": "81624L0087001",
+      "registration_date": "2024-07-30",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Various Health Services",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 395,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1534481.25,
+      "original_registered_amount": 1534481.25,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT181920251401532",
+      "agency": "Health and Hospitals Corporation",
+      "prime_vendor": "SUPERSTRUCTURES ENGINEERING ARCHITECTURE, PLLC",
+      "pin": null,
+      "registration_date": "2024-07-30",
+      "start_date": "2023-10-17",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - PUBLICLY LET",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Goods",
+      "contract_purpose": "11202209 - CONSTRUCTION",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 287,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 48951.72,
+      "original_registered_amount": 48951.72,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-10-17"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT183620258800759",
+      "agency": "Department of Finance",
+      "prime_vendor": "TRUE NORTH CONSULTING GROUP LLC",
+      "pin": "83621P0006001R002",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-12-14",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "RENEWAL OF CONTRACT",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Professional Services",
+      "contract_purpose": "Exercising Renewal #2",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": -137,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 233250,
+      "original_registered_amount": 233250,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-12-14"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620258801683",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "S&K DISTRIBUTION LLC",
+      "pin": "84625C0047001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-25",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Goods",
+      "contract_purpose": "Waterproofing and Maintenance Supplies",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 5,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 12744.5,
+      "original_registered_amount": 12744.5,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-25"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620258801688",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "Field Form Inc",
+      "pin": "84625C0042001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-30",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Goods",
+      "contract_purpose": "CGRTB-MATERIALS FOR LANDSCAPE EDGING IN STATEN ISLAND",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 5900,
+      "original_registered_amount": 5900,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-30"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620258801689",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "GLOBAL DOMESTIC ADVISORY PARTNERS LLC",
+      "pin": "84625C0041001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-30",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "prime_vendor_mwbe_category": "Black American",
+      "industry": "Goods",
+      "contract_purpose": "RAB FIXTURES AND LIGHTS FOR BROOKLYN ELECTRICIANS",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 6395.27,
+      "original_registered_amount": 6395.27,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-30"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620258801695",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "BOUNCE PLAYGROUND INC",
+      "pin": "84625C0040001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-08-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "prime_vendor_mwbe_category": "Black American",
+      "industry": "Not Classified",
+      "contract_purpose": "EVENTS FROM AUGUST AND SEPTEMBER 2025",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -2,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 10500,
+      "original_registered_amount": 10500,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-08-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620258801705",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "DEALERS INDUSTRIAL EQUIPMENT LLC",
+      "pin": "84625C0050001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-30",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Goods",
+      "contract_purpose": "TO PURCHASE MOTOR FOR SUNSET POOL",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 8052,
+      "original_registered_amount": 8052,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-30"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620258801708",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "EASTERN HORIZON CORP",
+      "pin": "84625C0037001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-30",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "prime_vendor_mwbe_category": "Black American",
+      "industry": "Goods",
+      "contract_purpose": "BXOPS-STEEL DRUMS FOR ALL THE BRONX",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 16500,
+      "original_registered_amount": 16500,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-30"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620258801714",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "LOTUS FINE ARTS PRODUCTIONS INC",
+      "pin": "84625C0054001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-30",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Not Classified",
+      "contract_purpose": "Dance Workshop + Performance forÂ Pelham Bay Park",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 1000,
+      "original_registered_amount": 1000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-30"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT184620258801716",
+      "agency": "Department of Parks and Recreation",
+      "prime_vendor": "UNIQUE ENTERTAINMENT",
+      "pin": "84625C0057001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-08-17",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - UNDER $5,000",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Goods",
+      "contract_purpose": "Rental of Headsets for Silent Disco Event at Orchard BeachÂ",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -18,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 810,
+      "original_registered_amount": 810,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-08-17"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185020258801081",
+      "agency": "Department of Design and Construction",
+      "prime_vendor": "NEW YORK COMMON PANTRY INC",
+      "pin": "85024L0050001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-08-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Goods",
+      "contract_purpose": "HRMNPNTRY, Purchase of Mobile Pantry Truck",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -2,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 100000,
+      "original_registered_amount": 100000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-08-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT185620258801693",
+      "agency": "Department of Citywide Administrative Services",
+      "prime_vendor": "OZ DOOR SERVICE CORP",
+      "pin": "85625W0005001A001",
+      "registration_date": "2024-07-30",
+      "start_date": "2024-07-29",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": null,
+      "prime_vendor_mwbe_category": "Women (Non-Minority)",
+      "industry": "Not Classified",
+      "contract_purpose": "Revolving and Swing Door Repairs",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 1,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 400000,
+      "original_registered_amount": 100000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-29"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "MMA180620256000030",
+      "agency": "Housing Preservation and Development",
+      "prime_vendor": "NEW YORK CITY HOUSING AUTHORITY",
+      "pin": null,
+      "registration_date": "2024-07-30",
+      "start_date": "2024-05-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$10 million or more",
+      "award_method": "REQUEST FOR PROPOSAL (RFP)",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Construction Services",
+      "contract_purpose": "IDIQ Contract For Roof work at Various Developments",
+      "document_code": "MMA1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 90,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 10000000,
+      "original_registered_amount": 10000000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-05-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-30"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT100220251400964",
+      "agency": "Mayoralty",
+      "prime_vendor": "SELECTIVE INSURANCE COMPANY OF AMERICA",
+      "pin": "00214P0005001",
+      "registration_date": "2024-07-29",
+      "start_date": "2024-08-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "MISCELLANEOUS",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Not Classified",
+      "contract_purpose": "City Of New York Insurance Premium",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -3,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 20583,
+      "original_registered_amount": 20583,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-08-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT101520250000091",
+      "agency": "Office of the Comptroller",
+      "prime_vendor": "JP MORGAN INVESTMENT MANAGEMENT INC",
+      "pin": null,
+      "registration_date": "2024-07-29",
+      "start_date": "2024-04-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "RENEWAL OF CONTRACT",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Professional Services",
+      "contract_purpose": "FIRST RENEWAL-ENHANCED YIELD FIXED INCOME IMA",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 119,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 6328965,
+      "original_registered_amount": 6328965,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-04-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT101520250001862",
+      "agency": "Office of the Comptroller",
+      "prime_vendor": "LEARNING TREE INTERNATIONAL USA INC",
+      "pin": "01525BIST70060",
+      "registration_date": "2024-07-29",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "INTERGOVERNMENTAL PROCUREMENT",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Standardized Services",
+      "contract_purpose": "FY25-26 Learning Tree Training Vouchers (50)",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 28,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 95000,
+      "original_registered_amount": 95000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT104020253002221",
+      "agency": "Department of Education",
+      "prime_vendor": "ENVIRONMENTAL SYSTEMS RESEARCH INSTITUTE INC",
+      "pin": null,
+      "registration_date": "2024-07-29",
+      "start_date": "2024-07-29",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "SOLE VENDOR-COMMODITIES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-29"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104020253002266",
+      "agency": "Department of Education",
+      "prime_vendor": "BIOMEDICAL RESEARCH ALLIANCE OF NY, LLC",
+      "pin": null,
+      "registration_date": "2024-07-29",
+      "start_date": "2024-07-29",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "SOLE VENDOR-COMMODITIES",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 0,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-29"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT104220250001727",
+      "agency": "City University of New York",
+      "prime_vendor": "DORMITORY AUTHORITY STATE OF NY",
+      "pin": null,
+      "registration_date": "2024-07-29",
+      "start_date": "2024-05-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "COMPETITIVE SEALED BIDDING",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Construction Services",
+      "contract_purpose": "BX046-019 BXCC Alumni Gym Upgrades",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 89,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 406608,
+      "original_registered_amount": 406608,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-05-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT105620251401486",
+      "agency": "Police Department",
+      "prime_vendor": "Unique Global Travel LLC",
+      "pin": null,
+      "registration_date": "2024-07-29",
+      "start_date": "2024-08-06",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "prime_vendor_mwbe_category": "Asian American",
+      "industry": "Goods",
+      "contract_purpose": "BUS TRANSPORTATION SERVICE, QMS 213",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -8,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 24000,
+      "original_registered_amount": 24000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-08-06"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT105620251401487",
+      "agency": "Police Department",
+      "prime_vendor": "Unique Global Travel LLC",
+      "pin": null,
+      "registration_date": "2024-07-29",
+      "start_date": "2024-08-07",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "SMALL PURCHASE - WRITTEN",
+      "prime_vendor_mwbe_category": "Asian American",
+      "industry": "Goods",
+      "contract_purpose": "BUS TRANSPORTATION SERVICE, QMS 214",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": -9,
+      "registration_timing": "early_on_time",
+      "current_registered_amount": 23800,
+      "original_registered_amount": 23800,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-08-07"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "cannot_evaluate_missing_pin"
+    },
+    {
+      "prime_contract_id": "CT106820258801678",
+      "agency": "Administration for Children's Services",
+      "prime_vendor": "SABIR RICHARDSON & WEISBERG ENGINEERING & ARCHITECTURE PLLC",
+      "pin": "06824W0043001",
+      "registration_date": "2024-07-29",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": null,
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Professional Services",
+      "contract_purpose": "Architectural/Engineering/Violation Mitigation/Removal Svcs.",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 28,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 200000,
+      "original_registered_amount": 200000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106920248804606",
+      "agency": "Department of Social Services",
+      "prime_vendor": "VOLUNTEERS OF LEGAL SERVICE INC.",
+      "pin": "06924L0100001",
+      "registration_date": "2024-07-29",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Prov of legal services for New York City veterans",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 394,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 487500,
+      "original_registered_amount": 487500,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106920258800792",
+      "agency": "Department of Social Services",
+      "prime_vendor": "COMMUNITY ACCESS INC",
+      "pin": "06924R0003009",
+      "registration_date": "2024-07-29",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "DETERMINED BY GOV'T MANDATE",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Single Room Occupancy Supportive Housing @Davidson Ave 73U",
+      "document_code": "CT1",
+      "contract_version": "5",
+      "parent_contract_id": null,
+      "registration_lag_days": 28,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1478032.57,
+      "original_registered_amount": 1478032.57,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT106920258800796",
+      "agency": "Department of Social Services",
+      "prime_vendor": "WEST SIDE FEDERATION FOR SENIOR AND SUPPORTIVE HOUSING INC",
+      "pin": "06924R0003022",
+      "registration_date": "2024-07-29",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "DETERMINED BY GOV'T MANDATE",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Single Room Occupancy for Single Adults @The Claremont 95U",
+      "document_code": "CT1",
+      "contract_version": "7",
+      "parent_contract_id": null,
+      "registration_lag_days": 28,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 1440871.8,
+      "original_registered_amount": 1440871.8,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112520258800985",
+      "agency": "Department for the Aging",
+      "prime_vendor": "HEALTH INSURANCE PLAN OF GREATER NEW YORK",
+      "pin": "12524L1304001A001",
+      "registration_date": "2024-07-29",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "61H - Health and Wellbeing programming",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": 394,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 37500,
+      "original_registered_amount": 37500,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112520258801111",
+      "agency": "Department for the Aging",
+      "prime_vendor": "Harlem Presents Inc",
+      "pin": "12524L1359001",
+      "registration_date": "2024-07-29",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "3BV - provide free cultural entertainment",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 394,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 75000,
+      "original_registered_amount": 75000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112520258801113",
+      "agency": "Department for the Aging",
+      "prime_vendor": "Project Guardianship Inc",
+      "pin": "12524L1260001A002",
+      "registration_date": "2024-07-29",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "6XG - support district based senior services",
+      "document_code": "CT1",
+      "contract_version": "3",
+      "parent_contract_id": null,
+      "registration_lag_days": 394,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 322500,
+      "original_registered_amount": 37500,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT112520258801195",
+      "agency": "Department for the Aging",
+      "prime_vendor": "LA NUEVA ESPERANZA INC",
+      "pin": "12524L0251001",
+      "registration_date": "2024-07-29",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "2DD - services for substance abuse and/or HIV/AIDS",
+      "document_code": "CT1",
+      "contract_version": "1",
+      "parent_contract_id": null,
+      "registration_lag_days": 394,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 37500,
+      "original_registered_amount": 37500,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020248807942",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "NEW ALTERNATIVES FOR CHILDREN INC",
+      "pin": "26024L0834001A001",
+      "registration_date": "2024-07-29",
+      "start_date": "2023-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$100,000–$999,999",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "To support community programming",
+      "document_code": "CT1",
+      "contract_version": "10",
+      "parent_contract_id": null,
+      "registration_lag_days": 394,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 525427.5,
+      "original_registered_amount": 525427.5,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2023-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020258800821",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "THE GREATER RIDGEWOOD YOUTH COUNCIL INC",
+      "pin": "26024N0504018",
+      "registration_date": "2024-07-29",
+      "start_date": "2024-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "$1 million–$9.99 million",
+      "award_method": "NEG ACQUISITSION EXTN AND DOE NEGOTIATED SERVICES EXTN",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Beacon Program",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": 28,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 3725288,
+      "original_registered_amount": 3725288,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2024-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
+      "prime_contract_id": "CT126020258800883",
+      "agency": "Department of Youth and Community Development",
+      "prime_vendor": "WEST INDIAN AMERICAN DAY CARNIVAL ASSOCIATION INC",
+      "pin": "26022L1279001",
+      "registration_date": "2024-07-29",
+      "start_date": "2021-07-01",
+      "registration_fiscal_year": 2025,
+      "contract_amount_band": "Under $100,000",
+      "award_method": "BORO NEEDS/DISCRETIONARY FUND",
+      "prime_vendor_mwbe_category": "Non-M/WBE",
+      "industry": "Human Services",
+      "contract_purpose": "Funds will be used to provide high-quality arts and athletic",
+      "document_code": "CT1",
+      "contract_version": "4",
+      "parent_contract_id": null,
+      "registration_lag_days": 1124,
+      "registration_timing": "retroactive",
+      "current_registered_amount": 25000,
+      "original_registered_amount": 25000,
+      "source_fiscal_years": [
+        "2025"
+      ],
+      "source": "checkbook-contracts",
+      "date_ownership": {
+        "owner": "prime_vendor_slice",
+        "start_date_observations": [
+          "2021-07-01"
+        ],
+        "registration_date_observations": [
+          "2024-07-29"
+        ],
+        "conflicting_start_date_observations": false,
+        "conflicting_registration_date_observations": false
+      },
+      "city_record_match": "none"
+    },
+    {
       "prime_contract_id": "CT126020258800915",
       "agency": "Department of Youth and Community Development",
       "prime_vendor": "THE BERMAN GROUP INC",

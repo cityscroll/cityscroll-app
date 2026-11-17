@@ -1,4 +1,12 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":44,"first_ordinal":74010,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":44,"first_ordinal":74005,"entries":[
+{"s":"IOTA ETA ETA","n":[["IOTA ETA ETA INC",1]],"x":{"irs":{"r":1,"i":["873662519"],"z":["14226"]}}},
+{"s":"IOTA KAPPA LAMBDA SCHOLARSHIP FOUND ATION","n":[["IOTA KAPPA LAMBDA SCHOLARSHIP FOUND ATION",1]],"x":{"irs":{"r":1,"i":["161430972"],"z":["13217"]}}},
+{"s":"IOTA NU DELTA FRATERNITY","n":[["IOTA NU DELTA FRATERNITY INC",1]],"x":{"irs":{"r":1,"i":["134030232"],"z":["10016"]}}},
+{"s":"IOTA OMICRON ALUMNI ASSOCIATION","n":[["IOTA OMICRON ALUMNI ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["853306133"],"z":["11554"]}}},
+{"s":"IOTA PHI LAMBDA SORORITY","n":[["IOTA PHI LAMBDA SORORITY INC",1]],"x":{"irs":{"r":1,"i":["237382875"],"z":["10460"]}}},
+{"s":"IOTA TAU CHI","n":[["IOTA TAU CHI CORPORATION",1]],"x":{"irs":{"r":1,"i":["222527588"],"z":["14092"]}}},
+{"s":"IOTA TECHNOLOGY SYSTEMS","n":[["Iota Technology Systems LLC",1]],"x":{"sbs":{"r":1,"i":["361471"],"z":["10463"],"p":["MBE","WBE"]}}},
+{"s":"IOTA THETA LAMBDA EDUCATION FOUNDATION","n":[["IOTA THETA LAMBDA EDUCATION FOUNDATION INCORPORATED",1]],"x":{"irs":{"r":1,"i":["222900386"],"z":["13763"]}}},
 {"s":"IOTA XI ALUMNI ASSOCIATION OF ALPHA TAU OMEGA","n":[["IOTA XI ALUMNI ASSOCIATION OF ALPHA TAU OMEGA INC",1]],"x":{"irs":{"r":1,"i":["921545730"],"z":["14228"]}}},
 {"s":"IOVINO CONSTRUCTION PARTNERS JV","n":[["Iovino Construction Partners JV",1]],"x":{"dol":{"r":1,"i":["26-69U89-CR"],"z":["11021"]}}},
 {"s":"IP FOUNDATION","n":[["IP FOUNDATION",1]],"x":{"irs":{"r":1,"i":["205795702"],"z":["11559"]}}},
@@ -891,7 +899,7 @@
 {"s":"IVCI","n":[["IVCI LLC",2],["IVCI, LLC",1]],"x":{"ocp":{"r":2,"a":772329.28,"l":"2013-12-27","i":["20131217010","20050701017"]},"dol":{"r":1,"i":["25-654HP-CR"],"z":["11788"]}}},
 {"s":"IVDD AWARENESS FOUNDATION","n":[["IVDD AWARENESS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["331656300"],"z":["14086"]}}},
 {"s":"IVE S BEAUTY SALON II","n":[["Ive's Beauty Salon II Corp.",1]],"x":{"sbs":{"r":1,"i":["332095"],"z":["10030"],"p":["MBE","WBE"]}}},
-{"s":"IVEHEN MANAGEMENT","n":[["IVEHEN MANAGEMENT INC",11],["Ivehen Management Inc.",1]],"x":{"cbr":{"r":7,"a":175000,"l":"2026-10-02","c":7,"i":["CT104020273021884","CT104020263165150","CT104020263152838","CT104020263050731","CT104020263035744"],"m":["Hispanic American"]},"cbv":{"r":4,"l":"2026-10-02","i":["CT104020273021884","CT104020263165150","CT104020263152838","CT104020263050731"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["368933"],"z":["10452"],"p":["MBE","WBE"]}}},
+{"s":"IVEHEN MANAGEMENT","n":[["IVEHEN MANAGEMENT INC",10],["Ivehen Management Inc.",1]],"x":{"cbr":{"r":7,"a":175000,"l":"2026-10-02","c":7,"i":["CT104020273021884","CT104020263165150","CT104020263152838","CT104020263050731","CT104020263035744"],"m":["Hispanic American"]},"cbv":{"r":3,"l":"2026-10-02","i":["CT104020273021884","CT104020263165150","CT104020263152838"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["368933"],"z":["10452"],"p":["MBE","WBE"]}}},
 {"s":"IVELYSE PADILLA","n":[["IVELYSE PADILLA",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-03-02","i":["CT104020263109767"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-03-02","i":["CT104020263109767"],"m":["Non-M/WBE"]}}},
 {"s":"IVERSEN CONSTRUCTION","n":[["Iversen Construction Corporation",1]],"x":{"dol":{"r":1,"i":["24-64RG6-CR"],"z":["14461"]}}},
 {"s":"IVES HILL RETIREMENT COMMUNITY","n":[["IVES HILL RETIREMENT COMMUNITY INC",1]],"x":{"irs":{"r":1,"i":["161529379"],"z":["13601"]}}},
@@ -1704,13 +1712,5 @@
 {"s":"JAMES AND GINA GIORDANO FOUNDATION","n":[["JAMES AND GINA GIORDANO FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["921384552"],"z":["11209"]}}},
 {"s":"JAMES AND JUDITH K DIMON FOUNDATION","n":[["JAMES AND JUDITH K DIMON FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133922199"],"z":["10179"]}}},
 {"s":"JAMES AND MERRYL TISCH FOUNDATION","n":[["JAMES AND MERRYL TISCH FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133693587"],"z":["10019"]}}},
-{"s":"JAMES AND SON CONSTRUCTION","n":[["James and Son Construction CO., INC.",1]],"x":{"dol":{"r":1,"i":["25-6HINR-CR"],"z":["13152"]}}},
-{"s":"JAMES AND STEPHANIE PATRICK FAMILY FOUNDATION","n":[["JAMES AND STEPHANIE PATRICK FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["262610519"],"z":["13326"]}}},
-{"s":"JAMES AND VICTORIA CHANG FAMILY FOUNDATION","n":[["JAMES AND VICTORIA CHANG FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["274811784"],"z":["10128"]}}},
-{"s":"JAMES ANDERSON FOUNDATION","n":[["JAMES ANDERSON FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["454045714"],"z":["10036"]}}},
-{"s":"JAMES ARIANAS FOUNDATION","n":[["JAMES ARIANAS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["331214457"],"z":["11566"]}}},
-{"s":"JAMES AUSTIN","n":[["JAMES AUSTIN",1]],"x":{"dbe":{"r":1,"i":["JAMES AUSTIN"]}}},
-{"s":"JAMES B LEE JR SCHOLARSHIP AND RELIEF FUND IN HONOR OF JOSEPH","n":[["JAMES B LEE JR SCHOLARSHIP AND RELIEF FUND IN HONOR OF JOSEPH",1]],"x":{"irs":{"r":1,"i":["205269657"],"z":["11969"]}}},
-{"s":"JAMES B MINTZER FOUNDATION","n":[["JAMES B MINTZER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["863255307"],"z":["10019"]}}},
-{"s":"JAMES BALDWIN OUTDOOR LEARNING CENTER","n":[["JAMES BALDWIN OUTDOOR LEARNING CENTER INC",1]],"x":{"irs":{"r":1,"i":["832230411"],"z":["10471"]}}}
+{"s":"JAMES AND SON CONSTRUCTION","n":[["James and Son Construction CO., INC.",1]],"x":{"dol":{"r":1,"i":["25-6HINR-CR"],"z":["13152"]}}}
 ]}

@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":15,"first_ordinal":25050,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":15,"first_ordinal":25047,"entries":[
+{"s":"CARRINGTON PEACE","n":[["CARRINGTON PEACE INC",1]],"x":{"irs":{"r":1,"i":["863722205"],"z":["11208"]}}},
+{"s":"CARROLL AND PERCY KLINGENSTEIN FOUNDATION","n":[["CARROLL AND PERCY KLINGENSTEIN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["132850138"],"z":["10036"]}}},
+{"s":"CARROLL BH","n":[["CARROLL BH LLC",1]],"x":{"dbe":{"r":1,"i":["CARROLL BH LLC"]}}},
+{"s":"CARROLL FOUNDATION NY","n":[["CARROLL FOUNDATION NY INC",1]],"x":{"irs":{"r":1,"i":["392238973"],"z":["12831"]}}},
 {"s":"CARROLL GARDENS ASSOC","n":[["CARROLL GARDENS ASSOC INC",2]],"x":{"cbr":{"r":2,"a":47500,"l":"2026-02-27","i":["CT180620268803689","CT180620268802600"],"m":["Non-M/WBE"]}}},
 {"s":"CARROLL GARDENS ASSOCIATION","n":[["CARROLL GARDENS ASSOCIATION INC",1],["CARROLL GARDENS ASSOCIATION INCORPORATED",1]],"x":{"dbe":{"r":1,"i":["CARROLL GARDENS ASSOCIATION INC"]},"irs":{"r":1,"i":["112573432"],"z":["11231"]}}},
 {"s":"CARROLL HISTORICAL SOCIETY","n":[["CARROLL HISTORICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["161576461"],"z":["14738"]}}},
@@ -1561,8 +1565,5 @@
 {"s":"CENTRAL HARLEM HOUSING DEVELOPMENT FUND","n":[["CENTRAL HARLEM HOUSING DEVELOPMENT FUND COMPANY INCORPORATED",1]],"x":{"irs":{"r":1,"i":["300064578"],"z":["10018"]}}},
 {"s":"CENTRAL HARLEM SENIOR CITIZEN S CENTER","n":[["Central Harlem Senior Citizen's Center, Inc.",2]],"x":{"ocp":{"r":2,"a":7571537,"l":"2026-06-22","i":["20260615024","20250103013"]}}},
 {"s":"CENTRAL HARLEM SENIOR CITIZEN S CENTERS","n":[["CENTRAL HARLEM SENIOR CITIZEN'S CENTERS, INC.",3]],"x":{"cbr":{"r":2,"a":7571537,"l":"2026-06-12","i":["CT112520278800229","CT112520258803883"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-06-12","i":["CT112520278800229"],"m":["Non-M/WBE"]}}},
-{"s":"CENTRAL HARLEM SENIOR CITIZENS CENTERS","n":[["CENTRAL HARLEM SENIOR CITIZENS CENTERS  INC",1],["CENTRAL HARLEM SENIOR CITIZENS CENTERS INC",1]],"x":{"dbe":{"r":1,"i":["CENTRAL HARLEM SENIOR CITIZENS CENTERS  INC"]},"irs":{"r":1,"i":["132754783"],"z":["10037"]}}},
-{"s":"CENTRAL HARLEM SENIOR CITIZEN`S CENTER","n":[["Central Harlem Senior Citizen`s Center, Inc.",1]],"x":{"ocp":{"r":1,"a":2671255,"l":"2019-10-15","i":["20191007043"]}}},
-{"s":"CENTRAL HARLEM SENIOR CITIZEN`S CENTERS","n":[["Central Harlem Senior Citizen`s Centers, Inc.",1]],"x":{"ocp":{"r":1,"a":236438,"l":"2013-08-12","i":["20130805016"]}}},
-{"s":"CENTRAL HOME SYSTEMS","n":[["Central Home Systems, Inc.",1]],"x":{"dol":{"r":1,"i":["25-6HFDG-CR"],"z":["11735"]}}}
+{"s":"CENTRAL HARLEM SENIOR CITIZENS CENTERS","n":[["CENTRAL HARLEM SENIOR CITIZENS CENTERS  INC",1],["CENTRAL HARLEM SENIOR CITIZENS CENTERS INC",1]],"x":{"dbe":{"r":1,"i":["CENTRAL HARLEM SENIOR CITIZENS CENTERS  INC"]},"irs":{"r":1,"i":["132754783"],"z":["10037"]}}}
 ]}

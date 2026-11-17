@@ -1,4 +1,13 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":48,"first_ordinal":81024,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":48,"first_ordinal":81018,"entries":[
+{"s":"KIM AND HAHN CHARITABLE TR","n":[["KIM AND HAHN CHARITABLE TR",1]],"x":{"irs":{"r":1,"i":["926280776"],"z":["13104"]}}},
+{"s":"KIM FAMILY FOUNDATION","n":[["KIM FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["832752312"],"z":["10580"]}}},
+{"s":"KIM GU AND AN JUNG GEUN MEMORIAL SOCIETY","n":[["KIM GU AND AN JUNG GEUN MEMORIAL SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["113444467"],"z":["11753"]}}},
+{"s":"KIM INDUSTRIES","n":[["KIM INDUSTRIES, INC.",1]],"x":{"dol":{"r":1,"i":["26-634YF-CR"],"z":["06478"]}}},
+{"s":"KIM KLEIN","n":[["KIM KLEIN LLC",1]],"x":{"sbs":{"r":1,"i":["323633"],"z":["30312"],"p":["MBE"]}}},
+{"s":"KIM KURZ DESIGN","n":[["Kim Kurz Design LLC",1]],"x":{"sbs":{"r":1,"i":["397370"],"z":["11428"],"p":["WBE"]}}},
+{"s":"KIM NUGENT I-KAN SOLUTIONS MALL OF TECHN","n":[["KIM NUGENT I-KAN SOLUTIONS MALL OF TECHN",2]],"x":{"ocp":{"r":1,"a":89430,"l":"2023-06-28","i":["20230622121"]},"ppt":{"r":1,"a":89430,"l":"2023-06-21","i":["CT1-260-20238808722"]}}},
+{"s":"KIM NUGENT I-KAN SOLUTIONS MALL OF TECHNOLOGY","n":[["Kim Nugent I-Kan Solutions Mall of Technology",1]],"x":{"ocp":{"r":1,"a":52934,"l":"2019-09-10","i":["20190904002"]}}},
+{"s":"KIM PAWLOWSKI MEMORIAL FUND","n":[["KIM PAWLOWSKI MEMORIAL FUND INC",1]],"x":{"irs":{"r":1,"i":["883595813"],"z":["11952"]}}},
 {"s":"KIM S MAINTENANCE SERVICES","n":[["Kim's Maintenance Services Corp.",1]],"x":{"sbs":{"r":1,"i":["372813"],"z":["11358"],"p":["MBE"]}}},
 {"s":"KIM THE OG TEACHER","n":[["Kim the OG Teacher LLC",1]],"x":{"sbs":{"r":1,"i":["402345"],"z":["11787"],"p":["WBE"]}}},
 {"s":"KIMA NETWORK","n":[["KIMA NETWORK INC",1]],"x":{"irs":{"r":1,"i":["394350034"],"z":["11373"]}}},
@@ -46,7 +55,7 @@
 {"s":"KINDEAR","n":[["KINDEAR INC",1]],"x":{"irs":{"r":1,"i":["832523392"],"z":["10960"]}}},
 {"s":"KINDER 43","n":[["KINDER 43 INC",1]],"x":{"irs":{"r":1,"i":["811072713"],"z":["11219"]}}},
 {"s":"KINDER PREP CHILDCARE 2","n":[["KINDER PREP CHILDCARE 2 INC",4],["Kinder Prep Childcare 2  Inc.",1]],"x":{"ocp":{"r":1,"a":1221500,"l":"2022-10-24","i":["20221018110"]},"cbr":{"r":1,"a":1164300,"l":"2026-10-01","i":["CT104020279759976"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":1343650,"l":"2022-10-17","i":["CT1-040-20238803716"]},"cbv":{"r":1,"l":"2026-10-01","i":["CT104020279759976"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["Kinder Prep Childcare 2  Inc."]}}},
-{"s":"KINDERCARE EDUCATION AT WORK","n":[["KINDERCARE EDUCATION AT WORK LLC",10]],"x":{"ocp":{"r":3,"a":4623156,"l":"2023-09-29","i":["20230925104","20221028108","20221022119"]},"cbr":{"r":2,"a":2098384,"l":"2026-10-29","i":["CT104020279761475","CT104020279761415"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":5930556,"l":"2023-09-22","i":["CT1-040-20248802225","CT1-040-20238804105","CT1-040-20238803707"]},"cbv":{"r":2,"l":"2026-10-29","i":["CT104020279761475","CT104020279761415"],"m":["Non-M/WBE"]}}},
+{"s":"KINDERCARE EDUCATION AT WORK","n":[["KINDERCARE EDUCATION AT WORK LLC",12]],"x":{"ocp":{"r":3,"a":4623156,"l":"2023-09-29","i":["20230925104","20221028108","20221022119"]},"cbr":{"r":3,"a":3585644,"l":"2026-11-13","i":["CT104020279761476","CT104020279761475","CT104020279761415"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":5930556,"l":"2023-09-22","i":["CT1-040-20248802225","CT1-040-20238804105","CT1-040-20238803707"]},"cbv":{"r":3,"l":"2026-11-13","i":["CT104020279761476","CT104020279761475","CT104020279761415"],"m":["Non-M/WBE"]}}},
 {"s":"KINDERDANCE","d":[["Kinderdance",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["100727"],"z":["11215"],"p":["MBE","WBE"]}}},
 {"s":"KINDERGARTEN PARENTS CLUB","n":[["KINDERGARTEN PARENTS CLUB",1]],"x":{"irs":{"r":1,"i":["113403266"],"z":["11563"]}}},
 {"s":"KINDERHOOK LAKE","n":[["KINDERHOOK LAKE CORPORATION",1]],"x":{"irs":{"r":1,"i":["141490077"],"z":["12130"]}}},
@@ -1701,12 +1710,5 @@
 {"s":"KULKA","n":[["Kulka LLC",1]],"x":{"sbs":{"r":1,"i":["370165"],"z":["11788"],"p":["MBE"]}}},
 {"s":"KULLA PLUMBING","n":[["KULLA PLUMBING CORPORATION",1]],"x":{"dol":{"r":1,"i":["26-9YVN6-CR"],"z":["11105"]}}},
 {"s":"KULP DANNER COMBINED IRTUA FBO ETAL CHARITIES","n":[["KULP & DANNER COMBINED IRTUA FBO ETAL CHARITIES",1]],"x":{"irs":{"r":1,"i":["466757077"],"z":["14240"]}}},
-{"s":"KULSUM HINA CARE","n":[["KULSUM HINA CARE CORPORATION",1]],"x":{"irs":{"r":1,"i":["871383551"],"z":["11710"]}}},
-{"s":"KULTURE HEALTH","n":[["KULTURE HEALTH LLC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2024-10-15","i":["CT104020253026130"],"m":["Non-M/WBE"]}}},
-{"s":"KULU FOUNDATION","n":[["KULU FOUNDATION",1]],"x":{"irs":{"r":1,"i":["881695655"],"z":["10013"]}}},
-{"s":"KUMI CONSTRUCTION MANAGEMENT","n":[["Kumi Construction Management Corporation",1]],"x":{"sbs":{"r":1,"i":["6342"],"z":["20015"],"p":["MBE"]}}},
-{"s":"KUMI URI","n":[["KUMI URI USA",1]],"x":{"irs":{"r":1,"i":["812234920"],"z":["11210"]}}},
-{"s":"KUNDAL CONSTRUCTION","n":[["KUNDAL CONSTRUCTION INC",4],["Kundal Construction, Inc.",2]],"x":{"ocp":{"r":1,"a":1081819,"l":"2025-02-10","i":["20250203034"]},"cbr":{"r":1,"a":1081819,"l":"2025-01-31","i":["CT184620258805681"],"m":["Asian American"]},"ppt":{"r":1,"a":1081819,"l":"2025-01-31","i":["CT1-846-20258805681"]},"dbe":{"r":1,"i":["KUNDAL CONSTRUCTION INC"]},"sbs":{"r":1,"i":["332599"],"z":["08816"],"p":["MBE"]},"dol":{"r":1,"i":["24-64GL3-CR"],"z":["08816"]}}},
-{"s":"KUNDIG CONTRACTING","n":[["KUNDIG CONTRACTING INC.",1],["Kundig Contracting, Inc",1]],"x":{"dol":{"r":1,"i":["25-64P1K-CR"],"z":["11779"]},"sca":{"r":1,"i":["KUNDIG CONTRACTING, INC"],"z":["11779"]}}},
-{"s":"KUNDIMAN","n":[["KUNDIMAN INC",1]],"x":{"irs":{"r":1,"i":["061650662"],"z":["10023"]}}}
+{"s":"KULSUM HINA CARE","n":[["KULSUM HINA CARE CORPORATION",1]],"x":{"irs":{"r":1,"i":["871383551"],"z":["11710"]}}}
 ]}

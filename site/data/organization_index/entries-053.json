@@ -1,4 +1,12 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":53,"first_ordinal":89536,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":53,"first_ordinal":89532,"entries":[
+{"s":"M G MCLAREN ENGINEERING AND LAND SURVEYING P C","n":[["M.G. McLaren Engineering and Land Surveying, P.C.",1],["M.G. McLaren, Engineering and Land Surveying P.C.",1]],"x":{"ocp":{"r":1,"a":4500000,"l":"2019-06-20","i":["20190613040"]},"sca":{"r":1,"i":["M.G. MCLAREN ENGINEERING AND LAND SURVEYING, P.C."],"z":["07677"]}}},
+{"s":"M G MCLAREN ENGINEERING AND SURVEYING P C","n":[["M.G. McLaren Engineering and Surveying, P.C.",1]],"x":{"dol":{"r":1,"i":["25-64VU6-CR"],"z":["21152"]}}},
+{"s":"M G MCLAREN ENGINEERING LAND SURVEYING P C","n":[["M.G. McLaren Engineering & Land Surveying  P.C.",1]],"x":{"dbe":{"r":1,"i":["M.G. McLaren Engineering & Land Surveying  P.C."]}}},
+{"s":"M G MCLAREN P C","n":[["M.G. McLaren, P.C.",2],["M.G. MCLAREN P.C.",1]],"x":{"ocp":{"r":3,"a":683333,"l":"2011-02-14","i":["20110207018","20100324007","20051213002"]}}},
+{"s":"M G MCLAREN P C D/B/A MCLAREN ENGINEERING GROUP","n":[["M.G. McLaren, P.C. d/b/a McLaren Engineering Group",1]],"x":{"ocp":{"r":1,"a":3850000,"l":"2006-09-14","i":["20060908014"]}}},
+{"s":"M G MCLAREN P C DBA MCLAREN ENGINEERING GROUP","n":[["M.G. McLaren P.C. dba McLaren Engineering Group",1]],"x":{"ocp":{"r":1,"a":222000,"l":"2013-04-24","i":["20130417020"]}}},
+{"s":"M G PLUMBING AND HEATING","n":[["M&G PLUMBING AND HEATING CORP.",1]],"x":{"sbs":{"r":1,"i":["365801"],"z":["11101"],"p":["MBE"]}}},
+{"s":"M H BUILDERS","n":[["M H Builders Inc.",2],["M H BUILDERS INC.",1]],"x":{"sbs":{"r":1,"i":["14134"],"z":["11040"],"p":["MBE"]},"dol":{"r":1,"i":["25-646C6-CR"],"z":["11428"]},"sca":{"r":1,"i":["M H BUILDERS INC."],"z":["11428"]}}},
 {"s":"M H EBY","n":[["M H EBY INC",1],["M H EBY INC.",1]],"x":{"ocp":{"r":2,"a":3246450,"l":"2014-11-18","i":["20141110013","20130927005"]}}},
 {"s":"M H H PRIVATE FOUNDATION","n":[["M H & H PRIVATE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["844746620"],"z":["11232"]}}},
 {"s":"M H NEIMAN FOUNDATION","n":[["M & H NEIMAN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["237042788"],"z":["10456"]}}},
@@ -609,7 +617,7 @@
 {"s":"MAGIC SCHOOL","n":[["MAGIC SCHOOL INC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-03-19","i":["CT104020253116282"],"m":["Non-M/WBE"]}}},
 {"s":"MAGIC SEAL","n":[["Magic Seal, LLC",1]],"x":{"dol":{"r":1,"i":["25-65GQJ-CR"],"z":["14624"]}}},
 {"s":"MAGIC WRENCH","n":[["MAGIC WRENCH INC",1]],"x":{"dbe":{"r":1,"i":["MAGIC WRENCH INC"]}}},
-{"s":"MAGIC YEARS DAYCARE CENTER","n":[["MAGIC YEARS DAYCARE CENTER CORP.",1]],"x":{"dbe":{"r":1,"i":["MAGIC YEARS DAYCARE CENTER CORP."]}}},
+{"s":"MAGIC YEARS DAYCARE CENTER","n":[["MAGIC YEARS DAYCARE CENTER CORP.",3]],"x":{"cbr":{"r":1,"a":4212346,"l":"2026-11-13","i":["CT104020279759675"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-13","i":["CT104020279759675"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["MAGIC YEARS DAYCARE CENTER CORP."]}}},
 {"s":"MAGICAID","n":[["MAGICAID INC",1]],"x":{"irs":{"r":1,"i":["821727585"],"z":["11021"]}}},
 {"s":"MAGICAL FINISH CLEANING SOLUTIONS","n":[["Magical Finish Cleaning Solutions LLC",1]],"x":{"sbs":{"r":1,"i":["343716"],"z":["10451"],"p":["MBE","WBE"]}}},
 {"s":"MAGICAL MUSICAL SQUAD ADVISORY BOARD","n":[["MAGICAL MUSICAL SQUAD ADVISORY BOARD",1]],"x":{"irs":{"r":1,"i":["934277486"],"z":["13210"]}}},
@@ -1739,17 +1747,5 @@
 {"s":"MARCY PARENT TEACHER ORGANIZATION","n":[["MARCY PARENT TEACHER ORGANIZATION",1]],"x":{"irs":{"r":1,"i":["133941799"],"z":["13403"]}}},
 {"s":"MARDKHA FAMILY CHARITABLE FOUNDATION TR","n":[["MARDKHA FAMILY CHARITABLE FOUNDATION TR",1]],"x":{"irs":{"r":1,"i":["113477240"],"z":["11021"]}}},
 {"s":"MARE NOSTRUM ELEMENTS","n":[["MARE NOSTRUM ELEMENTS  INC.",1],["MARE NOSTRUM ELEMENTS INC",1]],"x":{"dbe":{"r":1,"i":["MARE NOSTRUM ELEMENTS  INC."]},"irs":{"r":1,"i":["264095519"],"z":["11377"]}}},
-{"s":"MAREA FISH MARKET","n":[["Marea Fish Market Inc.",1]],"x":{"sbs":{"r":1,"i":["391957"],"z":["10463"],"p":["MBE"]}}},
-{"s":"MARECHES SATMAR","n":[["MARECHES SATMAR",1]],"x":{"irs":{"r":1,"i":["832901027"],"z":["11205"]}}},
-{"s":"MAREH KEREN TORAH","n":[["MAREH KEREN TORAH INC",1]],"x":{"irs":{"r":1,"i":["842702373"],"z":["11230"]}}},
-{"s":"MARES DE MEXICO MARITIME HERITAGE C ORP","n":[["MARES DE MEXICO MARITIME HERITAGE C ORP",1]],"x":{"irs":{"r":1,"i":["423210436"],"z":["10549"]}}},
-{"s":"MARESCA EXTERIORS","n":[["Maresca Exteriors, Inc.",1]],"x":{"dol":{"r":1,"i":["26-69V6C-CR"],"z":["12603"]}}},
-{"s":"MAREVE","n":[["MAREVE CORPORATION",1]],"x":{"irs":{"r":1,"i":["133701551"],"z":["11232"]}}},
-{"s":"MARGALIT","n":[["MARGALIT INC",1]],"x":{"irs":{"r":1,"i":["263325336"],"z":["11367"]}}},
-{"s":"MARGARELLA INDUSTRIAL CONSTRUCTION/TOP ONE MAINTENANCE J/V","n":[["Margarella Industrial Construction/top One Maintenance J/v",1]],"x":{"ocp":{"r":1,"a":7214600,"l":"2015-06-22","i":["20150615020"]}}},
-{"s":"MARGARET A COOKE FOUNDATION","n":[["MARGARET A COOKE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["843617172"],"z":["11530"]}}},
-{"s":"MARGARET A MCGRATH CHARITABLE FOUNDATION SCHOLARSHIP FUND","n":[["MARGARET A MCGRATH CHARITABLE FOUNDATION SCHOLARSHIP FUND",1]],"x":{"irs":{"r":1,"i":["206228522"],"z":["14420"]}}},
-{"s":"MARGARET A MEYER FAMILY FOUNDATIONINC","n":[["MARGARET A MEYER FAMILY FOUNDATIONINC",1]],"x":{"irs":{"r":1,"i":["203983138"],"z":["10022"]}}},
-{"s":"MARGARET AND FRANK STINCHFIELD FOUNDATION","n":[["MARGARET AND FRANK STINCHFIELD FOUNDATION",1]],"x":{"irs":{"r":1,"i":["136082200"],"z":["10017"]}}},
-{"s":"MARGARET AND LEO MEYER AND HANS M HIRSCH FOUNDATION","n":[["MARGARET AND LEO MEYER AND HANS M HIRSCH FOUNDATION",1]],"x":{"irs":{"r":1,"i":["262982246"],"z":["10707"]}}}
+{"s":"MAREA FISH MARKET","n":[["Marea Fish Market Inc.",1]],"x":{"sbs":{"r":1,"i":["391957"],"z":["10463"],"p":["MBE"]}}}
 ]}

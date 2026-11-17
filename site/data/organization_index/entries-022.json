@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":22,"first_ordinal":36986,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":22,"first_ordinal":36984,"entries":[
+{"s":"CONSORTIUM OF JEWISH DAY SCHOOLS","n":[["CONSORTIUM OF JEWISH DAY SCHOOLS INC",1]],"x":{"irs":{"r":1,"i":["263142685"],"z":["10019"]}}},
+{"s":"CONSTABLE CUSTODIAL SERVICE","n":[["CONSTABLE CUSTODIAL SERVICE INC",3],["CONSTABLE CUSTODIAL SERVICE, INC.",1],["Constable Custodial Service Inc",1],["Constable Custodial Service, Inc.",1]],"d":[["Constable Custodial Service, Inc.",1]],"x":{"ocp":{"r":1,"a":921755,"l":"2026-07-01","i":["20260624031"]},"cbr":{"r":1,"a":921755.12,"l":"2026-06-23","i":["CT182620278801214"],"m":["Hispanic American"]},"ppt":{"r":1,"a":921755.12,"l":"2026-06-23","i":["CT1-826-20278801214"]},"cbv":{"r":1,"l":"2026-06-23","i":["CT182620278801214"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["102146"],"z":["12734"],"p":["MBE"]},"dol":{"r":2,"v":["dba","name"],"i":["25-659KC-CR"],"z":["12754"]}}},
+{"s":"CONSTABLE HALL ASSOCIATION","n":[["CONSTABLE HALL ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["161010339"],"z":["13325"]}}},
+{"s":"CONSTABLE TREE SERVICE","n":[["Constable Tree Service, LLC",1]],"x":{"dol":{"r":1,"i":["26-66HFZ-CR"],"z":["12121"]}}},
 {"s":"CONSTABLE VOLUNTEER FIREMEN","n":[["CONSTABLE VOLUNTEER FIREMEN INC",1]],"x":{"irs":{"r":1,"i":["141594863"],"z":["12926"]}}},
 {"s":"CONSTABLEVILLE AMBULANCE","n":[["CONSTABLEVILLE AMBULANCE INC",1]],"x":{"irs":{"r":1,"i":["844069879"],"z":["13325"]}}},
 {"s":"CONSTABLEVILLE FISH AND GAME CLUB","n":[["CONSTABLEVILLE FISH AND GAME CLUB",1]],"x":{"irs":{"r":1,"i":["453043686"],"z":["13325"]}}},
@@ -1375,7 +1379,7 @@
 {"s":"CRAFTS ALLIANCE","n":[["CRAFTS ALLIANCE INC",1]],"x":{"irs":{"r":1,"i":["272076868"],"z":["14201"]}}},
 {"s":"CRAFTSMAN FENCE","n":[["Craftsman Fence Corp.",1]],"x":{"dol":{"r":1,"i":["25-65IOU-CR"],"z":["11940"]}}},
 {"s":"CRAFTWORK MINISTRY","n":[["CRAFTWORK MINISTRY",1]],"x":{"irs":{"r":1,"i":["932927231"],"z":["14094"]}}},
-{"s":"CRAFTY CLOTH","n":[["Crafty Cloth Inc",5],["Crafty Cloth Inc.",1]],"x":{"cbr":{"r":3,"a":515522.74,"l":"2026-10-29","i":["CT182720278803377","CT181620271403438","CT181620261415183"],"m":["Black American"]},"cbv":{"r":2,"l":"2026-09-01","i":["CT181620271403438","CT181620261415183"],"m":["Black American"]},"sbs":{"r":1,"i":["341868"],"z":["11510"],"p":["MBE"]}}},
+{"s":"CRAFTY CLOTH","n":[["Crafty Cloth Inc",6],["Crafty Cloth Inc.",1]],"x":{"cbr":{"r":3,"a":515522.74,"l":"2026-10-29","i":["CT182720278803377","CT181620271403438","CT181620261415183"],"m":["Black American"]},"cbv":{"r":3,"l":"2026-10-29","i":["CT182720278803377","CT181620271403438","CT181620261415183"],"m":["Black American"]},"sbs":{"r":1,"i":["341868"],"z":["11510"],"p":["MBE"]}}},
 {"s":"CRAFTY GETAWAYS CARES","n":[["CRAFTY GETAWAYS CARES INC",1]],"x":{"irs":{"r":1,"i":["920827856"],"z":["11764"]}}},
 {"s":"CRAFTY TECHNOLOGIES","n":[["Crafty Technologies, Inc",2]],"x":{"sbs":{"r":1,"i":["368400"],"z":["10019"],"p":["MBE"]},"sca":{"r":1,"i":["CRAFTY TECHNOLOGIES, INC"],"z":["10019"]}}},
 {"s":"CRAG BURN GOLF CLUB","n":[["CRAG BURN GOLF CLUB INC",1]],"x":{"irs":{"r":1,"i":["161165877"],"z":["14052"]}}},
@@ -1552,13 +1556,5 @@
 {"s":"CREATIVE DIRECTION CONSTRUCTION AND DESIGN","n":[["Creative Direction Construction and Design , LLC",1]],"x":{"sbs":{"r":1,"i":["11684"],"z":["10550"],"p":["MBE"]}}},
 {"s":"CREATIVE DIRECTION CONSTRUCTION DESIGN","n":[["CREATIVE DIRECTION CONSTRUCTION & DESIGN, LLC",1]],"d":[["Creative Direction Construction & Design, LLC",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["25-67GHS-CR"],"z":["10550"]}}},
 {"s":"CREATIVE EDGE PARTIES CATERERS","n":[["Creative Edge Parties Caterers, Inc.",1]],"x":{"sbs":{"r":1,"i":["324266"],"z":["10014"],"p":["WBE"]}}},
-{"s":"CREATIVE ENSEMBLE","n":[["CREATIVE ENSEMBLE COMPANY",1]],"x":{"irs":{"r":1,"i":["424654813"],"z":["10018"]}}},
-{"s":"CREATIVE ENVIRONMENT DAY CARE","n":[["CREATIVE ENVIRONMENT DAY CARE INC",1]],"x":{"irs":{"r":1,"i":["222428915"],"z":["14502"]}}},
-{"s":"CREATIVE EQUITY INITIATIVE","n":[["CREATIVE EQUITY INITIATIVE",1]],"x":{"irs":{"r":1,"i":["991977441"],"z":["11216"]}}},
-{"s":"CREATIVE EVOLUTION","n":[["CREATIVE EVOLUTION",1]],"x":{"irs":{"r":1,"i":["200870848"],"z":["10023"]}}},
-{"s":"CREATIVE EXPRESSIONS","d":[["Creative Expressions",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["344087"],"z":["11102"],"p":["MBE"]}}},
-{"s":"CREATIVE EXPRESSIONS UNLIMITED","n":[["Creative Expressions Unlimited Inc.",1]],"x":{"sbs":{"r":1,"i":["344087"],"z":["11102"],"p":["MBE"]}}},
-{"s":"CREATIVE FLOOR SOLUTIONS","n":[["Creative Floor Solutions, LLC",1]],"x":{"sbs":{"r":1,"i":["3917"],"z":["07603"],"p":["MBE"]}}},
-{"s":"CREATIVE FLOORING DESIGNS","n":[["Creative Flooring Designs Inc.",1]],"x":{"dol":{"r":1,"i":["24-64Y3K-CR"],"z":["12118"]}}},
-{"s":"CREATIVE FORCE FOUNDATION","n":[["CREATIVE FORCE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["872422425"],"z":["12020"]}}}
+{"s":"CREATIVE ENSEMBLE","n":[["CREATIVE ENSEMBLE COMPANY",1]],"x":{"irs":{"r":1,"i":["424654813"],"z":["10018"]}}}
 ]}

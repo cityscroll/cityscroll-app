@@ -1,4 +1,16 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":32,"first_ordinal":53738,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":32,"first_ordinal":53729,"entries":[
+{"s":"FORGIVENESS ASSEMBLY","n":[["FORGIVENESS ASSEMBLY INC",1]],"x":{"irs":{"r":1,"i":["113540768"],"z":["11434"]}}},
+{"s":"FORGIVENESS LIFE SALVATION","n":[["FORGIVENESS LIFE & SALVATION",1]],"x":{"irs":{"r":1,"i":["471261272"],"z":["14468"]}}},
+{"s":"FORGOTTEN FELINES","n":[["FORGOTTEN FELINES INC",1]],"x":{"irs":{"r":1,"i":["133394305"],"z":["10595"]}}},
+{"s":"FORGOTTEN FELINES OF WNY","n":[["FORGOTTEN FELINES OF WNY",1]],"x":{"irs":{"r":1,"i":["862097385"],"z":["14057"]}}},
+{"s":"FORGOTTEN FOODS","n":[["FORGOTTEN FOODS INC",1]],"x":{"irs":{"r":1,"i":["931488692"],"z":["10310"]}}},
+{"s":"FORGOTTEN FRIENDS OF LONG ISLAND","n":[["FORGOTTEN FRIENDS OF LONG ISLAND",1]],"x":{"irs":{"r":1,"i":["262288394"],"z":["11803"]}}},
+{"s":"FORGOTTEN FRIENDS PET RESCUE","n":[["FORGOTTEN FRIENDS PET RESCUE INC",1]],"x":{"irs":{"r":1,"i":["311788661"],"z":["13459"]}}},
+{"s":"FORGOTTEN FUTURES FUND","n":[["FORGOTTEN FUTURES FUND INC",1]],"x":{"irs":{"r":1,"i":["850642456"],"z":["11238"]}}},
+{"s":"FORGOTTEN LINE FOUNDATION","n":[["FORGOTTEN LINE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["412879061"],"z":["14219"]}}},
+{"s":"FORHUMANITY","n":[["FORHUMANITY INC",1]],"x":{"irs":{"r":1,"i":["832054879"],"z":["10594"]}}},
+{"s":"FORIX FOUNDATION","n":[["FORIX FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["263882110"],"z":["10024"]}}},
+{"s":"FORK AND SPOON","n":[["FORK AND SPOON INC",1]],"x":{"irs":{"r":1,"i":["994038545"],"z":["11545"]}}},
 {"s":"FORKS SPORTMENS CLUB","n":[["FORKS SPORTMENS CLUB INC",1]],"x":{"irs":{"r":1,"i":["161172607"],"z":["14031"]}}},
 {"s":"FORM AND FIBER","n":[["Form and Fiber, Inc.",1]],"x":{"sbs":{"r":1,"i":["393289"],"z":["75147"],"p":["WBE"]}}},
 {"s":"FORM FOCUSED OPERATION REDEFINE MASCULINITY NYC","n":[["FORM FOCUSED OPERATION REDEFINE MASCULINITY NYC",1]],"x":{"irs":{"r":1,"i":["833981830"],"z":["11226"]}}},
@@ -1688,14 +1700,5 @@
 {"s":"FRIENDS OF CHRIST CHURCH CONSERVANCY","n":[["FRIENDS OF CHRIST CHURCH CONSERVANCY INC",1]],"x":{"irs":{"r":1,"i":["141828533"],"z":["12534"]}}},
 {"s":"FRIENDS OF CITY RELIQUARYINCORPORATED","n":[["FRIENDS OF CITY RELIQUARYINCORPORATED",1]],"x":{"irs":{"r":1,"i":["204355036"],"z":["11211"]}}},
 {"s":"FRIENDS OF CLARENCE","n":[["FRIENDS OF CLARENCE INC",1]],"x":{"irs":{"r":1,"i":["161386390"],"z":["14031"]}}},
-{"s":"FRIENDS OF CLARK RESERVATION STATE PARK","n":[["FRIENDS OF CLARK RESERVATION STATE PARK",1]],"x":{"irs":{"r":1,"i":["222305347"],"z":["13078"]}}},
-{"s":"FRIENDS OF CLASSICAL CHARTER SCHOOLS","n":[["FRIENDS OF CLASSICAL CHARTER SCHOOLS",1],["FRIENDS OF CLASSICAL CHARTER SCHOOLS INC",1]],"x":{"dbe":{"r":1,"i":["FRIENDS OF CLASSICAL CHARTER SCHOOLS"]},"irs":{"r":1,"i":["832539799"],"z":["10459"]}}},
-{"s":"FRIENDS OF CLAY ACADEMY CHARTER SCHOOLS","n":[["FRIENDS OF CLAY ACADEMY CHARTER SCHOOLS INC",1]],"x":{"irs":{"r":1,"i":["844553376"],"z":["10522"]}}},
-{"s":"FRIENDS OF CLERMONT","n":[["FRIENDS OF CLERMONT",1]],"x":{"irs":{"r":1,"i":["222434835"],"z":["12526"]}}},
-{"s":"FRIENDS OF CLIFTON PARK OPEN SPACEINC","n":[["FRIENDS OF CLIFTON PARK OPEN SPACEINC",1]],"x":{"irs":{"r":1,"i":["203924540"],"z":["12065"]}}},
-{"s":"FRIENDS OF CLINTON","n":[["FRIENDS OF CLINTON",1]],"x":{"irs":{"r":1,"i":["993120640"],"z":["12514"]}}},
-{"s":"FRIENDS OF COECLES HARBOR","n":[["FRIENDS OF COECLES HARBOR INC",1]],"x":{"irs":{"r":1,"i":["881009889"],"z":["11965"]}}},
-{"s":"FRIENDS OF COLEMAN STATION","n":[["FRIENDS OF COLEMAN STATION INC",1]],"x":{"irs":{"r":1,"i":["134018911"],"z":["12546"]}}},
-{"s":"FRIENDS OF COLES WOODS","n":[["FRIENDS OF COLES WOODS INC",1]],"x":{"irs":{"r":1,"i":["141601428"],"z":["12801"]}}},
-{"s":"FRIENDS OF COLONIE TOWN PARK TRAILS","n":[["FRIENDS OF COLONIE TOWN PARK TRAILS",1]],"x":{"irs":{"r":1,"i":["883842494"],"z":["12211"]}}}
+{"s":"FRIENDS OF CLARK RESERVATION STATE PARK","n":[["FRIENDS OF CLARK RESERVATION STATE PARK",1]],"x":{"irs":{"r":1,"i":["222305347"],"z":["13078"]}}}
 ]}

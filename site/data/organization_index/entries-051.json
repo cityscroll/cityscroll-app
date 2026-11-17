@@ -1,4 +1,13 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":51,"first_ordinal":86129,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":51,"first_ordinal":86123,"entries":[
+{"s":"LIFT HER UP","n":[["LIFT HER UP",1]],"x":{"irs":{"r":1,"i":["991983345"],"z":["10023"]}}},
+{"s":"LIFT JESUS HIGHER FELLOWSHIP","n":[["LIFT JESUS HIGHER FELLOWSHIP",1]],"x":{"irs":{"r":1,"i":["880586130"],"z":["11738"]}}},
+{"s":"LIFT ME UP","n":[["LIFT ME UP INC",1]],"x":{"irs":{"r":1,"i":["830834332"],"z":["11568"]}}},
+{"s":"LIFT MY GLASS","n":[["Lift My Glass, Inc.",1]],"x":{"dol":{"r":1,"i":["25-6H4RC-CR"],"z":["11563"]}}},
+{"s":"LIFT PARTS SERVICE","n":[["Lift Parts Service of New York, Inc.",1]],"x":{"ocp":{"r":1,"a":212500,"l":"2007-04-23","i":["20070416018"]}}},
+{"s":"LIFT PARTS SERVICE OF N Y","n":[["Lift Parts Service of N.Y. Inc.",1]],"x":{"ocp":{"r":1,"a":102000,"l":"2003-12-17","i":["20031210024"]}}},
+{"s":"LIFT SAFE - FUEL SAFE","n":[["LIFT SAFE - FUEL SAFE, INC.",1]],"x":{"dol":{"r":1,"i":["25-67BND-CR"],"z":["13210"]}}},
+{"s":"LIFT SOLUTIONS","n":[["Lift Solutions, Inc.",1]],"x":{"sbs":{"r":1,"i":["13990"],"z":["98290"],"p":["MBE"]}}},
+{"s":"LIFT UP A STANDARD MINISTRIES INTERNATIONAL FELLOWSHIP","n":[["LIFT UP A STANDARD MINISTRIES INTERNATIONAL FELLOWSHIP INC",1]],"x":{"irs":{"r":1,"i":["710986013"],"z":["11726"]}}},
 {"s":"LIFT UP HEMI-INC","n":[["LIFT UP HEMI-INC",1]],"x":{"irs":{"r":1,"i":["463391554"],"z":["13045"]}}},
 {"s":"LIFT UP LAB","n":[["LIFT UP LAB INC",1]],"x":{"irs":{"r":1,"i":["990933267"],"z":["10035"]}}},
 {"s":"LIFTBRAND AI","d":[["LiftBrand.ai",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["396524"],"z":["11435"],"p":["MBE"]}}},
@@ -210,6 +219,7 @@
 {"s":"LIL SWEET TREAT","n":[["LIL SWEET TREAT LLC",1]],"x":{"dbe":{"r":1,"i":["LIL SWEET TREAT LLC"]}}},
 {"s":"LILA BOYER","n":[["LILA BOYER",2]],"x":{"cbr":{"r":1,"a":19950,"l":"2025-12-16","i":["CT181620261408536"],"m":["Black American"]},"cbv":{"r":1,"l":"2025-12-16","i":["CT181620261408536"],"m":["Black American"]}}},
 {"s":"LILA CAFE","n":[["Lila Cafe LLC",1]],"x":{"sbs":{"r":1,"i":["329475"],"z":["11221"],"p":["MBE"]}}},
+{"s":"LILA COUNSELING WELLNESS","n":[["LILA COUNSELING & WELLNESS",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-11-13","i":["CT104020273048231"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-13","i":["CT104020273048231"],"m":["Non-M/WBE"]}}},
 {"s":"LILA G BULL CHARITABLE TRUST UNDER AGREEMENT DATED FEBRUARY 9 1998","n":[["LILA G BULL CHARITABLE TRUST UNDER AGREEMENT DATED FEBRUARY 9 1998",1]],"x":{"irs":{"r":1,"i":["166520842"],"z":["10001"]}}},
 {"s":"LILA LONG ISLAND LATINO ALLIANCE","n":[["LILA LONG ISLAND LATINO ALLIANCE INC",1]],"x":{"irs":{"r":1,"i":["882655329"],"z":["11520"]}}},
 {"s":"LILA NY GROUP","n":[["LILA NY GROUP INC",1]],"x":{"irs":{"r":1,"i":["834236353"],"z":["11542"]}}},
@@ -790,7 +800,7 @@
 {"s":"LITTLE GEMS THERAPEUTIC RIDING","n":[["LITTLE GEMS THERAPEUTIC RIDING INC",1]],"x":{"irs":{"r":1,"i":["834164108"],"z":["12168"]}}},
 {"s":"LITTLE GOLDEN LIGHT","n":[["LITTLE GOLDEN LIGHT INC",1]],"x":{"irs":{"r":1,"i":["932742665"],"z":["11209"]}}},
 {"s":"LITTLE GREEN GOURMETS","n":[["LITTLE GREEN GOURMETS LLC",1]],"x":{"sbs":{"r":1,"i":["327596"],"z":["10029"],"p":["WBE"]}}},
-{"s":"LITTLE GREEN TUGBOAT LICENSED BEHAVIOR ANALYSIS SERVICESPLLC","n":[["LITTLE GREEN TUGBOAT LICENSED BEHAVIOR ANALYSIS SERVICESPLLC",6]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-03-03","i":["CT104020263114671","CT104020263086272","CT104020263083821"],"m":["Non-M/WBE"]},"cbv":{"r":3,"l":"2026-03-03","i":["CT104020263114671","CT104020263086272","CT104020263083821"],"m":["Non-M/WBE"]}}},
+{"s":"LITTLE GREEN TUGBOAT LICENSED BEHAVIOR ANALYSIS SERVICESPLLC","n":[["LITTLE GREEN TUGBOAT LICENSED BEHAVIOR ANALYSIS SERVICESPLLC",8]],"x":{"cbr":{"r":4,"a":100000,"l":"2026-11-13","i":["CT104020273040379","CT104020263114671","CT104020263086272","CT104020263083821"],"m":["Non-M/WBE"]},"cbv":{"r":4,"l":"2026-11-13","i":["CT104020273040379","CT104020263114671","CT104020263086272","CT104020263083821"],"m":["Non-M/WBE"]}}},
 {"s":"LITTLE GUYANA CHAMBER OF COMMERCE","n":[["LITTLE GUYANA CHAMBER OF COMMERCE",1]],"x":{"irs":{"r":1,"i":["933447987"],"z":["11420"]}}},
 {"s":"LITTLE HAITI BK","n":[["LITTLE HAITI BK INC",5]],"x":{"cbr":{"r":3,"a":2945000,"l":"2026-09-08","i":["CT126020278802388","CT126020258805259","CT126020248809116"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["LITTLE HAITI BK INC"]},"irs":{"r":1,"i":["824710754"],"z":["11225"]}}},
 {"s":"LITTLE HANDS AND FEET DAYCARE","n":[["LITTLE HANDS AND FEET DAYCARE LLC",3]],"x":{"cbr":{"r":1,"a":1102392,"l":"2026-09-29","i":["CT104020279759582"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-29","i":["CT104020279759582"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["LITTLE HANDS AND FEET DAYCARE LLC"]}}},
@@ -1650,14 +1660,5 @@
 {"s":"LOKANA","n":[["LOKANA INC",1]],"x":{"irs":{"r":1,"i":["824226420"],"z":["10016"]}}},
 {"s":"LOKENATH MISSION OF","n":[["LOKENATH MISSION OF USA INC",1]],"x":{"irs":{"r":1,"i":["853652149"],"z":["11004"]}}},
 {"s":"LOLA FOUNDATION","n":[["LOLA FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["352613640"],"z":["10956"]}}},
-{"s":"LOLA JAYNE FOUNDATION","n":[["LOLA JAYNE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["922562966"],"z":["11783"]}}},
-{"s":"LOLA LOUIS CREATIVE PERFORMING ARTS","n":[["LOLA LOUIS CREATIVE & PERFORMING ARTS INC",1]],"x":{"irs":{"r":1,"i":["205554439"],"z":["10005"]}}},
-{"s":"LOLA S BRUNCH","n":[["Lola's Brunch LLC",1]],"x":{"sbs":{"r":1,"i":["366587"],"z":["10463"],"p":["MBE","WBE"]}}},
-{"s":"LOLAS LEGACY ANIMAL FOUNDATION","n":[["LOLAS LEGACY ANIMAL FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["425071454"],"z":["11953"]}}},
-{"s":"LOLLY S EARLY CHILDHOOD CENTER","n":[["LOLLY'S EARLY CHILDHOOD CENTER INC.",2],["LOLLY'S EARLY CHILDHOOD CENTER INC",1]],"x":{"cbr":{"r":1,"a":1579500,"l":"2026-09-18","i":["CT104020279758871"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-18","i":["CT104020279758871"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["LOLLY'S EARLY CHILDHOOD CENTER INC"]}}},
-{"s":"LOLOS LOST AND FOUND ANIMALS","n":[["LOLOS LOST AND FOUND ANIMALS INC",1]],"x":{"irs":{"r":1,"i":["830640944"],"z":["12520"]}}},
-{"s":"LOMA NO 5","n":[["Loma No. 5 Corp.",1]],"x":{"sbs":{"r":1,"i":["395537"],"z":["11212"],"p":["MBE"]}}},
-{"s":"LOMA RESTAURANT SPANISH AMERICAN FOOD","d":[["Loma Restaurant Spanish & American Food",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["395537"],"z":["11212"],"p":["MBE"]}}},
-{"s":"LOMAZER YOUNG MENS BENEVOLENT ASSOCIATION","n":[["LOMAZER YOUNG MENS BENEVOLENT ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["112597118"],"z":["10530"]}}},
-{"s":"LOMBAHE","n":[["LOMBAHE INC",1]],"x":{"irs":{"r":1,"i":["335028738"],"z":["10003"]}}}
+{"s":"LOLA JAYNE FOUNDATION","n":[["LOLA JAYNE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["922562966"],"z":["11783"]}}}
 ]}

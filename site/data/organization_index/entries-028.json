@@ -1,4 +1,11 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":28,"first_ordinal":47000,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":28,"first_ordinal":46995,"entries":[
+{"s":"ELIM HEALING WATERS MINISTRIES","n":[["ELIM HEALING WATERS MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["814412546"],"z":["11550"]}}},
+{"s":"ELIM HOUSE OF PRAYER AND WORSHIP","n":[["ELIM HOUSE OF PRAYER AND WORSHIP INC",1]],"x":{"irs":{"r":1,"i":["113304468"],"z":["11219"]}}},
+{"s":"ELIM HOUSE OF WORSHIP ELIM CASA DE ADORACION","n":[["ELIM HOUSE OF WORSHIP ELIM CASA DE ADORACION INC",1]],"x":{"irs":{"r":1,"i":["510554433"],"z":["10009"]}}},
+{"s":"ELIM INTERNATIONAL WORSHIP CENTER CONGREGATION EMMANUEL","n":[["ELIM INTERNATIONAL WORSHIP CENTER CONGREGATION EMMANUEL",1]],"x":{"irs":{"r":1,"i":["352554652"],"z":["11207"]}}},
+{"s":"ELIM LIFE CHURCH","n":[["ELIM LIFE CHURCH",1]],"x":{"irs":{"r":1,"i":["161366057"],"z":["14485"]}}},
+{"s":"ELIM PENTECOSTAL FELLOWSHIP","n":[["ELIM PENTECOSTAL FELLOWSHIP INC",1]],"x":{"irs":{"r":1,"i":["933527598"],"z":["10312"]}}},
+{"s":"ELIM RESTORATION CHURCH OF GOD","n":[["ELIM RESTORATION CHURCH OF GOD",1]],"x":{"irs":{"r":1,"i":["800074150"],"z":["11203"]}}},
 {"s":"ELIM SENIOR DAY","n":[["ELIM SENIOR DAY INC",1]],"x":{"irs":{"r":1,"i":["462757926"],"z":["11427"]}}},
 {"s":"ELIM TABERNACLE","n":[["ELIM TABERNACLE",1],["ELIM TABERNACLE CORPORATION",1]],"x":{"irs":{"r":2,"i":["133265252","222143009"],"z":["11361","13760"]}}},
 {"s":"ELIM TABERNACLE CHURCH OF CHRISTIAN AND MISSIONARY ALLIANCE","n":[["ELIM TABERNACLE CHURCH OF CHRISTIAN AND MISSIONARY ALLIANCE INC",1]],"x":{"irs":{"r":1,"i":["510170348"],"z":["10989"]}}},
@@ -559,7 +566,7 @@
 {"s":"EMEK HATALMUD","n":[["EMEK HATALMUD",1]],"x":{"irs":{"r":1,"i":["743250228"],"z":["11219"]}}},
 {"s":"EMELEC ELECTRIC","n":[["Emelec Electric Corp.",1]],"x":{"sbs":{"r":1,"i":["12222"],"z":["10470"],"p":["MBE"]}}},
 {"s":"EMELIN THEATRE FOR THE PERFORMING ARTS","n":[["EMELIN THEATRE FOR THE PERFORMING ARTS INC",1]],"x":{"irs":{"r":1,"i":["133601485"],"z":["10543"]}}},
-{"s":"EMELLE ENTERPRISES","n":[["Emelle Enterprises Inc",2],["Emelle Enterprises, Incorporated",1]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-04-11","i":["CT104020253156691","CT104020253054386"],"m":["Non-M/WBE"]},"sbs":{"r":1,"i":["12223"],"z":["11373"],"p":["MBE","WBE"]}}},
+{"s":"EMELLE ENTERPRISES","n":[["Emelle Enterprises Inc",4],["Emelle Enterprises, Incorporated",1]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-11-13","i":["CT104020273037842","CT104020253156691","CT104020253054386"],"m":["Non-M/WBE","Black American"]},"cbv":{"r":1,"l":"2026-11-13","i":["CT104020273037842"],"m":["Black American"]},"sbs":{"r":1,"i":["12223"],"z":["11373"],"p":["MBE","WBE"]}}},
 {"s":"EMENAR ELECTRICAL SERVICES CONSTRUCTION","n":[["EMENAR ELECTRICAL SERVICES CONSTRUCTION, INC.",1]],"x":{"dol":{"r":1,"i":["26-9YR5C-CR"],"z":["10309"]}}},
 {"s":"EMERALD ADVISERS","n":[["EMERALD ADVISERS INC",1],["Emerald Advisers Inc",1]],"x":{"ocp":{"r":1,"a":1825000,"l":"2008-03-17","i":["20080307042"]},"dbe":{"r":1,"i":["EMERALD ADVISERS INC"]}}},
 {"s":"EMERALD ADVISORS","n":[["Emerald Advisors Inc.",1]],"x":{"ocp":{"r":1,"a":910000,"l":"2006-08-31","i":["20060824026"]}}},
@@ -1634,7 +1641,5 @@
 {"s":"ENVIRONMENTAL SYSTEMS PRODUCTS HOLDINGS","n":[["Environmental Systems Products Holdings, Inc.",1]],"x":{"ocp":{"r":1,"a":313464.3,"l":"2003-07-22","i":["20030721012"]}}},
 {"s":"ENVIRONMENTAL SYSTEMS RESEARCH INC (ESRI)","n":[["Environmental Systems Research, Inc (ESRI)",1]],"x":{"ocp":{"r":1,"a":198000,"l":"2006-01-06","i":["20060103005"]}}},
 {"s":"ENVIRONMENTAL SYSTEMS RESEARCH INSITIUTE","n":[["Environmental Systems Research Insitiute Inc.",1]],"x":{"ocp":{"r":1,"a":227400,"l":"2016-10-17","i":["20161007009"]}}},
-{"s":"ENVIRONMENTAL SYSTEMS RESEARCH INST","n":[["Environmental Systems Research Inst. Inc.",1]],"x":{"ocp":{"r":1,"a":120540,"l":"2005-06-27","i":["20050620006"]}}},
-{"s":"ENVIRONMENTAL SYSTEMS RESEARCH INSTITURE","n":[["ENVIRONMENTAL SYSTEMS RESEARCH INSTITURE INC.",1]],"x":{"ocp":{"r":1,"a":159988.17,"l":"2013-09-23","i":["20130916025"]}}},
-{"s":"ENVIRONMENTAL SYSTEMS RESEARCH INSTITUTE","n":[["ENVIRONMENTAL SYSTEMS RESEARCH INSTITUTE INC",38],["Environmental Systems Research Institute Inc.",26],["Environmental Systems Research Institute Inc",2],["Environmental Systems Research Institute, Inc.",2],["ENVIRONMENTAL SYSTEMS RESEARCH INSTITUTE  INC.",1]],"x":{"ocp":{"r":30,"a":8619472.09,"l":"2026-06-29","c":30,"i":["20260623043","20260410018","20251117012","20250701013","20241016085"]},"cbr":{"r":16,"a":1634747.95,"l":"2026-07-16","c":16,"i":["CT112520278801642","CT104020273000316","CT103020278801000","CT126020268807975","CT112520268808384"],"m":["Non-M/WBE"]},"ppt":{"r":16,"a":4111130.71,"l":"2026-06-22","c":16,"i":["CT1-030-20278801000","CT1-017-20268802668","CT1-017-20268803650","CT1-030-20268800748","CT1-017-20258802362"]},"cbv":{"r":6,"l":"2026-07-16","c":6,"i":["CT112520278801642","CT104020273000316","CT103020278801000","CT126020268807975","CT112520268808384"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ENVIRONMENTAL SYSTEMS RESEARCH INSTITUTE  INC."]}}}
+{"s":"ENVIRONMENTAL SYSTEMS RESEARCH INST","n":[["Environmental Systems Research Inst. Inc.",1]],"x":{"ocp":{"r":1,"a":120540,"l":"2005-06-27","i":["20050620006"]}}}
 ]}

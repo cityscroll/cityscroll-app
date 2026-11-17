@@ -1,4 +1,13 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":52,"first_ordinal":87790,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":52,"first_ordinal":87785,"entries":[
+{"s":"LOLA LOUIS CREATIVE PERFORMING ARTS","n":[["LOLA LOUIS CREATIVE & PERFORMING ARTS INC",1]],"x":{"irs":{"r":1,"i":["205554439"],"z":["10005"]}}},
+{"s":"LOLA S BRUNCH","n":[["Lola's Brunch LLC",1]],"x":{"sbs":{"r":1,"i":["366587"],"z":["10463"],"p":["MBE","WBE"]}}},
+{"s":"LOLAS LEGACY ANIMAL FOUNDATION","n":[["LOLAS LEGACY ANIMAL FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["425071454"],"z":["11953"]}}},
+{"s":"LOLLY S EARLY CHILDHOOD CENTER","n":[["LOLLY'S EARLY CHILDHOOD CENTER INC.",2],["LOLLY'S EARLY CHILDHOOD CENTER INC",1]],"x":{"cbr":{"r":1,"a":1579500,"l":"2026-09-18","i":["CT104020279758871"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-18","i":["CT104020279758871"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["LOLLY'S EARLY CHILDHOOD CENTER INC"]}}},
+{"s":"LOLOS LOST AND FOUND ANIMALS","n":[["LOLOS LOST AND FOUND ANIMALS INC",1]],"x":{"irs":{"r":1,"i":["830640944"],"z":["12520"]}}},
+{"s":"LOMA NO 5","n":[["Loma No. 5 Corp.",1]],"x":{"sbs":{"r":1,"i":["395537"],"z":["11212"],"p":["MBE"]}}},
+{"s":"LOMA RESTAURANT SPANISH AMERICAN FOOD","d":[["Loma Restaurant Spanish & American Food",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["395537"],"z":["11212"],"p":["MBE"]}}},
+{"s":"LOMAZER YOUNG MENS BENEVOLENT ASSOCIATION","n":[["LOMAZER YOUNG MENS BENEVOLENT ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["112597118"],"z":["10530"]}}},
+{"s":"LOMBAHE","n":[["LOMBAHE INC",1]],"x":{"irs":{"r":1,"i":["335028738"],"z":["10003"]}}},
 {"s":"LOMBARDIA CAPITAL PARTNERS","n":[["LOMBARDIA CAPITAL PARTNERS LLC",1],["Lombardia Capital Partners LLC",1]],"x":{"ocp":{"r":1,"a":1735000,"l":"2009-10-14","i":["20091002009"]},"dbe":{"r":1,"i":["LOMBARDIA CAPITAL PARTNERS LLC"]}}},
 {"s":"LOMDEI TORAH","n":[["LOMDEI TORAH",1]],"x":{"irs":{"r":1,"i":["200055903"],"z":["11204"]}}},
 {"s":"LOMDEI TORAH DCHASIDI BELZ MACHNIFKA","n":[["LOMDEI TORAH DCHASIDI BELZ MACHNIFKA",1]],"x":{"irs":{"r":1,"i":["113394228"],"z":["11211"]}}},
@@ -1102,7 +1111,7 @@
 {"s":"LRC CREATIVE TRADING","n":[["LRC Creative Trading LLC",1]],"x":{"sbs":{"r":1,"i":["378921"],"z":["11552"],"p":["MBE","WBE"]}}},
 {"s":"LRC MAINTENANCE","n":[["LRC Maintenance, LLC",1]],"x":{"dol":{"r":1,"i":["26-64GUF-CR"],"z":["10601"]}}},
 {"s":"LRE GLOBAL","n":[["LRE Global Inc.",1]],"x":{"sbs":{"r":1,"i":["374033"],"z":["10027"],"p":["MBE","WBE"]}}},
-{"s":"LREFUAH MEDICAL REHABILITATION CENTER","n":[["LREFUAH MEDICAL & REHABILITATION CENTER INC",4]],"x":{"ocp":{"r":1,"a":16500,"l":"2023-07-31","i":["20230725108"]},"cbr":{"r":1,"a":1954000,"l":"2024-07-12","i":["CT185020248808592"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":17000,"l":"2023-07-24","i":["CT1-816-20248801308"]},"irs":{"r":1,"i":["113535388"],"z":["11218"]}}},
+{"s":"LREFUAH MEDICAL REHABILITATION CENTER","n":[["LREFUAH MEDICAL & REHABILITATION CENTER INC",5]],"x":{"ocp":{"r":1,"a":16500,"l":"2023-07-31","i":["20230725108"]},"cbr":{"r":2,"a":2264009,"l":"2026-11-13","i":["CT185020278803563","CT185020248808592"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":17000,"l":"2023-07-24","i":["CT1-816-20248801308"]},"irs":{"r":1,"i":["113535388"],"z":["11218"]}}},
 {"s":"LRG CHARITABLE FOUNDATION","n":[["LRG CHARITABLE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["883564697"],"z":["11210"]}}},
 {"s":"LRG INTERNATIONAL","d":[["LRG International",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["2251"],"z":["11201"],"p":["WBE"]}}},
 {"s":"LRJ CONSTRUCTION","n":[["LRJ CONSTRUCTION LLC",1],["LRJ Construction LLC",1]],"x":{"sbs":{"r":1,"i":["104184"],"z":["11414"],"p":["MBE"]},"dol":{"r":1,"i":["24-64EP8-CR"],"z":["11565"]}}},
@@ -1736,13 +1745,5 @@
 {"s":"M G INDUSTRIAL INSULATION","n":[["M.G. Industrial Insulation Co., Inc.",1]],"x":{"dol":{"r":1,"i":["26-635F9-CR"],"z":["13027"]}}},
 {"s":"M G INDUSTRIAL PAINTING","n":[["M.G. Industrial Painting Co., Inc.",1]],"x":{"dol":{"r":1,"i":["26-635DD-CR"],"z":["13027"]}}},
 {"s":"M G M INSULATION","n":[["M.G.M. Insulation, Inc.",1]],"x":{"dol":{"r":1,"i":["26-64D94-CR"],"z":["14611"]}}},
-{"s":"M G MASTER PLUMBING HEATING","n":[["M & G MASTER PLUMBING & HEATING, INC.",1]],"x":{"dol":{"r":1,"i":["26-676UP-CR"],"z":["11784"]}}},
-{"s":"M G MCLAREN ENGINEERING AND LAND SURVEYING P C","n":[["M.G. McLaren Engineering and Land Surveying, P.C.",1],["M.G. McLaren, Engineering and Land Surveying P.C.",1]],"x":{"ocp":{"r":1,"a":4500000,"l":"2019-06-20","i":["20190613040"]},"sca":{"r":1,"i":["M.G. MCLAREN ENGINEERING AND LAND SURVEYING, P.C."],"z":["07677"]}}},
-{"s":"M G MCLAREN ENGINEERING AND SURVEYING P C","n":[["M.G. McLaren Engineering and Surveying, P.C.",1]],"x":{"dol":{"r":1,"i":["25-64VU6-CR"],"z":["21152"]}}},
-{"s":"M G MCLAREN ENGINEERING LAND SURVEYING P C","n":[["M.G. McLaren Engineering & Land Surveying  P.C.",1]],"x":{"dbe":{"r":1,"i":["M.G. McLaren Engineering & Land Surveying  P.C."]}}},
-{"s":"M G MCLAREN P C","n":[["M.G. McLaren, P.C.",2],["M.G. MCLAREN P.C.",1]],"x":{"ocp":{"r":3,"a":683333,"l":"2011-02-14","i":["20110207018","20100324007","20051213002"]}}},
-{"s":"M G MCLAREN P C D/B/A MCLAREN ENGINEERING GROUP","n":[["M.G. McLaren, P.C. d/b/a McLaren Engineering Group",1]],"x":{"ocp":{"r":1,"a":3850000,"l":"2006-09-14","i":["20060908014"]}}},
-{"s":"M G MCLAREN P C DBA MCLAREN ENGINEERING GROUP","n":[["M.G. McLaren P.C. dba McLaren Engineering Group",1]],"x":{"ocp":{"r":1,"a":222000,"l":"2013-04-24","i":["20130417020"]}}},
-{"s":"M G PLUMBING AND HEATING","n":[["M&G PLUMBING AND HEATING CORP.",1]],"x":{"sbs":{"r":1,"i":["365801"],"z":["11101"],"p":["MBE"]}}},
-{"s":"M H BUILDERS","n":[["M H Builders Inc.",2],["M H BUILDERS INC.",1]],"x":{"sbs":{"r":1,"i":["14134"],"z":["11040"],"p":["MBE"]},"dol":{"r":1,"i":["25-646C6-CR"],"z":["11428"]},"sca":{"r":1,"i":["M H BUILDERS INC."],"z":["11428"]}}}
+{"s":"M G MASTER PLUMBING HEATING","n":[["M & G MASTER PLUMBING & HEATING, INC.",1]],"x":{"dol":{"r":1,"i":["26-676UP-CR"],"z":["11784"]}}}
 ]}

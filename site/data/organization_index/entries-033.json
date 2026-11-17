@@ -1,4 +1,13 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":33,"first_ordinal":55437,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":33,"first_ordinal":55431,"entries":[
+{"s":"FRIENDS OF CLASSICAL CHARTER SCHOOLS","n":[["FRIENDS OF CLASSICAL CHARTER SCHOOLS",1],["FRIENDS OF CLASSICAL CHARTER SCHOOLS INC",1]],"x":{"dbe":{"r":1,"i":["FRIENDS OF CLASSICAL CHARTER SCHOOLS"]},"irs":{"r":1,"i":["832539799"],"z":["10459"]}}},
+{"s":"FRIENDS OF CLAY ACADEMY CHARTER SCHOOLS","n":[["FRIENDS OF CLAY ACADEMY CHARTER SCHOOLS INC",1]],"x":{"irs":{"r":1,"i":["844553376"],"z":["10522"]}}},
+{"s":"FRIENDS OF CLERMONT","n":[["FRIENDS OF CLERMONT",1]],"x":{"irs":{"r":1,"i":["222434835"],"z":["12526"]}}},
+{"s":"FRIENDS OF CLIFTON PARK OPEN SPACEINC","n":[["FRIENDS OF CLIFTON PARK OPEN SPACEINC",1]],"x":{"irs":{"r":1,"i":["203924540"],"z":["12065"]}}},
+{"s":"FRIENDS OF CLINTON","n":[["FRIENDS OF CLINTON",1]],"x":{"irs":{"r":1,"i":["993120640"],"z":["12514"]}}},
+{"s":"FRIENDS OF COECLES HARBOR","n":[["FRIENDS OF COECLES HARBOR INC",1]],"x":{"irs":{"r":1,"i":["881009889"],"z":["11965"]}}},
+{"s":"FRIENDS OF COLEMAN STATION","n":[["FRIENDS OF COLEMAN STATION INC",1]],"x":{"irs":{"r":1,"i":["134018911"],"z":["12546"]}}},
+{"s":"FRIENDS OF COLES WOODS","n":[["FRIENDS OF COLES WOODS INC",1]],"x":{"irs":{"r":1,"i":["141601428"],"z":["12801"]}}},
+{"s":"FRIENDS OF COLONIE TOWN PARK TRAILS","n":[["FRIENDS OF COLONIE TOWN PARK TRAILS",1]],"x":{"irs":{"r":1,"i":["883842494"],"z":["12211"]}}},
 {"s":"FRIENDS OF COLUMBIA CROSS COUNTRY TRACK AND FIELD","n":[["FRIENDS OF COLUMBIA CROSS COUNTRY TRACK AND FIELD",1]],"x":{"irs":{"r":1,"i":["991338342"],"z":["12061"]}}},
 {"s":"FRIENDS OF COLUMBIA SECONDARY SCHOOL FOR MATH SCIENCE AND","n":[["FRIENDS OF COLUMBIA SECONDARY SCHOOL FOR MATH SCIENCE AND",1]],"x":{"irs":{"r":1,"i":["261146491"],"z":["10025"]}}},
 {"s":"FRIENDS OF COLUMBUS PARK","n":[["FRIENDS OF COLUMBUS PARK",1]],"x":{"irs":{"r":1,"i":["100008069"],"z":["11354"]}}},
@@ -1758,14 +1767,5 @@
 {"s":"FUNDACION EL SHADDAI","n":[["FUNDACION EL SHADDAI",1]],"x":{"irs":{"r":1,"i":["853491081"],"z":["10002"]}}},
 {"s":"FUNDACION FAGASA","n":[["FUNDACION FAGASA INC",1]],"x":{"irs":{"r":1,"i":["422349537"],"z":["11214"]}}},
 {"s":"FUNDACION HISPANOAMERICANA","n":[["FUNDACION HISPANOAMERICANA INC",1]],"x":{"irs":{"r":1,"i":["203731909"],"z":["11510"]}}},
-{"s":"FUNDACION INTERNACIONAL REENACER","n":[["FUNDACION INTERNACIONAL REENACER CORP",1]],"x":{"irs":{"r":1,"i":["844423297"],"z":["11373"]}}},
-{"s":"FUNDACION LOS HIJOS E HIJAS DEL SEN OR FOUNDATION","n":[["FUNDACION LOS HIJOS E HIJAS DEL SEN OR FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["422746677"],"z":["10550"]}}},
-{"s":"FUNDACION LUDOVINO BATISTA","n":[["FUNDACION LUDOVINO BATISTA",1]],"x":{"irs":{"r":1,"i":["462789814"],"z":["10033"]}}},
-{"s":"FUNDACION MANOS AMIGAS","n":[["FUNDACION MANOS AMIGAS INC",1]],"x":{"irs":{"r":1,"i":["813944787"],"z":["11368"]}}},
-{"s":"FUNDACION MANOS GLORIOSAS BRINDADO AMOR","n":[["FUNDACION MANOS GLORIOSAS BRINDADO AMOR",1]],"x":{"irs":{"r":1,"i":["394880330"],"z":["13501"]}}},
-{"s":"FUNDACION MANOS SOLIDARIAS","n":[["FUNDACION MANOS SOLIDARIAS INC",1]],"x":{"irs":{"r":1,"i":["882126894"],"z":["11550"]}}},
-{"s":"FUNDACION MBRD","n":[["FUNDACION MBRD INC",1]],"x":{"irs":{"r":1,"i":["851680409"],"z":["11374"]}}},
-{"s":"FUNDACION MINISTERIO DE RESTAURACION ARCA DEL PACTO","n":[["FUNDACION MINISTERIO DE RESTAURACION ARCA DEL PACTO INC",1]],"x":{"irs":{"r":1,"i":["463428041"],"z":["10027"]}}},
-{"s":"FUNDACION MISION SANCHEZ RAMIREZ","n":[["FUNDACION MISION SANCHEZ RAMIREZ INC",1]],"x":{"irs":{"r":1,"i":["821497784"],"z":["10034"]}}},
-{"s":"FUNDACION MONUMENTO VIVIENTE DE NUEVA YORK","n":[["FUNDACION MONUMENTO VIVIENTE DE NUEVA YORK",1]],"x":{"irs":{"r":1,"i":["481308764"],"z":["10034"]}}}
+{"s":"FUNDACION INTERNACIONAL REENACER","n":[["FUNDACION INTERNACIONAL REENACER CORP",1]],"x":{"irs":{"r":1,"i":["844423297"],"z":["11373"]}}}
 ]}

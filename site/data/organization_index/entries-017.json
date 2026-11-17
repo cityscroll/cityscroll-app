@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":17,"first_ordinal":28376,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":17,"first_ordinal":28373,"entries":[
+{"s":"CHENANGO COUNTY AGRICULTURAL SOCIETY","n":[["CHENANGO COUNTY AGRICULTURAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["150587923"],"z":["13815"]}}},
+{"s":"CHENANGO COUNTY BLUES SOCIETY","n":[["CHENANGO COUNTY BLUES SOCIETY",1]],"x":{"irs":{"r":1,"i":["161467490"],"z":["13815"]}}},
+{"s":"CHENANGO COUNTY CHAMBER OF COMMERCE FOUNDATION","n":[["CHENANGO COUNTY CHAMBER OF COMMERCE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["222978502"],"z":["13815"]}}},
+{"s":"CHENANGO COUNTY HISTORICAL SOCIETY","n":[["CHENANGO COUNTY HISTORICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["237035407"],"z":["13815"]}}},
 {"s":"CHENANGO COUNTY MEDICAL SOCIETY THE OTSEGO COUNTY MEDICAL SOCIETY","n":[["CHENANGO COUNTY MEDICAL SOCIETY & THE OTSEGO COUNTY MEDICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["237325443"],"z":["13815"]}}},
 {"s":"CHENANGO COUNTY PRIDE ALLIANCE","n":[["CHENANGO COUNTY PRIDE ALLIANCE",1]],"x":{"irs":{"r":1,"i":["923640809"],"z":["13780"]}}},
 {"s":"CHENANGO COUNTY SENIOR CITIZENS COUNCIL","n":[["CHENANGO COUNTY SENIOR CITIZENS COUNCIL INC",1]],"x":{"irs":{"r":1,"i":["161210347"],"z":["13815"]}}},
@@ -1736,9 +1740,5 @@
 {"s":"CHURCH OF HIS SAVING GRACE","n":[["CHURCH OF HIS SAVING GRACE",1]],"x":{"irs":{"r":1,"i":["721591758"],"z":["14546"]}}},
 {"s":"CHURCH OF HOLY APOSTLES","n":[["CHURCH OF HOLY APOSTLES",1]],"x":{"irs":{"r":1,"i":["116015780"],"z":["11218"]}}},
 {"s":"CHURCH OF HOLY FAMILY","n":[["CHURCH OF HOLY FAMILY",1]],"x":{"irs":{"r":1,"i":["131740162"],"z":["10472"]}}},
-{"s":"CHURCH OF HOPE EVANGELICAL MINISTRIES INTERNATIONAL","n":[["CHURCH OF HOPE EVANGELICAL MINISTRIES INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["611605812"],"z":["10455"]}}},
-{"s":"CHURCH OF HOPE IN NEW YORK","n":[["CHURCH OF HOPE IN NEW YORK",1]],"x":{"irs":{"r":1,"i":["113251292"],"z":["11366"]}}},
-{"s":"CHURCH OF HUMANISM","n":[["CHURCH OF HUMANISM",1]],"x":{"irs":{"r":1,"i":["132775962"],"z":["10024"]}}},
-{"s":"CHURCH OF INFINITE MOTION IN CHRIST MINISTRIES","n":[["CHURCH OF INFINITE MOTION IN CHRIST MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["753219439"],"z":["11722"]}}},
-{"s":"CHURCH OF INFINITE SPIRIT","n":[["CHURCH OF INFINITE SPIRIT",1]],"x":{"irs":{"r":1,"i":["223792693"],"z":["14904"]}}}
+{"s":"CHURCH OF HOPE EVANGELICAL MINISTRIES INTERNATIONAL","n":[["CHURCH OF HOPE EVANGELICAL MINISTRIES INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["611605812"],"z":["10455"]}}}
 ]}

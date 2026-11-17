@@ -1,4 +1,12 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":24,"first_ordinal":40246,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":24,"first_ordinal":40240,"entries":[
+{"s":"DANCE EMPOWERMENT MOVE","n":[["DANCE EMPOWERMENT MOVE INC",1]],"x":{"irs":{"r":1,"i":["462483911"],"z":["11010"]}}},
+{"s":"DANCE ENTROPY","n":[["DANCE ENTROPY INC.",2],["DANCE ENTROPY",1],["DANCE ENTROPY INC",1]],"x":{"cbr":{"r":2,"a":3000,"l":"2026-06-24","i":["CT101320261417573","CT101320251418216"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["DANCE ENTROPY INC"]},"irs":{"r":1,"i":["204388158"],"z":["11101"]}}},
+{"s":"DANCE FILMS ASSOCIATION","n":[["DANCE FILMS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["136125002"],"z":["11217"]}}},
+{"s":"DANCE FOR PAWS","n":[["DANCE FOR PAWS INC",1]],"x":{"irs":{"r":1,"i":["994727765"],"z":["10024"]}}},
+{"s":"DANCE FUSION ARTS","n":[["DANCE FUSION ARTS INC",1]],"x":{"irs":{"r":1,"i":["800249586"],"z":["10128"]}}},
+{"s":"DANCE HEGINBOTHAM","n":[["DANCE HEGINBOTHAM INCORPORATED",1]],"x":{"irs":{"r":1,"i":["833349973"],"z":["11226"]}}},
+{"s":"DANCE INCLUSION WORLDWIDE FOUNDATIO N","n":[["DANCE INCLUSION WORLDWIDE FOUNDATIO N CORP",1]],"x":{"irs":{"r":1,"i":["413508920"],"z":["10701"]}}},
+{"s":"DANCE INTO LIGHT","n":[["DANCE INTO LIGHT INC",1]],"x":{"irs":{"r":1,"i":["200202751"],"z":["11379"]}}},
 {"s":"DANCE LAB NYC","n":[["DANCE LAB NYC INC",1]],"x":{"irs":{"r":1,"i":["262703614"],"z":["10036"]}}},
 {"s":"DANCE MACHINE INTERNATIONAL","n":[["DANCE MACHINE INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["161529423"],"z":["12448"]}}},
 {"s":"DANCE MOVEMENT THERAPY CERTIFICATION BOARD","n":[["DANCE MOVEMENT THERAPY CERTIFICATION BOARD INC",1]],"x":{"irs":{"r":1,"i":["271118734"],"z":["12203"]}}},
@@ -1670,13 +1678,5 @@
 {"s":"DESTINY HELPERS OUTREACH","n":[["DESTINY HELPERS OUTREACH INC",1]],"x":{"irs":{"r":1,"i":["842837530"],"z":["11236"]}}},
 {"s":"DESTINY HOUSE CHRISTIAN CENTER","n":[["DESTINY HOUSE CHRISTIAN CENTER INC",1]],"x":{"irs":{"r":1,"i":["473688718"],"z":["11758"]}}},
 {"s":"DESTINY HOUSE OF MOTHE FOR THE NEEDY","n":[["DESTINY HOUSE OF MOTHE FOR THE NEEDY INC",1]],"x":{"irs":{"r":1,"i":["992136571"],"z":["10303"]}}},
-{"s":"DESTINY HOUSING","n":[["DESTINY HOUSING CORPORATION",1]],"x":{"ocp":{"r":1,"a":5000,"l":"2006-10-10","i":["20061003011"]}}},
-{"s":"DESTINY PREPARATION CHURCH","n":[["DESTINY PREPARATION CHURCH INC",1]],"x":{"irs":{"r":1,"i":["161670993"],"z":["14612"]}}},
-{"s":"DESTINY REALIZED EDUCATION ACHIEVEMENT MENTORSHIP SIGMA FOUND","n":[["DESTINY REALIZED EDUCATION ACHIEVEMENT MENTORSHIP SIGMA FOUND",1]],"x":{"irs":{"r":1,"i":["830829558"],"z":["10602"]}}},
-{"s":"DESTINY RESTORATION HUMAN SERVICES","n":[["DESTINY RESTORATION HUMAN SERVICES INC",1]],"x":{"irs":{"r":1,"i":["830985822"],"z":["11234"]}}},
-{"s":"DESTINY TABERNACLE","n":[["DESTINY TABERNACLE",1]],"x":{"irs":{"r":1,"i":["611509891"],"z":["11236"]}}},
-{"s":"DESTINY TEMPLE","n":[["DESTINY TEMPLE",1]],"x":{"irs":{"r":1,"i":["260100892"],"z":["12047"]}}},
-{"s":"DESTINY WORSHIP CENTER","n":[["DESTINY WORSHIP CENTER INC",1]],"x":{"irs":{"r":1,"i":["113307611"],"z":["11414"]}}},
-{"s":"DESTINYAPRON NY","n":[["DestinyApron NY LLC",1]],"x":{"sbs":{"r":1,"i":["323545"],"z":["11378"],"p":["MBE"]}}},
-{"s":"DESTINYS AFRICAN NATION CHURCH","n":[["DESTINYS AFRICAN NATION CHURCH",1]],"x":{"irs":{"r":1,"i":["453159309"],"z":["13208"]}}}
+{"s":"DESTINY HOUSING","n":[["DESTINY HOUSING CORPORATION",1]],"x":{"ocp":{"r":1,"a":5000,"l":"2006-10-10","i":["20061003011"]}}}
 ]}

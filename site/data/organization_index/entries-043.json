@@ -1,4 +1,12 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":43,"first_ordinal":72569,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":43,"first_ordinal":72564,"entries":[
+{"s":"INNOVATIVE LEARNING SOCIETY","n":[["INNOVATIVE LEARNING SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["463732884"],"z":["10462"]}}},
+{"s":"INNOVATIVE MECHANICAL SYSTEMS","n":[["INNOVATIVE MECHANICAL SYSTEMS, INC.",1]],"x":{"dol":{"r":1,"i":["26-64N8H-CR"],"z":["14150"]}}},
+{"s":"INNOVATIVE MUNICIPAL PRODUCTS US","n":[["Innovative Municipal Products US, Inc.",1]],"x":{"ocp":{"r":1,"a":321000,"l":"2009-04-21","i":["20090414041"]}}},
+{"s":"INNOVATIVE PARTNERSHIPS GROUP","n":[["INNOVATIVE PARTNERSHIPS GROUP  LLC",1]],"x":{"dbe":{"r":1,"i":["INNOVATIVE PARTNERSHIPS GROUP  LLC"]}}},
+{"s":"INNOVATIVE PEST MANAGEMENT","n":[["Innovative Pest Management Corp",1]],"x":{"dol":{"r":1,"i":["24-648VL-CR"],"z":["14621"]}}},
+{"s":"INNOVATIVE PRODUCTS IMPORTS","n":[["Innovative Products & Imports, Inc.",1]],"x":{"sbs":{"r":1,"i":["379528"],"z":["11797"],"p":["WBE"]}}},
+{"s":"INNOVATIVE RECYCLING TECHNOLOGIES","n":[["INNOVATIVE RECYCLING TECHNOLOGIES INC",1]],"x":{"ocp":{"r":1,"a":330130,"l":"2023-06-16","i":["20230609124"]}}},
+{"s":"INNOVATIVE RESILIENCE EAST BROOKLYN VILLAGE","n":[["INNOVATIVE RESILIENCE EAST BROOKLYN VILLAGE",1]],"x":{"irs":{"r":1,"i":["871877930"],"z":["11207"]}}},
 {"s":"INNOVATIVE SIGNAGE SYSTEMS","n":[["Innovative Signage Systems, Inc.",1]],"x":{"dol":{"r":1,"i":["24-648P1-CR"],"z":["13120"]}}},
 {"s":"INNOVATIVE STRUCTURAL AND SPECIALTY ENGINEERING","n":[["Innovative Structural and Specialty Engineering PLLC",1]],"x":{"sbs":{"r":1,"i":["13255"],"z":["10005"],"p":["MBE","WBE"]}}},
 {"s":"INNOVATIVE URBAN VILLAGE LOCAL DEVELOPMENT","n":[["INNOVATIVE URBAN VILLAGE LOCAL DEVELOPMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["990972832"],"z":["10010"]}}},
@@ -1431,13 +1439,5 @@
 {"s":"IOSH USA CHAPTER - NORTHEAST PRIORY","n":[["IOSH USA CHAPTER - NORTHEAST PRIORY INC",1]],"x":{"irs":{"r":1,"i":["852900872"],"z":["12545"]}}},
 {"s":"IOTA ASSOCATION","n":[["IOTA ASSOCATION INC",1]],"x":{"irs":{"r":1,"i":["311062612"],"z":["10708"]}}},
 {"s":"IOTA BETA ALUMNI CORPORATION OF KAP PA DELTA RHO","n":[["IOTA BETA ALUMNI CORPORATION OF KAP PA DELTA RHO INC",1]],"x":{"irs":{"r":1,"i":["251686649"],"z":["14467"]}}},
-{"s":"IOTA CHAPTER OF ALPHA SIGMA PHI FRATERNITY","n":[["IOTA CHAPTER OF ALPHA SIGMA PHI FRATERNITY INC",1]],"x":{"irs":{"r":1,"i":["150536982"],"z":["14850"]}}},
-{"s":"IOTA ETA ETA","n":[["IOTA ETA ETA INC",1]],"x":{"irs":{"r":1,"i":["873662519"],"z":["14226"]}}},
-{"s":"IOTA KAPPA LAMBDA SCHOLARSHIP FOUND ATION","n":[["IOTA KAPPA LAMBDA SCHOLARSHIP FOUND ATION",1]],"x":{"irs":{"r":1,"i":["161430972"],"z":["13217"]}}},
-{"s":"IOTA NU DELTA FRATERNITY","n":[["IOTA NU DELTA FRATERNITY INC",1]],"x":{"irs":{"r":1,"i":["134030232"],"z":["10016"]}}},
-{"s":"IOTA OMICRON ALUMNI ASSOCIATION","n":[["IOTA OMICRON ALUMNI ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["853306133"],"z":["11554"]}}},
-{"s":"IOTA PHI LAMBDA SORORITY","n":[["IOTA PHI LAMBDA SORORITY INC",1]],"x":{"irs":{"r":1,"i":["237382875"],"z":["10460"]}}},
-{"s":"IOTA TAU CHI","n":[["IOTA TAU CHI CORPORATION",1]],"x":{"irs":{"r":1,"i":["222527588"],"z":["14092"]}}},
-{"s":"IOTA TECHNOLOGY SYSTEMS","n":[["Iota Technology Systems LLC",1]],"x":{"sbs":{"r":1,"i":["361471"],"z":["10463"],"p":["MBE","WBE"]}}},
-{"s":"IOTA THETA LAMBDA EDUCATION FOUNDATION","n":[["IOTA THETA LAMBDA EDUCATION FOUNDATION INCORPORATED",1]],"x":{"irs":{"r":1,"i":["222900386"],"z":["13763"]}}}
+{"s":"IOTA CHAPTER OF ALPHA SIGMA PHI FRATERNITY","n":[["IOTA CHAPTER OF ALPHA SIGMA PHI FRATERNITY INC",1]],"x":{"irs":{"r":1,"i":["150536982"],"z":["14850"]}}}
 ]}

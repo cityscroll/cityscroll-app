@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.city_record_meeting_notice_materialization.v1",
-  "generated_at": "2026-11-14T13:54:10.820Z",
-  "as_of": "2026-11-14",
+  "generated_at": "2026-11-17T16:50:36.044Z",
+  "as_of": "2026-11-17",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",
@@ -17,34 +17,8 @@
     "agency_rules_type": "Public Hearings",
     "requires_event_date": true
   },
-  "row_count": 28,
+  "row_count": 29,
   "rows": [
-    {
-      "request_id": "20261008001",
-      "start_date": "2026-10-15T00:00:00.000",
-      "event_date": "2026-11-16T11:00:00.000",
-      "agency_name": "Buildings",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "short_title": "Proposed Rule - Amendment of Rules relating to Natural Gas Alarms",
-      "additional_description_1": "Title: Proposed Rule - Amendment of Rules relating to Natural Gas Alarms Agency Rules Section Buildings (DOB) Agency Name General Counsel Agency Division 11/16/2026 11:00 AM Event Date and Time Accessibility questions: Anthony Ceccato, 212-393-2021, antceccato@buildings.nyc.gov, by Monday, November 2, 2026 5:00 PM Accessibility Archived Status 10/15/2026 Publication Date Public Hearings Notice Type Attachments 1 Proposed Rule - Amendment of Rules relating to Natural Gas Alarms",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261008001&requestStatus=Archived&documentId=44723"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261008001&requestStatus=Archived&documentId=44723"
-      ]
-    },
-    {
-      "request_id": "20261109008",
-      "start_date": "2026-11-12T00:00:00.000",
-      "event_date": "2026-11-16T21:30:00.000",
-      "agency_name": "Public Design Commission",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "Design Commission Meeting Agenda, Monday, November 16, 2026",
-      "additional_description_1": "<p><span style='font-size:12pt'><strong>Design Commission Meeting Agenda</strong></span></p><p><span style='font-size:12pt'><strong>Monday, November 16, 2026</strong></span></p><p> </p><p><span style='font-size:12pt'><strong>Meeting Location:</strong> This meeting will be held in-person at the Landmarks Preservation Commission Hearing Room at 253 Broadway, 2nd Floor. Members of the public can attend and give testimony either in-person or remotely. The entrance to the building and hearing room are wheelchair accessible.</span></p><p> </p><p><span style='font-size:12pt'><strong>RSVPs are required for all who plan to attend in-person.</strong> If you plan to attend in-person, sign up in advance using this form: (https://tinyurl.com/PDCmeetingform) and indicate your attendance in-person <strong>no later than 3:00 p.m., Friday, November 13</strong>.</span></p><p><span style='font-size:12pt'> </span></p><p><span style='font-size:12pt'>To attend or testify remotely, the public can join the meeting via Microsoft Teams at https://teams.microsoft.com/meet/2405976504129809?p=QHxLQf8iIOohqdHYnP or by calling +1 332-910-6701 and using the phone conference ID: 744 831 800#.</span></p><p> </p><p><span style='font-size:12pt'>Members of the public who wish to give testimony on public hearing items can sign-up in advance using this form: https://tinyurl.com/PDCmeetingform. The order for in-person testimony is determined by a sign-in sheet the day of the meeting.</span></p><p><span style='font-size:12pt'>Instructions for testifying remotely via Microsoft Teams or by phone can be found on our website here: https://tinyurl.com/PDC-testimony-teams.</span></p><p> </p><p><span style='font-size:12pt'>The meeting will be livestreamed on the Public Design Commission\u001as YouTube channel at http://www.youtube.com/nycdesigncommission. </span></p><p> </p><p><span style='font-size:12pt'><strong><u>Public Meeting</u></strong></span></p><p style='margin-left:96px'> </p><p><span style='font-size:12pt'><strong>9:30 a.m.       Consent Items</strong></span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30604:            Installation of <em>A Necessary Secret World </em>by Sherrill Roland, Brooklyn Detention Complex, 275 Atlantic Avenue, Brooklyn. (Conceptual) (CC 33, CB 2)  DCLA%/DDC/DOC</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30605:            Reconstruction of a streetscape, including a plaza (Keltch Park), Jerome Avenue between East 164th Street and West 184th Street, West Tremont Avenue between Dr. Martin Luther King Jr. Boulevard and Grand Concourse, intersection of Sedgwick Avenue and West Tremont Avenue, and intersection of Dr. Martin Luther King Jr. Boulevard and West 181st Street, Bronx. (Preliminary) (CC 14 & 16, CB 4 & 5) DDC/DOT/DPR</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30606:            Installation of rooftop mechanical equipment and skylights, Main Building, Red Hook Wastewater Resource Recovery Facility, 63 Flushing Avenue, Brooklyn. (Preliminary and Final) (CC 33, CB 2) DEP</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30607:            Construction of streetscape improvements, Maspeth Avenue between Debevoise Avenue and Kingsland Avenue, Brooklyn. (Preliminary and Final) (CC 34, CB 1) DOT</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30608:            Installation of a prototypical automatic public toilet (APT) as part of the construction of the QueensWay Metropolitan Hub, Metropolitan Avenue and Trotting Course Lane, Forest Hills, Queens. (Preliminary and Final) (CB 6, CC 32) DOT</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30609:            Rehabilitation of kiosks and the installation of a public restroom, Municipal Plaza, adjacent to the David N. Dinkins Manhattan Municipal Building, One Centre Street, Manhattan. (Preliminary and Final) (CC 1, CB 1) DOT</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30610:            Removal of a distinctive sidewalk, 31 West 52nd Street, Manhattan. (Preliminary and Final) (CC 4, CB 5) DOT</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30611:            Reconstruction of a dog run, Thomas Jefferson Park, East 111th Street and FDR Drive, Manhattan. (Preliminary) (CC 8, CB 11) DPR</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30612:            Reconstruction of a portion of Wayanda Park, adjacent to P.S. 34, Hollis Avenue and Monterey Street, Queens Village, Queens. (Preliminary) (CC 27, CB 13) DPR</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30613:            Reconstruction of a playground, Kaiser Park, Neptune Avenue between West 29th Street and West 28th Street, Brooklyn. (Final) (CC 47, CB 13) DPR</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30614:            Reconstruction of Lozada Playground, adjacent to P.S. 154 (Jonathan D. Hyatt Elementary School), East 135th Street, between Willis Avenue and Alexander Avenue, Bronx. (Final) (CC 8, CB 1) DPR</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30615:            Rehabilitation of the Conservatory Water Basin and Boathouse Terrace and construction of an ADA path, Central Park, Fifth Avenue between East 72nd Street and East 76th Street, Manhattan. (Final) (CC 6, CB 5, 7, 8, 10 & 11) DPR/CPC</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30616:            Construction of a shade structure as part of the reconstruction of Damrosch Park, including streetscape improvements, Lincoln Center for the Performing Arts, West 62nd Street between Columbus Avenue and Amsterdam Avenue, Manhattan. (Final) (CC 6, CB 7) DPR/DOT/DCLA</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30617:            Reconstruction of a vent structure as part of the reconstruction of Damrosch Park, including streetscape improvements, Lincoln Center for the Performing Arts, West 62nd Street between Columbus Avenue and Amsterdam Avenue, Manhattan. (Final) (CC 6, CB 7) DPR/DOT/DCLA</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30618:            Reconstruction of the esplanade, adjacent to Bank Street, between Nicholas Street and Hamilton Avenue, Staten Island. (Preliminary) (CC 49, CB 1) EDC</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30619:            Installation of granite blocks within the plaza and streetscape, Phase I and IIA of Willets Point, Roosevelt Avenue, 126th Street, 38th Avenue, 127th Street, and 39th Avenue, Corona, Queens. (Preliminary and Final) (CC 21, CB 7) EDC</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30620:            Removal and temporary storage of <em>Simple Way of Life</em> (1939) by Lily Furedi, from the Bellevue Men\u001as Shelter (formerly Bellevue Psychiatric Center), 400 East 30th Street, Manhattan to 55 Water Street, Manhattan. (Preliminary) (CC 1, CB 3) HHC</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30621:            Reconstruction of Edenwald Library, including the construction of an addition, 1255 East 233rd Street, Bronx. (Final) (CC 12, CB 12) NYPL</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30622:            Rehabilitation of the Broad Channel Community Library, 16-26 Cross Bay Boulevard, Broad Channel, Queens. (Preliminary and Final) (CC 32, CB 14) QPL</span></p><p> </p><p> </p><p><span style='font-size:12pt'><strong>                        Public Hearing</strong></span></p><p><span style='font-size:12pt'><strong>9:35 a.m.</strong></span></p><p style='margin-left:96px'><span style='font-size:12pt'>30623:            Construction of a gaming facility, resort, retail, and events complex (Integrated Resort), as part of the master plan for the Metropolitan Park (Queens Future), north of Roosevelt Avenue, between Grand Central Parkway and Seaver Way, south of the World\u001as Fair Marina, and adjacent to Citi Field, Flushing Meadows Corona Park, Corona, Queens. (Preliminary and Final) (CC 21, CB 3, 4, 6, 7, 8 & 9) EDC/DPR</span></p><p style='margin-left:96px'> </p><p style='margin-left:96px'><span style='font-size:12pt'>https://www.nyc.gov/assets/designcommission/downloads/pdf/pres/11-16-26-EDC-DPR-pf-QF-IntegratedResort.pdf </span></p><p style='margin-left:96px'> </p><p><span style='font-size:12pt'><strong>11:35 a.m.</strong></span></p><p style='margin-left:96px'><span style='font-size:12pt'>30624:            Reconstruction of the western portion of Ferry Point Park, including the construction of a playground, sports courts, and waterfront walkways, west of Hutchinson River Parkway and Schley Avenue, Bronx. (Preliminary) (CC 13, CB 10) DPR/DOT</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>https://www.nyc.gov/assets/designcommission/downloads/pdf/pres/11-16-26-DPR-DOT-p-FerryPointParkWest</span></p><p> </p><p><span style='font-size:12pt'><strong><u>12:15 p.m.</u></strong><strong>     <u>BREAK</u></strong></span></p><p> </p><p><span style='font-size:12pt'><strong>12:25 p.m.</strong></span></p><p style='margin-left:96px'><span style='font-size:12pt'>30625:            Construction of a mixed-use residential building (Building 4) and adjacent site work, including a portion of a plaza (Phase IIB), as part of Phase II of Willets Point, 126th Street and 38th Avenue, Corona, Queens. (Preliminary) (CC 21, CB 7) EDC</span></p><p style='margin-left:96px'> </p><p style='margin-left:96px'><span style='font-size:12pt'><span style='font-size:11.0pt'><span style='font-size:12.0pt'>https://www.nyc.gov/assets/designcommission/downloads/pdf/pres/11-16-26-EDC-p-WilletsPoint-Phase2-Building4</span></span></span></p><p style='margin-left:96px'> </p><p style='margin-left:96px'> </p><p><span style='font-size:12pt'><strong>All times are approximate and subject to change without notice</strong>, and those who are testifying remotely should follow along on the livestreamed meeting on the Design Commission\u001as YouTube channel to know when to join the meeting. If testifying at in-person, please plan to arrive early in the event the meeting is ahead of schedule. Details on giving public testimony can be found above and here: https://www.nyc.gov/site/designcommission/design-review/testimony/public-testimony.page</span></p><p> </p><p><span style='font-size:12pt'><strong>Items on the consent agenda are not presented</strong>. If you wish to testify regarding a design-related issue of a project on the consent agenda, please notify staff as soon as possible. </span></p><p> </p><p><span style='font-size:12pt'><strong>Do you need assistance to participate in the meeting?</strong> If you need a reasonable accommodation of a disability, such as translation into a language other than English; American Sign Language Interpreting (ASL); Captioning in Real-Time (CART); </span></p><p><span style='font-size:12pt'>or the meeting agenda in Braille, large print, or electronic format, please contact the Public Design Commission at least as soon as possible before the meeting. </span></p><p> </p><p><span style='font-size:12pt'>Public Design Commission<br>City Hall, Third Floor<br>Phone: 212-788-3071<br>Fax: 212-788-3086</span></p><p><span style='font-size:12pt'>www.nyc.gov/designcommission</span></p><p><span style='font-size:12pt'>designcommission@cityhall.nyc.gov</span></p>"
-    },
     {
       "request_id": "20261023010",
       "start_date": "2026-10-30T00:00:00.000",
@@ -58,12 +32,12 @@
       "city": "New York",
       "state": "NY",
       "zip_code": "10007",
-      "additional_description_1": "Title: Correction: November 17, 2026, Public Hearing Agenda Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name 253 Broadway New York, NY 10007 Event Location 11/17/2026 9:00 AM Event Date and Time Current Status 10/30/2026 - 11/16/2026 Publication Date Public Hearings Notice Type Attachments 1 November 17, 2026, Public Hearing Agenda",
+      "additional_description_1": "Title: Correction: November 17, 2026, Public Hearing Agenda Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name 253 Broadway New York, NY 10007 Event Location 11/17/2026 9:00 AM Event Date and Time Archived Status 10/30/2026 - 11/16/2026 Publication Date Public Hearings Notice Type Attachments 1 November 17, 2026, Public Hearing Agenda",
       "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261023010&requestStatus=Current&documentId=44832"
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261023010&requestStatus=Archived&documentId=44832"
       ],
       "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261023010&requestStatus=Current&documentId=44832"
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261023010&requestStatus=Archived&documentId=44832"
       ]
     },
     {
@@ -334,6 +308,27 @@
       ]
     },
     {
+      "request_id": "20261109032",
+      "start_date": "2026-11-17T00:00:00.000",
+      "event_date": "2026-12-01T09:00:00.000",
+      "agency_name": "Landmarks Preservation Commission",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "December 1, 2026, Public Hearing Agenda CR",
+      "street_address_1": "253 Broadway",
+      "street_address_2": "2nd Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "additional_description_1": "Title: December 1, 2026, Public Hearing Agenda CR Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name Preservation Agency Division 253 Broadway New York, NY 10007 Event Location 12/1/2026 9:00 AM Event Date and Time Current Status 11/17/2026 - 12/1/2026 Publication Date Public Hearings Notice Type Attachments 1 December 1 2026, Public Hearing Agenda CR",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261109032&requestStatus=Current&documentId=44903"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261109032&requestStatus=Current&documentId=44903"
+      ]
+    },
+    {
       "request_id": "20261027004",
       "start_date": "2026-10-30T00:00:00.000",
       "event_date": "2026-12-02T10:00:00.000",
@@ -353,6 +348,42 @@
       "document_links": [
         "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261027004&requestStatus=Archived&documentId=44814"
       ]
+    },
+    {
+      "request_id": "20261109025",
+      "start_date": "2026-11-17T00:00:00.000",
+      "event_date": "2026-12-02T10:00:00.000",
+      "agency_name": "City Planning Commission",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "City Planning Commission Public Hearing Ad",
+      "street_address_1": "120 Broadway",
+      "street_address_2": "Lower Level",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10271",
+      "additional_description_1": "Title: City Planning Commission Public Hearing Ad Public Hearings and Meetings Section City Planning Commission (CPC) Agency Name 120 Broadway New York, NY 10271 Event Location 12/2/2026 10:00 AM Event Date and Time Accessibility questions: 212-720-3366, AccessibilityInfo@planning.nyc.gov, by Wednesday, November 25, 2026 5:00 PM Accessibility Commission Meetings External Links Current Status 11/17/2026 - 12/2/2026 Publication Date Public Hearings Notice Type Attachments 1 City Planning Commission Public Hearing Ad",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261109025&requestStatus=Current&documentId=44898"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261109025&requestStatus=Current&documentId=44898"
+      ]
+    },
+    {
+      "request_id": "20261102015",
+      "start_date": "2026-11-16T00:00:00.000",
+      "event_date": "2026-12-03T09:30:00.000",
+      "agency_name": "Environmental Control Board",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "New York City Environmental Control Board Meeting December 3, 2026",
+      "street_address_1": "100 Church Street",
+      "street_address_2": "12th Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "additional_description_1": "<p><span style='font-size:16px'><span style='font-family:Times New Roman,Times,serif'>The New York City Environmental Control Board (\u001aBoard\u001a) meeting scheduled for Thursday, December 3, 2026<u>,</u> at 9:30 A.M., will be accessible both in person and remotely. The meeting will be held in person at the Office of Administrative Trials and Hearings (\u001aOATH\u001a), 100 Church Street, 12th Floor, multipurpose training room.  Members of the public may alternatively view the Board meeting electronically by connecting through Webex with meeting number (access code) 2347 913 6932 and password PYdriTt7t65. Minutes of the Board meeting will be transcribed and posted on the OATH website.</span></span></p>"
     },
     {
       "request_id": "20261027031",

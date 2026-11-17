@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":18,"first_ordinal":30118,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"4b1c99613757290f","shard":18,"first_ordinal":30115,"entries":[
+{"s":"CHURCH OF HOPE IN NEW YORK","n":[["CHURCH OF HOPE IN NEW YORK",1]],"x":{"irs":{"r":1,"i":["113251292"],"z":["11366"]}}},
+{"s":"CHURCH OF HUMANISM","n":[["CHURCH OF HUMANISM",1]],"x":{"irs":{"r":1,"i":["132775962"],"z":["10024"]}}},
+{"s":"CHURCH OF INFINITE MOTION IN CHRIST MINISTRIES","n":[["CHURCH OF INFINITE MOTION IN CHRIST MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["753219439"],"z":["11722"]}}},
+{"s":"CHURCH OF INFINITE SPIRIT","n":[["CHURCH OF INFINITE SPIRIT",1]],"x":{"irs":{"r":1,"i":["223792693"],"z":["14904"]}}},
 {"s":"CHURCH OF JERSUALEM OF CHRIST","n":[["CHURCH OF JERSUALEM OF CHRIST INC",1]],"x":{"irs":{"r":1,"i":["113234052"],"z":["11210"]}}},
 {"s":"CHURCH OF JESUS CHRIST APOSTOLIC","n":[["CHURCH OF JESUS CHRIST APOSTOLIC OF NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["133254489"],"z":["10468"]}}},
 {"s":"CHURCH OF LEICESTER","n":[["CHURCH OF LEICESTER",1]],"x":{"irs":{"r":1,"i":["161271191"],"z":["14481"]}}},
@@ -1566,9 +1570,5 @@
 {"s":"CLUB DEI CARINESI DAMERICA","n":[["CLUB DEI CARINESI DAMERICA INC",1]],"x":{"irs":{"r":1,"i":["112892429"],"z":["11214"]}}},
 {"s":"CLUB DEL HUMO PRESIDENCIAL","n":[["CLUB DEL HUMO PRESIDENCIAL LLC",1]],"x":{"irs":{"r":1,"i":["333302075"],"z":["11210"]}}},
 {"s":"CLUB FOR CONTEMPORARY STUDIES","n":[["CLUB FOR CONTEMPORARY STUDIES",1]],"x":{"irs":{"r":1,"i":["394007551"],"z":["10025"]}}},
-{"s":"CLUB GETAWAY OPERATING","n":[["CLUB GETAWAY OPERATING CO.  LLC",1]],"x":{"dbe":{"r":1,"i":["CLUB GETAWAY OPERATING CO.  LLC"]}}},
-{"s":"CLUB GETAWAY OPERATINGCO","n":[["CLUB GETAWAY OPERATINGCO LLC",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-10-02","i":["CT104020273025405","CT104020253046839"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-10-02","i":["CT104020273025405"],"m":["Non-M/WBE"]}}},
-{"s":"CLUB ITALIANS 74 DELL IMMACOLATA","n":[["CLUB ITALIANS 74 DELL IMMACOLATA INC",1]],"x":{"irs":{"r":1,"i":["222186084"],"z":["14216"]}}},
-{"s":"CLUB LIBERTAD NACIONAL","n":[["CLUB LIBERTAD NACIONAL USA",1]],"x":{"irs":{"r":1,"i":["412732306"],"z":["10541"]}}},
-{"s":"CLUB MANAGEMENT ASSOCIATION OF AMERICA THE NEW YORK STATE CHAPTER","n":[["CLUB MANAGEMENT ASSOCIATION OF AMERICA THE NEW YORK STATE CHAPTER",1]],"x":{"irs":{"r":1,"i":["222545830"],"z":["14221"]}}}
+{"s":"CLUB GETAWAY OPERATING","n":[["CLUB GETAWAY OPERATING CO.  LLC",1]],"x":{"dbe":{"r":1,"i":["CLUB GETAWAY OPERATING CO.  LLC"]}}}
 ]}

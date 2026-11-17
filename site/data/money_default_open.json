@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-14T13:54:18.581Z",
-  "open_as_of": "2026-11-14",
+  "generated_at": "2026-11-17T16:51:10.260Z",
+  "open_as_of": "2026-11-17",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,57 +10,13 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-14'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-17'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
   },
   "count": 40,
   "notices": [
-    {
-      "request_id": "20261016012",
-      "start_date": "2026-10-23T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Pharmacy Benefit Management Consulting Services",
-      "pin": "MHP-1124",
-      "due_date": "2026-11-16T15:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
-      "request_id": "20261019001",
-      "start_date": "2026-10-23T00:00:00.000",
-      "agency_name": "Economic Development Corporation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods and Services",
-      "short_title": "Consultant Services, Outside Counsel for Affordable Housing Insurance Program RFP",
-      "pin": "11960",
-      "due_date": "2026-11-16T16:00:00.000",
-      "selection_method_description": "Request for Proposals"
-    },
-    {
-      "request_id": "20260806027",
-      "start_date": "2026-08-12T00:00:00.000",
-      "agency_name": "New York City Police Pension Fund",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Correction: Virtual Chief Information Security Officer (vCISO) Services",
-      "pin": "26REQ0374",
-      "due_date": "2026-11-16T17:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260901018",
-      "start_date": "2026-09-14T00:00:00.000",
-      "agency_name": "Information Technology and Telecommunications",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Correction: Leveraging Ground-Scanning Technology to Build Understanding of Underground Infrastructure in New York City",
-      "pin": "85827Y1399",
-      "due_date": "2026-11-16T23:45:00.000",
-      "selection_method_description": "Request for Information"
-    },
     {
       "request_id": "20260922020",
       "start_date": "2026-09-30T00:00:00.000",
@@ -135,17 +91,6 @@
       "category_description": "Construction/Construction Services",
       "short_title": "Bid Extension: 85624B0012-CSB 25th FL Construction at 1 Centre Street",
       "pin": "85624B0012",
-      "due_date": "2026-11-18T10:30:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20261006017",
-      "start_date": "2026-10-13T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "Correction: 85727B0029-2700014 - Stump Grinder - PARKS",
-      "pin": "85727B0029",
       "due_date": "2026-11-18T10:30:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
@@ -356,6 +301,17 @@
       "selection_method_description": "Other"
     },
     {
+      "request_id": "20261006017",
+      "start_date": "2026-10-13T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Bid Extension: 85727B0029-2700014 - Stump Grinder - PARKS",
+      "pin": "85727B0029",
+      "due_date": "2026-12-01T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260814014",
       "start_date": "2026-08-18T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -386,6 +342,17 @@
       "short_title": "85727B0027-2600091 APPARATUS, 100 FT TRACTOR DRAWN AERIEL -FDNY",
       "pin": "85727B0027",
       "due_date": "2026-12-02T10:30:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20261106025",
+      "start_date": "2026-11-16T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Electrical System Replacement - 156 South 9th Street, Brooklyn",
+      "pin": "80626B0039",
+      "due_date": "2026-12-02T13:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -453,6 +420,39 @@
       "pin": "85027P0001",
       "due_date": "2026-12-03T12:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
+      "request_id": "20261021030",
+      "start_date": "2026-10-28T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Bid Extension: 85727B0004-Citywide Moving Services",
+      "pin": "85727B0004",
+      "due_date": "2026-12-03T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260130016",
+      "start_date": "2026-02-06T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Bid Extension: Requirements Contract for Central Station Monitoring of Fire Alarm Systems",
+      "pin": "B5710040",
+      "due_date": "2026-12-03T16:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260928015",
+      "start_date": "2026-10-05T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Brooklyn Navy Yard Building 203 Boiler Plant and Building 365 Substation & Boiler Projects",
+      "pin": "000351",
+      "due_date": "2026-12-04T12:00:00.000",
+      "selection_method_description": "Request for Proposals"
     }
   ]
 }
