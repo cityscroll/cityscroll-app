@@ -17,6 +17,7 @@ import { d1DispatchExactCouncilMatter } from "./council_matter_watch_activation.
 import {
   exactInstitutionNoticeMatches,
   interpretStoredInstitutionFollow,
+  moneyAgencyScope,
 } from "../../../site/institution_follow_scope.mjs";
 import { textQueryEvaluationSupported } from "../../../site/watch_text_query.mjs";
 
@@ -81,7 +82,13 @@ export function subToD1Opts(sub, todayISO) {
     // either can serve any given digest run depending on mirror freshness.
     const opts = { limit: 25 };
     if (f.category) opts.category = f.category;
-    if (f.agency) opts.agency = f.agency;
+    // Same rule as compileSub(): a canonical agency ref is the scope, honoured exactly or not at all.
+    const agencyScope = moneyAgencyScope(f);
+    if (agencyScope.status === "unsupported") return null;
+    // A precise text query is evaluated by its own reader, which this scope is not wired into: refuse rather than ignore it.
+    if (agencyScope.status === "ok" && f.text_query != null) return null;
+    if (agencyScope.status === "ok") opts.agencyAny = { names: agencyScope.names, tokens: agencyScope.tokens };
+    else if (f.agency) opts.agency = f.agency;
     if (kws.length) opts.termGroups = [kws];
     // noticeType, when set, is authoritative; otherwise fall back to the pre-existing
     // amount-presence heuristic (open bids carry no dollar amount in this dataset — EDA).
@@ -140,6 +147,12 @@ export function compileSub_d1(sub, todayISO) {
   if (sub.lens === "entity" && f.kind !== "agency" && f.name) {
     const stem = vendorStem(f.name);
     postFilter = (row) => vendorStem(row.vendor_name || "") === stem;
+  }
+  if (sub.lens === "money") {
+    const agencyScope = moneyAgencyScope(f);
+    if (agencyScope.status === "ok") {
+      postFilter = (row) => agencyScope.matches({ agency_name: row.agency_name || row.agency });
+    }
   }
   if (sub.lens === "entity" && f.kind === "agency") {
     const exact = interpretStoredInstitutionFollow({ lens: "entity", filter: f });

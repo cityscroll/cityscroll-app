@@ -1023,6 +1023,8 @@
   ],
   "grep_exclusions": [
    "ontology/procurement_legal_register.v1.json",
+   "test/fixtures/money_agency_ref/open-list.live-2026-11-17.json",
+   "test/fixtures/money_agency_ref/recent-all-types.live-2026-11-17.json",
    "test/fixtures/procurement_register_consumption/fixtures.json"
   ],
   "unmapped": [

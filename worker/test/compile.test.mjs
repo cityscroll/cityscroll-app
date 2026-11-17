@@ -28,7 +28,7 @@ test("money + agency → agency_name clause applied to both the award and solici
   assert.match(rfp.params["$where"], /agency_name='Buildings'/);
 });
 
-test("money + typed agency scope compiles the same agency predicate used by the scope", () => {
+test("money + typed agency scope compiles an identity candidate set for that agency", () => {
   const q = compileSub({ lens: "money", filter: {
     agency: "Housing Preservation and Development",
     noticeType: "award",
@@ -36,8 +36,16 @@ test("money + typed agency scope compiles the same agency predicate used by the 
     connection_relation: "published_by_agency",
   } }, "2026-08-05");
   assert.equal(q.kind, "award");
-  assert.match(q.params["$where"], /agency_name='Housing Preservation and Development'/);
   assert.match(q.params["$where"], /type_of_notice_description='Award'/);
+  // The spelling hint is not the scope. The query is every known spelling, or a
+  // spelling that holds every distinctive word, and the identity test decides membership.
+  assert.match(q.params["$where"], /agency_name in \('Housing Preservation and Development'/);
+  assert.match(q.params["$where"], /upper\(agency_name\) like '%HOUSING%'/);
+  assert.match(q.params["$where"], /upper\(agency_name\) like '%PRESERVATION%'/);
+  assert.match(q.params["$where"], /upper\(agency_name\) like '%DEVELOPMENT%'/);
+  assert.equal(q.postFilter({ agency_name: "Housing Preservation and Development" }), true);
+  assert.equal(q.postFilter({ agency_name: "Department of Transportation" }), false);
+  assert.equal(q.postFilter({ agency_name: "NYC Health + Hospitals" }), false);
 });
 
 test("money + noticeType='award' with NO amount → still the award branch (closes the old amount-implies-type gap)", () => {
