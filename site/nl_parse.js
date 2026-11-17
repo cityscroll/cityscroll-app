@@ -46,6 +46,9 @@ var NL_AGENCY_ALIASES = [
   ["Environmental Protection", ["department of environmental protection", "environmental protection department", "dep"]],
   ["Police Department", ["police department", "nypd"]],
   ["Fire Department", ["fire department", "fdny"]],
+  // Tried before "department of health": that alias's remaining word is "health",
+  // so a later row would never see "health and hospitals".
+  ["NYC Health + Hospitals", ["nyc health and hospitals", "health and hospitals", "hhc"]],
   ["Health and Mental Hygiene", ["health and mental hygiene", "department of health", "dohmh"]],
   ["Administration for Children's Services", ["administration for children's services", "administration for children s services", "children's services", "acs"]],
   ["Citywide Administrative Services", ["citywide administrative services", "dcas"]],
@@ -54,11 +57,23 @@ var NL_AGENCY_ALIASES = [
   ["Correction", ["department of correction", "correction department", "doc"]],
   ["Finance", ["department of finance", "finance department", "dof"]],
   ["Aging", ["department for the aging", "dfta"]],
-  ["Human Resources Administration", ["human resources administration", "hra"]],
+  ["Human Resources Administration", ["human resources administration", "department of social services", "social services", "hra", "dss"]],
   ["City Planning", ["department of city planning", "city planning department", "dcp"]],
   ["Probation", ["department of probation", "probation department"]],
   ["Cultural Affairs", ["department of cultural affairs", "cultural affairs", "dcla"]],
   ["Consumer and Worker Protection", ["consumer and worker protection", "dcwp"]],
+  // Bodies on the open solicitation list that had no informal name here.
+  // Short names are the ones each body publishes on its own site. Brooklyn Navy
+  // Yard is the name only.
+  ["Youth and Community Development", ["department of youth and community development", "youth and community development", "dycd"]],
+  ["Homeless Services", ["department of homeless services", "homeless services", "dhs"]],
+  ["Housing Authority", ["new york city housing authority", "nyc housing authority", "housing authority", "nycha"]],
+  ["Information Technology and Telecommunications", ["office of technology and innovation", "information technology and telecommunications", "oti", "doitt"]],
+  ["Teachers' Retirement System", ["teachers retirement system", "trs"]],
+  ["District Attorney - New York County", ["manhattan district attorney", "new york county district attorney"]],
+  ["City University", ["city university of new york", "city university", "cuny"]],
+  ["Economic Development Corporation", ["new york city economic development corporation", "economic development corporation", "nycedc", "edc"]],
+  ["Brooklyn Navy Yard Development Corp.", ["brooklyn navy yard development corporation", "brooklyn navy yard", "navy yard"]],
 ];
 
 var NOTICE_TYPE_AWARD_RE = /\b(awards?|awarded|winners?)\b/;
