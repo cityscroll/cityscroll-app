@@ -11,6 +11,10 @@
 //        # Each notice also carries the City commodity category joined from PASSPort
 //        # Public RFx, or an explicit category-not-published reason. A failed RFx read
 //        # is recorded on the artifact and does not drop the City Record rows.
+//        # Each notice also says whether its own text names a work site (coverage.work_site):
+//        # a street address the notice presents as the place of the work, placed in a
+//        # community district from the committed address, tax-lot and boundary snapshots.
+//        # A failed text read is recorded and does not drop the City Record rows.
 //
 // Snapshots are commit-time artifacts (inline-at-build). Browser readers filter
 // them locally; only this acquisition command contacts publisher sources.
@@ -33,10 +37,16 @@ import {
   fetchLandOutcomeSnapshots,
   fetchMoneyAgencies,
   fetchMoneyDefaultOpen,
+  fetchMoneyOpenSolicitationText,
   fetchMoneyOpenSolicitations,
   fetchStaffingHires,
 } from "./lib/batch_precompute_snapshots.mjs";
 import { fetchPassportPublicRfxRows } from "./lib/open_notice_commodity_category.mjs";
+import {
+  createCommittedAddressGeocoder,
+  loadFullBoundaryLayers,
+  workSiteResolverSources,
+} from "./lib/open_notice_work_site_resolver.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DATA_DIR = path.join(ROOT, "site", "data");
@@ -199,8 +209,28 @@ export async function buildAll({
         observedAt: now.toISOString(),
       };
     }
+    let workSite;
+    try {
+      const textRows = fixture
+        ? await loadFixture("open_notice_text.json")
+        : await fetchMoneyOpenSolicitationText(fetchImpl, now);
+      const geocode = createCommittedAddressGeocoder();
+      const layerData = loadFullBoundaryLayers();
+      workSite = {
+        textRows,
+        observedAt: now.toISOString(),
+        geocode,
+        layerData,
+        resolverSources: workSiteResolverSources({ geocode, layerData }),
+      };
+    } catch (error) {
+      workSite = {
+        unavailable: String(error?.message || error).slice(0, 180),
+        observedAt: now.toISOString(),
+      };
+    }
     results.money_open_solicitations = buildMoneyOpenSolicitationsSnapshot(
-      { ...population, commodity },
+      { ...population, commodity, workSite },
       { now },
     );
   }
