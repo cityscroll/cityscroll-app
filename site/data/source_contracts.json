@@ -6913,6 +6913,42 @@
       "production_evidence_field": "first_class.agency_procurement_history"
     },
     {
+      "id": "agency-procurement-history-by-agency",
+      "public_artifact_path": "site/data/agency_procurement_history_by_agency.json",
+      "primary_routes": [
+        "/browse/",
+        "/browse/contracts/"
+      ],
+      "source_contract_id": "city-record",
+      "acquisition_command": [
+        "node",
+        "tools/build_agency_procurement_history_by_agency.mjs"
+      ],
+      "owning_builder": "tools/build_agency_procurement_history_by_agency.mjs",
+      "builder_command": [
+        "node",
+        "tools/build_agency_procurement_history_by_agency.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_source_health_observations.mjs"
+      ],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 24,
+      "hard_maximum_age_hours": 36,
+      "vintage_fields": [
+        "as_of",
+        "generated_at"
+      ],
+      "population_fields": [
+        "count",
+        "agencies"
+      ],
+      "last_known_good_behavior": "Retain the last verified per-agency history within the hard age; a short, capped or partly invalid pull is published marked incomplete with its reasons and its counts against the publisher count.",
+      "resident_stale_behavior": "Do not present solicitation counts, response windows or registered-contract medians as current after the hard maximum age.",
+      "resident_unavailable_behavior": "Show each figure as unavailable with its reason. Never read a missing file or a missing agency as zero notices or zero contracts.",
+      "production_evidence_field": "first_class.agency_procurement_history_by_agency"
+    },
+    {
       "id": "procurement-evidence-capabilities",
       "public_artifact_path": "site/data/procurement_evidence_capabilities.json",
       "primary_routes": [

@@ -1,0 +1,4120 @@
+{
+  "schema": "cityscroll.agency_procurement_history_by_agency.v1",
+  "schema_version": 1,
+  "delivery_tier": "inline-at-build",
+  "rule_version": "agency-history-v1",
+  "generated_at": "2026-11-19T08:56:22.627Z",
+  "as_of": "2026-11-19",
+  "window": {
+    "months": 24,
+    "start_inclusive": "2024-11-19",
+    "end_exclusive": "2026-11-19"
+  },
+  "sources": {
+    "city_record": {
+      "name": "City Record Online",
+      "dataset": "dg92-zbpx",
+      "url": "https://data.cityofnewyork.us/d/dg92-zbpx",
+      "as_of": "2026-11-18",
+      "rows_updated_at": "2026-11-18T13:28:28.000Z",
+      "query": "Procurement-section Solicitation notices with a start_date inside the window"
+    },
+    "registered_contracts": {
+      "name": "Checkbook NYC registered contracts",
+      "artifact": "site/data/analytics_registered_contracts.json",
+      "as_of": "2026-11-14"
+    }
+  },
+  "definitions": {
+    "solicitation_notice": "One City Record Solicitation notice, counted once per request_id, by its publication (start) date.",
+    "response_window": "Calendar days from the notice's publication date to its printed due date. Blank or invalid due dates, rolling placeholders (year 2090 or later) and due dates before publication are left out and counted in `excluded`.",
+    "usable_due_date_share": "Notices with a usable due date divided by all the agency's solicitation notices in the window.",
+    "registered_contract": "One Checkbook NYC registered contract, counted once per prime contract id, by its registration date. The amount is the original registered amount, not an award and not a payment.",
+    "median_original_registered_amount": "Median of the original registered amounts of the contracts counted in amount_eligible.",
+    "agency_identity": "Agencies are named by the engine's canonical agency id. A name the engine has not reviewed keeps its own id and is marked identity not_reviewed."
+  },
+  "reasons": {
+    "no_solicitation_notices": {
+      "state": "missing",
+      "text": "No solicitation notice under this agency's name was printed in the City Record in this window. Some agencies buy through PASSPort or print awards instead."
+    },
+    "no_usable_due_date": {
+      "state": "missing",
+      "text": "This agency's solicitation notices in this window carry no usable due date (blank, a rolling placeholder, or before publication), so no response window can be read."
+    },
+    "no_registered_contracts": {
+      "state": "missing",
+      "text": "No registered contracts are listed under this agency's name in Checkbook NYC in this window."
+    },
+    "no_contract_amounts": {
+      "state": "missing",
+      "text": "This agency's registered contracts in this window carry no usable amount, so no median can be read."
+    },
+    "identity_not_reviewed": {
+      "state": "note",
+      "text": "This agency name is not in CityScroll's reviewed agency list; figures are matched on the name as printed."
+    }
+  },
+  "bounds": {
+    "max_rows": 8000,
+    "max_bytes": 524288,
+    "small_sample_below": 5
+  },
+  "checkbook_spelling_review": {
+    "Health and Hospitals Corporation": {
+      "agency_id": "nyc-health-hospitals",
+      "basis": "The engine already routes the longer form \"NYC Health and Hospitals Corporation\" to this id; Checkbook prints the same public benefit corporation without the NYC prefix."
+    },
+    "City University of New York": {
+      "agency_id": "city-university",
+      "basis": "The City Record prints the body as \"City University\"; Checkbook spells out the full name. The separate \"City University Construction Fund\" is not mapped."
+    }
+  },
+  "population": {
+    "state": "complete",
+    "reasons": [],
+    "notice_source_count": 1890,
+    "notices_read": 1890,
+    "notices_in_window_counted": 1890,
+    "notices_unassigned": {},
+    "contract_rows_read": 29731,
+    "contracts_in_window_counted": 25143,
+    "contracts_unassigned": {
+      "community-boards": 6
+    }
+  },
+  "coverage": {
+    "agencies": 86,
+    "identity_not_reviewed": 19,
+    "with_solicitation_notices": 56,
+    "with_response_window": 56,
+    "with_registered_contracts": 61,
+    "with_contract_median": 61
+  },
+  "count": 86,
+  "agencies": [
+    {
+      "agency_id": "administration-for-childrens-services",
+      "agency_name": "Administration for Children's Services",
+      "display_name": "Administration for Children's Services",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Administration for Children's Services"
+      ],
+      "checkbook_spellings": [
+        "Administration for Children's Services"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 8,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 32,
+        "eligible_notices": 8,
+        "total_notices": 8,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 498,
+        "amount_eligible": 498,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 1170086.525,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "administrative-trials-and-hearings",
+      "agency_name": "Administrative Trials and Hearings",
+      "display_name": "Administrative Trials and Hearings",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Office of Administrative Trials and Hearings"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 25,
+        "amount_eligible": 25,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 99000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "aging",
+      "agency_name": "Aging",
+      "display_name": "Aging",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Aging"
+      ],
+      "checkbook_spellings": [
+        "Department for the Aging"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 4,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 35,
+        "eligible_notices": 4,
+        "total_notices": 4,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 582,
+        "amount_eligible": 582,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 862914,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "board-of-correction",
+      "agency_name": "Board of Correction",
+      "display_name": "Board of Correction",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Board of Correction"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 2,
+        "amount_eligible": 2,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 46596,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "board-of-education-retirement-system",
+      "agency_name": "Board of Education Retirement System",
+      "display_name": "Board of Education Retirement System",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "Board of Education Retirement System"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 6,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 43,
+        "eligible_notices": 6,
+        "total_notices": 6,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "board-of-elections",
+      "agency_name": "Board of Elections",
+      "display_name": "Board of Elections",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Board of Elections"
+      ],
+      "checkbook_spellings": [
+        "Board of Elections"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 5,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 29,
+        "eligible_notices": 5,
+        "total_notices": 5,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 73,
+        "amount_eligible": 73,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 690106.79,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "borough-president-bronx",
+      "agency_name": "Borough President - Bronx",
+      "display_name": "Borough President - Bronx",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Borough President - Bronx"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 1,
+        "amount_eligible": 1,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 99910.84,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "borough-president-brooklyn",
+      "agency_name": "Borough President - Brooklyn",
+      "display_name": "Borough President - Brooklyn",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Borough President - Brooklyn"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 5,
+        "amount_eligible": 5,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 28800,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "borough-president-manhattan",
+      "agency_name": "Borough President - Manhattan",
+      "display_name": "Borough President - Manhattan",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Borough President - Manhattan"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 3,
+        "amount_eligible": 3,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 74637.5,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "borough-president-queens",
+      "agency_name": "Borough President - Queens",
+      "display_name": "Borough President - Queens",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Borough President - Queens"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 192,
+        "amount_eligible": 192,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 1500,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "borough-president-staten-island",
+      "agency_name": "Borough President - Staten Island",
+      "display_name": "Borough President - Staten Island",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Borough President - Staten Island"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 1,
+        "amount_eligible": 1,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 23423.5,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "brooklyn-bridge-park",
+      "agency_name": "Brooklyn Bridge Park",
+      "display_name": "Brooklyn Bridge Park",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "Brooklyn Bridge Park"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 16,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 27.5,
+        "eligible_notices": 16,
+        "total_notices": 16,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "brooklyn-navy-yard-development-corp",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "display_name": "Brooklyn Navy Yard Development Corp.",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "Brooklyn Navy Yard Development Corp."
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 27,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 36,
+        "eligible_notices": 27,
+        "total_notices": 27,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "brooklyn-public-library",
+      "agency_name": "Brooklyn Public Library",
+      "display_name": "Brooklyn Public Library",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Brooklyn Public Library"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 6,
+        "amount_eligible": 6,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 249772.175,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "buildings",
+      "agency_name": "Buildings",
+      "display_name": "Buildings",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Buildings"
+      ],
+      "checkbook_spellings": [
+        "Department of Buildings"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 2,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 31.5,
+        "eligible_notices": 2,
+        "total_notices": 2,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 33,
+        "amount_eligible": 33,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 121500,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "business-integrity-commission",
+      "agency_name": "Business Integrity Commission",
+      "display_name": "Business Integrity Commission",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Business Integrity Commission"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 1,
+        "amount_eligible": 1,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 203459.76,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "campaign-finance-board",
+      "agency_name": "Campaign Finance Board",
+      "display_name": "Campaign Finance Board",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Campaign Finance Board"
+      ],
+      "checkbook_spellings": [
+        "Campaign Finance Board"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 8,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 30.5,
+        "eligible_notices": 8,
+        "total_notices": 8,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 29,
+        "amount_eligible": 29,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 625000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "chief-medical-examiner",
+      "agency_name": "chief medical examiner",
+      "display_name": "Chief Medical Examiner",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Chief Medical Examiner"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 2,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 14,
+        "eligible_notices": 2,
+        "total_notices": 2,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "city-council",
+      "agency_name": "City Council",
+      "display_name": "City Council",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "City Council"
+      ],
+      "checkbook_spellings": [
+        "City Council"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 3,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 25,
+        "eligible_notices": 3,
+        "total_notices": 3,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 173,
+        "amount_eligible": 173,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 81401.47,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "city-planning",
+      "agency_name": "City Planning",
+      "display_name": "City Planning",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Department of City Planning"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 36,
+        "amount_eligible": 36,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 82423.33,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "city-university",
+      "agency_name": "City University",
+      "display_name": "City University",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "City University"
+      ],
+      "checkbook_spellings": [
+        "City University of New York"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 66,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 27.5,
+        "eligible_notices": 66,
+        "total_notices": 66,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 84,
+        "amount_eligible": 84,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 252443.5,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "city-university-construction-fund",
+      "agency_name": "City University Construction Fund",
+      "display_name": "City University Construction Fund",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "City University Construction Fund"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 173,
+        "amount_eligible": 173,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 149213,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "citywide-administrative-services",
+      "agency_name": "Citywide Administrative Services",
+      "display_name": "Citywide Administrative Services",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Citywide Administrative Services"
+      ],
+      "checkbook_spellings": [
+        "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+        "Department of Citywide Administrative Services"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 257,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 38,
+        "eligible_notices": 257,
+        "total_notices": 257,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 880,
+        "amount_eligible": 880,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 280947.5,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "civilian-complaint-review-board",
+      "agency_name": "Civilian Complaint Review Board",
+      "display_name": "Civilian Complaint Review Board",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Civilian Complaint Review Board"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 18,
+        "amount_eligible": 18,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 71250,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "commission-on-human-rights",
+      "agency_name": "Commission on Human Rights",
+      "display_name": "Commission on Human Rights",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Commission on Human Rights"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 9,
+        "amount_eligible": 9,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 85991.6,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "commission-on-racial-equity",
+      "agency_name": "Commission on Racial Equity",
+      "display_name": "Commission on Racial Equity",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Commission on Racial Equity"
+      ],
+      "checkbook_spellings": [
+        "COMMISSION ON RACIAL EQUITY"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 1,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 31,
+        "eligible_notices": 1,
+        "total_notices": 1,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 1,
+        "amount_eligible": 1,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 1200000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "comptroller",
+      "agency_name": "Comptroller",
+      "display_name": "Comptroller",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Comptroller"
+      ],
+      "checkbook_spellings": [
+        "Office of the Comptroller"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 9,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 14,
+        "eligible_notices": 9,
+        "total_notices": 9,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 176,
+        "amount_eligible": 176,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 1274404.5,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "conflicts-of-interest-board",
+      "agency_name": "Conflicts of Interest Board",
+      "display_name": "Conflicts of Interest Board",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Conflicts of Interest Board"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 5,
+        "amount_eligible": 5,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 12000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "consumer-and-worker-protection",
+      "agency_name": "Consumer and Worker Protection",
+      "display_name": "Consumer and Worker Protection",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Department of Consumer & Worker Protection"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 52,
+        "amount_eligible": 52,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 95000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "correction",
+      "agency_name": "Correction",
+      "display_name": "Correction",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Correction"
+      ],
+      "checkbook_spellings": [
+        "Department of Correction"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 18,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 36.5,
+        "eligible_notices": 18,
+        "total_notices": 18,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 224,
+        "amount_eligible": 224,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 127716.62,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "criminal-justice-coordinator",
+      "agency_name": "Criminal Justice Coordinator",
+      "display_name": "Criminal Justice Coordinator",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "OFFICE OF CRIMINAL JUSTICE"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 93,
+        "amount_eligible": 93,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 1110680,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "cultural-affairs",
+      "agency_name": "Cultural Affairs",
+      "display_name": "Cultural Affairs",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Department of Cultural Affairs"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 21,
+        "amount_eligible": 21,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 234679.72,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "department-of-social-services",
+      "agency_name": "Department of Social Services",
+      "display_name": "Department of Social Services",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Department of Social Services"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 745,
+        "amount_eligible": 745,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 750000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "design-and-construction",
+      "agency_name": "Design and Construction",
+      "display_name": "Design and Construction",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Design and Construction"
+      ],
+      "checkbook_spellings": [
+        "Department of Design and Construction"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 142,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 31,
+        "eligible_notices": 134,
+        "total_notices": 142,
+        "usable_due_date_share": 0.944,
+        "excluded": {
+          "rolling_deadline_placeholder": 8
+        },
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 771,
+        "amount_eligible": 771,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 1940442,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "district-attorney-bronx-county",
+      "agency_name": "District Attorney - Bronx County",
+      "display_name": "District Attorney - Bronx County",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "District Attorney - Bronx County"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 4,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 47,
+        "eligible_notices": 4,
+        "total_notices": 4,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "district-attorney-kings-county",
+      "agency_name": "District Attorney - Kings County",
+      "display_name": "District Attorney - Kings County",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "District Attorney - Kings County"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 2,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 17.5,
+        "eligible_notices": 2,
+        "total_notices": 2,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "district-attorney-new-york-county",
+      "agency_name": "District Attorney - New York County",
+      "display_name": "District Attorney - New York County",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "District Attorney - New York County"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 7,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 35,
+        "eligible_notices": 7,
+        "total_notices": 7,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "economic-development-corporation",
+      "agency_name": "Economic Development Corporation",
+      "display_name": "Economic Development Corporation",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "Economic Development Corporation"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 87,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 41,
+        "eligible_notices": 87,
+        "total_notices": 87,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "education",
+      "agency_name": "Education",
+      "display_name": "Education",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Education"
+      ],
+      "checkbook_spellings": [
+        "Department of Education"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 66,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 86.5,
+        "eligible_notices": 66,
+        "total_notices": 66,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 8214,
+        "amount_eligible": 8214,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 25000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "educational-construction-fund",
+      "agency_name": "Educational Construction Fund",
+      "display_name": "Educational Construction Fund",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "Educational Construction Fund"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 1,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 17,
+        "eligible_notices": 1,
+        "total_notices": 1,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "emergency-management",
+      "agency_name": "Emergency Management",
+      "display_name": "Emergency Management",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Emergency Management"
+      ],
+      "checkbook_spellings": [
+        "Department of Emergency Management"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 9,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 24,
+        "eligible_notices": 9,
+        "total_notices": 9,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 91,
+        "amount_eligible": 91,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 369511,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "environmental-protection",
+      "agency_name": "Environmental Protection",
+      "display_name": "Environmental Protection",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Environmental Protection"
+      ],
+      "checkbook_spellings": [
+        "Department of Environmental Protection"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 175,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 36,
+        "eligible_notices": 175,
+        "total_notices": 175,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 531,
+        "amount_eligible": 531,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 740000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "finance",
+      "agency_name": "Finance",
+      "display_name": "Finance",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Finance"
+      ],
+      "checkbook_spellings": [
+        "Department of Finance"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 9,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 32,
+        "eligible_notices": 9,
+        "total_notices": 9,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 98,
+        "amount_eligible": 98,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 121482.075,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "financial-information-services-agency",
+      "agency_name": "Financial Information Services Agency",
+      "display_name": "Financial Information Services Agency",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Financial Information Services Agency"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 82,
+        "amount_eligible": 82,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 106103.785,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "fire-department",
+      "agency_name": "Fire Department",
+      "display_name": "Fire Department",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Fire Department"
+      ],
+      "checkbook_spellings": [
+        "Fire Department"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 25,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 26,
+        "eligible_notices": 25,
+        "total_notices": 25,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 286,
+        "amount_eligible": 286,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 101571.44,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "health-and-mental-hygiene",
+      "agency_name": "Health and Mental Hygiene",
+      "display_name": "Health and Mental Hygiene",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Health and Mental Hygiene"
+      ],
+      "checkbook_spellings": [
+        "Department of Health and Mental Hygiene"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 23,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 44.5,
+        "eligible_notices": 18,
+        "total_notices": 23,
+        "usable_due_date_share": 0.783,
+        "excluded": {
+          "rolling_deadline_placeholder": 5
+        },
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 1549,
+        "amount_eligible": 1549,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 19967.5,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "homeless-services",
+      "agency_name": "Homeless Services",
+      "display_name": "Homeless Services",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Homeless Services"
+      ],
+      "checkbook_spellings": [
+        "Department of Homeless Services"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 11,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 32,
+        "eligible_notices": 11,
+        "total_notices": 11,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 330,
+        "amount_eligible": 330,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 20933667,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "housing-authority",
+      "agency_name": "Housing Authority",
+      "display_name": "Housing Authority",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Housing Authority"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 271,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 34,
+        "eligible_notices": 271,
+        "total_notices": 271,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "housing-preservation-and-development",
+      "agency_name": "Housing Preservation and Development",
+      "display_name": "Housing Preservation and Development",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Housing Preservation and Development"
+      ],
+      "checkbook_spellings": [
+        "Housing Preservation and Development"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 20,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 31,
+        "eligible_notices": 20,
+        "total_notices": 20,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 1125,
+        "amount_eligible": 1125,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 432060.24,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "human-resources-administration",
+      "agency_name": "Human Resources Administration",
+      "display_name": "Human Resources Administration",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Dept. of Social Svcs/Human Resources Administration"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 13,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 35,
+        "eligible_notices": 13,
+        "total_notices": 13,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "independent-budget-office",
+      "agency_name": "Independent Budget Office",
+      "display_name": "Independent Budget Office",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Independent Budget Office"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 14,
+        "amount_eligible": 14,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 31243.5,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "information-technology-and-telecommunications",
+      "agency_name": "Information Technology and Telecommunications",
+      "display_name": "Information Technology and Telecommunications",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Information Technology and Telecommunications"
+      ],
+      "checkbook_spellings": [
+        "Department of Information Technology and Telecommunications"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 4,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 38.5,
+        "eligible_notices": 4,
+        "total_notices": 4,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 368,
+        "amount_eligible": 368,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 314340,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "investigation",
+      "agency_name": "Investigation",
+      "display_name": "Investigation",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Investigation"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 5,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 9,
+        "eligible_notices": 5,
+        "total_notices": 5,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "landmarks-preservation-commission",
+      "agency_name": "Landmarks Preservation Commission",
+      "display_name": "Landmarks Preservation Commission",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Landmarks Preservation Commission"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 6,
+        "amount_eligible": 6,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 54371.34,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "law-department",
+      "agency_name": "Law Department",
+      "display_name": "Law Department",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Law Department"
+      ],
+      "checkbook_spellings": [
+        "Law Department"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 2,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 35.5,
+        "eligible_notices": 2,
+        "total_notices": 2,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 160,
+        "amount_eligible": 160,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 234140,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "management-and-budget",
+      "agency_name": "Management and Budget",
+      "display_name": "Management and Budget",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Management and Budget"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 2,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 55,
+        "eligible_notices": 2,
+        "total_notices": 2,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "mayors-fund-to-advance-new-york-city",
+      "agency_name": "Mayor's Fund to Advance New York City",
+      "display_name": "Mayor's Fund to Advance New York City",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "Mayor's Fund to Advance New York City"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 6,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 17,
+        "eligible_notices": 6,
+        "total_notices": 6,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "mayors-office-of-contract-services",
+      "agency_name": "Mayor's Office of Contract Services",
+      "display_name": "Mayor's Office of Contract Services",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Mayor's Office of Contract Services"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 1,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 107,
+        "eligible_notices": 1,
+        "total_notices": 1,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "mayors-office-of-criminal-justice",
+      "agency_name": "mayors office of criminal justice",
+      "display_name": "Mayor's Office of Criminal Justice",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Mayor's Office of Criminal Justice"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 5,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 3,
+        "eligible_notices": 5,
+        "total_notices": 5,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "new-york-city-fire-pension-fund",
+      "agency_name": "New York City Fire Pension Fund",
+      "display_name": "New York City Fire Pension Fund",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "New York City Fire Pension Fund"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 4,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 40,
+        "eligible_notices": 4,
+        "total_notices": 4,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "new-york-city-police-pension-fund",
+      "agency_name": "new york city police pension fund",
+      "display_name": "New York City Police Pension Fund",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "New York City Police Pension Fund"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 7,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 41,
+        "eligible_notices": 7,
+        "total_notices": 7,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "new-york-research-libraries",
+      "agency_name": "New York Research Libraries",
+      "display_name": "New York Research Libraries",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "New York Research Libraries"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 17,
+        "amount_eligible": 17,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 48981.12,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "nyc-department-of-veterans-services",
+      "agency_name": "NYC Department of Veterans' Services",
+      "display_name": "NYC Department of Veterans' Services",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Veterans' Services"
+      ],
+      "checkbook_spellings": [
+        "Department of Veterans' Services"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 1,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 14,
+        "eligible_notices": 1,
+        "total_notices": 1,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 11,
+        "amount_eligible": 11,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 250000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "nyc-health-hospitals",
+      "agency_name": "nyc health hospitals",
+      "display_name": "NYC Health + Hospitals",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "NYC Health + Hospitals"
+      ],
+      "checkbook_spellings": [
+        "Health and Hospitals Corporation"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 101,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 40,
+        "eligible_notices": 101,
+        "total_notices": 101,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 297,
+        "amount_eligible": 297,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 295715,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "nyc-taxi-and-limousine-commission",
+      "agency_name": "NYC Taxi and Limousine Commission",
+      "display_name": "NYC Taxi and Limousine Commission",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "NYC Taxi and Limousine Commission"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 21,
+        "amount_eligible": 21,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 254400,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "office-of-administrative-tax-appeals",
+      "agency_name": "Office of Administrative Tax Appeals",
+      "display_name": "Office of Administrative Tax Appeals",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Office of Administrative Tax Appeals"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 3,
+        "amount_eligible": 3,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 28715,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "office-of-labor-relations",
+      "agency_name": "Office of Labor Relations",
+      "display_name": "Office of Labor Relations",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Office of Labor Relations"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 9,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 28,
+        "eligible_notices": 9,
+        "total_notices": 9,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "office-of-the-actuary",
+      "agency_name": "Office of The Actuary",
+      "display_name": "Office of The Actuary",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Office of the Actuary"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 4,
+        "amount_eligible": 4,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 43500,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "office-of-the-mayor",
+      "agency_name": "Office of the Mayor",
+      "display_name": "Office of the Mayor",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Office of the Mayor"
+      ],
+      "checkbook_spellings": [
+        "Mayoralty"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 1,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 58,
+        "eligible_notices": 1,
+        "total_notices": 1,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 159,
+        "amount_eligible": 159,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 150000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "parks-and-recreation",
+      "agency_name": "Parks and Recreation",
+      "display_name": "Parks and Recreation",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Parks and Recreation"
+      ],
+      "checkbook_spellings": [
+        "Department of Parks and Recreation"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 135,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 28,
+        "eligible_notices": 135,
+        "total_notices": 135,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 2356,
+        "amount_eligible": 2356,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 11675.165,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "payroll-administration",
+      "agency_name": "Payroll Administration",
+      "display_name": "Payroll Administration",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Office of Payroll Administration"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 6,
+        "amount_eligible": 6,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 73288.01000000001,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "police-department",
+      "agency_name": "Police Department",
+      "display_name": "Police Department",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Police Department"
+      ],
+      "checkbook_spellings": [
+        "Police Department"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 46,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 35,
+        "eligible_notices": 46,
+        "total_notices": 46,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 512,
+        "amount_eligible": 512,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 60950,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "probation",
+      "agency_name": "Probation",
+      "display_name": "Probation",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Department of Probation"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 69,
+        "amount_eligible": 69,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 269112.5,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "public-housing-preservation-trust",
+      "agency_name": "Public Housing Preservation Trust",
+      "display_name": "Public Housing Preservation Trust",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "Public Housing Preservation Trust"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 4,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 16.5,
+        "eligible_notices": 4,
+        "total_notices": 4,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "public-library-queens",
+      "agency_name": "Public Library - Queens",
+      "display_name": "Public Library - Queens",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "Public Library - Queens"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 12,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 23,
+        "eligible_notices": 12,
+        "total_notices": 12,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "queens-borough-public-library",
+      "agency_name": "Queens Borough Public Library",
+      "display_name": "Queens Borough Public Library",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Queens Borough Public Library"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 5,
+        "amount_eligible": 5,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 151748,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "records-and-information-services",
+      "agency_name": "Records and Information Services",
+      "display_name": "Records and Information Services",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Department of Records and Information Services"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 3,
+        "amount_eligible": 3,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 107643.4,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "sanitation",
+      "agency_name": "Sanitation",
+      "display_name": "Sanitation",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Sanitation"
+      ],
+      "checkbook_spellings": [
+        "Department of Sanitation"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 15,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 47,
+        "eligible_notices": 15,
+        "total_notices": 15,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 229,
+        "amount_eligible": 229,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 500000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "school-construction-authority",
+      "agency_name": "School Construction Authority",
+      "display_name": "School Construction Authority",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "School Construction Authority"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 128,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 12,
+        "eligible_notices": 128,
+        "total_notices": 128,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "small-business-services",
+      "agency_name": "Small Business Services",
+      "display_name": "Small Business Services",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Small Business Services"
+      ],
+      "checkbook_spellings": [
+        "Department of Small Business Services"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 5,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 44,
+        "eligible_notices": 5,
+        "total_notices": 5,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 737,
+        "amount_eligible": 737,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 300000,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "taxi-and-limousine-commission",
+      "agency_name": "Taxi and Limousine Commission",
+      "display_name": "Taxi and Limousine Commission",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Taxi and Limousine Commission"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 2,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 52,
+        "eligible_notices": 2,
+        "total_notices": 2,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "teachers-retirement-system",
+      "agency_name": "Teachers' Retirement System",
+      "display_name": "Teachers' Retirement System",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Teachers' Retirement System"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 10,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 27.5,
+        "eligible_notices": 10,
+        "total_notices": 10,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "transit-authority",
+      "agency_name": "Transit Authority",
+      "display_name": "Transit Authority",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [],
+      "checkbook_spellings": [
+        "Transit Authority"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": "no_solicitation_notices",
+        "notices": 0,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "missing",
+        "reason": "no_solicitation_notices",
+        "median_calendar_days": null,
+        "eligible_notices": 0,
+        "total_notices": 0,
+        "usable_due_date_share": null,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 3,
+        "amount_eligible": 3,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 30286342,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "transportation",
+      "agency_name": "Transportation",
+      "display_name": "Transportation",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Transportation"
+      ],
+      "checkbook_spellings": [
+        "Department of Transportation"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 69,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 34,
+        "eligible_notices": 69,
+        "total_notices": 69,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 459,
+        "amount_eligible": 459,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 479090,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "trust-for-governors-island",
+      "agency_name": "Trust for Governors Island",
+      "display_name": "Trust for Governors Island",
+      "identity": "not_reviewed",
+      "identity_note": "identity_not_reviewed",
+      "city_record_spellings": [
+        "Trust for Governors Island"
+      ],
+      "checkbook_spellings": [],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 17,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 43,
+        "eligible_notices": 17,
+        "total_notices": 17,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": false,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "missing",
+        "reason": "no_registered_contracts",
+        "count": 0,
+        "amount_eligible": 0,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": null,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    },
+    {
+      "agency_id": "youth-and-community-development",
+      "agency_name": "Youth and Community Development",
+      "display_name": "Youth and Community Development",
+      "identity": "reviewed",
+      "identity_note": null,
+      "city_record_spellings": [
+        "Youth and Community Development"
+      ],
+      "checkbook_spellings": [
+        "Department of Youth and Community Development"
+      ],
+      "solicitations": {
+        "state": "available",
+        "reason": null,
+        "notices": 2,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "response_window": {
+        "state": "available",
+        "reason": null,
+        "median_calendar_days": 43,
+        "eligible_notices": 2,
+        "total_notices": 2,
+        "usable_due_date_share": 1,
+        "excluded": {},
+        "small_sample": true,
+        "source": {
+          "name": "City Record Online"
+        },
+        "as_of": "2026-11-18"
+      },
+      "registered_contracts": {
+        "state": "available",
+        "reason": null,
+        "count": 2486,
+        "amount_eligible": 2486,
+        "missing_or_invalid_amount": 0,
+        "median_original_registered_amount": 444889.5,
+        "source": {
+          "name": "Checkbook NYC registered contracts"
+        },
+        "as_of": "2026-11-14"
+      }
+    }
+  ]
+}

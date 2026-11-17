@@ -1,0 +1,42 @@
+{
+ "schema": "cityscroll.agency_history_fixture_source.v1",
+ "as_of": "2026-11-11",
+ "generated_at": "2026-11-17T09:50:00.000Z",
+ "notice_count": 387,
+ "rows_updated_at": "2026-11-16T13:31:43.000Z",
+ "contracts_snapshot_date": "2026-11-14",
+ "notices": {
+  "source": "City Record Online dg92-zbpx via SODA",
+  "where": "section_name='Procurement' AND type_of_notice_description='Solicitation' AND start_date>='2024-11-11' AND start_date<'2026-11-11'",
+  "fetch_started": "2026-11-17T09:48:18Z",
+  "fetch_finished": "2026-11-17T09:48:21Z",
+  "full_pull_rows": 1914,
+  "full_pull_count_by_publisher": 1914,
+  "kept_agencies": [
+   "Brooklyn Navy Yard Development Corp.",
+   "City University",
+   "Correction",
+   "Design and Construction",
+   "NYC Health + Hospitals",
+   "New York City Police Pension Fund",
+   "Teachers' Retirement System"
+  ],
+  "derived": {
+   "Teachers' Retirement System": "due_date set to an empty string on every row (a real notice never printed without one in this window): the no-usable-due-date failure case"
+  },
+  "dycd": "The two DYCD notices are read from warehouse/fixtures/agency-procurement-history/dycd-solicitations-24months.raw.json by the test."
+ },
+ "contracts": {
+  "source": "site/data/analytics_registered_contracts (committed engine projection, snapshot 2026-11-14)",
+  "kept": "every contract of the kept Checkbook names registered inside the window, reduced to prime_contract_id, agency, registration_date, original_registered_amount; plus the six community-board contracts, which the history leaves unassigned",
+  "kept_agencies": [
+   "Board of Correction",
+   "City University of New York",
+   "Conflicts of Interest Board",
+   "Department of Correction",
+   "Health and Hospitals Corporation",
+   "(community boards)"
+  ],
+  "dycd": "DYCD contracts come from warehouse/fixtures/agency-procurement-history/dycd-registered-contracts-2026-09-09.json"
+ }
+}
