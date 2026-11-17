@@ -35,14 +35,41 @@ const REGISTERED_SITE_ARTIFACT = 'site/data/analytics_registered_contracts.json'
 
 const read = p => JSON.parse(readFileSync(p, 'utf8'));
 
-// Agencies that publish community-board budget request signals. The signals
-// are built from the whole register, so widening this list is the only change
-// needed to publish another agency; the coverage block names every agency the
-// register binds, published or not.
+// Agencies that publish community-board budget request signals. This is every
+// agency the register binds to a canonical id. The signals are built from the
+// whole register; an agency left off this list is counted as not published
+// rather than omitted. Design and Construction is absent because the register
+// binds it to no request.
 export const BOARD_REQUEST_AGENCIES = Object.freeze([
+  'administration-for-childrens-services',
+  'aging',
+  'buildings',
+  'city-planning',
+  'city-university',
+  'citywide-administrative-services',
+  'consumer-and-worker-protection',
+  'cultural-affairs',
+  'economic-development-corporation',
   'education',
+  'emergency-management',
   'environmental-protection',
+  'fire-department',
+  'health-and-mental-hygiene',
+  'homeless-services',
   'housing-authority',
+  'housing-preservation-and-development',
+  'human-resources-administration',
+  'information-technology-and-telecommunications',
+  'landmarks-preservation-commission',
+  'management-and-budget',
+  'mayors-office-of-criminal-justice',
+  'n-y-c-transit-authority',
+  'nyc-health-hospitals',
+  'parks-and-recreation',
+  'police-department',
+  'sanitation',
+  'small-business-services',
+  'transportation',
   'youth-and-community-development',
 ]);
 const BOARD_REGISTER_SCHEMA = 'cityscroll.community_board_budget_register.v1';
@@ -176,8 +203,6 @@ export function buildAll() {
   });
 
   const agencyInputs = {
-    'education': { 'signals': boardSignalsFamily('education') },
-    'environmental-protection': { 'signals': boardSignalsFamily('environmental-protection') },
     'design-and-construction': {
       'signals': {
         state: 'available',
@@ -188,7 +213,6 @@ export function buildAll() {
       },
     },
     'housing-authority': {
-      'signals': boardSignalsFamily('housing-authority'),
       'retained-examples': {
         state: 'dated_retained',
         source_contract_id: 'checkbook-nycha-contracts',
@@ -198,7 +222,6 @@ export function buildAll() {
       },
     },
     'youth-and-community-development': {
-      'signals': boardSignalsFamily('youth-and-community-development'),
       'program-sites': {
         state: 'available',
         source_contract_id: 'dycd-program-sites',
@@ -208,6 +231,10 @@ export function buildAll() {
       },
     },
   };
+  for (const agency of BOARD_REQUEST_AGENCIES) {
+    const slot = agencyInputs[agency] ??= {};
+    slot.signals = boardSignalsFamily(agency);
+  }
 
   const outputs = new Map();
   const capabilities = {

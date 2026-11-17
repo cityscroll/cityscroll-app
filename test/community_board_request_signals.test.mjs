@@ -11,7 +11,15 @@ const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const readJson = path => JSON.parse(readFileSync(path, 'utf8'));
 const cases = readJson(join(ROOT, 'warehouse/fixtures/procurement-evidence/board-request-signal-cases.json'));
 const asOf = cases.as_of;
-const agencies = [...BOARD_REQUEST_AGENCIES];
+// The case file still contains a bound agency that this list leaves unpublished,
+// so the "not published" outcome stays observable. Production publishes every
+// agency the register binds; see BOARD_REQUEST_AGENCIES.
+const agencies = [
+  'education',
+  'environmental-protection',
+  'housing-authority',
+  'youth-and-community-development',
+];
 const BOROUGHS = ['bronx', 'brooklyn', 'manhattan', 'queens', 'staten-island'];
 const set = m.budgetRequestSignalSet(cases.documents, { asOf, agencies });
 const rowFor = code => Object.values(set.signals).flat().find(r => r.tracking_code === code);
@@ -156,15 +164,28 @@ test('the builder reads the whole register: 3,809 requests, 59 boards, every req
   assert.equal(Object.keys(coverage.by_borough).sort().join(), BOROUGHS.join());
 });
 
-test('the four published agencies carry 664 signals, with the counts the register gives', () => {
-  assert.deepEqual(coverage.signal_agencies, agencies);
-  assert.equal(coverage.published_signals, 664);
+test('every agency the register binds is published, and requests left out stay counted', () => {
+  assert.deepEqual(coverage.signal_agencies, [...BOARD_REQUEST_AGENCIES]);
+  assert.deepEqual([...BOARD_REQUEST_AGENCIES].sort(), Object.keys(coverage.by_agency).sort());
+  assert.equal(coverage.by_outcome.agency_not_published, 0);
+  assert.equal(coverage.by_outcome.agency_unbound, 119);
+  assert.equal(coverage.by_outcome.request_text_missing, 1);
+  assert.equal(coverage.published_signals, 3689);
+  assert.equal(coverage.published_with_response, 3689);
+  assert.equal(coverage.published_without_response, 0);
   const counts = Object.fromEntries(Object.entries(coverage.published).map(([a, p]) => [a, p.requests]));
-  assert.deepEqual(counts, { 'education': 292, 'environmental-protection': 194, 'housing-authority': 72, 'youth-and-community-development': 106 });
+  assert.equal(counts.education, 292);
+  assert.equal(counts['environmental-protection'], 194);
+  assert.equal(counts['housing-authority'], 72);
+  assert.equal(counts['youth-and-community-development'], 106);
+  assert.ok(counts['parks-and-recreation'] > 600);
+  assert.equal(coverage.by_agency['parks-and-recreation'].published, true);
   const byBorough = Object.fromEntries(BOROUGHS.map(b => [b, Object.values(coverage.published).reduce((n, p) => n + (p.by_borough[b] || 0), 0)]));
-  assert.deepEqual(byBorough, { 'bronx': 125, 'brooklyn': 181, 'manhattan': 186, 'queens': 150, 'staten-island': 22 });
-  assert.equal(coverage.published_with_response + coverage.published_without_response, 664);
-  assert.ok(coverage.by_agency['parks-and-recreation'].requests > 600 && coverage.by_agency['parks-and-recreation'].published === false);
+  assert.deepEqual(byBorough, { 'bronx': 600, 'brooklyn': 1228, 'manhattan': 868, 'queens': 927, 'staten-island': 66 });
+  const shownBefore = ['education', 'environmental-protection', 'housing-authority', 'youth-and-community-development'];
+  const shownBorough = Object.fromEntries(BOROUGHS.map(b => [b, shownBefore.reduce((n, a) => n + (coverage.published[a].by_borough[b] || 0), 0)]));
+  assert.deepEqual(shownBorough, { 'bronx': 125, 'brooklyn': 181, 'manhattan': 186, 'queens': 150, 'staten-island': 22 });
+  assert.ok(full.outputs.get('capabilities').length <= 262144);
 });
 
 test('every one of the 59 boards has at least one signal from the published agencies', () => {
@@ -174,7 +195,7 @@ test('every one of the 59 boards has at least one signal from the published agen
 });
 
 test('each published signals family matches the rows it points at, and stays inside the page limits the evidence reader enforces', () => {
-  for (const agency of agencies) {
+  for (const agency of BOARD_REQUEST_AGENCIES) {
     const manifest = full.manifests.get(agency);
     const family = manifest.families.signals;
     assert.equal(family.total, coverage.published[agency].requests);
@@ -200,8 +221,11 @@ test('each published signals family matches the rows it points at, and stays ins
 test('existing families beside the new signals stay where they were', () => {
   assert.ok(full.manifests.get('youth-and-community-development').families['program-sites']);
   assert.equal(full.manifests.get('housing-authority').families['retained-examples'].total, 1);
-  assert.deepEqual(Object.keys(full.capabilities.agencies).sort(), ['design-and-construction', 'education', 'environmental-protection', 'housing-authority', 'youth-and-community-development']);
-  assert.deepEqual(full.capabilities.families.find(f => f.id === 'budget-requests').agency_ids, agencies);
+  assert.deepEqual(
+    Object.keys(full.capabilities.agencies).sort(),
+    [...new Set([...BOARD_REQUEST_AGENCIES, 'design-and-construction'])].sort(),
+  );
+  assert.deepEqual(full.capabilities.families.find(f => f.id === 'budget-requests').agency_ids, [...BOARD_REQUEST_AGENCIES]);
 });
 
 test('a short, altered or partial register fails the build closed', () => {
