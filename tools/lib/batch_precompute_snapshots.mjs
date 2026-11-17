@@ -2,6 +2,7 @@ import { stampLandRegulatoryEffect } from "../../ontology/land_regulatory_effect
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { attachOpenNoticeCommodityCategories } from "./open_notice_commodity_category.mjs";
 
 // Pure builders for daily resident snapshots. Publisher requests belong to the
 // acquisition commands; browser filters read the resulting artifacts locally.
@@ -114,10 +115,11 @@ export const MONEY_DEFAULT_LIMIT = 40;
 // Full open-solicitation population. Sized from measurement (retained capture fixtures):
 // 160 to 249 open rows on every bimonthly day from 2023-11-12 to 2026-11-12,
 // 194 on 2026-11-12 at about 0.6 KiB per pretty-printed row. 500 rows is twice the
-// observed maximum; 384 KiB holds 500 rows at the longest observed row.
+// observed maximum. A commodity category (or an explicit "not published" gap) on
+// every row adds roughly 0.4 KiB. 768 KiB holds 500 rows when every row is matched.
 export const MONEY_OPEN_SOLICITATIONS_SCHEMA = "cityscroll.money_open_solicitations.v1";
 export const MONEY_OPEN_SOLICITATIONS_MAX_ROWS = 500;
-export const MONEY_OPEN_SOLICITATIONS_MAX_BYTES = 384 * 1024;
+export const MONEY_OPEN_SOLICITATIONS_MAX_BYTES = 768 * 1024;
 export const MONEY_OPEN_SOLICITATION_REQUEST_ID = /^[0-9]{11}$/;
 export const MONEY_AGENCIES_LIMIT = 600;
 export const STAFFING_HIRES_LIMIT = 80;
@@ -372,7 +374,7 @@ export function buildMoneyDefaultOpenSnapshot(rows, { now = new Date() } = {}) {
  * or partly invalid pull is published as incomplete with its reasons, never as complete.
  */
 export function buildMoneyOpenSolicitationsSnapshot(
-  { rows, sourceCount } = {},
+  { rows, sourceCount, commodity = null } = {},
   { now = new Date(), maxRows = MONEY_OPEN_SOLICITATIONS_MAX_ROWS, maxBytes = MONEY_OPEN_SOLICITATIONS_MAX_BYTES } = {},
 ) {
   if (!Array.isArray(rows)) throw new Error("money open solicitations: rows must be an array");
@@ -400,6 +402,18 @@ export function buildMoneyOpenSolicitationsSnapshot(
   }
   if (!reasons.includes("row_cap") && rows.length !== count) reasons.push("count_mismatch");
   const pins = new Set(notices.map((row) => row.pin).filter((pin) => typeof pin === "string" && pin));
+  let published = notices;
+  let commodityCategoryCoverage = null;
+  if (commodity) {
+    const attached = attachOpenNoticeCommodityCategories(notices, {
+      rfxRows: commodity.rfxRows,
+      unavailableReason: commodity.unavailable || null,
+      asOf: calendarDayISO(now),
+      observedAt: commodity.observedAt || null,
+    });
+    published = attached.notices;
+    commodityCategoryCoverage = attached.coverage;
+  }
   const payload = {
     schema: MONEY_OPEN_SOLICITATIONS_SCHEMA,
     schema_version: 1,
@@ -425,8 +439,9 @@ export function buildMoneyOpenSolicitationsSnapshot(
       distinct_pins: pins.size,
       rows_without_pin: notices.filter((row) => !row.pin).length,
     },
-    count: notices.length,
-    notices,
+    count: published.length,
+    notices: published,
+    ...(commodityCategoryCoverage ? { commodity_category_coverage: commodityCategoryCoverage } : {}),
   };
   const bytes = Buffer.byteLength(`${JSON.stringify(payload, null, 2)}\n`);
   if (bytes > maxBytes) {

@@ -7,7 +7,10 @@
 //   node tools/build_batch_precompute_snapshots.mjs --fixture   # use offline fixtures
 //   node tools/build_batch_precompute_snapshots.mjs --money-open-solicitations-only
 //        # every open solicitation; its own first-class artifact, so a failed pull keeps
-//        # the last good file without touching the 40-row --money-only strip
+//        # the last good file without touching the 40-row --money-only strip.
+//        # Each notice also carries the City commodity category joined from PASSPort
+//        # Public RFx, or an explicit category-not-published reason. A failed RFx read
+//        # is recorded on the artifact and does not drop the City Record rows.
 //
 // Snapshots are commit-time artifacts (inline-at-build). Browser readers filter
 // them locally; only this acquisition command contacts publisher sources.
@@ -33,6 +36,7 @@ import {
   fetchMoneyOpenSolicitations,
   fetchStaffingHires,
 } from "./lib/batch_precompute_snapshots.mjs";
+import { fetchPassportPublicRfxRows } from "./lib/open_notice_commodity_category.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DATA_DIR = path.join(ROOT, "site", "data");
@@ -178,7 +182,27 @@ export async function buildAll({
         sourceCount: Number((await loadFixture("money_open_solicitations_count.json"))[0].n),
       }
       : await fetchMoneyOpenSolicitations(fetchImpl, now);
-    results.money_open_solicitations = buildMoneyOpenSolicitationsSnapshot(population, { now });
+    let commodity;
+    try {
+      if (fixture) {
+        commodity = {
+          rfxRows: await loadFixture("open_notice_commodity_rfx.json"),
+          observedAt: now.toISOString(),
+        };
+      } else {
+        const fetched = await fetchPassportPublicRfxRows(fetchImpl);
+        commodity = { rfxRows: fetched.rows, observedAt: fetched.observedAt };
+      }
+    } catch (error) {
+      commodity = {
+        unavailable: String(error?.message || error).slice(0, 180),
+        observedAt: now.toISOString(),
+      };
+    }
+    results.money_open_solicitations = buildMoneyOpenSolicitationsSnapshot(
+      { ...population, commodity },
+      { now },
+    );
   }
   if (wants(args, "staffing")) {
     let hires;
