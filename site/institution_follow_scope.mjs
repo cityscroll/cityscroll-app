@@ -8,7 +8,9 @@
  */
 
 import {
+  AGENCY_GROUPS,
   AGENCY_IDENTITY_CORRECTIONS,
+  agencyCanonicalId,
   agencyIdentityCorrection,
   canonicalAgency,
   resolveAgencyIdentity,
@@ -353,4 +355,79 @@ export function exactInstitutionNoticeMatches(follow, row = {}) {
 
 export function institutionFollowUnsupportedGroup(filter = {}) {
   return agencyRefsFromFilter(filter).length > 1;
+}
+
+// ---------------------------------------------------------------------------------------------
+// Solicitation-scoped agency follow (money lens + one canonical agency ref).
+//
+// A watch { lens: "money", filter: { noticeType, entity_refs_all: ["agency:id:<id>"] } } follows one agency by identity,
+// not by one exact spelling. The ref is the scope: it is never ignored and never widened. The City Record prints one
+// agency under several spellings, and some spellings do not contain the canonical name ("NYC Health + Hospitals" against
+// "nyc health hospitals"), so the store query is a candidate set that must contain every spelling of the agency, and
+// exactInstitutionNoticeMatches decides membership. A candidate set may be larger than the agency; it is never smaller.
+
+const CANDIDATE_STOP = new Set(["THE", "FOR", "CITY", "DEPT", "DEPARTMENT", "OFFICE", "YORK"]);
+
+/**
+ * Exact spellings the store query accepts for a follow: the identity's publisher names, its canonical name, and the
+ * reviewed group's variants (a route-classified identity carries fewer variants than the group it came from).
+ */
+export function institutionCandidateSpellings(follow) {
+  if (!follow || follow.status !== "ok") return Object.freeze([]);
+  const group = Object.entries(AGENCY_GROUPS)
+    .filter(([name]) => agencyCanonicalId(name) === follow.canonical_id)
+    .flatMap(([name, variants]) => [name, ...variants]);
+  return Object.freeze(unique([...(follow.publisher_names || []), follow.canonical_name, ...group]));
+}
+
+/**
+ * Distinctive words of the canonical name (upper case letters and digits, four or more characters, split on every
+ * other character, with a plural S dropped, so "Mayor's" and "Mayors" both give MAYOR). A spelling the resolver recognises by key ("NYC Health + Hospitals" for
+ * "nyc health hospitals") holds every one of these words, which is how it is found without being listed.
+ */
+export function institutionCandidateTokens(follow) {
+  if (!follow || follow.status !== "ok") return Object.freeze([]);
+  const words = String(follow.canonical_name || "").toUpperCase().split(/[^A-Z0-9]+/)
+    .filter((word) => word.length >= 4 && !CANDIDATE_STOP.has(word))
+    .map((word) => (word.length >= 5 && word.endsWith("S") ? word.slice(0, -1) : word));
+  return Object.freeze([...new Set(words)]);
+}
+
+/** SoQL predicate (same text runs as SQL on the D1 mirror) for the candidate set, or null when there is none. */
+export function sodaAgencyCandidateClause(follow) {
+  const names = institutionCandidateSpellings(follow);
+  const tokens = institutionCandidateTokens(follow);
+  const parts = [];
+  if (names.length) parts.push(`agency_name in (${names.map((name) => `'${name.replace(/'/g, "''")}'`).join(",")})`);
+  if (tokens.length) parts.push(`(${tokens.map((token) => `upper(agency_name) like '%${token}%'`).join(" AND ")})`);
+  if (!parts.length) return null;
+  return parts.length === 1 ? parts[0] : `(${parts.join(" OR ")})`;
+}
+
+/**
+ * Read the agency scope of a money-lens filter.
+ *   { status: "none" }                         no agency ref: the filter is unchanged
+ *   { status: "unsupported", reason }          a ref that cannot be honoured exactly: the watch must not compile
+ *   { status: "ok", follow, names, tokens, matches(row) }
+ */
+export function moneyAgencyScope(filter = {}) {
+  const refs = Array.isArray(filter?.entity_refs_all)
+    ? filter.entity_refs_all.map((ref) => String(ref || "").trim()).filter((ref) => ref.startsWith("agency:"))
+    : [];
+  if (!refs.length) return Object.freeze({ status: "none" });
+  const ids = agencyRefsFromFilter(filter);
+  if (refs.length !== 1 || ids.length !== 1) {
+    return Object.freeze({ status: "unsupported", reason: "A procurement follow carries exactly one agency id" });
+  }
+  const follow = exactInstitutionFollow(ids[0]);
+  if (follow.status !== "ok" || follow.matching_mode !== "canonical_id") {
+    return Object.freeze({ status: "unsupported", reason: follow.reason || "Agency identity is not followable" });
+  }
+  return Object.freeze({
+    status: "ok",
+    follow,
+    names: institutionCandidateSpellings(follow),
+    tokens: institutionCandidateTokens(follow),
+    matches: (row) => exactInstitutionNoticeMatches(follow, row),
+  });
 }

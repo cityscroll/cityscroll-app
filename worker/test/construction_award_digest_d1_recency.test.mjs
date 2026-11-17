@@ -105,6 +105,19 @@ function filterRows(allRows, opts) {
   if (opts.category) list = list.filter((r) => r.category === opts.category);
   if (opts.noticeType) list = list.filter((r) => r.type_of_notice === opts.noticeType);
   if (opts.agency) list = list.filter((r) => r.agency === opts.agency);
+  if (opts.agencyAny) {
+    // Same candidate predicate as notices.mjs: exact spelling, or every distinctive word.
+    // An empty candidate set matches nothing. The identity postFilter stays with the caller.
+    const names = new Set((opts.agencyAny.names || []).map((name) => String(name).toLowerCase()));
+    const tokens = [...new Set((opts.agencyAny.tokens || []).map((token) => String(token).toLowerCase()))];
+    list = list.filter((row) => {
+      if (!names.size && !tokens.length) return false;
+      const agency = String(row.agency || "").toLowerCase();
+      const byName = names.has(agency);
+      const byTokens = tokens.length > 0 && tokens.every((token) => agency.includes(token));
+      return byName || byTokens;
+    });
+  }
   if (opts.minAmount != null) {
     list = list.filter((r) => r.contract_amount_valid === 1 && r.contract_amount >= opts.minAmount);
   }
@@ -194,7 +207,12 @@ test("typed agency scope matches only the scoped fixture rows and still feeds th
   const opts = subToD1Opts({ lens: "money", filter: scopeFilter }, "2026-08-05");
   const { rows } = filterRows([otherAgency, scoped], opts);
   assert.deepEqual(rows.map((row) => row.request_id), ["HPD20260805001"]);
-  assert.deepEqual(opts.agency, "Housing Preservation and Development");
+  // The stored spelling is a hint. Identity scope is the candidate set plus the exact test.
+  assert.equal(opts.agency, undefined);
+  assert.ok(opts.agencyAny.names.includes("Housing Preservation and Development"));
+  const compiled = compileSub_d1({ lens: "money", filter: scopeFilter }, "2026-08-05");
+  assert.equal(compiled.postFilter({ agency: "Housing Preservation and Development" }), true);
+  assert.equal(compiled.postFilter({ agency: "Department of Transportation" }), false);
   assert.equal(scopeFilter.entity_refs_all[0], "agency:id:housing-preservation-and-development");
   assert.equal(scopeFilter.connection_relation, "published_by_agency");
 });

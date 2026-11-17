@@ -70,6 +70,16 @@ function buildStructuredFilters(opts = {}, alias = "") {
 
   if (opts.section) { where.push(`${col("section")} = ?`); params.push(opts.section); }
   if (opts.agency) { where.push(`lower(${col("agency")}) LIKE ?`); params.push("%" + String(opts.agency).toLowerCase() + "%"); }
+  if (opts.agencyAny) {
+    // Candidate set for one agency by identity: any exact spelling, or a spelling holding every distinctive word.
+    // Always a superset of the agency; the caller's postFilter is the exact test.
+    const names = [...new Set((opts.agencyAny.names || []).map((name) => String(name).toLowerCase()))];
+    const tokens = [...new Set((opts.agencyAny.tokens || []).map((token) => String(token).toLowerCase()))];
+    const parts = [];
+    if (names.length) { parts.push(`lower(${col("agency")}) IN (${names.map(() => "?").join(",")})`); params.push(...names); }
+    if (tokens.length) { parts.push(`(${tokens.map(() => `lower(${col("agency")}) LIKE ?`).join(" AND ")})`); params.push(...tokens.map((token) => `%${token}%`)); }
+    where.push(parts.length ? `(${parts.join(" OR ")})` : "1 = 0");
+  }
   if (opts.category) { where.push(`${col("category")} = ?`); params.push(opts.category); }
   if (opts.noticeType) { where.push(`${col("type_of_notice")} = ?`); params.push(opts.noticeType); }
   if (Object.prototype.hasOwnProperty.call(opts, "requestIds")) {

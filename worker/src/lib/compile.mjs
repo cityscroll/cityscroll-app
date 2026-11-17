@@ -34,6 +34,8 @@ import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.
 import {
   exactInstitutionNoticeMatches,
   interpretStoredInstitutionFollow,
+  moneyAgencyScope,
+  sodaAgencyCandidateClause,
   sodaAgencyNameClause,
 } from "../../../site/institution_follow_scope.mjs";
 import { examNumbersForAgency } from "../../../site/staffing_agency_scope.mjs";
@@ -788,6 +790,12 @@ export function compileSub(sub, todayISO) {
 
   if (sub.lens === "money") {
     const mergeRows = (rows) => mergeProcurementDigestMatches(sub, rows, digestSnapshot, todayISO);
+    // A canonical agency ref is the scope. It is honoured exactly (candidate set + identity postFilter) or the watch does
+    // not compile; it is never ignored. Exact-notice and precise-text watches carry no agency scope here, so they refuse.
+    const agencyScope = moneyAgencyScope(f);
+    if (agencyScope.status === "unsupported") return null;
+    if (agencyScope.status === "ok" && (f.text_query != null || (typeof f.procurement_id === "string" && f.procurement_id.trim()))) return null;
+    const agencyPostFilter = agencyScope.status === "ok" ? { postFilter: agencyScope.matches } : {};
     const procurementId = typeof f.procurement_id === "string" && f.procurement_id.trim()
       ? f.procurement_id.trim()
       : null;
@@ -826,7 +834,9 @@ export function compileSub(sub, todayISO) {
     // whether it's watching awards or open solicitations.
     const catClause = f.category ? ` AND category_description='${String(f.category).replace(/'/g, "''")}'` : "";
     const agency = typeof f.agency === "string" && f.agency.trim() ? f.agency.trim().replace(/'/g, "''") : null;
-    const agencyClause = agency ? ` AND agency_name='${agency}'` : "";
+    const agencyClause = agencyScope.status === "ok"
+      ? ` AND ${sodaAgencyCandidateClause(agencyScope.follow)}`
+      : agency ? ` AND agency_name='${agency}'` : "";
     // noticeType, when set, is authoritative. Otherwise fall back to the pre-existing
     // amount-presence heuristic: only Award notices carry a dollar amount in this dataset —
     // open bids do not (EDA) — so an amount bound alone still implies the award query. This
@@ -849,7 +859,7 @@ export function compileSub(sub, todayISO) {
       // Keywords apply to awards too (w6-16) — the D1 path always filtered by them;
       // without this, the SODA fallback delivered ALL awards over the threshold.
       if (kws.length) awardParams["$q"] = kws.join(" ");
-      return { url: SODA, idField: "digest_id", kind: "award", params: awardParams, mergeRows };
+      return { url: SODA, idField: "digest_id", kind: "award", params: awardParams, mergeRows, ...agencyPostFilter };
     }
     let where = `type_of_notice_description='Solicitation' AND due_date > '${todayISO}'`;
     if (f.closingWeek) {
@@ -872,6 +882,7 @@ export function compileSub(sub, todayISO) {
       recentParams: solicitationRecentParams(params),
       coverageCap: SOLICITATION_COVERAGE_CAP,
       mergeRows,
+      ...agencyPostFilter,
     };
   }
 

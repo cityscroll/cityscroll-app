@@ -1,0 +1,1264 @@
+{
+ "schema": "cityscroll.money_agency_ref_spellings.v1",
+ "source": {
+  "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+  "dataset": "dg92-zbpx",
+  "query": "$select=agency_name,count(*) as n &$group=agency_name &$limit=5000",
+  "retrieved_at": "2026-11-17T03:53:26Z",
+  "note": "Every distinct agency_name spelling the City Record has ever published, with its row count."
+ },
+ "spellings": [
+  {
+   "agency_name": "ADMIN FOR CHILDREN'S SERVICES",
+   "n": 6880
+  },
+  {
+   "agency_name": "ADMIN FOR CHILDRENS SERVICES",
+   "n": 1
+  },
+  {
+   "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+   "n": 3987
+  },
+  {
+   "agency_name": "ADMIN FOR CHILDRENS SVCS",
+   "n": 1993
+  },
+  {
+   "agency_name": "ADMIN FOR CHILDREN' SVCS",
+   "n": 19
+  },
+  {
+   "agency_name": "Administration for Children's Services",
+   "n": 4870
+  },
+  {
+   "agency_name": "Administrative Tax Appeals",
+   "n": 7
+  },
+  {
+   "agency_name": "Administrative Trials and Hearings",
+   "n": 278
+  },
+  {
+   "agency_name": "ADMIN TRIALS AND HEARINGS",
+   "n": 2481
+  },
+  {
+   "agency_name": "Aging",
+   "n": 2980
+  },
+  {
+   "agency_name": "Banking Commission",
+   "n": 5
+  },
+  {
+   "agency_name": "Battery Park City Authority",
+   "n": 10
+  },
+  {
+   "agency_name": "Board Meetings",
+   "n": 609
+  },
+  {
+   "agency_name": "Board of Correction",
+   "n": 149
+  },
+  {
+   "agency_name": "BOARD OF CORRECTION",
+   "n": 151
+  },
+  {
+   "agency_name": "Board of Education Retirement System",
+   "n": 253
+  },
+  {
+   "agency_name": "BOARD OF ELECTION",
+   "n": 4086
+  },
+  {
+   "agency_name": "BOARD OF ELECTION POLL WORKERS",
+   "n": 278030
+  },
+  {
+   "agency_name": "Board of Elections",
+   "n": 261
+  },
+  {
+   "agency_name": "Board of Standards and Appeals",
+   "n": 407
+  },
+  {
+   "agency_name": "Borough Of Manhattan Community College",
+   "n": 7
+  },
+  {
+   "agency_name": "Borough President - Bronx",
+   "n": 98
+  },
+  {
+   "agency_name": "BOROUGH PRESIDENT-BRONX",
+   "n": 287
+  },
+  {
+   "agency_name": "Borough President - Brooklyn",
+   "n": 170
+  },
+  {
+   "agency_name": "BOROUGH PRESIDENT-BROOKLYN",
+   "n": 429
+  },
+  {
+   "agency_name": "Borough President - Manhattan",
+   "n": 130
+  },
+  {
+   "agency_name": "Borough President - Queens",
+   "n": 265
+  },
+  {
+   "agency_name": "BOROUGH PRESIDENT-QUEENS",
+   "n": 394
+  },
+  {
+   "agency_name": "BOROUGH PRESIDENT-STATEN IS",
+   "n": 221
+  },
+  {
+   "agency_name": "Borough President - Staten Island",
+   "n": 7
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #1",
+   "n": 9
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #10",
+   "n": 17
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #11",
+   "n": 10
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #12",
+   "n": 12
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD 2",
+   "n": 1
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #2",
+   "n": 16
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #3",
+   "n": 11
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #4",
+   "n": 9
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #5",
+   "n": 13
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #6",
+   "n": 14
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD 7",
+   "n": 1
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #7",
+   "n": 23
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #8",
+   "n": 24
+  },
+  {
+   "agency_name": "BRONX COMMUNITY BOARD #9",
+   "n": 17
+  },
+  {
+   "agency_name": "BRONX DISTRICT ATTORNEY",
+   "n": 6045
+  },
+  {
+   "agency_name": "Brooklyn Bridge Park",
+   "n": 101
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #1",
+   "n": 13
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #10",
+   "n": 20
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #11",
+   "n": 6
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #12",
+   "n": 17
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #13",
+   "n": 11
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #14",
+   "n": 12
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #15",
+   "n": 10
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #16",
+   "n": 8
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #17",
+   "n": 13
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #18",
+   "n": 10
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #2",
+   "n": 21
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #3",
+   "n": 10
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD 4",
+   "n": 2
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #4",
+   "n": 12
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #5",
+   "n": 11
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #6",
+   "n": 12
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #7",
+   "n": 1
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #8",
+   "n": 8
+  },
+  {
+   "agency_name": "BROOKLYN COMMUNITY BOARD #9",
+   "n": 13
+  },
+  {
+   "agency_name": "Brooklyn Navy Yard Development Corp.",
+   "n": 304
+  },
+  {
+   "agency_name": "Buildings",
+   "n": 692
+  },
+  {
+   "agency_name": "Build NYC Resource Corporation",
+   "n": 119
+  },
+  {
+   "agency_name": "Business Integrity Commission",
+   "n": 120
+  },
+  {
+   "agency_name": "BUSINESS INTEGRITY COMMISSION",
+   "n": 396
+  },
+  {
+   "agency_name": "Campaign Finance Board",
+   "n": 236
+  },
+  {
+   "agency_name": "CAMPAIGN FINANCE BOARD",
+   "n": 781
+  },
+  {
+   "agency_name": "Changes in Personnel",
+   "n": 169
+  },
+  {
+   "agency_name": "Charter Revision Commission",
+   "n": 69
+  },
+  {
+   "agency_name": "Chief Medical Examiner",
+   "n": 586
+  },
+  {
+   "agency_name": "City Clerk",
+   "n": 36
+  },
+  {
+   "agency_name": "CITY CLERK",
+   "n": 261
+  },
+  {
+   "agency_name": "City Council",
+   "n": 443
+  },
+  {
+   "agency_name": "CITY COUNCIL",
+   "n": 4973
+  },
+  {
+   "agency_name": "City Planning",
+   "n": 684
+  },
+  {
+   "agency_name": "City Planning Commission",
+   "n": 302
+  },
+  {
+   "agency_name": "City Record",
+   "n": 153
+  },
+  {
+   "agency_name": "City University",
+   "n": 1186
+  },
+  {
+   "agency_name": "City University Of NY Central Office",
+   "n": 2
+  },
+  {
+   "agency_name": "Citywide Administrative Services",
+   "n": 22418
+  },
+  {
+   "agency_name": "Civic Engagement Commission",
+   "n": 60
+  },
+  {
+   "agency_name": "CIVILIAN COMPLAINT REVIEW BD",
+   "n": 1835
+  },
+  {
+   "agency_name": "Civilian Complaint Review Board",
+   "n": 22
+  },
+  {
+   "agency_name": "Civil Service Commission",
+   "n": 7
+  },
+  {
+   "agency_name": "CIVIL SERVICE COMMISSION",
+   "n": 53
+  },
+  {
+   "agency_name": "Commission on Human Rights",
+   "n": 73
+  },
+  {
+   "agency_name": "Commission on Public Information and Communication",
+   "n": 1
+  },
+  {
+   "agency_name": "Commission on Racial Equity",
+   "n": 7
+  },
+  {
+   "agency_name": "COMMISSION ON RACIAL EQUITY",
+   "n": 29
+  },
+  {
+   "agency_name": "Commission to Strengthen Local Democracy",
+   "n": 10
+  },
+  {
+   "agency_name": "Community Boards",
+   "n": 1060
+  },
+  {
+   "agency_name": "COMMUNITY COLLEGE (BRONX)",
+   "n": 8895
+  },
+  {
+   "agency_name": "COMMUNITY COLLEGE (HOSTOS)",
+   "n": 6362
+  },
+  {
+   "agency_name": "COMMUNITY COLLEGE (KINGSBORO)",
+   "n": 9659
+  },
+  {
+   "agency_name": "COMMUNITY COLLEGE (LAGUARDIA)",
+   "n": 11877
+  },
+  {
+   "agency_name": "COMMUNITY COLLEGE (MANHATTAN)",
+   "n": 17596
+  },
+  {
+   "agency_name": "COMMUNITY COLLEGE (QUEENSBORO)",
+   "n": 8337
+  },
+  {
+   "agency_name": "Comptroller",
+   "n": 1971
+  },
+  {
+   "agency_name": "Conflicts of Interest Board",
+   "n": 152
+  },
+  {
+   "agency_name": "CONFLICTS OF INTEREST BOARD",
+   "n": 114
+  },
+  {
+   "agency_name": "CONSUMER AFFAIRS",
+   "n": 1554
+  },
+  {
+   "agency_name": "Consumer and Worker Protection",
+   "n": 866
+  },
+  {
+   "agency_name": "CONSUMER AND WORKER PROTECTION",
+   "n": 886
+  },
+  {
+   "agency_name": "Correction",
+   "n": 1494
+  },
+  {
+   "agency_name": "Criminal Justice Coordinator",
+   "n": 6
+  },
+  {
+   "agency_name": "CRIMINAL JUSTICE COORDINATOR",
+   "n": 46
+  },
+  {
+   "agency_name": "Cultural Affairs",
+   "n": 156
+  },
+  {
+   "agency_name": "CULTURAL AFFAIRS",
+   "n": 268
+  },
+  {
+   "agency_name": "CUNY CENTRAL OFFICE",
+   "n": 552
+  },
+  {
+   "agency_name": "DEPARTMENT FOR THE AGING",
+   "n": 3729
+  },
+  {
+   "agency_name": "DEPARTMENT OF BUILDINGS",
+   "n": 7596
+  },
+  {
+   "agency_name": "DEPARTMENT OF BUSINESS SERV.",
+   "n": 1663
+  },
+  {
+   "agency_name": "DEPARTMENT OF CITY PLANNING",
+   "n": 1946
+  },
+  {
+   "agency_name": "DEPARTMENT OF CORRECTION",
+   "n": 26767
+  },
+  {
+   "agency_name": "DEPARTMENT OF EDUCATION ADMIN",
+   "n": 72429
+  },
+  {
+   "agency_name": "Department Of Employment",
+   "n": 69
+  },
+  {
+   "agency_name": "DEPARTMENT OF EMPLOYMENT",
+   "n": 3
+  },
+  {
+   "agency_name": "DEPARTMENT OF FINANCE",
+   "n": 7659
+  },
+  {
+   "agency_name": "DEPARTMENT OF INVESTIGATION",
+   "n": 1513
+  },
+  {
+   "agency_name": "DEPARTMENT OF JUVENILE JUSTICE",
+   "n": 36
+  },
+  {
+   "agency_name": "DEPARTMENT OF PROBATION",
+   "n": 4084
+  },
+  {
+   "agency_name": "DEPARTMENT OF SANITATION",
+   "n": 41076
+  },
+  {
+   "agency_name": "DEPARTMENT OF TRANSPORTATION",
+   "n": 18438
+  },
+  {
+   "agency_name": "DEPT OF CITYWIDE ADMIN SVCS",
+   "n": 10498
+  },
+  {
+   "agency_name": "DEPT. OF DESIGN & CONSTRUCTION",
+   "n": 3296
+  },
+  {
+   "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
+   "n": 19501
+  },
+  {
+   "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
+   "n": 26802
+  },
+  {
+   "agency_name": "DEPT. OF HOMELESS SERVICES",
+   "n": 8759
+  },
+  {
+   "agency_name": "DEPT OF INFO TECH & TELECOMM",
+   "n": 5343
+  },
+  {
+   "agency_name": "DEPT OF MH MR AND ALC SVCS",
+   "n": 1
+  },
+  {
+   "agency_name": "DEPT OF PARKS & RECREATION",
+   "n": 52136
+  },
+  {
+   "agency_name": "DEPT OF RECORDS & INFO SERVICE",
+   "n": 294
+  },
+  {
+   "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+   "n": 5782
+  },
+  {
+   "agency_name": "DEPT OF YOUTH & COMM DEV SRVS",
+   "n": 3225
+  },
+  {
+   "agency_name": "Design and Construction",
+   "n": 6765
+  },
+  {
+   "agency_name": "DESIGN AND CONSTRUCTION",
+   "n": 3226
+  },
+  {
+   "agency_name": "District Attorney - Bronx County",
+   "n": 84
+  },
+  {
+   "agency_name": "District Attorney - Kings County",
+   "n": 55
+  },
+  {
+   "agency_name": "DISTRICT ATTORNEY KINGS COUNTY",
+   "n": 5354
+  },
+  {
+   "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
+   "n": 9307
+  },
+  {
+   "agency_name": "District Attorney - New York County",
+   "n": 232
+  },
+  {
+   "agency_name": "DISTRICT ATTORNEY QNS COUNTY",
+   "n": 6678
+  },
+  {
+   "agency_name": "District Attorney - Queens County",
+   "n": 38
+  },
+  {
+   "agency_name": "DISTRICT ATTORNEY RICHMOND COU",
+   "n": 1481
+  },
+  {
+   "agency_name": "District Attorney - Richmond County",
+   "n": 25
+  },
+  {
+   "agency_name": "DISTRICT ATTORNEY-SPECIAL NARC",
+   "n": 1000
+  },
+  {
+   "agency_name": "Districting Commission",
+   "n": 14
+  },
+  {
+   "agency_name": "DISTRICTING COMMISSION",
+   "n": 24
+  },
+  {
+   "agency_name": "Economic Development Corporation",
+   "n": 1333
+  },
+  {
+   "agency_name": "Education",
+   "n": 3373
+  },
+  {
+   "agency_name": "Educational Construction Fund",
+   "n": 26
+  },
+  {
+   "agency_name": "Emergency Management",
+   "n": 541
+  },
+  {
+   "agency_name": "Empire State Development",
+   "n": 4
+  },
+  {
+   "agency_name": "Employees' Retirement System",
+   "n": 637
+  },
+  {
+   "agency_name": "Environmental Control Board",
+   "n": 102
+  },
+  {
+   "agency_name": "Environmental Protection",
+   "n": 6116
+  },
+  {
+   "agency_name": "Environmental Remediation",
+   "n": 133
+  },
+  {
+   "agency_name": "Equal Employment Practices Commission",
+   "n": 87
+  },
+  {
+   "agency_name": "EQUAL EMPLOY PRACTICES COMM",
+   "n": 92
+  },
+  {
+   "agency_name": "Finance",
+   "n": 986
+  },
+  {
+   "agency_name": "Financial Information Services Agency",
+   "n": 546
+  },
+  {
+   "agency_name": "FINANCIAL INFO SVCS AGENCY",
+   "n": 1139
+  },
+  {
+   "agency_name": "Fire Department",
+   "n": 1453
+  },
+  {
+   "agency_name": "FIRE DEPARTMENT",
+   "n": 49546
+  },
+  {
+   "agency_name": "Franchise and Concession Review Committee",
+   "n": 122
+  },
+  {
+   "agency_name": "GUTTMAN COMMUNITY COLLEGE",
+   "n": 2458
+  },
+  {
+   "agency_name": "Health and Mental Hygiene",
+   "n": 7919
+  },
+  {
+   "agency_name": "Homeless Services",
+   "n": 3197
+  },
+  {
+   "agency_name": "Housing and Community Renewal",
+   "n": 13
+  },
+  {
+   "agency_name": "Housing Authority",
+   "n": 7762
+  },
+  {
+   "agency_name": "Housing Preservation and Development",
+   "n": 3867
+  },
+  {
+   "agency_name": "HOUSING PRESERVATION & DVLPMNT",
+   "n": 9756
+  },
+  {
+   "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+   "n": 34352
+  },
+  {
+   "agency_name": "Hudson River Park Trust",
+   "n": 46
+  },
+  {
+   "agency_name": "Human Resources Administration",
+   "n": 1208
+  },
+  {
+   "agency_name": "HUMAN RIGHTS COMMISSION",
+   "n": 772
+  },
+  {
+   "agency_name": "HUNTER COLLEGE HIGH SCHOOL",
+   "n": 1390
+  },
+  {
+   "agency_name": "Independent Budget Office",
+   "n": 47
+  },
+  {
+   "agency_name": "INDEPENDENT BUDGET OFFICE",
+   "n": 248
+  },
+  {
+   "agency_name": "Industrial Development Agency",
+   "n": 112
+  },
+  {
+   "agency_name": "Information Technology and Telecommunications",
+   "n": 2199
+  },
+  {
+   "agency_name": "Investigation",
+   "n": 131
+  },
+  {
+   "agency_name": "Juvenile Justice",
+   "n": 60
+  },
+  {
+   "agency_name": "Kingsborough Community College",
+   "n": 1
+  },
+  {
+   "agency_name": "LANDMARKS PRESERVATION COMM",
+   "n": 344
+  },
+  {
+   "agency_name": "Landmarks Preservation Commission",
+   "n": 721
+  },
+  {
+   "agency_name": "Law Department",
+   "n": 472
+  },
+  {
+   "agency_name": "LAW DEPARTMENT",
+   "n": 7122
+  },
+  {
+   "agency_name": "Loft Board",
+   "n": 14
+  },
+  {
+   "agency_name": "Lower Manhattan Development Corporation",
+   "n": 4
+  },
+  {
+   "agency_name": "Management and Budget",
+   "n": 336
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #1",
+   "n": 14
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #10",
+   "n": 25
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #11",
+   "n": 16
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #12",
+   "n": 10
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #2",
+   "n": 10
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #3",
+   "n": 21
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #4",
+   "n": 9
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #5",
+   "n": 20
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #6",
+   "n": 22
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #7",
+   "n": 17
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #8",
+   "n": 39
+  },
+  {
+   "agency_name": "MANHATTAN COMMUNITY BOARD #9",
+   "n": 9
+  },
+  {
+   "agency_name": "Marketing Development Corp",
+   "n": 23
+  },
+  {
+   "agency_name": "Mayor's Fund to Advance New York City",
+   "n": 101
+  },
+  {
+   "agency_name": "Mayor's Office of Contract Services",
+   "n": 3370
+  },
+  {
+   "agency_name": "MAYORS OFFICE OF CONTRACT SVCS",
+   "n": 1225
+  },
+  {
+   "agency_name": "Mayor's Office of Criminal Justice",
+   "n": 618
+  },
+  {
+   "agency_name": "Mayor's Office of Environmental Coordination",
+   "n": 81
+  },
+  {
+   "agency_name": "Mayor's Office of Media and Entertainment",
+   "n": 19
+  },
+  {
+   "agency_name": "Mayor's Office of Operations",
+   "n": 8
+  },
+  {
+   "agency_name": "Mayor's Office of Special Enforcement",
+   "n": 1
+  },
+  {
+   "agency_name": "Mayor's Office of Sustainability",
+   "n": 16
+  },
+  {
+   "agency_name": "Metropolitan Transportation Authority",
+   "n": 1
+  },
+  {
+   "agency_name": "New York City Fire Pension Fund",
+   "n": 41
+  },
+  {
+   "agency_name": "New York City Police Pension Fund",
+   "n": 62
+  },
+  {
+   "agency_name": "NYC & Company",
+   "n": 9
+  },
+  {
+   "agency_name": "NYC DEPT OF VETERANS SERVICES",
+   "n": 6
+  },
+  {
+   "agency_name": "NYC DEPT OF VETERANS' SERVICES",
+   "n": 106
+  },
+  {
+   "agency_name": "NYC EMPLOYEES RETIREMENT SYS",
+   "n": 2266
+  },
+  {
+   "agency_name": "NYC FIRE PENSION FUND",
+   "n": 140
+  },
+  {
+   "agency_name": "NYC Health + Hospitals",
+   "n": 5838
+  },
+  {
+   "agency_name": "NYC Workforce Development Board",
+   "n": 11
+  },
+  {
+   "agency_name": "OFFICE OF COLLECTIVE BARGAININ",
+   "n": 112
+  },
+  {
+   "agency_name": "Office of Collective Bargaining",
+   "n": 258
+  },
+  {
+   "agency_name": "Office of Court Administration",
+   "n": 15
+  },
+  {
+   "agency_name": "OFFICE OF CRIMINAL JUSTICE",
+   "n": 156
+  },
+  {
+   "agency_name": "OFFICE OF EMERGENCY MANAGEMENT",
+   "n": 1133
+  },
+  {
+   "agency_name": "Office of Labor Relations",
+   "n": 376
+  },
+  {
+   "agency_name": "OFFICE OF LABOR RELATIONS",
+   "n": 698
+  },
+  {
+   "agency_name": "OFFICE OF MANAGEMENT AND BUDGET",
+   "n": 7
+  },
+  {
+   "agency_name": "OFFICE OF MANAGEMENT & BUDGET",
+   "n": 2620
+  },
+  {
+   "agency_name": "OFFICE OF RACIAL EQUITY",
+   "n": 39
+  },
+  {
+   "agency_name": "Office of Special Narcotics Prose",
+   "n": 2
+  },
+  {
+   "agency_name": "Office of The Actuary",
+   "n": 17
+  },
+  {
+   "agency_name": "OFFICE OF THE ACTUARY",
+   "n": 203
+  },
+  {
+   "agency_name": "OFFICE OF THE COMPTROLLER",
+   "n": 3689
+  },
+  {
+   "agency_name": "Office of the Mayor",
+   "n": 2090
+  },
+  {
+   "agency_name": "OFFICE OF THE MAYOR",
+   "n": 5153
+  },
+  {
+   "agency_name": "Office of the Special Narcotics Prosecutor",
+   "n": 3
+  },
+  {
+   "agency_name": "OFF OF PAYROLL ADMINISTRATION",
+   "n": 469
+  },
+  {
+   "agency_name": "Off Track Betting Corp.",
+   "n": 183
+  },
+  {
+   "agency_name": "Parks and Recreation",
+   "n": 8092
+  },
+  {
+   "agency_name": "Payroll Administration",
+   "n": 79
+  },
+  {
+   "agency_name": "Police Department",
+   "n": 1679
+  },
+  {
+   "agency_name": "POLICE DEPARTMENT",
+   "n": 118159
+  },
+  {
+   "agency_name": "Port Authority of New York and New Jersey",
+   "n": 460
+  },
+  {
+   "agency_name": "PRESIDENT BOROUGH OF MANHATTAN",
+   "n": 398
+  },
+  {
+   "agency_name": "Probation",
+   "n": 685
+  },
+  {
+   "agency_name": "Procurement Policy Board",
+   "n": 60
+  },
+  {
+   "agency_name": "PUBLIC ADMINISTRATOR-BRONX",
+   "n": 45
+  },
+  {
+   "agency_name": "PUBLIC ADMINISTRATOR-KINGS",
+   "n": 89
+  },
+  {
+   "agency_name": "Public Administrator - Kings County",
+   "n": 1
+  },
+  {
+   "agency_name": "PUBLIC ADMINISTRATOR-NEW YORK",
+   "n": 51
+  },
+  {
+   "agency_name": "Public Administrator - New York County",
+   "n": 1
+  },
+  {
+   "agency_name": "PUBLIC ADMINISTRATOR-QUEENS",
+   "n": 20
+  },
+  {
+   "agency_name": "Public Administrator - Queens County",
+   "n": 1
+  },
+  {
+   "agency_name": "PUBLIC ADMINISTRATOR-RICHMOND",
+   "n": 11
+  },
+  {
+   "agency_name": "Public Administrator - Richmond County",
+   "n": 3
+  },
+  {
+   "agency_name": "Public Advocate",
+   "n": 4
+  },
+  {
+   "agency_name": "PUBLIC ADVOCATE",
+   "n": 661
+  },
+  {
+   "agency_name": "Public Design Commission",
+   "n": 166
+  },
+  {
+   "agency_name": "Public Housing Preservation Trust",
+   "n": 4
+  },
+  {
+   "agency_name": "Public Library - Brooklyn",
+   "n": 5
+  },
+  {
+   "agency_name": "Public Library - Queens",
+   "n": 147
+  },
+  {
+   "agency_name": "PUBLIC SERVICE CORPS",
+   "n": 2068
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #1",
+   "n": 22
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #10",
+   "n": 16
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #11",
+   "n": 14
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #12",
+   "n": 14
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #13",
+   "n": 15
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD 14",
+   "n": 1
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #14",
+   "n": 12
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD 2",
+   "n": 1
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #2",
+   "n": 10
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #3",
+   "n": 16
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #4",
+   "n": 15
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD 5",
+   "n": 1
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #5",
+   "n": 7
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #6",
+   "n": 10
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #7",
+   "n": 22
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #8",
+   "n": 39
+  },
+  {
+   "agency_name": "QUEENS COMMUNITY BOARD #9",
+   "n": 20
+  },
+  {
+   "agency_name": "Records and Information Services",
+   "n": 51
+  },
+  {
+   "agency_name": "Rent Guidelines Board",
+   "n": 158
+  },
+  {
+   "agency_name": "Sanitation",
+   "n": 1513
+  },
+  {
+   "agency_name": "School Construction Authority",
+   "n": 2354
+  },
+  {
+   "agency_name": "Small Business Services",
+   "n": 1036
+  },
+  {
+   "agency_name": "STATEN ISLAND COMMUNITY BD #1",
+   "n": 9
+  },
+  {
+   "agency_name": "STATEN ISLAND COMMUNITY BD #2",
+   "n": 14
+  },
+  {
+   "agency_name": "STATEN ISLAND COMMUNITY BD #3",
+   "n": 5
+  },
+  {
+   "agency_name": "Staten Island Rapid Transit Operating Authority",
+   "n": 5
+  },
+  {
+   "agency_name": "Supreme Court",
+   "n": 156
+  },
+  {
+   "agency_name": "Tax Commission",
+   "n": 14
+  },
+  {
+   "agency_name": "TAX COMMISSION",
+   "n": 235
+  },
+  {
+   "agency_name": "Taxi and Limousine Commission",
+   "n": 386
+  },
+  {
+   "agency_name": "TAXI & LIMOUSINE COMMISSION",
+   "n": 3095
+  },
+  {
+   "agency_name": "Teachers' Retirement System",
+   "n": 101
+  },
+  {
+   "agency_name": "TEACHERS RETIREMENT SYSTEM",
+   "n": 1797
+  },
+  {
+   "agency_name": "Technology Development Corporation",
+   "n": 1
+  },
+  {
+   "agency_name": "TECHNOLOGY & INNOVATION",
+   "n": 1820
+  },
+  {
+   "agency_name": "Transportation",
+   "n": 3619
+  },
+  {
+   "agency_name": "Triborough Bridge and Tunnel Authority",
+   "n": 902
+  },
+  {
+   "agency_name": "Trust for Governors Island",
+   "n": 78
+  },
+  {
+   "agency_name": "Upper Manhattan Empowerment Zone",
+   "n": 23
+  },
+  {
+   "agency_name": "Veterans' Services",
+   "n": 26
+  },
+  {
+   "agency_name": "Water Board",
+   "n": 13
+  },
+  {
+   "agency_name": "Youth and Community Development",
+   "n": 3734
+  }
+ ]
+}
