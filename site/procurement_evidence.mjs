@@ -47,16 +47,120 @@ export function contractEndSignals(rows,{asOf,months=12}={}) {
   return {window:{from:asOf,to:upper,inclusive:true},unit:'distinct agency and contract agreement',signals,excluded};
 }
 
-// Community-board budget request signals: the latest servable publication at
-// or before asOf, exactly bound to board, fiscal cycle and tracking code.
-// Diagnostic-only future publications never become current.
+// Community boards. The 59 regular districts, keyed the way the engine's
+// geography layer keys them (X Bronx, K Brooklyn, M Manhattan, Q Queens,
+// R Staten Island). A board id outside this table is malformed, never repaired.
+export const COMMUNITY_BOARD_BOROUGHS = Object.freeze({
+  'bronx': Object.freeze({letter:'X',districts:12}),
+  'brooklyn': Object.freeze({letter:'K',districts:18}),
+  'manhattan': Object.freeze({letter:'M',districts:12}),
+  'queens': Object.freeze({letter:'Q',districts:14}),
+  'staten-island': Object.freeze({letter:'R',districts:3}),
+});
+export const BOARD_REQUEST_KIND='community_board_request';
+export const BOARD_REQUEST_KIND_LABEL='Community board budget request';
+export const BOARD_REQUEST_CLAIM='Published request and agency response; not an appropriation or solicitation.';
+export const BOARD_REQUEST_SOURCE_URL='https://data.cityofnewyork.us/d/vn4m-mk4t';
+
+export function boardIdentity(boardId) {
+  const m=/^(bronx|brooklyn|manhattan|queens|staten-island)-cb-(\d{2})$/.exec(typeof boardId==='string'?boardId:'');
+  if(!m)return null;
+  const spec=COMMUNITY_BOARD_BOROUGHS[m[1]],n=Number(m[2]);
+  if(n<1||n>spec.districts)return null;
+  return {board_id:boardId,borough:m[1],district_number:n,district_id:`${spec.letter}${m[2]}`,geography_key:`geography:community_district:${spec.letter}${m[2]}`};
+}
+
+// One request, one outcome. The version read is the latest servable
+// publication at or before asOf; diagnostic-only future publications never
+// become current. When that latest version names an agency the register could
+// not bind, the request stays unbound: an older bound version is not borrowed.
+export function classifyBudgetRequest(request,{asOf}={}) {
+  if(!isoDay(asOf)) throw Error('invalid asOf');
+  if(!request||request.board_binding!=='bound')return {outcome:'board_not_bound'};
+  const identity=boardIdentity(request.board_id);
+  if(!identity)return {outcome:'board_id_malformed'};
+  const version=(Array.isArray(request.versions)?request.versions:[]).filter(v=>v&&v.servable===true&&isoDay(v.publication_date)&&v.publication_date<=asOf&&typeof v.publication==='string').sort((a,b)=>b.publication.localeCompare(a.publication))[0];
+  if(!version)return {outcome:'no_servable_publication',identity};
+  const agency=version.responsible_agency;
+  if(!agency||agency.binding!=='bound'||typeof agency.agency_id!=='string'||!agency.agency_id)return {outcome:'agency_unbound',identity,version};
+  if(typeof version.request!=='string'||!version.request.trim())return {outcome:'request_text_missing',identity,version,agency:agency.agency_id};
+  return {outcome:'bound',identity,version,agency:agency.agency_id};
+}
+
+// A community-board request signal. Text is copied as published. The agency
+// response is carried only when the publisher wrote one; an absent response is
+// said so and is never filled. Nothing here is funding.
+function boardRequestRow(request,{identity,version,agency}) {
+  const row={id:`cb-request/${request.board_id}/${request.fiscal_year}/${request.tracking_code}`,kind:BOARD_REQUEST_KIND,kind_label:BOARD_REQUEST_KIND_LABEL,agency_id:agency,agency_label:version.responsible_agency.source_label,board_id:identity.board_id,borough:identity.borough,district_id:identity.district_id,geography_key:identity.geography_key,fiscal_year:request.fiscal_year,tracking_code:request.tracking_code,event_date:version.publication_date,headline:version.request,source_url:BOARD_REQUEST_SOURCE_URL,source_id:'vn4m-mk4t',source_publication:version.publication,claim:BOARD_REQUEST_CLAIM,denominator:null};
+  if(typeof version.explanation==='string')row.explanation=version.explanation;
+  const rank=version.rank;
+  if(rank&&typeof rank.value==='string'&&typeof rank.scope==='string'&&typeof rank.district_wide==='boolean')row.rank=rank;
+  if(typeof version.response==='string'&&version.response.trim()){row.response=version.response;row.response_state='published';}
+  else row.response_state='not_published';
+  return row;
+}
+
+// Community-board budget request signals for one agency: the latest servable
+// publication at or before asOf, exactly bound to board, fiscal cycle and
+// tracking code.
 export function budgetRequestSignals(document,{asOf,agency}={}) {
   if(!isoDay(asOf)) throw Error('invalid asOf');
   return document.requests.flatMap(r=>{
-    const versions=r.versions.filter(v=>v.servable===true && isoDay(v.publication_date) && v.publication_date<=asOf && v.responsible_agency.binding==='bound').sort((a,b)=>b.publication.localeCompare(a.publication));
-    const v=versions[0]; if(!v || v.responsible_agency.agency_id!==agency || r.board_binding!=='bound')return [];
-    return [{id:`cb-request/${r.board_id}/${r.fiscal_year}/${r.tracking_code}`,kind:'community_board_request',agency_id:agency,board_id:r.board_id,fiscal_year:r.fiscal_year,tracking_code:r.tracking_code,event_date:v.publication_date,headline:v.request,explanation:v.explanation,response:v.response,rank:v.rank,source_url:'https://data.cityofnewyork.us/d/vn4m-mk4t',source_id:'vn4m-mk4t',source_publication:v.publication,claim:'Published request and agency response; not an appropriation or solicitation.',denominator:null}];
+    const c=classifyBudgetRequest(r,{asOf});
+    return c.outcome==='bound'&&c.agency===agency?[boardRequestRow(r,c)]:[];
   });
+}
+
+const BOARD_REQUEST_OUTCOMES=['published','agency_not_published','agency_unbound','request_text_missing','no_servable_publication','board_id_malformed','board_not_bound'];
+const tally=(object,key)=>{object[key]=(object[key]||0)+1;};
+const sortedObject=o=>Object.fromEntries(Object.entries(o).sort(([a],[b])=>a.localeCompare(b)));
+
+// The whole register, read once. Signals are produced for the named agencies
+// only; every other request is counted under the reason it was left out, so
+// the coverage is measured on the full population and a wider agency list is a
+// one-line change with a number attached. Deterministic: no clock.
+export function budgetRequestSignalSet(documents,{asOf,agencies}={}) {
+  if(!isoDay(asOf)) throw Error('invalid asOf');
+  if(!Array.isArray(agencies)||!agencies.length) throw Error('agencies required');
+  const wanted=new Set(agencies),signals=Object.fromEntries(agencies.map(a=>[a,[]])),seen=new Set();
+  const outcomes=Object.fromEntries(BOARD_REQUEST_OUTCOMES.map(o=>[o,0]));
+  const byAgency={},byBorough={},published={};
+  let requests=0,withBoardId=0,withResponse=0,responseTotal=0;
+  const slot=(a)=>byAgency[a]??={requests:0,with_board_id:0,with_response:0,label:null,by_borough:{}};
+  for(const d of documents)for(const r of d.requests){
+    const key=`${r?.board_id}/${r?.fiscal_year}/${r?.tracking_code}`;
+    if(seen.has(key))throw Error(`duplicate request identity ${key}`);
+    seen.add(key);requests++;
+    const c=classifyBudgetRequest(r,{asOf});
+    if(c.identity)withBoardId++;
+    if(c.outcome==='bound'||c.outcome==='request_text_missing'){
+      const a=slot(c.agency);a.requests++;a.with_board_id++;a.label??=c.version.responsible_agency.source_label;
+      tally(a.by_borough,c.identity.borough);tally(byBorough,c.identity.borough);
+      const answered=typeof c.version.response==='string'&&c.version.response.trim()!=='';
+      if(answered)a.with_response++;
+      if(c.outcome==='bound'&&wanted.has(c.agency)){
+        signals[c.agency].push(boardRequestRow(r,c));tally(outcomes,'published');
+        const p=published[c.agency]??={requests:0,with_response:0,by_borough:{},by_board:{}};
+        p.requests++;if(answered)p.with_response++;tally(p.by_borough,c.identity.borough);tally(p.by_board,c.identity.board_id);
+        responseTotal++;if(answered)withResponse++;
+      } else tally(outcomes,c.outcome==='bound'?'agency_not_published':c.outcome);
+    } else tally(outcomes,c.outcome);
+  }
+  for(const rows of Object.values(signals))rows.sort((a,b)=>a.id.localeCompare(b.id));
+  const publishedOut=Object.fromEntries(Object.keys(published).sort().map(a=>[a,{requests:published[a].requests,with_response:published[a].with_response,by_borough:sortedObject(published[a].by_borough),by_board:sortedObject(published[a].by_board)}]));
+  const byAgencyOut=Object.fromEntries(Object.keys(byAgency).sort().map(a=>[a,{label:byAgency[a].label,requests:byAgency[a].requests,with_response:byAgency[a].with_response,by_borough:sortedObject(byAgency[a].by_borough),published:wanted.has(a)}]));
+  return {signals,coverage:{
+    requests_in_register:requests,
+    requests_with_valid_board_id:withBoardId,
+    share_with_valid_board_id:requests?Math.round(withBoardId/requests*10000)/10000:null,
+    by_outcome:outcomes,
+    published_signals:outcomes.published,
+    published_with_response:withResponse,
+    published_without_response:responseTotal-withResponse,
+    by_agency:byAgencyOut,
+    by_borough:sortedObject(byBorough),
+    published:publishedOut,
+  }};
 }
 
 // Whole-project capital movement: before/after budget and forecast

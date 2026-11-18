@@ -172,6 +172,9 @@ test('plan capability families register from the plan index with index pass-thro
   assert.ok(acs.families.filter((f) => f.family.startsWith('agency-plans-')).every((f) => f.index === '/data/procurement_plan_index.json'));
 
   const aging = m.capabilities(capabilities.families, 'aging');
-  assert.equal(aging.state, 'unknown');
-  assert.equal(aging.families.length, 0);
+  assert.equal(aging.state, 'supported');
+  assert.deepEqual(aging.families.map(f => f.family), ['budget-requests']);
+  const absent = m.capabilities(capabilities.families, 'not-a-published-agency');
+  assert.equal(absent.state, 'unknown');
+  assert.equal(absent.families.length, 0);
 });

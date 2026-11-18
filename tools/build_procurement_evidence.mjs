@@ -16,6 +16,8 @@ import { planCapabilityFamilies } from './build_procurement_plan_index.mjs';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const FIXTURE_DIR = join(ROOT, 'warehouse/fixtures/procurement-evidence');
+const BOARD_REGISTER_PATH = join(ROOT, 'site/data/community_board_budget_register.json');
+const BOARD_REGISTER_DIR = join(ROOT, 'site/data/community_board_budget_register');
 const OUT_DIR = join(ROOT, 'site/data/procurement_evidence');
 const CAPABILITIES_PATH = join(ROOT, 'site/data/procurement_evidence_capabilities.json');
 const PROGRAM_SITES_PATH = join(ROOT, 'site/data/agency_program_sites.json');
@@ -32,6 +34,83 @@ const REGISTERED_RECEIPT_SCHEMA = 'cityscroll.analytics_registered_contracts_pop
 const REGISTERED_SITE_ARTIFACT = 'site/data/analytics_registered_contracts.json';
 
 const read = p => JSON.parse(readFileSync(p, 'utf8'));
+
+// Agencies that publish community-board budget request signals. This is every
+// agency the register binds to a canonical id. The signals are built from the
+// whole register; an agency left off this list is counted as not published
+// rather than omitted. Design and Construction is absent because the register
+// binds it to no request.
+export const BOARD_REQUEST_AGENCIES = Object.freeze([
+  'administration-for-childrens-services',
+  'aging',
+  'buildings',
+  'city-planning',
+  'city-university',
+  'citywide-administrative-services',
+  'consumer-and-worker-protection',
+  'cultural-affairs',
+  'economic-development-corporation',
+  'education',
+  'emergency-management',
+  'environmental-protection',
+  'fire-department',
+  'health-and-mental-hygiene',
+  'homeless-services',
+  'housing-authority',
+  'housing-preservation-and-development',
+  'human-resources-administration',
+  'information-technology-and-telecommunications',
+  'landmarks-preservation-commission',
+  'management-and-budget',
+  'mayors-office-of-criminal-justice',
+  'n-y-c-transit-authority',
+  'nyc-health-hospitals',
+  'parks-and-recreation',
+  'police-department',
+  'sanitation',
+  'small-business-services',
+  'transportation',
+  'youth-and-community-development',
+]);
+const BOARD_REGISTER_SCHEMA = 'cityscroll.community_board_budget_register.v1';
+const BOARD_COVERAGE_SCHEMA = 'cityscroll.community_board_request_signal_coverage.v1';
+const boardRequestCounts = p => ({
+  by_board: p?.by_board ?? {},
+  by_borough: p?.by_borough ?? {},
+  with_response: p?.with_response ?? 0,
+  without_response: (p?.requests ?? 0) - (p?.with_response ?? 0),
+});
+const isoFromPublication = p => `${p.slice(0, 4)}-${p.slice(4, 6)}-${p.slice(6, 8)}`;
+
+/**
+ * Read the whole OMB community-board budget request register: the index and
+ * every per-board document it lists, each checked against the index hash and
+ * request count. A short, altered or partial register fails the build closed
+ * so the previous complete generation stays served.
+ */
+export function readBoardRegister({ indexPath = BOARD_REGISTER_PATH, dir = BOARD_REGISTER_DIR } = {}) {
+  const index = read(indexPath);
+  if (index.schema !== BOARD_REGISTER_SCHEMA) throw Error('community-board register has the wrong schema; refusing board request signals');
+  const selection = index.publication_selection;
+  if (!selection || !Array.isArray(selection.servable) || !selection.servable.length || !/^\d{8}$/.test(selection.latest || '')) {
+    throw Error('community-board register lacks a publication selection; refusing board request signals');
+  }
+  if (!Array.isArray(index.boards) || index.boards.length !== index.counts?.boards) throw Error('community-board register board list does not match its count');
+  if ((index.requests_without_a_board_document || []).length) throw Error('community-board register has requests without a board document');
+  const documents = [];
+  let total = 0;
+  for (const board of index.boards) {
+    if (!/^[a-z-]+-cb-\d{2}$/.test(board.board_id || '')) throw Error(`community-board register lists a malformed board id ${board.board_id}`);
+    const bytes = readFileSync(join(dir, `${board.board_id}.json`));
+    if (createHash('sha256').update(bytes).digest('hex') !== board.sha256) throw Error(`community-board document ${board.board_id} hash mismatch`);
+    const document = JSON.parse(bytes.toString('utf8'));
+    if (document.board_id !== board.board_id || document.requests.length !== board.request_count) throw Error(`community-board document ${board.board_id} does not match the index`);
+    total += document.requests.length;
+    documents.push(document);
+  }
+  if (total !== index.counts.requests) throw Error('community-board documents do not add up to the register request count');
+  return { index, documents };
+}
 
 /**
  * Accept the committed registered-contract index only when its owning
@@ -74,7 +153,7 @@ export function assertAcceptedRegisteredContracts({
 
 export function buildAll() {
   const nycha = read(join(FIXTURE_DIR, 'nycha-contract-agreement.json'));
-  const cb = read(join(FIXTURE_DIR, 'queens-cb12-budget-register.json'));
+  const { index: boardIndex, documents: boardDocuments } = readBoardRegister();
   const capital = read(join(FIXTURE_DIR, 'ddc-capital-project.json'));
   const crosswalk = read(CROSSWALK_PATH).entries;
   const programSites = read(PROGRAM_SITES_PATH);
@@ -87,7 +166,7 @@ export function buildAll() {
 
   // as_of is the newest source vintage among admitted inputs, never a wall clock.
   const asOf = [
-    ...cb.publications.servable.map(p => `${p.slice(0, 4)}-${p.slice(4, 6)}-${p.slice(6, 8)}`),
+    ...boardIndex.publication_selection.servable.map(isoFromPublication),
     nycha[0].retrieval_timestamp.slice(0, 10),
     capital.record.after.agency_data_date,
     registered.snapshot_date,
@@ -98,7 +177,7 @@ export function buildAll() {
     { id: 'registered-contracts', source_id: 'checkbook-contracts', agency_ids: ['environmental-protection', 'health-and-mental-hygiene'], status: 'available', unit: 'distinct prime contract', version: registered.snapshot_date, source_as_of: registered.snapshot_date },
     { id: 'program-sites', source_id: 'ebkm-iyma', agency_ids: ['youth-and-community-development'], status: 'available', unit: 'distinct program-site offering', geography: 'service_site_community_district', version: `fy${programSites.fiscal_year}`, source_as_of: null },
     { id: 'capital-projects', source_id: 'fb86-vt7u', agency_ids: ['design-and-construction'], status: 'available', unit: 'financial project identity', version: capital.record.after.reporting_period },
-    { id: 'budget-requests', source_id: 'vn4m-mk4t', agency_ids: ['education', 'environmental-protection'], status: 'available', unit: 'tracking code and fiscal cycle', version: cb.publications.latest },
+    { id: 'budget-requests', source_id: 'vn4m-mk4t', agency_ids: [...BOARD_REQUEST_AGENCIES], status: 'available', unit: 'tracking code and fiscal cycle', version: boardIndex.publication_selection.latest },
     { id: 'contract-terms', source_id: 'checkbook-nycha-contracts', agency_ids: ['housing-authority'], status: 'dated_retained', unit: 'contract agreement', version: nycha[0].retrieval_timestamp.slice(0, 10) },
     ...planCapabilityFamilies(planIndex),
   ];
@@ -112,25 +191,18 @@ export function buildAll() {
     dycdRows.push(...body.rows);
   }
 
+  const boardSet = m.budgetRequestSignalSet(boardDocuments, { asOf, agencies: BOARD_REQUEST_AGENCIES });
+  const boardLatest = isoFromPublication(boardIndex.publication_selection.latest);
+  const boardSignalsFamily = agency => ({
+    state: 'available',
+    source_contract_id: 'omb-community-board-budget-requests',
+    source_as_of: boardLatest,
+    coverage: 'Published community-board capital and expense budget requests and agency responses for the current fiscal cycle; not appropriations or solicitations.',
+    records: boardSet.signals[agency],
+    request_counts: boardRequestCounts(boardSet.coverage.published[agency]),
+  });
+
   const agencyInputs = {
-    'education': {
-      'signals': {
-        state: 'available',
-        source_contract_id: 'omb-community-board-budget-requests',
-        source_as_of: '2026-06-30',
-        coverage: 'Published community-board capital and expense budget requests and agency responses for the current fiscal cycle; not appropriations or solicitations.',
-        records: m.budgetRequestSignals(cb, { asOf, agency: 'education' }),
-      },
-    },
-    'environmental-protection': {
-      'signals': {
-        state: 'available',
-        source_contract_id: 'omb-community-board-budget-requests',
-        source_as_of: '2026-06-30',
-        coverage: 'Published community-board capital and expense budget requests and agency responses for the current fiscal cycle; not appropriations or solicitations.',
-        records: m.budgetRequestSignals(cb, { asOf, agency: 'environmental-protection' }),
-      },
-    },
     'design-and-construction': {
       'signals': {
         state: 'available',
@@ -159,6 +231,10 @@ export function buildAll() {
       },
     },
   };
+  for (const agency of BOARD_REQUEST_AGENCIES) {
+    const slot = agencyInputs[agency] ??= {};
+    slot.signals = boardSignalsFamily(agency);
+  }
 
   const outputs = new Map();
   const capabilities = {
@@ -166,6 +242,22 @@ export function buildAll() {
     as_of: asOf,
     families,
     agencies: Object.fromEntries(Object.keys(agencyInputs).sort().map(a => [a, { manifest: `/data/procurement_evidence/${a}/manifest.json` }])),
+    community_board_requests: {
+      schema: BOARD_COVERAGE_SCHEMA,
+      source: {
+        publisher: boardIndex.source.publisher,
+        name: boardIndex.source.name,
+        dataset_id: boardIndex.source.dataset_id,
+        source_url: boardIndex.source.source_url,
+        register: 'site/data/community_board_budget_register.json',
+        acquired_at: boardIndex.acquired_at,
+        publication_latest: boardIndex.publication_selection.latest,
+        publications_servable: boardIndex.publication_selection.servable,
+      },
+      rule: 'One signal per request: the latest servable publication at or before as_of, exact on board, fiscal year and tracking code. A request is a community board asking an agency for something; the response is the written answer. Neither is funding, a commitment or delivery.',
+      signal_agencies: [...BOARD_REQUEST_AGENCIES],
+      ...boardSet.coverage,
+    },
   };
   outputs.set('capabilities', m.bytes(capabilities));
 
@@ -199,6 +291,7 @@ export function buildAll() {
         coverage: f.coverage,
         source_check_at: null,
         publisher_updated_at: family === 'program-sites' ? programSites.publisher_updated_at : null,
+        ...(f.request_counts ? { request_counts: f.request_counts } : {}),
         pages: pointers,
       };
     }

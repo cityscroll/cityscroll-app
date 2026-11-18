@@ -1,11 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
+import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const SITE_ROOT = path.join(ROOT, "site");
@@ -78,8 +78,10 @@ function buildIgnoredArtifact(repo) {
 }
 
 test("two independently built language branches merge without shared generated edits", () => {
-  const repo = fs.mkdtempSync(path.join(os.tmpdir(), "i18n-merge-friendly-"));
-  try {
+  // A single rmSync of this git scratch can throw ENOTEMPTY while .git/objects
+  // is still settling, which fails the test and leaves the directory for the
+  // temp-leak gate. The helper retries that removal.
+  withTempDirSync("i18n-merge-friendly", (repo) => {
     copySiteFiles(SITE_ROOT, repo);
     fs.mkdirSync(path.join(repo, "tools"), { recursive: true });
     fs.copyFileSync(
@@ -116,14 +118,11 @@ test("two independently built language branches merge without shared generated e
     assert.equal(run("git", ["diff", "--name-only", "--diff-filter=U"], repo).stdout, "");
     assert.match(fs.readFileSync(path.join(repo, "i18n", "lang", "es.js"), "utf8"), /Spanish update/);
     assert.match(fs.readFileSync(path.join(repo, "i18n", "lang", "fr.js"), "utf8"), /French update/);
-  } finally {
-    fs.rmSync(repo, { recursive: true, force: true });
-  }
+  }, { rmRetries: 10, rmRetryDelayMs: 100 });
 });
 
 test("the built-artifact gate rejects real skew after a dictionary changes", () => {
-  const site = fs.mkdtempSync(path.join(os.tmpdir(), "i18n-built-skew-"));
-  try {
+  withTempDirSync("i18n-built-skew", (site) => {
     copySiteFiles(SITE_ROOT, site);
     run("python3", [path.join(ROOT, "tools", "stamp_i18n_assets.py"), "--site-root", site, "--stamp"], ROOT);
     run(
@@ -141,14 +140,11 @@ test("the built-artifact gate rejects real skew after a dictionary changes", () 
     );
     assert.notEqual(skew.status, 0);
     assert.match(`${skew.stdout}\n${skew.stderr}`, /built i18n cache skew/);
-  } finally {
-    fs.rmSync(site, { recursive: true, force: true });
-  }
+  });
 });
 
 test("the built /now/ and /browse/* pages do not ship the literal i18n asset placeholder", () => {
-  const site = fs.mkdtempSync(path.join(os.tmpdir(), "i18n-primary-routes-"));
-  try {
+  withTempDirSync("i18n-primary-routes", (site) => {
     copySiteFiles(SITE_ROOT, site);
     copyPrimaryDocuments(site);
 
@@ -174,7 +170,5 @@ test("the built /now/ and /browse/* pages do not ship the literal i18n asset pla
       assert.match(html, new RegExp(`i18n\\.js\\?v=${version}`), relative);
     }
     run("python3", [path.join(ROOT, "tools", "stamp_i18n_assets.py"), "--site-root", site, "--verify-built"], ROOT);
-  } finally {
-    fs.rmSync(site, { recursive: true, force: true });
-  }
+  });
 });

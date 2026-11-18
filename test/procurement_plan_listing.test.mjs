@@ -281,7 +281,9 @@ test("(v) the plan families register in the existing v3 capability registry with
   assert.equal(acs.state, "supported");
   assert.ok(acs.families.map((f) => f.family).includes("agency-plans-ll1"));
   assert.ok(acs.families.map((f) => f.family).includes("agency-plans-ll63"));
-  assert.equal(evidence.capabilities(families, "aging").state, "unknown");
+  const aging = evidence.capabilities(families, "aging");
+  assert.ok(aging.families.some((f) => f.family === "budget-requests"));
+  assert.equal(aging.families.some((f) => String(f.family).startsWith("agency-plans-")), false);
   const dep = evidence.capabilities(families, "environmental-protection").families.map((f) => f.family).sort();
   assert.ok(dep.includes("agency-plans-ll1"));
   assert.ok(dep.includes("agency-plans-ll63"));
