@@ -1229,6 +1229,9 @@ export async function buildMeetingOutcomesView({
   const upcomingBounds = upcomingWindow(now);
   const eligibleUpcoming = eventRows.filter((raw) => isEligibleUpcomingEvent(raw, upcomingBounds));
   const upcomingTargets = selectUpcomingItemTargets(eligibleUpcoming, matchedEventIds).targets;
+  // The published discovery cap stays at six. This refresh fetches three at
+  // a time so a response that still carries embedded document bodies is not
+  // retained beside five siblings and the rows already kept.
   const itemBatches = await boundedMap(
     [...matchedEvents, ...upcomingTargets],
     async (ev) => {
@@ -1253,6 +1256,7 @@ export async function buildMeetingOutcomesView({
         await shadowBags({ eventItems: retainedRows, attachments: embedded.rawAttachments });
         // Strip the whole response, including rows the upcoming cap did not keep.
         stripPublisherRows(rows, COUNCIL_ITEM_KEYS);
+        embedded.rawAttachments.length = 0;
         return {
           event_id: eventId,
           rows: retainedRows,
@@ -1270,7 +1274,7 @@ export async function buildMeetingOutcomesView({
         };
       }
     },
-    UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY,
+    Math.min(3, UPCOMING_COUNCIL_MEETINGS_ITEM_CONCURRENCY),
   );
   const itemsByEventId = new Map(itemBatches.map((batch) => [batch.event_id, batch]));
   const eventItemRows = itemBatches.flatMap((batch) => batch.rows);

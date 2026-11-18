@@ -537,10 +537,20 @@ export async function fetchLegistarEventItems({
   );
   if (!Array.isArray(rows)) return rows;
 
+  // Drop embedded document bodies before any other copy of these rows is made.
+  // A publisher that ignores the request default can put a large base64 body
+  // on every attachment; six of those responses must not stay live together.
+  for (const row of rows) {
+    const attachments = row?.EventItemMatterAttachments;
+    if (!Array.isArray(attachments)) continue;
+    for (const attachment of attachments) {
+      if (attachment && typeof attachment === "object") delete attachment.MatterAttachmentBinary;
+    }
+  }
+
   // Defensive boundary for a publisher or fixture that includes attachment
   // metadata despite the request default. Retain only the public metadata
-  // fields, discard MatterAttachmentBinary before rows leave the client, and
-  // restore the former per-event attachment cap.
+  // fields and the former per-event attachment cap.
   let remainingAttachments = MAX_EMBEDDED_ATTACHMENTS_PER_EVENT;
   return rows.map((row) => {
     if (!row || typeof row !== "object") return row;
