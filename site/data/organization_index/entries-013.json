@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":13,"first_ordinal":21601,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":13,"first_ordinal":21598,"entries":[
+{"s":"BROOKLYN UNITED MUSIC AND ARTS DEVELOPMENT","n":[["BROOKLYN UNITED MUSIC AND ARTS DEVELOPMENT INC",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-02-09","i":["CT104020263092778","CT104020263035863"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-02-09","i":["CT104020263092778"],"m":["Non-M/WBE"]}}},
+{"s":"BROOKLYN UNITED SCHOLARSHIP ASSOCIATION","n":[["BROOKLYN UNITED SCHOLARSHIP ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["830663555"],"z":["11226"]}}},
+{"s":"BROOKLYN URBAN GARDEN CHARTER SCHOOL","n":[["BROOKLYN URBAN GARDEN CHARTER SCHOOL",1]],"x":{"irs":{"r":1,"i":["453453383"],"z":["11215"]}}},
+{"s":"BROOKLYN URBAN GARDEN CHARTER SCHOOL PTA","n":[["BROOKLYN URBAN GARDEN CHARTER SCHOOL PTA INC",1]],"x":{"irs":{"r":1,"i":["473077480"],"z":["11215"]}}},
 {"s":"BROOKLYN USA ATHLETIC ASSOCIATION","n":[["Brooklyn USA Athletic Association",1]],"x":{"ocp":{"r":1,"a":0,"l":"2004-10-08","i":["20041012028"]}}},
 {"s":"BROOKLYN USA SPORTS ASSN","n":[["BROOKLYN USA SPORTS ASSN INC",1]],"x":{"irs":{"r":1,"i":["811070700"],"z":["11217"]}}},
 {"s":"BROOKLYN VETS 4 KIDS","n":[["BROOKLYN VETS 4 KIDS INC",1]],"x":{"irs":{"r":1,"i":["823080186"],"z":["11784"]}}},
@@ -1715,8 +1719,5 @@
 {"s":"CABLE LEARNING SOLUTIONS","n":[["CABLE LEARNING SOLUTIONS INC",4]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-02-12","i":["CT104020263096554","CT104020253131652","CT104020253050826"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-02-12","i":["CT104020263096554"],"m":["Non-M/WBE"]}}},
 {"s":"CABLE SERVICES","n":[["CABLE SERVICES CO., INC.",1]],"x":{"dol":{"r":1,"i":["25-6788Z-CR"],"z":["17701"]}}},
 {"s":"CABLE SYSTEMS","n":[["CABLE SYSTEMS, INC.",1]],"x":{"dol":{"r":1,"i":["26-69ZHY-CR"],"z":["14580"]}}},
-{"s":"CABLE TELECOMMUNICATIONS ASSOCIATION","n":[["CABLE TELECOMMUNICATIONS ASSOCIATION OF NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["141582932"],"z":["12207"]}}},
-{"s":"CABLEVISION LIGHTPATH","n":[["CABLEVISION LIGHTPATH LLC",2],["CABLEVISION LIGHTPATH",1],["Cablevision Lightpath, LLC",1]],"x":{"ocp":{"r":1,"a":398806,"l":"2003-05-08","i":["20030506019"]},"cbr":{"r":1,"a":102649149.63,"l":"2026-03-30","i":["CT185820268804008"],"m":["Individuals and Others"]},"cbv":{"r":1,"l":"2026-03-30","i":["CT185820268804008"],"m":["Individuals and Others"]},"dol":{"r":1,"i":["25-65DEC-CR"],"z":["11714"]}}},
-{"s":"CABLEVISON-LIGHTPATH","n":[["Cablevison-Lightpath",1]],"x":{"ocp":{"r":1,"a":17000000,"l":"2016-12-19","i":["20161212010"]}}},
-{"s":"CABORCA","n":[["CABORCA INC",1]],"x":{"irs":{"r":1,"i":["833784953"],"z":["11216"]}}}
+{"s":"CABLE TELECOMMUNICATIONS ASSOCIATION","n":[["CABLE TELECOMMUNICATIONS ASSOCIATION OF NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["141582932"],"z":["12207"]}}}
 ]}

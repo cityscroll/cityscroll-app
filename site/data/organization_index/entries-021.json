@@ -1,4 +1,15 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":21,"first_ordinal":35140,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":21,"first_ordinal":35131,"entries":[
+{"s":"CONGREGATION BETH SCHNAY-OR","n":[["CONGREGATION BETH SCHNAY-OR",1]],"x":{"irs":{"r":1,"i":["112700142"],"z":["11230"]}}},
+{"s":"CONGREGATION BETH SHALOM","n":[["CONGREGATION BETH SHALOM",1]],"x":{"irs":{"r":1,"i":["141562976"],"z":["12065"]}}},
+{"s":"CONGREGATION BETH SHALOM A MESSIANIC CONGREGATION OF THE","n":[["CONGREGATION BETH SHALOM A MESSIANIC CONGREGATION OF THE",1]],"x":{"irs":{"r":1,"i":["113356074"],"z":["11230"]}}},
+{"s":"CONGREGATION BETH SHIMON","n":[["CONGREGATION BETH SHIMON",1]],"x":{"irs":{"r":1,"i":["113408133"],"z":["11219"]}}},
+{"s":"CONGREGATION BETH SHLOIME OF STATEN ISLAND","n":[["CONGREGATION BETH SHLOIME OF STATEN ISLAND",1]],"x":{"irs":{"r":1,"i":["510195226"],"z":["10314"]}}},
+{"s":"CONGREGATION BETH SHLOMA","n":[["CONGREGATION BETH SHLOMA INC",1]],"x":{"irs":{"r":1,"i":["061495803"],"z":["10950"]}}},
+{"s":"CONGREGATION BETH SHMUEL","n":[["CONGREGATION BETH SHMUEL",1],["CONGREGATION BETH SHMUEL INC",1]],"x":{"irs":{"r":2,"i":["133079376","133639157"],"z":["10950","11210"]}}},
+{"s":"CONGREGATION BETH SHOLOM","n":[["CONGREGATION BETH SHOLOM",1],["CONGREGATION BETH SHOLOM INCORPORATED",1]],"x":{"irs":{"r":2,"i":["116003443","160814112"],"z":["11501","14620"]}}},
+{"s":"CONGREGATION BETH SHOLOM OF KINGS BAY","n":[["CONGREGATION BETH SHOLOM OF KINGS BAY",1]],"x":{"irs":{"r":1,"i":["934616410"],"z":["11235"]}}},
+{"s":"CONGREGATION BETH TALMUD VEHORAAH","n":[["CONGREGATION BETH TALMUD VEHORAAH",1]],"x":{"irs":{"r":1,"i":["112415092"],"z":["11218"]}}},
+{"s":"CONGREGATION BETH TORAH","n":[["CONGREGATION BETH TORAH",1]],"x":{"irs":{"r":1,"i":["116011458"],"z":["11230"]}}},
 {"s":"CONGREGATION BETH YECHIL","n":[["CONGREGATION BETH YECHIL INC",1]],"x":{"irs":{"r":1,"i":["133976721"],"z":["10952"]}}},
 {"s":"CONGREGATION BETH YEHUDA","n":[["CONGREGATION BETH YEHUDA",1]],"x":{"irs":{"r":1,"i":["133007845"],"z":["10314"]}}},
 {"s":"CONGREGATION BETH YESHAYE","n":[["CONGREGATION BETH YESHAYE",1]],"x":{"irs":{"r":1,"i":["510188129"],"z":["11211"]}}},
@@ -1689,7 +1700,7 @@
 {"s":"CONNECT PLUS PARTNERS","n":[["Connect Plus Partners",1]],"x":{"dol":{"r":1,"i":["25-657S1-CR"],"z":["10954"]}}},
 {"s":"CONNECT POINTE","n":[["CONNECT POINTE",1]],"x":{"irs":{"r":1,"i":["820890529"],"z":["12027"]}}},
 {"s":"CONNECT THE DOTS FOUNDATION","n":[["CONNECT THE DOTS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["853128231"],"z":["14210"]}}},
-{"s":"CONNECT THE DOTS OCCUPATIONAL THERAPY","n":[["CONNECT THE DOTS OCCUPATIONAL THERAPY PLLC",5],["Connect The Dots Occupational Therapy PLLC",2],["Connect The Dots Occupational Therapy, PLLC",1]],"x":{"ocp":{"r":2,"a":251440,"l":"2026-02-24","i":["20260218005","20230420102"]},"cbr":{"r":2,"a":70620,"l":"2026-02-17","i":["MA104020268804756","MA104020258805737"],"m":["Asian American"]},"ppt":{"r":2,"a":251440,"l":"2026-02-17","i":["MA1-040-20268804756","MA1-040-20238802146"]},"dbe":{"r":1,"i":["CONNECT THE DOTS OCCUPATIONAL THERAPY PLLC"]},"sbs":{"r":1,"i":["377480"],"z":["07920"],"p":["MBE","WBE"]}}},
+{"s":"CONNECT THE DOTS OCCUPATIONAL THERAPY","n":[["CONNECT THE DOTS OCCUPATIONAL THERAPY PLLC",7],["Connect The Dots Occupational Therapy PLLC",2],["Connect The Dots Occupational Therapy, PLLC",1]],"x":{"ocp":{"r":2,"a":251440,"l":"2026-02-24","i":["20260218005","20230420102"]},"cbr":{"r":3,"a":196620,"l":"2026-11-13","i":["MA104020279776550","MA104020268804756","MA104020258805737"],"m":["Asian American"]},"ppt":{"r":2,"a":251440,"l":"2026-02-17","i":["MA1-040-20268804756","MA1-040-20238802146"]},"cbv":{"r":1,"l":"2026-11-13","i":["MA104020279776550"],"m":["Asian American"]},"dbe":{"r":1,"i":["CONNECT THE DOTS OCCUPATIONAL THERAPY PLLC"]},"sbs":{"r":1,"i":["377480"],"z":["07920"],"p":["MBE","WBE"]}}},
 {"s":"CONNECTED CHEF FOUNDATION","n":[["CONNECTED CHEF FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["852348659"],"z":["11370"]}}},
 {"s":"CONNECTED COMMUNITIES","n":[["CONNECTED COMMUNITIES INC",1]],"x":{"irs":{"r":1,"i":["475104440"],"z":["14609"]}}},
 {"s":"CONNECTED HUMANITY PROJECT","n":[["CONNECTED HUMANITY PROJECT INC",1]],"x":{"irs":{"r":1,"i":["881489355"],"z":["12159"]}}},
@@ -1837,12 +1848,5 @@
 {"s":"CONSORTIUM FOR INTERNATIONAL STUDIES","n":[["CONSORTIUM FOR INTERNATIONAL STUDIES INC",1]],"x":{"irs":{"r":1,"i":["830991554"],"z":["11230"]}}},
 {"s":"CONSORTIUM FOR STREET CHILDREN","n":[["CONSORTIUM FOR STREET CHILDREN",1]],"x":{"irs":{"r":1,"i":["852405209"],"z":["10018"]}}},
 {"s":"CONSORTIUM FOR SUSTAINABLE URBANIZATION","n":[["CONSORTIUM FOR SUSTAINABLE URBANIZATION INC",1]],"x":{"irs":{"r":1,"i":["471452643"],"z":["10003"]}}},
-{"s":"CONSORTIUM FOR VISION AND OCULOMICS IN PSYCHIATRY","n":[["CONSORTIUM FOR VISION AND OCULOMICS IN PSYCHIATRY INC",1]],"x":{"irs":{"r":1,"i":["934669764"],"z":["14642"]}}},
-{"s":"CONSORTIUM FOR WORKER EDUCATION","n":[["CONSORTIUM FOR WORKER EDUCATION",8],["CONSORTIUM FOR WORKER EDUCATION INC",6],["CONSORTIUM FOR WORKER EDUCATION, INC.",1]],"x":{"ocp":{"r":10,"a":30463299,"l":"2023-04-26","c":10,"i":["20230420110","20100407002","20090528015","20090224021","20080304007"]},"cbr":{"r":2,"a":3000,"l":"2026-06-24","i":["CT101320261417570","CT101320251418213"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":8111174,"l":"2023-04-19","i":["CT1-069-20238807007"]},"dbe":{"r":1,"i":["CONSORTIUM FOR WORKER EDUCATION INC"]},"irs":{"r":1,"i":["133564313"],"z":["10001"]}}},
-{"s":"CONSORTIUM INFORMATION SERVICES","n":[["CONSORTIUM INFORMATION SERVICES INC",1]],"x":{"irs":{"r":1,"i":["161458933"],"z":["14221"]}}},
-{"s":"CONSORTIUM OF HIGHER EDUCATION LGBT RESOURCE PROFESSIONALS","n":[["CONSORTIUM OF HIGHER EDUCATION LGBT RESOURCE PROFESSIONALS",1]],"x":{"irs":{"r":1,"i":["461472229"],"z":["10016"]}}},
-{"s":"CONSORTIUM OF JEWISH DAY SCHOOLS","n":[["CONSORTIUM OF JEWISH DAY SCHOOLS INC",1]],"x":{"irs":{"r":1,"i":["263142685"],"z":["10019"]}}},
-{"s":"CONSTABLE CUSTODIAL SERVICE","n":[["CONSTABLE CUSTODIAL SERVICE INC",3],["CONSTABLE CUSTODIAL SERVICE, INC.",1],["Constable Custodial Service Inc",1],["Constable Custodial Service, Inc.",1]],"d":[["Constable Custodial Service, Inc.",1]],"x":{"ocp":{"r":1,"a":921755,"l":"2026-07-01","i":["20260624031"]},"cbr":{"r":1,"a":921755.12,"l":"2026-06-23","i":["CT182620278801214"],"m":["Hispanic American"]},"ppt":{"r":1,"a":921755.12,"l":"2026-06-23","i":["CT1-826-20278801214"]},"cbv":{"r":1,"l":"2026-06-23","i":["CT182620278801214"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["102146"],"z":["12734"],"p":["MBE"]},"dol":{"r":2,"v":["dba","name"],"i":["25-659KC-CR"],"z":["12754"]}}},
-{"s":"CONSTABLE HALL ASSOCIATION","n":[["CONSTABLE HALL ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["161010339"],"z":["13325"]}}},
-{"s":"CONSTABLE TREE SERVICE","n":[["Constable Tree Service, LLC",1]],"x":{"dol":{"r":1,"i":["26-66HFZ-CR"],"z":["12121"]}}}
+{"s":"CONSORTIUM FOR VISION AND OCULOMICS IN PSYCHIATRY","n":[["CONSORTIUM FOR VISION AND OCULOMICS IN PSYCHIATRY INC",1]],"x":{"irs":{"r":1,"i":["934669764"],"z":["14642"]}}}
 ]}

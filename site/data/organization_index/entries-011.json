@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":11,"first_ordinal":18319,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":11,"first_ordinal":18317,"entries":[
+{"s":"BLACK RADIO HERITAGE ASSOCIATION","n":[["BLACK RADIO HERITAGE ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["992316304"],"z":["11411"]}}},
+{"s":"BLACK RECONSTRUCTION COLLECTIVE","n":[["BLACK RECONSTRUCTION COLLECTIVE INC",1]],"x":{"irs":{"r":1,"i":["852900752"],"z":["11238"]}}},
 {"s":"BLACK RETAIL ACTION GROUP","n":[["BLACK RETAIL ACTION GROUP INC",1]],"x":{"irs":{"r":1,"i":["133350163"],"z":["10026"]}}},
 {"s":"BLACK RIVER AMBULANCE SQUAD","n":[["BLACK RIVER AMBULANCE SQUAD INC",1]],"x":{"irs":{"r":1,"i":["510185978"],"z":["13612"]}}},
 {"s":"BLACK RIVER ELEMENTARY PTO","n":[["BLACK RIVER ELEMENTARY PTO",1]],"x":{"irs":{"r":1,"i":["300278704"],"z":["13612"]}}},
@@ -1313,7 +1315,7 @@
 {"s":"BOUNDARY EXTERMINARE","n":[["Boundary Exterminare Corp",3],["BOUNDARY EXTERMINARE CORP.",1]],"x":{"ocp":{"r":1,"a":149880,"l":"2019-10-02","i":["20190925026"]},"cbr":{"r":1,"a":1500000,"l":"2025-02-20","i":["CT181620258806002"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["BOUNDARY EXTERMINARE CORP."]},"sbs":{"r":1,"i":["11075"],"z":["11758"],"p":["MBE"]}}},
 {"s":"BOUNDARY FENCE RAILING SYSTEMS","n":[["BOUNDARY FENCE & RAILING SYSTEMS INC",1]],"x":{"dbe":{"r":1,"i":["BOUNDARY FENCE & RAILING SYSTEMS INC"]}}},
 {"s":"BOUNDLESS ARTS","n":[["BOUNDLESS ARTS INC",1]],"x":{"irs":{"r":1,"i":["882779313"],"z":["12442"]}}},
-{"s":"BOUNDLESS AWARENESS","n":[["BOUNDLESS AWARENESS LLC",3],["Boundless Awareness, LLC",1]],"x":{"cbr":{"r":2,"a":55000,"l":"2026-11-12","i":["CT185620278803567","CT181620261414686"],"m":["Asian American"]},"cbv":{"r":1,"l":"2026-04-21","i":["CT181620261414686"],"m":["Asian American"]},"sbs":{"r":1,"i":["100203"],"z":["11231"],"p":["MBE","WBE"]}}},
+{"s":"BOUNDLESS AWARENESS","n":[["BOUNDLESS AWARENESS LLC",4],["Boundless Awareness, LLC",1]],"x":{"cbr":{"r":2,"a":55000,"l":"2026-11-12","i":["CT185620278803567","CT181620261414686"],"m":["Asian American"]},"cbv":{"r":2,"l":"2026-11-12","i":["CT185620278803567","CT181620261414686"],"m":["Asian American"]},"sbs":{"r":1,"i":["100203"],"z":["11231"],"p":["MBE","WBE"]}}},
 {"s":"BOUNDLESS BOOKS PROJECT","n":[["BOUNDLESS BOOKS PROJECT",1]],"x":{"irs":{"r":1,"i":["931506854"],"z":["13215"]}}},
 {"s":"BOUNDLESS PATHS","n":[["BOUNDLESS PATHS INCORPORATED",1]],"x":{"irs":{"r":1,"i":["264348865"],"z":["13421"]}}},
 {"s":"BOUNDLESS PROGRESS","n":[["BOUNDLESS PROGRESS INC",1]],"x":{"irs":{"r":1,"i":["872428005"],"z":["10014"]}}},
@@ -1417,7 +1419,7 @@
 {"s":"BOYS DO DRIVE","n":[["BOYS DO DRIVE INC",1]],"x":{"irs":{"r":1,"i":["422889491"],"z":["10065"]}}},
 {"s":"BOYS GIRLS CLUB OF EDEN","n":[["BOYS & GIRLS CLUB OF EDEN INC",1]],"x":{"irs":{"r":1,"i":["330996412"],"z":["14006"]}}},
 {"s":"BOYS GIRLS CLUB OF ELMA MARILLA WALES","n":[["BOYS & GIRLS CLUB OF ELMA MARILLA & WALES INC",1]],"x":{"irs":{"r":1,"i":["161023305"],"z":["14059"]}}},
-{"s":"BOYS GIRLS CLUB OF HARLEM","n":[["BOYS & GIRLS CLUB OF HARLEM INC",11],["Boys & Girls Club of Harlem Inc.",3]],"x":{"ocp":{"r":3,"a":2411738,"l":"2025-06-17","i":["20250611017","20241212011","20220923107"]},"cbr":{"r":5,"a":8215718,"l":"2026-11-05","i":["CT126020278802382","CT126020268800537","CT126020258803701","CT104020258803241","MA104020259575435"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":2486730.5,"l":"2025-06-10","i":["CT1-260-20268800537","CT1-040-20258803241","CT1-260-20238800676"]},"cbv":{"r":1,"l":"2026-11-05","i":["CT126020278802382"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["BOYS & GIRLS CLUB OF HARLEM INC"]},"irs":{"r":1,"i":["133102951"],"z":["10031"]}}},
+{"s":"BOYS GIRLS CLUB OF HARLEM","n":[["BOYS & GIRLS CLUB OF HARLEM INC",13],["Boys & Girls Club of Harlem Inc.",3]],"x":{"ocp":{"r":3,"a":2411738,"l":"2025-06-17","i":["20250611017","20241212011","20220923107"]},"cbr":{"r":6,"a":9795218,"l":"2026-11-13","c":6,"i":["CT126020278801791","CT126020278802382","CT126020268800537","CT126020258803701","CT104020258803241"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":2486730.5,"l":"2025-06-10","i":["CT1-260-20268800537","CT1-040-20258803241","CT1-260-20238800676"]},"cbv":{"r":2,"l":"2026-11-13","i":["CT126020278801791","CT126020278802382"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["BOYS & GIRLS CLUB OF HARLEM INC"]},"irs":{"r":1,"i":["133102951"],"z":["10031"]}}},
 {"s":"BOYS GIRLS CLUB OF KINGSTON","n":[["BOYS & GIRLS CLUB OF KINGSTON INC",1]],"x":{"irs":{"r":1,"i":["141374487"],"z":["12401"]}}},
 {"s":"BOYS GIRLS CLUB OF METRO QUEENS","n":[["BOYS & GIRLS CLUB OF METRO QUEENS, INC",19],["Boys & Girls Club of Metro Queens, Inc",9],["BOYS & GIRLS CLUB OF METRO QUEENS INC",1]],"x":{"ocp":{"r":9,"a":57072893,"l":"2026-08-28","c":9,"i":["20260824017","20260810020","20260707015","20260507019","20260427009"]},"cbr":{"r":10,"a":61725806,"l":"2026-09-16","c":10,"i":["CT104020279758673","CT126020278801440","CT126020278801198","CT126020278800923","CT126020268806281"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":4298343,"l":"2026-07-06","i":["CT1-260-20278800923","CT1-260-20268800499","CT1-260-20228805895"]},"cbv":{"r":6,"l":"2026-09-16","c":6,"i":["CT104020279758673","CT126020278801440","CT126020278801198","CT126020278800923","CT126020268806281"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["111966067"],"z":["11419"]}}},
 {"s":"BOYS GIRLS CLUB OF MOUNT VERNON NY","n":[["BOYS & GIRLS CLUB OF MOUNT VERNON NY INC",1]],"x":{"irs":{"r":1,"i":["131739925"],"z":["10550"]}}},
@@ -1697,7 +1699,5 @@
 {"s":"BRB PROJECT","n":[["BRB PROJECT CORPORATION",1]],"x":{"irs":{"r":1,"i":["994677413"],"z":["12586"]}}},
 {"s":"BRC AIDS SERVICES","n":[["BRC AIDS SERVICES CORPORATION",1]],"x":{"irs":{"r":1,"i":["133819259"],"z":["10001"]}}},
 {"s":"BRC CONSULTING","n":[["BRC Consulting, LLC",1]],"x":{"sbs":{"r":1,"i":["362645"],"z":["30038"],"p":["MBE","WBE"]}}},
-{"s":"BRC HUMAN SERVICES","n":[["BRC Human Services",1],["BRC Human Services Corp.",1]],"x":{"ocp":{"r":2,"a":897252,"l":"2008-09-02","i":["20080825006","20060711027"]}}},
-{"s":"BRC INWOOD I HOUSING DEVELOPMENT FUND","n":[["BRC INWOOD I HOUSING DEVELOPMENT FUND CORPORATION",1]],"x":{"irs":{"r":1,"i":["850614317"],"z":["10001"]}}},
-{"s":"BRC LANDING ROAD I HOUSING DEVELOPMENT FUND","n":[["BRC LANDING ROAD I HOUSING DEVELOPMENT FUND CORPORATION",1]],"x":{"irs":{"r":1,"i":["473985343"],"z":["10001"]}}}
+{"s":"BRC HUMAN SERVICES","n":[["BRC Human Services",1],["BRC Human Services Corp.",1]],"x":{"ocp":{"r":2,"a":897252,"l":"2008-09-02","i":["20080825006","20060711027"]}}}
 ]}

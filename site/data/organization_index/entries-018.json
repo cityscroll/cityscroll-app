@@ -1,4 +1,12 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":18,"first_ordinal":30118,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":18,"first_ordinal":30111,"entries":[
+{"s":"CHURCH OF HIS SAVING GRACE","n":[["CHURCH OF HIS SAVING GRACE",1]],"x":{"irs":{"r":1,"i":["721591758"],"z":["14546"]}}},
+{"s":"CHURCH OF HOLY APOSTLES","n":[["CHURCH OF HOLY APOSTLES",1]],"x":{"irs":{"r":1,"i":["116015780"],"z":["11218"]}}},
+{"s":"CHURCH OF HOLY FAMILY","n":[["CHURCH OF HOLY FAMILY",1]],"x":{"irs":{"r":1,"i":["131740162"],"z":["10472"]}}},
+{"s":"CHURCH OF HOPE EVANGELICAL MINISTRIES INTERNATIONAL","n":[["CHURCH OF HOPE EVANGELICAL MINISTRIES INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["611605812"],"z":["10455"]}}},
+{"s":"CHURCH OF HOPE IN NEW YORK","n":[["CHURCH OF HOPE IN NEW YORK",1]],"x":{"irs":{"r":1,"i":["113251292"],"z":["11366"]}}},
+{"s":"CHURCH OF HUMANISM","n":[["CHURCH OF HUMANISM",1]],"x":{"irs":{"r":1,"i":["132775962"],"z":["10024"]}}},
+{"s":"CHURCH OF INFINITE MOTION IN CHRIST MINISTRIES","n":[["CHURCH OF INFINITE MOTION IN CHRIST MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["753219439"],"z":["11722"]}}},
+{"s":"CHURCH OF INFINITE SPIRIT","n":[["CHURCH OF INFINITE SPIRIT",1]],"x":{"irs":{"r":1,"i":["223792693"],"z":["14904"]}}},
 {"s":"CHURCH OF JERSUALEM OF CHRIST","n":[["CHURCH OF JERSUALEM OF CHRIST INC",1]],"x":{"irs":{"r":1,"i":["113234052"],"z":["11210"]}}},
 {"s":"CHURCH OF JESUS CHRIST APOSTOLIC","n":[["CHURCH OF JESUS CHRIST APOSTOLIC OF NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["133254489"],"z":["10468"]}}},
 {"s":"CHURCH OF LEICESTER","n":[["CHURCH OF LEICESTER",1]],"x":{"irs":{"r":1,"i":["161271191"],"z":["14481"]}}},
@@ -338,7 +346,7 @@
 {"s":"CIRCLE CREATIVE COLLECTIVE","n":[["CIRCLE CREATIVE COLLECTIVE INC",1]],"x":{"irs":{"r":1,"i":["842510854"],"z":["12561"]}}},
 {"s":"CIRCLE FOR JUSTICE INNOVATIONS","n":[["CIRCLE FOR JUSTICE INNOVATIONS",1]],"x":{"irs":{"r":1,"i":["871003224"],"z":["11201"]}}},
 {"s":"CIRCLE IN THE SQUARE THEATRE SCHOOL","n":[["CIRCLE IN THE SQUARE THEATRE SCHOOL INC",1]],"x":{"irs":{"r":1,"i":["133716314"],"z":["10019"]}}},
-{"s":"CIRCLE JANITORIAL SUPPLIES","n":[["CIRCLE JANITORIAL SUPPLIES INC",9],["Circle Janitorial Supplies Inc.",7],["Circle Janitorial Supplies, Inc.",2],["CIRCLE JANITORIAL SUPPLIES INC.",1],["Circle Janitorial Supplies Inc",1]],"x":{"ocp":{"r":8,"a":4378769.73,"l":"2026-08-20","c":8,"i":["20260813026","20251114012","20241001119","20240613121","20210216104"]},"cbr":{"r":3,"a":790594.72,"l":"2026-08-12","i":["CT184620278802254","CT182620268803758","CT184620258803224"],"m":["Hispanic American"]},"ppt":{"r":4,"a":492728,"l":"2025-11-13","i":["CT1-826-20268803758","CT1-846-20258803224","CT1-856-20248809088","CT1-856-20218801018"]},"cbv":{"r":2,"l":"2026-08-12","i":["CT184620278802254","CT182620268803758"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["CIRCLE JANITORIAL SUPPLIES INC."]},"sbs":{"r":1,"i":["11441"],"z":["07524"],"p":["MBE"]},"sca":{"r":1,"i":["CIRCLE JANITORIAL SUPPLIES, INC."],"z":["07524"]}}},
+{"s":"CIRCLE JANITORIAL SUPPLIES","n":[["CIRCLE JANITORIAL SUPPLIES INC",8],["Circle Janitorial Supplies Inc.",7],["Circle Janitorial Supplies, Inc.",2],["CIRCLE JANITORIAL SUPPLIES INC.",1],["Circle Janitorial Supplies Inc",1]],"x":{"ocp":{"r":8,"a":4378769.73,"l":"2026-08-20","c":8,"i":["20260813026","20251114012","20241001119","20240613121","20210216104"]},"cbr":{"r":3,"a":790594.72,"l":"2026-08-12","i":["CT184620278802254","CT182620268803758","CT184620258803224"],"m":["Hispanic American"]},"ppt":{"r":4,"a":492728,"l":"2025-11-13","i":["CT1-826-20268803758","CT1-846-20258803224","CT1-856-20248809088","CT1-856-20218801018"]},"cbv":{"r":1,"l":"2026-08-12","i":["CT184620278802254"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["CIRCLE JANITORIAL SUPPLIES INC."]},"sbs":{"r":1,"i":["11441"],"z":["07524"],"p":["MBE"]},"sca":{"r":1,"i":["CIRCLE JANITORIAL SUPPLIES, INC."],"z":["07524"]}}},
 {"s":"CIRCLE K INTERNATIONAL","n":[["CIRCLE K INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["861777210"],"z":["14905"]}}},
 {"s":"CIRCLE LODGE-CAMP KINDER RING OF THE WORKMENS CIRCLE","n":[["CIRCLE LODGE-CAMP KINDER RING OF THE WORKMENS CIRCLE INCORPORATED",1]],"x":{"irs":{"r":1,"i":["134014418"],"z":["12533"]}}},
 {"s":"CIRCLE LUBRICANTS","n":[["Circle Lubricants, Inc.",4],["Circle Lubricants Inc.",3],["CIRCLE LUBRICANTS INC",2]],"x":{"ocp":{"r":9,"a":6201554.15,"l":"2017-02-09","c":9,"i":["20170202013","20141124006","20141017028","20140318014","20110211016"]}}},
@@ -713,7 +721,7 @@
 {"s":"CITY TRANSIT MIX","n":[["CITY TRANSIT MIX INC.",1]],"d":[["CITY TRANSIT MIX INC",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["26-64NKZ-CR"],"z":["11435"]}}},
 {"s":"CITY UNIVERSITY","n":[["CITY UNIVERSITY OF NEW YORK",1]],"x":{"cbr":{"r":1,"a":265000,"l":"2025-04-25","i":["CT104020259558190"],"m":["Non-M/WBE"]}}},
 {"s":"CITY UNIVERSITY CONSTRUCTION FUND","n":[["CITY UNIVERSITY CONSTRUCTION FUND",1]],"x":{"irs":{"r":1,"i":["132587538"],"z":["10019"]}}},
-{"s":"CITY UNIVERSITY OF NEW YORK - COMMUNITY COLLEGES","n":[["CITY UNIVERSITY OF NEW YORK - COMMUNITY COLLEGES",1]],"x":{"cbr":{"r":1,"a":15000,"l":"2024-09-17","i":["CT112520251404231"],"m":["Non-M/WBE"]}}},
+{"s":"CITY UNIVERSITY OF NEW YORK - COMMUNITY COLLEGES","n":[["CITY UNIVERSITY OF NEW YORK - COMMUNITY COLLEGES",3]],"x":{"cbr":{"r":2,"a":871680,"l":"2026-11-16","i":["CT104020279762210","CT112520251404231"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-16","i":["CT104020279762210"],"m":["Non-M/WBE"]}}},
 {"s":"CITY UNIVERSITY OF NEW YORK AND EDUCATIONAL OPPORTUNITY CENTER","n":[["CITY UNIVERSITY OF NEW YORK AND EDUCATIONAL OPPORTUNITY CENTER",1]],"x":{"irs":{"r":1,"i":["136220593"],"z":["10007"]}}},
 {"s":"CITY UNIVERSITY OF NEW YORK HUNTER COLLEGE","n":[["CITY UNIVERSITY OF NEW YORK HUNTER COLLEGE",1]],"x":{"ocp":{"r":1,"a":1500000,"l":"2010-10-25","i":["20101018018"]}}},
 {"s":"CITY UNIVERSITY OF NEW YORK INSTITUTE OF STATE AND LOCAL GOVERNANCE","n":[["City University of  New York Institute of State and Local Governance",1]],"x":{"ocp":{"r":1,"a":240000,"l":"2016-11-17","i":["20161109024"]}}},
@@ -1562,13 +1570,5 @@
 {"s":"CLUB AT POINT OWOODS","n":[["CLUB AT POINT OWOODS INC",1]],"x":{"irs":{"r":1,"i":["111859935"],"z":["11706"]}}},
 {"s":"CLUB CHEFS OF WESTCHESTER","n":[["CLUB CHEFS OF WESTCHESTER INC",1]],"x":{"irs":{"r":1,"i":["133646749"],"z":["10708"]}}},
 {"s":"CLUB CREATES","n":[["CLUB CREATES INC",1]],"x":{"irs":{"r":1,"i":["320813834"],"z":["11226"]}}},
-{"s":"CLUB CULTURE FOUNDATION NY","n":[["CLUB CULTURE FOUNDATION NY LTD",1]],"x":{"irs":{"r":1,"i":["841800484"],"z":["10004"]}}},
-{"s":"CLUB DEI CARINESI DAMERICA","n":[["CLUB DEI CARINESI DAMERICA INC",1]],"x":{"irs":{"r":1,"i":["112892429"],"z":["11214"]}}},
-{"s":"CLUB DEL HUMO PRESIDENCIAL","n":[["CLUB DEL HUMO PRESIDENCIAL LLC",1]],"x":{"irs":{"r":1,"i":["333302075"],"z":["11210"]}}},
-{"s":"CLUB FOR CONTEMPORARY STUDIES","n":[["CLUB FOR CONTEMPORARY STUDIES",1]],"x":{"irs":{"r":1,"i":["394007551"],"z":["10025"]}}},
-{"s":"CLUB GETAWAY OPERATING","n":[["CLUB GETAWAY OPERATING CO.  LLC",1]],"x":{"dbe":{"r":1,"i":["CLUB GETAWAY OPERATING CO.  LLC"]}}},
-{"s":"CLUB GETAWAY OPERATINGCO","n":[["CLUB GETAWAY OPERATINGCO LLC",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-10-02","i":["CT104020273025405","CT104020253046839"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-10-02","i":["CT104020273025405"],"m":["Non-M/WBE"]}}},
-{"s":"CLUB ITALIANS 74 DELL IMMACOLATA","n":[["CLUB ITALIANS 74 DELL IMMACOLATA INC",1]],"x":{"irs":{"r":1,"i":["222186084"],"z":["14216"]}}},
-{"s":"CLUB LIBERTAD NACIONAL","n":[["CLUB LIBERTAD NACIONAL USA",1]],"x":{"irs":{"r":1,"i":["412732306"],"z":["10541"]}}},
-{"s":"CLUB MANAGEMENT ASSOCIATION OF AMERICA THE NEW YORK STATE CHAPTER","n":[["CLUB MANAGEMENT ASSOCIATION OF AMERICA THE NEW YORK STATE CHAPTER",1]],"x":{"irs":{"r":1,"i":["222545830"],"z":["14221"]}}}
+{"s":"CLUB CULTURE FOUNDATION NY","n":[["CLUB CULTURE FOUNDATION NY LTD",1]],"x":{"irs":{"r":1,"i":["841800484"],"z":["10004"]}}}
 ]}

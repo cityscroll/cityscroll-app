@@ -1,4 +1,13 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":17,"first_ordinal":28376,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":17,"first_ordinal":28368,"entries":[
+{"s":"CHENANGO BRIDGE FIRE","n":[["CHENANGO BRIDGE FIRE CO INC",1]],"x":{"irs":{"r":1,"i":["161158863"],"z":["13745"]}}},
+{"s":"CHENANGO CANAL ASSOCIATION","n":[["CHENANGO CANAL ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["161455922"],"z":["13310"]}}},
+{"s":"CHENANGO COMMUNITY RESIDENCES","n":[["CHENANGO COMMUNITY RESIDENCES INC",1]],"x":{"irs":{"r":1,"i":["510239210"],"z":["13815"]}}},
+{"s":"CHENANGO CONCRETE","n":[["CHENANGO CONCRETE CORP.",1]],"x":{"dol":{"r":1,"i":["25-6HEEA-CR"],"z":["12149"]}}},
+{"s":"CHENANGO CONTRACTING","n":[["Chenango Contracting, Inc.",1]],"x":{"dol":{"r":1,"i":["24-63SAI-CR"],"z":["13790"]}}},
+{"s":"CHENANGO COUNTY AGRICULTURAL SOCIETY","n":[["CHENANGO COUNTY AGRICULTURAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["150587923"],"z":["13815"]}}},
+{"s":"CHENANGO COUNTY BLUES SOCIETY","n":[["CHENANGO COUNTY BLUES SOCIETY",1]],"x":{"irs":{"r":1,"i":["161467490"],"z":["13815"]}}},
+{"s":"CHENANGO COUNTY CHAMBER OF COMMERCE FOUNDATION","n":[["CHENANGO COUNTY CHAMBER OF COMMERCE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["222978502"],"z":["13815"]}}},
+{"s":"CHENANGO COUNTY HISTORICAL SOCIETY","n":[["CHENANGO COUNTY HISTORICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["237035407"],"z":["13815"]}}},
 {"s":"CHENANGO COUNTY MEDICAL SOCIETY THE OTSEGO COUNTY MEDICAL SOCIETY","n":[["CHENANGO COUNTY MEDICAL SOCIETY & THE OTSEGO COUNTY MEDICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["237325443"],"z":["13815"]}}},
 {"s":"CHENANGO COUNTY PRIDE ALLIANCE","n":[["CHENANGO COUNTY PRIDE ALLIANCE",1]],"x":{"irs":{"r":1,"i":["923640809"],"z":["13780"]}}},
 {"s":"CHENANGO COUNTY SENIOR CITIZENS COUNCIL","n":[["CHENANGO COUNTY SENIOR CITIZENS COUNCIL INC",1]],"x":{"irs":{"r":1,"i":["161210347"],"z":["13815"]}}},
@@ -806,7 +815,7 @@
 {"s":"CHINUCH HATUHOIR","n":[["CHINUCH HATUHOIR INC",1]],"x":{"irs":{"r":1,"i":["843174858"],"z":["11211"]}}},
 {"s":"CHINUCH KINDER FOUNDATION","n":[["CHINUCH KINDER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["832788504"],"z":["11211"]}}},
 {"s":"CHINUCH PLACEMENT OFFICE","n":[["CHINUCH PLACEMENT OFFICE INC",1]],"x":{"irs":{"r":1,"i":["990569471"],"z":["11213"]}}},
-{"s":"CHINWIN ENTERPRISE","n":[["CHINWIN ENTERPRISE CORP",2],["ChinWin Enterprise Corp",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-11-17","i":["CT104020263050776"],"m":["Black American"]},"cbv":{"r":1,"l":"2025-11-17","i":["CT104020263050776"],"m":["Black American"]},"sbs":{"r":1,"i":["362322"],"z":["11552"],"p":["MBE","WBE"]}}},
+{"s":"CHINWIN ENTERPRISE","n":[["CHINWIN ENTERPRISE CORP",1],["ChinWin Enterprise Corp",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-11-17","i":["CT104020263050776"],"m":["Black American"]},"sbs":{"r":1,"i":["362322"],"z":["11552"],"p":["MBE","WBE"]}}},
 {"s":"CHINYC","n":[["CHINYC INC",1]],"x":{"irs":{"r":1,"i":["992448260"],"z":["10018"]}}},
 {"s":"CHIODO HEATING AIR CONDITIONING REFRIGERATION","n":[["CHIODO HEATING, AIR CONDITIONING, REFRIGERATION, INC.",1]],"x":{"dol":{"r":1,"i":["26-64NL8-CR"],"z":["13208"]}}},
 {"s":"CHIOMA EMMANUEL GLOBAL MINISTRIES","n":[["CHIOMA EMMANUEL GLOBAL MINISTRIES",1]],"x":{"irs":{"r":1,"i":["273771282"],"z":["10469"]}}},
@@ -1732,13 +1741,5 @@
 {"s":"CHURCH OF GODS PEOPLE","n":[["CHURCH OF GODS PEOPLE",1]],"x":{"irs":{"r":1,"i":["452922712"],"z":["10314"]}}},
 {"s":"CHURCH OF GRACE AND RESURRECTION","n":[["CHURCH OF GRACE AND RESURRECTION",1]],"x":{"irs":{"r":1,"i":["812943095"],"z":["11369"]}}},
 {"s":"CHURCH OF GRACE TO FUJIANESE NEW YORK","n":[["CHURCH OF GRACE TO FUJIANESE NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["133585398"],"z":["10002"]}}},
-{"s":"CHURCH OF HEALING","n":[["CHURCH OF HEALING INC",1]],"x":{"irs":{"r":1,"i":["814041576"],"z":["11358"]}}},
-{"s":"CHURCH OF HIS SAVING GRACE","n":[["CHURCH OF HIS SAVING GRACE",1]],"x":{"irs":{"r":1,"i":["721591758"],"z":["14546"]}}},
-{"s":"CHURCH OF HOLY APOSTLES","n":[["CHURCH OF HOLY APOSTLES",1]],"x":{"irs":{"r":1,"i":["116015780"],"z":["11218"]}}},
-{"s":"CHURCH OF HOLY FAMILY","n":[["CHURCH OF HOLY FAMILY",1]],"x":{"irs":{"r":1,"i":["131740162"],"z":["10472"]}}},
-{"s":"CHURCH OF HOPE EVANGELICAL MINISTRIES INTERNATIONAL","n":[["CHURCH OF HOPE EVANGELICAL MINISTRIES INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["611605812"],"z":["10455"]}}},
-{"s":"CHURCH OF HOPE IN NEW YORK","n":[["CHURCH OF HOPE IN NEW YORK",1]],"x":{"irs":{"r":1,"i":["113251292"],"z":["11366"]}}},
-{"s":"CHURCH OF HUMANISM","n":[["CHURCH OF HUMANISM",1]],"x":{"irs":{"r":1,"i":["132775962"],"z":["10024"]}}},
-{"s":"CHURCH OF INFINITE MOTION IN CHRIST MINISTRIES","n":[["CHURCH OF INFINITE MOTION IN CHRIST MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["753219439"],"z":["11722"]}}},
-{"s":"CHURCH OF INFINITE SPIRIT","n":[["CHURCH OF INFINITE SPIRIT",1]],"x":{"irs":{"r":1,"i":["223792693"],"z":["14904"]}}}
+{"s":"CHURCH OF HEALING","n":[["CHURCH OF HEALING INC",1]],"x":{"irs":{"r":1,"i":["814041576"],"z":["11358"]}}}
 ]}

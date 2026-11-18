@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-13T14:45:47.486Z",
+  "generated_at": "2026-11-18T16:41:50.818Z",
   "source": {
     "name": "City Record Online — Changes in Personnel (APPOINTED)",
     "dataset": "dg92-zbpx",
@@ -17,564 +17,564 @@
   "count": 80,
   "notices": [
     {
-      "request_id": "1000271",
+      "request_id": "1001427",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: TUTKO,BRIAN A."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: THOMPSON,RHIANNON  ."
     },
     {
-      "request_id": "1000266",
+      "request_id": "1001426",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF EDUCATION ADMIN",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 95689; Reason For Change: APPOINTED; Salary: 168579.00; Employee Name: MABUS,ANNE G."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 54505; Reason For Change: APPOINTED; Salary: 40695.00; Employee Name: SUTHERLAND SFEI,KIRSTEN  ."
     },
     {
-      "request_id": "1000262",
+      "request_id": "1001425",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: NURSE,JOSEPH W."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: SANCHEZ VARGAS,DIANA  ."
     },
     {
-      "request_id": "1000258",
+      "request_id": "1001424",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: TALBOT,GAVIN W."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RODRIGUEZ,JINETTE A."
     },
     {
-      "request_id": "1000252",
+      "request_id": "1001423",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 72298.00; Employee Name: BELTRE,CARMEN G."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: WARTHEN,EARL  ."
     },
     {
-      "request_id": "1000251",
+      "request_id": "1001422",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: ALMEIDA,ANDREW  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RUIZ,MICKEY  ."
     },
     {
-      "request_id": "1000243",
+      "request_id": "1001421",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 56647.00; Employee Name: FARUQ,TASLIMA  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: VAZQUEZ-SANCHEZ,JOSE E."
     },
     {
-      "request_id": "1000242",
+      "request_id": "1001420",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: FLORES,RANDOLF  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: SADIK,MD ABU B."
     },
     {
-      "request_id": "1000241",
+      "request_id": "1001419",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (MANHATTAN)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: MAX,MYA  ."
+      "additional_description_1": "Effective Date: 08/10/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 19.12; Employee Name: DURAN BLANCO,JESUS A."
     },
     {
-      "request_id": "1000236",
+      "request_id": "1001418",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (LAGUARDIA)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 1009A; Reason For Change: APPOINTED; Salary: 98140.00; Employee Name: FIALHO,SHEILA M."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 04099; Reason For Change: APPOINTED; Salary: 90838.00; Employee Name: GRILES,AARON J."
     },
     {
-      "request_id": "1000234",
+      "request_id": "1001417",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 05/17/2026; Provisional Status: Yes; Title Code: 51274; Reason For Change: APPOINTED; Salary: 72298.00; Employee Name: BELLEJAMBE,SHARICE R."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: ROSARIO,EILEEN  ."
     },
     {
-      "request_id": "1000229",
+      "request_id": "1001416",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (QUEENSBORO)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: PEDIFORD,GERRI  ."
+      "additional_description_1": "Effective Date: 08/17/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 19.12; Employee Name: HOSSAIN,MD AZRAF T."
     },
     {
-      "request_id": "1000228",
+      "request_id": "1001415",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "NYC DEPT OF VETERANS' SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (BRONX)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: ALLEN,ARMANI O."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 20.00; Employee Name: RODRIGUEZ,ELIJAH B."
     },
     {
-      "request_id": "1000227",
+      "request_id": "1001414",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: HARRIS,TYISHA A."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: YANG,JIAN JIA  ."
     },
     {
-      "request_id": "1000225",
+      "request_id": "1001413",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (MANHATTAN)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 50910; Reason For Change: APPOINTED; Salary: 109490.00; Employee Name: KENNEDY,CARLENE Y."
+      "additional_description_1": "Effective Date: 06/25/2026; Provisional Status: Yes; Title Code: 04689; Reason For Change: APPOINTED; Salary: 64.63; Employee Name: RAMIREZ,DANIEL E."
     },
     {
-      "request_id": "1000219",
+      "request_id": "1001412",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 91212; Reason For Change: APPOINTED; Salary: 22.24; Employee Name: ALI,JAMAL  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: WOOLLGAR,MATTHEW  ."
     },
     {
-      "request_id": "1000216",
+      "request_id": "1001410",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 56647.00; Employee Name: CHOWDHURY,MOSTAFA A."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: WALKER,KAREN E."
     },
     {
-      "request_id": "1000200",
+      "request_id": "1001408",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "GUTTMAN COMMUNITY COLLEGE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: DEY,SATYAGIT  ."
+      "additional_description_1": "Effective Date: 08/17/2026; Provisional Status: Yes; Title Code: 10101; Reason For Change: APPOINTED; Salary: 15.00; Employee Name: ALEXIS,ZION K."
     },
     {
-      "request_id": "1000199",
+      "request_id": "1001407",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "DEPARTMENT OF EDUCATION ADMIN",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 62868.00; Employee Name: ROSARIO,MICHAEL A."
+      "additional_description_1": "Effective Date: 08/12/2026; Provisional Status: Yes; Title Code: 10251; Reason For Change: APPOINTED; Salary: 53494.00; Employee Name: AKINNUOYE,OLUBUKOL  ."
     },
     {
-      "request_id": "1000196",
+      "request_id": "1001405",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 95041; Reason For Change: APPOINTED; Salary: 190000.00; Employee Name: DIAZ,DANIEL R."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: YOHANES,STANLEY  ."
     },
     {
-      "request_id": "1000195",
+      "request_id": "1001403",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (QUEENSBORO)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: CHEN,DENISE  ."
+      "additional_description_1": "Effective Date: 08/17/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 19.12; Employee Name: TAMAYO I,HERSHEY K."
     },
     {
-      "request_id": "1000191",
+      "request_id": "1001402",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 02/01/2026; Provisional Status: Yes; Title Code: 52304; Reason For Change: APPOINTED; Salary: 48206.00; Employee Name: OSHIKOYA,TOKUNBO D."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: SANTIAGO,SHAKIRA  ."
     },
     {
-      "request_id": "1000189",
+      "request_id": "1001401",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (LAGUARDIA)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: MELENDEZ,ELIAS J."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 04075; Reason For Change: APPOINTED; Salary: 102408.00; Employee Name: LINK,BENJAMIN M."
     },
     {
-      "request_id": "1000188",
+      "request_id": "1001400",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: DE FREITAS,AMMA C."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: ZIA,MOHAMMAD  ."
     },
     {
-      "request_id": "1000182",
+      "request_id": "1001399",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 72298.00; Employee Name: PARNELL,DEJANIA  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: ZINKO,DEBRA A."
     },
     {
-      "request_id": "1000181",
+      "request_id": "1001398",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 30086; Reason For Change: APPOINTED; Salary: 72510.00; Employee Name: CHOEDON,TENZIN  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: VASQUEZ,MIA  ."
     },
     {
-      "request_id": "1000179",
+      "request_id": "1001397",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "COMMUNITY COLLEGE (QUEENSBORO)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: KHADU,STEPHANI K."
+      "additional_description_1": "Effective Date: 02/04/2023; Provisional Status: Yes; Title Code: 04625; Reason For Change: APPOINTED; Salary: 40.45; Employee Name: BISSOONDHARRY D,EVELYN  ."
     },
     {
-      "request_id": "1000176",
+      "request_id": "1001396",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: ALI,SHAHANAG  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: WAN,LEI  ."
     },
     {
-      "request_id": "1000170",
+      "request_id": "1001395",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF EDUCATION ADMIN",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: VALENTIN,HANDEL  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 44432.00; Employee Name: MINAYA,EVY  ."
     },
     {
-      "request_id": "1000168",
+      "request_id": "1001393",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (HOSTOS)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 49258.00; Employee Name: HASAN,AFZAL  ."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 04841; Reason For Change: APPOINTED; Salary: 41119.00; Employee Name: RUVEL,MD AMINU  ."
     },
     {
-      "request_id": "1000167",
+      "request_id": "1001391",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (MANHATTAN)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: FATIMA,SABRINA  ."
+      "additional_description_1": "Effective Date: 08/10/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 20.57; Employee Name: SMALLS,TOMEIRA C."
     },
     {
-      "request_id": "1000165",
+      "request_id": "1001390",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: GARCIA,MARCEL A."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: WILKINSON,QUDARI K."
     },
     {
-      "request_id": "1000161",
+      "request_id": "1001389",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 44545.00; Employee Name: ANTHONY,AMANI  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RONG,JAYANTA  ."
     },
     {
-      "request_id": "1000150",
+      "request_id": "1001388",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "DEPARTMENT OF EDUCATION ADMIN",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 1002A; Reason For Change: APPOINTED; Salary: 98140.00; Employee Name: BONNY,JOHANA C."
+      "additional_description_1": "Effective Date: 08/04/2026; Provisional Status: Yes; Title Code: 95050; Reason For Change: APPOINTED; Salary: 58827.00; Employee Name: HAMMOND JR.,RONNY L."
     },
     {
-      "request_id": "1000147",
+      "request_id": "1001387",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 11/30/2025; Provisional Status: Yes; Title Code: 52110; Reason For Change: APPOINTED; Salary: 95211.00; Employee Name: NIKULINA,VALENTIN  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: SANCHEZ,FRANCISC X."
     },
     {
-      "request_id": "1000146",
+      "request_id": "1001386",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: DIKIRIRIE,MERCY E."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: VAN OOIJEN,CORNELIS A."
     },
     {
-      "request_id": "1000141",
+      "request_id": "1001384",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (HOSTOS)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10251; Reason For Change: APPOINTED; Salary: 42288.00; Employee Name: LINDER,JUANITA R."
+      "additional_description_1": "Effective Date: 08/18/2026; Provisional Status: Yes; Title Code: 04802; Reason For Change: APPOINTED; Salary: 36700.00; Employee Name: TRIM,JONAS  ."
     },
     {
-      "request_id": "1000139",
+      "request_id": "1001383",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (KINGSBORO)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 50446.00; Employee Name: PAUL,SHEKHAR R."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 04017; Reason For Change: APPOINTED; Salary: 48647.00; Employee Name: MCGUIGAN,DANIEL T."
     },
     {
-      "request_id": "1000138",
+      "request_id": "1001382",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (BRONX)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: GILL,NOEL C."
+      "additional_description_1": "Effective Date: 01/26/2026; Provisional Status: Yes; Title Code: 04606; Reason For Change: APPOINTED; Salary: 129.17; Employee Name: ADEBOLA,ADIJAT  ."
     },
     {
-      "request_id": "1000137",
+      "request_id": "1001381",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (LAGUARDIA)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: RETANA,WILSON O."
+      "additional_description_1": "Effective Date: 07/08/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 19.12; Employee Name: FRANCO,LISBETHL  ."
     },
     {
-      "request_id": "1000135",
+      "request_id": "1001380",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: RANI,DIPALI  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RUBI,KULSUMA  ."
     },
     {
-      "request_id": "1000132",
+      "request_id": "1001378",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "DEPARTMENT OF EDUCATION ADMIN",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: NISBETT,ARTHUR S."
+      "additional_description_1": "Effective Date: 08/04/2026; Provisional Status: Yes; Title Code: 95050; Reason For Change: APPOINTED; Salary: 54549.00; Employee Name: MOBLEY,ADAM T."
     },
     {
-      "request_id": "1000123",
+      "request_id": "1001375",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: RAINFORD,ROXANNE M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: SIBAJA,SHIRLEY B."
     },
     {
-      "request_id": "1000119",
+      "request_id": "1001374",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (MANHATTAN)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: DEBNATH,POPY  ."
+      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 19.12; Employee Name: KARAYTU,MERVE  ."
     },
     {
-      "request_id": "1000112",
+      "request_id": "1001372",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: WHITE,TYESHAWN J."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: SANCHEZ,MARIA G."
     },
     {
-      "request_id": "1000110",
+      "request_id": "1001370",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: SLATER,KAELA A."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: VASQUEZ,ROSALIA L."
     },
     {
-      "request_id": "1000104",
+      "request_id": "1001369",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (BRONX)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 56647.00; Employee Name: SIRAJ,MD R."
+      "additional_description_1": "Effective Date: 06/29/2026; Provisional Status: Yes; Title Code: 04625; Reason For Change: APPOINTED; Salary: 77.50; Employee Name: ASAMOAH,CHARLES O."
     },
     {
-      "request_id": "1000102",
+      "request_id": "1001368",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "NYC DEPT OF VETERANS' SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 95844; Reason For Change: APPOINTED; Salary: 110000.00; Employee Name: BRUCE,ALICIA R."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: SULTANA,REBEKA  ."
     },
     {
-      "request_id": "1000101",
+      "request_id": "1001367",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (MANHATTAN)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 72298.00; Employee Name: MANUEL-ANDINO,DANIELA F."
+      "additional_description_1": "Effective Date: 08/17/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 19.12; Employee Name: KOROMA,MAHAWA  ."
     },
     {
-      "request_id": "1000096",
+      "request_id": "1001366",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (BRONX)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: WILSON,JESSICA M."
+      "additional_description_1": "Effective Date: 08/13/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 22.50; Employee Name: PHAN,GIA THAO  ."
     },
     {
-      "request_id": "1000093",
+      "request_id": "1001365",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "CONFLICTS OF INTEREST BOARD",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 62517.00; Employee Name: PONDAR,KRISTIAN B."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 31141; Reason For Change: APPOINTED; Salary: 60000.00; Employee Name: CHAMPLIN,SUSANAH  ."
     },
     {
-      "request_id": "1000091",
+      "request_id": "1001364",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (BRONX)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: JORDAN,ASHANTI D."
+      "additional_description_1": "Effective Date: 08/13/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 21.18; Employee Name: GONZALEZ,STEPHANI M."
     },
     {
-      "request_id": "1000090",
+      "request_id": "1001363",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: HOHENKIRK,VENISE  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: SIT XUE,TIAN XIN  ."
     },
     {
-      "request_id": "1000089",
+      "request_id": "1001361",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "COMMUNITY COLLEGE (QUEENSBORO)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 31142; Reason For Change: APPOINTED; Salary: 105000.00; Employee Name: CADLETT-HAWKINS,KATINA N."
+      "additional_description_1": "Effective Date: 08/11/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 19.12; Employee Name: COLLADO,CHRISTOP A."
     },
     {
-      "request_id": "1000086",
+      "request_id": "1001358",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: BEGUM,FATEMA  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: VANN,NIA  ."
     },
     {
-      "request_id": "1000085",
+      "request_id": "1001357",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 56647.00; Employee Name: SHAZIM,ABDULLAH A."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: RUSSO,CYNTHIA  ."
     },
     {
-      "request_id": "1000082",
+      "request_id": "1001356",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (BRONX)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/18/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: OREBE,OLALEKAN A."
+      "additional_description_1": "Effective Date: 08/13/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 24.75; Employee Name: SANTOS,MERCEDES  ."
     },
     {
-      "request_id": "1000081",
+      "request_id": "1001355",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (MANHATTAN)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 83484.00; Employee Name: AMBROSSI,BIANCA P."
+      "additional_description_1": "Effective Date: 07/12/2026; Provisional Status: Yes; Title Code: 04606; Reason For Change: APPOINTED; Salary: 515.63; Employee Name: ODOM,MICHAEL S."
     },
     {
-      "request_id": "1000080",
+      "request_id": "1001354",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 31142; Reason For Change: APPOINTED; Salary: 150000.00; Employee Name: ASSA,JACOB  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: WEGLICKI,VICTORIA J."
     },
     {
-      "request_id": "1000079",
+      "request_id": "1001353",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "DEPARTMENT OF EDUCATION ADMIN",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 1001B; Reason For Change: APPOINTED; Salary: 80000.00; Employee Name: LACAYO BONILLA,GINA L."
+      "additional_description_1": "Effective Date: 08/04/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 44432.00; Employee Name: HAMILTON,JAMES  ."
     },
     {
-      "request_id": "1000078",
+      "request_id": "1001352",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "COMMUNITY COLLEGE (BRONX)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 81801; Reason For Change: APPOINTED; Salary: 40223.00; Employee Name: BROWN,TACHEYAN C."
+      "additional_description_1": "Effective Date: 08/13/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 22.50; Employee Name: WANG,JIAN  ."
     },
     {
-      "request_id": "1000074",
+      "request_id": "1001351",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: TALUKDER,JUI  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: WILLIAMS,THASHON S."
     },
     {
-      "request_id": "1000069",
+      "request_id": "1001349",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "COMMUNITY COLLEGE (MANHATTAN)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 52416; Reason For Change: APPOINTED; Salary: 77211.00; Employee Name: MARTIN,ANTIGUA R."
+      "additional_description_1": "Effective Date: 08/10/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 19.12; Employee Name: SABINO,KELVIN G."
     },
     {
-      "request_id": "1000067",
+      "request_id": "1001348",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 22508; Reason For Change: APPOINTED; Salary: 99761.00; Employee Name: SANOGUEL,CARMEN M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: TROPNAS,MARGARET  ."
     },
     {
-      "request_id": "1000066",
+      "request_id": "1001347",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "COMMUNITY COLLEGE (BRONX)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 62868.00; Employee Name: FELDMAN,IRENE  ."
+      "additional_description_1": "Effective Date: 08/12/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 20.00; Employee Name: LEWIS,AKEEM Z."
     },
     {
-      "request_id": "1000064",
+      "request_id": "1001346",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "COMMUNITY COLLEGE (QUEENSBORO)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: CHANEZ-MORALES,VANESSA  ."
+      "additional_description_1": "Effective Date: 08/17/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 19.12; Employee Name: ZOU,IRENE  ."
     },
     {
-      "request_id": "1000063",
+      "request_id": "1001345",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "COMMUNITY COLLEGE (KINGSBORO)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: BRITO,ADRIANA  ."
+      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 04689; Reason For Change: APPOINTED; Salary: 51.94; Employee Name: CABRERA,ISATIS  ."
     },
     {
-      "request_id": "1000061",
+      "request_id": "1001344",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "CONFLICTS OF INTEREST BOARD",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: BLACK,MARCUS M."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 05030; Reason For Change: APPOINTED; Salary: 60000.00; Employee Name: LEE,SOPHIA S."
     },
     {
-      "request_id": "1000060",
+      "request_id": "1001343",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: WEISBERG,THOMAS S."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: ZOHRA,FATEMA  ."
     },
     {
-      "request_id": "1000052",
+      "request_id": "1001342",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "OFFICE OF MANAGEMENT & BUDGET",
+      "agency_name": "COMMUNITY COLLEGE (BRONX)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 06088; Reason For Change: APPOINTED; Salary: 60764.00; Employee Name: ALCIVAR,BREIANNA C."
+      "additional_description_1": "Effective Date: 08/13/2026; Provisional Status: Yes; Title Code: 10102; Reason For Change: APPOINTED; Salary: 22.50; Employee Name: TRAORE,KANIGBE  ."
     },
     {
-      "request_id": "1000051",
+      "request_id": "1001341",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "GUTTMAN COMMUNITY COLLEGE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: ASLITDINOV,AHMADJON  ."
+      "additional_description_1": "Effective Date: 08/17/2026; Provisional Status: Yes; Title Code: 10101; Reason For Change: APPOINTED; Salary: 15.00; Employee Name: SILVA,BRENDA  ."
     },
     {
-      "request_id": "1000050",
+      "request_id": "1001339",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: ALI,AMIN H."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: TULLOCH,TAJIE  ."
     },
     {
-      "request_id": "1000046",
+      "request_id": "1001338",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "LAW DEPARTMENT",
+      "agency_name": "GUTTMAN COMMUNITY COLLEGE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 30112; Reason For Change: APPOINTED; Salary: 90395.00; Employee Name: BRICKMAN,LILY C."
+      "additional_description_1": "Effective Date: 08/17/2026; Provisional Status: Yes; Title Code: 10101; Reason For Change: APPOINTED; Salary: 15.00; Employee Name: STERRETT,SEMIRA E."
     },
     {
-      "request_id": "1000045",
+      "request_id": "1001337",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "LAW DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 10037; Reason For Change: APPOINTED; Salary: 155571.00; Employee Name: SEGGIO SR,LOUIS B."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: WHITFIELD,DEMETRIU B."
     },
     {
-      "request_id": "1000039",
+      "request_id": "1001336",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "TAX COMMISSION",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 30087; Reason For Change: APPOINTED; Salary: 146052.00; Employee Name: ARMSTRONG,ANITA M."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: ZANNAT,FAHIMA  ."
     },
     {
-      "request_id": "1000035",
+      "request_id": "1001335",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "COMMUNITY COLLEGE (MANHATTAN)",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: DIALLO,ALSSENY  ."
+      "additional_description_1": "Effective Date: 05/17/2026; Provisional Status: Yes; Title Code: 04606; Reason For Change: APPOINTED; Salary: 257.81; Employee Name: RICHARD,JEAN W."
     },
     {
-      "request_id": "1000032",
+      "request_id": "1001334",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: SINGH,JAGMEET  ."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: SARKER,NUSRAT  ."
     },
     {
-      "request_id": "1000030",
+      "request_id": "1001333",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: MATHEWS,TALIA S."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: TILLMAN,JOANNA  ."
     },
     {
-      "request_id": "1000028",
+      "request_id": "1001332",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPARTMENT OF EDUCATION ADMIN",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: GILL-URENA,ALEXANDE  ."
+      "additional_description_1": "Effective Date: 08/11/2026; Provisional Status: Yes; Title Code: 60888; Reason For Change: APPOINTED; Salary: 46885.00; Employee Name: HOLMES,DEMETRIC C."
     },
     {
-      "request_id": "1000025",
+      "request_id": "1001330",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "BOARD OF ELECTION POLL WORKERS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: LANDOLFI,ANALIESE E."
+      "additional_description_1": "Effective Date: 01/01/2026; Provisional Status: Yes; Title Code: 9POLL; Reason For Change: APPOINTED; Salary: 1.00; Employee Name: SIAM,IBRAHIM  ."
     }
   ]
 }

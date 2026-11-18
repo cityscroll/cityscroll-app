@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":5,"first_ordinal":8270,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":5,"first_ordinal":8269,"entries":[
+{"s":"AMERICAN FRIENDS OF OHEL YOAV AND PNINA","n":[["AMERICAN FRIENDS OF OHEL YOAV AND PNINA",1]],"x":{"irs":{"r":1,"i":["832822621"],"z":["11367"]}}},
 {"s":"AMERICAN FRIENDS OF OHEV YISRAEL","n":[["AMERICAN FRIENDS OF OHEV YISRAEL",1]],"x":{"irs":{"r":1,"i":["112457980"],"z":["11204"]}}},
 {"s":"AMERICAN FRIENDS OF OHEV YISRAEL KAPISHNYTZ","n":[["AMERICAN FRIENDS OF OHEV YISRAEL KAPISHNYTZ",1]],"x":{"irs":{"r":1,"i":["862030319"],"z":["11204"]}}},
 {"s":"AMERICAN FRIENDS OF OHR CHADASH","n":[["AMERICAN FRIENDS OF OHR CHADASH INC",1]],"x":{"irs":{"r":1,"i":["862007837"],"z":["11204"]}}},
@@ -819,7 +820,7 @@
 {"s":"AMERICAN VOLUNTEER CENTER FOR IMMIGRANTS","n":[["AMERICAN VOLUNTEER CENTER FOR IMMIGRANTS INC",1]],"x":{"irs":{"r":1,"i":["863184342"],"z":["11361"]}}},
 {"s":"AMERICAN WATCH ASSOCIATION","n":[["AMERICAN WATCH ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["135500944"],"z":["10020"]}}},
 {"s":"AMERICAN WATER ECOSYSTEMS RESCUE FOUNDATION","n":[["AMERICAN WATER ECOSYSTEMS RESCUE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["824767723"],"z":["11355"]}}},
-{"s":"AMERICAN WATER WORKS ASSOCIATION","n":[["AMERICAN WATER WORKS ASSOCIATION",10],["American Water Works Association",4]],"x":{"ocp":{"r":4,"a":128890,"l":"2026-07-13","i":["20260707009","20250418012","20240430103","20221224106"]},"cbr":{"r":3,"a":72266,"l":"2026-07-06","i":["CT182620268808492","CT181620261407578","CT182620258806906"],"m":["Non-M/WBE"]},"ppt":{"r":4,"a":159667,"l":"2026-07-06","i":["CT1-826-20268808492","CT1-826-20258806906","CT1-826-20248807042","CT1-826-20238804365"]},"cbv":{"r":2,"l":"2026-07-06","i":["CT182620268808492","CT181620261407578"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["116026214"],"z":["14425"]}}},
+{"s":"AMERICAN WATER WORKS ASSOCIATION","n":[["AMERICAN WATER WORKS ASSOCIATION",11],["American Water Works Association",4]],"x":{"ocp":{"r":4,"a":128890,"l":"2026-07-13","i":["20260707009","20250418012","20240430103","20221224106"]},"cbr":{"r":4,"a":74426,"l":"2026-11-13","i":["CT181620271406466","CT182620268808492","CT181620261407578","CT182620258806906"],"m":["Non-M/WBE"]},"ppt":{"r":4,"a":159667,"l":"2026-07-06","i":["CT1-826-20268808492","CT1-826-20258806906","CT1-826-20248807042","CT1-826-20238804365"]},"cbv":{"r":2,"l":"2026-07-06","i":["CT182620268808492","CT181620261407578"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["116026214"],"z":["14425"]}}},
 {"s":"AMERICAN WATERCOLOR SOCIETY","n":[["AMERICAN WATERCOLOR SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["135658159"],"z":["10003"]}}},
 {"s":"AMERICAN WAX","n":[["American Wax Co., Inc.",1]],"x":{"ocp":{"r":1,"a":17500,"l":"2003-10-03","i":["20031001035"]}}},
 {"s":"AMERICAN WELL PUMP","d":[["American Well & Pump",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-64OHH-CR"],"z":["11735"]}}},
@@ -1548,6 +1549,5 @@
 {"s":"ANGELS FOR ANIMAL RIGHTS","n":[["ANGELS FOR ANIMAL RIGHTS",1]],"x":{"irs":{"r":1,"i":["463115576"],"z":["10014"]}}},
 {"s":"ANGELS FOR AUSTIN","n":[["ANGELS FOR AUSTIN INC",1]],"x":{"irs":{"r":1,"i":["274449781"],"z":["11560"]}}},
 {"s":"ANGELS FOR WARRIORS","n":[["ANGELS FOR WARRIORS INC",1]],"x":{"irs":{"r":1,"i":["461652393"],"z":["11743"]}}},
-{"s":"ANGELS HEARTS FOR HOPE FOUNDATION","n":[["ANGELS HEARTS FOR HOPE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["851323713"],"z":["11434"]}}},
-{"s":"ANGELS HELPERS NYC","n":[["ANGELS HELPERS NYC INC",1]],"x":{"irs":{"r":1,"i":["991921533"],"z":["11501"]}}}
+{"s":"ANGELS HEARTS FOR HOPE FOUNDATION","n":[["ANGELS HEARTS FOR HOPE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["851323713"],"z":["11434"]}}}
 ]}

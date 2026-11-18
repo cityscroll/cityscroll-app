@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":9,"first_ordinal":14835,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":9,"first_ordinal":14835,"entries":[
 {"s":"BARBARA THAYER PE ARCH LANDSCAPE ARCHITECTURE LS D","n":[["BARBARA THAYER PE ARCH LANDSCAPE ARCHITECTURE LS D",1]],"x":{"ocp":{"r":1,"a":2000000,"l":"2022-06-23","i":["20220617103"]}}},
 {"s":"BARBARA V SMALL FOUNDATION","n":[["BARBARA V SMALL FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["853105610"],"z":["11213"]}}},
 {"s":"BARBARA WAGNER COMMUNICATIONS","n":[["Barbara Wagner Communications LLC",1]],"x":{"sbs":{"r":1,"i":["367112"],"z":["10022"],"p":["WBE"]}}},
@@ -226,7 +226,7 @@
 {"s":"BARTZ SON CONTRACTING","n":[["Bartz & Son Contracting LLC",1]],"x":{"dol":{"r":1,"i":["25-67CBZ-CR"],"z":["14731"]}}},
 {"s":"BARUCH COLLEGE CAMPUS HIGH SCHOOL PARENT TEACHER ASSOCIATION","n":[["BARUCH COLLEGE CAMPUS HIGH SCHOOL PARENT TEACHER ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["311689048"],"z":["10010"]}}},
 {"s":"BARUCH COLLEGE EARLY LEARNING CENTER","n":[["BARUCH COLLEGE EARLY LEARNING CENTER",1]],"x":{"irs":{"r":1,"i":["133828431"],"z":["10010"]}}},
-{"s":"BARUPON","n":[["Barupon LLC",3]],"x":{"cbr":{"r":1,"a":5301,"l":"2025-12-18","i":["CT181620261408718"],"m":["Asian American"]},"cbv":{"r":1,"l":"2025-12-18","i":["CT181620261408718"],"m":["Asian American"]},"sbs":{"r":1,"i":["359320"],"z":["92620"],"p":["MBE","WBE"]}}},
+{"s":"BARUPON","n":[["Barupon LLC",2]],"x":{"cbr":{"r":1,"a":5301,"l":"2025-12-18","i":["CT181620261408718"],"m":["Asian American"]},"sbs":{"r":1,"i":["359320"],"z":["92620"],"p":["MBE","WBE"]}}},
 {"s":"BARURA ASSOCIATION OF","n":[["BARURA ASSOCIATION OF USA INC",1]],"x":{"irs":{"r":1,"i":["393341224"],"z":["11208"]}}},
 {"s":"BARVINOK 1 CHILDRENS CULTURAL CENTER","n":[["BARVINOK 1 CHILDRENS CULTURAL CENTER INC",1]],"x":{"irs":{"r":1,"i":["452317402"],"z":["10965"]}}},
 {"s":"BARYSHNIKOV ARTS CENTER","n":[["BARYSHNIKOV ARTS CENTER INC",2]],"x":{"dbe":{"r":1,"i":["BARYSHNIKOV ARTS CENTER INC"]},"irs":{"r":1,"i":["133031485"],"z":["10018"]}}},
@@ -1037,7 +1037,7 @@
 {"s":"BEDFORD STUYVESANT GATEWAY DISTRICT MANAGEMENT ASSOCIATION","n":[["BEDFORD STUYVESANT GATEWAY DISTRICT MANAGEMENT ASSOCIATION  INC.",1],["BEDFORD STUYVESANT GATEWAY DISTRICT MANAGEMENT ASSOCIATION INC",1]],"x":{"dbe":{"r":1,"i":["BEDFORD STUYVESANT GATEWAY DISTRICT MANAGEMENT ASSOCIATION  INC."]},"irs":{"r":1,"i":["270295829"],"z":["11216"]}}},
 {"s":"BEDFORD STUYVESANT GATEWAY DISTRICT MANAGEMENTASSOCIATION IN","n":[["BEDFORD STUYVESANT GATEWAY DISTRICT MANAGEMENTASSOCIATION IN",2]],"x":{"cbr":{"r":2,"a":292500,"l":"2026-01-21","i":["CT182720268804149","CT180120258804826"],"m":["Non-M/WBE"]}}},
 {"s":"BEDFORD STUYVESANT NEW BEGINNINGS CHARTER SCHOOL","n":[["BEDFORD STUYVESANT NEW BEGINNINGS CHARTER SCHOOL",3]],"x":{"ocp":{"r":1,"a":813573,"l":"2023-07-10","i":["20230705122"]},"cbr":{"r":1,"a":709578,"l":"2025-07-03","i":["CT126020268800624"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["BEDFORD STUYVESANT NEW BEGINNINGS CHARTER SCHOOL"]}}},
-{"s":"BEDFORD STUYVESANT NEW BEGINNINGS CHARTER SCHOOLS","n":[["BEDFORD STUYVESANT NEW BEGINNINGS CHARTER SCHOOLS",1]],"x":{"irs":{"r":1,"i":["934557912"],"z":["11206"]}}},
+{"s":"BEDFORD STUYVESANT NEW BEGINNINGS CHARTER SCHOOLS","n":[["BEDFORD STUYVESANT NEW BEGINNINGS CHARTER SCHOOLS",3]],"x":{"cbr":{"r":1,"a":3159000,"l":"2026-11-16","i":["CT126020278803548"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-16","i":["CT126020278803548"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["934557912"],"z":["11206"]}}},
 {"s":"BEDFORD STUYVESANT REAL ESTATE BOARD","n":[["BEDFORD STUYVESANT REAL ESTATE BOARD INC",1]],"x":{"irs":{"r":1,"i":["112547516"],"z":["11216"]}}},
 {"s":"BEDFORD STUYVESANT RESTORATION","n":[["BEDFORD STUYVESANT RESTORATION CORP",28],["Bedford Stuyvesant Restoration Corporation",10],["BEDFORD STUYVESANT RESTORATION CORPORATION",2],["Bedford Stuyvesant Restoration Corp.",2],["Bedford Stuyvesant Restoration Corp..",1]],"x":{"ocp":{"r":26,"a":24054046.57,"l":"2025-03-21","c":26,"i":["20250317013","20240620120","20231025102","20231017102","20231012106"]},"cbr":{"r":6,"a":2084406.33,"l":"2026-09-04","c":6,"i":["CT178120271402116","CT126020268804185","CT178120261401622","CT180120258805927","CT106920258804422"],"m":["Individuals and Others","Non-M/WBE"]},"ppt":{"r":8,"a":7516536.87,"l":"2024-06-18","c":8,"i":["CT1-069-20258800297","CT1-866-20248803325","CT1-866-20248803229","CT1-806-20248801445","CT1-069-20238804745"]},"cbv":{"r":1,"l":"2026-09-04","i":["CT178120271402116"],"m":["Individuals and Others"]},"dbe":{"r":1,"i":["BEDFORD STUYVESANT RESTORATION CORPORATION"]},"irs":{"r":1,"i":["116083182"],"z":["11216"]}}},
 {"s":"BEDFORD STUYVESANT SOUTH","n":[["BEDFORD STUYVESANT SOUTH LLC",1]],"x":{"dbe":{"r":1,"i":["BEDFORD STUYVESANT SOUTH LLC"]}}},
@@ -1714,6 +1714,5 @@
 {"s":"BEREAN HOUSING DEVELOPMENT FUND","n":[["BEREAN HOUSING DEVELOPMENT FUND COMPANY INC",1]],"x":{"irs":{"r":1,"i":["112662285"],"z":["11233"]}}},
 {"s":"BEREAN MANAGERS","n":[["BEREAN MANAGERS LLC",1]],"x":{"dbe":{"r":1,"i":["BEREAN MANAGERS LLC"]}}},
 {"s":"BEREAN PRAYER CENTER","n":[["BEREAN PRAYER CENTER",1]],"x":{"irs":{"r":1,"i":["562297372"],"z":["10460"]}}},
-{"s":"BEREAVED PARENTS OF","n":[["BEREAVED PARENTS OF USA",1]],"x":{"irs":{"r":1,"i":["831839912"],"z":["11772"]}}},
-{"s":"BEREAVED PARENTS OF THE","n":[["BEREAVED PARENTS OF THE USA",3]],"x":{"irs":{"r":3,"i":["421593465","843137466","911779691"],"z":["12603","12983","14227"]}}}
+{"s":"BEREAVED PARENTS OF","n":[["BEREAVED PARENTS OF USA",1]],"x":{"irs":{"r":1,"i":["831839912"],"z":["11772"]}}}
 ]}

@@ -6,7 +6,7 @@
     "publisher": "Office of the New York City Comptroller",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
-    "pulled_at": "2026-11-14T13:54:05.893Z",
+    "pulled_at": "2026-11-18T16:04:19.052Z",
     "type_of_data": "Contracts",
     "status": "registered",
     "category": "expense",
@@ -30,21 +30,21 @@
     "source_snapshot_token": "not_provided_by_publisher"
   },
   "population": {
-    "api_transaction_rows": 40580,
+    "api_transaction_rows": 40754,
     "by_fiscal_year": {
-      "2025": 19726,
-      "2026": 15206,
-      "2027": 5648
+      "2025": 19739,
+      "2026": 15232,
+      "2027": 5783
     },
-    "normalized_unique_contracts": 29731,
-    "duplicate_slices_collapsed": 10849,
-    "prime_slices": 29731,
-    "subvendor_slices": 10849,
+    "normalized_unique_contracts": 29828,
+    "duplicate_slices_collapsed": 10926,
+    "prime_slices": 29828,
+    "subvendor_slices": 10926,
     "other_slices": 0,
     "blocked": {
       "missing_contract_id_slices": 0,
       "ambiguous_pin_contracts": 0,
-      "missing_pin_contracts": 12738,
+      "missing_pin_contracts": 12801,
       "ambiguous_prime_vendor_contracts": 18,
       "missing_prime_vendor_contracts": 0,
       "ambiguous_agency_contracts": 0,
@@ -60,44 +60,44 @@
     }
   },
   "checksums": {
-    "page_manifest_sha256": "e2bbb01b76f0b7003f3b521dd76481b5d1a19e3eb2d86e37ab63847bbed955cf",
-    "normalized_contracts_sha256": "b1a1d04171e3c456afa3d77516713d87f7add4043b5bc0a93e2d22005c03a43d",
-    "committed_graph_slice_sha256": "925f360c9369590dee5a8a0b87685b02327726249f3123083c4400aebc3daf39"
+    "page_manifest_sha256": "25ab43ea3c22749460cb16e64b6fd11c9df959d064e6db03d229a195206cb83a",
+    "normalized_contracts_sha256": "dd2e86820b0e6fc60afcc5a6d574f70bd5522e3f9786f187b2db0a20f32d384d",
+    "committed_graph_slice_sha256": "71b97b547128b88dcb544002d92b7fe51225e944cb8d6fff66a1f22150f714c0"
   },
   "overlap_before_graph_selection": {
-    "checkbook_contracts": 29731,
+    "checkbook_contracts": 29828,
     "exact_overlap_buckets": {
-      "passport_and_city_record": 3843,
-      "passport_only": 1851,
+      "passport_and_city_record": 3841,
+      "passport_only": 1853,
       "city_record_only": 1355,
-      "new_unique": 22682
+      "new_unique": 22779
     },
     "passport": {
       "matched_contracts": 5694,
       "by_contract_id": 5562,
-      "by_pin_epin": 4969,
-      "rate": 0.1915172715347617,
+      "by_pin_epin": 4966,
+      "rate": 0.19089446157972376,
       "denominator": "normalized Checkbook contracts in the collected fiscal-year window"
     },
     "city_record": {
-      "matched_checkbook_contracts": 5198,
-      "checkbook_rate": 0.17483434798694966,
-      "matched_modern_awards": 5145,
+      "matched_checkbook_contracts": 5196,
+      "checkbook_rate": 0.17419873943945285,
+      "matched_modern_awards": 5143,
       "modern_awards_with_pin": 5966,
-      "modern_award_rate": 0.8623868588669125,
+      "modern_award_rate": 0.8620516258799866,
       "denominator": "City Record Recent Contract Awards since 2025-01-01 with an exact PIN"
     },
-    "new_unique_contract_ids": 22682,
+    "new_unique_contract_ids": 22779,
     "acceptance_rule": "normalized exact contract_id or exact PIN/EPIN only; names are not join keys"
   },
   "graph_slice": {
     "cap": null,
-    "row_count": 10609,
+    "row_count": 10630,
     "selected_buckets": {
-      "passport_and_city_record": 1672,
-      "passport_only": 84,
-      "city_record_only": 1049,
-      "new_unique": 7804
+      "passport_and_city_record": 1660,
+      "passport_only": 85,
+      "city_record_only": 1051,
+      "new_unique": 7834
     },
     "strategy": "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap",
     "source": "normalized unique contracts from the measured fiscal-year population"

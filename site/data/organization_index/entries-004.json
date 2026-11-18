@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":4,"first_ordinal":6795,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":4,"first_ordinal":6795,"entries":[
 {"s":"ALLIED VETERANS MEMORIAL COMMITTEE OF RIDGEWOOD GLENDALE NY","n":[["ALLIED VETERANS MEMORIAL COMMITTEE OF RIDGEWOOD & GLENDALE NY INC",1]],"x":{"irs":{"r":1,"i":["383853340"],"z":["11385"]}}},
 {"s":"ALLIED WASTE SYSTEMS","n":[["ALLIED WASTE SYSTEMS INC",3],["Allied Waste Systems Inc",1],["Allied Waste Systems, Inc.",1]],"x":{"ocp":{"r":2,"a":176725807.72,"l":"2026-11-02","i":["20261027014","20130423010"]},"cbr":{"r":1,"a":176557337.9,"l":"2026-10-26","i":["CT182720278802252"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-10-26","i":["CT182720278802252"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ALLIED WASTE SYSTEMS INC"]}}},
 {"s":"ALLIED WELFARE FUND","n":[["ALLIED WELFARE FUND",1]],"x":{"irs":{"r":1,"i":["226062974"],"z":["10314"]}}},
@@ -136,7 +136,7 @@
 {"s":"ALPERT FAMILY FOUNDATION","n":[["ALPERT FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["261612879"],"z":["11050"]}}},
 {"s":"ALPERT S NEWSPAPER DELIVERY SERVICE","n":[["ALPERT'S NEWSPAPER DELIVERY SERVICE INC.",1]],"x":{"dbe":{"r":1,"i":["ALPERT'S NEWSPAPER DELIVERY SERVICE INC."]}}},
 {"s":"ALPERT ZUSMAN FAMILY","n":[["ALPERT ZUSMAN FAMILY INC",1]],"x":{"irs":{"r":1,"i":["111876776"],"z":["10016"]}}},
-{"s":"ALPERTS NEWSPAPER DELIVERY SERVICE","n":[["ALPERTS NEWSPAPER DELIVERY SERVICE",16],["Alperts Newspaper Delivery Service",2]],"x":{"ocp":{"r":2,"a":2578163.52,"l":"2026-03-20","i":["20260316010","20230807108"]},"cbr":{"r":10,"a":2003778.79,"l":"2026-10-16","c":10,"i":["CT105620271403721","CT106920271400016","CT100220261414013","CT107220268801679","CT106920260001471"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":2578163.82,"l":"2026-03-13","i":["CT1-072-20268801679","CT1-072-20248801444"]},"cbv":{"r":4,"l":"2026-10-16","i":["CT105620271403721","CT106920271400016","CT100220261414013","CT107220268801679"],"m":["Non-M/WBE"]}}},
+{"s":"ALPERTS NEWSPAPER DELIVERY SERVICE","n":[["ALPERTS NEWSPAPER DELIVERY SERVICE",15],["Alperts Newspaper Delivery Service",2]],"x":{"ocp":{"r":2,"a":2578163.52,"l":"2026-03-20","i":["20260316010","20230807108"]},"cbr":{"r":10,"a":2003778.79,"l":"2026-10-16","c":10,"i":["CT105620271403721","CT106920271400016","CT100220261414013","CT107220268801679","CT106920260001471"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":2578163.82,"l":"2026-03-13","i":["CT1-072-20268801679","CT1-072-20248801444"]},"cbv":{"r":3,"l":"2026-10-16","i":["CT105620271403721","CT106920271400016","CT100220261414013"],"m":["Non-M/WBE"]}}},
 {"s":"ALPERTS NEWSPAPER DELIVERY SVCS","n":[["Alperts Newspaper Delivery Svcs",2]],"x":{"ocp":{"r":2,"a":1965600,"l":"2017-08-31","i":["20170824004","20111116006"]}}},
 {"s":"ALPH THETA FRATERNITY","n":[["ALPH THETA FRATERNITY INC",1]],"x":{"irs":{"r":1,"i":["237212257"],"z":["14850"]}}},
 {"s":"ALPHA AI","n":[["Alpha AI Inc.",1]],"x":{"sbs":{"r":1,"i":["396183"],"z":["10036"],"p":["MBE"]}}},
@@ -256,7 +256,7 @@
 {"s":"ALPHAPOINTE","n":[["Alphapointe Inc",3],["ALPHAPOINTE",1]],"x":{"ocp":{"r":1,"a":187500,"l":"2026-09-08","i":["20260901001"]},"cbr":{"r":2,"a":262500,"l":"2026-08-28","i":["CT181620278801597","CT126020278802055"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ALPHAPOINTE"]}}},
 {"s":"ALPHARIDGE","d":[["AlphaRidge",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["101533"],"z":["10001"],"p":["MBE","WBE"]}}},
 {"s":"ALPHASUN","n":[["ALPHASUN",1]],"x":{"irs":{"r":1,"i":["823372890"],"z":["10301"]}}},
-{"s":"ALPHAWIT MT","n":[["ALPHAWIT MT LLC",2],["AlphaWit MT  LLC",1]],"x":{"ocp":{"r":1,"a":2598452,"l":"2022-10-13","i":["20221007113"]},"ppt":{"r":1,"a":2858297.2,"l":"2022-10-06","i":["CT1-040-20238803656"]},"dbe":{"r":1,"i":["AlphaWit MT  LLC"]}}},
+{"s":"ALPHAWIT MT","n":[["ALPHAWIT MT LLC",4],["AlphaWit MT  LLC",1]],"x":{"ocp":{"r":1,"a":2598452,"l":"2022-10-13","i":["20221007113"]},"cbr":{"r":1,"a":1845204,"l":"2026-11-16","i":["CT104020279762180"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":2858297.2,"l":"2022-10-06","i":["CT1-040-20238803656"]},"cbv":{"r":1,"l":"2026-11-16","i":["CT104020279762180"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["AlphaWit MT  LLC"]}}},
 {"s":"ALPHEIOS PROJECT","n":[["ALPHEIOS PROJECT LTD",1]],"x":{"irs":{"r":1,"i":["272248757"],"z":["12309"]}}},
 {"s":"ALPHONSO JOHNSON ARCHIVES AND MUSEUM","n":[["ALPHONSO JOHNSON ARCHIVES AND MUSEUM",1]],"x":{"irs":{"r":1,"i":["473682436"],"z":["13440"]}}},
 {"s":"ALPINE CONSTRUCTION","n":[["ALPINE CONSTRUCTION, LLC",1]],"x":{"dol":{"r":1,"i":["25-64KES-CR"],"z":["12871"]}}},
@@ -1472,6 +1472,5 @@
 {"s":"AMERICAN FRIENDS OF OHEL MOSHE","n":[["AMERICAN FRIENDS OF OHEL MOSHE",1]],"x":{"irs":{"r":1,"i":["133300276"],"z":["10175"]}}},
 {"s":"AMERICAN FRIENDS OF OHEL NAFTULI","n":[["AMERICAN FRIENDS OF OHEL NAFTULI",1]],"x":{"irs":{"r":1,"i":["112952317"],"z":["11219"]}}},
 {"s":"AMERICAN FRIENDS OF OHEL RABEINU YONOSSON UBLIMA","n":[["AMERICAN FRIENDS OF OHEL RABEINU YONOSSON UBLIMA INC",1]],"x":{"irs":{"r":1,"i":["113179406"],"z":["11219"]}}},
-{"s":"AMERICAN FRIENDS OF OHEL SARAH","n":[["AMERICAN FRIENDS OF OHEL SARAH INC",1]],"x":{"irs":{"r":1,"i":["521304847"],"z":["10017"]}}},
-{"s":"AMERICAN FRIENDS OF OHEL YOAV AND PNINA","n":[["AMERICAN FRIENDS OF OHEL YOAV AND PNINA",1]],"x":{"irs":{"r":1,"i":["832822621"],"z":["11367"]}}}
+{"s":"AMERICAN FRIENDS OF OHEL SARAH","n":[["AMERICAN FRIENDS OF OHEL SARAH INC",1]],"x":{"irs":{"r":1,"i":["521304847"],"z":["10017"]}}}
 ]}

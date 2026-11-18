@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":6,"first_ordinal":9821,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":6,"first_ordinal":9820,"entries":[
+{"s":"ANGELS HELPERS NYC","n":[["ANGELS HELPERS NYC INC",1]],"x":{"irs":{"r":1,"i":["991921533"],"z":["11501"]}}},
 {"s":"ANGELS HOLYSTIC HEALING","n":[["ANGELS HOLYSTIC HEALING",1]],"x":{"irs":{"r":1,"i":["992876993"],"z":["12542"]}}},
 {"s":"ANGELS IN AFRICA","n":[["ANGELS IN AFRICA",1]],"x":{"irs":{"r":1,"i":["383784957"],"z":["10974"]}}},
 {"s":"ANGELS IN EDUCATION","n":[["ANGELS IN EDUCATION INC",1]],"x":{"irs":{"r":1,"i":["990978301"],"z":["11211"]}}},
@@ -1240,7 +1241,7 @@
 {"s":"ARGENBRIGHT SECURITY","n":[["ARGENBRIGHT SECURITY INC.",1]],"x":{"ocp":{"r":1,"a":2150000,"l":"2005-09-26","i":["20050919026"]}}},
 {"s":"ARGENIO BROS","n":[["ARGENIO BROS., INC.",1]],"x":{"dol":{"r":1,"i":["26-6348S-CR"],"z":["12553"]}}},
 {"s":"ARGENIS APOLINARIO PHOTOGRAPHY","n":[["Argenis Apolinario Photography",1]],"x":{"sbs":{"r":1,"i":["308822"],"z":["10036"],"p":["MBE"]}}},
-{"s":"ARGENT ASSOCIATES","n":[["ARGENT ASSOCIATES INC",19],["Argent Associates Inc.",10],["Argent Associates, Inc.",2],["ARGENT ASSOCIATES INC.",1],["Argent Associates Inc",1],["Argent Associates, inc.",1]],"x":{"ocp":{"r":13,"a":8756966.56,"l":"2026-09-29","c":13,"i":["20260922028","20260220053","20251211015","20251125012","20251002029"]},"cbr":{"r":8,"a":2451756.15,"l":"2026-09-16","c":8,"i":["CT184120278802894","CT184620268806400","CT184120268805279","CT184120268804125","CT184120268803875"],"m":["Hispanic American"]},"ppt":{"r":7,"a":2719641.51,"l":"2026-02-19","c":7,"i":["CT1-841-20268805279","CT1-841-20268804125","CT1-841-20268803875","CT1-827-20268803019","CT1-826-20268802520"]},"cbv":{"r":4,"l":"2026-09-16","i":["CT184120278802894","CT184620268806400","CT184120268805279","CT184120268803875"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["ARGENT ASSOCIATES INC."]},"sbs":{"r":1,"i":["2554"],"z":["07083"],"p":["MBE","WBE"]}}},
+{"s":"ARGENT ASSOCIATES","n":[["ARGENT ASSOCIATES INC",18],["Argent Associates Inc.",10],["Argent Associates, Inc.",2],["ARGENT ASSOCIATES INC.",1],["Argent Associates Inc",1],["Argent Associates, inc.",1]],"x":{"ocp":{"r":13,"a":8756966.56,"l":"2026-09-29","c":13,"i":["20260922028","20260220053","20251211015","20251125012","20251002029"]},"cbr":{"r":8,"a":2451756.15,"l":"2026-09-16","c":8,"i":["CT184120278802894","CT184620268806400","CT184120268805279","CT184120268804125","CT184120268803875"],"m":["Hispanic American"]},"ppt":{"r":7,"a":2719641.51,"l":"2026-02-19","c":7,"i":["CT1-841-20268805279","CT1-841-20268804125","CT1-841-20268803875","CT1-827-20268803019","CT1-826-20268802520"]},"cbv":{"r":3,"l":"2026-09-16","i":["CT184120278802894","CT184620268806400","CT184120268805279"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["ARGENT ASSOCIATES INC."]},"sbs":{"r":1,"i":["2554"],"z":["07083"],"p":["MBE","WBE"]}}},
 {"s":"ARGENTINE JEWISH TEMPLE","n":[["ARGENTINE JEWISH TEMPLE OF NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["510184104"],"z":["11373"]}}},
 {"s":"ARGENTINE LAWYERS ASSOCIATION","n":[["ARGENTINE LAWYERS ASSOCIATION OF NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["831405843"],"z":["10022"]}}},
 {"s":"ARGENTINE-AMERICAN CHAMBER OF COMMERCE","n":[["ARGENTINE-AMERICAN CHAMBER OF COMMERCE INC",1]],"x":{"irs":{"r":1,"i":["134929456"],"z":["10155"]}}},
@@ -1667,6 +1668,5 @@
 {"s":"ART SONG MAGAZINE","n":[["ART SONG MAGAZINE INC",1]],"x":{"irs":{"r":1,"i":["471648043"],"z":["12572"]}}},
 {"s":"ART SONG PRESERVATION SOCIETY","n":[["ART SONG PRESERVATION SOCIETY OF NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["320305966"],"z":["10026"]}}},
 {"s":"ART SOUL","n":[["ART SOUL INC",1]],"x":{"irs":{"r":1,"i":["813963430"],"z":["11944"]}}},
-{"s":"ART START","n":[["ART START INC",2],["ART START  INC.",1],["ART START INCORPORATED",1]],"x":{"ocp":{"r":1,"a":211524,"l":"2023-07-14","i":["20230708110"]},"cbr":{"r":1,"a":192364,"l":"2025-06-03","i":["CT126020268800549"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ART START  INC."]},"irs":{"r":1,"i":["134048380"],"z":["10001"]}}},
-{"s":"ART STORY FOUNDATION","n":[["ART STORY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["264041081"],"z":["10023"]}}}
+{"s":"ART START","n":[["ART START INC",2],["ART START  INC.",1],["ART START INCORPORATED",1]],"x":{"ocp":{"r":1,"a":211524,"l":"2023-07-14","i":["20230708110"]},"cbr":{"r":1,"a":192364,"l":"2025-06-03","i":["CT126020268800549"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ART START  INC."]},"irs":{"r":1,"i":["134048380"],"z":["10001"]}}}
 ]}

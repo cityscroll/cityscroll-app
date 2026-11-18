@@ -1,4 +1,16 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":20,"first_ordinal":33297,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":20,"first_ordinal":33287,"entries":[
+{"s":"COMMUNITY MUSIC PROJECT","n":[["COMMUNITY MUSIC PROJECT INC",1]],"x":{"irs":{"r":1,"i":["222404234"],"z":["14701"]}}},
+{"s":"COMMUNITY MUSIC SCHOOL OF BUFFALO","n":[["COMMUNITY MUSIC SCHOOL OF BUFFALO",1]],"x":{"irs":{"r":1,"i":["160755757"],"z":["14208"]}}},
+{"s":"COMMUNITY MUSIC SCHOOL OF NORTHERN NEW YORK","n":[["COMMUNITY MUSIC SCHOOL OF NORTHERN NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["413237294"],"z":["13601"]}}},
+{"s":"COMMUNITY NEEDS OF BELZ MONSEY","n":[["COMMUNITY NEEDS OF BELZ MONSEY INC",1]],"x":{"irs":{"r":1,"i":["832699999"],"z":["10977"]}}},
+{"s":"COMMUNITY NEXUS","n":[["COMMUNITY NEXUS INC",1]],"x":{"irs":{"r":1,"i":["842311128"],"z":["12533"]}}},
+{"s":"COMMUNITY NURSERY OF CAYUGA HEIGHTS","n":[["COMMUNITY NURSERY OF CAYUGA HEIGHTS INC",1]],"x":{"irs":{"r":1,"i":["160995420"],"z":["14850"]}}},
+{"s":"COMMUNITY NURSERY SCHOOL OF BALDWIN","n":[["COMMUNITY NURSERY SCHOOL OF BALDWIN",1]],"x":{"irs":{"r":1,"i":["112571756"],"z":["11510"]}}},
+{"s":"COMMUNITY NUTRITION PARTNERSHIP","n":[["COMMUNITY NUTRITION PARTNERSHIP",1]],"x":{"irs":{"r":1,"i":["271087338"],"z":["14201"]}}},
+{"s":"COMMUNITY OF CHAMPIONS","n":[["COMMUNITY OF CHAMPIONS INC",1]],"x":{"irs":{"r":1,"i":["392450910"],"z":["14709"]}}},
+{"s":"COMMUNITY OF CHRIST HEALING CENTER","n":[["COMMUNITY OF CHRIST HEALING CENTER",1]],"x":{"irs":{"r":1,"i":["112636018"],"z":["11792"]}}},
+{"s":"COMMUNITY OF CHRIST IN THE CITY","n":[["COMMUNITY OF CHRIST IN THE CITY",1]],"x":{"irs":{"r":1,"i":["132923711"],"z":["10003"]}}},
+{"s":"COMMUNITY OF DIVINE PROVIDENCE","n":[["COMMUNITY OF DIVINE PROVIDENCE INC",1]],"x":{"irs":{"r":1,"i":["222792152"],"z":["10989"]}}},
 {"s":"COMMUNITY OF FAITH FAMILY WORSHIPCENTER","n":[["COMMUNITY OF FAITH FAMILY WORSHIPCENTER INC",1]],"x":{"irs":{"r":1,"i":["205917654"],"z":["11207"]}}},
 {"s":"COMMUNITY OF GOOD NEIGHBORS","n":[["COMMUNITY OF GOOD NEIGHBORS",1]],"x":{"irs":{"r":1,"i":["850748027"],"z":["14209"]}}},
 {"s":"COMMUNITY OF GRACE FELLOWSHIP","n":[["COMMUNITY OF GRACE FELLOWSHIP",1]],"x":{"irs":{"r":1,"i":["161397457"],"z":["14221"]}}},
@@ -1830,16 +1842,5 @@
 {"s":"CONGREGATION BETH OSHER","n":[["CONGREGATION BETH OSHER",1]],"x":{"irs":{"r":1,"i":["237442870"],"z":["11211"]}}},
 {"s":"CONGREGATION BETH PERETZ","n":[["CONGREGATION BETH PERETZ",1]],"x":{"irs":{"r":1,"i":["113556248"],"z":["11230"]}}},
 {"s":"CONGREGATION BETH ROCHEL OF MONSEY","n":[["CONGREGATION BETH ROCHEL OF MONSEY",1]],"x":{"irs":{"r":1,"i":["132574596"],"z":["10952"]}}},
-{"s":"CONGREGATION BETH SCHMUL ANSHEI CHUST","n":[["CONGREGATION BETH SCHMUL ANSHEI CHUST INC",1]],"x":{"irs":{"r":1,"i":["510200288"],"z":["11219"]}}},
-{"s":"CONGREGATION BETH SCHNAY-OR","n":[["CONGREGATION BETH SCHNAY-OR",1]],"x":{"irs":{"r":1,"i":["112700142"],"z":["11230"]}}},
-{"s":"CONGREGATION BETH SHALOM","n":[["CONGREGATION BETH SHALOM",1]],"x":{"irs":{"r":1,"i":["141562976"],"z":["12065"]}}},
-{"s":"CONGREGATION BETH SHALOM A MESSIANIC CONGREGATION OF THE","n":[["CONGREGATION BETH SHALOM A MESSIANIC CONGREGATION OF THE",1]],"x":{"irs":{"r":1,"i":["113356074"],"z":["11230"]}}},
-{"s":"CONGREGATION BETH SHIMON","n":[["CONGREGATION BETH SHIMON",1]],"x":{"irs":{"r":1,"i":["113408133"],"z":["11219"]}}},
-{"s":"CONGREGATION BETH SHLOIME OF STATEN ISLAND","n":[["CONGREGATION BETH SHLOIME OF STATEN ISLAND",1]],"x":{"irs":{"r":1,"i":["510195226"],"z":["10314"]}}},
-{"s":"CONGREGATION BETH SHLOMA","n":[["CONGREGATION BETH SHLOMA INC",1]],"x":{"irs":{"r":1,"i":["061495803"],"z":["10950"]}}},
-{"s":"CONGREGATION BETH SHMUEL","n":[["CONGREGATION BETH SHMUEL",1],["CONGREGATION BETH SHMUEL INC",1]],"x":{"irs":{"r":2,"i":["133079376","133639157"],"z":["10950","11210"]}}},
-{"s":"CONGREGATION BETH SHOLOM","n":[["CONGREGATION BETH SHOLOM",1],["CONGREGATION BETH SHOLOM INCORPORATED",1]],"x":{"irs":{"r":2,"i":["116003443","160814112"],"z":["11501","14620"]}}},
-{"s":"CONGREGATION BETH SHOLOM OF KINGS BAY","n":[["CONGREGATION BETH SHOLOM OF KINGS BAY",1]],"x":{"irs":{"r":1,"i":["934616410"],"z":["11235"]}}},
-{"s":"CONGREGATION BETH TALMUD VEHORAAH","n":[["CONGREGATION BETH TALMUD VEHORAAH",1]],"x":{"irs":{"r":1,"i":["112415092"],"z":["11218"]}}},
-{"s":"CONGREGATION BETH TORAH","n":[["CONGREGATION BETH TORAH",1]],"x":{"irs":{"r":1,"i":["116011458"],"z":["11230"]}}}
+{"s":"CONGREGATION BETH SCHMUL ANSHEI CHUST","n":[["CONGREGATION BETH SCHMUL ANSHEI CHUST INC",1]],"x":{"irs":{"r":1,"i":["510200288"],"z":["11219"]}}}
 ]}

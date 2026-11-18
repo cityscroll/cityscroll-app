@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"7a60ebe7b37b26c1","shard":16,"first_ordinal":26616,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"c37ab4eaee3c0c8d","shard":16,"first_ordinal":26612,"entries":[
+{"s":"CENTRAL HARLEM SENIOR CITIZEN S CENTERS","n":[["CENTRAL HARLEM SENIOR CITIZEN'S CENTERS, INC.",3]],"x":{"cbr":{"r":2,"a":7571537,"l":"2026-06-12","i":["CT112520278800229","CT112520258803883"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-06-12","i":["CT112520278800229"],"m":["Non-M/WBE"]}}},
+{"s":"CENTRAL HARLEM SENIOR CITIZENS CENTERS","n":[["CENTRAL HARLEM SENIOR CITIZENS CENTERS  INC",1],["CENTRAL HARLEM SENIOR CITIZENS CENTERS INC",1]],"x":{"dbe":{"r":1,"i":["CENTRAL HARLEM SENIOR CITIZENS CENTERS  INC"]},"irs":{"r":1,"i":["132754783"],"z":["10037"]}}},
+{"s":"CENTRAL HARLEM SENIOR CITIZEN`S CENTER","n":[["Central Harlem Senior Citizen`s Center, Inc.",1]],"x":{"ocp":{"r":1,"a":2671255,"l":"2019-10-15","i":["20191007043"]}}},
+{"s":"CENTRAL HARLEM SENIOR CITIZEN`S CENTERS","n":[["Central Harlem Senior Citizen`s Centers, Inc.",1]],"x":{"ocp":{"r":1,"a":236438,"l":"2013-08-12","i":["20130805016"]}}},
+{"s":"CENTRAL HOME SYSTEMS","n":[["Central Home Systems, Inc.",1]],"x":{"dol":{"r":1,"i":["25-6HFDG-CR"],"z":["11735"]}}},
 {"s":"CENTRAL HOUSING DEVELOPMENT FUND","n":[["CENTRAL HOUSING DEVELOPMENT FUND COMPANY INC",1]],"x":{"irs":{"r":1,"i":["141756748"],"z":["12203"]}}},
 {"s":"CENTRAL HUDSON BAPTIST ASSOCIATION","n":[["CENTRAL HUDSON BAPTIST ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["300122210"],"z":["12550"]}}},
 {"s":"CENTRAL HUDSON GAS AND ELECTRIC","n":[["CENTRAL HUDSON GAS AND ELECTRIC CORP",4],["Central Hudson Gas and Electric Corp.",2]],"x":{"ocp":{"r":2,"a":2545082,"l":"2019-08-13","i":["20190806016","20161006025"]},"cbr":{"r":3,"a":8696000,"l":"2026-07-08","i":["CT185620275000002","CT185620265000066","CT185620255000034"],"m":["Individuals and Others"]},"cbv":{"r":1,"l":"2026-07-08","i":["CT185620275000002"],"m":["Individuals and Others"]}}},
@@ -130,7 +135,7 @@
 {"s":"CENTRAL ORANGE COUNTY ITALIAN AMERICAN FOUNDATION","n":[["CENTRAL ORANGE COUNTY ITALIAN AMERICAN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["833237453"],"z":["10924"]}}},
 {"s":"CENTRAL ORGANIZATION FOR JEWISH OUTREACH","n":[["CENTRAL ORGANIZATION FOR JEWISH OUTREACH",1]],"x":{"irs":{"r":1,"i":["113191615"],"z":["11213"]}}},
 {"s":"CENTRAL ORLEANS VOLUNTEER AMBULANCE","n":[["CENTRAL ORLEANS VOLUNTEER AMBULANCE INC",1]],"x":{"irs":{"r":1,"i":["222276128"],"z":["14225"]}}},
-{"s":"CENTRAL PARK CONSERVANCY","n":[["CENTRAL PARK CONSERVANCY INC",13],["Central Park Conservancy",8]],"x":{"ocp":{"r":11,"a":315497575,"l":"2024-03-06","c":11,"i":["20240229107","20230612106","20230310102","20220620101","20210621108"]},"cbr":{"r":5,"a":21468377.3,"l":"2026-09-24","i":["CTA184620278802589","CTA184620268802669","CTA184620268801490","CTA184620268801180","CTA184620257203738"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":312000000,"l":"2024-02-28","i":["CT1-846-20248805252","CT1-846-20248800017","MMA1-846-20238806128"]},"dbe":{"r":1,"i":["CENTRAL PARK CONSERVANCY INC"]},"irs":{"r":1,"i":["133022855"],"z":["10022"]}}},
+{"s":"CENTRAL PARK CONSERVANCY","n":[["CENTRAL PARK CONSERVANCY INC",15],["Central Park Conservancy",8]],"x":{"ocp":{"r":11,"a":315497575,"l":"2024-03-06","c":11,"i":["20240229107","20230612106","20230310102","20220620101","20210621108"]},"cbr":{"r":6,"a":24368377.3,"l":"2026-11-13","c":6,"i":["CTA184620278803470","CTA184620278802589","CTA184620268802669","CTA184620268801490","CTA184620268801180"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":312000000,"l":"2024-02-28","i":["CT1-846-20248805252","CT1-846-20248800017","MMA1-846-20238806128"]},"cbv":{"r":1,"l":"2026-11-13","i":["CTA184620278803470"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["CENTRAL PARK CONSERVANCY INC"]},"irs":{"r":1,"i":["133022855"],"z":["10022"]}}},
 {"s":"CENTRAL PARK CONSERVENCY","n":[["Central Park Conservency",1]],"x":{"ocp":{"r":1,"a":1300000,"l":"2007-01-12","i":["20070105037"]}}},
 {"s":"CENTRAL PARK DANCE SKATERS ASSOCIATION","n":[["CENTRAL PARK DANCE SKATERS ASSOCIATION INCORPORATED",1]],"x":{"irs":{"r":1,"i":["133831384"],"z":["11101"]}}},
 {"s":"CENTRAL PARK EAST II ELEMENTARY SCHOOL PARENTS ASSOCIATION","n":[["CENTRAL PARK EAST II ELEMENTARY SCHOOL PARENTS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["450509338"],"z":["10029"]}}},
@@ -678,7 +683,7 @@
 {"s":"CHABAD OF NORTH BROOKLYN","n":[["CHABAD OF NORTH BROOKLYN INC",6]],"x":{"cbr":{"r":2,"a":1039200,"l":"2026-10-27","i":["CT104020279761490","CT104020279760380"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-10-27","i":["CT104020279761490","CT104020279760380"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["CHABAD OF NORTH BROOKLYN INC"]},"irs":{"r":1,"i":["204891983"],"z":["11249"]}}},
 {"s":"CHABAD OF NORTH FORK","n":[["CHABAD OF NORTH FORK INC",1]],"x":{"irs":{"r":1,"i":["475095392"],"z":["11952"]}}},
 {"s":"CHABAD OF NORTHEAST QUEENS","n":[["CHABAD OF NORTHEAST QUEENS INC",1]],"x":{"dbe":{"r":1,"i":["CHABAD OF NORTHEAST QUEENS INC"]}}},
-{"s":"CHABAD OF NORTHEASTERN QUEENS","n":[["CHABAD OF NORTHEASTERN QUEENS INC",7]],"x":{"ocp":{"r":1,"a":4992176,"l":"2023-01-26","i":["20230120106"]},"cbr":{"r":3,"a":2739268,"l":"2026-10-29","i":["CT104020279761551","CT126020268803620","CT126020258806897"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":4992176,"l":"2023-01-19","i":["CT1-040-20238805429"]},"cbv":{"r":1,"l":"2026-10-29","i":["CT104020279761551"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["113207716"],"z":["11360"]}}},
+{"s":"CHABAD OF NORTHEASTERN QUEENS","n":[["CHABAD OF NORTHEASTERN QUEENS INC",9]],"x":{"ocp":{"r":1,"a":4992176,"l":"2023-01-26","i":["20230120106"]},"cbr":{"r":4,"a":5129356,"l":"2026-11-16","i":["CT104020279762031","CT104020279761551","CT126020268803620","CT126020258806897"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":4992176,"l":"2023-01-19","i":["CT1-040-20238805429"]},"cbv":{"r":2,"l":"2026-11-16","i":["CT104020279762031","CT104020279761551"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["113207716"],"z":["11360"]}}},
 {"s":"CHABAD OF OCEANSIDE","n":[["CHABAD OF OCEANSIDE INC",1]],"x":{"irs":{"r":1,"i":["522340607"],"z":["11572"]}}},
 {"s":"CHABAD OF OLYMPIA MONSEY NY","n":[["CHABAD OF OLYMPIA MONSEY NY INC",1]],"x":{"irs":{"r":1,"i":["824185916"],"z":["10952"]}}},
 {"s":"CHABAD OF ONEONTA","n":[["CHABAD OF ONEONTA",1]],"x":{"irs":{"r":1,"i":["455474925"],"z":["13820"]}}},
@@ -1749,14 +1754,5 @@
 {"s":"CHEN VCHESED VRACHMIM","n":[["CHEN VCHESED VRACHMIM INC",1]],"x":{"irs":{"r":1,"i":["020652515"],"z":["11230"]}}},
 {"s":"CHEN-JOSEPHSON FOUNDATION","n":[["CHEN-JOSEPHSON FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133569004"],"z":["10022"]}}},
 {"s":"CHENANGO AMBULANCE SERVICES","n":[["CHENANGO AMBULANCE SERVICES INC",1]],"x":{"irs":{"r":1,"i":["200620527"],"z":["13901"]}}},
-{"s":"CHENANGO AQUATICS","n":[["CHENANGO AQUATICS INC",1]],"x":{"irs":{"r":1,"i":["460939933"],"z":["13905"]}}},
-{"s":"CHENANGO BRIDGE FIRE","n":[["CHENANGO BRIDGE FIRE CO INC",1]],"x":{"irs":{"r":1,"i":["161158863"],"z":["13745"]}}},
-{"s":"CHENANGO CANAL ASSOCIATION","n":[["CHENANGO CANAL ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["161455922"],"z":["13310"]}}},
-{"s":"CHENANGO COMMUNITY RESIDENCES","n":[["CHENANGO COMMUNITY RESIDENCES INC",1]],"x":{"irs":{"r":1,"i":["510239210"],"z":["13815"]}}},
-{"s":"CHENANGO CONCRETE","n":[["CHENANGO CONCRETE CORP.",1]],"x":{"dol":{"r":1,"i":["25-6HEEA-CR"],"z":["12149"]}}},
-{"s":"CHENANGO CONTRACTING","n":[["Chenango Contracting, Inc.",1]],"x":{"dol":{"r":1,"i":["24-63SAI-CR"],"z":["13790"]}}},
-{"s":"CHENANGO COUNTY AGRICULTURAL SOCIETY","n":[["CHENANGO COUNTY AGRICULTURAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["150587923"],"z":["13815"]}}},
-{"s":"CHENANGO COUNTY BLUES SOCIETY","n":[["CHENANGO COUNTY BLUES SOCIETY",1]],"x":{"irs":{"r":1,"i":["161467490"],"z":["13815"]}}},
-{"s":"CHENANGO COUNTY CHAMBER OF COMMERCE FOUNDATION","n":[["CHENANGO COUNTY CHAMBER OF COMMERCE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["222978502"],"z":["13815"]}}},
-{"s":"CHENANGO COUNTY HISTORICAL SOCIETY","n":[["CHENANGO COUNTY HISTORICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["237035407"],"z":["13815"]}}}
+{"s":"CHENANGO AQUATICS","n":[["CHENANGO AQUATICS INC",1]],"x":{"irs":{"r":1,"i":["460939933"],"z":["13905"]}}}
 ]}
