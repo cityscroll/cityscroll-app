@@ -413,6 +413,7 @@ export async function fetchLegistarEventsWindow({
   pageSize = EVENTS_PAGE_SIZE,
   maxPages = EVENTS_MAX_PAGES,
   timeoutMs = 15000,
+  onPage = null,
 } = {}) {
   if (!token) {
     return { ok: false, kind: "token-absent", status: 0, rows: [], pages: 0, complete: false, retryAfter: null };
@@ -452,6 +453,9 @@ export async function fetchLegistarEventsWindow({
       break;
     }
     pages += 1;
+    // Let the caller release unused publisher fields before the next page
+    // arrives, so a multi-page window does not accumulate whole payloads.
+    if (typeof onPage === "function") await onPage(result.rows);
     rows.push(...result.rows);
     if (result.complete) {
       complete = true;

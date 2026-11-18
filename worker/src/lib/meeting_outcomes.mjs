@@ -133,6 +133,60 @@ async function fetchLegistarEventsWindowWithRetry(options, retry) {
 export const NOTICE_LIMIT = 500;
 export const API_RECORD_LIMIT = 100;
 
+// Fields the public projections and the matter journal actually read. Anything
+// else on a publisher row — including unused Legistar columns and unexpected
+// attachment bodies — is dropped before the assembled view is built so the
+// refresh does not hold a second copy of the window.
+const COUNCIL_EVENT_KEYS = new Set([
+  "EventId", "eventId", "Event_ID", "id",
+  "EventGuid",
+  "EventBodyId", "BodyId",
+  "EventBodyName", "BodyName", "Body", "committee",
+  "EventTitle", "Title", "Name",
+  "EventInSiteURL", "EventUrl", "EventURL", "url", "link",
+  "EventDate", "StartDate", "Date",
+  "EventTime",
+  "EventAgendaFile", "EventMinutesFile", "EventVideoStatus",
+  "EventLocation", "Location", "VenueAddress",
+  "VenueType", "VenueName", "Building", "Room",
+  "EventAgendaStatusName", "AgendaStatusName",
+  "EventRowVersion", "EventLastModifiedUtc", "EventAgendaLastPublishedUTC",
+]);
+const COUNCIL_ITEM_KEYS = new Set([
+  "EventItemId", "AgendaItemId", "AgendaItemID", "id",
+  "EventItemEventId", "EventId", "eventId", "EventID",
+  "EventItemAgendaNumber", "AgendaItemNumber",
+  "EventItemTitle", "AgendaItemTitle", "Title",
+  "EventItemAgendaNote", "EventItemActionText", "AgendaItemText",
+  "EventItemMatterId", "MatterId", "MatterID", "Matter_ID",
+  "EventItemMatterFile", "MatterFile",
+  "EventItemMatterName", "MatterName", "Name",
+  "EventItemMatterType", "MatterType",
+  "EventItemMatterStatus", "Status", "MatterStatus",
+  "EventItemActionName", "ActionName", "Action",
+  "EventItemActionId", "ActionId",
+  "EventItemPassedFlagName", "PassedFlagName",
+  "EventItemRollCallFlag",
+  "EventItemMatterUrl", "MatterUrl",
+  "EventItemMatterAttachments",
+]);
+const COUNCIL_VOTE_KEYS = new Set([
+  "EventItemId", "EventItemMatterId",
+  "VoteId", "VoteGuid", "VoteEventItemId", "VotePersonId", "VotePersonName",
+  "VoteValueId", "VoteValueName", "VoteResult", "VoteSort",
+  "PersonId", "PersonName", "PersonGuid",
+  "ValueId", "ValueName", "Result",
+]);
+
+function stripPublisherRows(rows, allowed) {
+  for (const row of rows || []) {
+    if (!row || typeof row !== "object") continue;
+    for (const key of Object.keys(row)) {
+      if (!allowed.has(key)) delete row[key];
+    }
+  }
+}
+
 /** Ordered stages of one matter's legislative path on a Council event. */
 export const MEETING_VOTE_SPINE_STAGES = Object.freeze([
   "agenda",
@@ -260,7 +314,6 @@ function normalizeCouncilEvent(raw = {}) {
     minutes_file: readFirst(raw, ["EventMinutesFile"]) || null,
     video_status: readFirst(raw, ["EventVideoStatus"]) || null,
     venue: normalizeCouncilLocation(raw),
-    raw,
   };
 }
 
@@ -287,7 +340,6 @@ export function normalizeCouncilAgendaItem(raw = {}) {
     action_text: normalizeText(readFirst(raw, ["EventItemActionText"])) || null,
     passed_flag: readFirst(raw, ["EventItemPassedFlagName", "PassedFlagName"]) || null,
     roll_call_flag: readFirst(raw, ["EventItemRollCallFlag"]) || null,
-    raw,
   };
 }
 
@@ -667,7 +719,31 @@ export function assembleAgenda(items, voteIndex, docsByItem = new Map()) {
  * @param {object[]} voteRows     — roll-call summaries [{matter_id,event_id,event_item_id,result,counts,by_person?,officials?,votes_on?}]
  * @param {object[]} attachmentRows — [{agenda_item_id, documents: [{url,name,category}]}]
  */
-export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteRows, attachmentRows = []) {
+export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteRows, attachmentRows = [], options = {}) {
+  const emitJson = options?.emitJson === true;
+  const jsonParts = [];
+  const matchedEventIds = new Set();
+  let matchedCount = 0;
+  let agendaItemCount = 0;
+  let matterCount = 0;
+  let voteCount = 0;
+  let matterDocCount = 0;
+  let eventDocCount = 0;
+  const spineMatter = { n: 0, fill: 0, full: 0, stages: Object.fromEntries(MEETING_VOTE_SPINE_STAGES.map((kind) => [kind, 0])) };
+  const spineAll = { n: 0, fill: 0, full: 0, stages: Object.fromEntries(MEETING_VOTE_SPINE_STAGES.map((kind) => [kind, 0])) };
+  const noteSpine = (spine) => {
+    const pools = spine?.matter_id ? [spineMatter, spineAll] : [spineAll];
+    for (const pool of pools) {
+      pool.n += 1;
+      pool.fill += Number(spine.stage_fill) || 0;
+      if (spine.full) pool.full += 1;
+      for (const stage of spine.stages || []) {
+        if (stage.matched && Object.prototype.hasOwnProperty.call(pool.stages, stage.kind)) {
+          pool.stages[stage.kind] += 1;
+        }
+      }
+    }
+  };
   const notices = (noticeRows || []).map(normalizeNoticeForOutcomes).filter((n) => n.request_id);
   const events = (eventRows || []).map(normalizeCouncilEvent).filter((e) => e.event_id);
   const items = (eventItemRows || []).map(normalizeCouncilAgendaItem).filter((i) => i.event_id);
@@ -684,6 +760,25 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
 
   const matchedRecords = [];
   const unmatchedNotices = [];
+  const keepRecord = (record, matched) => {
+    if (matched) {
+      matchedCount += 1;
+      if (record.council_event?.event_id) matchedEventIds.add(String(record.council_event.event_id));
+      agendaItemCount += record.agenda_items?.length || 0;
+      eventDocCount += record.council_event?.documents?.length || 0;
+      for (const item of record.agenda_items || []) {
+        for (const matter of item.matters || []) {
+          if (matter?.matter_id) matterCount += 1;
+          voteCount += matter?.votes?.length || 0;
+          matterDocCount += matter?.documents?.length || 0;
+        }
+      }
+      for (const spine of record.spines || []) noteSpine(spine);
+    }
+    if (emitJson) jsonParts.push(JSON.stringify(record));
+    else if (matched) matchedRecords.push(record);
+    else unmatchedNotices.push(record);
+  };
 
   for (const notice of notices) {
     const hit = joinNoticeToCouncilMeeting(
@@ -706,7 +801,7 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
       const subjects = linksFromMeetingRecord(unmatched);
       unmatched.subject_refs = subjects.subject_refs;
       unmatched.subject_links = subjects.subject_links;
-      unmatchedNotices.push(unmatched);
+      keepRecord(unmatched, false);
       continue;
     }
     const event = eventsById.get(String(hit.event_id));
@@ -722,7 +817,7 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
       const subjects = linksFromMeetingRecord(unmatched);
       unmatched.subject_refs = subjects.subject_refs;
       unmatched.subject_links = subjects.subject_links;
-      unmatchedNotices.push(unmatched);
+      keepRecord(unmatched, false);
       continue;
     }
     const docs = eventDocuments(event);
@@ -783,10 +878,9 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
     const matchedSubjects = linksFromMeetingRecord(matchedRecord);
     matchedRecord.subject_refs = matchedSubjects.subject_refs;
     matchedRecord.subject_links = matchedSubjects.subject_links;
-    matchedRecords.push(matchedRecord);
+    keepRecord(matchedRecord, true);
   }
 
-  const matchedEventIds = new Set(matchedRecords.map((r) => r.council_event?.event_id).filter(Boolean));
   const unmatchedEvents = events
     .filter((e) => !matchedEventIds.has(String(e.event_id)))
     .map((e) => ({
@@ -796,53 +890,97 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
       join: { matched: false, reason: "No City Record notice matched this Council event in the look-back window." },
     }));
 
-  const allMatters = matchedRecords.flatMap((r) => r.agenda_items.flatMap((i) => i.matters));
-  const totalVotes = allMatters.reduce((sum, m) => sum + (m.votes?.length || 0), 0);
-  const matterDocs = allMatters.reduce((sum, m) => sum + (m.documents?.length || 0), 0);
-  const eventDocs = matchedRecords.reduce((sum, r) => sum + (r.council_event?.documents?.length || 0), 0);
-  const totalDocs = matterDocs + eventDocs;
-  const spineMetric = measureMeetingVoteSpineCompleteness(matchedRecords);
+  const spinePool = spineMatter.n ? spineMatter : spineAll;
+  const spineStageRates = {};
+  for (const kind of MEETING_VOTE_SPINE_STAGES) {
+    spineStageRates[kind] = spinePool.n === 0 ? 0 : spinePool.stages[kind] / spinePool.n;
+  }
+  const streamedSpineMetric = {
+    meeting_vote_spine_completeness_rate: spinePool.n === 0 ? 0 : spinePool.fill / spinePool.n,
+    full_spine_rate: spinePool.n === 0 ? 0 : spinePool.full / spinePool.n,
+    spine_count: spinePool.n,
+    stage_rates: spineStageRates,
+  };
+  const retainedSpineMetric = emitJson ? null : measureMeetingVoteSpineCompleteness(matchedRecords);
+  const spineMetric = retainedSpineMetric || streamedSpineMetric;
+  const retainedMatters = emitJson
+    ? null
+    : matchedRecords.flatMap((record) => record.agenda_items.flatMap((item) => item.matters));
+  const counts = {
+    notices: notices.length,
+    matched_notices: emitJson ? matchedCount : matchedRecords.length,
+    unmatched_notices: emitJson ? jsonParts.length - matchedCount : unmatchedNotices.length,
+    unmatched_events: unmatchedEvents.length,
+    agenda_items: emitJson
+      ? agendaItemCount
+      : matchedRecords.reduce((sum, record) => sum + record.agenda_items.length, 0),
+    matters: emitJson
+      ? matterCount
+      : retainedMatters.filter((matter) => matter.matter_id).length,
+    votes: emitJson
+      ? voteCount
+      : retainedMatters.reduce((sum, matter) => sum + (matter.votes?.length || 0), 0),
+    documents: emitJson
+      ? matterDocCount + eventDocCount
+      : retainedMatters.reduce((sum, matter) => sum + (matter.documents?.length || 0), 0)
+        + matchedRecords.reduce((sum, record) => sum + (record.council_event?.documents?.length || 0), 0),
+    spines: spineMetric.spine_count,
+    full_spines: Math.round(spineMetric.full_spine_rate * spineMetric.spine_count),
+    records: emitJson ? jsonParts.length : matchedRecords.length + unmatchedNotices.length,
+    event_rows: events.length,
+  };
+  const source = {
+    primary: {
+      name: "City Record Online",
+      dataset: "dg92-zbpx",
+      url: "https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx",
+    },
+    enrichment: {
+      name: "NYC Council Legistar (authenticated Web API)",
+      base_url: "https://webapi.legistar.com/v1/nyc",
+    },
+  };
+  const metrics = {
+    meeting_vote_spine_completeness_rate: spineMetric.meeting_vote_spine_completeness_rate,
+    full_spine_rate: spineMetric.full_spine_rate,
+    stage_rates: spineMetric.stage_rates,
+  };
+  const joinPolicy = {
+    strategy: "exact_date_body_tokens",
+    required_fields: ["event_date", "short_title"],
+    note: "Strict join: notice event_date equals EventDate AND the meeting body is uniquely named in the notice title.",
+  };
+  const generatedAt = new Date().toISOString();
+  if (emitJson) {
+    const head = JSON.stringify({
+      schema_version: MEETING_OUTCOMES_VIEW_VERSION,
+      generated_at: generatedAt,
+      source,
+      counts,
+      metrics,
+    });
+    const tail = JSON.stringify({ unmatched_events: unmatchedEvents, join_policy: joinPolicy });
+    return {
+      schema_version: MEETING_OUTCOMES_VIEW_VERSION,
+      generated_at: generatedAt,
+      source,
+      counts,
+      metrics,
+      unmatched_events: unmatchedEvents,
+      join_policy: joinPolicy,
+      json: `${head.slice(0, -1)},"records":[${jsonParts.join(",")}],${tail.slice(1)}`,
+    };
+  }
 
   return {
     schema_version: MEETING_OUTCOMES_VIEW_VERSION,
-    generated_at: new Date().toISOString(),
-    source: {
-      primary: {
-        name: "City Record Online",
-        dataset: "dg92-zbpx",
-        url: "https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx",
-      },
-      enrichment: {
-        name: "NYC Council Legistar (authenticated Web API)",
-        base_url: "https://webapi.legistar.com/v1/nyc",
-      },
-    },
-    counts: {
-      notices: notices.length,
-      matched_notices: matchedRecords.length,
-      unmatched_notices: unmatchedNotices.length,
-      unmatched_events: unmatchedEvents.length,
-      agenda_items: matchedRecords.reduce((sum, r) => sum + r.agenda_items.length, 0),
-      matters: allMatters.filter((m) => m.matter_id).length,
-      votes: totalVotes,
-      documents: totalDocs,
-      spines: spineMetric.spine_count,
-      full_spines: Math.round(spineMetric.full_spine_rate * spineMetric.spine_count),
-      records: matchedRecords.length + unmatchedNotices.length,
-      event_rows: events.length,
-    },
-    metrics: {
-      meeting_vote_spine_completeness_rate: spineMetric.meeting_vote_spine_completeness_rate,
-      full_spine_rate: spineMetric.full_spine_rate,
-      stage_rates: spineMetric.stage_rates,
-    },
+    generated_at: generatedAt,
+    source,
+    counts,
+    metrics,
     records: [...matchedRecords, ...unmatchedNotices],
     unmatched_events: unmatchedEvents,
-    join_policy: {
-      strategy: "exact_date_body_tokens",
-      required_fields: ["event_date", "short_title"],
-      note: "Strict join: notice event_date equals EventDate AND the meeting body is uniquely named in the notice title.",
-    },
+    join_policy: joinPolicy,
   };
 }
 
@@ -982,53 +1120,18 @@ function collectEmbeddedAttachments({ eventItemRows }) {
   return { attachmentRows: out, rawAttachments };
 }
 
-async function writeLegistarShadowObservations(
-  env,
-  { events, eventItems, votes, attachments },
-  generatedAt,
-  authenticated,
-) {
-  if (!env) return { dualWrite: null, matterJournal: null };
-
-  const dualWrite = await dualWriteLegistarObservations(
-    env,
-    { events, eventItems, votes, attachments },
-    generatedAt,
-  );
-  const matterJournal = await retainNativeMatterObservations(
-    env,
-    { events, eventItems, votes },
-    { acquiredAt: generatedAt },
-  );
-
-  // Guardrail: authenticated materialization with events must leave observations.
-  // Nested Attachments may honestly be empty (event Agenda/Minutes live on Events).
-  if (
-    authenticated
-    && events.length > 0
-    && dualWrite
-    && dualWrite.skipped !== "flag-off"
-    && dualWrite.skipped !== "no-db"
-    && dualWrite.skipped !== "no-schema"
-    && (dualWrite.written || 0) <= 0
-  ) {
-    console.error(
-      "legistar source_records dual-write wrote 0 rows after authenticated fetch:",
-      JSON.stringify(dualWrite),
-    );
-  }
-
-  return { dualWrite, matterJournal };
-}
-
 /**
  * Fetch + assemble the full meeting-outcomes view. When no token is configured
  * the view degrades to notices-only with explicit "not yet ingested" gaps.
  *
  * When `env` is provided and LEGISTAR_SOURCE_RECORD_DUAL_WRITE is on, raw
  * Events / EventItems / Votes / Attachments are fail-soft dual-written into
- * source_records without changing the public KV view. The refresh path can
- * defer that shadow work until after the public KV write.
+ * source_records without changing the public KV view. Each publisher page is
+ * written and then reduced to the fields the projections read, before the
+ * public view is assembled, so the isolate does not hold the publisher window
+ * and the assembled records at the same time. `deferShadowWrites` remains
+ * accepted for callers that used to postpone that work; shadow writes now
+ * finish before assembly either way.
  */
 export async function buildMeetingOutcomesView({
   token = null,
@@ -1036,27 +1139,63 @@ export async function buildMeetingOutcomesView({
   now = new Date(),
   env = null,
   deferShadowWrites = false,
+  emitJson = false,
   lookbackDays = 180,
   noticeLimit = NOTICE_LIMIT,
   readRetry = {},
 } = {}) {
   const retry = readRetryPolicy(readRetry);
   const noticeRows = await buildNoticeRows(fetchImpl, now, { lookbackDays, noticeLimit, retry });
+  const assemblyOptions = emitJson ? { emitJson: true } : {};
 
   if (!token) {
-    const view = buildMeetingOutcomes(noticeRows, [], [], []);
+    const view = buildMeetingOutcomes(noticeRows, [], [], [], [], assemblyOptions);
     return {
       ...view,
       upcoming: { publishable: false, reason: "token-absent", view: null },
     };
   }
 
+  const acquiredAt = new Date(now).toISOString();
+  const shadowResults = [];
+  const publisherSpills = [];
+  let spillSeq = 0;
+  const shadowBags = async (bags) => {
+    if (!env) return;
+    if (deferShadowWrites) {
+      // Park each publisher batch outside the live object graph. The refresh
+      // replays these values only after the public snapshot is stored. Without
+      // a database there is no shadow write to replay, so the batch is dropped.
+      if (!env.DB || !env.ALERT_STATE?.put) return;
+      for (const [kind, rows] of Object.entries(bags)) {
+        if (!Array.isArray(rows) || rows.length === 0) continue;
+        const key = `meeting-outcomes:publisher-spill:v1:${kind}:${spillSeq}`;
+        spillSeq += 1;
+        await env.ALERT_STATE.put(key, JSON.stringify(rows), { expirationTtl: 60 * 60 });
+        publisherSpills.push({ key, kind });
+      }
+      return;
+    }
+    shadowResults.push(await dualWriteLegistarObservations(env, bags, acquiredAt));
+  };
+
   // One shared authenticated Events acquisition serves both materializations
   // (no second Events request). A failure — rate limiting, malformed payload,
   // transport — fails the whole refresh so last-known-good KV snapshots for
-  // both read models are retained.
-  const eventsFetch = await fetchLegistarEventsWindowWithRetry({ token, fetchImpl, now, lookbackDays }, retry);
+  // both read models are retained. Each page is persisted and stripped before
+  // the next page is retained.
+  const eventsFetch = await fetchLegistarEventsWindowWithRetry({
+    token,
+    fetchImpl,
+    now,
+    lookbackDays,
+    onPage: async (pageRows) => {
+      await shadowBags({ events: pageRows });
+      stripPublisherRows(pageRows, COUNCIL_EVENT_KEYS);
+    },
+  }, retry);
   if (!eventsFetch.ok) {
+    await discardPublisherSpills(env, publisherSpills);
     throw new Error(`legistar-events-${eventsFetch.kind}${eventsFetch.status ? `-${eventsFetch.status}` : ""}`);
   }
   const eventRows = eventsFetch.rows;
@@ -1110,6 +1249,10 @@ export async function buildMeetingOutcomesView({
         const retainedRows = upcomingOnly
           ? rows.slice(0, UPCOMING_COUNCIL_MEETINGS_AGENDA_ITEMS_MAX)
           : rows;
+        const embedded = collectEmbeddedAttachments({ eventItemRows: retainedRows });
+        await shadowBags({ eventItems: retainedRows, attachments: embedded.rawAttachments });
+        // Strip the whole response, including rows the upcoming cap did not keep.
+        stripPublisherRows(rows, COUNCIL_ITEM_KEYS);
         return {
           event_id: eventId,
           rows: retainedRows,
@@ -1134,6 +1277,43 @@ export async function buildMeetingOutcomesView({
 
   const attachmentBag = collectEmbeddedAttachments({ eventItemRows });
   const voteBag = await collectVoteSummaries({ eventItemRows, token, fetchImpl });
+  await shadowBags({ votes: voteBag.rawVotes });
+  stripPublisherRows(voteBag.rawVotes, COUNCIL_VOTE_KEYS);
+
+  // Journal after the publisher payloads have been reduced and before the
+  // public records exist. Source-record inserts here are ignored when the
+  // per-page dual-write already stored the full publisher row.
+  const matterJournal = env && !deferShadowWrites
+    ? await retainNativeMatterObservations(env, {
+      events: eventRows,
+      eventItems: eventItemRows,
+      votes: voteBag.rawVotes,
+    }, { acquiredAt })
+    : null;
+  const dualWrite = shadowResults.length
+    ? {
+      written: shadowResults.reduce((sum, result) => sum + (result?.written || 0), 0),
+      failed: shadowResults.some((result) => result?.failed),
+      skipped: shadowResults.every((result) => !result?.written)
+        ? (shadowResults.find((result) => result?.skipped)?.skipped || null)
+        : null,
+      streams: shadowResults.flatMap((result) => result?.streams || []),
+    }
+    : null;
+  if (
+    token
+    && eventRows.length > 0
+    && dualWrite
+    && dualWrite.skipped !== "flag-off"
+    && dualWrite.skipped !== "no-db"
+    && dualWrite.skipped !== "no-schema"
+    && (dualWrite.written || 0) <= 0
+  ) {
+    console.error(
+      "legistar source_records dual-write wrote 0 rows after authenticated fetch:",
+      JSON.stringify(dualWrite),
+    );
+  }
 
   const view = buildMeetingOutcomes(
     noticeRows,
@@ -1141,6 +1321,7 @@ export async function buildMeetingOutcomesView({
     eventItemRows,
     voteBag.summaries,
     attachmentBag.attachmentRows,
+    assemblyOptions,
   );
 
   // Distinct first-class materialization: sanitized upcoming Council meetings
@@ -1153,22 +1334,12 @@ export async function buildMeetingOutcomesView({
     eventsFetch,
   });
 
-  const shadowInputs = {
-    events: eventRows,
-    eventItems: eventItemRows,
-    votes: voteBag.rawVotes,
-    attachments: attachmentBag.rawAttachments,
-  };
-  const shadow = env && !deferShadowWrites
-    ? await writeLegistarShadowObservations(env, shadowInputs, view.generated_at, Boolean(token))
-    : { dualWrite: null, matterJournal: null };
-
   return {
     ...view,
     upcoming,
-    dual_write: shadow.dualWrite,
-    matter_journal: shadow.matterJournal,
-    ...(env && deferShadowWrites ? { _shadow_inputs: shadowInputs } : {}),
+    dual_write: dualWrite,
+    matter_journal: matterJournal,
+    ...(deferShadowWrites ? { _publisher_spills: publisherSpills, _acquired_at: acquiredAt } : {}),
   };
 }
 
@@ -1180,6 +1351,7 @@ export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new D
     fetchImpl,
     now,
     env,
+    emitJson: true,
     deferShadowWrites: true,
     readRetry,
   });
@@ -1187,10 +1359,12 @@ export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new D
   // strip the first two so public clients never see them; the upcoming view is
   // materialized under its own read-model key, not folded into this one.
   const {
-    dual_write: initialDualWrite,
-    matter_journal: initialMatterJournal,
+    dual_write: dualWrite,
+    matter_journal: matterJournal,
     upcoming,
-    _shadow_inputs: shadowInputs,
+    json,
+    _publisher_spills: publisherSpills,
+    _acquired_at: acquiredAt,
     ...publicView
   } = view;
 
@@ -1198,38 +1372,81 @@ export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new D
   // fails the refresh with both read models' last-known-good snapshots intact.
   if (upcoming?.publishable) assertPublicUpcomingProjection(upcoming.view);
 
-  await env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, JSON.stringify(publicView));
+  const publicJson = json || JSON.stringify(publicView);
+  let upcomingJson = null;
+  let upcomingCounts = null;
+  if (upcoming?.publishable) {
+    upcomingCounts = upcoming.view.counts;
+    upcomingJson = JSON.stringify(upcoming.view);
+    upcoming.view = null;
+  }
+
+  await env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, publicJson);
 
   // Token absence or an empty-source refusal retains the last-known-good
   // upcoming snapshot; the state is published as unavailable (never as a
   // successful empty source).
   let upcomingWrite = { status: "unavailable", reason: "token-absent" };
-  if (upcoming?.publishable) {
-    await env.ALERT_STATE.put(UPCOMING_COUNCIL_MEETINGS_KV_KEY, JSON.stringify(upcoming.view));
-    upcomingWrite = { status: "success", ...upcoming.view.counts };
+  if (upcomingJson) {
+    await env.ALERT_STATE.put(UPCOMING_COUNCIL_MEETINGS_KV_KEY, upcomingJson);
+    upcomingWrite = { status: "success", ...upcomingCounts };
   } else if (upcoming) {
     upcomingWrite = { status: "unavailable", reason: upcoming.reason };
   }
 
-  // Shadow observation writes are deliberately after both public materialized
-  // views. They are fail-soft evidence capture, not part of the serving path.
-  const shadow = shadowInputs
-    ? await writeLegistarShadowObservations(
-      env,
-      shadowInputs,
-      publicView.generated_at,
-      Boolean(token),
-    )
-    : { dualWrite: initialDualWrite, matterJournal: initialMatterJournal };
+  // Publisher spills are replayed only after both public snapshots are stored,
+  // and one batch at a time so the assembled view is not live beside them.
+  const shadow = await replayPublisherSpills(env, publisherSpills, acquiredAt || publicView.generated_at);
 
   return {
     status: token ? "success" : "no-token",
     enrichment: token ? "authenticated" : "unavailable",
     ...publicView.counts,
     upcoming: upcomingWrite,
-    dual_write: shadow.dualWrite || null,
-    matter_journal: shadow.matterJournal || null,
+    dual_write: shadow.dualWrite || dualWrite || null,
+    matter_journal: shadow.matterJournal || matterJournal || null,
   };
+}
+
+async function discardPublisherSpills(env, spills) {
+  for (const spill of spills || []) {
+    await env?.ALERT_STATE?.delete?.(spill.key);
+  }
+}
+
+async function replayPublisherSpills(env, spills, acquiredAt) {
+  const list = Array.isArray(spills) ? spills : [];
+  if (!env || list.length === 0) return { dualWrite: null, matterJournal: null };
+  const results = [];
+  const journalBags = { events: [], eventItems: [], votes: [], attachments: [] };
+  for (const spill of list) {
+    const stored = await env.ALERT_STATE?.get?.(spill.key);
+    if (typeof stored === "string" && stored) {
+      let rows = [];
+      try {
+        rows = JSON.parse(stored);
+      } catch {
+        rows = [];
+      }
+      if (Array.isArray(rows) && rows.length && Object.prototype.hasOwnProperty.call(journalBags, spill.kind)) {
+        results.push(await dualWriteLegistarObservations(env, { [spill.kind]: rows }, acquiredAt));
+        journalBags[spill.kind].push(...rows);
+      }
+    }
+    await env.ALERT_STATE?.delete?.(spill.key);
+  }
+  const matterJournal = await retainNativeMatterObservations(env, journalBags, { acquiredAt });
+  const dualWrite = results.length
+    ? {
+      written: results.reduce((sum, result) => sum + (result?.written || 0), 0),
+      failed: results.some((result) => result?.failed),
+      skipped: results.every((result) => !result?.written)
+        ? (results.find((result) => result?.skipped)?.skipped || null)
+        : null,
+      streams: results.flatMap((result) => result?.streams || []),
+    }
+    : null;
+  return { dualWrite, matterJournal };
 }
 
 export function applyApiLimits(rows, params = {}) {

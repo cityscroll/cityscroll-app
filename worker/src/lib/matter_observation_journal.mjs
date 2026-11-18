@@ -502,6 +502,7 @@ async function nativeRowsFromBags(bags, acquiredAt) {
 
   const rows = [];
   const unresolved = [];
+  const seenEventIds = new Set();
   for (const item of items) {
     const itemId = exactId(readFirst(item, ["EventItemId", "EventItemID", "AgendaItemId", "id"]));
     const matterId = exactId(readFirst(item, ["EventItemMatterId", "MatterId", "MatterID", "Matter_ID"]));
@@ -582,7 +583,8 @@ async function nativeRowsFromBags(bags, acquiredAt) {
       });
     }
 
-    if (eventById.has(eventId)) {
+    if (eventById.has(eventId) && !seenEventIds.has(eventId)) {
+      seenEventIds.add(eventId);
       const eventPayload = eventById.get(eventId);
       const eventHash = await computeSourceRecordHash(eventPayload);
       rows.push({
