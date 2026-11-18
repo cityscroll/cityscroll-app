@@ -5807,6 +5807,41 @@
       "production_evidence_field": "first_class.contracts_open_population"
     },
     {
+      "id": "contracts-award-links",
+      "public_artifact_path": "site/data/money_award_links.json",
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
+      "source_contract_id": "city-record",
+      "acquisition_command": [
+        "node",
+        "tools/build_money_award_links.mjs"
+      ],
+      "owning_builder": "tools/build_money_award_links.mjs",
+      "builder_command": [
+        "node",
+        "tools/build_money_award_links.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_source_health_observations.mjs"
+      ],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 24,
+      "hard_maximum_age_hours": 36,
+      "vintage_fields": [
+        "as_of",
+        "generated_at"
+      ],
+      "population_fields": [
+        "count",
+        "solicitations"
+      ],
+      "last_known_good_behavior": "Retain the last verified award links within the hard age; a short, capped or partly invalid pull is published marked incomplete with its reasons and its counts against the publisher counts.",
+      "resident_stale_behavior": "Do not describe a notice as having no award published yet, or an award as the latest, after the hard maximum age.",
+      "resident_unavailable_behavior": "Show the award link as unavailable; never read a missing file as no award published.",
+      "production_evidence_field": "first_class.contracts_award_links"
+    },
+    {
       "id": "contracts-agency-filter",
       "public_artifact_path": "site/data/money_procurement_agencies.json",
       "primary_routes": [

@@ -1,0 +1,90 @@
+[
+  {
+    "request_id": "20230210104",
+    "start_date": "2023-02-16T00:00:00.000",
+    "agency_name": "Health and Mental Hygiene",
+    "pin": "81622P0003001",
+    "contract_amount": "6000000",
+    "vendor_name": "Richmond Medical Center"
+  },
+  {
+    "request_id": "20230413103",
+    "start_date": "2023-04-19T00:00:00.000",
+    "agency_name": "Citywide Administrative Services",
+    "pin": "85723B0048001",
+    "contract_amount": "2792754.95",
+    "vendor_name": "Barnwell House of Tires Inc"
+  },
+  {
+    "request_id": "20230502102",
+    "start_date": "2023-05-08T00:00:00.000",
+    "agency_name": "Citywide Administrative Services",
+    "pin": "85723B008100",
+    "contract_amount": "813600",
+    "vendor_name": "READY AMERICA INC"
+  },
+  {
+    "request_id": "20230519104",
+    "start_date": "2023-05-30T00:00:00.000",
+    "agency_name": "Financial Information Services Agency",
+    "pin": "127FY2300031",
+    "contract_amount": "27750912",
+    "vendor_name": "QED Inc."
+  },
+  {
+    "request_id": "20230725107",
+    "start_date": "2023-07-31T00:00:00.000",
+    "agency_name": "Environmental Protection",
+    "pin": "82623B0012001",
+    "contract_amount": "985500",
+    "vendor_name": "VITAL PLUMBING INC"
+  },
+  {
+    "request_id": "20240411107",
+    "start_date": "2024-04-17T00:00:00.000",
+    "agency_name": "Homeless Services",
+    "pin": "07122P0023001",
+    "contract_amount": "4499955",
+    "vendor_name": "CSA Group NY Architects and Engineers PC"
+  },
+  {
+    "request_id": "20240911104",
+    "start_date": "2024-09-17T00:00:00.000",
+    "agency_name": "Housing Preservation and Development",
+    "pin": "80624B0004002",
+    "contract_amount": "2068085",
+    "vendor_name": "Alert Process Service LLC"
+  },
+  {
+    "request_id": "20240918107",
+    "start_date": "2024-09-24T00:00:00.000",
+    "agency_name": "Housing Preservation and Development",
+    "pin": "80624B0004001",
+    "contract_amount": "2579221",
+    "vendor_name": "Nationwide Court Services Inc"
+  },
+  {
+    "request_id": "20250311050",
+    "start_date": "2025-03-21T00:00:00.000",
+    "agency_name": "Parks and Recreation",
+    "pin": "CWTP-2024",
+    "contract_amount": "6700",
+    "vendor_name": "Zurab Tskhakaia"
+  },
+  {
+    "request_id": "20250311051",
+    "start_date": "2025-03-21T00:00:00.000",
+    "agency_name": "Parks and Recreation",
+    "pin": "CWTP-2024",
+    "contract_amount": "15000",
+    "vendor_name": "Zurab Tskhakaia"
+  },
+  {
+    "request_id": "20260626016",
+    "start_date": "2026-07-02T00:00:00.000",
+    "agency_name": "Homeless Services",
+    "pin": "07122P0023001R001",
+    "contract_amount": "4499955",
+    "vendor_name": "CSA Group NY Architects and Engineers PC"
+  }
+]
