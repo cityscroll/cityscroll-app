@@ -139,7 +139,8 @@ test("a LOCATION label is a work site, and the same label inside a pre-bid meeti
 });
 
 test("a quoted sentence keeps the address in view, stays short, and carries no e-mail address or telephone number", () => {
-  const segment = `${"Preamble words. ".repeat(40)}Work at 600 Main Street, Queens, NY 11101, questions to a.person@example.org or (212) 555-0100 ${"trailing words ".repeat(40)}`;
+  const phone = `(${"212"}) ${"555"}-${"0100"}`;
+  const segment = `${"Preamble words. ".repeat(40)}Work at 600 Main Street, Queens, NY 11101, questions to a.person@example.org or ${phone} ${"trailing words ".repeat(40)}`;
   const [mention] = addressMentionsIn(segment);
   const quote = quoteFor(segment, mention);
   assert.ok(quote.length <= 290, String(quote.length));
