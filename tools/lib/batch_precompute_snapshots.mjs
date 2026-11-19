@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { attachOpenNoticeCommodityCategories } from "./open_notice_commodity_category.mjs";
+import { NOTICE_TEXT_FIELDS, attachOpenNoticeWorkSites } from "../../site/open_notice_work_site.mjs";
 
 // Pure builders for daily resident snapshots. Publisher requests belong to the
 // acquisition commands; browser filters read the resulting artifacts locally.
@@ -269,6 +270,20 @@ export function moneyOpenSolicitationsQuery(now = new Date(), { maxRows = MONEY_
   };
 }
 
+/**
+ * The free-text fields of the same open population, in the same order and with the same predicate as
+ * `moneyOpenSolicitationsQuery`, so a notice and its text line up by request_id. The text is read to
+ * find the work site and is never published; only the quoted sentence of a resolved site is.
+ */
+export function moneyOpenSolicitationTextQuery(now = new Date(), { maxRows = MONEY_OPEN_SOLICITATIONS_MAX_ROWS } = {}) {
+  return {
+    $select: ["request_id", ...NOTICE_TEXT_FIELDS].join(","),
+    $where: moneyDefaultOpenWhere(now),
+    $order: "due_date ASC, request_id ASC",
+    $limit: String(maxRows + 1),
+  };
+}
+
 export function moneyOpenSolicitationsCountQuery(now = new Date()) {
   return { $select: "count(*) AS n", $where: moneyDefaultOpenWhere(now) };
 }
@@ -374,7 +389,7 @@ export function buildMoneyDefaultOpenSnapshot(rows, { now = new Date() } = {}) {
  * or partly invalid pull is published as incomplete with its reasons, never as complete.
  */
 export function buildMoneyOpenSolicitationsSnapshot(
-  { rows, sourceCount, commodity = null } = {},
+  { rows, sourceCount, commodity = null, workSite = null } = {},
   { now = new Date(), maxRows = MONEY_OPEN_SOLICITATIONS_MAX_ROWS, maxBytes = MONEY_OPEN_SOLICITATIONS_MAX_BYTES } = {},
 ) {
   if (!Array.isArray(rows)) throw new Error("money open solicitations: rows must be an array");
@@ -414,6 +429,21 @@ export function buildMoneyOpenSolicitationsSnapshot(
     published = attached.notices;
     commodityCategoryCoverage = attached.coverage;
   }
+  let workSiteCoverage = null;
+  if (workSite) {
+    const attached = attachOpenNoticeWorkSites(published, {
+      textRows: workSite.textRows,
+      unavailableReason: workSite.unavailable || null,
+      asOf: calendarDayISO(now),
+      observedAt: workSite.observedAt || null,
+      geocode: workSite.geocode,
+      layerData: workSite.layerData,
+      sourceUrl: workSite.sourceUrl || `https://data.cityofnewyork.us/d/${CITY_RECORD_DATASET}`,
+      resolverSources: workSite.resolverSources || null,
+    });
+    published = attached.notices;
+    workSiteCoverage = attached.coverage;
+  }
   const payload = {
     schema: MONEY_OPEN_SOLICITATIONS_SCHEMA,
     schema_version: 1,
@@ -442,6 +472,7 @@ export function buildMoneyOpenSolicitationsSnapshot(
     count: published.length,
     notices: published,
     ...(commodityCategoryCoverage ? { commodity_category_coverage: commodityCategoryCoverage } : {}),
+    ...(workSiteCoverage ? { work_site_coverage: workSiteCoverage } : {}),
   };
   const bytes = Buffer.byteLength(`${JSON.stringify(payload, null, 2)}\n`);
   if (bytes > maxBytes) {
@@ -867,6 +898,13 @@ export async function fetchMoneyOpenSolicitations(fetchImpl = fetch, now = new D
   const rows = await fetchJson(fetchImpl, sodaUrl(CITY_RECORD_DATASET, moneyOpenSolicitationsQuery(now, options)), options);
   if (!Array.isArray(rows)) throw new Error("money open solicitations SODA returned a non-array");
   return { rows, sourceCount };
+}
+
+/** The text of the open population, one bounded page. A failed read throws; the caller records it and keeps the notices. */
+export async function fetchMoneyOpenSolicitationText(fetchImpl = fetch, now = new Date(), options = {}) {
+  const rows = await fetchJson(fetchImpl, sodaUrl(CITY_RECORD_DATASET, moneyOpenSolicitationTextQuery(now, options)), options);
+  if (!Array.isArray(rows)) throw new Error("money open solicitation text SODA returned a non-array");
+  return rows;
 }
 
 export async function fetchMoneyAgencies(
