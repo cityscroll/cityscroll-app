@@ -44,6 +44,7 @@ export const OPEN_NOTICE_WORK_SITE_RULE = [
   "No vendor field, agency name or bare borough is used. Nothing is guessed.",
   "Each placed address is labelled from the typed role that sentence supports:",
   "\"Work site\", \"Delivery site\", or \"Property in this solicitation\".",
+  "When a LOCATION line names a facility the notice title already names, the quote is the street address as written.",
 ].join(" ");
 
 export const WORK_SITE_REASONS = Object.freeze([
@@ -328,6 +329,25 @@ export function quoteFor(segment, mention, headingAbove = null) {
   return text.replace(EMAIL_RE, "[email removed]").replace(PHONE_RE, "[phone removed]").trim();
 }
 
+/**
+ * The published quote. A LOCATION line that puts a facility name and a short abbreviation
+ * immediately before the address repeats that name when the title already carries it, so the
+ * quote is then the street address alone. The role is still read from the full sentence.
+ */
+export function publishedQuote(title, mention) {
+  const quote = String(mention?.quote || "");
+  const address = String(mention?.address || "");
+  const at = address ? quote.indexOf(address) : -1;
+  if (at < 0) return quote;
+  const before = quote.slice(0, at).trim();
+  const marked = before.match(/\(([A-Z]{2,6})\)\s*$/);
+  if (!marked) return quote;
+  const phrase = before.slice(0, marked.index).toLowerCase();
+  const titleWords = new Set(String(title || "").toLowerCase().match(/\b[a-z]{4,}\b/g) || []);
+  const repeatsTitle = (phrase.match(/\b[a-z]{4,}\b/g) || []).some((word) => titleWords.has(word));
+  return repeatsTitle ? address : quote;
+}
+
 /* ------------------------------------------------------------------------------------------ */
 /* One notice                                                                                  */
 /* ------------------------------------------------------------------------------------------ */
@@ -543,7 +563,7 @@ export function workSiteForNotice(notice, textRow, ctx) {
         role,
         label: OPEN_NOTICE_SITE_LABELS[role],
         address: mention.address,
-        quote: mention.quote,
+        quote: publishedQuote(title, mention),
         quote_field: mention.field,
         basis: mention.evidence,
         bbl: outcome.geocoded.bbl,

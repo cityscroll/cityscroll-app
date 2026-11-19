@@ -19,6 +19,7 @@ import {
   attachOpenNoticeWorkSites,
   classifyAddressMention,
   presentationRole,
+  publishedQuote,
   quoteFor,
   scanNoticeAddresses,
   splitNoticeSegments,
@@ -150,6 +151,18 @@ test("a quoted sentence keeps the address in view, stays short, and carries no e
   assert.match(quote, /\[phone removed\]/);
 });
 
+test("a LOCATION line whose facility name is already in the title quotes the street address", () => {
+  const address = "600 Main Street, Queens, NY 11101";
+  assert.equal(publishedQuote("East Side clinic renovation", {
+    address,
+    quote: `2. LOCATION Example Agency East Side (ES) ${address}`,
+  }), address);
+  assert.equal(publishedQuote("Upgrade IDF MDF Rooms", {
+    address: "3424 Kossuth Ave, Bronx, NY 10467",
+    quote: "2. LOCATION NYC Health + Hospitals North Central Bronx (NCB): 3424 Kossuth Ave, Bronx, NY 10467",
+  }), "2. LOCATION NYC Health + Hospitals North Central Bronx (NCB): 3424 Kossuth Ave, Bronx, NY 10467");
+});
+
 /* ---- real notices through the committed snapshots --------------------------------------------- */
 
 function districts(notice) {
@@ -182,7 +195,11 @@ test("resolved: other members of the population, by a title address and by a wor
   assert.deepEqual(districts(one("resolved_title")), ["K01"]);
   assert.deepEqual(districts(one("resolved_work_sentence")), ["K02"]);
   assert.deepEqual(districts(one("resolved_work_sentence_queens")), ["Q12"]);
-  assert.deepEqual(districts(one("resolved_hospital_a")), ["K05"]);
+  const hospital = one("resolved_hospital_a");
+  assert.deepEqual(districts(hospital), ["K05"]);
+  assert.equal(hospital.work_sites[0].role, "work_site");
+  assert.equal(hospital.work_sites[0].label, "Work site");
+  assert.equal(hospital.work_sites[0].quote, hospital.work_sites[0].address);
   assert.deepEqual(districts(one("resolved_hospital_b")), ["Q08"]);
   assert.equal(one("resolved_title").work_sites[0].basis, "title");
 });
