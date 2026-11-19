@@ -11,12 +11,14 @@ import { test } from "node:test";
 
 import {
   NOTICE_TEXT_FIELDS,
+  OPEN_NOTICE_SITE_LABELS,
   OPEN_NOTICE_WORK_SITE_COVERAGE_SCHEMA,
   OPEN_NOTICE_WORK_SITE_SOURCE,
   WORK_SITE_REASONS,
   addressMentionsIn,
   attachOpenNoticeWorkSites,
   classifyAddressMention,
+  presentationRole,
   quoteFor,
   scanNoticeAddresses,
   splitNoticeSegments,
@@ -160,6 +162,7 @@ test("resolved: a LOCATION label places the hospital in its district, with the q
   assert.equal(notice.work_sites.length, 1);
   const [site] = notice.work_sites;
   assert.equal(site.role, "work_site");
+  assert.equal(site.label, "Work site");
   assert.equal(site.address, "3424 Kossuth Ave, Bronx, NY 10467");
   assert.equal(site.quote, "2. LOCATION NYC Health + Hospitals North Central Bronx (NCB): 3424 Kossuth Ave, Bronx, NY 10467");
   assert.equal(site.quote_field, "additional_description_1");
@@ -181,6 +184,44 @@ test("resolved: other members of the population, by a title address and by a wor
   assert.deepEqual(districts(one("resolved_hospital_a")), ["K05"]);
   assert.deepEqual(districts(one("resolved_hospital_b")), ["Q08"]);
   assert.equal(one("resolved_title").work_sites[0].basis, "title");
+});
+
+test("a placed address is labelled from the typed role its sentence supports", () => {
+  assert.equal(presentationRole({
+    title: "Roof replacement",
+    quote: "The contractor shall purchase and deliver materials for the roof renovation at 600 Main Street.",
+  }), "work_site");
+  assert.equal(presentationRole({
+    title: "Event Operator Services for 1680 Lexington Avenue Event Space RFP",
+    quote: "Event Operator Services for 1680 Lexington Avenue Event Space RFP",
+  }), "facility_site");
+  assert.equal(presentationRole({
+    title: "Adaptive Reuse - 44-36 Vernon Boulevard Building",
+    quote: "Adaptive Reuse - 44-36 Vernon Boulevard Building",
+  }), "facility_site");
+  assert.equal(OPEN_NOTICE_SITE_LABELS.work_site, "Work site");
+  assert.equal(OPEN_NOTICE_SITE_LABELS.delivery_site, "Delivery site");
+  assert.equal(OPEN_NOTICE_SITE_LABELS.facility_site, "Property in this solicitation");
+
+  const delivery = attach([{
+    request_id: "20260309013",
+    agency_name: "City University",
+    short_title: "Ancillary Medical Equipment for BMCC's Hospital Simulation Center",
+    additional_description_1: "The Borough of Manhattan Community College ('College') of the City University of New York is seeking a vendor for the purchase and delivery of Ancillary Medical Equipment for BMCC's Hospital Simulation Center located at 70 Murray Street, NY NY 10007.",
+  }]).notices[0];
+  assert.equal(delivery.coverage.work_site.reason, "resolved");
+  assert.equal(delivery.work_sites.length, 1);
+  assert.equal(delivery.work_sites[0].role, "delivery_site");
+  assert.equal(delivery.work_sites[0].label, "Delivery site");
+  assert.equal(delivery.work_sites[0].community_district.key, "geography:community_district:M01");
+
+  const property = one("range_site_partly_placed");
+  assert.equal(property.coverage.work_site.reason, "resolved");
+  assert.ok(property.work_sites.length >= 1);
+  for (const site of property.work_sites) {
+    assert.equal(site.role, "facility_site");
+    assert.equal(site.label, "Property in this solicitation");
+  }
 });
 
 test("two sites in different districts are both published, one per address", () => {

@@ -6,12 +6,16 @@
  * primitives (`addressSpansIn`, `boroughsIn`, `plainText`), decides for each street address what
  * the sentence says the address is, and sends only the addresses the notice presents as the place
  * of the work through the existing typed-place resolver
- * (`site/procurement_contract_service_geography.mjs`, role `work_site`).
+ * (`site/procurement_contract_service_geography.mjs`).
  *
- * The honest claim is "the work site named in this notice is in community district X", quoted from
- * the notice. Addresses where bids are delivered or opened, where documents are collected, where a
- * pre-bid meeting or site tour is held, or where an agency office sits are never work sites.
- * Nothing is inferred from an agency name, a borough alone, or a vendor field.
+ * The honest claim is "the place named in this notice is in community district X", quoted from
+ * the notice. A placed address keeps the typed role its sentence supports: work at the address
+ * is `work_site` ("Work site"); goods purchased for delivery or installation, with no construction
+ * of the place, are `delivery_site` ("Delivery site"); a property the notice offers for lease,
+ * reuse or development is `facility_site` ("Property in this solicitation"). Addresses where bids
+ * are delivered or opened, where documents are collected, where a pre-bid meeting or site tour is
+ * held, or where an agency office sits are never published as one of those places. Nothing is
+ * inferred from an agency name, a borough alone, or a vendor field.
  *
  * Pure: no network, no file reads, no clock. The geocoder and the boundary layers are injected.
  */
@@ -38,6 +42,8 @@ export const OPEN_NOTICE_WORK_SITE_RULE = [
   "work sites. A work-site address is geocoded in the City Planning Property Address Directory snapshot,",
   "placed on its tax-lot point, and joined to the community district whose boundary contains the point.",
   "No vendor field, agency name or bare borough is used. Nothing is guessed.",
+  "Each placed address is labelled from the typed role that sentence supports:",
+  "\"Work site\", \"Delivery site\", or \"Property in this solicitation\".",
 ].join(" ");
 
 export const WORK_SITE_REASONS = Object.freeze([
@@ -411,13 +417,43 @@ function communityDistrictOf(resolution) {
   return distinct;
 }
 
+const GOODS_DELIVERY_CUE = /\b(?:purchase|purchasing)\b[^.]{0,200}\b(?:deliver(?:y|ed)|installation)\b/i;
+const CONSTRUCTION_CUE = /\b(?:renovat\w*|construct\w*|reconstruct\w*|rehabilitat\w*|demolit\w*|moderniz\w*|upgrad\w*|repair\w*|resurfac\w*|abatement)\b/i;
+const PROPERTY_OFFER_CUE = /\b(?:leasing\s+opportunit\w*|offered\s+for\s+lease|available\s+for\s+lease|adaptive\s+reuse|long-term\s+lease)\b/i;
+const PROPERTY_TITLE_CUE = /\b(?:leasing\s+opportunit\w*|adaptive\s+reuse|industrial\s+business\s+zone|event\s+space|event\s+operator\s+services)\b/i;
+
+/** Resident words for the three typed roles this reader publishes. */
+export const OPEN_NOTICE_SITE_LABELS = Object.freeze({
+  [CONTRACT_PLACE_ROLES.WORK_SITE]: "Work site",
+  [CONTRACT_PLACE_ROLES.DELIVERY_SITE]: "Delivery site",
+  [CONTRACT_PLACE_ROLES.FACILITY_SITE]: "Property in this solicitation",
+});
+
 /**
- * Resolve one work-site mention through the existing typed-place resolver.
+ * Typed role for an address the notice already presents as a place.
+ * Construction of the place stays work. Goods bought for delivery or installation
+ * are delivery. A property offered for lease, reuse or development is the facility.
+ *
+ * @returns {"work_site"|"delivery_site"|"facility_site"}
+ */
+export function presentationRole({ title = "", quote = "" } = {}) {
+  const text = `${title}\n${quote}`;
+  if (PROPERTY_OFFER_CUE.test(text) || (PROPERTY_TITLE_CUE.test(title) && !CONSTRUCTION_CUE.test(text))) {
+    return CONTRACT_PLACE_ROLES.FACILITY_SITE;
+  }
+  if (GOODS_DELIVERY_CUE.test(text) && !CONSTRUCTION_CUE.test(text)) {
+    return CONTRACT_PLACE_ROLES.DELIVERY_SITE;
+  }
+  return CONTRACT_PLACE_ROLES.WORK_SITE;
+}
+
+/**
+ * Resolve one placed mention through the existing typed-place resolver.
  *
  * @param {object} mention classified `work_site` mention
- * @param {{ requestId: string, geocode: (address: string) => object, layerData: object[], expectedBoundaryVintage?: string|null }} ctx
+ * @param {{ requestId: string, geocode: (address: string) => object, layerData: object[], expectedBoundaryVintage?: string|null, placeRole?: string }} ctx
  */
-export function resolveWorkSiteMention(mention, { requestId, geocode, layerData, expectedBoundaryVintage = null }) {
+export function resolveWorkSiteMention(mention, { requestId, geocode, layerData, expectedBoundaryVintage = null, placeRole = CONTRACT_PLACE_ROLES.WORK_SITE }) {
   const geocoded = geocode(mention.address);
   if (geocoded?.status === "ambiguous") {
     return { ok: false, state: "ambiguous", reason: geocoded.reason || "ambiguous_address", candidate_count: geocoded.candidate_count ?? null };
@@ -427,7 +463,7 @@ export function resolveWorkSiteMention(mention, { requestId, geocode, layerData,
   }
   const admitted = admitContractPlaceAssertion({
     contract_id: requestId,
-    place_role: CONTRACT_PLACE_ROLES.WORK_SITE,
+    place_role: placeRole,
     input_kind: PLACE_INPUT_KINDS.EXACT_ADDRESS,
     address: mention.address,
     request_id: requestId,
@@ -487,8 +523,10 @@ export function workSiteForNotice(notice, textRow, ctx) {
 
   const resolved = [];
   const failures = [];
+  const title = String(textRow.short_title || "");
   for (const mention of namedSites.slice(0, MAX_SITES_PER_NOTICE)) {
-    const outcome = resolveWorkSiteMention(mention, { ...ctx, requestId });
+    const placeRole = presentationRole({ title, quote: mention.quote || "" });
+    const outcome = resolveWorkSiteMention(mention, { ...ctx, requestId, placeRole });
     if (outcome.ok) resolved.push({ mention, outcome });
     else failures.push({ mention, outcome });
   }
@@ -500,8 +538,10 @@ export function workSiteForNotice(notice, textRow, ctx) {
       const key = `${outcome.geocoded.bbl}`;
       if (seen.has(key)) continue;
       seen.add(key);
+      const role = outcome.assertion.place_role;
       sites.push({
-        role: "work_site",
+        role,
+        label: OPEN_NOTICE_SITE_LABELS[role],
         address: mention.address,
         quote: mention.quote,
         quote_field: mention.field,
