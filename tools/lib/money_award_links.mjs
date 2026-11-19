@@ -17,6 +17,7 @@
 
 import { resolveAgencyIdentity } from "../../site/agency_identity.mjs";
 import { CITY_RECORD_DATASET, fetchJson, sodaUrl } from "./batch_precompute_snapshots.mjs";
+import { NYCHA_FEED_URL, NYCHA_PAGE_URL, NYCHA_SOURCE_ID, nychaSnapshotUse } from "./nycha_awarded_contracts.mjs";
 
 export const MONEY_AWARD_LINKS_SCHEMA = "cityscroll.money_award_links.v1";
 export const MONEY_AWARD_LINKS_RULE_VERSION = "pin-stem-agency-v1";
@@ -24,8 +25,20 @@ export const MONEY_AWARD_LINKS_SOURCE = "city_record_award_notices";
 export const MONEY_AWARD_LINKS_WINDOW_START = "2023-01-01";
 export const MONEY_AWARD_LINKS_MAX_ROWS = 8000;
 export const MONEY_AWARD_LINKS_MAX_AWARD_ROWS = 40000;
-export const MONEY_AWARD_LINKS_MAX_BYTES = 4 * 1024 * 1024;
+// 5 MiB. The 4 MiB guard fit one award list per notice. Publishing the response-due
+// split beside that list, and the Housing Authority contracts, measured 4,199,297
+// bytes on 2026-11-18, just over 4 MiB. Five MiB keeps the same refusal for a runaway
+// pull and leaves room for ordinary new notices.
+export const MONEY_AWARD_LINKS_MAX_BYTES = 5 * 1024 * 1024;
 export const MONEY_AWARD_LINKS_MAX_AWARDS_PER_NOTICE = 25;
+export const CITY_RECORD_AWARD_SOURCE_ID = "city_record_award_notices";
+
+// NYCHA's awards are not in the City Record; its own Awarded Contracts list is joined by RFQ number.
+export const NYCHA_AGENCY_ID = "housing-authority";
+export const NYCHA_RULE_VERSION = "nycha-rfq-number-v1";
+// A notice younger than this and absent from NYCHA's list may simply be early (the longest gap
+// measured between a notice and the listed contract start is 677 days; 9 in 10 are within 339).
+export const NYCHA_EARLY_WINDOW_DAYS = 365;
 
 export const MONEY_AWARD_LINKS_SOLICITATION_FIELDS = Object.freeze([
   "request_id",
@@ -60,6 +73,18 @@ export const MONEY_AWARD_LINKS_JOIN_RULE = [
   "date, linked_award is the earliest joined award and the due date is left empty. A single joined",
   "award is linked_award. Nothing is guessed from titles or vendor names. Award dates are City Record",
   "notice dates; amounts are the amount printed in the award notice, not payments.",
+].join(" ");
+
+export const NYCHA_JOIN_RULE = [
+  "NYCHA solicitations are the City Record notices whose agency is the Housing Authority. The City Record",
+  "publishes no award notices for it, so each is joined to NYCHA's own Awarded Contracts list instead. The",
+  "RFQ numbers of a notice are the separate 5 to 7 digit numbers in its PIN. A contract on the list is",
+  "joined when the leading 5 to 7 digit number of its printed RFQ number (\"304842,3\" reads as 304842) equals",
+  "one of those numbers and the contract's start date is on or after the notice date. Every such contract is",
+  "listed, with the vendor and total as printed. Nothing is guessed from titles or vendor names. A notice",
+  "with no PIN, or a PIN with no such number, cannot be linked. A notice whose number is not on the list is",
+  "published as no award yet when it is under a year old and as not on the list when it is older. Contract",
+  "start dates are NYCHA's, not award dates; totals are contract totals as listed, not payments.",
 ].join(" ");
 
 // One catalogue of the words and gap classes, so a consumer does not invent its own.
@@ -105,6 +130,36 @@ export const MONEY_AWARD_LINKS_REASONS = Object.freeze({
     state: "cannot_link",
     gap_class: "b",
     text: "This notice published no PIN, so no award can be matched to it.",
+  },
+  linked_nycha_rfq: {
+    state: "linked",
+    gap_class: null,
+    text: "NYCHA's Awarded Contracts list has a contract with this notice's RFQ number that starts on or after the notice.",
+  },
+  nycha_rfq_not_on_list_yet: {
+    state: "no_award_yet",
+    gap_class: "timing",
+    text: "NYCHA's Awarded Contracts list has no contract with this notice's RFQ number yet. Contracts appear on that list after they start, so a recent notice may simply be early.",
+  },
+  nycha_rfq_not_on_list: {
+    state: "cannot_link",
+    gap_class: "b",
+    text: "NYCHA's Awarded Contracts list has no contract with this notice's RFQ number. The list does not say whether the notice was awarded under another number or not awarded.",
+  },
+  nycha_award_before_notice: {
+    state: "cannot_link",
+    gap_class: "a",
+    text: "NYCHA's list has contracts with this RFQ number, but all started before this notice, so none is linked.",
+  },
+  nycha_pin_has_no_rfq_number: {
+    state: "cannot_link",
+    gap_class: "b",
+    text: "This notice's PIN holds no 5 to 7 digit RFQ number, so it cannot be matched to NYCHA's Awarded Contracts list.",
+  },
+  nycha_award_list_unavailable: {
+    state: "cannot_link",
+    gap_class: null,
+    text: "NYCHA's Awarded Contracts list could not be read recently enough to say whether an award is listed for this notice.",
   },
   agency_awards_not_in_city_record: {
     state: "cannot_link",
@@ -165,6 +220,27 @@ export function pinShape(pin) {
   return STEM_SHAPE.test(p) ? "stem" : "other";
 }
 
+/** The RFQ numbers a NYCHA notice's PIN holds: each separate run of 5 to 7 digits, sorted, once. */
+export function pinRfqNumbers(pin) {
+  const p = typeof pin === "string" ? pin : "";
+  if (STEM_SHAPE.test(p.trim().toUpperCase())) return [];
+  return [...new Set(p.match(/(?<![0-9])[0-9]{5,7}(?![0-9])/g) || [])].sort();
+}
+
+function nychaEntry(contract) {
+  return {
+    source: NYCHA_SOURCE_ID,
+    request_id: null,
+    award_date: contract.start_date,
+    date_kind: "contract_start",
+    contract_pin: null,
+    contract_number: contract.contract_number,
+    rfq_number: contract.rfq_number,
+    vendor_name: contract.vendor_name,
+    award_amount: typeof contract.total_amount === "number" ? contract.total_amount : null,
+  };
+}
+
 function parseAmount(printed) {
   if (typeof printed !== "string" || !printed.trim()) return null;
   const n = Number(printed.replace(/[$,\s]/g, ""));
@@ -182,9 +258,13 @@ function validNotice(row) {
 
 function awardEntry(award) {
   return {
+    source: CITY_RECORD_AWARD_SOURCE_ID,
     request_id: String(award.request_id),
     award_date: day(award.start_date),
+    date_kind: "notice_date",
     contract_pin: normalizePin(award.pin),
+    contract_number: null,
+    rfq_number: null,
     vendor_name: typeof award.vendor_name === "string" ? award.vendor_name.trim() || null : null,
     award_amount: parseAmount(award.contract_amount),
   };
@@ -193,8 +273,8 @@ function awardEntry(award) {
 function compareAwards(a, b) {
   return (
     a.award_date.localeCompare(b.award_date)
-    || a.contract_pin.localeCompare(b.contract_pin)
-    || a.request_id.localeCompare(b.request_id)
+    || (a.contract_pin || a.contract_number || "").localeCompare(b.contract_pin || b.contract_number || "")
+    || (a.request_id || "").localeCompare(b.request_id || "")
   );
 }
 
@@ -239,9 +319,15 @@ function pct(n, d) {
  *
  * @param {object[]} solicitations City Record rows, type Solicitation
  * @param {object[]} awards City Record rows, type Award
+ * @param {{ nycha?: { usable: boolean, rows: object[] }|null, asOf?: string|null }} options nycha is NYCHA's
+ *   retained Awarded Contracts list; without it NYCHA notices are read as any agency with no City Record awards.
  * @returns {{ rows: object[], rejected: number, awardRowsRejected: number, agencyAwardRows: Map<string, number> }}
  */
-export function linkSolicitationsToAwards(solicitations, awards, { maxAwardsPerNotice = MONEY_AWARD_LINKS_MAX_AWARDS_PER_NOTICE } = {}) {
+export function linkSolicitationsToAwards(
+  solicitations,
+  awards,
+  { maxAwardsPerNotice = MONEY_AWARD_LINKS_MAX_AWARDS_PER_NOTICE, nycha = null, asOf = null } = {},
+) {
   const goodAwards = (Array.isArray(awards) ? awards : []).filter(validNotice);
   const byStem = new Map();
   const byExactPin = new Map();
@@ -267,6 +353,25 @@ export function linkSolicitationsToAwards(solicitations, awards, { maxAwardsPerN
     if (stem) stemCounts.set(stem, (stemCounts.get(stem) || 0) + 1);
   }
 
+  const nychaByRfq = new Map();
+  if (nycha?.usable) {
+    for (const contract of nycha.rows || []) {
+      if (!contract.rfq_number || !contract.start_date) continue;
+      if (!nychaByRfq.has(contract.rfq_number)) nychaByRfq.set(contract.rfq_number, []);
+      nychaByRfq.get(contract.rfq_number).push(contract);
+    }
+  }
+  const nychaNoticesByRfq = new Map();
+  if (nycha) {
+    for (const row of good) {
+      if (normalizeAgency(row.agency_name) !== NYCHA_AGENCY_ID) continue;
+      for (const number of pinRfqNumbers(normalizePin(row.pin))) {
+        if (!nychaNoticesByRfq.has(number)) nychaNoticesByRfq.set(number, new Set());
+        nychaNoticesByRfq.get(number).add(String(row.request_id));
+      }
+    }
+  }
+
   const rows = good.map((sol) => {
     const date = day(sol.start_date);
     const pin = normalizePin(sol.pin);
@@ -276,8 +381,39 @@ export function linkSolicitationsToAwards(solicitations, awards, { maxAwardsPerN
     let reason;
     let basis = null;
     let matched = [];
+    let rfqNumbers = [];
+    let nychaMatched = [];
+    const readsNycha = Boolean(nycha) && agency === NYCHA_AGENCY_ID && !agencyAwardRows.get(agency);
 
-    if (!agencyAwardRows.get(agency)) {
+    if (readsNycha) {
+      rfqNumbers = pinRfqNumbers(pin);
+      if (!nycha.usable) {
+        reason = "nycha_award_list_unavailable";
+      } else if (shape === "none") {
+        reason = "no_pin";
+      } else if (!rfqNumbers.length) {
+        reason = "nycha_pin_has_no_rfq_number";
+      } else {
+        const seenContracts = new Set();
+        const onList = rfqNumbers.flatMap((number) => nychaByRfq.get(number) || []).filter((contract) => {
+          const key = `${contract.contract_number}|${contract.start_date}|${contract.rfq_number_printed}`;
+          if (seenContracts.has(key)) return false;
+          seenContracts.add(key);
+          return true;
+        });
+        nychaMatched = onList.filter((contract) => contract.start_date >= date);
+        if (nychaMatched.length) {
+          reason = "linked_nycha_rfq";
+          basis = "nycha_rfq_number";
+        } else if (onList.length) {
+          reason = "nycha_award_before_notice";
+        } else if (asOf && daysBetween(date, asOf) <= NYCHA_EARLY_WINDOW_DAYS) {
+          reason = "nycha_rfq_not_on_list_yet";
+        } else {
+          reason = "nycha_rfq_not_on_list";
+        }
+      }
+    } else if (!agencyAwardRows.get(agency)) {
       reason = "agency_awards_not_in_city_record";
     } else if (shape === "none") {
       reason = "no_pin";
@@ -310,7 +446,7 @@ export function linkSolicitationsToAwards(solicitations, awards, { maxAwardsPerN
       }
     }
 
-    const entries = matched.map(awardEntry).sort(compareAwards);
+    const entries = (readsNycha ? nychaMatched.map(nychaEntry) : matched.map(awardEntry)).sort(compareAwards);
     const published = entries.slice(0, maxAwardsPerNotice);
     const due = day(sol.due_date);
     const partition = partitionJoinedAwards(entries, due, maxAwardsPerNotice);
@@ -323,8 +459,12 @@ export function linkSolicitationsToAwards(solicitations, awards, { maxAwardsPerN
       cohort_year: Number(date.slice(0, 4)),
       solicitation_date: date,
       response_due_date: due || null,
-      pin_shape: shape,
+      pin_shape: readsNycha && rfqNumbers.length ? "rfq" : shape,
       stem_solicitation_count: stem ? stemCounts.get(stem) : null,
+      rfq_numbers: rfqNumbers,
+      rfq_solicitation_count: rfqNumbers.length
+        ? new Set(rfqNumbers.flatMap((number) => [...(nychaNoticesByRfq.get(number) || [])])).size
+        : null,
       link_state: state,
       reason,
       link_basis: basis,
@@ -353,6 +493,8 @@ function tally(rows, asOf, medianLag) {
     linked: 0,
     linked_pin_stem: 0,
     linked_pin_exact: 0,
+    linked_nycha_rfq: 0,
+    rfq_numbered: 0,
     no_award_yet: 0,
     cannot_link: 0,
     multi_award: 0,
@@ -365,11 +507,13 @@ function tally(rows, asOf, medianLag) {
   for (const row of rows) {
     out.by_reason[row.reason] += 1;
     if (row.pin_shape === "stem") out.stem_shaped += 1;
+    if (row.pin_shape === "rfq") out.rfq_numbered += 1;
     if (row.link_state === "linked") {
       out.linked += 1;
       out[row.reason] += 1;
       if (row.award_count > 1) out.multi_award += 1;
-      lags.push(row.first_award_lag_days);
+      // The lag the mature-cohort measure uses is the City Record lag; NYCHA's is reported on its own.
+      if (row.reason !== "linked_nycha_rfq") lags.push(row.first_award_lag_days);
     } else if (row.link_state === "no_award_yet") {
       out.no_award_yet += 1;
     } else {
@@ -394,7 +538,9 @@ function tally(rows, asOf, medianLag) {
 
 /** Coverage by cohort year and by agency, measured on the published rows. */
 export function measureAwardLinkCoverage(rows, { asOf }) {
-  const allLags = rows.filter((row) => row.link_state === "linked").map((row) => row.first_award_lag_days);
+  const allLags = rows
+    .filter((row) => row.link_state === "linked" && row.reason !== "linked_nycha_rfq")
+    .map((row) => row.first_award_lag_days);
   const medianLag = median(allLags);
   const byYear = new Map();
   const byAgency = new Map();
@@ -417,6 +563,75 @@ export function measureAwardLinkCoverage(rows, { asOf }) {
   };
 }
 
+function nychaTally(list, asOf) {
+  const reason = (code) => list.filter((row) => row.reason === code).length;
+  const linkedRows = list.filter((row) => row.reason === "linked_nycha_rfq");
+  const withRfq = list.filter((row) => row.pin_shape === "rfq").length;
+  const old = list.filter((row) => daysBetween(row.solicitation_date, asOf) >= NYCHA_EARLY_WINDOW_DAYS);
+  return {
+    solicitations: list.length,
+    with_rfq_number: withRfq,
+    linked: linkedRows.length,
+    linked_pct_of_all: pct(linkedRows.length, list.length),
+    linked_pct_of_rfq_numbered: pct(linkedRows.length, withRfq),
+    linked_with_several_contracts: linkedRows.filter((row) => row.award_count > 1).length,
+    not_on_list_yet: reason("nycha_rfq_not_on_list_yet"),
+    not_on_list: reason("nycha_rfq_not_on_list"),
+    award_before_notice: reason("nycha_award_before_notice"),
+    no_pin: reason("no_pin"),
+    pin_has_no_rfq_number: reason("nycha_pin_has_no_rfq_number"),
+    list_unavailable: reason("nycha_award_list_unavailable"),
+    median_lag_days: median(linkedRows.map((row) => row.first_award_lag_days)),
+    at_least_a_year_old: {
+      min_age_days: NYCHA_EARLY_WINDOW_DAYS,
+      solicitations: old.length,
+      linked: old.filter((row) => row.reason === "linked_nycha_rfq").length,
+      linked_pct_of_all: pct(old.filter((row) => row.reason === "linked_nycha_rfq").length, old.length),
+    },
+  };
+}
+
+/**
+ * NYCHA's own measure by cohort year, and the linked share of all solicitations without and with
+ * NYCHA's list (the rows that link by RFQ number are the only difference between the two).
+ */
+export function measureNychaCoverage(rows, { asOf }) {
+  const nycha = rows.filter((row) => row.agency_id === NYCHA_AGENCY_ID);
+  const byYear = new Map();
+  for (const row of nycha) {
+    if (!byYear.has(row.cohort_year)) byYear.set(row.cohort_year, []);
+    byYear.get(row.cohort_year).push(row);
+  }
+  const share = (list) => {
+    const after = list.filter((row) => row.link_state === "linked").length;
+    const before = list.filter((row) => row.link_state === "linked" && row.reason !== "linked_nycha_rfq").length;
+    return {
+      solicitations: list.length,
+      linked_without_nycha_list: before,
+      linked_with_nycha_list: after,
+      pct_without_nycha_list: pct(before, list.length),
+      pct_with_nycha_list: pct(after, list.length),
+    };
+  };
+  const years = new Map();
+  for (const row of rows) {
+    if (!years.has(row.cohort_year)) years.set(row.cohort_year, []);
+    years.get(row.cohort_year).push(row);
+  }
+  return {
+    totals: nychaTally(nycha, asOf),
+    by_cohort_year: Object.fromEntries(
+      [...byYear.entries()].sort((a, b) => a[0] - b[0]).map(([year, list]) => [String(year), nychaTally(list, asOf)]),
+    ),
+    all_solicitations: {
+      totals: share(rows),
+      by_cohort_year: Object.fromEntries(
+        [...years.entries()].sort((a, b) => a[0] - b[0]).map(([year, list]) => [String(year), share(list)]),
+      ),
+    },
+  };
+}
+
 export function calendarDay(now) {
   return new Date(now).toISOString().slice(0, 10);
 }
@@ -427,7 +642,7 @@ export function calendarDay(now) {
  * @param {{ solicitations: object[], awards: object[], solicitationCount: number, awardCount: number }} input
  */
 export function buildMoneyAwardLinksSnapshot(
-  { solicitations, awards, solicitationCount, awardCount } = {},
+  { solicitations, awards, solicitationCount, awardCount, nychaSnapshot } = {},
   {
     now = new Date(),
     maxRows = MONEY_AWARD_LINKS_MAX_ROWS,
@@ -441,12 +656,20 @@ export function buildMoneyAwardLinksSnapshot(
   const reasons = [];
   if (solicitations.length > maxRows) reasons.push("row_cap");
   if (awards.length > maxAwardRows) reasons.push("award_row_cap");
-  const joined = linkSolicitationsToAwards(solicitations.slice(0, maxRows), awards.slice(0, maxAwardRows));
+  // undefined: the NYCHA list was not read at all (older callers). null or unusable: it was asked for and is not there.
+  const nychaRead = nychaSnapshot !== undefined;
+  const nychaUse = nychaRead ? nychaSnapshotUse(nychaSnapshot, asOf) : null;
+  const joined = linkSolicitationsToAwards(solicitations.slice(0, maxRows), awards.slice(0, maxAwardRows), {
+    nycha: nychaRead ? { usable: nychaUse.usable, rows: nychaUse.usable ? nychaSnapshot.rows : [] } : null,
+    asOf,
+  });
+  if (nychaRead && !nychaUse.usable) reasons.push("nycha_award_list_unavailable");
   if (!reasons.includes("row_cap") && solicitations.length !== solicitationCount) reasons.push("solicitation_count_mismatch");
   if (!reasons.includes("award_row_cap") && awards.length !== awardCount) reasons.push("award_count_mismatch");
   if (joined.rejected) reasons.push("invalid_solicitation_rows");
   if (joined.awardRowsRejected) reasons.push("invalid_award_rows");
   const coverage = measureAwardLinkCoverage(joined.rows, { asOf });
+  if (nychaRead) coverage.nycha = measureNychaCoverage(joined.rows, { asOf });
   const payload = {
     schema: MONEY_AWARD_LINKS_SCHEMA,
     schema_version: 1,
@@ -465,6 +688,40 @@ export function buildMoneyAwardLinksSnapshot(
       awards_from: MONEY_AWARD_LINKS_WINDOW_START,
     },
     join_rule: MONEY_AWARD_LINKS_JOIN_RULE,
+    ...(nychaRead ? { nycha_rule_version: NYCHA_RULE_VERSION, nycha_join_rule: NYCHA_JOIN_RULE } : {}),
+    sources: {
+      city_record_award_notices: {
+        name: "City Record Online",
+        dataset: CITY_RECORD_DATASET,
+        url: `https://data.cityofnewyork.us/d/${CITY_RECORD_DATASET}`,
+      },
+      ...(nychaRead
+        ? {
+          [NYCHA_SOURCE_ID]: {
+            name: "NYCHA Awarded Contracts",
+            owner: "New York City Housing Authority",
+            url: NYCHA_PAGE_URL,
+            feed_url: NYCHA_FEED_URL,
+            note: "Contract start date, not award date. Total is the contract total as listed, not a payment.",
+          },
+        }
+        : {}),
+    },
+    nycha_feed: nychaRead
+      ? {
+        state: nychaUse.state,
+        usable: nychaUse.usable,
+        unusable_reason: nychaUse.reason,
+        snapshot_age_days: nychaUse.age_days,
+        fetched_at: nychaSnapshot?.feed?.fetched_at ?? null,
+        checked_at: nychaSnapshot?.feed?.checked_at ?? null,
+        fallback_reason: nychaSnapshot?.feed?.fallback_reason ?? null,
+        fallback_text: nychaSnapshot?.feed?.fallback_text ?? null,
+        max_fallback_age_days: 30,
+        contracts_read: Array.isArray(nychaSnapshot?.rows) ? nychaSnapshot.rows.length : 0,
+        contracts_with_rfq_number: nychaSnapshot?.rfq_numbered_count ?? 0,
+      }
+      : { state: "not_read", usable: false },
     reasons: MONEY_AWARD_LINKS_REASONS,
     bounds: {
       max_rows: maxRows,
@@ -480,6 +737,7 @@ export function buildMoneyAwardLinksSnapshot(
       award_source_count: awardCount,
       award_rows_read: awards.length,
       award_publishing_agencies: [...joined.agencyAwardRows.values()].filter((n) => n > 0).length,
+      nycha_feed_state: nychaRead ? nychaUse.state : "not_read",
     },
     coverage,
     count: joined.rows.length,

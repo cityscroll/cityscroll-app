@@ -2,8 +2,8 @@
   "schema": "cityscroll.served_coverage_census.v1",
   "purpose": "Disposition of every registered source contract against the served product, and the served-population evidence behind each published coverage unit. Not a served artifact: this is the receipt the public snapshot is derived from.",
   "registry": {
-    "reviewed_registry_size": 75,
-    "observed_registry_size": 75,
+    "reviewed_registry_size": 76,
+    "observed_registry_size": 76,
     "changed": false
   },
   "disposition_vocabulary": [
@@ -15,7 +15,7 @@
   "disposition_counts": {
     "publicly_represented": 19,
     "context_only": 37,
-    "not_served": 8,
+    "not_served": 9,
     "unresolved": 11
   },
   "served_units": [
@@ -1169,6 +1169,19 @@
           "status": "live",
           "delivery_tier": "inline-at-build",
           "used_for": "SCA prequalification and trade coverage for supplier directories."
+        }
+      }
+    },
+    {
+      "source_id": "nycha-awarded-contracts",
+      "name": "NYCHA Awarded Contracts",
+      "disposition": "not_served",
+      "reason": "Committed snapshot read only by the award-link build; no resident route reads it directly until the product slice that shows an award lands, so no served count is claimed.",
+      "evidence": {
+        "registry": {
+          "status": "live",
+          "delivery_tier": "inline-at-build",
+          "used_for": "Linking NYCHA solicitations in the City Record to the contracts NYCHA lists for the same RFQ number. The City Record publishes no award notices for NYCHA. The contract start date is not an award date, the total is a contract total and not a payment, and vendor names are shown as printed."
         }
       }
     },

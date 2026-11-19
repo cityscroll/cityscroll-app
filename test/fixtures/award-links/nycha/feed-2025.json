@@ -1,0 +1,26 @@
+{
+ "data": [
+  {
+   "ContractNumber": "2333901",
+   "StartDate": "/Date(1753761600000)/",
+   "EndDate": "/Date(1785297600000)/",
+   "Description": "",
+   "StartDateDisplay": "07/29/2025",
+   "ContractYear": "2025",
+   "EndDateDisplay": "07/29/2026",
+   "VendorName": "TRANS-VAC SYSTEMS LLC DBA ATREO",
+   "TotalAmount": 364139.1,
+   "AmountSpent": 0,
+   "TotalAmountDisplay": "$364,139.10",
+   "AmountSpentDisplay": "$0.00",
+   "ProcurementMethod": "NON-COMP \u2013 Single Source",
+   "TradeType": "Service",
+   "Category": "PS-PROFESSIONAL SERVICES OTHER.1CM",
+   "Location": "POLO GRDS -0260",
+   "ContractStatus": "Expired",
+   "RFQTitle": "A&CM Sustainability Programs - Operations & Maintenance Support - ACMSUS063217",
+   "RFQNumber": "N/A",
+   "ContractTerm": "1 year with 4 years renewal"
+  }
+ ]
+}

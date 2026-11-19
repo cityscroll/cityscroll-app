@@ -1185,6 +1185,23 @@
         "prequalified_vendor_contact_person",
         "prequalified_vendor_phone_number"
       ]
+    },
+    {
+      "id": "nycha-awarded-contracts",
+      "kind": "html",
+      "identifier": "AwardedContracts",
+      "response_type": "text/html",
+      "fields": [
+        "data",
+        "ContractNumber",
+        "RFQNumber",
+        "VendorName",
+        "TotalAmount",
+        "StartDateDisplay",
+        "ContractYear",
+        "ProcurementMethod",
+        "ContractStatus"
+      ]
     }
   ]
 }

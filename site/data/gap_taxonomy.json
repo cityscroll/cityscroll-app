@@ -1093,6 +1093,28 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "nycha-awarded-contracts",
+      "name": "NYCHA Awarded Contracts",
+      "source_contract_id": "nycha-awarded-contracts",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {
+        "realized": {
+          "rate": 0.4722,
+          "joined": 272,
+          "total": 576,
+          "metric": "notices_linked",
+          "observed_on": "2026-11-17",
+          "universe": "576 City Record Housing Authority solicitations since 2023-01-01 joined to NYCHA's 1,698 listed contracts (841 with an RFQ number) by RFQ number, contract start on or after the notice",
+          "strategy": "nycha-rfq-number-v1: equality of a 5 to 7 digit number in the notice PIN with the leading number of the printed RFQ number; no title, vendor or fuzzy join.",
+          "verdict": "Above the usefulness floor (47.2% of NYCHA notices; 34.3% of all solicitations, from 27.1%) and the precision floor on the pairs checked. Linked.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://my.nycha.info/PublicSite/Transparency/AwardedContracts",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "nycida-build-nyc-projects",
       "name": "NYCIDA/Build NYC public documents",
       "source_contract_id": "nycida-build-nyc-projects",
@@ -4063,8 +4085,8 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-11-14",
-    "source_contracts_fingerprint": "b4a50af6c5d42eaaff70355aff0fbcf374c486f276c6f7b59f75577b5368d084",
+    "observed_on": "2026-11-19",
+    "source_contracts_fingerprint": "508ff3c6d0be28f803dd00d64c4100a88e1044efc1b8823798ec5af5f385eecc",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 100,
     "class_changes": 0,

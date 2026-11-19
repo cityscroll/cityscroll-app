@@ -4993,6 +4993,111 @@
         "backstage_detail": "receipts-and-errors",
         "relationship_coverage": "separate"
       }
+    },
+    {
+      "id": "nycha-awarded-contracts",
+      "name": "NYCHA Awarded Contracts",
+      "owner": "New York City Housing Authority",
+      "status": "live",
+      "scope": "build-time",
+      "kind": "html",
+      "landing_page": "https://my.nycha.info/PublicSite/Transparency/AwardedContracts",
+      "probe_endpoint": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2026",
+      "endpoint_format": "json-api",
+      "landing_probe": "require",
+      "required_fields": [
+        "data",
+        "ContractNumber",
+        "RFQNumber",
+        "VendorName",
+        "TotalAmount",
+        "StartDateDisplay",
+        "ContractYear",
+        "ProcurementMethod",
+        "ContractStatus"
+      ],
+      "max_stale_days": 7,
+      "publisher_cadence": "Not stated; a contract appears after it starts. The list covers contract years 2011 to the present; the engine reads 2023 onward.",
+      "acquisition_cadence": "Daily",
+      "acquisition_cadence_days": 1,
+      "product_freshness": "A pull of the page's own JSON endpoint, one request per contract year two seconds apart, is shape-checked and committed as site/data/nycha_awarded_contracts_snapshot.json by the daily first-class refresh. A pull that fails the check (network, not JSON, changed fields, counts outside a band around the last good snapshot) keeps the last good rows and writes into the snapshot that they are the earlier list, why, and when they were read. Readers never call NYCHA. A fallback older than 30 days is not used to say a notice is absent from the list.",
+      "used_for": "Linking NYCHA solicitations in the City Record to the contracts NYCHA lists for the same RFQ number. The City Record publishes no award notices for NYCHA. The contract start date is not an award date, the total is a contract total and not a payment, and vendor names are shown as printed.",
+      "terms_note": "No terms specific to this list were found. The page links the City-wide terms of use (https://www1.nyc.gov/home/terms-of-use.page). The endpoint is the page's own back end, with no login and no bot challenge when read on 2026-11-17, and is not documented as an API. The description, location and amount-spent fields are not retained.",
+      "join_measurement": {
+        "observed_on": "2026-11-17",
+        "universe": "576 City Record Housing Authority solicitations since 2023-01-01 joined to NYCHA's 1,698 listed contracts (841 with an RFQ number) by RFQ number, contract start on or after the notice",
+        "strategy": "nycha-rfq-number-v1: equality of a 5 to 7 digit number in the notice PIN with the leading number of the printed RFQ number; no title, vendor or fuzzy join.",
+        "rates": {
+          "notices_linked": {
+            "joined": 272,
+            "total": 576,
+            "rate": 0.4722
+          },
+          "notices_with_rfq_number_linked": {
+            "joined": 272,
+            "total": 445,
+            "rate": 0.6112
+          },
+          "all_solicitations_linked_before": {
+            "joined": 1027,
+            "total": 3790,
+            "rate": 0.271
+          },
+          "all_solicitations_linked_after": {
+            "joined": 1299,
+            "total": 3790,
+            "rate": 0.3428
+          }
+        },
+        "precision_sample": {
+          "size": 417,
+          "same": 417,
+          "different": 0,
+          "cannot_tell": 0,
+          "method": "Every linked pair checked: the notice title shares at least a third of its distinctive words with the contract's RFQ title, no pair shares none, and the 45 lowest-overlap pairs read by eye are the same work."
+        },
+        "usefulness_threshold": 0.3,
+        "precision_threshold": 0.95,
+        "verdict": "Above the usefulness floor (47.2% of NYCHA notices; 34.3% of all solicitations, from 27.1%) and the precision floor on the pairs checked. Linked."
+      },
+      "code_references": [
+        {
+          "path": "tools/lib/nycha_awarded_contracts.mjs",
+          "contains": "GetAwardedContracts"
+        },
+        {
+          "path": "tools/acquire_nycha_awarded_contracts.mjs",
+          "contains": "nycha_awarded_contracts_snapshot.json"
+        },
+        {
+          "path": "tools/lib/money_award_links.mjs",
+          "contains": "linked_nycha_rfq"
+        },
+        {
+          "path": "test/nycha_awards_link.test.mjs",
+          "contains": "feed_shape_changed"
+        }
+      ],
+      "delivery_tier": "inline-at-build",
+      "freshness_contract": {
+        "mode": "continuous",
+        "max_stale_days": 7,
+        "clock_basis": "checked_acquired",
+        "retained_vintage": {
+          "artifact_path": "site/data/nycha_awarded_contracts_snapshot.json",
+          "vintage_fields": [
+            "as_of",
+            "generated_at"
+          ]
+        },
+        "serving_max_age_days": 30,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "backstage-only",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
     }
   ],
   "first_class_artifacts": [
@@ -5807,6 +5912,41 @@
       "production_evidence_field": "first_class.contracts_open_population"
     },
     {
+      "id": "contracts-nycha-awarded-contracts",
+      "public_artifact_path": "site/data/nycha_awarded_contracts_snapshot.json",
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
+      "source_contract_id": "nycha-awarded-contracts",
+      "acquisition_command": [
+        "node",
+        "tools/acquire_nycha_awarded_contracts.mjs"
+      ],
+      "owning_builder": "tools/acquire_nycha_awarded_contracts.mjs",
+      "builder_command": [
+        "node",
+        "tools/acquire_nycha_awarded_contracts.mjs"
+      ],
+      "dependent_materializers": [
+        "tools/build_money_award_links.mjs"
+      ],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 48,
+      "hard_maximum_age_hours": 720,
+      "vintage_fields": [
+        "as_of",
+        "generated_at"
+      ],
+      "population_fields": [
+        "count",
+        "rows"
+      ],
+      "last_known_good_behavior": "A pull that fails its shape check or cannot be fetched keeps the last good rows and records in the snapshot that they are the earlier list, the reason, and when they were read. With no earlier snapshot the run fails and writes nothing.",
+      "resident_stale_behavior": "After the hard maximum age do not say a notice is absent from NYCHA's list; keep the links already made and show the absence as unavailable.",
+      "resident_unavailable_behavior": "Show NYCHA awards as unavailable with the reason; never read a missing snapshot as no award listed.",
+      "production_evidence_field": "first_class.contracts_nycha_awarded_contracts"
+    },
+    {
       "id": "contracts-award-links",
       "public_artifact_path": "site/data/money_award_links.json",
       "primary_routes": [
@@ -5821,6 +5961,9 @@
       "builder_command": [
         "node",
         "tools/build_money_award_links.mjs"
+      ],
+      "depends_on": [
+        "contracts-nycha-awarded-contracts"
       ],
       "dependent_materializers": [
         "tools/build_source_health_observations.mjs"

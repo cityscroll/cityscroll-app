@@ -1,0 +1,239 @@
+{
+  "schema": "cityscroll.nycha_awarded_contracts_snapshot.v1",
+  "schema_version": 1,
+  "as_of": "2026-11-17",
+  "generated_at": "2026-11-17T10:45:00.000Z",
+  "source": {
+    "id": "nycha_awarded_contracts",
+    "name": "NYCHA Awarded Contracts",
+    "owner": "New York City Housing Authority",
+    "page_url": "https://my.nycha.info/PublicSite/Transparency/AwardedContracts",
+    "feed_url_template": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=<year>",
+    "terms_note": "No terms specific to this list were found. The page links the City-wide terms of use. The endpoint is the page's own back end and is not documented as an API.",
+    "terms_url": "https://www1.nyc.gov/home/terms-of-use.page",
+    "start_date_note": "NYCHA prints the contract start date, not an award date.",
+    "amount_note": "Total is the contract total as listed, often a ceiling for multi-year or IDIQ contracts. It is not a payment."
+  },
+  "feed": {
+    "state": "live",
+    "fetched_at": "2026-11-17T10:45:00.000Z",
+    "checked_at": "2026-11-17T10:45:00.000Z",
+    "fallback_reason": null,
+    "fallback_text": null,
+    "shape_problems": [],
+    "years": [
+      {
+        "year": 2023,
+        "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2023",
+        "fetched_at": "2026-11-17T10:45:00.000Z",
+        "bytes": 3848,
+        "sha256": "7436e1956e4224903e5fdd52b494fcad874964cb70ca7e2d65d32f256ae00ec2",
+        "row_count": 5
+      },
+      {
+        "year": 2024,
+        "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2024",
+        "fetched_at": "2026-11-17T10:45:00.000Z",
+        "bytes": 2953,
+        "sha256": "9c67d26cb4eea5335c41aace79f774c6346fc60b05b3319e485e305fc22e5ca0",
+        "row_count": 4
+      },
+      {
+        "year": 2025,
+        "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2025",
+        "fetched_at": "2026-11-17T10:45:00.000Z",
+        "bytes": 805,
+        "sha256": "e04cb6417ac85a660ec37cb68433957a85968f37d5037b61596df9a662f78169",
+        "row_count": 1
+      },
+      {
+        "year": 2026,
+        "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2026",
+        "fetched_at": "2026-11-17T10:45:00.000Z",
+        "bytes": 3156,
+        "sha256": "57dfc0c036971ac25cb0e29ec0d9f1a6500f9caa4c73158e6eac8d989b5e8dff",
+        "row_count": 4
+      },
+      {
+        "year": 2027,
+        "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2027",
+        "fetched_at": "2026-11-17T10:45:00.000Z",
+        "bytes": 864,
+        "sha256": "35275da1fcbad272e7b98d4abe717e0c12e94c6914ae15a6b873890f6b0a62cf",
+        "row_count": 1
+      }
+    ]
+  },
+  "window": {
+    "contract_years_from": 2023
+  },
+  "count": 15,
+  "rfq_numbered_count": 10,
+  "rows": [
+    {
+      "contract_number": "2116268",
+      "rfq_number_printed": "304842,3",
+      "rfq_number": "304842",
+      "vendor_name": "JSM CONSULTING",
+      "total_amount": 37500000,
+      "start_date": "2023-01-19",
+      "contract_year": 2023,
+      "procurement_method": "COMPETETIVE RFP",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2121005",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "BELFOR USA GROUP INC.",
+      "total_amount": 0,
+      "start_date": "2023-03-14",
+      "contract_year": 2023,
+      "procurement_method": "Master Service Agreement",
+      "contract_status": "Expired"
+    },
+    {
+      "contract_number": "2313292",
+      "rfq_number_printed": "422994",
+      "rfq_number": "422994",
+      "vendor_name": "WESCO DISTRIBUTION, INC.",
+      "total_amount": 2658973.75,
+      "start_date": "2023-06-15",
+      "contract_year": 2023,
+      "procurement_method": "SEALED BID",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2313291",
+      "rfq_number_printed": "422994",
+      "rfq_number": "422994",
+      "vendor_name": "MONMOUTH LIGHTING CORP",
+      "total_amount": 228698.85,
+      "start_date": "2023-08-17",
+      "contract_year": 2023,
+      "procurement_method": "SEALED BID",
+      "contract_status": "Expired"
+    },
+    {
+      "contract_number": "2313293",
+      "rfq_number_printed": "422994",
+      "rfq_number": "422994",
+      "vendor_name": "AC LIGHTING & ELECTRICAL SUPPLIES LLC DBA CONSERVE LIGHTING & ELECTRICAL SUPPLIES LLC",
+      "total_amount": 1156950.4,
+      "start_date": "2023-08-17",
+      "contract_year": 2023,
+      "procurement_method": "SEALED BID",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2304312",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "NAGARRO INC",
+      "total_amount": 0,
+      "start_date": "2024-03-13",
+      "contract_year": 2024,
+      "procurement_method": "GOVERMENT LIST",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2421793",
+      "rfq_number_printed": "502112-3",
+      "rfq_number": "502112",
+      "vendor_name": "BEN'S DISTRIBUTION CENTER, INC.",
+      "total_amount": 151306.8,
+      "start_date": "2024-06-02",
+      "contract_year": 2024,
+      "procurement_method": "SEALED BID",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2427951",
+      "rfq_number_printed": "502112-3",
+      "rfq_number": "502112",
+      "vendor_name": "MENSCH MILL & LUMBER CORP.",
+      "total_amount": 25000,
+      "start_date": "2024-08-02",
+      "contract_year": 2024,
+      "procurement_method": "SEALED BID",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2421789",
+      "rfq_number_printed": "503336",
+      "rfq_number": "503336",
+      "vendor_name": "LABORATORY TESTING SERVICES INC",
+      "total_amount": 1718679.96,
+      "start_date": "2024-10-10",
+      "contract_year": 2024,
+      "procurement_method": "SEALED BID",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2333901",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "TRANS-VAC SYSTEMS LLC DBA ATREO",
+      "total_amount": 364139.1,
+      "start_date": "2025-07-29",
+      "contract_year": 2025,
+      "procurement_method": "NON-COMP – Single Source",
+      "contract_status": "Expired"
+    },
+    {
+      "contract_number": "2534202",
+      "rfq_number_printed": "509312,3",
+      "rfq_number": "509312",
+      "vendor_name": "CORE ENVIRONMENTAL CONSULTANTS INC",
+      "total_amount": 3000000,
+      "start_date": "2026-02-10",
+      "contract_year": 2026,
+      "procurement_method": "COMPETETIVE RFP",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2534201",
+      "rfq_number_printed": "509312,3",
+      "rfq_number": "509312",
+      "vendor_name": "TRC ENVIRONMENTAL CORPORATION",
+      "total_amount": 3000000,
+      "start_date": "2026-02-19",
+      "contract_year": 2026,
+      "procurement_method": "COMPETETIVE RFP",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2534200",
+      "rfq_number_printed": "509312,3",
+      "rfq_number": "509312",
+      "vendor_name": "LIRO ENGINEERS INC",
+      "total_amount": 5000000,
+      "start_date": "2026-03-05",
+      "contract_year": 2026,
+      "procurement_method": "COMPETETIVE RFP",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2506092",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "EXIGIS, LLC.",
+      "total_amount": 922350,
+      "start_date": "2026-08-01",
+      "contract_year": 2026,
+      "procurement_method": "NON-COMP – Single Source",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2608926",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "E-BUILDER, INC. A TRIMBLE COMPANY",
+      "total_amount": 3874524,
+      "start_date": "2027-01-01",
+      "contract_year": 2027,
+      "procurement_method": "NON-COMP – Single Source",
+      "contract_status": "Active"
+    }
+  ]
+}

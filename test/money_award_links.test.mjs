@@ -91,9 +91,13 @@ test("linked by PIN stem: one award, vendor and amount as printed, dated after t
   assert.equal(row.solicitation_date, "2023-01-03");
   assert.equal(row.award_count, 1);
   assert.deepEqual(row.awards, [{
+    source: "city_record_award_notices",
     request_id: "20230725107",
     award_date: "2023-07-31",
+    date_kind: "notice_date",
     contract_pin: "82623B0012001",
+    contract_number: null,
+    rfq_number: null,
     vendor_name: "VITAL PLUMBING INC",
     award_amount: 985500,
   }]);
@@ -332,9 +336,9 @@ test("the published rows hold no contact fields, no markup and only declared key
   assert.doesNotMatch(JSON.stringify(snap.solicitations), /[<>]/);
   const rowKeys = [
     "request_id", "pin", "agency_name", "agency_id", "cohort_year", "solicitation_date",
-    "response_due_date", "pin_shape", "stem_solicitation_count", "link_state", "reason", "link_basis",
-    "award_count", "first_award_lag_days", "awards", "linked_award", "other_awards",
-    "other_awards_label", "other_awards_omitted",
+    "response_due_date", "pin_shape", "stem_solicitation_count", "rfq_numbers", "rfq_solicitation_count",
+    "link_state", "reason", "link_basis", "award_count", "first_award_lag_days", "awards",
+    "linked_award", "other_awards", "other_awards_label", "other_awards_omitted",
   ].sort();
   for (const row of snap.solicitations) assert.deepEqual(Object.keys(row).sort(), rowKeys);
   assert.deepEqual(MONEY_AWARD_LINKS_SOLICITATION_FIELDS, ["request_id", "start_date", "agency_name", "pin", "due_date"]);
@@ -411,7 +415,7 @@ test("a good pull reads counts, then one page of each notice type", async () => 
 
 test("the offline build reads the fixtures through the build entry point", async () => {
   const snap = await buildMoneyAwardLinks({ fixture: true, now: NOW });
-  assert.equal(snap.count, SOL.length);
+  assert.equal(snap.count, SOL.length + read(join(FIXTURE, "nycha_solicitations_raw.json")).length);
   assert.equal(snap.population.state, "complete");
 });
 
@@ -440,7 +444,8 @@ test("committed artifact: consistent with its own rule", { skip: !existsSync(COM
       assert.ok(row.awards.length >= 1 && row.award_count >= row.awards.length, row.request_id);
       for (const award of row.awards) {
         assert.ok(award.award_date >= row.solicitation_date, row.request_id);
-        assert.ok(award.contract_pin && award.request_id, row.request_id);
+        if (award.source === "city_record_award_notices") assert.ok(award.contract_pin && award.request_id, row.request_id);
+        else assert.ok(award.contract_number && award.request_id === null, row.request_id);
         if (row.link_basis === "pin_stem") assert.ok(award.contract_pin.startsWith(row.pin), row.request_id);
       }
       if (row.award_count === 1) assert.deepEqual(row.linked_award, row.awards[0]);
