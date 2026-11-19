@@ -1,0 +1,31 @@
+{
+ "schema": "cityscroll.agency_history_open_agencies_fixture.v1",
+ "source": "printed agency_name values from the open City Record solicitation list",
+ "retrieved_at": "2026-11-17T09:52:50.219Z",
+ "fetch_started": "2026-11-17T09:52:49Z",
+ "fetch_finished": "2026-11-17T09:52:50Z",
+ "open_notices": 198,
+ "agencies_by_printed_name": {
+  "Brooklyn Navy Yard Development Corp.": 2,
+  "City University": 1,
+  "Citywide Administrative Services": 21,
+  "Correction": 1,
+  "Dept. of Social Svcs/Human Resources Administration": 1,
+  "Design and Construction": 45,
+  "District Attorney - New York County": 1,
+  "Economic Development Corporation": 1,
+  "Education": 20,
+  "Environmental Protection": 17,
+  "Health and Mental Hygiene": 34,
+  "Homeless Services": 2,
+  "Housing Authority": 14,
+  "Housing Preservation and Development": 1,
+  "Human Resources Administration": 1,
+  "Information Technology and Telecommunications": 1,
+  "NYC Health + Hospitals": 13,
+  "Parks and Recreation": 15,
+  "Sanitation": 1,
+  "Teachers' Retirement System": 2,
+  "Transportation": 4
+ }
+}
