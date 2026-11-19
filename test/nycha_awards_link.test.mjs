@@ -42,6 +42,7 @@ import {
 } from "../tools/lib/money_award_links.mjs";
 import { buildMoneyAwardLinks, readNychaSnapshot } from "../tools/build_money_award_links.mjs";
 import { runAcquisition } from "../tools/acquire_nycha_awarded_contracts.mjs";
+import { withTempDir } from "../tools/lib/with_temp_dir.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FIXTURE = join(ROOT, "test", "fixtures", "award-links");
@@ -253,20 +254,20 @@ test("with no earlier snapshot a failed pull throws and nothing is written", asy
     () => acquireNychaAwardedContracts({ fetchImpl: html, now: NOW, previous: null, ...noSleep }),
     /feed_not_json.*no earlier snapshot/,
   );
-  const { mkdtemp, readdir } = await import("node:fs/promises");
-  const { tmpdir } = await import("node:os");
-  const dir = await mkdtemp(join(tmpdir(), "nycha-"));
-  const out = join(dir, "snapshot.json");
-  await assert.rejects(() => runAcquisition({ out, fetchImpl: html, now: NOW, ...noSleep }));
-  assert.deepEqual(await readdir(dir), []);
-  const ok = await runAcquisition({ out, fetchImpl: fixtureFetch(), now: NOW, ...noSleep });
-  assert.equal(ok.snapshot.feed.state, "live");
-  assert.deepEqual(read(out), SNAP);
-  // a second run that fails keeps the rows and records the fallback in the same file
-  const second = await runAcquisition({ out, fetchImpl: html, now: new Date("2026-11-18T06:40:00Z"), ...noSleep });
-  assert.equal(second.snapshot.feed.state, "snapshot_fallback");
-  assert.equal(read(out).feed.fallback_reason, "feed_not_json");
-  assert.deepEqual(read(out).rows, SNAP.rows);
+  const { readdir } = await import("node:fs/promises");
+  await withTempDir("nycha-awarded-contracts-", async (dir) => {
+    const out = join(dir, "snapshot.json");
+    await assert.rejects(() => runAcquisition({ out, fetchImpl: html, now: NOW, ...noSleep }));
+    assert.deepEqual(await readdir(dir), []);
+    const ok = await runAcquisition({ out, fetchImpl: fixtureFetch(), now: NOW, ...noSleep });
+    assert.equal(ok.snapshot.feed.state, "live");
+    assert.deepEqual(read(out), SNAP);
+    // a second run that fails keeps the rows and records the fallback in the same file
+    const second = await runAcquisition({ out, fetchImpl: html, now: new Date("2026-11-18T06:40:00Z"), ...noSleep });
+    assert.equal(second.snapshot.feed.state, "snapshot_fallback");
+    assert.equal(read(out).feed.fallback_reason, "feed_not_json");
+    assert.deepEqual(read(out).rows, SNAP.rows);
+  });
 });
 
 test("a fallback snapshot older than the age limit is not used to say a notice is absent", () => {
