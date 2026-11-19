@@ -1,16 +1,16 @@
 {
   "schema": "cityscroll.organization_index.v1",
-  "generation": "7a60ebe7b37b26c1",
+  "generation": "bd1e7a27d29a7082",
   "stem_method": "vendor_stem_v1",
   "built_from": "committed artifacts",
-  "entry_count": 160869,
+  "entry_count": 161004,
   "withheld_published_names": 1,
   "notes": [
     "1 published record name is withheld for a privacy rule."
   ],
-  "contributions": 277650,
+  "contributions": 277945,
   "contributions_without_stem": 1452,
-  "identifier_count": 154765,
+  "identifier_count": 154874,
   "sources": [
     {
       "id": "ocp_recent_contract_awards",
@@ -38,10 +38,10 @@
       "has_amounts": true,
       "receipt": {
         "path": "site/data/analytics_registered_contracts/shard-*.json",
-        "rows": 29731,
-        "collected_at": "2026-11-14T13:54:05.893Z"
+        "rows": 29872,
+        "collected_at": "2026-11-19T16:06:47.582Z"
       },
-      "entries": 8396
+      "entries": 8435
     },
     {
       "id": "passport_contracts",
@@ -54,7 +54,7 @@
       "receipt": {
         "path": "site/data/procurement_spine_sources.json rows.passport_contracts",
         "rows": 12795,
-        "collected_at": "2026-11-14T13:54:05.893Z"
+        "collected_at": "2026-11-19T16:06:47.582Z"
       },
       "entries": 3681
     },
@@ -68,10 +68,10 @@
       "has_amounts": false,
       "receipt": {
         "path": "site/data/procurement_spine_sources.json rows.checkbook_contracts",
-        "rows": 10609,
-        "collected_at": "2026-11-14T13:54:05.893Z"
+        "rows": 10637,
+        "collected_at": "2026-11-19T16:06:47.582Z"
       },
-      "entries": 4635
+      "entries": 4666
     },
     {
       "id": "checkbook_nycha_contracts",
@@ -84,7 +84,7 @@
       "receipt": {
         "path": "site/data/procurement_spine_sources.json rows.checkbook_nycha_contracts",
         "rows": 1,
-        "collected_at": "2026-11-14T13:54:05.893Z"
+        "collected_at": "2026-11-19T16:06:47.582Z"
       },
       "entries": 1
     },
@@ -99,7 +99,7 @@
       "receipt": {
         "path": "site/data/procurement_spine_sources.json rows.checkbook_spending",
         "rows": 31,
-        "collected_at": "2026-11-14T13:54:05.893Z"
+        "collected_at": "2026-11-19T16:06:47.582Z"
       },
       "entries": 17
     },
@@ -147,7 +147,7 @@
       "receipt": {
         "path": "site/data/irs_eo_bmf_ny/manifest.json",
         "rows": 125622,
-        "collected_at": "2026-11-12T12:00:00.000Z"
+        "collected_at": "2026-11-19T16:47:32.303Z"
       },
       "entries": 112061
     },
@@ -161,10 +161,10 @@
       "has_amounts": false,
       "receipt": {
         "path": "site/data/nys_dol_contractor_registry/manifest.json",
-        "rows": 15193,
-        "collected_at": "2026-11-12T12:00:00.000Z"
+        "rows": 15298,
+        "collected_at": "2026-11-19T16:47:39.305Z"
       },
-      "entries": 17333
+      "entries": 17458
     },
     {
       "id": "nyc_sca_prequalified_firms",
@@ -176,10 +176,10 @@
       "has_amounts": false,
       "receipt": {
         "path": "site/data/nyc_sca_prequalified_firms/manifest.json",
-        "rows": 2178,
-        "collected_at": "2026-11-12T12:00:00.000Z"
+        "rows": 2182,
+        "collected_at": "2026-11-19T16:47:34.808Z"
       },
-      "entries": 2178
+      "entries": 2182
     }
   ],
   "limits": {
@@ -195,8 +195,8 @@
   ],
   "stems": {
     "path": "data/organization_index/stems.json",
-    "bytes": 5848149,
-    "sha256": "3bfe3d8aebbfd0e19c19c62c6ea4d637d4b2ba65faacb8594694dfd4335656ed"
+    "bytes": 5852127,
+    "sha256": "b104942fc783b5cee5b72a565068b82304cc9ffc1f2870b5e4cbc6c12b89df22"
   },
   "entry_shards": [
     {
@@ -204,1407 +204,1407 @@
       "first_ordinal": 0,
       "entries": 1786,
       "first_stem": "(THE) LAKE GROVE SCHOOL",
-      "last_stem": "A AND L DOORS AND HARDWARE LLC QUANTUM SECURITY SYSTEMS",
-      "bytes": 262015,
-      "sha256": "5c4784f16a62aa8e8048eda732bc9ff3edaa26cf3dc7f23b76e49ab4ce7d13f3"
+      "last_stem": "A AND J CONSTRUCTION",
+      "bytes": 262050,
+      "sha256": "99305b45669fb998786d4d7d36f58158078b75d761aafb5f92d125350cba584e"
     },
     {
       "path": "data/organization_index/entries-001.json",
       "first_ordinal": 1786,
-      "entries": 1643,
-      "first_stem": "A AND M GLOBAL ENTERPRISES",
-      "last_stem": "ACTION COMMERCIAL SERVICE",
-      "bytes": 261888,
-      "sha256": "51ac0c48246b2cee928b7e527da094db266dfb6b4c64e20f25056bddbc541f9e"
+      "entries": 1644,
+      "first_stem": "A AND J SERENITY FUND",
+      "last_stem": "ACTION CARTING ENVIORNMENT SERVICES",
+      "bytes": 261413,
+      "sha256": "27d0133279c88dde973c9b32616ed658d0004a11597e9e8471cdd67ea99072d1"
     },
     {
       "path": "data/organization_index/entries-002.json",
-      "first_ordinal": 3429,
+      "first_ordinal": 3430,
       "entries": 1680,
-      "first_stem": "ACTION ELEVATOR",
-      "last_stem": "AIM HIGH LEADERSHIP CENTER THREE",
-      "bytes": 262089,
-      "sha256": "db896b5341ff4bce588f4822ef71c7c59dbe43eaf33b2f407db7fe05e105976d"
+      "first_stem": "ACTION CARTING ENVIRONMENTAL SERVICES",
+      "last_stem": "AIM",
+      "bytes": 262088,
+      "sha256": "844be2db0850adcfd7276fc67f18b0d40bbbb415c6d2eea186a10d301d9578e3"
     },
     {
       "path": "data/organization_index/entries-003.json",
-      "first_ordinal": 5109,
-      "entries": 1686,
-      "first_stem": "AIM HIGH LEADERSHIP CENTER TOO",
-      "last_stem": "ALLIED VETERANS MEMORIAL COMMITTEE OF RIDGEWOOD AND GLENDALE",
-      "bytes": 262005,
-      "sha256": "11b3854d285d893b7096bd0fd2bb6663af241420b203620ddc0bc7c81f9e39d9"
+      "first_ordinal": 5110,
+      "entries": 1689,
+      "first_stem": "AIM AUTISM",
+      "last_stem": "ALLIED PAINTING",
+      "bytes": 261730,
+      "sha256": "9d69119e142e91e8d7dc94df0a6596975500a6b780fde7d819244e328acfda89"
     },
     {
       "path": "data/organization_index/entries-004.json",
-      "first_ordinal": 6795,
-      "entries": 1475,
-      "first_stem": "ALLIED VETERANS MEMORIAL COMMITTEE OF RIDGEWOOD GLENDALE NY",
-      "last_stem": "AMERICAN FRIENDS OF OHEL YOAV AND PNINA",
-      "bytes": 262038,
-      "sha256": "e3fedc51bb62e172f49726cc85e2d403c10661d5aa3927269b527e4426bfbb53"
+      "first_ordinal": 6799,
+      "entries": 1466,
+      "first_stem": "ALLIED PERSONNEL SERVICES",
+      "last_stem": "AMERICAN FRIENDS OF NEFESH DOVID",
+      "bytes": 262020,
+      "sha256": "d2a6b8e08086989f7426e58629fec36185e550602c8b19967386fa6870085aef"
     },
     {
       "path": "data/organization_index/entries-005.json",
-      "first_ordinal": 8270,
-      "entries": 1551,
-      "first_stem": "AMERICAN FRIENDS OF OHEV YISRAEL",
-      "last_stem": "ANGELS HELPERS NYC",
-      "bytes": 262015,
-      "sha256": "25b7c4e044f8fa754f0733825fee841a48dc17b3c1b11434061e124279db46d0"
+      "first_ordinal": 8265,
+      "entries": 1549,
+      "first_stem": "AMERICAN FRIENDS OF NEHORA",
+      "last_stem": "ANGELIC KREATIONS",
+      "bytes": 261975,
+      "sha256": "bdd16b2887ee09fbb4f88ae941616310afa7329ea578b96d4a3c81f0cc1c283b"
     },
     {
       "path": "data/organization_index/entries-006.json",
-      "first_ordinal": 9821,
-      "entries": 1670,
-      "first_stem": "ANGELS HOLYSTIC HEALING",
-      "last_stem": "ART STORY FOUNDATION",
-      "bytes": 262098,
-      "sha256": "ecb25555b2ee493982484ff5475bb64ecc23e1362db152218493f2a323b10689"
+      "first_ordinal": 9814,
+      "entries": 1668,
+      "first_stem": "ANGELIC WORLD MISSIONS FOUNDATION",
+      "last_stem": "ART OF CANTONESE OPERA ASSOCIATION",
+      "bytes": 262072,
+      "sha256": "a5e124e6440a9b3bd3cb3572d9074fdf2002417db31458108343166ad88c448e"
     },
     {
       "path": "data/organization_index/entries-007.json",
-      "first_ordinal": 11491,
-      "entries": 1622,
-      "first_stem": "ART STUDENTS LEAGUE",
-      "last_stem": "ATTORNEYS WITH SWAG",
-      "bytes": 261932,
-      "sha256": "bf26d5efc67171b87f9046e5a921adfcf69570466a7c916eef8042a20995d0bd"
+      "first_ordinal": 11482,
+      "entries": 1629,
+      "first_stem": "ART OF ENTERTAINMENT MEDIA",
+      "last_stem": "ATTACHMATE",
+      "bytes": 261998,
+      "sha256": "5b48d177bbfc8649302dfea53e7703609909947e300282a96a0f4514f0457a98"
     },
     {
       "path": "data/organization_index/entries-008.json",
-      "first_ordinal": 13113,
+      "first_ordinal": 13111,
       "entries": 1722,
-      "first_stem": "ATTRI ENTERPRISES",
-      "last_stem": "BARBARA THAYER P E ARCH LANDSCAPE ARCHITECTURE L S P C D/B/A B THAYER ASSOCIATES",
-      "bytes": 261990,
-      "sha256": "e7f012e560ac9ab9274da22ba7aa8f4b2ecbb62202eb8966a4d3c5d320971aa4"
+      "first_stem": "ATTAINABLE FERTILITY FOUNDATION",
+      "last_stem": "BARBARA A JANOWITZ",
+      "bytes": 262045,
+      "sha256": "3cbe34944a8f5a6e07391d2c50ab4f619a1a06eb5cb5648c878c8f88fe34a8a2"
     },
     {
       "path": "data/organization_index/entries-009.json",
-      "first_ordinal": 14835,
-      "entries": 1717,
-      "first_stem": "BARBARA THAYER PE ARCH LANDSCAPE ARCHITECTURE LS D",
-      "last_stem": "BEREAVED PARENTS OF THE",
-      "bytes": 262074,
-      "sha256": "ee703991124eed8d956d85b53844cbc32c67830d8bb2958f544b2bf4268ce353"
+      "first_ordinal": 14833,
+      "entries": 1715,
+      "first_stem": "BARBARA A SHORNICK",
+      "last_stem": "BENZAQUEN FOUNDATION",
+      "bytes": 262071,
+      "sha256": "377a0f6bb26cb925f24506de0ab2e760b116b1a9b2249de17788873ebbdb7775"
     },
     {
       "path": "data/organization_index/entries-010.json",
-      "first_ordinal": 16552,
-      "entries": 1767,
-      "first_stem": "BEREGSZAZI CONSULTING SERVICES",
-      "last_stem": "BLACK RECONSTRUCTION COLLECTIVE",
-      "bytes": 262070,
-      "sha256": "2ff8ea8c3c14f85c2eb5eb2cc9142548d64ff1d1bc954da3050ac0bd3609ed91"
+      "first_ordinal": 16548,
+      "entries": 1764,
+      "first_stem": "BENZI GOODRICH DEVELOPMENT GROUP",
+      "last_stem": "BLACK LATINX ASIAN CHARTER COLLABORATIVE",
+      "bytes": 262103,
+      "sha256": "2cf919036b65b9679de28f0485a8dfc0ac818cb44202ad49bd9a6780f493afa2"
     },
     {
       "path": "data/organization_index/entries-011.json",
-      "first_ordinal": 18319,
-      "entries": 1701,
-      "first_stem": "BLACK RETAIL ACTION GROUP",
-      "last_stem": "BRC LANDING ROAD I HOUSING DEVELOPMENT FUND",
-      "bytes": 262086,
-      "sha256": "f0da68370794a1d1814c55f14f3d2dfce744ad21bc7ccc03489cdd031e6bcb4f"
+      "first_ordinal": 18312,
+      "entries": 1704,
+      "first_stem": "BLACK LEADERSHIP ACTION COALITION",
+      "last_stem": "BRAVO CONSTRUCTION NY",
+      "bytes": 261909,
+      "sha256": "a715c4d2bdeb4fffba6331efbcafded70f6d733101cf67c7988c93ec43ba3272"
     },
     {
       "path": "data/organization_index/entries-012.json",
-      "first_ordinal": 20020,
-      "entries": 1581,
-      "first_stem": "BRC LANDING ROAD II",
-      "last_stem": "BROOKLYN URBAN GARDEN CHARTER SCHOOL PTA",
-      "bytes": 262058,
-      "sha256": "37f352ca16ab637f844fc42dd79f460173207b93c14e34c4ee7a1f65506931f7"
+      "first_ordinal": 20016,
+      "entries": 1582,
+      "first_stem": "BRAVO CONTRACTING",
+      "last_stem": "BROOKLYN SUNDAY SCHOOL UNION",
+      "bytes": 261910,
+      "sha256": "80898b33351116335bcc170e8367f5e32d8acc7f2272ebc486c8e7b83e3c9f30"
     },
     {
       "path": "data/organization_index/entries-013.json",
-      "first_ordinal": 21601,
-      "entries": 1720,
-      "first_stem": "BROOKLYN USA ATHLETIC ASSOCIATION",
-      "last_stem": "CABORCA",
-      "bytes": 261747,
-      "sha256": "5a57d34ab7f7d4d939c1956477394c5f503340964c945f80ec1fd88bcef2ffde"
+      "first_ordinal": 21598,
+      "entries": 1723,
+      "first_stem": "BROOKLYN SUNSET PARK LIONS CLUB",
+      "last_stem": "CA",
+      "bytes": 262040,
+      "sha256": "160893b21089c3158837ac2a0747ef1feac44b6d2ffa34116a829de4ece48d4f"
     },
     {
       "path": "data/organization_index/entries-014.json",
       "first_ordinal": 23321,
-      "entries": 1729,
-      "first_stem": "CABRAL ENTERPRISES",
-      "last_stem": "CARROLL FOUNDATION NY",
-      "bytes": 262089,
-      "sha256": "270d1bc2e4263c1ffd49608a66fd2a79dbaac8bd008b655bfd83c846585c88ec"
+      "entries": 1724,
+      "first_stem": "CA - SUPPORTING FUND",
+      "last_stem": "CARPENTERS LOCAL UNION 157 SCHOLARSHIP FUND",
+      "bytes": 262052,
+      "sha256": "250a365aa9d3e7665f7b4d9e7673fc13a60b45a5126d6cde27e54c26444f77c3"
     },
     {
       "path": "data/organization_index/entries-015.json",
-      "first_ordinal": 25050,
-      "entries": 1566,
-      "first_stem": "CARROLL GARDENS ASSOC",
-      "last_stem": "CENTRAL HOME SYSTEMS",
-      "bytes": 262011,
-      "sha256": "82191af4db729f26c7c8e61b3a1db6e89eada9981beaa30e56e197cec80473ae"
+      "first_ordinal": 25045,
+      "entries": 1575,
+      "first_stem": "CARPENTRY MILLWORK",
+      "last_stem": "CENTRAL CHAIN LINK",
+      "bytes": 262019,
+      "sha256": "7a975d44a323257c5575f6f93ddf265077088925a636d1c9c41e6f35cee40cc5"
     },
     {
       "path": "data/organization_index/entries-016.json",
-      "first_ordinal": 26616,
-      "entries": 1760,
-      "first_stem": "CENTRAL HOUSING DEVELOPMENT FUND",
-      "last_stem": "CHENANGO COUNTY HISTORICAL SOCIETY",
-      "bytes": 262061,
-      "sha256": "b80e22c3f6465673163b5e4df34dcd6e98a2f2a8cc649bbb782463057ad2e2c9"
+      "first_ordinal": 26620,
+      "entries": 1745,
+      "first_stem": "CENTRAL CHARITY INSTITUTE",
+      "last_stem": "CHEMTECH CONSULTING GROUP",
+      "bytes": 261796,
+      "sha256": "a8093838c45cfae64d6527671de63cf1bb0c2f89f351d3a48a72498a1e74bd75"
     },
     {
       "path": "data/organization_index/entries-017.json",
-      "first_ordinal": 28376,
-      "entries": 1742,
-      "first_stem": "CHENANGO COUNTY MEDICAL SOCIETY THE OTSEGO COUNTY MEDICAL SOCIETY",
-      "last_stem": "CHURCH OF INFINITE SPIRIT",
-      "bytes": 262017,
-      "sha256": "12b50e3e701126e6836f0b9a2e67573d4d1a36070ad9caef21fdadb09de60e2b"
+      "first_ordinal": 28365,
+      "entries": 1745,
+      "first_stem": "CHEMTRADE CHEMICALS US",
+      "last_stem": "CHURCH OF GOD OF PROPHECY AT WALTON AVENUE BRONX NY",
+      "bytes": 262048,
+      "sha256": "83c3de9e1237133cb9453bf294997d9694e954ac132d493134f7031d39492270"
     },
     {
       "path": "data/organization_index/entries-018.json",
-      "first_ordinal": 30118,
-      "entries": 1572,
-      "first_stem": "CHURCH OF JERSUALEM OF CHRIST",
-      "last_stem": "CLUB MANAGEMENT ASSOCIATION OF AMERICA THE NEW YORK STATE CHAPTER",
-      "bytes": 262113,
-      "sha256": "8da670ebc09e9087d4f5939c30eca74636785d20afe578eac79c1d6418838148"
+      "first_ordinal": 30110,
+      "entries": 1571,
+      "first_stem": "CHURCH OF GOD OF PROPHECY BIBLE",
+      "last_stem": "CLOVER FARMS DAIRY",
+      "bytes": 262091,
+      "sha256": "22547b79e87bb165e19c72c2a353f159ffd1e6c8bb775181e05a7b5312992e54"
     },
     {
       "path": "data/organization_index/entries-019.json",
-      "first_ordinal": 31690,
-      "entries": 1607,
-      "first_stem": "CLUB MANAGERS OF THE CITY",
-      "last_stem": "COMMUNITY OF DIVINE PROVIDENCE",
-      "bytes": 262109,
-      "sha256": "68069cc48fa7011f6c9b8533baba796ff7fdff977b7c7d3cc311baa3c8e3ce51"
+      "first_ordinal": 31681,
+      "entries": 1613,
+      "first_stem": "CLOVER FOUNDATION",
+      "last_stem": "COMMUNITY LIBRARY",
+      "bytes": 262067,
+      "sha256": "1575ed29959c27c6021fa2adcdc2900e538018391a115a970a7b03c0cf187f1c"
     },
     {
       "path": "data/organization_index/entries-020.json",
-      "first_ordinal": 33297,
-      "entries": 1843,
-      "first_stem": "COMMUNITY OF FAITH FAMILY WORSHIPCENTER",
-      "last_stem": "CONGREGATION BETH TORAH",
-      "bytes": 262031,
-      "sha256": "e862f35eff418a147eae6361f89d14628f92826f1abd3315a522a51ea298d449"
+      "first_ordinal": 33294,
+      "entries": 1834,
+      "first_stem": "COMMUNITY LIBRARY FRIENDS OF THE ARTS",
+      "last_stem": "CONGREGATION BETH EMETH",
+      "bytes": 262022,
+      "sha256": "c32f8a0697a70b965a0583c45286f97948ca9c526fe2a2439258af7c0340e645"
     },
     {
       "path": "data/organization_index/entries-021.json",
-      "first_ordinal": 35140,
-      "entries": 1846,
-      "first_stem": "CONGREGATION BETH YECHIL",
-      "last_stem": "CONSTABLE TREE SERVICE",
-      "bytes": 262036,
-      "sha256": "b6a4ff3def799e5d48986a986aeb39826d60879f7a3028c4a5d4fef61798b2ee"
+      "first_ordinal": 35128,
+      "entries": 1862,
+      "first_stem": "CONGREGATION BETH GEMILAS CHESED BNEI JACOB",
+      "last_stem": "CONSOLIDATED BUS TRANSIT",
+      "bytes": 261974,
+      "sha256": "c4d25bb2689dc960713ab699dfb9e99e38705f1e04327fb4f4204b65d8c09ecc"
     },
     {
       "path": "data/organization_index/entries-022.json",
-      "first_ordinal": 36986,
-      "entries": 1562,
-      "first_stem": "CONSTABLE VOLUNTEER FIREMEN",
-      "last_stem": "CREATIVE FORCE FOUNDATION",
-      "bytes": 261956,
-      "sha256": "507f1e6b05b1914f00edfc4d61d6ccaaca3d55d001554a43567b4f72d43b5d9e"
+      "first_ordinal": 36990,
+      "entries": 1547,
+      "first_stem": "CONSOLIDATED CHEMICAL CORP TRI-CHEM",
+      "last_stem": "CREATING TOYAS VILLAGE",
+      "bytes": 262083,
+      "sha256": "8d4b15d1f3a3785ed883d5720cb26f71747b476371c6908037e00024518fcfcd"
     },
     {
       "path": "data/organization_index/entries-023.json",
-      "first_ordinal": 38548,
-      "entries": 1698,
-      "first_stem": "CREATIVE FORM DEVELOPMENT",
-      "last_stem": "DANCE INTO LIGHT",
-      "bytes": 262088,
-      "sha256": "de08b70e7cb36de61afff3ef662f2fee3cfd2af58f01547925f8ca6718e5ca1d"
+      "first_ordinal": 38537,
+      "entries": 1689,
+      "first_stem": "CREATIONBERRY",
+      "last_stem": "DAMIAN FAMILY CARE CENTERS",
+      "bytes": 262089,
+      "sha256": "bfcc5562de6fc423c7857ba272463ea184328242a7d3e96337e47734405e6f94"
     },
     {
       "path": "data/organization_index/entries-024.json",
-      "first_ordinal": 40246,
-      "entries": 1680,
-      "first_stem": "DANCE LAB NYC",
-      "last_stem": "DESTINYS AFRICAN NATION CHURCH",
-      "bytes": 261968,
-      "sha256": "0b80b070353a8d605e88e80a58429d127ace5e76dddcc488dc72a2b9fa51f6fd"
+      "first_ordinal": 40226,
+      "entries": 1688,
+      "first_stem": "DAMIAN P MEEHAN MEMORIAL FUND",
+      "last_stem": "DESIGNGIVERS",
+      "bytes": 262092,
+      "sha256": "019ebd1b9a99dde5e4aa742b36cd79349a692fb5d1421d3378fd4867c98f4187"
     },
     {
       "path": "data/organization_index/entries-025.json",
-      "first_ordinal": 41926,
-      "entries": 1696,
-      "first_stem": "DESTINYS EXTRA CHROMOSOME DAMOUR FOUNDATION",
-      "last_stem": "DOVER DRAGONS CLAY TARGET TEAM",
-      "bytes": 262090,
-      "sha256": "66cb778b73121080ffe7d58b8dc3fe58c19452ec642cd4bd2f55e1fd4d402de2"
+      "first_ordinal": 41914,
+      "entries": 1691,
+      "first_stem": "DESIGNING SUCCESS",
+      "last_stem": "DOUBLE PORTION MINISTRIES",
+      "bytes": 261934,
+      "sha256": "f20140791cd4c40f6923f56e798b323f4e05c19af9f4f601bfdb489f439fefdf"
     },
     {
       "path": "data/organization_index/entries-026.json",
-      "first_ordinal": 43622,
-      "entries": 1698,
-      "first_stem": "DOVER ENVIRONMENTAL GROUP",
-      "last_stem": "EAST ROCKAWAY FIRE DEPARTMENT",
-      "bytes": 262044,
-      "sha256": "1270e98eae6e37b1b36ac899aac074aaede11548b66631e9400993fe49383390"
+      "first_ordinal": 43605,
+      "entries": 1707,
+      "first_stem": "DOUBLE R CONSTRUCTION",
+      "last_stem": "EAST NEW YORK URBAN YOUTH",
+      "bytes": 262099,
+      "sha256": "7c06beb6bb88e7c54636118418c5126aa9bc091826c5fe23b12664f65387ee50"
     },
     {
       "path": "data/organization_index/entries-027.json",
-      "first_ordinal": 45320,
-      "entries": 1680,
-      "first_stem": "EAST ROCKAWAY RAIDERS ATHLETIC ASSOCIATION",
-      "last_stem": "ELIM RESTORATION CHURCH OF GOD",
-      "bytes": 262052,
-      "sha256": "992f34a84cdf49cafe7e25283bd01b88af9d7e91ee35bc0e9c95b7c727ff80d4"
+      "first_ordinal": 45312,
+      "entries": 1668,
+      "first_stem": "EAST NEW YORK URBAN YOUTH CORP HDFC",
+      "last_stem": "ELEVEN AND B HOUSING DEVELOPMENT FUND",
+      "bytes": 262067,
+      "sha256": "98181145c619b8382393c2f74fd4db4c2dc4db155eeab4e779f0cff558e0fa05"
     },
     {
       "path": "data/organization_index/entries-028.json",
-      "first_ordinal": 47000,
-      "entries": 1638,
-      "first_stem": "ELIM SENIOR DAY",
-      "last_stem": "ENVIRONMENTAL SYSTEMS RESEARCH INSTITUTE",
-      "bytes": 262042,
-      "sha256": "f3dcf4d8c40ff64cf9023fc3aa46757d2879afedac619e3a2b740862b7ccd105"
+      "first_ordinal": 46980,
+      "entries": 1665,
+      "first_stem": "ELEVEN BY LOUISE",
+      "last_stem": "ENVIRONMENTAL DEFENSE INITIATIVE",
+      "bytes": 262001,
+      "sha256": "308d801ef1b0a25fb85f82bce17ecc79f3857904ce208c6710cf679ab638db5e"
     },
     {
       "path": "data/organization_index/entries-029.json",
-      "first_ordinal": 48638,
-      "entries": 1700,
-      "first_stem": "ENVIRONMENTAL SYSTEMS RESEARCH INSTITUTE (ESRI)",
-      "last_stem": "FACES NY",
-      "bytes": 262004,
-      "sha256": "c4b5569e9502c05a645740f795b76a298be42009dd9ae6867ea144086f8a366a"
+      "first_ordinal": 48645,
+      "entries": 1683,
+      "first_stem": "ENVIRONMENTAL DESIGN RESEARCH (EDR)",
+      "last_stem": "F1S HELPS",
+      "bytes": 262087,
+      "sha256": "78c84c9a7577418e691c1e11655ce319cb1b234cf72387ea6136a8d9290c173d"
     },
     {
       "path": "data/organization_index/entries-030.json",
-      "first_ordinal": 50338,
-      "entries": 1694,
-      "first_stem": "FACES OF CHANGE FOUNDATION",
-      "last_stem": "FINEST CESSPOOL SEWER DRAIN",
-      "bytes": 262086,
-      "sha256": "cc3b991145bb203fd8bf4cae243c72b4af850f801aa223e2bbf8bdc87498ba51"
+      "first_ordinal": 50328,
+      "entries": 1698,
+      "first_stem": "F2 OWNER",
+      "last_stem": "FINALLY HOME-A SANCTUARY FOR ANIMALS",
+      "bytes": 262111,
+      "sha256": "31daf9ff25f0997ad1bef343a97c3aae75175518df8cf2211997980ed5a65a0b"
     },
     {
       "path": "data/organization_index/entries-031.json",
-      "first_ordinal": 52032,
-      "entries": 1706,
-      "first_stem": "FINEST CHRISTIAN FOUNDATION",
-      "last_stem": "FORK AND SPOON",
-      "bytes": 262015,
-      "sha256": "1e6a4043910ec7cf0deff3b58e16ea3d6b92d4bfe3b89886b3d0f1661129e2df"
+      "first_ordinal": 52026,
+      "entries": 1698,
+      "first_stem": "FINALY GENERAL CONTRACTING",
+      "last_stem": "FOREST RANGER SCHOLARSHIP FOUNDATION",
+      "bytes": 262046,
+      "sha256": "e5263c1a0461f41cdcede8e7d9e64ac8f9c75716d33ce3cbdb9397ff0887aa10"
     },
     {
       "path": "data/organization_index/entries-032.json",
-      "first_ordinal": 53738,
-      "entries": 1699,
-      "first_stem": "FORKS SPORTMENS CLUB",
-      "last_stem": "FRIENDS OF COLONIE TOWN PARK TRAILS",
-      "bytes": 261987,
-      "sha256": "98d5c8ff3b31b219bbcf92ceaa06d4cb7fe19e38807d7cdd6d6675f03d9a77e3"
+      "first_ordinal": 53724,
+      "entries": 1694,
+      "first_stem": "FOREST RIDGE COMMUNITY CLUB",
+      "last_stem": "FRIENDS OF CASTLE BRIDGE",
+      "bytes": 262097,
+      "sha256": "d90cfbf98f14dfdd73cce9a5413a8c0a8026716cf3d28916423181f8fa65251d"
     },
     {
       "path": "data/organization_index/entries-033.json",
-      "first_ordinal": 55437,
-      "entries": 1769,
-      "first_stem": "FRIENDS OF COLUMBIA CROSS COUNTRY TRACK AND FIELD",
-      "last_stem": "FUNDACION MONUMENTO VIVIENTE DE NUEVA YORK",
-      "bytes": 262055,
-      "sha256": "b7ed7b4d506bc98ecfef840742397333000b0494a5954a7ad37c1d168493de5d"
+      "first_ordinal": 55418,
+      "entries": 1784,
+      "first_stem": "FRIENDS OF CATHOLIC DIOCESE OF JAGDALPUR",
+      "last_stem": "FUND FOR PARK AVENUE NEW YORK",
+      "bytes": 262006,
+      "sha256": "f8a9eb8cf75b1d5e5d397c0ddc44d47a80cc19a12af2e27f3f5867b9c7990ee9"
     },
     {
       "path": "data/organization_index/entries-034.json",
-      "first_ordinal": 57206,
-      "entries": 1686,
-      "first_stem": "FUNDACION OJOS UNIDOS",
-      "last_stem": "GEORGE HARDY APARTMENTS",
-      "bytes": 261986,
-      "sha256": "822fd399183790ffae029f9a2cbc4da4cfb09170675795a305f9f781e17cbf33"
+      "first_ordinal": 57202,
+      "entries": 1678,
+      "first_stem": "FUND FOR POLICY REFORM",
+      "last_stem": "GEOFFREY M FREEMAN FOUNDATION",
+      "bytes": 262064,
+      "sha256": "d58cd2c2a77fac137b528f2b1bcf73a2f9853c7ea9caed2406d78a424239a1b3"
     },
     {
       "path": "data/organization_index/entries-035.json",
-      "first_ordinal": 58892,
-      "entries": 1746,
-      "first_stem": "GEORGE HARTSHORN PAVING",
-      "last_stem": "GOLDEN PLAN PROPERTY MANAGEMNET",
-      "bytes": 261998,
-      "sha256": "1b802b2479c091f608455379c9fec4f021dc4cb62ce3dc740b42352ed53cef39"
+      "first_ordinal": 58880,
+      "entries": 1740,
+      "first_stem": "GEOGRAPHIC INFORMATION SHARINGSPECIAL INTEREST GROUP",
+      "last_stem": "GOIMEL TOV",
+      "bytes": 261980,
+      "sha256": "7c238bd5749926516ed9dac7ab92ce0fefd26bbe054d3bc448aefce27e7c1263"
     },
     {
       "path": "data/organization_index/entries-036.json",
-      "first_ordinal": 60638,
-      "entries": 1654,
-      "first_stem": "GOLDEN PLATTER",
-      "last_stem": "GREATER ST JOHNS BAPTIST CHURCH",
-      "bytes": 262062,
-      "sha256": "3749c66e397f4b76bf0687c859b590546f8d2a90318ce955926fbd3145fa38bd"
+      "first_ordinal": 60620,
+      "entries": 1662,
+      "first_stem": "GOING BEYOND THE COUCH",
+      "last_stem": "GREATER OWEGO SWIM TEAM",
+      "bytes": 261999,
+      "sha256": "7a43bb2a467e3dcd8e5225664b40f8e08357ed4679fc80eeae1c11f9433f67af"
     },
     {
       "path": "data/organization_index/entries-037.json",
-      "first_ordinal": 62292,
-      "entries": 1731,
-      "first_stem": "GREATER ST JOHNS COMMUNITY CHURCH",
-      "last_stem": "HALLETTS POINT BUILDING 7 SPE",
-      "bytes": 262030,
-      "sha256": "7988baf6e2f6d4a83da157a608df32ba3bae95c545b5ad875741871181ed8f77"
+      "first_ordinal": 62282,
+      "entries": 1722,
+      "first_stem": "GREATER PATCHOGUE CHAMBER OF COMMERCE",
+      "last_stem": "HAKS-WEIDLINGER JV",
+      "bytes": 262064,
+      "sha256": "3dc228e19c3e4ac623d1cb69e77aeb83e1cce43fd9f3b36ea94aad9bb92e6d13"
     },
     {
       "path": "data/organization_index/entries-038.json",
-      "first_ordinal": 64023,
-      "entries": 1726,
-      "first_stem": "HALLINGS HAULING",
-      "last_stem": "HEARING LOOPS UNLIMITED",
-      "bytes": 262073,
-      "sha256": "b4b9e0d3cee6b806b13b10a57a47589f6c10c4a025019f3b3a5a4dcea3cb9bf0"
+      "first_ordinal": 64004,
+      "entries": 1732,
+      "first_stem": "HAKS/D AND B/WASHINGTON GROUP JV C/O HAKS ENGINEERS",
+      "last_stem": "HEALTHCARE INDUSTRY GRANT",
+      "bytes": 262088,
+      "sha256": "5ba19bf9069ecc004355903800d0f7d86b79040fcb6dbad80575ca4b4b8b00e9"
     },
     {
       "path": "data/organization_index/entries-039.json",
-      "first_ordinal": 65749,
-      "entries": 1703,
-      "first_stem": "HEARING LOSS ASSOCIATION OF AMERICA",
-      "last_stem": "HINDU HERITAGE SUMMER CAMP",
-      "bytes": 262111,
-      "sha256": "269aa7c7d4e7dcb3c488e008146288efb0390a4e8f43fd2c9fe3a35cde803bb8"
+      "first_ordinal": 65736,
+      "entries": 1698,
+      "first_stem": "HEALTHCARE INFORMATION XCHANGE",
+      "last_stem": "HILLSPRING COMMUNITY PARTNERS",
+      "bytes": 261983,
+      "sha256": "346fc1588799f9a4ce792666a00ede6bb8cb5b60207186c6b42c8e945571db2e"
     },
     {
       "path": "data/organization_index/entries-040.json",
-      "first_ordinal": 67452,
-      "entries": 1741,
-      "first_stem": "HINDU LEARNING FOUNDATION",
-      "last_stem": "HOWARD AND ALLISON LUTNICK FOUNDATION",
-      "bytes": 262026,
-      "sha256": "ab696b0073647f70327af2105d530c706de179c38e038889efa5e5b827b2fa5f"
+      "first_ordinal": 67434,
+      "entries": 1761,
+      "first_stem": "HILLSTONE CONSTRUCTION SERVICES",
+      "last_stem": "HOUSING OPTIONS AND GERIATRIC ASSOCIATION RESOURCES INC (HOGAR)",
+      "bytes": 261686,
+      "sha256": "757374b9cd1c49098f10f935a33e54a040cb60e6dc9dbb5cb6227e2eb22c759c"
     },
     {
       "path": "data/organization_index/entries-041.json",
-      "first_ordinal": 69193,
-      "entries": 1731,
-      "first_stem": "HOWARD AND BARBARA FARKAS FOUNDATION",
-      "last_stem": "IGLESIA CRISTIANA PENTECOSTAL RECONCILIACION",
-      "bytes": 261993,
-      "sha256": "559f926fd068bc6cbe945e8363efc88f1e098d048dad7d2ed1e42dc835117076"
+      "first_ordinal": 69195,
+      "entries": 1715,
+      "first_stem": "HOUSING OPTIONS GERIATRIC ASSOCIATION RESOURCES",
+      "last_stem": "IGLESIA CRISTIANA BUENAS NUEVAS DE SALVACION",
+      "bytes": 262090,
+      "sha256": "9f74113ec85ab59b7bec8f23dee9efa14a72671a89e091c43059be338b113998"
     },
     {
       "path": "data/organization_index/entries-042.json",
-      "first_ordinal": 70924,
-      "entries": 1645,
-      "first_stem": "IGLESIA CRISTIANA PENTECOSTAL ROMPIENDO LAS CADENAS EN CRISTO",
-      "last_stem": "INNOVATIVE RESILIENCE EAST BROOKLYN VILLAGE",
-      "bytes": 262036,
-      "sha256": "f98c7e063161480d45963b7a90ec18b997a132ea2a875cd3ee9ed591fc8d138b"
+      "first_ordinal": 70910,
+      "entries": 1662,
+      "first_stem": "IGLESIA CRISTIANA CANAAN DEQUEENS",
+      "last_stem": "INNOCORE PRO ELEVATOR",
+      "bytes": 262056,
+      "sha256": "beb941caf41e3021731daff92dacbec10942b59c4b79850670738983dbc22d89"
     },
     {
       "path": "data/organization_index/entries-043.json",
-      "first_ordinal": 72569,
-      "entries": 1441,
-      "first_stem": "INNOVATIVE SIGNAGE SYSTEMS",
-      "last_stem": "IOTA THETA LAMBDA EDUCATION FOUNDATION",
-      "bytes": 261989,
-      "sha256": "21fd2445fd0266648d325b48d564497c499ee0afc3550f324faba3da519046e1"
+      "first_ordinal": 72572,
+      "entries": 1428,
+      "first_stem": "INNOFIN SOLUTIONS",
+      "last_stem": "INVESTMENT DIVERSITY ADVISORY COUNCIL",
+      "bytes": 262025,
+      "sha256": "bcd07f14b708974aaa952beb4fe0578be184d6278ded5e685c45fcf273d45728"
     },
     {
       "path": "data/organization_index/entries-044.json",
-      "first_ordinal": 74010,
-      "entries": 1714,
-      "first_stem": "IOTA XI ALUMNI ASSOCIATION OF ALPHA TAU OMEGA",
-      "last_stem": "JAMES BALDWIN OUTDOOR LEARNING CENTER",
-      "bytes": 262062,
-      "sha256": "9eeab095036178a84fc37effacaaf2e0e1bb3b5e1561da3fdd5bdc25dc510beb"
+      "first_ordinal": 74000,
+      "entries": 1724,
+      "first_stem": "INVESTMENT MANAGEMENT ADVISORY GROUP",
+      "last_stem": "JAMAICA ESTATES ASSOCIATION",
+      "bytes": 261945,
+      "sha256": "5bf8ce201d6c37d42dedaac4816bdf9e89c36096473fb18cf75cf1ea914be1d4"
     },
     {
       "path": "data/organization_index/entries-045.json",
       "first_ordinal": 75724,
-      "entries": 1695,
-      "first_stem": "JAMES BRADLEY PEACE FOUNDATION",
-      "last_stem": "JMWY YOUTH ASSOCIATION EASTERN",
-      "bytes": 262071,
-      "sha256": "7e241c1906928f651c011a673f733d613ede640f657af54ac357d566af6d479c"
+      "entries": 1672,
+      "first_stem": "JAMAICA ESTATES-HOLLISWOOD SOUTH BAYSIDE VOLUNTEER AMBULANCE",
+      "last_stem": "JLKINGDON MECHANICALS",
+      "bytes": 261785,
+      "sha256": "29737973bd75f89bc70c68dc0658a07fd8c7344f2583880abe78e0e18cb9b83f"
     },
     {
       "path": "data/organization_index/entries-046.json",
-      "first_ordinal": 77419,
-      "entries": 1729,
-      "first_stem": "JN ELECTRICAL",
-      "last_stem": "K-LOG",
-      "bytes": 262096,
-      "sha256": "2a459b16c863d533ceda153cea1e9398126f4b2111e88e5e244cbb1f28da5f1e"
+      "first_ordinal": 77396,
+      "entries": 1749,
+      "first_stem": "JLL VALUATION ADVISORY SERVICES",
+      "last_stem": "K K INC RICHMOND CHANDELIER LIGHTING AND ELECTRICAL SUPPLY",
+      "bytes": 261818,
+      "sha256": "804fb68d811afec27e68bdab69a06740bdde339b339756c330a2aff687761f90"
     },
     {
       "path": "data/organization_index/entries-047.json",
-      "first_ordinal": 79148,
-      "entries": 1876,
-      "first_stem": "K-MAC ELECTRIC",
-      "last_stem": "KIM PAWLOWSKI MEMORIAL FUND",
-      "bytes": 262080,
-      "sha256": "272b788164f3313817dd13227b80d7206c36f3a9433cb3a3ac848ff0ef909996"
+      "first_ordinal": 79145,
+      "entries": 1860,
+      "first_stem": "K K INDUSTRIAL WELDERS",
+      "last_stem": "KIDS LIKE CONNOR",
+      "bytes": 262088,
+      "sha256": "0c5120bd18e96df558a4f813e54dee0f6d6e16240bbcf20f049953d38ab6c847"
     },
     {
       "path": "data/organization_index/entries-048.json",
-      "first_ordinal": 81024,
-      "entries": 1710,
-      "first_stem": "KIM S MAINTENANCE SERVICES",
-      "last_stem": "KUNDIMAN",
-      "bytes": 262014,
-      "sha256": "1ac9c27ed7e96a2c7231d8f111d3fb53756437e008829ceed79dee86da63d1f9"
+      "first_ordinal": 81005,
+      "entries": 1718,
+      "first_stem": "KIDS LIKE US AFFILIATES",
+      "last_stem": "KS ENGINEERS",
+      "bytes": 262091,
+      "sha256": "39e79b0af70248a8b09783ff8bb9945a79525618b4686ea73c74fa2d44b23c62"
     },
     {
       "path": "data/organization_index/entries-049.json",
-      "first_ordinal": 82734,
+      "first_ordinal": 82723,
       "entries": 1710,
-      "first_stem": "KUNDLAS CONSULTING GROUP",
-      "last_stem": "LAZRI LAND SURVEYING",
-      "bytes": 262054,
-      "sha256": "ed4f9a1d980fd19b95c77a230fd0936038828541fa839a8f98375fd1175d04f0"
+      "first_stem": "KS ENGINEERS P C",
+      "last_stem": "LAWRENCE C AND ALFHILD O WESTCOTT CHAR TR",
+      "bytes": 262031,
+      "sha256": "e8d29c25489a3501a97cc3a4215a8abca4fa68872a525a1448ea020040a0f94d"
     },
     {
       "path": "data/organization_index/entries-050.json",
-      "first_ordinal": 84444,
-      "entries": 1685,
-      "first_stem": "LB AND J CONSTRUCTION",
-      "last_stem": "LIFT UP A STANDARD MINISTRIES INTERNATIONAL FELLOWSHIP",
-      "bytes": 262051,
-      "sha256": "c5ed0576480026630df0b5106b885941dcdc6f96b57522f635889a12f3ea25f3"
+      "first_ordinal": 84433,
+      "entries": 1674,
+      "first_stem": "LAWRENCE CARE",
+      "last_stem": "LIFE WORSHIP CENTER CHURCH OF GOD OF PROPHECY",
+      "bytes": 262005,
+      "sha256": "e470e58ff09150070eb174c9165f2e7f711f14a95ecdf7eb21a130a0a21f82d8"
     },
     {
       "path": "data/organization_index/entries-051.json",
-      "first_ordinal": 86129,
+      "first_ordinal": 86107,
       "entries": 1661,
-      "first_stem": "LIFT UP HEMI-INC",
-      "last_stem": "LOMBAHE",
-      "bytes": 262037,
-      "sha256": "c8ccba023c041c74c54377311ead91bfb671ad92c1527beb4b844a4593e5dc5a"
+      "first_stem": "LIFE WORSHIP CHURCH",
+      "last_stem": "LOCO7 DANCE PUPPET THEATRE",
+      "bytes": 262034,
+      "sha256": "f4f9b36a46437c1e10f8422abf7be3c198f5eb7b57d635e6353f131573053949"
     },
     {
       "path": "data/organization_index/entries-052.json",
-      "first_ordinal": 87790,
-      "entries": 1746,
-      "first_stem": "LOMBARDIA CAPITAL PARTNERS",
-      "last_stem": "M H BUILDERS",
-      "bytes": 262011,
-      "sha256": "353dca6f19a65e449792d83a6f3e5ef6b7e81fccea2e289deb8ae30033ae67dc"
+      "first_ordinal": 87768,
+      "entries": 1751,
+      "first_stem": "LOCOMOTION NJ",
+      "last_stem": "M A D Y PROJECT",
+      "bytes": 261963,
+      "sha256": "e164e607a0b0f79f17432ce3b578ae42c764105ed49e132effa4b586885ff2de"
     },
     {
       "path": "data/organization_index/entries-053.json",
-      "first_ordinal": 89536,
-      "entries": 1753,
-      "first_stem": "M H EBY",
-      "last_stem": "MARGARET AND LEO MEYER AND HANS M HIRSCH FOUNDATION",
-      "bytes": 261976,
-      "sha256": "2b691b7a12be70a2cfed6ad1c9bebe550e10b029fcb2bf9f55aba433de4009b6"
+      "first_ordinal": 89519,
+      "entries": 1744,
+      "first_stem": "M A METALS",
+      "last_stem": "MARC ACADEMY FAMILY CENTER",
+      "bytes": 262005,
+      "sha256": "ffa0b6406b1818d02bb758bc86a81961a5af80711d8261565d0c0a61434e0dfb"
     },
     {
       "path": "data/organization_index/entries-054.json",
-      "first_ordinal": 91289,
-      "entries": 1737,
-      "first_stem": "MARGARET AND PETER PHILIPS FAMILY FOUNDATION",
-      "last_stem": "MCNEIL SALES AND SVC",
-      "bytes": 262022,
-      "sha256": "b71880dd7c119d2a14e85a4cb68ea58c067e5dee20a73d9e8a9ca0af302d6a91"
+      "first_ordinal": 91263,
+      "entries": 1750,
+      "first_stem": "MARC AFTERSCHOOL PROGRAM",
+      "last_stem": "MCGLOIN JUENKER FOUNDATION",
+      "bytes": 262015,
+      "sha256": "55be54dba64829f99ea448ffa037977c46d4d07f10908433004e81c937cfc7e3"
     },
     {
       "path": "data/organization_index/entries-055.json",
-      "first_ordinal": 93026,
-      "entries": 1678,
-      "first_stem": "MCNEIL SALES SERVICE",
-      "last_stem": "MICHAEL AND ROBIN PSAROS FAMILY FOUNDATION",
-      "bytes": 262087,
-      "sha256": "044b17c20223574c506ed440ffdf82c8a5f85e5c53705cbde9d0de7e942a7f66"
+      "first_ordinal": 93013,
+      "entries": 1668,
+      "first_stem": "MCGLYNN HAYS",
+      "last_stem": "MGC INK",
+      "bytes": 261905,
+      "sha256": "e3200ea5db7874fa2c6f1ffc136b0a6cbff67de9bf880025dd14c6ecb9012f88"
     },
     {
       "path": "data/organization_index/entries-056.json",
-      "first_ordinal": 94704,
-      "entries": 1719,
-      "first_stem": "MICHAEL AND RUTH SLADE FOUNDATION",
-      "last_stem": "MJS SURGICAL RELIEF FUND",
-      "bytes": 261998,
-      "sha256": "ba9a8a5ec986673dfad4ef92d1a6866729cf65c807ac4ce93641eb4dd61a7486"
+      "first_ordinal": 94681,
+      "entries": 1725,
+      "first_stem": "MGD ENTERPRISES",
+      "last_stem": "MITRATECH HOLDINGS",
+      "bytes": 261905,
+      "sha256": "4f0c5a2d9aa2f8dea8f1ff84bf38a6158454a6a4e0833ec674fe8c6071705efc"
     },
     {
       "path": "data/organization_index/entries-057.json",
-      "first_ordinal": 96423,
-      "entries": 1750,
-      "first_stem": "MJSA EDUCATION FOUNDATION FORMERLY KNOWN AS THE JEWELRY FOUNDATION",
-      "last_stem": "MPAC NYC",
-      "bytes": 261996,
-      "sha256": "7efa071f8ea1dbcbf0f9ee16a97508edc90457b20189b04ddde241d0c1ccc9ab"
+      "first_ordinal": 96406,
+      "entries": 1743,
+      "first_stem": "MITREX",
+      "last_stem": "MOUNTSINAI CHURCH OF JESUS",
+      "bytes": 262106,
+      "sha256": "3eb253faea555e54324794b27d324344922789a0cc5369496f9dfb28fc1519c3"
     },
     {
       "path": "data/organization_index/entries-058.json",
-      "first_ordinal": 98173,
-      "entries": 1736,
-      "first_stem": "MPACT STRATEGIC CONSULTING",
-      "last_stem": "NATHAN ENTERPRISES",
-      "bytes": 262044,
-      "sha256": "42a357960aaf610fcfc3da072ba52632c40e3c576d4830e5a0411e287c008114"
+      "first_ordinal": 98149,
+      "entries": 1740,
+      "first_stem": "MOURNE MANAGEMENT",
+      "last_stem": "NASSAU COUNTY PBA FOUNDATION",
+      "bytes": 261978,
+      "sha256": "e8424e9eb686f4dd04aa805e3f73cf08f2d35536d6fc70ee44b27ed98ae0bb0d"
     },
     {
       "path": "data/organization_index/entries-059.json",
-      "first_ordinal": 99909,
-      "entries": 1461,
-      "first_stem": "NATHAN EVA TREITEL FOUNDATION",
-      "last_stem": "NEW ALLIANCE ADONAI CHURCH",
-      "bytes": 261656,
-      "sha256": "17fd44539bf5c2d75d0adcc568f7118daab48d955f3d4483101a045dfcd0d2c3"
+      "first_ordinal": 99889,
+      "entries": 1451,
+      "first_stem": "NASSAU COUNTY POET LAUREATE SOCIETY",
+      "last_stem": "NETWORK EXPERTS",
+      "bytes": 261949,
+      "sha256": "3b81271296eccb237efb9c670c1585f1a57527fec7bb4bd4272c7547e48b9521"
     },
     {
       "path": "data/organization_index/entries-060.json",
-      "first_ordinal": 101370,
-      "entries": 1578,
-      "first_stem": "NEW ALTERNATIVES FOR CHILDREN",
-      "last_stem": "NEW YORK FEMINIST ART INSTITUTE",
-      "bytes": 262049,
-      "sha256": "9ad282378a43c32685a81989f10bd178374e4d355451e7efd0674728de5b6696"
+      "first_ordinal": 101340,
+      "entries": 1610,
+      "first_stem": "NETWORK FOR AFRICAN ORAL HEALTH RES OURCES ACCESS",
+      "last_stem": "NEW YORK CUSTOM INTERIOR MILLWORK",
+      "bytes": 262045,
+      "sha256": "12c71c2693712fe5c77bf7e30321f007757e3d8170bd5a73c3584873fdd64532"
     },
     {
       "path": "data/organization_index/entries-061.json",
-      "first_ordinal": 102948,
-      "entries": 1574,
-      "first_stem": "NEW YORK FERTILITY RESEARCH FOUNDATION",
-      "last_stem": "NGWA NATIONAL ASSOCIATION INC NORTH NEW YORK CHAPTER",
-      "bytes": 262031,
-      "sha256": "d1dc519d6a2052b109f6fe5b42d5db50811254cdc1175fbc3f0df6ddca291b8c"
+      "first_ordinal": 102950,
+      "entries": 1548,
+      "first_stem": "NEW YORK CYCLE CLUB",
+      "last_stem": "NEXT FOR AUTISM",
+      "bytes": 262059,
+      "sha256": "8ba8f2aa564ec51a58d3a3e53988d68d926b0cc62e1f57c736d5570900f0569f"
     },
     {
       "path": "data/organization_index/entries-062.json",
-      "first_ordinal": 104522,
-      "entries": 1724,
-      "first_stem": "NGWA YOUNG PROFESSIONALS",
-      "last_stem": "NORTHERN ZONE ASSOCIATION FOR COUNSELORS AND DEVELOPMENT",
-      "bytes": 261974,
-      "sha256": "b3d48b11d8b75de689d27f9bd47a25cb134cdd142b1bfe82f9ce16776fc822b4"
+      "first_ordinal": 104498,
+      "entries": 1731,
+      "first_stem": "NEXT GEN EDUCATION FUND",
+      "last_stem": "NORTHERN CLEARING",
+      "bytes": 262007,
+      "sha256": "035b524702761093b051dcba016ecccae35c55d013e2facac8078836966565f5"
     },
     {
       "path": "data/organization_index/entries-063.json",
-      "first_ordinal": 106246,
-      "entries": 1746,
-      "first_stem": "NORTHERN-CENTRAL NEW YORK VOLUNTEER FIREMENS ASSOCIATION",
-      "last_stem": "OHR AVROHOM AND MOSHE",
-      "bytes": 262060,
-      "sha256": "5f1e16ee6d12d72347664896d07b817e236a9691c9f9e7abc73ab6a0627d0072"
+      "first_ordinal": 106229,
+      "entries": 1732,
+      "first_stem": "NORTHERN CONSTRUCTION PAVING",
+      "last_stem": "OFFICE FOR VISUAL INTERACTION",
+      "bytes": 262016,
+      "sha256": "acdf9bd8accf50b22989cbf951a9effe7cf91d3145de6ee239cc3eeffe6ca82a"
     },
     {
       "path": "data/organization_index/entries-064.json",
-      "first_ordinal": 107992,
-      "entries": 1821,
-      "first_stem": "OHR BECHOR HALEVI",
-      "last_stem": "OSWEGO HISTORY RECORDS CENTER",
-      "bytes": 262081,
-      "sha256": "79a49dc561f14c43e401094f6a6352955a13cc4bdf3fcbd39512d56f29d05fe4"
+      "first_ordinal": 107961,
+      "entries": 1816,
+      "first_stem": "OFFICE MAX",
+      "last_stem": "ORTHODOX CHURCH 0F SAINT TATIANA OF ROME VIRGIN MARTYR AND DEACONESS I",
+      "bytes": 262015,
+      "sha256": "b3026b0e2067fa2e97639f607a71f896724bfdc73138fcaa36cdac66afc3bd5c"
     },
     {
       "path": "data/organization_index/entries-065.json",
-      "first_ordinal": 109813,
-      "entries": 1679,
-      "first_stem": "OSWEGO HOMESCHOOL ASSOCIATION",
-      "last_stem": "PARTS AUTHORITY",
-      "bytes": 261964,
-      "sha256": "28831c665329e381e647cec228555f0d0cda876e468150f24be1d3d1779c7a4d"
+      "first_ordinal": 109777,
+      "entries": 1715,
+      "first_stem": "ORTHODOX CHURCH IN AMERICA",
+      "last_stem": "PARSIFALS PRODUCTIONS",
+      "bytes": 262073,
+      "sha256": "18596a438e5cdee56a95cabe4c732074f45941f9f587adde95c48d5e4f68ad2d"
     },
     {
       "path": "data/organization_index/entries-066.json",
       "first_ordinal": 111492,
-      "entries": 1732,
-      "first_stem": "PARTS AUTHORITY INC DBA AUTOMOTIVE",
-      "last_stem": "PETRACO CONSULTING",
-      "bytes": 262034,
-      "sha256": "78c8336ef79f2d138538c3abd1bae93f4e7e949a4c3b2d7882ec1b28d81d335d"
+      "entries": 1701,
+      "first_stem": "PARSON TEMPLE FELLOWSHIP CHURCH OF THE APOSTOLIC FAITH",
+      "last_stem": "PESTONE FAMILY FOUNDATION",
+      "bytes": 262094,
+      "sha256": "0c5749c6196d5213b17a224eaa7fded9ece2934a9bd0370d9443a978506b4c1d"
     },
     {
       "path": "data/organization_index/entries-067.json",
-      "first_ordinal": 113224,
-      "entries": 1689,
-      "first_stem": "PETRAKIS TRUCKING EXCAVATING",
-      "last_stem": "POMPEY HILL CEMETERY",
-      "bytes": 262048,
-      "sha256": "0d1018344dc2725fd80d03c4e7c4e655a9262bc91f1b698bdf31fadddb663940"
+      "first_ordinal": 113193,
+      "entries": 1707,
+      "first_stem": "PESTONIX",
+      "last_stem": "POLICY RESEARCH",
+      "bytes": 262116,
+      "sha256": "08b05111de287b9c6e77ad4c31562269c6c1d0e1eb47c931c5b6624acf5fbe0b"
     },
     {
       "path": "data/organization_index/entries-068.json",
-      "first_ordinal": 114913,
-      "entries": 1644,
-      "first_stem": "POMPEY HILL VOL FIRE DEPT",
-      "last_stem": "PROJECT 59",
-      "bytes": 262031,
-      "sha256": "67a03ff19a04956dd61ebdae39e09ce629de22a941dd208aa454bf20995cf4a6"
+      "first_ordinal": 114900,
+      "entries": 1639,
+      "first_stem": "POLICY RESEARCH INTERNATIONAL",
+      "last_stem": "PROFESSIONAL HOME INSPECTION SERVICE",
+      "bytes": 261980,
+      "sha256": "8829ff95c0baf19fea4fe2d32f22aeced5706c6d68f072558f7aff990c25742d"
     },
     {
       "path": "data/organization_index/entries-069.json",
-      "first_ordinal": 116557,
-      "entries": 1542,
-      "first_stem": "PROJECT 8 YOUTH ATHLETIC SPORTS FOU NDATION",
-      "last_stem": "QUEENS COUNTY ST PATRICKS DAY PARADE AND CULTURAL COMMITTEE",
-      "bytes": 262010,
-      "sha256": "88e8b527b2fab5680e95400cd35a2647c099eb8b2b1ad5357880f84684970b2c"
+      "first_ordinal": 116539,
+      "entries": 1547,
+      "first_stem": "PROFESSIONAL HORSEMENS ASSOCIATION OF AMERICA",
+      "last_stem": "QUAN YIN FOUNDATION",
+      "bytes": 262031,
+      "sha256": "fede251450a55eb9ada17e5f38e6b84f4ec5dcc8dadc48843fac7cc87b86f5d2"
     },
     {
       "path": "data/organization_index/entries-070.json",
-      "first_ordinal": 118099,
-      "entries": 1734,
-      "first_stem": "QUEENS CREW PRODUCTIONS",
-      "last_stem": "RED APPLE CHILD DEVELOPMENT CENTER",
-      "bytes": 262029,
-      "sha256": "38c2956da37c3ddb51d39327f673c137caea707c97dbe2efb21f6832944f7f7a"
+      "first_ordinal": 118086,
+      "entries": 1716,
+      "first_stem": "QUANTILUS INNOVATION",
+      "last_stem": "REBBES PARTNERSHIP FOUNDATION",
+      "bytes": 262101,
+      "sha256": "7b15aa01a2edb532b040fe3d9a09a29fe63a822020603f0bc01294502073a373"
     },
     {
       "path": "data/organization_index/entries-071.json",
-      "first_ordinal": 119833,
-      "entries": 1727,
-      "first_stem": "RED APPLE CHILD DEVELOPMENT CENTER CHINATOWN INC A CHINESE SCHOOL",
-      "last_stem": "RICHMOND COUNTY GRANDMOTHERS CLUB",
-      "bytes": 261950,
-      "sha256": "0985bc303b35f0806c845deb7ab105921adcc210ce0bccc8eecc080f0e2db37e"
+      "first_ordinal": 119802,
+      "entries": 1731,
+      "first_stem": "REBECCA ASSOCIATION FOR AUTISM",
+      "last_stem": "RICHARD AND MARY MORRISON FOUNDATION",
+      "bytes": 261923,
+      "sha256": "e95e53946e43f3bdef4ba76daa81f9d4ae8dd4e7cd8eb4e0a27de5670ef2c1e1"
     },
     {
       "path": "data/organization_index/entries-072.json",
-      "first_ordinal": 121560,
-      "entries": 1695,
-      "first_stem": "RICHMOND COUNTY MEDIA",
-      "last_stem": "ROCKLAND KOREAN PRESBYTERIAN CHURCH",
-      "bytes": 262033,
-      "sha256": "6d2756684061f434c66a59bb7aa0f77b384f79eea0a01be9c0b8ab4d2b6700cc"
+      "first_ordinal": 121533,
+      "entries": 1696,
+      "first_stem": "RICHARD AND NINA EDELMAN FOUNDATION FOR ARTS AND EDUCATION",
+      "last_stem": "ROCKAWAY HOME ATENDANT SERVICE",
+      "bytes": 261736,
+      "sha256": "8c503960f84cca574927af5c10b80df86e1547e7b3ab7391cb0da52a2c60edc4"
     },
     {
       "path": "data/organization_index/entries-073.json",
-      "first_ordinal": 123255,
-      "entries": 1719,
-      "first_stem": "ROCKLAND MHA HOLDING",
-      "last_stem": "S H A W C HOUSING DEVELOPMENT FUND",
-      "bytes": 262078,
-      "sha256": "af95fd61e700833be0b26bed9f83f4b271e2eb1007371a5b539a53dd1659fcf1"
+      "first_ordinal": 123229,
+      "entries": 1708,
+      "first_stem": "ROCKAWAY HOME ATTENDANT SERVICES",
+      "last_stem": "RYAN PLUMBING HEATING AIR CONDITIONING AND FIRE PROTECTION",
+      "bytes": 262018,
+      "sha256": "062559c5eee2077eaac3e64957cb226ba29f42863af2fe5eff24f3f984d305e4"
     },
     {
       "path": "data/organization_index/entries-074.json",
-      "first_ordinal": 124974,
-      "entries": 1709,
-      "first_stem": "S H E L FOUNDATION",
-      "last_stem": "SAUNDERS FOUNDATION",
-      "bytes": 261997,
-      "sha256": "de2874b043433585dd0b47ff578de097edbcdd333dfacfb7d73aec79c744fdf8"
+      "first_ordinal": 124937,
+      "entries": 1722,
+      "first_stem": "RYAN RECTOR YOUTH OPPORTUNITY FOUNDATION",
+      "last_stem": "SARATOGA STARS YOUTH TRAVEL BASEBALL",
+      "bytes": 262091,
+      "sha256": "ad5c71ed5753efb01b0dfe916059b94505e0dd53395e84eedad17566ab59b912"
     },
     {
       "path": "data/organization_index/entries-075.json",
-      "first_ordinal": 126683,
-      "entries": 1732,
-      "first_stem": "SAUNDERS HS ALUMNI ASSOCIATION",
-      "last_stem": "SENIORHABITAT",
-      "bytes": 261910,
-      "sha256": "1531fc6332c7e5eff34302562706551a5091ffd00bae85215ff949f6890dfe3f"
+      "first_ordinal": 126659,
+      "entries": 1724,
+      "first_stem": "SARATOGA STRYDERS",
+      "last_stem": "SEMLITZ GLASER FOUNDATION",
+      "bytes": 262110,
+      "sha256": "8abce75b6bbac893c1a7e197a812a6f87681e79df6b7e38d4928769277cad65e"
     },
     {
       "path": "data/organization_index/entries-076.json",
-      "first_ordinal": 128415,
-      "entries": 1768,
-      "first_stem": "SENIORS HELPING SENIORS",
-      "last_stem": "SID TOOL",
-      "bytes": 262053,
-      "sha256": "1b27d44762b2bd71d1cc578f9c6f12a933b710e250a9b84588ec12debf0cea04"
+      "first_ordinal": 128383,
+      "entries": 1770,
+      "first_stem": "SEMMENS ASSOCIATE- LANDSCAPE ARCHITECT",
+      "last_stem": "SHREEJA",
+      "bytes": 262105,
+      "sha256": "b4b4c91f84978c4cfb168614e316cd6e042da5450cb7e5242d511586ac75ad8a"
     },
     {
       "path": "data/organization_index/entries-077.json",
-      "first_ordinal": 130183,
-      "entries": 1683,
-      "first_stem": "SID TOOL CO D/B/A MSC INDUSTRIAL SUPPLY",
-      "last_stem": "SOCIETY FOR SEVENTEENTH-CENTURY MUSIC",
-      "bytes": 262061,
-      "sha256": "c756d941ca3f8c7c51a539d2afa85c90b327f8db51a5e3f75fe2f423b47729f2"
+      "first_ordinal": 130153,
+      "entries": 1701,
+      "first_stem": "SHREYA ART",
+      "last_stem": "SOCCER LEAGUE OF LONG ISLAND",
+      "bytes": 262055,
+      "sha256": "e569655d36a81262c23c95ab499b51a48f5880979573905365786cabc4aa536a"
     },
     {
       "path": "data/organization_index/entries-078.json",
-      "first_ordinal": 131866,
-      "entries": 1698,
-      "first_stem": "SOCIETY FOR SPIRITUAL CALLIGRAPHY PAINTING",
-      "last_stem": "SPES CONTRACTING",
-      "bytes": 262070,
-      "sha256": "0ca29eead35c8f20c94b78a64a78b0b52e6e5ca2a458e685e93ecd1ea09befd9"
+      "first_ordinal": 131854,
+      "entries": 1685,
+      "first_stem": "SOCCER MOMS SOCCER DADS SMSD",
+      "last_stem": "SPECIAL OLYMPICS NEW YORK",
+      "bytes": 262030,
+      "sha256": "a1491103fa58d79b874de0881ed69deae042269a14005db2f5a648753c4ba8b4"
     },
     {
       "path": "data/organization_index/entries-079.json",
-      "first_ordinal": 133564,
-      "entries": 1702,
-      "first_stem": "SPES NOVA",
-      "last_stem": "STAGE AURORA NEW YORK -NY",
-      "bytes": 261977,
-      "sha256": "650455ff4143c153f67ca55e654c903ae0fea74f932b1fe0038515db6d201a86"
+      "first_ordinal": 133539,
+      "entries": 1706,
+      "first_stem": "SPECIAL PATHOGENS LABORATORY",
+      "last_stem": "ST STEPHEN",
+      "bytes": 262071,
+      "sha256": "ecfd90be225fd419236de1f3083fed06c2f6bbd7c20f28233310f4d0a3f10b60"
     },
     {
       "path": "data/organization_index/entries-080.json",
-      "first_ordinal": 135266,
-      "entries": 1577,
-      "first_stem": "STAGE DIRECTORS AND CHOREOGRAPHERS SOCIETY",
-      "last_stem": "STRUCTURED EMPLOYMENT ECONOMIC(SEECDO)",
-      "bytes": 262026,
-      "sha256": "bad5fa61f5860cc40421165293ed6423450837e79a412bd7d383d23edfbb5cf5"
+      "first_ordinal": 135245,
+      "entries": 1574,
+      "first_stem": "ST STEPHEN LUTHERAN CHURCH",
+      "last_stem": "STREET SMARTS VR",
+      "bytes": 261728,
+      "sha256": "3a969936ae353c2f55f19a31396d31a581d4285e07aa214d6cc87ee984eeb175"
     },
     {
       "path": "data/organization_index/entries-081.json",
-      "first_ordinal": 136843,
-      "entries": 1698,
-      "first_stem": "STRUCTUREDWNY",
-      "last_stem": "SYRACUSE CHARGERS TRACK CLUB",
-      "bytes": 262100,
-      "sha256": "6ede254b572c271d29c5973a33ad0c68e3f903b8f7a0092d4524a68e73cb30d3"
+      "first_ordinal": 136819,
+      "entries": 1690,
+      "first_stem": "STREET SOCCER",
+      "last_stem": "SYCAMORE ADVISORS",
+      "bytes": 262048,
+      "sha256": "8241bf448f1b522f6af0d8cb03e7e6ddbc0f816ba3e5cd33a7aa2cd7ded93f88"
     },
     {
       "path": "data/organization_index/entries-082.json",
-      "first_ordinal": 138541,
-      "entries": 1712,
-      "first_stem": "SYRACUSE CHILDREN THEATRE",
-      "last_stem": "TENJI",
-      "bytes": 262048,
-      "sha256": "8dafcdcdecd704ccf4f928a87c53052b87c624520da4a47fe867baf006b1cc92"
+      "first_ordinal": 138509,
+      "entries": 1696,
+      "first_stem": "SYCAMORE HILL ENVIRONMENTAL",
+      "last_stem": "TEMICHA SUPPORT LINE",
+      "bytes": 262105,
+      "sha256": "74f154ba2ad6ad3a1c49085a39c840b57c1ba70ea75f5977e9498b6d1ded7e67"
     },
     {
       "path": "data/organization_index/entries-083.json",
-      "first_ordinal": 140253,
-      "entries": 1570,
-      "first_stem": "TENLACHAYAL",
-      "last_stem": "THE FRIENDS OF THE GLOVERSVILLE PUBLIC LIBRARY",
-      "bytes": 261999,
-      "sha256": "1fb8f97d87225ab5b79251e9dee333f33f4b8423fa1e45b4622fedaf6e13076e"
+      "first_ordinal": 140205,
+      "entries": 1612,
+      "first_stem": "TEMIMEI TORAH OF MONSEY",
+      "last_stem": "THE FASHION FOOTWEAR CHARITABLE FOUNDATION",
+      "bytes": 261853,
+      "sha256": "ba9ec8ff1ddeacbb4fb9f8331e9ac9594516fe7e9454686c46076fb1f2f8c1c8"
     },
     {
       "path": "data/organization_index/entries-084.json",
-      "first_ordinal": 141823,
-      "entries": 1559,
-      "first_stem": "THE FRIENDS OF THE HIGH SCHOOL FOR ARTS IMAGINATION INQUIRIY",
-      "last_stem": "THE POETRY PROJECT",
-      "bytes": 262107,
-      "sha256": "4a8c3ac44a17fe16a297f7dfe12b566d0ae5ddc48dab7d23eb3c862962f020ec"
+      "first_ordinal": 141817,
+      "entries": 1545,
+      "first_stem": "THE FASTWAY GROUP",
+      "last_stem": "THE OSBORN NETWORK",
+      "bytes": 261910,
+      "sha256": "ee1286614ac5916150b89074cc0a318bd38cb7122ce8f1f1d80c950acaf74075"
     },
     {
       "path": "data/organization_index/entries-085.json",
-      "first_ordinal": 143382,
-      "entries": 1700,
-      "first_stem": "THE POETS HOUSE",
-      "last_stem": "THROUGH THE ROOF MINISTRY",
-      "bytes": 262056,
-      "sha256": "8cdd3bbb31ce19b382ca78431ec67f95abdbdd615eb5149384077c4fda7991e3"
+      "first_ordinal": 143362,
+      "entries": 1686,
+      "first_stem": "THE OSBORNE ASSOCIATION",
+      "last_stem": "THORNDEN PARK ASSOCIATION",
+      "bytes": 262115,
+      "sha256": "b8b5fd7ebc586414c34f1d4dd466167e3d2c6c1bbf0632f76686962b89e76708"
     },
     {
       "path": "data/organization_index/entries-086.json",
-      "first_ordinal": 145082,
-      "entries": 1775,
-      "first_stem": "THROUGHLINE ARTISTS",
-      "last_stem": "TRANSIT AUTHORITY MILITARY ASSOCIATION",
-      "bytes": 262094,
-      "sha256": "153c4380eb9ad565ff4bd3eb40323d76fd24bf5ed1ace622fcd381af63f5134f"
+      "first_ordinal": 145048,
+      "entries": 1784,
+      "first_stem": "THORNDEN PARK BULLDOGS ASSOCIATION",
+      "last_stem": "TRADITIONAL CULTURE REVIVING CENTER",
+      "bytes": 261686,
+      "sha256": "ea5ed8e3b3f3effa06267556a674c63b05ebd09cc4a27eb6a8384013400f94c9"
     },
     {
       "path": "data/organization_index/entries-087.json",
-      "first_ordinal": 146857,
-      "entries": 1682,
-      "first_stem": "TRANSIT CENTER",
-      "last_stem": "TYR SPORT",
-      "bytes": 261940,
-      "sha256": "514e269850b1dadd30201e64c84467af447d35239b519c84e721b2023337e12b"
+      "first_ordinal": 146832,
+      "entries": 1666,
+      "first_stem": "TRADITIONAL DAY CARE CENTER",
+      "last_stem": "TWILIGHT THEATRE",
+      "bytes": 262056,
+      "sha256": "88e75955923c894a8dceab3df6207cadf0452dc963df514e54f5325053f6905d"
     },
     {
       "path": "data/organization_index/entries-088.json",
-      "first_ordinal": 148539,
-      "entries": 1590,
-      "first_stem": "TYR SPORT INC DBA THE FINALS",
-      "last_stem": "UNITY CHURCH OF GOD MINISTRY",
-      "bytes": 262049,
-      "sha256": "3f5a3ba31e27861d3262e886157f90781d1114833d0520db0199f1317e437b0b"
+      "first_ordinal": 148498,
+      "entries": 1610,
+      "first_stem": "TWIN B PHOTOGRAPHY",
+      "last_stem": "UNITED STEEL WORKERS",
+      "bytes": 261564,
+      "sha256": "041cf3ab6e4e4787233b4bd5053ef3b5a5eec41aa79cad7d37de4b78dc3b8ee2"
     },
     {
       "path": "data/organization_index/entries-089.json",
-      "first_ordinal": 150129,
+      "first_ordinal": 150108,
       "entries": 1642,
-      "first_stem": "UNITY CHURCH OF OUR LORD JESUS CHRIST",
-      "last_stem": "VASSO WASTE SYSTEM",
-      "bytes": 261690,
-      "sha256": "8db36d7d215fbaacb0912d9210f23ac446f988549ffea1d0eb0be68fa2933203"
+      "first_stem": "UNITED STEELWORKERS",
+      "last_stem": "VAN HORNESVILLE COMMUNITY",
+      "bytes": 262101,
+      "sha256": "fbc0e62bd50f939dc2424d3aa97f3ef371cf97fa7705195973d7d2208df2de9a"
     },
     {
       "path": "data/organization_index/entries-090.json",
-      "first_ordinal": 151771,
-      "entries": 1601,
-      "first_stem": "VASSO WASTE SYSTEMS",
-      "last_stem": "VOLUNTEER EXEMPT FIREMENS BENEVOLENT ASSOCIATION OF ELMONT N",
-      "bytes": 261952,
-      "sha256": "6851247c94bb8e7f1c3005632c7fe643a8a57aa7ce42b8bf19c0800a5892aca2"
+      "first_ordinal": 151750,
+      "entries": 1606,
+      "first_stem": "VAN HOUTEN FARMS",
+      "last_stem": "VOICE FOR PEACE PROJECT",
+      "bytes": 262102,
+      "sha256": "3e9114a5c5509abdd77a059c50b10a23728e870a2d2671463a08d3734121c8c6"
     },
     {
       "path": "data/organization_index/entries-091.json",
-      "first_ordinal": 153372,
-      "entries": 1722,
-      "first_stem": "VOLUNTEER EXEMPT FIREMENS BENEVOLENT ASSOCIATION OF HEMPSTEA",
-      "last_stem": "WELLING COURT NEIGHBORHOOD ASSOCIAT ION",
-      "bytes": 261673,
-      "sha256": "bb9e8106e640937f13c4cf7f41659f12c6d776c2c9e2588d9d4d213132be745b"
+      "first_ordinal": 153356,
+      "entries": 1725,
+      "first_stem": "VOICE FOR THE VOICELESS SCHENECTADY",
+      "last_stem": "WEEKS EDUCATIONAL AND SOCIAL ADVOCACY PROJECT",
+      "bytes": 261916,
+      "sha256": "1b65efd686f8332df9390cd52beb200c4a26b673afbfc7330ce586972bd63c17"
     },
     {
       "path": "data/organization_index/entries-092.json",
-      "first_ordinal": 155094,
-      "entries": 1652,
-      "first_stem": "WELLINGTON MANAGEMENT",
-      "last_stem": "WILLIAM HODSON COMMUNITY CENTER",
-      "bytes": 262072,
-      "sha256": "2f2d5dbebd7726df67a3c4272b007af0c1f874ee3e35ab76404578f6b65fa363"
+      "first_ordinal": 155081,
+      "entries": 1659,
+      "first_stem": "WEEKS MARINE",
+      "last_stem": "WILKINS MECHANICAL",
+      "bytes": 262027,
+      "sha256": "d6ee162c8c06e9dfaebd582408216416b9f05e91ca099af8066603270baf3cd1"
     },
     {
       "path": "data/organization_index/entries-093.json",
-      "first_ordinal": 156746,
-      "entries": 1769,
-      "first_stem": "WILLIAM HUMPHREY III",
-      "last_stem": "WU TONG EDUCATION",
-      "bytes": 262070,
-      "sha256": "54b221e9b94669301ddb88ce5888b923ee732e61ecf7b001defa653b207b3a48"
+      "first_ordinal": 156740,
+      "entries": 1745,
+      "first_stem": "WILKINS MINISTRIES INTERNATIONAL",
+      "last_stem": "WORLDS WINDOW",
+      "bytes": 262009,
+      "sha256": "dcf60d24a1fafb920015daf80a68240b8d01bb10b6e3e4e04e04aeb86fafe19e"
     },
     {
       "path": "data/organization_index/entries-094.json",
-      "first_ordinal": 158515,
-      "entries": 1782,
-      "first_stem": "WU ZHONG-YI SCHOLARSHIPS FOUNDATION",
-      "last_stem": "ZALNER FOUNDATION",
-      "bytes": 261449,
-      "sha256": "daf343547cf7d8bc6c0204cba5eff7f4ed031853565c3c96828825208d987477"
+      "first_ordinal": 158485,
+      "entries": 1778,
+      "first_stem": "WORLDSCALE ASSOC NYC",
+      "last_stem": "YOUTH WELLNESS FOUNDATION",
+      "bytes": 262082,
+      "sha256": "ce8dc99886b8c72954496159f2a13f5051b73be5bae8ec2c05f16d54c944f0c8"
     },
     {
       "path": "data/organization_index/entries-095.json",
-      "first_ordinal": 160297,
-      "entries": 572,
-      "first_stem": "ZAMAN CONSTRUCTION",
+      "first_ordinal": 160263,
+      "entries": 741,
+      "first_stem": "YOUTH WIND ENSEMBLE OF WESTCHESTER",
       "last_stem": "“I AM” EHS MANAGEMENT",
-      "bytes": 84447,
-      "sha256": "7ebb7120481ecc6afc1c45ab686acb3fc5e1e0360d93166bcbdcc681b8b82f61"
+      "bytes": 109041,
+      "sha256": "803291e6460d2b6457c75cf24a6e5f3c56a416f0fb3333ec47c9f1f2fb0f5726"
     }
   ],
   "id_shards": [
     {
       "path": "data/organization_index/ids-00.json",
       "bucket": "00",
-      "ids": 2389,
-      "bytes": 61623,
-      "sha256": "15eac130e38ea41763e6ce0589cb3a1757777e3605fb5e45d1da5c78d5f9999b"
+      "ids": 2396,
+      "bytes": 61831,
+      "sha256": "4575cdece08cf5d89f49510ff3e3a8ea2f9dd1f1cb086f86a663ff02bcb73aa0"
     },
     {
       "path": "data/organization_index/ids-01.json",
       "bucket": "01",
-      "ids": 2378,
-      "bytes": 60836,
-      "sha256": "6c975de0096c7cf145d8269b1712983f13d5bcd8735c693de9c31af6bfcd42ec"
+      "ids": 2384,
+      "bytes": 61013,
+      "sha256": "2ef01de6bd1b971323ed6c23be38a15037fdc95792ac28e3280a82e1967f13ab"
     },
     {
       "path": "data/organization_index/ids-02.json",
       "bucket": "02",
-      "ids": 2387,
-      "bytes": 61288,
-      "sha256": "06076c3a8b82b8b709d2f9d97f43234317e8f2ad98cbe289a2075eed8b7f95e3"
+      "ids": 2389,
+      "bytes": 61347,
+      "sha256": "439192b4bf81cf8a5a42c7031bf57ed9102dcdd9c042efdaab04b491b8f3886c"
     },
     {
       "path": "data/organization_index/ids-03.json",
       "bucket": "03",
-      "ids": 2393,
-      "bytes": 61374,
-      "sha256": "4f0077fac2ee3f0d1e62968df86a33a30bba45414e8dafbd4d01c5b73f10c4ad"
+      "ids": 2396,
+      "bytes": 61459,
+      "sha256": "aa1204b6a38685e60ab5e03d6981ee056386f9a8e8b81190d3eb45ba2c3e55dc"
     },
     {
       "path": "data/organization_index/ids-04.json",
       "bucket": "04",
-      "ids": 2454,
-      "bytes": 63187,
-      "sha256": "754e6ecf02b4be0715a79befe2c147e46b7e5075b6dd006d12fd0b27d0c0b9c5"
+      "ids": 2457,
+      "bytes": 63273,
+      "sha256": "094aaa700635f611dbe7a757e40fd7e63e66a7bd8e9afaffdd4670316f233e9a"
     },
     {
       "path": "data/organization_index/ids-05.json",
       "bucket": "05",
-      "ids": 2382,
-      "bytes": 61424,
-      "sha256": "c23bfef0a0ad25aa02f9f6700009602af48a4238d580272d1903e21dfc5b1afb"
+      "ids": 2374,
+      "bytes": 61206,
+      "sha256": "17169297f6d8a79a1e2a5fe65ce4f63f56f27026c7711d6d05c3621d30ca1f4f"
     },
     {
       "path": "data/organization_index/ids-06.json",
       "bucket": "06",
-      "ids": 2401,
-      "bytes": 61532,
-      "sha256": "6ee99e4f9ff87b4d8d443dd03c367086698d5914309abf760364b6dec139faed"
+      "ids": 2403,
+      "bytes": 61592,
+      "sha256": "41c858035a0c60af9814a3d881cb123acf922b9194520516b05ddecabf011bbf"
     },
     {
       "path": "data/organization_index/ids-07.json",
       "bucket": "07",
-      "ids": 2427,
-      "bytes": 62226,
-      "sha256": "302df597664620afef9e746a5b114640deba9d27c30c458c9b39ad82ba3bfbbc"
+      "ids": 2429,
+      "bytes": 62285,
+      "sha256": "37cbf2f00deb5c51620fe2e53def03446bab171d852d1a13d2448454e2cbeefd"
     },
     {
       "path": "data/organization_index/ids-08.json",
       "bucket": "08",
-      "ids": 2391,
-      "bytes": 61354,
-      "sha256": "3af6c12eb9c557954a7787fdf8033fa4bf20b1ccd30ef0937523d5c785bc806c"
+      "ids": 2390,
+      "bytes": 61321,
+      "sha256": "596f6222e4cbeec3c20611989328503387bdb036e584f0ad693226f244643ce5"
     },
     {
       "path": "data/organization_index/ids-09.json",
       "bucket": "09",
-      "ids": 2430,
-      "bytes": 62424,
-      "sha256": "f1b67edd3603a1225509d683ef449d49b62edb27eb09a9105a1647a12be9382b"
+      "ids": 2434,
+      "bytes": 62532,
+      "sha256": "3a891854b3e4aac10effa45d00128d2f0862a67f04cd4764614bc3d0b4609815"
     },
     {
       "path": "data/organization_index/ids-0a.json",
       "bucket": "0a",
-      "ids": 2424,
-      "bytes": 62226,
-      "sha256": "017719dadf66ec5c0accabaf7abad5c10b69651b477546ab60298bf2ccd80e8b"
+      "ids": 2425,
+      "bytes": 62218,
+      "sha256": "ba8b2b5b36715a1ccae13ee99978404f588d06dadd166b15f464cbcde5737fdf"
     },
     {
       "path": "data/organization_index/ids-0b.json",
       "bucket": "0b",
       "ids": 2420,
-      "bytes": 62003,
-      "sha256": "c0430896b478eb302dc55bd7a0c303835a1db4bdcf5af1ff3fbe992f7a5332ba"
+      "bytes": 62024,
+      "sha256": "23f624eb0e83f36bf5bd329f32686cc2a947d18589741c51bfd9ac2b406d7609"
     },
     {
       "path": "data/organization_index/ids-0c.json",
       "bucket": "0c",
-      "ids": 2415,
-      "bytes": 61868,
-      "sha256": "b9917a923d21617e981d3f84788cb393d9e2423838ea6ef214f7bcfb7a5a03bb"
+      "ids": 2420,
+      "bytes": 62025,
+      "sha256": "76d154ef3eb20ac38f9dfed415c629ffb731c3e357743764141c3568627e35c0"
     },
     {
       "path": "data/organization_index/ids-0d.json",
       "bucket": "0d",
-      "ids": 2433,
-      "bytes": 62329,
-      "sha256": "19a99a8f4cd81ca0a59b58d00690e6137c27090ea65761cb8c184f636e0351fa"
+      "ids": 2436,
+      "bytes": 62418,
+      "sha256": "08cc9ccdb400849f0be0042634c5024e9aafeabc075fc3aa34b18645bff15829"
     },
     {
       "path": "data/organization_index/ids-0e.json",
       "bucket": "0e",
-      "ids": 2347,
-      "bytes": 60206,
-      "sha256": "45c47d086dbf2aa3b993357c5750492091d3a81dcfb365b6973d681ee0bf49cf"
+      "ids": 2349,
+      "bytes": 60257,
+      "sha256": "7982255019383da41f82e350ee1af1c926e3a262a58f0fdb5b5e6d2978e982a7"
     },
     {
       "path": "data/organization_index/ids-0f.json",
       "bucket": "0f",
-      "ids": 2421,
-      "bytes": 62175,
-      "sha256": "683bcd9cede29a1687b3c63ddd8e77caa8602bc665a3c028d86701b8568fd363"
+      "ids": 2427,
+      "bytes": 62359,
+      "sha256": "3057fcbfffeb9396d9b74e9e31ec33a27aceb593080c5d4e0910e6739b8da7b6"
     },
     {
       "path": "data/organization_index/ids-10.json",
       "bucket": "10",
-      "ids": 2497,
-      "bytes": 64266,
-      "sha256": "9c13efefc2a0cdd2dc949bae17a23cfacd0687316340b19556eca2e12b00e7fa"
+      "ids": 2494,
+      "bytes": 64184,
+      "sha256": "f58560e184cb90663c7a51fa4d9352d8a48c874f510671a61af725aeca9d3ce5"
     },
     {
       "path": "data/organization_index/ids-11.json",
       "bucket": "11",
-      "ids": 2442,
-      "bytes": 62656,
-      "sha256": "038265d017bd0c75fe939dc9b72c09d8d9696d5b58a0bb69dc81158abac07fb9"
+      "ids": 2441,
+      "bytes": 62616,
+      "sha256": "b7f48bfd815471d083aed090cedd8a0e051293992d5582f6157a1d0a6764cf26"
     },
     {
       "path": "data/organization_index/ids-12.json",
       "bucket": "12",
-      "ids": 2451,
-      "bytes": 62972,
-      "sha256": "b9a7516ac908987f417ecc2056f9fb3ceb4791bfb7e7d686356e4b9cdb8cf976"
+      "ids": 2456,
+      "bytes": 63096,
+      "sha256": "0bfa3b6479ce4422a6bd213861676f010d341a5ec626ed4bb4c9d0279d77e875"
     },
     {
       "path": "data/organization_index/ids-13.json",
       "bucket": "13",
-      "ids": 2332,
-      "bytes": 60090,
-      "sha256": "1cad5ef3af1f038ce26e6286438a7f7ff02d3e2ed1189bb8c915187ab9c6772c"
+      "ids": 2334,
+      "bytes": 60153,
+      "sha256": "a4311e6631269407f79c1ac3e28402bbeac4fc05e251b1e582b16cdfac3e70d8"
     },
     {
       "path": "data/organization_index/ids-14.json",
       "bucket": "14",
-      "ids": 2495,
-      "bytes": 64229,
-      "sha256": "b810211f19268d615134bfd5fd3dd038ffefa8cb7d7b29ee7456d426bb6043f8"
+      "ids": 2496,
+      "bytes": 64256,
+      "sha256": "997b10ee6b1d035d95222a872031e631e71fff623b29ffdf4895c388e5883d11"
     },
     {
       "path": "data/organization_index/ids-15.json",
       "bucket": "15",
-      "ids": 2459,
-      "bytes": 62995,
-      "sha256": "651ebee1511a064cc7ddadd8bc1d50bce0da7159b972af6571817b55a8ae550a"
+      "ids": 2460,
+      "bytes": 63019,
+      "sha256": "e6259a6c01dd824dcea1a33ef097ac082a7cf3c06b24155fddba00af49bc03b0"
     },
     {
       "path": "data/organization_index/ids-16.json",
       "bucket": "16",
-      "ids": 2449,
-      "bytes": 62816,
-      "sha256": "6bf9f945beae316e49cc1a5c045719f4d10592aead17f5ce5dcf8e49800a8696"
+      "ids": 2448,
+      "bytes": 62791,
+      "sha256": "6544808cbc7a7e57c3860e55c7779ceb2b6b46b2af6ba585f29d8b3f090d43f1"
     },
     {
       "path": "data/organization_index/ids-17.json",
       "bucket": "17",
       "ids": 2375,
-      "bytes": 60937,
-      "sha256": "29a97e00877c37ef4889db6cc0b901b527a72f118207c9d17cea871d0d647dc9"
+      "bytes": 60931,
+      "sha256": "a5428b98aae9678212d4679e6db43c8ad780bfbe427a0af200b6d00264c61cb7"
     },
     {
       "path": "data/organization_index/ids-18.json",
       "bucket": "18",
-      "ids": 2488,
-      "bytes": 63674,
-      "sha256": "01dbd11efe1b85ee05b6f95eeddb9e2b190f169faaafee1a99d81374921d8f7d"
+      "ids": 2494,
+      "bytes": 63850,
+      "sha256": "dfd4f2769e302fd952c975c366c5d5e55bf87af61bba235117ba436c8b2fcb6c"
     },
     {
       "path": "data/organization_index/ids-19.json",
       "bucket": "19",
       "ids": 2499,
-      "bytes": 64048,
-      "sha256": "a861e0f83f183edfa0b1ff64b8140c5f661cae8aa51ab788919b41fe5e5c7529"
+      "bytes": 64046,
+      "sha256": "d9fb8a466341a1627be9cd991284dd611b856c04858ad16c1d1ed6c7befc5f6e"
     },
     {
       "path": "data/organization_index/ids-1a.json",
       "bucket": "1a",
-      "ids": 2428,
-      "bytes": 62314,
-      "sha256": "8bf6d690a7774e5bcb7b01fa50778456ddb83a44b310b289cee0f73b3a1cba53"
+      "ids": 2425,
+      "bytes": 62231,
+      "sha256": "13b1c72d93822482299a6d9ca906e56b64dc37c487b3a07fb8b6ac6febd34b42"
     },
     {
       "path": "data/organization_index/ids-1b.json",
       "bucket": "1b",
-      "ids": 2416,
-      "bytes": 61866,
-      "sha256": "b60ebf1f2257b015b80bf9f17fe9ccbafa6fc5577b1ef5302f3b882192272d61"
+      "ids": 2417,
+      "bytes": 61888,
+      "sha256": "6d8b306dc391f057fabe32d5c813ff1eaf7998f2ceeef4c36866a4e176255d26"
     },
     {
       "path": "data/organization_index/ids-1c.json",
       "bucket": "1c",
-      "ids": 2448,
-      "bytes": 62903,
-      "sha256": "52aa547ab75ed349827bc2ae8054b580d5a216ca972f84060cc0a011b3b51d9b"
+      "ids": 2453,
+      "bytes": 63034,
+      "sha256": "1c0839a8039f08474df129f2b089be44856b414222412293c8008038acea41be"
     },
     {
       "path": "data/organization_index/ids-1d.json",
       "bucket": "1d",
-      "ids": 2385,
-      "bytes": 61284,
-      "sha256": "1e67781afa9d13c53f0d06470d68d04ba9877426c54ef56688282bccf98c46c1"
+      "ids": 2389,
+      "bytes": 61418,
+      "sha256": "e995daa455ffe90a3ebee5ffee3ca8e0cbce49511298543cebb5c2b43d2ba427"
     },
     {
       "path": "data/organization_index/ids-1e.json",
       "bucket": "1e",
-      "ids": 2478,
-      "bytes": 63689,
-      "sha256": "fd2999c1701796bb115c0c2d7a333b368c569b87a5a8fa0f41f881d0fe15b1b1"
+      "ids": 2476,
+      "bytes": 63645,
+      "sha256": "c29058ca01c92b2837f38231ecab4cc8e0baaa90ed6ff1348547a6f0fdf751a3"
     },
     {
       "path": "data/organization_index/ids-1f.json",
       "bucket": "1f",
-      "ids": 2454,
-      "bytes": 63264,
-      "sha256": "e13e0fcc010e7c10565b3bcc4144c2dbd17316bbfa8db8a9de9302d7c34bc222"
+      "ids": 2459,
+      "bytes": 63414,
+      "sha256": "4eabaa9458e4213ee9237875209bb0fc55a52e95ddd2681f07bf00b46c6ed96e"
     },
     {
       "path": "data/organization_index/ids-20.json",
       "bucket": "20",
-      "ids": 2404,
-      "bytes": 61780,
-      "sha256": "fa9869862a15b2a8ca3df1f5d735be6fb8f39d4498f26d473bff868131ab7277"
+      "ids": 2410,
+      "bytes": 61949,
+      "sha256": "8d69908a3533aa43c8a369663a29cdf03ff3e1d41b97d2f4b0a03c0b206e00cd"
     },
     {
       "path": "data/organization_index/ids-21.json",
       "bucket": "21",
-      "ids": 2391,
-      "bytes": 61296,
-      "sha256": "8cbc89f316b42c19597d35d75d55aacae5ec22ef18c38d47632b956e9d73ee92"
+      "ids": 2392,
+      "bytes": 61378,
+      "sha256": "3e7d06439fe49577fa0f83fd51993af6b6352d234e3bf2d1d656e9ca447c4a34"
     },
     {
       "path": "data/organization_index/ids-22.json",
       "bucket": "22",
-      "ids": 2369,
-      "bytes": 60833,
-      "sha256": "779acc79559cd15a03734cf9026bbb842d13bb9871acc3e9bf6d765a06678d56"
+      "ids": 2374,
+      "bytes": 60973,
+      "sha256": "b05257787c7768a39ac96cff502a34fc60fd8c09ab8ae3eba107fc83b2d2873f"
     },
     {
       "path": "data/organization_index/ids-23.json",
       "bucket": "23",
-      "ids": 2441,
-      "bytes": 62408,
-      "sha256": "d02c0870a8b7cfddd923f166b0dad8386fd4845ccd0b79ec02df96ca8a4e6cb2"
+      "ids": 2439,
+      "bytes": 62358,
+      "sha256": "4289262e31d42e985231e206bf4423160f8d2b0b9532e09e6cd30b7220cbf629"
     },
     {
       "path": "data/organization_index/ids-24.json",
       "bucket": "24",
-      "ids": 2451,
-      "bytes": 62736,
-      "sha256": "a412db372345b3b13b672b67b61f37d8010e4a98a580fbbf287e9ea930391c45"
+      "ids": 2455,
+      "bytes": 62851,
+      "sha256": "422def149bd1a5994d883d50e571013b3c9f8799079eb6970389e064782c0a10"
     },
     {
       "path": "data/organization_index/ids-25.json",
       "bucket": "25",
-      "ids": 2386,
-      "bytes": 61251,
-      "sha256": "4a7c26f31203273b90778f7ec451b37b3e706832b11e4f593a33f320fcab14e3"
+      "ids": 2383,
+      "bytes": 61169,
+      "sha256": "66d30dfac9dc552655285936ddb12a161ba06532baa0cc9e9c9c1c4143ac4c76"
     },
     {
       "path": "data/organization_index/ids-26.json",
       "bucket": "26",
-      "ids": 2466,
-      "bytes": 63484,
-      "sha256": "0e92338aa6a9284139375597f033ae7c14818cab4a9ba1de7a7a63117c55c488"
+      "ids": 2464,
+      "bytes": 63430,
+      "sha256": "e1cfd78c5a7f54d7f07561cec254b5eefcfcfd738e3ea395fa78ab5154a52266"
     },
     {
       "path": "data/organization_index/ids-27.json",
       "bucket": "27",
-      "ids": 2549,
-      "bytes": 65538,
-      "sha256": "c3ff7acb69ef744473a224bb632051588a33a050450d57283759d4186349cc88"
+      "ids": 2546,
+      "bytes": 65441,
+      "sha256": "d330599f7d8c0a34f0d9d973c1e892f975a60c86f9a5178b9edaf022cb85eabc"
     },
     {
       "path": "data/organization_index/ids-28.json",
       "bucket": "28",
-      "ids": 2428,
-      "bytes": 62147,
-      "sha256": "29d494d5ad0d3bb9b43fe4d653f2b722d51f0ea993bb192035cd02fa526d95c9"
+      "ids": 2422,
+      "bytes": 61972,
+      "sha256": "cf594a94740c64884e4cfa6a706a309bc182e9ee1edc016c784b0760c38f7e11"
     },
     {
       "path": "data/organization_index/ids-29.json",
       "bucket": "29",
-      "ids": 2392,
-      "bytes": 61459,
-      "sha256": "71a05403c5bfaf672c0655411c1edbae4da8c11ef602f114556cde85dc1071bb"
+      "ids": 2401,
+      "bytes": 61723,
+      "sha256": "dd44bae3b4779d69c50ef956c589d2c77d6b23900f4c94565b748d670226aa5f"
     },
     {
       "path": "data/organization_index/ids-2a.json",
       "bucket": "2a",
-      "ids": 2377,
-      "bytes": 60871,
-      "sha256": "8ec51dcb4585d7cb189700ae0835fe2976ee9828d635f3166af41bf57035885e"
+      "ids": 2389,
+      "bytes": 61231,
+      "sha256": "b56c9809ca34484c5d81fdcd9e9e337d295d58daea9648b221d55abe5fa095e7"
     },
     {
       "path": "data/organization_index/ids-2b.json",
       "bucket": "2b",
-      "ids": 2383,
-      "bytes": 61090,
-      "sha256": "760d6246c9cdc7454565fdcc716349c801876298d825cd392412196a9114ae08"
+      "ids": 2379,
+      "bytes": 60956,
+      "sha256": "2daf97f3e7cfded822629681aae6e5b4f741ddd32df0349e7d2c384989d7e439"
     },
     {
       "path": "data/organization_index/ids-2c.json",
       "bucket": "2c",
-      "ids": 2468,
-      "bytes": 63291,
-      "sha256": "b74183a358455253398e3be4cb4d964710eff89aaa303077ded41caf1027c8a3"
+      "ids": 2465,
+      "bytes": 63222,
+      "sha256": "d47e3a21d70f8808298e49f870dd32c4cfbc4ea538421d09cc7a306e7742c7cb"
     },
     {
       "path": "data/organization_index/ids-2d.json",
       "bucket": "2d",
       "ids": 2463,
-      "bytes": 63004,
-      "sha256": "6c97066753963a31cae5c40d5a505693e01263348d96937ed98c34fb78402e0e"
+      "bytes": 63012,
+      "sha256": "0b9b88a093990474c2f58ae8e9ec2012b17c8d9aaeb6dc919ea285cf8a8c800f"
     },
     {
       "path": "data/organization_index/ids-2e.json",
       "bucket": "2e",
-      "ids": 2423,
-      "bytes": 62168,
-      "sha256": "f4bf7de1d83eaf926256688aa3bfd30388ca1f8a7970acaf087e6cd132623f57"
+      "ids": 2430,
+      "bytes": 62365,
+      "sha256": "873fbee57249e77ab3e103d084b2025018e5efb8790382d2559457ea225e795a"
     },
     {
       "path": "data/organization_index/ids-2f.json",
       "bucket": "2f",
-      "ids": 2349,
-      "bytes": 60196,
-      "sha256": "1dd64d66767614b84c4f06e71b2e4ac298c0e0b16c8ebfdc57a7101e24eea2cf"
+      "ids": 2354,
+      "bytes": 60347,
+      "sha256": "753668e82ab3d492b1a16fdd7cd16b8bb1b6865ac1d17205a269b3d1a3a8622c"
     },
     {
       "path": "data/organization_index/ids-30.json",
       "bucket": "30",
-      "ids": 2509,
-      "bytes": 64631,
-      "sha256": "181bd4296995e2d32c5191905a9c41d1155fb0a1c917ed5c7541420379fde1fe"
+      "ids": 2510,
+      "bytes": 64676,
+      "sha256": "f00af071343761c135f0387c1b3c83be6529324134a3315a3840e4636b61ab3c"
     },
     {
       "path": "data/organization_index/ids-31.json",
       "bucket": "31",
-      "ids": 2406,
-      "bytes": 61932,
-      "sha256": "83726e72ceafe08746164a92f56298f3538b56cd21960c64510ce6a648455ed9"
+      "ids": 2412,
+      "bytes": 62095,
+      "sha256": "7ce6b173b44dad0ec3895fae360600d17877e95df512ee726742e28f1f645046"
     },
     {
       "path": "data/organization_index/ids-32.json",
       "bucket": "32",
       "ids": 2431,
-      "bytes": 62196,
-      "sha256": "5879b44405b2ff1afa7af20f9999f4de81979c2465b21d02fed08bf6a075a444"
+      "bytes": 62203,
+      "sha256": "51b423f8a95ac10700c9378352be3eeb19d76512544a81a7355a56542cbb94b6"
     },
     {
       "path": "data/organization_index/ids-33.json",
       "bucket": "33",
-      "ids": 2396,
-      "bytes": 61319,
-      "sha256": "7a7018b8ecc5eba49f00cde16cad5610ef80371ce8b2f34abb8ee892290a598c"
+      "ids": 2392,
+      "bytes": 61226,
+      "sha256": "6da5f9a1ce13d745c3466fb46c47d020d3a6494d32fb6d5144b1fa6f3bdde572"
     },
     {
       "path": "data/organization_index/ids-34.json",
       "bucket": "34",
-      "ids": 2350,
-      "bytes": 60424,
-      "sha256": "480e64c0ced4780b70a507bb47f458d0eb33f4283e7577b3d78508af154db0ef"
+      "ids": 2352,
+      "bytes": 60479,
+      "sha256": "46f6cd6b496fb9f2d10adcd394a3d885399250d76a4db62510761419964a0400"
     },
     {
       "path": "data/organization_index/ids-35.json",
       "bucket": "35",
-      "ids": 2371,
-      "bytes": 61123,
-      "sha256": "a6a792835fe3fb15e6da67d8758f9b3acb407326d4b940bfa4f616393de87ab6"
+      "ids": 2373,
+      "bytes": 61195,
+      "sha256": "886951f3adaaec322a249157ca688a9646c31080288c2c5fbb423be7732e5958"
     },
     {
       "path": "data/organization_index/ids-36.json",
       "bucket": "36",
-      "ids": 2486,
-      "bytes": 63861,
-      "sha256": "9485c447d47803a7be58dd3eb84a38c37938f600a7fb8a541b5fd4bae0020332"
+      "ids": 2491,
+      "bytes": 63997,
+      "sha256": "6426bc880441936cf789db131e1643b868668d6d4f1b7d45bf6a6967625a324d"
     },
     {
       "path": "data/organization_index/ids-37.json",
       "bucket": "37",
-      "ids": 2443,
-      "bytes": 62816,
-      "sha256": "435bb948a3bf27c9cc484218b13a2077e8e2424a84385574823d0328a47bded3"
+      "ids": 2448,
+      "bytes": 62957,
+      "sha256": "b54a2bf3a25af075732aebb164bb42d25df2e26f0d188e32344b1840d46e6b0e"
     },
     {
       "path": "data/organization_index/ids-38.json",
       "bucket": "38",
-      "ids": 2438,
-      "bytes": 62427,
-      "sha256": "85529fc42ffa91ace8783a288022b9586886b5d1e4a4ca20f7d614ff30914ffd"
+      "ids": 2439,
+      "bytes": 62475,
+      "sha256": "6058c73a17cd11a8063f3932148274e9e6aaa11a3fc9d6295f354d8517fbc7b6"
     },
     {
       "path": "data/organization_index/ids-39.json",
       "bucket": "39",
-      "ids": 2365,
-      "bytes": 60724,
-      "sha256": "f80fadc74131a85c2ab6f5c0a1bffb916c9b97b3ea6f181a0d6d242444701acd"
+      "ids": 2366,
+      "bytes": 60744,
+      "sha256": "0ba55930a158f085b4eb40aef29035af58aae7e590e62c3acd367e534e775e3b"
     },
     {
       "path": "data/organization_index/ids-3a.json",
       "bucket": "3a",
-      "ids": 2342,
-      "bytes": 60224,
-      "sha256": "f82b3b300017cd3392290abca56aa4aa69105c343621b517b2075926dc08be73"
+      "ids": 2345,
+      "bytes": 60295,
+      "sha256": "3120337c562426add6001b8191cb4406f5a244ef6b7ba155025619cdc32e1663"
     },
     {
       "path": "data/organization_index/ids-3b.json",
       "bucket": "3b",
-      "ids": 2391,
-      "bytes": 61446,
-      "sha256": "25e3b8bc13bd6b3050a639b0609c534a96ae8444d6404058e3762c010b10dfe6"
+      "ids": 2395,
+      "bytes": 61568,
+      "sha256": "84888b626346e9d6651badb6cee84a41814972361fa5be3f2bf5b2f070b66cd4"
     },
     {
       "path": "data/organization_index/ids-3c.json",
       "bucket": "3c",
       "ids": 2382,
-      "bytes": 61244,
-      "sha256": "e05376a5bee71eb667f5c89c1c22502118ae74d6bf2173e67c7339e627deb286"
+      "bytes": 61237,
+      "sha256": "51b275a49c9a15cd94e55a97d9117d3be67ba02569a6b3f4115306791848dc54"
     },
     {
       "path": "data/organization_index/ids-3d.json",
       "bucket": "3d",
-      "ids": 2338,
-      "bytes": 60027,
-      "sha256": "3b0325e7574c2e442b004716b9cfe28efcd93ef0b56a0e495d51a5a371ebaff8"
+      "ids": 2340,
+      "bytes": 60091,
+      "sha256": "4be095c6e0c14fb87c0b531c82eb5a2bf2976eebde1b8eb1aab3b09583d10f32"
     },
     {
       "path": "data/organization_index/ids-3e.json",
       "bucket": "3e",
-      "ids": 2427,
-      "bytes": 62077,
-      "sha256": "15a9cecc3c1dc10ecd44e69f2b7e16209fd638e6beb63f3a5b1ebe0f5ea5f016"
+      "ids": 2421,
+      "bytes": 61908,
+      "sha256": "c58b41a0e0bfc5cf1e659380f568721cfc95e2de34cb53ed96b6418f29259b7d"
     },
     {
       "path": "data/organization_index/ids-3f.json",
       "bucket": "3f",
-      "ids": 2362,
-      "bytes": 60419,
-      "sha256": "6405121473dbf38ed61757959653532bb9156438c56c196cba1a3d7a6cae18d0"
+      "ids": 2366,
+      "bytes": 60543,
+      "sha256": "77291b1179f26dca95f5908a375e64a068646f6d5cd41bec20310291c5d49575"
     }
   ],
   "composition": {
     "by_source_count": {
-      "1": 148158,
-      "2": 6188,
-      "3+": 6523
+      "1": 148259,
+      "2": 6204,
+      "3+": 6541
     },
     "by_source_combination": {
-      "irs_eo_bmf_ny": 109479,
-      "nys_dol_contractor_registry": 13815,
-      "sbs_certified_businesses": 9242,
-      "ocp_recent_contract_awards": 8939,
-      "doing_business_entities": 5235,
-      "checkbook_registered_contracts+checkbook_prime_vendor_contracts": 1203,
+      "irs_eo_bmf_ny": 109473,
+      "nys_dol_contractor_registry": 13935,
+      "sbs_certified_businesses": 9236,
+      "ocp_recent_contract_awards": 8938,
+      "doing_business_entities": 5230,
+      "checkbook_registered_contracts+checkbook_prime_vendor_contracts": 1216,
       "sbs_certified_businesses+nys_dol_contractor_registry": 1126,
-      "checkbook_registered_contracts": 1095,
-      "checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities": 562,
-      "checkbook_registered_contracts+irs_eo_bmf_ny": 548,
-      "nys_dol_contractor_registry+nyc_sca_prequalified_firms": 475,
-      "sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 458,
+      "checkbook_registered_contracts": 1096,
+      "checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities": 566,
+      "checkbook_registered_contracts+irs_eo_bmf_ny": 550,
+      "nys_dol_contractor_registry+nyc_sca_prequalified_firms": 477,
+      "sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 460,
       "ocp_recent_contract_awards+doing_business_entities": 436,
-      "doing_business_entities+irs_eo_bmf_ny": 399,
-      "ocp_recent_contract_awards+passport_contracts": 380,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities": 375,
-      "nyc_sca_prequalified_firms": 352,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts": 320,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+irs_eo_bmf_ny": 311,
-      "checkbook_registered_contracts+doing_business_entities": 274,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts": 253,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities": 232,
+      "doing_business_entities+irs_eo_bmf_ny": 398,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities": 380,
+      "ocp_recent_contract_awards+passport_contracts": 379,
+      "nyc_sca_prequalified_firms": 350,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts": 318,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+irs_eo_bmf_ny": 313,
+      "checkbook_registered_contracts+doing_business_entities": 275,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts": 257,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities": 229,
       "doing_business_entities+sbs_certified_businesses": 225,
-      "checkbook_registered_contracts+checkbook_prime_vendor_contracts+sbs_certified_businesses": 215,
-      "ocp_recent_contract_awards+passport_contracts+doing_business_entities": 209,
+      "checkbook_registered_contracts+checkbook_prime_vendor_contracts+sbs_certified_businesses": 218,
       "sbs_certified_businesses+nyc_sca_prequalified_firms": 209,
+      "ocp_recent_contract_awards+passport_contracts+doing_business_entities": 206,
       "ocp_recent_contract_awards+irs_eo_bmf_ny": 193,
       "checkbook_registered_contracts+doing_business_entities+irs_eo_bmf_ny": 191,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+sbs_certified_businesses": 178,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+sbs_certified_businesses": 180,
       "ocp_recent_contract_awards+sbs_certified_businesses": 173,
       "ocp_recent_contract_awards+nys_dol_contractor_registry": 169,
+      "checkbook_registered_contracts+checkbook_prime_vendor_contracts+irs_eo_bmf_ny": 167,
       "checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities+sbs_certified_businesses": 165,
-      "checkbook_registered_contracts+checkbook_prime_vendor_contracts+irs_eo_bmf_ny": 163,
-      "checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities+irs_eo_bmf_ny": 153,
-      "checkbook_registered_contracts+sbs_certified_businesses": 147,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+irs_eo_bmf_ny": 138,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+sbs_certified_businesses": 105,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts": 102,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+irs_eo_bmf_ny": 92,
+      "checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities+irs_eo_bmf_ny": 154,
+      "checkbook_registered_contracts+sbs_certified_businesses": 148,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+irs_eo_bmf_ny": 137,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+sbs_certified_businesses": 104,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts": 103,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+irs_eo_bmf_ny": 93,
       "ocp_recent_contract_awards+checkbook_registered_contracts+doing_business_entities": 89,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+nys_dol_contractor_registry": 74,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+sbs_certified_businesses": 71,
-      "ocp_recent_contract_awards+checkbook_registered_contracts": 70,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+nys_dol_contractor_registry": 73,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+sbs_certified_businesses": 73,
+      "ocp_recent_contract_awards+checkbook_registered_contracts": 71,
       "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities": 70,
       "ocp_recent_contract_awards+doing_business_entities+irs_eo_bmf_ny": 68,
-      "doing_business_entities+nys_dol_contractor_registry": 65,
       "doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 65,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities+irs_eo_bmf_ny": 63,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+sbs_certified_businesses": 62,
+      "doing_business_entities+nys_dol_contractor_registry": 64,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities+irs_eo_bmf_ny": 64,
       "checkbook_registered_contracts+doing_business_entities+sbs_certified_businesses": 61,
-      "doing_business_entities+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 53,
-      "ocp_recent_contract_awards+passport_contracts+doing_business_entities+sbs_certified_businesses": 52,
-      "ocp_recent_contract_awards+passport_contracts+sbs_certified_businesses": 52,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+doing_business_entities+irs_eo_bmf_ny": 50,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+sbs_certified_businesses": 61,
+      "doing_business_entities+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 54,
+      "ocp_recent_contract_awards+passport_contracts+doing_business_entities+sbs_certified_businesses": 51,
+      "ocp_recent_contract_awards+passport_contracts+sbs_certified_businesses": 51,
       "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+nys_dol_contractor_registry": 50,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+doing_business_entities+irs_eo_bmf_ny": 49,
       "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry": 49,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+irs_eo_bmf_ny": 48,
       "doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry": 47,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry": 47,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+irs_eo_bmf_ny": 47,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry": 46,
       "ocp_recent_contract_awards+passport_contracts+irs_eo_bmf_ny": 46,
       "ocp_recent_contract_awards+doing_business_entities+nys_dol_contractor_registry": 45,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 44,
-      "ocp_recent_contract_awards+sbs_certified_businesses+nys_dol_contractor_registry": 44,
-      "ocp_recent_contract_awards+passport_contracts+nys_dol_contractor_registry": 43,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 42,
+      "ocp_recent_contract_awards+sbs_certified_businesses+nys_dol_contractor_registry": 45,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 42,
+      "ocp_recent_contract_awards+passport_contracts+nys_dol_contractor_registry": 42,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 41,
       "doing_business_entities+nyc_sca_prequalified_firms": 40,
       "doing_business_entities+sbs_certified_businesses+nyc_sca_prequalified_firms": 38,
       "ocp_recent_contract_awards+doing_business_entities+sbs_certified_businesses": 38,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+nys_dol_contractor_registry": 36,
-      "checkbook_registered_contracts+checkbook_prime_vendor_contracts+nys_dol_contractor_registry": 35,
+      "checkbook_registered_contracts+checkbook_prime_vendor_contracts+nys_dol_contractor_registry": 36,
       "checkbook_registered_contracts+nys_dol_contractor_registry": 35,
-      "ocp_recent_contract_awards+passport_contracts+doing_business_entities+irs_eo_bmf_ny": 35,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+nys_dol_contractor_registry": 33,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+nys_dol_contractor_registry": 35,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+nys_dol_contractor_registry": 35,
+      "ocp_recent_contract_awards+passport_contracts+doing_business_entities+irs_eo_bmf_ny": 34,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 31,
       "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts+irs_eo_bmf_ny": 28,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 28,
       "ocp_recent_contract_awards+checkbook_registered_contracts+irs_eo_bmf_ny": 27,
       "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+sbs_certified_businesses+nyc_sca_prequalified_firms": 27,
       "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+sbs_certified_businesses+nys_dol_contractor_registry": 26,
       "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities+sbs_certified_businesses": 24,
-      "ocp_recent_contract_awards+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 23,
+      "ocp_recent_contract_awards+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 24,
       "ocp_recent_contract_awards+passport_contracts+doing_business_entities+nys_dol_contractor_registry": 22,
-      "ocp_recent_contract_awards+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 22,
       "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+doing_business_entities+nyc_sca_prequalified_firms": 21,
       "ocp_recent_contract_awards+doing_business_entities+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 21,
+      "ocp_recent_contract_awards+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 21,
       "checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities+nys_dol_contractor_registry": 19,
       "ocp_recent_contract_awards+passport_contracts+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry": 19,
       "checkbook_registered_contracts+checkbook_prime_vendor_contracts+sbs_certified_businesses+nys_dol_contractor_registry": 17,
@@ -1613,25 +1613,25 @@
       "ocp_recent_contract_awards+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 15,
       "ocp_recent_contract_awards+passport_contracts+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 15,
       "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts+sbs_certified_businesses": 14,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 14,
       "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts+nys_dol_contractor_registry": 13,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+doing_business_entities+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 13,
       "checkbook_registered_contracts+sbs_certified_businesses+nys_dol_contractor_registry": 12,
       "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts+sbs_certified_businesses+nys_dol_contractor_registry": 12,
       "ocp_recent_contract_awards+checkbook_registered_contracts+doing_business_entities+nys_dol_contractor_registry": 11,
-      "ocp_recent_contract_awards+checkbook_registered_contracts+nys_dol_contractor_registry": 11,
       "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+checkbook_spending+doing_business_entities+irs_eo_bmf_ny": 11,
       "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 11,
       "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 11,
-      "ocp_recent_contract_awards+nyc_sca_prequalified_firms": 11,
+      "ocp_recent_contract_awards+checkbook_registered_contracts+nys_dol_contractor_registry": 10,
       "ocp_recent_contract_awards+doing_business_entities+sbs_certified_businesses+nyc_sca_prequalified_firms": 10,
+      "ocp_recent_contract_awards+nyc_sca_prequalified_firms": 10,
       "checkbook_registered_contracts+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 9,
       "ocp_recent_contract_awards+checkbook_registered_contracts+sbs_certified_businesses": 9,
       "checkbook_registered_contracts+doing_business_entities+sbs_certified_businesses+nys_dol_contractor_registry": 8,
       "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 8,
       "ocp_recent_contract_awards+doing_business_entities+nyc_sca_prequalified_firms": 8,
+      "ocp_recent_contract_awards+passport_contracts+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 8,
       "ocp_recent_contract_awards+passport_contracts+sbs_certified_businesses+nys_dol_contractor_registry": 8,
       "ocp_recent_contract_awards+checkbook_registered_contracts+passport_contracts+checkbook_prime_vendor_contracts+sbs_certified_businesses+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 7,
-      "ocp_recent_contract_awards+passport_contracts+nys_dol_contractor_registry+nyc_sca_prequalified_firms": 7,
       "checkbook_registered_contracts+sbs_certified_businesses+nyc_sca_prequalified_firms": 6,
       "irs_eo_bmf_ny+nys_dol_contractor_registry": 6,
       "ocp_recent_contract_awards+checkbook_registered_contracts+checkbook_prime_vendor_contracts+doing_business_entities+nys_dol_contractor_registry": 6,

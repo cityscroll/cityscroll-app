@@ -1,40 +1,40 @@
 {
   "schema": "cityscroll.procurement_code_catalog_manifest.v1",
-  "generated_at": "2026-11-11T04:00:00.000Z",
+  "generated_at": "2026-11-19T16:48:07.759Z",
   "catalogs": [
     {
       "scheme": "NAICS",
       "version": "2022",
       "path": "/data/procurement_codes/naics-2022.json",
-      "sha256": "5bdca87cd34dd9555afe2ba410fbff551b2ffa1fd4b97eff0d6573957e24e9cf",
+      "sha256": "43f8d2a1b37b9dedc25d475e08500e2a3d690bef3a23ef61b1d614ca392ccbc2",
       "records": 2125,
-      "checked_at": "2026-11-11T04:00:00.000Z",
+      "checked_at": "2026-11-19T16:48:07.759Z",
       "source_url": "https://www.census.gov/naics/2022NAICS/2022_NAICS_Structure.xlsx",
       "source_sha256": "217c9e0d4d74e7517bc288f5f308b73aa0de5ee787976a6dd222412be28ada22",
       "freshness": {
-        "checked_at": "2026-11-11T04:00:00.000Z",
-        "acquired_at": "2026-11-11T04:00:00.000Z"
+        "checked_at": "2026-11-19T16:48:07.759Z",
+        "acquired_at": "2026-11-19T16:48:07.759Z"
       }
     },
     {
       "scheme": "NYC_COMMODITY",
       "version": "snapshot-2026-11-11-6325fbf06b26",
       "path": "/data/procurement_codes/nyc-commodity-status.json",
-      "sha256": "f5b52f8112f69483708ecf6358722711ba991a75d6424b67cc96e4bcf65aa0d2",
+      "sha256": "115fcf1449d6572337661e744071a19b8e85abd16c9c8eb684f4541e29b9d65d",
       "records": 9038,
-      "checked_at": "2026-11-11T04:00:00.000Z",
+      "checked_at": "2026-11-19T16:48:08.120Z",
       "source_url": "https://www.nyc.gov/assets/mocs/downloads/PASSPort/learning-to-use-passport/NYCCommodityClassificationDirectory.xlsx",
       "source_sha256": "6325fbf06b2620ea7992c6f16da4f1f209cd1339d736f86a23b17fdec579a6b7",
       "freshness": {
-        "checked_at": "2026-11-11T04:00:00.000Z",
-        "acquired_at": "2026-11-11T04:00:00.000Z"
+        "checked_at": "2026-11-19T16:48:08.120Z",
+        "acquired_at": "2026-11-19T16:48:08.120Z"
       }
     },
     {
       "scheme": "NYC_COMMODITY_CATEGORIES",
       "version": "snapshot-2026-11-11-6325fbf06b26",
       "path": "/data/procurement_codes/nyc-commodity-categories.json",
-      "sha256": "bbdae6e16eba9019f9a9757092070d3804f024fe0aa16e91ad4364520c3a4f8c",
+      "sha256": "83599c059970f8c399e67c5d68ae83a468121b86d8a80c410684a122e62e43b6",
       "records": 463,
       "codes": 9038,
       "counts": {
@@ -43,12 +43,12 @@
         "l3": 404,
         "codes": 9038
       },
-      "checked_at": "2026-11-11T04:00:00.000Z",
+      "checked_at": "2026-11-19T16:48:08.120Z",
       "source_url": "https://www.nyc.gov/assets/mocs/downloads/PASSPort/learning-to-use-passport/NYCCommodityClassificationDirectory.xlsx",
       "source_sha256": "6325fbf06b2620ea7992c6f16da4f1f209cd1339d736f86a23b17fdec579a6b7",
       "freshness": {
-        "checked_at": "2026-11-11T04:00:00.000Z",
-        "acquired_at": "2026-11-11T04:00:00.000Z"
+        "checked_at": "2026-11-19T16:48:08.120Z",
+        "acquired_at": "2026-11-19T16:48:08.120Z"
       }
     }
   ]

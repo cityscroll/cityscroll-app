@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.analytics_first_payment_timing_contracts.v1",
-  "snapshot_date": "2026-11-13T14:08:23.774Z",
-  "contracts_snapshot_date": "2026-11-13",
-  "row_count": 10560,
+  "snapshot_date": "2026-11-19T16:06:56.943Z",
+  "contracts_snapshot_date": "2026-11-19",
+  "row_count": 10569,
   "rows": [
     {
       "prime_contract_id": "CT106820260000121",
@@ -45077,6 +45077,15 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CT104020279761430",
+      "agency": "Department of Education",
+      "start_date": "2025-07-01",
+      "registration_date": "2026-11-13",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CT104020279761777",
       "agency": "Department of Education",
       "start_date": "2025-07-01",
@@ -46476,6 +46485,15 @@
       "agency": "Department of Education",
       "start_date": "2026-05-01",
       "registration_date": "2026-08-29",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "MA104020279776340",
+      "agency": "Department of Education",
+      "start_date": "2025-07-01",
+      "registration_date": "2026-11-13",
       "first_payment_date": null,
       "days_to_first_payment": null,
       "state": "no_payment_in_payment_years"
@@ -58671,18 +58689,18 @@
       "agency": "Department of Parks and Recreation",
       "start_date": "2025-07-07",
       "registration_date": "2025-05-22",
-      "first_payment_date": null,
-      "days_to_first_payment": null,
-      "state": "no_payment_in_payment_years"
+      "first_payment_date": "2025-09-18",
+      "days_to_first_payment": 73,
+      "state": "paid_in_payment_years"
     },
     {
       "prime_contract_id": "CT184620258806777",
       "agency": "Department of Parks and Recreation",
       "start_date": "2025-08-25",
       "registration_date": "2025-05-05",
-      "first_payment_date": null,
-      "days_to_first_payment": null,
-      "state": "no_payment_in_payment_years"
+      "first_payment_date": "2025-12-03",
+      "days_to_first_payment": 100,
+      "state": "paid_in_payment_years"
     },
     {
       "prime_contract_id": "CT184620258806942",
@@ -58761,9 +58779,9 @@
       "agency": "Department of Parks and Recreation",
       "start_date": "2025-10-14",
       "registration_date": "2025-07-09",
-      "first_payment_date": null,
-      "days_to_first_payment": null,
-      "state": "no_payment_in_payment_years"
+      "first_payment_date": "2025-11-10",
+      "days_to_first_payment": 27,
+      "state": "paid_in_payment_years"
     },
     {
       "prime_contract_id": "CT184620258808501",
@@ -58860,9 +58878,9 @@
       "agency": "Department of Parks and Recreation",
       "start_date": "2025-08-04",
       "registration_date": "2025-08-05",
-      "first_payment_date": null,
-      "days_to_first_payment": null,
-      "state": "no_payment_in_payment_years"
+      "first_payment_date": "2026-03-06",
+      "days_to_first_payment": 214,
+      "state": "paid_in_payment_years"
     },
     {
       "prime_contract_id": "CT184620258809340",
@@ -60273,9 +60291,9 @@
       "agency": "Department of Parks and Recreation",
       "start_date": "2025-12-01",
       "registration_date": "2025-09-18",
-      "first_payment_date": null,
-      "days_to_first_payment": null,
-      "state": "no_payment_in_payment_years"
+      "first_payment_date": "2026-05-21",
+      "days_to_first_payment": 171,
+      "state": "paid_in_payment_years"
     },
     {
       "prime_contract_id": "CT184620268802149",
@@ -60921,9 +60939,9 @@
       "agency": "Department of Parks and Recreation",
       "start_date": "2025-10-06",
       "registration_date": "2025-10-09",
-      "first_payment_date": null,
-      "days_to_first_payment": null,
-      "state": "no_payment_in_payment_years"
+      "first_payment_date": "2025-10-24",
+      "days_to_first_payment": 18,
+      "state": "paid_in_payment_years"
     },
     {
       "prime_contract_id": "CT184620268802674",
@@ -70439,6 +70457,15 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CT182720278803537",
+      "agency": "Department of Sanitation",
+      "start_date": "2025-07-01",
+      "registration_date": "2026-11-16",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CTA182720267202881",
       "agency": "Department of Sanitation",
       "start_date": "2025-12-01",
@@ -74462,6 +74489,15 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CT106920278801044",
+      "agency": "Department of Social Services",
+      "start_date": "2025-07-01",
+      "registration_date": "2026-11-13",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CT106920278801081",
       "agency": "Department of Social Services",
       "start_date": "2025-07-01",
@@ -76221,6 +76257,15 @@
       "agency": "Department of Transportation",
       "start_date": "2025-11-14",
       "registration_date": "2026-09-09",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CT184120278803379",
+      "agency": "Department of Transportation",
+      "start_date": "2026-04-01",
+      "registration_date": "2026-11-13",
       "first_payment_date": null,
       "days_to_first_payment": null,
       "state": "no_payment_in_payment_years"
@@ -85748,6 +85793,15 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CT181920271405866",
+      "agency": "Health and Hospitals Corporation",
+      "start_date": "2026-01-13",
+      "registration_date": "2026-11-12",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CT181920271405929",
       "agency": "Health and Hospitals Corporation",
       "start_date": "2026-01-13",
@@ -86049,6 +86103,33 @@
       "agency": "Health and Hospitals Corporation",
       "start_date": "2026-05-21",
       "registration_date": "2026-11-02",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CTA181920277201936",
+      "agency": "Health and Hospitals Corporation",
+      "start_date": "2025-11-14",
+      "registration_date": "2026-11-16",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CTA181920277202116",
+      "agency": "Health and Hospitals Corporation",
+      "start_date": "2026-04-15",
+      "registration_date": "2026-11-16",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CTA181920277202282",
+      "agency": "Health and Hospitals Corporation",
+      "start_date": "2026-05-21",
+      "registration_date": "2026-11-17",
       "first_payment_date": null,
       "days_to_first_payment": null,
       "state": "no_payment_in_payment_years"
