@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.nycha_awarded_contracts_snapshot.v1",
   "schema_version": 1,
-  "as_of": "2026-11-19",
-  "generated_at": "2026-11-19T04:22:11.451Z",
+  "as_of": "2026-11-20",
+  "generated_at": "2026-11-20T16:16:34.073Z",
   "source": {
     "id": "nycha_awarded_contracts",
     "name": "NYCHA Awarded Contracts",
@@ -16,8 +16,8 @@
   },
   "feed": {
     "state": "live",
-    "fetched_at": "2026-11-19T04:22:11.451Z",
-    "checked_at": "2026-11-19T04:22:11.451Z",
+    "fetched_at": "2026-11-20T16:16:34.073Z",
+    "checked_at": "2026-11-20T16:16:34.073Z",
     "fallback_reason": null,
     "fallback_text": null,
     "shape_problems": [],
@@ -25,39 +25,39 @@
       {
         "year": 2023,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2023",
-        "fetched_at": "2026-11-19T04:22:11.451Z",
-        "bytes": 513974,
-        "sha256": "b893de1c29786e3f62b12d1b03cd4c7b677ea0eebc1a61de7991b83a8ef33298",
+        "fetched_at": "2026-11-20T16:16:34.073Z",
+        "bytes": 513972,
+        "sha256": "12d9dec0b5222a96b589230f9a0000d6f1bf59894602547b3bf5b9ad58d6f337",
         "row_count": 657
       },
       {
         "year": 2024,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2024",
-        "fetched_at": "2026-11-19T04:22:11.451Z",
-        "bytes": 319844,
-        "sha256": "c9f57efeaf126d638feaca8d48879337632547478fdce4003144fbbe9abbaddd",
+        "fetched_at": "2026-11-20T16:16:34.073Z",
+        "bytes": 319847,
+        "sha256": "1186d9d2365a8c2ef917d4dbdd66bd5dd06ec45c6fe1d9bb45dc4f4e2c259fd9",
         "row_count": 400
       },
       {
         "year": 2025,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2025",
-        "fetched_at": "2026-11-19T04:22:11.451Z",
-        "bytes": 274522,
-        "sha256": "3518d6c3ec3d21df78e6e42e3e1a46ca7f27e9bfebb247b4bf9c38b974dc7ebb",
+        "fetched_at": "2026-11-20T16:16:34.073Z",
+        "bytes": 274550,
+        "sha256": "07be0567e1f90c24cb215f01940db3aeabc70f6bb1dd4857c307df43f072d268",
         "row_count": 353
       },
       {
         "year": 2026,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2026",
-        "fetched_at": "2026-11-19T04:22:11.451Z",
-        "bytes": 222481,
-        "sha256": "26bb54212bc3a3ba2c44c3f3ee1032cfe967ed58ca8d8d9de64e5d6a200cd03c",
-        "row_count": 287
+        "fetched_at": "2026-11-20T16:16:34.073Z",
+        "bytes": 223986,
+        "sha256": "adeebff16e034406ca132dc3117077bfa716bfa6a6d4fd582f911a66ccf8ad28",
+        "row_count": 289
       },
       {
         "year": 2027,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2027",
-        "fetched_at": "2026-11-19T04:22:11.451Z",
+        "fetched_at": "2026-11-20T16:16:34.073Z",
         "bytes": 888,
         "sha256": "3b38eba728cd2fd719fb6d26c54a39fad25990275705955f570e5c6ba5fe5025",
         "row_count": 1
@@ -67,8 +67,8 @@
   "window": {
     "contract_years_from": 2023
   },
-  "count": 1698,
-  "rfq_numbered_count": 841,
+  "count": 1700,
+  "rfq_numbered_count": 842,
   "rows": [
     {
       "contract_number": "2219909",
@@ -2026,7 +2026,7 @@
       "start_date": "2023-03-12",
       "contract_year": 2023,
       "procurement_method": "SEALED BID",
-      "contract_status": "Active"
+      "contract_status": "Expired"
     },
     {
       "contract_number": "2121005",
@@ -8798,7 +8798,7 @@
       "rfq_number_printed": "407999,4",
       "rfq_number": "407999",
       "vendor_name": "AWL INDUSTRIES INC.",
-      "total_amount": 12961201.45,
+      "total_amount": 12961204.45,
       "start_date": "2024-03-08",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
@@ -14870,7 +14870,7 @@
       "rfq_number_printed": "512440,4",
       "rfq_number": "512440",
       "vendor_name": "CSI SECURITY AND ELECTRIC, INC DBA/CENTENNIAL SECURITY INTEGRATION",
-      "total_amount": 21000000,
+      "total_amount": 25990809.25,
       "start_date": "2025-10-20",
       "contract_year": 2025,
       "procurement_method": "SEALED BID",
@@ -16937,7 +16937,7 @@
       "contract_number": "2610213",
       "rfq_number_printed": "N/A",
       "rfq_number": null,
-      "vendor_name": "SMOOTH PLASTERING LLC",
+      "vendor_name": "SMOOTH PLASTERING LLC DBA SMOOTH CONSTRUCTION SERVICES",
       "total_amount": 250000,
       "start_date": "2026-05-27",
       "contract_year": 2026,
@@ -18735,6 +18735,28 @@
       "start_date": "2026-11-13",
       "contract_year": 2026,
       "procurement_method": "COMPETETIVE RFP",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2622541",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "VANGUARD DIRECT ENTERPRISES, LLC",
+      "total_amount": 1000000,
+      "start_date": "2026-11-13",
+      "contract_year": 2026,
+      "procurement_method": "GOV_TO_GOV",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2522456",
+      "rfq_number_printed": "508220,2",
+      "rfq_number": "508220",
+      "vendor_name": "P & K CONTRACTING, INC.",
+      "total_amount": 100000000,
+      "start_date": "2026-11-17",
+      "contract_year": 2026,
+      "procurement_method": "SEALED BID",
       "contract_status": "Active"
     },
     {
