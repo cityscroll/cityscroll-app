@@ -3,20 +3,20 @@
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
   "rule_version": "agency-history-v1",
-  "generated_at": "2026-11-19T08:56:22.627Z",
-  "as_of": "2026-11-19",
+  "generated_at": "2026-11-21T14:55:51.980Z",
+  "as_of": "2026-11-21",
   "window": {
     "months": 24,
-    "start_inclusive": "2024-11-19",
-    "end_exclusive": "2026-11-19"
+    "start_inclusive": "2024-11-21",
+    "end_exclusive": "2026-11-21"
   },
   "sources": {
     "city_record": {
       "name": "City Record Online",
       "dataset": "dg92-zbpx",
       "url": "https://data.cityofnewyork.us/d/dg92-zbpx",
-      "as_of": "2026-11-18",
-      "rows_updated_at": "2026-11-18T13:28:28.000Z",
+      "as_of": "2026-11-21",
+      "rows_updated_at": "2026-11-21T13:38:26.000Z",
       "query": "Procurement-section Solicitation notices with a start_date inside the window"
     },
     "registered_contracts": {
@@ -73,12 +73,12 @@
   "population": {
     "state": "complete",
     "reasons": [],
-    "notice_source_count": 1890,
-    "notices_read": 1890,
-    "notices_in_window_counted": 1890,
+    "notice_source_count": 1892,
+    "notices_read": 1892,
+    "notices_in_window_counted": 1892,
     "notices_unassigned": {},
     "contract_rows_read": 29731,
-    "contracts_in_window_counted": 25143,
+    "contracts_in_window_counted": 25063,
     "contracts_unassigned": {
       "community-boards": 6
     }
@@ -112,7 +112,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -126,7 +126,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -158,7 +158,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -172,7 +172,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -206,7 +206,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -220,15 +220,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 582,
-        "amount_eligible": 582,
+        "count": 577,
+        "amount_eligible": 577,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 862914,
+        "median_original_registered_amount": 858065,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -252,7 +252,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -266,7 +266,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -298,7 +298,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -312,7 +312,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -346,7 +346,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -360,7 +360,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -392,7 +392,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -406,7 +406,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -438,7 +438,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -452,7 +452,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -484,7 +484,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -498,7 +498,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -530,7 +530,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -544,7 +544,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -576,7 +576,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -590,7 +590,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -622,7 +622,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -636,7 +636,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -668,7 +668,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -682,7 +682,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -714,7 +714,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -728,7 +728,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -762,7 +762,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -776,15 +776,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 33,
-        "amount_eligible": 33,
+        "count": 32,
+        "amount_eligible": 32,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 121500,
+        "median_original_registered_amount": 121265,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -808,7 +808,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -822,7 +822,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -856,7 +856,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -870,7 +870,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -902,7 +902,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -916,7 +916,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -950,7 +950,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -964,15 +964,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 173,
-        "amount_eligible": 173,
+        "count": 172,
+        "amount_eligible": 172,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 81401.47,
+        "median_original_registered_amount": 79950.735,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -996,7 +996,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -1010,7 +1010,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1040,25 +1040,25 @@
       "solicitations": {
         "state": "available",
         "reason": null,
-        "notices": 66,
+        "notices": 67,
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
         "reason": null,
-        "median_calendar_days": 27.5,
-        "eligible_notices": 66,
-        "total_notices": 66,
+        "median_calendar_days": 28,
+        "eligible_notices": 67,
+        "total_notices": 67,
         "usable_due_date_share": 1,
         "excluded": {},
         "small_sample": false,
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1090,7 +1090,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -1104,15 +1104,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 173,
-        "amount_eligible": 173,
+        "count": 172,
+        "amount_eligible": 172,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 149213,
+        "median_original_registered_amount": 150829,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -1139,7 +1139,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1153,15 +1153,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 880,
-        "amount_eligible": 880,
+        "count": 876,
+        "amount_eligible": 876,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 280947.5,
+        "median_original_registered_amount": 284430,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -1185,7 +1185,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -1199,7 +1199,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1231,7 +1231,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -1245,7 +1245,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1279,7 +1279,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1293,7 +1293,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1327,7 +1327,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1341,7 +1341,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1373,7 +1373,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -1387,7 +1387,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1419,7 +1419,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -1433,7 +1433,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1467,7 +1467,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1481,7 +1481,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1513,7 +1513,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -1527,7 +1527,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1559,7 +1559,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -1573,7 +1573,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1605,7 +1605,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -1619,7 +1619,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -1653,7 +1653,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1669,15 +1669,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 771,
-        "amount_eligible": 771,
+        "count": 770,
+        "amount_eligible": 770,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 1940442,
+        "median_original_registered_amount": 1943700.5,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -1701,7 +1701,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1715,7 +1715,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -1747,7 +1747,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1761,7 +1761,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -1793,7 +1793,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1807,7 +1807,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -1839,7 +1839,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1853,7 +1853,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -1887,7 +1887,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1901,13 +1901,13 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 8214,
-        "amount_eligible": 8214,
+        "count": 8200,
+        "amount_eligible": 8200,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 25000,
         "source": {
@@ -1933,7 +1933,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1947,7 +1947,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -1981,7 +1981,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -1995,15 +1995,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 91,
-        "amount_eligible": 91,
+        "count": 90,
+        "amount_eligible": 90,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 369511,
+        "median_original_registered_amount": 377255.5,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -2029,7 +2029,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2043,15 +2043,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 531,
-        "amount_eligible": 531,
+        "count": 529,
+        "amount_eligible": 529,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 740000,
+        "median_original_registered_amount": 751073,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -2077,7 +2077,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2091,7 +2091,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -2123,7 +2123,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -2137,15 +2137,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 82,
-        "amount_eligible": 82,
+        "count": 81,
+        "amount_eligible": 81,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 106103.785,
+        "median_original_registered_amount": 107589.6,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -2171,7 +2171,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2185,15 +2185,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 286,
-        "amount_eligible": 286,
+        "count": 283,
+        "amount_eligible": 283,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 101571.44,
+        "median_original_registered_amount": 107694.04,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -2219,7 +2219,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2235,15 +2235,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 1549,
-        "amount_eligible": 1549,
+        "count": 1545,
+        "amount_eligible": 1545,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 19967.5,
+        "median_original_registered_amount": 19964,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -2269,7 +2269,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2283,15 +2283,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 330,
-        "amount_eligible": 330,
+        "count": 329,
+        "amount_eligible": 329,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 20933667,
+        "median_original_registered_amount": 21020981,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -2311,25 +2311,25 @@
       "solicitations": {
         "state": "available",
         "reason": null,
-        "notices": 271,
+        "notices": 273,
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
         "reason": null,
         "median_calendar_days": 34,
-        "eligible_notices": 271,
-        "total_notices": 271,
+        "eligible_notices": 273,
+        "total_notices": 273,
         "usable_due_date_share": 1,
         "excluded": {},
         "small_sample": false,
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -2363,7 +2363,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2377,15 +2377,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 1125,
-        "amount_eligible": 1125,
+        "count": 1121,
+        "amount_eligible": 1121,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 432060.24,
+        "median_original_registered_amount": 432615.01,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -2409,7 +2409,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2423,7 +2423,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -2455,7 +2455,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -2469,7 +2469,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -2503,7 +2503,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2517,15 +2517,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 368,
-        "amount_eligible": 368,
+        "count": 365,
+        "amount_eligible": 365,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 314340,
+        "median_original_registered_amount": 317870,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -2549,7 +2549,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2563,7 +2563,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -2595,7 +2595,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -2609,7 +2609,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -2643,7 +2643,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2657,7 +2657,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -2689,7 +2689,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2703,7 +2703,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -2735,7 +2735,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2749,7 +2749,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -2781,7 +2781,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2795,7 +2795,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -2827,7 +2827,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2841,7 +2841,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -2873,7 +2873,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2887,7 +2887,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -2919,7 +2919,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -2933,7 +2933,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -2965,7 +2965,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -2979,7 +2979,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3013,7 +3013,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3027,7 +3027,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3061,7 +3061,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3075,15 +3075,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 297,
-        "amount_eligible": 297,
+        "count": 296,
+        "amount_eligible": 296,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 295715,
+        "median_original_registered_amount": 297597.9,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -3107,7 +3107,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -3121,7 +3121,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3153,7 +3153,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -3167,7 +3167,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3199,7 +3199,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3213,7 +3213,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -3245,7 +3245,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -3259,7 +3259,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3293,7 +3293,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3307,13 +3307,13 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 159,
-        "amount_eligible": 159,
+        "count": 157,
+        "amount_eligible": 157,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 150000,
         "source": {
@@ -3341,7 +3341,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3355,15 +3355,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 2356,
-        "amount_eligible": 2356,
+        "count": 2341,
+        "amount_eligible": 2341,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 11675.165,
+        "median_original_registered_amount": 11664.88,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
@@ -3387,7 +3387,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -3401,7 +3401,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3435,7 +3435,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3449,7 +3449,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3481,7 +3481,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -3495,7 +3495,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3527,7 +3527,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3541,7 +3541,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -3573,7 +3573,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3587,7 +3587,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -3619,7 +3619,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -3633,7 +3633,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3665,7 +3665,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -3679,7 +3679,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3713,7 +3713,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3727,13 +3727,13 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 229,
-        "amount_eligible": 229,
+        "count": 228,
+        "amount_eligible": 228,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 500000,
         "source": {
@@ -3759,7 +3759,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3773,7 +3773,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -3807,7 +3807,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3821,13 +3821,13 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 737,
-        "amount_eligible": 737,
+        "count": 735,
+        "amount_eligible": 735,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 300000,
         "source": {
@@ -3853,7 +3853,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3867,7 +3867,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -3899,7 +3899,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -3913,7 +3913,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -3945,7 +3945,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "missing",
@@ -3959,7 +3959,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
@@ -3989,31 +3989,31 @@
       "solicitations": {
         "state": "available",
         "reason": null,
-        "notices": 69,
+        "notices": 68,
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
         "reason": null,
         "median_calendar_days": 34,
-        "eligible_notices": 69,
-        "total_notices": 69,
+        "eligible_notices": 68,
+        "total_notices": 68,
         "usable_due_date_share": 1,
         "excluded": {},
         "small_sample": false,
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 459,
-        "amount_eligible": 459,
+        "count": 457,
+        "amount_eligible": 457,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 479090,
         "source": {
@@ -4039,7 +4039,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -4053,7 +4053,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "missing",
@@ -4087,7 +4087,7 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "response_window": {
         "state": "available",
@@ -4101,15 +4101,15 @@
         "source": {
           "name": "City Record Online"
         },
-        "as_of": "2026-11-18"
+        "as_of": "2026-11-21"
       },
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 2486,
-        "amount_eligible": 2486,
+        "count": 2475,
+        "amount_eligible": 2475,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 444889.5,
+        "median_original_registered_amount": 450000,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },

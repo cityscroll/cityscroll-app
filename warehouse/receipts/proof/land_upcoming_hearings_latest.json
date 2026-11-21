@@ -1,26 +1,26 @@
 {
   "schema_version": 2,
   "kind": "land_upcoming_hearings_materialization",
-  "observed_at": "2026-11-13T14:28:59.648Z",
+  "observed_at": "2026-11-21T15:25:56.511Z",
   "method": "zap_published_hearing_sweep_v2",
   "mode": "live",
   "projects_listed": 234,
   "projects_fetched": 234,
   "projects_failed": 0,
   "unavailable_project_ids": [],
-  "hearings_extracted": 382,
-  "disposition_hearings_extracted": 70,
+  "hearings_extracted": 388,
+  "disposition_hearings_extracted": 76,
   "milestone_hearings_extracted": 312,
-  "before_upcoming_count": 0,
-  "milestone_upcoming_count": 161,
-  "incremental_milestone_count": 161,
+  "before_upcoming_count": 3,
+  "milestone_upcoming_count": 144,
+  "incremental_milestone_count": 144,
   "accepted_milestone_classes": {
-    "cpc_pre_hearing_review_session": 85,
-    "cpc_public_hearing": 76
+    "cpc_pre_hearing_review_session": 77,
+    "cpc_public_hearing": 67
   },
-  "published_meeting_dates_evaluated": 823,
+  "published_meeting_dates_evaluated": 825,
   "hearing_shaped_candidates_reviewed": 799,
-  "upcoming_count": 161,
+  "upcoming_count": 147,
   "statuses": [
     "In Public Review",
     "Noticed",
@@ -30,18 +30,18 @@
   "detector_ok": true,
   "detector_findings": [],
   "sample_project_ids": [
+    "2019K0147",
     "2021K0261",
-    "2022K0416",
-    "2023Q0328",
-    "2023Q0364",
-    "2024Q0189",
-    "2024R0332",
-    "2026K0233",
-    "2026M0164",
-    "2026M0515",
-    "2026Q0320",
-    "2023R0259",
-    "2024Q0356"
+    "2021Q0439",
+    "2022K0252",
+    "2022Q0248",
+    "2023Q0144",
+    "2023Q0303",
+    "2023Q0424",
+    "2023X0140",
+    "2024M0194",
+    "2024Q0325",
+    "2024R0425"
   ],
   "reviewed_false_positive_sample": [
     {
@@ -73,20 +73,20 @@
     },
     {
       "project_id": "2023Q0177",
-      "milestone_id": "ebc00c39-0c77-ed11-81ab-001dd806a702",
-      "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
-      "display_title": "Post Hearing Follow-Up / Future Votes",
-      "meeting_date": "2026-11-16",
-      "status": "In Progress",
-      "review_result": "outside_exact_title_contract"
-    },
-    {
-      "project_id": "2023Q0177",
       "milestone_id": "2cc10c39-0c77-ed11-81ab-001dd806a702",
       "source_title": "CPC Public Meeting - Vote",
       "display_title": "City Planning Commission Vote",
       "meeting_date": "2026-11-18",
       "status": "Not Started",
+      "review_result": "outside_exact_title_contract"
+    },
+    {
+      "project_id": "2023Q0177",
+      "milestone_id": "ebc00c39-0c77-ed11-81ab-001dd806a702",
+      "source_title": "Review Session - Post Hearing Follow-Up / Future Votes",
+      "display_title": "Post Hearing Follow-Up / Future Votes",
+      "meeting_date": "2026-11-30",
+      "status": "In Progress",
       "review_result": "outside_exact_title_contract"
     },
     {

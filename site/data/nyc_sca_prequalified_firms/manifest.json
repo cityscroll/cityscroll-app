@@ -1,96 +1,101 @@
 {
   "schema": "cityscroll.register_shards_manifest.v1",
   "register": "nyc_sca_prequalified_firms",
-  "collected_at": "2026-11-12T12:00:00.000Z",
+  "collected_at": "2026-11-21T15:33:42.142Z",
   "source_url": "https://data.cityofnewyork.us/d/szkz-syh6",
-  "row_count": 2178,
-  "source_row_count": 6092,
+  "row_count": 2181,
+  "source_row_count": 6091,
   "source_receipt": {
-    "row_count": 6092,
-    "firm_records": 2178,
+    "row_count": 6091,
+    "firm_records": 2181,
     "source_url": "https://data.cityofnewyork.us/resource/szkz-syh6.json"
   },
   "bucket_count": 16,
+  "canary_rows": [
+    {
+      "prequalified_vendor_name": "A + Choice Construction Inc."
+    }
+  ],
   "shards": [
     {
       "path": "id-0.json",
       "kind": "id",
       "bucket": "0",
       "rows": 130,
-      "bytes": 469093,
-      "sha256": "f3bc8378885154ddd1ade3e2483a74bb73cb30c980ec376c01c4f7a9cb555582"
+      "bytes": 464794,
+      "sha256": "c6ee832c7038641a637945e69f5d5e30b921e9097dae17ae6bd612970d569315"
     },
     {
       "path": "id-1.json",
       "kind": "id",
       "bucket": "1",
-      "rows": 143,
-      "bytes": 464633,
-      "sha256": "fa326f0d90e5ad3ecdcf50efffdb8ef55eb9dde06e51eba74ef4da63a48aac39"
+      "rows": 141,
+      "bytes": 454269,
+      "sha256": "3a78d74d290d5da7529de32757b60110e8012c556abb0fb8566b8b6645b58e98"
     },
     {
       "path": "id-2.json",
       "kind": "id",
       "bucket": "2",
-      "rows": 135,
-      "bytes": 467237,
-      "sha256": "6d9d284492e3fe83a0f4d7e63fcf196be91cc664b34a30297e9c9c59390f8612"
+      "rows": 137,
+      "bytes": 477723,
+      "sha256": "a2b472a89096e1e7707ee0111db48b9cab16d23feb81fec1a82e39e4d6d055ba"
     },
     {
       "path": "id-3.json",
       "kind": "id",
       "bucket": "3",
-      "rows": 115,
-      "bytes": 442644,
-      "sha256": "3035b77ef240094358cd578fb2a277333ade7ee69bb763178c50f985fb5d46d9"
+      "rows": 117,
+      "bytes": 451060,
+      "sha256": "5a80d23319486f2ba6e16b8bf61b5712e5441f2822689cfb47c2280cc11afbfa"
     },
     {
       "path": "id-4.json",
       "kind": "id",
       "bucket": "4",
       "rows": 128,
-      "bytes": 398708,
-      "sha256": "da71fe81130c3a52f593532aba5771fb95aa6fa70427f0ecd073bb802fe269a1"
+      "bytes": 397801,
+      "sha256": "2315f011c4409fa57fbe3fe18fa2b8b873acb2d6ba6f0f973b4842657383d133"
     },
     {
       "path": "id-5.json",
       "kind": "id",
       "bucket": "5",
-      "rows": 143,
-      "bytes": 495537,
-      "sha256": "7a27a226e874483b4c9484cd1c17a229806ab4e90b493e3cfd637e73df283810"
+      "rows": 142,
+      "bytes": 482157,
+      "sha256": "9d6d6384ea14cb60220c27a4416f18b8d6b7b02ce72ae254fc86dbd84c3aa115"
     },
     {
       "path": "id-6.json",
       "kind": "id",
       "bucket": "6",
-      "rows": 130,
-      "bytes": 478203,
-      "sha256": "7cba7402561206578447ba6f5c1db6dd0bb5f25f37d51c1ca1b4c0b819f60afe"
+      "rows": 132,
+      "bytes": 484735,
+      "sha256": "69345da59b60cf512d22d3ec6301c701f90c3139c5ee6f8d6526946d9b2b2a18"
     },
     {
       "path": "id-7.json",
       "kind": "id",
       "bucket": "7",
-      "rows": 133,
-      "bytes": 445843,
-      "sha256": "a78c93d300ee5c1fa399c2ab7c780bd63d961204cd80ad03696d8e25092fe358"
+      "rows": 134,
+      "bytes": 451741,
+      "sha256": "68815b939ed59c5ce371090520c07f400d4c77f10d375c5f810d8e2a619bf36f"
     },
     {
       "path": "id-8.json",
       "kind": "id",
       "bucket": "8",
       "rows": 144,
-      "bytes": 475686,
-      "sha256": "9e5d0280cd9beaeadb87749d0e82c714e02a1f2457ee5b50b1c9556ff868bdb0"
+      "bytes": 477593,
+      "sha256": "d3b8ebcf4919d9951aded050db57c3943966d5b14c4cf72eae723234870fdaf3"
     },
     {
       "path": "id-9.json",
       "kind": "id",
       "bucket": "9",
       "rows": 129,
-      "bytes": 460726,
-      "sha256": "e006be0c8c5aa6b94c87e3e50f1ff844914bea7663340770b1c7bcf393df9636"
+      "bytes": 462484,
+      "sha256": "512ad332cc24cefff994e7a2e2c7c65f55a15ad1f1a155aa92764f0f52dc6c55"
     },
     {
       "path": "id-a.json",
@@ -98,79 +103,79 @@
       "bucket": "a",
       "rows": 123,
       "bytes": 418140,
-      "sha256": "70576122d1d1b6bb2ca4d4098675f666996ab003d4be1a80f4feddc34c1133cd"
+      "sha256": "dc8b68db8addcb656488d72f68f50443d6e8220d439262e900d14f8320831a1c"
     },
     {
       "path": "id-b.json",
       "kind": "id",
       "bucket": "b",
-      "rows": 156,
-      "bytes": 558839,
-      "sha256": "96e92ccbd67452fd11279b1c515a7dd29eec1200e2bebcdcea6e9af99df2f3d7"
+      "rows": 157,
+      "bytes": 563500,
+      "sha256": "ffbfd2e82f93074a5adf22b05f636b22e2ebd601522e6b4320201dd0096f9d25"
     },
     {
       "path": "id-c.json",
       "kind": "id",
       "bucket": "c",
-      "rows": 136,
-      "bytes": 467077,
-      "sha256": "747315a3029395aae6cbb69d493493933799d87249c7ee6d87c0ab4a0b6c0bf9"
+      "rows": 138,
+      "bytes": 473662,
+      "sha256": "6be7c03ccdc4552a8b80e021a5277648c2367d92637439452abfee626607fd3c"
     },
     {
       "path": "id-d.json",
       "kind": "id",
       "bucket": "d",
-      "rows": 149,
-      "bytes": 507482,
-      "sha256": "faa46c8669d58e418f9136574f41aa8cc0889c8cac87b0a74c910bd426954a2d"
+      "rows": 146,
+      "bytes": 497280,
+      "sha256": "6ba7703245bf7e4ed8440eb420da50af1af0f53262b25dd6a3a1322f5f5dcaa4"
     },
     {
       "path": "id-e.json",
       "kind": "id",
       "bucket": "e",
       "rows": 137,
-      "bytes": 440399,
-      "sha256": "e1b1acd1c4baaee5f96fe81982539bf8608ea3fadb40d544e15aa9f6a760a793"
+      "bytes": 437974,
+      "sha256": "f4d28cdf0d7987326aa8194e860a4ae3417da7d0e617331d3644e14de0776756"
     },
     {
       "path": "id-f.json",
       "kind": "id",
       "bucket": "f",
-      "rows": 147,
-      "bytes": 495237,
-      "sha256": "5ac2fc4c2d3f2d33d1388612ad7832628749d233d9cc1d710a9f11f4cf91b151"
+      "rows": 146,
+      "bytes": 494190,
+      "sha256": "aebb7a7f8b8192ad70b6a5580879f227e7ca516f5af23ab915d87e134c05a584"
     },
     {
       "path": "stem-0.json",
       "kind": "stem",
       "bucket": "0",
-      "rows": 135,
-      "bytes": 23863,
-      "sha256": "6d288ef31fb0eeccae9902fd78ef79ec3cc60e66bebf87021698c360b3eb1e4c"
+      "rows": 136,
+      "bytes": 24043,
+      "sha256": "bdf8f453165e0dceff5e6f931db10eb757a865e9946c9c105f514d761fb86c73"
     },
     {
       "path": "stem-1.json",
       "kind": "stem",
       "bucket": "1",
-      "rows": 114,
-      "bytes": 20251,
-      "sha256": "d38c46f75e4e8e32c76a0e8af594b15d46a8b40767aca6139e4d2ecc3e2e9aa8"
+      "rows": 113,
+      "bytes": 20008,
+      "sha256": "48328601d2a03f05505624a605aa0e83d74f0388dee28376fddb9def6fbc98d1"
     },
     {
       "path": "stem-2.json",
       "kind": "stem",
       "bucket": "2",
-      "rows": 132,
-      "bytes": 23415,
-      "sha256": "04fe61d60489cb7cdd03d6bad4da7b483cd7c0fa67c1d2092b177b69a039e486"
+      "rows": 134,
+      "bytes": 23788,
+      "sha256": "d8a2550e0e42c370a21e4216c41c22989d22b233ead5475de424bd7cf053bc3a"
     },
     {
       "path": "stem-3.json",
       "kind": "stem",
       "bucket": "3",
-      "rows": 141,
-      "bytes": 24950,
-      "sha256": "7e686adbac999366dbdbb58364935e4640517d6470e689ea8e800f33f46ea3ed"
+      "rows": 140,
+      "bytes": 24774,
+      "sha256": "1af44e222563aa5c9c0e68fff762b919ea74ff27d4a2f6b8d08ecf93e2fbd39f"
     },
     {
       "path": "stem-4.json",
@@ -178,63 +183,63 @@
       "bucket": "4",
       "rows": 130,
       "bytes": 23319,
-      "sha256": "c40c5b4aee8feecd89a62a5dd96be4aa310b3690956c0f2d4c1767b376b79112"
+      "sha256": "f23c15b88da0183e88d857ea8a7774f0b104fd94a144de7041f51fed61a444f4"
     },
     {
       "path": "stem-5.json",
       "kind": "stem",
       "bucket": "5",
       "rows": 152,
-      "bytes": 27032,
-      "sha256": "7c5eb4b57aa54930873599120467be5c8d251eb6949f95c836ab1afb0aea6d22"
+      "bytes": 26967,
+      "sha256": "cf839aee488748117a7acaf218fbf567e3de6779e87993fc0f7a9313598b0dd5"
     },
     {
       "path": "stem-6.json",
       "kind": "stem",
       "bucket": "6",
-      "rows": 122,
-      "bytes": 21580,
-      "sha256": "ac4108718516f57a19b1eca7a8b5545332bd30345353b468beaac1e37f652da5"
+      "rows": 126,
+      "bytes": 22297,
+      "sha256": "696d6570aed2e46d543af970d8e36825c7c42ed2e42d4b4e1b2b1535d7b14086"
     },
     {
       "path": "stem-7.json",
       "kind": "stem",
       "bucket": "7",
-      "rows": 155,
-      "bytes": 27800,
-      "sha256": "c135e7968d2c4b4eea8f69440c3f100a5c7e32d6411084dd82f135ccb482b185"
+      "rows": 156,
+      "bytes": 28030,
+      "sha256": "a69dcbf1eebc632f28df66c2a0be4dbb20f2cc531692f538be5b6a904f13a018"
     },
     {
       "path": "stem-8.json",
       "kind": "stem",
       "bucket": "8",
-      "rows": 146,
-      "bytes": 26250,
-      "sha256": "9c2881422c1b1de8065ce4d6a049188b0cee230f6fa24b13a7d24c764f16588f"
+      "rows": 147,
+      "bytes": 26425,
+      "sha256": "e18a98040abc7be8e110ac6e8ccc08d6bbdbd3d87a28b3b5a93412e4c5ecaf69"
     },
     {
       "path": "stem-9.json",
       "kind": "stem",
       "bucket": "9",
-      "rows": 128,
-      "bytes": 22658,
-      "sha256": "bef5ffb04e9da8eb8899aa1d8d0f29e1683e1f99210f1e145ab77db80ee432d8"
+      "rows": 129,
+      "bytes": 22835,
+      "sha256": "0f4ffa1819b24ffc607615d6980f1d9b109a9fd94136a5d52581ea878cb1f0c8"
     },
     {
       "path": "stem-a.json",
       "kind": "stem",
       "bucket": "a",
       "rows": 160,
-      "bytes": 27462,
-      "sha256": "eac6b4ec77dfc7f6ce88192a33970fe80a15b40602c751766d7965bbbec75afc"
+      "bytes": 27510,
+      "sha256": "00806fbd5237dd17f65cc9baef9c3d3acf7d28c16cd3cf0902bfbec65b9913a2"
     },
     {
       "path": "stem-b.json",
       "kind": "stem",
       "bucket": "b",
-      "rows": 142,
-      "bytes": 25098,
-      "sha256": "fee521bc5b46fcc4b44204051764a9e6b739aa1d1f34849f95141480a559de1c"
+      "rows": 141,
+      "bytes": 24900,
+      "sha256": "69e52f34e9273b20b4c9ecd537886a76c7bd659c1d963044f10fdd436b0ae0d8"
     },
     {
       "path": "stem-c.json",
@@ -242,7 +247,7 @@
       "bucket": "c",
       "rows": 133,
       "bytes": 23641,
-      "sha256": "5a3ebb1858859bbd5f237ac035d97d0929e5ca1111277d82134c96b24994ab1c"
+      "sha256": "4a44b121ad039591d4769867e00d3d951d4019e012a9e0e4e5fd7d9aa6ee9811"
     },
     {
       "path": "stem-d.json",
@@ -250,28 +255,23 @@
       "bucket": "d",
       "rows": 125,
       "bytes": 22668,
-      "sha256": "41024cbf872c578ff3b529b6a5132759cad97fa1b50d6f5d4f998df736f384bf"
+      "sha256": "6702d8c5cead2092fa0067727d39702ca5c150ad25a81f869ab47c166f6e96fc"
     },
     {
       "path": "stem-e.json",
       "kind": "stem",
       "bucket": "e",
-      "rows": 124,
-      "bytes": 21936,
-      "sha256": "4ee5047e95d1d321f4c0eae0ff03031421904e3f122f89c102443d28b0f8ae5c"
+      "rows": 122,
+      "bytes": 21579,
+      "sha256": "b198618a1b54d142bfd0199753c7639c3102b1ea18327679f1ef948297acca97"
     },
     {
       "path": "stem-f.json",
       "kind": "stem",
       "bucket": "f",
-      "rows": 139,
-      "bytes": 24709,
-      "sha256": "be55d445e52e545493f5221039360c2f4922ef26a8c9de4f5ba32740bb6cffc0"
-    }
-  ],
-  "canary_rows": [
-    {
-      "prequalified_vendor_name": "A + Choice Construction Inc."
+      "rows": 137,
+      "bytes": 24343,
+      "sha256": "814eda4c9f11a2b89d176162e07d4161dabc212f1a83a7c3017a3914da85cbcf"
     }
   ]
 }

@@ -1,9 +1,9 @@
 {
   "schema": "cityscroll.geography_located_in_audit.v1",
-  "polygon_memberships": 6048,
-  "unique_geography_pairs": 6048,
-  "public_edges": 6651,
-  "evidence_only_edges": 48,
+  "polygon_memberships": 6193,
+  "unique_geography_pairs": 6193,
+  "public_edges": 6804,
+  "evidence_only_edges": 38,
   "reconciled": true,
   "by_lens": {
     "land": {
@@ -84,51 +84,46 @@
       }
     },
     "meetings": {
-      "polygon_memberships": 4778,
-      "unique_geography_pairs": 4778,
-      "public_edges": 5392,
-      "evidence_only_edges": 37,
+      "polygon_memberships": 4923,
+      "unique_geography_pairs": 4923,
+      "public_edges": 5545,
+      "evidence_only_edges": 27,
       "reconciled": true,
       "by_method": {
         "community_board_ontology": {
-          "public": 1604,
+          "public": 1670,
           "evidence_only": 0,
-          "total": 1604
+          "total": 1670
         },
         "cd_intersects_council": {
-          "public": 2930,
-          "evidence_only": 3,
-          "total": 2933
+          "public": 3018,
+          "evidence_only": 0,
+          "total": 3018
         },
         "parcel_membership": {
-          "public": 693,
+          "public": 690,
           "evidence_only": 0,
-          "total": 693
-        },
-        "matter_title_place": {
-          "public": 22,
-          "evidence_only": 0,
-          "total": 22
+          "total": 690
         },
         "matter_body_borough": {
-          "public": 80,
+          "public": 73,
           "evidence_only": 0,
-          "total": 80
+          "total": 73
+        },
+        "matter_title_place": {
+          "public": 28,
+          "evidence_only": 0,
+          "total": 28
         },
         "civic_address_pip": {
-          "public": 57,
-          "evidence_only": 24,
+          "public": 60,
+          "evidence_only": 21,
           "total": 81
         },
         "venue_line": {
           "public": 2,
           "evidence_only": 0,
           "total": 2
-        },
-        "agency_hq": {
-          "public": 0,
-          "evidence_only": 1,
-          "total": 1
         },
         "venue_column": {
           "public": 3,
@@ -142,14 +137,14 @@
         },
         "stamped": {
           "public": 0,
-          "evidence_only": 9,
-          "total": 9
+          "evidence_only": 6,
+          "total": 6
         }
       },
       "by_tier": {
-        "strong": 5330,
-        "derived": 62,
-        "weak": 37
+        "strong": 5480,
+        "derived": 65,
+        "weak": 27
       }
     },
     "money": {
@@ -196,8 +191,8 @@
     "citywide": {
       "land": 3,
       "property": 0,
-      "rules": 96,
-      "meetings": 14,
+      "rules": 87,
+      "meetings": 16,
       "money": 42
     },
     "virtual": {
@@ -211,13 +206,13 @@
       "land": 0,
       "property": 0,
       "rules": 0,
-      "meetings": 70,
+      "meetings": 65,
       "money": 212
     }
   },
   "note": "Each polygon membership has at least one routed located_in candidate; distinct record×geography pairs reconcile to membership bags while separate venue and jurisdiction roles may share a pair. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
   "boundary_vintage": "2026-05-26",
-  "built_at": "2026-11-14T14:20:11.720Z",
+  "built_at": "2026-11-21T15:43:14.135Z",
   "subject_counts": {
     "borough": 5,
     "community-district": 59,

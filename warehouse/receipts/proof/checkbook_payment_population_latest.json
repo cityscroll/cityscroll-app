@@ -21,7 +21,7 @@
   "source": {
     "publisher": "Office of the New York City Comptroller",
     "acquisition_mode": "live-publisher",
-    "pulled_at": "2026-11-13T14:08:23.774Z",
+    "pulled_at": "2026-11-21T15:00:21.495Z",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
     "type_of_data": "Spending",
@@ -33,21 +33,21 @@
     "page_size": 20000,
     "pages": 90,
     "count_drift_policy": "fail without publishing",
-    "page_manifest_sha256": "d67ede558e09e38098778205f75617c1472ae7971f3419080e0437e3a7986647"
+    "page_manifest_sha256": "48fb69d89b14e4e41df21a8c3154c76138ec259d39c168cdb29cda6cda642171"
   },
   "population": {
-    "publisher_record_count": 1785886,
-    "source_xml_rows": 1785886,
-    "normalized_rows": 1785886,
-    "unique_transaction_ids": 1636029,
-    "duplicate_transaction_rows": 149857,
-    "reversal_rows": 1705,
+    "publisher_record_count": 1786125,
+    "source_xml_rows": 1786125,
+    "normalized_rows": 1786125,
+    "unique_transaction_ids": 1636249,
+    "duplicate_transaction_rows": 149876,
+    "reversal_rows": 1711,
     "null_amount_rows": 0,
     "agency_grouping": [
       {
         "agency": "Department of Education",
-        "transaction_count": 1211779,
-        "net_check_amount": 13250597878.6
+        "transaction_count": 1211782,
+        "net_check_amount": 13250589955.42
       },
       {
         "agency": "Pension Contributions",
@@ -76,8 +76,8 @@
       },
       {
         "agency": "Administration for Children's Services",
-        "transaction_count": 31945,
-        "net_check_amount": 1494968132.89
+        "transaction_count": 31947,
+        "net_check_amount": 1495027721.49
       },
       {
         "agency": "Department of Youth and Community Development",
@@ -91,8 +91,8 @@
       },
       {
         "agency": "Department of Environmental Protection",
-        "transaction_count": 57507,
-        "net_check_amount": 1030953220.87
+        "transaction_count": 57531,
+        "net_check_amount": 1031208796.01
       },
       {
         "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -126,8 +126,8 @@
       },
       {
         "agency": "Department for the Aging",
-        "transaction_count": 7383,
-        "net_check_amount": 513912723.8
+        "transaction_count": 7394,
+        "net_check_amount": 513914853.8
       },
       {
         "agency": "Fire Department",
@@ -175,14 +175,14 @@
         "net_check_amount": 139167338.04
       },
       {
+        "agency": "Department of Parks and Recreation",
+        "transaction_count": 26880,
+        "net_check_amount": 115087333.11
+      },
+      {
         "agency": "Law Department",
         "transaction_count": 14658,
         "net_check_amount": 113129074.82
-      },
-      {
-        "agency": "Department of Parks and Recreation",
-        "transaction_count": 26681,
-        "net_check_amount": 105189203.04
       },
       {
         "agency": "Board of Elections",
@@ -703,17 +703,17 @@
     "by_fiscal_year": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1785886,
-        "source_xml_rows": 1785886,
-        "normalized_rows": 1785886,
-        "source_net_check_amount": 52399983822.17,
-        "normalized_net_check_amount": 52399983822.17,
-        "reversal_rows": 1705,
+        "source_record_count": 1786125,
+        "source_xml_rows": 1786125,
+        "normalized_rows": 1786125,
+        "source_net_check_amount": 52410191322.8,
+        "normalized_net_check_amount": 52410191322.8,
+        "reversal_rows": 1711,
         "agency_grouping": [
           {
             "agency": "Department of Education",
-            "transaction_count": 1211779,
-            "net_check_amount": 13250597878.6
+            "transaction_count": 1211782,
+            "net_check_amount": 13250589955.42
           },
           {
             "agency": "Pension Contributions",
@@ -742,8 +742,8 @@
           },
           {
             "agency": "Administration for Children's Services",
-            "transaction_count": 31945,
-            "net_check_amount": 1494968132.89
+            "transaction_count": 31947,
+            "net_check_amount": 1495027721.49
           },
           {
             "agency": "Department of Youth and Community Development",
@@ -757,8 +757,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 57507,
-            "net_check_amount": 1030953220.87
+            "transaction_count": 57531,
+            "net_check_amount": 1031208796.01
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -792,8 +792,8 @@
           },
           {
             "agency": "Department for the Aging",
-            "transaction_count": 7383,
-            "net_check_amount": 513912723.8
+            "transaction_count": 7394,
+            "net_check_amount": 513914853.8
           },
           {
             "agency": "Fire Department",
@@ -841,14 +841,14 @@
             "net_check_amount": 139167338.04
           },
           {
+            "agency": "Department of Parks and Recreation",
+            "transaction_count": 26880,
+            "net_check_amount": 115087333.11
+          },
+          {
             "agency": "Law Department",
             "transaction_count": 14658,
             "net_check_amount": 113129074.82
-          },
-          {
-            "agency": "Department of Parks and Recreation",
-            "transaction_count": 26681,
-            "net_check_amount": 105189203.04
           },
           {
             "agency": "Board of Elections",
@@ -1375,17 +1375,17 @@
     "partitions": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1785886,
-        "source_xml_rows": 1785886,
-        "normalized_rows": 1785886,
-        "source_net_check_amount": 52399983822.17,
-        "normalized_net_check_amount": 52399983822.17,
-        "reversal_rows": 1705,
+        "source_record_count": 1786125,
+        "source_xml_rows": 1786125,
+        "normalized_rows": 1786125,
+        "source_net_check_amount": 52410191322.8,
+        "normalized_net_check_amount": 52410191322.8,
+        "reversal_rows": 1711,
         "agency_grouping": [
           {
             "agency": "Department of Education",
-            "transaction_count": 1211779,
-            "net_check_amount": 13250597878.6
+            "transaction_count": 1211782,
+            "net_check_amount": 13250589955.42
           },
           {
             "agency": "Pension Contributions",
@@ -1414,8 +1414,8 @@
           },
           {
             "agency": "Administration for Children's Services",
-            "transaction_count": 31945,
-            "net_check_amount": 1494968132.89
+            "transaction_count": 31947,
+            "net_check_amount": 1495027721.49
           },
           {
             "agency": "Department of Youth and Community Development",
@@ -1429,8 +1429,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 57507,
-            "net_check_amount": 1030953220.87
+            "transaction_count": 57531,
+            "net_check_amount": 1031208796.01
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -1464,8 +1464,8 @@
           },
           {
             "agency": "Department for the Aging",
-            "transaction_count": 7383,
-            "net_check_amount": 513912723.8
+            "transaction_count": 7394,
+            "net_check_amount": 513914853.8
           },
           {
             "agency": "Fire Department",
@@ -1513,14 +1513,14 @@
             "net_check_amount": 139167338.04
           },
           {
+            "agency": "Department of Parks and Recreation",
+            "transaction_count": 26880,
+            "net_check_amount": 115087333.11
+          },
+          {
             "agency": "Law Department",
             "transaction_count": 14658,
             "net_check_amount": 113129074.82
-          },
-          {
-            "agency": "Department of Parks and Recreation",
-            "transaction_count": 26681,
-            "net_check_amount": 105189203.04
           },
           {
             "agency": "Board of Elections",
@@ -2042,17 +2042,17 @@
         "reconciled": true
       }
     ],
-    "source_xml_rows": 1785886,
-    "normalized_rows": 1785886,
-    "source_net_check_amount": 52399983822.17,
-    "normalized_net_check_amount": 52399983822.17,
+    "source_xml_rows": 1786125,
+    "normalized_rows": 1786125,
+    "source_net_check_amount": 52410191322.8,
+    "normalized_net_check_amount": 52410191322.8,
     "reconciled": true
   },
   "conversion": {
     "csv": {
       "path": "warehouse/raw/checkbook-payment-population/payments.csv",
-      "row_count": 1785886,
-      "sha256": "e8e05deb3a24b892dc8d12382604c58e62c4ef95c369c8892046d21e8ba8b127"
+      "row_count": 1786125,
+      "sha256": "27ff3f50f1502748caeae7ce7d52d833d9fc8d92ccfc3a3fc63988264702b59a"
     },
     "receipt": "warehouse/receipts/proof/checkbook_payment_population_conversion_latest.json",
     "next_step": "warehouse/scripts/convert_checkbook_payment_population.py --csv <payments.csv> --parquet <payments.parquet> --source-receipt warehouse/receipts/proof/checkbook_payment_population_latest.json",
@@ -2081,7 +2081,7 @@
     ]
   },
   "checksums": {
-    "normalized_csv_sha256": "e8e05deb3a24b892dc8d12382604c58e62c4ef95c369c8892046d21e8ba8b127"
+    "normalized_csv_sha256": "27ff3f50f1502748caeae7ce7d52d833d9fc8d92ccfc3a3fc63988264702b59a"
   },
   "coverage_statement": "This receipt covers only the declared fiscal-year contract-spending partitions. It must not be used to infer payment coverage for other fiscal years or spending categories."
 }

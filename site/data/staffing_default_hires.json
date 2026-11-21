@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-13T14:45:47.486Z",
+  "generated_at": "2026-11-21T15:33:12.310Z",
   "source": {
     "name": "City Record Online — Changes in Personnel (APPOINTED)",
     "dataset": "dg92-zbpx",
@@ -17,564 +17,564 @@
   "count": 80,
   "notices": [
     {
-      "request_id": "1000271",
-      "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "request_id": "1002022",
+      "start_date": "2026-09-11T00:00:00.000",
+      "agency_name": "BOARD OF ELECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: TUTKO,BRIAN A."
+      "additional_description_1": "Effective Date: 08/23/2026; Provisional Status: Yes; Title Code: 94367; Reason For Change: APPOINTED; Salary: 22.85; Employee Name: ESCOTTO,EDWARD T."
     },
     {
-      "request_id": "1000266",
-      "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "request_id": "1002019",
+      "start_date": "2026-09-11T00:00:00.000",
+      "agency_name": "BOARD OF ELECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 95689; Reason For Change: APPOINTED; Salary: 168579.00; Employee Name: MABUS,ANNE G."
+      "additional_description_1": "Effective Date: 08/30/2026; Provisional Status: Yes; Title Code: 94367; Reason For Change: APPOINTED; Salary: 22.85; Employee Name: BALLOU,KATHERIN  ."
     },
     {
-      "request_id": "1000262",
-      "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "request_id": "1002016",
+      "start_date": "2026-09-11T00:00:00.000",
+      "agency_name": "BOARD OF ELECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: NURSE,JOSEPH W."
+      "additional_description_1": "Effective Date: 08/23/2026; Provisional Status: Yes; Title Code: 94367; Reason For Change: APPOINTED; Salary: 22.85; Employee Name: GIMM,ALICE  ."
     },
     {
-      "request_id": "1000258",
-      "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "request_id": "1002007",
+      "start_date": "2026-09-11T00:00:00.000",
+      "agency_name": "CAMPAIGN FINANCE BOARD",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: TALBOT,GAVIN W."
+      "additional_description_1": "Effective Date: 08/23/2026; Provisional Status: Yes; Title Code: 0660A; Reason For Change: APPOINTED; Salary: 100000.00; Employee Name: GHITELMAN,AARON N."
     },
     {
-      "request_id": "1000252",
-      "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "request_id": "1002000",
+      "start_date": "2026-09-11T00:00:00.000",
+      "agency_name": "BOARD OF ELECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 72298.00; Employee Name: BELTRE,CARMEN G."
+      "additional_description_1": "Effective Date: 08/23/2026; Provisional Status: Yes; Title Code: 94367; Reason For Change: APPOINTED; Salary: 22.85; Employee Name: TUSKE,RICHARD  ."
     },
     {
-      "request_id": "1000251",
-      "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "request_id": "1001999",
+      "start_date": "2026-09-11T00:00:00.000",
+      "agency_name": "BOARD OF ELECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: ALMEIDA,ANDREW  ."
+      "additional_description_1": "Effective Date: 08/23/2026; Provisional Status: Yes; Title Code: 94367; Reason For Change: APPOINTED; Salary: 22.85; Employee Name: KING,SUZAN  ."
     },
     {
-      "request_id": "1000243",
+      "request_id": "1001994",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 56647.00; Employee Name: FARUQ,TASLIMA  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 06844; Reason For Change: APPOINTED; Salary: 120000.00; Employee Name: MALVIYA,SIDDHART  ."
     },
     {
-      "request_id": "1000242",
+      "request_id": "1001991",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: FLORES,RANDOLF  ."
+      "additional_description_1": "Effective Date: 08/02/2026; Provisional Status: Yes; Title Code: 10234; Reason For Change: APPOINTED; Salary: 17.00; Employee Name: FORTE,EMMANUEL  ."
     },
     {
-      "request_id": "1000241",
+      "request_id": "1001987",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: MAX,MYA  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 10251; Reason For Change: APPOINTED; Salary: 48631.00; Employee Name: SALAZAR,OSIRIS  ."
     },
     {
-      "request_id": "1000236",
+      "request_id": "1001986",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 1009A; Reason For Change: APPOINTED; Salary: 98140.00; Employee Name: FIALHO,SHEILA M."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 31622; Reason For Change: APPOINTED; Salary: 71581.00; Employee Name: PATRISSY,MICHAEL P."
     },
     {
-      "request_id": "1000234",
+      "request_id": "1001983",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "HOUSING PRESERVATION & DVLPMNT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 05/17/2026; Provisional Status: Yes; Title Code: 51274; Reason For Change: APPOINTED; Salary: 72298.00; Employee Name: BELLEJAMBE,SHARICE R."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 22092; Reason For Change: APPOINTED; Salary: 76405.00; Employee Name: BRYANT,BIANCA J."
     },
     {
-      "request_id": "1000229",
+      "request_id": "1001981",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: PEDIFORD,GERRI  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 92610; Reason For Change: APPOINTED; Salary: 346.56; Employee Name: WHEATLEY,CHESTER  ."
     },
     {
-      "request_id": "1000228",
+      "request_id": "1001980",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "NYC DEPT OF VETERANS' SERVICES",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: ALLEN,ARMANI O."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 51613; Reason For Change: APPOINTED; Salary: 77211.00; Employee Name: HYLTON,MONIQUE  ."
     },
     {
-      "request_id": "1000227",
+      "request_id": "1001978",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: HARRIS,TYISHA A."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 06070; Reason For Change: APPOINTED; Salary: 45986.00; Employee Name: WHEELER,JOSEPH T."
     },
     {
-      "request_id": "1000225",
+      "request_id": "1001977",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 50910; Reason For Change: APPOINTED; Salary: 109490.00; Employee Name: KENNEDY,CARLENE Y."
+      "additional_description_1": "Effective Date: 07/17/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: SCOTT,MATHIEU T."
     },
     {
-      "request_id": "1000219",
+      "request_id": "1001973",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 91212; Reason For Change: APPOINTED; Salary: 22.24; Employee Name: ALI,JAMAL  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 92510; Reason For Change: APPOINTED; Salary: 346.56; Employee Name: DEOWDHARRIE,OMESH  ."
     },
     {
-      "request_id": "1000216",
+      "request_id": "1001972",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 56647.00; Employee Name: CHOWDHURY,MOSTAFA A."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 92510; Reason For Change: APPOINTED; Salary: 346.56; Employee Name: YI,JAMES S."
     },
     {
-      "request_id": "1000200",
+      "request_id": "1001970",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: DEY,SATYAGIT  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 31315; Reason For Change: APPOINTED; Salary: 51485.00; Employee Name: ALVARADO,CHRISTIA  ."
     },
     {
-      "request_id": "1000199",
+      "request_id": "1001966",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "HOUSING PRESERVATION & DVLPMNT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 62868.00; Employee Name: ROSARIO,MICHAEL A."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 77500.00; Employee Name: SENCHYNA,DARRAGH O."
     },
     {
-      "request_id": "1000196",
+      "request_id": "1001964",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 95041; Reason For Change: APPOINTED; Salary: 190000.00; Employee Name: DIAZ,DANIEL R."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 31215; Reason For Change: APPOINTED; Salary: 53132.00; Employee Name: TRAN,KEVIN H."
     },
     {
-      "request_id": "1000195",
+      "request_id": "1001963",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: CHEN,DENISE  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 60421; Reason For Change: APPOINTED; Salary: 58843.00; Employee Name: HAQUE,LAZIMUL  ."
     },
     {
-      "request_id": "1000191",
+      "request_id": "1001962",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 02/01/2026; Provisional Status: Yes; Title Code: 52304; Reason For Change: APPOINTED; Salary: 48206.00; Employee Name: OSHIKOYA,TOKUNBO D."
+      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 71894.00; Employee Name: STANNER,KELLAN C."
     },
     {
-      "request_id": "1000189",
+      "request_id": "1001961",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: MELENDEZ,ELIAS J."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 90641; Reason For Change: APPOINTED; Salary: 46395.00; Employee Name: SERRANO,JONATHAN  ."
     },
     {
-      "request_id": "1000188",
+      "request_id": "1001957",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "TECHNOLOGY & INNOVATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: DE FREITAS,AMMA C."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 12158; Reason For Change: APPOINTED; Salary: 95000.00; Employee Name: HOQUE,SAJEDUL  ."
     },
     {
-      "request_id": "1000182",
+      "request_id": "1001954",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 72298.00; Employee Name: PARNELL,DEJANIA  ."
+      "additional_description_1": "Effective Date: 05/17/2026; Provisional Status: Yes; Title Code: 1002A; Reason For Change: APPOINTED; Salary: 95051.00; Employee Name: PICARD,THOMAS J."
     },
     {
-      "request_id": "1000181",
+      "request_id": "1001950",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 30086; Reason For Change: APPOINTED; Salary: 72510.00; Employee Name: CHOEDON,TENZIN  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 92510; Reason For Change: APPOINTED; Salary: 346.56; Employee Name: DIAZ,JOEL A."
     },
     {
-      "request_id": "1000179",
+      "request_id": "1001949",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "DEPT. OF DESIGN & CONSTRUCTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: KHADU,STEPHANI K."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 22425; Reason For Change: APPOINTED; Salary: 68871.00; Employee Name: BISH,DANIEL J."
     },
     {
-      "request_id": "1000176",
+      "request_id": "1001948",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: ALI,SHAHANAG  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 91406; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: WHITE,CLINTON  ."
     },
     {
-      "request_id": "1000170",
+      "request_id": "1001946",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: VALENTIN,HANDEL  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 90642; Reason For Change: APPOINTED; Salary: 42049.00; Employee Name: WHALE,SEAN A."
     },
     {
-      "request_id": "1000168",
+      "request_id": "1001939",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 49258.00; Employee Name: HASAN,AFZAL  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 81310; Reason For Change: APPOINTED; Salary: 50448.00; Employee Name: YAMADA,CHELSEA S."
     },
     {
-      "request_id": "1000167",
+      "request_id": "1001937",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "HOUSING PRESERVATION & DVLPMNT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: FATIMA,SABRINA  ."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 51227.00; Employee Name: TISSON-LEE,NICOLE N."
     },
     {
-      "request_id": "1000165",
+      "request_id": "1001936",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: GARCIA,MARCEL A."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 55284.00; Employee Name: DILLON,CLAIRE A."
     },
     {
-      "request_id": "1000161",
+      "request_id": "1001932",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 44545.00; Employee Name: ANTHONY,AMANI  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 28.04; Employee Name: DORCELLY,EMERALD  ."
     },
     {
-      "request_id": "1000150",
+      "request_id": "1001928",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 1002A; Reason For Change: APPOINTED; Salary: 98140.00; Employee Name: BONNY,JOHANA C."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 52020; Reason For Change: APPOINTED; Salary: 45103.00; Employee Name: HENDRICKS,DILLON T."
     },
     {
-      "request_id": "1000147",
+      "request_id": "1001926",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 11/30/2025; Provisional Status: Yes; Title Code: 52110; Reason For Change: APPOINTED; Salary: 95211.00; Employee Name: NIKULINA,VALENTIN  ."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10209; Reason For Change: APPOINTED; Salary: 21.90; Employee Name: KANNY,BARRY F."
     },
     {
-      "request_id": "1000146",
+      "request_id": "1001920",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: DIKIRIRIE,MERCY E."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 52020; Reason For Change: APPOINTED; Salary: 45103.00; Employee Name: BROWN,NAJEIA D."
     },
     {
-      "request_id": "1000141",
+      "request_id": "1001916",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10251; Reason For Change: APPOINTED; Salary: 42288.00; Employee Name: LINDER,JUANITA R."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 31629; Reason For Change: APPOINTED; Salary: 71581.00; Employee Name: TORPEY,MARK S."
     },
     {
-      "request_id": "1000139",
+      "request_id": "1001914",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 50446.00; Employee Name: PAUL,SHEKHAR R."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 82179.00; Employee Name: VIRAN,NICHOLAS J."
     },
     {
-      "request_id": "1000138",
+      "request_id": "1001912",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "HOUSING PRESERVATION & DVLPMNT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: GILL,NOEL C."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 22092; Reason For Change: APPOINTED; Salary: 76279.00; Employee Name: HICIANO,LESLIE A."
     },
     {
-      "request_id": "1000137",
+      "request_id": "1001905",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF CITYWIDE ADMIN SVCS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: RETANA,WILSON O."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 12704; Reason For Change: APPOINTED; Salary: 72287.00; Employee Name: YEHUDA,BENJAMIN E."
     },
     {
-      "request_id": "1000135",
+      "request_id": "1001899",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "HOUSING PRESERVATION & DVLPMNT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: RANI,DIPALI  ."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 51227.00; Employee Name: MEJIA,YLICHTNA  ."
     },
     {
-      "request_id": "1000132",
+      "request_id": "1001894",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "DEPT OF CITYWIDE ADMIN SVCS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: NISBETT,ARTHUR S."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 90644; Reason For Change: APPOINTED; Salary: 39970.00; Employee Name: OWENS,JASON G."
     },
     {
-      "request_id": "1000123",
+      "request_id": "1001893",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: RAINFORD,ROXANNE M."
+      "additional_description_1": "Effective Date: 07/01/2026; Provisional Status: Yes; Title Code: 71205; Reason For Change: APPOINTED; Salary: 22.72; Employee Name: RAINAULI,LASHA  ."
     },
     {
-      "request_id": "1000119",
+      "request_id": "1001883",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: DEBNATH,POPY  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 71894.00; Employee Name: CHOW,MINDY Y."
     },
     {
-      "request_id": "1000112",
+      "request_id": "1001880",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: WHITE,TYESHAWN J."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 31622; Reason For Change: APPOINTED; Salary: 71581.00; Employee Name: KHALIL,BISHOY  ."
     },
     {
-      "request_id": "1000110",
+      "request_id": "1001879",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: SLATER,KAELA A."
+      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 71894.00; Employee Name: GRAZIANO,JULIET L."
     },
     {
-      "request_id": "1000104",
+      "request_id": "1001873",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 56647.00; Employee Name: SIRAJ,MD R."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 92610; Reason For Change: APPOINTED; Salary: 346.56; Employee Name: KARAMCHAND,BISSOOND  ."
     },
     {
-      "request_id": "1000102",
+      "request_id": "1001872",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "NYC DEPT OF VETERANS' SERVICES",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 95844; Reason For Change: APPOINTED; Salary: 110000.00; Employee Name: BRUCE,ALICIA R."
+      "additional_description_1": "Effective Date: 08/18/2026; Provisional Status: Yes; Title Code: 10209; Reason For Change: APPOINTED; Salary: 21.90; Employee Name: GORDON,SETH W."
     },
     {
-      "request_id": "1000101",
+      "request_id": "1001860",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 72298.00; Employee Name: MANUEL-ANDINO,DANIELA F."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 31622; Reason For Change: APPOINTED; Salary: 71581.00; Employee Name: SEDANO,ETHAN J."
     },
     {
-      "request_id": "1000096",
+      "request_id": "1001856",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: WILSON,JESSICA M."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 21215; Reason For Change: APPOINTED; Salary: 113256.00; Employee Name: BARKIN,PAULINE R."
     },
     {
-      "request_id": "1000093",
+      "request_id": "1001854",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 62517.00; Employee Name: PONDAR,KRISTIAN B."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 60888; Reason For Change: APPOINTED; Salary: 43477.00; Employee Name: AKHINUR,URME  ."
     },
     {
-      "request_id": "1000091",
+      "request_id": "1001852",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: JORDAN,ASHANTI D."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 31629; Reason For Change: APPOINTED; Salary: 71581.00; Employee Name: HARVEY,MARLON U."
     },
     {
-      "request_id": "1000090",
+      "request_id": "1001850",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: HOHENKIRK,VENISE  ."
+      "additional_description_1": "Effective Date: 08/19/2026; Provisional Status: Yes; Title Code: 06664; Reason For Change: APPOINTED; Salary: 20.60; Employee Name: HERNANDEZ COLON,MELISSA L."
     },
     {
-      "request_id": "1000089",
+      "request_id": "1001849",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 31142; Reason For Change: APPOINTED; Salary: 105000.00; Employee Name: CADLETT-HAWKINS,KATINA N."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 51227.00; Employee Name: LANDIN,SAMANTHA  ."
     },
     {
-      "request_id": "1000086",
+      "request_id": "1001848",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: BEGUM,FATEMA  ."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 21310; Reason For Change: APPOINTED; Salary: 76279.00; Employee Name: SELENIS,ANGELUS L."
     },
     {
-      "request_id": "1000085",
+      "request_id": "1001839",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 56647.00; Employee Name: SHAZIM,ABDULLAH A."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 90642; Reason For Change: APPOINTED; Salary: 42049.00; Employee Name: CAMPBELL,SHAUN V."
     },
     {
-      "request_id": "1000082",
+      "request_id": "1001838",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "TECHNOLOGY & INNOVATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/18/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: OREBE,OLALEKAN A."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 20247; Reason For Change: APPOINTED; Salary: 58327.00; Employee Name: RODRIGUEZ,JOSE O."
     },
     {
-      "request_id": "1000081",
+      "request_id": "1001834",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 83484.00; Employee Name: AMBROSSI,BIANCA P."
+      "additional_description_1": "Effective Date: 07/26/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 71894.00; Employee Name: FLORES,LILLIAN  ."
     },
     {
-      "request_id": "1000080",
+      "request_id": "1001833",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 31142; Reason For Change: APPOINTED; Salary: 150000.00; Employee Name: ASSA,JACOB  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 60421; Reason For Change: APPOINTED; Salary: 58843.00; Employee Name: LOPEZ,ELVIS J."
     },
     {
-      "request_id": "1000079",
+      "request_id": "1001826",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "DISTRICT ATTORNEY-MANHATTAN",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 1001B; Reason For Change: APPOINTED; Salary: 80000.00; Employee Name: LACAYO BONILLA,GINA L."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56057; Reason For Change: APPOINTED; Salary: 52110.00; Employee Name: AHN,RACHEL S."
     },
     {
-      "request_id": "1000078",
+      "request_id": "1001823",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPARTMENT OF CORRECTION",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 81801; Reason For Change: APPOINTED; Salary: 40223.00; Employee Name: BROWN,TACHEYAN C."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 75000.00; Employee Name: ALFONSO HERRERA,GLORIA  ."
     },
     {
-      "request_id": "1000074",
+      "request_id": "1001821",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency_name": "DEPARTMENT OF BUILDINGS",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: TALUKDER,JUI  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 10251; Reason For Change: APPOINTED; Salary: 48631.00; Employee Name: WANG,DANNY  ."
     },
     {
-      "request_id": "1000069",
+      "request_id": "1001808",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 52416; Reason For Change: APPOINTED; Salary: 77211.00; Employee Name: MARTIN,ANTIGUA R."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 95279; Reason For Change: APPOINTED; Salary: 203652.00; Employee Name: HAGERTY,ALEXANDR M."
     },
     {
-      "request_id": "1000067",
+      "request_id": "1001802",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "DEPARTMENT OF BUSINESS SERV.",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 22508; Reason For Change: APPOINTED; Salary: 99761.00; Employee Name: SANOGUEL,CARMEN M."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 22503; Reason For Change: APPOINTED; Salary: 90000.00; Employee Name: MARTINEZ,TANIA K."
     },
     {
-      "request_id": "1000066",
+      "request_id": "1001800",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 62868.00; Employee Name: FELDMAN,IRENE  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 90642; Reason For Change: APPOINTED; Salary: 42049.00; Employee Name: ROSS,ANDREW D."
     },
     {
-      "request_id": "1000064",
+      "request_id": "1001781",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: CHANEZ-MORALES,VANESSA  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 62868.00; Employee Name: GONZALEZ,PEDRO R."
     },
     {
-      "request_id": "1000063",
+      "request_id": "1001775",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: BRITO,ADRIANA  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 10124; Reason For Change: APPOINTED; Salary: 55105.00; Employee Name: SMALL,TIFFANY  ."
     },
     {
-      "request_id": "1000061",
+      "request_id": "1001772",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: BLACK,MARCUS M."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 81361; Reason For Change: APPOINTED; Salary: 75000.00; Employee Name: BONO,ETHAN M."
     },
     {
-      "request_id": "1000060",
+      "request_id": "1001771",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: WEISBERG,THOMAS S."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 21915; Reason For Change: APPOINTED; Salary: 57323.00; Employee Name: ARMSTRONG,WILLIAM L."
     },
     {
-      "request_id": "1000052",
+      "request_id": "1001768",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "OFFICE OF MANAGEMENT & BUDGET",
+      "agency_name": "HOUSING PRESERVATION & DVLPMNT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 06088; Reason For Change: APPOINTED; Salary: 60764.00; Employee Name: ALCIVAR,BREIANNA C."
+      "additional_description_1": "Effective Date: 08/17/2026; Provisional Status: Yes; Title Code: 22092; Reason For Change: APPOINTED; Salary: 76279.00; Employee Name: SCHEIDELER,KEITH M."
     },
     {
-      "request_id": "1000051",
+      "request_id": "1001765",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: ASLITDINOV,AHMADJON  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 31215; Reason For Change: APPOINTED; Salary: 53132.00; Employee Name: MCCUISTION,AMANDA M."
     },
     {
-      "request_id": "1000050",
+      "request_id": "1001764",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPT OF ENVIRONMENT PROTECTION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: ALI,AMIN H."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 71894.00; Employee Name: NUNEZ,JEZOARI  ."
     },
     {
-      "request_id": "1000046",
+      "request_id": "1001761",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "LAW DEPARTMENT",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 30112; Reason For Change: APPOINTED; Salary: 90395.00; Employee Name: BRICKMAN,LILY C."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 40493; Reason For Change: APPOINTED; Salary: 88856.00; Employee Name: RODO,PAOLA M."
     },
     {
-      "request_id": "1000045",
+      "request_id": "1001754",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "LAW DEPARTMENT",
+      "agency_name": "DEPT OF PARKS & RECREATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 10037; Reason For Change: APPOINTED; Salary: 155571.00; Employee Name: SEGGIO SR,LOUIS B."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 92005; Reason For Change: APPOINTED; Salary: 411.81; Employee Name: MERWIN,NICHOLAS J."
     },
     {
-      "request_id": "1000039",
+      "request_id": "1001748",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "TAX COMMISSION",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 30087; Reason For Change: APPOINTED; Salary: 146052.00; Employee Name: ARMSTRONG,ANITA M."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 92510; Reason For Change: APPOINTED; Salary: 346.56; Employee Name: DOULIS,PETER  ."
     },
     {
-      "request_id": "1000035",
+      "request_id": "1001743",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: DIALLO,ALSSENY  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 20210; Reason For Change: APPOINTED; Salary: 76279.00; Employee Name: OBERMAN,LILY M."
     },
     {
-      "request_id": "1000032",
+      "request_id": "1001738",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "HOUSING PRESERVATION & DVLPMNT",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: SINGH,JAGMEET  ."
+      "additional_description_1": "Effective Date: 08/16/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 77500.00; Employee Name: KOLATAU,VIKTAR  ."
     },
     {
-      "request_id": "1000030",
+      "request_id": "1001725",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPT OF HEALTH/MENTAL HYGIENE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: MATHEWS,TALIA S."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 72298.00; Employee Name: AHMED,SAMEER  ."
     },
     {
-      "request_id": "1000028",
+      "request_id": "1001722",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPARTMENT OF FINANCE",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: GILL-URENA,ALEXANDE  ."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 40523; Reason For Change: APPOINTED; Salary: 60710.00; Employee Name: SALDYKA,SYLWIA M."
     },
     {
-      "request_id": "1000025",
+      "request_id": "1001721",
       "start_date": "2026-08-28T00:00:00.000",
-      "agency_name": "POLICE DEPARTMENT",
+      "agency_name": "DEPARTMENT OF TRANSPORTATION",
       "short_title": "APPOINTED",
-      "additional_description_1": "Effective Date: 07/31/2026; Provisional Status: Yes; Title Code: 70206; Reason For Change: APPOINTED; Salary: 19.51; Employee Name: LANDOLFI,ANALIESE E."
+      "additional_description_1": "Effective Date: 08/09/2026; Provisional Status: Yes; Title Code: 92510; Reason For Change: APPOINTED; Salary: 346.56; Employee Name: AYAD,SAMUEL W."
     }
   ]
 }

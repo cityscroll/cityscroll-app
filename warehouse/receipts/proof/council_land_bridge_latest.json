@@ -1,16 +1,16 @@
 {
   "coverage": {
-    "eligible_rows": 113,
-    "matched": 49,
+    "eligible_rows": 114,
+    "matched": 52,
     "rejected": 0,
     "rejected_reasons": {},
-    "unresolved": 64,
+    "unresolved": 62,
     "unresolved_reasons": {
-      "no_exact_land_key": 64
+      "no_exact_land_key": 62
     }
   },
   "gate": {
-    "rationale": "49 of 113 eligible Council matter appearances (43.36%) carry a retained exact land identifier.",
+    "rationale": "52 of 114 eligible Council matter appearances (45.61%) carry a retained exact land identifier.",
     "resident_ingestion_committed": false,
     "result": "GO",
     "thresholds": {
@@ -23,9 +23,9 @@
   "join_measurement": {
     "rates": {
       "exact_land_identifier": {
-        "joined": 49,
-        "rate": 0.433628,
-        "total": 113
+        "joined": 52,
+        "rate": 0.45614,
+        "total": 114
       }
     },
     "strategy": "exact_ulurp_token | exact_zap_project_id",
@@ -33,6 +33,186 @@
     "verdict": "Above usefulness threshold (>=30%). Ship Council matter edge materialization."
   },
   "materialized_edges": [
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79800"
+          }
+        ],
+        "event": {
+          "date": "2026-11-24",
+          "event_id": "22797",
+          "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22797&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0161-2026",
+          "matter_id": "79800",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79800",
+          "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260190 ZSX)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22797:matter:79800",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2022X0393",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260190ZSX",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-11-24",
+        "project_id": "2022X0393",
+        "retained_identifier": "260190ZSX",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79800",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79800",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2022X0393"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79802"
+          }
+        ],
+        "event": {
+          "date": "2026-11-24",
+          "event_id": "22797",
+          "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22797&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0162-2026",
+          "matter_id": "79802",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79802",
+          "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260193 HAX)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22797:matter:79802",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2022X0393",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260193HAX",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-11-24",
+        "project_id": "2022X0393",
+        "retained_identifier": "260193HAX",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79802",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79802",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2022X0393"
+    },
+    {
+      "compatibility_relation": "decides_land_project",
+      "council_depth": {
+        "actions": [
+          "Committee"
+        ],
+        "documents": [
+          {
+            "name": "Agenda",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Legistar matter detail",
+            "scope": "matter",
+            "url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79803"
+          }
+        ],
+        "event": {
+          "date": "2026-11-24",
+          "event_id": "22797",
+          "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22797&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3"
+        },
+        "matter": {
+          "matter_file": "LU 0163-2026",
+          "matter_id": "79803",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79803",
+          "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (N 260336 ZAX)."
+        },
+        "outcome": "Committee",
+        "votes": null
+      },
+      "from": "legistar-event:22797:matter:79803",
+      "is_decision": false,
+      "negative_rule": "Exact matter identity supports an observed review/concern record at most; a committee action or roll-call vote here is never equated with a documented land decision.",
+      "proceeding_relation": "reviews_project",
+      "project_id": "2022X0393",
+      "provenance": {
+        "confidence": "strong",
+        "join_key": "ulurp_number",
+        "join_value": "260336ZAX",
+        "method": "exact_ulurp_token",
+        "method_version": "1",
+        "observed_time": "2026-11-24",
+        "project_id": "2022X0393",
+        "retained_identifier": "260336ZAX",
+        "source_fields": [
+          "matter_file",
+          "title"
+        ],
+        "source_record_id": "legistar:matter:79803",
+        "source_system": "legistar",
+        "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79803",
+        "tier": "deterministic_exact_key"
+      },
+      "relation": "about_project",
+      "schema": "cityscroll.council_land_matter_edge.v1",
+      "to": "project:2022X0393"
+    },
     {
       "compatibility_relation": "decides_land_project",
       "council_depth": {
@@ -4290,6 +4470,33 @@
   ],
   "precision_sample": [
     {
+      "event_id": "22797",
+      "join_key": "260190ZSX",
+      "join_method": "exact_ulurp_token",
+      "matter_file": "LU 0161-2026",
+      "matter_id": "79800",
+      "project_id": "2022X0393",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79800"
+    },
+    {
+      "event_id": "22797",
+      "join_key": "260193HAX",
+      "join_method": "exact_ulurp_token",
+      "matter_file": "LU 0162-2026",
+      "matter_id": "79802",
+      "project_id": "2022X0393",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79802"
+    },
+    {
+      "event_id": "22797",
+      "join_key": "260336ZAX",
+      "join_method": "exact_ulurp_token",
+      "matter_file": "LU 0163-2026",
+      "matter_id": "79803",
+      "project_id": "2022X0393",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79803"
+    },
+    {
       "event_id": "22701",
       "join_key": "220449ZMK",
       "join_method": "exact_ulurp_token",
@@ -4351,43 +4558,16 @@
       "matter_id": "79573",
       "project_id": "2024Q0292",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79573"
-    },
-    {
-      "event_id": "22615",
-      "join_key": "260235ZRQ",
-      "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0149-2026",
-      "matter_id": "79574",
-      "project_id": "2024Q0292",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79574"
-    },
-    {
-      "event_id": "22615",
-      "join_key": "260184ZMQ",
-      "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0150-2026",
-      "matter_id": "79575",
-      "project_id": "2023Q0450",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79575"
-    },
-    {
-      "event_id": "22615",
-      "join_key": "260185ZRQ",
-      "join_method": "exact_ulurp_token",
-      "matter_file": "LU 0151-2026",
-      "matter_id": "79576",
-      "project_id": "2023Q0450",
-      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79576"
     }
   ],
   "schema": "cityscroll.council_land_bridge_measurement.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 287,
+      "absent_count": 289,
       "present_count": 15,
-      "record_count": 302
+      "record_count": 304
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-11-14T10:01:03.273Z",
-    "zap_projects_warehouse_lookup_materialized_at": "2026-11-13T14:46:37.747Z"
+    "meeting_outcomes_snapshot_generated_at": "2026-11-21T10:00:40.622Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-11-21T15:33:34.399Z"
   }
 }

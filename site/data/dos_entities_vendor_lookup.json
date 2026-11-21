@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.dos_entities_vendor_lookup.v1",
-  "collected_at": "2026-11-12T12:51:05.125Z",
+  "collected_at": "2026-11-21T15:33:37.276Z",
   "source_url": "https://data.ny.gov/resource/n9v6-gdp6.json",
   "dataset_id": "n9v6-gdp6",
   "coverage": {
@@ -41,7 +41,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -122,7 +122,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -228,7 +228,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -295,7 +295,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -375,7 +375,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -442,7 +442,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -523,7 +523,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -604,7 +604,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -671,7 +671,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -738,7 +738,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -805,7 +805,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -885,7 +885,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -952,7 +952,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1026,7 +1026,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1112,7 +1112,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1199,7 +1199,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1266,7 +1266,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1334,7 +1334,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1401,7 +1401,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1468,7 +1468,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1549,7 +1549,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1630,7 +1630,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1697,7 +1697,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1764,7 +1764,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1832,7 +1832,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1900,7 +1900,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -1967,7 +1967,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -2034,7 +2034,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",
@@ -2102,7 +2102,7 @@
           "status_basis": "dataset_scope_active_corporations",
           "source_url": "https://data.ny.gov/d/n9v6-gdp6",
           "collected_at": null,
-          "queried_at": "2026-11-12T12:51:05.125Z",
+          "queried_at": "2026-11-21T15:33:37.276Z",
           "flags": [],
           "published": {
             "jurisdiction": "New York",

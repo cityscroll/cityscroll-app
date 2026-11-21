@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.city_record_meeting_notice_materialization.v1",
-  "generated_at": "2026-11-14T13:54:10.820Z",
-  "as_of": "2026-11-14",
+  "generated_at": "2026-11-21T15:25:59.021Z",
+  "as_of": "2026-11-21",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",
@@ -17,265 +17,8 @@
     "agency_rules_type": "Public Hearings",
     "requires_event_date": true
   },
-  "row_count": 28,
+  "row_count": 22,
   "rows": [
-    {
-      "request_id": "20261008001",
-      "start_date": "2026-10-15T00:00:00.000",
-      "event_date": "2026-11-16T11:00:00.000",
-      "agency_name": "Buildings",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "short_title": "Proposed Rule - Amendment of Rules relating to Natural Gas Alarms",
-      "additional_description_1": "Title: Proposed Rule - Amendment of Rules relating to Natural Gas Alarms Agency Rules Section Buildings (DOB) Agency Name General Counsel Agency Division 11/16/2026 11:00 AM Event Date and Time Accessibility questions: Anthony Ceccato, 212-393-2021, antceccato@buildings.nyc.gov, by Monday, November 2, 2026 5:00 PM Accessibility Archived Status 10/15/2026 Publication Date Public Hearings Notice Type Attachments 1 Proposed Rule - Amendment of Rules relating to Natural Gas Alarms",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261008001&requestStatus=Archived&documentId=44723"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261008001&requestStatus=Archived&documentId=44723"
-      ]
-    },
-    {
-      "request_id": "20261109008",
-      "start_date": "2026-11-12T00:00:00.000",
-      "event_date": "2026-11-16T21:30:00.000",
-      "agency_name": "Public Design Commission",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "Design Commission Meeting Agenda, Monday, November 16, 2026",
-      "additional_description_1": "<p><span style='font-size:12pt'><strong>Design Commission Meeting Agenda</strong></span></p><p><span style='font-size:12pt'><strong>Monday, November 16, 2026</strong></span></p><p> </p><p><span style='font-size:12pt'><strong>Meeting Location:</strong> This meeting will be held in-person at the Landmarks Preservation Commission Hearing Room at 253 Broadway, 2nd Floor. Members of the public can attend and give testimony either in-person or remotely. The entrance to the building and hearing room are wheelchair accessible.</span></p><p> </p><p><span style='font-size:12pt'><strong>RSVPs are required for all who plan to attend in-person.</strong> If you plan to attend in-person, sign up in advance using this form: (https://tinyurl.com/PDCmeetingform) and indicate your attendance in-person <strong>no later than 3:00 p.m., Friday, November 13</strong>.</span></p><p><span style='font-size:12pt'> </span></p><p><span style='font-size:12pt'>To attend or testify remotely, the public can join the meeting via Microsoft Teams at https://teams.microsoft.com/meet/2405976504129809?p=QHxLQf8iIOohqdHYnP or by calling +1 332-910-6701 and using the phone conference ID: 744 831 800#.</span></p><p> </p><p><span style='font-size:12pt'>Members of the public who wish to give testimony on public hearing items can sign-up in advance using this form: https://tinyurl.com/PDCmeetingform. The order for in-person testimony is determined by a sign-in sheet the day of the meeting.</span></p><p><span style='font-size:12pt'>Instructions for testifying remotely via Microsoft Teams or by phone can be found on our website here: https://tinyurl.com/PDC-testimony-teams.</span></p><p> </p><p><span style='font-size:12pt'>The meeting will be livestreamed on the Public Design Commission\u001as YouTube channel at http://www.youtube.com/nycdesigncommission. </span></p><p> </p><p><span style='font-size:12pt'><strong><u>Public Meeting</u></strong></span></p><p style='margin-left:96px'> </p><p><span style='font-size:12pt'><strong>9:30 a.m.       Consent Items</strong></span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30604:            Installation of <em>A Necessary Secret World </em>by Sherrill Roland, Brooklyn Detention Complex, 275 Atlantic Avenue, Brooklyn. (Conceptual) (CC 33, CB 2)  DCLA%/DDC/DOC</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30605:            Reconstruction of a streetscape, including a plaza (Keltch Park), Jerome Avenue between East 164th Street and West 184th Street, West Tremont Avenue between Dr. Martin Luther King Jr. Boulevard and Grand Concourse, intersection of Sedgwick Avenue and West Tremont Avenue, and intersection of Dr. Martin Luther King Jr. Boulevard and West 181st Street, Bronx. (Preliminary) (CC 14 & 16, CB 4 & 5) DDC/DOT/DPR</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30606:            Installation of rooftop mechanical equipment and skylights, Main Building, Red Hook Wastewater Resource Recovery Facility, 63 Flushing Avenue, Brooklyn. (Preliminary and Final) (CC 33, CB 2) DEP</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30607:            Construction of streetscape improvements, Maspeth Avenue between Debevoise Avenue and Kingsland Avenue, Brooklyn. (Preliminary and Final) (CC 34, CB 1) DOT</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30608:            Installation of a prototypical automatic public toilet (APT) as part of the construction of the QueensWay Metropolitan Hub, Metropolitan Avenue and Trotting Course Lane, Forest Hills, Queens. (Preliminary and Final) (CB 6, CC 32) DOT</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30609:            Rehabilitation of kiosks and the installation of a public restroom, Municipal Plaza, adjacent to the David N. Dinkins Manhattan Municipal Building, One Centre Street, Manhattan. (Preliminary and Final) (CC 1, CB 1) DOT</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30610:            Removal of a distinctive sidewalk, 31 West 52nd Street, Manhattan. (Preliminary and Final) (CC 4, CB 5) DOT</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30611:            Reconstruction of a dog run, Thomas Jefferson Park, East 111th Street and FDR Drive, Manhattan. (Preliminary) (CC 8, CB 11) DPR</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30612:            Reconstruction of a portion of Wayanda Park, adjacent to P.S. 34, Hollis Avenue and Monterey Street, Queens Village, Queens. (Preliminary) (CC 27, CB 13) DPR</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30613:            Reconstruction of a playground, Kaiser Park, Neptune Avenue between West 29th Street and West 28th Street, Brooklyn. (Final) (CC 47, CB 13) DPR</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30614:            Reconstruction of Lozada Playground, adjacent to P.S. 154 (Jonathan D. Hyatt Elementary School), East 135th Street, between Willis Avenue and Alexander Avenue, Bronx. (Final) (CC 8, CB 1) DPR</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30615:            Rehabilitation of the Conservatory Water Basin and Boathouse Terrace and construction of an ADA path, Central Park, Fifth Avenue between East 72nd Street and East 76th Street, Manhattan. (Final) (CC 6, CB 5, 7, 8, 10 & 11) DPR/CPC</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30616:            Construction of a shade structure as part of the reconstruction of Damrosch Park, including streetscape improvements, Lincoln Center for the Performing Arts, West 62nd Street between Columbus Avenue and Amsterdam Avenue, Manhattan. (Final) (CC 6, CB 7) DPR/DOT/DCLA</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30617:            Reconstruction of a vent structure as part of the reconstruction of Damrosch Park, including streetscape improvements, Lincoln Center for the Performing Arts, West 62nd Street between Columbus Avenue and Amsterdam Avenue, Manhattan. (Final) (CC 6, CB 7) DPR/DOT/DCLA</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30618:            Reconstruction of the esplanade, adjacent to Bank Street, between Nicholas Street and Hamilton Avenue, Staten Island. (Preliminary) (CC 49, CB 1) EDC</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30619:            Installation of granite blocks within the plaza and streetscape, Phase I and IIA of Willets Point, Roosevelt Avenue, 126th Street, 38th Avenue, 127th Street, and 39th Avenue, Corona, Queens. (Preliminary and Final) (CC 21, CB 7) EDC</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30620:            Removal and temporary storage of <em>Simple Way of Life</em> (1939) by Lily Furedi, from the Bellevue Men\u001as Shelter (formerly Bellevue Psychiatric Center), 400 East 30th Street, Manhattan to 55 Water Street, Manhattan. (Preliminary) (CC 1, CB 3) HHC</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30621:            Reconstruction of Edenwald Library, including the construction of an addition, 1255 East 233rd Street, Bronx. (Final) (CC 12, CB 12) NYPL</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>30622:            Rehabilitation of the Broad Channel Community Library, 16-26 Cross Bay Boulevard, Broad Channel, Queens. (Preliminary and Final) (CC 32, CB 14) QPL</span></p><p> </p><p> </p><p><span style='font-size:12pt'><strong>                        Public Hearing</strong></span></p><p><span style='font-size:12pt'><strong>9:35 a.m.</strong></span></p><p style='margin-left:96px'><span style='font-size:12pt'>30623:            Construction of a gaming facility, resort, retail, and events complex (Integrated Resort), as part of the master plan for the Metropolitan Park (Queens Future), north of Roosevelt Avenue, between Grand Central Parkway and Seaver Way, south of the World\u001as Fair Marina, and adjacent to Citi Field, Flushing Meadows Corona Park, Corona, Queens. (Preliminary and Final) (CC 21, CB 3, 4, 6, 7, 8 & 9) EDC/DPR</span></p><p style='margin-left:96px'> </p><p style='margin-left:96px'><span style='font-size:12pt'>https://www.nyc.gov/assets/designcommission/downloads/pdf/pres/11-16-26-EDC-DPR-pf-QF-IntegratedResort.pdf </span></p><p style='margin-left:96px'> </p><p><span style='font-size:12pt'><strong>11:35 a.m.</strong></span></p><p style='margin-left:96px'><span style='font-size:12pt'>30624:            Reconstruction of the western portion of Ferry Point Park, including the construction of a playground, sports courts, and waterfront walkways, west of Hutchinson River Parkway and Schley Avenue, Bronx. (Preliminary) (CC 13, CB 10) DPR/DOT</span></p><p> </p><p style='margin-left:96px'><span style='font-size:12pt'>https://www.nyc.gov/assets/designcommission/downloads/pdf/pres/11-16-26-DPR-DOT-p-FerryPointParkWest</span></p><p> </p><p><span style='font-size:12pt'><strong><u>12:15 p.m.</u></strong><strong>     <u>BREAK</u></strong></span></p><p> </p><p><span style='font-size:12pt'><strong>12:25 p.m.</strong></span></p><p style='margin-left:96px'><span style='font-size:12pt'>30625:            Construction of a mixed-use residential building (Building 4) and adjacent site work, including a portion of a plaza (Phase IIB), as part of Phase II of Willets Point, 126th Street and 38th Avenue, Corona, Queens. (Preliminary) (CC 21, CB 7) EDC</span></p><p style='margin-left:96px'> </p><p style='margin-left:96px'><span style='font-size:12pt'><span style='font-size:11.0pt'><span style='font-size:12.0pt'>https://www.nyc.gov/assets/designcommission/downloads/pdf/pres/11-16-26-EDC-p-WilletsPoint-Phase2-Building4</span></span></span></p><p style='margin-left:96px'> </p><p style='margin-left:96px'> </p><p><span style='font-size:12pt'><strong>All times are approximate and subject to change without notice</strong>, and those who are testifying remotely should follow along on the livestreamed meeting on the Design Commission\u001as YouTube channel to know when to join the meeting. If testifying at in-person, please plan to arrive early in the event the meeting is ahead of schedule. Details on giving public testimony can be found above and here: https://www.nyc.gov/site/designcommission/design-review/testimony/public-testimony.page</span></p><p> </p><p><span style='font-size:12pt'><strong>Items on the consent agenda are not presented</strong>. If you wish to testify regarding a design-related issue of a project on the consent agenda, please notify staff as soon as possible. </span></p><p> </p><p><span style='font-size:12pt'><strong>Do you need assistance to participate in the meeting?</strong> If you need a reasonable accommodation of a disability, such as translation into a language other than English; American Sign Language Interpreting (ASL); Captioning in Real-Time (CART); </span></p><p><span style='font-size:12pt'>or the meeting agenda in Braille, large print, or electronic format, please contact the Public Design Commission at least as soon as possible before the meeting. </span></p><p> </p><p><span style='font-size:12pt'>Public Design Commission<br>City Hall, Third Floor<br>Phone: 212-788-3071<br>Fax: 212-788-3086</span></p><p><span style='font-size:12pt'>www.nyc.gov/designcommission</span></p><p><span style='font-size:12pt'>designcommission@cityhall.nyc.gov</span></p>"
-    },
-    {
-      "request_id": "20261023010",
-      "start_date": "2026-10-30T00:00:00.000",
-      "event_date": "2026-11-17T09:00:00.000",
-      "agency_name": "Landmarks Preservation Commission",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "Correction: November 17, 2026, Public Hearing Agenda",
-      "street_address_1": "253 Broadway",
-      "street_address_2": "2nd Floor",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10007",
-      "additional_description_1": "Title: Correction: November 17, 2026, Public Hearing Agenda Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name 253 Broadway New York, NY 10007 Event Location 11/17/2026 9:00 AM Event Date and Time Current Status 10/30/2026 - 11/16/2026 Publication Date Public Hearings Notice Type Attachments 1 November 17, 2026, Public Hearing Agenda",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261023010&requestStatus=Current&documentId=44832"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261023010&requestStatus=Current&documentId=44832"
-      ]
-    },
-    {
-      "request_id": "20260922022",
-      "start_date": "2026-10-01T00:00:00.000",
-      "event_date": "2026-11-17T09:30:00.000",
-      "agency_name": "Landmarks Preservation Commission",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "short_title": "The Landmarks Preservation Commission is proposing to amend the various rules relating to staff approval for work on designated properties.",
-      "street_address_1": "253 Broadway",
-      "street_address_2": "2nd Floor",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10007",
-      "additional_description_1": "Title: The Landmarks Preservation Commission is proposing to amend the various rules relating to staff approval for work on designated properties. Agency Rules Section Landmarks Preservation Commission (LPC) Agency Name Legal Agency Division 253 Broadway New York, NY 10007 Event Location 11/17/2026 9:30 AM Event Date and Time Accessibility questions: Stephanie Yang, steyang@lpc.nyc.gov, by Tuesday, November 10, 2026 4:00 PM Accessibility Archived Status 10/1/2026 Publication Date Public Hearings Notice Type Attachments 1 LPC Proposed Rules 2026",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20260922022&requestStatus=Archived&documentId=44624"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20260922022&requestStatus=Archived&documentId=44624"
-      ]
-    },
-    {
-      "request_id": "20261008005",
-      "start_date": "2026-10-14T00:00:00.000",
-      "event_date": "2026-11-17T10:00:00.000",
-      "agency_name": "City Planning",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "short_title": "Department of City Planning Proposed Street Number Rulemaking",
-      "street_address_1": "120 Broadway",
-      "street_address_2": "Lower Level",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10271",
-      "additional_description_1": "Title: Department of City Planning Proposed Street Number Rulemaking Agency Rules Section City Planning (DCP) Agency Name Counsel Agency Division 120 Broadway New York, NY 10271 Event Location 11/17/2026 10:00 AM Event Date and Time Accessibility questions: AccessibilityInfo@planning.nyc.gov; 212-720-3366, by Wednesday, November 4, 2026 5:00 PM Accessibility Archived Status 10/14/2026 Publication Date Public Hearings Notice Type Attachments 1 DCP Proposed Street Number Rulemaking - Notice of Public Hearing, Statement of Basis and Purpose, Proposed Rule Text",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261008005&requestStatus=Archived&documentId=44717"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261008005&requestStatus=Archived&documentId=44717"
-      ]
-    },
-    {
-      "request_id": "20260106036",
-      "start_date": "2026-11-10T00:00:00.000",
-      "event_date": "2026-11-17T13:00:00.000",
-      "agency_name": "Board of Correction",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "Board of Correction Public Meeting",
-      "street_address_1": "125 Worth Street",
-      "street_address_2": "2nd Floor Auditorium",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10013",
-      "additional_description_1": "<p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-family:' calibri',sans-serif'=''>The New York City Board of Correction will hold a public meeting on Tuesday, November 17, 2026 at 1:00pm. The meeting with be held in the auditorium located on the 2nd floor of 125 Worth Street. The Board will discuss issues impacting the New York City jail system.</span></span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-family:' calibri',sans-serif'=''>More information is available on the Board's website at https://www.nyc.gov/site/boc/meetings/2026-meetings.page</span></span></span><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>                       </span></span></p><ul>\t<li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Wheelchair Access.</span></strong><span style='font-family:' calibri',sans-serif'=''> The venue has an accessible entrance on Lafayette Street and elevators. There are accessible bathrooms on the first floor of the building. </span></span></span></li>\t<li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Assistive Listening Systems (ALS)</span></strong><span style='font-family:' calibri',sans-serif'=''>. ALS is not currently in place at the 125 Worth Street Second Floor Auditorium.</span></span></span></li>\t<li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Communication Access Realtime Translation (CART).</span></strong><span style='font-family:' calibri',sans-serif'=''> CART is not currently available.</span></span></span><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>        </span></span></li>\t<li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><strong><span style='font-family:' calibri',sans-serif'=''>Sign Language Interpretation. </span></strong><span style='font-family:' calibri',sans-serif'=''>If you require language interpretation, or sign language interpretation to participate in the meeting, please email boc@boc.nyc.gov or call 212-669-7900 at least a week before the Board meeting to allow sufficient time to determine if accommodations can be arranged. </span></span></span></li></ul><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-family:' calibri',sans-serif'=''>To request any other accommodations, please email boc@boc.nyc.gov or call 212-669-7900 at least 48 hours before the meeting. </span></span></span></p>"
-    },
-    {
-      "request_id": "20261007005",
-      "start_date": "2026-10-14T00:00:00.000",
-      "event_date": "2026-11-17T16:00:00.000",
-      "agency_name": "Environmental Protection",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "New York City Indirect Source Rule 'WISER' Program",
-      "additional_description_1": "<p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>New York City Department of Environmental Protection (DEP) proposes to implement a Warehouse Indirect Source Emissions Reduction (WISER) local law that would require large warehouse operators to reduce mobile sources of pollution and/or mitigate the impact of the air pollution associated with their operations in New York City. In accordance with the State Environmental Quality Review Act (SEQRA) (Section 8-0113, Article 8 of the Environmental Conservation Law) as set forth in 6 NYCRR Part 617, and the City Environmental Quality Review (CEQR) process, as set forth in Executive Order 91 of 1977 and its amendments, DEP is hereby issuing Notice of Positive Declaration, Intent to Prepare a Draft Environmental Impact Statement, Lead Agency Declaration and Draft Scope of Work.</span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>DEP will hold a virtual public scoping meeting to receive public comments on the Draft Scope of Work on November 17, 2026, at 4:00 PM. The Draft Scope of Work, which provides a summary description of the Program and the methodologies to be used in preparing the Draft EIS impact analyses, is available on the DEP website at https://www.nyc.gov/site/dep/about/environmental-reviews.page. You may register for the virtual public meeting at: https://bit.ly/4egU5lY. Comments on the Draft Scope of Work may be presented at the meeting or submitted in writing or by email to:</span></span></p><p style='margin-left:48px; text-align:center'><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>Dana Taplin, Project Manager</span></span></p><p style='margin-left:48px; text-align:center'><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>NYC Department of Environmental Protection, Bureau of Environmental Planning and Analysis</span></span></p><p style='margin-left:48px; text-align:center'><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>59-17 Junction Boulevard, 4<sup>th</sup> Floor</span></span></p><p style='margin-left:48px; text-align:center'><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>Flushing, NY 11373</span></span></p><p style='margin-left:48px; text-align:center'><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>dtaplin@dep.nyc.gov</span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>Written comments on the Draft Scope of Work will be accepted until December 17, 2026, at 4:00 PM. DEP will subsequently issue a Final Scope of Work, which will include responses to written comments and comments received during the public meeting and may incorporate revisions in response to comments received.</span></span></p>"
-    },
-    {
-      "request_id": "20261014038",
-      "start_date": "2026-10-29T00:00:00.000",
-      "event_date": "2026-11-18T10:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "List Appropriations - Investigator (31105) and Fraud Investigator (31113)",
-      "additional_description_1": "Title: List Appropriations - Investigator (31105) and Fraud Investigator (31113) Public Hearings and Meetings Section Citywide Administrative Services (DCAS) Agency Name Classification and Compensation Agency Division 11/18/2026 10:00 AM Event Date and Time Accessibility questions: 212-386-0256 or accessibility@dcas.nyc.gov, by Friday, November 6, 2026 5:00 PM Accessibility Archived Status 10/29/2026 - 11/4/2026 Publication Date Public Hearings Notice Type Attachments 1 List Appropriation, Fraud Investigator (31113) to Investigator (31105) - Public Hearing - CROL Announcement",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261014038&requestStatus=Archived&documentId=44749"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261014038&requestStatus=Archived&documentId=44749"
-      ]
-    },
-    {
-      "request_id": "20261019007",
-      "start_date": "2026-11-04T00:00:00.000",
-      "event_date": "2026-11-18T10:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "New York City Housing Authority Board Meeting",
-      "additional_description_1": "<p>The next Board Meeting of the New York City Housing Authority is scheduled for Wednesday, November 18, 2026 at 10:00 A.M. in the Ceremonial Room on the 5th Floor of 90 Church Street, New York, New York 10007 (unless otherwise noted). This Board Meeting will also be streamed live on NYCHA's YouTube Channel at https://www.youtube.com/c/nycha and NYCHA's Website at https://www.nyc.gov/site/nycha/about/board-meetings.page</p><p>These Board Meetings are open to the public. To provide comment in-person, all speakers are required to pre-register, at least forty-five (45) minutes before the scheduled Board Meeting. Comments are limited to the items on the Calendar. Speaking time will be limited to three (3) minutes. The public comment period will conclude upon all speakers being heard or at the expiration of thirty (30) minutes allotted for public comment, whichever occurs first. Comments may also be provided to the Office of the Corporate Secretary by e-mail at corporate.secretary@nycha.nyc.gov or by mail at 90 Church Street, 5<sup>th</sup> Floor, New York NY 10007.</p><p>Please note that the Minutes for prior Board Meetings and the Calendar for the upcoming Board Meeting may be obtained by visiting the NYCHA Website at https://www.nyc.gov/site/nycha/about/board-meetings.page. Copies of the Calendar may also be picked up at the Office of the Corporate Secretary at 90 Church Street, 5th Floor, New York, NY, 10007, no earlier than twenty-four (24) hours before the upcoming Board Meeting. Copies of the Draft Minutes may also be picked up at the Office of the Corporate Secretary, no earlier than 3:00 P.M. on the Tuesday following the Board Meeting. Any changes to the schedule will be posted on this webpage and via social media, to the extent practicable, at a reasonable time before the Board Meeting.</p><p>Any person requiring a reasonable accommodation, including wheelchair accessibility or large print availability, to participate in the Board Meeting should contact the Office of the Corporate Secretary by e-mail at corporate.secretary@nycha.nyc.gov or by phone at (212) 306-6088, no later than 5:00 P.M., seven (7) calendar days before the Board Meeting.</p><p>For additional information regarding Board Meetings, please contact the Office of the Corporate Secretary by e-mail at corporate.secretary@nycha.nyc.gov or by phone at (212) 306-6088.</p>"
-    },
-    {
-      "request_id": "20261027024",
-      "start_date": "2026-11-02T00:00:00.000",
-      "event_date": "2026-11-18T10:00:00.000",
-      "agency_name": "City Planning Commission",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "City Planning Commission Public Hearing",
-      "street_address_1": "120 Broadway",
-      "street_address_2": "Lower Level",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10271",
-      "additional_description_1": "Title: City Planning Commission Public Hearing Public Hearings and Meetings Section City Planning Commission (CPC) Agency Name 120 Broadway New York, NY 10271 Event Location 11/18/2026 10:00 AM Event Date and Time Accessibility questions: 212-720-3366, accessibilityinfo@planning.nyc.gov, by Wednesday, November 11, 2026 5:00 PM Accessibility Commission Meetings External Links Current Status 11/2/2026 - 11/18/2026 Publication Date Public Hearings Notice Type Attachments 1 City Planning Commission Public Hearing Ad",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261027024&requestStatus=Current&documentId=44817"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261027024&requestStatus=Current&documentId=44817"
-      ]
-    },
-    {
-      "request_id": "20261013022",
-      "start_date": "2026-10-20T00:00:00.000",
-      "event_date": "2026-11-18T11:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "1678 Park Avenue",
-      "additional_description_1": "<p><span style='font-size:10pt'>PLEASE TAKE NOTICE that a public hearing will be held on November 18, 2026 at 11:00 a.m. The Public Hearing will be held at The Harlem Library, 224 East 125<sup>th</sup> Street, Manhattan at which time and place those wishing to be heard will be given an opportunity to be heard concerning the proposed deed and land disposition agreement amendments described below</span></p><p style='margin-left:240px'><span style='font-size:10pt'> </span></p><p><span style='font-size:10pt'>Pursuant to Section 1802(6)(j) of the Charter, the Department of Housing Preservation and Development (\u001aHPD\u001a) has proposed amendments to the terms and conditions of the sale of certain real property previously conveyed by the City of New York (\u001aCity\u001a), located in the Borough of Manhattan and known as:   </span></p><p style='margin-left:240px'> </p><p><span style='font-size:10pt'><u>Address</u>                                          <u>Block/Lot(s)</u> </span></p><p style='margin-left:240px'><span style='font-size:10pt'> </span></p><p><span style='font-size:10pt'>1678 Park Avenue                          1745/134 </span></p><p><span style='font-size:10pt'>                                                       (FKA p/o Lot 32, Lot 33-39, p/o Lot 41)                                                            </span></p><p><span style='font-size:10pt'>1678 Park Avenue was conveyed by the City to NYC Partnership Housing Development Fund Company, Inc. on December 13, 2001, pursuant to a deed and land disposition agreement (\u001aLDA\u001a). The deed and LDA require compliance with the original Milbank Frawley Circle-East Urban Renewal Plan (\u001aOriginal Plan\u001a), approved by the City Planning Commission on August 19, 1992 (C920139HUM) and the New York City Council on October 8, 1992 (Reso. No. 920), which prohibits residential development within 100 feet of Park Avenue and restricts the sites to parking. On November 30, 2017, the Original Plan was amended (\u001aSecond Amendment\u001a) by the New York City Council (Reso. No. 1743) to permit residential use within 100 feet of Park Avenue.</span></p><p style='text-align:justify'> </p><p style='text-align:justify'><span style='font-size:10pt'>The sponsor now intends to develop a proposed project consisting of one 100% affordable residential building financed by NYCHA that will include 222 total units and 80 parking spaces (the \u001aProject\u001a).</span></p><p style='text-align:justify'> </p><p><span style='font-size:10pt'>To facilitate the Project, HPD intends to modify the deed and LDA. The site is located in the Milbank Frawley Circle East Urban Renewal Area and is identified as a portion of Site 37A within the Plan. The deed and LDA associated with the parcel require compliance with the Original Plan, which specifically prohibits development within 100 feet of Park Avenue. HPD intends to amend the deed and LDA  to remove the restrictions limiting the use of the parcel to parking and require compliance with the Second Amendment, which will be in effect until December 14, 2057, and replace these restrictions with new restrictions that would require that 1678 Park Avenue be developed as a 100% affordable project.</span></p><p> </p><p><span style='font-size:10pt'>A public file containing copies of the calendar document and other public documents will be made available to Manhattan Community Board 11 for public review at the office of Community Board 11 no later than twenty (20) days prior to the public hearing. </span></p><p style='margin-left:240px'><span style='font-size:10pt'> </span></p><p><span style='font-size:10pt'>To make a request for accommodation, such as sign language interpretation services, please contact the Mayor\u001as Office of Contract Services (\u001aMOCS\u001a) via e-mail at disabilityaffairs@mocs.nyc.gov or via phone at (212) 298-0734. TDD users should call Verizon relay services. Any person requiring reasonable accommodation for the public hearing should contact MOCS at least three (3) business days in advance of the hearing to ensure availability. </span></p>"
-    },
-    {
-      "request_id": "20261013024",
-      "start_date": "2026-10-20T00:00:00.000",
-      "event_date": "2026-11-18T11:00:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "1700 Park Ave",
-      "additional_description_1": "<p><span style='font-size:10pt'>PLEASE TAKE NOTICE that a public hearing will be held on November 18, 2026 at 11:00 a.m. The Public Hearing will be held at The Harlem Library, 224 East 125<sup>th</sup> Street, Manhattan at which time and place those wishing to be heard will be given an opportunity to be heard concerning the proposed deed and land disposition agreement amendment described below</span></p><p style='margin-left:240px'> </p><p><span style='font-size:10pt'>Pursuant to Section 1802(6)(j) of the Charter, the Department of Housing Preservation and Development (\u001aHPD\u001a) has proposed amendments to the terms and conditions of the sale of certain real property previously conveyed by the City of New York (\u001aCity\u001a), located in the Borough of Manhattan and known as:   </span></p><p style='margin-left:240px'><span style='font-size:10pt'> </span></p><p><span style='font-size:10pt'><u>Address</u>                                          <u>Block/Lot(s)</u> </span></p><p style='margin-left:240px'><span style='font-size:10pt'> </span></p><p><span style='font-size:10pt'>1700 Park Avenue                                                            1746 / Lot 33</span></p><p style='margin-left:336px'><span style='font-size:10pt'>(FKA p/o Lot 32, Lot 33-39, p/o Lot 41)  </span></p><p style='margin-left:336px'><span style='font-size:10pt'>                                                                                            </span></p><p style='text-align:justify'><span style='font-size:10pt'>1700 Park Avenue was conveyed by the City to NYC Partnership Housing Development Fund Company, Inc. on June 28, 2001, pursuant to a deed and land disposition agreement (\u001aLDA\u001a). The deed and LDA require compliance with the original Milbank Frawley Circle-East Urban Renewal Plan (\u001aOriginal Plan\u001a), approved by the City Planning Commission on August 19, 1992 (C920139HUM) and the New York City Council on October 8, 1992 (Reso. No. 920), which prohibits residential development within 100 feet of Park Avenue and restricts the sites to parking. On November 30, 2017, the Plan was amended (\u001aSecond Amendment\u001a) by the New York City Council (Reso. No. 1743) to permit residential use within 100 feet of Park Avenue.</span></p><p><span style='font-size:10pt'>The sponsor intends to develop a proposed project consisting of one mixed-use building with 213 total units, of which at least 64 units will be affordable and will include retail and 21 parking spaces (the \u001aProject\u001a)</span></p><p> </p><p style='text-align:justify'><span style='font-size:10pt'>To facilitate the Project, HPD intends to modify the deed and LDA. The site is located in the Milbank Frawley Circle East Urban Renewal Area and is identified as a portion of Site 9 within the Plan. The deed and LDA associated with the parcel require compliance with the Original Plan, which specifically prohibits development within 100 feet of Park Avenue. HPD intends to amend the deed and LDA to remove the restrictions limiting the use of the parcel to parking, require compliance with the Second Amendment, which will be in effect until December 14, 2057, and to require at least 64 units in the project to be restricted as affordable housing.</span></p><p style='margin-left:240px'><span style='font-size:10pt'> </span></p><p><span style='font-size:10pt'>A public file containing copies of the calendar document and other public documents will be made available to Manhattan Community Board 11 for public review at the office of Community Board 11 no later than twenty (20) days prior to the public hearing. </span></p><p style='margin-left:240px'> </p><p><span style='font-size:10pt'>To make a request for accommodation, such as sign language interpretation services, please contact the Mayor\u001as Office of Contract Services (\u001aMOCS\u001a) via e-mail at disabilityaffairs@mocs.nyc.gov or via phone at (212) 298-0734. TDD users should call Verizon relay services. Any person requiring reasonable accommodation for the public hearing should contact MOCS at least three (3) business days in advance of the hearing to ensure availability. </span></p>"
-    },
-    {
-      "request_id": "20261105025",
-      "start_date": "2026-11-12T00:00:00.000",
-      "event_date": "2026-11-18T17:00:00.000",
-      "agency_name": "Community Boards",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "November 18, 2026 Public Hearing",
-      "additional_description_1": "<p><span style='font-family:Georgia,serif'><span style='font-size:16px'><strong>NOTICE IS HEREBY GIVEN</strong> that the following matters have been scheduled for public hearing by Community Board:</span></span></p><p style='text-align:center'><br><span style='font-family:Georgia,serif'><span style='font-size:16px'><u>BOROUGH OF THE BRONX</u></span></span></p><p><span style='font-family:Georgia,serif'><span style='font-size:16px'>COMMUNITY BOARD NO. 5 - Wednesday, November 18, 2026, at 5:00 P.M., Davidson Community Center, 2038 Davidson Avenue, Bronx, NY 10453<br> <br>A Public Hearing on ELURP Application: HPD 270002 PPX \u001a 1605 Nelson Avenue (HPD ELURP)</span></span></p><p><span style='font-family:Georgia,serif'><span style='font-size:16px'>The Department of Housing Preservation and Development (HPD) seeks ELURP approval for a PP disposition of city-owned land to facilitate a substantial rehabilitation of a six-story building formerly occupied by an 81-unit homeless shelter and the addition of a seventh floor to create a total of approximately 148 affordable units and one unit for a superintendent. </span></span></p><p><span style='font-family:Georgia,serif'><span style='font-size:16px'>The Public Hearing will take place prior to the General Board Meeting. </span></span></p><p><span style='font-family:Georgia,serif'><span style='font-size:16px'>The proposal can be accessed on the Zoning Application Portal (ZAP): <br>https://zap.planning.nyc.gov/projects/2027X0226/</span></span></p><p><span style='font-family:Georgia,serif'><span style='font-size:16px'>If you wish to testify or need accessibility, accommodations please call the district office at 718-364-2030. If you would like to submit a written testimony, please e-mail bx05@cb.nyc.gov no later than Monday, November 16, 2026, 5:00 P.M. end of business day.</span></span></p>"
-    },
-    {
-      "request_id": "20261009014",
-      "start_date": "2026-10-20T00:00:00.000",
-      "event_date": "2026-11-19T11:00:00.000",
-      "agency_name": "Consumer and Worker Protection",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "short_title": "DCWP NOH Rules Relating to Automated Customer Service Systems",
-      "additional_description_1": "Title: DCWP NOH Rules Relating to Automated Customer Service Systems Agency Rules Section Consumer and Worker Protection (DCWP) Agency Name External Affairs Agency Division 11/19/2026 11:00 AM Event Date and Time Accessibility questions: Reina Revina, 212-436-0183, Rulecomments@dcwp.nyc.gov, by Thursday, November 12, 2026 11:59 PM Accessibility Archived Status 10/20/2026 Publication Date Public Hearings Notice Type Attachments 1 DCWP NOH Rules Relating to Automated Customer Service Systems",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261009014&requestStatus=Archived&documentId=44732"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261009014&requestStatus=Archived&documentId=44732"
-      ]
-    },
-    {
-      "request_id": "20261015024",
-      "start_date": "2026-10-30T00:00:00.000",
-      "event_date": "2026-11-19T11:00:00.000",
-      "agency_name": "Transportation",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "Dining Out NYC Public Hearings",
-      "additional_description_1": "<p>NOTICE IS HEREBY GIVEN, PURSUANT TO LAW, that the following proposed revocable consent has been scheduled for a public hearing by the New York City Department of Transportation. A draft copy of the revocable consent agreement(s) may be obtained at no cost by submitting a request at diningoutnyc.info/requestcopy</p><p>The public hearing will be held remotely via Zoom, commencing on November 19th, 2026, at 11:00 am, in the matter of a proposed revocable consent authorizing the following:</p><ol>\t<li>\t<p>97 SAINT MARKS LLC to maintain, operate, and use a year-round roadway cafe for a term of four years adjacent to 97 Saint Marks Place in the Borough of Manhattan.</p>\t</li>\t<li>\t<p>LINDA'S AT MADISON INC to maintain, operate, and use a sidewalk cafe for a term of four years adjacent to 44 East 92 Street in the Borough of Manhattan.</p>\t</li>\t<li>\t<p>KAPPA 90 LLC to maintain, operate, and use a year-round roadway cafe for a term of four years adjacent to 90 South 4 Street in the Borough of Brooklyn.</p>\t</li>\t<li>\t<p>PROSCIUTTO LLC to maintain, operate, and use a year-round roadway cafe for a term of four years adjacent to 534 East 9 Street in the Borough of Manhattan.</p>\t</li>\t<li>\t<p>OSTERIA BROOKLYN ON JACKSON CORP to maintain, operate, and use a year-round roadway cafe for a term of four years adjacent to 26-21 Jackson Avenue in the Borough of Brooklyn.</p>\t</li></ol><p>To join the hearing enter the following URL link into your browser\u001as address bar: zoom.us/j/91467302621 Meeting ID: 914 6730 2621</p><p>To join the hearing only by phone, use the following information to connect: Phone: +1-929-205-6099 Meeting ID: 914 6730 2621</p>"
-    },
-    {
-      "request_id": "20261026022",
-      "start_date": "2026-11-04T00:00:00.000",
-      "event_date": "2026-11-19T11:30:00.000",
-      "agency_name": "Housing Preservation and Development",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "El Barrio",
-      "additional_description_1": "<p><span style='font-size:10pt'>PLEASE TAKE NOTICE that a public hearing will be held on November 19, 2026, at 11:30 A.M. The public hearing will be held at 125<sup>th</sup> Street Library, 224 East 125<sup>th</sup> Street, Manhattan, or as soon thereafter as the matter may be reached on the calendar, at which time and place those wishing to be heard will be given an opportunity to be heard concerning the proposed amendments to a deed and land disposition agreement identified below.</span></p><p> </p><p><span style='font-size:10pt'>Pursuant to Section 695(2)(b) of the General Municipal Law and Section 1802(6)(j) of the Charter, the Department of Housing Preservation and Development ('HPD') of the City of New York ('City') proposed amendments to the terms and conditions of the sale of certain real property previously conveyed by the City of New York (collectively, 'Disposition Area') in the Borough of Manhattan:</span></p><p> </p><p><span style='font-size:10pt'>                <u>Address</u>                            <u>Block</u>/<u>Lots</u>         <u>Community District</u></span></p><p><span style='font-size:10pt'>                53 East 110<sup>th</sup> Street            1616/123                  11</span></p><p><span style='font-size:10pt'>                304 East 126<sup>th</sup> Street           1802/47                    11</span></p><p><span style='font-size:10pt'>                201 East 120<sup>th</sup> Street           1785/1                      11</span></p><p><span style='font-size:10pt'>                204 West 121</span><sup>st</sup><span style='font-size:10pt'> Street          1926/35                    10</span></p><p> </p><p><span style='font-size:10pt'>Under HPD's Division of Property Disposition and Finance program, City-owned vacant and/or occupied multifamily residential buildings may be purchased and gut-rehabilitated by a designated sponsor in order to create affordable rental housing units with a range of affordability. Construction and permanent financing is provided through loans from private institutional lenders and from public sources, including HPD. </span></p><p> </p><p><span style='font-size:10pt'>On November 23, 2020, the City conveyed the Disposition Area to CLT East Harlem/El Barrio Community Land Trust Housing Development Fund Corporation. The deed and land disposition agreement recorded against the Premises requires compliance with a project summary approved by the Council requiring the development of approximately 36 rental dwelling units, two commercial spaces, and one community facility space. While it was originally intended that there would be commercial spaces in the project, it is now being developed with three community facility spaces and approximately 38 rental dwelling units. On July 16, 2026 (Res. No. 579), the Council approved an amended project summary reflecting these new conditions, and the deed and land disposition agreement will be amended to reflect these changes.</span></p><p><span style='font-size:10pt'>                                                                                                              </span></p><p><span style='font-size:10pt'>A public file containing copies of the calendar document and other public documents will be made available to Manhattan Community Board 11 for public review at the office of Manhattan Community Board 11 no later than twenty (20) days prior to the public hearing.</span></p><p> </p><p><span style='font-size:10pt'>The hearing location is accessible to individuals using wheelchairs or other mobility devices. For further information on accessibility or to make a request for accommodation, such as sign language interpretation services, please contact the Mayor\u001as Office of Contract Services (\u001aMOCS\u001a) via e-mail at disabilityaffairs@mocs.nyc.gov or via phone at (212) 788-0010.  TDD users should call Verizon relay services.  Any person requiring reasonable accommodation for the public hearing should contact MOCS at least three (3) business days in advance of the hearing to ensure availability.</span></p>"
-    },
-    {
-      "request_id": "20261023017",
-      "start_date": "2026-11-05T00:00:00.000",
-      "event_date": "2026-11-19T15:30:00.000",
-      "agency_name": "Teachers' Retirement System",
-      "type_of_notice_description": "Meeting",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "Teachers\u001a Retirement System of the City of New York Monthly Board Meeting",
-      "street_address_1": "55 Water Street",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10041",
-      "additional_description_1": "<p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='color:#221e1f'>Please be advised that the next Board Meeting of the Teachers\u001a Retirement System of the City of New York (TRS) has been scheduled for Thursday, November 19, 2026, at 3:30 p.m.</span></span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'><span style='color:#221e1f'>The meeting will be held at the Teachers\u001a Retirement System, 55 Water Street, 16<sup>th</sup> Floor, Boardroom, New York, NY 10041. </span></span><span style='font-size:10.0pt'>The meeting is open to the public. However, portions of the meeting, where permitted by law, may be held in executive session. </span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'>The remote Zoom meeting link, meeting ID, and phone number will be available approximately one hour before the start of the meeting at: </span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'>https://www.trsnyc.org/memberportal/About-Us/ourRetirementBoard</span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'>Learn how to </span><span style='color:black'>attend TRS meetings online or in person:</span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'>https://www.trsnyc.org/memberportal/About-Us/ourRetirementBoard/AttendingTRSMeetings</span></span></p>"
-    },
-    {
-      "request_id": "20261009010",
-      "start_date": "2026-10-20T00:00:00.000",
-      "event_date": "2026-11-20T11:00:00.000",
-      "agency_name": "Sanitation",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "short_title": "DSNY Proposed Rule Expanding Containerization Program",
-      "additional_description_1": "Title: DSNY Proposed Rule Expanding Containerization Program Agency Rules Section Sanitation (DSNY) Agency Name Legal Affairs Agency Division 11/20/2026 11:00 AM Event Date and Time Accessibility questions: Edna Luna 646-885-4996 eluna@dsny.nyc.gov, by Friday, November 13, 2026 5:00 PM Accessibility Archived Status 10/20/2026 Publication Date Public Hearings Notice Type Attachments 1 DSNY Proposed Rule Expanding Containerization Program",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261009010&requestStatus=Archived&documentId=44731"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261009010&requestStatus=Archived&documentId=44731"
-      ]
-    },
     {
       "request_id": "20261013025",
       "start_date": "2026-10-21T00:00:00.000",
@@ -313,6 +56,27 @@
       ]
     },
     {
+      "request_id": "20261109027",
+      "start_date": "2026-11-18T00:00:00.000",
+      "event_date": "2026-11-24T12:00:00.000",
+      "agency_name": "City Council",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "11-24-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+      "street_address_1": "250 Broadway",
+      "street_address_2": "8th Floor, Committee Room 3",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "additional_description_1": "Title: 11-24-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting Public Hearings and Meetings Section City Council (CC) Agency Name 250 Broadway New York, NY 10007 Event Location 11/24/2026 12:00 PM Event Date and Time Accessibility questions: Kaitlin Greer, kgreer@council.nyc.gov, by Thursday, November 19, 2026 3:00 PM Accessibility Current Status 11/18/2026 - 11/24/2026 Publication Date Public Hearings Notice Type Attachments 1 11-24-26 Landmarks City Record UPDATED 11.17.26",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261109027&requestStatus=Current&documentId=44931"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261109027&requestStatus=Current&documentId=44931"
+      ]
+    },
+    {
       "request_id": "20261021032",
       "start_date": "2026-11-04T00:00:00.000",
       "event_date": "2026-11-25T11:00:00.000",
@@ -331,6 +95,27 @@
       ],
       "document_links": [
         "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261021032&requestStatus=Current&documentId=44795"
+      ]
+    },
+    {
+      "request_id": "20261109032",
+      "start_date": "2026-11-17T00:00:00.000",
+      "event_date": "2026-12-01T09:00:00.000",
+      "agency_name": "Landmarks Preservation Commission",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "December 1, 2026, Public Hearing Agenda CR",
+      "street_address_1": "253 Broadway",
+      "street_address_2": "2nd Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "additional_description_1": "Title: December 1, 2026, Public Hearing Agenda CR Public Hearings and Meetings Section Landmarks Preservation Commission (LPC) Agency Name Preservation Agency Division 253 Broadway New York, NY 10007 Event Location 12/1/2026 9:00 AM Event Date and Time Current Status 11/17/2026 - 12/1/2026 Publication Date Public Hearings Notice Type Attachments 1 December 1 2026, Public Hearing Agenda CR",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261109032&requestStatus=Current&documentId=44903"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261109032&requestStatus=Current&documentId=44903"
       ]
     },
     {
@@ -355,6 +140,68 @@
       ]
     },
     {
+      "request_id": "20261109025",
+      "start_date": "2026-11-17T00:00:00.000",
+      "event_date": "2026-12-02T10:00:00.000",
+      "agency_name": "City Planning Commission",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "City Planning Commission Public Hearing Ad",
+      "street_address_1": "120 Broadway",
+      "street_address_2": "Lower Level",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10271",
+      "additional_description_1": "Title: City Planning Commission Public Hearing Ad Public Hearings and Meetings Section City Planning Commission (CPC) Agency Name 120 Broadway New York, NY 10271 Event Location 12/2/2026 10:00 AM Event Date and Time Accessibility questions: 212-720-3366, AccessibilityInfo@planning.nyc.gov, by Wednesday, November 25, 2026 5:00 PM Accessibility Commission Meetings External Links Current Status 11/17/2026 - 12/2/2026 Publication Date Public Hearings Notice Type Attachments 1 City Planning Commission Public Hearing Ad",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261109025&requestStatus=Current&documentId=44898"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261109025&requestStatus=Current&documentId=44898"
+      ]
+    },
+    {
+      "request_id": "20261102015",
+      "start_date": "2026-11-16T00:00:00.000",
+      "event_date": "2026-12-03T09:30:00.000",
+      "agency_name": "Environmental Control Board",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "New York City Environmental Control Board Meeting December 3, 2026",
+      "street_address_1": "100 Church Street",
+      "street_address_2": "12th Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "additional_description_1": "<p><span style='font-size:16px'><span style='font-family:Times New Roman,Times,serif'>The New York City Environmental Control Board (\u001aBoard\u001a) meeting scheduled for Thursday, December 3, 2026<u>,</u> at 9:30 A.M., will be accessible both in person and remotely. The meeting will be held in person at the Office of Administrative Trials and Hearings (\u001aOATH\u001a), 100 Church Street, 12th Floor, multipurpose training room.  Members of the public may alternatively view the Board meeting electronically by connecting through Webex with meeting number (access code) 2347 913 6932 and password PYdriTt7t65. Minutes of the Board meeting will be transcribed and posted on the OATH website.</span></span></p>"
+    },
+    {
+      "request_id": "20261110024",
+      "start_date": "2026-11-18T00:00:00.000",
+      "event_date": "2026-12-03T10:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Conflict of Interest Board, NYS Civil Service Commission Proposal",
+      "additional_description_1": "Title: Conflict of Interest Board, NYS Civil Service Commission Proposal Public Hearings and Meetings Section Citywide Administrative Services (DCAS) Agency Name Classification and Compensation Agency Division 12/3/2026 10:00 AM Event Date and Time Accessibility questions: 212-386-0256, accessibility@dcas.nyc.gov, by Monday, November 23, 2026 5:00 PM Accessibility Archived Status 11/18/2026 - 11/20/2026 Publication Date Public Hearings Notice Type Attachments 1 Public Hearing - (COIB)",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261110024&requestStatus=Archived&documentId=44918"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261110024&requestStatus=Archived&documentId=44918"
+      ]
+    },
+    {
+      "request_id": "20261112015",
+      "start_date": "2026-11-19T00:00:00.000",
+      "event_date": "2026-12-03T10:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "NYCHA Audit and Finance Committee Meeting.",
+      "additional_description_1": "<p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-size:11.0pt'>The next Audit & Finance Committee Meeting of the New York City Housing Authority is scheduled for Thursday, December 3, 2026, at 10:00 A.M. in the Ceremonial Room on the 5<sup>th</sup> Floor of 90 Church Street, New York, New York. Copies of the Agenda will be available on NYCHA\u001as Website or may be picked up at the Department of Internal Audit and Assessment at 90 Church Street, 9th Floor, New York, NY, no earlier than twenty-four (24) hours before the upcoming Audit & Finance Committee Meeting. Copies of the draft Minutes are available on this web page or can be picked up at the Department of Internal Audit and Assessment no earlier than 3:00 P.M. on Thursday, two weeks after the Audit & Finance Committee Meeting.</span></span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-size:11.0pt'>Any changes to the schedule will be posted here and on NYCHA\u001as website at </span>https://www.nyc.gov/site/nycha/about/audit-committee-meetings.page<span style='font-size:11.0pt'> to the extent practicable at a reasonable time before the meeting.</span></span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-size:11.0pt'>The meeting will be streamed live on YouTube Channel and on NYCHA's Website, at </span>https://www.nyc.gov/site/nycha/about/audit-committee-meetings.page<span style='font-size:11.0pt'> for public access.</span></span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-size:11.0pt'>The meeting is open to the public.  For those wishing to provide public comment, pre-registration is required, at least 45 minutes before the scheduled Committee Meeting. Comments are limited to the items on the Agenda.<br><br>Speaking time will be limited to three minutes. Speakers will provide comments in the order in which the requests to comment are received. The public comment period will conclude upon all speakers being heard or at the expiration of 30 minutes allotted for public comment, whichever occurs first.</span></span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-size:11.0pt'>Any person requiring a reasonable accommodation in order to participate in the Audit & Finance Committee Meeting should contact the Department of Internal Audit and Assessment by phone at 212-306-3441 or by e-mail at audit@nycha.nyc.gov, no later than Friday November 27, 2026, 5:00 P.M.</span></span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'><span style='font-size:11.0pt'>For additional information regarding the Audit & Finance Committee Meeting, please visit NYCHA's Website, contact by phone, at (212) 306-3441, or by email, at audit@nycha.nyc.gov</span></span></span></p>"
+    },
+    {
       "request_id": "20261027031",
       "start_date": "2026-11-13T00:00:00.000",
       "event_date": "2026-12-03T11:00:00.000",
@@ -363,6 +210,22 @@
       "section_name": "Public Hearings and Meetings",
       "short_title": "DINING OUT NYC PUBLIC HEARINGS",
       "additional_description_1": "<p>NOTICE IS HEREBY GIVEN, PURSUANT TO LAW, that the following revocable consent has been schedules for a public hearing by the New York City Department of Transportation. A draft copy of the revocable consent agreement(s) may be obtained at no cost by submitting a request at diningoutnyc.info/requestcopy</p><p>The public hearing will be held remotely via Zoom, commencing on December 3rd, 2026, at 11:00 am, in the matter of a proposed revocable consent authorizing the following:</p><ol>\t<li>\t<p>C&K Grocery Corporation to modify a license issued to maintain, operate, and use a sidewalk cafe for a term of four years adjacent to 362 2 Avenue in the Borough of Manhattan.</p>\t</li>\t<li>\t<p>AURORA FG INC to modify a license issued to maintain, operate, and use a year-round roadway cafe for a term of four years adjacent to 362 2 Avenue in the Borough of Manhattan.</p>\t</li>\t<li>\t<p>MANSIONS OF GLORY HOSPITALITY LLC to maintain, operate and use a year-round roadway cafe for a term of four years adjacent to 53 Spring Street in the Borough of Manhattan.</p>\t</li>\t<li>\t<p>SHOO SHOO EAST LLC to maintain, operate and use a year-round roadway cafe for a term of four years adjacent to 1477 2 Avenue in the Borough of Manhattan.</p>\t</li></ol><p>To join the hearing enter the following URL link into your browser\u001as address bar: zoom.us/j/91467302621 Meeting ID: 914 6730 2621</p><p>To join the hearing only by phone, use the following information to connect: Phone: +1-929-205-6099 Meeting ID: 914 6730 2621</p>"
+    },
+    {
+      "request_id": "20261110022",
+      "start_date": "2026-11-18T00:00:00.000",
+      "event_date": "2026-12-04T10:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Department of Citywide Administrative Services (868) - Urban Fellows",
+      "additional_description_1": "Title: Department of Citywide Administrative Services (868) - Urban Fellows Public Hearings and Meetings Section Citywide Administrative Services (DCAS) Agency Name Classification and Compensation Agency Division 12/4/2026 10:00 AM Event Date and Time Accessibility questions: 212-386-0256 or accessibility@dcas.nyc.gov, by Monday, November 23, 2026 5:00 PM Accessibility Archived Status 11/18/2026 - 11/20/2026 Publication Date Public Hearings Notice Type Attachments 1 Public Hearing - CROL Announcement (DCAS - Urban Fellows)",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261110022&requestStatus=Archived&documentId=44902"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261110022&requestStatus=Archived&documentId=44902"
+      ]
     },
     {
       "request_id": "20261104022",
@@ -419,6 +282,79 @@
       "section_name": "Public Hearings and Meetings",
       "short_title": "Spring Creek Phase 5A",
       "additional_description_1": "<p><span style='font-size:10pt'>PLEASE TAKE NOTICE that a public hearing will be held on December 9, 2026 at 10:00 A.M., or as soon thereafter as the matter may be reached on the calendar, at which time those wishing to be heard will be given an opportunity to be heard concerning the proposed disposition of the real property identified below. The public hearing will be held via conference call. Call in #: <span style='font-size:9.5pt'>1-646-992-2010;</span> Access Code <span style='font-size:9.5pt'>717 876 299</span></span></p><p><span style='font-size:10pt'>Pursuant to Section 695(2)(b) of the General Municipal Law and Section 1802(6)(j) of the Charter, the Department of Housing Preservation and Development ('HPD') of the City of New York ('City') has proposed the sale of the following City-owned property (collectively, 'Disposition Area') in the Borough of Brooklyn:</span></p><p><span style='font-size:10pt'><u>Address</u>                                     <u>Block/Lot(s)</u></span></p><p><span style='font-size:10pt'>1209 Cleveland Street                      4448 / 1</span></p><p><span style='font-size:10pt'>474 Egan Street                                4452/ 295     </span></p><p><span style='font-size:10pt'>450 Egan Street                                4452/ 130     </span></p><p><span style='font-size:10pt'>1090 Ashford Street                          4446/ 100     </span></p><p><span style='font-size:10pt'>417 Egan Street                                4445/ 100     </span></p><p><span style='font-size:10pt'>440 Locke Street                               4445/ 150         </span></p><p style='margin-left:352px'><span style='font-size:10pt'>(Formerly all or p/o Block 4444, Lot 1, Block 4445, Lot 1, Block 4446, Lot 1, Block 4448, Lot 1, and Block 4452, Lots 170 and 400)</span></p><p><span style='font-size:10pt'>                                                                                   </span></p><p><span style='font-size:10pt'><span style='font-family:Arial,sans-serif'>Under HPD's New Construction Finance Program, sponsors purchase City-owned or privately owned land or vacant buildings and construct multifamily buildings in order to create affordable rental housing.  Construction and permanent financing is provided through loans from private institutional lenders and from public sources including HPD, the New York City Housing Development Corporation, the State of New York, and the federal government. Additional funding may also be provided from the syndication of low-income housing tax credits. The newly constructed buildings provide rental housing affordable to low- and moderate-income households, with at least 60% of units affordable to households earning up to 80% of Area Median Income (\u001aAMI\u001a) and up to 40% of units affordable to households earning up to 120% of AMI. At least 15% of units are set aside for formerly homeless households.</span></span></p><p><span style='font-size:10pt'>Under the proposed project, the City will sell the Disposition Area to Nehemiah Spring Creek 5A Housing Development Fund Corporation ('Sponsor') for the nominal price of one dollar per tax lot. The Sponsor will also deliver an enforcement note and mortgage for the remainder of the appraised value (\u001aLand Debt\u001a). The Sponsor will then construct six buildings containing up to360 rental dwelling units, including one superintendent unit, on the Disposition Area.</span></p><p><span style='font-size:10pt'>The Land Debt or the City\u001as capital subsidy may be repayable out of resale or refinancing profits for a period of at least thirty (30) years following completion of construction. The remaining balance, if any, may be forgiven at the end of the term.</span></p><p><span style='font-size:10pt'>The appraisal and the proposed Land Disposition Agreement and Project Summary are available for public examination by emailing Margaret Carey at careym@hpd.nyc.gov on business days during business hours.</span></p><p><span style='font-size:10pt'>To make a request for accommodation, such as sign language interpretation services, please contact the Mayor\u001as Office of Contract Services (\u001aMOCS\u001a) via e-mail at disabilityaffairs@mocs.nyc.gov or via phone at (212) 298-0734.  TDD users should call Verizon relay services.  Any person requiring reasonable accommodation for the public hearing should contact MOCS at least three business days in advance of the hearing to ensure availability.</span></p>"
+    },
+    {
+      "request_id": "20261106001",
+      "start_date": "2026-11-20T00:00:00.000",
+      "event_date": "2026-12-09T14:30:00.000",
+      "agency_name": "Franchise and Concession Review Committee",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "FCRC DECEMBER PUBLIC MEETING",
+      "street_address_1": "255 Greenwich Street",
+      "street_address_2": "8th Floor",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "additional_description_1": "<p>PUBLIC NOTICE IS HEREBY GIVEN that the Franchise and Concession Review Committee, will hold a public meeting, on Wednesday, December 9, 2026, at 2:30 P.M., at 255 Greenwich Street, 8th Floor, New York, NY 10007</p><p>For further information on accessibility or to make a request for accommodations, such as sign language interpretation services, please contact the Mayor\u001as Office of Contract Services (MOCS) via e-mail at DisabilityAffairs@mocs.nyc.gov or via phone at (212) 298-0734. Any person requiring reasonable accommodation for the public hearing should contact MOCS at least five (5) business days in advance of the hearing to ensure availability.</p>"
+    },
+    {
+      "request_id": "20261112003",
+      "start_date": "2026-11-18T00:00:00.000",
+      "event_date": "2026-12-10T10:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Department of Design and Construction, NYS Civil Service Commission Proposal",
+      "additional_description_1": "Title: Department of Design and Construction, NYS Civil Service Commission Proposal Public Hearings and Meetings Section Citywide Administrative Services (DCAS) Agency Name Classification and Compensation Agency Division 12/10/2026 10:00 AM Event Date and Time Accessibility questions: 212-386-0256 or accessibility@dcas.nyc.gov, by Monday, November 23, 2026 5:00 PM Accessibility Archived Status 11/18/2026 - 11/20/2026 Publication Date Public Hearings Notice Type Attachments 1 Public Hearing - CROL Announcement (DDC)",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261112003&requestStatus=Archived&documentId=44915"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261112003&requestStatus=Archived&documentId=44915"
+      ]
+    },
+    {
+      "request_id": "20261117013",
+      "start_date": "2026-11-20T00:00:00.000",
+      "event_date": "2026-12-10T11:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "DINING OUT NYC PUBLIC HEARINGS",
+      "additional_description_1": "<p>NOTICE IS HEREBY GIVEN, PURSUANT TO LAW, that the following revocable consent has been schedules for a public hearing by the New York City Department of Transportation. A draft copy of the revocable consent agreement(s) may be obtained at no cost by submitting a request at diningoutnyc.info/requestcopy</p><p>The public hearing will be held remotely via Zoom, commencing on December 10th, 2026, at 11:00 am, in the matter of a proposed revocable consent authorizing the following:</p><ol>\t<li>\t<p>11TH STREET HOSPITALITY to maintain, operate, and use a year-round roadway cafe for a term of four years adjacent to 314 W 11 Street in the Borough of Manhattan.</p>\t</li>\t<li>\t<p>VILLAGE SQUARE PIZZA III INC to maintain, operate, and use a year-round roadway cafe for a term of four years adjacent to 1200 Lexington Avenue in the Borough of Manhattan.</p>\t</li>\t<li>\t<p>G.V.S. BAKERY INC to modify a license issued to maintain, operate and use a sidewalk cafe for a term of four years adjacent to 36-21 Ditmars Boulevard in the Borough of Queens.</p>\t</li></ol><p>To join the hearing enter the following URL link into your browser\u001as address bar: zoom.us/j/91467302621 Meeting ID: 914 6730 2621</p><p>To join the hearing only by phone, use the following information to connect: Phone: +1-929-205-6099 Meeting ID: 914 6730 2621</p>"
+    },
+    {
+      "request_id": "20261112005",
+      "start_date": "2026-11-18T00:00:00.000",
+      "event_date": "2026-12-11T10:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "List Appropriations, Fraud Investigator (31113) to Investigator (31105)",
+      "additional_description_1": "Title: List Appropriations, Fraud Investigator (31113) to Investigator (31105) Public Hearings and Meetings Section Citywide Administrative Services (DCAS) Agency Name Classification and Compensation Agency Division 12/11/2026 10:00 AM Event Date and Time Accessibility questions: 212-386-0256 or accessibility@dcas.nyc.gov, by Monday, November 23, 2026 5:00 PM Accessibility Archived Status 11/18/2026 - 11/20/2026 Publication Date Public Hearings Notice Type Attachments 1 Public Hearing - CROL Announcement (List Appropriation)",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261112005&requestStatus=Archived&documentId=44914"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261112005&requestStatus=Archived&documentId=44914"
+      ]
+    },
+    {
+      "request_id": "20261112013",
+      "start_date": "2026-11-19T00:00:00.000",
+      "event_date": "2026-12-21T10:00:00.000",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "short_title": "DSNY Proposed Amendment of Rules Relating to Recycling by City Agencies and Institutions",
+      "additional_description_1": "Title: DSNY Proposed Amendment of Rules Relating to Recycling by City Agencies and Institutions Agency Rules Section Sanitation (DSNY) Agency Name Legal Affairs Agency Division 12/21/2026 10:00 AM Event Date and Time Accessibility questions: Edna Luna, 646-885-4996, eluna@dsny.nyc.gov, by Monday, December 14, 2026 5:00 PM Accessibility Archived Status 11/19/2026 Publication Date Public Hearings Notice Type Attachments 1 DSNY Proposed Amendment of Rules Relating to Recycling by City Agencies and Institutions",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261112013&requestStatus=Archived&documentId=44932"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20261112013&requestStatus=Archived&documentId=44932"
+      ]
     }
   ]
 }

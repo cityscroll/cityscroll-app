@@ -53,28 +53,28 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-11-14T13:54:05.893Z",
+    "generated_at": "2026-11-21T15:00:10.828Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "33a37bb84b18145eaa0cb0fd9c1db1cecc334098d9052251213f06ab5f31b449",
-        "row_count": 20644
+        "sha256": "f18ed2613a563227978b04df38641a12bb70b26fb0cda2db7c20804dddd629b5",
+        "row_count": 20705
       },
       "spine_sources": {
         "path": "site/data/procurement_spine_sources.json",
-        "sha256": "87b395433adc1f40ce51c2150ec5f7d0f3395a7a512dae6208c839ee4d108f7d",
+        "sha256": "da5bf5be5194e08847c2fdb4e3ed18a1f97af7ce31e1f519d39a13df7ddde55f",
         "passport_contract_rows": 12795
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "79fd487a7d9d459dca48ae4e7bc068c7ce176824193ecb6db2825c29a02b3c43",
-        "object_count": 20644
+        "sha256": "dde7a28e1bfad67533a2305a5a50e34c7d4ad412b3a3abc56899ceccdd74c0e6",
+        "object_count": 20705
       }
     },
     "served_source_counts": {
       "city_record": 12685,
       "passport_public_contracts": 12771,
-      "checkbook_contracts": 9560
+      "checkbook_contracts": 9612
     },
     "interpretation": "Counts are the committed CityScroll snapshot, not a claim that any source is a complete citywide inventory."
   },
@@ -475,23 +475,23 @@
       "passport_public_contracts": 12782,
       "checkbook_contracts": 9807
     },
-    "doe_canonical_rows": 4623,
+    "doe_canonical_rows": 4634,
     "doe_rows_by_source": {
       "city_record": 431,
       "passport_public_contracts": 438,
-      "checkbook_contracts": 4185
+      "checkbook_contracts": 4196
     },
     "doe_source_combinations": {
       "city_record+passport_public_contracts": 431,
       "passport_public_contracts": 7,
-      "checkbook_contracts": 4185
+      "checkbook_contracts": 4196
     },
     "already_served_rows": {
-      "checkbook_only": 4185,
+      "checkbook_only": 4196,
       "passport_only": 7,
       "city_record_and_passport": 431,
       "all_three": 0,
-      "total": 4623
+      "total": 4634
     },
     "demonstrated_missing_rows": 0,
     "production_card_proposed": false,
@@ -499,7 +499,7 @@
     "review_note": "Re-reviewed after the DOE canonical row count moved from 3856 to 4412 on the 2026-10-09 Checkbook/OCP browse rematerialization. Counts by source before -> after: city_record 436 -> 433, passport_public_contracts 438 -> 438, checkbook_contracts 3418 -> 3974. New combination keys: none. No DOE row is left without a recognised source family. The added rows are served Checkbook/PASSPort/City Record records rather than a newly discovered distinct DOE corpus, so the finding is unchanged in substance: no distinct public DOE corpus is demonstrated missing, and no production card is proposed.",
     "served_measurement": {
       "artifact": "site/data/procurement_browse_rows.json",
-      "generated_at": "2026-11-14T13:54:05.893Z"
+      "generated_at": "2026-11-21T15:00:10.828Z"
     }
   },
   "production_cards": [],
