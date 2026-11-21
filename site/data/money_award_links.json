@@ -3,8 +3,8 @@
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
   "rule_version": "pin-stem-agency-v1",
-  "generated_at": "2026-11-19T04:23:39.911Z",
-  "as_of": "2026-11-19",
+  "generated_at": "2026-11-21T15:42:23.770Z",
+  "as_of": "2026-11-21",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -37,13 +37,13 @@
     "usable": true,
     "unusable_reason": null,
     "snapshot_age_days": 0,
-    "fetched_at": "2026-11-19T04:22:11.451Z",
-    "checked_at": "2026-11-19T04:22:11.451Z",
+    "fetched_at": "2026-11-21T15:26:04.192Z",
+    "checked_at": "2026-11-21T15:26:04.192Z",
     "fallback_reason": null,
     "fallback_text": null,
     "max_fallback_age_days": 30,
-    "contracts_read": 1698,
-    "contracts_with_rfq_number": 841
+    "contracts_read": 1703,
+    "contracts_with_rfq_number": 844
   },
   "reasons": {
     "linked_pin_stem": {
@@ -131,49 +131,49 @@
   "population": {
     "state": "complete",
     "reasons": [],
-    "solicitation_source_count": 3791,
-    "solicitations_published": 3791,
-    "award_source_count": 12434,
-    "award_rows_read": 12434,
+    "solicitation_source_count": 3795,
+    "solicitations_published": 3795,
+    "award_source_count": 12448,
+    "award_rows_read": 12448,
     "award_publishing_agencies": 53,
     "nycha_feed_state": "live"
   },
   "coverage": {
     "totals": {
-      "solicitations": 3791,
-      "stem_shaped": 1717,
-      "linked": 1301,
-      "linked_pin_stem": 1011,
+      "solicitations": 3795,
+      "stem_shaped": 1718,
+      "linked": 1303,
+      "linked_pin_stem": 1013,
       "linked_pin_exact": 18,
       "linked_nycha_rfq": 272,
-      "rfq_numbered": 445,
+      "rfq_numbered": 446,
       "no_award_yet": 747,
-      "cannot_link": 1743,
-      "multi_award": 212,
+      "cannot_link": 1745,
+      "multi_award": 213,
       "by_reason": {
-        "linked_pin_stem": 1011,
+        "linked_pin_stem": 1013,
         "linked_pin_exact": 18,
-        "no_award_published_yet": 693,
+        "no_award_published_yet": 692,
         "award_before_notice": 12,
         "award_other_agency": 0,
         "award_pin_tail_unrecognised": 1,
-        "pin_shape_not_joinable": 572,
+        "pin_shape_not_joinable": 573,
         "no_pin": 158,
         "linked_nycha_rfq": 272,
-        "nycha_rfq_not_on_list_yet": 54,
+        "nycha_rfq_not_on_list_yet": 55,
         "nycha_rfq_not_on_list": 119,
         "nycha_award_before_notice": 0,
-        "nycha_pin_has_no_rfq_number": 19,
+        "nycha_pin_has_no_rfq_number": 20,
         "nycha_award_list_unavailable": 0,
         "agency_awards_not_in_city_record": 862
       },
       "linked_pct_of_all": 34.3,
-      "linked_pct_of_stem_shaped": 58.9,
+      "linked_pct_of_stem_shaped": 59,
       "median_lag_days": 192,
       "at_least_median_lag_old": {
         "min_age_days": 192,
-        "stem_shaped": 1528,
-        "linked": 1000,
+        "stem_shaped": 1531,
+        "linked": 1001,
         "linked_pct_of_stem_shaped": 65.4
       }
     },
@@ -265,7 +265,7 @@
         "rfq_numbered": 117,
         "no_award_yet": 193,
         "cannot_link": 462,
-        "multi_award": 52,
+        "multi_award": 53,
         "by_reason": {
           "linked_pin_stem": 261,
           "linked_pin_exact": 7,
@@ -294,41 +294,41 @@
         }
       },
       "2026": {
-        "solicitations": 795,
-        "stem_shaped": 335,
-        "linked": 98,
-        "linked_pin_stem": 70,
+        "solicitations": 799,
+        "stem_shaped": 336,
+        "linked": 100,
+        "linked_pin_stem": 72,
         "linked_pin_exact": 0,
         "linked_nycha_rfq": 28,
-        "rfq_numbered": 82,
+        "rfq_numbered": 83,
         "no_award_yet": 317,
-        "cannot_link": 380,
+        "cannot_link": 382,
         "multi_award": 12,
         "by_reason": {
-          "linked_pin_stem": 70,
+          "linked_pin_stem": 72,
           "linked_pin_exact": 0,
-          "no_award_published_yet": 263,
+          "no_award_published_yet": 262,
           "award_before_notice": 2,
           "award_other_agency": 0,
           "award_pin_tail_unrecognised": 0,
-          "pin_shape_not_joinable": 134,
+          "pin_shape_not_joinable": 135,
           "no_pin": 36,
           "linked_nycha_rfq": 28,
-          "nycha_rfq_not_on_list_yet": 54,
+          "nycha_rfq_not_on_list_yet": 55,
           "nycha_rfq_not_on_list": 0,
           "nycha_award_before_notice": 0,
-          "nycha_pin_has_no_rfq_number": 3,
+          "nycha_pin_has_no_rfq_number": 4,
           "nycha_award_list_unavailable": 0,
           "agency_awards_not_in_city_record": 205
         },
-        "linked_pct_of_all": 12.3,
-        "linked_pct_of_stem_shaped": 20.9,
+        "linked_pct_of_all": 12.5,
+        "linked_pct_of_stem_shaped": 21.4,
         "median_lag_days": 115,
         "at_least_median_lag_old": {
           "min_age_days": 192,
-          "stem_shaped": 146,
-          "linked": 59,
-          "linked_pct_of_stem_shaped": 40.4
+          "stem_shaped": 149,
+          "linked": 60,
+          "linked_pct_of_stem_shaped": 40.3
         }
       }
     },
@@ -336,16 +336,16 @@
       {
         "agency_name": "Housing Authority",
         "agency_id": "housing-authority",
-        "solicitations": 576,
+        "solicitations": 578,
         "stem_shaped": 0,
         "linked": 272,
         "linked_pin_stem": 0,
         "linked_pin_exact": 0,
         "linked_nycha_rfq": 272,
-        "rfq_numbered": 445,
-        "no_award_yet": 54,
-        "cannot_link": 250,
-        "multi_award": 57,
+        "rfq_numbered": 446,
+        "no_award_yet": 55,
+        "cannot_link": 251,
+        "multi_award": 58,
         "by_reason": {
           "linked_pin_stem": 0,
           "linked_pin_exact": 0,
@@ -356,14 +356,14 @@
           "pin_shape_not_joinable": 0,
           "no_pin": 112,
           "linked_nycha_rfq": 272,
-          "nycha_rfq_not_on_list_yet": 54,
+          "nycha_rfq_not_on_list_yet": 55,
           "nycha_rfq_not_on_list": 119,
           "nycha_award_before_notice": 0,
-          "nycha_pin_has_no_rfq_number": 19,
+          "nycha_pin_has_no_rfq_number": 20,
           "nycha_award_list_unavailable": 0,
           "agency_awards_not_in_city_record": 0
         },
-        "linked_pct_of_all": 47.2,
+        "linked_pct_of_all": 47.1,
         "linked_pct_of_stem_shaped": null,
         "median_lag_days": null,
         "at_least_median_lag_old": {
@@ -378,18 +378,18 @@
         "agency_id": "citywide-administrative-services",
         "solicitations": 526,
         "stem_shaped": 438,
-        "linked": 322,
-        "linked_pin_stem": 322,
+        "linked": 323,
+        "linked_pin_stem": 323,
         "linked_pin_exact": 0,
         "linked_nycha_rfq": 0,
         "rfq_numbered": 0,
-        "no_award_yet": 114,
+        "no_award_yet": 113,
         "cannot_link": 90,
         "multi_award": 78,
         "by_reason": {
-          "linked_pin_stem": 322,
+          "linked_pin_stem": 323,
           "linked_pin_exact": 0,
-          "no_award_published_yet": 114,
+          "no_award_published_yet": 113,
           "award_before_notice": 1,
           "award_other_agency": 0,
           "award_pin_tail_unrecognised": 1,
@@ -403,8 +403,8 @@
           "nycha_award_list_unavailable": 0,
           "agency_awards_not_in_city_record": 0
         },
-        "linked_pct_of_all": 61.2,
-        "linked_pct_of_stem_shaped": 73.5,
+        "linked_pct_of_all": 61.4,
+        "linked_pct_of_stem_shaped": 73.7,
         "median_lag_days": 111,
         "at_least_median_lag_old": {
           "min_age_days": 192,
@@ -418,18 +418,18 @@
         "agency_id": "environmental-protection",
         "solicitations": 372,
         "stem_shaped": 357,
-        "linked": 181,
-        "linked_pin_stem": 181,
+        "linked": 182,
+        "linked_pin_stem": 182,
         "linked_pin_exact": 0,
         "linked_nycha_rfq": 0,
         "rfq_numbered": 0,
-        "no_award_yet": 176,
+        "no_award_yet": 175,
         "cannot_link": 15,
         "multi_award": 6,
         "by_reason": {
-          "linked_pin_stem": 181,
+          "linked_pin_stem": 182,
           "linked_pin_exact": 0,
-          "no_award_published_yet": 176,
+          "no_award_published_yet": 175,
           "award_before_notice": 0,
           "award_other_agency": 0,
           "award_pin_tail_unrecognised": 0,
@@ -443,8 +443,8 @@
           "nycha_award_list_unavailable": 0,
           "agency_awards_not_in_city_record": 0
         },
-        "linked_pct_of_all": 48.7,
-        "linked_pct_of_stem_shaped": 50.7,
+        "linked_pct_of_all": 48.9,
+        "linked_pct_of_stem_shaped": 51,
         "median_lag_days": 250,
         "at_least_median_lag_old": {
           "min_age_days": 192,
@@ -496,20 +496,20 @@
       {
         "agency_name": "Design and Construction",
         "agency_id": "design-and-construction",
-        "solicitations": 288,
-        "stem_shaped": 249,
+        "solicitations": 289,
+        "stem_shaped": 250,
         "linked": 154,
         "linked_pin_stem": 154,
         "linked_pin_exact": 0,
         "linked_nycha_rfq": 0,
         "rfq_numbered": 0,
-        "no_award_yet": 95,
+        "no_award_yet": 96,
         "cannot_link": 39,
         "multi_award": 13,
         "by_reason": {
           "linked_pin_stem": 154,
           "linked_pin_exact": 0,
-          "no_award_published_yet": 95,
+          "no_award_published_yet": 96,
           "award_before_notice": 0,
           "award_other_agency": 0,
           "award_pin_tail_unrecognised": 0,
@@ -523,14 +523,14 @@
           "nycha_award_list_unavailable": 0,
           "agency_awards_not_in_city_record": 0
         },
-        "linked_pct_of_all": 53.5,
-        "linked_pct_of_stem_shaped": 61.8,
+        "linked_pct_of_all": 53.3,
+        "linked_pct_of_stem_shaped": 61.6,
         "median_lag_days": 181,
         "at_least_median_lag_old": {
           "min_age_days": 192,
-          "stem_shaped": 227,
+          "stem_shaped": 228,
           "linked": 154,
-          "linked_pct_of_stem_shaped": 67.8
+          "linked_pct_of_stem_shaped": 67.5
         }
       },
       {
@@ -776,7 +776,7 @@
       {
         "agency_name": "City University",
         "agency_id": "city-university",
-        "solicitations": 76,
+        "solicitations": 77,
         "stem_shaped": 0,
         "linked": 0,
         "linked_pin_stem": 0,
@@ -784,7 +784,7 @@
         "linked_nycha_rfq": 0,
         "rfq_numbered": 0,
         "no_award_yet": 0,
-        "cannot_link": 76,
+        "cannot_link": 77,
         "multi_award": 0,
         "by_reason": {
           "linked_pin_stem": 0,
@@ -793,7 +793,7 @@
           "award_before_notice": 0,
           "award_other_agency": 0,
           "award_pin_tail_unrecognised": 0,
-          "pin_shape_not_joinable": 63,
+          "pin_shape_not_joinable": 64,
           "no_pin": 13,
           "linked_nycha_rfq": 0,
           "nycha_rfq_not_on_list_yet": 0,
@@ -1288,9 +1288,9 @@
         "median_lag_days": 340,
         "at_least_median_lag_old": {
           "min_age_days": 192,
-          "stem_shaped": 15,
+          "stem_shaped": 16,
           "linked": 4,
-          "linked_pct_of_stem_shaped": 26.7
+          "linked_pct_of_stem_shaped": 25
         }
       },
       {
@@ -1448,9 +1448,9 @@
         "median_lag_days": 157,
         "at_least_median_lag_old": {
           "min_age_days": 192,
-          "stem_shaped": 9,
-          "linked": 6,
-          "linked_pct_of_stem_shaped": 66.7
+          "stem_shaped": 10,
+          "linked": 7,
+          "linked_pct_of_stem_shaped": 70
         }
       },
       {
@@ -2816,17 +2816,17 @@
     ],
     "nycha": {
       "totals": {
-        "solicitations": 576,
-        "with_rfq_number": 445,
+        "solicitations": 578,
+        "with_rfq_number": 446,
         "linked": 272,
-        "linked_pct_of_all": 47.2,
-        "linked_pct_of_rfq_numbered": 61.1,
-        "linked_with_several_contracts": 57,
-        "not_on_list_yet": 54,
+        "linked_pct_of_all": 47.1,
+        "linked_pct_of_rfq_numbered": 61,
+        "linked_with_several_contracts": 58,
+        "not_on_list_yet": 55,
         "not_on_list": 119,
         "award_before_notice": 0,
         "no_pin": 112,
-        "pin_has_no_rfq_number": 19,
+        "pin_has_no_rfq_number": 20,
         "list_unavailable": 0,
         "median_lag_days": 181,
         "at_least_a_year_old": {
@@ -2885,7 +2885,7 @@
           "linked": 78,
           "linked_pct_of_all": 53.8,
           "linked_pct_of_rfq_numbered": 66.7,
-          "linked_with_several_contracts": 17,
+          "linked_with_several_contracts": 18,
           "not_on_list_yet": 0,
           "not_on_list": 39,
           "award_before_notice": 0,
@@ -2901,17 +2901,17 @@
           }
         },
         "2026": {
-          "solicitations": 110,
-          "with_rfq_number": 82,
+          "solicitations": 112,
+          "with_rfq_number": 83,
           "linked": 28,
-          "linked_pct_of_all": 25.5,
-          "linked_pct_of_rfq_numbered": 34.1,
+          "linked_pct_of_all": 25,
+          "linked_pct_of_rfq_numbered": 33.7,
           "linked_with_several_contracts": 3,
-          "not_on_list_yet": 54,
+          "not_on_list_yet": 55,
           "not_on_list": 0,
           "award_before_notice": 0,
           "no_pin": 25,
-          "pin_has_no_rfq_number": 3,
+          "pin_has_no_rfq_number": 4,
           "list_unavailable": 0,
           "median_lag_days": 92,
           "at_least_a_year_old": {
@@ -2924,10 +2924,10 @@
       },
       "all_solicitations": {
         "totals": {
-          "solicitations": 3791,
-          "linked_without_nycha_list": 1029,
-          "linked_with_nycha_list": 1301,
-          "pct_without_nycha_list": 27.1,
+          "solicitations": 3795,
+          "linked_without_nycha_list": 1031,
+          "linked_with_nycha_list": 1303,
+          "pct_without_nycha_list": 27.2,
           "pct_with_nycha_list": 34.3
         },
         "by_cohort_year": {
@@ -2953,17 +2953,17 @@
             "pct_with_nycha_list": 34.6
           },
           "2026": {
-            "solicitations": 795,
-            "linked_without_nycha_list": 70,
-            "linked_with_nycha_list": 98,
-            "pct_without_nycha_list": 8.8,
-            "pct_with_nycha_list": 12.3
+            "solicitations": 799,
+            "linked_without_nycha_list": 72,
+            "linked_with_nycha_list": 100,
+            "pct_without_nycha_list": 9,
+            "pct_with_nycha_list": 12.5
           }
         }
       }
     }
   },
-  "count": 3791,
+  "count": 3795,
   "solicitations": [
     {
       "request_id": "20221021102",
@@ -24051,7 +24051,7 @@
           "contract_number": "2324679",
           "rfq_number": "407999",
           "vendor_name": "AWL INDUSTRIES INC.",
-          "award_amount": 12961201.45
+          "award_amount": 12961204.45
         }
       ],
       "linked_award": {
@@ -24063,7 +24063,7 @@
         "contract_number": "2324679",
         "rfq_number": "407999",
         "vendor_name": "AWL INDUSTRIES INC.",
-        "award_amount": 12961201.45
+        "award_amount": 12961204.45
       },
       "other_awards": [],
       "other_awards_label": null,
@@ -30770,7 +30770,7 @@
           "contract_number": "2331264",
           "rfq_number": "466034",
           "vendor_name": "EMPIRE CONTROL ABATEMENT INC",
-          "award_amount": 37506211
+          "award_amount": 37512214
         }
       ],
       "linked_award": {
@@ -30794,7 +30794,7 @@
           "contract_number": "2331264",
           "rfq_number": "466034",
           "vendor_name": "EMPIRE CONTROL ABATEMENT INC",
-          "award_amount": 37506211
+          "award_amount": 37512214
         }
       ],
       "other_awards_label": "other awards on the same contract number",
@@ -36188,7 +36188,7 @@
           "contract_number": "2405400",
           "rfq_number": "447022",
           "vendor_name": "RICHARDS PLUMBING AND HEATING CO., INC.",
-          "award_amount": 46870789.44
+          "award_amount": 46875904.18
         }
       ],
       "linked_award": {
@@ -36200,7 +36200,7 @@
         "contract_number": "2405400",
         "rfq_number": "447022",
         "vendor_name": "RICHARDS PLUMBING AND HEATING CO., INC.",
-        "award_amount": 46870789.44
+        "award_amount": 46875904.18
       },
       "other_awards": [],
       "other_awards_label": null,
@@ -43491,7 +43491,7 @@
           "contract_number": "2410776",
           "rfq_number": "347887",
           "vendor_name": "WDF INC.",
-          "award_amount": 35648476.95
+          "award_amount": 35729444.36
         }
       ],
       "linked_award": {
@@ -43503,7 +43503,7 @@
         "contract_number": "2410776",
         "rfq_number": "347887",
         "vendor_name": "WDF INC.",
-        "award_amount": 35648476.95
+        "award_amount": 35729444.36
       },
       "other_awards": [],
       "other_awards_label": null,
@@ -94944,7 +94944,7 @@
       "link_state": "linked",
       "reason": "linked_nycha_rfq",
       "link_basis": "nycha_rfq_number",
-      "award_count": 1,
+      "award_count": 2,
       "first_award_lag_days": 508,
       "awards": [
         {
@@ -94957,6 +94957,17 @@
           "rfq_number": "510473",
           "vendor_name": "KANIRA CONSULTING INC",
           "award_amount": 24000000
+        },
+        {
+          "source": "nycha_awarded_contracts",
+          "request_id": null,
+          "award_date": "2026-11-19",
+          "date_kind": "contract_start",
+          "contract_pin": null,
+          "contract_number": "2612621",
+          "rfq_number": "510473",
+          "vendor_name": "A1 WORKS IN PROGRESS ASSOCIATES, LLC",
+          "award_amount": 65000000
         }
       ],
       "linked_award": {
@@ -94970,8 +94981,20 @@
         "vendor_name": "KANIRA CONSULTING INC",
         "award_amount": 24000000
       },
-      "other_awards": [],
-      "other_awards_label": null,
+      "other_awards": [
+        {
+          "source": "nycha_awarded_contracts",
+          "request_id": null,
+          "award_date": "2026-11-19",
+          "date_kind": "contract_start",
+          "contract_pin": null,
+          "contract_number": "2612621",
+          "rfq_number": "510473",
+          "vendor_name": "A1 WORKS IN PROGRESS ASSOCIATES, LLC",
+          "award_amount": 65000000
+        }
+      ],
+      "other_awards_label": "other awards on the same contract number",
       "other_awards_omitted": 0
     },
     {
@@ -102365,7 +102388,7 @@
       "link_state": "linked",
       "reason": "linked_pin_stem",
       "link_basis": "pin_stem",
-      "award_count": 143,
+      "award_count": 144,
       "first_award_lag_days": 300,
       "awards": [
         {
@@ -102922,7 +102945,7 @@
         }
       ],
       "other_awards_label": "other awards on the same contract number",
-      "other_awards_omitted": 118
+      "other_awards_omitted": 119
     },
     {
       "request_id": "20250915022",
@@ -102939,7 +102962,7 @@
       "link_state": "linked",
       "reason": "linked_pin_stem",
       "link_basis": "pin_stem",
-      "award_count": 59,
+      "award_count": 62,
       "first_award_lag_days": 272,
       "awards": [
         {
@@ -103496,7 +103519,7 @@
         }
       ],
       "other_awards_label": "other awards on the same contract number",
-      "other_awards_omitted": 34
+      "other_awards_omitted": 37
     },
     {
       "request_id": "20250924016",
@@ -119411,7 +119434,7 @@
       "link_state": "linked",
       "reason": "linked_nycha_rfq",
       "link_basis": "nycha_rfq_number",
-      "award_count": 2,
+      "award_count": 3,
       "first_award_lag_days": 92,
       "awards": [
         {
@@ -119435,6 +119458,17 @@
           "rfq_number": "521132",
           "vendor_name": "CAPP HOLDINGS CORPORATION",
           "award_amount": 8130562.5
+        },
+        {
+          "source": "nycha_awarded_contracts",
+          "request_id": null,
+          "award_date": "2026-11-18",
+          "date_kind": "contract_start",
+          "contract_pin": null,
+          "contract_number": "2619297",
+          "rfq_number": "521132",
+          "vendor_name": "H VAK MECHANICAL CORP",
+          "award_amount": 5818027.5
         }
       ],
       "linked_award": {
@@ -119459,6 +119493,17 @@
           "rfq_number": "521132",
           "vendor_name": "CAPP HOLDINGS CORPORATION",
           "award_amount": 8130562.5
+        },
+        {
+          "source": "nycha_awarded_contracts",
+          "request_id": null,
+          "award_date": "2026-11-18",
+          "date_kind": "contract_start",
+          "contract_pin": null,
+          "contract_number": "2619297",
+          "rfq_number": "521132",
+          "vendor_name": "H VAK MECHANICAL CORP",
+          "award_amount": 5818027.5
         }
       ],
       "other_awards_label": "other awards on the same contract number",
@@ -124717,13 +124762,35 @@
       "stem_solicitation_count": 1,
       "rfq_numbers": [],
       "rfq_solicitation_count": null,
-      "link_state": "no_award_yet",
-      "reason": "no_award_published_yet",
-      "link_basis": null,
-      "award_count": 0,
-      "first_award_lag_days": null,
-      "awards": [],
-      "linked_award": null,
+      "link_state": "linked",
+      "reason": "linked_pin_stem",
+      "link_basis": "pin_stem",
+      "award_count": 1,
+      "first_award_lag_days": 150,
+      "awards": [
+        {
+          "source": "city_record_award_notices",
+          "request_id": "20261113005",
+          "award_date": "2026-11-19",
+          "date_kind": "notice_date",
+          "contract_pin": "82626B0038001",
+          "contract_number": null,
+          "rfq_number": null,
+          "vendor_name": "J. Pizzirusso Landscaping Corp",
+          "award_amount": 6538863
+        }
+      ],
+      "linked_award": {
+        "source": "city_record_award_notices",
+        "request_id": "20261113005",
+        "award_date": "2026-11-19",
+        "date_kind": "notice_date",
+        "contract_pin": "82626B0038001",
+        "contract_number": null,
+        "rfq_number": null,
+        "vendor_name": "J. Pizzirusso Landscaping Corp",
+        "award_amount": 6538863
+      },
       "other_awards": [],
       "other_awards_label": null,
       "other_awards_omitted": 0
@@ -128087,13 +128154,35 @@
       "stem_solicitation_count": 1,
       "rfq_numbers": [],
       "rfq_solicitation_count": null,
-      "link_state": "no_award_yet",
-      "reason": "no_award_published_yet",
-      "link_basis": null,
-      "award_count": 0,
-      "first_award_lag_days": null,
-      "awards": [],
-      "linked_award": null,
+      "link_state": "linked",
+      "reason": "linked_pin_stem",
+      "link_basis": "pin_stem",
+      "award_count": 1,
+      "first_award_lag_days": 93,
+      "awards": [
+        {
+          "source": "city_record_award_notices",
+          "request_id": "20261116005",
+          "award_date": "2026-11-20",
+          "date_kind": "notice_date",
+          "contract_pin": "85726B0069001",
+          "contract_number": null,
+          "rfq_number": null,
+          "vendor_name": "Pitney Bowes Inc.",
+          "award_amount": 6075175
+        }
+      ],
+      "linked_award": {
+        "source": "city_record_award_notices",
+        "request_id": "20261116005",
+        "award_date": "2026-11-20",
+        "date_kind": "notice_date",
+        "contract_pin": "85726B0069001",
+        "contract_number": null,
+        "rfq_number": null,
+        "vendor_name": "Pitney Bowes Inc.",
+        "award_amount": 6075175
+      },
       "other_awards": [],
       "other_awards_label": null,
       "other_awards_omitted": 0
@@ -130982,7 +131071,7 @@
       "agency_id": "housing-authority",
       "cohort_year": 2026,
       "solicitation_date": "2026-10-13",
-      "response_due_date": "2026-11-19",
+      "response_due_date": "2026-12-03",
       "pin_shape": "rfq",
       "stem_solicitation_count": null,
       "rfq_numbers": [
@@ -131055,7 +131144,7 @@
       "agency_id": "nyc-health-hospitals",
       "cohort_year": 2026,
       "solicitation_date": "2026-10-13",
-      "response_due_date": "2026-11-23",
+      "response_due_date": "2026-11-30",
       "pin_shape": "other",
       "stem_solicitation_count": null,
       "rfq_numbers": [],
@@ -132707,6 +132796,100 @@
       "rfq_solicitation_count": null,
       "link_state": "cannot_link",
       "reason": "agency_awards_not_in_city_record",
+      "link_basis": null,
+      "award_count": 0,
+      "first_award_lag_days": null,
+      "awards": [],
+      "linked_award": null,
+      "other_awards": [],
+      "other_awards_label": null,
+      "other_awards_omitted": 0
+    },
+    {
+      "request_id": "20261112004",
+      "pin": "528532",
+      "agency_name": "Housing Authority",
+      "agency_id": "housing-authority",
+      "cohort_year": 2026,
+      "solicitation_date": "2026-11-19",
+      "response_due_date": "2026-12-03",
+      "pin_shape": "rfq",
+      "stem_solicitation_count": null,
+      "rfq_numbers": [
+        "528532"
+      ],
+      "rfq_solicitation_count": 1,
+      "link_state": "no_award_yet",
+      "reason": "nycha_rfq_not_on_list_yet",
+      "link_basis": null,
+      "award_count": 0,
+      "first_award_lag_days": null,
+      "awards": [],
+      "linked_award": null,
+      "other_awards": [],
+      "other_awards_label": null,
+      "other_awards_omitted": 0
+    },
+    {
+      "request_id": "20261112006",
+      "pin": "HC-CUCF-20-26",
+      "agency_name": "City University",
+      "agency_id": "city-university",
+      "cohort_year": 2026,
+      "solicitation_date": "2026-11-19",
+      "response_due_date": "2027-01-11",
+      "pin_shape": "other",
+      "stem_solicitation_count": null,
+      "rfq_numbers": [],
+      "rfq_solicitation_count": null,
+      "link_state": "cannot_link",
+      "reason": "pin_shape_not_joinable",
+      "link_basis": null,
+      "award_count": 0,
+      "first_award_lag_days": null,
+      "awards": [],
+      "linked_award": null,
+      "other_awards": [],
+      "other_awards_label": null,
+      "other_awards_omitted": 0
+    },
+    {
+      "request_id": "20261112020",
+      "pin": "11192026",
+      "agency_name": "Housing Authority",
+      "agency_id": "housing-authority",
+      "cohort_year": 2026,
+      "solicitation_date": "2026-11-19",
+      "response_due_date": "2027-02-18",
+      "pin_shape": "other",
+      "stem_solicitation_count": null,
+      "rfq_numbers": [],
+      "rfq_solicitation_count": null,
+      "link_state": "cannot_link",
+      "reason": "nycha_pin_has_no_rfq_number",
+      "link_basis": null,
+      "award_count": 0,
+      "first_award_lag_days": null,
+      "awards": [],
+      "linked_award": null,
+      "other_awards": [],
+      "other_awards_label": null,
+      "other_awards_omitted": 0
+    },
+    {
+      "request_id": "20261116019",
+      "pin": "85027B0023",
+      "agency_name": "Design and Construction",
+      "agency_id": "design-and-construction",
+      "cohort_year": 2026,
+      "solicitation_date": "2026-11-20",
+      "response_due_date": "2026-12-16",
+      "pin_shape": "stem",
+      "stem_solicitation_count": 1,
+      "rfq_numbers": [],
+      "rfq_solicitation_count": null,
+      "link_state": "no_award_yet",
+      "reason": "no_award_published_yet",
       "link_basis": null,
       "award_count": 0,
       "first_award_lag_days": null,

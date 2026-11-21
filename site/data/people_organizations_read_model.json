@@ -2469,9 +2469,9 @@
           "status": "matched",
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+            "source_record_id": "cb6-board-members-and-staff-2026-11-21",
             "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-11-13T14:46:39.366Z",
+            "observed_at": "2026-11-21T15:33:37.103Z",
             "join_method": "exact_publisher_identity_date_document",
             "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
             "source_fields": [
@@ -2510,9 +2510,9 @@
         "provenance": {
           "source_identity": "community-board-person:manhattan-cb-06:jason-froimowitz",
           "source_observation_refs": [
-            "cb6-board-members-and-staff-2026-11-13"
+            "cb6-board-members-and-staff-2026-11-21"
           ],
-          "observed_at": "2026-11-13",
+          "observed_at": "2026-11-21",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -2556,9 +2556,9 @@
             "hold_reason": "This relation has no verified published destination.",
             "provenance": {
               "source_system": "community_board_publisher",
-              "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+              "source_record_id": "cb6-board-members-and-staff-2026-11-21",
               "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-              "observed_at": "2026-11-13T14:46:39.366Z",
+              "observed_at": "2026-11-21T15:33:37.103Z",
               "join_method": "exact_publisher_identity_date_document",
               "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
               "source_fields": [
@@ -2672,7 +2672,7 @@
               },
               "provenance": {
                 "source_system": "community_board_publisher",
-                "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+                "source_record_id": "cb6-board-members-and-staff-2026-11-21",
                 "source_fields": [
                   "board_id",
                   "committee_ref",
@@ -2685,7 +2685,7 @@
                 ],
                 "join_method": "exact_publisher_identity_date_document",
                 "source_href": "https://cbsix.org/about-us/board-members-and-staff/",
-                "observed_at": "2026-11-13T14:46:39.366Z",
+                "observed_at": "2026-11-21T15:33:37.103Z",
                 "cross_spine_confidence": "unmatched",
                 "cross_spine_explicit": false
               },
@@ -2736,9 +2736,9 @@
           "status": "matched",
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+            "source_record_id": "cb6-board-members-and-staff-2026-11-21",
             "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-11-13T14:46:39.366Z",
+            "observed_at": "2026-11-21T15:33:37.103Z",
             "join_method": "exact_publisher_identity_date_document",
             "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
             "source_fields": [
@@ -2776,9 +2776,9 @@
         "provenance": {
           "source_identity": "community-board-person:manhattan-cb-06:jesus-perez",
           "source_observation_refs": [
-            "cb6-board-members-and-staff-2026-11-13"
+            "cb6-board-members-and-staff-2026-11-21"
           ],
-          "observed_at": "2026-11-13",
+          "observed_at": "2026-11-21",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -2822,9 +2822,9 @@
             "hold_reason": null,
             "provenance": {
               "source_system": "community_board_publisher",
-              "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+              "source_record_id": "cb6-board-members-and-staff-2026-11-21",
               "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-              "observed_at": "2026-11-13T14:46:39.366Z",
+              "observed_at": "2026-11-21T15:33:37.103Z",
               "join_method": "exact_publisher_identity_date_document",
               "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
               "source_fields": [
@@ -2937,7 +2937,7 @@
               },
               "provenance": {
                 "source_system": "community_board_publisher",
-                "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+                "source_record_id": "cb6-board-members-and-staff-2026-11-21",
                 "source_fields": [
                   "board_id",
                   "person_name",
@@ -2949,7 +2949,7 @@
                 ],
                 "join_method": "exact_publisher_identity_date_document",
                 "source_href": "https://cbsix.org/about-us/board-members-and-staff/",
-                "observed_at": "2026-11-13T14:46:39.366Z",
+                "observed_at": "2026-11-21T15:33:37.103Z",
                 "cross_spine_confidence": "unmatched",
                 "cross_spine_explicit": false
               },
@@ -3004,9 +3004,9 @@
           "status": "matched",
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+            "source_record_id": "cb6-board-members-and-staff-2026-11-21",
             "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-11-13T14:46:39.366Z",
+            "observed_at": "2026-11-21T15:33:37.103Z",
             "join_method": "exact_publisher_identity_date_document",
             "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
             "source_fields": [
@@ -3045,9 +3045,9 @@
         "provenance": {
           "source_identity": "community-board-person:manhattan-cb-06:michael-cohen",
           "source_observation_refs": [
-            "cb6-board-members-and-staff-2026-11-13"
+            "cb6-board-members-and-staff-2026-11-21"
           ],
-          "observed_at": "2026-11-13",
+          "observed_at": "2026-11-21",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -3091,9 +3091,9 @@
             "hold_reason": "This relation has no verified published destination.",
             "provenance": {
               "source_system": "community_board_publisher",
-              "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+              "source_record_id": "cb6-board-members-and-staff-2026-11-21",
               "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-              "observed_at": "2026-11-13T14:46:39.366Z",
+              "observed_at": "2026-11-21T15:33:37.103Z",
               "join_method": "exact_publisher_identity_date_document",
               "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
               "source_fields": [
@@ -3207,7 +3207,7 @@
               },
               "provenance": {
                 "source_system": "community_board_publisher",
-                "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+                "source_record_id": "cb6-board-members-and-staff-2026-11-21",
                 "source_fields": [
                   "board_id",
                   "committee_ref",
@@ -3220,7 +3220,7 @@
                 ],
                 "join_method": "exact_publisher_identity_date_document",
                 "source_href": "https://cbsix.org/about-us/board-members-and-staff/",
-                "observed_at": "2026-11-13T14:46:39.366Z",
+                "observed_at": "2026-11-21T15:33:37.103Z",
                 "cross_spine_confidence": "unmatched",
                 "cross_spine_explicit": false
               },
@@ -3271,9 +3271,9 @@
           "status": "matched",
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+            "source_record_id": "cb6-board-members-and-staff-2026-11-21",
             "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-11-13T14:46:39.366Z",
+            "observed_at": "2026-11-21T15:33:37.103Z",
             "join_method": "exact_publisher_identity_date_document",
             "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
             "source_fields": [
@@ -3298,9 +3298,9 @@
           "status": "matched",
           "provenance": {
             "source_system": "community_board_publisher",
-            "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+            "source_record_id": "cb6-board-members-and-staff-2026-11-21",
             "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-            "observed_at": "2026-11-13T14:46:39.366Z",
+            "observed_at": "2026-11-21T15:33:37.103Z",
             "join_method": "exact_publisher_identity_date_document",
             "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
             "source_fields": [
@@ -3338,9 +3338,9 @@
         "provenance": {
           "source_identity": "community-board-person:manhattan-cb-06:sandra-mckee",
           "source_observation_refs": [
-            "cb6-board-members-and-staff-2026-11-13"
+            "cb6-board-members-and-staff-2026-11-21"
           ],
-          "observed_at": "2026-11-13",
+          "observed_at": "2026-11-21",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -3384,9 +3384,9 @@
             "hold_reason": null,
             "provenance": {
               "source_system": "community_board_publisher",
-              "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+              "source_record_id": "cb6-board-members-and-staff-2026-11-21",
               "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-              "observed_at": "2026-11-13T14:46:39.366Z",
+              "observed_at": "2026-11-21T15:33:37.103Z",
               "join_method": "exact_publisher_identity_date_document",
               "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
               "source_fields": [
@@ -3411,9 +3411,9 @@
             "hold_reason": null,
             "provenance": {
               "source_system": "community_board_publisher",
-              "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+              "source_record_id": "cb6-board-members-and-staff-2026-11-21",
               "source_url": "https://cbsix.org/about-us/board-members-and-staff/",
-              "observed_at": "2026-11-13T14:46:39.366Z",
+              "observed_at": "2026-11-21T15:33:37.103Z",
               "join_method": "exact_publisher_identity_date_document",
               "basis": "source-qualified, temporal board-local person relationship; it does not imply a Council official identity or voting power",
               "source_fields": [
@@ -3526,7 +3526,7 @@
               },
               "provenance": {
                 "source_system": "community_board_publisher",
-                "source_record_id": "cb6-board-members-and-staff-2026-11-13",
+                "source_record_id": "cb6-board-members-and-staff-2026-11-21",
                 "source_fields": [
                   "board_id",
                   "person_name",
@@ -3538,7 +3538,7 @@
                 ],
                 "join_method": "exact_publisher_identity_date_document",
                 "source_href": "https://cbsix.org/about-us/board-members-and-staff/",
-                "observed_at": "2026-11-13T14:46:39.366Z",
+                "observed_at": "2026-11-21T15:33:37.103Z",
                 "cross_spine_confidence": "unmatched",
                 "cross_spine_explicit": false
               },
@@ -3650,7 +3650,7 @@
           "source_observation_refs": [
             "person_hub:425"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -3795,7 +3795,7 @@
           "source_observation_refs": [
             "person_hub:7739"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -3940,7 +3940,7 @@
           "source_observation_refs": [
             "person_hub:5258"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -4085,7 +4085,7 @@
           "source_observation_refs": [
             "person_hub:7635"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -4230,7 +4230,7 @@
           "source_observation_refs": [
             "person_hub:5284"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -4375,7 +4375,7 @@
           "source_observation_refs": [
             "person_hub:7825"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -4520,7 +4520,7 @@
           "source_observation_refs": [
             "person_hub:7747"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -4665,7 +4665,7 @@
           "source_observation_refs": [
             "person_hub:5277"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -4810,7 +4810,7 @@
           "source_observation_refs": [
             "person_hub:420"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -4955,7 +4955,7 @@
           "source_observation_refs": [
             "person_hub:7809"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -5100,7 +5100,7 @@
           "source_observation_refs": [
             "person_hub:7810"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -5245,7 +5245,7 @@
           "source_observation_refs": [
             "person_hub:7624"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -5390,7 +5390,7 @@
           "source_observation_refs": [
             "person_hub:5255"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -5535,7 +5535,7 @@
           "source_observation_refs": [
             "person_hub:7613"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -5680,7 +5680,7 @@
           "source_observation_refs": [
             "person_hub:433"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -5825,7 +5825,7 @@
           "source_observation_refs": [
             "person_hub:5416"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -5970,7 +5970,7 @@
           "source_observation_refs": [
             "person_hub:407"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -6115,7 +6115,7 @@
           "source_observation_refs": [
             "person_hub:7490"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -6260,7 +6260,7 @@
           "source_observation_refs": [
             "person_hub:411"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -6405,7 +6405,7 @@
           "source_observation_refs": [
             "person_hub:7638"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -6550,7 +6550,7 @@
           "source_observation_refs": [
             "person_hub:23"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -6695,7 +6695,7 @@
           "source_observation_refs": [
             "person_hub:7830"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -6840,7 +6840,7 @@
           "source_observation_refs": [
             "person_hub:7691"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -6985,7 +6985,7 @@
           "source_observation_refs": [
             "person_hub:7632"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -7130,7 +7130,7 @@
           "source_observation_refs": [
             "person_hub:5286"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -7275,7 +7275,7 @@
           "source_observation_refs": [
             "person_hub:430"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -7420,7 +7420,7 @@
           "source_observation_refs": [
             "person_hub:7566"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -7565,7 +7565,7 @@
           "source_observation_refs": [
             "person_hub:7740"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -7710,7 +7710,7 @@
           "source_observation_refs": [
             "person_hub:7636"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -7855,7 +7855,7 @@
           "source_observation_refs": [
             "person_hub:7806"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -8000,7 +8000,7 @@
           "source_observation_refs": [
             "person_hub:7629"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -8145,7 +8145,7 @@
           "source_observation_refs": [
             "person_hub:5288"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -8290,7 +8290,7 @@
           "source_observation_refs": [
             "person_hub:7823"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -8435,7 +8435,7 @@
           "source_observation_refs": [
             "person_hub:7864"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -8580,7 +8580,7 @@
           "source_observation_refs": [
             "person_hub:434"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -8725,7 +8725,7 @@
           "source_observation_refs": [
             "person_hub:7801"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -8870,7 +8870,7 @@
           "source_observation_refs": [
             "person_hub:7631"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -9015,7 +9015,7 @@
           "source_observation_refs": [
             "person_hub:7627"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -9160,7 +9160,7 @@
           "source_observation_refs": [
             "person_hub:7822"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -9305,7 +9305,7 @@
           "source_observation_refs": [
             "person_hub:7563"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -9450,7 +9450,7 @@
           "source_observation_refs": [
             "person_hub:7564"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -9595,7 +9595,7 @@
           "source_observation_refs": [
             "person_hub:6267"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -9740,7 +9740,7 @@
           "source_observation_refs": [
             "person_hub:6272"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -9885,7 +9885,7 @@
           "source_observation_refs": [
             "person_hub:7793"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -10030,7 +10030,7 @@
           "source_observation_refs": [
             "person_hub:7577"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -10175,7 +10175,7 @@
           "source_observation_refs": [
             "person_hub:5272"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -10320,7 +10320,7 @@
           "source_observation_refs": [
             "person_hub:7833"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -10465,7 +10465,7 @@
           "source_observation_refs": [
             "person_hub:5282"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -10610,7 +10610,7 @@
           "source_observation_refs": [
             "person_hub:7568"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -10755,7 +10755,7 @@
           "source_observation_refs": [
             "person_hub:5279"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -10900,7 +10900,7 @@
           "source_observation_refs": [
             "person_hub:7742"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -11045,7 +11045,7 @@
           "source_observation_refs": [
             "person_hub:5256"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -11190,7 +11190,7 @@
           "source_observation_refs": [
             "person_hub:5292"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -11335,7 +11335,7 @@
           "source_observation_refs": [
             "person_hub:7617"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -11480,7 +11480,7 @@
           "source_observation_refs": [
             "person_hub:7502"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -11625,7 +11625,7 @@
           "source_observation_refs": [
             "person_hub:7895"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -11770,7 +11770,7 @@
           "source_observation_refs": [
             "person_hub:7510"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -11915,7 +11915,7 @@
           "source_observation_refs": [
             "person_hub:7799"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -12060,7 +12060,7 @@
           "source_observation_refs": [
             "person_hub:5275"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -12205,7 +12205,7 @@
           "source_observation_refs": [
             "person_hub:7802"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -12350,7 +12350,7 @@
           "source_observation_refs": [
             "person_hub:5285"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -12495,7 +12495,7 @@
           "source_observation_refs": [
             "person_hub:5229"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -12640,7 +12640,7 @@
           "source_observation_refs": [
             "person_hub:7785"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -12785,7 +12785,7 @@
           "source_observation_refs": [
             "person_hub:7561"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -12930,7 +12930,7 @@
           "source_observation_refs": [
             "person_hub:7745"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -13075,7 +13075,7 @@
           "source_observation_refs": [
             "person_hub:7887"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -13220,7 +13220,7 @@
           "source_observation_refs": [
             "person_hub:5262"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -13365,7 +13365,7 @@
           "source_observation_refs": [
             "person_hub:5259"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -13510,7 +13510,7 @@
           "source_observation_refs": [
             "person_hub:422"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -13655,7 +13655,7 @@
           "source_observation_refs": [
             "person_hub:395"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -13800,7 +13800,7 @@
           "source_observation_refs": [
             "person_hub:7893"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -13945,7 +13945,7 @@
           "source_observation_refs": [
             "person_hub:5265"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -14090,7 +14090,7 @@
           "source_observation_refs": [
             "person_hub:7639"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -14235,7 +14235,7 @@
           "source_observation_refs": [
             "person_hub:401"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -14380,7 +14380,7 @@
           "source_observation_refs": [
             "person_hub:5274"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -14525,7 +14525,7 @@
           "source_observation_refs": [
             "person_hub:5026"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -14670,7 +14670,7 @@
           "source_observation_refs": [
             "person_hub:5270"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -14815,7 +14815,7 @@
           "source_observation_refs": [
             "person_hub:418"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -14960,7 +14960,7 @@
           "source_observation_refs": [
             "person_hub:7637"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -15105,7 +15105,7 @@
           "source_observation_refs": [
             "person_hub:7623"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -15250,7 +15250,7 @@
           "source_observation_refs": [
             "person_hub:6270"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -15395,7 +15395,7 @@
           "source_observation_refs": [
             "person_hub:7831"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -15540,7 +15540,7 @@
           "source_observation_refs": [
             "person_hub:5283"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -15685,7 +15685,7 @@
           "source_observation_refs": [
             "person_hub:5273"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -15830,7 +15830,7 @@
           "source_observation_refs": [
             "person_hub:7569"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -15975,7 +15975,7 @@
           "source_observation_refs": [
             "person_hub:436"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -16120,7 +16120,7 @@
           "source_observation_refs": [
             "person_hub:5280"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -16265,7 +16265,7 @@
           "source_observation_refs": [
             "person_hub:6271"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -16410,7 +16410,7 @@
           "source_observation_refs": [
             "person_hub:7821"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -16555,7 +16555,7 @@
           "source_observation_refs": [
             "person_hub:7"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -16700,7 +16700,7 @@
           "source_observation_refs": [
             "person_hub:6268"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -16845,7 +16845,7 @@
           "source_observation_refs": [
             "person_hub:7819"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -16990,7 +16990,7 @@
           "source_observation_refs": [
             "person_hub:5244"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -17135,7 +17135,7 @@
           "source_observation_refs": [
             "person_hub:5269"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -17280,7 +17280,7 @@
           "source_observation_refs": [
             "person_hub:402"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -17425,7 +17425,7 @@
           "source_observation_refs": [
             "person_hub:412"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -17570,7 +17570,7 @@
           "source_observation_refs": [
             "person_hub:5266"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -17715,7 +17715,7 @@
           "source_observation_refs": [
             "person_hub:7264"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -17860,7 +17860,7 @@
           "source_observation_refs": [
             "person_hub:5281"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -18005,7 +18005,7 @@
           "source_observation_refs": [
             "person_hub:406"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -18150,7 +18150,7 @@
           "source_observation_refs": [
             "person_hub:25"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -18295,7 +18295,7 @@
           "source_observation_refs": [
             "person_hub:7803"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -18440,7 +18440,7 @@
           "source_observation_refs": [
             "person_hub:7816"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -18585,7 +18585,7 @@
           "source_observation_refs": [
             "person_hub:7509"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -18730,7 +18730,7 @@
           "source_observation_refs": [
             "person_hub:7571"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -18875,7 +18875,7 @@
           "source_observation_refs": [
             "person_hub:16"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -19020,7 +19020,7 @@
           "source_observation_refs": [
             "person_hub:7897"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -19165,7 +19165,7 @@
           "source_observation_refs": [
             "person_hub:7748"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -19310,7 +19310,7 @@
           "source_observation_refs": [
             "person_hub:7749"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -19455,7 +19455,7 @@
           "source_observation_refs": [
             "person_hub:7832"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -19600,7 +19600,7 @@
           "source_observation_refs": [
             "person_hub:386"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -19745,7 +19745,7 @@
           "source_observation_refs": [
             "person_hub:391"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -19890,7 +19890,7 @@
           "source_observation_refs": [
             "person_hub:7901"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -20035,7 +20035,7 @@
           "source_observation_refs": [
             "person_hub:7741"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -20180,7 +20180,7 @@
           "source_observation_refs": [
             "person_hub:5290"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -20325,7 +20325,7 @@
           "source_observation_refs": [
             "person_hub:7516"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -20470,7 +20470,7 @@
           "source_observation_refs": [
             "person_hub:385"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -20615,7 +20615,7 @@
           "source_observation_refs": [
             "person_hub:7794"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -20760,7 +20760,7 @@
           "source_observation_refs": [
             "person_hub:7805"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -20905,7 +20905,7 @@
           "source_observation_refs": [
             "person_hub:7865"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -21050,7 +21050,7 @@
           "source_observation_refs": [
             "person_hub:5263"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -21195,7 +21195,7 @@
           "source_observation_refs": [
             "person_hub:7628"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -21340,7 +21340,7 @@
           "source_observation_refs": [
             "person_hub:397"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -21485,7 +21485,7 @@
           "source_observation_refs": [
             "person_hub:5276"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -21630,7 +21630,7 @@
           "source_observation_refs": [
             "person_hub:5417"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -21775,7 +21775,7 @@
           "source_observation_refs": [
             "person_hub:5291"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -21920,7 +21920,7 @@
           "source_observation_refs": [
             "person_hub:7820"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -22065,7 +22065,7 @@
           "source_observation_refs": [
             "person_hub:7814"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -22210,7 +22210,7 @@
           "source_observation_refs": [
             "person_hub:417"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -22355,7 +22355,7 @@
           "source_observation_refs": [
             "person_hub:399"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -22500,7 +22500,7 @@
           "source_observation_refs": [
             "person_hub:7818"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -22645,7 +22645,7 @@
           "source_observation_refs": [
             "person_hub:431"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -22790,7 +22790,7 @@
           "source_observation_refs": [
             "person_hub:7562"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -22935,7 +22935,7 @@
           "source_observation_refs": [
             "person_hub:429"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -23080,7 +23080,7 @@
           "source_observation_refs": [
             "person_hub:5264"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -23225,7 +23225,7 @@
           "source_observation_refs": [
             "person_hub:5911"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -23370,7 +23370,7 @@
           "source_observation_refs": [
             "person_hub:7807"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -23515,7 +23515,7 @@
           "source_observation_refs": [
             "person_hub:7743"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -23660,7 +23660,7 @@
           "source_observation_refs": [
             "person_hub:7634"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -23805,7 +23805,7 @@
           "source_observation_refs": [
             "person_hub:7570"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -23950,7 +23950,7 @@
           "source_observation_refs": [
             "person_hub:7641"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -24095,7 +24095,7 @@
           "source_observation_refs": [
             "person_hub:428"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -24240,7 +24240,7 @@
           "source_observation_refs": [
             "person_hub:415"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -24385,7 +24385,7 @@
           "source_observation_refs": [
             "person_hub:35"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -24530,7 +24530,7 @@
           "source_observation_refs": [
             "person_hub:7113"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -24675,7 +24675,7 @@
           "source_observation_refs": [
             "person_hub:5278"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -24820,7 +24820,7 @@
           "source_observation_refs": [
             "person_hub:6269"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -24965,7 +24965,7 @@
           "source_observation_refs": [
             "person_hub:7829"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -25110,7 +25110,7 @@
           "source_observation_refs": [
             "person_hub:435"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -25255,7 +25255,7 @@
           "source_observation_refs": [
             "person_hub:5293"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -25400,7 +25400,7 @@
           "source_observation_refs": [
             "person_hub:5227"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -25545,7 +25545,7 @@
           "source_observation_refs": [
             "person_hub:5261"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -25690,7 +25690,7 @@
           "source_observation_refs": [
             "person_hub:24"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -25835,7 +25835,7 @@
           "source_observation_refs": [
             "person_hub:7817"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -25980,7 +25980,7 @@
           "source_observation_refs": [
             "person_hub:39"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -26125,7 +26125,7 @@
           "source_observation_refs": [
             "person_hub:7798"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -26270,7 +26270,7 @@
           "source_observation_refs": [
             "person_hub:7642"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -26415,7 +26415,7 @@
           "source_observation_refs": [
             "person_hub:5389"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -26560,7 +26560,7 @@
           "source_observation_refs": [
             "person_hub:426"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -26705,7 +26705,7 @@
           "source_observation_refs": [
             "person_hub:7565"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -26850,7 +26850,7 @@
           "source_observation_refs": [
             "person_hub:26"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -26995,7 +26995,7 @@
           "source_observation_refs": [
             "person_hub:5271"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -27140,7 +27140,7 @@
           "source_observation_refs": [
             "person_hub:7900"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -27285,7 +27285,7 @@
           "source_observation_refs": [
             "person_hub:432"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -27430,7 +27430,7 @@
           "source_observation_refs": [
             "person_hub:7808"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -27575,7 +27575,7 @@
           "source_observation_refs": [
             "person_hub:31"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -27720,7 +27720,7 @@
           "source_observation_refs": [
             "person_hub:7630"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -27865,7 +27865,7 @@
           "source_observation_refs": [
             "person_hub:7714"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -28010,7 +28010,7 @@
           "source_observation_refs": [
             "person_hub:7827"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -28155,7 +28155,7 @@
           "source_observation_refs": [
             "person_hub:7640"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -28300,7 +28300,7 @@
           "source_observation_refs": [
             "person_hub:7604"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -28445,7 +28445,7 @@
           "source_observation_refs": [
             "person_hub:7746"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -28590,7 +28590,7 @@
           "source_observation_refs": [
             "person_hub:5260"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -28735,7 +28735,7 @@
           "source_observation_refs": [
             "person_hub:57"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -28880,7 +28880,7 @@
           "source_observation_refs": [
             "person_hub:7633"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -29025,7 +29025,7 @@
           "source_observation_refs": [
             "person_hub:6274"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -29170,7 +29170,7 @@
           "source_observation_refs": [
             "person_hub:5267"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -29315,7 +29315,7 @@
           "source_observation_refs": [
             "person_hub:7744"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -29460,7 +29460,7 @@
           "source_observation_refs": [
             "person_hub:7586"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -29605,7 +29605,7 @@
           "source_observation_refs": [
             "person_hub:7812"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -29750,7 +29750,7 @@
           "source_observation_refs": [
             "person_hub:7824"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -29895,7 +29895,7 @@
           "source_observation_refs": [
             "person_hub:5376"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -30040,7 +30040,7 @@
           "source_observation_refs": [
             "person_hub:7796"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -30185,7 +30185,7 @@
           "source_observation_refs": [
             "person_hub:7826"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -30330,7 +30330,7 @@
           "source_observation_refs": [
             "person_hub:7898"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -30475,7 +30475,7 @@
           "source_observation_refs": [
             "person_hub:7804"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -30620,7 +30620,7 @@
           "source_observation_refs": [
             "person_hub:7815"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -30765,7 +30765,7 @@
           "source_observation_refs": [
             "person_hub:22"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -30910,7 +30910,7 @@
           "source_observation_refs": [
             "person_hub:7896"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -31055,7 +31055,7 @@
           "source_observation_refs": [
             "person_hub:5289"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -31200,7 +31200,7 @@
           "source_observation_refs": [
             "person_hub:12"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -31345,7 +31345,7 @@
           "source_observation_refs": [
             "person_hub:37"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -31490,7 +31490,7 @@
           "source_observation_refs": [
             "person_hub:7567"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -31635,7 +31635,7 @@
           "source_observation_refs": [
             "person_hub:5953"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -31780,7 +31780,7 @@
           "source_observation_refs": [
             "person_hub:7867"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -31925,7 +31925,7 @@
           "source_observation_refs": [
             "person_hub:393"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -32070,7 +32070,7 @@
           "source_observation_refs": [
             "person_hub:405"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -32215,7 +32215,7 @@
           "source_observation_refs": [
             "person_hub:404"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -32360,7 +32360,7 @@
           "source_observation_refs": [
             "person_hub:6273"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -32505,7 +32505,7 @@
           "source_observation_refs": [
             "person_hub:7813"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -32650,7 +32650,7 @@
           "source_observation_refs": [
             "person_hub:5268"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -32795,7 +32795,7 @@
           "source_observation_refs": [
             "person_hub:424"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -32940,7 +32940,7 @@
           "source_observation_refs": [
             "person_hub:7899"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -33085,7 +33085,7 @@
           "source_observation_refs": [
             "person_hub:5029"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -33230,7 +33230,7 @@
           "source_observation_refs": [
             "person_hub:7622"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -33375,7 +33375,7 @@
           "source_observation_refs": [
             "person_hub:7811"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -33520,7 +33520,7 @@
           "source_observation_refs": [
             "person_hub:34"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -33665,7 +33665,7 @@
           "source_observation_refs": [
             "person_hub:7112"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -33810,7 +33810,7 @@
           "source_observation_refs": [
             "person_hub:5390"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -33955,7 +33955,7 @@
           "source_observation_refs": [
             "person_hub:7894"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -34100,7 +34100,7 @@
           "source_observation_refs": [
             "person_hub:27"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -34245,7 +34245,7 @@
           "source_observation_refs": [
             "person_hub:15"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -34390,7 +34390,7 @@
           "source_observation_refs": [
             "person_hub:7541"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -34535,7 +34535,7 @@
           "source_observation_refs": [
             "person_hub:7866"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -34680,7 +34680,7 @@
           "source_observation_refs": [
             "person_hub:5287"
           ],
-          "observed_at": "2026-11-13T14:29:36.445Z",
+          "observed_at": "2026-11-21T15:26:17.259Z",
           "identity_basis": "source_namespace_scope_native_key"
         }
       },
@@ -50781,7 +50781,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 6,
+          "count": 5,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -50854,7 +50854,7 @@
       "href": "/agencies/board-of-standards-and-appeals/",
       "entity_ref": "agency:id:board-of-standards-and-appeals",
       "relation_state": "published",
-      "detail": "2 linked record categories",
+      "detail": "1 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -50873,12 +50873,12 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 3,
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51154,7 +51154,7 @@
         },
         "rules": {
           "status": "matched",
-          "count": 2,
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51195,7 +51195,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 3,
+          "count": 4,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -51379,7 +51379,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 17,
+          "count": 16,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -51609,7 +51609,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 7,
+          "count": 11,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -51931,7 +51931,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 3,
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -52023,7 +52023,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 13,
+          "count": 11,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -52120,7 +52120,7 @@
         },
         "rules": {
           "status": "matched",
-          "count": 2,
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -52258,7 +52258,7 @@
         },
         "rules": {
           "status": "matched",
-          "count": 2,
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -52418,7 +52418,7 @@
       "href": "/agencies/economic-development-corporation/",
       "entity_ref": "agency:id:economic-development-corporation",
       "relation_state": "published",
-      "detail": "1 linked record categories",
+      "detail": "0 linked record categories",
       "institution": "agency",
       "institution_label": "Nonprofit organization",
       "institution_context": "A nonprofit corporation doing economic development work in the city. Its own board materials discuss obligations that apply to local authorities.",
@@ -52426,8 +52426,8 @@
       "search_text": "Economic Development Corporation Economic Development Corporation economic-development-corporation NYCEDC EDC Nonprofit organization. A nonprofit corporation doing economic development work in the city. Its own board materials discuss obligations that apply to local authorities.",
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -52510,7 +52510,7 @@
       "href": "/agencies/equal-employment-practices-commission/",
       "entity_ref": "agency:id:equal-employment-practices-commission",
       "relation_state": "published",
-      "detail": "2 linked record categories",
+      "detail": "1 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -52528,8 +52528,8 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -52648,7 +52648,7 @@
       "href": "/agencies/human-resources-administration/",
       "entity_ref": "agency:id:human-resources-administration",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -52666,8 +52666,8 @@
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -52878,7 +52878,7 @@
       "href": "/agencies/mayors-office-of-contract-services/",
       "entity_ref": "agency:id:mayors-office-of-contract-services",
       "relation_state": "published",
-      "detail": "4 linked record categories",
+      "detail": "3 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -52901,8 +52901,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -53219,7 +53219,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 4,
+          "count": 3,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -53265,7 +53265,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 2,
+          "count": 3,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -53311,7 +53311,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 13,
+          "count": 14,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -53393,7 +53393,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 10,
+          "count": 7,
           "method": "checkbook_nycha_contracts_adapter_v1"
         },
         "vendors": {
@@ -53403,7 +53403,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 2,
+          "count": 3,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -53522,7 +53522,7 @@
       "href": "/agencies/new-york-city-police-pension-fund/",
       "entity_ref": "agency:id:new-york-city-police-pension-fund",
       "relation_state": "published",
-      "detail": "2 linked record categories",
+      "detail": "1 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -53530,8 +53530,8 @@
       "search_text": "New York City Police Pension Fund New York City Police Pension Fund new-york-city-police-pension-fund PPF",
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -53715,7 +53715,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 6,
+          "count": 4,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -53982,7 +53982,7 @@
       "href": "/agencies/information-technology-and-telecommunications/",
       "entity_ref": "agency:id:information-technology-and-telecommunications",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -54005,8 +54005,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -54282,7 +54282,7 @@
         },
         "rules": {
           "status": "matched",
-          "count": 2,
+          "count": 1,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -54635,7 +54635,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 1,
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -59637,1443 +59637,1443 @@
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000052",
-      "label": "ALCIVAR,BREIANNA C.",
-      "href": "/notices/1000052",
+      "id": "hire:1001725",
+      "label": "AHMED,SAMEER .",
+      "href": "/notices/1001725",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "OFFICE OF MANAGEMENT & BUDGET",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
       "institution_context": "City Record staffing record",
-      "agency": "OFFICE OF MANAGEMENT & BUDGET",
-      "date": "08/16/2026",
-      "source_record_id": "1000052",
-      "title_code": "06088",
-      "search_text": "ALCIVAR,BREIANNA C. notice-only hire appointment OFFICE OF MANAGEMENT & BUDGET 06088"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000050",
-      "label": "ALI,AMIN H.",
-      "href": "/notices/1000050",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
-      "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000050",
-      "title_code": "70206",
-      "search_text": "ALI,AMIN H. notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000219",
-      "label": "ALI,JAMAL .",
-      "href": "/notices/1000219",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPARTMENT OF CORRECTION",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPARTMENT OF CORRECTION",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
       "date": "08/09/2026",
-      "source_record_id": "1000219",
-      "title_code": "91212",
-      "search_text": "ALI,JAMAL . notice-only hire appointment DEPARTMENT OF CORRECTION 91212"
+      "source_record_id": "1001725",
+      "title_code": "56058",
+      "search_text": "AHMED,SAMEER . notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 56058"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000176",
-      "label": "ALI,SHAHANAG .",
-      "href": "/notices/1000176",
+      "id": "hire:1001826",
+      "label": "AHN,RACHEL S.",
+      "href": "/notices/1001826",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
+      "institution_label": "DISTRICT ATTORNEY-MANHATTAN",
       "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000176",
-      "title_code": "10104",
-      "search_text": "ALI,SHAHANAG . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000228",
-      "label": "ALLEN,ARMANI O.",
-      "href": "/notices/1000228",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "NYC DEPT OF VETERANS' SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "NYC DEPT OF VETERANS' SERVICES",
+      "agency": "DISTRICT ATTORNEY-MANHATTAN",
       "date": "08/09/2026",
-      "source_record_id": "1000228",
-      "title_code": "70810",
-      "search_text": "ALLEN,ARMANI O. notice-only hire appointment NYC DEPT OF VETERANS' SERVICES 70810"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000251",
-      "label": "ALMEIDA,ANDREW .",
-      "href": "/notices/1000251",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000251",
-      "title_code": "10104",
-      "search_text": "ALMEIDA,ANDREW . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000081",
-      "label": "AMBROSSI,BIANCA P.",
-      "href": "/notices/1000081",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000081",
-      "title_code": "12626",
-      "search_text": "AMBROSSI,BIANCA P. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 12626"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000161",
-      "label": "ANTHONY,AMANI .",
-      "href": "/notices/1000161",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPARTMENT OF CORRECTION",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPARTMENT OF CORRECTION",
-      "date": "08/16/2026",
-      "source_record_id": "1000161",
+      "source_record_id": "1001826",
       "title_code": "56057",
-      "search_text": "ANTHONY,AMANI . notice-only hire appointment DEPARTMENT OF CORRECTION 56057"
+      "search_text": "AHN,RACHEL S. notice-only hire appointment DISTRICT ATTORNEY-MANHATTAN 56057"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000039",
-      "label": "ARMSTRONG,ANITA M.",
-      "href": "/notices/1000039",
+      "id": "hire:1001854",
+      "label": "AKHINUR,URME .",
+      "href": "/notices/1001854",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "TAX COMMISSION",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
       "institution_context": "City Record staffing record",
-      "agency": "TAX COMMISSION",
-      "date": "08/16/2026",
-      "source_record_id": "1000039",
-      "title_code": "30087",
-      "search_text": "ARMSTRONG,ANITA M. notice-only hire appointment TAX COMMISSION 30087"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000051",
-      "label": "ASLITDINOV,AHMADJON .",
-      "href": "/notices/1000051",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
-      "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000051",
-      "title_code": "70206",
-      "search_text": "ASLITDINOV,AHMADJON . notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000080",
-      "label": "ASSA,JACOB .",
-      "href": "/notices/1000080",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPARTMENT OF CORRECTION",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPARTMENT OF CORRECTION",
-      "date": "08/16/2026",
-      "source_record_id": "1000080",
-      "title_code": "31142",
-      "search_text": "ASSA,JACOB . notice-only hire appointment DEPARTMENT OF CORRECTION 31142"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000086",
-      "label": "BEGUM,FATEMA .",
-      "href": "/notices/1000086",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000086",
-      "title_code": "10104",
-      "search_text": "BEGUM,FATEMA . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000234",
-      "label": "BELLEJAMBE,SHARICE R.",
-      "href": "/notices/1000234",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPARTMENT OF CORRECTION",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPARTMENT OF CORRECTION",
-      "date": "05/17/2026",
-      "source_record_id": "1000234",
-      "title_code": "51274",
-      "search_text": "BELLEJAMBE,SHARICE R. notice-only hire appointment DEPARTMENT OF CORRECTION 51274"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000252",
-      "label": "BELTRE,CARMEN G.",
-      "href": "/notices/1000252",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
       "date": "08/09/2026",
-      "source_record_id": "1000252",
+      "source_record_id": "1001854",
+      "title_code": "60888",
+      "search_text": "AKHINUR,URME . notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 60888"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001823",
+      "label": "ALFONSO HERRERA,GLORIA .",
+      "href": "/notices/1001823",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "date": "08/09/2026",
+      "source_record_id": "1001823",
       "title_code": "56058",
-      "search_text": "BELTRE,CARMEN G. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 56058"
+      "search_text": "ALFONSO HERRERA,GLORIA . notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 56058"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000061",
-      "label": "BLACK,MARCUS M.",
-      "href": "/notices/1000061",
+      "id": "hire:1001970",
+      "label": "ALVARADO,CHRISTIA .",
+      "href": "/notices/1001970",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
       "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000061",
-      "title_code": "70206",
-      "search_text": "BLACK,MARCUS M. notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000150",
-      "label": "BONNY,JOHANA C.",
-      "href": "/notices/1000150",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPT. OF HOMELESS SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPT. OF HOMELESS SERVICES",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
       "date": "08/09/2026",
-      "source_record_id": "1000150",
-      "title_code": "1002A",
-      "search_text": "BONNY,JOHANA C. notice-only hire appointment DEPT. OF HOMELESS SERVICES 1002A"
+      "source_record_id": "1001970",
+      "title_code": "31315",
+      "search_text": "ALVARADO,CHRISTIA . notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 31315"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000046",
-      "label": "BRICKMAN,LILY C.",
-      "href": "/notices/1000046",
+      "id": "hire:1001771",
+      "label": "ARMSTRONG,WILLIAM L.",
+      "href": "/notices/1001771",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "LAW DEPARTMENT",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
       "institution_context": "City Record staffing record",
-      "agency": "LAW DEPARTMENT",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
       "date": "08/09/2026",
-      "source_record_id": "1000046",
-      "title_code": "30112",
-      "search_text": "BRICKMAN,LILY C. notice-only hire appointment LAW DEPARTMENT 30112"
+      "source_record_id": "1001771",
+      "title_code": "21915",
+      "search_text": "ARMSTRONG,WILLIAM L. notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 21915"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000063",
-      "label": "BRITO,ADRIANA .",
-      "href": "/notices/1000063",
+      "id": "hire:1001721",
+      "label": "AYAD,SAMUEL W.",
+      "href": "/notices/1001721",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
       "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000063",
-      "title_code": "70206",
-      "search_text": "BRITO,ADRIANA . notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000078",
-      "label": "BROWN,TACHEYAN C.",
-      "href": "/notices/1000078",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPARTMENT OF CORRECTION",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPARTMENT OF CORRECTION",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
       "date": "08/09/2026",
-      "source_record_id": "1000078",
-      "title_code": "81801",
-      "search_text": "BROWN,TACHEYAN C. notice-only hire appointment DEPARTMENT OF CORRECTION 81801"
+      "source_record_id": "1001721",
+      "title_code": "92510",
+      "search_text": "AYAD,SAMUEL W. notice-only hire appointment DEPARTMENT OF TRANSPORTATION 92510"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000102",
-      "label": "BRUCE,ALICIA R.",
-      "href": "/notices/1000102",
+      "id": "hire:1002019",
+      "label": "BALLOU,KATHERIN .",
+      "href": "/notices/1002019",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "NYC DEPT OF VETERANS' SERVICES",
+      "institution_label": "BOARD OF ELECTION",
       "institution_context": "City Record staffing record",
-      "agency": "NYC DEPT OF VETERANS' SERVICES",
+      "agency": "BOARD OF ELECTION",
+      "date": "08/30/2026",
+      "source_record_id": "1002019",
+      "title_code": "94367",
+      "search_text": "BALLOU,KATHERIN . notice-only hire appointment BOARD OF ELECTION 94367"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001856",
+      "label": "BARKIN,PAULINE R.",
+      "href": "/notices/1001856",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUILDINGS",
       "date": "08/09/2026",
-      "source_record_id": "1000102",
-      "title_code": "95844",
-      "search_text": "BRUCE,ALICIA R. notice-only hire appointment NYC DEPT OF VETERANS' SERVICES 95844"
+      "source_record_id": "1001856",
+      "title_code": "21215",
+      "search_text": "BARKIN,PAULINE R. notice-only hire appointment DEPARTMENT OF BUILDINGS 21215"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000089",
-      "label": "CADLETT-HAWKINS,KATINA N.",
-      "href": "/notices/1000089",
+      "id": "hire:1001949",
+      "label": "BISH,DANIEL J.",
+      "href": "/notices/1001949",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "DEPARTMENT OF CORRECTION",
+      "institution_label": "DEPT. OF DESIGN & CONSTRUCTION",
       "institution_context": "City Record staffing record",
-      "agency": "DEPARTMENT OF CORRECTION",
+      "agency": "DEPT. OF DESIGN & CONSTRUCTION",
+      "date": "08/16/2026",
+      "source_record_id": "1001949",
+      "title_code": "22425",
+      "search_text": "BISH,DANIEL J. notice-only hire appointment DEPT. OF DESIGN & CONSTRUCTION 22425"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001772",
+      "label": "BONO,ETHAN M.",
+      "href": "/notices/1001772",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
       "date": "08/09/2026",
-      "source_record_id": "1000089",
-      "title_code": "31142",
-      "search_text": "CADLETT-HAWKINS,KATINA N. notice-only hire appointment DEPARTMENT OF CORRECTION 31142"
+      "source_record_id": "1001772",
+      "title_code": "81361",
+      "search_text": "BONO,ETHAN M. notice-only hire appointment DEPT OF PARKS & RECREATION 81361"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000064",
-      "label": "CHANEZ-MORALES,VANESSA .",
-      "href": "/notices/1000064",
+      "id": "hire:1001920",
+      "label": "BROWN,NAJEIA D.",
+      "href": "/notices/1001920",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
       "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000064",
-      "title_code": "70206",
-      "search_text": "CHANEZ-MORALES,VANESSA . notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000195",
-      "label": "CHEN,DENISE .",
-      "href": "/notices/1000195",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000195",
-      "title_code": "10104",
-      "search_text": "CHEN,DENISE . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000181",
-      "label": "CHOEDON,TENZIN .",
-      "href": "/notices/1000181",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPARTMENT OF CORRECTION",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPARTMENT OF CORRECTION",
-      "date": "08/16/2026",
-      "source_record_id": "1000181",
-      "title_code": "30086",
-      "search_text": "CHOEDON,TENZIN . notice-only hire appointment DEPARTMENT OF CORRECTION 30086"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000216",
-      "label": "CHOWDHURY,MOSTAFA A.",
-      "href": "/notices/1000216",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
       "date": "08/09/2026",
-      "source_record_id": "1000216",
-      "title_code": "56314",
-      "search_text": "CHOWDHURY,MOSTAFA A. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 56314"
+      "source_record_id": "1001920",
+      "title_code": "52020",
+      "search_text": "BROWN,NAJEIA D. notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 52020"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000188",
-      "label": "DE FREITAS,AMMA C.",
-      "href": "/notices/1000188",
+      "id": "hire:1001983",
+      "label": "BRYANT,BIANCA J.",
+      "href": "/notices/1001983",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
+      "institution_label": "HOUSING PRESERVATION & DVLPMNT",
       "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency": "HOUSING PRESERVATION & DVLPMNT",
       "date": "08/16/2026",
-      "source_record_id": "1000188",
-      "title_code": "10104",
-      "search_text": "DE FREITAS,AMMA C. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
+      "source_record_id": "1001983",
+      "title_code": "22092",
+      "search_text": "BRYANT,BIANCA J. notice-only hire appointment HOUSING PRESERVATION & DVLPMNT 22092"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000119",
-      "label": "DEBNATH,POPY .",
-      "href": "/notices/1000119",
+      "id": "hire:1001839",
+      "label": "CAMPBELL,SHAUN V.",
+      "href": "/notices/1001839",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
       "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
       "date": "08/16/2026",
-      "source_record_id": "1000119",
-      "title_code": "10104",
-      "search_text": "DEBNATH,POPY . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
+      "source_record_id": "1001839",
+      "title_code": "90642",
+      "search_text": "CAMPBELL,SHAUN V. notice-only hire appointment DEPARTMENT OF TRANSPORTATION 90642"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000200",
-      "label": "DEY,SATYAGIT .",
-      "href": "/notices/1000200",
+      "id": "hire:1001883",
+      "label": "CHOW,MINDY Y.",
+      "href": "/notices/1001883",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
       "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000200",
-      "title_code": "10104",
-      "search_text": "DEY,SATYAGIT . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000035",
-      "label": "DIALLO,ALSSENY .",
-      "href": "/notices/1000035",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
-      "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000035",
-      "title_code": "70206",
-      "search_text": "DIALLO,ALSSENY . notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000196",
-      "label": "DIAZ,DANIEL R.",
-      "href": "/notices/1000196",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPARTMENT OF CORRECTION",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPARTMENT OF CORRECTION",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
       "date": "08/09/2026",
-      "source_record_id": "1000196",
-      "title_code": "95041",
-      "search_text": "DIAZ,DANIEL R. notice-only hire appointment DEPARTMENT OF CORRECTION 95041"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000146",
-      "label": "DIKIRIRIE,MERCY E.",
-      "href": "/notices/1000146",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000146",
-      "title_code": "10104",
-      "search_text": "DIKIRIRIE,MERCY E. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000243",
-      "label": "FARUQ,TASLIMA .",
-      "href": "/notices/1000243",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000243",
-      "title_code": "56314",
-      "search_text": "FARUQ,TASLIMA . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 56314"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000167",
-      "label": "FATIMA,SABRINA .",
-      "href": "/notices/1000167",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000167",
-      "title_code": "10104",
-      "search_text": "FATIMA,SABRINA . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000066",
-      "label": "FELDMAN,IRENE .",
-      "href": "/notices/1000066",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPT. OF HOMELESS SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPT. OF HOMELESS SERVICES",
-      "date": "08/09/2026",
-      "source_record_id": "1000066",
-      "title_code": "56058",
-      "search_text": "FELDMAN,IRENE . notice-only hire appointment DEPT. OF HOMELESS SERVICES 56058"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000236",
-      "label": "FIALHO,SHEILA M.",
-      "href": "/notices/1000236",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPT. OF HOMELESS SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPT. OF HOMELESS SERVICES",
-      "date": "08/09/2026",
-      "source_record_id": "1000236",
-      "title_code": "1009A",
-      "search_text": "FIALHO,SHEILA M. notice-only hire appointment DEPT. OF HOMELESS SERVICES 1009A"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000242",
-      "label": "FLORES,RANDOLF .",
-      "href": "/notices/1000242",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000242",
-      "title_code": "10104",
-      "search_text": "FLORES,RANDOLF . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000165",
-      "label": "GARCIA,MARCEL A.",
-      "href": "/notices/1000165",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000165",
-      "title_code": "10104",
-      "search_text": "GARCIA,MARCEL A. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000028",
-      "label": "GILL-URENA,ALEXANDE .",
-      "href": "/notices/1000028",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
-      "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000028",
-      "title_code": "70206",
-      "search_text": "GILL-URENA,ALEXANDE . notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000138",
-      "label": "GILL,NOEL C.",
-      "href": "/notices/1000138",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000138",
-      "title_code": "10104",
-      "search_text": "GILL,NOEL C. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000227",
-      "label": "HARRIS,TYISHA A.",
-      "href": "/notices/1000227",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000227",
-      "title_code": "10104",
-      "search_text": "HARRIS,TYISHA A. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000168",
-      "label": "HASAN,AFZAL .",
-      "href": "/notices/1000168",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000168",
-      "title_code": "56314",
-      "search_text": "HASAN,AFZAL . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 56314"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000090",
-      "label": "HOHENKIRK,VENISE .",
-      "href": "/notices/1000090",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000090",
-      "title_code": "10104",
-      "search_text": "HOHENKIRK,VENISE . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000091",
-      "label": "JORDAN,ASHANTI D.",
-      "href": "/notices/1000091",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000091",
-      "title_code": "10104",
-      "search_text": "JORDAN,ASHANTI D. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000225",
-      "label": "KENNEDY,CARLENE Y.",
-      "href": "/notices/1000225",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000225",
-      "title_code": "50910",
-      "search_text": "KENNEDY,CARLENE Y. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 50910"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000179",
-      "label": "KHADU,STEPHANI K.",
-      "href": "/notices/1000179",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "ADMIN FOR CHILDREN'S SVCS",
-      "institution_context": "City Record staffing record",
-      "agency": "ADMIN FOR CHILDREN'S SVCS",
-      "date": "08/09/2026",
-      "source_record_id": "1000179",
-      "title_code": "70810",
-      "search_text": "KHADU,STEPHANI K. notice-only hire appointment ADMIN FOR CHILDREN'S SVCS 70810"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000079",
-      "label": "LACAYO BONILLA,GINA L.",
-      "href": "/notices/1000079",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "ADMIN FOR CHILDREN'S SVCS",
-      "institution_context": "City Record staffing record",
-      "agency": "ADMIN FOR CHILDREN'S SVCS",
-      "date": "08/09/2026",
-      "source_record_id": "1000079",
-      "title_code": "1001B",
-      "search_text": "LACAYO BONILLA,GINA L. notice-only hire appointment ADMIN FOR CHILDREN'S SVCS 1001B"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000025",
-      "label": "LANDOLFI,ANALIESE E.",
-      "href": "/notices/1000025",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
-      "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000025",
-      "title_code": "70206",
-      "search_text": "LANDOLFI,ANALIESE E. notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000141",
-      "label": "LINDER,JUANITA R.",
-      "href": "/notices/1000141",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000141",
-      "title_code": "10251",
-      "search_text": "LINDER,JUANITA R. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10251"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000266",
-      "label": "MABUS,ANNE G.",
-      "href": "/notices/1000266",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000266",
-      "title_code": "95689",
-      "search_text": "MABUS,ANNE G. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 95689"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000101",
-      "label": "MANUEL-ANDINO,DANIELA F.",
-      "href": "/notices/1000101",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPT. OF HOMELESS SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPT. OF HOMELESS SERVICES",
-      "date": "05/10/2026",
-      "source_record_id": "1000101",
-      "title_code": "56058",
-      "search_text": "MANUEL-ANDINO,DANIELA F. notice-only hire appointment DEPT. OF HOMELESS SERVICES 56058"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000069",
-      "label": "MARTIN,ANTIGUA R.",
-      "href": "/notices/1000069",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "ADMIN FOR CHILDREN'S SVCS",
-      "institution_context": "City Record staffing record",
-      "agency": "ADMIN FOR CHILDREN'S SVCS",
-      "date": "08/16/2026",
-      "source_record_id": "1000069",
-      "title_code": "52416",
-      "search_text": "MARTIN,ANTIGUA R. notice-only hire appointment ADMIN FOR CHILDREN'S SVCS 52416"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000030",
-      "label": "MATHEWS,TALIA S.",
-      "href": "/notices/1000030",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
-      "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000030",
-      "title_code": "70206",
-      "search_text": "MATHEWS,TALIA S. notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000241",
-      "label": "MAX,MYA .",
-      "href": "/notices/1000241",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000241",
-      "title_code": "10104",
-      "search_text": "MAX,MYA . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000189",
-      "label": "MELENDEZ,ELIAS J.",
-      "href": "/notices/1000189",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000189",
-      "title_code": "10104",
-      "search_text": "MELENDEZ,ELIAS J. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000147",
-      "label": "NIKULINA,VALENTIN .",
-      "href": "/notices/1000147",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "ADMIN FOR CHILDREN'S SVCS",
-      "institution_context": "City Record staffing record",
-      "agency": "ADMIN FOR CHILDREN'S SVCS",
-      "date": "11/30/2025",
-      "source_record_id": "1000147",
-      "title_code": "52110",
-      "search_text": "NIKULINA,VALENTIN . notice-only hire appointment ADMIN FOR CHILDREN'S SVCS 52110"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000132",
-      "label": "NISBETT,ARTHUR S.",
-      "href": "/notices/1000132",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "ADMIN FOR CHILDREN'S SVCS",
-      "institution_context": "City Record staffing record",
-      "agency": "ADMIN FOR CHILDREN'S SVCS",
-      "date": "08/09/2026",
-      "source_record_id": "1000132",
-      "title_code": "70810",
-      "search_text": "NISBETT,ARTHUR S. notice-only hire appointment ADMIN FOR CHILDREN'S SVCS 70810"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000262",
-      "label": "NURSE,JOSEPH W.",
-      "href": "/notices/1000262",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPT. OF HOMELESS SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPT. OF HOMELESS SERVICES",
-      "date": "08/09/2026",
-      "source_record_id": "1000262",
-      "title_code": "70810",
-      "search_text": "NURSE,JOSEPH W. notice-only hire appointment DEPT. OF HOMELESS SERVICES 70810"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000082",
-      "label": "OREBE,OLALEKAN A.",
-      "href": "/notices/1000082",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/18/2026",
-      "source_record_id": "1000082",
-      "title_code": "10104",
-      "search_text": "OREBE,OLALEKAN A. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000191",
-      "label": "OSHIKOYA,TOKUNBO D.",
-      "href": "/notices/1000191",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "02/01/2026",
-      "source_record_id": "1000191",
-      "title_code": "52304",
-      "search_text": "OSHIKOYA,TOKUNBO D. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 52304"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000182",
-      "label": "PARNELL,DEJANIA .",
-      "href": "/notices/1000182",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPT. OF HOMELESS SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPT. OF HOMELESS SERVICES",
-      "date": "08/09/2026",
-      "source_record_id": "1000182",
-      "title_code": "56058",
-      "search_text": "PARNELL,DEJANIA . notice-only hire appointment DEPT. OF HOMELESS SERVICES 56058"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000139",
-      "label": "PAUL,SHEKHAR R.",
-      "href": "/notices/1000139",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000139",
-      "title_code": "10104",
-      "search_text": "PAUL,SHEKHAR R. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000229",
-      "label": "PEDIFORD,GERRI .",
-      "href": "/notices/1000229",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000229",
-      "title_code": "10104",
-      "search_text": "PEDIFORD,GERRI . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000093",
-      "label": "PONDAR,KRISTIAN B.",
-      "href": "/notices/1000093",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "ADMIN FOR CHILDREN'S SVCS",
-      "institution_context": "City Record staffing record",
-      "agency": "ADMIN FOR CHILDREN'S SVCS",
-      "date": "08/09/2026",
-      "source_record_id": "1000093",
+      "source_record_id": "1001883",
       "title_code": "12626",
-      "search_text": "PONDAR,KRISTIAN B. notice-only hire appointment ADMIN FOR CHILDREN'S SVCS 12626"
+      "search_text": "CHOW,MINDY Y. notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 12626"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000123",
-      "label": "RAINFORD,ROXANNE M.",
-      "href": "/notices/1000123",
+      "id": "hire:1001973",
+      "label": "DEOWDHARRIE,OMESH .",
+      "href": "/notices/1001973",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
       "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000123",
-      "title_code": "10104",
-      "search_text": "RAINFORD,ROXANNE M. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000135",
-      "label": "RANI,DIPALI .",
-      "href": "/notices/1000135",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000135",
-      "title_code": "10104",
-      "search_text": "RANI,DIPALI . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000137",
-      "label": "RETANA,WILSON O.",
-      "href": "/notices/1000137",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000137",
-      "title_code": "10104",
-      "search_text": "RETANA,WILSON O. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000199",
-      "label": "ROSARIO,MICHAEL A.",
-      "href": "/notices/1000199",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "DEPT. OF HOMELESS SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "DEPT. OF HOMELESS SERVICES",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
       "date": "08/09/2026",
-      "source_record_id": "1000199",
+      "source_record_id": "1001973",
+      "title_code": "92510",
+      "search_text": "DEOWDHARRIE,OMESH . notice-only hire appointment DEPARTMENT OF TRANSPORTATION 92510"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001950",
+      "label": "DIAZ,JOEL A.",
+      "href": "/notices/1001950",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001950",
+      "title_code": "92510",
+      "search_text": "DIAZ,JOEL A. notice-only hire appointment DEPARTMENT OF TRANSPORTATION 92510"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001936",
+      "label": "DILLON,CLAIRE A.",
+      "href": "/notices/1001936",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DISTRICT ATTORNEY-MANHATTAN",
+      "institution_context": "City Record staffing record",
+      "agency": "DISTRICT ATTORNEY-MANHATTAN",
+      "date": "08/09/2026",
+      "source_record_id": "1001936",
+      "title_code": "56057",
+      "search_text": "DILLON,CLAIRE A. notice-only hire appointment DISTRICT ATTORNEY-MANHATTAN 56057"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001932",
+      "label": "DORCELLY,EMERALD .",
+      "href": "/notices/1001932",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001932",
+      "title_code": "56057",
+      "search_text": "DORCELLY,EMERALD . notice-only hire appointment DEPT OF PARKS & RECREATION 56057"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001748",
+      "label": "DOULIS,PETER .",
+      "href": "/notices/1001748",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001748",
+      "title_code": "92510",
+      "search_text": "DOULIS,PETER . notice-only hire appointment DEPARTMENT OF TRANSPORTATION 92510"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1002022",
+      "label": "ESCOTTO,EDWARD T.",
+      "href": "/notices/1002022",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "BOARD OF ELECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "BOARD OF ELECTION",
+      "date": "08/23/2026",
+      "source_record_id": "1002022",
+      "title_code": "94367",
+      "search_text": "ESCOTTO,EDWARD T. notice-only hire appointment BOARD OF ELECTION 94367"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001834",
+      "label": "FLORES,LILLIAN .",
+      "href": "/notices/1001834",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUILDINGS",
+      "date": "07/26/2026",
+      "source_record_id": "1001834",
+      "title_code": "12626",
+      "search_text": "FLORES,LILLIAN . notice-only hire appointment DEPARTMENT OF BUILDINGS 12626"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001991",
+      "label": "FORTE,EMMANUEL .",
+      "href": "/notices/1001991",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
+      "date": "08/02/2026",
+      "source_record_id": "1001991",
+      "title_code": "10234",
+      "search_text": "FORTE,EMMANUEL . notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 10234"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1002007",
+      "label": "GHITELMAN,AARON N.",
+      "href": "/notices/1002007",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "CAMPAIGN FINANCE BOARD",
+      "institution_context": "City Record staffing record",
+      "agency": "CAMPAIGN FINANCE BOARD",
+      "date": "08/23/2026",
+      "source_record_id": "1002007",
+      "title_code": "0660A",
+      "search_text": "GHITELMAN,AARON N. notice-only hire appointment CAMPAIGN FINANCE BOARD 0660A"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1002016",
+      "label": "GIMM,ALICE .",
+      "href": "/notices/1002016",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "BOARD OF ELECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "BOARD OF ELECTION",
+      "date": "08/23/2026",
+      "source_record_id": "1002016",
+      "title_code": "94367",
+      "search_text": "GIMM,ALICE . notice-only hire appointment BOARD OF ELECTION 94367"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001781",
+      "label": "GONZALEZ,PEDRO R.",
+      "href": "/notices/1001781",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "date": "08/09/2026",
+      "source_record_id": "1001781",
       "title_code": "56058",
-      "search_text": "ROSARIO,MICHAEL A. notice-only hire appointment DEPT. OF HOMELESS SERVICES 56058"
+      "search_text": "GONZALEZ,PEDRO R. notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 56058"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000067",
-      "label": "SANOGUEL,CARMEN M.",
-      "href": "/notices/1000067",
+      "id": "hire:1001872",
+      "label": "GORDON,SETH W.",
+      "href": "/notices/1001872",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "DEPT. OF HOMELESS SERVICES",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
       "institution_context": "City Record staffing record",
-      "agency": "DEPT. OF HOMELESS SERVICES",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
+      "date": "08/18/2026",
+      "source_record_id": "1001872",
+      "title_code": "10209",
+      "search_text": "GORDON,SETH W. notice-only hire appointment DEPARTMENT OF TRANSPORTATION 10209"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001879",
+      "label": "GRAZIANO,JULIET L.",
+      "href": "/notices/1001879",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUILDINGS",
+      "date": "07/26/2026",
+      "source_record_id": "1001879",
+      "title_code": "12626",
+      "search_text": "GRAZIANO,JULIET L. notice-only hire appointment DEPARTMENT OF BUILDINGS 12626"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001808",
+      "label": "HAGERTY,ALEXANDR M.",
+      "href": "/notices/1001808",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
       "date": "08/09/2026",
-      "source_record_id": "1000067",
-      "title_code": "22508",
-      "search_text": "SANOGUEL,CARMEN M. notice-only hire appointment DEPT. OF HOMELESS SERVICES 22508"
+      "source_record_id": "1001808",
+      "title_code": "95279",
+      "search_text": "HAGERTY,ALEXANDR M. notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 95279"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000045",
-      "label": "SEGGIO SR,LOUIS B.",
-      "href": "/notices/1000045",
+      "id": "hire:1001963",
+      "label": "HAQUE,LAZIMUL .",
+      "href": "/notices/1001963",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "LAW DEPARTMENT",
+      "institution_label": "DEPT OF PARKS & RECREATION",
       "institution_context": "City Record staffing record",
-      "agency": "LAW DEPARTMENT",
+      "agency": "DEPT OF PARKS & RECREATION",
       "date": "08/09/2026",
-      "source_record_id": "1000045",
-      "title_code": "10037",
-      "search_text": "SEGGIO SR,LOUIS B. notice-only hire appointment LAW DEPARTMENT 10037"
+      "source_record_id": "1001963",
+      "title_code": "60421",
+      "search_text": "HAQUE,LAZIMUL . notice-only hire appointment DEPT OF PARKS & RECREATION 60421"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000085",
-      "label": "SHAZIM,ABDULLAH A.",
-      "href": "/notices/1000085",
+      "id": "hire:1001852",
+      "label": "HARVEY,MARLON U.",
+      "href": "/notices/1001852",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
       "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000085",
-      "title_code": "56314",
-      "search_text": "SHAZIM,ABDULLAH A. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 56314"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000032",
-      "label": "SINGH,JAGMEET .",
-      "href": "/notices/1000032",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
-      "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000032",
-      "title_code": "70206",
-      "search_text": "SINGH,JAGMEET . notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000104",
-      "label": "SIRAJ,MD R.",
-      "href": "/notices/1000104",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000104",
-      "title_code": "56314",
-      "search_text": "SIRAJ,MD R. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 56314"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000110",
-      "label": "SLATER,KAELA A.",
-      "href": "/notices/1000110",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000110",
-      "title_code": "10104",
-      "search_text": "SLATER,KAELA A. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000258",
-      "label": "TALBOT,GAVIN W.",
-      "href": "/notices/1000258",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000258",
-      "title_code": "10104",
-      "search_text": "TALBOT,GAVIN W. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000074",
-      "label": "TALUKDER,JUI .",
-      "href": "/notices/1000074",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000074",
-      "title_code": "10104",
-      "search_text": "TALUKDER,JUI . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000271",
-      "label": "TUTKO,BRIAN A.",
-      "href": "/notices/1000271",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000271",
-      "title_code": "10104",
-      "search_text": "TUTKO,BRIAN A. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000170",
-      "label": "VALENTIN,HANDEL .",
-      "href": "/notices/1000170",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
-      "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
-      "date": "08/16/2026",
-      "source_record_id": "1000170",
-      "title_code": "10104",
-      "search_text": "VALENTIN,HANDEL . notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000060",
-      "label": "WEISBERG,THOMAS S.",
-      "href": "/notices/1000060",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "POLICE DEPARTMENT",
-      "institution_context": "City Record staffing record",
-      "agency": "POLICE DEPARTMENT",
-      "date": "07/31/2026",
-      "source_record_id": "1000060",
-      "title_code": "70206",
-      "search_text": "WEISBERG,THOMAS S. notice-only hire appointment POLICE DEPARTMENT 70206"
-    },
-    {
-      "kind": "notice-only-hire",
-      "id": "hire:1000112",
-      "label": "WHITE,TYESHAWN J.",
-      "href": "/notices/1000112",
-      "entity_ref": null,
-      "person_id": null,
-      "relation_state": "unknown",
-      "detail": "Published staffing notice · person identity not joined",
-      "institution": "agency",
-      "institution_label": "ADMIN FOR CHILDREN'S SVCS",
-      "institution_context": "City Record staffing record",
-      "agency": "ADMIN FOR CHILDREN'S SVCS",
+      "agency": "DEPARTMENT OF BUILDINGS",
       "date": "08/09/2026",
-      "source_record_id": "1000112",
-      "title_code": "70810",
-      "search_text": "WHITE,TYESHAWN J. notice-only hire appointment ADMIN FOR CHILDREN'S SVCS 70810"
+      "source_record_id": "1001852",
+      "title_code": "31629",
+      "search_text": "HARVEY,MARLON U. notice-only hire appointment DEPARTMENT OF BUILDINGS 31629"
     },
     {
       "kind": "notice-only-hire",
-      "id": "hire:1000096",
-      "label": "WILSON,JESSICA M.",
-      "href": "/notices/1000096",
+      "id": "hire:1001928",
+      "label": "HENDRICKS,DILLON T.",
+      "href": "/notices/1001928",
       "entity_ref": null,
       "person_id": null,
       "relation_state": "unknown",
       "detail": "Published staffing notice · person identity not joined",
       "institution": "agency",
-      "institution_label": "HRA/DEPT OF SOCIAL SERVICES",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
       "institution_context": "City Record staffing record",
-      "agency": "HRA/DEPT OF SOCIAL SERVICES",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
       "date": "08/16/2026",
-      "source_record_id": "1000096",
-      "title_code": "10104",
-      "search_text": "WILSON,JESSICA M. notice-only hire appointment HRA/DEPT OF SOCIAL SERVICES 10104"
+      "source_record_id": "1001928",
+      "title_code": "52020",
+      "search_text": "HENDRICKS,DILLON T. notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 52020"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001850",
+      "label": "HERNANDEZ COLON,MELISSA L.",
+      "href": "/notices/1001850",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
+      "date": "08/19/2026",
+      "source_record_id": "1001850",
+      "title_code": "06664",
+      "search_text": "HERNANDEZ COLON,MELISSA L. notice-only hire appointment DEPT OF PARKS & RECREATION 06664"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001912",
+      "label": "HICIANO,LESLIE A.",
+      "href": "/notices/1001912",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "HOUSING PRESERVATION & DVLPMNT",
+      "institution_context": "City Record staffing record",
+      "agency": "HOUSING PRESERVATION & DVLPMNT",
+      "date": "08/16/2026",
+      "source_record_id": "1001912",
+      "title_code": "22092",
+      "search_text": "HICIANO,LESLIE A. notice-only hire appointment HOUSING PRESERVATION & DVLPMNT 22092"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001957",
+      "label": "HOQUE,SAJEDUL .",
+      "href": "/notices/1001957",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "TECHNOLOGY & INNOVATION",
+      "institution_context": "City Record staffing record",
+      "agency": "TECHNOLOGY & INNOVATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001957",
+      "title_code": "12158",
+      "search_text": "HOQUE,SAJEDUL . notice-only hire appointment TECHNOLOGY & INNOVATION 12158"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001980",
+      "label": "HYLTON,MONIQUE .",
+      "href": "/notices/1001980",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "date": "08/09/2026",
+      "source_record_id": "1001980",
+      "title_code": "51613",
+      "search_text": "HYLTON,MONIQUE . notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 51613"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001926",
+      "label": "KANNY,BARRY F.",
+      "href": "/notices/1001926",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "date": "08/16/2026",
+      "source_record_id": "1001926",
+      "title_code": "10209",
+      "search_text": "KANNY,BARRY F. notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 10209"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001873",
+      "label": "KARAMCHAND,BISSOOND .",
+      "href": "/notices/1001873",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
+      "date": "08/09/2026",
+      "source_record_id": "1001873",
+      "title_code": "92610",
+      "search_text": "KARAMCHAND,BISSOOND . notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 92610"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001880",
+      "label": "KHALIL,BISHOY .",
+      "href": "/notices/1001880",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUILDINGS",
+      "date": "08/09/2026",
+      "source_record_id": "1001880",
+      "title_code": "31622",
+      "search_text": "KHALIL,BISHOY . notice-only hire appointment DEPARTMENT OF BUILDINGS 31622"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001999",
+      "label": "KING,SUZAN .",
+      "href": "/notices/1001999",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "BOARD OF ELECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "BOARD OF ELECTION",
+      "date": "08/23/2026",
+      "source_record_id": "1001999",
+      "title_code": "94367",
+      "search_text": "KING,SUZAN . notice-only hire appointment BOARD OF ELECTION 94367"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001738",
+      "label": "KOLATAU,VIKTAR .",
+      "href": "/notices/1001738",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "HOUSING PRESERVATION & DVLPMNT",
+      "institution_context": "City Record staffing record",
+      "agency": "HOUSING PRESERVATION & DVLPMNT",
+      "date": "08/16/2026",
+      "source_record_id": "1001738",
+      "title_code": "56058",
+      "search_text": "KOLATAU,VIKTAR . notice-only hire appointment HOUSING PRESERVATION & DVLPMNT 56058"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001849",
+      "label": "LANDIN,SAMANTHA .",
+      "href": "/notices/1001849",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "date": "08/16/2026",
+      "source_record_id": "1001849",
+      "title_code": "56057",
+      "search_text": "LANDIN,SAMANTHA . notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 56057"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001833",
+      "label": "LOPEZ,ELVIS J.",
+      "href": "/notices/1001833",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001833",
+      "title_code": "60421",
+      "search_text": "LOPEZ,ELVIS J. notice-only hire appointment DEPT OF PARKS & RECREATION 60421"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001994",
+      "label": "MALVIYA,SIDDHART .",
+      "href": "/notices/1001994",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "date": "08/09/2026",
+      "source_record_id": "1001994",
+      "title_code": "06844",
+      "search_text": "MALVIYA,SIDDHART . notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 06844"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001802",
+      "label": "MARTINEZ,TANIA K.",
+      "href": "/notices/1001802",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUSINESS SERV.",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUSINESS SERV.",
+      "date": "08/16/2026",
+      "source_record_id": "1001802",
+      "title_code": "22503",
+      "search_text": "MARTINEZ,TANIA K. notice-only hire appointment DEPARTMENT OF BUSINESS SERV. 22503"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001765",
+      "label": "MCCUISTION,AMANDA M.",
+      "href": "/notices/1001765",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "date": "08/09/2026",
+      "source_record_id": "1001765",
+      "title_code": "31215",
+      "search_text": "MCCUISTION,AMANDA M. notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 31215"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001899",
+      "label": "MEJIA,YLICHTNA .",
+      "href": "/notices/1001899",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "HOUSING PRESERVATION & DVLPMNT",
+      "institution_context": "City Record staffing record",
+      "agency": "HOUSING PRESERVATION & DVLPMNT",
+      "date": "08/16/2026",
+      "source_record_id": "1001899",
+      "title_code": "56057",
+      "search_text": "MEJIA,YLICHTNA . notice-only hire appointment HOUSING PRESERVATION & DVLPMNT 56057"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001754",
+      "label": "MERWIN,NICHOLAS J.",
+      "href": "/notices/1001754",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
+      "date": "08/16/2026",
+      "source_record_id": "1001754",
+      "title_code": "92005",
+      "search_text": "MERWIN,NICHOLAS J. notice-only hire appointment DEPT OF PARKS & RECREATION 92005"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001764",
+      "label": "NUNEZ,JEZOARI .",
+      "href": "/notices/1001764",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
+      "date": "08/09/2026",
+      "source_record_id": "1001764",
+      "title_code": "12626",
+      "search_text": "NUNEZ,JEZOARI . notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 12626"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001743",
+      "label": "OBERMAN,LILY M.",
+      "href": "/notices/1001743",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001743",
+      "title_code": "20210",
+      "search_text": "OBERMAN,LILY M. notice-only hire appointment DEPARTMENT OF TRANSPORTATION 20210"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001894",
+      "label": "OWENS,JASON G.",
+      "href": "/notices/1001894",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF CITYWIDE ADMIN SVCS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF CITYWIDE ADMIN SVCS",
+      "date": "08/09/2026",
+      "source_record_id": "1001894",
+      "title_code": "90644",
+      "search_text": "OWENS,JASON G. notice-only hire appointment DEPT OF CITYWIDE ADMIN SVCS 90644"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001986",
+      "label": "PATRISSY,MICHAEL P.",
+      "href": "/notices/1001986",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUILDINGS",
+      "date": "08/09/2026",
+      "source_record_id": "1001986",
+      "title_code": "31622",
+      "search_text": "PATRISSY,MICHAEL P. notice-only hire appointment DEPARTMENT OF BUILDINGS 31622"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001954",
+      "label": "PICARD,THOMAS J.",
+      "href": "/notices/1001954",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
+      "date": "05/17/2026",
+      "source_record_id": "1001954",
+      "title_code": "1002A",
+      "search_text": "PICARD,THOMAS J. notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 1002A"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001893",
+      "label": "RAINAULI,LASHA .",
+      "href": "/notices/1001893",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
+      "date": "07/01/2026",
+      "source_record_id": "1001893",
+      "title_code": "71205",
+      "search_text": "RAINAULI,LASHA . notice-only hire appointment DEPT OF PARKS & RECREATION 71205"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001761",
+      "label": "RODO,PAOLA M.",
+      "href": "/notices/1001761",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001761",
+      "title_code": "40493",
+      "search_text": "RODO,PAOLA M. notice-only hire appointment DEPARTMENT OF TRANSPORTATION 40493"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001838",
+      "label": "RODRIGUEZ,JOSE O.",
+      "href": "/notices/1001838",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "TECHNOLOGY & INNOVATION",
+      "institution_context": "City Record staffing record",
+      "agency": "TECHNOLOGY & INNOVATION",
+      "date": "08/16/2026",
+      "source_record_id": "1001838",
+      "title_code": "20247",
+      "search_text": "RODRIGUEZ,JOSE O. notice-only hire appointment TECHNOLOGY & INNOVATION 20247"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001800",
+      "label": "ROSS,ANDREW D.",
+      "href": "/notices/1001800",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001800",
+      "title_code": "90642",
+      "search_text": "ROSS,ANDREW D. notice-only hire appointment DEPARTMENT OF TRANSPORTATION 90642"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001987",
+      "label": "SALAZAR,OSIRIS .",
+      "href": "/notices/1001987",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUILDINGS",
+      "date": "08/09/2026",
+      "source_record_id": "1001987",
+      "title_code": "10251",
+      "search_text": "SALAZAR,OSIRIS . notice-only hire appointment DEPARTMENT OF BUILDINGS 10251"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001722",
+      "label": "SALDYKA,SYLWIA M.",
+      "href": "/notices/1001722",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF FINANCE",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF FINANCE",
+      "date": "08/09/2026",
+      "source_record_id": "1001722",
+      "title_code": "40523",
+      "search_text": "SALDYKA,SYLWIA M. notice-only hire appointment DEPARTMENT OF FINANCE 40523"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001768",
+      "label": "SCHEIDELER,KEITH M.",
+      "href": "/notices/1001768",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "HOUSING PRESERVATION & DVLPMNT",
+      "institution_context": "City Record staffing record",
+      "agency": "HOUSING PRESERVATION & DVLPMNT",
+      "date": "08/17/2026",
+      "source_record_id": "1001768",
+      "title_code": "22092",
+      "search_text": "SCHEIDELER,KEITH M. notice-only hire appointment HOUSING PRESERVATION & DVLPMNT 22092"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001977",
+      "label": "SCOTT,MATHIEU T.",
+      "href": "/notices/1001977",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
+      "date": "07/17/2026",
+      "source_record_id": "1001977",
+      "title_code": "71205",
+      "search_text": "SCOTT,MATHIEU T. notice-only hire appointment DEPT OF PARKS & RECREATION 71205"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001860",
+      "label": "SEDANO,ETHAN J.",
+      "href": "/notices/1001860",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUILDINGS",
+      "date": "08/09/2026",
+      "source_record_id": "1001860",
+      "title_code": "31622",
+      "search_text": "SEDANO,ETHAN J. notice-only hire appointment DEPARTMENT OF BUILDINGS 31622"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001848",
+      "label": "SELENIS,ANGELUS L.",
+      "href": "/notices/1001848",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
+      "date": "08/16/2026",
+      "source_record_id": "1001848",
+      "title_code": "21310",
+      "search_text": "SELENIS,ANGELUS L. notice-only hire appointment DEPT OF PARKS & RECREATION 21310"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001966",
+      "label": "SENCHYNA,DARRAGH O.",
+      "href": "/notices/1001966",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "HOUSING PRESERVATION & DVLPMNT",
+      "institution_context": "City Record staffing record",
+      "agency": "HOUSING PRESERVATION & DVLPMNT",
+      "date": "08/16/2026",
+      "source_record_id": "1001966",
+      "title_code": "56058",
+      "search_text": "SENCHYNA,DARRAGH O. notice-only hire appointment HOUSING PRESERVATION & DVLPMNT 56058"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001961",
+      "label": "SERRANO,JONATHAN .",
+      "href": "/notices/1001961",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001961",
+      "title_code": "90641",
+      "search_text": "SERRANO,JONATHAN . notice-only hire appointment DEPT OF PARKS & RECREATION 90641"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001775",
+      "label": "SMALL,TIFFANY .",
+      "href": "/notices/1001775",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "date": "08/09/2026",
+      "source_record_id": "1001775",
+      "title_code": "10124",
+      "search_text": "SMALL,TIFFANY . notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 10124"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001962",
+      "label": "STANNER,KELLAN C.",
+      "href": "/notices/1001962",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUILDINGS",
+      "date": "07/26/2026",
+      "source_record_id": "1001962",
+      "title_code": "12626",
+      "search_text": "STANNER,KELLAN C. notice-only hire appointment DEPARTMENT OF BUILDINGS 12626"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001937",
+      "label": "TISSON-LEE,NICOLE N.",
+      "href": "/notices/1001937",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "HOUSING PRESERVATION & DVLPMNT",
+      "institution_context": "City Record staffing record",
+      "agency": "HOUSING PRESERVATION & DVLPMNT",
+      "date": "08/16/2026",
+      "source_record_id": "1001937",
+      "title_code": "56057",
+      "search_text": "TISSON-LEE,NICOLE N. notice-only hire appointment HOUSING PRESERVATION & DVLPMNT 56057"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001916",
+      "label": "TORPEY,MARK S.",
+      "href": "/notices/1001916",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUILDINGS",
+      "date": "08/09/2026",
+      "source_record_id": "1001916",
+      "title_code": "31629",
+      "search_text": "TORPEY,MARK S. notice-only hire appointment DEPARTMENT OF BUILDINGS 31629"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001964",
+      "label": "TRAN,KEVIN H.",
+      "href": "/notices/1001964",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF HEALTH/MENTAL HYGIENE",
+      "date": "08/09/2026",
+      "source_record_id": "1001964",
+      "title_code": "31215",
+      "search_text": "TRAN,KEVIN H. notice-only hire appointment DEPT OF HEALTH/MENTAL HYGIENE 31215"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1002000",
+      "label": "TUSKE,RICHARD .",
+      "href": "/notices/1002000",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "BOARD OF ELECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "BOARD OF ELECTION",
+      "date": "08/23/2026",
+      "source_record_id": "1002000",
+      "title_code": "94367",
+      "search_text": "TUSKE,RICHARD . notice-only hire appointment BOARD OF ELECTION 94367"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001914",
+      "label": "VIRAN,NICHOLAS J.",
+      "href": "/notices/1001914",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
+      "date": "08/09/2026",
+      "source_record_id": "1001914",
+      "title_code": "12626",
+      "search_text": "VIRAN,NICHOLAS J. notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 12626"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001821",
+      "label": "WANG,DANNY .",
+      "href": "/notices/1001821",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF BUILDINGS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF BUILDINGS",
+      "date": "08/09/2026",
+      "source_record_id": "1001821",
+      "title_code": "10251",
+      "search_text": "WANG,DANNY . notice-only hire appointment DEPARTMENT OF BUILDINGS 10251"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001946",
+      "label": "WHALE,SEAN A.",
+      "href": "/notices/1001946",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001946",
+      "title_code": "90642",
+      "search_text": "WHALE,SEAN A. notice-only hire appointment DEPARTMENT OF TRANSPORTATION 90642"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001981",
+      "label": "WHEATLEY,CHESTER .",
+      "href": "/notices/1001981",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
+      "date": "08/09/2026",
+      "source_record_id": "1001981",
+      "title_code": "92610",
+      "search_text": "WHEATLEY,CHESTER . notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 92610"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001978",
+      "label": "WHEELER,JOSEPH T.",
+      "href": "/notices/1001978",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
+      "date": "08/16/2026",
+      "source_record_id": "1001978",
+      "title_code": "06070",
+      "search_text": "WHEELER,JOSEPH T. notice-only hire appointment DEPT OF PARKS & RECREATION 06070"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001948",
+      "label": "WHITE,CLINTON .",
+      "href": "/notices/1001948",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF PARKS & RECREATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF PARKS & RECREATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001948",
+      "title_code": "91406",
+      "search_text": "WHITE,CLINTON . notice-only hire appointment DEPT OF PARKS & RECREATION 91406"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001939",
+      "label": "YAMADA,CHELSEA S.",
+      "href": "/notices/1001939",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF ENVIRONMENT PROTECTION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF ENVIRONMENT PROTECTION",
+      "date": "08/09/2026",
+      "source_record_id": "1001939",
+      "title_code": "81310",
+      "search_text": "YAMADA,CHELSEA S. notice-only hire appointment DEPT OF ENVIRONMENT PROTECTION 81310"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001905",
+      "label": "YEHUDA,BENJAMIN E.",
+      "href": "/notices/1001905",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPT OF CITYWIDE ADMIN SVCS",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPT OF CITYWIDE ADMIN SVCS",
+      "date": "08/09/2026",
+      "source_record_id": "1001905",
+      "title_code": "12704",
+      "search_text": "YEHUDA,BENJAMIN E. notice-only hire appointment DEPT OF CITYWIDE ADMIN SVCS 12704"
+    },
+    {
+      "kind": "notice-only-hire",
+      "id": "hire:1001972",
+      "label": "YI,JAMES S.",
+      "href": "/notices/1001972",
+      "entity_ref": null,
+      "person_id": null,
+      "relation_state": "unknown",
+      "detail": "Published staffing notice · person identity not joined",
+      "institution": "agency",
+      "institution_label": "DEPARTMENT OF TRANSPORTATION",
+      "institution_context": "City Record staffing record",
+      "agency": "DEPARTMENT OF TRANSPORTATION",
+      "date": "08/09/2026",
+      "source_record_id": "1001972",
+      "title_code": "92510",
+      "search_text": "YI,JAMES S. notice-only hire appointment DEPARTMENT OF TRANSPORTATION 92510"
     }
   ],
   "identity_candidates": [
@@ -64556,5 +64556,5 @@
     "agency",
     "vendor"
   ],
-  "generated_at": "2026-11-13T14:29:36.445Z"
+  "generated_at": "2026-11-21T15:26:17.259Z"
 }

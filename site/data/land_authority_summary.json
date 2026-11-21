@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_authority_summary.v1",
   "join_version": "ldp06_authority_summary_v1",
-  "generated_at": "2026-11-13T14:23:02.330Z",
+  "generated_at": "2026-11-21T15:20:38.440Z",
   "source_basis_defaults": {
     "profile": {
       "source_type": "reviewed_static_registry",
@@ -24,7 +24,7 @@
     },
     "publisher": {
       "source_type": "published_hearing",
-      "checked_vintage": "2026-11-13"
+      "checked_vintage": "2026-11-21"
     }
   },
   "legal_basis_by_stage": {
@@ -64,15 +64,15 @@
     }
   },
   "freshness_defaults": {
-    "generated_at": "2026-11-13T14:23:02.330Z",
-    "as_of": "2026-11-13T14:23:02.330Z",
+    "generated_at": "2026-11-21T15:20:38.440Z",
+    "as_of": "2026-11-21T15:20:38.440Z",
     "source_vintages": {
-      "hearings_generated_at": "2026-11-13T14:28:59.648Z"
+      "hearings_generated_at": "2026-11-21T15:25:56.511Z"
     }
   },
   "published_next_defaults": {
     "checked": true,
-    "checked_vintage": "2026-11-13",
+    "checked_vintage": "2026-11-21",
     "source": "land_upcoming_hearings",
     "source_id": null,
     "label": null,
@@ -128,7 +128,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -178,7 +178,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -224,7 +224,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -274,7 +274,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -366,7 +366,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -432,7 +432,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": null,
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -538,7 +538,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-10-09T00:00:00.000",
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -590,7 +590,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-11-13",
+        "checked_vintage": "2026-11-21",
         "source_id": "534987bc-9d13-ef11-9f8a-001dd8306bd4",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -730,7 +730,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-11-13",
+        "checked_vintage": "2026-11-21",
         "source_id": "f0bd0f74-3f19-ef11-9f8a-001dd8306bd4",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -748,7 +748,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-10-09T00:00:00.000",
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -800,7 +800,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-11-13",
+        "checked_vintage": "2026-11-21",
         "source_id": "881b9289-305e-ee11-be6e-001dd804eb39",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -881,7 +881,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-10-08T00:00:00.000",
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -1010,7 +1010,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-10-08T00:00:00.000",
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -1132,7 +1132,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-11-13",
+        "checked_vintage": "2026-11-21",
         "source_id": "20b1b2a8-46b0-f011-bbd2-001dd80a67c9",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -1257,23 +1257,14 @@
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source": "zap-api-milestones",
-          "source_id": "54afc836-1624-ef11-840b-001dd8306c80",
+          "source": "land_upcoming_hearings",
+          "source_id": null,
           "checked": true
         }
       },
       "expected_next_stage": null,
       "published_next_opportunity": {
-        "status": "published",
-        "checked": true,
-        "checked_vintage": "2026-11-13",
-        "source_id": "54afc836-1624-ef11-840b-001dd8306c80",
-        "source": "zap-api-milestones",
-        "label": "Review Session - Pre-Hearing Review / Post Referral",
-        "date": "2026-11-16",
-        "representing": "City Planning Commission",
-        "phase_id": "cpc",
-        "body_ref": "agency:id:city-planning-commission"
+        "status": "none"
       },
       "next_procedural_body": null,
       "affected_actor_refs": [],
@@ -1335,8 +1326,8 @@
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source": "zap-api-milestones",
-          "source_id": "01bdc83a-46a9-f011-bbd3-001dd806295a",
+          "source": "land_upcoming_hearings",
+          "source_id": null,
           "checked": true
         }
       },
@@ -1346,22 +1337,9 @@
         "status": "known"
       },
       "published_next_opportunity": {
-        "status": "published",
-        "checked": true,
-        "checked_vintage": "2026-11-13",
-        "source_id": "01bdc83a-46a9-f011-bbd3-001dd806295a",
-        "source": "zap-api-milestones",
-        "label": "Review Session - Pre-Hearing Review / Post Referral",
-        "date": "2026-11-16",
-        "representing": "City Planning Commission",
-        "phase_id": "cpc",
-        "body_ref": "agency:id:city-planning-commission"
+        "status": "none"
       },
-      "next_procedural_body": {
-        "body_ref": "agency:id:city-planning-commission",
-        "source_id": "01bdc83a-46a9-f011-bbd3-001dd806295a",
-        "source": "zap-api-milestones"
-      },
+      "next_procedural_body": null,
       "affected_actor_refs": [
         {
           "body_ref": "community-board:brooklyn-cb-02",
@@ -2083,7 +2061,7 @@
         },
         "publisher": {
           "source": "zap-api-milestones",
-          "source_id": "f7663498-f3f9-ef11-9341-001dd80644b1",
+          "source_id": "04673498-f3f9-ef11-9341-001dd80644b1",
           "checked": true
         }
       },
@@ -2095,18 +2073,18 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-11-13",
-        "source_id": "f7663498-f3f9-ef11-9341-001dd80644b1",
+        "checked_vintage": "2026-11-21",
+        "source_id": "04673498-f3f9-ef11-9341-001dd80644b1",
         "source": "zap-api-milestones",
-        "label": "Review Session - Pre-Hearing Review / Post Referral",
-        "date": "2026-11-30",
+        "label": "City Planning Commission Review",
+        "date": "2026-12-02",
         "representing": "City Planning Commission",
         "phase_id": "cpc",
         "body_ref": "agency:id:city-planning-commission"
       },
       "next_procedural_body": {
         "body_ref": "agency:id:city-planning-commission",
-        "source_id": "f7663498-f3f9-ef11-9341-001dd80644b1",
+        "source_id": "04673498-f3f9-ef11-9341-001dd80644b1",
         "source": "zap-api-milestones"
       },
       "affected_actor_refs": [
@@ -2178,7 +2156,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-11-13",
+        "checked_vintage": "2026-11-21",
         "source_id": "a14c92bd-d6b8-f011-bbd3-001dd80db62a",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -2259,7 +2237,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-10-05T00:00:00.000",
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     },
@@ -2376,7 +2354,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-11-13",
+        "checked_vintage": "2026-11-21",
         "source_id": "8f644060-d20f-f011-bae2-001dd80db62a",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -2441,7 +2419,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-11-13",
+        "checked_vintage": "2026-11-21",
         "source_id": "72c89b39-4642-f011-877a-001dd806295a",
         "source": "zap-api-milestones",
         "label": "City Planning Commission Review",
@@ -2498,7 +2476,7 @@
           "profile_version": "2026-08-27.v1"
         },
         "publisher": {
-          "source": "land_upcoming_hearings",
+          "source": "zap-api-dispositions",
           "source_id": null,
           "checked": true
         }
@@ -2509,7 +2487,16 @@
         "status": "known"
       },
       "published_next_opportunity": {
-        "status": "none"
+        "status": "published",
+        "checked": true,
+        "checked_vintage": "2026-11-21",
+        "source_id": null,
+        "source": "zap-api-dispositions",
+        "label": null,
+        "date": "2026-12-08",
+        "representing": "Borough President",
+        "phase_id": "borough_president",
+        "body_ref": null
       },
       "next_procedural_body": null,
       "affected_actor_refs": [
@@ -2576,7 +2563,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-11-13",
+        "checked_vintage": "2026-11-21",
         "source_id": "46ec6068-6ba7-ef11-8a6a-001dd80552a0",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -2775,7 +2762,7 @@
       "published_next_opportunity": {
         "status": "published",
         "checked": true,
-        "checked_vintage": "2026-11-13",
+        "checked_vintage": "2026-11-21",
         "source_id": "3dc871f7-1aa5-f011-bbd3-001dd80c29f4",
         "source": "zap-api-milestones",
         "label": "Review Session - Pre-Hearing Review / Post Referral",
@@ -2793,7 +2780,7 @@
       "freshness": {
         "source_vintages": {
           "project_milestone_date": "2026-10-01T00:00:00.000",
-          "outcomes_generated_at": "2026-11-13T14:23:02.330Z"
+          "outcomes_generated_at": "2026-11-21T15:20:38.440Z"
         }
       }
     }

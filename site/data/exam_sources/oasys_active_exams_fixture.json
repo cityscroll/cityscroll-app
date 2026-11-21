@@ -1,6 +1,6 @@
 {
-  "fetched_at": "2026-11-14",
-  "fetched_at_utc": "2026-11-14T14:06:07.056Z",
+  "fetched_at": "2026-11-21",
+  "fetched_at_utc": "2026-11-21T15:33:29.980Z",
   "http_status": 200,
   "payload": [
     {
@@ -421,38 +421,11 @@
       "examId": 9669,
       "title": "Emergency Medical Specialist Trainee",
       "examNumber": "7032",
-      "filingStart": "2026-10-07T00:00:00",
-      "filingEnd": "2026-11-18T00:00:00",
+      "filingStart": "2026-10-07",
+      "filingEnd": "2026-11-18",
       "filingFee": 30,
       "isPromotional": false,
-      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277032000.pdf",
-      "examParts": [
-        {
-          "examId": 9669,
-          "examPartId": 5186,
-          "partNo": 1,
-          "partTypeCode": "EEE",
-          "title": "EEE Test",
-          "examPartType": {
-            "partTypeCode": "EEE",
-            "partTypeDescription": "EEE Test",
-            "allowScheduling": false,
-            "allowOnlineEvaluation": true,
-            "allowAdmissionNotice": false,
-            "active": true,
-            "scheduleRequired": false
-          },
-          "examPartStatusId": 2,
-          "systemScheduled": false,
-          "candidateReschedule": false,
-          "qualifyingIncumbent": false,
-          "isSelfSchedulable": false
-        }
-      ],
-      "examDesignationId": 1,
-      "isSelfSchedulable": false,
-      "updatedOn": "2026-10-07T11:06:49.84",
-      "isAddedToTop": false
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277032000.pdf"
     },
     {
       "examId": 9641,
@@ -758,38 +731,11 @@
       "examId": 9670,
       "title": "Emergency Medical Specialist - EMT",
       "examNumber": "7131",
-      "filingStart": "2026-10-07T00:00:00",
-      "filingEnd": "2026-11-18T00:00:00",
+      "filingStart": "2026-10-07",
+      "filingEnd": "2026-11-18",
       "filingFee": 30,
       "isPromotional": false,
-      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277131000.pdf",
-      "examParts": [
-        {
-          "examId": 9670,
-          "examPartId": 5187,
-          "partNo": 1,
-          "partTypeCode": "EEE",
-          "title": "EEE Test",
-          "examPartType": {
-            "partTypeCode": "EEE",
-            "partTypeDescription": "EEE Test",
-            "allowScheduling": false,
-            "allowOnlineEvaluation": true,
-            "allowAdmissionNotice": false,
-            "active": true,
-            "scheduleRequired": false
-          },
-          "examPartStatusId": 2,
-          "systemScheduled": false,
-          "candidateReschedule": false,
-          "qualifyingIncumbent": false,
-          "isSelfSchedulable": false
-        }
-      ],
-      "examDesignationId": 1,
-      "isSelfSchedulable": false,
-      "updatedOn": "2026-10-07T10:25:19.21",
-      "isAddedToTop": false
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277131000.pdf"
     },
     {
       "examId": 9656,
@@ -835,38 +781,11 @@
       "examId": 9690,
       "title": "Police Officer",
       "examNumber": "7315",
-      "filingStart": "2026-11-02T00:00:00",
-      "filingEnd": "2026-11-16T00:00:00",
+      "filingStart": "2026-11-02",
+      "filingEnd": "2026-11-16",
       "filingFee": 0,
       "isPromotional": false,
-      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277315000.pdf",
-      "examParts": [
-        {
-          "examId": 9690,
-          "examPartId": 5230,
-          "partNo": 1,
-          "partTypeCode": "MC",
-          "title": "Multiple Choice Test",
-          "examPartType": {
-            "partTypeCode": "MC",
-            "partTypeDescription": "Multiple Choice Test",
-            "allowScheduling": true,
-            "allowOnlineEvaluation": false,
-            "allowAdmissionNotice": true,
-            "active": true,
-            "scheduleRequired": true
-          },
-          "examPartStatusId": 2,
-          "systemScheduled": false,
-          "candidateReschedule": true,
-          "qualifyingIncumbent": false,
-          "isSelfSchedulable": true
-        }
-      ],
-      "examDesignationId": 1,
-      "isSelfSchedulable": true,
-      "updatedOn": "2026-10-30T18:16:14.673",
-      "isAddedToTop": false
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277315000.pdf"
     },
     {
       "examId": 9634,

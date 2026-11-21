@@ -3,7 +3,7 @@
  "version": "snapshot-2026-11-11-6325fbf06b26",
  "source_sha256": "6325fbf06b2620ea7992c6f16da4f1f209cd1339d736f86a23b17fdec579a6b7",
  "categories_path": "/data/procurement_codes/nyc-commodity-categories.json",
- "categories_sha256": "bbdae6e16eba9019f9a9757092070d3804f024fe0aa16e91ad4364520c3a4f8c",
+ "categories_sha256": "9d1fa1e6d04058cf3649d397b3b24380b97e129b6121a32d4f78e0ddaf965c86",
  "match_rule": "exact label after Unicode NFKC, whitespace collapse, trim and lower-case",
  "categories": [
   {

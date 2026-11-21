@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.register_shards_manifest.v1",
   "register": "irs_eo_bmf_ny",
-  "collected_at": "2026-11-12T12:00:00.000Z",
+  "collected_at": "2026-11-21T15:33:40.093Z",
   "source_url": "https://www.irs.gov/pub/irs-soi/eo_ny.csv",
   "row_count": 125622,
   "source_row_count": 125622,
@@ -11,6 +11,12 @@
     "row_count": 125622
   },
   "bucket_count": 64,
+  "canary_rows": [
+    {
+      "EIN": "263419217",
+      "NAME": "VINCENT NASTA FOUNDATION INC"
+    }
+  ],
   "shards": [
     {
       "path": "ein-00.json",
@@ -18,7 +24,7 @@
       "bucket": "00",
       "rows": 1910,
       "bytes": 656837,
-      "sha256": "c690409333fcee58d540e2bbe2972f549f717bbbbc4adc58cf5dd7ceff49733a"
+      "sha256": "8dd36b6caf02eb9dde83e8baf0935806febdf6cf267eb818ed06b386f0853523"
     },
     {
       "path": "ein-01.json",
@@ -26,7 +32,7 @@
       "bucket": "01",
       "rows": 2009,
       "bytes": 690390,
-      "sha256": "0abdc3159f837aa4393ad85354b3c82b302b6185df87088b5d67998fc3d23b8f"
+      "sha256": "a8870d9bc4b239d9764e002171f84fbc2a1cf4627b3fc580e1e82eb25e6c2860"
     },
     {
       "path": "ein-02.json",
@@ -34,7 +40,7 @@
       "bucket": "02",
       "rows": 1983,
       "bytes": 678638,
-      "sha256": "8bf12a055e055161bec8f2ba9d0ea29d51c80a0c4859bbadc62c72b697af1419"
+      "sha256": "91607764712fa8963979d3b05384127cd697c0285ff671d620b8ffd05aa18f95"
     },
     {
       "path": "ein-03.json",
@@ -42,7 +48,7 @@
       "bucket": "03",
       "rows": 1948,
       "bytes": 665521,
-      "sha256": "675551d871d5bb01d03d154f46f81b3e806156bf584f068d8dece6b52cd76a4a"
+      "sha256": "827c7a52858e06973418b334e0d1c9fbfba3339902e708a92b61c0e710761c07"
     },
     {
       "path": "ein-04.json",
@@ -50,7 +56,7 @@
       "bucket": "04",
       "rows": 1979,
       "bytes": 676735,
-      "sha256": "132eb8f4b4c84fd08a95c371fe4c36a762d880db062b92a409696e29c73fbb6f"
+      "sha256": "258bc8d301df105a3e0bede14e9d9c8f32fb7230f216dee994bb0877ef4e0f8a"
     },
     {
       "path": "ein-05.json",
@@ -58,7 +64,7 @@
       "bucket": "05",
       "rows": 1933,
       "bytes": 665741,
-      "sha256": "03e85482cea0b3368d4610373b83093854880b725c8b08aa224b7c43db88388c"
+      "sha256": "cb097506981d88ab378ba967cb2dd5bbeebe15a8f44208533a9b795cd903bb42"
     },
     {
       "path": "ein-06.json",
@@ -66,7 +72,7 @@
       "bucket": "06",
       "rows": 2017,
       "bytes": 691445,
-      "sha256": "7c04155910be07c3d0e0bb7232ffdb6d85a8ba9da29234bde8a82f499eea7e87"
+      "sha256": "8692cf207e6234537c24f9a43c8043e8d64ca314e8790a3a58ed2c6c5cac3bdf"
     },
     {
       "path": "ein-07.json",
@@ -74,7 +80,7 @@
       "bucket": "07",
       "rows": 1951,
       "bytes": 670354,
-      "sha256": "6a26f347095118e87541d2ac90ea9ab46c300e3c3a565f7972930afd6641a781"
+      "sha256": "fc835fc424155d0cdcc343b903250b27de582625602316416b737db4f90ea5a2"
     },
     {
       "path": "ein-08.json",
@@ -82,7 +88,7 @@
       "bucket": "08",
       "rows": 1943,
       "bytes": 666444,
-      "sha256": "3aa106c5c657b345d9588048d6e32856513c12238f3f58d0c11cbe3c785167da"
+      "sha256": "52e426914fa7f250f2adaccd1afdcca3d883948a640f84521d31dbb93cefb987"
     },
     {
       "path": "ein-09.json",
@@ -90,7 +96,7 @@
       "bucket": "09",
       "rows": 1955,
       "bytes": 670318,
-      "sha256": "f494efbd874ee1e12e7c856d2069df1bf130cb2d808a1355ae9a83ee7c6e1785"
+      "sha256": "bb28fc15a007ab466445f866022000df602b3c0bbf4ec5044a7c6586ea20d002"
     },
     {
       "path": "ein-0a.json",
@@ -98,7 +104,7 @@
       "bucket": "0a",
       "rows": 1970,
       "bytes": 678481,
-      "sha256": "7d93ab24e89baec65f4dfdd020f5d5e0095285b49791f64880eadc731058fba8"
+      "sha256": "7789c7893e89eed14124f8b5d712c73742c3062a1e7589cbc85bcad1c72d67bf"
     },
     {
       "path": "ein-0b.json",
@@ -106,7 +112,7 @@
       "bucket": "0b",
       "rows": 1927,
       "bytes": 659418,
-      "sha256": "d34f0e33e2950535e1c65d539d661c5dae2b2835b25b1674261aaec023fa28dd"
+      "sha256": "9362a21e165ddafc635d1f4b4e2e092c6a4a44d3fffccbbee311c711144d5959"
     },
     {
       "path": "ein-0c.json",
@@ -114,7 +120,7 @@
       "bucket": "0c",
       "rows": 2005,
       "bytes": 689266,
-      "sha256": "5ca85a57fb184d5c68d55bdc484efb95669803f37aca29d8e4f5616b499cdf21"
+      "sha256": "04cdcdf6e8e76b2d708ad03c0d25a3ca001f9f7529f3bdf1e5c07d25b51b8c69"
     },
     {
       "path": "ein-0d.json",
@@ -122,7 +128,7 @@
       "bucket": "0d",
       "rows": 1917,
       "bytes": 655179,
-      "sha256": "64b80415b66eec44349c5a5189512bac8b6953ec4d09cdbe93dd905ffb312823"
+      "sha256": "43662d8a4f71eb3e97a320cc9b40843a624276031d945c9e9f21f13e5ccdd03e"
     },
     {
       "path": "ein-0e.json",
@@ -130,7 +136,7 @@
       "bucket": "0e",
       "rows": 1950,
       "bytes": 667310,
-      "sha256": "0768ebc797eb91fbec206aad0fcab04ac69de636c2187e2cc44f88ffff66a27f"
+      "sha256": "7dec8fc4cdd4a67640ae5ec8f46b018c54839e4d7381b595e75d71c675b68ec5"
     },
     {
       "path": "ein-0f.json",
@@ -138,7 +144,7 @@
       "bucket": "0f",
       "rows": 1884,
       "bytes": 647396,
-      "sha256": "1129131d60132cbde507b816489192b4cf1128d9feaae8fedb919b760a0b9b45"
+      "sha256": "9109e224027ef38d7a5c5617268c852a9862e83159ce1e2b807299754302a726"
     },
     {
       "path": "ein-10.json",
@@ -146,7 +152,7 @@
       "bucket": "10",
       "rows": 2005,
       "bytes": 687695,
-      "sha256": "a5f4b79a34fb2a52ef1b236c1c0b3779fd9aab9980699b6673cb9d7677ae3280"
+      "sha256": "f8345fd3f885360c3e140567e813b05863cc8cd43d60eaf3c9e189d69087a1b9"
     },
     {
       "path": "ein-11.json",
@@ -154,7 +160,7 @@
       "bucket": "11",
       "rows": 2035,
       "bytes": 699452,
-      "sha256": "dfe3e4213cdc584e01933eeb462412af74fb35dd539f38058a4aa4ec1c27d0f6"
+      "sha256": "a63326da579761232a8c16f193b143d3b273e851559f5d4c39e64f70ac957aba"
     },
     {
       "path": "ein-12.json",
@@ -162,7 +168,7 @@
       "bucket": "12",
       "rows": 1997,
       "bytes": 684805,
-      "sha256": "a1f638d9c2d3db16f6e00635e75ee49ca83ec60ce0878672645e6a81beb02554"
+      "sha256": "ad352c7aa1d010eecc6e4a5d70b10236086ddacc8e22c066d6a07c7b1250cea9"
     },
     {
       "path": "ein-13.json",
@@ -170,7 +176,7 @@
       "bucket": "13",
       "rows": 1948,
       "bytes": 668807,
-      "sha256": "10db11c44f5d555375c1a10b15534d2f4b294866d1349be5fb208fbf3b098586"
+      "sha256": "e77e9c36e9a0c16283931edfc28448c16dfbc334946d3540712ab56c4131a09f"
     },
     {
       "path": "ein-14.json",
@@ -178,7 +184,7 @@
       "bucket": "14",
       "rows": 1956,
       "bytes": 671199,
-      "sha256": "b40450ca34319bcd89acb3902786f8374086fb2692259387d9f676d2e7b0c0bc"
+      "sha256": "61db39f21742fb06981be0dc69d22076484ad1dc0c2438dac08b20d8baba67a4"
     },
     {
       "path": "ein-15.json",
@@ -186,7 +192,7 @@
       "bucket": "15",
       "rows": 1904,
       "bytes": 652312,
-      "sha256": "3bbd802a72252dd3f132abc4a5642d160d33eff8d8eee90c3af8cf8978bd9f8a"
+      "sha256": "7b9a3424ad35427c8746671aa04a434ca7a6ddbcd44b00a61fa88f29605fe0c5"
     },
     {
       "path": "ein-16.json",
@@ -194,7 +200,7 @@
       "bucket": "16",
       "rows": 2029,
       "bytes": 695883,
-      "sha256": "9dd4b390906f4d26123770e4ac638cc626af74fc29586d03b52d69316bad8226"
+      "sha256": "27585d1be9accf37a95c943a52b0c406a4b44f92cd1a89a35766daac75d4e7ff"
     },
     {
       "path": "ein-17.json",
@@ -202,7 +208,7 @@
       "bucket": "17",
       "rows": 2021,
       "bytes": 693357,
-      "sha256": "114c515bcc91445d9f52dc1f2f965d44c2aebc438ba499d5c06b229eedca2140"
+      "sha256": "6f3205b7ff0f433d2afce61759ab4defb62abbb24b59bd6d2197844e26099c35"
     },
     {
       "path": "ein-18.json",
@@ -210,7 +216,7 @@
       "bucket": "18",
       "rows": 1924,
       "bytes": 660889,
-      "sha256": "a0d86e3bdb213f397d87dd1b63913749213e0477dde47ffaeba02a9a48e3a1c5"
+      "sha256": "f2d804297022af39658467c14a1ecbc96a9fb7705c5ea9fa94e21befa89b98f0"
     },
     {
       "path": "ein-19.json",
@@ -218,7 +224,7 @@
       "bucket": "19",
       "rows": 1862,
       "bytes": 638331,
-      "sha256": "b0943987006503f91fa150874d40ede5436cb76218e8d716e42dff637e0a9a29"
+      "sha256": "b485d48a31ef1f8c72c573f99ffb4e3578f1c15a871323ef4510ac35a22e1f59"
     },
     {
       "path": "ein-1a.json",
@@ -226,7 +232,7 @@
       "bucket": "1a",
       "rows": 1989,
       "bytes": 683419,
-      "sha256": "af887d69166afcdedd5a339bfae9da6d4be77a81dc0c7affe157719f175120ee"
+      "sha256": "a4fddfe72bd1b0db71441d846e3680477262ce8e0facadbb7ea3d98bc9bf1f0a"
     },
     {
       "path": "ein-1b.json",
@@ -234,7 +240,7 @@
       "bucket": "1b",
       "rows": 1977,
       "bytes": 679695,
-      "sha256": "205b73bed16f0d767908cc4e2b8e3d56f30284ac268133e0ae094cd87bec7c94"
+      "sha256": "5f8b8339abd95fa43215a212d5566a8c34c3153e0f426de0f788d91f18f786d5"
     },
     {
       "path": "ein-1c.json",
@@ -242,7 +248,7 @@
       "bucket": "1c",
       "rows": 1932,
       "bytes": 662480,
-      "sha256": "3ccd3d792264b21bb5bafaf5485c7d742ccb912fb4ca94ff87c7d632aefd9cf5"
+      "sha256": "428536355b72df605ecbd3947f9ff31bd85814be566c5de268e66e84a084ba4c"
     },
     {
       "path": "ein-1d.json",
@@ -250,7 +256,7 @@
       "bucket": "1d",
       "rows": 1983,
       "bytes": 682013,
-      "sha256": "ee17244cd04b4779a3d5a48e914c0cd40845972c784cae55280c3ef9edb392b0"
+      "sha256": "4b6fabdd2574ac389cde3ea8365a5e99e9e3b015d857a07c2457c210f0316003"
     },
     {
       "path": "ein-1e.json",
@@ -258,7 +264,7 @@
       "bucket": "1e",
       "rows": 1957,
       "bytes": 668432,
-      "sha256": "69a653b93b04a7e0a1f0185e9fd5525fb4801232a8d68c9169ac991d25ee8f85"
+      "sha256": "d335e16273ac86154b3d7e1cac3e7a26a9ad403e8ed01b4787b477275b0d44fc"
     },
     {
       "path": "ein-1f.json",
@@ -266,7 +272,7 @@
       "bucket": "1f",
       "rows": 1946,
       "bytes": 668276,
-      "sha256": "7e1471e4eeab51e944faadd1a459bb4a944c8b50ae9e6a73b535062fd00faa70"
+      "sha256": "3e5091a899703f2573a0239e091e75dff33b484a68f761ae185f7f9770142b3d"
     },
     {
       "path": "ein-20.json",
@@ -274,7 +280,7 @@
       "bucket": "20",
       "rows": 1974,
       "bytes": 675691,
-      "sha256": "cb91e0258b2a80f18512544b2e67ef1fb9cdbe28cd90e5260bdfbe33123b1fd4"
+      "sha256": "b9bf1fd18a5335811060b19b8fa3aa5df64aaa5697c4f41e8f546c70af0c79ab"
     },
     {
       "path": "ein-21.json",
@@ -282,7 +288,7 @@
       "bucket": "21",
       "rows": 1946,
       "bytes": 669521,
-      "sha256": "778e2d3cab7c81c05d02b0318a100bb965745288459f0b7d305bf834ae783cec"
+      "sha256": "57efefaf2604dfc84d5a4277222b3c32391fcfa5217ba07f8bbec180bf90042c"
     },
     {
       "path": "ein-22.json",
@@ -290,7 +296,7 @@
       "bucket": "22",
       "rows": 2044,
       "bytes": 700520,
-      "sha256": "668109e13b5389267f06c0c48d95a418fc2952bccec599e8a2ca13aaa0ca919b"
+      "sha256": "05295620254242b8ece2a19c70d5c5889f68c869cf8a32b1c3ed039727dcc7b7"
     },
     {
       "path": "ein-23.json",
@@ -298,7 +304,7 @@
       "bucket": "23",
       "rows": 1972,
       "bytes": 674360,
-      "sha256": "03ac34469a6b7ffcd8f7277d44bf4faaff32bc284474093f48eed00ca7ab6273"
+      "sha256": "8c4bb6741040ae51bdac018df08a0413bc337b357bc348732c06041ca6ac25c7"
     },
     {
       "path": "ein-24.json",
@@ -306,7 +312,7 @@
       "bucket": "24",
       "rows": 2009,
       "bytes": 688027,
-      "sha256": "69c09f0b0142de6e50a0ffda0bf9223812fb6eac2d08bc76022891c210ec5a67"
+      "sha256": "58bff5e146b384e40edba08c2f6df083865bd44ec4f9522b60dedffefb70e762"
     },
     {
       "path": "ein-25.json",
@@ -314,7 +320,7 @@
       "bucket": "25",
       "rows": 1978,
       "bytes": 676844,
-      "sha256": "84de3835b5522a2243e3f78a6afcd8f8073a9fe6b180505d046b31ab9795c682"
+      "sha256": "3608b4f2c6424b248c105b2824f1f051ca46353e2fa9334b4313b2668b1e548d"
     },
     {
       "path": "ein-26.json",
@@ -322,7 +328,7 @@
       "bucket": "26",
       "rows": 1963,
       "bytes": 671898,
-      "sha256": "a06b3f0af3c53d0be452d7068d756cd2df8261549329586c2ca6f540f5bd9e4a"
+      "sha256": "4f8b4551a219eff5f2cb56049ca513e798646f49a54ed4928aeb18bcdc82f29a"
     },
     {
       "path": "ein-27.json",
@@ -330,7 +336,7 @@
       "bucket": "27",
       "rows": 1985,
       "bytes": 682336,
-      "sha256": "c198b65e89df00e934111f330c0a17122dd58652acd78b9f469ecb86647809df"
+      "sha256": "7cb3d849ba6fc07546f2ed38456538cb1aa00952332fb1491b6005b344a33a0c"
     },
     {
       "path": "ein-28.json",
@@ -338,7 +344,7 @@
       "bucket": "28",
       "rows": 1927,
       "bytes": 660864,
-      "sha256": "119b8cbbea380b0ac9717afdac421e5500992b5a214542807af674eb92c0849d"
+      "sha256": "586cf952f3dc62bce51a3acd40e54f6a06dd772b70c816f168c8b567306d519e"
     },
     {
       "path": "ein-29.json",
@@ -346,7 +352,7 @@
       "bucket": "29",
       "rows": 1988,
       "bytes": 680694,
-      "sha256": "c2d66a2d0c4957ecb58ebb9a8d710abc6d6fa2430a0e98ab9a2e6f9086b36945"
+      "sha256": "a1e9d04658a973c4beaaf958f26fc62d75b6836d0e72bc036d775211fe418cef"
     },
     {
       "path": "ein-2a.json",
@@ -354,7 +360,7 @@
       "bucket": "2a",
       "rows": 1964,
       "bytes": 671066,
-      "sha256": "5efd6d37352cecab6c3fe44217ccf00a6bc6a2bfc8e6f803d9eb35c6ed6d58c2"
+      "sha256": "fe2077e1f5c5af2f3758d414ac309d98ac78ef94df0c0eb0d244bb295dfa9430"
     },
     {
       "path": "ein-2b.json",
@@ -362,7 +368,7 @@
       "bucket": "2b",
       "rows": 1930,
       "bytes": 663743,
-      "sha256": "ceadb122e88e912ab416ffffa7ec1bbb0a799977ed4d5a54315c830376ff9e8f"
+      "sha256": "a138f90cf5198c9fcfff5b2856c1fe57ca9519593ab6fd1a03cb4b538ec0f0f7"
     },
     {
       "path": "ein-2c.json",
@@ -370,7 +376,7 @@
       "bucket": "2c",
       "rows": 1970,
       "bytes": 673972,
-      "sha256": "f3545c131969729dcccdf0c6cb122dd38294323156b9bcbb70c2a2236ee1c877"
+      "sha256": "e44b9e9c906e0030eb41e336e44ac084ec6f34bee8d6a65f91a30ab06d0a4b44"
     },
     {
       "path": "ein-2d.json",
@@ -378,7 +384,7 @@
       "bucket": "2d",
       "rows": 1937,
       "bytes": 663609,
-      "sha256": "5d1aa12e649e2d90eaa20dd6c540b29163186fae940c7470b4c332ee792a39f7"
+      "sha256": "ece58fc898572dee7a7fdeb6ff0dba991378b031e1206524736cef0c20a9e189"
     },
     {
       "path": "ein-2e.json",
@@ -386,7 +392,7 @@
       "bucket": "2e",
       "rows": 1986,
       "bytes": 681966,
-      "sha256": "fd6e0dbd474f7c08d658317361dfeb00414ac1f881b11b3f34b9e4c5888c310b"
+      "sha256": "59925e068fe275b00b1ade7f492c9074eee52d09bc1391062e17d814fa074de0"
     },
     {
       "path": "ein-2f.json",
@@ -394,7 +400,7 @@
       "bucket": "2f",
       "rows": 1943,
       "bytes": 668245,
-      "sha256": "91ed569ad357871cadebbd82a10d40b944d917ab2a7836f7cc20f70f43cb6fcd"
+      "sha256": "ade3eadfa9ea568cbe76b3e2bb4b3c8ce39a5176ed61f0dd027ccd5220995a51"
     },
     {
       "path": "ein-30.json",
@@ -402,7 +408,7 @@
       "bucket": "30",
       "rows": 1952,
       "bytes": 667071,
-      "sha256": "5af35e4c5a007e0ef9c25fc5729a9bfd36d14d6bd7b759aff2dd0cf28b168523"
+      "sha256": "3846081ea2723f9757e55a7d86b90e942b3ce6df77ccc81e856cefb6554640eb"
     },
     {
       "path": "ein-31.json",
@@ -410,7 +416,7 @@
       "bucket": "31",
       "rows": 1939,
       "bytes": 663807,
-      "sha256": "94327eb36e243c2adecf0b228dc7cc174e52d8670a922a008ef1549b191eb61b"
+      "sha256": "ca91b15891321e572adb18619d8623a26dfbf1597686aa77b5f5026df0529424"
     },
     {
       "path": "ein-32.json",
@@ -418,7 +424,7 @@
       "bucket": "32",
       "rows": 1977,
       "bytes": 674747,
-      "sha256": "131e0d2b2fd3a4c4d667a416985d2c04362b24954c6fb8435740260a8e0e2384"
+      "sha256": "4f34c700d561a00283108062e464e083118d1b298dab16a4636fd9b290d86e81"
     },
     {
       "path": "ein-33.json",
@@ -426,7 +432,7 @@
       "bucket": "33",
       "rows": 1889,
       "bytes": 645060,
-      "sha256": "91a02d416ebf1ac59a38d146c68d5d4289f7e37c05ca709b7da578ebf819b32b"
+      "sha256": "afa66c83052f606b23e7bd22791fcb19238ef5e3ce58bd2588c5c0a96c1bc911"
     },
     {
       "path": "ein-34.json",
@@ -434,7 +440,7 @@
       "bucket": "34",
       "rows": 2014,
       "bytes": 688125,
-      "sha256": "9209f556f3a9f8ea94dcf1c8393f1989e8b0f459b35ef100f6aae18afb96ed7f"
+      "sha256": "f47e51a3d9ecd4b9521536e1ba30515cc3bfb644fe9c27675ccc7f95d4339cdd"
     },
     {
       "path": "ein-35.json",
@@ -442,7 +448,7 @@
       "bucket": "35",
       "rows": 1965,
       "bytes": 674654,
-      "sha256": "75d7088d78baee4e1d65e73c537a0d82d565279c491c675be1f6fae6cb3bb896"
+      "sha256": "739b57ba491c9a0a2bfe44b83ff604aaca936f4cbfb1483617792790c2bd2e81"
     },
     {
       "path": "ein-36.json",
@@ -450,7 +456,7 @@
       "bucket": "36",
       "rows": 1949,
       "bytes": 667426,
-      "sha256": "0ef23aa907e04013bbd798da75d7a298a32586a261b514d298501be6fdba5bc8"
+      "sha256": "e290b1f07ff5438ffc62068b0af7875aa652f72d6dd06ab49ed4327c24d44e24"
     },
     {
       "path": "ein-37.json",
@@ -458,7 +464,7 @@
       "bucket": "37",
       "rows": 1964,
       "bytes": 673548,
-      "sha256": "ed78d1a5ba81fdf05caaff402178ad4dd1f6c28ee205887397b1912d326a4052"
+      "sha256": "d5b6f7a0e8efd1dd383139fd1e816c939cdea3485f44618685aeef6650ebd3ef"
     },
     {
       "path": "ein-38.json",
@@ -466,7 +472,7 @@
       "bucket": "38",
       "rows": 2026,
       "bytes": 695388,
-      "sha256": "3fa11caa0d38a3578def3f0a4d5ad1e19c6bc687aeb3b6b8127054105bd60eb5"
+      "sha256": "b87e60989f01fd2954150518020d53595e7f2a6d81fa74610d2e5287f0b6f39b"
     },
     {
       "path": "ein-39.json",
@@ -474,7 +480,7 @@
       "bucket": "39",
       "rows": 1965,
       "bytes": 671586,
-      "sha256": "e4d28ebb9696e0674f12395aee6b3a72e1ceca754a07f0a02d4af5fa89045082"
+      "sha256": "8462132754f35a9c3a234f02d370a722272b74046d668323c9b02b5de1080b56"
     },
     {
       "path": "ein-3a.json",
@@ -482,7 +488,7 @@
       "bucket": "3a",
       "rows": 1952,
       "bytes": 668613,
-      "sha256": "46c70dc58892f6fd188ecb36dce9e3917cc37ca8ba4c4771e9f4d2bf909c880a"
+      "sha256": "722501849d85ddc0bafd7b9f87e30e164e7fe842006d512a8255b690066c816f"
     },
     {
       "path": "ein-3b.json",
@@ -490,7 +496,7 @@
       "bucket": "3b",
       "rows": 2031,
       "bytes": 695795,
-      "sha256": "1d8e5410c4214138545f88552f8b2f809c317e7f96a00dce5c9190b256d3aa49"
+      "sha256": "b6a5ef1393ce69c55b7fbc9e4567392946f351bd41886134a033d48d27903e9b"
     },
     {
       "path": "ein-3c.json",
@@ -498,7 +504,7 @@
       "bucket": "3c",
       "rows": 1918,
       "bytes": 661284,
-      "sha256": "d094048a102b094097a6e815501c61fb608352e0f05760f6a3250d7e52bbb05e"
+      "sha256": "3a20d4d62f1fe171da6fa5121bcc56c4d7a0162bfbd058ba3fab1378d299a7f3"
     },
     {
       "path": "ein-3d.json",
@@ -506,7 +512,7 @@
       "bucket": "3d",
       "rows": 1901,
       "bytes": 649071,
-      "sha256": "36d543d27e797950a5dac1c50119babc60e8432f66629d27d4848953f485c272"
+      "sha256": "3f96d809b10044b2b220250d33562489627a786f97c86c9d5f87bc354686e09b"
     },
     {
       "path": "ein-3e.json",
@@ -514,7 +520,7 @@
       "bucket": "3e",
       "rows": 1957,
       "bytes": 670195,
-      "sha256": "5e3cc8ad82ea663387c95fd0e92765776ad49a93fae013c7f67be3dcf97217eb"
+      "sha256": "56f0fb3e8c397a973c0a3739ca670883136f97f8b8d031a07d85907c8fb506fd"
     },
     {
       "path": "ein-3f.json",
@@ -522,7 +528,7 @@
       "bucket": "3f",
       "rows": 1961,
       "bytes": 671954,
-      "sha256": "1a116cc5321c9b535e951594787fa08a5e7ca7ea9d16c31440822c8fcc1674ea"
+      "sha256": "cd6eb6ae099a8e3e803d26e39cb8806ab4b1cb5eac6df6d2453d07965b911d3a"
     },
     {
       "path": "stem-00.json",
@@ -530,7 +536,7 @@
       "bucket": "00",
       "rows": 1930,
       "bytes": 377716,
-      "sha256": "da40ae72dc280355521a08827a872a2b51e8029a64f5f159c724dc2df4521e46"
+      "sha256": "8569feddd94322a4ea98df01355306ce76c3815512b376121ccef734ef4d6205"
     },
     {
       "path": "stem-01.json",
@@ -538,7 +544,7 @@
       "bucket": "01",
       "rows": 1869,
       "bytes": 366577,
-      "sha256": "56dd670eade0c72b835e0cfad01124f25d0cf0bcee5373a551a0ce143fdc5934"
+      "sha256": "f670dea9cf148200a3ed88b37d9ea26fcf236ad2372d66cfb130c00cce3ac04b"
     },
     {
       "path": "stem-02.json",
@@ -546,7 +552,7 @@
       "bucket": "02",
       "rows": 1832,
       "bytes": 356027,
-      "sha256": "5fb46522db489f862987411cfe2ba7227339308c44006503b09033aaa68e12ab"
+      "sha256": "5075ae5f53837d976e35733dcd1830366581eee1ae4152ceca134fd96ecbaef2"
     },
     {
       "path": "stem-03.json",
@@ -554,7 +560,7 @@
       "bucket": "03",
       "rows": 1900,
       "bytes": 372828,
-      "sha256": "d73af366e232e0e7f2cf05ff077a9266f3f74f89b98f59f331eaef81c20e36fa"
+      "sha256": "56f1bcf0abfc9c1161067b92cbf8a7e4ee18dfbcd7aa76ed65721a4b50d00d1b"
     },
     {
       "path": "stem-04.json",
@@ -562,7 +568,7 @@
       "bucket": "04",
       "rows": 1747,
       "bytes": 342095,
-      "sha256": "79e291fee98e275c2d1366b9600cb9ce078fe7a77fe0c2bb8f2334b99c85c783"
+      "sha256": "0f3a8cf562f75906005862ab43958f18f828ceb65eb8844b92456c72bec24f32"
     },
     {
       "path": "stem-05.json",
@@ -570,7 +576,7 @@
       "bucket": "05",
       "rows": 1980,
       "bytes": 384225,
-      "sha256": "e8345f0e3c4fd8ba6613c25ff282c15439e9760a2d0fadba4277bc055d5d232d"
+      "sha256": "57731aacf7371afec57c46d6e5e7456d35283ee3cb91defad51df90a4aafdc88"
     },
     {
       "path": "stem-06.json",
@@ -578,7 +584,7 @@
       "bucket": "06",
       "rows": 1835,
       "bytes": 357405,
-      "sha256": "2329469fc7173686affe5d38783b91a005d64ad98f322016d9c493982dff669c"
+      "sha256": "910e125b792be6fe6337927be002abd4007b32954200ef00107d1c2eb4d179af"
     },
     {
       "path": "stem-07.json",
@@ -586,7 +592,7 @@
       "bucket": "07",
       "rows": 1817,
       "bytes": 352756,
-      "sha256": "96e81fa62956e02e9c49eaa46332b271f5af34c25a09bddeb6bab360df0343b1"
+      "sha256": "82870f7129ef119368c2ece0ca216f2f87e223c0d04f1f9780bc3ee59510d3e1"
     },
     {
       "path": "stem-08.json",
@@ -594,7 +600,7 @@
       "bucket": "08",
       "rows": 1922,
       "bytes": 373496,
-      "sha256": "19b846ee8fc56a9932a08caa12ea5244eb646a11733621da5c9eb78fd3cc63f2"
+      "sha256": "1644f60e85f79110d75f94f3f6cdbdd883fb8eddf0e3c03d3da7e31da630980c"
     },
     {
       "path": "stem-09.json",
@@ -602,7 +608,7 @@
       "bucket": "09",
       "rows": 1822,
       "bytes": 357185,
-      "sha256": "c55c61e0d6d2d004269e2c74b09356bab78e0c9af30ca4a357c0610449b7a85e"
+      "sha256": "e65b2073f66ed06bf47a7cc6d2f96d6d58bb21d16f2f7a5c5314245758137bda"
     },
     {
       "path": "stem-0a.json",
@@ -610,7 +616,7 @@
       "bucket": "0a",
       "rows": 1838,
       "bytes": 360122,
-      "sha256": "0ae24f05dabac0c407c1e0c04c82bfcef624939527a2eb8d0ba190696e6149cb"
+      "sha256": "e88b3d080fa6df4bbfc6c1c2f2de439a94b771a0fc7ea14b8ef86d0bd863e011"
     },
     {
       "path": "stem-0b.json",
@@ -618,7 +624,7 @@
       "bucket": "0b",
       "rows": 1873,
       "bytes": 367083,
-      "sha256": "16565c5196f45ebd3dc12e5430b0c4b1e4eb88d706ea29788f73364f83342b6a"
+      "sha256": "8ca269f48edf606b1e5d32191b299b55d0558bf16d391c0ba01d8447cdfc0ead"
     },
     {
       "path": "stem-0c.json",
@@ -626,7 +632,7 @@
       "bucket": "0c",
       "rows": 1910,
       "bytes": 374710,
-      "sha256": "506dc3802376f3f6604bc39b15c5186be9c17a031045550ebc4a798c5becae6e"
+      "sha256": "871faf94fed43b30bd15ca310c4eec1dd95aae9077f7e6afcc357dcd37ea7862"
     },
     {
       "path": "stem-0d.json",
@@ -634,7 +640,7 @@
       "bucket": "0d",
       "rows": 1928,
       "bytes": 379511,
-      "sha256": "769bea35018714c9311e9da36b24993b44557496deac32ace6d6c09c74f95459"
+      "sha256": "f3367060939bf67815f1061a0b356fad7a7a69924441fa78b43d2a5c39b2029e"
     },
     {
       "path": "stem-0e.json",
@@ -642,7 +648,7 @@
       "bucket": "0e",
       "rows": 1827,
       "bytes": 355391,
-      "sha256": "b20cef3195dfaffa70965eaac0c9976e992fd6c05566fa38556c425e03e6746b"
+      "sha256": "986f2a6b257b941c95f6fb46ef4ef9886a0eab85b7d087a3062720cdd3c5cecc"
     },
     {
       "path": "stem-0f.json",
@@ -650,7 +656,7 @@
       "bucket": "0f",
       "rows": 2019,
       "bytes": 402215,
-      "sha256": "20f2abb18a473f9ad8e24efa4880c4bbcb5b0785caf2e18c90482d299b45db0c"
+      "sha256": "3023b277246e4e3c8b6dac8514acaa5c1cfef3b43209f726a22082896451c92d"
     },
     {
       "path": "stem-10.json",
@@ -658,7 +664,7 @@
       "bucket": "10",
       "rows": 1846,
       "bytes": 362809,
-      "sha256": "e0d3db59fc78cd7b7c9034ea7722a6216e6267be7eef4ee11bf25f30cdd76b12"
+      "sha256": "9f4337881c5c73c5ab0bfa80f7820928c2cbfc14247b75f1208021fbd2ae2215"
     },
     {
       "path": "stem-11.json",
@@ -666,7 +672,7 @@
       "bucket": "11",
       "rows": 1729,
       "bytes": 337985,
-      "sha256": "5342e33f62d933707022b3d5c4accc2846c817d93f8a2c265fa6f2a0dd435c36"
+      "sha256": "1108310f0e3c1907f22a5837df3d9d99b645ef7c21e50b494ed2101eabd7d64b"
     },
     {
       "path": "stem-12.json",
@@ -674,7 +680,7 @@
       "bucket": "12",
       "rows": 1918,
       "bytes": 380375,
-      "sha256": "c16e13d0dcf48e23714eea0db6b86c8f51f1781fb417db6b2fcc6ed64026d567"
+      "sha256": "21989fb5ada2f4b9576e056f051f41cfb7f9b640f4690e99aba9491491b02d4b"
     },
     {
       "path": "stem-13.json",
@@ -682,7 +688,7 @@
       "bucket": "13",
       "rows": 1827,
       "bytes": 357482,
-      "sha256": "167f964157eb840dea73d86add552987e1bd3f3879b3338eb2fe4770b9151b7a"
+      "sha256": "72568a4fbc2679102fce0004e464cb91572e5bd5d50e0c9597292e5eb8eb0a14"
     },
     {
       "path": "stem-14.json",
@@ -690,7 +696,7 @@
       "bucket": "14",
       "rows": 2228,
       "bytes": 428367,
-      "sha256": "b0301fa85997533f34cfe2469f9ae8cb693445a36caf44f57de6bd40d7d7e6e2"
+      "sha256": "2b9225bca199567f6432aaae4da5ad2bf83116372d5f45d4df37f415bd753137"
     },
     {
       "path": "stem-15.json",
@@ -698,7 +704,7 @@
       "bucket": "15",
       "rows": 1797,
       "bytes": 351199,
-      "sha256": "3aecbcc5af0c5686110ebf9200b62a44cbdb62782ab6c5fb30d5b790c3537aea"
+      "sha256": "26fc39f93ba09c242bd9cfaa247be3151c8a2b0d2893820cecd13440ca685ce2"
     },
     {
       "path": "stem-16.json",
@@ -706,7 +712,7 @@
       "bucket": "16",
       "rows": 1840,
       "bytes": 358353,
-      "sha256": "f2642444411cac2956987b576f488a0604a426dc54d8f6dc714e306a8d1c2f79"
+      "sha256": "d5dbb7c684e7e8065bbc747332a1e350852eb94fec844dee6541d472e7db2cbe"
     },
     {
       "path": "stem-17.json",
@@ -714,7 +720,7 @@
       "bucket": "17",
       "rows": 1794,
       "bytes": 349612,
-      "sha256": "34b7226d6c51cbac0446f2e089b3c6d5072bfa86ca0c907f6d7f887f7826d811"
+      "sha256": "1eda0f43ae418bae219c3cd3f87b717d996f02312067774f45e08550f81022b3"
     },
     {
       "path": "stem-18.json",
@@ -722,7 +728,7 @@
       "bucket": "18",
       "rows": 1863,
       "bytes": 363510,
-      "sha256": "75d1cc15f658ffcd5ace2812745b9065b53f1abf1ac332e8b922407729e18af5"
+      "sha256": "4eac1d66ebb46eacd0510732e477e2626fb0c7af407cd78f7ee5ec535a061d4f"
     },
     {
       "path": "stem-19.json",
@@ -730,7 +736,7 @@
       "bucket": "19",
       "rows": 1821,
       "bytes": 354818,
-      "sha256": "b2d78c9d691be6ed21efc649b1e285ae999e05e184aa1dfccc74c0523b26c015"
+      "sha256": "b422e29b01c7fac879520618f6831bdd4ec5919d8da066955ed63b111cf4e0a9"
     },
     {
       "path": "stem-1a.json",
@@ -738,7 +744,7 @@
       "bucket": "1a",
       "rows": 1831,
       "bytes": 358631,
-      "sha256": "b213c96e64bd5a6b6a1e2a5d4398077de0ed013851c07107f1dde5ced7056903"
+      "sha256": "fb3b8051b9927cad0d3c3451bc33966e7e817af87edb437b50989656fc183d88"
     },
     {
       "path": "stem-1b.json",
@@ -746,7 +752,7 @@
       "bucket": "1b",
       "rows": 1873,
       "bytes": 365032,
-      "sha256": "93e5875fe295630a03564b02a2a8854b97aef7b6b575a3c74483f29ce824f9b3"
+      "sha256": "425275c5b3a2bd4e204d3b6928f6dfa0ec64bccacc07cf5394b4bf69f0b6d25f"
     },
     {
       "path": "stem-1c.json",
@@ -754,7 +760,7 @@
       "bucket": "1c",
       "rows": 1835,
       "bytes": 356363,
-      "sha256": "9a0f293998937da9f1a64902b5ad24195e2f7240cfe7ff808d32f7d85e56d99e"
+      "sha256": "7420cf5ea29601d0eb932849480dd1053d640de2a808e0f6d3e3d586d545b3a9"
     },
     {
       "path": "stem-1d.json",
@@ -762,7 +768,7 @@
       "bucket": "1d",
       "rows": 1855,
       "bytes": 370076,
-      "sha256": "0860b14d59762bacbc9b834c9413e8493d979573913b8432bc04321fc1459fb6"
+      "sha256": "5a4d999d15fb57e19a270beba66d5d1fec825d764da863f5568dd42cc7caeb92"
     },
     {
       "path": "stem-1e.json",
@@ -770,7 +776,7 @@
       "bucket": "1e",
       "rows": 1839,
       "bytes": 359946,
-      "sha256": "8a1bcf1eb0dd145bc16e6c4737d1ab91196e359ce42d1197b1bc2a0c1d46aa6e"
+      "sha256": "e7e135eb233f6fde26031fc17c1473a7d9144b7f5947da95396ff2050e9e16b0"
     },
     {
       "path": "stem-1f.json",
@@ -778,7 +784,7 @@
       "bucket": "1f",
       "rows": 1852,
       "bytes": 360360,
-      "sha256": "48c244cc9469508b6752705fd72918d47356c1aaeccab2cd025ec9b4ee9d096e"
+      "sha256": "b844ed120df16d6c0fa148e808db7cf070be81305274aad3041af26fc2be78da"
     },
     {
       "path": "stem-20.json",
@@ -786,7 +792,7 @@
       "bucket": "20",
       "rows": 2925,
       "bytes": 573688,
-      "sha256": "ce16bcf2e8b3db67215ac77661d63b497e200a43c76589daadb276dc5779ba69"
+      "sha256": "c321a4dc33ca9b8934c33f6971e498ea91b42f1a614939406c0359bcf587b658"
     },
     {
       "path": "stem-21.json",
@@ -794,7 +800,7 @@
       "bucket": "21",
       "rows": 1904,
       "bytes": 377934,
-      "sha256": "43bdaa91b536b3a06f3a91effa4921a9580ff95baf7e319823e5cb56e008946e"
+      "sha256": "87c0ff6527023e700ef3072e01e99e7e55176e90c4bf0b8ec097ca4b0779d7fd"
     },
     {
       "path": "stem-22.json",
@@ -802,7 +808,7 @@
       "bucket": "22",
       "rows": 1895,
       "bytes": 368497,
-      "sha256": "82d15a6d4c3b1a84bb0182013a9f8e9a4cbb200adc58112b27f083fa6eba1dde"
+      "sha256": "14a55515ca277a2b9245879533c4d3aa5e7df6da3e1125ae3267f7b84bc2919a"
     },
     {
       "path": "stem-23.json",
@@ -810,7 +816,7 @@
       "bucket": "23",
       "rows": 1741,
       "bytes": 339791,
-      "sha256": "25825d0d37a595e00f1fae73bb1611fb284ff9877231ed51e2782d31faef5d40"
+      "sha256": "4cc31413fd630354a2f14665fe64f3be2f298dd10735069daeba51c346abd635"
     },
     {
       "path": "stem-24.json",
@@ -818,7 +824,7 @@
       "bucket": "24",
       "rows": 1841,
       "bytes": 358646,
-      "sha256": "a279f61d14cd25c490dfd24e6618e9252b9bd8a392ee1bf134e6a239f1c09baa"
+      "sha256": "1e8646562f883a3c95371f8860d2b36d47eae4faf8f76033c2b6169e9537cade"
     },
     {
       "path": "stem-25.json",
@@ -826,7 +832,7 @@
       "bucket": "25",
       "rows": 1877,
       "bytes": 367784,
-      "sha256": "ae89900de570fdcbcc86dc07577b496d890493b276a714502263cead7a5c7d7d"
+      "sha256": "3e8d5bdfa654ded55a34f6ce88edc40130c7511c97acd8af7378e8f09efee624"
     },
     {
       "path": "stem-26.json",
@@ -834,7 +840,7 @@
       "bucket": "26",
       "rows": 1857,
       "bytes": 364372,
-      "sha256": "b855e0f097528ffe476d18fdfd8d843d14fdaacf70aa3429b45f69d697c8a75e"
+      "sha256": "73695ec0db3ab61480696d128a2689670b805c9223ca3e3682547cc9056274e5"
     },
     {
       "path": "stem-27.json",
@@ -842,7 +848,7 @@
       "bucket": "27",
       "rows": 1914,
       "bytes": 369690,
-      "sha256": "6c23c56f0fdb37c14645bfc6089ebc1feb51c333f3983ae700ce044b4a990524"
+      "sha256": "d62967694769aa112256aa63009f2a320268cb6485eedb4bebe767c82639ea58"
     },
     {
       "path": "stem-28.json",
@@ -850,7 +856,7 @@
       "bucket": "28",
       "rows": 1903,
       "bytes": 374325,
-      "sha256": "c73d9498df18fcde58b7e4642e75a5dc38caa6e0b5a61249dbdb6424253f66b0"
+      "sha256": "7e8e6cb737d24a2e1e1c94ac395bfe171750c45a0dfc3aa801203b741a84ef16"
     },
     {
       "path": "stem-29.json",
@@ -858,7 +864,7 @@
       "bucket": "29",
       "rows": 3148,
       "bytes": 627187,
-      "sha256": "7d92fa1cbf5276c378e7e84ae28a5a7df5896baf60880cece28a809d61e448db"
+      "sha256": "76a4f5507fb7fb74691a8f4885f5c3a92fdf2ff9e09f5b969e46942a1a4e96fd"
     },
     {
       "path": "stem-2a.json",
@@ -866,7 +872,7 @@
       "bucket": "2a",
       "rows": 2046,
       "bytes": 396673,
-      "sha256": "51e003da2a711fcaec432b6d81f5a4cb9f7bf4feea256c930a7348574ce9b152"
+      "sha256": "e7ac4db068cbef754d75b7362de958e0c90e2a64db02c44c1551c74f6ba77534"
     },
     {
       "path": "stem-2b.json",
@@ -874,7 +880,7 @@
       "bucket": "2b",
       "rows": 2229,
       "bytes": 435502,
-      "sha256": "8112bd955570f798f1fdf42ef8ba07184318f4a462000fe6925ed3fbb27f92d2"
+      "sha256": "b670c118f43c2981dc7c27f3cf69f0c120b1ee0d1e37bb71e9c261366137c615"
     },
     {
       "path": "stem-2c.json",
@@ -882,7 +888,7 @@
       "bucket": "2c",
       "rows": 1757,
       "bytes": 342393,
-      "sha256": "44a67cb8e99b98489b098be8fd826a767c2a73248f3ca54f3564d6dedc925223"
+      "sha256": "53ff8cc0b84726b86addaca9ff1a1ef94bef46b811ceae31124bb3d55ff3ce68"
     },
     {
       "path": "stem-2d.json",
@@ -890,7 +896,7 @@
       "bucket": "2d",
       "rows": 1950,
       "bytes": 378147,
-      "sha256": "4bb669b4d933056eb7a243f16edcc697a2fef7ed1f7fdf33105e7e1b44db5597"
+      "sha256": "41f6d130fb5ddd1a4e55d39ffaa65f809e7e075694409c8d7687229013b5c186"
     },
     {
       "path": "stem-2e.json",
@@ -898,7 +904,7 @@
       "bucket": "2e",
       "rows": 2100,
       "bytes": 405926,
-      "sha256": "b6788ac68abe816483a71734ee22630fea603771a9d17a59d69b7a73509681a7"
+      "sha256": "89ac3c22c29255a2493d5b0a27b80f958fa47516f16600132adafef341c0e374"
     },
     {
       "path": "stem-2f.json",
@@ -906,7 +912,7 @@
       "bucket": "2f",
       "rows": 2276,
       "bytes": 448394,
-      "sha256": "345a18f08ac0e697a57a5088ff6c0d1de6e8a552c575b1b84e9387887b6f0cdc"
+      "sha256": "544699b3d5588d22f6ba735bdda763480895a31b1a6c4cd0551dde22b9a12a14"
     },
     {
       "path": "stem-30.json",
@@ -914,7 +920,7 @@
       "bucket": "30",
       "rows": 1768,
       "bytes": 345214,
-      "sha256": "2dc349055978d6f358fc649c827c1d9f746018bfb6ce7bb405b1d66e54a16a63"
+      "sha256": "4c05a754b608a38794673864570f64a73f4fde3b9077d3f7dfa7418b69e4dd35"
     },
     {
       "path": "stem-31.json",
@@ -922,7 +928,7 @@
       "bucket": "31",
       "rows": 1883,
       "bytes": 368310,
-      "sha256": "eb59f354dc384f9388b4fca99d1bc8db99b290ce3291e363f657dbcd2cd7ac9a"
+      "sha256": "c4711c93adb220676cc79895e911ab5a9c53d5c6b4b850dcb95fffc1c76aa022"
     },
     {
       "path": "stem-32.json",
@@ -930,7 +936,7 @@
       "bucket": "32",
       "rows": 1787,
       "bytes": 349327,
-      "sha256": "3294a7ca660a6cc323e268d7456fa3980accd20071266fc4a746514b5aa6915b"
+      "sha256": "9d3051904dfbc28d7be90a1cbb9b3c739483895bb3ead31011b443089984081d"
     },
     {
       "path": "stem-33.json",
@@ -938,7 +944,7 @@
       "bucket": "33",
       "rows": 2113,
       "bytes": 410397,
-      "sha256": "121f746468c701a660b786e4da8833c76ec3feffae40faca0e9fc791febd7671"
+      "sha256": "ecf8bbd30647e51af0f44bf14bfc53c65b9353cf02add00948740441660b52a0"
     },
     {
       "path": "stem-34.json",
@@ -946,7 +952,7 @@
       "bucket": "34",
       "rows": 1773,
       "bytes": 346146,
-      "sha256": "a889cff16c07b349e6c43d6e5fa5d53edca7d02e89221a0257d0e917764b32b3"
+      "sha256": "d1fecb98c5abe5a10a239cee7e285c10cb5e75162a99f9779617a2daa4394754"
     },
     {
       "path": "stem-35.json",
@@ -954,7 +960,7 @@
       "bucket": "35",
       "rows": 1761,
       "bytes": 343011,
-      "sha256": "063ce4bff428e681cbe8fe2f9cc996372fb2564f8a351b24a010cc9d5a1befad"
+      "sha256": "bce343fa5124775e04f4bf1a16e5493ac2e3b8b6cc93e724498b515436cf2dfb"
     },
     {
       "path": "stem-36.json",
@@ -962,7 +968,7 @@
       "bucket": "36",
       "rows": 1878,
       "bytes": 367835,
-      "sha256": "612ee1d9a699df422a86673128d11add28009cf3c3461d38eaae803dfe1af664"
+      "sha256": "71e223fc84a2f1654954f2e4d12d4c69c7ec4795d65733d8abad0788cce057c6"
     },
     {
       "path": "stem-37.json",
@@ -970,7 +976,7 @@
       "bucket": "37",
       "rows": 1964,
       "bytes": 383600,
-      "sha256": "9e2ee05768a259899dc52c432b15eb32932467e781cbd5e34909edb48bf87551"
+      "sha256": "9aa3c1986edc1d715c343eaa70c1627450b29d64881b90b970c8bae3a0886e11"
     },
     {
       "path": "stem-38.json",
@@ -978,7 +984,7 @@
       "bucket": "38",
       "rows": 1995,
       "bytes": 382332,
-      "sha256": "437f4076c1c5ee05420d94b5b3b15df863b03e40574e76e269c60d51c664712d"
+      "sha256": "4d1de0bd260477adbeecad69f0232e58b4a3b980d1dae20ebcb489a4b100fc88"
     },
     {
       "path": "stem-39.json",
@@ -986,7 +992,7 @@
       "bucket": "39",
       "rows": 1969,
       "bytes": 383189,
-      "sha256": "01fc31a6a627e481dab58ea504c91dcb4efd46fa2b7b634df08d8e1d0eca5fbe"
+      "sha256": "1e5a4a432454eb1687831601e91e38468c091c5a353eb04160a606ab3e9a1be5"
     },
     {
       "path": "stem-3a.json",
@@ -994,7 +1000,7 @@
       "bucket": "3a",
       "rows": 1874,
       "bytes": 368885,
-      "sha256": "e061796acbbdb9a89eaf7563d39fefc9f7cd4916fd5e2f0c8ef422cdde221ced"
+      "sha256": "0db37cb7859654b43278293991138ff040b6e0794b9cd93814d71565bcc91647"
     },
     {
       "path": "stem-3b.json",
@@ -1002,7 +1008,7 @@
       "bucket": "3b",
       "rows": 2422,
       "bytes": 465491,
-      "sha256": "e0add76d4f20619ec68144cb25cda0a36af141a2836688e77f3e1b71dab7be94"
+      "sha256": "0b272afe0d98e411a13e730f834e0c6bce2685fc39d6e194560a3ad98fff7178"
     },
     {
       "path": "stem-3c.json",
@@ -1010,7 +1016,7 @@
       "bucket": "3c",
       "rows": 2101,
       "bytes": 403915,
-      "sha256": "343456ab371779566726ec0d9ac479b2350653831efaab63a3cfff6c30380429"
+      "sha256": "37e49efeee9048c7d32cc99dfe065e5536b6cb9be256dca7c7bb3c4c0504c0b3"
     },
     {
       "path": "stem-3d.json",
@@ -1018,7 +1024,7 @@
       "bucket": "3d",
       "rows": 3446,
       "bytes": 645908,
-      "sha256": "51e4710c722678d8b6b75926f348a756ae7ad512ac9880a805f56541704bfd5b"
+      "sha256": "6ed15759acfe764f31621b1c3afd79a6f1145ede180df45f4945e6c838f0a8e4"
     },
     {
       "path": "stem-3e.json",
@@ -1026,7 +1032,7 @@
       "bucket": "3e",
       "rows": 1870,
       "bytes": 364059,
-      "sha256": "aa4cc93291262ec76925cc891cc389725bb7fad97121460a36df47a58c67586f"
+      "sha256": "8cc3d7a2018f0836ce9bf1d0879aef0173c68446bb6b02306efdb575922e2782"
     },
     {
       "path": "stem-3f.json",
@@ -1034,13 +1040,7 @@
       "bucket": "3f",
       "rows": 1858,
       "bytes": 363750,
-      "sha256": "fd6710a10e1b9898ed7a1f0d155db164f17bbfa4352421a37c371d158c1edf21"
-    }
-  ],
-  "canary_rows": [
-    {
-      "EIN": "263419217",
-      "NAME": "VINCENT NASTA FOUNDATION INC"
+      "sha256": "53e235467729dcf426f7aa155b1c47d3714cf50933d651ed9a9c4526ed7f17fb"
     }
   ]
 }

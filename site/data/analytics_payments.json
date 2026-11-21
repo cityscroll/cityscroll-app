@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_payments.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "payment",
-  "generated_at": "2026-11-13T14:08:23.774Z",
-  "snapshot_date": "2026-11-13T14:08:23.774Z",
+  "generated_at": "2026-11-21T15:00:21.495Z",
+  "snapshot_date": "2026-11-21T15:00:21.495Z",
   "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
   "dimensions": [
     "agency",
@@ -21,19 +21,19 @@
     "fiscal_years": [
       2026
     ],
-    "publisher_record_count": 1785886,
-    "source_net_check_amount": 52399983822.17,
+    "publisher_record_count": 1786125,
+    "source_net_check_amount": 52410191322.8,
     "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
     "input": "payments.csv"
   },
   "population": {
-    "source_rows": 1785886,
-    "grouped_rows": 28559,
-    "transaction_count": 1785886,
-    "unique_transaction_count": 1636029,
-    "actual_payment_amount": 52399983822.17,
-    "duplicate_transaction_rows": 149857,
-    "reversal_rows": 1705
+    "source_rows": 1786125,
+    "grouped_rows": 28603,
+    "transaction_count": 1786125,
+    "unique_transaction_count": 1636249,
+    "actual_payment_amount": 52410191322.8,
+    "duplicate_transaction_rows": 149876,
+    "reversal_rows": 1711
   },
   "rows": [
     {
@@ -2845,6 +2845,16 @@
       "actual_payment_amount": 2264611,
       "contract_count": 1,
       "contract_id": "CT106820258800311"
+    },
+    {
+      "agency": "Administration for Children's Services",
+      "payee_name": "KRISHNA CONTRACTING INC.",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 59588.6,
+      "contract_count": 1,
+      "contract_id": "CT106820258800222"
     },
     {
       "agency": "Administration for Children's Services",
@@ -39145,6 +39155,16 @@
       "actual_payment_amount": 970918.86,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department for the Aging",
+      "payee_name": "Altagracia Zapata",
+      "fiscal_year": 2026,
+      "transaction_count": 11,
+      "unique_transaction_count": 11,
+      "actual_payment_amount": 2130,
+      "contract_count": 1,
+      "contract_id": "CT112520258803867"
     },
     {
       "agency": "Department for the Aging",
@@ -143190,9 +143210,9 @@
       "agency": "Department of Education",
       "payee_name": "SCHWANIERI ENTERTAINMENT CORP",
       "fiscal_year": 2026,
-      "transaction_count": 87,
-      "unique_transaction_count": 87,
-      "actual_payment_amount": 235618.74,
+      "transaction_count": 90,
+      "unique_transaction_count": 90,
+      "actual_payment_amount": 227695.56,
       "contract_count": 73,
       "contract_id": null
     },
@@ -168558,6 +168578,16 @@
     },
     {
       "agency": "Department of Environmental Protection",
+      "payee_name": "Citymark Striping LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 1850,
+      "contract_count": 1,
+      "contract_id": "CT182620248807119"
+    },
+    {
+      "agency": "Department of Environmental Protection",
       "payee_name": "CITYWATER METER REPAIR CO INC",
       "fiscal_year": 2026,
       "transaction_count": 4,
@@ -171600,9 +171630,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "HINMAN, HOWARD & KATELL, LLP",
       "fiscal_year": 2026,
-      "transaction_count": 23,
-      "unique_transaction_count": 23,
-      "actual_payment_amount": 47140.82,
+      "transaction_count": 26,
+      "unique_transaction_count": 26,
+      "actual_payment_amount": 46565.82,
       "contract_count": 1,
       "contract_id": "CT182620258804159"
     },
@@ -176948,6 +176978,16 @@
     },
     {
       "agency": "Department of Environmental Protection",
+      "payee_name": "S & T SECURITY INC",
+      "fiscal_year": 2026,
+      "transaction_count": 19,
+      "unique_transaction_count": 19,
+      "actual_payment_amount": 201936.14,
+      "contract_count": 2,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Environmental Protection",
       "payee_name": "S.I. PHOTONICS INC",
       "fiscal_year": 2026,
       "transaction_count": 1,
@@ -178765,6 +178805,16 @@
       "actual_payment_amount": 57658.04,
       "contract_count": 4,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Environmental Protection",
+      "payee_name": "Top Line Ltd Inc",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 52364,
+      "contract_count": 1,
+      "contract_id": "CT182620248807119"
     },
     {
       "agency": "Department of Environmental Protection",
@@ -201240,10 +201290,10 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "AARCO ENVIRONMENTAL SERVICES CORP",
       "fiscal_year": 2026,
-      "transaction_count": 213,
-      "unique_transaction_count": 213,
-      "actual_payment_amount": 395963.5,
-      "contract_count": 11,
+      "transaction_count": 214,
+      "unique_transaction_count": 214,
+      "actual_payment_amount": 401502.7,
+      "contract_count": 12,
       "contract_id": null
     },
     {
@@ -201578,6 +201628,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "AMERICAN ENGINEERING SERVICES, P.C.",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 4000,
+      "contract_count": 1,
+      "contract_id": "CT184620268802665"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "AMERICAN EXPRESS TRAVEL RELATED SERVICES COMPANY INC",
       "fiscal_year": 2026,
       "transaction_count": 33,
@@ -201728,6 +201788,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "Athletic Field Services Corp",
+      "fiscal_year": 2026,
+      "transaction_count": 5,
+      "unique_transaction_count": 5,
+      "actual_payment_amount": 409969.55,
+      "contract_count": 2,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "ATHLETIC FIELD SERVICES CORPORATION",
       "fiscal_year": 2026,
       "transaction_count": 1,
@@ -201790,11 +201860,11 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "AWK ELECTRICAL CONTRACTING INC",
       "fiscal_year": 2026,
-      "transaction_count": 2,
-      "unique_transaction_count": 2,
-      "actual_payment_amount": 30000,
-      "contract_count": 1,
-      "contract_id": "CT184620258805407"
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 55000,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -202180,11 +202250,11 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "C.FRANCIS CONSTRUCTION, CORP",
       "fiscal_year": 2026,
-      "transaction_count": 14,
-      "unique_transaction_count": 14,
-      "actual_payment_amount": 53992.62,
-      "contract_count": 1,
-      "contract_id": "CT184620258808697"
+      "transaction_count": 37,
+      "unique_transaction_count": 37,
+      "actual_payment_amount": 125841.01,
+      "contract_count": 3,
+      "contract_id": null
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -202438,6 +202508,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "CM Testing Lab Inc",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 3733.5,
+      "contract_count": 1,
+      "contract_id": "CT184620258806036"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "COLD MIX MANUFACTURING CORP",
       "fiscal_year": 2026,
       "transaction_count": 12,
@@ -202548,6 +202628,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "CORONA INDUSTRIES CORP",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 76323,
+      "contract_count": 1,
+      "contract_id": "CT184620258806662"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "CORPORATE COMPUTER SOLUTIONS INC",
       "fiscal_year": 2026,
       "transaction_count": 1,
@@ -202580,11 +202670,11 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "CRAIG SULLIVAN THE AVANT GARDNER LLC",
       "fiscal_year": 2026,
-      "transaction_count": 1,
-      "unique_transaction_count": 1,
-      "actual_payment_amount": 3100,
-      "contract_count": 1,
-      "contract_id": "CT184620258806307"
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 18100,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -202685,6 +202775,16 @@
       "actual_payment_amount": 60759.92,
       "contract_count": 3,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "D.D.S. MECHANICAL PLUMBING & HEATING CORP.",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 105867,
+      "contract_count": 1,
+      "contract_id": "CT184620258804416"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -202990,11 +203090,11 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "ELECTRICAL SERVICES & CONSULTING GROUP LLC",
       "fiscal_year": 2026,
-      "transaction_count": 2,
-      "unique_transaction_count": 2,
-      "actual_payment_amount": 26000,
-      "contract_count": 1,
-      "contract_id": "CT184620258808697"
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 34600,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -203065,6 +203165,16 @@
       "actual_payment_amount": 18500,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "EN-TECH INFRASTRUCTURE LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 5850,
+      "contract_count": 1,
+      "contract_id": "CT184620258806036"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -203150,10 +203260,10 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "FAMILY TREE SERVICE, INC.",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 52298.3,
-      "contract_count": 2,
+      "transaction_count": 13,
+      "unique_transaction_count": 13,
+      "actual_payment_amount": 348561.71,
+      "contract_count": 7,
       "contract_id": null
     },
     {
@@ -203235,6 +203345,16 @@
       "actual_payment_amount": 1059723.02,
       "contract_count": 1,
       "contract_id": "CTA184620197208446"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "FJP MECHANICAL INC",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 49750.94,
+      "contract_count": 1,
+      "contract_id": "CT184620258803704"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -203320,10 +203440,10 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "Fresh Meadow Mechanical Plumbing, LLC",
       "fiscal_year": 2026,
-      "transaction_count": 2,
-      "unique_transaction_count": 2,
-      "actual_payment_amount": 28173.09,
-      "contract_count": 2,
+      "transaction_count": 10,
+      "unique_transaction_count": 10,
+      "actual_payment_amount": 131738.93,
+      "contract_count": 6,
       "contract_id": null
     },
     {
@@ -203558,6 +203678,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "GRANITE WORKS, INC.",
+      "fiscal_year": 2026,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 614921.07,
+      "contract_count": 1,
+      "contract_id": "CT184620258806036"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "GREEN APPLE GOURMET NY INC",
       "fiscal_year": 2026,
       "transaction_count": 6,
@@ -203708,6 +203838,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "HISTORICAL PERSPECTIVES INC",
+      "fiscal_year": 2026,
+      "transaction_count": 5,
+      "unique_transaction_count": 5,
+      "actual_payment_amount": 18123.88,
+      "contract_count": 2,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "HMD CONSTRUCTION GROUP LLC",
       "fiscal_year": 2026,
       "transaction_count": 10,
@@ -203810,11 +203950,11 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "IN-CITY ENTERPRISES INC",
       "fiscal_year": 2026,
-      "transaction_count": 1,
-      "unique_transaction_count": 1,
-      "actual_payment_amount": 1200,
-      "contract_count": 1,
-      "contract_id": "CT184620258806307"
+      "transaction_count": 5,
+      "unique_transaction_count": 5,
+      "actual_payment_amount": 97073.36,
+      "contract_count": 4,
+      "contract_id": null
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -203825,6 +203965,16 @@
       "actual_payment_amount": 12350,
       "contract_count": 1,
       "contract_id": "CT184620268801361"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "INFINITI ESC PLUMBING CORP",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 152843.9,
+      "contract_count": 1,
+      "contract_id": "CT184620258805286"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -203855,6 +204005,16 @@
       "actual_payment_amount": 76309.03,
       "contract_count": 10,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "ISLAND PAVEMENT CUTTING CO, INC.",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 3230,
+      "contract_count": 1,
+      "contract_id": "CT184620268802147"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -204058,6 +204218,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "JP HOGAN CORING & SAWING CO",
+      "fiscal_year": 2026,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 19420,
+      "contract_count": 2,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "JP MORGAN CHASE BANK NA",
       "fiscal_year": 2026,
       "transaction_count": 358,
@@ -204138,6 +204308,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "KELLER NORTH AMERICA INC",
+      "fiscal_year": 2026,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 1140000,
+      "contract_count": 1,
+      "contract_id": "CT184620258806036"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "Key Merchant Services, LLC",
       "fiscal_year": 2026,
       "transaction_count": 13,
@@ -204164,6 +204344,16 @@
       "unique_transaction_count": 39,
       "actual_payment_amount": 67467,
       "contract_count": 15,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "KLEINBERG ELECTRIC INC",
+      "fiscal_year": 2026,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 647502.31,
+      "contract_count": 2,
       "contract_id": null
     },
     {
@@ -204270,11 +204460,11 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "LERCO ELECTRIC LLC",
       "fiscal_year": 2026,
-      "transaction_count": 2,
-      "unique_transaction_count": 2,
-      "actual_payment_amount": 145218.56,
-      "contract_count": 1,
-      "contract_id": "CT184620258806307"
+      "transaction_count": 6,
+      "unique_transaction_count": 6,
+      "actual_payment_amount": 256648.6,
+      "contract_count": 3,
+      "contract_id": null
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -204428,6 +204618,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "MAC CONTRACTING OF SI INC",
+      "fiscal_year": 2026,
+      "transaction_count": 10,
+      "unique_transaction_count": 10,
+      "actual_payment_amount": 588991.62,
+      "contract_count": 1,
+      "contract_id": "CT184620258806111"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "MAINE TECHNICAL SOURCE, INC.",
       "fiscal_year": 2026,
       "transaction_count": 1,
@@ -204495,6 +204695,16 @@
       "actual_payment_amount": 101940.08,
       "contract_count": 9,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "MESSINA ASPHALT CORP",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 14880,
+      "contract_count": 1,
+      "contract_id": "CT184620258805555"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -204708,6 +204918,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "NADINE PLAUT, CPA",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 1800,
+      "contract_count": 1,
+      "contract_id": "CT184620258805255"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "NADLER MOBILE LLC",
       "fiscal_year": 2026,
       "transaction_count": 2,
@@ -204743,6 +204963,16 @@
       "transaction_count": 3,
       "unique_transaction_count": 3,
       "actual_payment_amount": 187.93,
+      "contract_count": 3,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "Nathan Enterprises LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 7,
+      "unique_transaction_count": 7,
+      "actual_payment_amount": 178843.83,
       "contract_count": 3,
       "contract_id": null
     },
@@ -204838,6 +205068,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "New York Boom Trucks, Inc.",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 9000,
+      "contract_count": 1,
+      "contract_id": "CT184620258805170"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "NEW YORK CITY STREET TREE CONSORTIUM INC",
       "fiscal_year": 2026,
       "transaction_count": 12,
@@ -204910,10 +205150,10 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "NICHE ANALYSIS INC",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 33657.95,
-      "contract_count": 2,
+      "transaction_count": 7,
+      "unique_transaction_count": 7,
+      "actual_payment_amount": 56437.95,
+      "contract_count": 4,
       "contract_id": null
     },
     {
@@ -205015,6 +205255,16 @@
       "actual_payment_amount": 14650,
       "contract_count": 1,
       "contract_id": "PCC184620252001516"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "OMEGA ENVIRONMENTAL SERVICES",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 1583,
+      "contract_count": 1,
+      "contract_id": "CT184620258806036"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -205120,10 +205370,10 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "Paul Bunyon Tree Care, Inc.",
       "fiscal_year": 2026,
-      "transaction_count": 2,
-      "unique_transaction_count": 2,
-      "actual_payment_amount": 241220.58,
-      "contract_count": 2,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 294444.34,
+      "contract_count": 3,
       "contract_id": null
     },
     {
@@ -205135,6 +205385,16 @@
       "actual_payment_amount": 2000,
       "contract_count": 1,
       "contract_id": "CT184620221416802"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "PDK COMMERCIAL PHOTOGRAPHERS LTD",
+      "fiscal_year": 2026,
+      "transaction_count": 6,
+      "unique_transaction_count": 6,
+      "actual_payment_amount": 3580,
+      "contract_count": 3,
+      "contract_id": null
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -205165,6 +205425,16 @@
       "actual_payment_amount": 245,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "PETER J CATANZARO INC",
+      "fiscal_year": 2026,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 147365,
+      "contract_count": 1,
+      "contract_id": "CT184620258805170"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -205205,6 +205475,16 @@
       "actual_payment_amount": 18899,
       "contract_count": 1,
       "contract_id": "CT184620268802465"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "PIONEER LANDSCAPING & ASPHALT PAVING INC",
+      "fiscal_year": 2026,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 1338184.71,
+      "contract_count": 1,
+      "contract_id": "CT184620248807743"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -205270,11 +205550,11 @@
       "agency": "Department of Parks and Recreation",
       "payee_name": "POLE- TECH COMPANY",
       "fiscal_year": 2026,
-      "transaction_count": 2,
-      "unique_transaction_count": 2,
-      "actual_payment_amount": 19515,
-      "contract_count": 1,
-      "contract_id": "CT184620258806307"
+      "transaction_count": 9,
+      "unique_transaction_count": 9,
+      "actual_payment_amount": 73710,
+      "contract_count": 4,
+      "contract_id": null
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -205285,6 +205565,16 @@
       "actual_payment_amount": 5850,
       "contract_count": 1,
       "contract_id": "CT184620258806437"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "POWER CONNECT ELECTRIC CORP",
+      "fiscal_year": 2026,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 365673.1,
+      "contract_count": 3,
+      "contract_id": null
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -205355,6 +205645,26 @@
       "actual_payment_amount": 252811.63,
       "contract_count": 4,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "PRESTIGE FENCING INC",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 366278.14,
+      "contract_count": 1,
+      "contract_id": "CT184620258805255"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "PRESTIGE PAVERS OF NYC INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 63041.68,
+      "contract_count": 1,
+      "contract_id": "CT184620258803174"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -205528,6 +205838,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "RAMPA LAND SURVEYING PC",
+      "fiscal_year": 2026,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 8800,
+      "contract_count": 1,
+      "contract_id": "CT184620258805555"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "RBI Corporation",
       "fiscal_year": 2026,
       "transaction_count": 1,
@@ -205575,6 +205895,16 @@
       "actual_payment_amount": 600,
       "contract_count": 1,
       "contract_id": "CT184620268801755"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "RENTOKIL NORTH AMERICA INC",
+      "fiscal_year": 2026,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 2075,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -205635,6 +205965,16 @@
       "actual_payment_amount": 53940.39,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "RMI ROAD MARKINGS INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 508.9,
+      "contract_count": 1,
+      "contract_id": "CT184620211416741"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -205765,6 +206105,16 @@
       "actual_payment_amount": 2474.28,
       "contract_count": 1,
       "contract_id": "CT184620248805829"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "SAN ANTONIO CONTRACTING CORP",
+      "fiscal_year": 2026,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 237500,
+      "contract_count": 1,
+      "contract_id": "CT184620211416741"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -206198,12 +206548,32 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "Straight Edge Striping",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 2193.5,
+      "contract_count": 1,
+      "contract_id": "CT184620258803704"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "Strictly Tango NYC",
       "fiscal_year": 2026,
       "transaction_count": 3,
       "unique_transaction_count": 3,
       "actual_payment_amount": 7300,
       "contract_count": 3,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "SUN STAR INDUSTRIES CORPORATION",
+      "fiscal_year": 2026,
+      "transaction_count": 10,
+      "unique_transaction_count": 10,
+      "actual_payment_amount": 139841.57,
+      "contract_count": 2,
       "contract_id": null
     },
     {
@@ -206365,6 +206735,16 @@
       "actual_payment_amount": 19976,
       "contract_count": 1,
       "contract_id": "CT184620268804122"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "TECTONIC ENGINEERING CONSULTANTS GEOLOGISTS & LAND SURVEYORS",
+      "fiscal_year": 2026,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 15755,
+      "contract_count": 1,
+      "contract_id": "CT184620258806036"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -206758,6 +207138,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "UNITED METRO CONST CORP",
+      "fiscal_year": 2026,
+      "transaction_count": 2,
+      "unique_transaction_count": 2,
+      "actual_payment_amount": 58733.27,
+      "contract_count": 2,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "UNITED PARCEL SERVICE INC",
       "fiscal_year": 2026,
       "transaction_count": 10,
@@ -206958,6 +207348,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "WALKER DIVING UNDERWATER CONSTRUCTION LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 3,
+      "unique_transaction_count": 3,
+      "actual_payment_amount": 569603.37,
+      "contract_count": 1,
+      "contract_id": "CT184620258809333"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "WALSH & HUGHES INC VELVETOP PRODUCTS",
       "fiscal_year": 2026,
       "transaction_count": 20,
@@ -206998,6 +207398,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "WBE UNLIMITED CORP.",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 185000,
+      "contract_count": 1,
+      "contract_id": "CT184620258805255"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "WEST PUBLISHING CORPORATION",
       "fiscal_year": 2026,
       "transaction_count": 24,
@@ -207005,6 +207415,16 @@
       "actual_payment_amount": 24386.87,
       "contract_count": 4,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "WETLANDS INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 8104.69,
+      "contract_count": 1,
+      "contract_id": "CT184620258806777"
     },
     {
       "agency": "Department of Parks and Recreation",
@@ -207078,6 +207498,16 @@
     },
     {
       "agency": "Department of Parks and Recreation",
+      "payee_name": "WINDSOR ELECTRICAL CONTRACTING INC",
+      "fiscal_year": 2026,
+      "transaction_count": 14,
+      "unique_transaction_count": 14,
+      "actual_payment_amount": 1036450,
+      "contract_count": 1,
+      "contract_id": "CT184620258805286"
+    },
+    {
+      "agency": "Department of Parks and Recreation",
       "payee_name": "WINGGLEE LLC",
       "fiscal_year": 2026,
       "transaction_count": 183,
@@ -207134,6 +207564,16 @@
       "unique_transaction_count": 99,
       "actual_payment_amount": 170944.37,
       "contract_count": 8,
+      "contract_id": null
+    },
+    {
+      "agency": "Department of Parks and Recreation",
+      "payee_name": "YABOO FENCE COMPANY INC",
+      "fiscal_year": 2026,
+      "transaction_count": 8,
+      "unique_transaction_count": 8,
+      "actual_payment_amount": 439489.54,
+      "contract_count": 2,
       "contract_id": null
     },
     {

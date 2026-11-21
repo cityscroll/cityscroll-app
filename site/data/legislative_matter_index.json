@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.legislative_matter_index.v1",
-  "generated_at": "2026-11-14T10:01:03.273Z",
+  "generated_at": "2026-11-21T10:00:40.622Z",
   "source": {
     "system": "legistar",
     "input_artifact": "site/data/meeting_outcomes_snapshot.json",
@@ -8,30 +8,6 @@
     "note": "Published population and official addresses only. Appearances, actions, votes and receipts stay in the lookup."
   },
   "matters": {
-    "78605": {
-      "matter_id": "78605",
-      "matter_ref": "legistar:nyc:matter:78605",
-      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78605",
-      "appearance_count": 1
-    },
-    "78606": {
-      "matter_id": "78606",
-      "matter_ref": "legistar:nyc:matter:78606",
-      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78606",
-      "appearance_count": 1
-    },
-    "78682": {
-      "matter_id": "78682",
-      "matter_ref": "legistar:nyc:matter:78682",
-      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78682",
-      "appearance_count": 1
-    },
-    "78760": {
-      "matter_id": "78760",
-      "matter_ref": "legistar:nyc:matter:78760",
-      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78760",
-      "appearance_count": 1
-    },
     "78872": {
       "matter_id": "78872",
       "matter_ref": "legistar:nyc:matter:78872",
@@ -468,6 +444,36 @@
       "matter_id": "79579",
       "matter_ref": "legistar:nyc:matter:79579",
       "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79579",
+      "appearance_count": 1
+    },
+    "79800": {
+      "matter_id": "79800",
+      "matter_ref": "legistar:nyc:matter:79800",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79800",
+      "appearance_count": 1
+    },
+    "79802": {
+      "matter_id": "79802",
+      "matter_ref": "legistar:nyc:matter:79802",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79802",
+      "appearance_count": 1
+    },
+    "79803": {
+      "matter_id": "79803",
+      "matter_ref": "legistar:nyc:matter:79803",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79803",
+      "appearance_count": 1
+    },
+    "79805": {
+      "matter_id": "79805",
+      "matter_ref": "legistar:nyc:matter:79805",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79805",
+      "appearance_count": 1
+    },
+    "79806": {
+      "matter_id": "79806",
+      "matter_ref": "legistar:nyc:matter:79806",
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79806",
       "appearance_count": 1
     }
   }

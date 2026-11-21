@@ -1,11 +1,11 @@
 {
   "bridge": {
-    "eligible_appearances": 113,
+    "eligible_appearances": 114,
     "gate": "GO",
-    "linked_matters": 27,
-    "linked_projects": 14,
-    "matched_appearances": 49,
-    "matched_rate": 0.433628
+    "linked_matters": 30,
+    "linked_projects": 15,
+    "matched_appearances": 52,
+    "matched_rate": 0.45614
   },
   "generated_at": "2026-09-05T00:00:00.000Z",
   "matters": {
@@ -867,6 +867,72 @@
       "project_id": "2024M0193",
       "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79579",
       "title": "Zoning, Studio 54 Rehabilitation and Text Amendment, Manhattan (C 260212 ZSM)."
+    },
+    "79800": {
+      "appearances": [
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-11-24",
+          "event_id": "22797",
+          "event_name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260190ZSX",
+      "matter_file": "LU 0161-2026",
+      "matter_id": "79800",
+      "project_id": "2022X0393",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79800",
+      "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260190 ZSX)."
+    },
+    "79802": {
+      "appearances": [
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-11-24",
+          "event_id": "22797",
+          "event_name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260193HAX",
+      "matter_file": "LU 0162-2026",
+      "matter_id": "79802",
+      "project_id": "2022X0393",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79802",
+      "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260193 HAX)."
+    },
+    "79803": {
+      "appearances": [
+        {
+          "actions": [
+            "Committee"
+          ],
+          "event_date": "2026-11-24",
+          "event_id": "22797",
+          "event_name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "named_votes": null,
+          "outcome": "Committee"
+        }
+      ],
+      "join_key": "ulurp_number",
+      "join_method": "exact_ulurp_token",
+      "join_value": "260336ZAX",
+      "matter_file": "LU 0163-2026",
+      "matter_id": "79803",
+      "project_id": "2022X0393",
+      "source_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79803",
+      "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (N 260336 ZAX)."
     }
   },
   "projects": {
@@ -885,6 +951,15 @@
       ],
       "project_id": "2022K0430",
       "project_name": "Park Avenue Brooklyn Rezoning"
+    },
+    "2022X0393": {
+      "matter_ids": [
+        "79800",
+        "79802",
+        "79803"
+      ],
+      "project_id": "2022X0393",
+      "project_name": "110 East 138th Street/63 Exterior Street"
     },
     "2023Q0125": {
       "matter_ids": [
@@ -992,11 +1067,11 @@
   "schema": "cityscroll.council_land_matter_links.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 287,
+      "absent_count": 289,
       "present_count": 15,
-      "record_count": 302
+      "record_count": 304
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-11-14T10:01:03.273Z",
-    "zap_projects_warehouse_lookup_materialized_at": "2026-11-13T14:46:37.747Z"
+    "meeting_outcomes_snapshot_generated_at": "2026-11-21T10:00:40.622Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-11-21T15:33:34.399Z"
   }
 }

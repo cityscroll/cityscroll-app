@@ -1,11 +1,481 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-11-14T10:01:03.273Z",
+  "generated_at": "2026-11-21T10:00:40.622Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 302,
+  "record_count": 304,
   "present_count": 15,
-  "absent_count": 287,
+  "absent_count": 289,
   "by_notice": {
+    "20261112013": {
+      "request_id": "20261112013",
+      "snapshot_state": "absent"
+    },
+    "20261112005": {
+      "request_id": "20261112005",
+      "snapshot_state": "absent"
+    },
+    "20261117013": {
+      "request_id": "20261117013",
+      "snapshot_state": "absent"
+    },
+    "20261112003": {
+      "request_id": "20261112003",
+      "snapshot_state": "absent"
+    },
+    "20261106001": {
+      "request_id": "20261106001",
+      "snapshot_state": "absent"
+    },
+    "20261106003": {
+      "request_id": "20261106003",
+      "snapshot_state": "absent"
+    },
+    "20261104007": {
+      "request_id": "20261104007",
+      "snapshot_state": "absent"
+    },
+    "20261106002": {
+      "request_id": "20261106002",
+      "snapshot_state": "absent"
+    },
+    "20261104022": {
+      "request_id": "20261104022",
+      "snapshot_state": "absent"
+    },
+    "20261110022": {
+      "request_id": "20261110022",
+      "snapshot_state": "absent"
+    },
+    "20261027031": {
+      "request_id": "20261027031",
+      "snapshot_state": "absent"
+    },
+    "20261110024": {
+      "request_id": "20261110024",
+      "snapshot_state": "absent"
+    },
+    "20261112015": {
+      "request_id": "20261112015",
+      "snapshot_state": "absent"
+    },
+    "20261102015": {
+      "request_id": "20261102015",
+      "snapshot_state": "absent"
+    },
+    "20261109025": {
+      "request_id": "20261109025",
+      "snapshot_state": "absent"
+    },
+    "20261027004": {
+      "request_id": "20261027004",
+      "snapshot_state": "absent"
+    },
+    "20261109032": {
+      "request_id": "20261109032",
+      "snapshot_state": "absent"
+    },
+    "20261021032": {
+      "request_id": "20261021032",
+      "snapshot_state": "absent"
+    },
+    "20261109027": {
+      "request_id": "20261109027",
+      "snapshot_state": "present",
+      "event": {
+        "event_id": "22797",
+        "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+        "date": "2026-11-24",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22797&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+        "documents": [
+          {
+            "name": "Agenda",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Committee_Agenda.pdf"
+          }
+        ]
+      },
+      "matters": [
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "444684",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79800",
+          "matter_file": "LU 0161-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79800",
+          "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260190 ZSX).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "444685",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79802",
+          "matter_file": "LU 0162-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79802",
+          "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260193 HAX).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "444686",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79803",
+          "matter_file": "LU 0163-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79803",
+          "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (N 260336 ZAX).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "444687",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79805",
+          "matter_file": "LU 0164-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79805",
+          "title": "Landmarks, New, Approximately 972-Seat Intermediate School, Queens (G 260008 SCQ).",
+          "outcome": "Committee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Committee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "444688",
+              "action": "Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "79806",
+          "matter_file": "LU 0165-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79806",
+          "title": "Landmarks, New, Approximately 676-Seat High School With District 75 Program, Queens (G 260009 SCQ).",
+          "outcome": "Committee",
+          "votes": null
+        }
+      ]
+    },
+    "20261014024": {
+      "request_id": "20261014024",
+      "snapshot_state": "absent"
+    },
+    "20261014002": {
+      "request_id": "20261014002",
+      "snapshot_state": "absent"
+    },
+    "20261013025": {
+      "request_id": "20261013025",
+      "snapshot_state": "absent"
+    },
+    "20261009010": {
+      "request_id": "20261009010",
+      "snapshot_state": "absent"
+    },
+    "20261023017": {
+      "request_id": "20261023017",
+      "snapshot_state": "absent"
+    },
+    "20261026022": {
+      "request_id": "20261026022",
+      "snapshot_state": "absent"
+    },
+    "20261009014": {
+      "request_id": "20261009014",
+      "snapshot_state": "absent"
+    },
+    "20261015024": {
+      "request_id": "20261015024",
+      "snapshot_state": "absent"
+    },
+    "20261112001": {
+      "request_id": "20261112001",
+      "snapshot_state": "absent"
+    },
+    "20261113011": {
+      "request_id": "20261113011",
+      "snapshot_state": "absent"
+    },
+    "20261105025": {
+      "request_id": "20261105025",
+      "snapshot_state": "absent"
+    },
+    "20261013022": {
+      "request_id": "20261013022",
+      "snapshot_state": "absent"
+    },
+    "20261013024": {
+      "request_id": "20261013024",
+      "snapshot_state": "absent"
+    },
+    "20261019007": {
+      "request_id": "20261019007",
+      "snapshot_state": "absent"
+    },
+    "20261027024": {
+      "request_id": "20261027024",
+      "snapshot_state": "absent"
+    },
+    "20261014038": {
+      "request_id": "20261014038",
+      "snapshot_state": "absent"
+    },
+    "20261007005": {
+      "request_id": "20261007005",
+      "snapshot_state": "absent"
+    },
+    "20260106036": {
+      "request_id": "20260106036",
+      "snapshot_state": "absent"
+    },
+    "20261008005": {
+      "request_id": "20261008005",
+      "snapshot_state": "absent"
+    },
+    "20260922022": {
+      "request_id": "20260922022",
+      "snapshot_state": "absent"
+    },
+    "20261023010": {
+      "request_id": "20261023010",
+      "snapshot_state": "absent"
+    },
+    "20261109008": {
+      "request_id": "20261109008",
+      "snapshot_state": "absent"
+    },
+    "20261008001": {
+      "request_id": "20261008001",
+      "snapshot_state": "absent"
+    },
+    "20261019006": {
+      "request_id": "20261019006",
+      "snapshot_state": "absent"
+    },
+    "20261013021": {
+      "request_id": "20261013021",
+      "snapshot_state": "absent"
+    },
+    "20261001007": {
+      "request_id": "20261001007",
+      "snapshot_state": "absent"
+    },
+    "20261102024": {
+      "request_id": "20261102024",
+      "snapshot_state": "absent"
+    },
+    "20261102029": {
+      "request_id": "20261102029",
+      "snapshot_state": "absent"
+    },
+    "20261029016": {
+      "request_id": "20261029016",
+      "snapshot_state": "absent"
+    },
+    "20261026021": {
+      "request_id": "20261026021",
+      "snapshot_state": "absent"
+    },
+    "20261027029": {
+      "request_id": "20261027029",
+      "snapshot_state": "absent"
+    },
+    "20261002028": {
+      "request_id": "20261002028",
+      "snapshot_state": "absent"
+    },
+    "20261008024": {
+      "request_id": "20261008024",
+      "snapshot_state": "absent"
+    },
+    "20261021015": {
+      "request_id": "20261021015",
+      "snapshot_state": "absent"
+    },
+    "20261021010": {
+      "request_id": "20261021010",
+      "snapshot_state": "absent"
+    },
+    "20261019018": {
+      "request_id": "20261019018",
+      "snapshot_state": "absent"
+    },
+    "20261020005": {
+      "request_id": "20261020005",
+      "snapshot_state": "absent"
+    },
+    "20261014023": {
+      "request_id": "20261014023",
+      "snapshot_state": "absent"
+    },
+    "20261006029": {
+      "request_id": "20261006029",
+      "snapshot_state": "absent"
+    },
+    "20261009013": {
+      "request_id": "20261009013",
+      "snapshot_state": "absent"
+    },
+    "20260929011": {
+      "request_id": "20260929011",
+      "snapshot_state": "absent"
+    },
+    "20260924006": {
+      "request_id": "20260924006",
+      "snapshot_state": "absent"
+    },
+    "20261029019": {
+      "request_id": "20261029019",
+      "snapshot_state": "absent"
+    },
+    "20260925024": {
+      "request_id": "20260925024",
+      "snapshot_state": "absent"
+    },
+    "20260923020": {
+      "request_id": "20260923020",
+      "snapshot_state": "absent"
+    },
+    "20261021009": {
+      "request_id": "20261021009",
+      "snapshot_state": "absent"
+    },
+    "20260929023": {
+      "request_id": "20260929023",
+      "snapshot_state": "absent"
+    },
+    "20260924007": {
+      "request_id": "20260924007",
+      "snapshot_state": "absent"
+    },
+    "20260915032": {
+      "request_id": "20260915032",
+      "snapshot_state": "absent"
+    },
+    "20260921011": {
+      "request_id": "20260921011",
+      "snapshot_state": "absent"
+    },
+    "20261020023": {
+      "request_id": "20261020023",
+      "snapshot_state": "absent"
+    },
+    "20260916036": {
+      "request_id": "20260916036",
+      "snapshot_state": "absent"
+    },
+    "20260929022": {
+      "request_id": "20260929022",
+      "snapshot_state": "absent"
+    },
+    "20261016004": {
+      "request_id": "20261016004",
+      "snapshot_state": "absent"
+    },
+    "20261021004": {
+      "request_id": "20261021004",
+      "snapshot_state": "absent"
+    },
+    "20260929021": {
+      "request_id": "20260929021",
+      "snapshot_state": "absent"
+    },
+    "20261014031": {
+      "request_id": "20261014031",
+      "snapshot_state": "absent"
+    },
+    "20261006022": {
+      "request_id": "20261006022",
+      "snapshot_state": "absent"
+    },
+    "20261015027": {
+      "request_id": "20261015027",
+      "snapshot_state": "absent"
+    },
+    "20261020021": {
+      "request_id": "20261020021",
+      "snapshot_state": "absent"
+    },
+    "20260922017": {
+      "request_id": "20260922017",
+      "snapshot_state": "absent"
+    },
+    "20260915002": {
+      "request_id": "20260915002",
+      "snapshot_state": "absent"
+    },
+    "20261014026": {
+      "request_id": "20261014026",
+      "snapshot_state": "absent"
+    },
+    "20260917001": {
+      "request_id": "20260917001",
+      "snapshot_state": "absent"
+    },
+    "20260909022": {
+      "request_id": "20260909022",
+      "snapshot_state": "absent"
+    },
+    "20260918021": {
+      "request_id": "20260918021",
+      "snapshot_state": "absent"
+    },
+    "20260923002": {
+      "request_id": "20260923002",
+      "snapshot_state": "absent"
+    },
+    "20261007002": {
+      "request_id": "20261007002",
+      "snapshot_state": "absent"
+    },
+    "20260922032": {
+      "request_id": "20260922032",
+      "snapshot_state": "absent"
+    },
+    "20261013004": {
+      "request_id": "20261013004",
+      "snapshot_state": "absent"
+    },
     "20261006004": {
       "request_id": "20261006004",
       "snapshot_state": "present",
@@ -861,6 +1331,90 @@
           "votes": null
         }
       ]
+    },
+    "20260921022": {
+      "request_id": "20260921022",
+      "snapshot_state": "absent"
+    },
+    "20261013035": {
+      "request_id": "20261013035",
+      "snapshot_state": "absent"
+    },
+    "20260929002": {
+      "request_id": "20260929002",
+      "snapshot_state": "absent"
+    },
+    "20260923032": {
+      "request_id": "20260923032",
+      "snapshot_state": "absent"
+    },
+    "20260911005": {
+      "request_id": "20260911005",
+      "snapshot_state": "absent"
+    },
+    "20260921008": {
+      "request_id": "20260921008",
+      "snapshot_state": "absent"
+    },
+    "20260925019": {
+      "request_id": "20260925019",
+      "snapshot_state": "absent"
+    },
+    "20260827020": {
+      "request_id": "20260827020",
+      "snapshot_state": "absent"
+    },
+    "20260916024": {
+      "request_id": "20260916024",
+      "snapshot_state": "absent"
+    },
+    "20260915022": {
+      "request_id": "20260915022",
+      "snapshot_state": "absent"
+    },
+    "20261008019": {
+      "request_id": "20261008019",
+      "snapshot_state": "absent"
+    },
+    "20261005013": {
+      "request_id": "20261005013",
+      "snapshot_state": "absent"
+    },
+    "20261001008": {
+      "request_id": "20261001008",
+      "snapshot_state": "absent"
+    },
+    "20261007003": {
+      "request_id": "20261007003",
+      "snapshot_state": "absent"
+    },
+    "20260924023": {
+      "request_id": "20260924023",
+      "snapshot_state": "absent"
+    },
+    "20260106035": {
+      "request_id": "20260106035",
+      "snapshot_state": "absent"
+    },
+    "20260827021": {
+      "request_id": "20260827021",
+      "snapshot_state": "absent"
+    },
+    "20260910005": {
+      "request_id": "20260910005",
+      "snapshot_state": "absent"
+    },
+    "20260908023": {
+      "request_id": "20260908023",
+      "snapshot_state": "absent"
+    },
+    "20260827019": {
+      "request_id": "20260827019",
+      "snapshot_state": "absent"
+    },
+    "20260922003": {
+      "request_id": "20260922003",
+      "snapshot_state": "absent"
     },
     "20260922023": {
       "request_id": "20260922023",
@@ -2313,6 +2867,70 @@
         }
       ]
     },
+    "20260915030": {
+      "request_id": "20260915030",
+      "snapshot_state": "absent"
+    },
+    "20260826001": {
+      "request_id": "20260826001",
+      "snapshot_state": "absent"
+    },
+    "20260904019": {
+      "request_id": "20260904019",
+      "snapshot_state": "absent"
+    },
+    "20260827001": {
+      "request_id": "20260827001",
+      "snapshot_state": "absent"
+    },
+    "20260902002": {
+      "request_id": "20260902002",
+      "snapshot_state": "absent"
+    },
+    "20260922018": {
+      "request_id": "20260922018",
+      "snapshot_state": "absent"
+    },
+    "20260902031": {
+      "request_id": "20260902031",
+      "snapshot_state": "absent"
+    },
+    "20260827017": {
+      "request_id": "20260827017",
+      "snapshot_state": "absent"
+    },
+    "20260819004": {
+      "request_id": "20260819004",
+      "snapshot_state": "absent"
+    },
+    "20260909002": {
+      "request_id": "20260909002",
+      "snapshot_state": "absent"
+    },
+    "20260817025": {
+      "request_id": "20260817025",
+      "snapshot_state": "absent"
+    },
+    "20260826006": {
+      "request_id": "20260826006",
+      "snapshot_state": "absent"
+    },
+    "20260911022": {
+      "request_id": "20260911022",
+      "snapshot_state": "absent"
+    },
+    "20260814012": {
+      "request_id": "20260814012",
+      "snapshot_state": "absent"
+    },
+    "20260902022": {
+      "request_id": "20260902022",
+      "snapshot_state": "absent"
+    },
+    "20260817001": {
+      "request_id": "20260817001",
+      "snapshot_state": "absent"
+    },
     "20260909019": {
       "request_id": "20260909019",
       "snapshot_state": "present",
@@ -2543,6 +3161,10 @@
         }
       ]
     },
+    "20260819033": {
+      "request_id": "20260819033",
+      "snapshot_state": "absent"
+    },
     "20260911033": {
       "request_id": "20260911033",
       "snapshot_state": "present",
@@ -2591,6 +3213,126 @@
           "votes": null
         }
       ]
+    },
+    "20260828012": {
+      "request_id": "20260828012",
+      "snapshot_state": "absent"
+    },
+    "20260911001": {
+      "request_id": "20260911001",
+      "snapshot_state": "absent"
+    },
+    "20260915035": {
+      "request_id": "20260915035",
+      "snapshot_state": "absent"
+    },
+    "20260812019": {
+      "request_id": "20260812019",
+      "snapshot_state": "absent"
+    },
+    "20260723027": {
+      "request_id": "20260723027",
+      "snapshot_state": "absent"
+    },
+    "20260903021": {
+      "request_id": "20260903021",
+      "snapshot_state": "absent"
+    },
+    "20260910007": {
+      "request_id": "20260910007",
+      "snapshot_state": "absent"
+    },
+    "20260818004": {
+      "request_id": "20260818004",
+      "snapshot_state": "absent"
+    },
+    "20260810007": {
+      "request_id": "20260810007",
+      "snapshot_state": "absent"
+    },
+    "20260827003": {
+      "request_id": "20260827003",
+      "snapshot_state": "absent"
+    },
+    "20260910024": {
+      "request_id": "20260910024",
+      "snapshot_state": "absent"
+    },
+    "20260908027": {
+      "request_id": "20260908027",
+      "snapshot_state": "absent"
+    },
+    "20260805001": {
+      "request_id": "20260805001",
+      "snapshot_state": "absent"
+    },
+    "20260810005": {
+      "request_id": "20260810005",
+      "snapshot_state": "absent"
+    },
+    "20260806002": {
+      "request_id": "20260806002",
+      "snapshot_state": "absent"
+    },
+    "20260812022": {
+      "request_id": "20260812022",
+      "snapshot_state": "absent"
+    },
+    "20260803026": {
+      "request_id": "20260803026",
+      "snapshot_state": "absent"
+    },
+    "20260825038": {
+      "request_id": "20260825038",
+      "snapshot_state": "absent"
+    },
+    "20260825003": {
+      "request_id": "20260825003",
+      "snapshot_state": "absent"
+    },
+    "20260819025": {
+      "request_id": "20260819025",
+      "snapshot_state": "absent"
+    },
+    "20260817015": {
+      "request_id": "20260817015",
+      "snapshot_state": "absent"
+    },
+    "20260803009": {
+      "request_id": "20260803009",
+      "snapshot_state": "absent"
+    },
+    "20260901022": {
+      "request_id": "20260901022",
+      "snapshot_state": "absent"
+    },
+    "20260826043": {
+      "request_id": "20260826043",
+      "snapshot_state": "absent"
+    },
+    "20260810025": {
+      "request_id": "20260810025",
+      "snapshot_state": "absent"
+    },
+    "20260810024": {
+      "request_id": "20260810024",
+      "snapshot_state": "absent"
+    },
+    "20260901021": {
+      "request_id": "20260901021",
+      "snapshot_state": "absent"
+    },
+    "20260831001": {
+      "request_id": "20260831001",
+      "snapshot_state": "absent"
+    },
+    "20260106034": {
+      "request_id": "20260106034",
+      "snapshot_state": "absent"
+    },
+    "20260728026": {
+      "request_id": "20260728026",
+      "snapshot_state": "absent"
     },
     "20260825026": {
       "request_id": "20260825026",
@@ -4007,6 +4749,38 @@
         }
       ]
     },
+    "20260709020": {
+      "request_id": "20260709020",
+      "snapshot_state": "absent"
+    },
+    "20260810050": {
+      "request_id": "20260810050",
+      "snapshot_state": "absent"
+    },
+    "20260714002": {
+      "request_id": "20260714002",
+      "snapshot_state": "absent"
+    },
+    "20260811001": {
+      "request_id": "20260811001",
+      "snapshot_state": "absent"
+    },
+    "20260818027": {
+      "request_id": "20260818027",
+      "snapshot_state": "absent"
+    },
+    "20260810051": {
+      "request_id": "20260810051",
+      "snapshot_state": "absent"
+    },
+    "20260814016": {
+      "request_id": "20260814016",
+      "snapshot_state": "absent"
+    },
+    "20260723022": {
+      "request_id": "20260723022",
+      "snapshot_state": "absent"
+    },
     "20260824048": {
       "request_id": "20260824048",
       "snapshot_state": "present",
@@ -4082,6 +4856,82 @@
           "votes": null
         }
       ]
+    },
+    "20260805006": {
+      "request_id": "20260805006",
+      "snapshot_state": "absent"
+    },
+    "20260602001": {
+      "request_id": "20260602001",
+      "snapshot_state": "absent"
+    },
+    "20260714029": {
+      "request_id": "20260714029",
+      "snapshot_state": "absent"
+    },
+    "20260811003": {
+      "request_id": "20260811003",
+      "snapshot_state": "absent"
+    },
+    "20260728028": {
+      "request_id": "20260728028",
+      "snapshot_state": "absent"
+    },
+    "20260715041": {
+      "request_id": "20260715041",
+      "snapshot_state": "absent"
+    },
+    "20260730025": {
+      "request_id": "20260730025",
+      "snapshot_state": "absent"
+    },
+    "20260805038": {
+      "request_id": "20260805038",
+      "snapshot_state": "absent"
+    },
+    "20260722029": {
+      "request_id": "20260722029",
+      "snapshot_state": "absent"
+    },
+    "20260708002": {
+      "request_id": "20260708002",
+      "snapshot_state": "absent"
+    },
+    "20260729019": {
+      "request_id": "20260729019",
+      "snapshot_state": "absent"
+    },
+    "20260713006": {
+      "request_id": "20260713006",
+      "snapshot_state": "absent"
+    },
+    "20260729020": {
+      "request_id": "20260729020",
+      "snapshot_state": "absent"
+    },
+    "20260729005": {
+      "request_id": "20260729005",
+      "snapshot_state": "absent"
+    },
+    "20260727031": {
+      "request_id": "20260727031",
+      "snapshot_state": "absent"
+    },
+    "20260810053": {
+      "request_id": "20260810053",
+      "snapshot_state": "absent"
+    },
+    "20260723005": {
+      "request_id": "20260723005",
+      "snapshot_state": "absent"
+    },
+    "20260706044": {
+      "request_id": "20260706044",
+      "snapshot_state": "absent"
+    },
+    "20260710032": {
+      "request_id": "20260710032",
+      "snapshot_state": "absent"
     },
     "20260729004": {
       "request_id": "20260729004",
@@ -5349,6 +6199,78 @@
         }
       ]
     },
+    "20260618040": {
+      "request_id": "20260618040",
+      "snapshot_state": "absent"
+    },
+    "20260721023": {
+      "request_id": "20260721023",
+      "snapshot_state": "absent"
+    },
+    "20260716022": {
+      "request_id": "20260716022",
+      "snapshot_state": "absent"
+    },
+    "20260709028": {
+      "request_id": "20260709028",
+      "snapshot_state": "absent"
+    },
+    "20260723030": {
+      "request_id": "20260723030",
+      "snapshot_state": "absent"
+    },
+    "20260626036": {
+      "request_id": "20260626036",
+      "snapshot_state": "absent"
+    },
+    "20260716009": {
+      "request_id": "20260716009",
+      "snapshot_state": "absent"
+    },
+    "20260716025": {
+      "request_id": "20260716025",
+      "snapshot_state": "absent"
+    },
+    "20260626034": {
+      "request_id": "20260626034",
+      "snapshot_state": "absent"
+    },
+    "20260618036": {
+      "request_id": "20260618036",
+      "snapshot_state": "absent"
+    },
+    "20260714001": {
+      "request_id": "20260714001",
+      "snapshot_state": "absent"
+    },
+    "20260708015": {
+      "request_id": "20260708015",
+      "snapshot_state": "absent"
+    },
+    "20260707029": {
+      "request_id": "20260707029",
+      "snapshot_state": "absent"
+    },
+    "20260624001": {
+      "request_id": "20260624001",
+      "snapshot_state": "absent"
+    },
+    "20260624005": {
+      "request_id": "20260624005",
+      "snapshot_state": "absent"
+    },
+    "20260707004": {
+      "request_id": "20260707004",
+      "snapshot_state": "absent"
+    },
+    "20260629003": {
+      "request_id": "20260629003",
+      "snapshot_state": "absent"
+    },
+    "20260616058": {
+      "request_id": "20260616058",
+      "snapshot_state": "absent"
+    },
     "20260707022": {
       "request_id": "20260707022",
       "snapshot_state": "present",
@@ -5554,6 +6476,46 @@
           "votes": null
         }
       ]
+    },
+    "20260623060": {
+      "request_id": "20260623060",
+      "snapshot_state": "absent"
+    },
+    "20260630005": {
+      "request_id": "20260630005",
+      "snapshot_state": "absent"
+    },
+    "20260713032": {
+      "request_id": "20260713032",
+      "snapshot_state": "absent"
+    },
+    "20260624036": {
+      "request_id": "20260624036",
+      "snapshot_state": "absent"
+    },
+    "20260609003": {
+      "request_id": "20260609003",
+      "snapshot_state": "absent"
+    },
+    "20260617040": {
+      "request_id": "20260617040",
+      "snapshot_state": "absent"
+    },
+    "20260617042": {
+      "request_id": "20260617042",
+      "snapshot_state": "absent"
+    },
+    "20260625034": {
+      "request_id": "20260625034",
+      "snapshot_state": "absent"
+    },
+    "20260624002": {
+      "request_id": "20260624002",
+      "snapshot_state": "absent"
+    },
+    "20260106033": {
+      "request_id": "20260106033",
+      "snapshot_state": "absent"
     },
     "20260706036": {
       "request_id": "20260706036",
@@ -6654,6 +7616,22 @@
         }
       ]
     },
+    "20260623006": {
+      "request_id": "20260623006",
+      "snapshot_state": "absent"
+    },
+    "20260612028": {
+      "request_id": "20260612028",
+      "snapshot_state": "absent"
+    },
+    "20260605058": {
+      "request_id": "20260605058",
+      "snapshot_state": "absent"
+    },
+    "20260602003": {
+      "request_id": "20260602003",
+      "snapshot_state": "absent"
+    },
     "20260625040": {
       "request_id": "20260625040",
       "snapshot_state": "present",
@@ -6810,6 +7788,26 @@
           "votes": null
         }
       ]
+    },
+    "20260618050": {
+      "request_id": "20260618050",
+      "snapshot_state": "absent"
+    },
+    "20260629046": {
+      "request_id": "20260629046",
+      "snapshot_state": "absent"
+    },
+    "20260605007": {
+      "request_id": "20260605007",
+      "snapshot_state": "absent"
+    },
+    "20260522007": {
+      "request_id": "20260522007",
+      "snapshot_state": "absent"
+    },
+    "20260618037": {
+      "request_id": "20260618037",
+      "snapshot_state": "absent"
     },
     "20260617039": {
       "request_id": "20260617039",
@@ -7103,6 +8101,106 @@
         }
       ]
     },
+    "20260609065": {
+      "request_id": "20260609065",
+      "snapshot_state": "absent"
+    },
+    "20260610012": {
+      "request_id": "20260610012",
+      "snapshot_state": "absent"
+    },
+    "20260522008": {
+      "request_id": "20260522008",
+      "snapshot_state": "absent"
+    },
+    "20260506007": {
+      "request_id": "20260506007",
+      "snapshot_state": "absent"
+    },
+    "20260610007": {
+      "request_id": "20260610007",
+      "snapshot_state": "absent"
+    },
+    "20260605045": {
+      "request_id": "20260605045",
+      "snapshot_state": "absent"
+    },
+    "20260623048": {
+      "request_id": "20260623048",
+      "snapshot_state": "absent"
+    },
+    "20260618032": {
+      "request_id": "20260618032",
+      "snapshot_state": "absent"
+    },
+    "20260514022": {
+      "request_id": "20260514022",
+      "snapshot_state": "absent"
+    },
+    "20260605006": {
+      "request_id": "20260605006",
+      "snapshot_state": "absent"
+    },
+    "20260610067": {
+      "request_id": "20260610067",
+      "snapshot_state": "absent"
+    },
+    "20260521020": {
+      "request_id": "20260521020",
+      "snapshot_state": "absent"
+    },
+    "20260601045": {
+      "request_id": "20260601045",
+      "snapshot_state": "absent"
+    },
+    "20260604005": {
+      "request_id": "20260604005",
+      "snapshot_state": "absent"
+    },
+    "20260528032": {
+      "request_id": "20260528032",
+      "snapshot_state": "absent"
+    },
+    "20260603002": {
+      "request_id": "20260603002",
+      "snapshot_state": "absent"
+    },
+    "20260514002": {
+      "request_id": "20260514002",
+      "snapshot_state": "absent"
+    },
+    "20260603039": {
+      "request_id": "20260603039",
+      "snapshot_state": "absent"
+    },
+    "20260415033": {
+      "request_id": "20260415033",
+      "snapshot_state": "absent"
+    },
+    "20260602006": {
+      "request_id": "20260602006",
+      "snapshot_state": "absent"
+    },
+    "20260519043": {
+      "request_id": "20260519043",
+      "snapshot_state": "absent"
+    },
+    "20260612036": {
+      "request_id": "20260612036",
+      "snapshot_state": "absent"
+    },
+    "20260527017": {
+      "request_id": "20260527017",
+      "snapshot_state": "absent"
+    },
+    "20260512036": {
+      "request_id": "20260512036",
+      "snapshot_state": "absent"
+    },
+    "20260610003": {
+      "request_id": "20260610003",
+      "snapshot_state": "absent"
+    },
     "20260603052": {
       "request_id": "20260603052",
       "snapshot_state": "present",
@@ -7286,6 +8384,170 @@
           "votes": null
         }
       ]
+    },
+    "20260528020": {
+      "request_id": "20260528020",
+      "snapshot_state": "absent"
+    },
+    "20260512035": {
+      "request_id": "20260512035",
+      "snapshot_state": "absent"
+    },
+    "20260513035": {
+      "request_id": "20260513035",
+      "snapshot_state": "absent"
+    },
+    "20260528031": {
+      "request_id": "20260528031",
+      "snapshot_state": "absent"
+    },
+    "20260608005": {
+      "request_id": "20260608005",
+      "snapshot_state": "absent"
+    },
+    "20260515018": {
+      "request_id": "20260515018",
+      "snapshot_state": "absent"
+    },
+    "20260513034": {
+      "request_id": "20260513034",
+      "snapshot_state": "absent"
+    },
+    "20260505026": {
+      "request_id": "20260505026",
+      "snapshot_state": "absent"
+    },
+    "20260513024": {
+      "request_id": "20260513024",
+      "snapshot_state": "absent"
+    },
+    "20260507005": {
+      "request_id": "20260507005",
+      "snapshot_state": "absent"
+    },
+    "20260528021": {
+      "request_id": "20260528021",
+      "snapshot_state": "absent"
+    },
+    "20260512007": {
+      "request_id": "20260512007",
+      "snapshot_state": "absent"
+    },
+    "20260429031": {
+      "request_id": "20260429031",
+      "snapshot_state": "absent"
+    },
+    "20260528018": {
+      "request_id": "20260528018",
+      "snapshot_state": "absent"
+    },
+    "20260527036": {
+      "request_id": "20260527036",
+      "snapshot_state": "absent"
+    },
+    "20260601042": {
+      "request_id": "20260601042",
+      "snapshot_state": "absent"
+    },
+    "20260512010": {
+      "request_id": "20260512010",
+      "snapshot_state": "absent"
+    },
+    "20260428020": {
+      "request_id": "20260428020",
+      "snapshot_state": "absent"
+    },
+    "20260603044": {
+      "request_id": "20260603044",
+      "snapshot_state": "absent"
+    },
+    "20260106032": {
+      "request_id": "20260106032",
+      "snapshot_state": "absent"
+    },
+    "20260417003": {
+      "request_id": "20260417003",
+      "snapshot_state": "absent"
+    },
+    "20260519007": {
+      "request_id": "20260519007",
+      "snapshot_state": "absent"
+    },
+    "20260513033": {
+      "request_id": "20260513033",
+      "snapshot_state": "absent"
+    },
+    "20260512008": {
+      "request_id": "20260512008",
+      "snapshot_state": "absent"
+    },
+    "20260513032": {
+      "request_id": "20260513032",
+      "snapshot_state": "absent"
+    },
+    "20260529027": {
+      "request_id": "20260529027",
+      "snapshot_state": "absent"
+    },
+    "20260504025": {
+      "request_id": "20260504025",
+      "snapshot_state": "absent"
+    },
+    "20260512004": {
+      "request_id": "20260512004",
+      "snapshot_state": "absent"
+    },
+    "20260518031": {
+      "request_id": "20260518031",
+      "snapshot_state": "absent"
+    },
+    "20260515001": {
+      "request_id": "20260515001",
+      "snapshot_state": "absent"
+    },
+    "20260512013": {
+      "request_id": "20260512013",
+      "snapshot_state": "absent"
+    },
+    "20260521019": {
+      "request_id": "20260521019",
+      "snapshot_state": "absent"
+    },
+    "20260512014": {
+      "request_id": "20260512014",
+      "snapshot_state": "absent"
+    },
+    "20260518003": {
+      "request_id": "20260518003",
+      "snapshot_state": "absent"
+    },
+    "20260518025": {
+      "request_id": "20260518025",
+      "snapshot_state": "absent"
+    },
+    "20260512011": {
+      "request_id": "20260512011",
+      "snapshot_state": "absent"
+    },
+    "20260422018": {
+      "request_id": "20260422018",
+      "snapshot_state": "absent"
+    },
+    "20260504022": {
+      "request_id": "20260504022",
+      "snapshot_state": "absent"
+    },
+    "20260507001": {
+      "request_id": "20260507001",
+      "snapshot_state": "absent"
+    },
+    "20260506035": {
+      "request_id": "20260506035",
+      "snapshot_state": "absent"
+    },
+    "20260522019": {
+      "request_id": "20260522019",
+      "snapshot_state": "absent"
     },
     "20260512045": {
       "request_id": "20260512045",
@@ -7606,1932 +8868,6 @@
         }
       ]
     },
-    "20260428021": {
-      "request_id": "20260428021",
-      "snapshot_state": "present",
-      "event": {
-        "event_id": "22375",
-        "name": "Subcommittee on Zoning and Franchises",
-        "date": "2026-05-19",
-        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-        "documents": [
-          {
-            "name": "Agenda",
-            "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22375_A_Subcommittee_on_Zoning_and_Franchises_26-05-19_Committee_Agenda.pdf"
-          },
-          {
-            "name": "Minutes",
-            "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22375_M_Subcommittee_on_Zoning_and_Franchises_26-05-19_Meeting_Minutes.pdf"
-          }
-        ]
-      },
-      "matters": [
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Approved by Subcommittee"
-          ],
-          "documents": [],
-          "item_actions": [
-            {
-              "agenda_item_id": "438171",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "agenda_item_id": "438310",
-              "action": "Approved by Subcommittee",
-              "vote_state": "roll_call_recorded",
-              "votes": {
-                "result": "Passed",
-                "yes": 8,
-                "no": 0,
-                "abstain": 0,
-                "absent": 1,
-                "recused": 0,
-                "non_voting": 0,
-                "unknown": 0,
-                "published_vote_values": [
-                  {
-                    "vote_value": "Affirmative",
-                    "rows": 8
-                  },
-                  {
-                    "vote_value": "Absent",
-                    "rows": 1
-                  }
-                ],
-                "event_id": "22375",
-                "event_item_id": "438310",
-                "vote_identity": "roll_call",
-                "person_count": 9,
-                "by_person": [
-                  {
-                    "person_id": "7785",
-                    "person_name": "Farah N. Louis",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7833",
-                    "person_name": "David M. Carr",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7895",
-                    "person_name": "Elsie Encarnación",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7810",
-                    "person_name": "Amanda C. Farías",
-                    "vote_bucket": "absent",
-                    "vote_value": "Absent",
-                    "vote_participation": "absent"
-                  },
-                  {
-                    "person_id": "5289",
-                    "person_name": "Simcha Felder",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7866",
-                    "person_name": "Yusef Salaam",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7897",
-                    "person_name": "Justin E. Sanchez",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7818",
-                    "person_name": "Lynn C. Schulman",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7898",
-                    "person_name": "Shanel Thomas-Henry",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  }
-                ]
-              }
-            }
-          ],
-          "matter_id": "78605",
-          "matter_file": "LU 0056-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78605",
-          "title": "Zoning, 147-14 Northern Boulevard Rezoning, Queens (C 220415 ZMQ).",
-          "outcome": "Approved by Subcommittee",
-          "votes": {
-            "result": "Passed",
-            "yes": 8,
-            "no": 0,
-            "abstain": 0,
-            "absent": 1,
-            "recused": 0,
-            "non_voting": 0,
-            "unknown": 0,
-            "published_vote_values": [
-              {
-                "vote_value": "Affirmative",
-                "rows": 8
-              },
-              {
-                "vote_value": "Absent",
-                "rows": 1
-              }
-            ],
-            "event_id": "22375",
-            "event_item_id": "438310",
-            "vote_identity": "roll_call",
-            "person_count": 9,
-            "by_person": [
-              {
-                "person_id": "7785",
-                "person_name": "Farah N. Louis",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7833",
-                "person_name": "David M. Carr",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7895",
-                "person_name": "Elsie Encarnación",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7810",
-                "person_name": "Amanda C. Farías",
-                "vote_bucket": "absent",
-                "vote_value": "Absent",
-                "vote_participation": "absent"
-              },
-              {
-                "person_id": "5289",
-                "person_name": "Simcha Felder",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7866",
-                "person_name": "Yusef Salaam",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7897",
-                "person_name": "Justin E. Sanchez",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7818",
-                "person_name": "Lynn C. Schulman",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7898",
-                "person_name": "Shanel Thomas-Henry",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              }
-            ]
-          }
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Approved by Subcommittee"
-          ],
-          "documents": [],
-          "item_actions": [
-            {
-              "agenda_item_id": "438172",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "agenda_item_id": "438311",
-              "action": "Approved by Subcommittee",
-              "vote_state": "roll_call_recorded",
-              "votes": {
-                "result": "Passed",
-                "yes": 8,
-                "no": 0,
-                "abstain": 0,
-                "absent": 1,
-                "recused": 0,
-                "non_voting": 0,
-                "unknown": 0,
-                "published_vote_values": [
-                  {
-                    "vote_value": "Affirmative",
-                    "rows": 8
-                  },
-                  {
-                    "vote_value": "Absent",
-                    "rows": 1
-                  }
-                ],
-                "event_id": "22375",
-                "event_item_id": "438311",
-                "vote_identity": "roll_call",
-                "person_count": 9,
-                "by_person": [
-                  {
-                    "person_id": "7785",
-                    "person_name": "Farah N. Louis",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7833",
-                    "person_name": "David M. Carr",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7895",
-                    "person_name": "Elsie Encarnación",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7810",
-                    "person_name": "Amanda C. Farías",
-                    "vote_bucket": "absent",
-                    "vote_value": "Absent",
-                    "vote_participation": "absent"
-                  },
-                  {
-                    "person_id": "5289",
-                    "person_name": "Simcha Felder",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7866",
-                    "person_name": "Yusef Salaam",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7897",
-                    "person_name": "Justin E. Sanchez",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7818",
-                    "person_name": "Lynn C. Schulman",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7898",
-                    "person_name": "Shanel Thomas-Henry",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  }
-                ]
-              }
-            }
-          ],
-          "matter_id": "78606",
-          "matter_file": "LU 0057-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78606",
-          "title": "Zoning, 147-14 Northern Boulevard Rezoning, Queens (N 220416 ZRQ).",
-          "outcome": "Approved by Subcommittee",
-          "votes": {
-            "result": "Passed",
-            "yes": 8,
-            "no": 0,
-            "abstain": 0,
-            "absent": 1,
-            "recused": 0,
-            "non_voting": 0,
-            "unknown": 0,
-            "published_vote_values": [
-              {
-                "vote_value": "Affirmative",
-                "rows": 8
-              },
-              {
-                "vote_value": "Absent",
-                "rows": 1
-              }
-            ],
-            "event_id": "22375",
-            "event_item_id": "438311",
-            "vote_identity": "roll_call",
-            "person_count": 9,
-            "by_person": [
-              {
-                "person_id": "7785",
-                "person_name": "Farah N. Louis",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7833",
-                "person_name": "David M. Carr",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7895",
-                "person_name": "Elsie Encarnación",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7810",
-                "person_name": "Amanda C. Farías",
-                "vote_bucket": "absent",
-                "vote_value": "Absent",
-                "vote_participation": "absent"
-              },
-              {
-                "person_id": "5289",
-                "person_name": "Simcha Felder",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7866",
-                "person_name": "Yusef Salaam",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7897",
-                "person_name": "Justin E. Sanchez",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7818",
-                "person_name": "Lynn C. Schulman",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7898",
-                "person_name": "Shanel Thomas-Henry",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              }
-            ]
-          }
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Approved by Subcommittee"
-          ],
-          "documents": [],
-          "item_actions": [
-            {
-              "agenda_item_id": "438173",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "agenda_item_id": "438312",
-              "action": "Approved by Subcommittee",
-              "vote_state": "roll_call_recorded",
-              "votes": {
-                "result": "Passed",
-                "yes": 8,
-                "no": 0,
-                "abstain": 0,
-                "absent": 1,
-                "recused": 0,
-                "non_voting": 0,
-                "unknown": 0,
-                "published_vote_values": [
-                  {
-                    "vote_value": "Affirmative",
-                    "rows": 8
-                  },
-                  {
-                    "vote_value": "Absent",
-                    "rows": 1
-                  }
-                ],
-                "event_id": "22375",
-                "event_item_id": "438312",
-                "vote_identity": "roll_call",
-                "person_count": 9,
-                "by_person": [
-                  {
-                    "person_id": "7785",
-                    "person_name": "Farah N. Louis",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7833",
-                    "person_name": "David M. Carr",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7895",
-                    "person_name": "Elsie Encarnación",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7810",
-                    "person_name": "Amanda C. Farías",
-                    "vote_bucket": "absent",
-                    "vote_value": "Absent",
-                    "vote_participation": "absent"
-                  },
-                  {
-                    "person_id": "5289",
-                    "person_name": "Simcha Felder",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7866",
-                    "person_name": "Yusef Salaam",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7897",
-                    "person_name": "Justin E. Sanchez",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7818",
-                    "person_name": "Lynn C. Schulman",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7898",
-                    "person_name": "Shanel Thomas-Henry",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  }
-                ]
-              }
-            }
-          ],
-          "matter_id": "78682",
-          "matter_file": "LU 0058-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78682",
-          "title": "Zoning, Denino's, Manhattan (D 2650094566 SWM).",
-          "outcome": "Approved by Subcommittee",
-          "votes": {
-            "result": "Passed",
-            "yes": 8,
-            "no": 0,
-            "abstain": 0,
-            "absent": 1,
-            "recused": 0,
-            "non_voting": 0,
-            "unknown": 0,
-            "published_vote_values": [
-              {
-                "vote_value": "Affirmative",
-                "rows": 8
-              },
-              {
-                "vote_value": "Absent",
-                "rows": 1
-              }
-            ],
-            "event_id": "22375",
-            "event_item_id": "438312",
-            "vote_identity": "roll_call",
-            "person_count": 9,
-            "by_person": [
-              {
-                "person_id": "7785",
-                "person_name": "Farah N. Louis",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7833",
-                "person_name": "David M. Carr",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7895",
-                "person_name": "Elsie Encarnación",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7810",
-                "person_name": "Amanda C. Farías",
-                "vote_bucket": "absent",
-                "vote_value": "Absent",
-                "vote_participation": "absent"
-              },
-              {
-                "person_id": "5289",
-                "person_name": "Simcha Felder",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7866",
-                "person_name": "Yusef Salaam",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7897",
-                "person_name": "Justin E. Sanchez",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7818",
-                "person_name": "Lynn C. Schulman",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7898",
-                "person_name": "Shanel Thomas-Henry",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              }
-            ]
-          }
-        },
-        {
-          "actions": [
-            "Hearing Held by Committee",
-            "Approved by Subcommittee with Modifications"
-          ],
-          "documents": [],
-          "item_actions": [
-            {
-              "agenda_item_id": "438174",
-              "action": "Hearing Held by Committee",
-              "vote_state": "no_roll_call_recorded",
-              "votes": null
-            },
-            {
-              "agenda_item_id": "438313",
-              "action": "Approved by Subcommittee with Modifications",
-              "vote_state": "roll_call_recorded",
-              "votes": {
-                "result": "Passed",
-                "yes": 8,
-                "no": 0,
-                "abstain": 0,
-                "absent": 1,
-                "recused": 0,
-                "non_voting": 0,
-                "unknown": 0,
-                "published_vote_values": [
-                  {
-                    "vote_value": "Affirmative",
-                    "rows": 8
-                  },
-                  {
-                    "vote_value": "Absent",
-                    "rows": 1
-                  }
-                ],
-                "event_id": "22375",
-                "event_item_id": "438313",
-                "vote_identity": "roll_call",
-                "person_count": 9,
-                "by_person": [
-                  {
-                    "person_id": "7785",
-                    "person_name": "Farah N. Louis",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7833",
-                    "person_name": "David M. Carr",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7895",
-                    "person_name": "Elsie Encarnación",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7810",
-                    "person_name": "Amanda C. Farías",
-                    "vote_bucket": "absent",
-                    "vote_value": "Absent",
-                    "vote_participation": "absent"
-                  },
-                  {
-                    "person_id": "5289",
-                    "person_name": "Simcha Felder",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7866",
-                    "person_name": "Yusef Salaam",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7897",
-                    "person_name": "Justin E. Sanchez",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7818",
-                    "person_name": "Lynn C. Schulman",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  },
-                  {
-                    "person_id": "7898",
-                    "person_name": "Shanel Thomas-Henry",
-                    "vote_bucket": "aye",
-                    "vote_value": "Affirmative",
-                    "vote_participation": "voted"
-                  }
-                ]
-              }
-            }
-          ],
-          "matter_id": "78760",
-          "matter_file": "LU 0066-2026",
-          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78760",
-          "title": "Zoning, Chalong, Manhattan (D 2650129760 SWM).",
-          "outcome": "Approved by Subcommittee with Modifications",
-          "votes": {
-            "result": "Passed",
-            "yes": 8,
-            "no": 0,
-            "abstain": 0,
-            "absent": 1,
-            "recused": 0,
-            "non_voting": 0,
-            "unknown": 0,
-            "published_vote_values": [
-              {
-                "vote_value": "Affirmative",
-                "rows": 8
-              },
-              {
-                "vote_value": "Absent",
-                "rows": 1
-              }
-            ],
-            "event_id": "22375",
-            "event_item_id": "438313",
-            "vote_identity": "roll_call",
-            "person_count": 9,
-            "by_person": [
-              {
-                "person_id": "7785",
-                "person_name": "Farah N. Louis",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7833",
-                "person_name": "David M. Carr",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7895",
-                "person_name": "Elsie Encarnación",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7810",
-                "person_name": "Amanda C. Farías",
-                "vote_bucket": "absent",
-                "vote_value": "Absent",
-                "vote_participation": "absent"
-              },
-              {
-                "person_id": "5289",
-                "person_name": "Simcha Felder",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7866",
-                "person_name": "Yusef Salaam",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7897",
-                "person_name": "Justin E. Sanchez",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7818",
-                "person_name": "Lynn C. Schulman",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              },
-              {
-                "person_id": "7898",
-                "person_name": "Shanel Thomas-Henry",
-                "vote_bucket": "aye",
-                "vote_value": "Affirmative",
-                "vote_participation": "voted"
-              }
-            ]
-          }
-        }
-      ]
-    },
-    "20261106003": {
-      "request_id": "20261106003",
-      "snapshot_state": "absent"
-    },
-    "20261104007": {
-      "request_id": "20261104007",
-      "snapshot_state": "absent"
-    },
-    "20261106002": {
-      "request_id": "20261106002",
-      "snapshot_state": "absent"
-    },
-    "20261104022": {
-      "request_id": "20261104022",
-      "snapshot_state": "absent"
-    },
-    "20261027031": {
-      "request_id": "20261027031",
-      "snapshot_state": "absent"
-    },
-    "20261027004": {
-      "request_id": "20261027004",
-      "snapshot_state": "absent"
-    },
-    "20261021032": {
-      "request_id": "20261021032",
-      "snapshot_state": "absent"
-    },
-    "20261014024": {
-      "request_id": "20261014024",
-      "snapshot_state": "absent"
-    },
-    "20261014002": {
-      "request_id": "20261014002",
-      "snapshot_state": "absent"
-    },
-    "20261013025": {
-      "request_id": "20261013025",
-      "snapshot_state": "absent"
-    },
-    "20261009010": {
-      "request_id": "20261009010",
-      "snapshot_state": "absent"
-    },
-    "20261023017": {
-      "request_id": "20261023017",
-      "snapshot_state": "absent"
-    },
-    "20261026022": {
-      "request_id": "20261026022",
-      "snapshot_state": "absent"
-    },
-    "20261009014": {
-      "request_id": "20261009014",
-      "snapshot_state": "absent"
-    },
-    "20261015024": {
-      "request_id": "20261015024",
-      "snapshot_state": "absent"
-    },
-    "20261105025": {
-      "request_id": "20261105025",
-      "snapshot_state": "absent"
-    },
-    "20261013022": {
-      "request_id": "20261013022",
-      "snapshot_state": "absent"
-    },
-    "20261013024": {
-      "request_id": "20261013024",
-      "snapshot_state": "absent"
-    },
-    "20261014038": {
-      "request_id": "20261014038",
-      "snapshot_state": "absent"
-    },
-    "20261019007": {
-      "request_id": "20261019007",
-      "snapshot_state": "absent"
-    },
-    "20261027024": {
-      "request_id": "20261027024",
-      "snapshot_state": "absent"
-    },
-    "20261007005": {
-      "request_id": "20261007005",
-      "snapshot_state": "absent"
-    },
-    "20260106036": {
-      "request_id": "20260106036",
-      "snapshot_state": "absent"
-    },
-    "20261008005": {
-      "request_id": "20261008005",
-      "snapshot_state": "absent"
-    },
-    "20260922022": {
-      "request_id": "20260922022",
-      "snapshot_state": "absent"
-    },
-    "20261023010": {
-      "request_id": "20261023010",
-      "snapshot_state": "absent"
-    },
-    "20261109008": {
-      "request_id": "20261109008",
-      "snapshot_state": "absent"
-    },
-    "20261008001": {
-      "request_id": "20261008001",
-      "snapshot_state": "absent"
-    },
-    "20261019006": {
-      "request_id": "20261019006",
-      "snapshot_state": "absent"
-    },
-    "20261013021": {
-      "request_id": "20261013021",
-      "snapshot_state": "absent"
-    },
-    "20261001007": {
-      "request_id": "20261001007",
-      "snapshot_state": "absent"
-    },
-    "20261102024": {
-      "request_id": "20261102024",
-      "snapshot_state": "absent"
-    },
-    "20261102029": {
-      "request_id": "20261102029",
-      "snapshot_state": "absent"
-    },
-    "20261029016": {
-      "request_id": "20261029016",
-      "snapshot_state": "absent"
-    },
-    "20261026021": {
-      "request_id": "20261026021",
-      "snapshot_state": "absent"
-    },
-    "20261027029": {
-      "request_id": "20261027029",
-      "snapshot_state": "absent"
-    },
-    "20261002028": {
-      "request_id": "20261002028",
-      "snapshot_state": "absent"
-    },
-    "20261008024": {
-      "request_id": "20261008024",
-      "snapshot_state": "absent"
-    },
-    "20261021015": {
-      "request_id": "20261021015",
-      "snapshot_state": "absent"
-    },
-    "20261021010": {
-      "request_id": "20261021010",
-      "snapshot_state": "absent"
-    },
-    "20261019018": {
-      "request_id": "20261019018",
-      "snapshot_state": "absent"
-    },
-    "20261020005": {
-      "request_id": "20261020005",
-      "snapshot_state": "absent"
-    },
-    "20261014023": {
-      "request_id": "20261014023",
-      "snapshot_state": "absent"
-    },
-    "20261006029": {
-      "request_id": "20261006029",
-      "snapshot_state": "absent"
-    },
-    "20261009013": {
-      "request_id": "20261009013",
-      "snapshot_state": "absent"
-    },
-    "20260929011": {
-      "request_id": "20260929011",
-      "snapshot_state": "absent"
-    },
-    "20260924006": {
-      "request_id": "20260924006",
-      "snapshot_state": "absent"
-    },
-    "20261029019": {
-      "request_id": "20261029019",
-      "snapshot_state": "absent"
-    },
-    "20260925024": {
-      "request_id": "20260925024",
-      "snapshot_state": "absent"
-    },
-    "20260923020": {
-      "request_id": "20260923020",
-      "snapshot_state": "absent"
-    },
-    "20261021009": {
-      "request_id": "20261021009",
-      "snapshot_state": "absent"
-    },
-    "20260924007": {
-      "request_id": "20260924007",
-      "snapshot_state": "absent"
-    },
-    "20260929023": {
-      "request_id": "20260929023",
-      "snapshot_state": "absent"
-    },
-    "20260915032": {
-      "request_id": "20260915032",
-      "snapshot_state": "absent"
-    },
-    "20260921011": {
-      "request_id": "20260921011",
-      "snapshot_state": "absent"
-    },
-    "20261020023": {
-      "request_id": "20261020023",
-      "snapshot_state": "absent"
-    },
-    "20260916036": {
-      "request_id": "20260916036",
-      "snapshot_state": "absent"
-    },
-    "20260929022": {
-      "request_id": "20260929022",
-      "snapshot_state": "absent"
-    },
-    "20261016004": {
-      "request_id": "20261016004",
-      "snapshot_state": "absent"
-    },
-    "20261021004": {
-      "request_id": "20261021004",
-      "snapshot_state": "absent"
-    },
-    "20261006022": {
-      "request_id": "20261006022",
-      "snapshot_state": "absent"
-    },
-    "20261014031": {
-      "request_id": "20261014031",
-      "snapshot_state": "absent"
-    },
-    "20260929021": {
-      "request_id": "20260929021",
-      "snapshot_state": "absent"
-    },
-    "20261015027": {
-      "request_id": "20261015027",
-      "snapshot_state": "absent"
-    },
-    "20261020021": {
-      "request_id": "20261020021",
-      "snapshot_state": "absent"
-    },
-    "20260922017": {
-      "request_id": "20260922017",
-      "snapshot_state": "absent"
-    },
-    "20260915002": {
-      "request_id": "20260915002",
-      "snapshot_state": "absent"
-    },
-    "20261014026": {
-      "request_id": "20261014026",
-      "snapshot_state": "absent"
-    },
-    "20260917001": {
-      "request_id": "20260917001",
-      "snapshot_state": "absent"
-    },
-    "20260909022": {
-      "request_id": "20260909022",
-      "snapshot_state": "absent"
-    },
-    "20260923002": {
-      "request_id": "20260923002",
-      "snapshot_state": "absent"
-    },
-    "20260918021": {
-      "request_id": "20260918021",
-      "snapshot_state": "absent"
-    },
-    "20261007002": {
-      "request_id": "20261007002",
-      "snapshot_state": "absent"
-    },
-    "20260922032": {
-      "request_id": "20260922032",
-      "snapshot_state": "absent"
-    },
-    "20261013004": {
-      "request_id": "20261013004",
-      "snapshot_state": "absent"
-    },
-    "20260921022": {
-      "request_id": "20260921022",
-      "snapshot_state": "absent"
-    },
-    "20261013035": {
-      "request_id": "20261013035",
-      "snapshot_state": "absent"
-    },
-    "20260929002": {
-      "request_id": "20260929002",
-      "snapshot_state": "absent"
-    },
-    "20260923032": {
-      "request_id": "20260923032",
-      "snapshot_state": "absent"
-    },
-    "20260911005": {
-      "request_id": "20260911005",
-      "snapshot_state": "absent"
-    },
-    "20260921008": {
-      "request_id": "20260921008",
-      "snapshot_state": "absent"
-    },
-    "20260925019": {
-      "request_id": "20260925019",
-      "snapshot_state": "absent"
-    },
-    "20260827020": {
-      "request_id": "20260827020",
-      "snapshot_state": "absent"
-    },
-    "20260916024": {
-      "request_id": "20260916024",
-      "snapshot_state": "absent"
-    },
-    "20260915022": {
-      "request_id": "20260915022",
-      "snapshot_state": "absent"
-    },
-    "20261008019": {
-      "request_id": "20261008019",
-      "snapshot_state": "absent"
-    },
-    "20261005013": {
-      "request_id": "20261005013",
-      "snapshot_state": "absent"
-    },
-    "20261001008": {
-      "request_id": "20261001008",
-      "snapshot_state": "absent"
-    },
-    "20261007003": {
-      "request_id": "20261007003",
-      "snapshot_state": "absent"
-    },
-    "20260924023": {
-      "request_id": "20260924023",
-      "snapshot_state": "absent"
-    },
-    "20260106035": {
-      "request_id": "20260106035",
-      "snapshot_state": "absent"
-    },
-    "20260827021": {
-      "request_id": "20260827021",
-      "snapshot_state": "absent"
-    },
-    "20260910005": {
-      "request_id": "20260910005",
-      "snapshot_state": "absent"
-    },
-    "20260908023": {
-      "request_id": "20260908023",
-      "snapshot_state": "absent"
-    },
-    "20260827019": {
-      "request_id": "20260827019",
-      "snapshot_state": "absent"
-    },
-    "20260922003": {
-      "request_id": "20260922003",
-      "snapshot_state": "absent"
-    },
-    "20260915030": {
-      "request_id": "20260915030",
-      "snapshot_state": "absent"
-    },
-    "20260826001": {
-      "request_id": "20260826001",
-      "snapshot_state": "absent"
-    },
-    "20260904019": {
-      "request_id": "20260904019",
-      "snapshot_state": "absent"
-    },
-    "20260827001": {
-      "request_id": "20260827001",
-      "snapshot_state": "absent"
-    },
-    "20260902002": {
-      "request_id": "20260902002",
-      "snapshot_state": "absent"
-    },
-    "20260922018": {
-      "request_id": "20260922018",
-      "snapshot_state": "absent"
-    },
-    "20260902031": {
-      "request_id": "20260902031",
-      "snapshot_state": "absent"
-    },
-    "20260827017": {
-      "request_id": "20260827017",
-      "snapshot_state": "absent"
-    },
-    "20260819004": {
-      "request_id": "20260819004",
-      "snapshot_state": "absent"
-    },
-    "20260909002": {
-      "request_id": "20260909002",
-      "snapshot_state": "absent"
-    },
-    "20260826006": {
-      "request_id": "20260826006",
-      "snapshot_state": "absent"
-    },
-    "20260817025": {
-      "request_id": "20260817025",
-      "snapshot_state": "absent"
-    },
-    "20260911022": {
-      "request_id": "20260911022",
-      "snapshot_state": "absent"
-    },
-    "20260814012": {
-      "request_id": "20260814012",
-      "snapshot_state": "absent"
-    },
-    "20260819033": {
-      "request_id": "20260819033",
-      "snapshot_state": "absent"
-    },
-    "20260902022": {
-      "request_id": "20260902022",
-      "snapshot_state": "absent"
-    },
-    "20260817001": {
-      "request_id": "20260817001",
-      "snapshot_state": "absent"
-    },
-    "20260828012": {
-      "request_id": "20260828012",
-      "snapshot_state": "absent"
-    },
-    "20260911001": {
-      "request_id": "20260911001",
-      "snapshot_state": "absent"
-    },
-    "20260915035": {
-      "request_id": "20260915035",
-      "snapshot_state": "absent"
-    },
-    "20260812019": {
-      "request_id": "20260812019",
-      "snapshot_state": "absent"
-    },
-    "20260723027": {
-      "request_id": "20260723027",
-      "snapshot_state": "absent"
-    },
-    "20260903021": {
-      "request_id": "20260903021",
-      "snapshot_state": "absent"
-    },
-    "20260818004": {
-      "request_id": "20260818004",
-      "snapshot_state": "absent"
-    },
-    "20260910007": {
-      "request_id": "20260910007",
-      "snapshot_state": "absent"
-    },
-    "20260810007": {
-      "request_id": "20260810007",
-      "snapshot_state": "absent"
-    },
-    "20260827003": {
-      "request_id": "20260827003",
-      "snapshot_state": "absent"
-    },
-    "20260910024": {
-      "request_id": "20260910024",
-      "snapshot_state": "absent"
-    },
-    "20260908027": {
-      "request_id": "20260908027",
-      "snapshot_state": "absent"
-    },
-    "20260805001": {
-      "request_id": "20260805001",
-      "snapshot_state": "absent"
-    },
-    "20260810005": {
-      "request_id": "20260810005",
-      "snapshot_state": "absent"
-    },
-    "20260806002": {
-      "request_id": "20260806002",
-      "snapshot_state": "absent"
-    },
-    "20260812022": {
-      "request_id": "20260812022",
-      "snapshot_state": "absent"
-    },
-    "20260803026": {
-      "request_id": "20260803026",
-      "snapshot_state": "absent"
-    },
-    "20260825038": {
-      "request_id": "20260825038",
-      "snapshot_state": "absent"
-    },
-    "20260825003": {
-      "request_id": "20260825003",
-      "snapshot_state": "absent"
-    },
-    "20260819025": {
-      "request_id": "20260819025",
-      "snapshot_state": "absent"
-    },
-    "20260803009": {
-      "request_id": "20260803009",
-      "snapshot_state": "absent"
-    },
-    "20260817015": {
-      "request_id": "20260817015",
-      "snapshot_state": "absent"
-    },
-    "20260901022": {
-      "request_id": "20260901022",
-      "snapshot_state": "absent"
-    },
-    "20260810025": {
-      "request_id": "20260810025",
-      "snapshot_state": "absent"
-    },
-    "20260810024": {
-      "request_id": "20260810024",
-      "snapshot_state": "absent"
-    },
-    "20260826043": {
-      "request_id": "20260826043",
-      "snapshot_state": "absent"
-    },
-    "20260901021": {
-      "request_id": "20260901021",
-      "snapshot_state": "absent"
-    },
-    "20260831001": {
-      "request_id": "20260831001",
-      "snapshot_state": "absent"
-    },
-    "20260106034": {
-      "request_id": "20260106034",
-      "snapshot_state": "absent"
-    },
-    "20260728026": {
-      "request_id": "20260728026",
-      "snapshot_state": "absent"
-    },
-    "20260709020": {
-      "request_id": "20260709020",
-      "snapshot_state": "absent"
-    },
-    "20260818027": {
-      "request_id": "20260818027",
-      "snapshot_state": "absent"
-    },
-    "20260810051": {
-      "request_id": "20260810051",
-      "snapshot_state": "absent"
-    },
-    "20260814016": {
-      "request_id": "20260814016",
-      "snapshot_state": "absent"
-    },
-    "20260723022": {
-      "request_id": "20260723022",
-      "snapshot_state": "absent"
-    },
-    "20260811001": {
-      "request_id": "20260811001",
-      "snapshot_state": "absent"
-    },
-    "20260714002": {
-      "request_id": "20260714002",
-      "snapshot_state": "absent"
-    },
-    "20260810050": {
-      "request_id": "20260810050",
-      "snapshot_state": "absent"
-    },
-    "20260805006": {
-      "request_id": "20260805006",
-      "snapshot_state": "absent"
-    },
-    "20260602001": {
-      "request_id": "20260602001",
-      "snapshot_state": "absent"
-    },
-    "20260714029": {
-      "request_id": "20260714029",
-      "snapshot_state": "absent"
-    },
-    "20260811003": {
-      "request_id": "20260811003",
-      "snapshot_state": "absent"
-    },
-    "20260728028": {
-      "request_id": "20260728028",
-      "snapshot_state": "absent"
-    },
-    "20260715041": {
-      "request_id": "20260715041",
-      "snapshot_state": "absent"
-    },
-    "20260730025": {
-      "request_id": "20260730025",
-      "snapshot_state": "absent"
-    },
-    "20260805038": {
-      "request_id": "20260805038",
-      "snapshot_state": "absent"
-    },
-    "20260722029": {
-      "request_id": "20260722029",
-      "snapshot_state": "absent"
-    },
-    "20260708002": {
-      "request_id": "20260708002",
-      "snapshot_state": "absent"
-    },
-    "20260729019": {
-      "request_id": "20260729019",
-      "snapshot_state": "absent"
-    },
-    "20260713006": {
-      "request_id": "20260713006",
-      "snapshot_state": "absent"
-    },
-    "20260729020": {
-      "request_id": "20260729020",
-      "snapshot_state": "absent"
-    },
-    "20260729005": {
-      "request_id": "20260729005",
-      "snapshot_state": "absent"
-    },
-    "20260727031": {
-      "request_id": "20260727031",
-      "snapshot_state": "absent"
-    },
-    "20260810053": {
-      "request_id": "20260810053",
-      "snapshot_state": "absent"
-    },
-    "20260723005": {
-      "request_id": "20260723005",
-      "snapshot_state": "absent"
-    },
-    "20260706044": {
-      "request_id": "20260706044",
-      "snapshot_state": "absent"
-    },
-    "20260710032": {
-      "request_id": "20260710032",
-      "snapshot_state": "absent"
-    },
-    "20260618040": {
-      "request_id": "20260618040",
-      "snapshot_state": "absent"
-    },
-    "20260721023": {
-      "request_id": "20260721023",
-      "snapshot_state": "absent"
-    },
-    "20260716022": {
-      "request_id": "20260716022",
-      "snapshot_state": "absent"
-    },
-    "20260709028": {
-      "request_id": "20260709028",
-      "snapshot_state": "absent"
-    },
-    "20260723030": {
-      "request_id": "20260723030",
-      "snapshot_state": "absent"
-    },
-    "20260626036": {
-      "request_id": "20260626036",
-      "snapshot_state": "absent"
-    },
-    "20260716009": {
-      "request_id": "20260716009",
-      "snapshot_state": "absent"
-    },
-    "20260716025": {
-      "request_id": "20260716025",
-      "snapshot_state": "absent"
-    },
-    "20260626034": {
-      "request_id": "20260626034",
-      "snapshot_state": "absent"
-    },
-    "20260618036": {
-      "request_id": "20260618036",
-      "snapshot_state": "absent"
-    },
-    "20260714001": {
-      "request_id": "20260714001",
-      "snapshot_state": "absent"
-    },
-    "20260708015": {
-      "request_id": "20260708015",
-      "snapshot_state": "absent"
-    },
-    "20260707029": {
-      "request_id": "20260707029",
-      "snapshot_state": "absent"
-    },
-    "20260624001": {
-      "request_id": "20260624001",
-      "snapshot_state": "absent"
-    },
-    "20260624005": {
-      "request_id": "20260624005",
-      "snapshot_state": "absent"
-    },
-    "20260707004": {
-      "request_id": "20260707004",
-      "snapshot_state": "absent"
-    },
-    "20260629003": {
-      "request_id": "20260629003",
-      "snapshot_state": "absent"
-    },
-    "20260616058": {
-      "request_id": "20260616058",
-      "snapshot_state": "absent"
-    },
-    "20260623060": {
-      "request_id": "20260623060",
-      "snapshot_state": "absent"
-    },
-    "20260630005": {
-      "request_id": "20260630005",
-      "snapshot_state": "absent"
-    },
-    "20260713032": {
-      "request_id": "20260713032",
-      "snapshot_state": "absent"
-    },
-    "20260624036": {
-      "request_id": "20260624036",
-      "snapshot_state": "absent"
-    },
-    "20260609003": {
-      "request_id": "20260609003",
-      "snapshot_state": "absent"
-    },
-    "20260617040": {
-      "request_id": "20260617040",
-      "snapshot_state": "absent"
-    },
-    "20260617042": {
-      "request_id": "20260617042",
-      "snapshot_state": "absent"
-    },
-    "20260625034": {
-      "request_id": "20260625034",
-      "snapshot_state": "absent"
-    },
-    "20260624002": {
-      "request_id": "20260624002",
-      "snapshot_state": "absent"
-    },
-    "20260106033": {
-      "request_id": "20260106033",
-      "snapshot_state": "absent"
-    },
-    "20260623006": {
-      "request_id": "20260623006",
-      "snapshot_state": "absent"
-    },
-    "20260612028": {
-      "request_id": "20260612028",
-      "snapshot_state": "absent"
-    },
-    "20260605058": {
-      "request_id": "20260605058",
-      "snapshot_state": "absent"
-    },
-    "20260602003": {
-      "request_id": "20260602003",
-      "snapshot_state": "absent"
-    },
-    "20260618050": {
-      "request_id": "20260618050",
-      "snapshot_state": "absent"
-    },
-    "20260629046": {
-      "request_id": "20260629046",
-      "snapshot_state": "absent"
-    },
-    "20260605007": {
-      "request_id": "20260605007",
-      "snapshot_state": "absent"
-    },
-    "20260522007": {
-      "request_id": "20260522007",
-      "snapshot_state": "absent"
-    },
-    "20260618037": {
-      "request_id": "20260618037",
-      "snapshot_state": "absent"
-    },
-    "20260609065": {
-      "request_id": "20260609065",
-      "snapshot_state": "absent"
-    },
-    "20260522008": {
-      "request_id": "20260522008",
-      "snapshot_state": "absent"
-    },
-    "20260610012": {
-      "request_id": "20260610012",
-      "snapshot_state": "absent"
-    },
-    "20260506007": {
-      "request_id": "20260506007",
-      "snapshot_state": "absent"
-    },
-    "20260610007": {
-      "request_id": "20260610007",
-      "snapshot_state": "absent"
-    },
-    "20260605045": {
-      "request_id": "20260605045",
-      "snapshot_state": "absent"
-    },
-    "20260623048": {
-      "request_id": "20260623048",
-      "snapshot_state": "absent"
-    },
-    "20260618032": {
-      "request_id": "20260618032",
-      "snapshot_state": "absent"
-    },
-    "20260514022": {
-      "request_id": "20260514022",
-      "snapshot_state": "absent"
-    },
-    "20260605006": {
-      "request_id": "20260605006",
-      "snapshot_state": "absent"
-    },
-    "20260610067": {
-      "request_id": "20260610067",
-      "snapshot_state": "absent"
-    },
-    "20260521020": {
-      "request_id": "20260521020",
-      "snapshot_state": "absent"
-    },
-    "20260601045": {
-      "request_id": "20260601045",
-      "snapshot_state": "absent"
-    },
-    "20260604005": {
-      "request_id": "20260604005",
-      "snapshot_state": "absent"
-    },
-    "20260528032": {
-      "request_id": "20260528032",
-      "snapshot_state": "absent"
-    },
-    "20260603002": {
-      "request_id": "20260603002",
-      "snapshot_state": "absent"
-    },
-    "20260514002": {
-      "request_id": "20260514002",
-      "snapshot_state": "absent"
-    },
-    "20260603039": {
-      "request_id": "20260603039",
-      "snapshot_state": "absent"
-    },
-    "20260415033": {
-      "request_id": "20260415033",
-      "snapshot_state": "absent"
-    },
-    "20260602006": {
-      "request_id": "20260602006",
-      "snapshot_state": "absent"
-    },
-    "20260519043": {
-      "request_id": "20260519043",
-      "snapshot_state": "absent"
-    },
-    "20260612036": {
-      "request_id": "20260612036",
-      "snapshot_state": "absent"
-    },
-    "20260527017": {
-      "request_id": "20260527017",
-      "snapshot_state": "absent"
-    },
-    "20260512036": {
-      "request_id": "20260512036",
-      "snapshot_state": "absent"
-    },
-    "20260610003": {
-      "request_id": "20260610003",
-      "snapshot_state": "absent"
-    },
-    "20260528020": {
-      "request_id": "20260528020",
-      "snapshot_state": "absent"
-    },
-    "20260512035": {
-      "request_id": "20260512035",
-      "snapshot_state": "absent"
-    },
-    "20260513035": {
-      "request_id": "20260513035",
-      "snapshot_state": "absent"
-    },
-    "20260528031": {
-      "request_id": "20260528031",
-      "snapshot_state": "absent"
-    },
-    "20260608005": {
-      "request_id": "20260608005",
-      "snapshot_state": "absent"
-    },
-    "20260515018": {
-      "request_id": "20260515018",
-      "snapshot_state": "absent"
-    },
-    "20260513034": {
-      "request_id": "20260513034",
-      "snapshot_state": "absent"
-    },
-    "20260505026": {
-      "request_id": "20260505026",
-      "snapshot_state": "absent"
-    },
-    "20260513024": {
-      "request_id": "20260513024",
-      "snapshot_state": "absent"
-    },
-    "20260507005": {
-      "request_id": "20260507005",
-      "snapshot_state": "absent"
-    },
-    "20260528021": {
-      "request_id": "20260528021",
-      "snapshot_state": "absent"
-    },
-    "20260512007": {
-      "request_id": "20260512007",
-      "snapshot_state": "absent"
-    },
-    "20260429031": {
-      "request_id": "20260429031",
-      "snapshot_state": "absent"
-    },
-    "20260528018": {
-      "request_id": "20260528018",
-      "snapshot_state": "absent"
-    },
-    "20260527036": {
-      "request_id": "20260527036",
-      "snapshot_state": "absent"
-    },
-    "20260601042": {
-      "request_id": "20260601042",
-      "snapshot_state": "absent"
-    },
-    "20260512010": {
-      "request_id": "20260512010",
-      "snapshot_state": "absent"
-    },
-    "20260428020": {
-      "request_id": "20260428020",
-      "snapshot_state": "absent"
-    },
-    "20260603044": {
-      "request_id": "20260603044",
-      "snapshot_state": "absent"
-    },
-    "20260106032": {
-      "request_id": "20260106032",
-      "snapshot_state": "absent"
-    },
-    "20260417003": {
-      "request_id": "20260417003",
-      "snapshot_state": "absent"
-    },
-    "20260519007": {
-      "request_id": "20260519007",
-      "snapshot_state": "absent"
-    },
-    "20260513033": {
-      "request_id": "20260513033",
-      "snapshot_state": "absent"
-    },
-    "20260512008": {
-      "request_id": "20260512008",
-      "snapshot_state": "absent"
-    },
-    "20260513032": {
-      "request_id": "20260513032",
-      "snapshot_state": "absent"
-    },
-    "20260529027": {
-      "request_id": "20260529027",
-      "snapshot_state": "absent"
-    },
-    "20260504025": {
-      "request_id": "20260504025",
-      "snapshot_state": "absent"
-    },
-    "20260512004": {
-      "request_id": "20260512004",
-      "snapshot_state": "absent"
-    },
-    "20260518031": {
-      "request_id": "20260518031",
-      "snapshot_state": "absent"
-    },
-    "20260512013": {
-      "request_id": "20260512013",
-      "snapshot_state": "absent"
-    },
-    "20260521019": {
-      "request_id": "20260521019",
-      "snapshot_state": "absent"
-    },
-    "20260515001": {
-      "request_id": "20260515001",
-      "snapshot_state": "absent"
-    },
-    "20260512014": {
-      "request_id": "20260512014",
-      "snapshot_state": "absent"
-    },
-    "20260518003": {
-      "request_id": "20260518003",
-      "snapshot_state": "absent"
-    },
-    "20260518025": {
-      "request_id": "20260518025",
-      "snapshot_state": "absent"
-    },
-    "20260512011": {
-      "request_id": "20260512011",
-      "snapshot_state": "absent"
-    },
-    "20260422018": {
-      "request_id": "20260422018",
-      "snapshot_state": "absent"
-    },
-    "20260504022": {
-      "request_id": "20260504022",
-      "snapshot_state": "absent"
-    },
-    "20260507001": {
-      "request_id": "20260507001",
-      "snapshot_state": "absent"
-    },
-    "20260506035": {
-      "request_id": "20260506035",
-      "snapshot_state": "absent"
-    },
-    "20260522019": {
-      "request_id": "20260522019",
-      "snapshot_state": "absent"
-    },
     "20260428028": {
       "request_id": "20260428028",
       "snapshot_state": "absent"
@@ -9542,50 +8878,6 @@
     },
     "20260507033": {
       "request_id": "20260507033",
-      "snapshot_state": "absent"
-    },
-    "20260428033": {
-      "request_id": "20260428033",
-      "snapshot_state": "absent"
-    },
-    "20260420048": {
-      "request_id": "20260420048",
-      "snapshot_state": "absent"
-    },
-    "20260508023": {
-      "request_id": "20260508023",
-      "snapshot_state": "absent"
-    },
-    "20260506028": {
-      "request_id": "20260506028",
-      "snapshot_state": "absent"
-    },
-    "20260512046": {
-      "request_id": "20260512046",
-      "snapshot_state": "absent"
-    },
-    "20260506020": {
-      "request_id": "20260506020",
-      "snapshot_state": "absent"
-    },
-    "20260508008": {
-      "request_id": "20260508008",
-      "snapshot_state": "absent"
-    },
-    "20260428006": {
-      "request_id": "20260428006",
-      "snapshot_state": "absent"
-    },
-    "20260311016": {
-      "request_id": "20260311016",
-      "snapshot_state": "absent"
-    },
-    "20260410006": {
-      "request_id": "20260410006",
-      "snapshot_state": "absent"
-    },
-    "20260511029": {
-      "request_id": "20260511029",
       "snapshot_state": "absent"
     }
   }

@@ -5,15 +5,15 @@
     "dataset_id": "vx8i-nprf",
     "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
     "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-    "fetched_at": "2026-11-14",
+    "fetched_at": "2026-11-21",
     "refresh_cadence": "Daily",
     "stale_after_days": 3,
     "privacy": "Per-applicant rows and names are never retained. Only exam-level counts and list dates from group-by."
   },
   "summary": {
-    "distinct_exams": 875,
-    "total_list_rows_sum": 406678,
-    "latest_established": "2026-11-04"
+    "distinct_exams": 883,
+    "total_list_rows_sum": 412842,
+    "latest_established": "2026-11-18"
   },
   "records": [
     {
@@ -4033,6 +4033,14 @@
       "title_count": 1
     },
     {
+      "exam_number": "4605",
+      "exam_no_raw": "4605",
+      "list_count": 4567,
+      "established_date": "2026-11-04",
+      "extension_date": null,
+      "title_count": 1
+    },
+    {
       "exam_number": "4606",
       "exam_no_raw": "4606",
       "list_count": 66,
@@ -5569,6 +5577,14 @@
       "title_count": 1
     },
     {
+      "exam_number": "5603",
+      "exam_no_raw": "5603",
+      "list_count": 460,
+      "established_date": "2026-11-18",
+      "extension_date": null,
+      "title_count": 1
+    },
+    {
       "exam_number": "5605",
       "exam_no_raw": "5605",
       "list_count": 91,
@@ -5603,7 +5619,7 @@
     {
       "exam_number": "5611",
       "exam_no_raw": "5611",
-      "list_count": 186,
+      "list_count": 195,
       "established_date": "2026-09-09",
       "extension_date": null,
       "title_count": 1
@@ -5613,6 +5629,14 @@
       "exam_no_raw": "5613",
       "list_count": 27,
       "established_date": "2026-04-29",
+      "extension_date": null,
+      "title_count": 1
+    },
+    {
+      "exam_number": "5620",
+      "exam_no_raw": "5620",
+      "list_count": 21,
+      "established_date": "2026-11-18",
       "extension_date": null,
       "title_count": 1
     },
@@ -5627,7 +5651,7 @@
     {
       "exam_number": "5625",
       "exam_no_raw": "5625",
-      "list_count": 71,
+      "list_count": 72,
       "established_date": "2026-10-14",
       "extension_date": null,
       "title_count": 1
@@ -5849,6 +5873,14 @@
       "title_count": 1
     },
     {
+      "exam_number": "6004",
+      "exam_no_raw": "6004",
+      "list_count": 108,
+      "established_date": "2026-11-18",
+      "extension_date": null,
+      "title_count": 1
+    },
+    {
       "exam_number": "6005",
       "exam_no_raw": "6005",
       "list_count": 137,
@@ -5860,6 +5892,14 @@
       "exam_number": "6006",
       "exam_no_raw": "6006",
       "list_count": 144,
+      "established_date": null,
+      "extension_date": null,
+      "title_count": 1
+    },
+    {
+      "exam_number": "6009",
+      "exam_no_raw": "6009",
+      "list_count": 206,
       "established_date": null,
       "extension_date": null,
       "title_count": 1
@@ -6225,6 +6265,14 @@
       "title_count": 1
     },
     {
+      "exam_number": "6087",
+      "exam_no_raw": "6087",
+      "list_count": 337,
+      "established_date": "2026-11-18",
+      "extension_date": null,
+      "title_count": 1
+    },
+    {
       "exam_number": "6088",
       "exam_no_raw": "6088",
       "list_count": 788,
@@ -6369,9 +6417,17 @@
       "title_count": 1
     },
     {
+      "exam_number": "6124",
+      "exam_no_raw": "6124",
+      "list_count": 53,
+      "established_date": null,
+      "extension_date": null,
+      "title_count": 1
+    },
+    {
       "exam_number": "6301",
       "exam_no_raw": "6301",
-      "list_count": 678,
+      "list_count": 679,
       "established_date": "2026-04-08",
       "extension_date": null,
       "title_count": 1
@@ -6691,7 +6747,7 @@
     {
       "exam_number": "6530",
       "exam_no_raw": "6530",
-      "list_count": 189,
+      "list_count": 190,
       "established_date": "2026-06-24",
       "extension_date": null,
       "title_count": 1
@@ -6779,10 +6835,10 @@
     {
       "exam_number": "6601",
       "exam_no_raw": "6601",
-      "list_count": 31856,
-      "established_date": "2018-02-14",
+      "list_count": 32255,
+      "established_date": "2026-11-18",
       "extension_date": "2027-02-14",
-      "title_count": 1
+      "title_count": 2
     },
     {
       "exam_number": "6607",
@@ -6829,6 +6885,14 @@
       "exam_no_raw": "7524",
       "list_count": 1,
       "established_date": "2026-09-30",
+      "extension_date": null,
+      "title_count": 1
+    },
+    {
+      "exam_number": "7527",
+      "exam_no_raw": "7527",
+      "list_count": 1,
+      "established_date": "2026-11-18",
       "extension_date": null,
       "title_count": 1
     },
@@ -6893,7 +6957,7 @@
       "exam_no_raw": "8720",
       "list_count": 257,
       "established_date": "2020-11-25",
-      "extension_date": "2026-11-25",
+      "extension_date": "2027-11-25",
       "title_count": 1
     },
     {

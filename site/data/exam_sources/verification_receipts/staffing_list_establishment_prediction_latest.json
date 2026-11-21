@@ -4,17 +4,17 @@
     "annual-examination-schedule",
     "active-civil-service-list"
   ],
-  "verified_at": "2026-11-14",
+  "verified_at": "2026-11-21",
   "join": {
     "method": "exact_exam_number_zero_pad",
     "schedule_rows": 1271,
     "distinct_schedule_exams": 1271,
-    "distinct_list_aggregate_exams": 875,
-    "matched_pairs": 453,
+    "distinct_list_aggregate_exams": 883,
+    "matched_pairs": 456,
     "misses": {
-      "no_list_aggregate": 757,
+      "no_list_aggregate": 753,
       "missing_application_close": 10,
-      "missing_established_date": 51,
+      "missing_established_date": 52,
       "established_before_application_close": 0
     },
     "privacy": "Exam-level aggregates only; no applicant rows, names, scores, or ranks."
@@ -27,38 +27,38 @@
       "citywide": {
         "key": "citywide",
         "label": "citywide",
-        "n": 453,
+        "n": 456,
         "eligible": true,
         "p10_days": 106,
         "p50_days": 274,
         "p90_days": 736,
         "median_months": 9,
         "train_from": "2021-05-05",
-        "train_to": "2026-11-04"
+        "train_to": "2026-11-18"
       },
       "open_competitive": {
         "key": "open_competitive",
         "label": "open competitive",
-        "n": 314,
+        "n": 316,
         "eligible": true,
         "p10_days": 92,
         "p50_days": 239,
         "p90_days": 834,
         "median_months": 8,
         "train_from": "2021-05-05",
-        "train_to": "2026-11-04"
+        "train_to": "2026-11-18"
       },
       "promotion": {
         "key": "promotion",
         "label": "promotion",
-        "n": 139,
+        "n": 140,
         "eligible": true,
-        "p10_days": 119,
-        "p50_days": 358,
-        "p90_days": 617,
+        "p10_days": 113,
+        "p50_days": 351,
+        "p90_days": 610,
         "median_months": 12,
         "train_from": "2021-05-26",
-        "train_to": "2026-09-30"
+        "train_to": "2026-11-18"
       }
     }
   },

@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.nycha_awarded_contracts_snapshot.v1",
   "schema_version": 1,
-  "as_of": "2026-11-19",
-  "generated_at": "2026-11-19T04:22:11.451Z",
+  "as_of": "2026-11-21",
+  "generated_at": "2026-11-21T15:26:04.192Z",
   "source": {
     "id": "nycha_awarded_contracts",
     "name": "NYCHA Awarded Contracts",
@@ -16,8 +16,8 @@
   },
   "feed": {
     "state": "live",
-    "fetched_at": "2026-11-19T04:22:11.451Z",
-    "checked_at": "2026-11-19T04:22:11.451Z",
+    "fetched_at": "2026-11-21T15:26:04.192Z",
+    "checked_at": "2026-11-21T15:26:04.192Z",
     "fallback_reason": null,
     "fallback_text": null,
     "shape_problems": [],
@@ -25,39 +25,39 @@
       {
         "year": 2023,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2023",
-        "fetched_at": "2026-11-19T04:22:11.451Z",
-        "bytes": 513974,
-        "sha256": "b893de1c29786e3f62b12d1b03cd4c7b677ea0eebc1a61de7991b83a8ef33298",
+        "fetched_at": "2026-11-21T15:26:04.192Z",
+        "bytes": 513966,
+        "sha256": "671b4c6a2a651b9fdfae3b8e969d98ba2f4aa4cdafbfc68b1f951c2e2bb43841",
         "row_count": 657
       },
       {
         "year": 2024,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2024",
-        "fetched_at": "2026-11-19T04:22:11.451Z",
-        "bytes": 319844,
-        "sha256": "c9f57efeaf126d638feaca8d48879337632547478fdce4003144fbbe9abbaddd",
+        "fetched_at": "2026-11-21T15:26:04.192Z",
+        "bytes": 319849,
+        "sha256": "7532e6c230a9b4a0a39293de9a0fdb44ad56b79f36cc23a9e2baec9c4d039ed6",
         "row_count": 400
       },
       {
         "year": 2025,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2025",
-        "fetched_at": "2026-11-19T04:22:11.451Z",
-        "bytes": 274522,
-        "sha256": "3518d6c3ec3d21df78e6e42e3e1a46ca7f27e9bfebb247b4bf9c38b974dc7ebb",
+        "fetched_at": "2026-11-21T15:26:04.192Z",
+        "bytes": 274546,
+        "sha256": "5699e966d006e7eaa0274108f90bb8ec1a53c010149839f2758827e2efcc6ff1",
         "row_count": 353
       },
       {
         "year": 2026,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2026",
-        "fetched_at": "2026-11-19T04:22:11.451Z",
-        "bytes": 222481,
-        "sha256": "26bb54212bc3a3ba2c44c3f3ee1032cfe967ed58ca8d8d9de64e5d6a200cd03c",
-        "row_count": 287
+        "fetched_at": "2026-11-21T15:26:04.192Z",
+        "bytes": 226379,
+        "sha256": "e5511d9fe67d71db3239a5cf79c7afc1327eb5f28475fa12d524a4708f27d828",
+        "row_count": 292
       },
       {
         "year": 2027,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2027",
-        "fetched_at": "2026-11-19T04:22:11.451Z",
+        "fetched_at": "2026-11-21T15:26:04.192Z",
         "bytes": 888,
         "sha256": "3b38eba728cd2fd719fb6d26c54a39fad25990275705955f570e5c6ba5fe5025",
         "row_count": 1
@@ -67,8 +67,8 @@
   "window": {
     "contract_years_from": 2023
   },
-  "count": 1698,
-  "rfq_numbered_count": 841,
+  "count": 1703,
+  "rfq_numbered_count": 844,
   "rows": [
     {
       "contract_number": "2219909",
@@ -871,7 +871,7 @@
       "start_date": "2023-01-18",
       "contract_year": 2023,
       "procurement_method": "SEALED BID",
-      "contract_status": "Expired"
+      "contract_status": "Active"
     },
     {
       "contract_number": "2301191",
@@ -2026,7 +2026,7 @@
       "start_date": "2023-03-12",
       "contract_year": 2023,
       "procurement_method": "SEALED BID",
-      "contract_status": "Active"
+      "contract_status": "Expired"
     },
     {
       "contract_number": "2121005",
@@ -2587,7 +2587,7 @@
       "start_date": "2023-03-27",
       "contract_year": 2023,
       "procurement_method": "SEALED BID",
-      "contract_status": "Expired"
+      "contract_status": "Active"
     },
     {
       "contract_number": "2216303",
@@ -3841,7 +3841,7 @@
       "start_date": "2023-05-23",
       "contract_year": 2023,
       "procurement_method": "SEALED BID",
-      "contract_status": "Expired"
+      "contract_status": "Active"
     },
     {
       "contract_number": "2218552",
@@ -6921,7 +6921,7 @@
       "start_date": "2023-11-21",
       "contract_year": 2023,
       "procurement_method": "GOVERMENT LIST",
-      "contract_status": "Active"
+      "contract_status": "Expired"
     },
     {
       "contract_number": "2320523",
@@ -8798,7 +8798,7 @@
       "rfq_number_printed": "407999,4",
       "rfq_number": "407999",
       "vendor_name": "AWL INDUSTRIES INC.",
-      "total_amount": 12961201.45,
+      "total_amount": 12961204.45,
       "start_date": "2024-03-08",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
@@ -9172,7 +9172,7 @@
       "rfq_number_printed": "466034",
       "rfq_number": "466034",
       "vendor_name": "EMPIRE CONTROL ABATEMENT INC",
-      "total_amount": 37506211,
+      "total_amount": 37512214,
       "start_date": "2024-04-12",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
@@ -9495,7 +9495,7 @@
       "start_date": "2024-05-15",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
-      "contract_status": "Expired"
+      "contract_status": "Active"
     },
     {
       "contract_number": "2414458",
@@ -9678,7 +9678,7 @@
       "rfq_number_printed": "447022,5",
       "rfq_number": "447022",
       "vendor_name": "RICHARDS PLUMBING AND HEATING CO., INC.",
-      "total_amount": 46870789.44,
+      "total_amount": 46875904.18,
       "start_date": "2024-06-06",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
@@ -10030,7 +10030,7 @@
       "rfq_number_printed": "347887,3",
       "rfq_number": "347887",
       "vendor_name": "WDF INC.",
-      "total_amount": 35648476.95,
+      "total_amount": 35729444.36,
       "start_date": "2024-07-15",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
@@ -10261,7 +10261,7 @@
       "rfq_number_printed": "492053,1",
       "rfq_number": "492053",
       "vendor_name": "BARROS CONSTRUCTION CORP.",
-      "total_amount": 36000000,
+      "total_amount": 90000000,
       "start_date": "2024-08-14",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
@@ -11108,7 +11108,7 @@
       "rfq_number_printed": "502092",
       "rfq_number": "502092",
       "vendor_name": "EMPIRE CONTROL ABATEMENT INC",
-      "total_amount": 50000000,
+      "total_amount": 100000000,
       "start_date": "2024-11-14",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
@@ -14001,7 +14001,7 @@
       "rfq_number_printed": "N/A",
       "rfq_number": null,
       "vendor_name": "SLSCO, LP",
-      "total_amount": 411900000,
+      "total_amount": 416094496,
       "start_date": "2025-07-21",
       "contract_year": 2025,
       "procurement_method": "COMPETETIVE RFP",
@@ -14155,7 +14155,7 @@
       "rfq_number_printed": "508272,1",
       "rfq_number": "508272",
       "vendor_name": "SIMSIM CONSTRUCTION INC",
-      "total_amount": 1000000,
+      "total_amount": 2500000,
       "start_date": "2025-08-01",
       "contract_year": 2025,
       "procurement_method": "SEALED BID",
@@ -14870,7 +14870,7 @@
       "rfq_number_printed": "512440,4",
       "rfq_number": "512440",
       "vendor_name": "CSI SECURITY AND ELECTRIC, INC DBA/CENTENNIAL SECURITY INTEGRATION",
-      "total_amount": 21000000,
+      "total_amount": 25990809.25,
       "start_date": "2025-10-20",
       "contract_year": 2025,
       "procurement_method": "SEALED BID",
@@ -16937,7 +16937,7 @@
       "contract_number": "2610213",
       "rfq_number_printed": "N/A",
       "rfq_number": null,
-      "vendor_name": "SMOOTH PLASTERING LLC",
+      "vendor_name": "SMOOTH PLASTERING LLC DBA SMOOTH CONSTRUCTION SERVICES",
       "total_amount": 250000,
       "start_date": "2026-05-27",
       "contract_year": 2026,
@@ -18529,6 +18529,17 @@
       "contract_status": "Active"
     },
     {
+      "contract_number": "2630162",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "NEW YORK STATE URBAN DEVELOPMENT CORPORATION",
+      "total_amount": 0,
+      "start_date": "2026-10-09",
+      "contract_year": 2026,
+      "procurement_method": "NON-COMP -  Sole Source",
+      "contract_status": "Active"
+    },
+    {
       "contract_number": "2617126",
       "rfq_number_printed": "514558",
       "rfq_number": "514558",
@@ -18733,6 +18744,50 @@
       "vendor_name": "DACK CONSULTING SOLUTIONS INC",
       "total_amount": 1500000,
       "start_date": "2026-11-13",
+      "contract_year": 2026,
+      "procurement_method": "COMPETETIVE RFP",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2622541",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "VANGUARD DIRECT ENTERPRISES, LLC",
+      "total_amount": 1000000,
+      "start_date": "2026-11-13",
+      "contract_year": 2026,
+      "procurement_method": "GOV_TO_GOV",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2522456",
+      "rfq_number_printed": "508220,2",
+      "rfq_number": "508220",
+      "vendor_name": "P & K CONTRACTING, INC.",
+      "total_amount": 100000000,
+      "start_date": "2026-11-17",
+      "contract_year": 2026,
+      "procurement_method": "SEALED BID",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2619297",
+      "rfq_number_printed": "521132",
+      "rfq_number": "521132",
+      "vendor_name": "H VAK MECHANICAL CORP",
+      "total_amount": 5818027.5,
+      "start_date": "2026-11-18",
+      "contract_year": 2026,
+      "procurement_method": "SEALED BID",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2612621",
+      "rfq_number_printed": "510473,2",
+      "rfq_number": "510473",
+      "vendor_name": "A1 WORKS IN PROGRESS ASSOCIATES, LLC",
+      "total_amount": 65000000,
+      "start_date": "2026-11-19",
       "contract_year": 2026,
       "procurement_method": "COMPETETIVE RFP",
       "contract_status": "Active"

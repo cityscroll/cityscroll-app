@@ -10,7 +10,7 @@
       "https://data.cityofnewyork.us/d/4ptz-hmtc",
       "https://data.cityofnewyork.us/d/vx8i-nprf"
     ],
-    "fetched_at": "2026-11-14",
+    "fetched_at": "2026-11-21",
     "refresh_cadence": "Rebuild when annual schedule or active-list aggregates refresh; closed exams keep list-size depth after they leave the current FY snapshot.",
     "stale_after_days": 95,
     "role": "Supplements the current FY annual snapshot so list_aggregate joins land on real closed exams (open 7xxx series has 0% list presence)."
@@ -447,7 +447,7 @@
       "application_period_end_date": "2025-10-29",
       "open_competitive_promotion": "Open Competitive",
       "eligibility": "open_competitive",
-      "expected_list_count": 678,
+      "expected_list_count": 679,
       "expected_established_date": "2026-04-08"
     },
     {
@@ -678,7 +678,7 @@
       "application_period_end_date": "2025-08-26",
       "open_competitive_promotion": "Promotion",
       "eligibility": "promotion",
-      "expected_list_count": 189,
+      "expected_list_count": 190,
       "expected_established_date": "2026-06-24"
     },
     {
