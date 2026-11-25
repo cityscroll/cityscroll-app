@@ -7,7 +7,7 @@ url: /guide/how-to/check-the-evidence-behind-a-connection/
 reader_question: Why does this say two records are connected?
 purpose: Inspect a connection and copy a link that reopens its evidence.
 description: Open the receipt behind any connection CityScroll draws between two records, read what it claims, and keep a link that reopens the same panel.
-last_reviewed: 2026-09-08
+last_reviewed: 2026-11-25
 return_to_task: Open the connection this guide uses | /agencies/parks-and-recreation/?claim=rules%3Anotice%3A20260521021
 depends_on:
   - site/i18n.js
@@ -24,7 +24,7 @@ sources:
 ## Step 1 — Open a connection's details
 
 Open [Parks and Recreation](/agencies/parks-and-recreation/) with JavaScript switched on. No account is needed. Under **Connected records**, choose **details** beside a record's title
-(announced as **View connection details** by a screen reader).
+(announced as **Details** by a screen reader).
 A **Connection evidence** panel opens for that record.
 
 For the worked example, use **details** beside **Update to Parks List of Qualifying Documents

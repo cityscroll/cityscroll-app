@@ -16,7 +16,7 @@ test("A1: government access guides publish both native routes with required meta
   assert.ok(observe);
   assert.ok(request);
   for (const article of [observe, request]) {
-    withPinnedClock("2026-09-15T12:00:00Z", () => assert.equal(article.last_reviewed, todayISO()));
+    withPinnedClock("2026-11-25T12:00:00Z", () => assert.equal(article.last_reviewed, todayISO()));
     assert.ok(article.sources.length >= 3);
     assert.ok(article.related.length >= 1);
     assert.equal(article.return_to_task.href, "https://cityscroll.org/observe/");
@@ -26,8 +26,8 @@ test("A1: government access guides publish both native routes with required meta
 test("A2: each profile names what is seen, access, preparation, and an official next step", () => {
   const html = withoutJavaScript(readFileSync("site/guide/how-to/observe-city-government/index.html", "utf8"));
   const profiles = {
-    pdc: "https://www.nyc.gov/site/planning/about/commission.page",
-    bsa: "https://www.nyc.gov/site/bsa/calendar/calendar.page",
+    pdc: "https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page",
+    bsa: "https://www.nyc.gov/site/bsa/public-hearings/upcoming-hearing-info.page",
     oath: "https://www.nyc.gov/site/oath/trials/conference-and-trial-calendar.page",
     ccrb: "https://www.nyc.gov/site/ccrb/complaints/complaint-process/apu-trials.page",
     "hart-island": "https://www.nyc.gov/site/hartisland/hart-island/visitation.page",
@@ -60,7 +60,7 @@ test("A4: OATH and CCRB boundary details are exact and date-list-free", () => {
   assert.match(section("oath"), /<strong>index<\/strong>[\s\S]*<strong>date<\/strong>[\s\S]*<strong>time<\/strong>/);
   assert.match(section("oath"), /OATHCalUnit@OATH\.nyc\.gov/);
   assert.doesNotMatch(section("ccrb"), /\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, 20\d{2}\b/);
-  assert.match(section("ccrb"), /rolling three-week grid/);
+  assert.match(section("ccrb"), /publishes trials four months ahead/);
   assert.match(section("ccrb"), /charges are allegations, not adjudicated findings/);
 });
 

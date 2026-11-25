@@ -7,7 +7,7 @@ url: /guide/reference/controls-and-outputs/
 reader_question: What can this control do, and what do I get back?
 purpose: Look up common controls, their effects and the files or links they produce.
 description: What each control on CityScroll does when you use it — searching, filtering, following, calendars, links and exports — and what state you are left in.
-last_reviewed: 2026-09-10
+last_reviewed: 2026-11-25
 return_to_task: Browse public records by type | /browse/
 related:
   - Glossary of terms used in this guide | /guide/reference/glossary/
@@ -22,9 +22,9 @@ sources:
 | Control | What it does | What you are left with |
 | --- | --- | --- |
 | Search | Searches the records for your words | A results page grouped by kind of record, with your words in the address |
-| The result groups | Splits results into Contracts, People + organizations, Land, Rules, Meetings and Exams, each with its own count | The kind of record is visible before you open anything |
-| Why it matched | Marks each result as a title match, a summary match, or a match in the body of the record | For a body match, the passage itself, quoted from the record |
-| Scope | Limits a search to one kind of record instead of all of them | A narrower search, kept in the address |
+| The result groups | Splits results into Contracts, People + organizations, Land, Rules, Meetings, Exams and Consultations, each with its own count | The kind of record is visible before you open anything |
+| Why it matched | Marks each result as a title match, a summary match, or a record text match | For a record text match, the passage itself, quoted from the record |
+| Scope | Shows **Scope: All sources**, with a **Contracts only** link that limits the search to contracts | A narrower search, kept in the address |
 | Recent searches | Lists what you have searched for, with a way to clear it | A list kept in this browser only |
 | Browse | Opens one kind of record on its own page, without searching | A listing you can filter |
 | Filters and More filters | Narrow a listing by the things that listing has — a keyword, an agency, a place, a stage, a date window, an amount | A narrower listing, kept in the address |
@@ -74,11 +74,11 @@ your calendar, and some of them take hours to show a change.
 | Control | What it does | What you are left with |
 | --- | --- | --- |
 | The address bar | Holds your search, filters, chosen day and inspected connection | A link that rebuilds the same view later, against whatever is published by then |
-| How this connection was made | Opens the basis for a connection, the relation it asserts, and its official source | The connection stays in the address, so the link carries it |
+| Details | Opens the Connection evidence panel: the basis for a connection and, under How this connection was made, the relation it asserts and its official source | The connection stays in the address, so the link carries it |
 | Copy link to this connection | Copies the address with that one connection already inspected | An address on your clipboard |
 | Copy link | Copies the address of the record you are on | An address on your clipboard |
 | The source link | Opens the city's own published copy. It is named for where it goes, such as City Record notice | The city's page, in a new tab |
-| Print or save PDF, and Download JSON | Take one record with you | A file of that record as it stands |
+| Print / save PDF, and Download JSON | Take one record with you | A file of that record as it stands |
 | As of day | Keeps only records dated on or before the day you pick, with Apply and Clear | A dated view, shareable by its address |
 
 ## Collecting records

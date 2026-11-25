@@ -7,7 +7,7 @@ url: /guide/understand/how-records-are-connected/
 reader_question: What does a connection between two records actually claim?
 purpose: What CityScroll means when it links two records, how to inspect that claim, and why some obvious relationships stay unlinked.
 description: A connection between two records on CityScroll is a claim with a stated basis. Here is what it asserts, how to check it, and where it stops.
-last_reviewed: 2026-09-06
+last_reviewed: 2026-11-25
 return_to_task: Browse public records by type | /browse/
 related:
   - What a public record tells you | /guide/understand/what-a-public-record-tells-you/
@@ -29,7 +29,7 @@ did anything wrong.
 
 ## How the identification was made
 
-Open **How this connection was made** on a connected record and you get the basis rather than a
+Open **Details** beside a connected record and its **Connection evidence** panel gives you the basis rather than a
 score. The labels distinguish three kinds of evidence.
 
 | Basis | What it means | How much weight it carries |

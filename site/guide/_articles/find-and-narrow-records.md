@@ -7,7 +7,7 @@ url: /guide/how-to/find-and-narrow-records/
 reader_question: How do I find records about my topic and narrow them down?
 purpose: Find a topic, narrow the relevant collection, and keep a link to its filters.
 description: Search CityScroll for a topic, move to the collection holding the kind of record you want, narrow it, keep the link, and recover from no results.
-last_reviewed: 2026-09-08
+last_reviewed: 2026-11-25
 return_to_task: Start a search | /search/
 related:
   - Explore housing across city records | /guide/start/explore-housing-across-city-records/
@@ -28,7 +28,7 @@ of record. Read each result's match explanation before choosing it. Counts chang
 ## Step 2 — Open the relevant collection
 
 Open [Browse](/browse/) and choose the kind of record you need. Use **People + organizations**
-for agencies, boards and vendors, **Staffing** for appointments and hiring outcomes, or **Exams**
+for agencies, boards and vendors, **Browse appointments** in that card for appointments and hiring outcomes, or **Exams**
 for civil-service applications. The destination's heading confirms the collection.
 
 ## Step 3 — Narrow the list

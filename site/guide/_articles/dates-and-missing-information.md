@@ -7,7 +7,7 @@ url: /guide/understand/dates-and-missing-information/
 reader_question: Why is this blank, and which date am I looking at?
 purpose: How to tell the dates on a record apart, and how to read an empty field without reading something into it.
 description: Records carry several different kinds of date, and several different kinds of blank. Telling them apart is most of what it takes to read one safely.
-last_reviewed: 2026-09-06
+last_reviewed: 2026-11-25
 return_to_task: Browse public records by type | /browse/
 related:
   - What a public record tells you | /guide/understand/what-a-public-record-tells-you/
@@ -45,7 +45,7 @@ does not answer it.
 An empty field is not one thing, and the difference between these is the difference between an
 absence of publication and an absence of an event.
 
-- **Not shown here yet** — the city publishes this, and CityScroll has not joined it. The gap is
+- **Not yet shown here** — the city publishes this, and CityScroll has not joined it. The gap is
   here, not in the city's publishing.
 - **The city does not publish this** — no public, joinable release of the field is known. Where there
   is an obvious place it would appear if it were released, the record names it.
@@ -53,7 +53,7 @@ absence of publication and an absence of an event.
   together with confidence.
 - **Unknown** — the source itself carries no value.
 
-None of these is a zero. "No awards found for this agency" means none were found in the sources
+None of these is a zero. An agency section counted as **empty in this snapshot** means none were found in the sources
 CityScroll reads, and several agencies publish their awards somewhere those sources do not reach.
 The classification behind these states is
 [written down and kept as a document of its own](https://github.com/cityscroll/cityscroll-app/blob/main/docs/gap-taxonomy.md).

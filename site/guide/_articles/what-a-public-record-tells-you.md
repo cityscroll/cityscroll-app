@@ -7,7 +7,7 @@ url: /guide/understand/what-a-public-record-tells-you/
 reader_question: Does this record mean the city decided something?
 purpose: What a published record establishes about a government action, and what it deliberately leaves open.
 description: A record on CityScroll proves the city published something. Whether it also shows a decision depends on which kind of record you are reading.
-last_reviewed: 2026-09-06
+last_reviewed: 2026-11-25
 return_to_task: Browse public records by type | /browse/
 related:
   - Public hearings and meetings on CityScroll | /browse/meetings/
@@ -19,7 +19,7 @@ sources:
   - Testify at a New York City Council hearing | https://council.nyc.gov/testify/
   - NYC Rules, the city's rulemaking portal | https://rules.cityofnewyork.us/capa/
   - Public hearings on proposed contracts, Mayor's Office of Contract Services | https://www.nyc.gov/site/mocs/about/public-hearing.page
-  - Public review of land-use applications, Department of City Planning | https://www.nyc.gov/site/planning/applicants/applicant-portal/step5-ulurp-process.page
+  - Public review of land-use applications, Department of City Planning | https://www.nyc.gov/content/planning/pages/planning/public-review
 ---
 
 ## Read what the agency published
@@ -70,7 +70,7 @@ A record showing a community board voted against an application is a real, meani
 not the outcome of the application. The official project file at the city's
 [Zoning Application Portal](https://zap.planning.nyc.gov/) is where the full procedure and its
 documents live, and the city's own account of the review is
-[the Department of City Planning's public review page](https://www.nyc.gov/site/planning/applicants/applicant-portal/step5-ulurp-process.page).
+[the Department of City Planning's public review page](https://www.nyc.gov/content/planning/pages/planning/public-review).
 
 ## Four different invitations to take part
 

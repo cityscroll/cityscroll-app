@@ -7,7 +7,7 @@ url: /guide/start/trace-a-notice-to-the-duty-behind-it/
 reader_question: How do I get from a published notice to the law that required it?
 purpose: Follow a Sanitation rule notice to its legal duty, source law and publication evidence.
 description: Follow one real Sanitation rule from the notice the city published back to the Charter duty behind it, and learn where a published record stops.
-last_reviewed: 2026-09-08
+last_reviewed: 2026-11-25
 return_to_task: Open the Sanitation notice this tutorial uses | /notices/20260605008
 related:
   - Explore housing across city records | /guide/start/explore-housing-across-city-records/
@@ -25,7 +25,7 @@ sources:
 Open [the Sanitation final rule notice](/notices/20260605008). No account is needed, and the notice
 and duty pages read without JavaScript. Check the title: **DSNY Final Rule re Implementation Dates
 for the Brooklyn North and Upper Manhattan Commercial Waste Zones**.
-Open **View in City Record** beside the notice's actions to compare the city's copy, then return.
+Open **View in City Record** among the notice's actions (**Official record** without JavaScript) to compare the city's copy, then return.
 
 ## Step 2 — Follow the duty
 
@@ -53,13 +53,13 @@ A compliance finding would also need to establish whether the filing met the dut
 
 ## Step 5 — Try another notice
 
-Open another rule notice from [Rules](/browse/rules/), find **Connected mandate**, then follow
+Open another notice with **Connected mandate**, such as [a Homeless Services shelter renewal](/notices/20210727108), then follow
 its duty text and **Source law**. If the block is absent, no supported connection is shown. That does not mean no law applies. Check the notice's own official copy instead.
 
 ## Optional — Watch for later filings
 
 On a notice with **Connected mandate**, select **Watch this mandate** beside the connection.
-Following opens with the duty selected and needs JavaScript switched on. Check **Preview matches**
+Following opens with the duty selected. Creating the watch needs JavaScript switched on. Check the **Preview** list
 there. Previewing does not subscribe you. Choose a frequency, enter **Email address** under
 **Create this watch**, and press **Create watch** only if you want email updates.
 The page's subscribed confirmation is the saved result.

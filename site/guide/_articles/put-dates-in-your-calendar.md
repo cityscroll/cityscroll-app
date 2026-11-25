@@ -7,7 +7,7 @@ url: /guide/how-to/put-dates-in-your-calendar/
 reader_question: How do I get these dates into my own calendar?
 purpose: Add a single event or subscribe to a dated list, then check the result in your calendar app.
 description: Add one city event to your calendar, or subscribe to a whole list of them, and know exactly which of the two you did and what it can promise.
-last_reviewed: 2026-09-08
+last_reviewed: 2026-11-25
 return_to_task: Open Now | /now/
 depends_on:
   - site/i18n.js

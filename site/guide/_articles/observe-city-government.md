@@ -7,15 +7,15 @@ url: /guide/how-to/observe-city-government/
 reader_question: What can I watch, and how do I prepare to observe it?
 purpose: Compare six public government experiences, then follow the official access step for the one you want to see.
 description: Compare six ways to observe New York City government, from public review meetings to a procurement livestream, with preparation and official next steps.
-last_reviewed: 2026-09-15
+last_reviewed: 2026-11-25
 return_to_task: Browse government observations | https://cityscroll.org/observe/
 related:
   - Request trial observation | /guide/how-to/request-trial-observation/
   - Put dates in your calendar | /guide/how-to/put-dates-in-your-calendar/
   - Browse meetings | /browse/meetings/
 sources:
-  - New York City Planning Commission public meetings | https://www.nyc.gov/site/planning/about/commission.page
-  - New York City Board of Standards and Appeals | https://www.nyc.gov/site/bsa/calendar/calendar.page
+  - New York City Public Design Commission public meetings | https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page
+  - New York City Board of Standards and Appeals upcoming hearing information | https://www.nyc.gov/site/bsa/public-hearings/upcoming-hearing-info.page
   - New York City Office of Administrative Trials and Hearings calendar | https://www.nyc.gov/site/oath/trials/conference-and-trial-calendar.page
   - New York City Department of Design and Construction construction contracts | https://www.nyc.gov/site/ddc/contracts/construction-contracts.page
   - New York City Hart Island visitation | https://www.nyc.gov/site/hartisland/hart-island/visitation.page
@@ -27,23 +27,23 @@ These are six different experiences, not six versions of the same meeting. Read 
 
 ## Watch a PDC public review {#pdc}
 
-What you see: A Planning Commission public review meeting, including presentations and the commission's public proceedings. Watching is separate from speaking.
+What you see: A Public Design Commission meeting, usually a morning committee meeting followed by a public meeting with consent items and any public hearings. Watching is separate from speaking.
 
-Access: Follow the scheduled PDC meeting's official page or meeting link. You can watch without signing up to testify. The Teams testimony signup, when offered, is a separate action and is not required merely to observe.
+Access: Attend in the Public Design Commission Board Room on the third floor of City Hall, join by Microsoft Teams, or watch the YouTube livestream. You can watch without signing up to testify. The Teams testimony signup, when offered, is a separate action and is not required merely to observe.
 
 Prepare: Open the agenda and confirm the date, time, meeting format, and any published materials. Keep the official page open in case the agency changes the details.
 
-Official next step: [Read the Planning Commission meeting information](https://www.nyc.gov/site/planning/about/commission.page). For a scheduled item, return to its [PDC detail page](https://cityscroll.org/observe/#pdc).
+Official next step: [Read the Public Design Commission meeting information](https://www.nyc.gov/site/designcommission/design-review/meetings/meetings.page). For a scheduled item, choose **Open scheduled detail** on its card in [Observe City Government](https://cityscroll.org/observe/).
 
 ## Listen to a BSA executive review {#bsa}
 
 What you see: A Board of Standards and Appeals executive review of applications and cases. This is listen-only for an observer; the executive review is not a public testimony signup.
 
-Access: Use the official BSA calendar or the meeting link on the scheduled detail. No bidder or speaker registration is implied by watching.
+Access: Use BSA's upcoming hearing information page. Hearings are also livestreamed on YouTube. No bidder or speaker registration is implied by watching.
 
 Prepare: Read the agenda, case numbers, and any attached hearing material. Do not treat a prior case date in a case history as another upcoming session.
 
-Official next step: [Open the BSA calendar](https://www.nyc.gov/site/bsa/calendar/calendar.page). For a scheduled item, return to its [BSA detail page](https://cityscroll.org/observe/#bsa).
+Official next step: [Open BSA's upcoming hearing information](https://www.nyc.gov/site/bsa/public-hearings/upcoming-hearing-info.page). Scheduled BSA hearings are listed in [Observe City Government](https://cityscroll.org/observe/).
 
 ## Request an OATH trial observation {#oath}
 
@@ -59,7 +59,7 @@ Official next step: [Open OATH's trial calendar](https://www.nyc.gov/site/oath/t
 
 What you see: A public Civilian Complaint Review Board disciplinary trial at 1 Police Plaza. The officer, borough, and charges in the rolling grid are case information; charges are allegations, not findings.
 
-Access: Use the current official rolling three-week trial grid. It is the source of the available dates, and dates can change.
+Access: Use the current official CCRB trial calendar. It is the source of the available dates. The board publishes trials four months ahead, and dates can change.
 
 Prepare: Check the grid immediately before you go. It does not provide a stable case identifier or a session start time in every row, so do not copy an old date list into a CityScroll event or infer a venue from the incident borough.
 
@@ -71,7 +71,7 @@ What you see: A Ranger-led public visit to Hart Island. General public visits ar
 
 Access: Apply through the official Parks registration program for a selected visit date. If demand exceeds capacity, the program uses a lottery. A selected-Tuesday policy is not a weekly event schedule.
 
-Prepare: Read the visitation rules and wait for the registration program to publish dates. Do not assume availability, a recurring Tuesday event, or a confirmed place from this guide.
+Prepare: Read the visitation rules, including any notice that visits are postponed, and wait for the registration program to publish dates. Do not assume availability, a recurring Tuesday event, or a confirmed place from this guide.
 
 Official next step: [Read Hart Island visitation information](https://www.nyc.gov/site/hartisland/hart-island/visitation.page). The page's registration instructions are the authority for selected dates and capacity.
 
