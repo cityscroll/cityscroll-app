@@ -1,0 +1,326 @@
+{
+  "schema": "cityscroll.meeting_outcomes_snapshot.v1",
+  "generated_at": "2026-11-14T10:01:03.273Z",
+  "delivery_tier": "inline-at-build",
+  "by_notice": {
+    "20260512045": {
+      "request_id": "20260512045",
+      "snapshot_state": "present",
+      "event": {
+        "event_id": "22390",
+        "name": "Subcommittee on Zoning and Franchises",
+        "date": "2026-05-27",
+        "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22390&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+        "documents": [
+          {
+            "name": "Agenda",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22390_A_Subcommittee_on_Zoning_and_Franchises_26-05-27_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22390_M_Subcommittee_on_Zoning_and_Franchises_26-05-27_Meeting_Minutes.pdf"
+          }
+        ]
+      },
+      "matters": [
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438508",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438610",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78872",
+          "matter_file": "LU 0067-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78872",
+          "title": "Zoning, Monitor Point, Brooklyn (C 260105 ZMK).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438509",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438609",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78873",
+          "matter_file": "LU 0068-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78873",
+          "title": "Zoning, Monitor Point, Brooklyn (N 260106 ZRK).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438510",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438608",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78874",
+          "matter_file": "LU 0069-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78874",
+          "title": "Zoning, Monitor Point, Brooklyn (C 260107 ZSK).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438511",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438607",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78875",
+          "matter_file": "LU 0070-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78875",
+          "title": "Zoning, Monitor Point, Brooklyn (C 260109 ZSK).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438512",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438606",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78876",
+          "matter_file": "LU 0071-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78876",
+          "title": "Zoning, Monitor Point, Brooklyn (C 250326 MMK).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438513",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438605",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78877",
+          "matter_file": "LU 0072-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78877",
+          "title": "Zoning, Dewitt Clinton Park North (801 Eleventh Avenue), Manhattan (C 260013 ZMM).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438514",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438604",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78878",
+          "matter_file": "LU 0073-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78878",
+          "title": "Zoning, Dewitt Clinton Park North (801 Eleventh Avenue), Manhattan (N 260014 ZRM).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438515",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438603",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78879",
+          "matter_file": "LU 0074-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78879",
+          "title": "Zoning, Dewitt Clinton Park North (801 Eleventh Avenue), Manhattan (C 260015 ZSM).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438516",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438602",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78880",
+          "matter_file": "LU 0075-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78880",
+          "title": "Zoning, Dewitt Clinton Park North (629 West 54th Street), Manhattan (C 260060 ZMM).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438517",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438601",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78881",
+          "matter_file": "LU 0076-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78881",
+          "title": "Zoning, Dewitt Clinton Park North (629 West 54th Street), Manhattan (N 260062 ZRM).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        },
+        {
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "documents": [],
+          "item_actions": [
+            {
+              "agenda_item_id": "438518",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "438600",
+              "action": "Laid Over by Subcommittee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            }
+          ],
+          "matter_id": "78882",
+          "matter_file": "LU 0077-2026",
+          "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78882",
+          "title": "Zoning, Dewitt Clinton Park North (629 West 54th Street), Manhattan (C 260061 ZSM).",
+          "outcome": "Laid Over by Subcommittee",
+          "votes": null
+        }
+      ]
+    }
+  }
+}

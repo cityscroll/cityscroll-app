@@ -1,16 +1,16 @@
 {
   "schema": "cityscroll.community_board_budget_requests_lookup.v1",
-  "generated_at": "2026-10-17T01:53:34.458Z",
+  "generated_at": "2026-11-24T18:55:01.202Z",
   "board_count": 59,
   "source": {
     "publisher": "New York City Office of Management and Budget",
     "name": "Register of Community Board Budget Requests",
     "source_url": "https://data.cityofnewyork.us/d/vn4m-mk4t",
     "dataset_id": "vn4m-mk4t",
-    "as_of": "2026-10-17"
+    "as_of": "2026-11-24"
   },
   "publication_selection": {
-    "as_of": "2026-10-17",
+    "as_of": "2026-11-24",
     "servable": [
       "20260512",
       "20260630"

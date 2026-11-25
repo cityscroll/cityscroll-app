@@ -174,6 +174,19 @@
       ]
     },
     {
+      "id": "board-budget-requests-lookup",
+      "command": [
+        "tools/build_community_board_budget_requests_lookup.mjs"
+      ],
+      "covers": [
+        "tools/build_community_board_budget_requests_lookup.mjs"
+      ],
+      "after": [
+        "publication-guard"
+      ],
+      "note": "The Near You board budget-request preview is derived from the community board budget register and its per-board documents, which the register's own acquisition rewrites, and the Near You pages read it inside the derived JSON boundary. Its freshness is asserted in process by the site-node family, so a refresh that moves the register without rebuilding this lookup fails its own verification."
+    },
+    {
       "id": "board-graph-census",
       "command": [
         "tools/build_community_board_graph_census.mjs"
@@ -258,6 +271,7 @@
         "rules-semantic",
         "legislative-matters",
         "board-land-positions",
+        "board-budget-requests-lookup",
         "board-graph-census",
         "council-land-bridge",
         "council-land-links",
@@ -745,6 +759,7 @@
     "tools/build_agency_source_identity_snapshot.mjs",
     "tools/build_ceqr_project_milestone_reconciliation.mjs",
     "tools/build_community_board_activity_lookup.mjs",
+    "tools/build_community_board_budget_requests_lookup.mjs",
     "tools/build_community_board_constellation_documents.mjs",
     "tools/build_community_board_district_projects.mjs",
     "tools/build_community_board_full_board_meetings.mjs",

@@ -421,6 +421,7 @@ test("A3: hearing, explicit choice, history, confirm, update, reopen, and remova
   insertJournal(sqlite, early);
   const sub = await watchRecord(["resident", "example.com"].join("@"), MATTER_ID);
   const confirmed = await confirmExactMatterWatch(env, sub, {
+    roster: snapshot,
     observations: [early],
     requireReadiness: true,
     now: "2026-05-01T00:00:00.000Z",
@@ -513,7 +514,11 @@ test("watch activation requires collector and delivery readiness", async () => {
   const sub = await watchRecord(["blocked", "example.com"].join("@"), MATTER_ID);
   const readiness = await matterWatchActivationReadiness(env);
   assert.equal(readiness.ready, false);
-  const failed = await confirmExactMatterWatch(env, sub, { requireReadiness: true, observations: [] });
+  const failed = await confirmExactMatterWatch(env, sub, {
+    roster: snapshot,
+    requireReadiness: true,
+    observations: [],
+  });
   assert.equal(failed.confirmation, "failed");
   assert.equal(failed.following, false);
   assert.match(councilMatterWatchSummaryHtml(sub, { confirmation: "failed" }), /not confirmed/);

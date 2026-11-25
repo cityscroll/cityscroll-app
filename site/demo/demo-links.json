@@ -1252,7 +1252,7 @@
           },
           {
             "selector": ".agency-connection-card[data-edge-type='issued_rule']",
-            "text": "Rules issued by this agency"
+            "text": "issued by this agency"
           }
         ],
         "notVisible": [

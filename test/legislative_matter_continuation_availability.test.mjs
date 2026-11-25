@@ -143,7 +143,7 @@ test("every matter surface resolves the same identity to the same destination", 
   // shared rule rather than with a locally composed href, whichever answer the
   // rule gives for an identity.
   for (const [requestId, matterId] of [["20260428021", "78605"], ["20260707022", "79200"]]) {
-    const firstPaint = renderMeetingOutcomesFirstPaint(snapshot, requestId);
+    const firstPaint = renderMeetingOutcomesFirstPaint(snapshot, requestId, { matterGeneration: lookup });
     assert.ok(advertisedHrefs(firstPaint).includes(`/matters/${matterId}/`));
     assert.match(firstPaint, /data-matter-availability="local_history"/);
 
@@ -159,6 +159,7 @@ test("every matter surface resolves the same identity to the same destination", 
   const firstPaintOfficial = renderMeetingOutcomesFirstPaint(
     { ...snapshot, by_notice: { ...snapshot.by_notice, 20260707022: outcome } },
     "20260707022",
+    { matterGeneration: lookup },
   );
   assert.ok(advertisedHrefs(firstPaintOfficial).includes(OFFICIAL_ONLY_MATTER.matter_url));
   assert.ok(!advertisedHrefs(firstPaintOfficial).includes("/matters/999998/"));
@@ -222,8 +223,8 @@ test("continuation copy names a destination and never claims tracking, subscript
     renderCouncilHearingMatterContinuation(meeting("20260707022", constructedOutcome([OFFICIAL_ONLY_MATTER])), null, destinationOpts),
   ];
   const firstPaint = [
-    renderMeetingOutcomesFirstPaint(snapshot, "20260428021"),
-    renderMeetingOutcomesFirstPaint(snapshot, "20260707022"),
+    renderMeetingOutcomesFirstPaint(snapshot, "20260428021", { matterGeneration: lookup }),
+    renderMeetingOutcomesFirstPaint(snapshot, "20260707022", { matterGeneration: lookup }),
   ];
   const forbidden = [
     /\bfollow(ing|ed|s)?\b/i,

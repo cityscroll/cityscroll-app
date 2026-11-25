@@ -47,13 +47,11 @@ function fixturePinDay() {
   throw new Error("staffing_exams.json declares no vintage for a fixture pin");
 }
 
-function firstPageStatuses(today) {
+const GUIDE_FILTERS = { window: "actionable", eligibility: "open_competitive", interest: "all", query: "" };
+
+function firstPageStatuses(today, exams = staffingExams.exams) {
   // Match the Exams guide default: open-competitive + actionable window.
-  const filtered = Staffing.filterExams(
-    staffingExams.exams,
-    { window: "actionable", eligibility: "open_competitive", interest: "all", query: "" },
-    today,
-  );
+  const filtered = Staffing.filterExams(exams, GUIDE_FILTERS, today);
   return filtered.slice(0, INITIAL_PAGE_SIZE).map((exam) => {
     if (Staffing.isContinuousExam(exam)) return "continuous";
     return Staffing.statusFor(exam, today);
@@ -64,43 +62,61 @@ function firstPageStatuses(today) {
 // uses, not every exam's raw status; a row the guide's own filter excludes can
 // never occupy a page slot, so counting it would report a day as hostile when
 // the rendered first page would not actually be saturated.
-function filteredOpenCount(day) {
-  return Staffing.filterExams(
-    staffingExams.exams,
-    { window: "actionable", eligibility: "open_competitive", interest: "all", query: "" },
-    day,
-  ).filter((exam) => !Staffing.isContinuousExam(exam) && Staffing.statusFor(exam, day) === "open").length;
+function filteredStatusCount(exams, day, status) {
+  return Staffing.filterExams(exams, GUIDE_FILTERS, day)
+    .filter((exam) => !Staffing.isContinuousExam(exam) && Staffing.statusFor(exam, day) === status).length;
 }
 
-/** A day on which open exams alone fill the first actionable page. */
-function hostileWallClockDay(pinDay) {
-  const openByEnd = new Map();
-  for (const exam of staffingExams.exams) {
-    const start = String(exam.application_start || "").slice(0, 10);
-    const end = String(exam.application_end || "").slice(0, 10);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(start) || !/^\d{4}-\d{2}-\d{2}$/.test(end)) continue;
-    if (end < pinDay) continue;
-    const bucket = openByEnd.get(end) || [];
-    bucket.push(exam);
-    openByEnd.set(end, bucket);
-  }
-  const ends = [...openByEnd.keys()].sort();
+function addDays(day, count) {
+  const [y, m, d] = day.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d + count)).toISOString().slice(0, 10);
+}
+
+/** A day on which open exams alone fill the first actionable page, or null. */
+function hostileWallClockDay(exams, pinDay) {
+  const ends = [...new Set(exams
+    .filter((exam) => /^\d{4}-\d{2}-\d{2}$/.test(String(exam.application_start || "").slice(0, 10)))
+    .map((exam) => String(exam.application_end || "").slice(0, 10))
+    .filter((end) => /^\d{4}-\d{2}-\d{2}$/.test(end) && end >= pinDay))].sort();
   for (const end of ends) {
-    const day = end < pinDay ? pinDay : end;
-    if (filteredOpenCount(day) >= INITIAL_PAGE_SIZE) return day;
+    if (filteredStatusCount(exams, end, "open") >= INITIAL_PAGE_SIZE) return end;
   }
-  // Fall back to the latest application_start among exams that open after the pin:
-  // walking forward one day at a time from the pin until the open count fills the page.
-  let day = pinDay;
-  for (let step = 0; step < 120; step += 1) {
-    if (filteredOpenCount(day) >= INITIAL_PAGE_SIZE) return day;
-    const [y, m, d] = day.split("-").map(Number);
-    const next = new Date(Date.UTC(y, m - 1, d + 1));
-    day = next.toISOString().slice(0, 10);
+  // Walk forward one day at a time from the pin until the open count fills the page.
+  for (let step = 0, day = pinDay; step < 120; step += 1, day = addDays(day, 1)) {
+    if (filteredStatusCount(exams, day, "open") >= INITIAL_PAGE_SIZE) return day;
   }
-  throw new Error(
-    `committed staffing_exams.json never fills the first ${INITIAL_PAGE_SIZE} rows with open exams; the calendar regression needs a denser snapshot`,
-  );
+  return null;
+}
+
+/**
+ * A calendar dense enough to saturate the first page. The committed snapshot is
+ * used as it is whenever some day in it is already that dense. How many windows
+ * overlap is the publisher's calendar, not a property of the guide, so when the
+ * current snapshot never fills the page the same real exam rows are re-windowed
+ * instead: enough copies open together on one day, plus one that opens a week
+ * later, so the hidden upcoming card demonstrably exists.
+ */
+function denseCalendar(pinDay) {
+  const day = hostileWallClockDay(staffingExams.exams, pinDay);
+  if (day) return { exams: staffingExams.exams, day };
+  const hostile = addDays(pinDay, 30);
+  const candidates = Staffing.filterExams(
+    staffingExams.exams,
+    { ...GUIDE_FILTERS, window: "any" },
+    pinDay,
+  ).filter((exam) => !Staffing.isContinuousExam(exam)
+    && !["canceled", "postponed"].includes(exam.schedule_status));
+  assert.ok(candidates.length > 0, "staffing_exams.json carries no open-competitive scheduled exam to re-window");
+  const rewindow = (exam, index, start, end) => ({
+    ...exam,
+    exam_number: `${exam.exam_number}-dense-${index}`,
+    application_start: start,
+    application_end: end,
+  });
+  const open = Array.from({ length: INITIAL_PAGE_SIZE }, (_, index) =>
+    rewindow(candidates[index % candidates.length], index, addDays(hostile, -1), addDays(hostile, 30)));
+  const upcoming = rewindow(candidates[0], "upcoming", addDays(hostile, 7), addDays(hostile, 37));
+  return { exams: [...staffingExams.exams, ...open, upcoming], day: hostile };
 }
 
 test("careerToday returns a harness pin before the real day", () => {
@@ -154,12 +170,14 @@ test("a denser open calendar can hide upcoming from the first page without the p
   // This is the failure mode the routes-focus exams check hits when careerToday
   // follows wall-clock: open windows fill initialPageSize and upcoming falls off.
   const pinDay = fixturePinDay();
-  const hostileDay = hostileWallClockDay(pinDay);
+  const { exams, day: hostileDay } = denseCalendar(pinDay);
   assert.notEqual(hostileDay, pinDay, "hostile day must differ from the fixture pin");
-  const statuses = firstPageStatuses(hostileDay);
+  assert.ok(filteredStatusCount(exams, hostileDay, "upcoming") > 0, `hostile day ${hostileDay} has no upcoming exam to hide`);
+  const statuses = firstPageStatuses(hostileDay, exams);
   assert.equal(
     statuses.includes("upcoming"),
     false,
     `hostile day ${hostileDay} should hide upcoming from the first page so the pin stays load-bearing; got ${statuses.join(",")}`,
   );
 });
+
