@@ -7,7 +7,7 @@ url: /guide/start/trace-an-award-and-keep-the-trail/
 reader_question: How do I follow an agency to a vendor to an award, and keep that path?
 purpose: Follow an agency to a vendor and an award, then check whether the copied link keeps both steps.
 description: Follow a city agency to an organization it pays and on to one award, then keep the whole two-step path as a link that rebuilds itself.
-last_reviewed: 2026-09-08
+last_reviewed: 2026-11-25
 return_to_task: Open the finished two-step trail | /notices/20260729015?walk=eyJzY2hlbWEiOiJjaXR5c2Nyb2xsLnRyYXZlcnNhbC52MSIsInZlcnNpb24iOjEsInN0YXR1cyI6ImFjdGl2ZSIsImhvcHMiOlt7InNvdXJjZSI6eyJraW5kIjoiYWdlbmN5LWNvbnN0ZWxsYXRpb24iLCJpZCI6ImlkOmhvbWVsZXNzLXNlcnZpY2VzIiwibmFtZSI6IkRlcGFydG1lbnQgb2YgSG9tZWxlc3MgU2VydmljZXMiLCJocmVmIjoiL2FnZW5jaWVzL2hvbWVsZXNzLXNlcnZpY2VzLyJ9LCJyZWxhdGlvbiI6InB1Ymxpc2hlZCBieSBhZ2VuY3kiLCJkZXN0aW5hdGlvbiI6eyJraW5kIjoicmVjb3JkIiwiaWQiOiJDVDEtMDcxLTIwMjc4ODAwOTQyIiwibmFtZSI6IuKXhkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIElOQyBwdWJsaXNoZWQgYnkgYWdlbmN5IiwiaHJlZiI6Ii92ZW5kb3JzL0xBTlRFUk4lMjBDT01NVU5JVFklMjBTRVJWSUNFUy8ifSwic2NvcGUiOm51bGx9LHsic291cmNlIjp7ImtpbmQiOiJ2ZW5kb3IiLCJpZCI6IkxBTlRFUk4gQ09NTVVOSVRZIFNFUlZJQ0VTIiwibmFtZSI6IkxhbnRlcm4gQ29tbXVuaXR5IFNlcnZpY2VzIEluYy4iLCJocmVmIjoiL3ZlbmRvcnMvTEFOVEVSTiUyMENPTU1VTklUWSUyMFNFUlZJQ0VTLyJ9LCJyZWxhdGlvbiI6IkF3YXJkIiwiZGVzdGluYXRpb24iOnsia2luZCI6Im5vdGljZSIsImlkIjoiMjAyNjA3MjkwMTUiLCJuYW1lIjoiSW50ZWdyYXRlZCBDb21tZXJjaWFsIEhvdGVscyBQcm9ncmFtIiwiaHJlZiI6IiNub3RpY2UvMjAyNjA3MjkwMTUifSwic2NvcGUiOm51bGx9XX0
 related:
   - Trace a notice to the duty behind it | /guide/start/trace-a-notice-to-the-duty-behind-it/
@@ -23,17 +23,17 @@ sources:
 ## Step 1 — Open the agency's connections
 
 Open [Homeless Services](/agencies/homeless-services/) with JavaScript switched on.
-No account is needed. Under **Connected records**, find a vendor entry, identified by its
+No account is needed. In the **Contracts** list of linked records, find a vendor entry, identified by its
 organization name and connection label. For this example, use **Lantern Community Services** if present.
 
 ::: figure vendor-connection
 
 ## Step 2 — Follow the vendor connection
 
-Select the organization's title in **Connected records**. Its **Vendor profile** opens.
+Select the organization's title in that **Contracts** list. Its **Vendor profile** opens.
 Check that the trail at the top names Homeless Services and the vendor, with a connection
-such as **published by agency** between them. Use **Back one step** beside the trail to return
-if you selected a different record, or **Restart at origin** to start again.
+such as **published by agency** between them. Use **Back one step** (‹) beside the trail to return
+if you selected a different record, or **Restart at origin** (↺) to start again.
 
 ::: figure vendor-trail
 
@@ -67,10 +67,10 @@ it is not an announcement that subcontracts are available or an invitation to bi
 
 ## Step 5 — Repeat with another agency
 
-Open an agency from [People + organizations](/browse/people/), select a vendor under
-**Connected records**, and open **Show all dates** under **On the record — notices naming this vendor** to select an award. Copy and reopen
+Open an agency from [People + organizations](/browse/people/), select a vendor in its
+**Contracts** list, and open **Show all dates** under **On the record — notices naming this vendor** to select an award. Copy and reopen
 the address only after checking both steps. If a connection is absent, choose another published
 connection. Absence here does not prove no award exists.
 
 For evidence behind a connection, choose **details** beside its title (announced as
-**View connection details**). The panel names the basis and source for that particular link.
+**Details**). The panel names the basis and source for that particular link.

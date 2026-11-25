@@ -3,7 +3,7 @@ title: Using CityScroll
 page_title: Using CityScroll · Guide
 description: Learn how to read New York City public records on CityScroll, do a task you came here for, understand what a record means, and look details up.
 purpose: Four ways in, depending on whether you want to learn, do something, understand something, or look something up.
-last_reviewed: 2026-09-05
+last_reviewed: 2026-11-25
 ---
 
 ## Orientation
@@ -16,6 +16,10 @@ If you are here for the first time, start with the first tutorial. It uses one r
 about ten minutes, and you do not need an account or an email address to follow it. The two that
 follow it trace a single published notice back to the law behind it, and an agency through an
 organization it pays to one award.
+
+To look on your own, use [Search](/search/) or [Browse](/browse/). To keep up with a topic or a
+place, use [Following](/following/). Pages marked Demo or example use sample records for practice.
+They are not public records.
 
 If you already have a task, go straight to How to. If a record has left you with a question about
 what it means, or a word you have not met before, Understand and Reference answer those without

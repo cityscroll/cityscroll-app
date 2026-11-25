@@ -7,7 +7,7 @@ url: /guide/how-to/collect-records-and-export-them/
 reader_question: How do I keep a set of records together and take them with me?
 purpose: Pin records, save notes, and choose between a local export and a shared copy.
 description: Pin real records into one investigation, annotate them, take them away as a file, and learn exactly where each copy lives and who can read it.
-last_reviewed: 2026-09-08
+last_reviewed: 2026-11-25
 depends_on:
   - site/app/workspace.mjs
 return_to_task: Open your investigation | /#investigation
@@ -23,9 +23,9 @@ sources:
 ## Step 1 — Pin two records
 
 Open [the West 50th Street award notice](/notices/20231222103) with JavaScript switched on.
-Among the record's actions, choose **Pin**. The confirmation links to the workspace and shows the
+Among the record's actions, open **More tools** and choose **Pin**. The confirmation links to the workspace and shows the
 item count. Open [the named organization](/vendors/HOUSING%20OPTIONS%20GERIATRIC%20ASSOCIATION%20RESOURCES/)
-and choose **Pin** there too. Pin appears on individual records, not search results.
+and choose **Pin** under **More tools** there too. Pin appears on individual records, not search results.
 
 ::: figure pin-record
 
@@ -44,7 +44,7 @@ removes it. A session recognized through a CityScroll email can keep pins across
 ## Step 3 — Export a copy
 
 Below the items, choose **Export .csv** for a spreadsheet or **Export .json** for structured data.
-Open the downloaded file and check the records, notes and links. Both files are fixed copies. They do not update. **Print dossier** opens the browser's print window to print or save a PDF.
+Open the downloaded file and check the records and notes; the .csv also lists each record's link. Both files are fixed copies. They do not update. **Print dossier** opens the browser's print window to print or save a PDF.
 
 ::: figure notes-and-exports
 

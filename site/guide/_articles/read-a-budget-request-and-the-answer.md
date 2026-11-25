@@ -7,7 +7,7 @@ url: /guide/how-to/read-a-budget-request-and-the-answer/
 reader_question: What did my community board ask the city for, and what did the city say back?
 purpose: Find one budget request a community board made, read the answers published for it in order, and tell a changed answer apart from a changed budget label.
 description: Find a budget request your community board made, read the dated answers to it in order, and tell a changed answer from a changed budget label.
-last_reviewed: 2026-09-07
+last_reviewed: 2026-11-25
 return_to_task: Open the requests this guide uses | /community-boards/brooklyn-cb-14/#board-budget-requests-transportation
 related:
   - Follow a Community Board | /guide/how-to/follow-a-community-board/
@@ -161,8 +161,9 @@ address of nowhere.
 The requests and answers are published by the New York City Office of Management and Budget in its
 [Register of Community Board Budget Requests](https://data.cityofnewyork.us/d/vn4m-mk4t). CityScroll
 keeps a copy of each publication it has read and shows the answers from those copies, so the pages
-above do not depend on the publisher being reachable when you open them. The section names the
-publication dates it is reading, and there is a link to the published register at the foot of it.
+above do not depend on the publisher being reachable when you open them. Each answer is labelled with
+the date it was published, and the foot of the section says when CityScroll last read the register and
+links to it with **Open the published register**.
 
 ## You are done when you can read any board's list the same way
 

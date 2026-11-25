@@ -7,7 +7,7 @@ url: /guide/reference/glossary/
 reader_question: What does this term mean?
 purpose: The words you meet while reading records on CityScroll, in the sense the city and this site use them.
 description: Definitions for the terms, identifiers and institutions you meet while reading New York City public records on CityScroll, with where each one appears.
-last_reviewed: 2026-09-06
+last_reviewed: 2026-11-25
 return_to_task: Browse public records by type | /browse/
 related:
   - What a public record tells you | /guide/understand/what-a-public-record-tells-you/
@@ -16,14 +16,14 @@ related:
 sources:
   - The City Record Online, published by the City of New York | https://a856-cityrecord.nyc.gov/
   - Zoning Application Portal, Department of City Planning | https://zap.planning.nyc.gov/
-  - Take a civil-service exam, Department of Citywide Administrative Services | https://www.nyc.gov/site/dcas/employment/take-an-exam.page
+  - Apply for a civil-service exam, Department of Citywide Administrative Services | https://www.nyc.gov/site/dcas/employment/apply-for-a-city-job-how-you-can-apply-for-a-civil-service-exam.page
 ---
 
 ## Records and publications
 
 | Term | What it means | Where you meet it |
 | --- | --- | --- |
-| The City Record | The city's own daily publication of official notices, and the source behind much of this site | The Official source link on a notice |
+| The City Record | The city's own daily publication of official notices, and the source behind much of this site | The View in City Record link on a notice |
 | Notice | One published item — a solicitation, an award, a hearing announcement, a rule proposal | Everywhere records are listed |
 | Solicitation | A published invitation to respond to something the city wants to buy | Contracts |
 | Award | A published statement of who the city intends to give the work to | Contracts |
@@ -45,14 +45,14 @@ sources:
 | City Council District | The area one Council Member represents, numbered citywide | Its lines do not follow community district lines |
 | Borough president | The elected office for one of the five boroughs, which reviews land-use applications | Its recommendation is not the decision |
 | City Planning Commission | The body that reviews land-use applications before the City Council | One stage of a review, not the end of it |
-| Vendor | An organization named on a procurement record | The published name is used exactly. Spellings are not merged |
+| Vendor | An organization named on a procurement record | A vendor profile groups spelling variants and says how many it resolved. Flags and context notes use the exact published name |
 
 ## Connections and evidence
 
 | Term | What it means | Where you meet it |
 | --- | --- | --- |
 | Connection | A claim that two published records refer to the same thing | Between any two linked records |
-| How this connection was made | The panel giving the basis for a connection, its relation and its official source | On a connected record |
+| How this connection was made | The part of the Connection evidence panel, opened from Details, that gives a connection's relation and official source | On a connected record |
 | Matched by a published record | Joined on an identifier the publisher issued — the strongest basis | In that panel |
 | Record-linkage match | Joined on content such as a name rather than an identifier | In that panel |
 | Person-accepted | A pairing someone reviewed and accepted | In that panel |
@@ -70,7 +70,7 @@ sources:
 | Last reviewed | When an editor last checked a guide article against the live site | Nothing about the records |
 | Estimate | A range drawn from comparable past records, always labelled | Never an official deadline |
 | Not published | No public, joinable release of this field is known | Not a statement that nothing happened |
-| Not shown here yet | The city publishes this and CityScroll has not joined it | Not a gap in the city's publishing |
+| Not yet shown here | The city publishes this and CityScroll has not joined it | Not a gap in the city's publishing |
 
 ## Identifiers
 

@@ -7,7 +7,7 @@ url: /guide/how-to/follow-a-community-board/
 reader_question: How do I watch what happens at my community board?
 purpose: Create an email watch for one Community Board and keep the link that manages it.
 description: Pick a borough and a board number to watch one Community Board, tell it apart from a City Council District, and read what its matches really cover.
-last_reviewed: 2026-09-08
+last_reviewed: 2026-11-25
 return_to_task: Open Following | /following/
 depends_on:
   - site/i18n.js

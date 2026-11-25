@@ -9,7 +9,7 @@ purpose: Search for housing, compare two kinds of record, and check a result at 
 description: A guided walk through one real CityScroll search — read the groups of results, open two of them, check a record against the official source, and keep the link.
 published: 2026-09-05
 updated: 2026-09-06
-last_reviewed: 2026-09-06
+last_reviewed: 2026-11-25
 return_to_task: Try this search yourself | /search/?q=housing
 demos:
   - semantic-search-housing
@@ -35,14 +35,14 @@ sources:
 
 ## Step 1 — Search for housing
 
-Open the [CityScroll front page](/), type **housing** in the search box and press **Search**.
+Open [Search](/search/), type **housing** in the **Search public records** box and press **Search**.
 Search needs JavaScript switched on. No account or email address is needed.
 The results page shows your word and groups such as **Contracts**, **People + organizations**,
-**Land**, **Rules**, **Meetings**, and **Exams**. Counts vary with the published records.
+**Land**, **Rules**, **Meetings**, **Exams**, and **Consultations**. Counts vary with the published records.
 
 ## Step 2 — Open an agency result
 
-In **People + organizations**, select an agency title, such as **Housing Preservation and Development**
+In **People + organizations**, select an agency title, such as **Department of Housing Preservation and Development**
 when it appears. The agency page names the agency and groups its connected records by kind.
 If this group is empty, try another agency-related word in the search field.
 
@@ -61,7 +61,7 @@ treating it as an open chance to comment. A final rule is not a proposal.
 
 For a result with a quoted passage, open **Official source** beside that passage.
 Check the title, agency and stage on the city's published copy. If no passage result appears,
-open a result's title and use its **View in City Record** link instead.
+choose **Continue in Rules**, open a notice title there and use its **View in City Record** link instead.
 You now have a source you can rely on, rather than just a search match.
 
 ::: figure rule-source

@@ -7,7 +7,7 @@ url: /guide/how-to/read-a-land-use-projects-next-step/
 reader_question: What happens next on this project, and where are its documents?
 purpose: Check a project’s current stage, next published opportunity and official documents.
 description: Open a land-use project, read which body acts next and when that is known, and get to the real filed documents at the city's own portal.
-last_reviewed: 2026-09-08
+last_reviewed: 2026-11-25
 return_to_task: Browse land-use projects | /browse/zoning/
 related:
   - Put dates in your calendar | /guide/how-to/put-dates-in-your-calendar/
@@ -22,9 +22,10 @@ sources:
 
 ## Step 1 — Open the project
 
-Open [land-use projects](/browse/zoning/) with JavaScript switched on. Enter the project's name
-in **ZIP or place** above the list. For practice use **Timbale Terrace**. Select its title and check
-project number **2022M0258**. Reading here submits nothing and starts no subscription.
+Open [land-use projects](/browse/zoning/) with JavaScript switched on. The list starts on active
+projects, so set **Stage** to **All**, then enter the project's name in **ZIP or place** above the
+list. For practice use **Timbale Terrace**. Select its title and check that the address ends in
+**2022M0258**. Reading here submits nothing and starts no subscription.
 
 ## Step 2 — Read the stage and authority
 
@@ -46,7 +47,7 @@ These are a body's published decisions. Application filings, including a **Racia
 where required, serve a different purpose. Read whether a report was required and observed before
 drawing a conclusion from its absence.
 
-Use **Open full ZAP project** in the decision-documents area to open its full record in the city's **Zoning Application Portal**.
+Use **Open full ZAP project** under **Land-use outcomes** to open its full record in the city's **Zoning Application Portal**.
 Check that the project number matches and open the filed document there. If no document is listed
 on CityScroll, use that same portal record to check the released package.
 
@@ -60,4 +61,4 @@ or marked stale leaves the answer unknown. Check the project's portal record and
 body's published calendar before making plans.
 
 A report that **has not been observed** is not automatically late or missing from the applicant's
-filing. Keep that distinct from a publisher's explicit finding that it was not filed on time.
+filing. The page shows it as “No report has been observed for this filing yet”. Keep that distinct from a publisher's explicit finding that it was not filed on time.

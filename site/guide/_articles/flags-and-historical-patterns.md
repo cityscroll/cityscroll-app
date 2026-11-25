@@ -7,7 +7,7 @@ url: /guide/understand/flags-and-historical-patterns/
 reader_question: What does this flag mean, and how far can I trust it?
 purpose: What the computed notes on a record are, what they are not, and where the exact rule behind each one is written down.
 description: Flags and past-pattern notes on CityScroll are statistical context, never findings. Here is what each one counts, and where its exact rule lives.
-last_reviewed: 2026-09-06
+last_reviewed: 2026-11-25
 return_to_task: Browse contracts and awards | /browse/contracts/
 related:
   - What a public record tells you | /guide/understand/what-a-public-record-tells-you/
@@ -36,9 +36,9 @@ and [Opentender's](https://opentender.eu/) integrity indicators.
 
 - **⚑ Non-competitive method** — the notice says it will pick a vendor without a full contest. It may be a deal made through talks, a single chosen source, an urgent buy, or a test project. This can be fair at times. But it is always good to know.
 
-- **⚑ Repeat awards** — the same vendor name shows up on 3 or more award notices at the same agency within 90 days. This can point to task orders under a blanket contract just as much as favoritism. The flag just counts them — you decide what it means.
+- **⚑ Repeat awards** — shown as, for example, "⚑ 3rd award to this vendor at this agency in 90 days". The same vendor name shows up on 3 or more award notices at the same agency within 90 days. This can point to task orders under a blanket contract just as much as favoritism. The flag just counts them — you decide what it means.
 
-- **Context strip** — how big an award is, shown as a percentile of that agency's awards in the last 12 months (shown only when the agency has 20 or more awards in that time). It also shows the vendor's share of the agency's award dollars in the same time. We use the exact published name. We do not merge name variants here.
+- **Context strip** — shown under **Context** on an award notice: how big an award is, shown as a percentile of that agency's awards in the last 12 months (shown only when the agency has 20 or more awards in that time). It also shows the vendor's share of the agency's award dollars in the same time. We use the exact published name. We do not merge name variants here.
 
 - **Rules adoption lag** estimates the time from comments closing to adoption. The [rules adoption lag formula](https://github.com/cityscroll/cityscroll-app/blob/main/docs/formulas/rules-adoption-lag.md) owns its pools, unfinished-case treatment, and display rules. An estimate is never a confirmed date.
 

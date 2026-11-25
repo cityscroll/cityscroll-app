@@ -7,7 +7,7 @@ url: /guide/how-to/look-at-records-as-of-a-day/
 reader_question: What did an agency's record set look like on a given day?
 purpose: Filter an agency to a chosen date and share or clear that view.
 description: Filter an agency page down to the records dated on or before a day you choose, share the result, and learn what that filter cannot tell you.
-last_reviewed: 2026-09-08
+last_reviewed: 2026-11-25
 depends_on:
   - site/civic_time_ledger_runtime.mjs
 return_to_task: Open the Parks page filtered to a day | /agencies/parks-and-recreation/?as_of=2024-06-01
@@ -27,13 +27,13 @@ Open [Parks and Recreation](/agencies/parks-and-recreation/#ctl-heading) with Ja
 The [Parks example link](/agencies/parks-and-recreation/?as_of=2024-06-01) opens the same filtered view.
 
 This filters currently linked records by their event or publication date. It is not a reconstruction
-of what CityScroll knew that day. Undated records are excluded because they cannot be placed on a timeline.
+of what CityScroll knew that day. Undated records are left out of the count because they cannot be placed on a timeline.
 
 ::: figure date-field
 
 ## Step 2 — Inspect what was set aside
 
-Under the count, open **Later records**. These records have dates after your chosen day.
+Under the count, open **Later records**. It lists records dated after your chosen day, then linked records with no date, so its number can be larger than the later count in the summary.
 Compare the retained and later counts. Their values can change as records are added or corrected.
 An empty retained set means no dated records currently linked here meet the cutoff, not that the
 agency did nothing then.
@@ -46,7 +46,7 @@ Share that address to repeat the filter against the records available when opene
 
 ## Step 4 — Clear the filter
 
-Next to **Apply**, choose **Clear**, which appears after a date is set.
+Next to **Apply**, choose **Clear**.
 The date selection clears and the page again invites you to pick a day. Repeat these steps
 on another agency from [People + organizations](/browse/people/) when you need a different cutoff.
 
