@@ -7,6 +7,7 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 ## Sources of truth
 
 - [`README.md`](README.md) owns the product overview and public entry points.
+- [Data use and privacy](docs/collection-and-publication-boundary.md)
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) is the short human architecture narrative;
   [`docs/architecture.md`](docs/architecture.md) owns detailed architecture invariants and system
   boundaries. Accepted decisions live in [`docs/adr/`](docs/adr/).

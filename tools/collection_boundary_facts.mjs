@@ -51,7 +51,7 @@ export const ROUTED_SUMMARIES = ["ARCHITECTURE.md", "docs/architecture.md"];
  * correction cannot be undone by an edit that never reads the code.
  */
 export const RETIRED_CLAIMS = Object.freeze([
-  { pattern: /no third-party trackers?/i, why: `${CLARITY_LOADER} is configured with a project id and is included by every top-level site document` },
+  { pattern: /no third-party trackers?/i, why: `${CLARITY_LOADER} is configured and included on public site documents` },
   { pattern: /never reads or returns product-use telemetry/i, why: "public /stats publishes two period-bounded search counts" },
   { pattern: /no product-use telemetry is published/i, why: "public /stats publishes two period-bounded search counts" },
 ]);
@@ -184,11 +184,13 @@ export function verifyCollectionBoundaryDocumentation(rootDir = ROOT) {
   for (const signal of loader.skip_signals) {
     requires(reference.includes(signal), `${BOUNDARY_REFERENCE} does not name the opt-out signal ${signal}`);
   }
-  for (const path of loader.documents_loading) {
-    requires(reference.includes(path), `${BOUNDARY_REFERENCE} does not list ${path} among the documents that include the loader`);
+  const documented = new Set(Array.from(reference.matchAll(/^- `(site\/[^\x60]+\.html)`$/gm), match => match[1]));
+  const actual = new Set(loader.documents_loading);
+  for (const path of actual) {
+    requires(documented.has(path), `${BOUNDARY_REFERENCE} does not list ${path} among the documents that include the loader`);
   }
-  for (const path of facts.third_party_loader.top_level_documents) {
-    requires(loader.documents_loading.includes(path), `${path} does not include the loader, so the reference's "every top-level document" statement is no longer true`);
+  for (const path of documented) {
+    requires(actual.has(path), `${BOUNDARY_REFERENCE} lists ${path}, which does not include the loader`);
   }
   for (const boundary of EVIDENCE_BOUNDARIES) {
     requires(reference.includes(boundary), `${BOUNDARY_REFERENCE} does not record the evidence boundary for ${boundary}`);

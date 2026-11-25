@@ -25,11 +25,13 @@ test("the third-party loader is configured, not dormant", () => {
   assert.equal(loader.tag_origin, "https://www.clarity.ms/tag/");
 });
 
-test("every top-level site document includes the loader", () => {
+test("the loader is present on site documents and absent on the privacy notice", () => {
   const topLevel = topLevelSiteDocuments();
   const loading = documentsLoadingClarity();
-  assert.ok(topLevel.length > 0);
-  for (const path of topLevel) assert.ok(loading.includes(path), path);
+  assert.ok(topLevel.includes("site/privacy.html"));
+  assert.ok(loading.includes("site/index.html"));
+  assert.ok(loading.includes("site/about.html"));
+  assert.ok(!loading.includes("site/privacy.html"));
   // The search shell carries it too, and resolves it through its own base href.
   assert.ok(loading.includes("site/search/index.html"));
 });
