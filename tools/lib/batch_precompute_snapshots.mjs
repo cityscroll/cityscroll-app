@@ -423,8 +423,9 @@ export function buildMoneyOpenSolicitationsSnapshot(
     const attached = attachOpenNoticeCommodityCategories(notices, {
       rfxRows: commodity.rfxRows,
       unavailableReason: commodity.unavailable || null,
-      asOf: calendarDayISO(now),
+      asOf: commodity.asOf || calendarDayISO(now),
       observedAt: commodity.observedAt || null,
+      read: commodity.read || null,
     });
     published = attached.notices;
     commodityCategoryCoverage = attached.coverage;

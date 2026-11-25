@@ -41,7 +41,11 @@ import {
   fetchMoneyOpenSolicitations,
   fetchStaffingHires,
 } from "./lib/batch_precompute_snapshots.mjs";
-import { fetchPassportPublicRfxRows } from "./lib/open_notice_commodity_category.mjs";
+import { readOpenNoticeCommodity } from "./lib/open_notice_commodity_category.mjs";
+import {
+  PASSPORT_RFX_COMMODITY_SLICE_PATH,
+  renderPassportRfxCommoditySlice,
+} from "./lib/passport_rfx_commodity_slice.mjs";
 import {
   createCommittedAddressGeocoder,
   loadFullBoundaryLayers,
@@ -57,6 +61,7 @@ const MONEY_OPEN_OUT = path.join(DATA_DIR, "money_default_open.json");
 const MONEY_OPEN_SOLICITATIONS_OUT = path.join(DATA_DIR, "money_open_solicitations.json");
 const MONEY_AGENCIES_OUT = path.join(DATA_DIR, "money_procurement_agencies.json");
 const STAFFING_HIRES_OUT = path.join(DATA_DIR, "staffing_default_hires.json");
+const RFX_COMMODITY_SLICE_OUT = path.join(ROOT, PASSPORT_RFX_COMMODITY_SLICE_PATH);
 const FIXTURE_DIR = path.join(ROOT, "test", "fixtures", "batch-precompute");
 
 function parseArgs(argv) {
@@ -193,21 +198,19 @@ export async function buildAll({
       }
       : await fetchMoneyOpenSolicitations(fetchImpl, now);
     let commodity;
-    try {
-      if (fixture) {
-        commodity = {
-          rfxRows: await loadFixture("open_notice_commodity_rfx.json"),
-          observedAt: now.toISOString(),
-        };
-      } else {
-        const fetched = await fetchPassportPublicRfxRows(fetchImpl);
-        commodity = { rfxRows: fetched.rows, observedAt: fetched.observedAt };
-      }
-    } catch (error) {
+    if (fixture) {
       commodity = {
-        unavailable: String(error?.message || error).slice(0, 180),
+        rfxRows: await loadFixture("open_notice_commodity_rfx.json"),
         observedAt: now.toISOString(),
       };
+    } else {
+      // PASSPort refuses the hosted runners; a refused read joins against the committed slice.
+      commodity = await readOpenNoticeCommodity({
+        fetchImpl,
+        now,
+        loadSlice: async () => JSON.parse(await readFile(RFX_COMMODITY_SLICE_OUT, "utf8")),
+      });
+      if (commodity.slice) results.passport_rfx_commodity_slice = commodity.slice;
     }
     let workSite;
     try {
@@ -273,6 +276,12 @@ async function main() {
   }
   if (built.money_open_solicitations) {
     out.push(await writeOrCheck(MONEY_OPEN_SOLICITATIONS_OUT, built.money_open_solicitations, args.check));
+  }
+  if (built.passport_rfx_commodity_slice && !args.check) {
+    const rendered = renderPassportRfxCommoditySlice(built.passport_rfx_commodity_slice);
+    await mkdir(path.dirname(RFX_COMMODITY_SLICE_OUT), { recursive: true });
+    await writeFile(RFX_COMMODITY_SLICE_OUT, rendered);
+    out.push({ path: RFX_COMMODITY_SLICE_OUT, status: "wrote", bytes: Buffer.byteLength(rendered) });
   }
   if (built.money_agencies) {
     out.push(await writeOrCheck(MONEY_AGENCIES_OUT, built.money_agencies, args.check));
