@@ -143,9 +143,9 @@
       "article": "sources-and-coverage",
       "locale": "en",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
@@ -311,9 +311,9 @@
       "article": "sources-and-coverage",
       "locale": "es",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
@@ -479,9 +479,9 @@
       "article": "sources-and-coverage",
       "locale": "zh-Hans",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
@@ -647,9 +647,9 @@
       "article": "sources-and-coverage",
       "locale": "ru",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
@@ -815,9 +815,9 @@
       "article": "sources-and-coverage",
       "locale": "bn",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
@@ -983,9 +983,9 @@
       "article": "sources-and-coverage",
       "locale": "ht",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
@@ -1151,9 +1151,9 @@
       "article": "sources-and-coverage",
       "locale": "ko",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
@@ -1319,9 +1319,9 @@
       "article": "sources-and-coverage",
       "locale": "fr",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
@@ -1487,9 +1487,9 @@
       "article": "sources-and-coverage",
       "locale": "pl",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
@@ -1655,9 +1655,9 @@
       "article": "sources-and-coverage",
       "locale": "ar",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
@@ -1823,9 +1823,9 @@
       "article": "sources-and-coverage",
       "locale": "ur",
       "status": "complete",
-      "source_sha256": "5b21a014724fab3703ed19ae74acb123b4061af0650ca6abc98c7db22306309c",
-      "required_segments": 60,
-      "intentional_source_segments": 1
+      "source_sha256": "f0bb8b81e35e431c62c0337da2da15db1fd6b3c4fc41856d08a2e253437e474c",
+      "required_segments": 123,
+      "intentional_source_segments": 2
     },
     {
       "article": "trace-a-notice-to-the-duty-behind-it",
