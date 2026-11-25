@@ -83,7 +83,9 @@ test("committee link is emitted only for an explicit BodyId", () => {
 });
 
 test("meeting outcome and Pages edge resolve the matter route", async () => {
-  const meetingHtml = renderMeetingOutcomesFirstPaint(frozenPopulationSnapshot, "20260428021");
+  const meetingHtml = renderMeetingOutcomesFirstPaint(frozenPopulationSnapshot, "20260428021", {
+    matterGeneration: frozenPopulationLookup,
+  });
   assert.match(meetingHtml, /href="\/matters\/78605\/"/);
   assert.equal(edgeRequestKind("https://cityscroll.org/matters/78605/"), "matter");
 

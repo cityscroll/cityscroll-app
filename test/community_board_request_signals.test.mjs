@@ -139,7 +139,14 @@ const register = readBoardRegister();
 
 test('the one-board fixture the builder used to read is the register document for that board, so reading the whole register keeps its signals', () => {
   const old = readJson(join(ROOT, 'warehouse/fixtures/procurement-evidence/queens-cb12-budget-register.json'));
-  assert.deepEqual(old, register.documents.find(d => d.board_id === 'queens-cb-12'));
+  // publications.as_of is the day the register was last acquired, and every
+  // scheduled acquisition moves it without changing a request; everything the
+  // signals are read from must still match the fixture exactly.
+  const current = register.documents.find(d => d.board_id === 'queens-cb-12');
+  const withoutObservationDay = (doc) => ({ ...doc, publications: { ...doc.publications, as_of: null } });
+  assert.match(current.publications.as_of, /^\d{4}-\d{2}-\d{2}$/);
+  assert.ok(current.publications.as_of >= old.publications.as_of);
+  assert.deepEqual(withoutObservationDay(old), withoutObservationDay(current));
   const day = '2026-11-14';
   const all = m.budgetRequestSignalSet(register.documents, { asOf: day, agencies });
   for (const agency of ['education', 'environmental-protection']) {

@@ -229,7 +229,10 @@ export function buildMeetingOutcomesSnapshot(records, { generatedAt = new Date()
   };
 }
 
-export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId, { lookup } = {}) {
+// `matterGeneration` names the published matter generation a caller holds (a
+// test reading a frozen fixture, a build step reading a candidate artifact);
+// production callers omit it and read the published index.
+export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId, { lookup, matterGeneration } = {}) {
   const record = snapshotOrRecord?.schema === MEETING_OUTCOMES_SNAPSHOT_SCHEMA
     ? snapshotOrRecord.by_notice?.[clean(requestId)]
     : snapshotOrRecord;
@@ -282,7 +285,9 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId, { l
     const fileLabel = matter.matter_file || matter.matter_id;
     // The same availability rule every other matter surface uses: a published
     // local history, this matter's own official address, or plain text.
-    const destination = resolveMatterDestination(matter);
+    const destination = resolveMatterDestination(matter, matterGeneration === undefined
+      ? {}
+      : { published: matterGeneration, lookup: matterGeneration });
     const file = destination.availability === "local_history"
       ? `<a class="meeting-file meeting-matter-link ui-constellation-link" href="${esc(destination.href)}" data-matter-id="${esc(matter.matter_id)}" data-matter-availability="local_history">${esc(fileLabel)}</a>`
       : destination.availability === "official_record"
@@ -309,7 +314,10 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId, { l
   // itself is rendered whole either way, and an agenda the accepted bridge never
   // joined renders no group furniture at all.
   const projectGroups = renderAgendaProjectGroups(
-    buildAgendaProjectGroups(record.matters, lookup !== undefined ? { lookup } : {}),
+    buildAgendaProjectGroups(record.matters, {
+      ...(lookup !== undefined ? { lookup } : {}),
+      ...(matterGeneration !== undefined ? { published: matterGeneration } : {}),
+    }),
   );
   return `<section class="meeting-outcomes-static" data-meeting-outcomes-first-paint="1" data-meeting-outcomes-state="present">
     <div class="chain-h">Decision documents and outcomes</div>
