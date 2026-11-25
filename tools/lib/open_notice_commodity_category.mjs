@@ -13,6 +13,7 @@ import {
 } from "../../worker/src/lib/passport_commodity_category.mjs";
 import { RFX_DATA_URL, parseRfxDump } from "../../worker/src/lib/passport_parse.mjs";
 import { PASSPORT_FETCH_HEADERS, classifyPassportDumpBody } from "../../worker/src/passport.mjs";
+import { buildPassportRfxCommoditySlice, rfxRowsFromCommoditySlice } from "./passport_rfx_commodity_slice.mjs";
 
 export const OPEN_NOTICE_COMMODITY_SOURCE = "passport_public_rfx";
 export const OPEN_NOTICE_COMMODITY_COVERAGE_SCHEMA = "cityscroll.open_notice_commodity_category_coverage.v1";
@@ -70,13 +71,18 @@ function detail(base, extra) {
  * Attach a commodity category, or an explicit gap, to each open notice.
  *
  * @param {object[]} notices projected open-solicitation rows
- * @param {{ rfxRows?: object[]|null, unavailableReason?: string|null, asOf: string, observedAt?: string }} input
+ * `read` says where the RFx rows came from: the live dump, or the committed slice when the live
+ * dump refused this host. A slice read makes a notice first published on or after the slice's
+ * day `rfx_unavailable` rather than `pin_not_joined`, since PASSPort was not read for it.
+ *
+ * @param {{ rfxRows?: object[]|null, unavailableReason?: string|null, asOf: string, observedAt?: string, read?: object|null }} input
  */
 export function attachOpenNoticeCommodityCategories(notices, {
   rfxRows = null,
   unavailableReason = null,
   asOf,
   observedAt = null,
+  read = null,
 } = {}) {
   if (!Array.isArray(notices)) throw new Error("open notice categories: notices must be an array");
   if (typeof asOf !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(asOf)) {
@@ -117,6 +123,7 @@ export function attachOpenNoticeCommodityCategories(notices, {
       indexUnavailable,
       byEpin,
       epinIndex,
+      sliceDay: read?.mode === "committed_slice" ? read.as_of : null,
     });
     byReason[outcome.reason] += 1;
     if (outcome.joinMethod) byJoinMethod[outcome.joinMethod] += 1;
@@ -146,6 +153,7 @@ export function attachOpenNoticeCommodityCategories(notices, {
     by_join_method: byJoinMethod,
     rfx_rows: Array.isArray(rfxRows) ? rfxRows.length : 0,
     rfx_epins: byEpin.size,
+    ...(read ? { rfx_read: read } : {}),
   };
   return { notices: published, coverage };
 }
@@ -161,9 +169,8 @@ function classifyNotice(notice, ctx) {
   const pin = typeof notice?.pin === "string" ? notice.pin.trim() : "";
   if (!pin) return gap("no_pin", asOf);
   const join = joinPinToEpin(pin, ctx.epinIndex);
-  if (!join) return gap("pin_not_joined", asOf);
-  const group = ctx.byEpin.get(join.epin) || [];
-  if (!group.length) return gap("pin_not_joined", asOf);
+  const group = join ? ctx.byEpin.get(join.epin) || [] : [];
+  if (!group.length) return gap(postdatesSlice(notice, ctx.sliceDay) ? "rfx_unavailable" : "pin_not_joined", asOf);
 
   const resolved = group.map((row) => passportRfxCommodityCategory(row, ctx.index));
   const signatures = new Set(resolved.map(categorySignature));
@@ -229,6 +236,12 @@ function classifyNotice(notice, ctx) {
   return joinedGap("category_index_unavailable", asOf, joinRecord, { status: "unavailable" });
 }
 
+function postdatesSlice(notice, sliceDay) {
+  if (!sliceDay) return false;
+  const day = typeof notice?.start_date === "string" ? notice.start_date.slice(0, 10) : "";
+  return !/^\d{4}-\d{2}-\d{2}$/.test(day) || day >= sliceDay;
+}
+
 function gap(reason, asOf) {
   return {
     state: "missing",
@@ -284,4 +297,42 @@ export async function fetchPassportPublicRfxRows(fetchImpl = fetch, { timeoutMs 
   const rows = parseRfxDump(text);
   if (!rows.length) throw new Error("rfx-parsed-zero-rows");
   return { rows, observedAt };
+}
+
+/**
+ * The RFx rows for the open-solicitation category join. A live read returns the rows and a fresh
+ * slice for the caller to commit. A refused or failed live read falls back to the committed slice
+ * and says so; with no usable slice the failure is returned as `unavailable`, as before.
+ */
+export async function readOpenNoticeCommodity({
+  fetchImpl = fetch,
+  now = new Date(),
+  fetchRows = (impl) => fetchPassportPublicRfxRows(impl),
+  loadSlice,
+} = {}) {
+  let liveFailure;
+  try {
+    const fetched = await fetchRows(fetchImpl);
+    const slice = buildPassportRfxCommoditySlice(fetched.rows, { observedAt: fetched.observedAt });
+    return {
+      rfxRows: fetched.rows,
+      observedAt: fetched.observedAt,
+      read: { mode: "live", observed_at: slice.observed_at, as_of: slice.as_of },
+      slice,
+    };
+  } catch (error) {
+    liveFailure = String(error?.message || error).slice(0, 180);
+  }
+  try {
+    const slice = await loadSlice();
+    const rfxRows = rfxRowsFromCommoditySlice(slice);
+    return {
+      rfxRows,
+      observedAt: slice.observed_at,
+      asOf: slice.as_of,
+      read: { mode: "committed_slice", observed_at: slice.observed_at, as_of: slice.as_of, live_failure: liveFailure },
+    };
+  } catch {
+    return { unavailable: liveFailure, observedAt: now.toISOString() };
+  }
 }
