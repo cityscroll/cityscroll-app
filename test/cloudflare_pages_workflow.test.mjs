@@ -120,6 +120,12 @@ test("scheduled Pages deploys stage the authenticated graph and record a Desk pu
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   const action = read(".github/actions/build-site/action.yml");
   const build = read("tools/build_cloudflare_pages.mjs");
+  const graphArtifactNames = workflow.match(/name: data-source-graph-\$\{\{ github\.run_id \}\}/g) || [];
+  assert.equal(
+    graphArtifactNames.length,
+    1,
+    "the desk graph artifact name is uploaded once; a second upload of the same name conflicts",
+  );
   assert.match(workflow, /name: data-source-graph-\$\{\{ github\.run_id \}\}/);
   assert.match(workflow, /desk-health-publication-cycle\.json/);
   assert.match(workflow, /cycle: "desk-publication"/);
@@ -137,7 +143,20 @@ test("scheduled Pages deploys stage the authenticated graph and record a Desk pu
   const heartbeat = workflow.indexOf("Record Desk publication heartbeat");
   const stamp = workflow.indexOf("Stamp Desk publication clock after accepted heartbeat");
   const retain = workflow.indexOf("Retain publication receipt after heartbeat");
-  assert.ok(heartbeat >= 0 && stamp > heartbeat && retain > stamp);
+  const budgets = workflow.indexOf("Verify hosting budgets");
+  assert.ok(heartbeat >= 0 && stamp > heartbeat && retain > stamp && budgets > retain);
+  assert.equal(
+    workflow.slice(0, heartbeat).includes("name: data-source-graph-${{ github.run_id }}"),
+    false,
+    "nothing uploads the desk graph before the publication heartbeat",
+  );
+  const retainBlock = workflow.slice(retain, budgets);
+  assert.match(retainBlock, /name: data-source-graph-\$\{\{ github\.run_id \}\}/);
+  assert.match(
+    retainBlock,
+    /github\.event_name == 'schedule' \|\| github\.event_name == 'workflow_dispatch'/,
+  );
+  assert.doesNotMatch(retainBlock, /github\.event_name == 'push'/);
 });
 
 test("Pages deploy retains and binds release-surface evidence", () => {
