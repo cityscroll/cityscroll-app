@@ -24,11 +24,12 @@ class HeadRewriter {
   }
 }
 
-test("preview expects only the opt-in cookie and refreshes document validators", () => {
+test("preview expects the enabled cookie and refreshes document validators", () => {
   const request = new Request("https://cityscroll.org/browse/?q=Astoria", {
     headers: { Cookie: "unrelated=abc; cityscroll_start_preview=1", "If-None-Match": "older" },
   });
   assert.equal(usesStartPreview(request), true);
+  assert.equal(usesStartPreview(new Request(request.url, { headers: { Cookie: "cityscroll_start_preview=0" } })), false);
   assert.equal(usesStartPreview(new Request(request.url, { headers: { Cookie: "cityscroll_start_preview=10" } })), false);
   const preview = startPreviewRequest(request);
   assert.equal(preview.url, request.url);
