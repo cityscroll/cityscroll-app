@@ -39,7 +39,7 @@ Official next step: [Read the Public Design Commission meeting information](http
 
 What you see: A Board of Standards and Appeals executive review of applications and cases. This is listen-only for an observer; the executive review is not a public testimony signup.
 
-Access: Use BSA's upcoming hearing information page; hearings are also livestreamed on YouTube. No bidder or speaker registration is implied by watching.
+Access: Use BSA's upcoming hearing information page. Hearings are also livestreamed on YouTube. No bidder or speaker registration is implied by watching.
 
 Prepare: Read the agenda, case numbers, and any attached hearing material. Do not treat a prior case date in a case history as another upcoming session.
 
@@ -59,7 +59,7 @@ Official next step: [Open OATH's trial calendar](https://www.nyc.gov/site/oath/t
 
 What you see: A public Civilian Complaint Review Board disciplinary trial at 1 Police Plaza. The officer, borough, and charges in the rolling grid are case information; charges are allegations, not findings.
 
-Access: Use the current official CCRB trial calendar. It is the source of the available dates; CCRB publishes trials four months ahead, and dates can change.
+Access: Use the current official CCRB trial calendar. It is the source of the available dates. The board publishes trials four months ahead, and dates can change.
 
 Prepare: Check the grid immediately before you go. It does not provide a stable case identifier or a session start time in every row, so do not copy an old date list into a CityScroll event or infer a venue from the incident borough.
 

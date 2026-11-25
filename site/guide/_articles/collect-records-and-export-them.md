@@ -44,7 +44,7 @@ removes it. A session recognized through a CityScroll email can keep pins across
 ## Step 3 — Export a copy
 
 Below the items, choose **Export .csv** for a spreadsheet or **Export .json** for structured data.
-Open the downloaded file and check the records and notes; the .csv also lists each record's link. Both files are fixed copies. They do not update. **Print dossier** opens the browser's print window to print or save a PDF.
+Open the downloaded file and check the records and notes. The .csv also lists each record's link. Both files are fixed copies. They do not update. **Print dossier** opens the browser's print window to print or save a PDF.
 
 ::: figure notes-and-exports
 

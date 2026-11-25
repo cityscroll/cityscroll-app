@@ -34,7 +34,7 @@ Example shape: `Subject: Request to observe OATH trial — index [index] — [da
 
 ## CCRB — use the current rolling grid {#ccrb}
 
-The [CCRB public trial page](https://www.nyc.gov/site/ccrb/complaints/complaint-process/apu-trials.page) is the official link for the current trial calendar, which CCRB says publishes trials four months ahead. Open it close to the day you plan to attend because dates are subject to change. The grid may show an incident borough, officer, and charges, but the incident borough is not the venue and charges are allegations, not adjudicated findings.
+The [CCRB public trial page](https://www.nyc.gov/site/ccrb/complaints/complaint-process/apu-trials.page) is the official link for the current trial calendar, which the board says publishes trials four months ahead. Open it close to the day you plan to attend because dates are subject to change. The grid may show an incident borough, officer, and charges, but the incident borough is not the venue and charges are allegations, not adjudicated findings.
 
 The page does not provide a stable case identifier or a session start time in every row. Do not copy an inspected date list into a stale CityScroll calendar. Confirm the official page's current instructions before going to 1 Police Plaza.
 

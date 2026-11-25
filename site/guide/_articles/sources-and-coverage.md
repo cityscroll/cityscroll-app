@@ -144,7 +144,7 @@ on November 25, 2026.
    year 2027. The board asked for a library and media room at PS 5, and for entrance cameras and
    School Safety Agents. This is the board's request.
 3. Read the answers below it. Both, published May 12, 2026 and June 30, 2026, say “Agency supports
-   but cannot accommodate” and add “FUNDING NOT AVAILABLE.” This is the agency's published response.
+   but cannot accommodate” and add that funding is not available. This is the agency's published response.
    CityScroll notes that the second answer reads the same as the first.
 4. Check the source line at the foot of the section. It names the publisher and the day CityScroll
    last read the register, and links to the published register, where tracking code 101202708C

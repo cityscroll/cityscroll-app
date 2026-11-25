@@ -59,7 +59,7 @@ its duty text and **Source law**. If the block is absent, no supported connectio
 ## Optional — Watch for later filings
 
 On a notice with **Connected mandate**, select **Watch this mandate** beside the connection.
-Following opens with the duty selected; creating the watch needs JavaScript switched on. Check the **Preview** list
+Following opens with the duty selected. Creating the watch needs JavaScript switched on. Check the **Preview** list
 there. Previewing does not subscribe you. Choose a frequency, enter **Email address** under
 **Create this watch**, and press **Create watch** only if you want email updates.
 The page's subscribed confirmation is the saved result.
