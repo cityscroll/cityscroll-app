@@ -55,9 +55,9 @@ returned 200 from a residential host. With no fallback, every open solicitation 
 `money_open_solicitations.json` was published as `rfx_unavailable` (0 of 191 categories).
 
 `rfx_commodity_slice.json` holds the two RFx columns that join needs: each EPIN with its
-`main_commodity` label exactly as published, plus the read's `observed_at`. A build whose
-live read succeeds rewrites it (`tools/build_batch_precompute_snapshots.mjs`). A build whose
-live read is refused joins against it instead and says so in
+`main_commodity` label exactly as published, plus the read's `observed_at`. A write-mode build
+whose live read succeeds rewrites it (`tools/build_batch_precompute_snapshots.mjs`); `--check`
+never rewrites the slice. A build whose live read is refused joins against it instead and says so in
 `commodity_category_coverage.rfx_read` (`mode: "committed_slice"`, the slice's date, and the
 live failure). Each category record is then dated by the slice, not by the list. A notice the
 City Record first published on or after the slice's day, with no EPIN in the slice, is
