@@ -5912,6 +5912,50 @@
       "production_evidence_field": "first_class.contracts_open_population"
     },
     {
+      "id": "open-notice-document-listings",
+      "public_artifact_path": "site/data/open_notice_document_listings.json",
+      "primary_routes": [
+        "/browse/contracts/"
+      ],
+      "source_contract_id": "passport-public-rfx",
+      "acquisition_command": [
+        "node",
+        "tools/measure_open_notice_document_listings.mjs",
+        "--out",
+        "site/data/open_notice_document_listings.json",
+        "--summary-out",
+        ".artifacts/open-notice-document-listings-summary.json"
+      ],
+      "owning_builder": "tools/measure_open_notice_document_listings.mjs",
+      "builder_command": [
+        "node",
+        "tools/measure_open_notice_document_listings.mjs",
+        "--out",
+        "site/data/open_notice_document_listings.json",
+        "--summary-out",
+        ".artifacts/open-notice-document-listings-summary.json"
+      ],
+      "dependent_materializers": [
+        "tools/build_source_health_observations.mjs"
+      ],
+      "normal_refresh_cadence_hours": 24,
+      "warning_age_hours": 24,
+      "hard_maximum_age_hours": 36,
+      "vintage_fields": [
+        "observed_at",
+        "as_of"
+      ],
+      "population_fields": [
+        "open_notices",
+        "notices"
+      ],
+      "last_known_good_behavior": "Retain the last verified document listings within the hard age; a failed acquisition or PASSPort read keeps the previous artifact and the refresh receipt records the gap.",
+      "resident_stale_behavior": "Do not describe a notice's listed files as its current public documents after the hard maximum age.",
+      "resident_unavailable_behavior": "Show the document listings as unavailable; never read a missing or unbound list as a notice having no public files.",
+      "production_evidence_field": "first_class.open_notice_document_listings",
+      "hosted_refresh_required": false
+    },
+    {
       "id": "contracts-nycha-awarded-contracts",
       "public_artifact_path": "site/data/nycha_awarded_contracts_snapshot.json",
       "primary_routes": [

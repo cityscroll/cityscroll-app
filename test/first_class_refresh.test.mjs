@@ -420,6 +420,62 @@ test("official-cfb-influence freshness is measured from the scheduled check, not
   });
 });
 
+test("open-notice document listings go stale past 36 hours on the artifact's own observation stamp", async () => {
+  const registry = canonical();
+  const listing = registry.first_class_artifacts.find((row) => row.id === "open-notice-document-listings");
+  assert.equal(listing.public_artifact_path, "site/data/open_notice_document_listings.json");
+  assert.equal(listing.normal_refresh_cadence_hours, 24);
+  assert.equal(listing.warning_age_hours, 24);
+  assert.equal(listing.hard_maximum_age_hours, 36);
+  assert.deepEqual(listing.vintage_fields, ["observed_at", "as_of"]);
+  assert.equal(listing.hosted_refresh_required, false);
+
+  await withTempDir("open-notice-document-listings", async (root) => {
+    const write = (value) => {
+      const target = join(root, listing.public_artifact_path);
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, JSON.stringify(value));
+    };
+    const now = "2026-11-25T12:00:00.000Z";
+    const definitions = [listing];
+    // The artifact's staleness clock is its own observed_at (when the measure
+    // ran), with the open list's publisher day as the fallback vintage.
+    const upstream = {
+      schema: "cityscroll.open_notice_document_listings.v1",
+      state: "measured",
+      as_of: "2026-11-24",
+      open_notices: 3,
+      notices: [{}, {}, {}],
+    };
+
+    write({ ...upstream, observed_at: "2026-11-25T06:40:00.000Z" });
+    const fresh = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
+    assert.equal(fresh.surfaces[0].freshness_state, "fresh");
+    assert.equal(fresh.surfaces[0].source_vintage, "2026-11-25T06:40:00.000Z");
+    assert.deepEqual(productionFreshnessFindings(fresh), []);
+
+    // Just inside the 36-hour hard maximum the deploy gate still accepts it.
+    write({ ...upstream, observed_at: "2026-11-24T00:30:00.000Z" });
+    const inside = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
+    assert.equal(inside.surfaces[0].freshness_state, "degraded");
+    assert.deepEqual(productionFreshnessFindings(inside), []);
+
+    // Past 36 hours the artifact is stale and the production gate blocks.
+    write({ ...upstream, observed_at: "2026-11-23T23:59:00.000Z" });
+    const stale = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
+    assert.equal(stale.surfaces[0].freshness_state, "stale");
+    assert.equal(productionFreshnessFindings(stale).length, 1);
+    assert.match(productionFreshnessFindings(stale)[0], /open_notice_document_listings\.json: stale/);
+
+    // Without the observation stamp the publisher day is the vintage, so a
+    // day-old list is still inside the rule.
+    write({ schema: upstream.schema, state: upstream.state, as_of: "2026-11-24", open_notices: 3, notices: [{}, {}, {}] });
+    const fallback = buildFirstClassFreshnessReport({ first_class_artifacts: definitions }, { root, now });
+    assert.equal(fallback.surfaces[0].source_vintage, "2026-11-24T00:00:00.000Z");
+    assert.equal(fallback.surfaces[0].freshness_state, "degraded");
+  });
+});
+
 test("sharded shared meeting index still counts population through rows", async () => {
   // The published catalog keeps rows in shards; a bare JSON.parse of the index
   // leaves population_fields=["rows"] null and falsely marks a current vintage

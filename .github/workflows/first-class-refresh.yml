@@ -71,7 +71,8 @@ jobs:
       - uses: ./.github/actions/setup-playwright
       # Same pinned poppler-utils contract as .github/actions/build-site: FlateDecode
       # calendar/rule PDFs need pdftotext; pin by Ubuntu suite so apt drift cannot
-      # silently change extraction.
+      # silently change extraction. The open-notice document-listing measure uses
+      # pdfinfo from the same pinned package for page counts.
       - name: Install PDF text extraction for rule evidence
         run: tools/install_pinned_poppler_utils.sh
 
@@ -177,6 +178,7 @@ jobs:
             .artifacts/first-class-refresh-receipt.json
             .artifacts/first-class-rebuild-receipt.json
             .artifacts/first-class-refresh-run-receipt.json
+            .artifacts/open-notice-document-listings-summary.json
             site/data/first_class_refresh_run_history.json
             site/data/first_class_freshness_report.json
           if-no-files-found: warn
