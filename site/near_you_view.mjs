@@ -7,7 +7,6 @@ import {
   mapFeatures,
 } from "./map_exploration.mjs";
 import {
-  commonNearYouPath,
   nearYouUrlFromScope,
   geographyKeysFromScope,
   scopeWithGeographies,
@@ -2004,7 +2003,6 @@ export function renderNearYouDocument(view, options = {}) {
   const prefix = assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`;
   const deferredDataHref = options.deferredDataHref || view.deferredDataHref || "";
   const body = renderNearYouBody({ ...view, deferredDataHref });
-  const privacyLink = commonNearYouPath(view.scope) === "/near-you/" ? ' · <a href="/privacy">Privacy policy</a>' : "";
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active filters.">
@@ -2014,7 +2012,7 @@ export function renderNearYouDocument(view, options = {}) {
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "near-you", siteBase: view.siteBase, scope: view.scope, surfaceClass: "near-mast" })}
 ${body}
-<footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.${privacyLink}</footer>
+<footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>
 <script type="module" src="${esc(prefix)}legacy_hash_forward.mjs"></script>
 <script type="module" src="${esc(prefix)}analytics.js?v=1.4.0"></script>
 <script type="module" src="${esc(prefix)}app/walk-entry.mjs"></script>
