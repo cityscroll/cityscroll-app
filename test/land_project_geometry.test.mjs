@@ -23,7 +23,10 @@ const requireJson = createRequire(import.meta.url);
 const fixture = requireJson("./fixtures/land_project_geometry/inputs.json");
 
 function run(overrides = {}, opts = {}) {
-  return materializeLandProjectGeometry({ ...fixture, ...overrides }, opts);
+  return materializeLandProjectGeometry(
+    { ...fixture, ...overrides },
+    { now: fixture.geometrySource.materialized_at, ...opts },
+  );
 }
 
 test("single-BBL exact candidate renders a valid shape with method, relation, precision", () => {

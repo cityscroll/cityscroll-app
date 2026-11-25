@@ -496,7 +496,8 @@
       "lon": -73.9467862,
       "method": "single_bbl_centroid",
       "precision": "exact",
-      "bbl_count": 1
+      "bbl_count": 1,
+      "geometry_shard": "3d"
     },
     "2023Q0177": {
       "lat": 40.7420336,
@@ -931,7 +932,8 @@
       "lon": -73.9167031,
       "method": "single_bbl_centroid",
       "precision": "exact",
-      "bbl_count": 1
+      "bbl_count": 1,
+      "geometry_shard": "84"
     },
     "2025K0497": {
       "lat": 40.701768,
@@ -980,8 +982,7 @@
       "lon": -73.9884219,
       "method": "single_bbl_centroid",
       "precision": "exact",
-      "bbl_count": 1,
-      "geometry_shard": "2a"
+      "bbl_count": 1
     },
     "2025M0441": {
       "lat": 40.7512626,
