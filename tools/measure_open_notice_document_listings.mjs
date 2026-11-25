@@ -9,6 +9,11 @@
  * One request at a time, with a pause between them. Bodies are not retained.
  *
  * Offline: --notices <json> --rfx <dump-or-json> --navigator-dir <dir of rfp_id.html>
+ *
+ * --out writes the artifact; the measurement summary (counts, samples and the
+ * fetch log) is written beside it unless --summary-out names another path, so
+ * a scheduled publisher can keep the request log in ignored scratch space
+ * instead of the served tree.
  */
 import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
@@ -234,9 +239,11 @@ async function main() {
   }
   const text = JSON.stringify(out ? artifact : summary, null, 1) + "\n";
   if (out) {
+    const summaryOut = arg("--summary-out") || `${out}.summary.json`;
     mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
     writeFileSync(out, JSON.stringify(artifact));
-    writeFileSync(`${out}.summary.json`, JSON.stringify(summary, null, 1) + "\n");
+    mkdirSync(path.dirname(path.resolve(summaryOut)), { recursive: true });
+    writeFileSync(summaryOut, JSON.stringify(summary, null, 1) + "\n");
     process.stdout.write(`${summary.state} available ${summary.coverage.available} of ${summary.coverage.open_notices}\n`);
   } else {
     process.stdout.write(text);

@@ -10,6 +10,35 @@ under a stated lease, and it opens a new pull request when the previous one on
 that branch was closed. `test/first_class_refresh_pr_step.test.mjs` exercises that
 script against a local remote.
 
+## Open-notice document listings
+
+`site/data/open_notice_document_listings.json` lists the public documents on
+open City Record solicitations whose PIN, title and dates strictly bind one
+PASSPort round with an observed Navigator page. It is an ordinary first-class
+artifact (`open-notice-document-listings` in the registry), so it rides the
+hosted rail above with no job of its own: the daily `First-class dataset
+refresh` schedule (06:40 UTC, after the City's overnight publishing window,
+plus `workflow_dispatch`) runs `tools/measure_open_notice_document_listings.mjs`
+as both acquisition and owning builder, and the refresh pull request lands the
+result. The artifact is served at `/data/open_notice_document_listings.json`;
+the product application's document-listing slice reads it, and nothing in this
+site does.
+
+Staleness is the registry's per-dataset rule, not a separate gate: the
+artifact's own `observed_at` (falling back to the open list's publisher day)
+must stay within `hard_maximum_age_hours: 36`, with the warning at 24 hours.
+A stale artifact blocks the production build's existing first-class freshness
+check; a failed acquisition skips the builder, keeps the last verified
+artifact in place, and records the gap in the refresh and run receipts.
+
+Reused engine parts: the registry contract and `--run-due` selection
+(`tools/first_class_refresh.mjs`), the pinned poppler install on the refresh
+runner (`tools/install_pinned_poppler_utils.sh`, which provides `pdfinfo` for
+page counts), the refresh pull-request script and retained run history, and
+the deploy-time `--check-production` freshness gate. The measure tool's
+request pacing and byte cap are unchanged, and its per-request summary stays
+out of the served tree under `.artifacts/` via `--summary-out`.
+
 ## Why the refresh pull request needs its own token
 
 GitHub deliberately does not start workflows for pushes or pull requests made
