@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.meeting_geography_backfill_manifest.v1",
-  "active_generation": "refresh-bba58d59252c",
-  "activated_at": "2026-11-24T20:22:07.681Z",
+  "active_generation": "refresh-b7e682759f74",
+  "activated_at": "2026-11-25T19:37:37.915Z",
   "previous_generation": "refresh-bba58d59252c"
 }
