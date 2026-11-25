@@ -14,34 +14,27 @@
     "dataset": "mappluto",
     "publisher": "NYC Department of City Planning MapPLUTO/PLUTO",
     "mode": "mappluto_arcgis_batch",
-    "materialized_at": "2026-09-03T01:34:56.321Z",
+    "materialized_at": "2026-11-25T16:20:00.687Z",
     "max_age_days": 120
   },
   "counts": {
-    "universe": 244,
-    "exact": 9,
-    "ambiguous_relation": 147,
+    "universe": 243,
+    "exact": 3,
+    "ambiguous_relation": 127,
     "invalid": 0,
     "stale": 0,
-    "missing_geometry_row": 73,
-    "not_applicable_unmapped": 15
+    "missing_geometry_row": 55,
+    "not_applicable_unmapped": 58
   },
   "project_ids": {
     "exact": [
-      "2023K0183",
-      "2023M0116",
-      "2024K0286",
+      "2023Q0125",
       "2025K0284",
-      "2025K0287",
-      "2025M0395",
-      "2025Q0142",
-      "2026R0127",
-      "2026R0186"
+      "2025K0470"
     ],
     "ambiguous_relation": [
       "2018X0438",
       "2019K0147",
-      "2019K0190",
       "2019K0219",
       "2019K0301",
       "2019K0383",
@@ -77,7 +70,6 @@
       "2022Q0196",
       "2022Q0214",
       "2022Q0248",
-      "2022Q0449",
       "2022X0150",
       "2022X0393",
       "2023K0126",
@@ -87,7 +79,6 @@
       "2023K0368",
       "2023K0398",
       "2023K0400",
-      "2023M0213",
       "2023M0309",
       "2023M0316",
       "2023Q0177",
@@ -111,28 +102,21 @@
       "2024K0240",
       "2024K0294",
       "2024K0299",
-      "2024K0358",
       "2024K0369",
       "2024K0421",
       "2024K0444",
       "2024M0193",
       "2024M0194",
       "2024M0223",
-      "2024M0244",
-      "2024Q0113",
-      "2024Q0164",
       "2024Q0219",
       "2024Q0292",
       "2024Q0297",
       "2024Q0324",
       "2024Q0325",
       "2024Q0356",
-      "2024R0300",
       "2024R0332",
       "2024R0425",
-      "2024X0132",
       "2025K0150",
-      "2025K0154",
       "2025K0229",
       "2025K0232",
       "2025K0250",
@@ -141,39 +125,29 @@
       "2025K0306",
       "2025K0318",
       "2025K0374",
-      "2025K0419",
       "2025M0115",
       "2025M0265",
       "2025M0338",
       "2025M0360",
       "2025M0441",
-      "2025M0473",
       "2025Q0124",
       "2025Q0155",
       "2025Q0247",
       "2025Q0304",
       "2025Q0314",
-      "2025Q0316",
       "2025Q0331",
       "2025Q0335",
-      "2025Q0445",
-      "2025R0137",
       "2025R0222",
-      "2025R0309",
       "2025R0312",
-      "2025R0398",
       "2025X0116",
       "2025X0143",
       "2025X0283",
       "2026K0233",
-      "2026K0443",
       "2026M0164",
       "2026M0206",
       "2026M0211",
       "2026M0247",
-      "2026M0366",
       "2026Q0128",
-      "2026Q0210",
       "2026R0319",
       "P2012Q0076",
       "P2012R0043",
@@ -195,7 +169,6 @@
       "2019M0107",
       "2019M0206",
       "2019M0455",
-      "2019X0255",
       "2020M0325",
       "2020M0487",
       "2020R0264",
@@ -204,7 +177,6 @@
       "2021M0264",
       "2021M0357",
       "2021R0348",
-      "2021X0247",
       "2022R0134",
       "2022X0392",
       "2023K0203",
@@ -214,7 +186,6 @@
       "2023M0200",
       "2023M0271",
       "2023M0399",
-      "2023Q0125",
       "2023Q0328",
       "2023Q0424",
       "2023R0111",
@@ -222,42 +193,27 @@
       "2023R0281",
       "2024K0214",
       "2024K0274",
-      "2024K0437",
       "2024M0104",
       "2024M0120",
       "2024M0243",
       "2024M0267",
       "2024M0372",
       "2024Q0189",
-      "2024R0137",
       "2024R0289",
       "2024X0210",
       "2025K0226",
-      "2025K0470",
       "2025K0497",
-      "2025M0329",
       "2025M0332",
-      "2025R0140",
+      "2025M0395",
       "2025R0277",
-      "2025R0285",
       "2025X0385",
       "2026K0123",
       "2026K0129",
       "2026M0120",
       "2026M0136",
       "2026M0275",
-      "2026M0432",
-      "2026M0444",
-      "2026M0445",
       "2026Q0320",
-      "2026R0137",
-      "2026R0142",
       "2026R0145",
-      "2026R0166",
-      "2026R0189",
-      "2026R0195",
-      "2026R0196",
-      "2026X0274",
       "2026X0282",
       "2026X0354",
       "2026X0362",
@@ -266,18 +222,61 @@
     ],
     "not_applicable_unmapped": [
       "2020K0444",
-      "2020M0385",
       "2020Q0317",
+      "2022K0366",
       "2022Y0395",
       "2023M0452",
+      "2023Q0144",
+      "2023R0259",
+      "2024M0148",
       "2024M0278",
       "2024Q0135",
-      "2025M0252",
+      "2024Q0434",
+      "2024X0217",
+      "2024X0309",
+      "2025K0234",
+      "2025K0356",
+      "2025K0417",
+      "2025K0434",
+      "2025M0399",
       "2025M0464",
+      "2025Q0144",
+      "2025Q0230",
+      "2025Q0288",
+      "2025Q0403",
+      "2025Q0476",
+      "2025Q0494",
+      "2025X0147",
+      "2025X0256",
+      "2025X0264",
+      "2025X0296",
+      "2025X0462",
       "2025Y0279",
+      "2026K0117",
+      "2026K0322",
+      "2026M0108",
+      "2026M0163",
+      "2026M0208",
+      "2026M0250",
+      "2026M0382",
+      "2026M0454",
+      "2026M0455",
+      "2026M0515",
+      "2026Q0184",
+      "2026Q0198",
+      "2026Q0371",
+      "2026Q0460",
+      "2026R0299",
       "2026R0327",
-      "2026X0464",
+      "2026R0338",
+      "2026R0368",
+      "2026X0180",
+      "2026X0270",
+      "2026X0514",
       "2026Y0360",
+      "2027K0210",
+      "2027Q0181",
+      "P2009K0185",
       "P2009M0029",
       "P2012X0048"
     ]
@@ -295,13 +294,6 @@
       "project_id": "2019K0147",
       "bbl": null,
       "exact_bbl_count": 3,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
-      "project_id": "2019K0190",
-      "bbl": null,
-      "exact_bbl_count": 15,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
@@ -376,13 +368,6 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2019X0255",
-      "bbl": "2034550001",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
-    },
-    {
       "project_id": "2020K0276",
       "bbl": null,
       "exact_bbl_count": 7,
@@ -437,13 +422,6 @@
       "exact_bbl_count": 3,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
-      "project_id": "2020M0385",
-      "bbl": null,
-      "exact_bbl_count": 2,
-      "coverage_state": "not_applicable_unmapped",
-      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2020M0429",
@@ -579,13 +557,6 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
-      "project_id": "2021X0247",
-      "bbl": "2055597501",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
-    },
-    {
       "project_id": "2022K0121",
       "bbl": null,
       "exact_bbl_count": 6,
@@ -612,6 +583,13 @@
       "exact_bbl_count": 3,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
+    },
+    {
+      "project_id": "2022K0366",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2022K0416",
@@ -677,13 +655,6 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2022Q0449",
-      "bbl": null,
-      "exact_bbl_count": 14,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
       "project_id": "2022R0134",
       "bbl": "5006830001",
       "exact_bbl_count": 1,
@@ -731,13 +702,6 @@
       "exact_bbl_count": 3,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
-      "project_id": "2023K0183",
-      "bbl": "3070550013",
-      "exact_bbl_count": 1,
-      "coverage_state": "exact",
-      "reason": null
     },
     {
       "project_id": "2023K0203",
@@ -796,13 +760,6 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2023M0116",
-      "bbl": "1002670019",
-      "exact_bbl_count": 1,
-      "coverage_state": "exact",
-      "reason": null
-    },
-    {
       "project_id": "2023M0117",
       "bbl": "1001420025",
       "exact_bbl_count": 1,
@@ -815,13 +772,6 @@
       "exact_bbl_count": 1,
       "coverage_state": "missing_geometry_row",
       "reason": "exact BBL has no retained parcel geometry"
-    },
-    {
-      "project_id": "2023M0213",
-      "bbl": null,
-      "exact_bbl_count": 7,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
       "project_id": "2023M0271",
@@ -862,8 +812,15 @@
       "project_id": "2023Q0125",
       "bbl": "4000760011",
       "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
+      "coverage_state": "exact",
+      "reason": null
+    },
+    {
+      "project_id": "2023Q0144",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2023Q0177",
@@ -948,6 +905,13 @@
       "exact_bbl_count": 1,
       "coverage_state": "missing_geometry_row",
       "reason": "exact BBL has no retained parcel geometry"
+    },
+    {
+      "project_id": "2023R0259",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2023R0281",
@@ -1048,13 +1012,6 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
-      "project_id": "2024K0286",
-      "bbl": "3023560001",
-      "exact_bbl_count": 1,
-      "coverage_state": "exact",
-      "reason": null
-    },
-    {
       "project_id": "2024K0294",
       "bbl": null,
       "exact_bbl_count": 2,
@@ -1065,13 +1022,6 @@
       "project_id": "2024K0299",
       "bbl": null,
       "exact_bbl_count": 25,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
-      "project_id": "2024K0358",
-      "bbl": null,
-      "exact_bbl_count": 2,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
@@ -1088,13 +1038,6 @@
       "exact_bbl_count": 11,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
-      "project_id": "2024K0437",
-      "bbl": "3018590024",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
     },
     {
       "project_id": "2024K0444",
@@ -1116,6 +1059,13 @@
       "exact_bbl_count": 1,
       "coverage_state": "missing_geometry_row",
       "reason": "exact BBL has no retained parcel geometry"
+    },
+    {
+      "project_id": "2024M0148",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2024M0193",
@@ -1146,13 +1096,6 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
-      "project_id": "2024M0244",
-      "bbl": null,
-      "exact_bbl_count": 8,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
       "project_id": "2024M0267",
       "bbl": "1012940046",
       "exact_bbl_count": 1,
@@ -1174,25 +1117,11 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
-      "project_id": "2024Q0113",
-      "bbl": null,
-      "exact_bbl_count": 24,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
       "project_id": "2024Q0135",
       "bbl": null,
       "exact_bbl_count": 25,
       "coverage_state": "not_applicable_unmapped",
       "reason": "project has no accepted point; geometry never substitutes for one"
-    },
-    {
-      "project_id": "2024Q0164",
-      "bbl": null,
-      "exact_bbl_count": 6,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
       "project_id": "2024Q0189",
@@ -1244,11 +1173,11 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2024R0137",
-      "bbl": "5000970030",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
+      "project_id": "2024Q0434",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2024R0289",
@@ -1256,13 +1185,6 @@
       "exact_bbl_count": 1,
       "coverage_state": "missing_geometry_row",
       "reason": "exact BBL has no retained parcel geometry"
-    },
-    {
-      "project_id": "2024R0300",
-      "bbl": null,
-      "exact_bbl_count": 5,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
       "project_id": "2024R0332",
@@ -1279,13 +1201,6 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2024X0132",
-      "bbl": null,
-      "exact_bbl_count": 4,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
       "project_id": "2024X0210",
       "bbl": "2027060082",
       "exact_bbl_count": 1,
@@ -1293,16 +1208,23 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
+      "project_id": "2024X0217",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2024X0309",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
       "project_id": "2025K0150",
       "bbl": null,
       "exact_bbl_count": 4,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
-      "project_id": "2025K0154",
-      "bbl": null,
-      "exact_bbl_count": 3,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
@@ -1328,6 +1250,13 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
+      "project_id": "2025K0234",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
       "project_id": "2025K0250",
       "bbl": null,
       "exact_bbl_count": 3,
@@ -1337,13 +1266,6 @@
     {
       "project_id": "2025K0284",
       "bbl": "3061090001",
-      "exact_bbl_count": 1,
-      "coverage_state": "exact",
-      "reason": null
-    },
-    {
-      "project_id": "2025K0287",
-      "bbl": "3025900025",
       "exact_bbl_count": 1,
       "coverage_state": "exact",
       "reason": null
@@ -1377,6 +1299,13 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
+      "project_id": "2025K0356",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
       "project_id": "2025K0374",
       "bbl": null,
       "exact_bbl_count": 7,
@@ -1384,18 +1313,25 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2025K0419",
+      "project_id": "2025K0417",
       "bbl": null,
-      "exact_bbl_count": 2,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2025K0434",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2025K0470",
       "bbl": "3084700143",
       "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
+      "coverage_state": "exact",
+      "reason": null
     },
     {
       "project_id": "2025K0497",
@@ -1412,25 +1348,11 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2025M0252",
-      "bbl": null,
-      "exact_bbl_count": 0,
-      "coverage_state": "not_applicable_unmapped",
-      "reason": "project has no accepted point; geometry never substitutes for one"
-    },
-    {
       "project_id": "2025M0265",
       "bbl": null,
       "exact_bbl_count": 11,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
-      "project_id": "2025M0329",
-      "bbl": "1002187505",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
     },
     {
       "project_id": "2025M0332",
@@ -1457,8 +1379,15 @@
       "project_id": "2025M0395",
       "bbl": "1008097502",
       "exact_bbl_count": 1,
-      "coverage_state": "exact",
-      "reason": null
+      "coverage_state": "missing_geometry_row",
+      "reason": "exact BBL has no retained parcel geometry"
+    },
+    {
+      "project_id": "2025M0399",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2025M0441",
@@ -1475,13 +1404,6 @@
       "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
-      "project_id": "2025M0473",
-      "bbl": null,
-      "exact_bbl_count": 5,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
       "project_id": "2025Q0124",
       "bbl": null,
       "exact_bbl_count": 4,
@@ -1489,11 +1411,11 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2025Q0142",
-      "bbl": "4020030001",
-      "exact_bbl_count": 1,
-      "coverage_state": "exact",
-      "reason": null
+      "project_id": "2025Q0144",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2025Q0155",
@@ -1503,11 +1425,25 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
+      "project_id": "2025Q0230",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
       "project_id": "2025Q0247",
       "bbl": null,
       "exact_bbl_count": 2,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
+    },
+    {
+      "project_id": "2025Q0288",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2025Q0304",
@@ -1520,13 +1456,6 @@
       "project_id": "2025Q0314",
       "bbl": null,
       "exact_bbl_count": 16,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
-      "project_id": "2025Q0316",
-      "bbl": null,
-      "exact_bbl_count": 25,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
@@ -1545,25 +1474,25 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2025Q0445",
+      "project_id": "2025Q0403",
       "bbl": null,
-      "exact_bbl_count": 2,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
-      "project_id": "2025R0137",
+      "project_id": "2025Q0476",
       "bbl": null,
-      "exact_bbl_count": 3,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
-      "project_id": "2025R0140",
-      "bbl": "5074650126",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
+      "project_id": "2025Q0494",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2025R0222",
@@ -1580,30 +1509,9 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
-      "project_id": "2025R0285",
-      "bbl": "5006140010",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
-    },
-    {
-      "project_id": "2025R0309",
-      "bbl": null,
-      "exact_bbl_count": 3,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
       "project_id": "2025R0312",
       "bbl": null,
       "exact_bbl_count": 3,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
-    },
-    {
-      "project_id": "2025R0398",
-      "bbl": null,
-      "exact_bbl_count": 2,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
@@ -1622,11 +1530,39 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
+      "project_id": "2025X0147",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2025X0256",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2025X0264",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
       "project_id": "2025X0283",
       "bbl": null,
       "exact_bbl_count": 3,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
+    },
+    {
+      "project_id": "2025X0296",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2025X0385",
@@ -1636,7 +1572,21 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
+      "project_id": "2025X0462",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
       "project_id": "2025Y0279",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2026K0117",
       "bbl": null,
       "exact_bbl_count": 0,
       "coverage_state": "not_applicable_unmapped",
@@ -1664,11 +1614,18 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2026K0443",
+      "project_id": "2026K0322",
       "bbl": null,
-      "exact_bbl_count": 2,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2026M0108",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2026M0120",
@@ -1685,6 +1642,13 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
+      "project_id": "2026M0163",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
       "project_id": "2026M0164",
       "bbl": null,
       "exact_bbl_count": 3,
@@ -1697,6 +1661,13 @@
       "exact_bbl_count": 4,
       "coverage_state": "ambiguous_relation",
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
+    },
+    {
+      "project_id": "2026M0208",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2026M0211",
@@ -1713,6 +1684,13 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
+      "project_id": "2026M0250",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
       "project_id": "2026M0275",
       "bbl": "1012840021",
       "exact_bbl_count": 1,
@@ -1720,32 +1698,32 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
-      "project_id": "2026M0366",
+      "project_id": "2026M0382",
       "bbl": null,
-      "exact_bbl_count": 8,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
-      "project_id": "2026M0432",
-      "bbl": "1012687501",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
+      "project_id": "2026M0454",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
-      "project_id": "2026M0444",
-      "bbl": "1003410026",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
+      "project_id": "2026M0455",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
-      "project_id": "2026M0445",
-      "bbl": "1007540034",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
+      "project_id": "2026M0515",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2026Q0128",
@@ -1755,11 +1733,18 @@
       "reason": "two or more retained BBLs have no documented complete-assemblage relation"
     },
     {
-      "project_id": "2026Q0210",
+      "project_id": "2026Q0184",
       "bbl": null,
-      "exact_bbl_count": 25,
-      "coverage_state": "ambiguous_relation",
-      "reason": "two or more retained BBLs have no documented complete-assemblage relation"
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2026Q0198",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2026Q0320",
@@ -1769,25 +1754,18 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
-      "project_id": "2026R0127",
-      "bbl": "5007087501",
-      "exact_bbl_count": 1,
-      "coverage_state": "exact",
-      "reason": null
+      "project_id": "2026Q0371",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
-      "project_id": "2026R0137",
-      "bbl": "5000920001",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
-    },
-    {
-      "project_id": "2026R0142",
-      "bbl": "5008710240",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
+      "project_id": "2026Q0460",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2026R0145",
@@ -1797,39 +1775,11 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
-      "project_id": "2026R0166",
-      "bbl": "5005690361",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
-    },
-    {
-      "project_id": "2026R0186",
-      "bbl": "5028100080",
-      "exact_bbl_count": 1,
-      "coverage_state": "exact",
-      "reason": null
-    },
-    {
-      "project_id": "2026R0189",
-      "bbl": "5008320110",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
-    },
-    {
-      "project_id": "2026R0195",
-      "bbl": "5006180107",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
-    },
-    {
-      "project_id": "2026R0196",
-      "bbl": "5006180125",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
+      "project_id": "2026R0299",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2026R0319",
@@ -1846,11 +1796,32 @@
       "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
-      "project_id": "2026X0274",
-      "bbl": "2059450079",
-      "exact_bbl_count": 1,
-      "coverage_state": "missing_geometry_row",
-      "reason": "exact BBL has no retained parcel geometry"
+      "project_id": "2026R0338",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2026R0368",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2026X0180",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2026X0270",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
     },
     {
       "project_id": "2026X0282",
@@ -1874,7 +1845,7 @@
       "reason": "exact BBL has no retained parcel geometry"
     },
     {
-      "project_id": "2026X0464",
+      "project_id": "2026X0514",
       "bbl": null,
       "exact_bbl_count": 0,
       "coverage_state": "not_applicable_unmapped",
@@ -1884,6 +1855,27 @@
       "project_id": "2026Y0360",
       "bbl": null,
       "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2027K0210",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "2027Q0181",
+      "bbl": null,
+      "exact_bbl_count": 0,
+      "coverage_state": "not_applicable_unmapped",
+      "reason": "project has no accepted point; geometry never substitutes for one"
+    },
+    {
+      "project_id": "P2009K0185",
+      "bbl": null,
+      "exact_bbl_count": 1,
       "coverage_state": "not_applicable_unmapped",
       "reason": "project has no accepted point; geometry never substitutes for one"
     },
@@ -1997,7 +1989,7 @@
     "derivation": "node tools/build_land_project_geometry.mjs",
     "join_version": "exact_single_bbl_wh06_mappluto_parcel_polygon_v1",
     "payload_path": "site/data/land_project_geometry.json",
-    "payload_bytes": 15492,
-    "payload_sha256": "cb72afa7cfa8133f7c64a4e314602a3cc803924c5be3ba94dc5fc9b65357baff"
+    "payload_bytes": 3844,
+    "payload_sha256": "72f46e46dcd4b64d017052e9b87a03abd120fe6d7ad5c130b4bf37a6457746d8"
   }
 }

@@ -30,6 +30,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_SITE = path.join(ROOT, "site", "data", "land_project_geometry_source_lookup.json");
 const LAND_DEFAULT = path.join(ROOT, "site", "data", "land_default_ulurp.json");
 const BBL_LOOKUP = path.join(ROOT, "site", "data", "zap_bbl_warehouse_lookup.json");
+const CENTROIDS_LOOKUP = path.join(ROOT, "site", "data", "bbl_mappluto_centroids_lookup.json");
 const MAPPLUTO_QUERY =
   "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0/query";
 
@@ -55,8 +56,10 @@ function readJson(filePath) {
 function candidateBbls() {
   const landDefault = readJson(LAND_DEFAULT);
   const zapBbl = readJson(BBL_LOOKUP);
+  const centroidsByBbl = existsSync(CENTROIDS_LOOKUP) ? (readJson(CENTROIDS_LOOKUP)?.by_bbl || {}) : null;
   const candidates = singleBblGeometryCandidates({ landDefault, zapBbl });
-  return [...new Set(candidates.values())].sort();
+  const bbls = [...candidates.values()].filter((bbl) => !centroidsByBbl || Boolean(centroidsByBbl[bbl]));
+  return [...new Set(bbls)].sort();
 }
 
 async function fetchArcgisGeometry(bbls) {

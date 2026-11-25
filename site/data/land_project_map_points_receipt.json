@@ -2819,13 +2819,14 @@
     "resolver_version": "cityscroll.land_project_geography.v1",
     "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1",
     "payload_path": "site/data/land_project_map_points.json",
-    "payload_bytes": 35982,
-    "payload_sha256": "a92374796d385bd1a38d6613106177d659ffe21b9f054202a4cb46b7feb8334f",
+    "payload_bytes": 36012,
+    "payload_sha256": "efeeb9ad88805dabb99afe4dab74d4081fda6a421a7acf50e47e5ec73a25532e",
     "geometry_shard_dir": "site/data/land-project-geometry",
     "geometry_shard_keys": [
-      "2a",
+      "3d",
+      "84",
       "b9"
     ],
-    "geometry_shard_count": 2
+    "geometry_shard_count": 3
   }
 }

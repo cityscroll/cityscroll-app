@@ -36,19 +36,25 @@ function validDoc(overrides = {}) {
 
 test("a fresh, valid, complete doc passes the serve gate", () => {
   const doc = validDoc();
-  assert.deepEqual(landParcelGeometrySourceFindings(doc, { candidateBbls: ["5007087501"] }), []);
-  assert.equal(assertLandParcelGeometrySource(doc, { candidateBbls: ["5007087501"] }), true);
+  assert.deepEqual(landParcelGeometrySourceFindings(doc, { candidateBbls: ["5007087501"], now: FIXTURE_NOW }), []);
+  assert.equal(assertLandParcelGeometrySource(doc, { candidateBbls: ["5007087501"], now: FIXTURE_NOW }), true);
 });
 
 test("a missing candidate BBL fails closed", () => {
   const doc = validDoc();
-  const findings = landParcelGeometrySourceFindings(doc, { candidateBbls: ["5007087501", "1000000001"] });
+  const findings = landParcelGeometrySourceFindings(doc, {
+    candidateBbls: ["5007087501", "1000000001"],
+    now: FIXTURE_NOW,
+  });
   assert.ok(findings.some((f) => f.includes("missing candidate BBL 1000000001")));
 });
 
 test("an invalid ring on a candidate BBL fails closed", () => {
   const doc = validDoc({ by_bbl: { "5007087501": { rings: [[[-74.1, 40.6]]] } } });
-  const findings = landParcelGeometrySourceFindings(doc, { candidateBbls: ["5007087501"] });
+  const findings = landParcelGeometrySourceFindings(doc, {
+    candidateBbls: ["5007087501"],
+    now: FIXTURE_NOW,
+  });
   assert.ok(findings.some((f) => f.includes("invalid")));
 });
 
@@ -63,7 +69,18 @@ test("stale materialized_at fails closed", () => {
 
 test("wrong mode and schema version fail closed", () => {
   const doc = validDoc({ mode: "live_resident_fetch", schema_version: 99 });
-  const findings = landParcelGeometrySourceFindings(doc, { candidateBbls: ["5007087501"] });
+  const findings = landParcelGeometrySourceFindings(doc, {
+    candidateBbls: ["5007087501"],
+    now: FIXTURE_NOW,
+  });
   assert.ok(findings.some((f) => f.includes("schema_version")));
   assert.ok(findings.some((f) => f.includes("mode")));
+});
+
+test("committed MapPLUTO geometry lookup passes the serve gate under the ambient clock", async () => {
+  const { execFileSync } = await import("node:child_process");
+  const out = execFileSync(process.execPath, ["tools/build_land_project_geometry_source.mjs", "--check"], {
+    encoding: "utf8",
+  });
+  assert.match(out, /ok serve-gate site\/data\/land_project_geometry_source_lookup\.json/);
 });
