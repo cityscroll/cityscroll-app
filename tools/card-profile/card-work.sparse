@@ -776,6 +776,7 @@
 /site/preset_validation.mjs
 /site/preview_federated_form_factor.mjs
 /site/primary_document_view.mjs
+/site/privacy.html
 /site/process_conformance.mjs
 /site/procurement_alert_atom.mjs
 /site/procurement_browse_capability_index.mjs

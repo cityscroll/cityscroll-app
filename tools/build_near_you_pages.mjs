@@ -144,13 +144,16 @@ function buildDocuments() {
       ...(boardBudgetRequestsState ? { boardBudgetRequestsState, boardBudgetRequests } : {}),
     });
     const deferredParts = renderNearYouDeferredParts(view);
+    const html = renderNearYouDocument(view, {
+      assetPrefix: "/",
+      deferredDataHref: `${publicPath}deferred.json`,
+    });
     return {
       path: outputPath(publicPath),
       deferredPath: join(SITE, publicPath.replace(/^\/+/, ""), "deferred.json"),
-      html: renderNearYouDocument(view, {
-        assetPrefix: "/",
-        deferredDataHref: `${publicPath}deferred.json`,
-      }),
+      html: publicPath === "/near-you/"
+        ? html.replace("</footer>", ' · <a href="/privacy">Privacy policy</a></footer>')
+        : html,
       deferred: `${JSON.stringify({
         schema: "cityscroll.near_you_deferred.v1",
         href: `${publicPath}deferred.json`,

@@ -11,6 +11,16 @@ committed loader source, the documents that include it, and the exported constan
 the analytics, receipt, account-history and public-projection contracts. `--check`
 fails if this document and those files disagree.
 
+## Using the privacy notice during development
+
+The [public privacy notice](https://cityscroll.org/privacy) describes current practices.
+Evaluate proposed features using their actual sources, purpose, data flows, providers, and controls.
+Permitted public records can support new analysis, connections, exports, and products.
+When a proposal changes how visitor information is used, identify the concrete change and the
+applicable source terms, law, and existing commitments. Update the notice and any required
+choices or safeguards when the practice changes. Preserve previously made commitments and
+route unresolved policy decisions to the project maintainers.
+
 ## Two registers
 
 | Register | Meaning | Evidence |
@@ -43,7 +53,7 @@ session-analytics service. It is **configured**, not dormant: `CONFIGURED_PROJEC
 carries a non-empty project id, which is the condition the loader itself uses to decide
 whether to run at all.
 
-It is included by every top-level site document and by the search shell:
+The following static documents and the search shell load it:
 
 - `site/about.html`
 - `site/api.html`
@@ -56,6 +66,7 @@ It is included by every top-level site document and by the search shell:
 - `site/stats.html`
 - `site/search/index.html`
 
+The privacy notice is a static document with no analytics scripts.
 Documents rendered by the Worker and by the Pages edge handler do not include it; the
 loader is a static-site inclusion only.
 
