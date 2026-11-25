@@ -104,13 +104,26 @@ export function checkCensus() {
   };
 }
 
+// A reviewed DOE canonical count may be refreshed. Any other count still refuses,
+// so the next unexplained change cannot rewrite the finding on its own.
+export function assertDoeCanonicalCountAllowsRefresh(recordedCount, measuredCount) {
+  if (measuredCount !== recordedCount) {
+    throw new Error(
+      `DOE canonical row count changed (${recordedCount} -> ${measuredCount}); `
+      + 'the DOE missing-corpus finding needs a human re-review before this census can be refreshed, not an automatic rewrite'
+    );
+  }
+}
+
 // Refreshes only the mechanical fingerprints of the three tracked live artifacts
 // (their byte hash and row/object count) after a routine data refresh changes them.
 // Never touches doe_missing_record_census: that section is a human-reviewed finding
 // about whether a distinct DOE corpus is missing from existing sources, not a
 // mechanical snapshot, so a live DOE row-count change refuses the write instead of
 // silently re-blessing the finding — this must reach a person, not the refresh job.
-export function refreshExistingSnapshot() {
+// Options are for tests: recordedDoeCanonicalRows / measuredDoeCanonicalRows probe
+// the refusal without writing, and write:false previews a matching refresh.
+export function refreshExistingSnapshot(options = {}) {
   const browsePath = path.join(repoRoot, 'site/data/procurement_browse_rows.json');
   const spinePath = path.join(repoRoot, 'site/data/procurement_spine_sources.json');
   const readModelPath = path.join(repoRoot, 'site/data/shared_procurement_read_model.json');
@@ -120,11 +133,12 @@ export function refreshExistingSnapshot() {
   const sharedReadModel = JSON.parse(fs.readFileSync(readModelPath, 'utf8'));
 
   const doe = rowsForAgency(browse.rows, 'department of education|^education$|education admin|^doe$');
-  if (doe.length !== census.doe_missing_record_census.doe_canonical_rows) {
-    throw new Error(
-      `DOE canonical row count changed (${census.doe_missing_record_census.doe_canonical_rows} -> ${doe.length}); `
-      + 'the DOE missing-corpus finding needs a human re-review before this census can be refreshed, not an automatic rewrite'
-    );
+  const recordedCount = options.recordedDoeCanonicalRows ?? census.doe_missing_record_census.doe_canonical_rows;
+  const measuredCount = options.measuredDoeCanonicalRows ?? doe.length;
+  const probing = options.recordedDoeCanonicalRows != null || options.measuredDoeCanonicalRows != null;
+  assertDoeCanonicalCountAllowsRefresh(recordedCount, measuredCount);
+  if (probing || options.write === false) {
+    return { recordedCount, measuredCount };
   }
 
   census.existing_snapshot.generated_at = new Date().toISOString();

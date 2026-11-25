@@ -53,7 +53,7 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-11-25T10:20:15.926Z",
+    "generated_at": "2026-11-25T16:58:40.353Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
@@ -497,6 +497,12 @@
     "production_card_proposed": false,
     "conclusion": "No distinct public DOE corpus is missing from the existing City Record, PASSPort, and Checkbook ingestion snapshot. The 3974 Checkbook-only and 5 PASSPort-only rows are already served by those existing source families; no DOE production card is proposed.",
     "review_note": "Re-reviewed after the DOE canonical row count moved from 3856 to 4412 on the 2026-10-09 Checkbook/OCP browse rematerialization. Counts by source before -> after: city_record 436 -> 433, passport_public_contracts 438 -> 438, checkbook_contracts 3418 -> 3974. New combination keys: none. No DOE row is left without a recognised source family. The added rows are served Checkbook/PASSPort/City Record records rather than a newly discovered distinct DOE corpus, so the finding is unchanged in substance: no distinct public DOE corpus is demonstrated missing, and no production card is proposed.",
+    "re_review": {
+      "reviewed_at": "2026-11-25",
+      "reviewer": "site owner",
+      "reason": "365-day rolling-window expiry of 14 checkbook-only FY26 DOE contracts",
+      "previous_doe_canonical_rows": 4642
+    },
     "served_measurement": {
       "artifact": "site/data/procurement_browse_rows.json",
       "generated_at": "2026-11-25T10:20:15.926Z"
