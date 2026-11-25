@@ -11,9 +11,18 @@ function setPreview(enabled) {
   document.cookie = `${preference}=${enabled ? "1" : "; Max-Age=0"}; Path=/; SameSite=Lax${security}`;
 }
 
+function loadPreviewStyles() {
+  if (document.querySelector('link[href="/start/preview.css"]')) return;
+  const styles = document.createElement("link");
+  styles.rel = "stylesheet";
+  styles.href = "/start/preview.css";
+  document.head.append(styles);
+}
+
 function renderNavigation() {
   document.querySelector("#cityscroll-start-nav")?.remove();
   if (!previewIsOn()) return;
+  loadPreviewStyles();
   const nav = document.createElement("nav");
   nav.id = "cityscroll-start-nav";
   nav.setAttribute("aria-label", "CityScroll preview");
@@ -45,10 +54,12 @@ function syncPreview() {
   if (toggle) toggle.checked = previewIsOn();
 }
 
-syncPreview();
-window.addEventListener("pageshow", event => {
-  if (event.persisted) syncPreview();
-});
+if (startPage || previewIsOn()) {
+  syncPreview();
+  window.addEventListener("pageshow", event => {
+    if (event.persisted) syncPreview();
+  });
+}
 
 if (toggle) {
   const state = document.querySelector("#start-toggle-help");

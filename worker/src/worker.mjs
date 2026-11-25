@@ -512,12 +512,13 @@ const worker = {
       return handleCostControlProbe(request, env);
     }
     if (MIRROR_HOSTS.has(hostname)) {
-      const startPage = pathname === "/start" || pathname === "/start/" || pathname === "/start/index.html";
       const preview = hostname === "cityscroll.org" && request.method === "GET" && usesStartPreview(request);
       if (preview && pathname === "/" && !search) {
         return new Response(null, { status: 302, headers: { Location: "/start/", "Cache-Control": "private, no-store" } });
       }
-      const previewDocument = preview && !startPage
+      const nearYouDocument = isNearYouDocumentPath(pathname);
+      const followingDocument = pathname === "/following" || pathname === "/following/" || pathname === "/following/personal";
+      const previewDocument = preview && (nearYouDocument || followingDocument)
         && (request.headers.get("Sec-Fetch-Dest") === "document" || request.headers.get("Accept")?.includes("text/html"));
       const siteRequest = previewDocument ? startPreviewRequest(request) : request;
       const siteResponse = async (response) => {
@@ -526,10 +527,10 @@ const worker = {
       };
       // Site root `/` and `/near-you` share the local discovery shell; deferred
       // JSON remains under `/near-you/deferred.json`.
-      if (isNearYouDocumentPath(pathname) || isNearYouDeferredPath(pathname)) {
+      if (nearYouDocument || isNearYouDeferredPath(pathname)) {
         return siteResponse(handleNearYou(siteRequest, env, ctx));
       }
-      if (pathname === "/following" || pathname === "/following/" || pathname === "/following/personal") return siteResponse(handleFollowing(siteRequest, env, ctx));
+      if (followingDocument) return siteResponse(handleFollowing(siteRequest, env, ctx));
       if (pathname === "/prefs") return handlePrefs(request, env);
       // The common-account sign-in shell and its one-time confirmation page are
       // engine-served on the canonical site host (the email link points at
@@ -540,7 +541,7 @@ const worker = {
       if (pathname === "/account" || pathname === "/account/" || pathname === "/account/confirm") {
         return handleAccountPage(request, env, pathname);
       }
-      return siteResponse(handleMirror(siteRequest));
+      return handleMirror(request);
     }
     if (pathname === "/nl") return handleNl(request, env);
     if (pathname === "/mcp") return handleMcp(request, env);

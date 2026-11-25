@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { cpSync, existsSync, mkdirSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -69,6 +69,25 @@ function publishTopicAppDocument(siteSource, siteDir) {
   cpSync(sourcePath, destinationPath);
 }
 
+function publishStartPreviewBoot(siteDir) {
+  if (!existsSync(join(siteDir, "start", "preview.mjs"))) return;
+  const boot = '<script type="module" src="/start/preview.mjs"></script>';
+  const visit = (directory) => {
+    if (!existsSync(directory)) return;
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      const path = join(directory, entry.name);
+      if (entry.isDirectory()) visit(path);
+      else if (entry.isFile() && entry.name.endsWith(".html")) {
+        const document = readFileSync(path, "utf8");
+        if (document.includes(boot)) continue;
+        if (!document.includes("</head>")) throw new Error(`Preview destination has no closing head: ${path}`);
+        writeFileSync(path, document.replace("</head>", `${boot}</head>`));
+      }
+    }
+  };
+  for (const route of ["browse", "search", "now", "guide"]) visit(join(siteDir, route));
+}
+
 const args = parseArgs(process.argv.slice(2));
 const cwd = process.cwd();
 const sourceDir = resolve(cwd, args["source-dir"] || ".");
@@ -85,6 +104,7 @@ copyTree(siteSource, siteDir);
 // cannot collapse back onto the Near You home document.
 publishTopicAppDocument(siteSource, siteDir);
 publishClientCapabilityModules(sourceDir, siteSource, siteDir);
+publishStartPreviewBoot(siteDir);
 assertGeneratedOutputs({
   rootDir: cwd,
   boundary: "public-site-generation",
