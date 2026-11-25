@@ -89,17 +89,6 @@ jobs:
           legistar-api-token: ${{ secrets.LEGISTAR_API_TOKEN }}
           carto-basemap-api-key: ${{ secrets.CARTO_BASEMAP_API_KEY }}
           require-carto-basemap-api-key: "true"
-      - name: Stage authenticated graph for the private Desk consumer
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v4
-        with:
-          name: data-source-graph-${{ github.run_id }}
-          path: |
-            docs/data-source-graph.json
-            docs/data-source-graph.html
-            .artifacts/desk-health-publication-cycle.json
-          if-no-files-found: error
-          retention-days: 90
       - name: Record Desk publication heartbeat
         id: desk_publication_heartbeat
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -152,6 +141,7 @@ jobs:
             --now "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)" \
             --event "${GITHUB_EVENT_NAME}" \
             --run-id "${GITHUB_RUN_ID}"
+      # One upload of this name. The artifact service rejects a second create in the same run.
       - name: Retain publication receipt after heartbeat
         if: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && !cancelled() }}
         uses: actions/upload-artifact@v4
