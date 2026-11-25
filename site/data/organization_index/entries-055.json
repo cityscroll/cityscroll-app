@@ -1,4 +1,10 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":55,"first_ordinal":93006,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":55,"first_ordinal":93003,"entries":[
+{"s":"MCCREARY ROOFING","n":[["MCCREARY ROOFING CO., INC.",1]],"x":{"dol":{"r":1,"i":["26-9YX3Y-CR"],"z":["16503"]}}},
+{"s":"MCCUE MEMORIAL FOUNDATION","n":[["MCCUE MEMORIAL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["161556283"],"z":["14607"]}}},
+{"s":"MCCULLOUGH FOUNDATION","n":[["MCCULLOUGH FOUNDATION",1]],"x":{"irs":{"r":1,"i":["010744113"],"z":["10168"]}}},
+{"s":"MCCUNE SMITH-CORDICE MEDICAL SOCIETY","n":[["MCCUNE SMITH-CORDICE MEDICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["990567178"],"z":["11040"]}}},
+{"s":"MCCUTCHEON ASSOCIATES P A","n":[["MCCUTCHEON ASSOCIATES, P.A.",1]],"x":{"dol":{"r":1,"i":["25-6HO5T-CR"],"z":["07094"]}}},
+{"s":"MCD METALS","n":[["MCD METALS, LLC",1]],"x":{"dol":{"r":1,"i":["24-634F9-CR"],"z":["12203"]}}},
 {"s":"MCDATA","n":[["McData Corporation",1]],"x":{"ocp":{"r":1,"a":7469.1,"l":"2006-05-30","i":["20060525006"]}}},
 {"s":"MCDERMOTT PLOWING LAWNCARE","d":[["McDermott Plowing & Lawncare",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-9YC13-CR"],"z":["12401"]}}},
 {"s":"MCDERMOTT WILL EMERY","n":[["MCDERMOTT WILL & EMERY LLP",1]],"x":{"dbe":{"r":1,"i":["MCDERMOTT WILL & EMERY LLP"]}}},
@@ -1270,7 +1276,7 @@
 {"s":"META CHURCH MOVEMENT","n":[["META CHURCH MOVEMENT",1]],"x":{"irs":{"r":1,"i":["820993017"],"z":["10028"]}}},
 {"s":"META FOUNDATION","n":[["META FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["872098264"],"z":["10010"]}}},
 {"s":"META LITE","n":[["Meta Lite Inc.",1]],"x":{"ocp":{"r":1,"a":60404.4,"l":"2003-11-25","i":["20031118005"]}}},
-{"s":"META LOGIC STRATEGIC CONSULTING","n":[["META LOGIC STRATEGIC CONSULTING",46],["META LOGIC STRATEGIC CONSULTING LLC",6],["Meta Logic Strategic Consulting, LLC",1]],"x":{"cbr":{"r":33,"a":825000,"l":"2026-11-03","c":33,"i":["CT104020273036139","CT104020273038601","CT104020273028351","CT104020263162811","CT104020263129134"],"m":["Black American","Non-M/WBE"]},"cbv":{"r":18,"l":"2026-11-03","c":18,"i":["CT104020273036139","CT104020273038601","CT104020273028351","CT104020263162811","CT104020263129134"],"m":["Black American"]},"dbe":{"r":1,"i":["META LOGIC STRATEGIC CONSULTING"]},"sbs":{"r":1,"i":["330913"],"z":["11236"],"p":["MBE"]}}},
+{"s":"META LOGIC STRATEGIC CONSULTING","n":[["META LOGIC STRATEGIC CONSULTING",46],["META LOGIC STRATEGIC CONSULTING LLC",7],["Meta Logic Strategic Consulting, LLC",1]],"x":{"cbr":{"r":33,"a":825000,"l":"2026-11-03","c":33,"i":["CT104020273036139","CT104020273038601","CT104020273028351","CT104020263162811","CT104020263129134"],"m":["Black American","Non-M/WBE"]},"cbv":{"r":19,"l":"2026-11-23","c":19,"i":["CT104020273053516","CT104020273036139","CT104020273038601","CT104020273028351","CT104020263162811"],"m":["Black American"]},"dbe":{"r":1,"i":["META LOGIC STRATEGIC CONSULTING"]},"sbs":{"r":1,"i":["330913"],"z":["11236"],"p":["MBE"]}}},
 {"s":"META MEDICAL SUPPLIES","n":[["Meta Medical Supplies Inc.",3],["META MEDICAL SUPPLIES, INC.",1]],"x":{"ocp":{"r":4,"a":192006,"l":"2007-11-20","i":["20071113022","20040528008","20040316020","20030813002"]}}},
 {"s":"META SPIRITUALITY FOUNDATION","n":[["META SPIRITUALITY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["422634201"],"z":["10023"]}}},
 {"s":"META VIABLE SOLUTIONS","n":[["Meta Viable Solutions LLC",1]],"x":{"sbs":{"r":1,"i":["331017"],"z":["07047"],"p":["MBE","WBE"]}}},
@@ -1673,7 +1679,5 @@
 {"s":"MFS CONSTRUCTION","n":[["MFS Construction, LLC",2]],"x":{"sbs":{"r":1,"i":["101171"],"z":["07080"],"p":["MBE"]},"sca":{"r":1,"i":["MFS CONSTRUCTION, LLC"],"z":["07080"]}}},
 {"s":"MFS CONSULTING ENGINEERS SURVEYOR D P C","n":[["MFS Consulting Engineers & Surveyor, D.P.C.",2]],"x":{"sbs":{"r":1,"i":["2861"],"z":["10038"],"p":["MBE"]},"sca":{"r":1,"i":["MFS CONSULTING ENGINEERS & SURVEYOR, D.P.C."],"z":["10038"]}}},
 {"s":"MFS CONSULTING ENGINEERS SURVEYOR DPC","n":[["MFS CONSULTING ENGINEERS & SURVEYOR  DPC",1],["MFS Consulting Engineers & Surveyor, DPC",1]],"x":{"dbe":{"r":1,"i":["MFS CONSULTING ENGINEERS & SURVEYOR  DPC"]},"dol":{"r":1,"i":["25-646F8-CR"],"z":["07080"]}}},
-{"s":"MFS FAMILY FOUNDATION","n":[["MFS FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["331407088"],"z":["11210"]}}},
-{"s":"MFS INSTITUTIONAL ADVISORS","n":[["MFS INSTITUTIONAL ADVISORS INC",3],["MFS Institutional Advisors, Inc.",1]],"x":{"ocp":{"r":1,"a":17331000,"l":"2022-03-28","i":["20220321111"]},"cbr":{"r":2,"a":25462698.22,"l":"2026-01-12","i":["CT101520261404607","CT101520251407396"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["MFS INSTITUTIONAL ADVISORS INC"]}}},
-{"s":"MFY LEGAL SERVICES","n":[["MFY Legal Services, Inc.",11],["MFY Legal Services",3],["MFY Legal Services Inc.",3],["MFY LEGAL SERVICES INC",1],["MFY Legal Services, Inc",1],["Mfy Legal Services Inc",1]],"x":{"ocp":{"r":19,"a":17038080,"l":"2016-08-26","c":19,"i":["20160812023","20160620016","20160615035","20160302014","20150602003"]},"dbe":{"r":1,"i":["MFY LEGAL SERVICES INC"]}}}
+{"s":"MFS FAMILY FOUNDATION","n":[["MFS FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["331407088"],"z":["11210"]}}}
 ]}

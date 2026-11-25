@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":9,"first_ordinal":14837,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":9,"first_ordinal":14836,"entries":[
+{"s":"BARBARA A JANOWITZ","n":[["BARBARA A JANOWITZ",1]],"x":{"dbe":{"r":1,"i":["BARBARA A JANOWITZ"]}}},
 {"s":"BARBARA A SHORNICK","n":[["Barbara A Shornick",1]],"x":{"sbs":{"r":1,"i":["374735"],"z":["10522"],"p":["WBE"]}}},
 {"s":"BARBARA ALDEN TAYLOR FOUNDATION","n":[["BARBARA ALDEN TAYLOR FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["134123316"],"z":["10128"]}}},
 {"s":"BARBARA AND BENTLEY KASSAL FOUNDATION","n":[["BARBARA AND BENTLEY KASSAL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["882643656"],"z":["10022"]}}},
@@ -974,7 +975,7 @@
 {"s":"BECAUSE JONAH WOULD","n":[["BECAUSE JONAH WOULD INC",1]],"x":{"irs":{"r":1,"i":["394489428"],"z":["11735"]}}},
 {"s":"BECAUSE OF DUKE FOUNDATION","n":[["BECAUSE OF DUKE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["422389182"],"z":["12866"]}}},
 {"s":"BECAUSE OF YOU I CAN","n":[["BECAUSE OF YOU I CAN",2]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-10-27","i":["CT104020263037008","CT104020253076371"],"m":["Non-M/WBE"]}}},
-{"s":"BECAUSE WE CAN","n":[["BECAUSE WE CAN LLC",28]],"x":{"cbr":{"r":18,"a":450000,"l":"2026-11-10","c":18,"i":["CT104020273046280","CT104020273035379","CT104020273030647","CT104020273021941","CT104020273019163"],"m":["Non-M/WBE"]},"cbv":{"r":9,"l":"2026-11-10","c":9,"i":["CT104020273046280","CT104020273035379","CT104020273030647","CT104020273021941","CT104020273019163"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["BECAUSE WE CAN LLC"]}}},
+{"s":"BECAUSE WE CAN","n":[["BECAUSE WE CAN LLC",29]],"x":{"cbr":{"r":18,"a":450000,"l":"2026-11-10","c":18,"i":["CT104020273046280","CT104020273035379","CT104020273030647","CT104020273021941","CT104020273019163"],"m":["Non-M/WBE"]},"cbv":{"r":10,"l":"2026-11-23","c":10,"i":["CT104020273053585","CT104020273046280","CT104020273035379","CT104020273030647","CT104020273021941"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["BECAUSE WE CAN LLC"]}}},
 {"s":"BECAUSE WE CARE","n":[["BECAUSE WE CARE INC",4]],"x":{"cbr":{"r":3,"a":57500,"l":"2026-08-17","i":["CT112520278802054","CT101320261417346","CT101320251418551"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["352825932"],"z":["11434"]}}},
 {"s":"BECC","n":[["BECC, LLC",1]],"x":{"dol":{"r":1,"i":["26-634S7-CR"],"z":["14063"]}}},
 {"s":"BECC ELECTRIC","d":[["BECC ELECTRIC",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-634S7-CR"],"z":["14063"]}}},
@@ -1710,6 +1711,5 @@
 {"s":"BENTLEY INITIATIVE","n":[["BENTLEY INITIATIVE LLC",1]],"x":{"dol":{"r":1,"i":["25-67EVU-CR"],"z":["14787"]}}},
 {"s":"BENTLEY STRONG FOUNDATION","n":[["BENTLEY STRONG FOUNDATION CORP",1]],"x":{"irs":{"r":1,"i":["393515608"],"z":["11949"]}}},
 {"s":"BENTON BAR CEMETERY ASSOCIATION","n":[["BENTON BAR CEMETERY ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["141469019"],"z":["12484"]}}},
-{"s":"BENTON VOLUNTEER FIRE DEPARTMENT","n":[["BENTON VOLUNTEER FIRE DEPARTMENT INC",1]],"x":{"irs":{"r":1,"i":["200410406"],"z":["14527"]}}},
-{"s":"BENZAK FOUNDATION","n":[["BENZAK FOUNDATION",1]],"x":{"irs":{"r":1,"i":["203872608"],"z":["10580"]}}}
+{"s":"BENTON VOLUNTEER FIRE DEPARTMENT","n":[["BENTON VOLUNTEER FIRE DEPARTMENT INC",1]],"x":{"irs":{"r":1,"i":["200410406"],"z":["14527"]}}}
 ]}

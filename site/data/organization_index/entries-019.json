@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":19,"first_ordinal":31680,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":19,"first_ordinal":31679,"entries":[
+{"s":"CLOUDENYC","n":[["CLOUDENYC INC",1]],"x":{"irs":{"r":1,"i":["850992793"],"z":["11102"]}}},
 {"s":"CLOUDFIERY","n":[["CloudFiery Inc.",1]],"x":{"sbs":{"r":1,"i":["394963"],"z":["11507"],"p":["MBE","WBE"]}}},
 {"s":"CLOUDFIRST TECHNOLOGY SOLUTIONS","n":[["CloudFirst Technology Solutions, Inc.",1]],"x":{"sbs":{"r":1,"i":["369661"],"z":["12550"],"p":["MBE"]}}},
 {"s":"CLOUDS OF BLESSINGS MINISTRY","n":[["CLOUDS OF BLESSINGS MINISTRY INC",1]],"x":{"irs":{"r":1,"i":["822419942"],"z":["11236"]}}},
@@ -1614,6 +1615,5 @@
 {"s":"COMMUNITY KOLLEL-BAAL HA BATIM OF WILLOW BROOK","n":[["COMMUNITY KOLLEL-BAAL HA BATIM OF WILLOW BROOK INC",1]],"x":{"irs":{"r":1,"i":["133915552"],"z":["10314"]}}},
 {"s":"COMMUNITY LANTERN","n":[["Community Lantern Corporation",4],["Community Lantern Corp.",1]],"x":{"ocp":{"r":5,"a":8258227,"l":"2009-12-24","i":["20091217008","20090115010","20080908025","20080630028","20080627012"]}}},
 {"s":"COMMUNITY LAW OFFICE","n":[["COMMUNITY LAW OFFICE INC",1]],"x":{"irs":{"r":1,"i":["452707905"],"z":["10028"]}}},
-{"s":"COMMUNITY LEADERSHIP DEVELOPMENT PROGRAM OF NIAGARA COUNTY","n":[["COMMUNITY LEADERSHIP DEVELOPMENT PROGRAM OF NIAGARA COUNTY INC",1]],"x":{"irs":{"r":1,"i":["161244398"],"z":["14304"]}}},
-{"s":"COMMUNITY LEADERSHIP SERVICES","n":[["COMMUNITY LEADERSHIP SERVICES INC",1]],"x":{"irs":{"r":1,"i":["460617150"],"z":["11691"]}}}
+{"s":"COMMUNITY LEADERSHIP DEVELOPMENT PROGRAM OF NIAGARA COUNTY","n":[["COMMUNITY LEADERSHIP DEVELOPMENT PROGRAM OF NIAGARA COUNTY INC",1]],"x":{"irs":{"r":1,"i":["161244398"],"z":["14304"]}}}
 ]}

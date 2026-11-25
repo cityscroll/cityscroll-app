@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":31,"first_ordinal":52026,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":31,"first_ordinal":52021,"entries":[
+{"s":"FILOMENO FAMILY AWARDS FOUNDATION","n":[["FILOMENO FAMILY AWARDS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["462910749"],"z":["11201"]}}},
+{"s":"FILTER ROOM SOLUTIONS","n":[["FILTER ROOM SOLUTIONS INC.",1]],"x":{"dol":{"r":1,"i":["25-65K43-CR"],"z":["11501"]}}},
+{"s":"FILTERBUY","n":[["FILTERBUY INC.",1]],"x":{"dbe":{"r":1,"i":["FILTERBUY INC."]}}},
+{"s":"FILTREC","n":[["FILTREC CORPORATION",1]],"x":{"dol":{"r":1,"i":["26-639EU-CR"],"z":["13021"]}}},
+{"s":"FIMF","n":[["FIMF INC",1]],"x":{"irs":{"r":1,"i":["134072661"],"z":["10022"]}}},
 {"s":"FIN FEATHER FUR CONSERVATION SOCIETY","n":[["FIN FEATHER & FUR CONSERVATION SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["160747782"],"z":["14174"]}}},
 {"s":"FIN LIT KIDS","d":[["FIN LIT KIDS",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["377530"],"z":["07030"],"p":["MBE","WBE"]}}},
 {"s":"FIN POINT SPORTSMEN CLUB","n":[["FIN & POINT SPORTSMEN CLUB INC",1]],"x":{"irs":{"r":1,"i":["760757757"],"z":["14009"]}}},
@@ -1691,8 +1696,5 @@
 {"s":"FOREST HILLS VOL AMBUL","n":[["FOREST HILLS VOL AMBUL. CORP.",4]],"x":{"ocp":{"r":1,"a":6700,"l":"2021-02-26","i":["20210222106"]},"cbr":{"r":2,"a":3000,"l":"2026-06-24","i":["CT101320261417610","CT101320251418443"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":6700,"l":"2021-02-19","i":["CT1-057-20218801227"]}}},
 {"s":"FOREST HILLS VOLUNTEER AMBULANCE CORPS","n":[["FOREST HILLS VOLUNTEER AMBULANCE CORPS INC",1]],"x":{"irs":{"r":1,"i":["237169662"],"z":["11375"]}}},
 {"s":"FOREST HILLS YOUTH ATHLETIC ASSOCIATION","n":[["FOREST HILLS YOUTH ATHLETIC ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["264164715"],"z":["11375"]}}},
-{"s":"FOREST HOUSE","n":[["FOREST HOUSE LLC",1]],"x":{"dbe":{"r":1,"i":["FOREST HOUSE LLC"]}}},
-{"s":"FOREST HOUSE OF MANHATTAN","n":[["FOREST HOUSE OF MANHATTAN",1]],"x":{"irs":{"r":1,"i":["813286640"],"z":["10027"]}}},
-{"s":"FOREST HUGHES ASSOCIATES","n":[["Forest Hughes & Associates LLC",1]],"x":{"sbs":{"r":1,"i":["103072"],"z":["10004"],"p":["WBE"]}}},
-{"s":"FOREST LAKE CAMP ALUMNI SCHOLARSHIP FUND","n":[["FOREST LAKE CAMP ALUMNI & SCHOLARSHIP FUND INC",1]],"x":{"irs":{"r":1,"i":["820764124"],"z":["12817"]}}}
+{"s":"FOREST HOUSE","n":[["FOREST HOUSE LLC",1]],"x":{"dbe":{"r":1,"i":["FOREST HOUSE LLC"]}}}
 ]}

@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":24,"first_ordinal":40229,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":24,"first_ordinal":40227,"entries":[
+{"s":"DAMASCUS ROAD LUTHERAN SECRETARIAT OF CNY","n":[["DAMASCUS ROAD LUTHERAN SECRETARIAT OF CNY",1]],"x":{"irs":{"r":1,"i":["161572367"],"z":["13431"]}}},
+{"s":"DAMASCUS SHRINERS","n":[["DAMASCUS SHRINERS",1]],"x":{"irs":{"r":1,"i":["160332470"],"z":["14580"]}}},
 {"s":"DAMASCUS SHRINERS GROUP RETURN","n":[["DAMASCUS SHRINERS GROUP RETURN",1]],"x":{"irs":{"r":1,"i":["510214199"],"z":["14580"]}}},
 {"s":"DAMASTE","n":[["DAMASTE INC",6],["Damaste Inc.",1],["Damaste, Inc.",1]],"x":{"ocp":{"r":2,"a":236250,"l":"2025-03-06","i":["20250228010","20240524113"]},"cbr":{"r":1,"a":200000,"l":"2025-02-27","i":["CT184120258806153"],"m":["Hispanic American"]},"ppt":{"r":2,"a":1536250,"l":"2025-02-27","i":["CT1-841-20258806153","CT1-841-20248808447"]},"dbe":{"r":1,"i":["DAMASTE INC"]},"sbs":{"r":1,"i":["329284"],"z":["10473"],"p":["MBE"]},"dol":{"r":1,"i":["25-64UGG-CR"],"z":["10473"]}}},
 {"s":"DAMAYAN MIGRANT WORKERS ASSOCIATION","n":[["DAMAYAN MIGRANT WORKERS ASSOCIATION",2]],"x":{"cbr":{"r":1,"a":175000,"l":"2026-10-19","i":["CT106920278801783"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["030481206"],"z":["10018"]}}},
@@ -1679,7 +1681,5 @@
 {"s":"DESIGN RESOURCES GROUP ARCHITECTS A I A","n":[["Design Resources Group Architects, A.I.A., Inc.",1]],"x":{"sca":{"r":1,"i":["DESIGN RESOURCES GROUP ARCHITECTS, A.I.A., INC."],"z":["08873"]}}},
 {"s":"DESIGN RESOURCES GROUP ARCHITECTS AIA","n":[["DESIGN RESOURCES GROUP ARCHITECTS AIA INC PC",1]],"x":{"dbe":{"r":1,"i":["DESIGN RESOURCES GROUP ARCHITECTS AIA INC PC"]}}},
 {"s":"DESIGN SPACE STUDIOS","n":[["Design Space Studios, LLC",1]],"x":{"dol":{"r":1,"i":["26-66AZA-CR"],"z":["14450"]}}},
-{"s":"DESIGN SPECIALISTS","n":[["Design Specialists",1]],"x":{"dol":{"r":1,"i":["24-6367T-CR"],"z":["13057"]}}},
-{"s":"DESIGN STUDIES INSTITUTE","n":[["DESIGN STUDIES INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["921382312"],"z":["10019"]}}},
-{"s":"DESIGN STUDY COLLABORATIVE","n":[["DESIGN STUDY COLLABORATIVE INC",1]],"x":{"irs":{"r":1,"i":["932697463"],"z":["11215"]}}}
+{"s":"DESIGN SPECIALISTS","n":[["Design Specialists",1]],"x":{"dol":{"r":1,"i":["24-6367T-CR"],"z":["13057"]}}}
 ]}

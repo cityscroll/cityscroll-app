@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":29,"first_ordinal":48648,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":29,"first_ordinal":48644,"entries":[
+{"s":"ENVIRONMENTAL AND FUELING SYSTEMS","n":[["Environmental and Fueling Systems, LLC",1]],"x":{"dol":{"r":1,"i":["26-63ZK9-CR"],"z":["12182"]}}},
+{"s":"ENVIRONMENTAL ASSESSMENT REMEDIATIONS","d":[["Environmental Assessment & Remediations",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["24-648PD-CR"],"z":["11772"]}}},
+{"s":"ENVIRONMENTAL CENTERS OF SETAUKET SMITHTOWN","n":[["ENVIRONMENTAL CENTERS OF SETAUKET SMITHTOWN INC",1]],"x":{"irs":{"r":1,"i":["237177705"],"z":["11787"]}}},
+{"s":"ENVIRONMENTAL COALITION OF THE PELHAMS","n":[["ENVIRONMENTAL COALITION OF THE PELHAMS INC",1]],"x":{"irs":{"r":1,"i":["464331428"],"z":["10803"]}}},
 {"s":"ENVIRONMENTAL CODE CONSULTANTS","n":[["ENVIRONMENTAL CODE CONSULTANTS INC",3],["Environmental Code Consultants Inc.",1]],"x":{"ocp":{"r":1,"a":365000,"l":"2023-11-24","i":["20231118101"]},"ppt":{"r":1,"a":499999,"l":"2023-11-16","i":["CT1-856-20248803262"]},"dbe":{"r":1,"i":["ENVIRONMENTAL CODE CONSULTANTS INC"]},"sbs":{"r":1,"i":["12283"],"z":["10016"],"p":["MBE"]}}},
 {"s":"ENVIRONMENTAL COMPLIANCE MANAGEMENT","n":[["Environmental Compliance Management Corp.",1]],"x":{"dol":{"r":1,"i":["26-67451-CR"],"z":["13037"]}}},
 {"s":"ENVIRONMENTAL COMPLIANCE MANAGEMENT CONCEPTS","n":[["Environmental Compliance Management Concepts, LLC",1]],"x":{"dol":{"r":1,"i":["26-69P17-CR"],"z":["10941"]}}},
@@ -1675,9 +1679,5 @@
 {"s":"F OTTOMANELLI LIC","n":[["F OTTOMANELLI LIC LLC",1]],"x":{"dbe":{"r":1,"i":["F OTTOMANELLI LIC LLC"]}}},
 {"s":"F P KANE CONSTRUCTION","d":[["F. P. Kane Construction, Inc.",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["24-633F1-CR"],"z":["13850"]}}},
 {"s":"F R E CONTRACTOR","n":[["F R E Contractor LLC",12]],"x":{"cbr":{"r":6,"a":150000,"l":"2026-10-29","c":6,"i":["CT104020273039831","CT104020273038485","CT104020273002463","CT104020273002739","CT104020263170682"],"m":["Hispanic American"]},"cbv":{"r":6,"l":"2026-10-29","c":6,"i":["CT104020273039831","CT104020273038485","CT104020273002463","CT104020273002739","CT104020263170682"],"m":["Hispanic American"]}}},
-{"s":"F R E CONTRACTOR L L C","n":[["F.R.E Contractor L.L.C",1]],"x":{"sbs":{"r":1,"i":["377208"],"z":["10467"],"p":["MBE"]}}},
-{"s":"F R GAUNT ESTATE F M GAUNT ENDOWMENT FUND","n":[["F R GAUNT ESTATE F M GAUNT ENDOWMENT FUND",1]],"x":{"irs":{"r":1,"i":["136112092"],"z":["10008"]}}},
-{"s":"F R I E N D S -THROUGH JESUS CHRIST","n":[["F R I E N D S -THROUGH JESUS CHRIST INC",1]],"x":{"irs":{"r":1,"i":["030515622"],"z":["11422"]}}},
-{"s":"F RACHEL MEMORIAL FOUNDATION","n":[["F RACHEL MEMORIAL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["113498006"],"z":["11224"]}}},
-{"s":"F S ENVIRONMENTAL","n":[["F. & S. ENVIRONMENTAL INC.",1]],"x":{"dol":{"r":1,"i":["25-64IIU-CR"],"z":["14086"]}}}
+{"s":"F R E CONTRACTOR L L C","n":[["F.R.E Contractor L.L.C",1]],"x":{"sbs":{"r":1,"i":["377208"],"z":["10467"],"p":["MBE"]}}}
 ]}

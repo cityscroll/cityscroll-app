@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":83,"first_ordinal":140200,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":83,"first_ordinal":140202,"entries":[
+{"s":"TELEOSIS FOUNDATION","n":[["TELEOSIS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["943400328"],"z":["12075"]}}},
+{"s":"TELEPHONE BUSINESS SYSTEMS","n":[["TELEPHONE BUSINESS SYSTEMS, INC",1]],"x":{"dol":{"r":1,"i":["25-6HEOY-CR"],"z":["11558"]}}},
+{"s":"TELEQUEST COMMUNICATION TECHNOLOGIES","n":[["Telequest Communication Technologies, Inc.",1]],"x":{"ocp":{"r":1,"a":110000,"l":"2014-08-14","i":["20140807010"]}}},
 {"s":"TELESECTOR RESOURCES GROUP","n":[["Telesector Resources Group, Inc.",2],["Telesector Resources Group, Inc",1]],"x":{"ocp":{"r":3,"a":372549489,"l":"2011-06-01","i":["20110526018","20070313004","20070108022"]}}},
 {"s":"TELESECTOR RESOURCES GROUP INC D/B/A VERIZON SERVICES GROUP","n":[["Telesector Resources Group Inc. D/B/A Verizon Services Group",1]],"x":{"ocp":{"r":1,"a":3600000,"l":"2007-11-26","i":["20071121017"]}}},
 {"s":"TELESECTOR RESOURCES GROUP INC D/B/A/ VERIZON","n":[["Telesector Resources Group, Inc. d/b/a/ Verizon",1]],"x":{"ocp":{"r":1,"a":500000000,"l":"2007-01-29","i":["20070123027"]}}},
@@ -1362,7 +1365,7 @@
 {"s":"THE CREATIVE GRACE PROJECT","n":[["THE CREATIVE GRACE PROJECT INC",1]],"x":{"irs":{"r":1,"i":["422514258"],"z":["10462"]}}},
 {"s":"THE CREATIVE OUTPOST","n":[["THE CREATIVE OUTPOST",1]],"x":{"irs":{"r":1,"i":["853714092"],"z":["13365"]}}},
 {"s":"THE CREATORS COLLECTIVE","n":[["THE CREATORS COLLECTIVE",1]],"x":{"irs":{"r":1,"i":["463434083"],"z":["11215"]}}},
-{"s":"THE CRENULATED","n":[["THE CRENULATED COMPANY LTD",23],["The Crenulated Company Ltd.",15],["THE CRENULATED COMPANY LTD.",1]],"x":{"ocp":{"r":15,"a":33741467,"l":"2026-08-14","c":15,"i":["20260810019","20260722016","20260709008","20250616030","20250410010"]},"cbr":{"r":12,"a":33611511,"l":"2026-08-07","c":12,"i":["CT126020278801346","CT126020278801314","CT126020278801051","CT126020278800999","CT180620268802813"],"m":["Non-M/WBE"]},"ppt":{"r":6,"a":16440538.75,"l":"2026-07-21","c":6,"i":["CT1-260-20278801314","CT1-260-20278800999","CT1-260-20268800471","CT1-040-20258804351","CT1-260-20238800638"]},"cbv":{"r":4,"l":"2026-08-07","i":["CT126020278801346","CT126020278801314","CT126020278801051","CT126020278800999"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["THE CRENULATED COMPANY LTD."]},"irs":{"r":1,"i":["141719016"],"z":["10452"]}}},
+{"s":"THE CRENULATED","n":[["THE CRENULATED COMPANY LTD",24],["The Crenulated Company Ltd.",15],["THE CRENULATED COMPANY LTD.",1]],"x":{"ocp":{"r":15,"a":33741467,"l":"2026-08-14","c":15,"i":["20260810019","20260722016","20260709008","20250616030","20250410010"]},"cbr":{"r":12,"a":33611511,"l":"2026-08-07","c":12,"i":["CT126020278801346","CT126020278801314","CT126020278801051","CT126020278800999","CT180620268802813"],"m":["Non-M/WBE"]},"ppt":{"r":6,"a":16440538.75,"l":"2026-07-21","c":6,"i":["CT1-260-20278801314","CT1-260-20278800999","CT1-260-20268800471","CT1-040-20258804351","CT1-260-20238800638"]},"cbv":{"r":5,"l":"2026-11-23","i":["CT104020273047143","CT126020278801346","CT126020278801314","CT126020278801051","CT126020278800999"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["THE CRENULATED COMPANY LTD."]},"irs":{"r":1,"i":["141719016"],"z":["10452"]}}},
 {"s":"THE CRENULATED COMPANY LTD NEW SETTLEMENT APARTMENT","n":[["The Crenulated Company LTD New Settlement Apartment",1]],"x":{"ocp":{"r":1,"a":294890,"l":"2019-08-05","i":["20190726018"]}}},
 {"s":"THE CRENULATED COMPANY LTD NEW SETTLEMENT APARTMENTS","n":[["The Crenulated Company LTD New Settlement Apartments",1]],"x":{"ocp":{"r":1,"a":137000,"l":"2018-09-07","i":["20180831008"]}}},
 {"s":"THE CRESCENT ACADEMY","n":[["THE CRESCENT ACADEMY",1]],"x":{"irs":{"r":1,"i":["562563048"],"z":["13760"]}}},
@@ -1607,8 +1610,5 @@
 {"s":"THE EVANGELICAL CHURCHES OF WEST AFRICA","n":[["THE EVANGELICAL CHURCHES OF WEST AFRICA USA INC",1]],"x":{"irs":{"r":1,"i":["112927488"],"z":["11202"]}}},
 {"s":"THE EVANGELICAL FRIENDS OF CHRIST TEAM INTERNATIONAL","n":[["THE EVANGELICAL FRIENDS OF CHRIST TEAM INTERNATIONAL",1]],"x":{"irs":{"r":1,"i":["424583621"],"z":["11412"]}}},
 {"s":"THE EVANGELICAL LUTHERAN CHURCH OF THE ATONEMENT","n":[["THE EVANGELICAL LUTHERAN CHURCH OF THE ATONEMENT",1]],"x":{"dbe":{"r":1,"i":["THE EVANGELICAL LUTHERAN CHURCH OF THE ATONEMENT"]}}},
-{"s":"THE EVANGELICAL LUTHERAN CHURCH OF THE REDEEMER","n":[["THE EVANGELICAL LUTHERAN CHURCH OF THE REDEEMER",1]],"x":{"irs":{"r":1,"i":["111984845"],"z":["11428"]}}},
-{"s":"THE EVANGELICAL LUTHERAN CHURCH OF THE TRANSFIGURATION","n":[["THE EVANGELICAL LUTHERAN CHURCH OF THE TRANSFIGURATION",1]],"x":{"irs":{"r":1,"i":["132560846"],"z":["10461"]}}},
-{"s":"THE EVENING LIGHT EVANGELICAL TABERNACLE","n":[["THE EVENING LIGHT EVANGELICAL TABERNACLE INC",1]],"x":{"irs":{"r":1,"i":["133589941"],"z":["10466"]}}},
-{"s":"THE EVERETT B BIRCH FOUNDATION","n":[["THE EVERETT B BIRCH FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133630494"],"z":["10017"]}}}
+{"s":"THE EVANGELICAL LUTHERAN CHURCH OF THE REDEEMER","n":[["THE EVANGELICAL LUTHERAN CHURCH OF THE REDEEMER",1]],"x":{"irs":{"r":1,"i":["111984845"],"z":["11428"]}}}
 ]}

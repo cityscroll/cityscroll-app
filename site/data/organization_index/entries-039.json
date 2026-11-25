@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":39,"first_ordinal":65734,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":39,"first_ordinal":65729,"entries":[
+{"s":"HEALTH TRANSFORMERS","n":[["HEALTH TRANSFORMERS INC",1]],"x":{"irs":{"r":1,"i":["931856728"],"z":["14467"]}}},
+{"s":"HEALTH UNITY FOUNDATION","n":[["HEALTH UNITY FOUNDATION CORPORATION",1]],"x":{"irs":{"r":1,"i":["414162839"],"z":["11214"]}}},
+{"s":"HEALTH WELFARE FUND OF ROOFERS LOCAL NO 22 BOARD OF TRUSTEES","n":[["HEALTH & WELFARE FUND OF ROOFERS LOCAL NO 22 BOARD OF TRUSTEES",1]],"x":{"irs":{"r":1,"i":["237381527"],"z":["14623"]}}},
+{"s":"HEALTH WORKFORCE COLLABORATIVE","n":[["HEALTH WORKFORCE COLLABORATIVE INC",1]],"x":{"irs":{"r":1,"i":["852837780"],"z":["14569"]}}},
+{"s":"HEALTH WORKFORCE NEW YORK","n":[["HEALTH WORKFORCE NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["471088653"],"z":["13617"]}}},
 {"s":"HEALTH YOUTH UNITY","n":[["HEALTH YOUTH UNITY INC",1]],"x":{"irs":{"r":1,"i":["334116109"],"z":["11803"]}}},
 {"s":"HEALTHALLIANCE FOUNDATION","n":[["HEALTHALLIANCE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["222511450"],"z":["12401"]}}},
 {"s":"HEALTHALLIANCE HOSPITAL BROADWAY CAMPUS","n":[["HEALTHALLIANCE HOSPITAL BROADWAY CAMPUS",1]],"x":{"irs":{"r":1,"i":["141349558"],"z":["12401"]}}},
@@ -1686,11 +1691,5 @@
 {"s":"HILLSIDE ALLIANCE CHURCH","n":[["HILLSIDE ALLIANCE CHURCH",1]],"x":{"irs":{"r":1,"i":["237276560"],"z":["14850"]}}},
 {"s":"HILLSIDE BAGELS ON THE CORNER","n":[["Hillside Bagels on the Corner, Inc.",1]],"x":{"sbs":{"r":1,"i":["2252"],"z":["10304"],"p":["MBE"]}}},
 {"s":"HILLSIDE CEMETERY ASSOCIATION","n":[["HILLSIDE CEMETERY ASSOCIATION",1],["HILLSIDE CEMETERY ASSOCIATION INC",1]],"x":{"irs":{"r":2,"i":["160789577","160841443"],"z":["14806","14823"]}}},
-{"s":"HILLSIDE CEMETERY ASSOCIATION OF CA MDEN NEW YORK","n":[["HILLSIDE CEMETERY ASSOCIATION OF CA MDEN NEW YORK",1]],"x":{"irs":{"r":1,"i":["393334403"],"z":["13316"]}}},
-{"s":"HILLSIDE CEMETERY CORPORATION MULBERRY ST","n":[["HILLSIDE CEMETERY CORPORATION MULBERRY ST",1]],"x":{"irs":{"r":1,"i":["140751620"],"z":["10940"]}}},
-{"s":"HILLSIDE CENTER FOR EDUCATION","n":[["HILLSIDE CENTER FOR EDUCATION INC",1]],"x":{"irs":{"r":1,"i":["853346721"],"z":["10001"]}}},
-{"s":"HILLSIDE CHILDRENS CENTER","n":[["HILLSIDE CHILDRENS CENTER",1]],"x":{"irs":{"r":1,"i":["160743039"],"z":["14620"]}}},
-{"s":"HILLSIDE CHRISTIAN MINISTRIES","n":[["HILLSIDE CHRISTIAN MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["452673177"],"z":["12306"]}}},
-{"s":"HILLSIDE CHURCH OF CHRIST","n":[["HILLSIDE CHURCH OF CHRIST",1]],"x":{"irs":{"r":1,"i":["112493526"],"z":["11435"]}}},
-{"s":"HILLSIDE FOOD OUTREACH","n":[["HILLSIDE FOOD OUTREACH INC",1]],"x":{"irs":{"r":1,"i":["010712431"],"z":["10549"]}}}
+{"s":"HILLSIDE CEMETERY ASSOCIATION OF CA MDEN NEW YORK","n":[["HILLSIDE CEMETERY ASSOCIATION OF CA MDEN NEW YORK",1]],"x":{"irs":{"r":1,"i":["393334403"],"z":["13316"]}}}
 ]}

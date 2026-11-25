@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":26,"first_ordinal":43604,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":26,"first_ordinal":43602,"entries":[
+{"s":"DOUBLE C FAMILY FOUNDATION","n":[["DOUBLE C FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["471598898"],"z":["11901"]}}},
+{"s":"DOUBLE D BAR RANCH","n":[["DOUBLE D BAR RANCH INC",1]],"x":{"irs":{"r":1,"i":["113531941"],"z":["11949"]}}},
 {"s":"DOUBLE ENTENDRE","n":[["DOUBLE ENTENDRE INC",1]],"x":{"irs":{"r":1,"i":["132881863"],"z":["10001"]}}},
 {"s":"DOUBLE ENTENDRE MUSIC ENSEMBLE","n":[["DOUBLE ENTENDRE MUSIC ENSEMBLE INC",1]],"x":{"irs":{"r":1,"i":["134314973"],"z":["10128"]}}},
 {"s":"DOUBLE H - HOLE IN THE WOODS RANCH","n":[["DOUBLE H - HOLE IN THE WOODS RANCH INC",1]],"x":{"irs":{"r":1,"i":["141752888"],"z":["12846"]}}},
@@ -1709,7 +1711,5 @@
 {"s":"EAST NEW YORK 4 GARDENS","n":[["EAST NEW YORK 4 GARDENS INC",1]],"x":{"irs":{"r":1,"i":["824418780"],"z":["11208"]}}},
 {"s":"EAST NEW YORK CLT","n":[["EAST NEW YORK CLT INC",1],["East New York CLT Inc",1]],"x":{"cbr":{"r":1,"a":10000,"l":"2025-06-26","i":["CT180620258808773"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["854288954"],"z":["11208"]}}},
 {"s":"EAST NEW YORK COUNCIL FOR AGING","n":[["EAST NEW YORK COUNCIL FOR AGING INC",1]],"x":{"dbe":{"r":1,"i":["EAST NEW YORK COUNCIL FOR AGING INC"]}}},
-{"s":"EAST NEW YORK COUNCIL FOR HUMAN SERVICES","n":[["East New York Council for Human Services Inc",1]],"x":{"ocp":{"r":1,"a":700021,"l":"2008-07-14","i":["20080707013"]}}},
-{"s":"EAST NEW YORK COUNCIL FOR THE AGING","n":[["East New York Council For The Aging Inc",1]],"x":{"ocp":{"r":1,"a":284383,"l":"2004-07-19","i":["20040712014"]}}},
-{"s":"EAST NEW YORK CRICKET CLUB","n":[["EAST NEW YORK CRICKET CLUB INC",1]],"x":{"irs":{"r":1,"i":["335016807"],"z":["11779"]}}}
+{"s":"EAST NEW YORK COUNCIL FOR HUMAN SERVICES","n":[["East New York Council for Human Services Inc",1]],"x":{"ocp":{"r":1,"a":700021,"l":"2008-07-14","i":["20080707013"]}}}
 ]}

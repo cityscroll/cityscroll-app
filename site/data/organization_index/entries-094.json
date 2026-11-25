@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":94,"first_ordinal":158488,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":94,"first_ordinal":158492,"entries":[
+{"s":"WORLD UPSIDE DOWN INTERNATIONAL","n":[["WORLD UPSIDE DOWN INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["872416252"],"z":["13760"]}}},
 {"s":"WORLD VASECTOMY DAY","n":[["WORLD VASECTOMY DAY INC",1]],"x":{"irs":{"r":1,"i":["473178528"],"z":["10011"]}}},
 {"s":"WORLD VOICE ENSEMBLE","n":[["WORLD VOICE ENSEMBLE",1]],"x":{"irs":{"r":1,"i":["462054458"],"z":["10469"]}}},
 {"s":"WORLD WATER FILM FESTIVAL","n":[["WORLD WATER FILM FESTIVAL CORPORATION",1]],"x":{"irs":{"r":1,"i":["881027400"],"z":["10010"]}}},
@@ -1769,6 +1770,5 @@
 {"s":"YOUTH IDEAS AT WORK","n":[["YOUTH IDEAS AT WORK",1]],"x":{"irs":{"r":1,"i":["821993344"],"z":["10001"]}}},
 {"s":"YOUTH IMPROVING NON-PROFITS FOR CHILDREN","n":[["YOUTH IMPROVING NON-PROFITS FOR CHILDREN",1]],"x":{"irs":{"r":1,"i":["521936144"],"z":["10018"]}}},
 {"s":"YOUTH IN CHARGE OF POSITIVE THINKIN IN MEMORY STEPHEN GIVENS","n":[["YOUTH IN CHARGE OF POSITIVE THINKIN IN MEMORY STEPHEN GIVENS INC",1]],"x":{"irs":{"r":1,"i":["510573596"],"z":["14603"]}}},
-{"s":"YOUTH INSPIRATIONAL UPLIFTING CLUB","n":[["YOUTH INSPIRATIONAL UPLIFTING CLUB INC",1]],"x":{"irs":{"r":1,"i":["832817544"],"z":["11210"]}}},
-{"s":"YOUTH JUSTICE NETWORK","n":[["YOUTH JUSTICE NETWORK INC",18],["Youth Justice Network Inc.",8]],"x":{"ocp":{"r":8,"a":24731919,"l":"2026-07-17","c":8,"i":["20260713012","20260629017","20260402012","20250616010","20250414004"]},"cbr":{"r":6,"a":15525804.5,"l":"2026-07-10","c":6,"i":["CT178120278800591","CT106820278800426","CT126020268805906","CT126020268800799","CT126020258806206"],"m":["Non-M/WBE"]},"ppt":{"r":8,"a":22676960.5,"l":"2026-07-10","c":8,"i":["CT1-781-20278800591","CT1-068-20278800426","CT1-260-20268805906","CT1-260-20268800799","CT1-260-20258806206"]},"cbv":{"r":3,"l":"2026-07-10","i":["CT178120278800591","CT106820278800426","CT126020268805906"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["133576756"],"z":["10027"]}}}
+{"s":"YOUTH INSPIRATIONAL UPLIFTING CLUB","n":[["YOUTH INSPIRATIONAL UPLIFTING CLUB INC",1]],"x":{"irs":{"r":1,"i":["832817544"],"z":["11210"]}}}
 ]}

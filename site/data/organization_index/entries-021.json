@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":21,"first_ordinal":35127,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":21,"first_ordinal":35126,"entries":[
+{"s":"CONGREGATION BETH ARON DKARLIN STOLIN OF MONSEY","n":[["CONGREGATION BETH ARON DKARLIN STOLIN OF MONSEY",1]],"x":{"irs":{"r":1,"i":["134116566"],"z":["10952"]}}},
 {"s":"CONGREGATION BETH ARON VISRAEL KARLIN STOLIN INC OF BORO PARK","n":[["CONGREGATION BETH ARON VISRAEL KARLIN STOLIN INC OF BORO PARK",1]],"x":{"irs":{"r":1,"i":["471143490"],"z":["11204"]}}},
 {"s":"CONGREGATION BETH ARYE","n":[["CONGREGATION BETH ARYE",1]],"x":{"irs":{"r":1,"i":["113253803"],"z":["11230"]}}},
 {"s":"CONGREGATION BETH ARYEH","n":[["CONGREGATION BETH ARYEH",2]],"x":{"irs":{"r":2,"i":["116084720","133550019"],"z":["10950","11234"]}}},
@@ -1863,7 +1864,5 @@
 {"s":"CONSERVATION WITHOUT BORDERS","n":[["CONSERVATION WITHOUT BORDERS",1]],"x":{"irs":{"r":1,"i":["474086572"],"z":["10805"]}}},
 {"s":"CONSERVATIVE BAPTIST ASSOCIATION OF AMERICA","n":[["CONSERVATIVE BAPTIST ASSOCIATION OF AMERICA",1]],"x":{"irs":{"r":1,"i":["156000371"],"z":["13413"]}}},
 {"s":"CONSERVATIVE SYNAGOGUE OF FIFTH AVENUE","n":[["CONSERVATIVE SYNAGOGUE OF FIFTH AVENUE",1]],"x":{"irs":{"r":1,"i":["133054568"],"z":["10003"]}}},
-{"s":"CONSERVATIVE SYNAGOGUE OF THE HAMPTONS","n":[["CONSERVATIVE SYNAGOGUE OF THE HAMPTONS INC",1]],"x":{"irs":{"r":1,"i":["134018735"],"z":["11932"]}}},
-{"s":"CONSERVING TRADITION","n":[["CONSERVING TRADITION INC",1]],"x":{"irs":{"r":1,"i":["474194447"],"z":["11743"]}}},
-{"s":"CONSIDINE BIEBEL","n":[["CONSIDINE BIEBEL & COMPANY",1]],"x":{"dol":{"r":1,"i":["25-67RNQ-CR"],"z":["16505"]}}}
+{"s":"CONSERVATIVE SYNAGOGUE OF THE HAMPTONS","n":[["CONSERVATIVE SYNAGOGUE OF THE HAMPTONS INC",1]],"x":{"irs":{"r":1,"i":["134018735"],"z":["11932"]}}}
 ]}

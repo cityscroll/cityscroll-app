@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":77,"first_ordinal":130146,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":77,"first_ordinal":130146,"entries":[
+{"s":"SHOSTAKOVICH MUSIC ART SPORT SCHOOL","n":[["SHOSTAKOVICH MUSIC ART & SPORT SCHOOL",1]],"x":{"dbe":{"r":1,"i":["SHOSTAKOVICH MUSIC ART & SPORT SCHOOL"]}}},
+{"s":"SHOT KALLERS ENT","n":[["Shot Kallers Ent LLC",1]],"x":{"sbs":{"r":1,"i":["362599"],"z":["10467"],"p":["MBE"]}}},
+{"s":"SHOTGUN LEMC BUFFALO","n":[["SHOTGUN LEMC BUFFALO",1]],"x":{"irs":{"r":1,"i":["861205286"],"z":["14150"]}}},
+{"s":"SHOTGUN PRODUCTIONS","n":[["SHOTGUN PRODUCTIONS INC",1]],"x":{"irs":{"r":1,"i":["133786051"],"z":["10016"]}}},
 {"s":"SHOTOKAN KARATE DO FEDERATION","n":[["SHOTOKAN KARATE DO FEDERATION INC",1]],"x":{"irs":{"r":1,"i":["821860830"],"z":["11367"]}}},
 {"s":"SHOTSPOTTER","n":[["SHOTSPOTTER, INC.",2],["SHOTSPOTTER  INC.",1]],"x":{"ocp":{"r":2,"a":23504388,"l":"2021-11-23","i":["20211117118","20140912001"]},"dbe":{"r":1,"i":["SHOTSPOTTER  INC."]}}},
 {"s":"SHOTTI NYC","n":[["SHOTTI NYC INC.",1]],"x":{"sbs":{"r":1,"i":["364904"],"z":["10468"],"p":["MBE"]}}},
@@ -1691,8 +1695,5 @@
 {"s":"SO RICH ENTERTAINMENT","n":[["So Rich Entertainment LLC",1]],"x":{"sbs":{"r":1,"i":["397152"],"z":["11004"],"p":["MBE"]}}},
 {"s":"SO RICH IN COMMUNITY","n":[["SO RICH IN COMMUNITY INC",1]],"x":{"irs":{"r":1,"i":["921869608"],"z":["11510"]}}},
 {"s":"SO SEND I YOU","n":[["SO SEND I YOU",1]],"x":{"irs":{"r":1,"i":["452836067"],"z":["10037"]}}},
-{"s":"SO SEND I YOU OUTREACH MINISTRIES","n":[["SO SEND I YOU OUTREACH MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["333113303"],"z":["11581"]}}},
-{"s":"SO YOU WANT TO CHANGE THE WORLD","n":[["SO YOU WANT TO CHANGE THE WORLD",1]],"x":{"irs":{"r":1,"i":["473846125"],"z":["11211"]}}},
-{"s":"SO-CHAT TAP2CHAT","n":[["SO-CHAT TAP2CHAT INC",1]],"x":{"irs":{"r":1,"i":["832333598"],"z":["11977"]}}},
-{"s":"SO-IL OFFICE","n":[["SO-IL OFFICE LTD.",1]],"x":{"sbs":{"r":1,"i":["268937"],"z":["11205"],"p":["MBE","WBE"]}}}
+{"s":"SO SEND I YOU OUTREACH MINISTRIES","n":[["SO SEND I YOU OUTREACH MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["333113303"],"z":["11581"]}}}
 ]}

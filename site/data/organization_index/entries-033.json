@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":33,"first_ordinal":55415,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":33,"first_ordinal":55412,"entries":[
+{"s":"FRIENDS OF CAMP GORTON","n":[["FRIENDS OF CAMP GORTON LTD",1]],"x":{"irs":{"r":1,"i":["474875798"],"z":["14830"]}}},
+{"s":"FRIENDS OF CAMP HOLLIS","n":[["FRIENDS OF CAMP HOLLIS INC",1]],"x":{"irs":{"r":1,"i":["161537178"],"z":["13126"]}}},
+{"s":"FRIENDS OF CAMP KENAN","n":[["FRIENDS OF CAMP KENAN",1]],"x":{"irs":{"r":1,"i":["161508397"],"z":["14095"]}}},
 {"s":"FRIENDS OF CAMP LITTLE NOTCH","n":[["FRIENDS OF CAMP LITTLE NOTCH INC",1]],"x":{"irs":{"r":1,"i":["270210079"],"z":["12866"]}}},
 {"s":"FRIENDS OF CAMP TURNER","n":[["FRIENDS OF CAMP TURNER INC",1]],"x":{"irs":{"r":1,"i":["161563904"],"z":["14151"]}}},
 {"s":"FRIENDS OF CAMP YOUNG JUDAEA SPROUT LAKE","n":[["FRIENDS OF CAMP YOUNG JUDAEA SPROUT LAKE INC",1]],"x":{"irs":{"r":1,"i":["371595626"],"z":["12585"]}}},
@@ -1780,7 +1783,5 @@
 {"s":"FUN BRICKS","n":[["FUN BRICKS LLC",3]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-09-16","i":["CT104020273015858"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-16","i":["CT104020273015858"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["FUN BRICKS LLC"]}}},
 {"s":"FUN CARE","n":[["FUN CARE INC",1]],"x":{"irs":{"r":1,"i":["333670729"],"z":["11219"]}}},
 {"s":"FUN CITY ENTERTAINMENT PEACEMAKERS","n":[["FUN CITY ENTERTAINMENT PEACEMAKERS INC",1]],"x":{"irs":{"r":1,"i":["883616284"],"z":["10035"]}}},
-{"s":"FUN EXPRESS","n":[["FUN EXPRESS LLC",19]],"x":{"cbr":{"r":13,"a":55493.14,"l":"2026-09-25","c":13,"i":["CT184620278803017","CT184620268807320","CT184620268807321","CT184620268807009","CT184620268806664"],"m":["Non-M/WBE"]},"cbv":{"r":6,"l":"2026-09-25","c":6,"i":["CT184620278803017","CT184620268807320","CT184620268807321","CT184620268807009","CT184620268806664"],"m":["Non-M/WBE"]}}},
-{"s":"FUN FACTORY SENSORY GYM","n":[["FUN FACTORY SENSORY GYM LLC",5]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-09-16","i":["CT104020273015380","CT104020263112894","CT104020253128369"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-09-16","i":["CT104020273015380","CT104020263112894"],"m":["Non-M/WBE"]}}},
-{"s":"FUN FOR CURE","n":[["FUN FOR CURE INC",1]],"x":{"irs":{"r":1,"i":["800365133"],"z":["10708"]}}}
+{"s":"FUN EXPRESS","n":[["FUN EXPRESS LLC",19]],"x":{"cbr":{"r":13,"a":55493.14,"l":"2026-09-25","c":13,"i":["CT184620278803017","CT184620268807320","CT184620268807321","CT184620268807009","CT184620268806664"],"m":["Non-M/WBE"]},"cbv":{"r":6,"l":"2026-09-25","c":6,"i":["CT184620278803017","CT184620268807320","CT184620268807321","CT184620268807009","CT184620268806664"],"m":["Non-M/WBE"]}}}
 ]}

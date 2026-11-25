@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":8,"first_ordinal":13114,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":8,"first_ordinal":13114,"entries":[
 {"s":"ATTACHMATE","n":[["Attachmate Corporation",1]],"x":{"ocp":{"r":1,"a":112220.51,"l":"2016-09-07","i":["20160830020"]}}},
 {"s":"ATTAINABLE FERTILITY FOUNDATION","n":[["ATTAINABLE FERTILITY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["991919547"],"z":["10006"]}}},
 {"s":"ATTAINMENT","n":[["ATTAINMENT CO INC",3]],"x":{"cbr":{"r":2,"a":657245.06,"l":"2026-05-21","i":["MA104020269676705","MA104020269670755"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-05-21","i":["MA104020269676705"],"m":["Non-M/WBE"]}}},
@@ -335,7 +335,7 @@
 {"s":"AUTOMOTIVE RENTALS INC (ARI)","n":[["AUTOMOTIVE RENTALS INC. (ARI)",1]],"x":{"dbe":{"r":1,"i":["AUTOMOTIVE RENTALS INC. (ARI)"]}}},
 {"s":"AUTOMOTIVE RESOURCES","n":[["Automotive Resources Inc.",2]],"x":{"ocp":{"r":2,"a":1355581.4,"l":"2007-12-18","i":["20071211029","20050616009"]}}},
 {"s":"AUTOMOTIVE TRAINING GROUP","n":[["AUTOMOTIVE TRAINING GROUP INC",5]],"x":{"ocp":{"r":2,"a":39998,"l":"2024-11-01","i":["20241025024","20240117107"]},"cbr":{"r":1,"a":19998,"l":"2024-10-25","i":["CT185620258803726"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":39998,"l":"2024-10-25","i":["CT1-856-20258803726","CT1-856-20248804716"]}}},
-{"s":"AUTOMOTIVE VIDEO INNOVATIONS","n":[["AUTOMOTIVE VIDEO INNOVATIONS",6],["Automotive Video Innovations",4]],"x":{"ocp":{"r":4,"a":75350,"l":"2025-12-15","i":["20251208041","20250218032","20231212113","20230130118"]},"cbr":{"r":2,"a":37400,"l":"2025-12-08","i":["CT185620268804089","CT185620258805909"],"m":["Non-M/WBE"]},"ppt":{"r":4,"a":75350,"l":"2025-12-08","i":["CT1-856-20268804089","CT1-856-20258805909","CT1-856-20248804219","CT1-856-20238805777"]}}},
+{"s":"AUTOMOTIVE VIDEO INNOVATIONS","n":[["AUTOMOTIVE VIDEO INNOVATIONS",7],["Automotive Video Innovations",4]],"x":{"ocp":{"r":4,"a":75350,"l":"2025-12-15","i":["20251208041","20250218032","20231212113","20230130118"]},"cbr":{"r":2,"a":37400,"l":"2025-12-08","i":["CT185620268804089","CT185620258805909"],"m":["Non-M/WBE"]},"ppt":{"r":4,"a":75350,"l":"2025-12-08","i":["CT1-856-20268804089","CT1-856-20258805909","CT1-856-20248804219","CT1-856-20238805777"]},"cbv":{"r":1,"l":"2026-11-23","i":["CT185620278803894"],"m":["Non-M/WBE"]}}},
 {"s":"AUTONOMEDIA","n":[["AUTONOMEDIA INC",1]],"x":{"irs":{"r":1,"i":["112688498"],"z":["11221"]}}},
 {"s":"AUTS2 RESEARCH COLLABORATIVE","n":[["AUTS2 RESEARCH COLLABORATIVE INC",1]],"x":{"irs":{"r":1,"i":["415081067"],"z":["10025"]}}},
 {"s":"AUTUISM LIFE SKILLS CENTER","n":[["AUTUISM LIFE SKILLS CENTER INC",1]],"x":{"irs":{"r":1,"i":["921004612"],"z":["10150"]}}},
@@ -1720,6 +1720,5 @@
 {"s":"BARBADOS CANCER ASSOCIATION USA INC-BACA","n":[["BARBADOS CANCER ASSOCIATION USA INC-BACA",1]],"x":{"irs":{"r":1,"i":["202104050"],"z":["11202"]}}},
 {"s":"BARBADOS DIASPORA COLLABORATIVE USA - BDC USA -","n":[["BARBADOS DIASPORA COLLABORATIVE USA - BDC USA - INC",1]],"x":{"irs":{"r":1,"i":["461694268"],"z":["10607"]}}},
 {"s":"BARBADOS NURSES ASSOCIATION OF AMERICA","n":[["BARBADOS NURSES ASSOCIATION OF AMERICA INC",1]],"x":{"irs":{"r":1,"i":["136616424"],"z":["11203"]}}},
-{"s":"BARBADOS SUPPORT GROUP","n":[["BARBADOS SUPPORT GROUP INC",1]],"x":{"irs":{"r":1,"i":["873033049"],"z":["11236"]}}},
-{"s":"BARBARA A JANOWITZ","n":[["BARBARA A JANOWITZ",1]],"x":{"dbe":{"r":1,"i":["BARBARA A JANOWITZ"]}}}
+{"s":"BARBADOS SUPPORT GROUP","n":[["BARBADOS SUPPORT GROUP INC",1]],"x":{"irs":{"r":1,"i":["873033049"],"z":["11236"]}}}
 ]}

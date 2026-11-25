@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":59,"first_ordinal":99887,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":59,"first_ordinal":99887,"entries":[
+{"s":"NASSAU COUNTY CRIMINAL COURTS BAR FOUNDATION","n":[["NASSAU COUNTY CRIMINAL COURTS BAR FOUNDATION",1]],"x":{"irs":{"r":1,"i":["272664414"],"z":["11501"]}}},
+{"s":"NASSAU COUNTY DENTAL SOCIETY","n":[["NASSAU COUNTY DENTAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["111591282"],"z":["11530"]}}},
+{"s":"NASSAU COUNTY DEPUTY SHERIFFS BENEVOLENT ASSOCIATION","n":[["NASSAU COUNTY DEPUTY SHERIFFS BENEVOLENT ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["112925372"],"z":["11501"]}}},
 {"s":"NASSAU COUNTY DETECTIVES CHARITABLE FOUNDATION","n":[["NASSAU COUNTY DETECTIVES CHARITABLE FOUNDATION OF NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["900799676"],"z":["11803"]}}},
 {"s":"NASSAU COUNTY FEIS COMMITTE","n":[["NASSAU COUNTY FEIS COMMITTE CORP",1]],"x":{"irs":{"r":1,"i":["272148229"],"z":["11743"]}}},
 {"s":"NASSAU COUNTY FIRE FIGHTERS BURN CENTER FOUNDATION","n":[["NASSAU COUNTY FIRE FIGHTERS BURN CENTER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["113081830"],"z":["11530"]}}},
@@ -1442,10 +1445,5 @@
 {"s":"NETHERLAND-AMERICA FOUNDATION","n":[["NETHERLAND-AMERICA FOUNDATION INCORPORATED",1]],"x":{"irs":{"r":1,"i":["132989216"],"z":["10018"]}}},
 {"s":"NETHERLANDS NATIONAL TOURIST OFFICE","n":[["NETHERLANDS NATIONAL TOURIST OFFICE",1]],"x":{"irs":{"r":1,"i":["986005066"],"z":["10001"]}}},
 {"s":"NETHERWOOD BAPTIST CHURCH","n":[["NETHERWOOD BAPTIST CHURCH",1]],"x":{"irs":{"r":1,"i":["141608733"],"z":["12578"]}}},
-{"s":"NETITON","n":[["NetItOn LLC",1]],"x":{"dol":{"r":1,"i":["26-9YVAN-CR"],"z":["08857"]}}},
-{"s":"NETIV YEHUDI","n":[["NETIV YEHUDI CORP",1]],"x":{"irs":{"r":1,"i":["414303105"],"z":["11235"]}}},
-{"s":"NETIVOS OLAM","n":[["NETIVOS OLAM",1]],"x":{"irs":{"r":1,"i":["260312507"],"z":["10036"]}}},
-{"s":"NETIVOT ISRAEL","n":[["NETIVOT ISRAEL",1]],"x":{"irs":{"r":1,"i":["112943633"],"z":["11223"]}}},
-{"s":"NETIVOT MAHARITZ","n":[["NETIVOT MAHARITZ",1]],"x":{"irs":{"r":1,"i":["992081887"],"z":["11234"]}}},
-{"s":"NETIVOT NOAM","n":[["NETIVOT NOAM",1]],"x":{"irs":{"r":1,"i":["113559076"],"z":["11218"]}}}
+{"s":"NETITON","n":[["NetItOn LLC",1]],"x":{"dol":{"r":1,"i":["26-9YVAN-CR"],"z":["08857"]}}}
 ]}

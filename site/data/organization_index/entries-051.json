@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":51,"first_ordinal":86105,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":51,"first_ordinal":86106,"entries":[
+{"s":"LIFE STYLE AWARDS PROMOTIONAL PRODUCTS","n":[["LIFE STYLE AWARDS & PROMOTIONAL PRODUCTS",9],["Life Style Awards & Promotional Products",1]],"x":{"ocp":{"r":1,"a":250000,"l":"2026-05-22","i":["20260515026"]},"cbr":{"r":6,"a":313625.9,"l":"2026-08-07","c":6,"i":["CT181620271402032","CT101720268807111","CT181620261401878","CT112520258808822","CT181620251413627"],"m":["Black American"]},"ppt":{"r":1,"a":250000,"l":"2026-05-13","i":["CT1-017-20268807111"]},"cbv":{"r":2,"l":"2026-08-07","i":["CT181620271402032","CT101720268807111"],"m":["Black American"]}}},
+{"s":"LIFE TARGET","n":[["LIFE TARGET INCORPORATED",1]],"x":{"irs":{"r":1,"i":["812077537"],"z":["10128"]}}},
 {"s":"LIFE TECHNOLOGIES","n":[["LIFE TECHNOLOGIES CORPORATION",13],["Life Technologies Corporation",13],["LIFE TECHNOLOGIES CORP",2]],"x":{"ocp":{"r":15,"a":21528800.43,"l":"2025-09-05","c":15,"i":["20250828008","20250124003","20240928102","20240508102","20230515106"]},"cbr":{"r":5,"a":6226320.31,"l":"2025-08-27","i":["CT185720268801557","CT181620251414626","CT181620258804311","CT181620251405736","CT181620258801386"],"m":["Non-M/WBE"]},"ppt":{"r":7,"a":10328590.01,"l":"2025-08-27","c":7,"i":["CT1-857-20268801557","CT1-816-20258804311","CT1-816-20258801386","MA1-857-20248806595","CT1-816-20238807776"]},"dbe":{"r":1,"i":["LIFE TECHNOLOGIES CORPORATION"]}}},
 {"s":"LIFE THROUGH DANCE","n":[["LIFE THROUGH DANCE INC",1]],"x":{"irs":{"r":1,"i":["133537704"],"z":["10025"]}}},
 {"s":"LIFE THRU HOOPS CARES","n":[["LIFE THRU HOOPS CARES INC",1]],"x":{"irs":{"r":1,"i":["934617572"],"z":["10502"]}}},
@@ -1656,9 +1658,5 @@
 {"s":"LOCKPORT HIGH SCHOOL FOUNDATION","n":[["LOCKPORT HIGH SCHOOL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["510486467"],"z":["14094"]}}},
 {"s":"LOCKPORT HIGH SCHOOL SCHOLARSHIP TR","n":[["LOCKPORT HIGH SCHOOL SCHOLARSHIP TR",1]],"x":{"irs":{"r":1,"i":["166020248"],"z":["14240"]}}},
 {"s":"LOCKPORT HOCKEY CLUB","n":[["LOCKPORT HOCKEY CLUB INC",1]],"x":{"irs":{"r":1,"i":["161578032"],"z":["14094"]}}},
-{"s":"LOCKPORT ICE ARENA SPORTS CENTER","n":[["LOCKPORT ICE ARENA & SPORTS CENTER INC",1]],"x":{"irs":{"r":1,"i":["261718666"],"z":["14094"]}}},
-{"s":"LOCKPORT LITTLE LEAGUE BASEBALL ORGANIZATION","n":[["LOCKPORT LITTLE LEAGUE BASEBALL ORGANIZATION INC",1]],"x":{"irs":{"r":1,"i":["201997867"],"z":["14095"]}}},
-{"s":"LOCKPORT LITTLE LOOP FOOTBALL CLUB","n":[["LOCKPORT LITTLE LOOP FOOTBALL CLUB INC",1]],"x":{"irs":{"r":1,"i":["462633348"],"z":["14095"]}}},
-{"s":"LOCKPORT LOCKS HERITAGE DISTRICT","n":[["LOCKPORT LOCKS HERITAGE DISTRICT CORPORATION",1]],"x":{"irs":{"r":1,"i":["465359073"],"z":["14094"]}}},
-{"s":"LOCKPORT MAIN STREET","n":[["LOCKPORT MAIN STREET INC",1]],"x":{"irs":{"r":1,"i":["263838339"],"z":["14094"]}}}
+{"s":"LOCKPORT ICE ARENA SPORTS CENTER","n":[["LOCKPORT ICE ARENA & SPORTS CENTER INC",1]],"x":{"irs":{"r":1,"i":["261718666"],"z":["14094"]}}}
 ]}

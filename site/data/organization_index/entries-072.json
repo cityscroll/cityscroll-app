@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":72,"first_ordinal":121525,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":72,"first_ordinal":121527,"entries":[
+{"s":"RICE ARCHITECTURE P C D/B/A RICE PLUS LIPKA ARCHITECTS","n":[["Rice Architecture, P.C. d/b/a Rice  plus  Lipka Architects",1]],"x":{"ocp":{"r":1,"a":4000000,"l":"2013-04-26","i":["20130419013"]}}},
 {"s":"RICE ARCHITECTURE P C DBA RICE PLUS LIPKA ARCHITECTS","n":[["Rice Architecture P.C. dba Rice plus Lipka Architects",2]],"x":{"ocp":{"r":2,"a":9000000,"l":"2019-09-30","i":["20190923007","20160919012"]}}},
 {"s":"RICE FAM FOUNDATION TR","n":[["RICE FAM FOUNDATION TR",1]],"x":{"irs":{"r":1,"i":["137152866"],"z":["10128"]}}},
 {"s":"RICE FAMILY FOUNDATION","n":[["RICE FAMILY FOUNDATION",2]],"x":{"irs":{"r":2,"i":["133542090","463562026"],"z":["11530","11753"]}}},
@@ -1705,6 +1706,5 @@
 {"s":"ROCK STREAM CEMETERY ASSOC","n":[["ROCK STREAM CEMETERY ASSOC",1]],"x":{"irs":{"r":1,"i":["166076286"],"z":["14878"]}}},
 {"s":"ROCK STREAM CONSTRUCTION","d":[["Rock Stream Construction",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-67BX3-CR"],"z":["14878"]}}},
 {"s":"ROCK TECH","n":[["ROCK TECH, INC.",1]],"x":{"dol":{"r":1,"i":["26-69GCX-CR"],"z":["11704"]}}},
-{"s":"ROCK THE BLOCK FOUNDATION","n":[["ROCK THE BLOCK FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["934425854"],"z":["11691"]}}},
-{"s":"ROCK THE PINK TODAY FOUNDATION","n":[["ROCK THE PINK TODAY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["395152141"],"z":["10305"]}}}
+{"s":"ROCK THE BLOCK FOUNDATION","n":[["ROCK THE BLOCK FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["934425854"],"z":["11691"]}}}
 ]}

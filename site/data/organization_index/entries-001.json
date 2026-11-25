@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":1,"first_ordinal":1787,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":1,"first_ordinal":1787,"entries":[
 {"s":"A AND J SERENITY FUND","n":[["A AND J SERENITY FUND INC",1]],"x":{"irs":{"r":1,"i":["352627862"],"z":["10128"]}}},
 {"s":"A AND L CESSPOOL SERVICE CORP A AND L RECYCLING","n":[["A  and  L Cesspool Service, Corp. A and L Recycling",1]],"x":{"ocp":{"r":1,"a":402000,"l":"2016-02-03","i":["20160127035"]}}},
 {"s":"A AND L DOORS AND HARDWARE LLC QUANTUM SECURITY SYSTEMS","n":[["A  and  L DOORS  and  HARDWARE, LLC QUANTUM SECURITY SYSTEMS",2]],"x":{"ocp":{"r":2,"a":6946074,"l":"2007-03-08","i":["20070301023","20070221018"]}}},
@@ -549,7 +549,7 @@
 {"s":"A WOMENS CARE CENTER","n":[["A WOMENS CARE CENTER INC",1]],"x":{"irs":{"r":1,"i":["161383775"],"z":["14612"]}}},
 {"s":"A WOODNER FUND","n":[["A WOODNER FUND INC",1]],"x":{"irs":{"r":1,"i":["134092338"],"z":["10011"]}}},
 {"s":"A WORD AWAY","n":[["A WORD AWAY INC",2],["A Word Away, Inc.",1]],"x":{"ocp":{"r":1,"a":99999,"l":"2023-09-07","i":["20230901106"]},"ppt":{"r":1,"a":99999,"l":"2023-08-30","i":["CT1-002-20248802720"]},"sbs":{"r":1,"i":["103309"],"z":["10588"],"p":["WBE"]}}},
-{"s":"A WORDS WORTH","n":[["A WORDS WORTH LLC",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-12-12","i":["CT104020263060803","CT104020253031602"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2025-12-12","i":["CT104020263060803"],"m":["Non-M/WBE"]}}},
+{"s":"A WORDS WORTH","n":[["A WORDS WORTH LLC",4]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-12-12","i":["CT104020263060803","CT104020253031602"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-23","i":["CT104020273039237","CT104020263060803"],"m":["Non-M/WBE"]}}},
 {"s":"A Y CONSTRUCTION GROUP","n":[["A&Y CONSTRUCTION GROUP INC",1]],"x":{"dol":{"r":1,"i":["25-65C6L-CR"],"z":["11580"]}}},
 {"s":"A Y MCDONALD MFG","n":[["A.Y. McDonald Mfg.Co.",1]],"x":{"ocp":{"r":1,"a":418050,"l":"2003-02-04","i":["20030128019"]}}},
 {"s":"A Z HASENFELD FOUNDATION","n":[["A & Z HASENFELD FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["237017589"],"z":["10036"]}}},

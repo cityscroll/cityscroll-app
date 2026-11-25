@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":91,"first_ordinal":153359,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":91,"first_ordinal":153364,"entries":[
 {"s":"VOC ED EXT BOARD OF THE COUNTY OF SUFFOLK","n":[["VOC ED & EXT BOARD OF THE COUNTY OF SUFFOLK",3]],"x":{"ocp":{"r":1,"a":23525,"l":"2025-01-27","i":["20250117006"]},"cbr":{"r":1,"a":23525,"l":"2025-01-16","i":["CT107220258804639"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":23525,"l":"2025-01-16","i":["CT1-072-20258804639"]}}},
 {"s":"VOCA CENTER","n":[["VOCA CENTER INC",1]],"x":{"irs":{"r":1,"i":["823479642"],"z":["10038"]}}},
 {"s":"VOCAL EASE","n":[["VOCAL EASE INC",2]],"x":{"dbe":{"r":1,"i":["VOCAL EASE INC"]},"irs":{"r":1,"i":["371469320"],"z":["10023"]}}},

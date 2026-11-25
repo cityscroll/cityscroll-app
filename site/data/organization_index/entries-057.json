@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":57,"first_ordinal":96406,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":57,"first_ordinal":96406,"entries":[
+{"s":"MITCHELL COMMUNICATIONS","n":[["Mitchell Communications Corporation",1]],"x":{"sbs":{"r":1,"i":["3321"],"z":["08831"],"p":["MBE"]}}},
+{"s":"MITCHELL GIURGOLA ARCHITECTS","n":[["MITCHELL GIURGOLA ARCHITECTS LLP",1],["Mitchell Giurgola Architects LLP",1]],"x":{"dbe":{"r":1,"i":["MITCHELL GIURGOLA ARCHITECTS LLP"]},"sca":{"r":1,"i":["MITCHELL GIURGOLA ARCHITECTS LLP"],"z":["10036"]}}},
+{"s":"MITCHELL HOLLOW MISSION CHURCH INC C O REV D OVERTON","n":[["MITCHELL HOLLOW MISSION CHURCH INC C O REV D OVERTON",1]],"x":{"irs":{"r":1,"i":["141595040"],"z":["12496"]}}},
 {"s":"MITCHELL INTERNATIONAL","n":[["MITCHELL INTERNATIONAL INC",2],["Mitchell International Inc",1]],"x":{"ocp":{"r":1,"a":533000,"l":"2020-02-04","i":["20200128015"]},"cbr":{"r":1,"a":630109.04,"l":"2025-10-06","i":["CT101520261403121"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["MITCHELL INTERNATIONAL INC"]}}},
 {"s":"MITCHELL J BLUTT AND MARGO KRODY BLUTT FAMILY FOUNDATION","n":[["MITCHELL J BLUTT AND MARGO KRODY BLUTT FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["134053216"],"z":["10022"]}}},
 {"s":"MITCHELL SWEET","n":[["Mitchell Sweet Inc.",1],["Mitchell Sweet, Inc.",1]],"x":{"ocp":{"r":2,"a":387500,"l":"2004-04-28","i":["20040420023","20031117020"]}}},
@@ -872,7 +875,7 @@
 {"s":"MOODY NOLAN","n":[["MOODY NOLAN  INC",1]],"x":{"dbe":{"r":1,"i":["MOODY NOLAN  INC"]}}},
 {"s":"MOODY S ANALYTICS","n":[["MOODY'S ANALYTICS, INC",13]],"x":{"ocp":{"r":1,"a":100000,"l":"2023-08-29","i":["20230822108"]},"cbr":{"r":9,"a":700169.5,"l":"2026-09-22","c":9,"i":["CT101520270001141","CT101520270000619","CT101520261408508","CT100220261403646","CT101520261402296"],"m":["Non-M/WBE"]},"cbv":{"r":3,"l":"2026-09-22","i":["CT101520270001141","CT101520270000619","CT101520261408508"],"m":["Non-M/WBE"]}}},
 {"s":"MOODY S INVESTORS SERVICE","n":[["MOODY S INVESTORS SERVICE INC.",2],["MOODY'S INVESTORS SERVICE  INC.",1]],"x":{"cbr":{"r":2,"a":48700,"l":"2025-11-21","i":["CT101520261404832","CT101520251405521"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["MOODY'S INVESTORS SERVICE  INC."]}}},
-{"s":"MOODY-NOLAN","n":[["MOODY-NOLAN INC",7],["MOODY-NOLAN, INC.",1],["Moody-Nolan, Inc.",1]],"x":{"cbr":{"r":5,"a":11441860,"l":"2026-03-30","i":["MMA181920266201082","MMA181920266201081","CT181920251417507","CT181920251416052","CTA181920257202477"],"m":["Black American"]},"cbv":{"r":2,"l":"2026-03-30","i":["MMA181920266201082","MMA181920266201081"],"m":["Black American"]},"sbs":{"r":1,"i":["14588"],"z":["10010"],"p":["MBE"]},"sca":{"r":1,"i":["MOODY-NOLAN, INC."],"z":["10010"]}}},
+{"s":"MOODY-NOLAN","n":[["MOODY-NOLAN INC",8],["MOODY-NOLAN, INC.",1],["Moody-Nolan, Inc.",1]],"x":{"cbr":{"r":5,"a":11441860,"l":"2026-03-30","i":["MMA181920266201082","MMA181920266201081","CT181920251417507","CT181920251416052","CTA181920257202477"],"m":["Black American"]},"cbv":{"r":3,"l":"2026-11-23","i":["CTA181920277202132","MMA181920266201082","MMA181920266201081"],"m":["Black American"]},"sbs":{"r":1,"i":["14588"],"z":["10010"],"p":["MBE"]},"sca":{"r":1,"i":["MOODY-NOLAN, INC."],"z":["10010"]}}},
 {"s":"MOODYS ECONOMY COM","n":[["MOODYS ECONOMY COM INC",2]],"x":{"cbr":{"r":2,"a":255952,"l":"2025-09-30","i":["CT113220261403391","CT113220251401607"],"m":["Non-M/WBE"]}}},
 {"s":"MOODYS FOUNDATION","n":[["MOODYS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["134200757"],"z":["10007"]}}},
 {"s":"MOODYS WATER SUPPLY SERVICES","n":[["Moodys Water Supply Services, LLC",1]],"x":{"dol":{"r":1,"i":["25-64QDP-CR"],"z":["16335"]}}},
@@ -1733,9 +1736,5 @@
 {"s":"MOUNTAIN TOP SMALL ANIMAL SANCTUARY - SHELTER","n":[["MOUNTAIN TOP SMALL ANIMAL SANCTUARY - SHELTER",1]],"x":{"irs":{"r":1,"i":["142001321"],"z":["12436"]}}},
 {"s":"MOUNTAIN TOP VISION MINISTRY","n":[["MOUNTAIN TOP VISION MINISTRY INC",1]],"x":{"irs":{"r":1,"i":["812576580"],"z":["12187"]}}},
 {"s":"MOUNTAIN TORAH CENTER- BAIS MENACHEM","n":[["MOUNTAIN TORAH CENTER- BAIS MENACHEM",1]],"x":{"irs":{"r":1,"i":["933753001"],"z":["11213"]}}},
-{"s":"MOUNTAIN TRAIL BOWHUNTERS","n":[["MOUNTAIN TRAIL BOWHUNTERS INC",1]],"x":{"irs":{"r":1,"i":["161215054"],"z":["13745"]}}},
-{"s":"MOUNTAIN VALLEY HOSPICE FOUNDATIONINC","n":[["MOUNTAIN VALLEY HOSPICE FOUNDATIONINC",1]],"x":{"irs":{"r":1,"i":["205822989"],"z":["12078"]}}},
-{"s":"MOUNTAIN VALLEY YOUTH FLAG FOOTBALL","n":[["MOUNTAIN VALLEY YOUTH FLAG FOOTBALL INC",1]],"x":{"irs":{"r":1,"i":["852747286"],"z":["12491"]}}},
-{"s":"MOUNTAIN VIEW COMMUNITY PROTESTANT CHURCH","n":[["MOUNTAIN VIEW COMMUNITY PROTESTANT CHURCH",1]],"x":{"irs":{"r":1,"i":["352385210"],"z":["12969"]}}},
-{"s":"MOUNTAIN VIEW FOUNDATION","n":[["MOUNTAIN VIEW FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["884110805"],"z":["12484"]}}}
+{"s":"MOUNTAIN TRAIL BOWHUNTERS","n":[["MOUNTAIN TRAIL BOWHUNTERS INC",1]],"x":{"irs":{"r":1,"i":["161215054"],"z":["13745"]}}}
 ]}

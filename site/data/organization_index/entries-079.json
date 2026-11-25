@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":79,"first_ordinal":133532,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":79,"first_ordinal":133533,"entries":[
+{"s":"SPEAK UP AFRICA","n":[["SPEAK UP AFRICA",1]],"x":{"irs":{"r":1,"i":["463611387"],"z":["10003"]}}},
+{"s":"SPEAK YOUR LEGACY","n":[["Speak Your Legacy Inc.",1]],"x":{"sbs":{"r":1,"i":["373452"],"z":["11757"],"p":["WBE"]}}},
+{"s":"SPEAK-AT-EASE","d":[["Speak-At-Ease",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["5895"],"z":["10033"],"p":["WBE"]}}},
 {"s":"SPEAKEASY SERVICES","n":[["SpeakEasy Services, Corp.",1]],"x":{"sbs":{"r":1,"i":["361538"],"z":["11566"],"p":["MBE","WBE"]}}},
 {"s":"SPEAKHIRE","n":[["SPEAKHIRE",1]],"x":{"irs":{"r":1,"i":["474132773"],"z":["11001"]}}},
 {"s":"SPEAKING OUT FOR ANIMALS","n":[["SPEAKING OUT FOR ANIMALS",1]],"x":{"irs":{"r":1,"i":["204031086"],"z":["14031"]}}},
@@ -448,7 +451,7 @@
 {"s":"SPRAYTECH COATINGS","n":[["Spraytech Coatings, Inc",1]],"x":{"dol":{"r":1,"i":["25-64KUS-CR"],"z":["14219"]}}},
 {"s":"SPREAD CHEIN","n":[["SPREAD CHEIN INC",1]],"x":{"irs":{"r":1,"i":["821535565"],"z":["11204"]}}},
 {"s":"SPREAD COMPASSION FOUNDATION","n":[["SPREAD COMPASSION FOUNDATION",1]],"x":{"irs":{"r":1,"i":["477005429"],"z":["14127"]}}},
-{"s":"SPREAD INFORMATION SCIENCESINC","n":[["SPREAD INFORMATION SCIENCESINC",7]],"x":{"cbr":{"r":4,"a":146207.73,"l":"2026-04-28","i":["CT105620261413051","CT105620261412571","CT105620261412617","CT105620261403466"],"m":["Asian American"]},"cbv":{"r":3,"l":"2026-04-28","i":["CT105620261413051","CT105620261412571","CT105620261412617"],"m":["Asian American"]}}},
+{"s":"SPREAD INFORMATION SCIENCESINC","n":[["SPREAD INFORMATION SCIENCESINC",8]],"x":{"cbr":{"r":4,"a":146207.73,"l":"2026-04-28","i":["CT105620261413051","CT105620261412571","CT105620261412617","CT105620261403466"],"m":["Asian American"]},"cbv":{"r":4,"l":"2026-11-23","i":["CT105620271405762","CT105620261413051","CT105620261412571","CT105620261412617"],"m":["Asian American","Non-M/WBE"]}}},
 {"s":"SPREAD THE WORD","n":[["SPREAD THE WORD INC",1]],"x":{"irs":{"r":1,"i":["113564078"],"z":["11758"]}}},
 {"s":"SPREAD THE WORD MINISTRIES","n":[["SPREAD THE WORD MINISTRIES",1]],"x":{"irs":{"r":1,"i":["113183354"],"z":["11412"]}}},
 {"s":"SPREAD YOUR WINGS PROJECT","n":[["SPREAD YOUR WINGS PROJECT",1]],"x":{"irs":{"r":1,"i":["825100565"],"z":["10990"]}}},
@@ -1707,8 +1710,5 @@
 {"s":"ST REMY REFORMED CHURCH","n":[["ST REMY REFORMED CHURCH",1]],"x":{"irs":{"r":1,"i":["141755936"],"z":["12466"]}}},
 {"s":"ST REMY RURAL CEMETERY ASSN","n":[["ST REMY RURAL CEMETERY ASSN INC",1]],"x":{"irs":{"r":1,"i":["141251267"],"z":["12466"]}}},
 {"s":"ST RITA SCHOOL","n":[["ST RITA SCHOOL",1]],"x":{"irs":{"r":1,"i":["264504896"],"z":["14580"]}}},
-{"s":"ST RITAS CHURCH","n":[["ST RITAS CHURCH",1]],"x":{"irs":{"r":1,"i":["160794894"],"z":["14580"]}}},
-{"s":"ST RITAS HOME","n":[["ST RITAS HOME",1]],"x":{"irs":{"r":1,"i":["161569627"],"z":["14211"]}}},
-{"s":"ST ROCCO SOCIETY","n":[["ST ROCCO SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["141275637"],"z":["12508"]}}},
-{"s":"ST ROSALIA S ROMAN CATHOLIC CHURCH","n":[["ST. ROSALIA'S ROMAN CATHOLIC CHURCH",1]],"x":{"dbe":{"r":1,"i":["ST. ROSALIA'S ROMAN CATHOLIC CHURCH"]}}}
+{"s":"ST RITAS CHURCH","n":[["ST RITAS CHURCH",1]],"x":{"irs":{"r":1,"i":["160794894"],"z":["14580"]}}}
 ]}

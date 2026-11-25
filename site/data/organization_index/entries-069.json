@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":69,"first_ordinal":116535,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":69,"first_ordinal":116536,"entries":[
+{"s":"PROF EDGAR H LEHRMAN MEMORIAL FDTN FOR ETHICS RELGN SCNCE ARTS","n":[["PROF EDGAR H LEHRMAN MEMORIAL FDTN FOR ETHICS RELGN SCNCE & ARTS INC",1]],"x":{"irs":{"r":1,"i":["112916112"],"z":["11580"]}}},
+{"s":"PROFABULA","n":[["Profabula, LLC",1]],"x":{"sbs":{"r":1,"i":["356681"],"z":["11101"],"p":["MBE"]}}},
 {"s":"PROFESSIONAL ADVISORS TO THE INTERNATIONAL ART MARKET - NEW YOR","n":[["PROFESSIONAL ADVISORS TO THE INTERNATIONAL ART MARKET - NEW YOR",1]],"x":{"irs":{"r":1,"i":["814966668"],"z":["10036"]}}},
 {"s":"PROFESSIONAL ANIMAL CARE CERTIFICATION COUNCIL","n":[["PROFESSIONAL ANIMAL CARE CERTIFICATION COUNCIL",1]],"x":{"irs":{"r":1,"i":["474023893"],"z":["14226"]}}},
 {"s":"PROFESSIONAL ARCHAEOLOGISTS OF NEW YORK CITY","n":[["PROFESSIONAL ARCHAEOLOGISTS OF NEW YORK CITY INC",1]],"x":{"irs":{"r":1,"i":["311706559"],"z":["10016"]}}},
@@ -1540,6 +1542,5 @@
 {"s":"QUALITY FACILITY SOLUTIONS","n":[["QUALITY FACILITY SOLUTIONS CORP",8],["Quality Facility Solutions Corp",2],["Quality Facility Solutions Corp.",2]],"x":{"ocp":{"r":2,"a":7633000,"l":"2026-09-14","i":["20260908009","20240510103"]},"cbr":{"r":3,"a":4183169.6,"l":"2026-11-13","i":["CT100320271406991","MA185720278802700","CT100320261417946"],"m":["Women (Non-Minority)"]},"ppt":{"r":1,"a":3500000,"l":"2024-05-09","i":["CT1-017-20248807207"]},"cbv":{"r":3,"l":"2026-11-13","i":["CT100320271406991","MA185720278802700","CT100320261417946"],"m":["Women (Non-Minority)"]},"sbs":{"r":1,"i":["15418"],"z":["11211"],"p":["WBE"]},"dol":{"r":1,"i":["26-637YV-CR"],"z":["11211"]},"sca":{"r":1,"i":["QUALITY FACILITY SOLUTIONS CORP."],"z":["11205"]}}},
 {"s":"QUALITY FACILITY SOLUTIONS CORP DBA/ QUALITY FLOORSHINE","n":[["QUALITY FACILITY SOLUTIONS CORP.  DBA/ QUALITY FLOORSHINE",1]],"x":{"ocp":{"r":1,"a":10325136,"l":"2022-02-17","i":["20220210104"]}}},
 {"s":"QUALITY FENCE OF PESKINESS","n":[["QUALITY FENCE OF PESKINESS, INC.",1]],"x":{"ocp":{"r":1,"a":648760.9,"l":"2011-03-17","i":["20110311001"]}}},
-{"s":"QUALITY FINSHES PAINTING","n":[["Quality Finshes Painting LLC",1]],"x":{"sbs":{"r":1,"i":["103559"],"z":["10475"],"p":["MBE"]}}},
-{"s":"QUALITY FLOORSHINE","n":[["Quality Floorshine Corp.",2]],"d":[["Quality Floorshine",1]],"x":{"ocp":{"r":2,"a":5283109.1,"l":"2018-06-12","i":["20180605019","20131120008"]},"sbs":{"r":1,"v":["dba"],"i":["15418"],"z":["11211"],"p":["WBE"]}}}
+{"s":"QUALITY FINSHES PAINTING","n":[["Quality Finshes Painting LLC",1]],"x":{"sbs":{"r":1,"i":["103559"],"z":["10475"],"p":["MBE"]}}}
 ]}

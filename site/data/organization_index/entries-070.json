@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":70,"first_ordinal":118078,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":70,"first_ordinal":118080,"entries":[
+{"s":"QUALITY FLOORSHINE","n":[["Quality Floorshine Corp.",2]],"d":[["Quality Floorshine",1]],"x":{"ocp":{"r":2,"a":5283109.1,"l":"2018-06-12","i":["20180605019","20131120008"]},"sbs":{"r":1,"v":["dba"],"i":["15418"],"z":["11211"],"p":["WBE"]}}},
 {"s":"QUALITY FORENSICS CONSULTING SERVICES","n":[["QUALITY FORENSICS CONSULTING SERVICES",1]],"x":{"ocp":{"r":1,"a":75000,"l":"2006-10-20","i":["20061013013"]}}},
 {"s":"QUALITY HEALTHCARE STAFFING","d":[["Quality Healthcare Staffing",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["338407"],"z":["11101"],"p":["MBE"]}}},
 {"s":"QUALITY HEATING AND COOLING","d":[["Quality Heating and Cooling",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-6HXYI-CR"],"z":["10940"]}}},
@@ -1712,6 +1713,5 @@
 {"s":"REALITYCHECK RESEARCH","n":[["REALITYCHECK RESEARCH INC",1]],"x":{"irs":{"r":1,"i":["884400438"],"z":["12207"]}}},
 {"s":"REALITYOFBEING ORG","n":[["REALITYOFBEING ORG LTD",1]],"x":{"irs":{"r":1,"i":["331765060"],"z":["12545"]}}},
 {"s":"REALITYWORKS","n":[["REALITYWORKS, INC.",5]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-04-20","i":["CT104020263165575","CT104020263110530","CT104020263053191"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-04-20","i":["CT104020263165575","CT104020263110530"],"m":["Non-M/WBE"]}}},
-{"s":"REALIZE YOUR BEAUTY","n":[["REALIZE YOUR BEAUTY",1]],"x":{"irs":{"r":1,"i":["262046400"],"z":["10005"]}}},
-{"s":"REALIZING INNER CONFIDENCE HAPPIN ESS FOUNDATION","n":[["REALIZING INNER CONFIDENCE & HAPPIN ESS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["393860667"],"z":["10457"]}}}
+{"s":"REALIZE YOUR BEAUTY","n":[["REALIZE YOUR BEAUTY",1]],"x":{"irs":{"r":1,"i":["262046400"],"z":["10005"]}}}
 ]}

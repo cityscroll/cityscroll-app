@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":11,"first_ordinal":18314,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":11,"first_ordinal":18313,"entries":[
+{"s":"BLACK LAKE ASSOCIATION","n":[["BLACK LAKE ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["161246384"],"z":["13646"]}}},
 {"s":"BLACK LAKE FISH GAME ASSOCIATION","n":[["BLACK LAKE FISH & GAME ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["821943656"],"z":["13646"]}}},
 {"s":"BLACK LAND ACCESS COMMUNITY LAND TRUST","n":[["BLACK LAND ACCESS COMMUNITY LAND TRUST INC",1]],"x":{"irs":{"r":1,"i":["994884190"],"z":["11213"]}}},
 {"s":"BLACK LATINO AND ASIAN COALITION IN C","n":[["BLACK LATINO AND ASIAN COALITION IN C",1]],"x":{"irs":{"r":1,"i":["393950122"],"z":["10027"]}}},
@@ -1702,6 +1703,5 @@
 {"s":"BRAVEN SOLUTIONS","n":[["BRAVEN SOLUTIONS LLC",4],["Braven Solutions LLC",1]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-08-21","i":["CT104020273005592","CT104020253165773","CT104020253050252"],"m":["Black American"]},"cbv":{"r":1,"l":"2026-08-21","i":["CT104020273005592"],"m":["Black American"]},"sbs":{"r":1,"i":["371892"],"z":["10011"],"p":["MBE"]}}},
 {"s":"BRAVER ANGELS","n":[["BRAVER ANGELS INC",1]],"x":{"irs":{"r":1,"i":["133400377"],"z":["10017"]}}},
 {"s":"BRAVER CHARITABLE FOUNDATION","n":[["BRAVER CHARITABLE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["810945657"],"z":["11218"]}}},
-{"s":"BRAVERHOOD","n":[["BRAVERHOOD LTD",1]],"x":{"irs":{"r":1,"i":["204157876"],"z":["11219"]}}},
-{"s":"BRAVES FOOTBALL ALUMNI CLUB","n":[["BRAVES FOOTBALL ALUMNI CLUB INC",1]],"x":{"irs":{"r":1,"i":["842450812"],"z":["12078"]}}}
+{"s":"BRAVERHOOD","n":[["BRAVERHOOD LTD",1]],"x":{"irs":{"r":1,"i":["204157876"],"z":["11219"]}}}
 ]}

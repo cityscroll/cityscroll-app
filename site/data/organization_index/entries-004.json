@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":4,"first_ordinal":6800,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":4,"first_ordinal":6800,"entries":[
 {"s":"ALLIED PERSONNEL SERVICES","n":[["Allied Personnel Services, Inc",3],["ALLIED PERSONNEL SERVICES INC",1],["ALLIED PERSONNEL SERVICES, INC",1],["Allied Personnel Services, Inc.",1]],"x":{"ocp":{"r":3,"a":1197575,"l":"2024-05-16","i":["20240509114","20230708147","20190718035"]},"ppt":{"r":1,"a":175700,"l":"2023-07-07","i":["CT1-068-20238807518"]},"dbe":{"r":1,"i":["ALLIED PERSONNEL SERVICES INC"]},"sbs":{"r":1,"i":["339"],"z":["11426"],"p":["MBE","WBE"]}}},
 {"s":"ALLIED PRODUCTIONS","n":[["ALLIED PRODUCTIONS INC",1]],"x":{"irs":{"r":1,"i":["133123525"],"z":["10009"]}}},
 {"s":"ALLIED RISK MANAGEMENT","n":[["ALLIED RISK MANAGEMENT INC.",1],["Allied Risk Management, Inc.",1]],"x":{"sbs":{"r":1,"i":["4105"],"z":["11530"],"p":["WBE"]},"dol":{"r":1,"i":["25-65PN7-CR"],"z":["11530"]}}},

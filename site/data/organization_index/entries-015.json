@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":15,"first_ordinal":25048,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":15,"first_ordinal":25047,"entries":[
+{"s":"CARPENTER FAMILY CARITAS FOUNDATION","n":[["CARPENTER FAMILY CARITAS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["261588334"],"z":["14618"]}}},
 {"s":"CARPENTER FUND MANAGER GP","n":[["CARPENTER FUND MANAGER GP LLC",1]],"x":{"dbe":{"r":1,"i":["CARPENTER FUND MANAGER GP LLC"]}}},
 {"s":"CARPENTER GROUP","n":[["Carpenter Group, Inc.",1]],"x":{"sbs":{"r":1,"i":["1061"],"z":["10004"],"p":["WBE"]}}},
 {"s":"CARPENTER HOUSING DEVELOPMENT FUND","n":[["CARPENTER HOUSING DEVELOPMENT FUND CO INC",1]],"x":{"irs":{"r":1,"i":["061475666"],"z":["13203"]}}},
@@ -1002,7 +1003,7 @@
 {"s":"CEBUANOS ENGAGING IN BUILDING UNITY","n":[["CEBUANOS ENGAGING IN BUILDING UNITY INC",1]],"x":{"irs":{"r":1,"i":["455391461"],"z":["11105"]}}},
 {"s":"CEC ARTSLINK","n":[["CEC ARTSLINK INC",1]],"x":{"irs":{"r":1,"i":["132531695"],"z":["10013"]}}},
 {"s":"CEC ELEVATOR CAB","n":[["CEC Elevator Cab Corp.",1]],"x":{"sbs":{"r":1,"i":["11347"],"z":["10474"],"p":["MBE"]}}},
-{"s":"CEC STUYVESANT COVE","n":[["CEC STUYVESANT COVE INC",6]],"x":{"cbr":{"r":3,"a":658750,"l":"2026-11-10","i":["CT104020273046244","CT112520258806707","CT126020258802571"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-10","i":["CT104020273046244"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["CEC STUYVESANT COVE INC"]},"irs":{"r":1,"i":["522440116"],"z":["11101"]}}},
+{"s":"CEC STUYVESANT COVE","n":[["CEC STUYVESANT COVE INC",7]],"x":{"cbr":{"r":3,"a":658750,"l":"2026-11-10","i":["CT104020273046244","CT112520258806707","CT126020258802571"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-23","i":["CT104020273040238","CT104020273046244"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["CEC STUYVESANT COVE INC"]},"irs":{"r":1,"i":["522440116"],"z":["11101"]}}},
 {"s":"CECC COURIER","n":[["CECC Courier Corp.",1]],"x":{"sbs":{"r":1,"i":["343881"],"z":["11691"],"p":["MBE"]}}},
 {"s":"CECELIA JOYCE AND SEWARD JOHNSON","n":[["CECELIA JOYCE AND SEWARD JOHNSON",1]],"x":{"irs":{"r":1,"i":["223048720"],"z":["10013"]}}},
 {"s":"CECIL HAYES SCHOLARSHIP FUND TR UW","n":[["CECIL HAYES SCHOLARSHIP FUND TR UW",1]],"x":{"irs":{"r":1,"i":["166152521"],"z":["13815"]}}},
@@ -1572,6 +1573,5 @@
 {"s":"CENTRAL BRIDGE CIVIC ASSOCIATION","n":[["CENTRAL BRIDGE CIVIC ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["222528823"],"z":["12035"]}}},
 {"s":"CENTRAL BRONX GHANAIAN SEVENTH DAY ADVENTIST CHURCH","n":[["CENTRAL BRONX GHANAIAN SEVENTH DAY ADVENTIST CHURCH",1]],"x":{"irs":{"r":1,"i":["823898864"],"z":["10456"]}}},
 {"s":"CENTRAL BRONX HOUSING ASSOCIATES","n":[["CENTRAL BRONX HOUSING ASSOCIATES LP",1]],"x":{"dbe":{"r":1,"i":["CENTRAL BRONX HOUSING ASSOCIATES LP"]}}},
-{"s":"CENTRAL BROOKLYN COMMUNITY SERVICES","n":[["CENTRAL BROOKLYN COMMUNITY SERVICES CORP",2]],"x":{"dbe":{"r":1,"i":["CENTRAL BROOKLYN COMMUNITY SERVICES CORP"]},"irs":{"r":1,"i":["550817833"],"z":["11221"]}}},
-{"s":"CENTRAL BROOKLYN ECONOMIC DEVELOPMENT","n":[["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORP",2],["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORPORATION",1],["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORPORATION INC",1]],"x":{"ocp":{"r":1,"a":823854,"l":"2024-04-22","i":["20240416110"]},"cbr":{"r":1,"a":29375,"l":"2024-08-05","i":["CT126020248803713"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORPORATION"]},"irs":{"r":1,"i":["112981085"],"z":["11212"]}}}
+{"s":"CENTRAL BROOKLYN COMMUNITY SERVICES","n":[["CENTRAL BROOKLYN COMMUNITY SERVICES CORP",2]],"x":{"dbe":{"r":1,"i":["CENTRAL BROOKLYN COMMUNITY SERVICES CORP"]},"irs":{"r":1,"i":["550817833"],"z":["11221"]}}}
 ]}

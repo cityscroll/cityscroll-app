@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":64,"first_ordinal":107954,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":64,"first_ordinal":107954,"entries":[
+{"s":"OF LOVE FAITH AND POWER WORSHIP CENTER","n":[["OF LOVE FAITH AND POWER WORSHIP CENTER",1]],"x":{"irs":{"r":1,"i":["562526961"],"z":["14613"]}}},
+{"s":"OFEK YEHUDI","n":[["OFEK YEHUDI",1]],"x":{"irs":{"r":1,"i":["454182630"],"z":["11226"]}}},
+{"s":"OFF ASSIGNMENT","n":[["OFF ASSIGNMENT INC",1]],"x":{"irs":{"r":1,"i":["471979963"],"z":["10003"]}}},
 {"s":"OFF BROADWAY LEAGUE","n":[["OFF BROADWAY LEAGUE",1]],"x":{"irs":{"r":1,"i":["133772271"],"z":["10011"]}}},
 {"s":"OFF CENTER DANCE THEATRE","n":[["OFF CENTER DANCE THEATRE INC",1]],"x":{"irs":{"r":1,"i":["133603084"],"z":["10543"]}}},
 {"s":"OFF DA STREETZ","n":[["OFF DA STREETZ",1]],"x":{"irs":{"r":1,"i":["813561047"],"z":["11207"]}}},
@@ -1817,7 +1820,5 @@
 {"s":"ORPHANS FUTURES ALLIANCE","n":[["ORPHANS FUTURES ALLIANCE INC",1]],"x":{"irs":{"r":1,"i":["455106746"],"z":["10001"]}}},
 {"s":"ORPHANS INTERNATIONAL AMERICA","n":[["ORPHANS INTERNATIONAL AMERICA",1]],"x":{"irs":{"r":1,"i":["431971411"],"z":["10012"]}}},
 {"s":"ORPHANS RELIEF FOUNDTION","n":[["ORPHANS RELIEF FOUNDTION INC",1]],"x":{"irs":{"r":1,"i":["452988309"],"z":["11429"]}}},
-{"s":"ORPHEAN PEKING OPERA FACTORY","n":[["ORPHEAN PEKING OPERA FACTORY INCORPORATED",1]],"x":{"irs":{"r":1,"i":["832694467"],"z":["10017"]}}},
-{"s":"ORPHEUS CHAMBER ORCHESTRA","n":[["ORPHEUS CHAMBER ORCHESTRA INC",1]],"x":{"irs":{"r":1,"i":["237362572"],"z":["10027"]}}},
-{"s":"ORPHEUS CHORALE","n":[["ORPHEUS CHORALE",1]],"x":{"irs":{"r":1,"i":["462702149"],"z":["14804"]}}}
+{"s":"ORPHEAN PEKING OPERA FACTORY","n":[["ORPHEAN PEKING OPERA FACTORY INCORPORATED",1]],"x":{"irs":{"r":1,"i":["832694467"],"z":["10017"]}}}
 ]}

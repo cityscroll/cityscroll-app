@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":73,"first_ordinal":123233,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":73,"first_ordinal":123235,"entries":[
+{"s":"ROCK THE PINK TODAY FOUNDATION","n":[["ROCK THE PINK TODAY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["395152141"],"z":["10305"]}}},
 {"s":"ROCK THE SOCKS FOUNDATION","n":[["ROCK THE SOCKS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["821224144"],"z":["11788"]}}},
 {"s":"ROCK VIBE GOSPEL RADIO","n":[["ROCK VIBE GOSPEL RADIO INC",1]],"x":{"irs":{"r":1,"i":["393440742"],"z":["11692"]}}},
 {"s":"ROCK WORKS MASONRY","n":[["ROCK WORKS MASONRY, INC.",1]],"x":{"dol":{"r":1,"i":["25-6HPKS-CR"],"z":["14141"]}}},
@@ -1694,7 +1695,5 @@
 {"s":"RXR 61 BROADWAY OWNER","n":[["RXR 61 BROADWAY OWNER LLC",1]],"x":{"dbe":{"r":1,"i":["RXR 61 BROADWAY OWNER LLC"]}}},
 {"s":"RXR 9-47 HALL STREET OWNER","n":[["RXR 9-47 HALL STREET OWNER LLC",1]],"x":{"dbe":{"r":1,"i":["RXR 9-47 HALL STREET OWNER LLC"]}}},
 {"s":"RXR REALTY","n":[["RXR REALTY LLC",1]],"x":{"dbe":{"r":1,"i":["RXR REALTY LLC"]}}},
-{"s":"RXR SL OWNER","n":[["RXR SL OWNER LLC",1]],"x":{"dbe":{"r":1,"i":["RXR SL OWNER LLC"]}}},
-{"s":"RY MARIE MARKETING","n":[["Ry Marie Marketing LLC",1]],"x":{"sbs":{"r":1,"i":["371365"],"z":["11237"],"p":["MBE","WBE"]}}},
-{"s":"RY-LECIA","n":[["Ry-Lecia Corp.",1]],"x":{"dol":{"r":1,"i":["24-64NF1-CR"],"z":["11779"]}}}
+{"s":"RXR SL OWNER","n":[["RXR SL OWNER LLC",1]],"x":{"dbe":{"r":1,"i":["RXR SL OWNER LLC"]}}}
 ]}

@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":30,"first_ordinal":50329,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":30,"first_ordinal":50325,"entries":[
+{"s":"F R GAUNT ESTATE F M GAUNT ENDOWMENT FUND","n":[["F R GAUNT ESTATE F M GAUNT ENDOWMENT FUND",1]],"x":{"irs":{"r":1,"i":["136112092"],"z":["10008"]}}},
+{"s":"F R I E N D S -THROUGH JESUS CHRIST","n":[["F R I E N D S -THROUGH JESUS CHRIST INC",1]],"x":{"irs":{"r":1,"i":["030515622"],"z":["11422"]}}},
+{"s":"F RACHEL MEMORIAL FOUNDATION","n":[["F RACHEL MEMORIAL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["113498006"],"z":["11224"]}}},
+{"s":"F S ENVIRONMENTAL","n":[["F. & S. ENVIRONMENTAL INC.",1]],"x":{"dol":{"r":1,"i":["25-64IIU-CR"],"z":["14086"]}}},
 {"s":"F S GENERAL CONSTRUCTION","n":[["F & S GENERAL CONSTRUCTION INC",1],["F & S GENERAL CONSTRUCTION INC.",1],["F & S General Construction Inc.",1]],"x":{"dbe":{"r":1,"i":["F & S GENERAL CONSTRUCTION INC"]},"dol":{"r":1,"i":["25-6474Q-CR"],"z":["11230"]},"sca":{"r":1,"i":["F & S GENERAL CONSTRUCTION INC."],"z":["11230"]}}},
 {"s":"F S LANDAU FOUNDATION","n":[["F S LANDAU FOUNDATION",1]],"x":{"irs":{"r":1,"i":["810917723"],"z":["11205"]}}},
 {"s":"F S LOPKE CONTRACTING","n":[["F. S. LOPKE CONTRACTING, INC.",1]],"x":{"dol":{"r":1,"i":["25-67U3G-CR"],"z":["13732"]}}},
@@ -1690,10 +1694,5 @@
 {"s":"FILMSABOTAJ","n":[["Filmsabotaj LLC",1]],"x":{"sbs":{"r":1,"i":["101176"],"z":["07013"],"p":["MBE"]}}},
 {"s":"FILOMEN M DAGOSTINO GREENBERG MUSIC SCHOOL","n":[["FILOMEN M DAGOSTINO GREENBERG MUSIC SCHOOL INC",1]],"x":{"irs":{"r":1,"i":["832582279"],"z":["10023"]}}},
 {"s":"FILOMENA GARDENS HOUSING DEVELOPMENT FUND","n":[["FILOMENA GARDENS HOUSING DEVELOPMENT FUND COMPANY INC",1]],"x":{"irs":{"r":1,"i":["133975116"],"z":["10466"]}}},
-{"s":"FILOMENA M DAGOSTINO FOUNDATION","n":[["FILOMENA M DAGOSTINO FOUNDATION CORP",1]],"x":{"irs":{"r":1,"i":["133548660"],"z":["10022"]}}},
-{"s":"FILOMENO FAMILY AWARDS FOUNDATION","n":[["FILOMENO FAMILY AWARDS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["462910749"],"z":["11201"]}}},
-{"s":"FILTER ROOM SOLUTIONS","n":[["FILTER ROOM SOLUTIONS INC.",1]],"x":{"dol":{"r":1,"i":["25-65K43-CR"],"z":["11501"]}}},
-{"s":"FILTERBUY","n":[["FILTERBUY INC.",1]],"x":{"dbe":{"r":1,"i":["FILTERBUY INC."]}}},
-{"s":"FILTREC","n":[["FILTREC CORPORATION",1]],"x":{"dol":{"r":1,"i":["26-639EU-CR"],"z":["13021"]}}},
-{"s":"FIMF","n":[["FIMF INC",1]],"x":{"irs":{"r":1,"i":["134072661"],"z":["10022"]}}}
+{"s":"FILOMENA M DAGOSTINO FOUNDATION","n":[["FILOMENA M DAGOSTINO FOUNDATION CORP",1]],"x":{"irs":{"r":1,"i":["133548660"],"z":["10022"]}}}
 ]}

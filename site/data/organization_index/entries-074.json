@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":74,"first_ordinal":124931,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":74,"first_ordinal":124932,"entries":[
+{"s":"RY MARIE MARKETING","n":[["Ry Marie Marketing LLC",1]],"x":{"sbs":{"r":1,"i":["371365"],"z":["11237"],"p":["MBE","WBE"]}}},
+{"s":"RY-LECIA","n":[["Ry-Lecia Corp.",1]],"x":{"dol":{"r":1,"i":["24-64NF1-CR"],"z":["11779"]}}},
 {"s":"RYAL INSTITUTE FOR MOSHIACH AND SCIENCE RESEARCH","n":[["RYAL INSTITUTE FOR MOSHIACH AND SCIENCE RESEARCH INC",1]],"x":{"irs":{"r":1,"i":["861434338"],"z":["11203"]}}},
 {"s":"RYAN ALDRICH TRUCKING SAWING","n":[["Ryan Aldrich Trucking & Sawing, Inc.",1]],"x":{"dol":{"r":1,"i":["24-64Y1L-CR"],"z":["13340"]}}},
 {"s":"RYAN ANDREWS NEWTON FUND","n":[["RYAN ANDREWS NEWTON FUND INC",1]],"x":{"irs":{"r":1,"i":["834400225"],"z":["10028"]}}},
@@ -323,7 +325,7 @@
 {"s":"S Z P R ZEDAKAH FUND","n":[["S Z & P R ZEDAKAH FUND",1]],"x":{"irs":{"r":1,"i":["113335250"],"z":["11219"]}}},
 {"s":"S-A-Y F0UNDATI0N","n":[["S-A-Y F0UNDATI0N INC",1]],"x":{"irs":{"r":1,"i":["422071476"],"z":["11798"]}}},
 {"s":"S2AY RURAL HEALTH NETWORK","n":[["S2AY RURAL HEALTH NETWORK",1]],"x":{"irs":{"r":1,"i":["550810542"],"z":["14424"]}}},
-{"s":"S4-SUCCESSFUL STUDY SKILLS 4 STUDENTS","n":[["S4-SUCCESSFUL STUDY SKILLS 4 STUDENTS LLC",15],["S4-Successful Study Skills 4 Students LLC",1]],"x":{"cbr":{"r":8,"a":200000,"l":"2026-10-21","c":8,"i":["CT104020273035395","CT104020263173510","CT104020263162684","CT104020263148873","CT104020263147592"],"m":["Women (Non-Minority)"]},"cbv":{"r":6,"l":"2026-10-21","c":6,"i":["CT104020273035395","CT104020263173510","CT104020263162684","CT104020263148873","CT104020263147592"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["S4-SUCCESSFUL STUDY SKILLS 4 STUDENTS LLC"]},"sbs":{"r":1,"i":["373897"],"z":["06890"],"p":["WBE"]}}},
+{"s":"S4-SUCCESSFUL STUDY SKILLS 4 STUDENTS","n":[["S4-SUCCESSFUL STUDY SKILLS 4 STUDENTS LLC",16],["S4-Successful Study Skills 4 Students LLC",1]],"x":{"cbr":{"r":8,"a":200000,"l":"2026-10-21","c":8,"i":["CT104020273035395","CT104020263173510","CT104020263162684","CT104020263148873","CT104020263147592"],"m":["Women (Non-Minority)"]},"cbv":{"r":7,"l":"2026-11-23","c":7,"i":["CT104020273050493","CT104020273035395","CT104020263173510","CT104020263162684","CT104020263148873"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["S4-SUCCESSFUL STUDY SKILLS 4 STUDENTS LLC"]},"sbs":{"r":1,"i":["373897"],"z":["06890"],"p":["WBE"]}}},
 {"s":"S4E GLOBAL","n":[["S4E GLOBAL INC",1]],"x":{"irs":{"r":1,"i":["854172253"],"z":["10016"]}}},
 {"s":"SA COMMUNITY NETWORK","n":[["SA COMMUNITY NETWORK INC",1]],"x":{"irs":{"r":1,"i":["873873206"],"z":["11803"]}}},
 {"s":"SA ENGINEERING","n":[["SA Engineering LLC",2]],"x":{"sbs":{"r":1,"i":["6313"],"z":["08817"],"p":["MBE"]},"dol":{"r":1,"i":["24-64RJB-CR"],"z":["08817"]}}},
@@ -1719,7 +1721,5 @@
 {"s":"SARATOGA JOINERY","n":[["SARATOGA JOINERY INC",1]],"x":{"irs":{"r":1,"i":["884150571"],"z":["12866"]}}},
 {"s":"SARATOGA LADIES","n":[["SARATOGA LADIES INC",1]],"x":{"irs":{"r":1,"i":["884206202"],"z":["12871"]}}},
 {"s":"SARATOGA LAKE ASSOCIATION","n":[["SARATOGA LAKE ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["141759224"],"z":["12020"]}}},
-{"s":"SARATOGA LAKE SAILING CLUB","n":[["SARATOGA LAKE SAILING CLUB",1]],"x":{"irs":{"r":1,"i":["141550917"],"z":["12020"]}}},
-{"s":"SARATOGA LAKE SAILING FOUNDATION","n":[["SARATOGA LAKE SAILING FOUNDATION INCORPORATED",1]],"x":{"irs":{"r":1,"i":["475584910"],"z":["12020"]}}},
-{"s":"SARATOGA MISS SOFTBALL","n":[["SARATOGA MISS SOFTBALL",1]],"x":{"irs":{"r":1,"i":["141818483"],"z":["12866"]}}}
+{"s":"SARATOGA LAKE SAILING CLUB","n":[["SARATOGA LAKE SAILING CLUB",1]],"x":{"irs":{"r":1,"i":["141550917"],"z":["12020"]}}}
 ]}

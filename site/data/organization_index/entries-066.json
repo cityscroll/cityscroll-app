@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":66,"first_ordinal":111482,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":66,"first_ordinal":111483,"entries":[
+{"s":"PARKWAY-STUYVESANT COMMUNITY HOUSING COUNCIL","n":[["PARKWAY-STUYVESANT COMMUNITY & HOUSING COUNCIL INC",1]],"x":{"irs":{"r":1,"i":["112585004"],"z":["11216"]}}},
+{"s":"PARKWAYNYC","n":[["PARKWAYNYC INC",1]],"x":{"irs":{"r":1,"i":["922591949"],"z":["11220"]}}},
 {"s":"PARLANDO","n":[["PARLANDO INC",1]],"x":{"irs":{"r":1,"i":["843076436"],"z":["10023"]}}},
 {"s":"PARLAY SQUARE MANAGEMENT","n":[["Parlay Square Management",1]],"x":{"sbs":{"r":1,"i":["101515"],"z":["10001"],"p":["MBE"]}}},
 {"s":"PARLE ENDEAVORS","n":[["Parle Endeavors",2],["PARLE ENDEAVORS INC",1]],"x":{"cbr":{"r":1,"a":16000,"l":"2026-03-12","i":["CT181620261412616"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-03-12","i":["CT181620261412616"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["883641366"],"z":["11236"]}}},
@@ -997,7 +999,7 @@
 {"s":"PEGGY MCGRATH ROCKEFELLER FOUNDATION","n":[["PEGGY MCGRATH ROCKEFELLER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["462261050"],"z":["10020"]}}},
 {"s":"PEGUERO FAMILY FOUNDATION","n":[["PEGUERO FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["833503859"],"z":["11412"]}}},
 {"s":"PEHR TREE","n":[["PEHR TREE INC",1]],"x":{"irs":{"r":1,"i":["331973773"],"z":["10003"]}}},
-{"s":"PEI COBB FREED PARTNERS ARCHITECTS","n":[["PEI COBB FREED & PARTNERS ARCHITECTS LLP",3],["Pei Cobb Freed & Partners Architects LLP",1]],"x":{"cbr":{"r":1,"a":312571.09,"l":"2026-06-05","i":["CT104320261417088"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-06-05","i":["CT104320261417088"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["PEI COBB FREED & PARTNERS ARCHITECTS LLP"]},"sca":{"r":1,"i":["PEI COBB FREED & PARTNERS ARCHITECTS LLP"],"z":["10005"]}}},
+{"s":"PEI COBB FREED PARTNERS ARCHITECTS","n":[["PEI COBB FREED & PARTNERS ARCHITECTS LLP",4],["Pei Cobb Freed & Partners Architects LLP",1]],"x":{"cbr":{"r":1,"a":312571.09,"l":"2026-06-05","i":["CT104320261417088"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-23","i":["CT104320271407306","CT104320261417088"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["PEI COBB FREED & PARTNERS ARCHITECTS LLP"]},"sca":{"r":1,"i":["PEI COBB FREED & PARTNERS ARCHITECTS LLP"],"z":["10005"]}}},
 {"s":"PEI MEDIA","n":[["PEI MEDIA INC",2]],"x":{"cbr":{"r":2,"a":77914.59,"l":"2026-02-09","i":["CT101520261408717","CT101520251405733"],"m":["Non-M/WBE"]}}},
 {"s":"PEI PARTNERSHIP ARCHITECTS","n":[["Pei Partnership Architects LLP",1]],"x":{"sbs":{"r":1,"i":["363674"],"z":["10010"],"p":["MBE"]}}},
 {"s":"PEJC MINISTRY","n":[["PEJC MINISTRY OF NEW YORK",1]],"x":{"irs":{"r":1,"i":["333909961"],"z":["12550"]}}},
@@ -1704,7 +1706,5 @@
 {"s":"PERTH CENTER CEMETERY ASSOCIATION","n":[["PERTH CENTER CEMETERY ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["301213301"],"z":["12010"]}}},
 {"s":"PERTH VOLUNTEER FIRE DEPARTMENT","n":[["PERTH VOLUNTEER FIRE DEPARTMENT",1]],"x":{"irs":{"r":1,"i":["141615429"],"z":["12010"]}}},
 {"s":"PERU ASSOCIATION OF TEACHERS","n":[["PERU ASSOCIATION OF TEACHERS",1]],"x":{"irs":{"r":1,"i":["222305960"],"z":["12972"]}}},
-{"s":"PERU CENTRAL SCHOOL MUSIC BOOSTERS","n":[["PERU CENTRAL SCHOOL MUSIC BOOSTERS",1]],"x":{"irs":{"r":1,"i":["383789231"],"z":["12972"]}}},
-{"s":"PERU FREE LIBRARY","n":[["PERU FREE LIBRARY",1]],"x":{"irs":{"r":1,"i":["141386807"],"z":["12972"]}}},
-{"s":"PERU K-5 PARENT TEACHER ORGANIZATION","n":[["PERU K-5 PARENT TEACHER ORGANIZATION INC",1]],"x":{"irs":{"r":1,"i":["203309043"],"z":["12972"]}}}
+{"s":"PERU CENTRAL SCHOOL MUSIC BOOSTERS","n":[["PERU CENTRAL SCHOOL MUSIC BOOSTERS",1]],"x":{"irs":{"r":1,"i":["383789231"],"z":["12972"]}}}
 ]}

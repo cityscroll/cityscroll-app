@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":25,"first_ordinal":41912,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":25,"first_ordinal":41910,"entries":[
+{"s":"DESIGN STUDIES INSTITUTE","n":[["DESIGN STUDIES INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["921382312"],"z":["10019"]}}},
+{"s":"DESIGN STUDY COLLABORATIVE","n":[["DESIGN STUDY COLLABORATIVE INC",1]],"x":{"irs":{"r":1,"i":["932697463"],"z":["11215"]}}},
 {"s":"DESIGN TRUST FOR PUBLIC SPACE","n":[["DESIGN TRUST FOR PUBLIC SPACE INC",1]],"x":{"irs":{"r":1,"i":["133884881"],"z":["10013"]}}},
 {"s":"DESIGN VIDEO SECURITY SYSTEMS","n":[["Design Video Security Systems Corporation",1]],"x":{"dol":{"r":1,"i":["26-64LKU-CR"],"z":["11530"]}}},
 {"s":"DESIGN YOUR FUTURE","n":[["DESIGN YOUR FUTURE INC",1]],"x":{"irs":{"r":1,"i":["331868842"],"z":["10016"]}}},
@@ -1620,7 +1622,7 @@
 {"s":"DORMANN LIBRARY","n":[["DORMANN LIBRARY",1]],"x":{"irs":{"r":1,"i":["160835026"],"z":["14810"]}}},
 {"s":"DORMITION OF THE VIRGIN MARY ORTHODOX CHURCH","n":[["DORMITION OF THE VIRGIN MARY ORTHODOX CHURCH",1]],"x":{"irs":{"r":1,"i":["150626758"],"z":["13905"]}}},
 {"s":"DORMITORY AUTHORITY OF THE STATE","n":[["Dormitory Authority of the State of NY",1]],"x":{"ocp":{"r":1,"a":76000,"l":"2003-03-10","i":["20030303021"]}}},
-{"s":"DORMITORY AUTHORITY STATE","n":[["DORMITORY AUTHORITY STATE OF NY",81]],"x":{"ocp":{"r":1,"a":606911727,"l":"2022-08-17","i":["20220811118"]},"cbr":{"r":62,"a":85924561.95,"l":"2026-09-15","c":62,"i":["CT104220271403001","CT104220271400001","CT104220261416474","CT104220261416471","CT104220261415437"],"m":["Individuals and Others","Non-M/WBE"]},"cbv":{"r":18,"l":"2026-09-15","c":18,"i":["CT104220271403001","CT104220271400001","CT104220261416474","CT104220261416471","CT104220261415437"],"m":["Individuals and Others"]}}},
+{"s":"DORMITORY AUTHORITY STATE","n":[["DORMITORY AUTHORITY STATE OF NY",82]],"x":{"ocp":{"r":1,"a":606911727,"l":"2022-08-17","i":["20220811118"]},"cbr":{"r":62,"a":85924561.95,"l":"2026-09-15","c":62,"i":["CT104220271403001","CT104220271400001","CT104220261416474","CT104220261416471","CT104220261415437"],"m":["Individuals and Others","Non-M/WBE"]},"cbv":{"r":19,"l":"2026-11-23","c":19,"i":["CT104220271404262","CT104220271403001","CT104220271400001","CT104220261416474","CT104220261416471"],"m":["Individuals and Others"]}}},
 {"s":"DORON PRECISION SYSTEMS","n":[["DORON PRECISION SYSTEMS INC",5],["Doron Precision Systems Inc.",4],["Doron Precision Systems",1]],"x":{"ocp":{"r":5,"a":2179780.92,"l":"2025-11-24","i":["20251118009","20240721106","20230517106","20170105019","20090116026"]},"cbr":{"r":2,"a":173830,"l":"2025-11-17","i":["CT107220268802745","CT107220258800190"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":347662,"l":"2025-11-17","i":["CT1-072-20268802745","CT1-072-20258800190","CT1-072-20238804940"]}}},
 {"s":"DOROS YISRAEL","n":[["DOROS YISRAEL INC",1]],"x":{"irs":{"r":1,"i":["833432024"],"z":["11375"]}}},
 {"s":"DOROT","n":[["DOROT  INC",1],["DOROT INC",1]],"x":{"dbe":{"r":1,"i":["DOROT  INC"]},"irs":{"r":1,"i":["133264005"],"z":["10024"]}}},
@@ -1688,7 +1690,5 @@
 {"s":"DOUBLE A CONCRETE","n":[["DOUBLE A CONCRETE CORP.",2],["Double A Concrete Corp",1]],"x":{"sbs":{"r":1,"i":["12005"],"z":["11554"],"p":["MBE"]},"dol":{"r":1,"i":["26-639ZO-CR"],"z":["11554"]},"sca":{"r":1,"i":["DOUBLE A CONCRETE CORP"],"z":["11554"]}}},
 {"s":"DOUBLE A SPECIALTIES","n":[["Double A Specialties, Inc.",1]],"x":{"dol":{"r":1,"i":["24-63614-CR"],"z":["14062"]}}},
 {"s":"DOUBLE A VENTURES","n":[["Double A Ventures, LLC",1]],"x":{"sbs":{"r":1,"i":["12006"],"z":["10303"],"p":["MBE","WBE"]}}},
-{"s":"DOUBLE AMPUTEE TOO FOUNDATION","n":[["DOUBLE AMPUTEE TOO FOUNDATION",1]],"x":{"irs":{"r":1,"i":["332485085"],"z":["10151"]}}},
-{"s":"DOUBLE C FAMILY FOUNDATION","n":[["DOUBLE C FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["471598898"],"z":["11901"]}}},
-{"s":"DOUBLE D BAR RANCH","n":[["DOUBLE D BAR RANCH INC",1]],"x":{"irs":{"r":1,"i":["113531941"],"z":["11949"]}}}
+{"s":"DOUBLE AMPUTEE TOO FOUNDATION","n":[["DOUBLE AMPUTEE TOO FOUNDATION",1]],"x":{"irs":{"r":1,"i":["332485085"],"z":["10151"]}}}
 ]}

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":14,"first_ordinal":23324,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":14,"first_ordinal":23324,"entries":[
 {"s":"C4 FOUNDATION","n":[["C4 FOUNDATION",1]],"x":{"irs":{"r":1,"i":["465705074"],"z":["14227"]}}},
 {"s":"C4 NETWORK","n":[["C4 NETWORK",1]],"x":{"irs":{"r":1,"i":["850513908"],"z":["11207"]}}},
 {"s":"C40 CITIES CLIMATE LEADERSHIP GROUP","n":[["C40 CITIES CLIMATE LEADERSHIP GROUP INC",1]],"x":{"irs":{"r":1,"i":["900634376"],"z":["10017"]}}},
@@ -89,7 +89,7 @@
 {"s":"CADOGAN MANAGEMENT","n":[["CADOGAN MANAGEMENT LLC",1]],"x":{"dbe":{"r":1,"i":["CADOGAN MANAGEMENT LLC"]}}},
 {"s":"CADYVILLE FIRE DEPARTMENT","n":[["CADYVILLE FIRE DEPARTMENT INC",1]],"x":{"irs":{"r":1,"i":["202588616"],"z":["12918"]}}},
 {"s":"CADYVILLE PROTESTANT CEMETERY ASSOCIATION","n":[["CADYVILLE PROTESTANT CEMETERY ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["141576472"],"z":["12901"]}}},
-{"s":"CAEAR COALITION","n":[["CAEAR COALITION INC",2]],"x":{"cbr":{"r":2,"a":26000,"l":"2025-10-16","i":["CT181620261404562","CT181620251410096"],"m":["Non-M/WBE"]}}},
+{"s":"CAEAR COALITION","n":[["CAEAR COALITION INC",3]],"x":{"cbr":{"r":2,"a":26000,"l":"2025-10-16","i":["CT181620261404562","CT181620251410096"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-23","i":["CT181620271406316"],"m":["Non-M/WBE"]}}},
 {"s":"CAERUS WADSWORTH 184","n":[["CAERUS WADSWORTH 184 LLC",1]],"x":{"dbe":{"r":1,"i":["CAERUS WADSWORTH 184 LLC"]}}},
 {"s":"CAESAR R CABINESS MINISTRIES","n":[["CAESAR R CABINESS MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["853974718"],"z":["11426"]}}},
 {"s":"CAESARS ENTERPRISE SERVICES","n":[["CAESARS ENTERPRISE SERVICES LLC",1]],"x":{"dbe":{"r":1,"i":["CAESARS ENTERPRISE SERVICES LLC"]}}},
@@ -1721,6 +1721,5 @@
 {"s":"CARPATIAN CONGREGATION OF WHITE LAKE","n":[["CARPATIAN CONGREGATION OF WHITE LAKE",1]],"x":{"irs":{"r":1,"i":["753058389"],"z":["11229"]}}},
 {"s":"CARPE DIEM ENTERPRISES","n":[["Carpe Diem Enterprises Inc.",1]],"x":{"sbs":{"r":1,"i":["11313"],"z":["11746"],"p":["WBE"]}}},
 {"s":"CARPE DIEM THEATER","n":[["CARPE DIEM THEATER INC",1]],"x":{"irs":{"r":1,"i":["991086029"],"z":["12020"]}}},
-{"s":"CARPENTER CONTRACTOR ALLIANCE OF METROPOLITAN NEW YORK","n":[["CARPENTER CONTRACTOR ALLIANCE OF METROPOLITAN NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["562410898"],"z":["10016"]}}},
-{"s":"CARPENTER FAMILY CARITAS FOUNDATION","n":[["CARPENTER FAMILY CARITAS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["261588334"],"z":["14618"]}}}
+{"s":"CARPENTER CONTRACTOR ALLIANCE OF METROPOLITAN NEW YORK","n":[["CARPENTER CONTRACTOR ALLIANCE OF METROPOLITAN NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["562410898"],"z":["10016"]}}}
 ]}

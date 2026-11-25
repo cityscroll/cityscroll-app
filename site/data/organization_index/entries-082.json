@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":82,"first_ordinal":138501,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":82,"first_ordinal":138502,"entries":[
+{"s":"SWIMELITE","n":[["SWIMELITE CORP",1]],"x":{"irs":{"r":1,"i":["990647762"],"z":["11230"]}}},
+{"s":"SWIMKINS SYNCHRONIZED SWIMMING ASSOCIATION","n":[["SWIMKINS SYNCHRONIZED SWIMMING ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["161541025"],"z":["14215"]}}},
+{"s":"SWIMMERS FOR CHANGE","n":[["SWIMMERS FOR CHANGE INC",1]],"x":{"irs":{"r":1,"i":["882554988"],"z":["11201"]}}},
+{"s":"SWIMMING POOL SERVICE TECHNICIANS","n":[["Swimming Pool Service Technicians, Inc.",1]],"x":{"dol":{"r":1,"i":["26-64PS6-CR"],"z":["12549"]}}},
 {"s":"SWINERTON BUILDERS","n":[["SWINERTON BUILDERS",2],["Swinerton Builders",1]],"x":{"cbr":{"r":1,"a":14665612,"l":"2026-02-24","i":["CT104320261411837"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-02-24","i":["CT104320261411837"],"m":["Non-M/WBE"]},"dol":{"r":1,"i":["26-64ES5-CR"],"z":["94520"]}}},
 {"s":"SWING DANCE LONG ISLAND","n":[["SWING DANCE LONG ISLAND INC",1]],"x":{"irs":{"r":1,"i":["113128029"],"z":["11720"]}}},
 {"s":"SWING IT","n":[["Swing It Inc",1]],"x":{"sbs":{"r":1,"i":["103778"],"z":["10035"],"p":["MBE","WBE"]}}},
@@ -1694,8 +1698,5 @@
 {"s":"TELEDYNE ISCO","n":[["Teledyne Isco Inc.",1]],"x":{"ocp":{"r":1,"a":139247.32,"l":"2010-04-07","i":["20100330005"]}}},
 {"s":"TELEFLEX","n":[["TELEFLEX INCORPORATED",2]],"x":{"ocp":{"r":1,"a":17564750,"l":"2023-03-21","i":["20230315107"]},"ppt":{"r":1,"a":17564750,"l":"2023-03-14","i":["MA1-857-20238803978"]}}},
 {"s":"TELEMEDIA","n":[["TELEMEDIA LLC",2]],"x":{"cbr":{"r":1,"a":19990,"l":"2026-01-09","i":["CT181620261409621"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-01-09","i":["CT181620261409621"],"m":["Non-M/WBE"]}}},
-{"s":"TELEOS LEADERSHIP INSTITUTE","n":[["TELEOS LEADERSHIP INSTITUTE LLC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-03-14","i":["CT104020253113132"],"m":["Non-M/WBE"]}}},
-{"s":"TELEOSIS FOUNDATION","n":[["TELEOSIS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["943400328"],"z":["12075"]}}},
-{"s":"TELEPHONE BUSINESS SYSTEMS","n":[["TELEPHONE BUSINESS SYSTEMS, INC",1]],"x":{"dol":{"r":1,"i":["25-6HEOY-CR"],"z":["11558"]}}},
-{"s":"TELEQUEST COMMUNICATION TECHNOLOGIES","n":[["Telequest Communication Technologies, Inc.",1]],"x":{"ocp":{"r":1,"a":110000,"l":"2014-08-14","i":["20140807010"]}}}
+{"s":"TELEOS LEADERSHIP INSTITUTE","n":[["TELEOS LEADERSHIP INSTITUTE LLC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-03-14","i":["CT104020253113132"],"m":["Non-M/WBE"]}}}
 ]}

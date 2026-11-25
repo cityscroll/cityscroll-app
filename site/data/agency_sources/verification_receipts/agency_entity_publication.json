@@ -2,9 +2,9 @@
   "schema": "cityscroll.agency_entity_publication_receipt.v1",
   "publication_schema": "cityscroll.agency_entity_publication.v1",
   "method": "agency_entity_publication_v1",
-  "generated_at": "2026-11-25T10:20:15.926Z",
-  "input_digest": "sha256:42d0873f8ef1c26d23f4aef852a58387c72438a2f8fca97711353c13d9167d5c",
-  "publication_digest": "sha256:c5cdbe2ae299cce57e1676d54a4d05d0aaa2aff9dab8b5065651c211d30a4acc",
+  "generated_at": "2026-11-25T17:39:28.431Z",
+  "input_digest": "sha256:6d75b6f199d09254279828f1ccd2067e8d32d8ac672e026c766ad998a34c7d29",
+  "publication_digest": "sha256:222010e1ea59e1f79fdc1aefd2b846f9c93f26dc878db654dbe0366132b3af1a",
   "sources": [
     {
       "system": "nyc_open_data",

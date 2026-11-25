@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":87,"first_ordinal":146823,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":87,"first_ordinal":146827,"entries":[
+{"s":"TRACEY DOOR","n":[["Tracey Door Company, Inc.",1]],"x":{"dol":{"r":1,"i":["25-65Z34-CR"],"z":["14606"]}}},
 {"s":"TRACEY ROAD EQUIPMENT","n":[["Tracey Road Equipment Inc.",1]],"x":{"ocp":{"r":1,"a":81894,"l":"2003-07-01","i":["20030624010"]}}},
 {"s":"TRACEY TOWERS ASSOCIATES","n":[["TRACEY TOWERS ASSOCIATES",1]],"x":{"dbe":{"r":1,"i":["TRACEY TOWERS ASSOCIATES"]}}},
 {"s":"TRACEY TRUCKING","n":[["Tracey Trucking Inc",1]],"x":{"dol":{"r":1,"i":["24-6395P-CR"],"z":["14009"]}}},
@@ -1662,6 +1663,5 @@
 {"s":"TUXEDO VOLUNTEER AMBULANCE CORPS","n":[["TUXEDO VOLUNTEER AMBULANCE CORPS INC",1]],"x":{"irs":{"r":1,"i":["061359388"],"z":["10987"]}}},
 {"s":"TV REPUBLIKA FOUNDATION","n":[["TV REPUBLIKA FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["332265735"],"z":["10036"]}}},
 {"s":"TVERIA KOLLEL","n":[["TVERIA KOLLEL",1]],"x":{"irs":{"r":1,"i":["112676399"],"z":["11204"]}}},
-{"s":"TVHE FOUNDATION","n":[["TVHE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["922820682"],"z":["14211"]}}},
-{"s":"TVI","n":[["TVI Corporation",2]],"x":{"ocp":{"r":2,"a":613268.52,"l":"2005-01-03","i":["20041227009","20041203005"]}}}
+{"s":"TVHE FOUNDATION","n":[["TVHE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["922820682"],"z":["14211"]}}}
 ]}

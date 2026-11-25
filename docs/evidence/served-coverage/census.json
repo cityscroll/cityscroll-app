@@ -27,7 +27,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 20690,
+      "value": 20731,
       "reason": null
     },
     {
@@ -245,8 +245,8 @@
       "source_system": "checkbook_contracts",
       "source_contract_id": "checkbook-contracts",
       "registered": true,
-      "served_observations": 9594,
-      "declared_input_rows": 9594,
+      "served_observations": 9635,
+      "declared_input_rows": 9635,
       "specimen": {
         "source_observation_ref": "checkbook_contracts:contract:registered:CT100220261406692:NEW YORK STATE ASSOCIATION OF COUNTIES:prime-vendor:2025-12-03",
         "procurement_id": "procurement:contract:CT100220261406692",
@@ -634,7 +634,7 @@
             "unit_id": "properties",
             "route": "/browse/property/",
             "served_records": 133,
-            "evidence_vintage": "2026-11-24T13:42:07.000Z"
+            "evidence_vintage": "2026-11-25T13:34:12.000Z"
           },
           {
             "unit_id": "rules",

@@ -1,4 +1,10 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":40,"first_ordinal":67428,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":40,"first_ordinal":67422,"entries":[
+{"s":"HILLSIDE CEMETERY CORPORATION MULBERRY ST","n":[["HILLSIDE CEMETERY CORPORATION MULBERRY ST",1]],"x":{"irs":{"r":1,"i":["140751620"],"z":["10940"]}}},
+{"s":"HILLSIDE CENTER FOR EDUCATION","n":[["HILLSIDE CENTER FOR EDUCATION INC",1]],"x":{"irs":{"r":1,"i":["853346721"],"z":["10001"]}}},
+{"s":"HILLSIDE CHILDRENS CENTER","n":[["HILLSIDE CHILDRENS CENTER",1]],"x":{"irs":{"r":1,"i":["160743039"],"z":["14620"]}}},
+{"s":"HILLSIDE CHRISTIAN MINISTRIES","n":[["HILLSIDE CHRISTIAN MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["452673177"],"z":["12306"]}}},
+{"s":"HILLSIDE CHURCH OF CHRIST","n":[["HILLSIDE CHURCH OF CHRIST",1]],"x":{"irs":{"r":1,"i":["112493526"],"z":["11435"]}}},
+{"s":"HILLSIDE FOOD OUTREACH","n":[["HILLSIDE FOOD OUTREACH INC",1]],"x":{"irs":{"r":1,"i":["010712431"],"z":["10549"]}}},
 {"s":"HILLSIDE FOUNDATION","n":[["HILLSIDE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["161493404"],"z":["14620"]}}},
 {"s":"HILLSIDE GOSPEL CHAPEL","n":[["HILLSIDE GOSPEL CHAPEL",1]],"x":{"irs":{"r":1,"i":["237072520"],"z":["12719"]}}},
 {"s":"HILLSIDE GOURMET","d":[["Hillside Gourmet",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["2252"],"z":["10304"],"p":["MBE"]}}},
@@ -1764,7 +1770,5 @@
 {"s":"HOUSING ASSISTANCE PROGRAM OF ESSEX COUNTY","n":[["HOUSING ASSISTANCE PROGRAM OF ESSEX COUNTY",1]],"x":{"irs":{"r":1,"i":["141601549"],"z":["12932"]}}},
 {"s":"HOUSING BRIDGE","n":[["Housing Bridge, Inc.",2]],"x":{"ocp":{"r":2,"a":45106888,"l":"2016-01-05","i":["20151224028","20151222021"]}}},
 {"s":"HOUSING COMMUNITY DEVELOPMENT CONSULTING","n":[["HOUSING COMMUNITY DEVELOPMENT CONSULTING",1]],"x":{"dbe":{"r":1,"i":["HOUSING COMMUNITY DEVELOPMENT CONSULTING"]}}},
-{"s":"HOUSING CONSERVATION COORDINATORS","n":[["Housing Conservation Coordinators",11],["HOUSING CONSERVATION COORDINATORS INC",9],["Housing Conservation Coordinators, Inc.",7],["Housing Conservation Coordinators Inc",6]],"x":{"ocp":{"r":24,"a":31214356.51,"l":"2024-07-16","c":24,"i":["20240710113","20230526112","20220504122","20191202001","20190530033"]},"cbr":{"r":4,"a":22122507.5,"l":"2026-01-20","i":["CT180620268804261","CT180620268803080","CT106920258801210","CT106920258800698"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":22549539,"l":"2024-07-09","i":["CT1-069-20258800698","CT1-069-20248800177","CT1-069-20228806994"]},"dbe":{"r":1,"i":["HOUSING CONSERVATION COORDINATORS INC"]},"irs":{"r":1,"i":["510141489"],"z":["10019"]}}},
-{"s":"HOUSING CORPORATION OF THE BETA PSI CHAPTER OF ALPHA SIGMA PHI","n":[["HOUSING CORPORATION OF THE BETA PSI CHAPTER OF ALPHA SIGMA PHI",1]],"x":{"irs":{"r":1,"i":["271280048"],"z":["12180"]}}},
-{"s":"HOUSING COUNCIL AT PATHSTONE","n":[["HOUSING COUNCIL AT PATHSTONE INC",1]],"x":{"irs":{"r":1,"i":["160991179"],"z":["14607"]}}}
+{"s":"HOUSING CONSERVATION COORDINATORS","n":[["Housing Conservation Coordinators",11],["HOUSING CONSERVATION COORDINATORS INC",9],["Housing Conservation Coordinators, Inc.",7],["Housing Conservation Coordinators Inc",6]],"x":{"ocp":{"r":24,"a":31214356.51,"l":"2024-07-16","c":24,"i":["20240710113","20230526112","20220504122","20191202001","20190530033"]},"cbr":{"r":4,"a":22122507.5,"l":"2026-01-20","i":["CT180620268804261","CT180620268803080","CT106920258801210","CT106920258800698"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":22549539,"l":"2024-07-09","i":["CT1-069-20258800698","CT1-069-20248800177","CT1-069-20228806994"]},"dbe":{"r":1,"i":["HOUSING CONSERVATION COORDINATORS INC"]},"irs":{"r":1,"i":["510141489"],"z":["10019"]}}}
 ]}

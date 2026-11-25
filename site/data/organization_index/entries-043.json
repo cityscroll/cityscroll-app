@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":43,"first_ordinal":72570,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":43,"first_ordinal":72567,"entries":[
+{"s":"INNER PEACE NY","n":[["INNER PEACE NY",1]],"x":{"irs":{"r":1,"i":["993438335"],"z":["11101"]}}},
+{"s":"INNER POWER FOUNDATION","n":[["INNER POWER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["863737961"],"z":["11216"]}}},
+{"s":"INNER PTTRN","n":[["Inner Pttrn LLC",1]],"x":{"sbs":{"r":1,"i":["404054"],"z":["11102"],"p":["MBE","WBE"]}}},
 {"s":"INNER SPACE SYSTEMS","n":[["INNER SPACE SYSTEMS, INC.",4],["Inner Space Systems, Inc.",2]],"d":[["Inner Space Systems Inc.",1]],"x":{"ocp":{"r":1,"a":260643.9,"l":"2018-12-11","i":["20181204017"]},"cbr":{"r":2,"a":17050,"l":"2026-01-07","i":["CT181620261409466","CT181620261409260"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-01-07","i":["CT181620261409466","CT181620261409260"],"m":["Non-M/WBE"]},"dol":{"r":2,"v":["dba","name"],"i":["24-636EX-CR"],"z":["10509"]}}},
 {"s":"INNER TRIP REIYUKAI INTERNATIONAL","n":[["INNER TRIP REIYUKAI INTERNATIONAL",1]],"x":{"irs":{"r":1,"i":["311804179"],"z":["10007"]}}},
 {"s":"INNER-CITIES OUTREACH MINISTRIES","n":[["INNER-CITIES OUTREACH MINISTRIES",1]],"x":{"irs":{"r":1,"i":["841655276"],"z":["10039"]}}},
@@ -1423,7 +1426,5 @@
 {"s":"INTRINSIC TRANSPORTATION","n":[["Intrinsic Transportation, Inc.",1]],"x":{"sbs":{"r":1,"i":["13308"],"z":["14732"],"p":["WBE"]}}},
 {"s":"INTROSPECTION INDEPENDENT WINTERGUARD","n":[["INTROSPECTION INDEPENDENT WINTERGUARD INC",1]],"x":{"irs":{"r":1,"i":["841988154"],"z":["13760"]}}},
 {"s":"INTUEOR CONSULTING","n":[["Intueor Consulting, Inc.",1]],"x":{"sbs":{"r":1,"i":["13309"],"z":["92618"],"p":["MBE"]}}},
-{"s":"INTUIT","n":[["INTUIT INC.",1]],"x":{"ocp":{"r":1,"a":17492.9,"l":"2005-11-09","i":["20051104014"]}}},
-{"s":"INT`L BUSINESS MACHINE","n":[["Int`l Business Machine Corp.",9]],"x":{"ocp":{"r":9,"a":18597066.98,"l":"2006-11-06","c":9,"i":["20061027015","20061004002","20061004003","20060922003","20060918005"]}}},
-{"s":"INT`L BUSINESS MACHINES","n":[["Int`l Business Machines",1]],"x":{"ocp":{"r":1,"a":411524.46,"l":"2006-09-29","i":["20060922007"]}}}
+{"s":"INTUIT","n":[["INTUIT INC.",1]],"x":{"ocp":{"r":1,"a":17492.9,"l":"2005-11-09","i":["20051104014"]}}}
 ]}

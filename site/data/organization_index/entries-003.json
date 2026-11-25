@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":3,"first_ordinal":5112,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":3,"first_ordinal":5112,"entries":[
 {"s":"AIM B YISROEL","n":[["AIM B YISROEL INC",1]],"x":{"irs":{"r":1,"i":["134149817"],"z":["10977"]}}},
 {"s":"AIM CARRIERS","n":[["Aim Carriers LLC",1]],"x":{"dol":{"r":1,"i":["25-646AX-CR"],"z":["10512"]}}},
 {"s":"AIM COMMUNITY LIVING","n":[["AIM COMMUNITY LIVING INC",1]],"x":{"irs":{"r":1,"i":["823901156"],"z":["14830"]}}},
@@ -415,7 +415,7 @@
 {"s":"ALAN J AIDALA MEMORIAL FUND","n":[["ALAN J AIDALA MEMORIAL FUND INC",1]],"x":{"irs":{"r":1,"i":["422252576"],"z":["12401"]}}},
 {"s":"ALAN JOEL COMMUNICATIONS","n":[["Alan Joel Communications, Inc.",1]],"x":{"dol":{"r":1,"i":["25-6HJVO-CR"],"z":["07645"]}}},
 {"s":"ALAN L PAINTING","n":[["Alan L Painting Corp",1]],"x":{"dol":{"r":1,"i":["26-6999K-CR"],"z":["11747"]}}},
-{"s":"ALAN MARGOLIN ASSOCIATES CONSULTING ENGINEERS AND ARCHITEC","n":[["Alan Margolin & Associates Consulting Engineers and Architec",5]],"x":{"cbr":{"r":4,"a":112775,"l":"2026-05-13","i":["CT104320261415226","CT104320261405001","CT104320261400048","CT104320261400050"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-05-13","i":["CT104320261415226"],"m":["Non-M/WBE"]}}},
+{"s":"ALAN MARGOLIN ASSOCIATES CONSULTING ENGINEERS AND ARCHITEC","n":[["Alan Margolin & Associates Consulting Engineers and Architec",6]],"x":{"cbr":{"r":4,"a":112775,"l":"2026-05-13","i":["CT104320261415226","CT104320261405001","CT104320261400048","CT104320261400050"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-23","i":["CT104320271407188","CT104320261415226"],"m":["Non-M/WBE"]}}},
 {"s":"ALAN MARGOLIN ASSOCIATES CONSULTING ENGINEERS AND ARCHITECTS D P C","n":[["ALAN MARGOLIN & ASSOCIATES CONSULTING ENGINEERS AND ARCHITECTS, D.P.C.",1]],"x":{"dol":{"r":1,"i":["25-64LN4-CR"],"z":["10170"]}}},
 {"s":"ALAN OS CAST FOR A CAUSE","n":[["ALAN OS CAST FOR A CAUSE INC",1]],"x":{"irs":{"r":1,"i":["332885076"],"z":["11520"]}}},
 {"s":"ALAN R LICHTENSTEIN","n":[["ALAN R. LICHTENSTEIN",1]],"x":{"dbe":{"r":1,"i":["ALAN R. LICHTENSTEIN"]}}},

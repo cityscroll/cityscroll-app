@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":68,"first_ordinal":114898,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":68,"first_ordinal":114900,"entries":[
+{"s":"POLICE EMERALD SOCIETY OF THE HUDSON VALLEY NY","n":[["POLICE EMERALD SOCIETY OF THE HUDSON VALLEY NY",1]],"x":{"irs":{"r":1,"i":["460916053"],"z":["12561"]}}},
 {"s":"POLICE EMERALD SOCIETY OF WESTCHESTER","n":[["POLICE EMERALD SOCIETY OF WESTCHESTER",1]],"x":{"irs":{"r":1,"i":["133047430"],"z":["10532"]}}},
 {"s":"POLICE EXECUTIVE RESEARCH FORUM","n":[["POLICE EXECUTIVE RESEARCH FORUM",9]],"x":{"ocp":{"r":3,"a":283950,"l":"2025-05-08","i":["20250502011","20240322109","20220517112"]},"cbr":{"r":2,"a":195000,"l":"2025-05-01","i":["CT105620258807309","CT105620251406196"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":416300,"l":"2025-05-01","i":["CT1-056-20258807309","CT1-056-20248805542","CT1-056-20228807641"]},"dbe":{"r":1,"i":["POLICE EXECUTIVE RESEARCH FORUM"]}}},
 {"s":"POLICE FIRE MEMORIAL FOUNDATION OF YONKERS","n":[["POLICE FIRE MEMORIAL FOUNDATION OF YONKERS INC",1]],"x":{"irs":{"r":1,"i":["821767675"],"z":["10704"]}}},
@@ -1633,7 +1634,5 @@
 {"s":"PRODUCTIVE SOLUTIONS","n":[["Productive Solutions Inc",1]],"x":{"ocp":{"r":1,"a":40000,"l":"2003-10-24","i":["20031017011"]}}},
 {"s":"PRODUCTS UNLIMITED","n":[["PRODUCTS UNLIMITED INC.",1]],"x":{"ocp":{"r":1,"a":108224.5,"l":"2013-11-19","i":["20131112009"]}}},
 {"s":"PROENGIN","n":[["PROENGIN INC",2]],"x":{"cbr":{"r":1,"a":96422.35,"l":"2026-05-22","i":["CT105720261415616"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-05-22","i":["CT105720261415616"],"m":["Non-M/WBE"]}}},
-{"s":"PROEST","n":[["PROEST INC",1]],"x":{"dbe":{"r":1,"i":["PROEST INC"]}}},
-{"s":"PROF EDGAR H LEHRMAN MEMORIAL FDTN FOR ETHICS RELGN SCNCE ARTS","n":[["PROF EDGAR H LEHRMAN MEMORIAL FDTN FOR ETHICS RELGN SCNCE & ARTS INC",1]],"x":{"irs":{"r":1,"i":["112916112"],"z":["11580"]}}},
-{"s":"PROFABULA","n":[["Profabula, LLC",1]],"x":{"sbs":{"r":1,"i":["356681"],"z":["11101"],"p":["MBE"]}}}
+{"s":"PROEST","n":[["PROEST INC",1]],"x":{"dbe":{"r":1,"i":["PROEST INC"]}}}
 ]}

@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":35,"first_ordinal":58877,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":35,"first_ordinal":58875,"entries":[
+{"s":"GENUINE PARTS","n":[["GENUINE PARTS COMPANY",6]],"x":{"ocp":{"r":3,"a":450181535,"l":"2024-07-16","i":["20240710102","20171229007","20130321009"]},"cbr":{"r":1,"a":96000000,"l":"2024-07-09","i":["MA185720248807720"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":96000000,"l":"2024-07-09","i":["MA1-857-20248807720"]},"dbe":{"r":1,"i":["GENUINE PARTS COMPANY"]}}},
+{"s":"GENUINE PLUMBING AND HEATING","n":[["Genuine Plumbing and Heating LLC",1]],"d":[["Genuine Plumbing and Heating LLC",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["25-64K36-CR"],"z":["10309"]}}},
 {"s":"GENUINE PLUMBING HEATING","n":[["Genuine Plumbing & Heating, LLC",1]],"x":{"sca":{"r":1,"i":["GENUINE PLUMBING & HEATING, LLC"],"z":["10309"]}}},
 {"s":"GENUINEXS","n":[["GenuineXs LLC",1]],"x":{"sbs":{"r":1,"i":["328604"],"z":["11023"],"p":["MBE","WBE"]}}},
 {"s":"GENWE INVESTS","n":[["GenWe Invests LLC",1]],"x":{"sbs":{"r":1,"i":["394197"],"z":["11236"],"p":["MBE","WBE"]}}},
@@ -1732,10 +1734,5 @@
 {"s":"GODS UPPER ROOM INTERNATIONAL CHURCH","n":[["GODS UPPER ROOM INTERNATIONAL CHURCH",1]],"x":{"irs":{"r":1,"i":["611695542"],"z":["10701"]}}},
 {"s":"GODS VISION MINISTRIES","n":[["GODS VISION MINISTRIES",1]],"x":{"irs":{"r":1,"i":["900776282"],"z":["11967"]}}},
 {"s":"GODS VISIONS MINISTRIES","n":[["GODS VISIONS MINISTRIES",1]],"x":{"irs":{"r":1,"i":["202670783"],"z":["14621"]}}},
-{"s":"GODS VOICE MINISTRIES","n":[["GODS VOICE MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["832262105"],"z":["14411"]}}},
-{"s":"GODS WATCHTOWER OF PRAYER","n":[["GODS WATCHTOWER OF PRAYER INC",1]],"x":{"irs":{"r":1,"i":["311558648"],"z":["11207"]}}},
-{"s":"GODS WAY CHURCH OF JESUS","n":[["GODS WAY CHURCH OF JESUS",1]],"x":{"irs":{"r":1,"i":["161439692"],"z":["13205"]}}},
-{"s":"GODS WAY COMMUNITY ADVENTIST CHURCH","n":[["GODS WAY COMMUNITY ADVENTIST CHURCH INC",1]],"x":{"irs":{"r":1,"i":["460996894"],"z":["11230"]}}},
-{"s":"GODS WAY FOUNDATION","n":[["GODS WAY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["823390958"],"z":["11520"]}}},
-{"s":"GODS WAY MINISTRIES","n":[["GODS WAY MINISTRIES",1]],"x":{"irs":{"r":1,"i":["562565978"],"z":["12601"]}}}
+{"s":"GODS VOICE MINISTRIES","n":[["GODS VOICE MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["832262105"],"z":["14411"]}}}
 ]}

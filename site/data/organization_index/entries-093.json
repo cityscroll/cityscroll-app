@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":93,"first_ordinal":156739,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":93,"first_ordinal":156744,"entries":[
 {"s":"WILDHEART SANCTUARY OF CNY","n":[["WILDHEART SANCTUARY OF CNY INC",1]],"x":{"irs":{"r":1,"i":["932947250"],"z":["13209"]}}},
 {"s":"WILDKALE","d":[["Wildkale",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["339616"],"z":["10282"],"p":["WBE"]}}},
 {"s":"WILDKALE COM","n":[["WILDKALE.COM INC.",1]],"x":{"dbe":{"r":1,"i":["WILDKALE.COM INC."]}}},
@@ -391,7 +391,7 @@
 {"s":"WILSHIRE HOSPITALITY","n":[["Wilshire Hospitality, LLC",1]],"x":{"sbs":{"r":1,"i":["363945"],"z":["11101"],"p":["MBE"]}}},
 {"s":"WILSON ADVANCEMENT FOUNDATION","n":[["WILSON ADVANCEMENT FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["812742145"],"z":["14172"]}}},
 {"s":"WILSON ALL SPORTS BOOSTER CLUB","n":[["WILSON ALL SPORTS BOOSTER CLUB",1]],"x":{"irs":{"r":1,"i":["061788966"],"z":["14172"]}}},
-{"s":"WILSON AVE DAY CARE","n":[["WILSON AVE DAY CARE LLC",1]],"x":{"dbe":{"r":1,"i":["WILSON AVE DAY CARE LLC"]}}},
+{"s":"WILSON AVE DAY CARE","n":[["WILSON AVE DAY CARE LLC",2]],"x":{"cbv":{"r":1,"l":"2026-11-23","i":["CT104020279761250"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["WILSON AVE DAY CARE LLC"]}}},
 {"s":"WILSON CENTER","n":[["WILSON CENTER INC",1]],"x":{"irs":{"r":1,"i":["263966227"],"z":["14031"]}}},
 {"s":"WILSON CENTRAL SCHOOL ALUMNI ASSOCIATION","n":[["WILSON CENTRAL SCHOOL ALUMNI ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["862753081"],"z":["14172"]}}},
 {"s":"WILSON CHAN","n":[["Wilson & Chan, LLP",1]],"x":{"sbs":{"r":1,"i":["3294"],"z":["10017"],"p":["MBE"]}}},
@@ -1746,6 +1746,5 @@
 {"s":"WORLD TRADE CENTER PERFORMING ARTS CENTER","n":[["WORLD TRADE CENTER PERFORMING ARTS CENTER INC",1]],"x":{"irs":{"r":1,"i":["455316035"],"z":["10006"]}}},
 {"s":"WORLD TRADE CENTERS ASSOCIATION","n":[["WORLD TRADE CENTERS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["132644507"],"z":["10006"]}}},
 {"s":"WORLD TZURBA INSTITUTE","n":[["WORLD TZURBA INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["873229619"],"z":["11516"]}}},
-{"s":"WORLD UNITED BUDDHIST ASSOCIATION PU XIAN TEMPLE","n":[["WORLD UNITED BUDDHIST ASSOCIATION PU XIAN TEMPLE INC",1]],"x":{"irs":{"r":1,"i":["201762865"],"z":["10002"]}}},
-{"s":"WORLD UPSIDE DOWN INTERNATIONAL","n":[["WORLD UPSIDE DOWN INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["872416252"],"z":["13760"]}}}
+{"s":"WORLD UNITED BUDDHIST ASSOCIATION PU XIAN TEMPLE","n":[["WORLD UNITED BUDDHIST ASSOCIATION PU XIAN TEMPLE INC",1]],"x":{"irs":{"r":1,"i":["201762865"],"z":["10002"]}}}
 ]}

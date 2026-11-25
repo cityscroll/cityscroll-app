@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":86,"first_ordinal":145045,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":86,"first_ordinal":145049,"entries":[
+{"s":"THOMAS TRUMP CONSTRUCTION","n":[["Thomas Trump Construction LLC",1]],"x":{"dol":{"r":1,"i":["25-6HD69-CR"],"z":["13083"]}}},
 {"s":"THOMAS WHITE JR FOUNDATION","n":[["THOMAS WHITE JR FOUNDATION INC",2],["THOMAS WHITE JR. FOUNDATION INC",1]],"x":{"cbr":{"r":1,"a":420000,"l":"2024-08-29","i":["CT126020258801951"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["THOMAS WHITE JR. FOUNDATION INC"]},"irs":{"r":1,"i":["112534753"],"z":["11433"]}}},
 {"s":"THOMASHEFSKY PROJECT","n":[["THOMASHEFSKY PROJECT",1]],"x":{"irs":{"r":1,"i":["943305386"],"z":["10017"]}}},
 {"s":"THOMORIAL A M E ZION CHURCH","n":[["THOMORIAL A M E ZION CHURCH",1]],"x":{"irs":{"r":1,"i":["300053849"],"z":["13205"]}}},
@@ -1775,6 +1776,5 @@
 {"s":"TRACE MEDIA","n":[["TRACE MEDIA INC",1]],"x":{"irs":{"r":1,"i":["474175513"],"z":["11215"]}}},
 {"s":"TRACE OF HOPE","n":[["TRACE OF HOPE",1]],"x":{"irs":{"r":1,"i":["873672208"],"z":["10003"]}}},
 {"s":"TRACEABILITY INSTITUTE","n":[["TRACEABILITY INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["333241138"],"z":["10003"]}}},
-{"s":"TRACEY D MILLER ASSOCIATES","n":[["Tracey D. Miller Associates LLC",1]],"x":{"sbs":{"r":1,"i":["357554"],"z":["14608"],"p":["MBE","WBE"]}}},
-{"s":"TRACEY DOOR","n":[["Tracey Door Company, Inc.",1]],"x":{"dol":{"r":1,"i":["25-65Z34-CR"],"z":["14606"]}}}
+{"s":"TRACEY D MILLER ASSOCIATES","n":[["Tracey D. Miller Associates LLC",1]],"x":{"sbs":{"r":1,"i":["357554"],"z":["14608"],"p":["MBE","WBE"]}}}
 ]}

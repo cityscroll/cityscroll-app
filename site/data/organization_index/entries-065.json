@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":65,"first_ordinal":109775,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":65,"first_ordinal":109776,"entries":[
+{"s":"ORPHEUS CHAMBER ORCHESTRA","n":[["ORPHEUS CHAMBER ORCHESTRA INC",1]],"x":{"irs":{"r":1,"i":["237362572"],"z":["10027"]}}},
+{"s":"ORPHEUS CHORALE","n":[["ORPHEUS CHORALE",1]],"x":{"irs":{"r":1,"i":["462702149"],"z":["14804"]}}},
 {"s":"ORPHEUS FOUNDATION FOR GREEK MUSIC AND THE ARTS","n":[["ORPHEUS FOUNDATION FOR GREEK MUSIC AND THE ARTS INC",1]],"x":{"irs":{"r":1,"i":["263721984"],"z":["11102"]}}},
 {"s":"ORPHEUS THEATRE","n":[["ORPHEUS THEATRE INC",1]],"x":{"irs":{"r":1,"i":["161259528"],"z":["13820"]}}},
 {"s":"ORPRA","n":[["ORPRA INC",1]],"x":{"irs":{"r":1,"i":["853565238"],"z":["11520"]}}},
@@ -1703,7 +1705,5 @@
 {"s":"PARKWAY EXTERMINATING","n":[["Parkway Exterminating Co. Inc.",1]],"x":{"dol":{"r":1,"i":["26-64k8v-cr"],"z":["11040"]}}},
 {"s":"PARKWAY HOUSING DEVELOPMENT FUND","n":[["PARKWAY HOUSING DEVELOPMENT FUND COMPANY INC",2]],"x":{"dbe":{"r":1,"i":["PARKWAY HOUSING DEVELOPMENT FUND COMPANY INC"]},"irs":{"r":1,"i":["272397268"],"z":["10025"]}}},
 {"s":"PARKWAY PEST SERVICE","d":[["Parkway Pest Service",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-64k8v-cr"],"z":["11040"]}}},
-{"s":"PARKWAY VILLAGE HISTORICAL SOCIETY","n":[["PARKWAY VILLAGE HISTORICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["510428659"],"z":["11435"]}}},
-{"s":"PARKWAY-STUYVESANT COMMUNITY HOUSING COUNCIL","n":[["PARKWAY-STUYVESANT COMMUNITY & HOUSING COUNCIL INC",1]],"x":{"irs":{"r":1,"i":["112585004"],"z":["11216"]}}},
-{"s":"PARKWAYNYC","n":[["PARKWAYNYC INC",1]],"x":{"irs":{"r":1,"i":["922591949"],"z":["11220"]}}}
+{"s":"PARKWAY VILLAGE HISTORICAL SOCIETY","n":[["PARKWAY VILLAGE HISTORICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["510428659"],"z":["11435"]}}}
 ]}

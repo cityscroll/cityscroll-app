@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":16,"first_ordinal":26623,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":16,"first_ordinal":26622,"entries":[
+{"s":"CENTRAL BROOKLYN ECONOMIC DEVELOPMENT","n":[["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORP",2],["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORPORATION",1],["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORPORATION INC",1]],"x":{"ocp":{"r":1,"a":823854,"l":"2024-04-22","i":["20240416110"]},"cbr":{"r":1,"a":29375,"l":"2024-08-05","i":["CT126020248803713"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORPORATION"]},"irs":{"r":1,"i":["112981085"],"z":["11212"]}}},
 {"s":"CENTRAL BROOKLYN JAZZ CONSORTIUM","n":[["CENTRAL BROOKLYN JAZZ CONSORTIUM",1]],"x":{"irs":{"r":1,"i":["113549224"],"z":["11202"]}}},
 {"s":"CENTRAL BROOKLYN LIONS FOUNDATION","n":[["CENTRAL BROOKLYN LIONS FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["800504790"],"z":["11221"]}}},
 {"s":"CENTRAL BROOKLYN SPORTS CLUB","n":[["CENTRAL BROOKLYN SPORTS CLUB INC",1]],"x":{"irs":{"r":1,"i":["832605595"],"z":["12207"]}}},

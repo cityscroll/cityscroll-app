@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":80,"first_ordinal":135244,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":80,"first_ordinal":135245,"entries":[
+{"s":"ST RITAS HOME","n":[["ST RITAS HOME",1]],"x":{"irs":{"r":1,"i":["161569627"],"z":["14211"]}}},
+{"s":"ST ROCCO SOCIETY","n":[["ST ROCCO SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["141275637"],"z":["12508"]}}},
+{"s":"ST ROSALIA S ROMAN CATHOLIC CHURCH","n":[["ST. ROSALIA'S ROMAN CATHOLIC CHURCH",1]],"x":{"dbe":{"r":1,"i":["ST. ROSALIA'S ROMAN CATHOLIC CHURCH"]}}},
 {"s":"ST ROSALIAS ROMAN CATHOLIC CHURCH","n":[["ST ROSALIAS ROMAN CATHOLIC CHURCH",1]],"x":{"irs":{"r":1,"i":["002022084"],"z":["11219"]}}},
 {"s":"ST ROSE ART DEPARTMENT FOUNDERS SCHOLARSHIP","n":[["ST ROSE ART DEPARTMENT FOUNDERS SCHOLARSHIP INC",1]],"x":{"irs":{"r":1,"i":["993193737"],"z":["12020"]}}},
 {"s":"ST ROSE CHURCH","n":[["ST ROSE CHURCH",1]],"x":{"irs":{"r":1,"i":["160754670"],"z":["14485"]}}},
@@ -1566,8 +1569,5 @@
 {"s":"STRAUSS-CREATIVE FINISHES","n":[["Strauss-Creative Finishes, Inc",1],["Strauss-Creative Finishes, Inc.",1]],"x":{"dol":{"r":1,"i":["25-65Y4J-CR"],"z":["10001"]},"sca":{"r":1,"i":["STRAUSS-CREATIVE FINISHES, INC."],"z":["10001"]}}},
 {"s":"STRAVINSKY INSTITUTE FOUNDATION","n":[["STRAVINSKY INSTITUTE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["453126544"],"z":["10471"]}}},
 {"s":"STRAWBERRY LAKE PRODUCTIONS","n":[["STRAWBERRY LAKE PRODUCTIONS INC",1]],"x":{"irs":{"r":1,"i":["113113539"],"z":["11530"]}}},
-{"s":"STRAWBERRY PATCH DAYCARE CENTER","n":[["STRAWBERRY PATCH DAYCARE CENTER INC",3]],"x":{"cbr":{"r":1,"a":2367090,"l":"2026-09-04","i":["CT104020279758025"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-04","i":["CT104020279758025"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["STRAWBERRY PATCH DAYCARE CENTER INC"]}}},
-{"s":"STRAWBERRY WISDOM","n":[["STRAWBERRY WISDOM INC",1]],"x":{"irs":{"r":1,"i":["392999099"],"z":["12534"]}}},
-{"s":"STRAWTOWN ART GARDEN STUDIO","n":[["STRAWTOWN ART & GARDEN STUDIO",1]],"x":{"irs":{"r":1,"i":["453205679"],"z":["10923"]}}},
-{"s":"STRAY CAT NETWORK","n":[["STRAY CAT NETWORK INC",1]],"x":{"irs":{"r":1,"i":["853755645"],"z":["12571"]}}}
+{"s":"STRAWBERRY PATCH DAYCARE CENTER","n":[["STRAWBERRY PATCH DAYCARE CENTER INC",3]],"x":{"cbr":{"r":1,"a":2367090,"l":"2026-09-04","i":["CT104020279758025"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-04","i":["CT104020279758025"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["STRAWBERRY PATCH DAYCARE CENTER INC"]}}}
 ]}

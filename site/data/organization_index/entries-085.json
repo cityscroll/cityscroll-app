@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":85,"first_ordinal":143361,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":85,"first_ordinal":143363,"entries":[
+{"s":"THE OLIVE BRANCH","n":[["THE OLIVE BRANCH INC",1]],"x":{"irs":{"r":1,"i":["823095284"],"z":["11746"]}}},
+{"s":"THE OLIVE BRANCH CONNECTION","n":[["THE OLIVE BRANCH CONNECTION",1]],"x":{"irs":{"r":1,"i":["943465381"],"z":["12309"]}}},
+{"s":"THE OLIVER SCHOLARS PROGRAM","n":[["THE OLIVER SCHOLARS PROGRAM INC",1]],"x":{"irs":{"r":1,"i":["133248876"],"z":["10005"]}}},
 {"s":"THE OLYMPIC GLOVE AND SAFETY","n":[["THE OLYMPIC GLOVE  and  SAFETY CO",1],["The Olympic Glove  and  Safety Co Inc",1],["The Olympic Glove  and  Safety Co, Inc.",1],["The Olympic Glove  and  Safety Co.  Inc",1],["The Olympic Glove  and  Safety Co.,  Inc.",1],["The Olympic Glove And Safety Co. Inc.",1]],"x":{"ocp":{"r":6,"a":1725063.62,"l":"2017-10-30","c":6,"i":["20171023020","20130816016","20101025022","20091123006","20091021014"]}}},
 {"s":"THE OLYMPIC GLOVE AND SAFETY C O","n":[["The Olympic Glove  and  Safety C O, Inc.",1]],"x":{"ocp":{"r":1,"a":41184,"l":"2007-04-12","i":["20070405006"]}}},
 {"s":"THE OLYMPIC GLOVE SAFETY","n":[["THE OLYMPIC GLOVE & SAFETY CO. INC.",4],["THE OLYMPIC GLOVE & SAFETY CO. INC",1],["The Olympic Glove & Safety Company Inc.",1]],"x":{"ocp":{"r":1,"a":774550,"l":"2020-11-24","i":["20201117103"]},"cbr":{"r":4,"a":38086.85,"l":"2024-12-30","i":["CT184620258805155","CT181620251407726","CT184620258804192","CT184620258803963"],"m":["Women (Non-Minority)"]},"sbs":{"r":1,"i":["93"],"z":["07407"],"p":["WBE"]}}},
@@ -1681,6 +1684,5 @@
 {"s":"THOMAS SHIPMAN SR MEMORIAL YOUTH CENTER","n":[["THOMAS SHIPMAN SR MEMORIAL YOUTH CENTER INC",1]],"x":{"irs":{"r":1,"i":["141794204"],"z":["12946"]}}},
 {"s":"THOMAS SPORTS GROUP","n":[["THOMAS SPORTS GROUP INC",1]],"x":{"irs":{"r":1,"i":["270033076"],"z":["12304"]}}},
 {"s":"THOMAS TAKE ON LIFE","n":[["THOMAS TAKE ON LIFE INC",1]],"x":{"irs":{"r":1,"i":["881469707"],"z":["11520"]}}},
-{"s":"THOMAS TREMBLAY","n":[["THOMAS TREMBLAY",3],["Thomas Tremblay",3]],"x":{"ocp":{"r":3,"a":144408,"l":"2025-07-18","i":["20250714014","20231014104","20210611101"]},"cbr":{"r":1,"a":54000,"l":"2025-07-11","i":["CT105620268800921"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":94008,"l":"2025-07-11","i":["CT1-056-20268800921","CT1-056-20218801852"]}}},
-{"s":"THOMAS TRUMP CONSTRUCTION","n":[["Thomas Trump Construction LLC",1]],"x":{"dol":{"r":1,"i":["25-6HD69-CR"],"z":["13083"]}}}
+{"s":"THOMAS TREMBLAY","n":[["THOMAS TREMBLAY",3],["Thomas Tremblay",3]],"x":{"ocp":{"r":3,"a":144408,"l":"2025-07-18","i":["20250714014","20231014104","20210611101"]},"cbr":{"r":1,"a":54000,"l":"2025-07-11","i":["CT105620268800921"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":94008,"l":"2025-07-11","i":["CT1-056-20268800921","CT1-056-20218801852"]}}}
 ]}

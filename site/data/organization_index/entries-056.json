@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":56,"first_ordinal":94683,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":56,"first_ordinal":94684,"entries":[
+{"s":"MFS INSTITUTIONAL ADVISORS","n":[["MFS INSTITUTIONAL ADVISORS INC",3],["MFS Institutional Advisors, Inc.",1]],"x":{"ocp":{"r":1,"a":17331000,"l":"2022-03-28","i":["20220321111"]},"cbr":{"r":2,"a":25462698.22,"l":"2026-01-12","i":["CT101520261404607","CT101520251407396"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["MFS INSTITUTIONAL ADVISORS INC"]}}},
+{"s":"MFY LEGAL SERVICES","n":[["MFY Legal Services, Inc.",11],["MFY Legal Services",3],["MFY Legal Services Inc.",3],["MFY LEGAL SERVICES INC",1],["MFY Legal Services, Inc",1],["Mfy Legal Services Inc",1]],"x":{"ocp":{"r":19,"a":17038080,"l":"2016-08-26","c":19,"i":["20160812023","20160620016","20160615035","20160302014","20150602003"]},"dbe":{"r":1,"i":["MFY LEGAL SERVICES INC"]}}},
 {"s":"MG CAR CLUB OF CENTRAL NY","n":[["MG CAR CLUB OF CENTRAL NY INC",1]],"x":{"irs":{"r":1,"i":["161586783"],"z":["13039"]}}},
 {"s":"MG CAUSE","n":[["MG CAUSE",1]],"x":{"irs":{"r":1,"i":["414426940"],"z":["12208"]}}},
 {"s":"MG CONSTRUCTION GROUP","n":[["MG CONSTRUCTION GROUP INC",1],["MG CONSTRUCTION GROUP INC.",1]],"x":{"sbs":{"r":1,"i":["370843"],"z":["11003"],"p":["MBE"]},"dol":{"r":1,"i":["24-648PR-CR"],"z":["11003"]}}},
@@ -1718,8 +1720,5 @@
 {"s":"MITCHELL AND ELAINE YANOW CHARITABLE TR 052097","n":[["MITCHELL AND ELAINE YANOW CHARITABLE TR 052097",1]],"x":{"irs":{"r":1,"i":["137111098"],"z":["10005"]}}},
 {"s":"MITCHELL AND KAREN KUFLIK CHARITABLE FOUNDATION","n":[["MITCHELL AND KAREN KUFLIK CHARITABLE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["137197004"],"z":["10528"]}}},
 {"s":"MITCHELL AND TITUS","n":[["Mitchell  and  Titus LLP",2]],"x":{"ocp":{"r":2,"a":237250,"l":"2020-01-08","i":["20191231010","20160701026"]}}},
-{"s":"MITCHELL CANGELOSI SCHOLARSHIP FUND","n":[["MITCHELL CANGELOSI SCHOLARSHIP FUND INC",1]],"x":{"irs":{"r":1,"i":["262077330"],"z":["11769"]}}},
-{"s":"MITCHELL COMMUNICATIONS","n":[["Mitchell Communications Corporation",1]],"x":{"sbs":{"r":1,"i":["3321"],"z":["08831"],"p":["MBE"]}}},
-{"s":"MITCHELL GIURGOLA ARCHITECTS","n":[["MITCHELL GIURGOLA ARCHITECTS LLP",1],["Mitchell Giurgola Architects LLP",1]],"x":{"dbe":{"r":1,"i":["MITCHELL GIURGOLA ARCHITECTS LLP"]},"sca":{"r":1,"i":["MITCHELL GIURGOLA ARCHITECTS LLP"],"z":["10036"]}}},
-{"s":"MITCHELL HOLLOW MISSION CHURCH INC C O REV D OVERTON","n":[["MITCHELL HOLLOW MISSION CHURCH INC C O REV D OVERTON",1]],"x":{"irs":{"r":1,"i":["141595040"],"z":["12496"]}}}
+{"s":"MITCHELL CANGELOSI SCHOLARSHIP FUND","n":[["MITCHELL CANGELOSI SCHOLARSHIP FUND INC",1]],"x":{"irs":{"r":1,"i":["262077330"],"z":["11769"]}}}
 ]}

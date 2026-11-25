@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":13,"first_ordinal":21601,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":13,"first_ordinal":21601,"entries":[
 {"s":"BROOKLYN STAR DAYCARE","n":[["BROOKLYN STAR DAYCARE INC",3]],"x":{"cbr":{"r":1,"a":1906740,"l":"2026-09-17","i":["CT104020279758674"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-17","i":["CT104020279758674"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["BROOKLYN STAR DAYCARE INC"]}}},
 {"s":"BROOKLYN STEEL ORCHESTRA","n":[["BROOKLYN STEEL ORCHESTRA INC",1]],"x":{"irs":{"r":1,"i":["475210094"],"z":["11226"]}}},
 {"s":"BROOKLYN STEPPERS","n":[["BROOKLYN STEPPERS",1]],"x":{"irs":{"r":1,"i":["271223035"],"z":["11201"]}}},
@@ -1583,7 +1583,7 @@
 {"s":"C G CONSTRUCTION CO NY","n":[["C & G CONSTRUCTION CO NY INC",1]],"x":{"sbs":{"r":1,"i":["338246"],"z":["11434"],"p":["MBE"]}}},
 {"s":"C G JUNG FOUNDATION FOR ANALYTICAL PSYCHOLOGY","n":[["C G JUNG FOUNDATION FOR ANALYTICAL PSYCHOLOGY INC",1]],"x":{"irs":{"r":1,"i":["136102804"],"z":["10016"]}}},
 {"s":"C G LANDSCAPING TREE SERVICE","n":[["C & G LANDSCAPING TREE SERVICE, INC.",1]],"x":{"dol":{"r":1,"i":["25-6H7SL-CR"],"z":["08741"]}}},
-{"s":"C GLOBAL CONSULTING","n":[["C GLOBAL CONSULTING LLC",4]],"x":{"cbr":{"r":3,"a":26700,"l":"2026-02-12","i":["CT185620268805122","CT185620268802044","CT185620258803422"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-02-12","i":["CT185620268805122"],"m":["Non-M/WBE"]}}},
+{"s":"C GLOBAL CONSULTING","n":[["C GLOBAL CONSULTING LLC",5]],"x":{"cbr":{"r":3,"a":26700,"l":"2026-02-12","i":["CT185620268805122","CT185620268802044","CT185620258803422"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-23","i":["CT185620278802441","CT185620268805122"],"m":["Non-M/WBE"]}}},
 {"s":"C H A T FOR DEMOCRACY","n":[["C H A T FOR DEMOCRACY INC",1]],"x":{"irs":{"r":1,"i":["393561277"],"z":["11228"]}}},
 {"s":"C H COOLING AND HEATING","n":[["C&H COOLING AND HEATING INC.",1]],"x":{"dol":{"r":1,"i":["25-6H6SV-CR"],"z":["13733"]}}},
 {"s":"C H GRAHAM HOSE VOLUNTEER FIRE","n":[["C H GRAHAM HOSE VOLUNTEER FIRE COMPANY INC",1]],"x":{"irs":{"r":1,"i":["261507306"],"z":["12155"]}}},

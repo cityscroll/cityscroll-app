@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":7,"first_ordinal":11484,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":7,"first_ordinal":11484,"entries":[
 {"s":"ART OF ENTERTAINMENT MEDIA","n":[["Art Of Entertainment Media Inc",1]],"x":{"sbs":{"r":1,"i":["369005"],"z":["11216"],"p":["MBE"]}}},
 {"s":"ART OF EXPRESSION","n":[["ART OF EXPRESSION INC",1]],"x":{"irs":{"r":1,"i":["462375429"],"z":["10001"]}}},
 {"s":"ART OF FACES","n":[["Art of Faces LLC",1]],"x":{"sbs":{"r":1,"i":["370825"],"z":["11201"],"p":["MBE","WBE"]}}},
@@ -165,7 +165,7 @@
 {"s":"ARTISIAN SCHOOL TRUST UA FBO JOHN SWEET LECTURE FUND","n":[["ARTISIAN SCHOOL TRUST UA FBO JOHN SWEET LECTURE FUND",1]],"x":{"irs":{"r":1,"i":["156016293"],"z":["13815"]}}},
 {"s":"ARTIST ARMORY","n":[["ARTIST ARMORY INC",1]],"x":{"irs":{"r":1,"i":["852534058"],"z":["10304"]}}},
 {"s":"ARTIST AS CITIZEN","n":[["ARTIST AS CITIZEN INC",1]],"x":{"irs":{"r":1,"i":["203856596"],"z":["12409"]}}},
-{"s":"ARTIST CONNECT","n":[["ARTIST CONNECT INC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-11-10","i":["CT104020263047558"],"m":["Non-M/WBE"]}}},
+{"s":"ARTIST CONNECT","n":[["ARTIST CONNECT INC",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-11-10","i":["CT104020263047558"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-23","i":["CT104020273051084"],"m":["Asian American"]}}},
 {"s":"ARTIST EXPERIMENT","n":[["ARTIST EXPERIMENT INC",1]],"x":{"irs":{"r":1,"i":["850575718"],"z":["11105"]}}},
 {"s":"ARTIST MANAGEMENT ASSOCIATION","n":[["ARTIST MANAGEMENT ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["853078756"],"z":["11205"]}}},
 {"s":"ARTIST ORGANIZED ART","n":[["ARTIST ORGANIZED ART INC",1]],"x":{"irs":{"r":1,"i":["262126105"],"z":["10011"]}}},

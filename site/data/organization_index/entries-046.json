@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":46,"first_ordinal":77400,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":46,"first_ordinal":77397,"entries":[
+{"s":"JLEE MONTESSORI","n":[["JLEE MONTESSORI INC",3]],"x":{"cbr":{"r":1,"a":4898352,"l":"2026-10-03","i":["CT104020279759939"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-10-03","i":["CT104020279759939"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["JLEE MONTESSORI INC"]}}},
+{"s":"JLEGACY GIVE BACK FOUNDATION","n":[["JLEGACY GIVE BACK FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["872390346"],"z":["11233"]}}},
+{"s":"JLENS","n":[["JLENS",1]],"x":{"irs":{"r":1,"i":["873297460"],"z":["10158"]}}},
+{"s":"JLEW FOREVER FOUNDATION","n":[["JLEW FOREVER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["872598695"],"z":["11530"]}}},
 {"s":"JLG CHARITABLE FOUNDATION","n":[["JLG CHARITABLE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["356818239"],"z":["11230"]}}},
 {"s":"JLGMOPCO24","n":[["JLGMOPCO24 CORP.",1]],"x":{"dol":{"r":1,"i":["25-6H9BA-CR"],"z":["10604"]}}},
 {"s":"JLGS FOUNDATION","n":[["JLGS FOUNDATION CORP",1]],"x":{"irs":{"r":1,"i":["854013047"],"z":["10920"]}}},
@@ -11,8 +15,8 @@
 {"s":"JLJIV ENTERPRISES","n":[["JLJIV ENTERPRISES, INC.",1]],"x":{"ocp":{"r":1,"a":15619593.44,"l":"2004-03-05","i":["20040301001"]}}},
 {"s":"JLK CAPITAL","n":[["JLK CAPITAL LLC",2]],"x":{"cbr":{"r":1,"a":164824495,"l":"2026-07-10","i":["CT185620275000075"],"m":["Individuals and Others"]},"cbv":{"r":1,"l":"2026-07-10","i":["CT185620275000075"],"m":["Individuals and Others"]}}},
 {"s":"JLKINGDON MECHANICALS","n":[["JLKingdon Mechanicals Inc",1]],"d":[["JLKingdon Mechanicals Inc",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["25-65AXG-CR"],"z":["14020"]}}},
-{"s":"JLL VALUATION ADVISORY SERVICES","n":[["JLL VALUATION & ADVISORY SERVICES",9]],"x":{"cbr":{"r":8,"a":864575,"l":"2026-10-13","c":8,"i":["CT102520278803055","CT102520278801588","CT102520278802329","CT102520268801610","CT102520268801611"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-10-13","i":["CT102520278803055"],"m":["Non-M/WBE"]}}},
-{"s":"JLLUND AND ASSOCIATES","n":[["JLLUND AND ASSOCIATES",2]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-11-06","i":["CT104020263045723","CT104020253034108"],"m":["Non-M/WBE"]}}},
+{"s":"JLL VALUATION ADVISORY SERVICES","n":[["JLL VALUATION & ADVISORY SERVICES",10]],"x":{"cbr":{"r":8,"a":864575,"l":"2026-10-13","c":8,"i":["CT102520278803055","CT102520278801588","CT102520278802329","CT102520268801610","CT102520268801611"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-23","i":["CT102520278803123","CT102520278803055"],"m":["Non-M/WBE"]}}},
+{"s":"JLLUND AND ASSOCIATES","n":[["JLLUND AND ASSOCIATES",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-11-06","i":["CT104020263045723","CT104020253034108"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-23","i":["CT104020273036631"],"m":["Non-M/WBE"]}}},
 {"s":"JLM AND S ENTERPRISES","n":[["JLM and S Enterprises LLC",1]],"x":{"dol":{"r":1,"i":["25-64CVA-CR"],"z":["11208"]}}},
 {"s":"JLM CONCRETE PUMPING","d":[["JLM Concrete Pumping",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["24-633LJ-CR"],"z":["13456"]}}},
 {"s":"JLM DECORATING NS","n":[["JLM Decorating NS Inc",1],["JLM Decorating NS Inc.",1]],"x":{"sbs":{"r":1,"i":["343928"],"z":["10018"],"p":["WBE"]},"dol":{"r":1,"i":["25-65IDE-CR"],"z":["10018"]}}},
@@ -1740,10 +1744,5 @@
 {"s":"K G ELECTRIC MOTOR PUMP CORP DBA K G POWER SYSTEMS","n":[["K & G Electric Motor & Pump Corp.DBA K & G Power Systems",2],["K&G Electric Motor & pump Corp. DBA K & G Power Systems",1]],"x":{"ocp":{"r":3,"a":1906310,"l":"2022-09-14","i":["20220907111","20040213001","20030618002"]}}},
 {"s":"K G MANAGEMENT DEVELOPMENT","n":[["K G Management & Development, Corp",1]],"x":{"dol":{"r":1,"i":["26-693US-CR"],"z":["10573"]}}},
 {"s":"K G MECHANICAL","n":[["K.G. MECHANICAL INC.",1]],"x":{"dol":{"r":1,"i":["26-64R3I-CR"],"z":["11704"]}}},
-{"s":"K G P","n":[["K. G. P. Inc.",1]],"x":{"dol":{"r":1,"i":["26-9YIZJ-CR"],"z":["11715"]}}},
-{"s":"K G UPRIGHT CONSULTING","n":[["K&G Upright Consulting, Inc",1]],"x":{"sbs":{"r":1,"i":["340336"],"z":["10451"],"p":["MBE","WBE"]}}},
-{"s":"K GRAEFE AND SONS","n":[["K.GRAEFE AND SONS CORP",1]],"x":{"dol":{"r":1,"i":["25-6HPJS-CR"],"z":["10960"]}}},
-{"s":"K GUERRERO","n":[["K Guerrero LLC",3]],"x":{"cbr":{"r":2,"a":18900,"l":"2025-09-03","i":["CT181620261403288","CT181620251410008"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["368418"],"z":["10031"],"p":["MBE","WBE"]}}},
-{"s":"K HAL MACHZIKEI TORAH","n":[["K HAL MACHZIKEI TORAH",1]],"x":{"irs":{"r":1,"i":["208367041"],"z":["11691"]}}},
-{"s":"K HUGHES EXPERT TREE SERVICE","n":[["K HUGHES EXPERT TREE SERVICE LLC",1]],"x":{"dol":{"r":1,"i":["24-63SSC-CR"],"z":["12443"]}}}
+{"s":"K G P","n":[["K. G. P. Inc.",1]],"x":{"dol":{"r":1,"i":["26-9YIZJ-CR"],"z":["11715"]}}}
 ]}

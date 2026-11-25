@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":34,"first_ordinal":57199,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":34,"first_ordinal":57197,"entries":[
+{"s":"FUN FACTORY SENSORY GYM","n":[["FUN FACTORY SENSORY GYM LLC",5]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-09-16","i":["CT104020273015380","CT104020263112894","CT104020253128369"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-09-16","i":["CT104020273015380","CT104020263112894"],"m":["Non-M/WBE"]}}},
+{"s":"FUN FOR CURE","n":[["FUN FOR CURE INC",1]],"x":{"irs":{"r":1,"i":["800365133"],"z":["10708"]}}},
 {"s":"FUN FUND FOUNDATION","n":[["FUN FUND FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["424839617"],"z":["10014"]}}},
 {"s":"FUN THERAPY (OT)","n":[["FUN THERAPY (OT) PLLC",1],["Fun Therapy (OT) PLLC",1]],"x":{"dbe":{"r":1,"i":["FUN THERAPY (OT) PLLC"]},"sbs":{"r":1,"i":["377394"],"z":["10308"],"p":["WBE"]}}},
 {"s":"FUNCTIONAL CREATIVE DESIGN","d":[["Functional Creative Design",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["332168"],"z":["10010"],"p":["WBE"]}}},
@@ -1674,7 +1676,5 @@
 {"s":"GENTLEMANS KITCHEN","n":[["GENTLEMANS KITCHEN LLC",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-02-25","i":["CT104020263108602"],"m":["Black American"]},"cbv":{"r":1,"l":"2026-02-25","i":["CT104020263108602"],"m":["Black American"]}}},
 {"s":"GENTLEMENS FACTORY","n":[["GENTLEMENS FACTORY INC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2024-12-17","i":["CT104020253057337"],"m":["Non-M/WBE"]}}},
 {"s":"GENTLY USED MOVES","n":[["GENTLY USED MOVES",1]],"x":{"irs":{"r":1,"i":["412667710"],"z":["10024"]}}},
-{"s":"GENUINE GEMS","n":[["GENUINE GEMS INCORPORATED",1]],"x":{"irs":{"r":1,"i":["850522274"],"z":["11212"]}}},
-{"s":"GENUINE PARTS","n":[["GENUINE PARTS COMPANY",6]],"x":{"ocp":{"r":3,"a":450181535,"l":"2024-07-16","i":["20240710102","20171229007","20130321009"]},"cbr":{"r":1,"a":96000000,"l":"2024-07-09","i":["MA185720248807720"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":96000000,"l":"2024-07-09","i":["MA1-857-20248807720"]},"dbe":{"r":1,"i":["GENUINE PARTS COMPANY"]}}},
-{"s":"GENUINE PLUMBING AND HEATING","n":[["Genuine Plumbing and Heating LLC",1]],"d":[["Genuine Plumbing and Heating LLC",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["25-64K36-CR"],"z":["10309"]}}}
+{"s":"GENUINE GEMS","n":[["GENUINE GEMS INCORPORATED",1]],"x":{"irs":{"r":1,"i":["850522274"],"z":["11212"]}}}
 ]}

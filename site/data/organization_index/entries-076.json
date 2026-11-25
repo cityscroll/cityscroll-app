@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":76,"first_ordinal":128378,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":76,"first_ordinal":128379,"entries":[
+{"s":"SELFY MY SISTER S KEEPER","n":[["Selfy My Sister's Keeper LLC",1]],"x":{"sbs":{"r":1,"i":["366436"],"z":["11207"],"p":["MBE","WBE"]}}},
+{"s":"SELIG MANAGEMENT","n":[["Selig Management Inc.",1]],"x":{"sbs":{"r":1,"i":["15943"],"z":["11559"],"p":["WBE"]}}},
+{"s":"SELIGSOHN FAMILY FOUNDATION","n":[["SELIGSOHN FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133683755"],"z":["10804"]}}},
 {"s":"SELIN PRESBYTERIAN CHURCH","n":[["SELIN PRESBYTERIAN CHURCH OF NY",1]],"x":{"irs":{"r":1,"i":["113389097"],"z":["11354"]}}},
 {"s":"SELINA LYNX","n":[["SELINA& LYNX INC",1]],"x":{"sbs":{"r":1,"i":["317495"],"z":["10024"],"p":["WBE"]}}},
 {"s":"SELK HOUSING DEVELOPMENT FUND","n":[["SELK HOUSING DEVELOPMENT FUND COMPANY INC",1]],"x":{"irs":{"r":1,"i":["133230516"],"z":["11428"]}}},
@@ -1762,9 +1765,5 @@
 {"s":"SHOSHVININ","n":[["SHOSHVININ",1]],"x":{"irs":{"r":1,"i":["931667372"],"z":["11219"]}}},
 {"s":"SHOSHVININ OF MONSEY","n":[["SHOSHVININ OF MONSEY",1]],"x":{"irs":{"r":1,"i":["414149155"],"z":["10952"]}}},
 {"s":"SHOSHVININ OF WILLIAMSBURG","n":[["SHOSHVININ OF WILLIAMSBURG INC",1]],"x":{"irs":{"r":1,"i":["993430181"],"z":["11206"]}}},
-{"s":"SHOSTAKOVICH MUSIC ART AND SPORT SCHOOL","n":[["SHOSTAKOVICH MUSIC ART AND SPORT SCHOOL, INC.",8]],"x":{"ocp":{"r":2,"a":3955824,"l":"2022-10-26","i":["20221020118","20221017121"]},"cbr":{"r":2,"a":1977912,"l":"2026-09-21","i":["CT104020279758987","CT104020279759317"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":3955824,"l":"2022-10-19","i":["CT1-040-20238803768","CT1-040-20238803581"]},"cbv":{"r":2,"l":"2026-09-21","i":["CT104020279758987","CT104020279759317"],"m":["Non-M/WBE"]}}},
-{"s":"SHOSTAKOVICH MUSIC ART SPORT SCHOOL","n":[["SHOSTAKOVICH MUSIC ART & SPORT SCHOOL",1]],"x":{"dbe":{"r":1,"i":["SHOSTAKOVICH MUSIC ART & SPORT SCHOOL"]}}},
-{"s":"SHOT KALLERS ENT","n":[["Shot Kallers Ent LLC",1]],"x":{"sbs":{"r":1,"i":["362599"],"z":["10467"],"p":["MBE"]}}},
-{"s":"SHOTGUN LEMC BUFFALO","n":[["SHOTGUN LEMC BUFFALO",1]],"x":{"irs":{"r":1,"i":["861205286"],"z":["14150"]}}},
-{"s":"SHOTGUN PRODUCTIONS","n":[["SHOTGUN PRODUCTIONS INC",1]],"x":{"irs":{"r":1,"i":["133786051"],"z":["10016"]}}}
+{"s":"SHOSTAKOVICH MUSIC ART AND SPORT SCHOOL","n":[["SHOSTAKOVICH MUSIC ART AND SPORT SCHOOL, INC.",8]],"x":{"ocp":{"r":2,"a":3955824,"l":"2022-10-26","i":["20221020118","20221017121"]},"cbr":{"r":2,"a":1977912,"l":"2026-09-21","i":["CT104020279758987","CT104020279759317"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":3955824,"l":"2022-10-19","i":["CT1-040-20238803768","CT1-040-20238803581"]},"cbv":{"r":2,"l":"2026-09-21","i":["CT104020279758987","CT104020279759317"],"m":["Non-M/WBE"]}}}
 ]}

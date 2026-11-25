@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":12,"first_ordinal":20019,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":12,"first_ordinal":20018,"entries":[
+{"s":"BRAVES FOOTBALL ALUMNI CLUB","n":[["BRAVES FOOTBALL ALUMNI CLUB INC",1]],"x":{"irs":{"r":1,"i":["842450812"],"z":["12078"]}}},
 {"s":"BRAVEST FOOTBALL CLUB","n":[["BRAVEST FOOTBALL CLUB INC",1]],"x":{"irs":{"r":1,"i":["300057526"],"z":["10459"]}}},
 {"s":"BRAVEST LACROSSE CLUB","n":[["BRAVEST LACROSSE CLUB INC",1]],"x":{"irs":{"r":1,"i":["933303389"],"z":["11710"]}}},
 {"s":"BRAVEWELL","n":[["BRAVEWELL",1]],"x":{"irs":{"r":1,"i":["414046735"],"z":["10128"]}}},
@@ -1226,7 +1227,7 @@
 {"s":"BROOKLYN ACADEMY OF MUSIC","n":[["BROOKLYN ACADEMY OF MUSIC",2],["Brooklyn Academy of Music",2],["BROOKLYN ACADEMY OF MUSIC INC",1]],"x":{"ocp":{"r":2,"a":13157000,"l":"2006-02-15","i":["20060208030","20031210029"]},"cbr":{"r":2,"a":147500,"l":"2025-06-25","i":["CT126020258806695","CT112520258802148"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["112201344"],"z":["11217"]}}},
 {"s":"BROOKLYN ACCESS SPORTS ALLIANCE","n":[["BROOKLYN ACCESS SPORTS ALLIANCE INC",1]],"x":{"irs":{"r":1,"i":["422644073"],"z":["11378"]}}},
 {"s":"BROOKLYN ACTING LAB","n":[["BROOKLYN ACTING LAB INC",1]],"x":{"irs":{"r":1,"i":["275247988"],"z":["11215"]}}},
-{"s":"BROOKLYN ADVISORY 6","n":[["BROOKLYN ADVISORY 6",9]],"x":{"cbr":{"r":5,"a":125000,"l":"2026-11-04","i":["CT104020273041089","CT104020273042325","CT104020263146099","CT104020263067237","CT104020263044923"],"m":["Non-M/WBE"]},"cbv":{"r":4,"l":"2026-11-04","i":["CT104020273041089","CT104020273042325","CT104020263146099","CT104020263067237"],"m":["Non-M/WBE"]}}},
+{"s":"BROOKLYN ADVISORY 6","n":[["BROOKLYN ADVISORY 6",11]],"x":{"cbr":{"r":5,"a":125000,"l":"2026-11-04","i":["CT104020273041089","CT104020273042325","CT104020263146099","CT104020263067237","CT104020263044923"],"m":["Non-M/WBE"]},"cbv":{"r":6,"l":"2026-11-23","c":6,"i":["CT104020273044589","CT104020273047230","CT104020273041089","CT104020273042325","CT104020263146099"],"m":["Non-M/WBE"]}}},
 {"s":"BROOKLYN AIDS TASK FORCE","n":[["Brooklyn AIDS Task Force, Inc.",5]],"x":{"ocp":{"r":5,"a":5011551,"l":"2012-07-16","i":["20120710001","20120120004","20110629010","20060928003","20050901011"]}}},
 {"s":"BROOKLYN AIKIKAI","n":[["BROOKLYN AIKIKAI INC",1]],"x":{"irs":{"r":1,"i":["261693436"],"z":["11215"]}}},
 {"s":"BROOKLYN ALLIANCE","n":[["BROOKLYN ALLIANCE, INC.",7],["Brooklyn Alliance, Inc.",4],["BROOKLYN ALLIANCE INC",1],["BROOKLYN ALLIANCE INC.",1]],"x":{"ocp":{"r":4,"a":3361800,"l":"2026-04-01","i":["20260326015","20250326011","20240222109","20090106014"]},"cbr":{"r":4,"a":4625487.5,"l":"2026-03-25","i":["CT180120268805250","CT126020258809091","CT180120258801757","CT180120258803140"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":1814600,"l":"2026-03-25","i":["CT1-801-20268805250","CT1-801-20258801757","CT1-801-20248804156"]},"dbe":{"r":1,"i":["BROOKLYN ALLIANCE INC."]},"irs":{"r":1,"i":["112145956"],"z":["11232"]}}},

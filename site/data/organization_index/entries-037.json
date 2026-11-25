@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":37,"first_ordinal":62281,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":37,"first_ordinal":62276,"entries":[
+{"s":"GREATER NIAGARA MECHANICAL","n":[["Greater Niagara Mechanical Inc.",1]],"x":{"dol":{"r":1,"i":["26-64F1V-CR"],"z":["14120"]}}},
+{"s":"GREATER NIAGARA PRO AM","n":[["GREATER NIAGARA PRO AM INC",1]],"x":{"irs":{"r":1,"i":["462330849"],"z":["14108"]}}},
+{"s":"GREATER NORWICH FOUNDATION","n":[["GREATER NORWICH FOUNDATION",1]],"x":{"irs":{"r":1,"i":["166064927"],"z":["13815"]}}},
+{"s":"GREATER NY AUTOMOBILE DEALERS ASSOCIATION","n":[["GREATER NY AUTOMOBILE DEALERS ASSOCIATION INC",1]],"x":{"dbe":{"r":1,"i":["GREATER NY AUTOMOBILE DEALERS ASSOCIATION INC"]}}},
+{"s":"GREATER NY FOUNDATION","n":[["GREATER NY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["474856357"],"z":["10018"]}}},
 {"s":"GREATER NY HOSPITAL FOUNDATION","n":[["Greater NY Hospital Foundation, Inc.",1]],"x":{"ocp":{"r":1,"a":225000,"l":"2003-06-03","i":["20030527003"]}}},
 {"s":"GREATER NY INTERGROUP","n":[["GREATER NY INTERGROUP INC",1]],"x":{"irs":{"r":1,"i":["852955865"],"z":["10116"]}}},
 {"s":"GREATER NY OVEREATERS ANONYMOUS INTERGROUP","n":[["GREATER NY OVEREATERS ANONYMOUS INTERGROUP",1]],"x":{"irs":{"r":1,"i":["133181937"],"z":["10001"]}}},
@@ -1373,7 +1378,7 @@
 {"s":"H L CONTRACTING","n":[["H & L CONTRACTING LLC",3],["H & L Contracting, LLC",1],["H&L Contracting LLC",1]],"x":{"ocp":{"r":1,"a":16815000,"l":"2025-07-23","i":["20250717008"]},"cbr":{"r":1,"a":16815000,"l":"2025-07-16","i":["CT185020258809209"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":16815000,"l":"2025-07-16","i":["CT1-850-20258809209"]},"cbv":{"r":1,"l":"2025-07-16","i":["CT185020258809209"],"m":["Non-M/WBE"]},"dol":{"r":1,"i":["24-635DV-CR"],"z":["11788"]}}},
 {"s":"H L DALIS","n":[["H.L. DALIS INC",2],["H. L. Dalis, Inc.",1]],"x":{"ocp":{"r":2,"a":213668,"l":"2021-06-24","i":["20210618108","20190910002"]},"ppt":{"r":1,"a":113057.6,"l":"2021-06-17","i":["CT1-057-20218801728"]}}},
 {"s":"H L ELECTRIC","n":[["H & L ELECTRIC INC",2]],"d":[["H&L Electric",1]],"x":{"ocp":{"r":1,"a":32754152,"l":"2021-05-10","i":["20210504122"]},"ppt":{"r":1,"a":37914612,"l":"2021-05-03","i":["CT1-056-20218801481"]},"dol":{"r":1,"v":["dba"],"i":["26-64VLG-CR"],"z":["11101"]}}},
-{"s":"H L HEATING SUPPLY","n":[["H&L HEATING SUPPLY CO",3]],"x":{"cbr":{"r":2,"a":20163.54,"l":"2026-09-29","i":["CT184620278803142","CT184620268801108"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-29","i":["CT184620278803142"],"m":["Non-M/WBE"]}}},
+{"s":"H L HEATING SUPPLY","n":[["H&L HEATING SUPPLY CO",4]],"x":{"cbr":{"r":2,"a":20163.54,"l":"2026-09-29","i":["CT184620278803142","CT184620268801108"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-23","i":["CT184620278803912","CT184620278803142"],"m":["Non-M/WBE"]}}},
 {"s":"H L MACKLOWE FAMILY FOUNDATION","n":[["H & L MACKLOWE FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["237333431"],"z":["10019"]}}},
 {"s":"H L ROBINSON SAND GRAVEL","n":[["H.L. ROBINSON SAND & GRAVEL, INC.",1]],"x":{"dol":{"r":1,"i":["25-6H1GG-CR"],"z":["13743"]}}},
 {"s":"H LEE WHITE MARINE MUSEUM GUILD","n":[["H LEE WHITE MARINE MUSEUM GUILD INC",1]],"x":{"irs":{"r":1,"i":["223267814"],"z":["13126"]}}},
@@ -1720,9 +1725,5 @@
 {"s":"HAKIRAH","n":[["HAKIRAH INC",1]],"x":{"irs":{"r":1,"i":["203178577"],"z":["11559"]}}},
 {"s":"HAKKA ASSOCIATION OF N Y","n":[["HAKKA ASSOCIATION OF N Y INC",1]],"x":{"irs":{"r":1,"i":["113488551"],"z":["11355"]}}},
 {"s":"HAKNESIAH PRESBYTERIAN CHURCH","n":[["HAKNESIAH PRESBYTERIAN CHURCH",1]],"x":{"irs":{"r":1,"i":["112444810"],"z":["11364"]}}},
-{"s":"HAKOBA","n":[["Hakoba, Inc.",1]],"x":{"sbs":{"r":1,"i":["375697"],"z":["11435"],"p":["MBE"]}}},
-{"s":"HAKOL HEVEL HEVILIM","n":[["HAKOL HEVEL HEVILIM INC",1]],"x":{"irs":{"r":1,"i":["994878521"],"z":["10977"]}}},
-{"s":"HAKORAS HATOV CHARITABLE FOUNDATION","n":[["HAKORAS HATOV CHARITABLE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["113074851"],"z":["11230"]}}},
-{"s":"HAKS ENGINEERING ARCHITECTS AND LAND SURVEYORS P C","n":[["HAKS Engineering, Architects and Land Surveyors, P.C.",1],["HAKS Engineering, Architects, and Land Surveyors, P.C.",1],["Haks Engineering, Architects  and  Land Surveyors, P.C.",1]],"x":{"ocp":{"r":3,"a":15474963.6,"l":"2014-09-04","i":["20140827011","20120730011","20090112014"]}}},
-{"s":"HAKS ENGINEERS","n":[["HAKS Engineers",2]],"x":{"ocp":{"r":2,"a":12000000,"l":"2016-11-18","i":["20161110015","20161110031"]}}}
+{"s":"HAKOBA","n":[["Hakoba, Inc.",1]],"x":{"sbs":{"r":1,"i":["375697"],"z":["11435"],"p":["MBE"]}}}
 ]}

@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":90,"first_ordinal":151749,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":90,"first_ordinal":151753,"entries":[
+{"s":"VALUE NETWORK","n":[["VALUE NETWORK INC",1]],"x":{"irs":{"r":1,"i":["331575102"],"z":["14228"]}}},
 {"s":"VALUES 4 LIFE FOUNDATION","n":[["VALUES 4 LIFE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["823077340"],"z":["10469"]}}},
 {"s":"VALUES IN KNOWLEDGE FOUNDATION","n":[["VALUES IN KNOWLEDGE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["271615205"],"z":["11104"]}}},
 {"s":"VALUES OVER VALUABLES","n":[["VALUES OVER VALUABLES INC",1]],"x":{"irs":{"r":1,"i":["333735443"],"z":["10952"]}}},

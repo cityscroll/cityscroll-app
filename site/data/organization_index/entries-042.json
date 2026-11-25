@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":42,"first_ordinal":70906,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":42,"first_ordinal":70904,"entries":[
+{"s":"IGLESIA CENTRO DE RESTAURACION DE LA COMUNIDAD","n":[["IGLESIA CENTRO DE RESTAURACION DE LA COMUNIDAD",1]],"x":{"irs":{"r":1,"i":["113569271"],"z":["11501"]}}},
+{"s":"IGLESIA CENTRO FAMILIAR CRISTO VIVE","n":[["IGLESIA CENTRO FAMILIAR CRISTO VIVE INC",1]],"x":{"irs":{"r":1,"i":["460928254"],"z":["11717"]}}},
 {"s":"IGLESIA CENTRO VIDA UPCI","n":[["IGLESIA CENTRO VIDA UPCI INC",1]],"x":{"irs":{"r":1,"i":["841733855"],"z":["11801"]}}},
 {"s":"IGLESIA CHRISTIANA EVANGELICA","n":[["IGLESIA CHRISTIANA EVANGELICA",1]],"x":{"irs":{"r":1,"i":["272492093"],"z":["11372"]}}},
 {"s":"IGLESIA CHRISTIANA FUENTE DELUZ","n":[["IGLESIA CHRISTIANA FUENTE DELUZ",1]],"x":{"irs":{"r":1,"i":["113205863"],"z":["11231"]}}},
@@ -1600,7 +1602,7 @@
 {"s":"INIS FADA GAELIC PIPE BAND","n":[["INIS FADA GAELIC PIPE BAND LTD",1]],"x":{"irs":{"r":1,"i":["113470545"],"z":["11731"]}}},
 {"s":"INISFAD FOUNDATION","n":[["INISFAD FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["136157475"],"z":["10018"]}}},
 {"s":"INITIAL RESEARCH","n":[["INITIAL RESEARCH INC",1]],"x":{"irs":{"r":1,"i":["333790282"],"z":["10013"]}}},
-{"s":"INITIAL STEPS CHILD DEVELOPMENT","n":[["INITIAL STEPS CHILD DEVELOPMENT INC",2]],"x":{"cbr":{"r":1,"a":1270260,"l":"2026-09-24","i":["CT104020279759263"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-24","i":["CT104020279759263"],"m":["Non-M/WBE"]}}},
+{"s":"INITIAL STEPS CHILD DEVELOPMENT","n":[["INITIAL STEPS CHILD DEVELOPMENT INC",3]],"x":{"cbr":{"r":1,"a":1270260,"l":"2026-09-24","i":["CT104020279759263"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-23","i":["CT104020279761910","CT104020279759263"],"m":["Non-M/WBE"]}}},
 {"s":"INITIAL STEPS CHILD DEVELOPMENT CENTER","n":[["INITIAL STEPS CHILD DEVELOPMENT CENTER INC.",1]],"x":{"dbe":{"r":1,"i":["INITIAL STEPS CHILD DEVELOPMENT CENTER INC."]}}},
 {"s":"INITIAL TEACHING ALPHABET FOUNDATION","n":[["INITIAL TEACHING ALPHABET FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["112074243"],"z":["10017"]}}},
 {"s":"INITIATIVE FOR A COMPETITIVE INNER CITY","n":[["Initiative for a Competitive Inner City",1]],"x":{"ocp":{"r":1,"a":125000,"l":"2005-02-07","i":["20050203029"]}}},
@@ -1659,8 +1661,5 @@
 {"s":"INNER HARBOR YACHT CLUB","n":[["INNER HARBOR YACHT CLUB INC",1]],"x":{"irs":{"r":1,"i":["160902451"],"z":["14150"]}}},
 {"s":"INNER LIFE SOCIETY","n":[["INNER LIFE SOCIETY",1]],"x":{"irs":{"r":1,"i":["200892216"],"z":["10016"]}}},
 {"s":"INNER LIGHT FOR SPIRITUAL LIVING","n":[["INNER LIGHT FOR SPIRITUAL LIVING",1]],"x":{"irs":{"r":1,"i":["475109116"],"z":["11542"]}}},
-{"s":"INNER LIGHT FOUNDATION","n":[["INNER LIGHT FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["393184474"],"z":["10018"]}}},
-{"s":"INNER PEACE NY","n":[["INNER PEACE NY",1]],"x":{"irs":{"r":1,"i":["993438335"],"z":["11101"]}}},
-{"s":"INNER POWER FOUNDATION","n":[["INNER POWER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["863737961"],"z":["11216"]}}},
-{"s":"INNER PTTRN","n":[["Inner Pttrn LLC",1]],"x":{"sbs":{"r":1,"i":["404054"],"z":["11102"],"p":["MBE","WBE"]}}}
+{"s":"INNER LIGHT FOUNDATION","n":[["INNER LIGHT FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["393184474"],"z":["10018"]}}}
 ]}

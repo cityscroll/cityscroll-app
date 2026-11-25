@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":75,"first_ordinal":126654,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":75,"first_ordinal":126655,"entries":[
+{"s":"SARATOGA LAKE SAILING FOUNDATION","n":[["SARATOGA LAKE SAILING FOUNDATION INCORPORATED",1]],"x":{"irs":{"r":1,"i":["475584910"],"z":["12020"]}}},
+{"s":"SARATOGA MISS SOFTBALL","n":[["SARATOGA MISS SOFTBALL",1]],"x":{"irs":{"r":1,"i":["141818483"],"z":["12866"]}}},
 {"s":"SARATOGA MOUNTAIN BIKE ASSOCIATION","n":[["SARATOGA MOUNTAIN BIKE ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["300093937"],"z":["12866"]}}},
 {"s":"SARATOGA NATIONAL CEMETERY HONOR GUARD ASSOCIATION","n":[["SARATOGA NATIONAL CEMETERY HONOR GUARD ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["141812123"],"z":["12871"]}}},
 {"s":"SARATOGA P L A N","n":[["SARATOGA P L A N INC",1]],"x":{"irs":{"r":1,"i":["141706013"],"z":["12866"]}}},
@@ -663,6 +665,7 @@
 {"s":"SCHMIEDER AND MEISTER","n":[["Schmieder  and  Meister, Inc.",1]],"x":{"ocp":{"r":1,"a":147000,"l":"2007-12-24","i":["20071217013"]}}},
 {"s":"SCHMITT BROS EXCAVATING SITE DEVELOPMENT","n":[["Schmitt Bros. Excavating & Site Development, LLC",1]],"x":{"dol":{"r":1,"i":["26-648N7-CR"],"z":["12564"]}}},
 {"s":"SCHMITT S CARPET SERVICE","n":[["Schmitt's Carpet Service, Inc.",1]],"x":{"dol":{"r":1,"i":["25-64O4I-CR"],"z":["14086"]}}},
+{"s":"SCHMTCS","n":[["SCHMTCS LLC",1]],"x":{"cbv":{"r":1,"l":"2026-11-23","i":["CT104020273049641"],"m":["Non-M/WBE"]}}},
 {"s":"SCHNABEL ENGINEERING","d":[["Schnabel Engineering of New York",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-676VO-CR"],"z":["12065"]}}},
 {"s":"SCHNABEL ROOFING OF L I","d":[["Schnabel Roofing of L.I. Inc.",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-64G3L-CR"],"z":["11779"]}}},
 {"s":"SCHNABEL ROOFING OF LONG ISLAND","n":[["Schnabel Roofing of Long Island, Inc.",1]],"x":{"dol":{"r":1,"i":["26-64G3L-CR"],"z":["11779"]}}},
@@ -1719,8 +1722,5 @@
 {"s":"SELFHELP-UNITED HELP KISSENA APTS","n":[["SELFHELP-UNITED HELP KISSENA APTS",1]],"x":{"irs":{"r":1,"i":["134028905"],"z":["10017"]}}},
 {"s":"SELFLESS SERVICE","n":[["Selfless Service LLC",2]],"x":{"sbs":{"r":1,"i":["370938"],"z":["11206"],"p":["MBE"]},"dol":{"r":1,"i":["25-6HTC3-CR"],"z":["11206"]}}},
 {"s":"SELFRELIANCE ASSOCIATION OF AMERICAN UKRAINIANS","n":[["SELFRELIANCE ASSOCIATION OF AMERICAN UKRAINIANS INC",1]],"x":{"irs":{"r":1,"i":["135629116"],"z":["10003"]}}},
-{"s":"SELFWORKS GROUP: THERAPY PROFESSIONALS","d":[["SelfWorks Group: Therapy Professionals",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["327776"],"z":["10001"],"p":["WBE"]}}},
-{"s":"SELFY MY SISTER S KEEPER","n":[["Selfy My Sister's Keeper LLC",1]],"x":{"sbs":{"r":1,"i":["366436"],"z":["11207"],"p":["MBE","WBE"]}}},
-{"s":"SELIG MANAGEMENT","n":[["Selig Management Inc.",1]],"x":{"sbs":{"r":1,"i":["15943"],"z":["11559"],"p":["WBE"]}}},
-{"s":"SELIGSOHN FAMILY FOUNDATION","n":[["SELIGSOHN FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133683755"],"z":["10804"]}}}
+{"s":"SELFWORKS GROUP: THERAPY PROFESSIONALS","d":[["SelfWorks Group: Therapy Professionals",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["327776"],"z":["10001"],"p":["WBE"]}}}
 ]}

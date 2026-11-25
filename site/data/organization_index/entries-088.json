@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":88,"first_ordinal":148488,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":88,"first_ordinal":148492,"entries":[
+{"s":"TVI","n":[["TVI Corporation",2]],"x":{"ocp":{"r":2,"a":613268.52,"l":"2005-01-03","i":["20041227009","20041203005"]}}},
 {"s":"TVISTOMI ASSOCIATION","n":[["TVISTOMI ASSOCIATION CORP",1]],"x":{"irs":{"r":1,"i":["010782375"],"z":["11235"]}}},
 {"s":"TVS MECHANICAL","n":[["TVS Mechanical Corp.",1]],"x":{"dol":{"r":1,"i":["25-641AX-CR"],"z":["10309"]}}},
 {"s":"TW COMMUNITY OUTREACH","n":[["TW COMMUNITY OUTREACH INC",1]],"x":{"irs":{"r":1,"i":["392854453"],"z":["11717"]}}},
@@ -1625,6 +1626,5 @@
 {"s":"UNITED STATES INSTITUTE FOR THEATRE TECHNOLOGY","n":[["UNITED STATES INSTITUTE FOR THEATRE TECHNOLOGY INC",1]],"x":{"irs":{"r":1,"i":["136216921"],"z":["13088"]}}},
 {"s":"UNITED STATES INTEGRATED SECURITY","n":[["United States Integrated Security, Inc.",1]],"x":{"dol":{"r":1,"i":["25-64XZX-CR"],"z":["10965"]}}},
 {"s":"UNITED STATES INTERNAL SYSTEMS","n":[["United States Internal Systems, Inc.",1]],"x":{"dol":{"r":1,"i":["25-64Q7G-CR"],"z":["10965"]}}},
-{"s":"UNITED STATES ISRAEL EDUCATION ALLI ANCE","n":[["UNITED STATES ISRAEL EDUCATION ALLI ANCE INC",1]],"x":{"irs":{"r":1,"i":["415045316"],"z":["10601"]}}},
-{"s":"UNITED STATES JUDO ASSOCIATION","n":[["UNITED STATES JUDO ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["720629934"],"z":["11566"]}}}
+{"s":"UNITED STATES ISRAEL EDUCATION ALLI ANCE","n":[["UNITED STATES ISRAEL EDUCATION ALLI ANCE INC",1]],"x":{"irs":{"r":1,"i":["415045316"],"z":["10601"]}}}
 ]}

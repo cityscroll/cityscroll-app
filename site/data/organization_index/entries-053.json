@@ -1,4 +1,10 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":53,"first_ordinal":89511,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":53,"first_ordinal":89508,"entries":[
+{"s":"LYNX TECHNOLOGIES","n":[["LYNX TECHNOLOGIES INC.",1]],"x":{"dol":{"r":1,"i":["25-64CQL-CR"],"z":["14072"]}}},
+{"s":"LYNYC FOOTBALL","n":[["LYNYC FOOTBALL INC",1]],"x":{"irs":{"r":1,"i":["472701121"],"z":["11552"]}}},
+{"s":"LYON MOUNTAIN AMBULANCE SERVICES","n":[["LYON MOUNTAIN AMBULANCE SERVICES INC",1]],"x":{"irs":{"r":1,"i":["823284634"],"z":["12952"]}}},
+{"s":"LYON SZOT ARCHITECTURE DPC","n":[["LYON SZOT ARCHITECTURE DPC",1]],"x":{"dbe":{"r":1,"i":["LYON SZOT ARCHITECTURE DPC"]}}},
+{"s":"LYONS CEMETERY ASSOCIATION","n":[["LYONS CEMETERY ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["156022707"],"z":["14513"]}}},
+{"s":"LYONS COMMUNITY CENTER","n":[["LYONS COMMUNITY CENTER INC",1]],"x":{"irs":{"r":1,"i":["150503158"],"z":["14489"]}}},
 {"s":"LYONS FALLS ALIVE","n":[["LYONS FALLS ALIVE",1]],"x":{"irs":{"r":1,"i":["264300746"],"z":["13368"]}}},
 {"s":"LYONS FALLS FREE LIBRARY HIGH ST","n":[["LYONS FALLS FREE LIBRARY HIGH ST",1]],"x":{"irs":{"r":1,"i":["222523690"],"z":["13368"]}}},
 {"s":"LYONS FALLS HISTORY ASSOC","n":[["LYONS FALLS HISTORY ASSOC INC",1]],"x":{"irs":{"r":1,"i":["203312663"],"z":["13368"]}}},
@@ -1745,11 +1751,5 @@
 {"s":"MARATHON ENGINEERING","n":[["Marathon Engineering Corporation",1]],"x":{"dol":{"r":1,"i":["26-64Z6I-CR"],"z":["33971"]}}},
 {"s":"MARATHON EQUIPMENT","n":[["Marathon Equipment Inc.",1]],"x":{"ocp":{"r":1,"a":332500,"l":"2005-10-18","i":["20051011008"]}}},
 {"s":"MARATHON FOR A BETTER LIFE","n":[["MARATHON FOR A BETTER LIFE INC",1]],"x":{"irs":{"r":1,"i":["264518003"],"z":["12187"]}}},
-{"s":"MARATHON JEWISH COMMUNITY CENTER","n":[["MARATHON JEWISH COMMUNITY CENTER",1]],"x":{"irs":{"r":1,"i":["111814011"],"z":["11362"]}}},
-{"s":"MARBE CHAIM","n":[["MARBE CHAIM",1]],"x":{"irs":{"r":1,"i":["113558228"],"z":["11218"]}}},
-{"s":"MARBEATZE TORAH INSTITUTE","n":[["MARBEATZE TORAH INSTITUTE",1]],"x":{"irs":{"r":1,"i":["112231116"],"z":["11229"]}}},
-{"s":"MARBEH CHESED","n":[["MARBEH CHESED",1]],"x":{"irs":{"r":1,"i":["113209598"],"z":["11219"]}}},
-{"s":"MARBEH LEHEITIV","n":[["MARBEH LEHEITIV INC",1]],"x":{"irs":{"r":1,"i":["933171048"],"z":["11205"]}}},
-{"s":"MARBEH SHALOM FOUNDATION","n":[["MARBEH SHALOM FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["452818049"],"z":["10001"]}}},
-{"s":"MARBELITE","n":[["Marbelite Co.,Inc.",2]],"x":{"ocp":{"r":2,"a":124260,"l":"2004-09-16","i":["20040909015","20040909017"]}}}
+{"s":"MARATHON JEWISH COMMUNITY CENTER","n":[["MARATHON JEWISH COMMUNITY CENTER",1]],"x":{"irs":{"r":1,"i":["111814011"],"z":["11362"]}}}
 ]}

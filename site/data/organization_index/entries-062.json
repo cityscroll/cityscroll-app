@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":62,"first_ordinal":104489,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":62,"first_ordinal":104489,"entries":[
+{"s":"NEWYORKBIO INSTITUTE","n":[["NEWYORKBIO INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["823646524"],"z":["10016"]}}},
+{"s":"NEWYORKREP","n":[["NEWYORKREP LLC",1]],"x":{"irs":{"r":1,"i":["463685963"],"z":["10019"]}}},
+{"s":"NEX-TO-NEW","n":[["NEX-TO-NEW INC",1]],"x":{"irs":{"r":1,"i":["471471575"],"z":["13838"]}}},
 {"s":"NEX-XOS WORLDWIDE","n":[["Nex-Xos Worldwide LLC",1],["Nex-xos Worldwide LLC",1]],"x":{"ocp":{"r":1,"a":29469.6,"l":"2019-05-03","i":["20190426013"]},"sbs":{"r":1,"i":["100118"],"z":["33021"],"p":["MBE"]}}},
 {"s":"NEXA WOMENS BUSINESS ASSOCIATION","n":[["NEXA WOMENS BUSINESS ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["413639334"],"z":["10003"]}}},
 {"s":"NEXAMP SOLAR","n":[["Nexamp Solar LLC",1]],"x":{"dbe":{"r":1,"i":["Nexamp Solar LLC"]}}},
@@ -1731,7 +1734,5 @@
 {"s":"NORTHEASTERNERS","n":[["NORTHEASTERNERS INC",1]],"x":{"irs":{"r":1,"i":["510230586"],"z":["11230"]}}},
 {"s":"NORTHEN PRAYING MANTIS INSTITUTE IN CORPORATED","n":[["NORTHEN PRAYING MANTIS INSTITUTE IN CORPORATED",1]],"x":{"irs":{"r":1,"i":["414987660"],"z":["10013"]}}},
 {"s":"NORTHERN ACADEMY OF THE ARTS","n":[["NORTHERN ACADEMY OF THE ARTS",1]],"x":{"irs":{"r":1,"i":["824017884"],"z":["10940"]}}},
-{"s":"NORTHERN ADIRONDACK BOARD OF REALTORS","n":[["NORTHERN ADIRONDACK BOARD OF REALTORS INC",1]],"x":{"irs":{"r":1,"i":["141676924"],"z":["12901"]}}},
-{"s":"NORTHERN ADIRONDACK CENTRAL SCHOOL PARENT TEACHER ORGANIZATION","n":[["NORTHERN ADIRONDACK CENTRAL SCHOOL PARENT TEACHER ORGANIZATION INC",1]],"x":{"irs":{"r":1,"i":["394092631"],"z":["12935"]}}},
-{"s":"NORTHERN ADIRONDACK HOUSING DEVELOPMENT FUND","n":[["NORTHERN ADIRONDACK HOUSING DEVELOPMENT FUND",1]],"x":{"irs":{"r":1,"i":["455609097"],"z":["12953"]}}}
+{"s":"NORTHERN ADIRONDACK BOARD OF REALTORS","n":[["NORTHERN ADIRONDACK BOARD OF REALTORS INC",1]],"x":{"irs":{"r":1,"i":["141676924"],"z":["12901"]}}}
 ]}

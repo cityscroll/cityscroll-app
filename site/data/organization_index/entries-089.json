@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":89,"first_ordinal":150116,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":89,"first_ordinal":150120,"entries":[
+{"s":"UNITED STATES JUDO ASSOCIATION","n":[["UNITED STATES JUDO ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["720629934"],"z":["11566"]}}},
 {"s":"UNITED STATES JUNIOR CHAMBER OF COMMERCE","n":[["UNITED STATES JUNIOR CHAMBER OF COMMERCE",3]],"x":{"irs":{"r":3,"i":["133004306","332570454","471593854"],"z":["10001","10163","11217"]}}},
 {"s":"UNITED STATES LUGE ASSOCIATION","n":[["UNITED STATES LUGE ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["141638206"],"z":["12946"]}}},
 {"s":"UNITED STATES LUGE FEDERATION FOUNDATION","n":[["UNITED STATES LUGE FEDERATION FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["141675816"],"z":["12946"]}}},
@@ -1630,6 +1631,5 @@
 {"s":"VALUE ADDED GROUP","n":[["Value Added Group, Inc.",1]],"x":{"ocp":{"r":1,"a":99600,"l":"2007-12-17","i":["20071211022"]}}},
 {"s":"VALUE FOR WOMEN FOUNDATION","n":[["VALUE FOR WOMEN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["331317288"],"z":["11238"]}}},
 {"s":"VALUE MANAGEMENT STRATEGIES","n":[["VALUE MANAGEMENT STRATEGIES, INC.",4],["VALUE MANAGEMENT STRATEGIES  INC",1]],"x":{"ocp":{"r":2,"a":6600000,"l":"2020-07-30","i":["20200724106","20111028007"]},"cbr":{"r":2,"a":838982.63,"l":"2025-07-29","i":["CTA100220267200046","CTA100220257201171"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["VALUE MANAGEMENT STRATEGIES  INC"]}}},
-{"s":"VALUE MANAGEMENT STRATEGIES IN C","n":[["Value Management Strategies, In.c",1]],"x":{"ocp":{"r":1,"a":4000000,"l":"2017-08-02","i":["20170726003"]}}},
-{"s":"VALUE NETWORK","n":[["VALUE NETWORK INC",1]],"x":{"irs":{"r":1,"i":["331575102"],"z":["14228"]}}}
+{"s":"VALUE MANAGEMENT STRATEGIES IN C","n":[["Value Management Strategies, In.c",1]],"x":{"ocp":{"r":1,"a":4000000,"l":"2017-08-02","i":["20170726003"]}}}
 ]}

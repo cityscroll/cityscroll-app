@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":41,"first_ordinal":69196,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":41,"first_ordinal":69194,"entries":[
+{"s":"HOUSING CORPORATION OF THE BETA PSI CHAPTER OF ALPHA SIGMA PHI","n":[["HOUSING CORPORATION OF THE BETA PSI CHAPTER OF ALPHA SIGMA PHI",1]],"x":{"irs":{"r":1,"i":["271280048"],"z":["12180"]}}},
+{"s":"HOUSING COUNCIL AT PATHSTONE","n":[["HOUSING COUNCIL AT PATHSTONE INC",1]],"x":{"irs":{"r":1,"i":["160991179"],"z":["14607"]}}},
 {"s":"HOUSING COURT ANSWERS","n":[["HOUSING COURT ANSWERS INC",6],["Housing Court Answers Inc",5],["Housing Court Answers, Inc.",5]],"x":{"ocp":{"r":10,"a":5846972,"l":"2021-09-21","c":10,"i":["20210914120","20200609005","20190808015","20180619006","20170523007"]},"cbr":{"r":3,"a":2687683.5,"l":"2026-04-29","i":["CT180620268802876","CT180620268804658","CT106920258802190"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":672000,"l":"2021-08-30","i":["CT1-069-20228801619"]},"dbe":{"r":1,"i":["HOUSING COURT ANSWERS INC"]},"irs":{"r":1,"i":["133317188"],"z":["10004"]}}},
 {"s":"HOUSING DEVELOPMENT FOUNDATION","n":[["HOUSING DEVELOPMENT FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["161583317"],"z":["14624"]}}},
 {"s":"HOUSING DEVELOPMENT GRANT","n":[["HOUSING DEVELOPMENT GRANT CORPORATION",1]],"x":{"irs":{"r":1,"i":["331711499"],"z":["10468"]}}},
@@ -1706,7 +1708,5 @@
 {"s":"IGLESIA CARISMATICA CASA DE ORACION","n":[["IGLESIA CARISMATICA CASA DE ORACION INC",1]],"x":{"irs":{"r":1,"i":["113058491"],"z":["11232"]}}},
 {"s":"IGLESIA CASA DE ISRAEL","n":[["IGLESIA CASA DE ISRAEL INC",1]],"x":{"irs":{"r":1,"i":["473347537"],"z":["10461"]}}},
 {"s":"IGLESIA CASA DE ORACION EMMANUEL","n":[["IGLESIA CASA DE ORACION EMMANUEL INC",2]],"x":{"irs":{"r":2,"i":["365126677","822258318"],"z":["11209"]}}},
-{"s":"IGLESIA CASA DEL ALFARERO","n":[["IGLESIA CASA DEL ALFARERO",1]],"x":{"irs":{"r":1,"i":["134175265"],"z":["10460"]}}},
-{"s":"IGLESIA CENTRO DE RESTAURACION DE LA COMUNIDAD","n":[["IGLESIA CENTRO DE RESTAURACION DE LA COMUNIDAD",1]],"x":{"irs":{"r":1,"i":["113569271"],"z":["11501"]}}},
-{"s":"IGLESIA CENTRO FAMILIAR CRISTO VIVE","n":[["IGLESIA CENTRO FAMILIAR CRISTO VIVE INC",1]],"x":{"irs":{"r":1,"i":["460928254"],"z":["11717"]}}}
+{"s":"IGLESIA CASA DEL ALFARERO","n":[["IGLESIA CASA DEL ALFARERO",1]],"x":{"irs":{"r":1,"i":["134175265"],"z":["10460"]}}}
 ]}

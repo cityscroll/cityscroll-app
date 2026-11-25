@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":61,"first_ordinal":102948,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":61,"first_ordinal":102948,"entries":[
+{"s":"NEW YORK COUNTY LAWYERS ASSOCIATION","n":[["NEW YORK COUNTY LAWYERS ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["135273040"],"z":["10006"]}}},
+{"s":"NEW YORK COUNTY LAWYERS ASSOCIATION FOUNDATION","n":[["NEW YORK COUNTY LAWYERS ASSOCIATION FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["136185988"],"z":["10006"]}}},
+{"s":"NEW YORK COUNTY MEDICAL SOCIETY","n":[["NEW YORK COUNTY MEDICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["131030750"],"z":["10018"]}}},
 {"s":"NEW YORK COVENANT CHURCH-NEW ROCHELLE NY","n":[["NEW YORK COVENANT CHURCH-NEW ROCHELLE NY",1]],"x":{"irs":{"r":1,"i":["134024768"],"z":["10801"]}}},
 {"s":"NEW YORK COVENANT COMMUNITY DEVELOPMENT","n":[["NEW YORK COVENANT COMMUNITY DEVELOPMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["743245728"],"z":["10801"]}}},
 {"s":"NEW YORK CRANE EQUIPMENT","n":[["NEW YORK CRANE & EQUIPMENT CORP",1],["NEW YORK CRANE&EQUIPMENT CORP",1]],"x":{"cbr":{"r":1,"a":97000,"l":"2024-09-12","i":["CT182620251400151"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["NEW YORK CRANE & EQUIPMENT CORP"]}}},
@@ -1536,8 +1539,5 @@
 {"s":"NEWYORK ALL STAR CRICKET CLUB","n":[["NEWYORK ALL STAR CRICKET CLUB INC",1]],"x":{"irs":{"r":1,"i":["923864957"],"z":["11727"]}}},
 {"s":"NEWYORK HEALTH FOUNDATION","n":[["NEWYORK HEALTH FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["472954409"],"z":["11237"]}}},
 {"s":"NEWYORK KIDS THEATRICAL ALLIANCE","n":[["NEWYORK KIDS THEATRICAL ALLIANCE INC",1]],"x":{"irs":{"r":1,"i":["550830257"],"z":["10469"]}}},
-{"s":"NEWYORK-PRESBYTERIAN-QUEENS","n":[["NEWYORK-PRESBYTERIAN-QUEENS",1]],"x":{"irs":{"r":1,"i":["111839362"],"z":["11355"]}}},
-{"s":"NEWYORKBIO INSTITUTE","n":[["NEWYORKBIO INSTITUTE INC",1]],"x":{"irs":{"r":1,"i":["823646524"],"z":["10016"]}}},
-{"s":"NEWYORKREP","n":[["NEWYORKREP LLC",1]],"x":{"irs":{"r":1,"i":["463685963"],"z":["10019"]}}},
-{"s":"NEX-TO-NEW","n":[["NEX-TO-NEW INC",1]],"x":{"irs":{"r":1,"i":["471471575"],"z":["13838"]}}}
+{"s":"NEWYORK-PRESBYTERIAN-QUEENS","n":[["NEWYORK-PRESBYTERIAN-QUEENS",1]],"x":{"irs":{"r":1,"i":["111839362"],"z":["11355"]}}}
 ]}

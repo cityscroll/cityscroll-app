@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":47,"first_ordinal":79147,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":47,"first_ordinal":79143,"entries":[
+{"s":"K G UPRIGHT CONSULTING","n":[["K&G Upright Consulting, Inc",1]],"x":{"sbs":{"r":1,"i":["340336"],"z":["10451"],"p":["MBE","WBE"]}}},
+{"s":"K GRAEFE AND SONS","n":[["K.GRAEFE AND SONS CORP",1]],"x":{"dol":{"r":1,"i":["25-6HPJS-CR"],"z":["10960"]}}},
+{"s":"K GUERRERO","n":[["K Guerrero LLC",3]],"x":{"cbr":{"r":2,"a":18900,"l":"2025-09-03","i":["CT181620261403288","CT181620251410008"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["368418"],"z":["10031"],"p":["MBE","WBE"]}}},
+{"s":"K HAL MACHZIKEI TORAH","n":[["K HAL MACHZIKEI TORAH",1]],"x":{"irs":{"r":1,"i":["208367041"],"z":["11691"]}}},
+{"s":"K HUGHES EXPERT TREE SERVICE","n":[["K HUGHES EXPERT TREE SERVICE LLC",1]],"x":{"dol":{"r":1,"i":["24-63SSC-CR"],"z":["12443"]}}},
 {"s":"K I A MEMORIAL ROAD MARCH","n":[["K I A MEMORIAL ROAD MARCH",1]],"x":{"irs":{"r":1,"i":["471924565"],"z":["14212"]}}},
 {"s":"K I D S OF THE LOCAL 14 OPERATING ENGINEERS","n":[["K I D S OF THE LOCAL 14 OPERATING ENGINEERS INC",1]],"x":{"irs":{"r":1,"i":["112744326"],"z":["11358"]}}},
 {"s":"K I M CO REFRIGERATION","n":[["K.I.M. CO. REFRIGERATION CORP.",1],["K.I.M.CO. REFRIGERATION CORP.",1]],"x":{"dol":{"r":1,"i":["25-64QDH-CR"],"z":["11040"]},"sca":{"r":1,"i":["K.I.M.CO. REFRIGERATION CORP."],"z":["11040"]}}},
@@ -1854,11 +1859,5 @@
 {"s":"KIDS CODE COMPUTER SCIENCE","n":[["KIDS CODE & COMPUTER SCIENCE INC",1]],"x":{"irs":{"r":1,"i":["920869033"],"z":["11598"]}}},
 {"s":"KIDS COUNT","n":[["KIDS COUNT",1]],"x":{"irs":{"r":1,"i":["141836540"],"z":["12189"]}}},
 {"s":"KIDS CREATIVE COLLECTIVE","n":[["KIDS CREATIVE COLLECTIVE INC",1]],"x":{"irs":{"r":1,"i":["453364339"],"z":["11213"]}}},
-{"s":"KIDS DANCE REVOLUTION","n":[["Kids Dance Revolution, LLC",1]],"x":{"sbs":{"r":1,"i":["312357"],"z":["10027"],"p":["MBE","WBE"]}}},
-{"s":"KIDS DANCE SPORT","n":[["Kids Dance Sport LLC",1]],"x":{"sbs":{"r":1,"i":["6827"],"z":["11215"],"p":["MBE","WBE"]}}},
-{"s":"KIDS DISCOVER","n":[["KIDS DISCOVER LLC",1]],"x":{"cbr":{"r":1,"a":75000,"l":"2025-03-31","i":["MA104020259577056"],"m":["Non-M/WBE"]}}},
-{"s":"KIDS ENJOY EXERCISE NOW","n":[["KIDS ENJOY EXERCISE NOW",1]],"x":{"irs":{"r":1,"i":["261416505"],"z":["10195"]}}},
-{"s":"KIDS ESCAPING DRUGS","n":[["KIDS ESCAPING DRUGS INC",1]],"x":{"irs":{"r":1,"i":["161319839"],"z":["14224"]}}},
-{"s":"KIDS ET CETERA DAY CARE CENTER","n":[["KIDS ET CETERA DAY CARE CENTER INC",1]],"x":{"irs":{"r":1,"i":["113295520"],"z":["11203"]}}},
-{"s":"KIDS EVENT TICKETS","n":[["KIDS EVENT TICKETS INC",1]],"x":{"irs":{"r":1,"i":["300647110"],"z":["14072"]}}}
+{"s":"KIDS DANCE REVOLUTION","n":[["Kids Dance Revolution, LLC",1]],"x":{"sbs":{"r":1,"i":["312357"],"z":["10027"],"p":["MBE","WBE"]}}}
 ]}

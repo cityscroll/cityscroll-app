@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":23,"first_ordinal":38537,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":23,"first_ordinal":38535,"entries":[
+{"s":"CREATING ATHLETES FOR AMERICA","n":[["CREATING ATHLETES FOR AMERICA INC",1]],"x":{"irs":{"r":1,"i":["133996993"],"z":["10039"]}}},
+{"s":"CREATING CHANGE COACHING","n":[["Creating Change Coaching LLC",1]],"x":{"sbs":{"r":1,"i":["327121"],"z":["10710"],"p":["MBE","WBE"]}}},
 {"s":"CREATING COMMUNITY AND CULTURE","n":[["CREATING COMMUNITY AND CULTURE",1]],"x":{"irs":{"r":1,"i":["332684777"],"z":["13339"]}}},
 {"s":"CREATING DREAMS MOVEMENT","n":[["CREATING DREAMS MOVEMENT INC",1]],"x":{"irs":{"r":1,"i":["833978614"],"z":["13068"]}}},
 {"s":"CREATING FOR JUSTICE","n":[["CREATING FOR JUSTICE INC",1]],"x":{"irs":{"r":1,"i":["851577746"],"z":["12763"]}}},
@@ -132,7 +134,7 @@
 {"s":"CREATIVE WORD MINISTRIES","n":[["CREATIVE WORD MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["581309712"],"z":["14485"]}}},
 {"s":"CREATIVE WORKS","n":[["CREATIVE WORKS INC",1]],"x":{"irs":{"r":1,"i":["364836552"],"z":["13045"]}}},
 {"s":"CREATIVE WORLD DIGITAL ARTS","n":[["CREATIVE WORLD DIGITAL ARTS INC",1]],"x":{"irs":{"r":1,"i":["333499225"],"z":["11206"]}}},
-{"s":"CREATIVELEE CATERED","n":[["CREATIVELEE CATERED",4],["CreativeLee Catered LLC",1]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-03-18","i":["CT104020263130422","CT104020263068872"],"m":["Black American"]},"cbv":{"r":2,"l":"2026-03-18","i":["CT104020263130422","CT104020263068872"],"m":["Black American"]},"sbs":{"r":1,"i":["377828"],"z":["11205"],"p":["MBE","WBE"]}}},
+{"s":"CREATIVELEE CATERED","n":[["CREATIVELEE CATERED",5],["CreativeLee Catered LLC",1]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-03-18","i":["CT104020263130422","CT104020263068872"],"m":["Black American"]},"cbv":{"r":3,"l":"2026-11-23","i":["CT104020273049716","CT104020263130422","CT104020263068872"],"m":["Black American"]},"sbs":{"r":1,"i":["377828"],"z":["11205"],"p":["MBE","WBE"]}}},
 {"s":"CREATIVELY RELEASING","n":[["Creatively Releasing of NY LLC",1]],"x":{"sbs":{"r":1,"i":["342139"],"z":["07111"],"p":["MBE","WBE"]}}},
 {"s":"CREATIVES CARE NETWORK","n":[["CREATIVES CARE NETWORK INC",1]],"x":{"irs":{"r":1,"i":["882197523"],"z":["10007"]}}},
 {"s":"CREATIVES FOR MENTAL HEALTH","n":[["CREATIVES FOR MENTAL HEALTH INC",1]],"x":{"irs":{"r":1,"i":["414648928"],"z":["11530"]}}},
@@ -1688,7 +1690,5 @@
 {"s":"DAMASCUS CHRISTIAN CHURCH THE NEW LIFE","n":[["DAMASCUS CHRISTIAN CHURCH THE NEW LIFE INC",1]],"x":{"irs":{"r":1,"i":["112903041"],"z":["11232"]}}},
 {"s":"DAMASCUS CHRISTION CHURCH","n":[["DAMASCUS CHRISTION CHURCH INC",1]],"x":{"irs":{"r":1,"i":["133455164"],"z":["10457"]}}},
 {"s":"DAMASCUS CHURHC OF GOD","n":[["DAMASCUS CHURHC OF GOD",1]],"x":{"irs":{"r":1,"i":["223259653"],"z":["12202"]}}},
-{"s":"DAMASCUS ROAD A PLACE OF CONVERSION","n":[["DAMASCUS ROAD A PLACE OF CONVERSION INC",1]],"x":{"irs":{"r":1,"i":["392142395"],"z":["14606"]}}},
-{"s":"DAMASCUS ROAD LUTHERAN SECRETARIAT OF CNY","n":[["DAMASCUS ROAD LUTHERAN SECRETARIAT OF CNY",1]],"x":{"irs":{"r":1,"i":["161572367"],"z":["13431"]}}},
-{"s":"DAMASCUS SHRINERS","n":[["DAMASCUS SHRINERS",1]],"x":{"irs":{"r":1,"i":["160332470"],"z":["14580"]}}}
+{"s":"DAMASCUS ROAD A PLACE OF CONVERSION","n":[["DAMASCUS ROAD A PLACE OF CONVERSION INC",1]],"x":{"irs":{"r":1,"i":["392142395"],"z":["14606"]}}}
 ]}

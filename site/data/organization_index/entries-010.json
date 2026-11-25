@@ -1,4 +1,5 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":10,"first_ordinal":16550,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":10,"first_ordinal":16549,"entries":[
+{"s":"BENZAK FOUNDATION","n":[["BENZAK FOUNDATION",1]],"x":{"irs":{"r":1,"i":["203872608"],"z":["10580"]}}},
 {"s":"BENZAKEN FOUNDATION","n":[["BENZAKEN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["264437333"],"z":["11557"]}}},
 {"s":"BENZAQUEN FOUNDATION","n":[["BENZAQUEN FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133796971"],"z":["10018"]}}},
 {"s":"BENZI GOODRICH DEVELOPMENT GROUP","n":[["Benzi & Goodrich Development Group LLC",1]],"x":{"sbs":{"r":1,"i":["332097"],"z":["11226"],"p":["MBE"]}}},
@@ -1761,6 +1762,5 @@
 {"s":"BLACK INTIMACY CONSENT COLLECTIVE","n":[["BLACK INTIMACY CONSENT COLLECTIVE",1]],"x":{"irs":{"r":1,"i":["933995463"],"z":["10039"]}}},
 {"s":"BLACK JADE FOUNDATION","n":[["BLACK JADE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["873124688"],"z":["10023"]}}},
 {"s":"BLACK JOE HODGE OUTDOORS CLUB","n":[["BLACK JOE HODGE OUTDOORS CLUB INC",1]],"x":{"irs":{"r":1,"i":["922343106"],"z":["14226"]}}},
-{"s":"BLACK KETTLE SPORTSMEN","n":[["BLACK KETTLE SPORTSMEN INC",1]],"x":{"irs":{"r":1,"i":["232464555"],"z":["13865"]}}},
-{"s":"BLACK LAKE ASSOCIATION","n":[["BLACK LAKE ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["161246384"],"z":["13646"]}}}
+{"s":"BLACK KETTLE SPORTSMEN","n":[["BLACK KETTLE SPORTSMEN INC",1]],"x":{"irs":{"r":1,"i":["232464555"],"z":["13865"]}}}
 ]}

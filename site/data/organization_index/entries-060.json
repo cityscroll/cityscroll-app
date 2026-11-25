@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":60,"first_ordinal":101336,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":60,"first_ordinal":101334,"entries":[
+{"s":"NETIV YEHUDI","n":[["NETIV YEHUDI CORP",1]],"x":{"irs":{"r":1,"i":["414303105"],"z":["11235"]}}},
+{"s":"NETIVOS OLAM","n":[["NETIVOS OLAM",1]],"x":{"irs":{"r":1,"i":["260312507"],"z":["10036"]}}},
+{"s":"NETIVOT ISRAEL","n":[["NETIVOT ISRAEL",1]],"x":{"irs":{"r":1,"i":["112943633"],"z":["11223"]}}},
+{"s":"NETIVOT MAHARITZ","n":[["NETIVOT MAHARITZ",1]],"x":{"irs":{"r":1,"i":["992081887"],"z":["11234"]}}},
+{"s":"NETIVOT NOAM","n":[["NETIVOT NOAM",1]],"x":{"irs":{"r":1,"i":["113559076"],"z":["11218"]}}},
 {"s":"NETIYOIS","n":[["NETIYOIS INC",1]],"x":{"irs":{"r":1,"i":["994191773"],"z":["10977"]}}},
 {"s":"NETLIFE","n":[["NETLIFE",1]],"x":{"irs":{"r":1,"i":["800168424"],"z":["14450"]}}},
 {"s":"NETLOCITY VA","n":[["Netlocity Va Inc.",1]],"x":{"ocp":{"r":1,"a":306936,"l":"2014-11-06","i":["20141028039"]}}},
@@ -1607,8 +1612,5 @@
 {"s":"NEW YORK COUNTY HEALTH SERVICES REVIEW","n":[["NEW YORK COUNTY HEALTH SERVICES REVIEW",1]],"x":{"dbe":{"r":1,"i":["NEW YORK COUNTY HEALTH SERVICES REVIEW"]}}},
 {"s":"NEW YORK COUNTY HEALTH SERVICES REVIEW ORGANIZATION","n":[["New York County Health Services Review Organization",11],["New York County Health Services Review Organization, Inc.",1]],"x":{"ocp":{"r":12,"a":52708066.32,"l":"2025-08-27","c":12,"i":["20250821011","20230828105","20221129106","20180629012","20150630012"]}}},
 {"s":"NEW YORK COUNTY HEALTH SERVICES REVIEW ORGANIZATION (NYCHSRO)","n":[["NEW YORK COUNTY HEALTH SERVICES REVIEW ORGANIZATION (NYCHSRO)",2]],"x":{"ocp":{"r":2,"a":15745387,"l":"2024-10-22","i":["20241016024","20100727009"]}}},
-{"s":"NEW YORK COUNTY HEALTH SERVICES REVIEW ORGANIZATIONS","n":[["NEW YORK COUNTY HEALTH SERVICES REVIEW ORGANIZATIONS INC",5]],"x":{"cbr":{"r":3,"a":1990605.5,"l":"2026-10-28","i":["CT106920278801735","CT106920268800808","CT106920258802511"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-10-28","i":["CT106920278801735"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["237379635"],"z":["10038"]}}},
-{"s":"NEW YORK COUNTY LAWYERS ASSOCIATION","n":[["NEW YORK COUNTY LAWYERS ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["135273040"],"z":["10006"]}}},
-{"s":"NEW YORK COUNTY LAWYERS ASSOCIATION FOUNDATION","n":[["NEW YORK COUNTY LAWYERS ASSOCIATION FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["136185988"],"z":["10006"]}}},
-{"s":"NEW YORK COUNTY MEDICAL SOCIETY","n":[["NEW YORK COUNTY MEDICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["131030750"],"z":["10018"]}}}
+{"s":"NEW YORK COUNTY HEALTH SERVICES REVIEW ORGANIZATIONS","n":[["NEW YORK COUNTY HEALTH SERVICES REVIEW ORGANIZATIONS INC",5]],"x":{"cbr":{"r":3,"a":1990605.5,"l":"2026-10-28","i":["CT106920278801735","CT106920268800808","CT106920258802511"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-10-28","i":["CT106920278801735"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["237379635"],"z":["10038"]}}}
 ]}

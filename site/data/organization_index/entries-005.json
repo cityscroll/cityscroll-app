@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":5,"first_ordinal":8266,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":5,"first_ordinal":8266,"entries":[
 {"s":"AMERICAN FRIENDS OF NEFESH DOVID","n":[["AMERICAN FRIENDS OF NEFESH DOVID",1]],"x":{"irs":{"r":1,"i":["454835626"],"z":["11229"]}}},
 {"s":"AMERICAN FRIENDS OF NEHORA","n":[["AMERICAN FRIENDS OF NEHORA INC",1]],"x":{"irs":{"r":1,"i":["113391398"],"z":["11691"]}}},
 {"s":"AMERICAN FRIENDS OF NEOT KEDUMIM","n":[["AMERICAN FRIENDS OF NEOT KEDUMIM",1]],"x":{"irs":{"r":1,"i":["237149282"],"z":["10021"]}}},

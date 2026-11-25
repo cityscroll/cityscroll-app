@@ -1,4 +1,6 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":63,"first_ordinal":106224,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":63,"first_ordinal":106225,"entries":[
+{"s":"NORTHERN ADIRONDACK CENTRAL SCHOOL PARENT TEACHER ORGANIZATION","n":[["NORTHERN ADIRONDACK CENTRAL SCHOOL PARENT TEACHER ORGANIZATION INC",1]],"x":{"irs":{"r":1,"i":["394092631"],"z":["12935"]}}},
+{"s":"NORTHERN ADIRONDACK HOUSING DEVELOPMENT FUND","n":[["NORTHERN ADIRONDACK HOUSING DEVELOPMENT FUND",1]],"x":{"irs":{"r":1,"i":["455609097"],"z":["12953"]}}},
 {"s":"NORTHERN ADIRONDACK PET FUND","n":[["NORTHERN ADIRONDACK PET FUND INC",1]],"x":{"irs":{"r":1,"i":["994035017"],"z":["12981"]}}},
 {"s":"NORTHERN AIR REFRIGERATION","n":[["Northern Air & Refrigeration LLC",1]],"d":[["Northern Air & Refrigeration",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["25-6HDAT-CR"],"z":["12920"]}}},
 {"s":"NORTHERN AREA HEALTH EDUCATION CENTER","n":[["NORTHERN AREA HEALTH EDUCATION CENTER INC",1]],"x":{"irs":{"r":1,"i":["161605584"],"z":["13617"]}}},
@@ -1725,8 +1727,5 @@
 {"s":"OEHLER CONTRACTING AND CONSULTING","n":[["Oehler Contracting and Consulting Inc",1]],"x":{"dol":{"r":1,"i":["25-65ZAG-CR"],"z":["10128"]}}},
 {"s":"OER SERVICES LLC DBA OLYMPIC EQUIPMENT RENTALS","n":[["OER Services, LLC dba Olympic Equipment Rentals",1],["Oer Services LLC DBA Olympic Equipment Rentals",1]],"x":{"ocp":{"r":2,"a":1691275.95,"l":"2015-04-29","i":["20150422010","20150130006"]}}},
 {"s":"OER SERVICES LLLC","n":[["Oer Services Lllc",1]],"x":{"ocp":{"r":1,"a":652200,"l":"2019-09-10","i":["20190903025"]}}},
-{"s":"OF HOME FAMILY AND FUTURE","n":[["OF HOME FAMILY AND FUTURE INC",1]],"x":{"irs":{"r":1,"i":["202014390"],"z":["10003"]}}},
-{"s":"OF LOVE FAITH AND POWER WORSHIP CENTER","n":[["OF LOVE FAITH AND POWER WORSHIP CENTER",1]],"x":{"irs":{"r":1,"i":["562526961"],"z":["14613"]}}},
-{"s":"OFEK YEHUDI","n":[["OFEK YEHUDI",1]],"x":{"irs":{"r":1,"i":["454182630"],"z":["11226"]}}},
-{"s":"OFF ASSIGNMENT","n":[["OFF ASSIGNMENT INC",1]],"x":{"irs":{"r":1,"i":["471979963"],"z":["10003"]}}}
+{"s":"OF HOME FAMILY AND FUTURE","n":[["OF HOME FAMILY AND FUTURE INC",1]],"x":{"irs":{"r":1,"i":["202014390"],"z":["10003"]}}}
 ]}

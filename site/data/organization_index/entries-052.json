@@ -1,4 +1,8 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":52,"first_ordinal":87767,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":52,"first_ordinal":87766,"entries":[
+{"s":"LOCKPORT LITTLE LEAGUE BASEBALL ORGANIZATION","n":[["LOCKPORT LITTLE LEAGUE BASEBALL ORGANIZATION INC",1]],"x":{"irs":{"r":1,"i":["201997867"],"z":["14095"]}}},
+{"s":"LOCKPORT LITTLE LOOP FOOTBALL CLUB","n":[["LOCKPORT LITTLE LOOP FOOTBALL CLUB INC",1]],"x":{"irs":{"r":1,"i":["462633348"],"z":["14095"]}}},
+{"s":"LOCKPORT LOCKS HERITAGE DISTRICT","n":[["LOCKPORT LOCKS HERITAGE DISTRICT CORPORATION",1]],"x":{"irs":{"r":1,"i":["465359073"],"z":["14094"]}}},
+{"s":"LOCKPORT MAIN STREET","n":[["LOCKPORT MAIN STREET INC",1]],"x":{"irs":{"r":1,"i":["263838339"],"z":["14094"]}}},
 {"s":"LOCKPORT NEW BEGINNINGS","n":[["LOCKPORT NEW BEGINNINGS",1]],"x":{"irs":{"r":1,"i":["161454332"],"z":["14095"]}}},
 {"s":"LOCKPORT NEW YORK ROTARY FOUNDATION","n":[["LOCKPORT NEW YORK ROTARY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["452556261"],"z":["14221"]}}},
 {"s":"LOCKPORT PUBLIC ARTS COUNCIL","n":[["LOCKPORT PUBLIC ARTS COUNCIL INC",1]],"x":{"irs":{"r":1,"i":["113824673"],"z":["14094"]}}},
@@ -1147,7 +1151,7 @@
 {"s":"LOWER EAST SIDE RENAISSANCE","n":[["LOWER EAST SIDE RENAISSANCE CORP",1]],"x":{"irs":{"r":1,"i":["992105755"],"z":["10002"]}}},
 {"s":"LOWER EAST SIDE SERVICE CENTER","n":[["LOWER EAST SIDE SERVICE CENTER, INC.",2],["Lower East Side Service Center",2]],"x":{"ocp":{"r":4,"a":4105471,"l":"2014-08-26","i":["20140819024","20120718030","20110707007","20100628011"]}}},
 {"s":"LOWER EAST SIDE SPORTS ACADEMY","n":[["LOWER EAST SIDE SPORTS ACADEMY INC",1]],"x":{"irs":{"r":1,"i":["454506682"],"z":["10009"]}}},
-{"s":"LOWER EAST SIDE TENEMENT MUSEUM","n":[["LOWER EAST SIDE TENEMENT MUSEUM",2]],"x":{"dbe":{"r":1,"i":["LOWER EAST SIDE TENEMENT MUSEUM"]},"irs":{"r":1,"i":["133475390"],"z":["10002"]}}},
+{"s":"LOWER EAST SIDE TENEMENT MUSEUM","n":[["LOWER EAST SIDE TENEMENT MUSEUM",3]],"x":{"cbv":{"r":1,"l":"2026-11-23","i":["CT104020273048428"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["LOWER EAST SIDE TENEMENT MUSEUM"]},"irs":{"r":1,"i":["133475390"],"z":["10002"]}}},
 {"s":"LOWER EAST SIDE VOLUNTEERS OF HATZALAH","n":[["LOWER EAST SIDE VOLUNTEERS OF HATZALAH INC",1]],"x":{"irs":{"r":1,"i":["133721394"],"z":["10002"]}}},
 {"s":"LOWER EASTSIDE GIRLS CLUB","n":[["LOWER EASTSIDE GIRLS CLUB OF NY",6],["Lower Eastside Girls Club of NY",3]],"x":{"ocp":{"r":3,"a":2833039,"l":"2026-07-21","i":["20260715014","20230729109","20211126106"]},"cbr":{"r":3,"a":3312074,"l":"2026-07-14","i":["CT126020278801029","CT126020268801013","CT126020258806757"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":2402555,"l":"2026-07-14","i":["CT1-260-20278801029","CT1-260-20228801849"]},"cbv":{"r":1,"l":"2026-07-14","i":["CT126020278801029"],"m":["Non-M/WBE"]}}},
 {"s":"LOWER EASTSIDE GIRLS CLUB DELAWARE","n":[["LOWER EASTSIDE GIRLS CLUB DELAWARE INC",1]],"x":{"irs":{"r":1,"i":["272354919"],"z":["10009"]}}},
@@ -1736,11 +1740,5 @@
 {"s":"LYNVET FOOTBALL CHEERLEADING ASSOCIATION","n":[["LYNVET FOOTBALL & CHEERLEADING ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["113519898"],"z":["11951"]}}},
 {"s":"LYNVET YOUTH SPORTS ASSOCIATION","n":[["LYNVET YOUTH SPORTS ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["113504856"],"z":["11572"]}}},
 {"s":"LYNX ENSEMBLE THEATER","n":[["LYNX ENSEMBLE THEATER",1]],"x":{"irs":{"r":1,"i":["320089993"],"z":["11218"]}}},
-{"s":"LYNX GENERAL CONTRACTING","n":[["Lynx General Contracting, LLC",1]],"x":{"dol":{"r":1,"i":["26-667LY-CR"],"z":["19971"]}}},
-{"s":"LYNX TECHNOLOGIES","n":[["LYNX TECHNOLOGIES INC.",1]],"x":{"dol":{"r":1,"i":["25-64CQL-CR"],"z":["14072"]}}},
-{"s":"LYNYC FOOTBALL","n":[["LYNYC FOOTBALL INC",1]],"x":{"irs":{"r":1,"i":["472701121"],"z":["11552"]}}},
-{"s":"LYON MOUNTAIN AMBULANCE SERVICES","n":[["LYON MOUNTAIN AMBULANCE SERVICES INC",1]],"x":{"irs":{"r":1,"i":["823284634"],"z":["12952"]}}},
-{"s":"LYON SZOT ARCHITECTURE DPC","n":[["LYON SZOT ARCHITECTURE DPC",1]],"x":{"dbe":{"r":1,"i":["LYON SZOT ARCHITECTURE DPC"]}}},
-{"s":"LYONS CEMETERY ASSOCIATION","n":[["LYONS CEMETERY ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["156022707"],"z":["14513"]}}},
-{"s":"LYONS COMMUNITY CENTER","n":[["LYONS COMMUNITY CENTER INC",1]],"x":{"irs":{"r":1,"i":["150503158"],"z":["14489"]}}}
+{"s":"LYNX GENERAL CONTRACTING","n":[["Lynx General Contracting, LLC",1]],"x":{"dol":{"r":1,"i":["26-667LY-CR"],"z":["19971"]}}}
 ]}

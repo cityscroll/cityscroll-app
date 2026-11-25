@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":78,"first_ordinal":131842,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":78,"first_ordinal":131843,"entries":[
+{"s":"SO YOU WANT TO CHANGE THE WORLD","n":[["SO YOU WANT TO CHANGE THE WORLD",1]],"x":{"irs":{"r":1,"i":["473846125"],"z":["11211"]}}},
+{"s":"SO-CHAT TAP2CHAT","n":[["SO-CHAT TAP2CHAT INC",1]],"x":{"irs":{"r":1,"i":["832333598"],"z":["11977"]}}},
+{"s":"SO-IL OFFICE","n":[["SO-IL OFFICE LTD.",1]],"x":{"sbs":{"r":1,"i":["268937"],"z":["11205"],"p":["MBE","WBE"]}}},
 {"s":"SOA SERVICE","n":[["SOA SERVICE CORPORATION",3],["SOA Service Corporation",2]],"x":{"ocp":{"r":1,"a":956100,"l":"2025-07-28","i":["20250721035"]},"cbr":{"r":1,"a":956100,"l":"2025-07-21","i":["CT184120268801473"],"m":["Asian American"]},"ppt":{"r":1,"a":956100,"l":"2025-07-21","i":["CT1-841-20268801473"]},"sbs":{"r":1,"i":["903"],"z":["10710"],"p":["MBE"]},"dol":{"r":1,"i":["24-64GHI-CR"],"z":["10765"]}}},
 {"s":"SOAL TECHNOLOGIES","n":[["SOAL Technologies LLC",1]],"x":{"sbs":{"r":1,"i":["376479"],"z":["78759"],"p":["MBE"]}}},
 {"s":"SOAPBOX - THE FEMINIST FOUNDATION","n":[["SOAPBOX - THE FEMINIST FOUNDATION",1]],"x":{"irs":{"r":1,"i":["464146072"],"z":["10002"]}}},
@@ -1685,8 +1688,5 @@
 {"s":"SPEAK ON SIS","n":[["SPEAK ON SIS",1]],"x":{"irs":{"r":1,"i":["414640171"],"z":["12577"]}}},
 {"s":"SPEAK PRACTICE ENGLISH","n":[["SPEAK & PRACTICE ENGLISH INC",1]],"x":{"irs":{"r":1,"i":["833016289"],"z":["11229"]}}},
 {"s":"SPEAK SOCIETY FOR THE PROMOTION OF EDUCATION IN ANIMAL KINDNESS","n":[["SPEAK SOCIETY FOR THE PROMOTION OF EDUCATION IN ANIMAL KINDNESS",1]],"x":{"irs":{"r":1,"i":["161159692"],"z":["13732"]}}},
-{"s":"SPEAK TO LEAD","n":[["SPEAK TO LEAD INC",1]],"x":{"irs":{"r":1,"i":["993451652"],"z":["12207"]}}},
-{"s":"SPEAK UP AFRICA","n":[["SPEAK UP AFRICA",1]],"x":{"irs":{"r":1,"i":["463611387"],"z":["10003"]}}},
-{"s":"SPEAK YOUR LEGACY","n":[["Speak Your Legacy Inc.",1]],"x":{"sbs":{"r":1,"i":["373452"],"z":["11757"],"p":["WBE"]}}},
-{"s":"SPEAK-AT-EASE","d":[["Speak-At-Ease",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["5895"],"z":["10033"],"p":["WBE"]}}}
+{"s":"SPEAK TO LEAD","n":[["SPEAK TO LEAD INC",1]],"x":{"irs":{"r":1,"i":["993451652"],"z":["12207"]}}}
 ]}

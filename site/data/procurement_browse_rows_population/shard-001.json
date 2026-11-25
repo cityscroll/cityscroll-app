@@ -4,6 +4,1077 @@
   "shard_id": "001",
   "rows": [
     {
+      "procurement_id": "procurement:contract:CT181620248806089",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248806089",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240706107",
+        "passport_public_contracts:contract:81623S0016001:4992178"
+      ],
+      "request_id": "20240706107",
+      "start_date": "2023-11-01",
+      "end_date": "2029-10-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Bulk Data Licensing - Restaurant Data",
+      "pin": "81623S0016001",
+      "contract_id": "CT181620248806089",
+      "contract_amount": 510000,
+      "vendor_name": "SYNDIGO LLC",
+      "official_url": null,
+      "selection_method_description": "Sole Source",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · SYNDIGO LLC · $510,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240706107",
+          "type_of_notice_description": "Award",
+          "short_title": "Bulk Data Licensing - Restaurant Data",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-12",
+          "href": "/notices/20240706107"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248806105",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248806105",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240415106",
+        "passport_public_contracts:contract:81619P8231KXLR001:5049521"
+      ],
+      "request_id": "20240415106",
+      "start_date": "2024-02-01",
+      "end_date": "2028-01-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Supportive Housing",
+      "pin": "81619P8231KXLR001",
+      "contract_id": "CT181620248806105",
+      "contract_amount": 922492,
+      "vendor_name": "Center For Urban Community Services Inc.",
+      "official_url": null,
+      "selection_method_description": "Renewal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Center For Urban Community Services Inc. · $922,492",
+      "notice_evidence": [
+        {
+          "request_id": "20240415106",
+          "type_of_notice_description": "Award",
+          "short_title": "Supportive Housing",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-04-19",
+          "href": "/notices/20240415106"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248806416",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248806416",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240322120",
+        "passport_public_contracts:contract:81624W0039001:5081414"
+      ],
+      "request_id": "20240322120",
+      "start_date": "2024-01-01",
+      "end_date": "2026-12-31",
+      "agency_id": null,
+      "agency_name": "Chief Medical Examiner",
+      "short_title": "SWARMP CONSULTANT",
+      "pin": "81624W0039001",
+      "contract_id": "CT181620248806416",
+      "contract_amount": 586854,
+      "vendor_name": "ZI ENGINEERING PC",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Chief Medical Examiner · ZI ENGINEERING PC · $586,854",
+      "notice_evidence": [
+        {
+          "request_id": "20240322120",
+          "type_of_notice_description": "Award",
+          "short_title": "SWARMP CONSULTANT",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-03-29",
+          "href": "/notices/20240322120"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248806567",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248806567",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240508104",
+        "passport_public_contracts:contract:81623N0050001:4958120"
+      ],
+      "request_id": "20240508104",
+      "start_date": "2023-06-03",
+      "end_date": "2024-06-02",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Disease Diagnostic testing in NYC SNFs",
+      "pin": "81623N0050001",
+      "contract_id": "CT181620248806567",
+      "contract_amount": 6500000,
+      "vendor_name": "HEALTHQUEST ESOTERICS INC",
+      "official_url": null,
+      "selection_method_description": "Negotiated Acquisition",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · HEALTHQUEST ESOTERICS INC · $6,500,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240508104",
+          "type_of_notice_description": "Award",
+          "short_title": "Disease Diagnostic testing in NYC SNFs",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-05-14",
+          "href": "/notices/20240508104"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248806725",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248806725",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240502107",
+        "passport_public_contracts:contract:81624P0007001:4657202"
+      ],
+      "request_id": "20240502107",
+      "start_date": "2024-03-01",
+      "end_date": "2033-02-28",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "NY 15/15 CONGREGATE SUPPORTIVE HOUSING SERVICES FOR SINGLE ADULTS (GROUP 28)",
+      "pin": "81624P0007001",
+      "contract_id": "CT181620248806725",
+      "contract_amount": 15946875,
+      "vendor_name": "Lantern Community Services Inc.",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Lantern Community Services Inc. · $15,946,875",
+      "notice_evidence": [
+        {
+          "request_id": "20240502107",
+          "type_of_notice_description": "Award",
+          "short_title": "NY 15/15 CONGREGATE SUPPORTIVE HOUSING SERVICES FOR SINGLE ADULTS (GROUP 28)",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-05-08",
+          "href": "/notices/20240502107"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248806775",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248806775",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240429108",
+        "passport_public_contracts:contract:81624U0015001:5070817"
+      ],
+      "request_id": "20240429108",
+      "start_date": "2023-08-01",
+      "end_date": "2024-07-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Politico news subscription service",
+      "pin": "81624U0015001",
+      "contract_id": "CT181620248806775",
+      "contract_amount": 71820,
+      "vendor_name": "Politico LLC",
+      "official_url": null,
+      "selection_method_description": "Subscription",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Politico LLC · $71,820",
+      "notice_evidence": [
+        {
+          "request_id": "20240429108",
+          "type_of_notice_description": "Award",
+          "short_title": "Politico news subscription service",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-05-03",
+          "href": "/notices/20240429108"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807028",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807028",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240627111",
+        "passport_public_contracts:contract:81624P0008001:4657229"
+      ],
+      "request_id": "20240627111",
+      "start_date": "2024-04-01",
+      "end_date": "2039-03-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "NY 15/15 Congregate Supp Housing (Bridge Rockaway) 52 Units",
+      "pin": "81624P0008001",
+      "contract_id": "CT181620248807028",
+      "contract_amount": 17062500,
+      "vendor_name": "The Bridge Inc.",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Proposal",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · The Bridge Inc. · $17,062,500",
+      "notice_evidence": [
+        {
+          "request_id": "20240627111",
+          "type_of_notice_description": "Award",
+          "short_title": "NY 15/15 Congregate Supp Housing (Bridge Rockaway) 52 Units",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-03",
+          "href": "/notices/20240627111"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807089",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807089",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240416119",
+        "passport_public_contracts:contract:81624W0030001:5065980"
+      ],
+      "request_id": "20240416119",
+      "start_date": "2024-03-01",
+      "end_date": "2027-02-28",
+      "agency_id": null,
+      "agency_name": "Chief Medical Examiner",
+      "short_title": "Maintenance & Repair of Mechanical Equipment",
+      "pin": "81624W0030001",
+      "contract_id": "CT181620248807089",
+      "contract_amount": 1000000,
+      "vendor_name": "Green Mechanical Corp",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Chief Medical Examiner · Green Mechanical Corp · $1,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240416119",
+          "type_of_notice_description": "Award",
+          "short_title": "Maintenance & Repair of Mechanical Equipment",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-04-23",
+          "href": "/notices/20240416119"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807091",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807091",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240807113",
+        "passport_public_contracts:contract:81624W0031001:5065983"
+      ],
+      "request_id": "20240807113",
+      "start_date": "2024-05-01",
+      "end_date": "2027-04-30",
+      "agency_id": null,
+      "agency_name": "Chief Medical Examiner",
+      "short_title": "Servicing Facility/Building Doors",
+      "pin": "81624W0031001",
+      "contract_id": "CT181620248807091",
+      "contract_amount": 1000000,
+      "vendor_name": "OZ Door Service Corp.",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Chief Medical Examiner · OZ Door Service Corp. · $1,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240807113",
+          "type_of_notice_description": "Award",
+          "short_title": "Servicing Facility/Building Doors",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-08-13",
+          "href": "/notices/20240807113"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807104",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807104",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240627110",
+        "passport_public_contracts:contract:81624U0016001:5070818"
+      ],
+      "request_id": "20240627110",
+      "start_date": "2024-01-01",
+      "end_date": "2024-06-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "DMSC Training",
+      "pin": "81624U0016001",
+      "contract_id": "CT181620248807104",
+      "contract_amount": 73980,
+      "vendor_name": "Learning Tree International USA Inc.",
+      "official_url": null,
+      "selection_method_description": "Subscription",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Learning Tree International USA Inc. · $73,980",
+      "notice_evidence": [
+        {
+          "request_id": "20240627110",
+          "type_of_notice_description": "Award",
+          "short_title": "DMSC Training",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-03",
+          "href": "/notices/20240627110"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807115",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807115",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240418108",
+        "passport_public_contracts:contract:81624W0032001:5065984"
+      ],
+      "request_id": "20240418108",
+      "start_date": "2024-05-01",
+      "end_date": "2027-04-30",
+      "agency_id": null,
+      "agency_name": "Chief Medical Examiner",
+      "short_title": "Roofing Services",
+      "pin": "81624W0032001",
+      "contract_id": "CT181620248807115",
+      "contract_amount": 1000000,
+      "vendor_name": "ZORIA CONSTRUCTION NY INC",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Chief Medical Examiner · ZORIA CONSTRUCTION NY INC · $1,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240418108",
+          "type_of_notice_description": "Award",
+          "short_title": "Roofing Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-04-24",
+          "href": "/notices/20240418108"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807388",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807388",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240423112",
+        "passport_public_contracts:contract:81624W0059001:5181438"
+      ],
+      "request_id": "20240423112",
+      "start_date": "2024-04-19",
+      "end_date": "2024-10-18",
+      "agency_id": null,
+      "agency_name": "Chief Medical Examiner",
+      "short_title": "Laser scanner for forensic analysis",
+      "pin": "81624W0059001",
+      "contract_id": "CT181620248807388",
+      "contract_amount": 25477.66,
+      "vendor_name": "Quality and Assurance Technology Corp.",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Chief Medical Examiner · Quality and Assurance Technology Corp. · $25,477.66",
+      "notice_evidence": [
+        {
+          "request_id": "20240423112",
+          "type_of_notice_description": "Award",
+          "short_title": "Laser scanner for forensic analysis",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-04-30",
+          "href": "/notices/20240423112"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807559",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807559",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240501111",
+        "passport_public_contracts:contract:81624W0037001:5079771"
+      ],
+      "request_id": "20240501111",
+      "start_date": "2024-05-01",
+      "end_date": "2029-04-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Design and installation services for the Active Design Placemaking Program",
+      "pin": "81624W0037001",
+      "contract_id": "CT181620248807559",
+      "contract_amount": 1000000,
+      "vendor_name": "HIVE PUBLIC SPACE INC",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · HIVE PUBLIC SPACE INC · $1,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240501111",
+          "type_of_notice_description": "Award",
+          "short_title": "Design and installation services for the Active Design Placemaking Program",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-05-08",
+          "href": "/notices/20240501111"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807628",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807628",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240507119",
+        "passport_public_contracts:contract:81624W0034001:5075637"
+      ],
+      "request_id": "20240507119",
+      "start_date": "2024-02-01",
+      "end_date": "2030-01-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Third party witness for passenger and freight elevators, wheelchair lifts and elevator door lock monitoring at DOHMH facilities",
+      "pin": "81624W0034001",
+      "contract_id": "CT181620248807628",
+      "contract_amount": 1000000,
+      "vendor_name": "JOHN MARTIN ASSOCIATES INC",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · JOHN MARTIN ASSOCIATES INC · $1,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240507119",
+          "type_of_notice_description": "Award",
+          "short_title": "Third party witness for passenger and freight elevators, wheelchair lifts and elevator door lock monitoring at DOHMH facilities",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-05-14",
+          "href": "/notices/20240507119"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807696",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807696",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240603110",
+        "passport_public_contracts:contract:81623S0015001:4979009"
+      ],
+      "request_id": "20240603110",
+      "start_date": "2022-09-01",
+      "end_date": "2026-08-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Custom Software Service",
+      "pin": "81623S0015001",
+      "contract_id": "CT181620248807696",
+      "contract_amount": 112000,
+      "vendor_name": "PRECISELY SOFTWARE INCORPORATED",
+      "official_url": null,
+      "selection_method_description": "Sole Source",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · PRECISELY SOFTWARE INCORPORATED · $112,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240603110",
+          "type_of_notice_description": "Award",
+          "short_title": "Custom Software Service",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-07",
+          "href": "/notices/20240603110"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807699",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807699",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240605129",
+        "passport_public_contracts:contract:81624W0029001:5063769"
+      ],
+      "request_id": "20240605129",
+      "start_date": "2024-01-01",
+      "end_date": "2029-12-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Brand Specific EPIC Medical Record System Hardware/Peripherals",
+      "pin": "81624W0029001",
+      "contract_id": "CT181620248807699",
+      "contract_amount": 1000000,
+      "vendor_name": "Mougondha Acharya",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Mougondha Acharya · $1,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240605129",
+          "type_of_notice_description": "Award",
+          "short_title": "Brand Specific EPIC Medical Record System Hardware/Peripherals",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-12",
+          "href": "/notices/20240605129"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807764",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807764",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240529112",
+        "passport_public_contracts:contract:81624W0044001:5096553"
+      ],
+      "request_id": "20240529112",
+      "start_date": "2024-06-01",
+      "end_date": "2029-05-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Agencywide Transcription Services",
+      "pin": "81624W0044001",
+      "contract_id": "CT181620248807764",
+      "contract_amount": 1000000,
+      "vendor_name": "Language Bank Inc.",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Language Bank Inc. · $1,000,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240529112",
+          "type_of_notice_description": "Award",
+          "short_title": "Agencywide Transcription Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-05",
+          "href": "/notices/20240529112"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248807788",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248807788",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240516107",
+        "passport_public_contracts:contract:81624W0050001:5143838"
+      ],
+      "request_id": "20240516107",
+      "start_date": "2024-03-01",
+      "end_date": "2027-02-28",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Existing Cloudli Software Maintenance and Support",
+      "pin": "81624W0050001",
+      "contract_id": "CT181620248807788",
+      "contract_amount": 100000,
+      "vendor_name": "Raj Somas",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Raj Somas · $100,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240516107",
+          "type_of_notice_description": "Award",
+          "short_title": "Existing Cloudli Software Maintenance and Support",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-05-22",
+          "href": "/notices/20240516107"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248808078",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248808078",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240528109",
+        "passport_public_contracts:contract:81624W0065001:5190076"
+      ],
+      "request_id": "20240528109",
+      "start_date": "2024-01-01",
+      "end_date": "2024-06-30",
+      "agency_id": null,
+      "agency_name": "Chief Medical Examiner",
+      "short_title": "EXTENDED WARRANTY SERVICES FOR DELL DESKTOPS ISILON & VXRAIL",
+      "pin": "81624W0065001",
+      "contract_id": "CT181620248808078",
+      "contract_amount": 44639.69,
+      "vendor_name": "Quality and Assurance Technology Corp.",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Chief Medical Examiner · Quality and Assurance Technology Corp. · $44,639.69",
+      "notice_evidence": [
+        {
+          "request_id": "20240528109",
+          "type_of_notice_description": "Award",
+          "short_title": "EXTENDED WARRANTY SERVICES FOR DELL DESKTOPS ISILON & VXRAIL",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-03",
+          "href": "/notices/20240528109"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248808199",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248808199",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240517119",
+        "passport_public_contracts:contract:81624W0045001:5098511"
+      ],
+      "request_id": "20240517119",
+      "start_date": "2024-05-08",
+      "end_date": "2027-05-07",
+      "agency_id": null,
+      "agency_name": "Chief Medical Examiner",
+      "short_title": "Cycle 9C Façade Inspection Services",
+      "pin": "81624W0045001",
+      "contract_id": "CT181620248808199",
+      "contract_amount": 373300,
+      "vendor_name": "ZI ENGINEERING PC",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Chief Medical Examiner · ZI ENGINEERING PC · $373,300",
+      "notice_evidence": [
+        {
+          "request_id": "20240517119",
+          "type_of_notice_description": "Award",
+          "short_title": "Cycle 9C Façade Inspection Services",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-05-24",
+          "href": "/notices/20240517119"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248808243",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248808243",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240803105",
+        "passport_public_contracts:contract:81623S0002001:4810469"
+      ],
+      "request_id": "20240803105",
+      "start_date": "2023-12-01",
+      "end_date": "2029-11-30",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Hardware and software maintenance for Q-matic system",
+      "pin": "81623S0002001",
+      "contract_id": "CT181620248808243",
+      "contract_amount": 350021.34,
+      "vendor_name": "Q-Matic Corporation",
+      "official_url": null,
+      "selection_method_description": "Sole Source",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · Q-Matic Corporation · $350,021.34",
+      "notice_evidence": [
+        {
+          "request_id": "20240803105",
+          "type_of_notice_description": "Award",
+          "short_title": "Hardware and software maintenance for Q-matic system",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-08-09",
+          "href": "/notices/20240803105"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248808412",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248808412",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240627109",
+        "passport_public_contracts:contract:81624B0001001:5119677"
+      ],
+      "request_id": "20240627109",
+      "start_date": "2024-04-01",
+      "end_date": "2030-03-31",
+      "agency_id": null,
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Pilot Services for Aerial Vector-Borne Disease Control",
+      "pin": "81624B0001001",
+      "contract_id": "CT181620248808412",
+      "contract_amount": 1006500,
+      "vendor_name": "North Fork Helicopters Ltd",
+      "official_url": null,
+      "selection_method_description": "Competitive Sealed Bid",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Health and Mental Hygiene · North Fork Helicopters Ltd · $1,006,500",
+      "notice_evidence": [
+        {
+          "request_id": "20240627109",
+          "type_of_notice_description": "Award",
+          "short_title": "Pilot Services for Aerial Vector-Borne Disease Control",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-07-03",
+          "href": "/notices/20240627109"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248808583",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248808583",
+      "procurement_stages": [
+        "award",
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "city_record:20240531112",
+        "passport_public_contracts:contract:81624W0064001:5188813"
+      ],
+      "request_id": "20240531112",
+      "start_date": "2024-06-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Chief Medical Examiner",
+      "short_title": "24R0908LL: MORTUARY SUPPLIES",
+      "pin": "81624W0064001",
+      "contract_id": "CT181620248808583",
+      "contract_amount": 100000,
+      "vendor_name": "SALAM INTERNATIONAL INC",
+      "official_url": null,
+      "selection_method_description": "MWBE Non Competitive Small Purchase",
+      "process_states": [
+        "award",
+        "registered"
+      ],
+      "additional_description_1": "Chief Medical Examiner · SALAM INTERNATIONAL INC · $100,000",
+      "notice_evidence": [
+        {
+          "request_id": "20240531112",
+          "type_of_notice_description": "Award",
+          "short_title": "24R0908LL: MORTUARY SUPPLIES",
+          "additional_description_1": null,
+          "contact_name": null,
+          "start_date": "2024-06-07",
+          "href": "/notices/20240531112"
+        }
+      ],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "city_record",
+        "passport_public_contracts"
+      ],
+      "method_family": "mwbe_small_purchase"
+    },
+    {
       "procurement_id": "procurement:contract:CT181620248808767",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248808767",
       "procurement_stages": [
@@ -26493,20 +27564,20 @@
         "checkbook_contracts:contract:registered:CT181620271400753:MARTA SIBERIO CONSULTING INC:prime-vendor:2026-07-16"
       ],
       "start_date": "2026-07-01",
-      "end_date": "2026-11-30",
+      "end_date": "2026-12-31",
       "agency_id": null,
       "agency_name": "Department of Health and Mental Hygiene",
       "short_title": "Organizational Training",
       "pin": null,
       "contract_id": "CT181620271400753",
-      "contract_amount": 16500,
+      "contract_amount": 19800,
       "vendor_name": "MARTA SIBERIO CONSULTING INC",
       "official_url": null,
       "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
       "process_states": [
         "registered"
       ],
-      "additional_description_1": "Department of Health and Mental Hygiene · MARTA SIBERIO CONSULTING INC · $16,500",
+      "additional_description_1": "Department of Health and Mental Hygiene · MARTA SIBERIO CONSULTING INC · $19,800",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -29977,7 +31048,7 @@
         "checkbook_contracts:contract:registered:CT181620271404621:EMPIRE ELECTRONICS INC:prime-vendor:2026-09-25"
       ],
       "start_date": "2026-07-01",
-      "end_date": "2027-06-30",
+      "end_date": "2027-10-02",
       "agency_id": null,
       "agency_name": "Department of Health and Mental Hygiene",
       "short_title": "Articulate Rise 360 Licenses",
@@ -31023,6 +32094,37 @@
       "method_family": "ordinary_micropurchase"
     },
     {
+      "procurement_id": "procurement:contract:CT181620271406316",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271406316",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271406316:CAEAR COALITION INC:prime-vendor:2026-11-23"
+      ],
+      "start_date": "2026-09-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "CAEAR Membership Dues - RW",
+      "pin": null,
+      "contract_id": "CT181620271406316",
+      "contract_amount": 9000,
+      "vendor_name": "CAEAR COALITION INC",
+      "official_url": null,
+      "selection_method_description": "PROF. MEMBERSHIP NEGOTIATION",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · CAEAR COALITION INC · $9,000",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT181620271406526",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271406526",
       "procurement_stages": [
@@ -31591,6 +32693,38 @@
         "registered"
       ],
       "additional_description_1": "Department of Health and Mental Hygiene · T ROC RIDGE ENTERPRISE INC · $900",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620271407456",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620271407456",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT181620271407456:EMPIRE OFFICE INC:prime-vendor:2026-11-23"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Health and Mental Hygiene",
+      "short_title": "EEO Approved Chair",
+      "pin": null,
+      "contract_id": "CT181620271407456",
+      "contract_amount": 2399.64,
+      "vendor_name": "EMPIRE OFFICE INC",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Health and Mental Hygiene · EMPIRE OFFICE INC · $2,399.64",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -74951,6 +76085,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CT182620278803396",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT182620278803396",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT182620278803396:JET VAC EQUIPMENT LLC:prime-vendor:2026-11-23"
+      ],
+      "start_date": "2026-10-19",
+      "end_date": "2027-10-19",
+      "agency_id": null,
+      "agency_name": "Department of Environmental Protection",
+      "short_title": "82626S0015-BWSO_POLECAM-2025",
+      "pin": "82626S0015001",
+      "contract_id": "CT182620278803396",
+      "contract_amount": 275160,
+      "vendor_name": "JET VAC EQUIPMENT LLC",
+      "official_url": null,
+      "selection_method_description": "SOLE SOURCE",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Environmental Protection · JET VAC EQUIPMENT LLC · $275,160",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT182620278803506",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT182620278803506",
       "procurement_stages": [
@@ -75069,6 +76234,37 @@
         "registered"
       ],
       "additional_description_1": "Department of Environmental Protection · J PIZZIRUSSO LANDSCAPING CORP · $6,538,862.5",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
+      "procurement_id": "procurement:contract:CT182620278803663",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT182620278803663",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT182620278803663:JACOBS CIVIL CONSULTANTS:prime-vendor:2026-11-23"
+      ],
+      "start_date": "2026-09-01",
+      "end_date": "2031-05-08",
+      "agency_id": null,
+      "agency_name": "Department of Environmental Protection",
+      "short_title": "CSO-FC DF CM",
+      "pin": "82626P0016001",
+      "contract_id": "CT182620278803663",
+      "contract_amount": 13093970.32,
+      "vendor_name": "Jacobs Civil Consultants",
+      "official_url": null,
+      "selection_method_description": "REQUEST FOR PROPOSAL (RFP)",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Environmental Protection · Jacobs Civil Consultants · $13,093,970.32",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [
@@ -168201,6 +169397,38 @@
       "method_family": "ordinary_micropurchase"
     },
     {
+      "procurement_id": "procurement:contract:CT184620278803912",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620278803912",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT184620278803912:H&L HEATING SUPPLY CO:prime-vendor:2026-11-23"
+      ],
+      "start_date": "2026-11-24",
+      "end_date": "2027-01-29",
+      "agency_id": null,
+      "agency_name": "Department of Parks and Recreation",
+      "short_title": "BKOPS-Boiler Parts for the Betsy Head Boiler",
+      "pin": "84627C0315001",
+      "contract_id": "CT184620278803912",
+      "contract_amount": 3960.75,
+      "vendor_name": "H&L HEATING SUPPLY CO",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCHASE - UNDER $5,000",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Parks and Recreation · H&L HEATING SUPPLY CO · $3,960.75",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ],
+      "method_family": "ordinary_micropurchase"
+    },
+    {
       "procurement_id": "procurement:contract:CT185020228800785",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185020228800785",
       "procurement_stages": [
@@ -208826,6 +210054,37 @@
       "method_family": "ordinary_micropurchase"
     },
     {
+      "procurement_id": "procurement:contract:CT185620278802441",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185620278802441",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT185620278802441:C GLOBAL CONSULTING LLC:prime-vendor:2026-11-23"
+      ],
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Citywide Administrative Services",
+      "short_title": "102(f) C Global Consulting",
+      "pin": "85627U0011001",
+      "contract_id": "CT185620278802441",
+      "contract_amount": 99999,
+      "vendor_name": "C GLOBAL CONSULTING LLC",
+      "official_url": null,
+      "selection_method_description": "SUBSCRIPTION ETC PER PPB",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Citywide Administrative Services · C GLOBAL CONSULTING LLC · $99,999",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT185620278802518",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185620278802518",
       "procurement_stages": [
@@ -209400,6 +210659,37 @@
       "method_family": "mwbe_small_purchase"
     },
     {
+      "procurement_id": "procurement:contract:CT185620278803772",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185620278803772",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT185620278803772:CLARK EQUIPMENT COMPANY:prime-vendor:2026-11-23"
+      ],
+      "start_date": "2026-10-01",
+      "end_date": "2027-09-30",
+      "agency_id": null,
+      "agency_name": "Department of Citywide Administrative Services",
+      "short_title": "Snow Removal Vehicles",
+      "pin": "85627O0001001",
+      "contract_id": "CT185620278803772",
+      "contract_amount": 408457,
+      "vendor_name": "CLARK EQUIPMENT COMPANY",
+      "official_url": null,
+      "selection_method_description": "INTERGOVERNMENTAL PROCUREMENT",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Citywide Administrative Services · CLARK EQUIPMENT COMPANY · $408,457",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CT185620278803890",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185620278803890",
       "procurement_stages": [
@@ -209430,6 +210720,37 @@
         "checkbook_contracts"
       ],
       "method_family": "mwbe_small_purchase"
+    },
+    {
+      "procurement_id": "procurement:contract:CT185620278803894",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185620278803894",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CT185620278803894:AUTOMOTIVE VIDEO INNOVATIONS:prime-vendor:2026-11-23"
+      ],
+      "start_date": "2026-11-09",
+      "end_date": "2027-06-30",
+      "agency_id": null,
+      "agency_name": "Department of Citywide Administrative Services",
+      "short_title": "EV Mechanical Training",
+      "pin": "85627U0022001",
+      "contract_id": "CT185620278803894",
+      "contract_amount": 19645,
+      "vendor_name": "AUTOMOTIVE VIDEO INNOVATIONS",
+      "official_url": null,
+      "selection_method_description": "SMALL PURCH -SUBSCRIPTION ETC",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Department of Citywide Administrative Services · AUTOMOTIVE VIDEO INNOVATIONS · $19,645",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
     },
     {
       "procurement_id": "procurement:contract:CT185720228800365",
@@ -250616,6 +251937,37 @@
       ]
     },
     {
+      "procurement_id": "procurement:contract:CTA181920277202132",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACTA181920277202132",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_observation_refs": [
+        "checkbook_contracts:contract:registered:CTA181920277202132:MOODY-NOLAN INC:prime-vendor:2026-11-23"
+      ],
+      "start_date": "2026-04-20",
+      "end_date": "2027-04-20",
+      "agency_id": null,
+      "agency_name": "Health and Hospitals Corporation",
+      "short_title": "MOODY ;24202204; NCB OUTPOSTED THERAPEUT",
+      "pin": null,
+      "contract_id": "CTA181920277202132",
+      "contract_amount": 138795,
+      "vendor_name": "MOODY-NOLAN INC",
+      "official_url": null,
+      "selection_method_description": "MULTIPLE AWARDS",
+      "process_states": [
+        "registered"
+      ],
+      "additional_description_1": "Health and Hospitals Corporation · MOODY-NOLAN INC · $138,795",
+      "notice_evidence": [],
+      "source_system": "shared_procurement_read_model",
+      "source_systems": [
+        "checkbook_contracts"
+      ]
+    },
+    {
       "procurement_id": "procurement:contract:CTA181920277202282",
       "canonical_href": "/procurements/procurement%3Acontract%3ACTA181920277202282",
       "procurement_stages": [
@@ -259805,16 +261157,16 @@
       "agency_id": null,
       "agency_name": "Department of Citywide Administrative Services",
       "short_title": "Aramark Focus Area 1 - Energy Efficiency Report Task Order #",
-      "pin": "85626Z0034001",
+      "pin": "85626Z0034001A001",
       "contract_id": "CTA185620278801177",
-      "contract_amount": 294445.85,
+      "contract_amount": 292926.8,
       "vendor_name": "ARAMARK TECHNICAL SERVICES OF NEW YORK LLC",
       "official_url": null,
       "selection_method_description": "MULTIPLE AWARDS",
       "process_states": [
         "registered"
       ],
-      "additional_description_1": "Department of Citywide Administrative Services · ARAMARK TECHNICAL SERVICES OF NEW YORK LLC · $294,445.85",
+      "additional_description_1": "Department of Citywide Administrative Services · ARAMARK TECHNICAL SERVICES OF NEW YORK LLC · $292,926.8",
       "notice_evidence": [],
       "source_system": "shared_procurement_read_model",
       "source_systems": [

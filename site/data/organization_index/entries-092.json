@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":92,"first_ordinal":155079,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":92,"first_ordinal":155084,"entries":[
 {"s":"WEBSTER VOLUNTEER FIRE DEPARTMENT","n":[["WEBSTER VOLUNTEER FIRE DEPARTMENT INC",1]],"x":{"irs":{"r":1,"i":["166152745"],"z":["14580"]}}},
 {"s":"WEBSTER W FLORENCE M STETSON FOUNDATION","n":[["WEBSTER W & FLORENCE M STETSON FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["237092237"],"z":["10021"]}}},
 {"s":"WEBSTER YOUTH HOCKEY ASSOCIATION","n":[["WEBSTER YOUTH HOCKEY ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["141819217"],"z":["14580"]}}},

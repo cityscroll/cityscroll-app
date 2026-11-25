@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":45,"first_ordinal":75724,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":45,"first_ordinal":75721,"entries":[
+{"s":"JAMAICA ASSOCIATION OF VINTAGE ARTISTS AFFILIATES NY","n":[["JAMAICA ASSOCIATION OF VINTAGE ARTISTS & AFFILIATES NY INC",1]],"x":{"irs":{"r":1,"i":["611650466"],"z":["11225"]}}},
+{"s":"JAMAICA ATHLETIC AND LEARING CENTER","n":[["JAMAICA ATHLETIC AND LEARING CENTER",1]],"x":{"irs":{"r":1,"i":["200975215"],"z":["11411"]}}},
+{"s":"JAMAICA ATHLETIC LEARNING CENTER","n":[["JAMAICA ATHLETIC & LEARNING CENTER INC",1]],"x":{"cbr":{"r":1,"a":10000,"l":"2024-07-02","i":["CT126020258800906"],"m":["Non-M/WBE"]}}},
 {"s":"JAMAICA BANGLADESH ASSOCIATION","n":[["JAMAICA BANGLADESH ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["934537949"],"z":["11432"]}}},
 {"s":"JAMAICA BAY - ROCKAWAY PARKS CONSERVANCY","n":[["JAMAICA BAY - ROCKAWAY PARKS CONSERVANCY INC",1]],"x":{"irs":{"r":1,"i":["463640410"],"z":["11694"]}}},
 {"s":"JAMAICA BAY COMMUNITY DEVELOPMENT","n":[["JAMAICA BAY COMMUNITY DEVELOPMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["463118464"],"z":["11569"]}}},
@@ -1179,6 +1182,7 @@
 {"s":"JET HAULING","n":[["Jet Hauling LLC",4],["JET HAULING LLC",1]],"x":{"ocp":{"r":1,"a":496345,"l":"2026-01-14","i":["20260108007"]},"cbr":{"r":1,"a":496344.59,"l":"2026-01-07","i":["CT182720268803117"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":496344.59,"l":"2026-01-07","i":["CT1-827-20268803117"]},"cbv":{"r":1,"l":"2026-01-07","i":["CT182720268803117"],"m":["Non-M/WBE"]},"dol":{"r":1,"i":["25-6HD7L-CR"],"z":["10312"]}}},
 {"s":"JET STREAM FUELS","n":[["JET STREAM FUELS INC",1]],"x":{"ocp":{"r":1,"a":2226960,"l":"2019-11-04","i":["20191028002"]}}},
 {"s":"JET VAC","n":[["Jet Vac, Inc.",1]],"x":{"ocp":{"r":1,"a":180677.8,"l":"2013-07-30","i":["20130723010"]}}},
+{"s":"JET VAC EQUIPMENT","n":[["JET VAC EQUIPMENT LLC",1]],"x":{"cbv":{"r":1,"l":"2026-11-23","i":["CT182620278803396"],"m":["Non-M/WBE"]}}},
 {"s":"JET-BLACK","d":[["Jet-Black",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-9YSGG-CR"],"z":["11733"]}}},
 {"s":"JET-BLACK OF ORANGE BERGEN","d":[["Jet-Black of Orange & Bergen",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-65KHI-CR"],"z":["10924"]}}},
 {"s":"JET-BLACK OF WESTCHESTER","d":[["Jet-Black of Westchester",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-6HPO8-CR"],"z":["10941"]}}},
@@ -1670,9 +1674,5 @@
 {"s":"JLC ENVIRONMENTAL CONSULTANTS","n":[["JLC Environmental Consultants, Inc.",2]],"x":{"sbs":{"r":1,"i":["2647"],"z":["10001"],"p":["WBE"]},"dol":{"r":1,"i":["26-648Y8-CR"],"z":["10001"]}}},
 {"s":"JLC UNITED","n":[["JLC UNITED INC",1]],"x":{"irs":{"r":1,"i":["455213730"],"z":["13902"]}}},
 {"s":"JLD ADVISORY","d":[["JLD Advisory",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["331227"],"z":["11375"],"p":["WBE"]}}},
-{"s":"JLDCE SCHWARTZ FAMILY FOUNDATION","n":[["JLDCE SCHWARTZ FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["993394122"],"z":["10065"]}}},
-{"s":"JLEE MONTESSORI","n":[["JLEE MONTESSORI INC",3]],"x":{"cbr":{"r":1,"a":4898352,"l":"2026-10-03","i":["CT104020279759939"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-10-03","i":["CT104020279759939"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["JLEE MONTESSORI INC"]}}},
-{"s":"JLEGACY GIVE BACK FOUNDATION","n":[["JLEGACY GIVE BACK FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["872390346"],"z":["11233"]}}},
-{"s":"JLENS","n":[["JLENS",1]],"x":{"irs":{"r":1,"i":["873297460"],"z":["10158"]}}},
-{"s":"JLEW FOREVER FOUNDATION","n":[["JLEW FOREVER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["872598695"],"z":["11530"]}}}
+{"s":"JLDCE SCHWARTZ FAMILY FOUNDATION","n":[["JLDCE SCHWARTZ FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["993394122"],"z":["10065"]}}}
 ]}

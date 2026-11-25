@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":84,"first_ordinal":141812,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"8469c24b0c350b07","shard":84,"first_ordinal":141814,"entries":[
+{"s":"THE EVANGELICAL LUTHERAN CHURCH OF THE TRANSFIGURATION","n":[["THE EVANGELICAL LUTHERAN CHURCH OF THE TRANSFIGURATION",1]],"x":{"irs":{"r":1,"i":["132560846"],"z":["10461"]}}},
+{"s":"THE EVENING LIGHT EVANGELICAL TABERNACLE","n":[["THE EVENING LIGHT EVANGELICAL TABERNACLE INC",1]],"x":{"irs":{"r":1,"i":["133589941"],"z":["10466"]}}},
+{"s":"THE EVERETT B BIRCH FOUNDATION","n":[["THE EVERETT B BIRCH FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133630494"],"z":["10017"]}}},
 {"s":"THE EVERFUND","n":[["THE EVERFUND INC",1]],"x":{"irs":{"r":1,"i":["831218408"],"z":["10952"]}}},
 {"s":"THE EVERGREEN ASSOCIATION","n":[["THE EVERGREEN ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["133301413"],"z":["10705"]}}},
 {"s":"THE EVERGREEN CHURCH OF GOD IN CHRIST WORSHIP CENTER","n":[["THE EVERGREEN CHURCH OF GOD IN CHRIST WORSHIP CENTER INC",1]],"x":{"irs":{"r":1,"i":["814677658"],"z":["11233"]}}},
@@ -1544,8 +1547,5 @@
 {"s":"THE OKINAGA FOUNDATION","n":[["THE OKINAGA FOUNDATION",1]],"x":{"irs":{"r":1,"i":["421354468"],"z":["11530"]}}},
 {"s":"THE OLEAN HISTORICAL AND PRESERVATION SOCIETY","n":[["THE OLEAN HISTORICAL AND PRESERVATION SOCIETY",1]],"x":{"irs":{"r":1,"i":["161329724"],"z":["14760"]}}},
 {"s":"THE OLEY FOUNDATION","n":[["THE OLEY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133194182"],"z":["12208"]}}},
-{"s":"THE OLGA FORRAI FOUNDATION","n":[["THE OLGA FORRAI FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133182161"],"z":["10006"]}}},
-{"s":"THE OLIVE BRANCH","n":[["THE OLIVE BRANCH INC",1]],"x":{"irs":{"r":1,"i":["823095284"],"z":["11746"]}}},
-{"s":"THE OLIVE BRANCH CONNECTION","n":[["THE OLIVE BRANCH CONNECTION",1]],"x":{"irs":{"r":1,"i":["943465381"],"z":["12309"]}}},
-{"s":"THE OLIVER SCHOLARS PROGRAM","n":[["THE OLIVER SCHOLARS PROGRAM INC",1]],"x":{"irs":{"r":1,"i":["133248876"],"z":["10005"]}}}
+{"s":"THE OLGA FORRAI FOUNDATION","n":[["THE OLGA FORRAI FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133182161"],"z":["10006"]}}}
 ]}
