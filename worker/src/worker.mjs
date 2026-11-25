@@ -82,6 +82,7 @@ import { handleMcp } from "./mcp.mjs";
 import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
 import { handleOrganizationSearch } from "./organization_search_route.mjs";
 import { handleMirror } from "./mirror.mjs";
+import { startPreviewRequest, startPreviewResponse, usesStartPreview } from "../../site/start/response.mjs";
 import { handleHearings, handleMeetingICS, refreshHearings } from "./hearings.mjs";
 import { handleLandUpcomingHearings, refreshLandUpcomingHearings } from "./land_upcoming_hearings.mjs";
 import { handleZapProjectsLookup, refreshZapProjectsLookup } from "./zap_projects_lookup.mjs";
@@ -506,17 +507,30 @@ async function handleCostControlProbe(request, env) {
 
 const worker = {
   async fetch(request, env, ctx) {
-    const { pathname, hostname } = new URL(request.url);
+    const { pathname, hostname, search } = new URL(request.url);
     if (pathname === "/admin/cost-control-probe" && request.method === "POST") {
       return handleCostControlProbe(request, env);
     }
     if (MIRROR_HOSTS.has(hostname)) {
+      const preview = hostname === "cityscroll.org" && request.method === "GET" && usesStartPreview(request);
+      if (preview && pathname === "/" && !search) {
+        return new Response(null, { status: 302, headers: { Location: "/start/", "Cache-Control": "private, no-store" } });
+      }
+      const nearYouDocument = isNearYouDocumentPath(pathname);
+      const followingDocument = pathname === "/following" || pathname === "/following/" || pathname === "/following/personal";
+      const previewDocument = preview && (nearYouDocument || followingDocument)
+        && (request.headers.get("Sec-Fetch-Dest") === "document" || request.headers.get("Accept")?.includes("text/html"));
+      const siteRequest = previewDocument ? startPreviewRequest(request) : request;
+      const siteResponse = async (response) => {
+        const resolved = await response;
+        return previewDocument ? startPreviewResponse(resolved) : resolved;
+      };
       // Site root `/` and `/near-you` share the local discovery shell; deferred
       // JSON remains under `/near-you/deferred.json`.
-      if (isNearYouDocumentPath(pathname) || isNearYouDeferredPath(pathname)) {
-        return handleNearYou(request, env, ctx);
+      if (nearYouDocument || isNearYouDeferredPath(pathname)) {
+        return siteResponse(handleNearYou(siteRequest, env, ctx));
       }
-      if (pathname === "/following" || pathname === "/following/" || pathname === "/following/personal") return handleFollowing(request, env, ctx);
+      if (followingDocument) return siteResponse(handleFollowing(siteRequest, env, ctx));
       if (pathname === "/prefs") return handlePrefs(request, env);
       // The common-account sign-in shell and its one-time confirmation page are
       // engine-served on the canonical site host (the email link points at

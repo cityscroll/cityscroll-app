@@ -738,6 +738,8 @@
     "site/staffing_agency_scope.mjs",
     "site/staffing_surface.mjs",
     "site/staffing.js",
+    "site/start/preview.mjs",
+    "site/start/response.mjs",
     "site/statutory_mandate_provision_join.mjs",
     "site/story_signal_projection.mjs",
     "site/sub_outreach.mjs",
