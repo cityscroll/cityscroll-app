@@ -164,6 +164,8 @@ site/data/nys_dol_contractor_registry/id-03.json
 site/data/official_cfb_influence_lookup.json
 site/data/official_committee_memberships_lookup.json
 site/data/official_lobby_influence_lookup.json
+site/data/organization_index/entries-031.json
+site/data/organization_index/stems.json
 site/data/parcel-geography/manifest.json
 site/data/passport_sources/retained_contract_families.json
 site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json
@@ -182,7 +184,7 @@ site/data/procurement_contract_substance.json
 site/data/procurement_contract_substance_access.json
 site/data/procurement_contract_substance_role_corpus.json
 site/data/procurement_place_facts.json
-site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-11-12.json
+site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-11-14.json
 site/data/procurement_planning_payload.json
 site/data/procurement_planning_payload.schema.json
 site/data/procurement_planning_thread_lookup.json
