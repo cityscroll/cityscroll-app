@@ -55,7 +55,9 @@ The census is measured against the committed `procurement_browse_rows.json` snap
 | Checkbook only | 180 | Already served by Checkbook |
 | Demonstrated missing rows | 0 | No DOE production card |
 
-The checker fails if source artifact fingerprints or these combinations drift, so a future refresh must update the census rather than silently reusing stale counts.
+The checker fails if source artifact fingerprints or these combinations drift. A fingerprint refresh rewrites the mechanical snapshot only when the served DOE canonical row count still equals the reviewed `doe_canonical_rows`. A different count is refused until a person updates the count fields.
+
+`doe_missing_record_census.re_review` records that review. It has `reviewed_at` (a calendar date), `reviewer`, `reason`, and `previous_doe_canonical_rows`. The 2026-11-25 review accepted the move from 4,642 to 4,628 canonical rows. The fourteen rows that left were Checkbook-only Department of Education contracts of $25,000, each starting 2025-11-24 and ending 2026-06-30. They fell outside the 365-day publication window when the snapshot date moved from 2026-11-24 to 2026-11-25. City Record membership stayed 431 and PASSPort membership stayed 438. No source combination was added. Demonstrated missing rows stayed 0, and no production card is proposed.
 
 ## Boundary
 
