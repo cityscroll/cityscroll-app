@@ -1,0 +1,195 @@
+{
+ "schema": "cityscroll.procurement_document_section_text_index.v1",
+ "version": 1,
+ "generated_at": "2026-11-05T04:24:15Z",
+ "rfp_id": "37728",
+ "document_id": "253286611",
+ "document_label": "Contract Book -(9)",
+ "document_sha256": "f39a054a1aa94d64c30d08fd5772b80d16909b973428a5b534c6e2e3556cb28a",
+ "official_url": "https://webserver-mocs-prd.lfr.cloud/c/public_document/download?documentId=253286611",
+ "extractor": "pdftotext (poppler)",
+ "sections": [
+  {
+   "id": "cover",
+   "index": 1,
+   "label": "Cover and submission channel",
+   "scope_class": "bid_specific",
+   "pdf_pages": [
+    1,
+    1
+   ],
+   "page_count": 1,
+   "path": "procurement_documents/rfx-37728/sections/cover.json",
+   "bytes": 1092,
+   "sha256": "43ccf1fa15097b0f18cd6b1ec17ffe949698e6769a7ef53f0fa866ed7e942ebc"
+  },
+  {
+   "id": "schedule-a-reference",
+   "index": 2,
+   "label": "Schedule A: reference item requirements",
+   "scope_class": "bid_specific",
+   "pdf_pages": [
+    2,
+    4
+   ],
+   "page_count": 3,
+   "path": "procurement_documents/rfx-37728/sections/schedule-a-reference.json",
+   "bytes": 4836,
+   "sha256": "13756a4f77c16d75c58edb494396726fe692522169ff4840e8532dd53b030e64"
+  },
+  {
+   "id": "schedule-a-insurance",
+   "index": 3,
+   "label": "Schedule A: insurance types and limits",
+   "scope_class": "bid_specific",
+   "pdf_pages": [
+    5,
+    10
+   ],
+   "page_count": 6,
+   "path": "procurement_documents/rfx-37728/sections/schedule-a-insurance.json",
+   "bytes": 6729,
+   "sha256": "8ee8ff28b865ef044c1c853aaf00d828fa23963ce92c21876462844397d6ea69"
+  },
+  {
+   "id": "insurance-certificates",
+   "index": 4,
+   "label": "Certificates of insurance and broker certification",
+   "scope_class": "standard_form",
+   "pdf_pages": [
+    11,
+    12
+   ],
+   "page_count": 2,
+   "path": "procurement_documents/rfx-37728/sections/insurance-certificates.json",
+   "bytes": 2527,
+   "sha256": "30a7b28183609b671009ae65cbe5e14035c8ff0151473b61e7d86b746f0db659"
+  },
+  {
+   "id": "notice-vendex-fee",
+   "index": 5,
+   "label": "Notice: VENDEX name-check fee",
+   "scope_class": "standard_notice",
+   "pdf_pages": [
+    13,
+    13
+   ],
+   "page_count": 1,
+   "path": "procurement_documents/rfx-37728/sections/notice-vendex-fee.json",
+   "bytes": 1512,
+   "sha256": "efd9ec0222668cafa429bece356a35005cc70bb3177f5a35f767d2a9b292fd0d"
+  },
+  {
+   "id": "notice-subcontractor-reporting",
+   "index": 6,
+   "label": "Notice to bidders: subcontractor reporting",
+   "scope_class": "standard_notice",
+   "pdf_pages": [
+    14,
+    14
+   ],
+   "page_count": 1,
+   "path": "procurement_documents/rfx-37728/sections/notice-subcontractor-reporting.json",
+   "bytes": 2854,
+   "sha256": "0a5a2b0e17f86ed47bd2176647f24fa7335c0b8f4398fd8ffc22d7742fe9b688"
+  },
+  {
+   "id": "mwbe-notice",
+   "index": 7,
+   "label": "M/WBE participation notice",
+   "scope_class": "standard_notice",
+   "pdf_pages": [
+    15,
+    24
+   ],
+   "page_count": 10,
+   "path": "procurement_documents/rfx-37728/sections/mwbe-notice.json",
+   "bytes": 32576,
+   "sha256": "9adf371d7349bf798ee5fdfa2e34cab4038c2b4ff931aede0ee4c12ed1982b7b"
+  },
+  {
+   "id": "notices-whistleblower-doi",
+   "index": 8,
+   "label": "Notices: whistleblower protection and DOI reporting",
+   "scope_class": "standard_notice",
+   "pdf_pages": [
+    25,
+    28
+   ],
+   "page_count": 4,
+   "path": "procurement_documents/rfx-37728/sections/notices-whistleblower-doi.json",
+   "bytes": 7598,
+   "sha256": "bd955233bdd444e2b8bf38621090da6b001f2cb9afdb2674ecfb458807f92ff4"
+  },
+  {
+   "id": "essta-rider",
+   "index": 9,
+   "label": "Earned Safe and Sick Time Act contract rider",
+   "scope_class": "standard_rider",
+   "pdf_pages": [
+    29,
+    34
+   ],
+   "page_count": 6,
+   "path": "procurement_documents/rfx-37728/sections/essta-rider.json",
+   "bytes": 17585,
+   "sha256": "32bc8e09010fb13bbac0e527883bba71e4b9be777a95110bd0eee08f91300ff6"
+  },
+  {
+   "id": "bid-book",
+   "index": 10,
+   "label": "Part I: bid book (terms, conditions, affirmations)",
+   "scope_class": "mixed_bid_and_terms",
+   "pdf_pages": [
+    35,
+    51
+   ],
+   "page_count": 17,
+   "path": "procurement_documents/rfx-37728/sections/bid-book.json",
+   "bytes": 45612,
+   "sha256": "adbf4515af24973ad8ec35b2a3184786f082bcc664252fb6325727b93e3f8e5b"
+  },
+  {
+   "id": "general-specifications",
+   "index": 11,
+   "label": "Part I-D: general specifications",
+   "scope_class": "bid_specific",
+   "pdf_pages": [
+    52,
+    66
+   ],
+   "page_count": 15,
+   "path": "procurement_documents/rfx-37728/sections/general-specifications.json",
+   "bytes": 37143,
+   "sha256": "6c56b94bffb9d9a31eb5c96c3bcf5e95669244ea3ab9fc659fe8aa5301bd27e7"
+  },
+  {
+   "id": "agreement",
+   "index": 12,
+   "label": "Part II: supply and service contract (proposed terms)",
+   "scope_class": "standard_contract",
+   "pdf_pages": [
+    67,
+    141
+   ],
+   "page_count": 75,
+   "path": "procurement_documents/rfx-37728/sections/agreement.json",
+   "bytes": 223474,
+   "sha256": "8da63492c635576a81132ad2879d87d9e232234c2463c23522f44a1923e4223b"
+  },
+  {
+   "id": "prevailing-wage-schedule",
+   "index": 13,
+   "label": "Comptroller's prevailing wage schedule (reference)",
+   "scope_class": "reference_schedule",
+   "pdf_pages": [
+    142,
+    237
+   ],
+   "page_count": 96,
+   "path": "procurement_documents/rfx-37728/sections/prevailing-wage-schedule.json",
+   "bytes": 180907,
+   "sha256": "e444f9110a44f922e05ec5825ebcfda64222e9de6172155825c73ab3d4696340"
+  }
+ ]
+}

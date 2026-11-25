@@ -15,11 +15,13 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC_DATA = path.join(ROOT, "site/data");
 const MANIFEST_PATH = path.join(PUBLIC_DATA, "procurement_documents.json");
 const SHARD_PATH = path.join(PUBLIC_DATA, "procurement_documents/rfx-37728.json");
+const SECTION_DIR_PATH = path.join(PUBLIC_DATA, "procurement_documents/rfx-37728");
 
 function copyCommittedPublication(destination) {
   mkdirSync(path.join(destination, "procurement_documents"), { recursive: true });
   cpSync(MANIFEST_PATH, path.join(destination, "procurement_documents.json"));
   cpSync(SHARD_PATH, path.join(destination, "procurement_documents/rfx-37728.json"));
+  cpSync(SECTION_DIR_PATH, path.join(destination, "procurement_documents/rfx-37728"), { recursive: true });
 }
 
 test("A1: the served manifest and shard declare matching contract bytes and rows", () => {
@@ -98,4 +100,52 @@ test("A3: the public readback exposes its generation time and shard hash inputs"
   assert.equal(manifest.shards[0].path, "procurement_documents/rfx-37728.json");
   assert.equal(manifest.shards[0].sha256, createHash("sha256").update(shardBytes).digest("hex"));
   assert.ok(shard.rows.every((row) => /^[a-f0-9]{64}$/.test(row.sha256)));
+});
+
+test("A4: companion section-text index and all 13 section shards validate and cover all 237 pages", () => {
+  const publication = readProcurementDocumentPublication(PUBLIC_DATA);
+  const [{ sectionText }] = publication.shards;
+  assert.ok(sectionText, "rfx-37728 must publish companion section-text shards");
+  assert.equal(sectionText.index.schema, "cityscroll.procurement_document_section_text_index.v1");
+  assert.equal(sectionText.sections.length, 13);
+  const totalPages = sectionText.sections.reduce((sum, item) => sum + item.payload.pages.length, 0);
+  assert.equal(totalPages, 237);
+
+  const mwbe = sectionText.sections.find((item) => item.entry.id === "mwbe-notice");
+  assert.ok(mwbe);
+  assert.deepEqual(mwbe.payload.section.pdf_pages, [15, 24]);
+  assert.equal(mwbe.payload.pages.length, 10);
+  assert.match(mwbe.payload.pages[0].text, /PARTICIPATION BY MINORITY-OWNED/i);
+
+  const wage = sectionText.sections.find((item) => item.entry.id === "prevailing-wage-schedule");
+  assert.ok(wage);
+  const highlighted = wage.payload.jumps.filter((j) => j.highlight);
+  assert.ok(highlighted.some((j) => /electrician/i.test(j.label) && j.pdf_page === 164));
+  assert.ok(highlighted.some((j) => /plumber/i.test(j.label) && j.pdf_page === 216));
+});
+
+test("A5: publishProcurementDocuments copies all 13 section shards and rejects a tampered section shard", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "procurement-section-text-pub-"));
+  const generatedDir = path.join(root, "generated");
+  const siteDataDir = path.join(root, "site/data");
+  copyCommittedPublication(generatedDir);
+
+  try {
+    const result = publishProcurementDocuments({ generatedDir, siteDataDir });
+    assert.equal(result.shards[0].section_text_count, 13);
+    assert.ok(
+      readFileSync(path.join(siteDataDir, "procurement_documents/rfx-37728/sections/mwbe-notice.json"))
+        .equals(readFileSync(path.join(SECTION_DIR_PATH, "sections/mwbe-notice.json"))),
+    );
+
+    // Tamper with one section shard and ensure validation fails before touching destination
+    const badPath = path.join(generatedDir, "procurement_documents/rfx-37728/sections/cover.json");
+    writeFileSync(badPath, `${readFileSync(badPath, "utf8")} `);
+    assert.throws(
+      () => publishProcurementDocuments({ generatedDir, siteDataDir }),
+      /bytes=.*does not match/,
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
