@@ -1,14 +1,18 @@
-const preference = "cityscroll_start_preview";
+const preference = "cityscroll_start_preview=";
 const startPage = document.body.hasAttribute("data-start-page");
 const toggle = document.querySelector("#start-toggle");
+const toggleHelp = document.querySelector("#start-toggle-help");
 
-function previewIsOn() {
-  return document.cookie.split(";").some(cookie => cookie.trim() === `${preference}=1`);
+function previewPreference() {
+  return document.cookie.split(";")
+    .map(cookie => cookie.trim())
+    .find(cookie => cookie.startsWith(preference))
+    ?.slice(preference.length);
 }
 
 function setPreview(enabled) {
   const security = location.protocol === "https:" ? "; Secure" : "";
-  document.cookie = `${preference}=${enabled ? "1" : "; Max-Age=0"}; Path=/; SameSite=Lax${security}`;
+  document.cookie = `${preference}${enabled ? "1" : "0"}; Path=/; SameSite=Lax${security}`;
 }
 
 function loadPreviewStyles() {
@@ -21,7 +25,7 @@ function loadPreviewStyles() {
 
 function renderNavigation() {
   document.querySelector("#cityscroll-start-nav")?.remove();
-  if (!previewIsOn()) return;
+  if (previewPreference() !== "1") return;
   loadPreviewStyles();
   const nav = document.createElement("nav");
   nav.id = "cityscroll-start-nav";
@@ -29,7 +33,7 @@ function renderNavigation() {
   const current = location.pathname.replace(/\/$/, "");
   for (const [href, label] of [
     ["/start/", "CityScroll preview"], ["/wincitywork/", "WinCityWork"], ["/browse/", "Browse records"],
-    ["/start/#feedback", "Give feedback"],
+    ["/about", "About"], ["/start/#feedback", "Give feedback"],
   ]) {
     const link = document.createElement("a");
     link.href = href;
@@ -51,10 +55,18 @@ function renderNavigation() {
 
 function syncPreview() {
   renderNavigation();
-  if (toggle) toggle.checked = previewIsOn();
+  if (toggle) {
+    const choice = previewPreference();
+    toggle.checked = choice === "1";
+    toggleHelp.textContent = choice === undefined
+      ? "Allow browser cookies to keep the preview navigation as you move between pages."
+      : `Preview navigation is ${toggle.checked ? "on" : "off"} in this browser.`;
+  }
 }
 
-if (startPage || previewIsOn()) {
+if (startPage && previewPreference() === undefined) setPreview(true);
+
+if (startPage || previewPreference() === "1") {
   syncPreview();
   window.addEventListener("pageshow", event => {
     if (event.persisted) syncPreview();
@@ -62,14 +74,9 @@ if (startPage || previewIsOn()) {
 }
 
 if (toggle) {
-  const state = document.querySelector("#start-toggle-help");
   toggle.addEventListener("change", () => {
-    const requested = toggle.checked;
-    setPreview(requested);
+    setPreview(toggle.checked);
     syncPreview();
-    state.textContent = requested && !toggle.checked
-      ? "Allow browser cookies to keep the preview navigation as you move between pages."
-      : `Preview navigation is ${toggle.checked ? "on" : "off"} in this browser.`;
   });
 }
 
