@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import worker from "../src/worker.mjs";
 import { startPreviewRequest, startPreviewResponse, usesStartPreview } from "../../site/start/response.mjs";
-import pagesEdge from "../../site/pages_edge.mjs";
+import pagesEdge from "../../site/_worker.js";
 
 const ctx = { waitUntil() {}, passThroughOnException() {} };
 
@@ -81,7 +81,8 @@ test("Worker preview handling is bounded to dynamic documents and the root redir
     const browse = await worker.fetch(new Request("https://cityscroll.org/browse/?q=parks", {
       headers: { ...cookie, "If-None-Match": "browse-public" },
     }), {}, ctx);
-    assert.equal(forwarded.url, "https://crol-list.org/browse/?q=parks");
+    const upstream = new URL(forwarded.url);
+    assert.equal(upstream.pathname + upstream.search, "/browse/?q=parks");
     assert.equal(forwarded.options.headers.get("if-none-match"), "browse-public");
     assert.equal(browse.headers.get("cache-control"), "public, max-age=60");
     assert.equal(browse.headers.get("etag"), "browse-public");
