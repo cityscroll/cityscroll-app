@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":77,"first_ordinal":130146,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":77,"first_ordinal":130146,"entries":[
 {"s":"SHOTOKAN KARATE DO FEDERATION","n":[["SHOTOKAN KARATE DO FEDERATION INC",1]],"x":{"irs":{"r":1,"i":["821860830"],"z":["11367"]}}},
 {"s":"SHOTSPOTTER","n":[["SHOTSPOTTER, INC.",2],["SHOTSPOTTER  INC.",1]],"x":{"ocp":{"r":2,"a":23504388,"l":"2021-11-23","i":["20211117118","20140912001"]},"dbe":{"r":1,"i":["SHOTSPOTTER  INC."]}}},
 {"s":"SHOTTI NYC","n":[["SHOTTI NYC INC.",1]],"x":{"sbs":{"r":1,"i":["364904"],"z":["10468"],"p":["MBE"]}}},
@@ -625,7 +625,7 @@
 {"s":"SIMPLIFASTER","n":[["SIMPLIFASTER LLC",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-09-15","i":["CT104020273013204"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-15","i":["CT104020273013204"],"m":["Non-M/WBE"]}}},
 {"s":"SIMPLIFYING IT CONSULTANTS","n":[["Simplifying IT Consultants LLC",1]],"x":{"dol":{"r":1,"i":["26-66SKD-CR"],"z":["11554"]}}},
 {"s":"SIMPLY BEAUTIFUL CREATION","n":[["SIMPLY BEAUTIFUL CREATION INC",1]],"x":{"irs":{"r":1,"i":["831179925"],"z":["11225"]}}},
-{"s":"SIMPLY ED","n":[["SIMPLY ED",41],["Simply Ed LLC",1]],"x":{"cbr":{"r":28,"a":700000,"l":"2026-11-17","c":28,"i":["CT104020273047783","CT104020273044839","CT104020273034758","CT104020273038155","CT104020263170081"],"m":["Non-M/WBE","Hispanic American"]},"cbv":{"r":13,"l":"2026-11-17","c":13,"i":["CT104020273047783","CT104020273044839","CT104020273034758","CT104020273038155","CT104020263170081"],"m":["Non-M/WBE","Hispanic American"]},"sbs":{"r":1,"i":["396406"],"z":["10462"],"p":["MBE","WBE"]}}},
+{"s":"SIMPLY ED","n":[["SIMPLY ED",40],["Simply Ed LLC",1]],"x":{"cbr":{"r":28,"a":700000,"l":"2026-11-17","c":28,"i":["CT104020273047783","CT104020273044839","CT104020273034758","CT104020273038155","CT104020263170081"],"m":["Non-M/WBE","Hispanic American"]},"cbv":{"r":12,"l":"2026-11-17","c":12,"i":["CT104020273047783","CT104020273044839","CT104020273034758","CT104020273038155","CT104020263170081"],"m":["Non-M/WBE","Hispanic American"]},"sbs":{"r":1,"i":["396406"],"z":["10462"],"p":["MBE","WBE"]}}},
 {"s":"SIMPLY ETIQUETTE FOR ETERNITY","n":[["SIMPLY ETIQUETTE FOR ETERNITY INC",1]],"x":{"irs":{"r":1,"i":["921568697"],"z":["11207"]}}},
 {"s":"SIMPLY FORMS AND COMPUTERS","n":[["SIMPLY FORMS AND COMPUTERS INC",2],["Simply Forms and Computers, Inc.",1]],"x":{"cbr":{"r":1,"a":736,"l":"2026-02-03","i":["CT181620261410803"],"m":["Black American"]},"cbv":{"r":1,"l":"2026-02-03","i":["CT181620261410803"],"m":["Black American"]},"sbs":{"r":1,"i":["785"],"z":["11225"],"p":["MBE"]}}},
 {"s":"SIMPLY FRIED","n":[["SIMPLY FRIED LLC",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-09-11","i":["CT104020273010644"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-11","i":["CT104020273010644"],"m":["Non-M/WBE"]}}},

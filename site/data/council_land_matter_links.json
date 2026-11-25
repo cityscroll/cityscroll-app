@@ -872,13 +872,14 @@
       "appearances": [
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "event_date": "2026-11-24",
           "event_id": "22797",
           "event_name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
           "named_votes": null,
-          "outcome": "Committee"
+          "outcome": "Laid Over by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -894,13 +895,14 @@
       "appearances": [
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "event_date": "2026-11-24",
           "event_id": "22797",
           "event_name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
           "named_votes": null,
-          "outcome": "Committee"
+          "outcome": "Laid Over by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -916,13 +918,14 @@
       "appearances": [
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "event_date": "2026-11-24",
           "event_id": "22797",
           "event_name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
           "named_votes": null,
-          "outcome": "Committee"
+          "outcome": "Laid Over by Subcommittee"
         }
       ],
       "join_key": "ulurp_number",
@@ -1067,11 +1070,11 @@
   "schema": "cityscroll.council_land_matter_links.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 290,
+      "absent_count": 291,
       "present_count": 14,
-      "record_count": 304
+      "record_count": 305
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-11-23T10:00:50.997Z",
+    "meeting_outcomes_snapshot_generated_at": "2026-11-24T23:45:13.719Z",
     "zap_projects_warehouse_lookup_materialized_at": "2026-11-24T18:54:47.256Z"
   }
 }

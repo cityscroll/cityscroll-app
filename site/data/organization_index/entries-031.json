@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":31,"first_ordinal":52026,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":31,"first_ordinal":52026,"entries":[
 {"s":"FIN FEATHER FUR CONSERVATION SOCIETY","n":[["FIN FEATHER & FUR CONSERVATION SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["160747782"],"z":["14174"]}}},
 {"s":"FIN LIT KIDS","d":[["FIN LIT KIDS",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["377530"],"z":["07030"],"p":["MBE","WBE"]}}},
 {"s":"FIN POINT SPORTSMEN CLUB","n":[["FIN & POINT SPORTSMEN CLUB INC",1]],"x":{"irs":{"r":1,"i":["760757757"],"z":["14009"]}}},
@@ -245,7 +245,7 @@
 {"s":"FINTEGRITY","n":[["FINTEGRITY",1]],"x":{"irs":{"r":1,"i":["263758247"],"z":["14850"]}}},
 {"s":"FIONA SPEAR / SPEAR DESIGN GROUP","n":[["FIONA SPEAR / SPEAR DESIGN GROUP",1]],"x":{"ocp":{"r":1,"a":45000,"l":"2004-05-18","i":["20040511006"]}}},
 {"s":"FIORAVANTI CONSTRUCTION","n":[["Fioravanti Construction Corp.",1]],"x":{"dol":{"r":1,"i":["25-64CY6-CR"],"z":["14445"]}}},
-{"s":"FIORELLA GUEVARA CONSULTING","n":[["FIORELLA GUEVARA CONSULTING LLC",5],["Fiorella Guevara Consulting LLC",1]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-10-07","i":["CT104020273026878","CT104020263051408","CT104020253041039"],"m":["Hispanic American"]},"cbv":{"r":2,"l":"2026-10-07","i":["CT104020273026878","CT104020263051408"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["367625"],"z":["20816"],"p":["MBE","WBE"]}}},
+{"s":"FIORELLA GUEVARA CONSULTING","n":[["FIORELLA GUEVARA CONSULTING LLC",4],["Fiorella Guevara Consulting LLC",1]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-10-07","i":["CT104020273026878","CT104020263051408","CT104020253041039"],"m":["Hispanic American"]},"cbv":{"r":1,"l":"2026-10-07","i":["CT104020273026878"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["367625"],"z":["20816"],"p":["MBE","WBE"]}}},
 {"s":"FIORELLAS LANDSCAPING","n":[["Fiorellas Landscaping LLC",1]],"x":{"dol":{"r":1,"i":["26-668EF-CR"],"z":["14150"]}}},
 {"s":"FIORELLO H LA GUARDIA COMMUNITY COLLEGE ASSOCIATION","n":[["FIORELLO H LA GUARDIA COMMUNITY COLLEGE ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["112257176"],"z":["11101"]}}},
 {"s":"FIORELLO H LA GURDIA COMMUNITY COLLEGE ALUMNI ASSOCIATION","n":[["FIORELLO H LA GURDIA COMMUNITY COLLEGE ALUMNI ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["112487951"],"z":["11101"]}}},

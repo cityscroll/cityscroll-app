@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":74,"first_ordinal":124931,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":74,"first_ordinal":124931,"entries":[
 {"s":"RYAL INSTITUTE FOR MOSHIACH AND SCIENCE RESEARCH","n":[["RYAL INSTITUTE FOR MOSHIACH AND SCIENCE RESEARCH INC",1]],"x":{"irs":{"r":1,"i":["861434338"],"z":["11203"]}}},
 {"s":"RYAN ALDRICH TRUCKING SAWING","n":[["Ryan Aldrich Trucking & Sawing, Inc.",1]],"x":{"dol":{"r":1,"i":["24-64Y1L-CR"],"z":["13340"]}}},
 {"s":"RYAN ANDREWS NEWTON FUND","n":[["RYAN ANDREWS NEWTON FUND INC",1]],"x":{"irs":{"r":1,"i":["834400225"],"z":["10028"]}}},
@@ -291,7 +291,7 @@
 {"s":"S S QUARTERLY","n":[["S & S QUARTERLY INC",1]],"x":{"irs":{"r":1,"i":["133203712"],"z":["11201"]}}},
 {"s":"S S SALES","n":[["S & S SALES",1]],"x":{"dbe":{"r":1,"i":["S & S SALES"]}}},
 {"s":"S S SITE DEVELOPMENT","d":[["S & S Site Development Inc.",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-654TX-CR"],"z":["14080"]}}},
-{"s":"S S WORLDWIDE","n":[["S&S WORLDWIDE INC",54]],"x":{"cbr":{"r":38,"a":260063.58,"l":"2026-11-06","c":38,"i":["CT184620278803716","CT184620278803121","CT184620278802988","CT184620278802380","CT184620268807188"],"m":["Non-M/WBE"]},"cbv":{"r":16,"l":"2026-11-06","c":16,"i":["CT184620278803716","CT184620278803121","CT184620278802988","CT184620278802380","CT184620268807188"],"m":["Non-M/WBE"]}}},
+{"s":"S S WORLDWIDE","n":[["S&S WORLDWIDE INC",53]],"x":{"cbr":{"r":38,"a":260063.58,"l":"2026-11-06","c":38,"i":["CT184620278803716","CT184620278803121","CT184620278802988","CT184620278802380","CT184620268807188"],"m":["Non-M/WBE"]},"cbv":{"r":15,"l":"2026-11-06","c":15,"i":["CT184620278803716","CT184620278803121","CT184620278802988","CT184620278802380","CT184620268807188"],"m":["Non-M/WBE"]}}},
 {"s":"S SECTION CIRCLE OF FRIENDS","n":[["S SECTION CIRCLE OF FRIENDS INC",1]],"x":{"irs":{"r":1,"i":["932417175"],"z":["11790"]}}},
 {"s":"S ST GEORGE ENTERPRISES","n":[["S. St. George Enterprises, Inc.",1]],"x":{"dol":{"r":1,"i":["26-634e9-cr"],"z":["14063"]}}},
 {"s":"S T A R INITIATIVES","n":[["S T A R INITIATIVES INC",1]],"x":{"irs":{"r":1,"i":["932910190"],"z":["11411"]}}},

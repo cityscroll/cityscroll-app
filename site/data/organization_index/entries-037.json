@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":37,"first_ordinal":62281,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":37,"first_ordinal":62281,"entries":[
 {"s":"GREATER NY HOSPITAL FOUNDATION","n":[["Greater NY Hospital Foundation, Inc.",1]],"x":{"ocp":{"r":1,"a":225000,"l":"2003-06-03","i":["20030527003"]}}},
 {"s":"GREATER NY INTERGROUP","n":[["GREATER NY INTERGROUP INC",1]],"x":{"irs":{"r":1,"i":["852955865"],"z":["10116"]}}},
 {"s":"GREATER NY OVEREATERS ANONYMOUS INTERGROUP","n":[["GREATER NY OVEREATERS ANONYMOUS INTERGROUP",1]],"x":{"irs":{"r":1,"i":["133181937"],"z":["10001"]}}},

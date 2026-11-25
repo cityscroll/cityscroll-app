@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":78,"first_ordinal":131842,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":78,"first_ordinal":131842,"entries":[
 {"s":"SOA SERVICE","n":[["SOA SERVICE CORPORATION",3],["SOA Service Corporation",2]],"x":{"ocp":{"r":1,"a":956100,"l":"2025-07-28","i":["20250721035"]},"cbr":{"r":1,"a":956100,"l":"2025-07-21","i":["CT184120268801473"],"m":["Asian American"]},"ppt":{"r":1,"a":956100,"l":"2025-07-21","i":["CT1-841-20268801473"]},"sbs":{"r":1,"i":["903"],"z":["10710"],"p":["MBE"]},"dol":{"r":1,"i":["24-64GHI-CR"],"z":["10765"]}}},
 {"s":"SOAL TECHNOLOGIES","n":[["SOAL Technologies LLC",1]],"x":{"sbs":{"r":1,"i":["376479"],"z":["78759"],"p":["MBE"]}}},
 {"s":"SOAPBOX - THE FEMINIST FOUNDATION","n":[["SOAPBOX - THE FEMINIST FOUNDATION",1]],"x":{"irs":{"r":1,"i":["464146072"],"z":["10002"]}}},
@@ -70,7 +70,7 @@
 {"s":"SOCIAL EMPACT","n":[["SOCIAL EMPACT CORPORATION",1]],"x":{"irs":{"r":1,"i":["331538090"],"z":["14216"]}}},
 {"s":"SOCIAL ENTERPRISE AND TRAINING CENTER","n":[["SOCIAL ENTERPRISE AND TRAINING CENTER",1]],"x":{"irs":{"r":1,"i":["473946521"],"z":["12305"]}}},
 {"s":"SOCIAL FORCES","n":[["SOCIAL FORCES LLC",1]],"x":{"cbr":{"r":1,"a":20000,"l":"2025-03-14","i":["CT101520251411732"],"m":["Non-M/WBE"]}}},
-{"s":"SOCIAL GOOD FUND","n":[["SOCIAL GOOD FUND INC",5]],"x":{"cbr":{"r":3,"a":55898.71,"l":"2026-09-25","i":["CT184620278803091","CT184620268803822","CT184620258803537"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-09-25","i":["CT184620278803091","CT184620268803822"],"m":["Non-M/WBE"]}}},
+{"s":"SOCIAL GOOD FUND","n":[["SOCIAL GOOD FUND INC",4]],"x":{"cbr":{"r":3,"a":55898.71,"l":"2026-09-25","i":["CT184620278803091","CT184620268803822","CT184620258803537"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-25","i":["CT184620278803091"],"m":["Non-M/WBE"]}}},
 {"s":"SOCIAL IMPACT SCHOLARS","n":[["SOCIAL IMPACT SCHOLARS",1]],"x":{"irs":{"r":1,"i":["820756565"],"z":["10011"]}}},
 {"s":"SOCIAL INNOVATION AFRICA","n":[["SOCIAL INNOVATION AFRICA INC",1]],"x":{"irs":{"r":1,"i":["475233455"],"z":["10467"]}}},
 {"s":"SOCIAL INQUIRY","n":[["SOCIAL INQUIRY INC",1]],"x":{"irs":{"r":1,"i":["822244722"],"z":["11201"]}}},

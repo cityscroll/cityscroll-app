@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":34,"first_ordinal":57199,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":34,"first_ordinal":57199,"entries":[
 {"s":"FUN FUND FOUNDATION","n":[["FUN FUND FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["424839617"],"z":["10014"]}}},
 {"s":"FUN THERAPY (OT)","n":[["FUN THERAPY (OT) PLLC",1],["Fun Therapy (OT) PLLC",1]],"x":{"dbe":{"r":1,"i":["FUN THERAPY (OT) PLLC"]},"sbs":{"r":1,"i":["377394"],"z":["10308"],"p":["WBE"]}}},
 {"s":"FUNCTIONAL CREATIVE DESIGN","d":[["Functional Creative Design",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["332168"],"z":["10010"],"p":["WBE"]}}},
@@ -799,7 +799,7 @@
 {"s":"GARDNER ROAD PTO","n":[["GARDNER ROAD PTO",1]],"x":{"irs":{"r":1,"i":["331158845"],"z":["14845"]}}},
 {"s":"GARDNER TRUCKING","d":[["Gardner Trucking",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-65SO7-CR"],"z":["13616"]}}},
 {"s":"GARDNERS PICK OF THE CROP","n":[["GARDNERS PICK OF THE CROP INC",1]],"x":{"irs":{"r":1,"i":["222578947"],"z":["14136"]}}},
-{"s":"GARDYN","n":[["GARDYN INC",10]],"x":{"cbr":{"r":6,"a":150000,"l":"2026-04-13","c":6,"i":["CT104020263153191","CT104020263106050","CT104020263056003","CT104020263014617","CT104020253135040"],"m":["Non-M/WBE"]},"cbv":{"r":3,"l":"2026-04-13","i":["CT104020263153191","CT104020263106050","CT104020263056003"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["GARDYN INC"]}}},
+{"s":"GARDYN","n":[["GARDYN INC",9]],"x":{"cbr":{"r":6,"a":150000,"l":"2026-04-13","c":6,"i":["CT104020263153191","CT104020263106050","CT104020263056003","CT104020263014617","CT104020253135040"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-04-13","i":["CT104020263153191","CT104020263106050"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["GARDYN INC"]}}},
 {"s":"GARFIELD W HARDEMAN ESQ","n":[["Garfield W. Hardeman, Esq.",1]],"x":{"sbs":{"r":1,"i":["373645"],"z":["11369"],"p":["MBE"]}}},
 {"s":"GARG CONSULTING ENGINEER","n":[["GARG CONSULTING ENGINEER PC",1]],"x":{"dbe":{"r":1,"i":["GARG CONSULTING ENGINEER PC"]}}},
 {"s":"GARG CONSULTING ENGINEER P C","n":[["Garg Consulting Engineer, P.C.",1]],"x":{"sbs":{"r":1,"i":["357126"],"z":["10007"],"p":["MBE"]}}},

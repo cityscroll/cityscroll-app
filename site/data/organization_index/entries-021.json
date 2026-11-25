@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":21,"first_ordinal":35127,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":21,"first_ordinal":35127,"entries":[
 {"s":"CONGREGATION BETH ARON VISRAEL KARLIN STOLIN INC OF BORO PARK","n":[["CONGREGATION BETH ARON VISRAEL KARLIN STOLIN INC OF BORO PARK",1]],"x":{"irs":{"r":1,"i":["471143490"],"z":["11204"]}}},
 {"s":"CONGREGATION BETH ARYE","n":[["CONGREGATION BETH ARYE",1]],"x":{"irs":{"r":1,"i":["113253803"],"z":["11230"]}}},
 {"s":"CONGREGATION BETH ARYEH","n":[["CONGREGATION BETH ARYEH",2]],"x":{"irs":{"r":2,"i":["116084720","133550019"],"z":["10950","11234"]}}},

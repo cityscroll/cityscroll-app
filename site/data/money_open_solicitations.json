@@ -2,8 +2,8 @@
   "schema": "cityscroll.money_open_solicitations.v1",
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-24T18:40:33.970Z",
-  "open_as_of": "2026-11-24",
+  "generated_at": "2026-11-25T10:21:13.025Z",
+  "open_as_of": "2026-11-25",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -11,7 +11,7 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-24'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-25'",
     "$order": "due_date ASC, request_id ASC",
     "$limit": "501",
     "note": "Every open solicitation (same predicate as money_default_open, without its 40-row strip limit). Contact fields stay on the notice detail read."
@@ -23,106 +23,14 @@
   "population": {
     "state": "complete",
     "reasons": [],
-    "source_count": 193,
-    "published_count": 193,
+    "source_count": 191,
+    "published_count": 191,
     "rejected_rows": 0,
-    "distinct_pins": 135,
+    "distinct_pins": 133,
     "rows_without_pin": 5
   },
-  "count": 193,
+  "count": 191,
   "notices": [
-    {
-      "request_id": "20260921005",
-      "start_date": "2026-09-28T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: SMD_PS_RFP_523249 - Lead Abatement Program Services",
-      "pin": "523249",
-      "due_date": "2026-11-24T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids",
-      "main_commodity_category": {
-        "status": "not_published",
-        "state": "missing",
-        "reason": "rfx_unavailable",
-        "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
-      },
-      "coverage": {
-        "category": {
-          "state": "missing",
-          "reason": "rfx_unavailable",
-          "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
-        },
-        "work_site": {
-          "state": "missing",
-          "reason": "no_place_named",
-          "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
-        }
-      },
-      "work_sites": [],
-      "work_site_scan": {
-        "addresses_found": 0,
-        "rejected": {
-          "bid_drop": 0,
-          "meeting": 0,
-          "agency_office": 0,
-          "unclear": 0
-        },
-        "boroughs_named": [],
-        "sites_named": 0,
-        "sites_placed": 0
-      }
-    },
-    {
-      "request_id": "20260930015",
-      "start_date": "2026-10-07T00:00:00.000",
-      "agency_name": "District Attorney - New York County",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Human Services/Client Services",
-      "short_title": "Correction: RFP: Neighborhood Navigator Initiative",
-      "pin": "2027NNRFP001",
-      "due_date": "2026-11-24T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals",
-      "main_commodity_category": {
-        "status": "not_published",
-        "state": "missing",
-        "reason": "rfx_unavailable",
-        "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
-      },
-      "coverage": {
-        "category": {
-          "state": "missing",
-          "reason": "rfx_unavailable",
-          "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
-        },
-        "work_site": {
-          "state": "missing",
-          "reason": "borough_only",
-          "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
-        }
-      },
-      "work_sites": [],
-      "work_site_scan": {
-        "addresses_found": 0,
-        "rejected": {
-          "bid_drop": 0,
-          "meeting": 0,
-          "agency_office": 0,
-          "unclear": 0
-        },
-        "boroughs_named": [
-          "Manhattan"
-        ],
-        "sites_named": 0,
-        "sites_placed": 0
-      }
-    },
     {
       "request_id": "20261005018",
       "start_date": "2026-10-13T00:00:00.000",
@@ -138,20 +46,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -183,20 +91,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -229,20 +137,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -280,20 +188,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -325,20 +233,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -370,20 +278,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -415,20 +323,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [
@@ -480,20 +388,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -525,20 +433,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -570,20 +478,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [
@@ -635,20 +543,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -680,20 +588,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [
@@ -745,20 +653,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -792,20 +700,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -837,20 +745,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -884,20 +792,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [
@@ -949,20 +857,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -994,20 +902,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1039,20 +947,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1084,20 +992,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1129,20 +1037,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1176,20 +1084,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1223,20 +1131,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1268,20 +1176,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1313,20 +1221,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1361,20 +1269,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1406,20 +1314,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1451,20 +1359,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1498,20 +1406,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1546,20 +1454,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1591,20 +1499,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [
@@ -1658,20 +1566,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1703,20 +1611,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1748,20 +1656,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1793,20 +1701,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1838,20 +1746,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1883,20 +1791,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1930,20 +1838,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -1975,20 +1883,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2020,20 +1928,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2065,20 +1973,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2110,20 +2018,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2155,20 +2063,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2200,20 +2108,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2247,20 +2155,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2298,20 +2206,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2343,20 +2251,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2391,20 +2299,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2436,20 +2344,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2481,20 +2389,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2526,20 +2434,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "address_not_resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2578,20 +2486,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2623,20 +2531,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2668,20 +2576,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2713,20 +2621,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2758,20 +2666,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2806,20 +2714,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2855,20 +2763,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2900,20 +2808,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -2947,20 +2855,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [
@@ -3012,20 +2920,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [
@@ -3079,20 +2987,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3124,20 +3032,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3171,20 +3079,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3216,20 +3124,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3263,20 +3171,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3307,20 +3215,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3352,20 +3260,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3396,20 +3304,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3441,20 +3349,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3486,20 +3394,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3531,20 +3439,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3576,20 +3484,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3621,20 +3529,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3666,20 +3574,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3713,20 +3621,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3758,20 +3666,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3806,20 +3714,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -3853,20 +3761,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [
@@ -3918,20 +3826,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [
@@ -3983,20 +3891,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4028,20 +3936,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4073,20 +3981,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4118,20 +4026,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4163,20 +4071,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4208,20 +4116,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4253,20 +4161,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [
@@ -4325,20 +4233,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4370,20 +4278,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4415,20 +4323,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4460,20 +4368,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4504,20 +4412,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "address_role_unclear",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4551,20 +4459,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4596,20 +4504,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4641,20 +4549,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4686,20 +4594,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4731,20 +4639,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4776,20 +4684,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4821,20 +4729,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4866,20 +4774,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4911,20 +4819,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -4956,20 +4864,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5001,20 +4909,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5046,20 +4954,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5091,20 +4999,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5136,20 +5044,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5181,20 +5089,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5226,20 +5134,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5271,20 +5179,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5316,20 +5224,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5361,20 +5269,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5406,20 +5314,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5451,20 +5359,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5496,20 +5404,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5541,20 +5449,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5586,20 +5494,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5631,20 +5539,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5676,20 +5584,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5721,20 +5629,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5766,20 +5674,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5811,20 +5719,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5856,20 +5764,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5901,20 +5809,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5946,20 +5854,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -5991,20 +5899,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6036,20 +5944,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6081,20 +5989,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6126,20 +6034,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6171,20 +6079,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6216,20 +6124,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6260,20 +6168,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6305,20 +6213,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6350,20 +6258,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6395,20 +6303,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6440,20 +6348,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6485,20 +6393,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6530,20 +6438,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6575,20 +6483,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6620,20 +6528,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6665,20 +6573,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6710,20 +6618,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6755,20 +6663,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6800,20 +6708,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6845,20 +6753,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6890,20 +6798,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6935,20 +6843,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -6980,20 +6888,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7025,20 +6933,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7070,20 +6978,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7115,20 +7023,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7160,20 +7068,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7205,20 +7113,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7250,20 +7158,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7295,20 +7203,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7340,20 +7248,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7385,20 +7293,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7430,20 +7338,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7475,20 +7383,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7520,20 +7428,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7565,20 +7473,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7610,20 +7518,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7655,20 +7563,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7700,20 +7608,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7745,20 +7653,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7790,20 +7698,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7835,20 +7743,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7880,20 +7788,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7925,20 +7833,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -7970,20 +7878,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8015,20 +7923,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8060,20 +7968,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8105,20 +8013,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8150,20 +8058,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8197,20 +8105,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8244,20 +8152,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8289,20 +8197,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8334,20 +8242,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8379,20 +8287,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8424,20 +8332,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8469,20 +8377,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8514,20 +8422,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8559,20 +8467,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8604,20 +8512,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8649,20 +8557,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8694,20 +8602,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "address_role_unclear",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8741,20 +8649,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8788,20 +8696,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8833,20 +8741,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8878,20 +8786,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8923,20 +8831,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -8968,20 +8876,20 @@
         "state": "missing",
         "reason": "rfx_unavailable",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-24"
+        "as_of": "2026-11-25"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "rfx_unavailable",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-24"
+          "as_of": "2026-11-25"
         }
       },
       "work_sites": [],
@@ -9006,12 +8914,12 @@
     "join_rule": "A City Record PIN is joined to a PASSPort Public RFx EPIN by exact alphanumeric match, one trailing letter-and-digits suffix stripped, the PIN as a prefix of the EPIN, or the EPIN as a prefix of the PIN. The RFx main commodity is an L3 category only when its label matches a City commodity category exactly after normalizing case and spacing. No PIN, no join, two RFx rows for the same EPIN that disagree, or a label that is not an L3 category is published as category not published, with the reason. Nothing is guessed.",
     "source": "passport_public_rfx",
     "source_url": "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js",
-    "as_of": "2026-11-24",
-    "observed_at": "2026-11-24T18:40:33.970Z",
+    "as_of": "2026-11-25",
+    "observed_at": "2026-11-25T10:21:13.025Z",
     "catalog_version": null,
-    "open_notices": 193,
+    "open_notices": 191,
     "available": 0,
-    "missing": 193,
+    "missing": 191,
     "by_reason": {
       "joined_l3": 0,
       "no_pin": 0,
@@ -9020,7 +8928,7 @@
       "joined_no_label": 0,
       "ambiguous_epin": 0,
       "category_index_unavailable": 0,
-      "rfx_unavailable": 193,
+      "rfx_unavailable": 191,
       "rfx_empty": 0
     },
     "by_join_method": {
@@ -9040,15 +8948,15 @@
     "rule": "A street address in the notice text is a work site only when the notice presents it as the place of the work: it is in the notice title, it follows a LOCATION label that is not part of a pre-bid meeting block, or its sentence says the work, project or facility is located at it. Addresses where bids are delivered or opened, where documents are collected, where a pre-bid meeting or site tour is held, where an agency office sits, or whose role the sentence does not say are never work sites. A work-site address is geocoded in the City Planning Property Address Directory snapshot, placed on its tax-lot point, and joined to the community district whose boundary contains the point. No vendor field, agency name or bare borough is used. Nothing is guessed. Each placed address is labelled from the typed role that sentence supports: \"Work site\", \"Delivery site\", or \"Property in this solicitation\". When a LOCATION line names a facility the notice title already names, the quote is the street address as written.",
     "source": "city_record_notice_text",
     "source_url": "https://data.cityofnewyork.us/d/dg92-zbpx",
-    "as_of": "2026-11-24",
-    "observed_at": "2026-11-24T18:40:33.970Z",
-    "open_notices": 193,
+    "as_of": "2026-11-25",
+    "observed_at": "2026-11-25T10:21:13.025Z",
+    "open_notices": 191,
     "available": 10,
-    "missing": 183,
+    "missing": 181,
     "by_reason": {
       "resolved": 10,
-      "no_place_named": 109,
-      "borough_only": 17,
+      "no_place_named": 108,
+      "borough_only": 16,
       "broad_scope": 29,
       "only_bid_drop_address": 25,
       "only_meeting_address": 0,

@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":44,"first_ordinal":73996,"entries":[
-{"s":"INT`L BUSINESS MACHINES","n":[["Int`l Business Machines",1]],"x":{"ocp":{"r":1,"a":411524.46,"l":"2006-09-29","i":["20060922007"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":44,"first_ordinal":73997,"entries":[
 {"s":"INUNITY ALLIANCE","n":[["INUNITY ALLIANCE INC",1]],"x":{"irs":{"r":1,"i":["132729071"],"z":["12210"]}}},
 {"s":"INVENTYOU","n":[["InventYou LLC",1]],"x":{"sbs":{"r":1,"i":["357340"],"z":["07017"],"p":["MBE"]}}},
 {"s":"INVERIS TRAINING SOLUTIONS","n":[["InVeris Training Solutions, Inc.",1]],"x":{"dol":{"r":1,"i":["25-649T8-CR"],"z":["30024"]}}},
@@ -1725,5 +1724,6 @@
 {"s":"JAMAICA ASH RUBBISH REMOVAL","n":[["JAMAICA ASH & RUBBISH REMOVAL CO., INC.",1]],"x":{"dol":{"r":1,"i":["25-65E7N-CR"],"z":["11590"]}}},
 {"s":"JAMAICA ASSEMBLY OF GOD","n":[["JAMAICA ASSEMBLY OF GOD",1]],"x":{"irs":{"r":1,"i":["113060912"],"z":["11435"]}}},
 {"s":"JAMAICA ASSOCIATION OF VINTAGE ARTISTS AFFILIATES NY","n":[["JAMAICA ASSOCIATION OF VINTAGE ARTISTS & AFFILIATES NY INC",1]],"x":{"irs":{"r":1,"i":["611650466"],"z":["11225"]}}},
-{"s":"JAMAICA ATHLETIC AND LEARING CENTER","n":[["JAMAICA ATHLETIC AND LEARING CENTER",1]],"x":{"irs":{"r":1,"i":["200975215"],"z":["11411"]}}}
+{"s":"JAMAICA ATHLETIC AND LEARING CENTER","n":[["JAMAICA ATHLETIC AND LEARING CENTER",1]],"x":{"irs":{"r":1,"i":["200975215"],"z":["11411"]}}},
+{"s":"JAMAICA ATHLETIC LEARNING CENTER","n":[["JAMAICA ATHLETIC & LEARNING CENTER INC",1]],"x":{"cbr":{"r":1,"a":10000,"l":"2024-07-02","i":["CT126020258800906"],"m":["Non-M/WBE"]}}}
 ]}

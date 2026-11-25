@@ -1,6 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":48,"first_ordinal":81007,"entries":[
-{"s":"KIDS ET CETERA DAY CARE CENTER","n":[["KIDS ET CETERA DAY CARE CENTER INC",1]],"x":{"irs":{"r":1,"i":["113295520"],"z":["11203"]}}},
-{"s":"KIDS EVENT TICKETS","n":[["KIDS EVENT TICKETS INC",1]],"x":{"irs":{"r":1,"i":["300647110"],"z":["14072"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":48,"first_ordinal":81009,"entries":[
 {"s":"KIDS FIRST INTERNATIONAL","n":[["KIDS FIRST INTERNATIONAL INC",1]],"x":{"irs":{"r":1,"i":["263676031"],"z":["11717"]}}},
 {"s":"KIDS FOR CHESS","n":[["KIDS FOR CHESS INC",1]],"x":{"irs":{"r":1,"i":["832193215"],"z":["10065"]}}},
 {"s":"KIDS FOR KIDS FOUNDATION","n":[["KIDS FOR KIDS FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["455617961"],"z":["11779"]}}},
@@ -1718,5 +1716,7 @@
 {"s":"KROYWEN REALTY AND CONSTRUCTION","n":[["Kroywen Realty and Construction Corp.",1]],"x":{"dol":{"r":1,"i":["24-64RZZ-CR"],"z":["11103"]}}},
 {"s":"KRUEGER ELECTRICAL CONTRACTING","n":[["Krueger Electrical Contracting, LLC",1]],"x":{"dol":{"r":1,"i":["25-65G76-CR"],"z":["12804"]}}},
 {"s":"KRUEGER FAMILY FOUNDATION","n":[["KRUEGER FAMILY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["272457479"],"z":["11518"]}}},
-{"s":"KRUEGER INTERNATIONAL","n":[["KRUEGER INTERNATIONAL INC",2],["KRUEGER INTERNATIONAL, INC.",1]],"x":{"cbr":{"r":1,"a":3408.69,"l":"2026-05-15","i":["CT181620261415601"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-05-15","i":["CT181620261415601"],"m":["Non-M/WBE"]},"dol":{"r":1,"i":["25-6HDJC-CR"],"z":["54302"]}}}
+{"s":"KRUEGER INTERNATIONAL","n":[["KRUEGER INTERNATIONAL INC",2],["KRUEGER INTERNATIONAL, INC.",1]],"x":{"cbr":{"r":1,"a":3408.69,"l":"2026-05-15","i":["CT181620261415601"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-05-15","i":["CT181620261415601"],"m":["Non-M/WBE"]},"dol":{"r":1,"i":["25-6HDJC-CR"],"z":["54302"]}}},
+{"s":"KRUGMAN FAMILY FOUNDATION","n":[["KRUGMAN FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["816999346"],"z":["10075"]}}},
+{"s":"KRUISING KNIGHTS","n":[["KRUISING KNIGHTS INC",1]],"x":{"irs":{"r":1,"i":["161398532"],"z":["13029"]}}}
 ]}

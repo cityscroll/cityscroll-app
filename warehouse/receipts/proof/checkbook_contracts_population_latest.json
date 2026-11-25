@@ -6,7 +6,7 @@
     "publisher": "Office of the New York City Comptroller",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
-    "pulled_at": "2026-11-24T18:19:02.851Z",
+    "pulled_at": "2026-11-25T10:20:15.926Z",
     "type_of_data": "Contracts",
     "status": "registered",
     "category": "expense",
@@ -60,9 +60,9 @@
     }
   },
   "checksums": {
-    "page_manifest_sha256": "646283a2c25d1e69ff023e283049b8e475d63f825ac16791ef114a859698b201",
+    "page_manifest_sha256": "ab709055b65f0c84374c14e89d4841101be713216a399d383e6bafd0b6176faf",
     "normalized_contracts_sha256": "90732aac4e5181d2043e0ac82f8c0feae64a0fb78a2d4b82fe3b343cf1e67c6d",
-    "committed_graph_slice_sha256": "32e8f093a993193842d2831269d32a2e66e327de6c3fd6646d24e65e90e8b49e"
+    "committed_graph_slice_sha256": "6428928b7d82a173f1c3eba4c5c86a1620311ab6a16c03d97b3eae9b8270a78f"
   },
   "overlap_before_graph_selection": {
     "checkbook_contracts": 30004,
@@ -92,12 +92,12 @@
   },
   "graph_slice": {
     "cap": null,
-    "row_count": 10674,
+    "row_count": 10646,
     "selected_buckets": {
-      "passport_and_city_record": 1661,
-      "passport_only": 86,
+      "passport_and_city_record": 1659,
+      "passport_only": 84,
       "city_record_only": 1052,
-      "new_unique": 7875
+      "new_unique": 7851
     },
     "strategy": "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap",
     "source": "normalized unique contracts from the measured fiscal-year population"

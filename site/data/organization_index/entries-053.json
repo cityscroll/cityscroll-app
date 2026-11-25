@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":53,"first_ordinal":89511,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":53,"first_ordinal":89511,"entries":[
 {"s":"LYONS FALLS ALIVE","n":[["LYONS FALLS ALIVE",1]],"x":{"irs":{"r":1,"i":["264300746"],"z":["13368"]}}},
 {"s":"LYONS FALLS FREE LIBRARY HIGH ST","n":[["LYONS FALLS FREE LIBRARY HIGH ST",1]],"x":{"irs":{"r":1,"i":["222523690"],"z":["13368"]}}},
 {"s":"LYONS FALLS HISTORY ASSOC","n":[["LYONS FALLS HISTORY ASSOC INC",1]],"x":{"irs":{"r":1,"i":["203312663"],"z":["13368"]}}},
@@ -1162,7 +1162,7 @@
 {"s":"MALONE CALLFIREMEN","n":[["MALONE CALLFIREMEN INC",1]],"x":{"irs":{"r":1,"i":["141654861"],"z":["12953"]}}},
 {"s":"MALONE CEMETERY ASSOC","n":[["MALONE CEMETERY ASSOC",1]],"x":{"irs":{"r":1,"i":["150374800"],"z":["12953"]}}},
 {"s":"MALONE CHAMBER OF COMMERCE","n":[["MALONE CHAMBER OF COMMERCE",1]],"x":{"irs":{"r":1,"i":["150584692"],"z":["12953"]}}},
-{"s":"MALONE CREATIVE GROUP","n":[["MALONE CREATIVE GROUP LLC",40],["Malone Creative Group LLC",3],["Malone Creative Group, LLC",1]],"x":{"ocp":{"r":3,"a":36240000,"l":"2026-08-11","i":["20260805007","20260204017","20231118107"]},"cbr":{"r":25,"a":39062081,"l":"2026-09-08","c":25,"i":["CT100320271403722","CTA183620278802312","CTA184620278802101","MMA185720278800589","CTA122620268807930"],"m":["Black American"]},"ppt":{"r":2,"a":35500000,"l":"2026-02-03","i":["CT1-816-20268804447","MMA1-857-20248804088"]},"cbv":{"r":12,"l":"2026-09-08","c":12,"i":["CT100320271403722","CTA183620278802312","CTA184620278802101","MMA185720278800589","CTA122620268807930"],"m":["Black American"]},"dbe":{"r":1,"i":["MALONE CREATIVE GROUP LLC"]},"sbs":{"r":1,"i":["14230"],"z":["10010"],"p":["MBE","WBE"]}}},
+{"s":"MALONE CREATIVE GROUP","n":[["MALONE CREATIVE GROUP LLC",39],["Malone Creative Group LLC",3],["Malone Creative Group, LLC",1]],"x":{"ocp":{"r":3,"a":36240000,"l":"2026-08-11","i":["20260805007","20260204017","20231118107"]},"cbr":{"r":25,"a":39062081,"l":"2026-09-08","c":25,"i":["CT100320271403722","CTA183620278802312","CTA184620278802101","MMA185720278800589","CTA122620268807930"],"m":["Black American"]},"ppt":{"r":2,"a":35500000,"l":"2026-02-03","i":["CT1-816-20268804447","MMA1-857-20248804088"]},"cbv":{"r":11,"l":"2026-09-08","c":11,"i":["CT100320271403722","CTA183620278802312","CTA184620278802101","MMA185720278800589","CTA122620268807930"],"m":["Black American"]},"dbe":{"r":1,"i":["MALONE CREATIVE GROUP LLC"]},"sbs":{"r":1,"i":["14230"],"z":["10010"],"p":["MBE","WBE"]}}},
 {"s":"MALONE EMS","n":[["MALONE EMS INC",1]],"x":{"irs":{"r":1,"i":["272439210"],"z":["12953"]}}},
 {"s":"MALONE FISH GAME CLUB","n":[["MALONE FISH & GAME CLUB INC",1]],"x":{"irs":{"r":1,"i":["222303775"],"z":["12953"]}}},
 {"s":"MALONE GOLDEN AGE CLUB","n":[["MALONE GOLDEN AGE CLUB INC",1]],"x":{"irs":{"r":1,"i":["161597751"],"z":["12953"]}}},

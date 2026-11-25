@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":55,"first_ordinal":93006,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":55,"first_ordinal":93006,"entries":[
 {"s":"MCDATA","n":[["McData Corporation",1]],"x":{"ocp":{"r":1,"a":7469.1,"l":"2006-05-30","i":["20060525006"]}}},
 {"s":"MCDERMOTT PLOWING LAWNCARE","d":[["McDermott Plowing & Lawncare",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-9YC13-CR"],"z":["12401"]}}},
 {"s":"MCDERMOTT WILL EMERY","n":[["MCDERMOTT WILL & EMERY LLP",1]],"x":{"dbe":{"r":1,"i":["MCDERMOTT WILL & EMERY LLP"]}}},

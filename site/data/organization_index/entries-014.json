@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":14,"first_ordinal":23323,"entries":[
-{"s":"C4 CHORAL COMPOSER CONDUCTOR COLLECTIVE","n":[["C4 CHORAL COMPOSER CONDUCTOR COLLECTIVE",1]],"x":{"irs":{"r":1,"i":["262810798"],"z":["10036"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":14,"first_ordinal":23324,"entries":[
 {"s":"C4 FOUNDATION","n":[["C4 FOUNDATION",1]],"x":{"irs":{"r":1,"i":["465705074"],"z":["14227"]}}},
 {"s":"C4 NETWORK","n":[["C4 NETWORK",1]],"x":{"irs":{"r":1,"i":["850513908"],"z":["11207"]}}},
 {"s":"C40 CITIES CLIMATE LEADERSHIP GROUP","n":[["C40 CITIES CLIMATE LEADERSHIP GROUP INC",1]],"x":{"irs":{"r":1,"i":["900634376"],"z":["10017"]}}},
@@ -111,7 +110,7 @@
 {"s":"CAFH FOUNDATION","n":[["CAFH FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["237125962"],"z":["11374"]}}},
 {"s":"CAFH ORDER AT TIVOLI","n":[["CAFH ORDER AT TIVOLI INC",1]],"x":{"irs":{"r":1,"i":["222451679"],"z":["12583"]}}},
 {"s":"CAFH ORDER AT YORKTOWN","n":[["CAFH ORDER AT YORKTOWN INC",1]],"x":{"irs":{"r":1,"i":["133949840"],"z":["10598"]}}},
-{"s":"CAG CONSTRUCTION","n":[["CAG CONSTRUCTION CORP",22],["CAG Construction Corp.",8],["CAG Construction Corp",2]],"d":[["CAG Construction Corp.",1]],"x":{"ocp":{"r":8,"a":6070592,"l":"2026-02-13","c":8,"i":["20260206021","20251223019","20251114024","20251023023","20250630010"]},"cbr":{"r":9,"a":8244097.94,"l":"2026-11-19","c":9,"i":["CT182620278803877","CT184620268804974","CT184620268804193","CT184620268803555","CT184620268803272"],"m":["Hispanic American"]},"ppt":{"r":8,"a":6139038.89,"l":"2026-02-06","c":8,"i":["CT1-846-20268804974","CT1-846-20268804193","CT1-846-20268803555","CT1-846-20268803272","CT1-846-20258809192"]},"cbv":{"r":4,"l":"2026-02-05","i":["CT184620268804974","CT184620268804193","CT184620268803555","CT184620268803272"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["CAG CONSTRUCTION CORP"]},"sbs":{"r":1,"i":["101351"],"z":["10314"],"p":["MBE"]},"dol":{"r":2,"v":["dba","name"],"i":["24-64YYZ-CR"],"z":["10314"]}}},
+{"s":"CAG CONSTRUCTION","n":[["CAG CONSTRUCTION CORP",21],["CAG Construction Corp.",8],["CAG Construction Corp",2]],"d":[["CAG Construction Corp.",1]],"x":{"ocp":{"r":8,"a":6070592,"l":"2026-02-13","c":8,"i":["20260206021","20251223019","20251114024","20251023023","20250630010"]},"cbr":{"r":9,"a":8244097.94,"l":"2026-11-19","c":9,"i":["CT182620278803877","CT184620268804974","CT184620268804193","CT184620268803555","CT184620268803272"],"m":["Hispanic American"]},"ppt":{"r":8,"a":6139038.89,"l":"2026-02-06","c":8,"i":["CT1-846-20268804974","CT1-846-20268804193","CT1-846-20268803555","CT1-846-20268803272","CT1-846-20258809192"]},"cbv":{"r":3,"l":"2026-02-05","i":["CT184620268804974","CT184620268804193","CT184620268803272"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["CAG CONSTRUCTION CORP"]},"sbs":{"r":1,"i":["101351"],"z":["10314"],"p":["MBE"]},"dol":{"r":2,"v":["dba","name"],"i":["24-64YYZ-CR"],"z":["10314"]}}},
 {"s":"CAG GROUP","n":[["CAG GROUP LLC",1],["CAG Group LLC",1]],"d":[["CAG GROUP LLC",1]],"x":{"sbs":{"r":1,"i":["11249"],"z":["11003"],"p":["MBE"]},"dol":{"r":2,"v":["dba","name"],"i":["26-6937A-CR"],"z":["11003"]}}},
 {"s":"CAHIERS D ART INSTITUTE","n":[["CAHIERS D ART INSTITUTE",1]],"x":{"irs":{"r":1,"i":["844717224"],"z":["10011"]}}},
 {"s":"CAHILL CONSULTANTS","n":[["Cahill Consultants, Inc.",1]],"x":{"sbs":{"r":1,"i":["103382"],"z":["11733"],"p":["WBE"]}}},
@@ -1162,7 +1161,7 @@
 {"s":"CAPITAL SUPPLY","n":[["Capital Supply Co.",1]],"x":{"ocp":{"r":1,"a":21250,"l":"2003-10-03","i":["20031001041"]}}},
 {"s":"CAPITAL SURFACE MAINTENANCE","n":[["CAPITAL SURFACE MAINTENANCE, LLP",1]],"x":{"dol":{"r":1,"i":["25-65CTS-CR"],"z":["12065"]}}},
 {"s":"CAPITAL TECHNICAL RESCUE AND SAFETY CONSULTANTS","n":[["Capital Technical Rescue and Safety Consultants LLC",1]],"x":{"dol":{"r":1,"i":["24-64DRU-CR"],"z":["12204"]}}},
-{"s":"CAPITAL TOURS","n":[["CAPITAL TOURS INC",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-11-24","i":["CT104020263056697","CT104020253088726"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2025-11-24","i":["CT104020263056697"],"m":["Non-M/WBE"]}}},
+{"s":"CAPITAL TOURS","n":[["CAPITAL TOURS INC",2]],"x":{"cbr":{"r":2,"a":50000,"l":"2025-11-24","i":["CT104020263056697","CT104020253088726"],"m":["Non-M/WBE"]}}},
 {"s":"CAPITALAND FLOORING","n":[["Capitaland Flooring Company LLC",1]],"x":{"dol":{"r":1,"i":["26-698L6-CR"],"z":["12065"]}}},
 {"s":"CAPITALIZE ALBANY","n":[["CAPITALIZE ALBANY CORPORATION",1]],"x":{"irs":{"r":1,"i":["222353905"],"z":["12207"]}}},
 {"s":"CAPITANO FOUNDATION UA 041097","n":[["CAPITANO FOUNDATION UA 041097",1]],"x":{"irs":{"r":1,"i":["116480969"],"z":["11795"]}}},
@@ -1721,5 +1720,7 @@
 {"s":"CARPATHO-RUSSIAN ORTHODOX GREEK CATHOLIC CHURCH OF ST MARY","n":[["CARPATHO-RUSSIAN ORTHODOX GREEK CATHOLIC CHURCH OF ST MARY",1]],"x":{"irs":{"r":1,"i":["136135097"],"z":["10701"]}}},
 {"s":"CARPATIAN CONGREGATION OF WHITE LAKE","n":[["CARPATIAN CONGREGATION OF WHITE LAKE",1]],"x":{"irs":{"r":1,"i":["753058389"],"z":["11229"]}}},
 {"s":"CARPE DIEM ENTERPRISES","n":[["Carpe Diem Enterprises Inc.",1]],"x":{"sbs":{"r":1,"i":["11313"],"z":["11746"],"p":["WBE"]}}},
-{"s":"CARPE DIEM THEATER","n":[["CARPE DIEM THEATER INC",1]],"x":{"irs":{"r":1,"i":["991086029"],"z":["12020"]}}}
+{"s":"CARPE DIEM THEATER","n":[["CARPE DIEM THEATER INC",1]],"x":{"irs":{"r":1,"i":["991086029"],"z":["12020"]}}},
+{"s":"CARPENTER CONTRACTOR ALLIANCE OF METROPOLITAN NEW YORK","n":[["CARPENTER CONTRACTOR ALLIANCE OF METROPOLITAN NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["562410898"],"z":["10016"]}}},
+{"s":"CARPENTER FAMILY CARITAS FOUNDATION","n":[["CARPENTER FAMILY CARITAS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["261588334"],"z":["14618"]}}}
 ]}

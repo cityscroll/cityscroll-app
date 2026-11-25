@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":66,"first_ordinal":111482,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":66,"first_ordinal":111482,"entries":[
 {"s":"PARLANDO","n":[["PARLANDO INC",1]],"x":{"irs":{"r":1,"i":["843076436"],"z":["10023"]}}},
 {"s":"PARLAY SQUARE MANAGEMENT","n":[["Parlay Square Management",1]],"x":{"sbs":{"r":1,"i":["101515"],"z":["10001"],"p":["MBE"]}}},
 {"s":"PARLE ENDEAVORS","n":[["Parle Endeavors",2],["PARLE ENDEAVORS INC",1]],"x":{"cbr":{"r":1,"a":16000,"l":"2026-03-12","i":["CT181620261412616"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-03-12","i":["CT181620261412616"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["883641366"],"z":["11236"]}}},

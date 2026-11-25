@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-11-24T19:10:06.796Z"
+    "newest": "2026-11-25T10:44:57.602Z"
   },
   "domains": [
     {
@@ -69,15 +69,15 @@
           "source_id": null,
           "source_name": null,
           "state": "measured",
-          "value": 20714,
-          "evidence_vintage": "2026-11-24T18:19:02.851Z",
+          "value": 20690,
+          "evidence_vintage": "2026-11-25T10:20:15.926Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
           "sources": [
             {
               "source_id": "checkbook-contracts",
               "source_name": "Checkbook NYC registered contracts",
-              "served_records": 9622,
+              "served_records": 9594,
               "state": "measured"
             },
             {
@@ -140,7 +140,7 @@
           "source_name": "Checkbook NYC registered contracts",
           "state": "measured",
           "value": 30004,
-          "evidence_vintage": "2026-11-24T00:00:00.000Z",
+          "evidence_vintage": "2026-11-25T00:00:00.000Z",
           "vintage_field": "snapshot_date",
           "vintage_basis": "single"
         },
@@ -231,10 +231,10 @@
           "source_name": "NYC Council Legistar API",
           "state": "measured",
           "value": 14,
-          "evidence_vintage": "2026-11-23T10:00:50.997Z",
+          "evidence_vintage": "2026-11-24T23:45:13.719Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
-          "records_considered": 304
+          "records_considered": 305
         }
       ]
     },
@@ -368,7 +368,7 @@
           "source_name": "City Record Online",
           "state": "measured",
           "value": 88,
-          "evidence_vintage": "2026-11-24T19:10:06.796Z",
+          "evidence_vintage": "2026-11-25T10:44:57.602Z",
           "vintage_field": "retrieved_at",
           "vintage_basis": "single"
         }
@@ -408,7 +408,7 @@
           "source_name": "Annual Examination Schedule",
           "state": "measured",
           "value": 227,
-          "evidence_vintage": "2026-11-24T00:00:00.000Z",
+          "evidence_vintage": "2026-11-25T00:00:00.000Z",
           "vintage_field": "sources_retrieved_as_of",
           "vintage_basis": "single"
         }

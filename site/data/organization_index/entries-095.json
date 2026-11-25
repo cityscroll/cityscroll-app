@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":95,"first_ordinal":160260,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":95,"first_ordinal":160260,"entries":[
 {"s":"YOUTH LEADERS DEVELOPMENT ORGANIZATION","n":[["YOUTH LEADERS DEVELOPMENT ORGANIZATION INC",1]],"x":{"irs":{"r":1,"i":["992306524"],"z":["11021"]}}},
 {"s":"YOUTH LIFE SUPPORT NETWORK","n":[["YOUTH LIFE SUPPORT NETWORK INC",1]],"x":{"irs":{"r":1,"i":["460671779"],"z":["12210"]}}},
 {"s":"YOUTH LIMITLESS LEADERS","n":[["YOUTH LIMITLESS LEADERS",1]],"x":{"irs":{"r":1,"i":["422815009"],"z":["10001"]}}},
@@ -223,7 +223,7 @@
 {"s":"ZANE CONSTRUCTION","n":[["Zane Construction LLC",1]],"x":{"dol":{"r":1,"i":["26-66ZNS-CR"],"z":["06419"]}}},
 {"s":"ZANE NORTHEAST","n":[["Zane Northeast, LLC",1]],"x":{"dol":{"r":1,"i":["26-6639L-CR"],"z":["06419"]}}},
 {"s":"ZANELLI FAM FOUNDATION","n":[["ZANELLI FAM FOUNDATION",1]],"x":{"irs":{"r":1,"i":["357032081"],"z":["11747"]}}},
-{"s":"ZANER-BLOSER","n":[["ZANER-BLOSER INC",22]],"x":{"cbr":{"r":16,"a":400000,"l":"2026-04-16","c":16,"i":["CT104020263162909","CT104020263158162","CT104020263145259","CT104020263119110","CT104020263056058"],"m":["Non-M/WBE"]},"cbv":{"r":5,"l":"2026-04-16","i":["CT104020263162909","CT104020263158162","CT104020263145259","CT104020263119110","CT104020263056058"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ZANER-BLOSER INC"]}}},
+{"s":"ZANER-BLOSER","n":[["ZANER-BLOSER INC",21]],"x":{"cbr":{"r":16,"a":400000,"l":"2026-04-16","c":16,"i":["CT104020263162909","CT104020263158162","CT104020263145259","CT104020263119110","CT104020263056058"],"m":["Non-M/WBE"]},"cbv":{"r":4,"l":"2026-04-16","i":["CT104020263162909","CT104020263158162","CT104020263145259","CT104020263119110"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ZANER-BLOSER INC"]}}},
 {"s":"ZANGRILLI CONTRACTING","d":[["Zangrilli Contracting",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-9YG48-CR"],"z":["13502"]}}},
 {"s":"ZANIS FURRY FRIENDS ZFF","n":[["ZANIS FURRY FRIENDS ZFF INC",1]],"x":{"irs":{"r":1,"i":["472344925"],"z":["10028"]}}},
 {"s":"ZANKEL FUND","n":[["ZANKEL FUND",1]],"x":{"irs":{"r":1,"i":["352319507"],"z":["10020"]}}},

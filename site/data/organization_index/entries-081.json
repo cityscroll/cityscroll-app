@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":81,"first_ordinal":136814,"entries":[
-{"s":"STRAY CAT NETWORK","n":[["STRAY CAT NETWORK INC",1]],"x":{"irs":{"r":1,"i":["853755645"],"z":["12571"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":81,"first_ordinal":136815,"entries":[
 {"s":"STRAY FROM THE HEART","n":[["STRAY FROM THE HEART INC",1]],"x":{"irs":{"r":1,"i":["134138589"],"z":["11375"]}}},
 {"s":"STRAY HAVEN HUMANE SOCIETY","n":[["STRAY HAVEN HUMANE SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["160950996"],"z":["14892"]}}},
 {"s":"STRAY HEALTHCARE EDUCATION TO LIMIT POPULATION","n":[["STRAY HEALTHCARE & EDUCATION TO LIMIT POPULATION INC",1]],"x":{"irs":{"r":1,"i":["300861027"],"z":["12524"]}}},
@@ -1684,5 +1683,6 @@
 {"s":"SWIM STRONG FOUNDATION","n":[["Swim Strong Foundation, Inc.",3],["SWIM STRONG FOUNDATION INC",1]],"x":{"cbr":{"r":3,"a":148500,"l":"2026-06-24","i":["CT101320261417872","CT126020268802230","CT101320251418547"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["371526132"],"z":["11377"]}}},
 {"s":"SWIMELITE","n":[["SWIMELITE CORP",1]],"x":{"irs":{"r":1,"i":["990647762"],"z":["11230"]}}},
 {"s":"SWIMKINS SYNCHRONIZED SWIMMING ASSOCIATION","n":[["SWIMKINS SYNCHRONIZED SWIMMING ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["161541025"],"z":["14215"]}}},
-{"s":"SWIMMERS FOR CHANGE","n":[["SWIMMERS FOR CHANGE INC",1]],"x":{"irs":{"r":1,"i":["882554988"],"z":["11201"]}}}
+{"s":"SWIMMERS FOR CHANGE","n":[["SWIMMERS FOR CHANGE INC",1]],"x":{"irs":{"r":1,"i":["882554988"],"z":["11201"]}}},
+{"s":"SWIMMING POOL SERVICE TECHNICIANS","n":[["Swimming Pool Service Technicians, Inc.",1]],"x":{"dol":{"r":1,"i":["26-64PS6-CR"],"z":["12549"]}}}
 ]}

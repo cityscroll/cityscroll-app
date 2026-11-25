@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":23,"first_ordinal":38537,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":23,"first_ordinal":38537,"entries":[
 {"s":"CREATING COMMUNITY AND CULTURE","n":[["CREATING COMMUNITY AND CULTURE",1]],"x":{"irs":{"r":1,"i":["332684777"],"z":["13339"]}}},
 {"s":"CREATING DREAMS MOVEMENT","n":[["CREATING DREAMS MOVEMENT INC",1]],"x":{"irs":{"r":1,"i":["833978614"],"z":["13068"]}}},
 {"s":"CREATING FOR JUSTICE","n":[["CREATING FOR JUSTICE INC",1]],"x":{"irs":{"r":1,"i":["851577746"],"z":["12763"]}}},
@@ -578,7 +578,7 @@
 {"s":"CRUSH FOUNDATION","n":[["CRUSH FOUNDATION",1]],"x":{"irs":{"r":1,"i":["824156527"],"z":["10010"]}}},
 {"s":"CRUX ART FOUNDATION","n":[["CRUX ART FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["331487234"],"z":["10010"]}}},
 {"s":"CRUX CLIMBING","n":[["CRUX CLIMBING INC",1]],"x":{"irs":{"r":1,"i":["273868534"],"z":["11217"]}}},
-{"s":"CRUZ BUSINESS SOLUTIONS","n":[["CRUZ BUSINESS SOLUTIONS LLC",31],["Cruz Business Solutions LLC",1]],"x":{"cbr":{"r":24,"a":600000,"l":"2026-10-09","c":24,"i":["CT104020273028681","CT104020273017877","CT104020273014899","CT104020263039875","CT104020263044519"],"m":["Hispanic American"]},"cbv":{"r":6,"l":"2026-10-09","c":6,"i":["CT104020273028681","CT104020273017877","CT104020273014899","CT104020263039875","CT104020263044519"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["CRUZ BUSINESS SOLUTIONS LLC"]},"sbs":{"r":1,"i":["361516"],"z":["07666"],"p":["MBE"]}}},
+{"s":"CRUZ BUSINESS SOLUTIONS","n":[["CRUZ BUSINESS SOLUTIONS LLC",30],["Cruz Business Solutions LLC",1]],"x":{"cbr":{"r":24,"a":600000,"l":"2026-10-09","c":24,"i":["CT104020273028681","CT104020273017877","CT104020273014899","CT104020263039875","CT104020263044519"],"m":["Hispanic American"]},"cbv":{"r":5,"l":"2026-10-09","i":["CT104020273028681","CT104020273017877","CT104020273014899","CT104020263039875","CT104020263044519"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["CRUZ BUSINESS SOLUTIONS LLC"]},"sbs":{"r":1,"i":["361516"],"z":["07666"],"p":["MBE"]}}},
 {"s":"CRUZ CONCRETE AND GUNITING REPAIR","n":[["Cruz Concrete and Guniting Repair, Inc.",1]],"x":{"dol":{"r":1,"i":["25-65KIC-CR"],"z":["08736"]}}},
 {"s":"CRUZ CONCRETE GUNITING REPAIR","n":[["Cruz Concrete & Guniting Repair Inc.",1]],"x":{"sbs":{"r":1,"i":["4801"],"z":["08736"],"p":["MBE"]}}},
 {"s":"CRUZ CONST","n":[["Cruz Const. Corp.",1]],"x":{"ocp":{"r":1,"a":6230000,"l":"2003-01-27","i":["20030121030"]}}},

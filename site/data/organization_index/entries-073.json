@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":73,"first_ordinal":123233,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":73,"first_ordinal":123233,"entries":[
 {"s":"ROCK THE SOCKS FOUNDATION","n":[["ROCK THE SOCKS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["821224144"],"z":["11788"]}}},
 {"s":"ROCK VIBE GOSPEL RADIO","n":[["ROCK VIBE GOSPEL RADIO INC",1]],"x":{"irs":{"r":1,"i":["393440742"],"z":["11692"]}}},
 {"s":"ROCK WORKS MASONRY","n":[["ROCK WORKS MASONRY, INC.",1]],"x":{"dol":{"r":1,"i":["25-6HPKS-CR"],"z":["14141"]}}},

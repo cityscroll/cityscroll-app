@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":24,"first_ordinal":40229,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":24,"first_ordinal":40229,"entries":[
 {"s":"DAMASCUS SHRINERS GROUP RETURN","n":[["DAMASCUS SHRINERS GROUP RETURN",1]],"x":{"irs":{"r":1,"i":["510214199"],"z":["14580"]}}},
 {"s":"DAMASTE","n":[["DAMASTE INC",6],["Damaste Inc.",1],["Damaste, Inc.",1]],"x":{"ocp":{"r":2,"a":236250,"l":"2025-03-06","i":["20250228010","20240524113"]},"cbr":{"r":1,"a":200000,"l":"2025-02-27","i":["CT184120258806153"],"m":["Hispanic American"]},"ppt":{"r":2,"a":1536250,"l":"2025-02-27","i":["CT1-841-20258806153","CT1-841-20248808447"]},"dbe":{"r":1,"i":["DAMASTE INC"]},"sbs":{"r":1,"i":["329284"],"z":["10473"],"p":["MBE"]},"dol":{"r":1,"i":["25-64UGG-CR"],"z":["10473"]}}},
 {"s":"DAMAYAN MIGRANT WORKERS ASSOCIATION","n":[["DAMAYAN MIGRANT WORKERS ASSOCIATION",2]],"x":{"cbr":{"r":1,"a":175000,"l":"2026-10-19","i":["CT106920278801783"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["030481206"],"z":["10018"]}}},

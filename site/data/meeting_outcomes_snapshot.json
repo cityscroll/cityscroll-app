@@ -1,17 +1,25 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-11-23T10:00:50.997Z",
+  "generated_at": "2026-11-24T23:45:13.719Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 304,
+  "record_count": 305,
   "present_count": 14,
-  "absent_count": 290,
+  "absent_count": 291,
   "by_notice": {
     "20261112013": {
       "request_id": "20261112013",
       "snapshot_state": "absent"
     },
+    "20261116024": {
+      "request_id": "20261116024",
+      "snapshot_state": "absent"
+    },
     "20261112005": {
       "request_id": "20261112005",
+      "snapshot_state": "absent"
+    },
+    "20261117022": {
+      "request_id": "20261117022",
       "snapshot_state": "absent"
     },
     "20261117013": {
@@ -26,20 +34,20 @@
       "request_id": "20261106001",
       "snapshot_state": "absent"
     },
-    "20261106003": {
-      "request_id": "20261106003",
-      "snapshot_state": "absent"
-    },
     "20261104007": {
       "request_id": "20261104007",
       "snapshot_state": "absent"
     },
-    "20261106002": {
-      "request_id": "20261106002",
+    "20261106003": {
+      "request_id": "20261106003",
       "snapshot_state": "absent"
     },
     "20261104022": {
       "request_id": "20261104022",
+      "snapshot_state": "absent"
+    },
+    "20261106002": {
+      "request_id": "20261106002",
       "snapshot_state": "absent"
     },
     "20261110022": {
@@ -50,28 +58,48 @@
       "request_id": "20261027031",
       "snapshot_state": "absent"
     },
-    "20261110024": {
-      "request_id": "20261110024",
-      "snapshot_state": "absent"
-    },
     "20261112015": {
       "request_id": "20261112015",
+      "snapshot_state": "absent"
+    },
+    "20261110024": {
+      "request_id": "20261110024",
       "snapshot_state": "absent"
     },
     "20261102015": {
       "request_id": "20261102015",
       "snapshot_state": "absent"
     },
-    "20261109025": {
-      "request_id": "20261109025",
+    "20261104001": {
+      "request_id": "20261104001",
+      "snapshot_state": "absent"
+    },
+    "20261020014": {
+      "request_id": "20261020014",
       "snapshot_state": "absent"
     },
     "20261027004": {
       "request_id": "20261027004",
       "snapshot_state": "absent"
     },
+    "20261109025": {
+      "request_id": "20261109025",
+      "snapshot_state": "absent"
+    },
+    "20261118007": {
+      "request_id": "20261118007",
+      "snapshot_state": "absent"
+    },
+    "20261118006": {
+      "request_id": "20261118006",
+      "snapshot_state": "absent"
+    },
     "20261109032": {
       "request_id": "20261109032",
+      "snapshot_state": "absent"
+    },
+    "20261118005": {
+      "request_id": "20261118005",
       "snapshot_state": "absent"
     },
     "20261021032": {
@@ -90,19 +118,30 @@
           {
             "name": "Agenda",
             "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Meeting_Minutes.pdf"
           }
         ]
       },
       "matters": [
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "documents": [],
           "item_actions": [
             {
               "agenda_item_id": "444684",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "444823",
+              "action": "Laid Over by Subcommittee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -111,18 +150,25 @@
           "matter_file": "LU 0161-2026",
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79800",
           "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260190 ZSX).",
-          "outcome": "Committee",
+          "outcome": "Laid Over by Subcommittee",
           "votes": null
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "documents": [],
           "item_actions": [
             {
               "agenda_item_id": "444685",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "444824",
+              "action": "Laid Over by Subcommittee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -131,18 +177,25 @@
           "matter_file": "LU 0162-2026",
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79802",
           "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260193 HAX).",
-          "outcome": "Committee",
+          "outcome": "Laid Over by Subcommittee",
           "votes": null
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "documents": [],
           "item_actions": [
             {
               "agenda_item_id": "444686",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "444825",
+              "action": "Laid Over by Subcommittee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -151,18 +204,25 @@
           "matter_file": "LU 0163-2026",
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79803",
           "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (N 260336 ZAX).",
-          "outcome": "Committee",
+          "outcome": "Laid Over by Subcommittee",
           "votes": null
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "documents": [],
           "item_actions": [
             {
               "agenda_item_id": "444687",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "444826",
+              "action": "Laid Over by Subcommittee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -171,18 +231,25 @@
           "matter_file": "LU 0164-2026",
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79805",
           "title": "Landmarks, New, Approximately 972-Seat Intermediate School, Queens (G 260008 SCQ).",
-          "outcome": "Committee",
+          "outcome": "Laid Over by Subcommittee",
           "votes": null
         },
         {
           "actions": [
-            "Committee"
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
           ],
           "documents": [],
           "item_actions": [
             {
               "agenda_item_id": "444688",
-              "action": "Committee",
+              "action": "Hearing Held by Committee",
+              "vote_state": "no_roll_call_recorded",
+              "votes": null
+            },
+            {
+              "agenda_item_id": "444827",
+              "action": "Laid Over by Subcommittee",
               "vote_state": "no_roll_call_recorded",
               "votes": null
             }
@@ -191,7 +258,7 @@
           "matter_file": "LU 0165-2026",
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79806",
           "title": "Landmarks, New, Approximately 676-Seat High School With District 75 Program, Queens (G 260009 SCQ).",
-          "outcome": "Committee",
+          "outcome": "Laid Over by Subcommittee",
           "votes": null
         }
       ]
@@ -200,12 +267,12 @@
       "request_id": "20261014024",
       "snapshot_state": "absent"
     },
-    "20261014002": {
-      "request_id": "20261014002",
-      "snapshot_state": "absent"
-    },
     "20261013025": {
       "request_id": "20261013025",
+      "snapshot_state": "absent"
+    },
+    "20261014002": {
+      "request_id": "20261014002",
       "snapshot_state": "absent"
     },
     "20261009010": {
@@ -220,12 +287,12 @@
       "request_id": "20261026022",
       "snapshot_state": "absent"
     },
-    "20261009014": {
-      "request_id": "20261009014",
-      "snapshot_state": "absent"
-    },
     "20261015024": {
       "request_id": "20261015024",
+      "snapshot_state": "absent"
+    },
+    "20261009014": {
+      "request_id": "20261009014",
       "snapshot_state": "absent"
     },
     "20261112001": {
@@ -240,24 +307,24 @@
       "request_id": "20261105025",
       "snapshot_state": "absent"
     },
-    "20261013022": {
-      "request_id": "20261013022",
-      "snapshot_state": "absent"
-    },
     "20261013024": {
       "request_id": "20261013024",
       "snapshot_state": "absent"
     },
-    "20261019007": {
-      "request_id": "20261019007",
+    "20261013022": {
+      "request_id": "20261013022",
+      "snapshot_state": "absent"
+    },
+    "20261014038": {
+      "request_id": "20261014038",
       "snapshot_state": "absent"
     },
     "20261027024": {
       "request_id": "20261027024",
       "snapshot_state": "absent"
     },
-    "20261014038": {
-      "request_id": "20261014038",
+    "20261019007": {
+      "request_id": "20261019007",
       "snapshot_state": "absent"
     },
     "20261007005": {
@@ -300,16 +367,16 @@
       "request_id": "20261001007",
       "snapshot_state": "absent"
     },
-    "20261102024": {
-      "request_id": "20261102024",
+    "20261029016": {
+      "request_id": "20261029016",
       "snapshot_state": "absent"
     },
     "20261102029": {
       "request_id": "20261102029",
       "snapshot_state": "absent"
     },
-    "20261029016": {
-      "request_id": "20261029016",
+    "20261102024": {
+      "request_id": "20261102024",
       "snapshot_state": "absent"
     },
     "20261026021": {
@@ -320,24 +387,24 @@
       "request_id": "20261027029",
       "snapshot_state": "absent"
     },
-    "20261002028": {
-      "request_id": "20261002028",
-      "snapshot_state": "absent"
-    },
-    "20261008024": {
-      "request_id": "20261008024",
-      "snapshot_state": "absent"
-    },
-    "20261021015": {
-      "request_id": "20261021015",
+    "20261019018": {
+      "request_id": "20261019018",
       "snapshot_state": "absent"
     },
     "20261021010": {
       "request_id": "20261021010",
       "snapshot_state": "absent"
     },
-    "20261019018": {
-      "request_id": "20261019018",
+    "20261021015": {
+      "request_id": "20261021015",
+      "snapshot_state": "absent"
+    },
+    "20261008024": {
+      "request_id": "20261008024",
+      "snapshot_state": "absent"
+    },
+    "20261002028": {
+      "request_id": "20261002028",
       "snapshot_state": "absent"
     },
     "20261020005": {
@@ -348,12 +415,12 @@
       "request_id": "20261014023",
       "snapshot_state": "absent"
     },
-    "20261006029": {
-      "request_id": "20261006029",
-      "snapshot_state": "absent"
-    },
     "20261009013": {
       "request_id": "20261009013",
+      "snapshot_state": "absent"
+    },
+    "20261006029": {
+      "request_id": "20261006029",
       "snapshot_state": "absent"
     },
     "20260929011": {
@@ -380,12 +447,12 @@
       "request_id": "20261021009",
       "snapshot_state": "absent"
     },
-    "20260929023": {
-      "request_id": "20260929023",
-      "snapshot_state": "absent"
-    },
     "20260924007": {
       "request_id": "20260924007",
+      "snapshot_state": "absent"
+    },
+    "20260929023": {
+      "request_id": "20260929023",
       "snapshot_state": "absent"
     },
     "20260915032": {
@@ -416,16 +483,16 @@
       "request_id": "20261021004",
       "snapshot_state": "absent"
     },
-    "20260929021": {
-      "request_id": "20260929021",
+    "20261006022": {
+      "request_id": "20261006022",
       "snapshot_state": "absent"
     },
     "20261014031": {
       "request_id": "20261014031",
       "snapshot_state": "absent"
     },
-    "20261006022": {
-      "request_id": "20261006022",
+    "20260929021": {
+      "request_id": "20260929021",
       "snapshot_state": "absent"
     },
     "20261015027": {
@@ -456,12 +523,12 @@
       "request_id": "20260909022",
       "snapshot_state": "absent"
     },
-    "20260918021": {
-      "request_id": "20260918021",
-      "snapshot_state": "absent"
-    },
     "20260923002": {
       "request_id": "20260923002",
+      "snapshot_state": "absent"
+    },
+    "20260918021": {
+      "request_id": "20260918021",
       "snapshot_state": "absent"
     },
     "20261007002": {
@@ -470,10 +537,6 @@
     },
     "20260922032": {
       "request_id": "20260922032",
-      "snapshot_state": "absent"
-    },
-    "20261013004": {
-      "request_id": "20261013004",
       "snapshot_state": "absent"
     },
     "20261006004": {
@@ -1332,6 +1395,10 @@
         }
       ]
     },
+    "20261013004": {
+      "request_id": "20261013004",
+      "snapshot_state": "absent"
+    },
     "20260921022": {
       "request_id": "20260921022",
       "snapshot_state": "absent"
@@ -1360,28 +1427,28 @@
       "request_id": "20260925019",
       "snapshot_state": "absent"
     },
-    "20260827020": {
-      "request_id": "20260827020",
+    "20260915022": {
+      "request_id": "20260915022",
       "snapshot_state": "absent"
     },
     "20260916024": {
       "request_id": "20260916024",
       "snapshot_state": "absent"
     },
-    "20260915022": {
-      "request_id": "20260915022",
+    "20260827020": {
+      "request_id": "20260827020",
       "snapshot_state": "absent"
     },
     "20261008019": {
       "request_id": "20261008019",
       "snapshot_state": "absent"
     },
-    "20261005013": {
-      "request_id": "20261005013",
-      "snapshot_state": "absent"
-    },
     "20261001008": {
       "request_id": "20261001008",
+      "snapshot_state": "absent"
+    },
+    "20261005013": {
+      "request_id": "20261005013",
       "snapshot_state": "absent"
     },
     "20261007003": {
@@ -2891,12 +2958,12 @@
       "request_id": "20260922018",
       "snapshot_state": "absent"
     },
-    "20260902031": {
-      "request_id": "20260902031",
-      "snapshot_state": "absent"
-    },
     "20260827017": {
       "request_id": "20260827017",
+      "snapshot_state": "absent"
+    },
+    "20260902031": {
+      "request_id": "20260902031",
       "snapshot_state": "absent"
     },
     "20260819004": {
@@ -2907,12 +2974,12 @@
       "request_id": "20260909002",
       "snapshot_state": "absent"
     },
-    "20260817025": {
-      "request_id": "20260817025",
-      "snapshot_state": "absent"
-    },
     "20260826006": {
       "request_id": "20260826006",
+      "snapshot_state": "absent"
+    },
+    "20260817025": {
+      "request_id": "20260817025",
       "snapshot_state": "absent"
     },
     "20260911022": {
@@ -2923,12 +2990,8 @@
       "request_id": "20260814012",
       "snapshot_state": "absent"
     },
-    "20260902022": {
-      "request_id": "20260902022",
-      "snapshot_state": "absent"
-    },
-    "20260817001": {
-      "request_id": "20260817001",
+    "20260819033": {
+      "request_id": "20260819033",
       "snapshot_state": "absent"
     },
     "20260909019": {
@@ -3161,8 +3224,12 @@
         }
       ]
     },
-    "20260819033": {
-      "request_id": "20260819033",
+    "20260817001": {
+      "request_id": "20260817001",
+      "snapshot_state": "absent"
+    },
+    "20260902022": {
+      "request_id": "20260902022",
       "snapshot_state": "absent"
     },
     "20260911033": {
@@ -3238,20 +3305,20 @@
       "request_id": "20260903021",
       "snapshot_state": "absent"
     },
-    "20260910007": {
-      "request_id": "20260910007",
-      "snapshot_state": "absent"
-    },
-    "20260818004": {
-      "request_id": "20260818004",
-      "snapshot_state": "absent"
-    },
     "20260810007": {
       "request_id": "20260810007",
       "snapshot_state": "absent"
     },
     "20260827003": {
       "request_id": "20260827003",
+      "snapshot_state": "absent"
+    },
+    "20260818004": {
+      "request_id": "20260818004",
+      "snapshot_state": "absent"
+    },
+    "20260910007": {
+      "request_id": "20260910007",
       "snapshot_state": "absent"
     },
     "20260910024": {
@@ -3306,10 +3373,6 @@
       "request_id": "20260901022",
       "snapshot_state": "absent"
     },
-    "20260826043": {
-      "request_id": "20260826043",
-      "snapshot_state": "absent"
-    },
     "20260810025": {
       "request_id": "20260810025",
       "snapshot_state": "absent"
@@ -3318,20 +3381,20 @@
       "request_id": "20260810024",
       "snapshot_state": "absent"
     },
-    "20260901021": {
-      "request_id": "20260901021",
+    "20260826043": {
+      "request_id": "20260826043",
       "snapshot_state": "absent"
     },
     "20260831001": {
       "request_id": "20260831001",
       "snapshot_state": "absent"
     },
-    "20260106034": {
-      "request_id": "20260106034",
+    "20260901021": {
+      "request_id": "20260901021",
       "snapshot_state": "absent"
     },
-    "20260728026": {
-      "request_id": "20260728026",
+    "20260106034": {
+      "request_id": "20260106034",
       "snapshot_state": "absent"
     },
     "20260825026": {
@@ -4748,6 +4811,10 @@
           "votes": null
         }
       ]
+    },
+    "20260728026": {
+      "request_id": "20260728026",
+      "snapshot_state": "absent"
     },
     "20260709020": {
       "request_id": "20260709020",
@@ -8539,30 +8606,6 @@
     },
     "20260507001": {
       "request_id": "20260507001",
-      "snapshot_state": "absent"
-    },
-    "20260506035": {
-      "request_id": "20260506035",
-      "snapshot_state": "absent"
-    },
-    "20260522019": {
-      "request_id": "20260522019",
-      "snapshot_state": "absent"
-    },
-    "20260512045": {
-      "request_id": "20260512045",
-      "snapshot_state": "absent"
-    },
-    "20260428028": {
-      "request_id": "20260428028",
-      "snapshot_state": "absent"
-    },
-    "20260506002": {
-      "request_id": "20260506002",
-      "snapshot_state": "absent"
-    },
-    "20260507033": {
-      "request_id": "20260507033",
       "snapshot_state": "absent"
     }
   }

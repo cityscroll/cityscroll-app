@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":68,"first_ordinal":114898,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":68,"first_ordinal":114898,"entries":[
 {"s":"POLICE EMERALD SOCIETY OF WESTCHESTER","n":[["POLICE EMERALD SOCIETY OF WESTCHESTER",1]],"x":{"irs":{"r":1,"i":["133047430"],"z":["10532"]}}},
 {"s":"POLICE EXECUTIVE RESEARCH FORUM","n":[["POLICE EXECUTIVE RESEARCH FORUM",9]],"x":{"ocp":{"r":3,"a":283950,"l":"2025-05-08","i":["20250502011","20240322109","20220517112"]},"cbr":{"r":2,"a":195000,"l":"2025-05-01","i":["CT105620258807309","CT105620251406196"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":416300,"l":"2025-05-01","i":["CT1-056-20258807309","CT1-056-20248805542","CT1-056-20228807641"]},"dbe":{"r":1,"i":["POLICE EXECUTIVE RESEARCH FORUM"]}}},
 {"s":"POLICE FIRE MEMORIAL FOUNDATION OF YONKERS","n":[["POLICE FIRE MEMORIAL FOUNDATION OF YONKERS INC",1]],"x":{"irs":{"r":1,"i":["821767675"],"z":["10704"]}}},

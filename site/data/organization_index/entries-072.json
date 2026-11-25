@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":72,"first_ordinal":121525,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":72,"first_ordinal":121525,"entries":[
 {"s":"RICE ARCHITECTURE P C DBA RICE PLUS LIPKA ARCHITECTS","n":[["Rice Architecture P.C. dba Rice plus Lipka Architects",2]],"x":{"ocp":{"r":2,"a":9000000,"l":"2019-09-30","i":["20190923007","20160919012"]}}},
 {"s":"RICE FAM FOUNDATION TR","n":[["RICE FAM FOUNDATION TR",1]],"x":{"irs":{"r":1,"i":["137152866"],"z":["10128"]}}},
 {"s":"RICE FAMILY FOUNDATION","n":[["RICE FAMILY FOUNDATION",2]],"x":{"irs":{"r":2,"i":["133542090","463562026"],"z":["11530","11753"]}}},
@@ -422,7 +422,7 @@
 {"s":"RING AROUND THE ROSIE PRESCHOOL","n":[["RING AROUND THE ROSIE PRESCHOOL, INC.",2],["RING AROUND THE ROSIE PRESCHOOL INC",1]],"x":{"cbr":{"r":1,"a":1443722,"l":"2026-09-17","i":["CT104020279758550"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-17","i":["CT104020279758550"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["RING AROUND THE ROSIE PRESCHOOL INC"]}}},
 {"s":"RING FOUNDATION","n":[["RING FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["133015418"],"z":["10022"]}}},
 {"s":"RING OF GHOSTI","n":[["RING OF GHOSTI",1]],"x":{"irs":{"r":1,"i":["844618694"],"z":["12054"]}}},
-{"s":"RING OF HOPE","n":[["RING OF HOPE CORPORATION",19]],"x":{"cbr":{"r":14,"a":350000,"l":"2026-11-10","c":14,"i":["CT104020273034006","CT104020273026572","CT104020263055908","CT104020263052628","CT104020263046367"],"m":["Non-M/WBE"]},"cbv":{"r":3,"l":"2026-11-10","i":["CT104020273034006","CT104020273026572","CT104020263055908"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["RING OF HOPE CORPORATION"]},"irs":{"r":1,"i":["923363283"],"z":["10027"]}}},
+{"s":"RING OF HOPE","n":[["RING OF HOPE CORPORATION",18]],"x":{"cbr":{"r":14,"a":350000,"l":"2026-11-10","c":14,"i":["CT104020273034006","CT104020273026572","CT104020263055908","CT104020263052628","CT104020263046367"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-10","i":["CT104020273034006","CT104020273026572"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["RING OF HOPE CORPORATION"]},"irs":{"r":1,"i":["923363283"],"z":["10027"]}}},
 {"s":"RING OF KEYS COALITION","n":[["RING OF KEYS COALITION INC",1]],"x":{"irs":{"r":1,"i":["854137087"],"z":["10018"]}}},
 {"s":"RING POWER","n":[["RING POWER CORPORATION",1]],"x":{"ocp":{"r":1,"a":5246470,"l":"2017-01-31","i":["20170124005"]}}},
 {"s":"RING TRI STATE FOUNDATION","n":[["RING TRI STATE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["333544893"],"z":["11234"]}}},

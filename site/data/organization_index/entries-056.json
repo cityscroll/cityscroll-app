@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":56,"first_ordinal":94683,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":56,"first_ordinal":94683,"entries":[
 {"s":"MG CAR CLUB OF CENTRAL NY","n":[["MG CAR CLUB OF CENTRAL NY INC",1]],"x":{"irs":{"r":1,"i":["161586783"],"z":["13039"]}}},
 {"s":"MG CAUSE","n":[["MG CAUSE",1]],"x":{"irs":{"r":1,"i":["414426940"],"z":["12208"]}}},
 {"s":"MG CONSTRUCTION GROUP","n":[["MG CONSTRUCTION GROUP INC",1],["MG CONSTRUCTION GROUP INC.",1]],"x":{"sbs":{"r":1,"i":["370843"],"z":["11003"],"p":["MBE"]},"dol":{"r":1,"i":["24-648PR-CR"],"z":["11003"]}}},

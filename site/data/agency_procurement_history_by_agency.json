@@ -3,12 +3,12 @@
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
   "rule_version": "agency-history-v1",
-  "generated_at": "2026-11-24T18:16:33.118Z",
-  "as_of": "2026-11-24",
+  "generated_at": "2026-11-25T10:17:38.767Z",
+  "as_of": "2026-11-25",
   "window": {
     "months": 24,
-    "start_inclusive": "2024-11-24",
-    "end_exclusive": "2026-11-24"
+    "start_inclusive": "2024-11-25",
+    "end_exclusive": "2026-11-25"
   },
   "sources": {
     "city_record": {
@@ -22,7 +22,7 @@
     "registered_contracts": {
       "name": "Checkbook NYC registered contracts",
       "artifact": "site/data/analytics_registered_contracts.json",
-      "as_of": "2026-11-14"
+      "as_of": "2026-11-24"
     }
   },
   "definitions": {
@@ -73,12 +73,12 @@
   "population": {
     "state": "complete",
     "reasons": [],
-    "notice_source_count": 1884,
-    "notices_read": 1884,
-    "notices_in_window_counted": 1884,
+    "notice_source_count": 1888,
+    "notices_read": 1888,
+    "notices_in_window_counted": 1888,
     "notices_unassigned": {},
-    "contract_rows_read": 29731,
-    "contracts_in_window_counted": 24995,
+    "contract_rows_read": 30004,
+    "contracts_in_window_counted": 25268,
     "contracts_unassigned": {
       "community-boards": 6
     }
@@ -131,14 +131,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 498,
-        "amount_eligible": 498,
+        "count": 500,
+        "amount_eligible": 500,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 1170086.525,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -184,7 +184,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -225,14 +225,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 577,
-        "amount_eligible": 577,
+        "count": 579,
+        "amount_eligible": 579,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 858065,
+        "median_original_registered_amount": 853211,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -278,7 +278,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -324,7 +324,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -365,14 +365,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 73,
-        "amount_eligible": 73,
+        "count": 74,
+        "amount_eligible": 74,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 690106.79,
+        "median_original_registered_amount": 687516.97,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -418,7 +418,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -464,7 +464,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -510,7 +510,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -556,7 +556,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -602,7 +602,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -648,7 +648,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -694,7 +694,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -740,7 +740,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -781,14 +781,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 32,
-        "amount_eligible": 32,
+        "count": 34,
+        "amount_eligible": 34,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 121265,
+        "median_original_registered_amount": 105205,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -834,7 +834,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -875,14 +875,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 29,
-        "amount_eligible": 29,
+        "count": 30,
+        "amount_eligible": 30,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 625000,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -928,7 +928,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -969,14 +969,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 172,
-        "amount_eligible": 172,
+        "count": 175,
+        "amount_eligible": 175,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 79950.735,
+        "median_original_registered_amount": 81401.47,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1015,14 +1015,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 36,
-        "amount_eligible": 36,
+        "count": 39,
+        "amount_eligible": 39,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 82423.33,
+        "median_original_registered_amount": 80000,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1070,7 +1070,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1116,7 +1116,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1158,14 +1158,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 876,
-        "amount_eligible": 876,
+        "count": 880,
+        "amount_eligible": 880,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 284430,
+        "median_original_registered_amount": 287227.65,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1204,14 +1204,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 18,
-        "amount_eligible": 18,
+        "count": 19,
+        "amount_eligible": 19,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 71250,
+        "median_original_registered_amount": 70500,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1257,7 +1257,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1305,7 +1305,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1346,14 +1346,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 175,
-        "amount_eligible": 175,
+        "count": 176,
+        "amount_eligible": 176,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 1380000,
+        "median_original_registered_amount": 1274404.5,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1399,7 +1399,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1445,7 +1445,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1486,14 +1486,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 224,
-        "amount_eligible": 224,
+        "count": 228,
+        "amount_eligible": 228,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 127716.62,
+        "median_original_registered_amount": 123109.255,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1539,7 +1539,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1585,7 +1585,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1624,14 +1624,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 742,
-        "amount_eligible": 742,
+        "count": 752,
+        "amount_eligible": 752,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 750000,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1674,14 +1674,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 769,
-        "amount_eligible": 769,
+        "count": 775,
+        "amount_eligible": 775,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 1946959,
+        "median_original_registered_amount": 1940442,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1727,7 +1727,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1773,7 +1773,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1819,7 +1819,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1865,7 +1865,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1906,14 +1906,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 8179,
-        "amount_eligible": 8179,
+        "count": 8313,
+        "amount_eligible": 8313,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 25000,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -1959,7 +1959,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2000,14 +2000,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 90,
-        "amount_eligible": 90,
+        "count": 91,
+        "amount_eligible": 91,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 377255.5,
+        "median_original_registered_amount": 385000,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2025,7 +2025,7 @@
       "solicitations": {
         "state": "available",
         "reason": null,
-        "notices": 173,
+        "notices": 174,
         "source": {
           "name": "City Record Online"
         },
@@ -2034,9 +2034,9 @@
       "response_window": {
         "state": "available",
         "reason": null,
-        "median_calendar_days": 36,
-        "eligible_notices": 173,
-        "total_notices": 173,
+        "median_calendar_days": 35.5,
+        "eligible_notices": 174,
+        "total_notices": 174,
         "usable_due_date_share": 1,
         "excluded": {},
         "small_sample": false,
@@ -2048,14 +2048,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 525,
-        "amount_eligible": 525,
+        "count": 529,
+        "amount_eligible": 529,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 768774,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2103,7 +2103,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2142,14 +2142,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 81,
-        "amount_eligible": 81,
+        "count": 82,
+        "amount_eligible": 82,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 107589.6,
+        "median_original_registered_amount": 106103.785,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2190,14 +2190,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 282,
-        "amount_eligible": 282,
+        "count": 283,
+        "amount_eligible": 283,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 107994.01999999999,
+        "median_original_registered_amount": 108294,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2240,14 +2240,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 1540,
-        "amount_eligible": 1540,
+        "count": 1565,
+        "amount_eligible": 1565,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 19965.75,
+        "median_original_registered_amount": 19950,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2288,14 +2288,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 328,
-        "amount_eligible": 328,
+        "count": 330,
+        "amount_eligible": 330,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 21032449,
+        "median_original_registered_amount": 20933667,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2311,7 +2311,7 @@
       "solicitations": {
         "state": "available",
         "reason": null,
-        "notices": 272,
+        "notices": 273,
         "source": {
           "name": "City Record Online"
         },
@@ -2321,8 +2321,8 @@
         "state": "available",
         "reason": null,
         "median_calendar_days": 34,
-        "eligible_notices": 272,
-        "total_notices": 272,
+        "eligible_notices": 273,
+        "total_notices": 273,
         "usable_due_date_share": 1,
         "excluded": {},
         "small_sample": false,
@@ -2341,7 +2341,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2382,14 +2382,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 1120,
-        "amount_eligible": 1120,
+        "count": 1124,
+        "amount_eligible": 1124,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 433971.005,
+        "median_original_registered_amount": 432337.625,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2435,7 +2435,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2481,7 +2481,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2522,14 +2522,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 362,
-        "amount_eligible": 362,
+        "count": 364,
+        "amount_eligible": 364,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 317275,
+        "median_original_registered_amount": 318706.5,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2575,7 +2575,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2621,7 +2621,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2662,14 +2662,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 160,
-        "amount_eligible": 160,
+        "count": 161,
+        "amount_eligible": 161,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 234140,
+        "median_original_registered_amount": 238440,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2715,7 +2715,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2761,7 +2761,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2807,7 +2807,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2853,7 +2853,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2899,7 +2899,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2945,7 +2945,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -2991,7 +2991,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3039,7 +3039,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3057,7 +3057,7 @@
       "solicitations": {
         "state": "available",
         "reason": null,
-        "notices": 101,
+        "notices": 103,
         "source": {
           "name": "City Record Online"
         },
@@ -3067,8 +3067,8 @@
         "state": "available",
         "reason": null,
         "median_calendar_days": 40,
-        "eligible_notices": 101,
-        "total_notices": 101,
+        "eligible_notices": 103,
+        "total_notices": 103,
         "usable_due_date_share": 1,
         "excluded": {},
         "small_sample": false,
@@ -3080,14 +3080,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 294,
-        "amount_eligible": 294,
+        "count": 301,
+        "amount_eligible": 301,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 297597.9,
+        "median_original_registered_amount": 290941,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3133,7 +3133,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3179,7 +3179,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3225,7 +3225,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3271,7 +3271,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3319,7 +3319,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3360,14 +3360,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 2328,
-        "amount_eligible": 2328,
+        "count": 2348,
+        "amount_eligible": 2348,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 11692.725,
+        "median_original_registered_amount": 11632.2,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3413,7 +3413,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3454,14 +3454,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 511,
-        "amount_eligible": 511,
+        "count": 513,
+        "amount_eligible": 513,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 60400,
+        "median_original_registered_amount": 61500,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3500,14 +3500,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 69,
-        "amount_eligible": 69,
+        "count": 71,
+        "amount_eligible": 71,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 269112.5,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3553,7 +3553,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3599,7 +3599,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3645,7 +3645,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3691,7 +3691,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3732,14 +3732,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 227,
-        "amount_eligible": 227,
+        "count": 230,
+        "amount_eligible": 230,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 500000,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3785,7 +3785,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3826,14 +3826,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 732,
-        "amount_eligible": 732,
+        "count": 735,
+        "amount_eligible": 735,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 300000,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3879,7 +3879,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3925,7 +3925,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -3971,7 +3971,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -4012,14 +4012,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 455,
-        "amount_eligible": 455,
+        "count": 457,
+        "amount_eligible": 457,
         "missing_or_invalid_amount": 0,
         "median_original_registered_amount": 475000,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -4065,7 +4065,7 @@
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     },
     {
@@ -4106,14 +4106,14 @@
       "registered_contracts": {
         "state": "available",
         "reason": null,
-        "count": 2471,
-        "amount_eligible": 2471,
+        "count": 2490,
+        "amount_eligible": 2490,
         "missing_or_invalid_amount": 0,
-        "median_original_registered_amount": 450000,
+        "median_original_registered_amount": 448011.5,
         "source": {
           "name": "Checkbook NYC registered contracts"
         },
-        "as_of": "2026-11-14"
+        "as_of": "2026-11-24"
       }
     }
   ]

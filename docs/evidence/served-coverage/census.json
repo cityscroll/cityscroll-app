@@ -27,7 +27,7 @@
       "vintage_field": "generated_at",
       "vintage_basis": "single",
       "state": "measured",
-      "value": 20714,
+      "value": 20690,
       "reason": null
     },
     {
@@ -245,12 +245,12 @@
       "source_system": "checkbook_contracts",
       "source_contract_id": "checkbook-contracts",
       "registered": true,
-      "served_observations": 9622,
-      "declared_input_rows": 9622,
+      "served_observations": 9594,
+      "declared_input_rows": 9594,
       "specimen": {
-        "source_observation_ref": "checkbook_contracts:contract:registered:CT100220261406691:SELECTIVE INSURANCE COMPANY OF AMERICA:prime-vendor:2025-12-05",
-        "procurement_id": "procurement:contract:CT100220261406691",
-        "canonical_route": "/procurements/procurement%3Acontract%3ACT100220261406691"
+        "source_observation_ref": "checkbook_contracts:contract:registered:CT100220261406692:NEW YORK STATE ASSOCIATION OF COUNTIES:prime-vendor:2025-12-03",
+        "procurement_id": "procurement:contract:CT100220261406692",
+        "canonical_route": "/procurements/procurement%3Acontract%3ACT100220261406692"
       }
     },
     {
@@ -451,7 +451,7 @@
             "unit_id": "exams",
             "route": "/browse/exams/",
             "served_records": 227,
-            "evidence_vintage": "2026-11-24T00:00:00.000Z"
+            "evidence_vintage": "2026-11-25T00:00:00.000Z"
           }
         ]
       }
@@ -532,7 +532,7 @@
             "unit_id": "registered-contracts",
             "route": "/browse/contracts/",
             "served_records": 30004,
-            "evidence_vintage": "2026-11-24T00:00:00.000Z"
+            "evidence_vintage": "2026-11-25T00:00:00.000Z"
           }
         ]
       }
@@ -640,7 +640,7 @@
             "unit_id": "rules",
             "route": "/browse/rules/",
             "served_records": 88,
-            "evidence_vintage": "2026-11-24T19:10:06.796Z"
+            "evidence_vintage": "2026-11-25T10:44:57.602Z"
           },
           {
             "unit_id": "staffing-notices",
@@ -1074,7 +1074,7 @@
             "unit_id": "meeting-outcomes",
             "route": "/browse/meetings/",
             "served_records": 14,
-            "evidence_vintage": "2026-11-23T10:00:50.997Z"
+            "evidence_vintage": "2026-11-24T23:45:13.719Z"
           },
           {
             "unit_id": "committee-memberships",

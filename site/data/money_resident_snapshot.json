@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-11-24T18:40:15.912Z",
+  "generated_at": "2026-11-25T10:21:01.041Z",
   "source_vintages": {
-    "default_open": "2026-11-24T18:40:15.912Z",
+    "default_open": "2026-11-25T10:21:01.041Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-11-04T04:22:02.123Z"
   },
@@ -107,6 +107,17 @@
       "pin": "2158",
       "due_date": "2026-12-02T17:00:00.000",
       "selection_method_description": "Request for Quote"
+    },
+    {
+      "request_id": "20261027022",
+      "start_date": "2026-11-04T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Human Services/Client Services",
+      "short_title": "PS_RFP_Mold Assessment Services - PACT/RAD Sites",
+      "pin": "528444",
+      "due_date": "2026-12-10T14:00:00.000",
+      "selection_method_description": "Request for Proposals"
     },
     {
       "request_id": "20261027023",
@@ -306,17 +317,6 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20260930015",
-      "start_date": "2026-10-07T00:00:00.000",
-      "agency_name": "District Attorney - New York County",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Human Services/Client Services",
-      "short_title": "Correction: RFP: Neighborhood Navigator Initiative",
-      "pin": "2027NNRFP001",
-      "due_date": "2026-11-24T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
       "request_id": "20260930019",
       "start_date": "2026-10-07T00:00:00.000",
       "agency_name": "Teachers' Retirement System",
@@ -348,17 +348,6 @@
       "pin": "M104-DR-2026",
       "due_date": "2026-12-08T15:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260921005",
-      "start_date": "2026-09-28T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: SMD_PS_RFP_523249 - Lead Abatement Program Services",
-      "pin": "523249",
-      "due_date": "2026-11-24T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260917021",
@@ -6793,6 +6782,17 @@
         },
         "confidence_tier": "strong"
       }
+    },
+    {
+      "request_id": "20260319032",
+      "start_date": "2026-03-26T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Bid Extension: Requirement Contract for Electrical Installations and Repair",
+      "pin": "B5721040",
+      "due_date": "2026-12-10T16:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260226026",
