@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.nycha_awarded_contracts_snapshot.v1",
   "schema_version": 1,
-  "as_of": "2026-11-24",
-  "generated_at": "2026-11-24T18:39:41.484Z",
+  "as_of": "2026-11-25",
+  "generated_at": "2026-11-25T10:20:28.343Z",
   "source": {
     "id": "nycha_awarded_contracts",
     "name": "NYCHA Awarded Contracts",
@@ -16,8 +16,8 @@
   },
   "feed": {
     "state": "live",
-    "fetched_at": "2026-11-24T18:39:41.484Z",
-    "checked_at": "2026-11-24T18:39:41.484Z",
+    "fetched_at": "2026-11-25T10:20:28.343Z",
+    "checked_at": "2026-11-25T10:20:28.343Z",
     "fallback_reason": null,
     "fallback_text": null,
     "shape_problems": [],
@@ -25,39 +25,39 @@
       {
         "year": 2023,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2023",
-        "fetched_at": "2026-11-24T18:39:41.484Z",
-        "bytes": 513964,
-        "sha256": "aa63acafbf65f7f9f3ec728783a710d38733fb5e4585e9631b43d077ce0e23fa",
+        "fetched_at": "2026-11-25T10:20:28.343Z",
+        "bytes": 513978,
+        "sha256": "50943c07ba14ffaf366845dba9f8e2169c5e7070ce1ec0aae8696bc8801fd99a",
         "row_count": 657
       },
       {
         "year": 2024,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2024",
-        "fetched_at": "2026-11-24T18:39:41.484Z",
-        "bytes": 319834,
-        "sha256": "0767a09fe8c97da07d09077ecb457600a93d6dc2931704a339b96e8a806df794",
+        "fetched_at": "2026-11-25T10:20:28.343Z",
+        "bytes": 319852,
+        "sha256": "bb4c4d43d1d812ffae961cdd72519ea53a3e1fa4d419ed98d43d5556776a2352",
         "row_count": 400
       },
       {
         "year": 2025,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2025",
-        "fetched_at": "2026-11-24T18:39:41.484Z",
-        "bytes": 274549,
-        "sha256": "47cf6fd74eb2d504b7401ec5fe1a7553c0687cf86e2b0443946ce0f46c1a8686",
+        "fetched_at": "2026-11-25T10:20:28.343Z",
+        "bytes": 274548,
+        "sha256": "d94ddc98f4d2c5ce506d09d06ce22436521888847645d883608b04b4d21937bd",
         "row_count": 353
       },
       {
         "year": 2026,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2026",
-        "fetched_at": "2026-11-24T18:39:41.484Z",
-        "bytes": 226408,
-        "sha256": "e29255826eabc7d8a823aac5de6763a18ae0c40698439e3fad9b6f1792962a2e",
-        "row_count": 292
+        "fetched_at": "2026-11-25T10:20:28.343Z",
+        "bytes": 227917,
+        "sha256": "a432dc5dbc87096ff34ede07b9b9a2262d375baafcb9ad2cc3a2f6fcd2cd9937",
+        "row_count": 294
       },
       {
         "year": 2027,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2027",
-        "fetched_at": "2026-11-24T18:39:41.484Z",
+        "fetched_at": "2026-11-25T10:20:28.343Z",
         "bytes": 888,
         "sha256": "3b38eba728cd2fd719fb6d26c54a39fad25990275705955f570e5c6ba5fe5025",
         "row_count": 1
@@ -67,7 +67,7 @@
   "window": {
     "contract_years_from": 2023
   },
-  "count": 1703,
+  "count": 1705,
   "rfq_numbered_count": 844,
   "rows": [
     {
@@ -9172,7 +9172,7 @@
       "rfq_number_printed": "466034",
       "rfq_number": "466034",
       "vendor_name": "EMPIRE CONTROL ABATEMENT INC",
-      "total_amount": 37512214,
+      "total_amount": 37516214,
       "start_date": "2024-04-12",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
@@ -9777,7 +9777,7 @@
       "rfq_number_printed": "470039,2",
       "rfq_number": "470039",
       "vendor_name": "CSI SECURITY AND ELECTRIC, INC DBA/CENTENNIAL SECURITY INTEGRATION",
-      "total_amount": 10000000,
+      "total_amount": 10024322.5,
       "start_date": "2024-06-18",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
@@ -18790,6 +18790,28 @@
       "start_date": "2026-11-19",
       "contract_year": 2026,
       "procurement_method": "COMPETETIVE RFP",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2609650",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "KONICA MINOLTA BUSINESS SOLUTIONS U.S.A., INC.",
+      "total_amount": 2802371.3,
+      "start_date": "2026-11-23",
+      "contract_year": 2026,
+      "procurement_method": "GOV_TO_GOV",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2619913",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "GARTNER INC.",
+      "total_amount": 1000000,
+      "start_date": "2026-11-24",
+      "contract_year": 2026,
+      "procurement_method": "GOV_TO_GOV",
       "contract_status": "Active"
     },
     {

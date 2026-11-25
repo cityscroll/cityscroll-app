@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":9,"first_ordinal":14836,"entries":[
-{"s":"BARBARA A JANOWITZ","n":[["BARBARA A JANOWITZ",1]],"x":{"dbe":{"r":1,"i":["BARBARA A JANOWITZ"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":9,"first_ordinal":14837,"entries":[
 {"s":"BARBARA A SHORNICK","n":[["Barbara A Shornick",1]],"x":{"sbs":{"r":1,"i":["374735"],"z":["10522"],"p":["WBE"]}}},
 {"s":"BARBARA ALDEN TAYLOR FOUNDATION","n":[["BARBARA ALDEN TAYLOR FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["134123316"],"z":["10128"]}}},
 {"s":"BARBARA AND BENTLEY KASSAL FOUNDATION","n":[["BARBARA AND BENTLEY KASSAL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["882643656"],"z":["10022"]}}},
@@ -444,7 +443,7 @@
 {"s":"BAUGH FOUNDATION","n":[["BAUGH FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["260697390"],"z":["10065"]}}},
 {"s":"BAUGHMAN MAGIC SEAL","n":[["Baughman Magic Seal, Inc",1]],"x":{"dol":{"r":1,"i":["25-646ZA-CR"],"z":["14226"]}}},
 {"s":"BAUM BEAULIEU ASSOCIATES","n":[["BAUM & BEAULIEU ASSOCIATES INC",4],["Baum & Beaulieu Associates, Inc.",1]],"x":{"cbr":{"r":3,"a":45373.59,"l":"2026-03-30","i":["CT181620261413684","CT181620251405484","CT181620251404235"],"m":["Women (Non-Minority)"]},"cbv":{"r":1,"l":"2026-03-30","i":["CT181620261413684"],"m":["Women (Non-Minority)"]},"sbs":{"r":1,"i":["4899"],"z":["11739"],"p":["WBE"]}}},
-{"s":"BAUMANN RESOURCE GROUP","n":[["BAUMANN RESOURCE GROUP INC",4],["Baumann Resource Group, Inc.",1]],"x":{"cbr":{"r":2,"a":39535,"l":"2026-01-02","i":["CT181620261409259","CT181620251403916"],"m":["Women (Non-Minority)"]},"cbv":{"r":1,"l":"2026-01-02","i":["CT181620261409259"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["BAUMANN RESOURCE GROUP INC"]},"sbs":{"r":1,"i":["10851"],"z":["10012"],"p":["WBE"]}}},
+{"s":"BAUMANN RESOURCE GROUP","n":[["BAUMANN RESOURCE GROUP INC",3],["Baumann Resource Group, Inc.",1]],"x":{"cbr":{"r":2,"a":39535,"l":"2026-01-02","i":["CT181620261409259","CT181620251403916"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["BAUMANN RESOURCE GROUP INC"]},"sbs":{"r":1,"i":["10851"],"z":["10012"],"p":["WBE"]}}},
 {"s":"BAUMGARTNER FOUNDATION","n":[["BAUMGARTNER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["474043262"],"z":["12207"]}}},
 {"s":"BAUMOL FAMILY FOUNDATION","n":[["BAUMOL FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["222709758"],"z":["10512"]}}},
 {"s":"BAURIA JANA KALLYAN SAMITY","n":[["BAURIA JANA KALLYAN SAMITY INC",1]],"x":{"irs":{"r":1,"i":["813400078"],"z":["11203"]}}},
@@ -1710,5 +1709,7 @@
 {"s":"BENTLEY HOLDEN FUND","n":[["BENTLEY HOLDEN FUND",1]],"x":{"irs":{"r":1,"i":["146018221"],"z":["12474"]}}},
 {"s":"BENTLEY INITIATIVE","n":[["BENTLEY INITIATIVE LLC",1]],"x":{"dol":{"r":1,"i":["25-67EVU-CR"],"z":["14787"]}}},
 {"s":"BENTLEY STRONG FOUNDATION","n":[["BENTLEY STRONG FOUNDATION CORP",1]],"x":{"irs":{"r":1,"i":["393515608"],"z":["11949"]}}},
-{"s":"BENTON BAR CEMETERY ASSOCIATION","n":[["BENTON BAR CEMETERY ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["141469019"],"z":["12484"]}}}
+{"s":"BENTON BAR CEMETERY ASSOCIATION","n":[["BENTON BAR CEMETERY ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["141469019"],"z":["12484"]}}},
+{"s":"BENTON VOLUNTEER FIRE DEPARTMENT","n":[["BENTON VOLUNTEER FIRE DEPARTMENT INC",1]],"x":{"irs":{"r":1,"i":["200410406"],"z":["14527"]}}},
+{"s":"BENZAK FOUNDATION","n":[["BENZAK FOUNDATION",1]],"x":{"irs":{"r":1,"i":["203872608"],"z":["10580"]}}}
 ]}

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":41,"first_ordinal":69196,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":41,"first_ordinal":69196,"entries":[
 {"s":"HOUSING COURT ANSWERS","n":[["HOUSING COURT ANSWERS INC",6],["Housing Court Answers Inc",5],["Housing Court Answers, Inc.",5]],"x":{"ocp":{"r":10,"a":5846972,"l":"2021-09-21","c":10,"i":["20210914120","20200609005","20190808015","20180619006","20170523007"]},"cbr":{"r":3,"a":2687683.5,"l":"2026-04-29","i":["CT180620268802876","CT180620268804658","CT106920258802190"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":672000,"l":"2021-08-30","i":["CT1-069-20228801619"]},"dbe":{"r":1,"i":["HOUSING COURT ANSWERS INC"]},"irs":{"r":1,"i":["133317188"],"z":["10004"]}}},
 {"s":"HOUSING DEVELOPMENT FOUNDATION","n":[["HOUSING DEVELOPMENT FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["161583317"],"z":["14624"]}}},
 {"s":"HOUSING DEVELOPMENT GRANT","n":[["HOUSING DEVELOPMENT GRANT CORPORATION",1]],"x":{"irs":{"r":1,"i":["331711499"],"z":["10468"]}}},

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":18,"first_ordinal":30110,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":18,"first_ordinal":30110,"entries":[
 {"s":"CHURCH OF GOD OF KINGSBRIDGE RD","n":[["CHURCH OF GOD OF KINGSBRIDGE RD INC",1]],"x":{"irs":{"r":1,"i":["020786822"],"z":["10463"]}}},
 {"s":"CHURCH OF GOD OF MORNING STAR","n":[["CHURCH OF GOD OF MORNING STAR",1]],"x":{"irs":{"r":1,"i":["113321437"],"z":["11210"]}}},
 {"s":"CHURCH OF GOD OF NEW SEASONS","n":[["CHURCH OF GOD OF NEW SEASONS",1]],"x":{"irs":{"r":1,"i":["453019009"],"z":["11203"]}}},

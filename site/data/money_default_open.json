@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-24T18:40:15.912Z",
-  "open_as_of": "2026-11-24",
+  "generated_at": "2026-11-25T10:21:01.041Z",
+  "open_as_of": "2026-11-25",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -10,35 +10,13 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-24'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-25'",
     "$order": "due_date ASC",
     "$limit": "40",
     "note": "Default Money tab acquisition: open solicitations, all agencies, no keyword/method. Resident reads filter the committed snapshot."
   },
   "count": 40,
   "notices": [
-    {
-      "request_id": "20260921005",
-      "start_date": "2026-09-28T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: SMD_PS_RFP_523249 - Lead Abatement Program Services",
-      "pin": "523249",
-      "due_date": "2026-11-24T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260930015",
-      "start_date": "2026-10-07T00:00:00.000",
-      "agency_name": "District Attorney - New York County",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Human Services/Client Services",
-      "short_title": "Correction: RFP: Neighborhood Navigator Initiative",
-      "pin": "2027NNRFP001",
-      "due_date": "2026-11-24T15:00:00.000",
-      "selection_method_description": "Competitive Sealed Proposals"
-    },
     {
       "request_id": "20261005018",
       "start_date": "2026-10-13T00:00:00.000",
@@ -160,17 +138,6 @@
       "selection_method_description": "Request for Quote"
     },
     {
-      "request_id": "20260821028",
-      "start_date": "2026-08-26T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: CSB 161 ST Elevator Modernization Rebid",
-      "pin": "85626B0010",
-      "due_date": "2026-12-03T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
       "request_id": "20260923005",
       "start_date": "2026-10-13T00:00:00.000",
       "agency_name": "Housing Authority",
@@ -178,6 +145,17 @@
       "category_description": "Construction Related Services",
       "short_title": "Bid Extension: INDEFINITE DELIVERY INDEFINITE QUANTITY (IDIQ) CONTRACT FOR JOB ORDER CONTRACT (JOC) PLUMBING SERVICES AT VARIOUS NYCHA DEVELOPMENTS AND FACILITIES CITYWIDE WITH BOROUGH OF MANHATTAN NEIGHBORHOOD #9 FOCUS",
       "pin": "515813-2",
+      "due_date": "2026-12-03T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
+      "request_id": "20260821028",
+      "start_date": "2026-08-26T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: CSB 161 ST Elevator Modernization Rebid",
+      "pin": "85626B0010",
       "due_date": "2026-12-03T10:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
@@ -193,6 +171,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20261013013",
+      "start_date": "2026-10-21T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Correction: 22202201- NYC H+H - Gotham/ East New York - ADA Restroom, Office Storage and Lounge Renovation",
+      "pin": "22202201- ENY- ADA-",
+      "due_date": "2026-12-03T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260825035",
       "start_date": "2026-09-02T00:00:00.000",
       "agency_name": "NYC Health + Hospitals",
@@ -204,14 +193,14 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20261013013",
-      "start_date": "2026-10-21T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
+      "request_id": "20261112004",
+      "start_date": "2026-11-19T00:00:00.000",
+      "agency_name": "Housing Authority",
       "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Correction: 22202201- NYC H+H - Gotham/ East New York - ADA Restroom, Office Storage and Lounge Renovation",
-      "pin": "22202201- ENY- ADA-",
-      "due_date": "2026-12-03T11:00:00.000",
+      "category_description": "Goods",
+      "short_title": "SMPD_Materials _Heating Materials (Heating CMA & Boilers/Parts)",
+      "pin": "528532",
+      "due_date": "2026-12-03T12:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
@@ -224,17 +213,6 @@
       "pin": "85027P0001",
       "due_date": "2026-12-03T12:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20261112004",
-      "start_date": "2026-11-19T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Goods",
-      "short_title": "SMPD_Materials _Heating Materials (Heating CMA & Boilers/Parts)",
-      "pin": "528532",
-      "due_date": "2026-12-03T12:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20261021030",
@@ -424,6 +402,17 @@
       "selection_method_description": "Request for Proposals"
     },
     {
+      "request_id": "20261106026",
+      "start_date": "2026-11-13T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "FMC-ROLLUP DOOR-2027 - Installation and Repair of overhead roll up doors, Citywide",
+      "pin": "82627B0008",
+      "due_date": "2026-12-10T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20261027028",
       "start_date": "2026-11-04T00:00:00.000",
       "agency_name": "Environmental Protection",
@@ -446,14 +435,25 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20261106026",
-      "start_date": "2026-11-13T00:00:00.000",
-      "agency_name": "Environmental Protection",
+      "request_id": "20261027022",
+      "start_date": "2026-11-04T00:00:00.000",
+      "agency_name": "Housing Authority",
       "type_of_notice_description": "Solicitation",
-      "category_description": "Construction Related Services",
-      "short_title": "FMC-ROLLUP DOOR-2027 - Installation and Repair of overhead roll up doors, Citywide",
-      "pin": "82627B0008",
-      "due_date": "2026-12-10T10:00:00.000",
+      "category_description": "Human Services/Client Services",
+      "short_title": "PS_RFP_Mold Assessment Services - PACT/RAD Sites",
+      "pin": "528444",
+      "due_date": "2026-12-10T14:00:00.000",
+      "selection_method_description": "Request for Proposals"
+    },
+    {
+      "request_id": "20260319032",
+      "start_date": "2026-03-26T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods and Services",
+      "short_title": "Bid Extension: Requirement Contract for Electrical Installations and Repair",
+      "pin": "B5721040",
+      "due_date": "2026-12-10T16:00:00.000",
       "selection_method_description": "Competitive Sealed Bids"
     }
   ]

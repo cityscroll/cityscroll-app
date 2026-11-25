@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":79,"first_ordinal":133532,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":79,"first_ordinal":133532,"entries":[
 {"s":"SPEAKEASY SERVICES","n":[["SpeakEasy Services, Corp.",1]],"x":{"sbs":{"r":1,"i":["361538"],"z":["11566"],"p":["MBE","WBE"]}}},
 {"s":"SPEAKHIRE","n":[["SPEAKHIRE",1]],"x":{"irs":{"r":1,"i":["474132773"],"z":["11001"]}}},
 {"s":"SPEAKING OUT FOR ANIMALS","n":[["SPEAKING OUT FOR ANIMALS",1]],"x":{"irs":{"r":1,"i":["204031086"],"z":["14031"]}}},
@@ -673,7 +673,7 @@
 {"s":"SRS INVESTMENT MANAGEMENT","n":[["SRS INVESTMENT MANAGEMENT LLC",1]],"x":{"dbe":{"r":1,"i":["SRS INVESTMENT MANAGEMENT LLC"]}}},
 {"s":"SRS OF THE CATHOLIC APOSTOLATE","n":[["SRS OF THE CATHOLIC APOSTOLATE",1]],"x":{"irs":{"r":1,"i":["141348695"],"z":["10950"]}}},
 {"s":"SRS REALTY MANAGEMENT","n":[["SRS REALTY MANAGEMENT INC.",1],["SRS Realty Management Inc.",1]],"x":{"dol":{"r":1,"i":["26-691OA-CR"],"z":["10901"]},"sca":{"r":1,"i":["SRS REALTY MANAGEMENT INC."],"z":["10901"]}}},
-{"s":"SRSD ONLINE","n":[["SRSD ONLINE INC",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-11-24","i":["CT104020263056203"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2025-11-24","i":["CT104020263056203"],"m":["Non-M/WBE"]}}},
+{"s":"SRSD ONLINE","n":[["SRSD ONLINE INC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-11-24","i":["CT104020263056203"],"m":["Non-M/WBE"]}}},
 {"s":"SRT CONSTRUCTION","n":[["SRT Construction Inc",1]],"d":[["SRT Construction",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["24-637E7-CR","26-64CKE-CR"],"z":["10547","11001"]}}},
 {"s":"SRTM ENTERPRISE","n":[["SRTM Enterprise LLC",1]],"x":{"dol":{"r":1,"i":["26-69L7P-CR"],"z":["13031"]}}},
 {"s":"SRV CONSTRUCTORS","n":[["SRV CONSTRUCTORS LLC",1]],"x":{"dol":{"r":1,"i":["25-6465G-CR"],"z":["13164"]}}},
@@ -1709,5 +1709,6 @@
 {"s":"ST RITA SCHOOL","n":[["ST RITA SCHOOL",1]],"x":{"irs":{"r":1,"i":["264504896"],"z":["14580"]}}},
 {"s":"ST RITAS CHURCH","n":[["ST RITAS CHURCH",1]],"x":{"irs":{"r":1,"i":["160794894"],"z":["14580"]}}},
 {"s":"ST RITAS HOME","n":[["ST RITAS HOME",1]],"x":{"irs":{"r":1,"i":["161569627"],"z":["14211"]}}},
-{"s":"ST ROCCO SOCIETY","n":[["ST ROCCO SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["141275637"],"z":["12508"]}}}
+{"s":"ST ROCCO SOCIETY","n":[["ST ROCCO SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["141275637"],"z":["12508"]}}},
+{"s":"ST ROSALIA S ROMAN CATHOLIC CHURCH","n":[["ST. ROSALIA'S ROMAN CATHOLIC CHURCH",1]],"x":{"dbe":{"r":1,"i":["ST. ROSALIA'S ROMAN CATHOLIC CHURCH"]}}}
 ]}

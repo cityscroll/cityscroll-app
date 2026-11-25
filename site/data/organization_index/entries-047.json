@@ -1,6 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":47,"first_ordinal":79145,"entries":[
-{"s":"K HAL MACHZIKEI TORAH","n":[["K HAL MACHZIKEI TORAH",1]],"x":{"irs":{"r":1,"i":["208367041"],"z":["11691"]}}},
-{"s":"K HUGHES EXPERT TREE SERVICE","n":[["K HUGHES EXPERT TREE SERVICE LLC",1]],"x":{"dol":{"r":1,"i":["24-63SSC-CR"],"z":["12443"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":47,"first_ordinal":79147,"entries":[
 {"s":"K I A MEMORIAL ROAD MARCH","n":[["K I A MEMORIAL ROAD MARCH",1]],"x":{"irs":{"r":1,"i":["471924565"],"z":["14212"]}}},
 {"s":"K I D S OF THE LOCAL 14 OPERATING ENGINEERS","n":[["K I D S OF THE LOCAL 14 OPERATING ENGINEERS INC",1]],"x":{"irs":{"r":1,"i":["112744326"],"z":["11358"]}}},
 {"s":"K I M CO REFRIGERATION","n":[["K.I.M. CO. REFRIGERATION CORP.",1],["K.I.M.CO. REFRIGERATION CORP.",1]],"x":{"dol":{"r":1,"i":["25-64QDH-CR"],"z":["11040"]},"sca":{"r":1,"i":["K.I.M.CO. REFRIGERATION CORP."],"z":["11040"]}}},
@@ -1860,5 +1858,7 @@
 {"s":"KIDS DANCE SPORT","n":[["Kids Dance Sport LLC",1]],"x":{"sbs":{"r":1,"i":["6827"],"z":["11215"],"p":["MBE","WBE"]}}},
 {"s":"KIDS DISCOVER","n":[["KIDS DISCOVER LLC",1]],"x":{"cbr":{"r":1,"a":75000,"l":"2025-03-31","i":["MA104020259577056"],"m":["Non-M/WBE"]}}},
 {"s":"KIDS ENJOY EXERCISE NOW","n":[["KIDS ENJOY EXERCISE NOW",1]],"x":{"irs":{"r":1,"i":["261416505"],"z":["10195"]}}},
-{"s":"KIDS ESCAPING DRUGS","n":[["KIDS ESCAPING DRUGS INC",1]],"x":{"irs":{"r":1,"i":["161319839"],"z":["14224"]}}}
+{"s":"KIDS ESCAPING DRUGS","n":[["KIDS ESCAPING DRUGS INC",1]],"x":{"irs":{"r":1,"i":["161319839"],"z":["14224"]}}},
+{"s":"KIDS ET CETERA DAY CARE CENTER","n":[["KIDS ET CETERA DAY CARE CENTER INC",1]],"x":{"irs":{"r":1,"i":["113295520"],"z":["11203"]}}},
+{"s":"KIDS EVENT TICKETS","n":[["KIDS EVENT TICKETS INC",1]],"x":{"irs":{"r":1,"i":["300647110"],"z":["14072"]}}}
 ]}

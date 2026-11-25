@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-11-24T19:10:34.905Z",
+  "generated_at": "2026-11-25T10:45:42.395Z",
   "observation_count": 3455,
   "entity_count": 200,
   "multi_domain_count": 31,
@@ -38467,39 +38467,6 @@
           "note": null,
           "objects": [
             {
-              "subject_ref": "notice:20260924006",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "Amendment of Rules Relating to Syndromic Surveillance",
-              "when": "2026-10-05T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260924006",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:health-and-mental-hygiene",
-              "root_kind": "agency",
-              "href": "#notice/20260924006",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260924006",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-10-05T00:00:00.000",
-                "input_value": "Health and Mental Hygiene"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
               "subject_ref": "notice:20260929001",
               "domain": "rules",
               "object_kind": "rule",
@@ -38521,6 +38488,39 @@
               "provenance": {
                 "source_system": "city_record",
                 "source_record_id": "city_record:20260929001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-10-05T00:00:00.000",
+                "input_value": "Health and Mental Hygiene"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260924006",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "Amendment of Rules Relating to Syndromic Surveillance",
+              "when": "2026-10-05T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260924006",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:health-and-mental-hygiene",
+              "root_kind": "agency",
+              "href": "#notice/20260924006",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260924006",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -188174,39 +188174,6 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "notice:20261102024",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "FY'28 STATEMENT OF DISTRICT NEEDS CAPITAL AND EXPENSE BUDGET REQUESTS PRIORITIES",
-              "when": "2026-11-10T18:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20261102024",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:community-boards",
-              "root_kind": "agency",
-              "href": "#notice/20261102024",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20261102024",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-11-10T18:00:00.000",
-                "input_value": "Community Boards"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
               "subject_ref": "notice:20261102029",
               "domain": "meetings",
               "object_kind": "hearing",
@@ -188228,6 +188195,39 @@
               "provenance": {
                 "source_system": "city_record",
                 "source_record_id": "city_record:20261102029",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-11-10T18:00:00.000",
+                "input_value": "Community Boards"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20261102024",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "FY'28 STATEMENT OF DISTRICT NEEDS CAPITAL AND EXPENSE BUDGET REQUESTS PRIORITIES",
+              "when": "2026-11-10T18:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20261102024",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:community-boards",
+              "root_kind": "agency",
+              "href": "#notice/20261102024",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20261102024",
                 "source_fields": [
                   "agency_name"
                 ],
@@ -188324,6 +188324,26 @@
         }
       },
       "links": [
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260922018",
+          "to": "agency:id:community-boards",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260922018",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-09-30T18:00:00.000",
+            "input_value": "Community Boards"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
         {
           "type": "hosts_meeting",
           "from": "notice:20260923032",
@@ -188949,7 +188969,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 6,
-        "link_count": 25,
+        "link_count": 26,
         "join_key_link_count": 10,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
@@ -324176,252 +324196,6 @@
         "coverage_rate": 0.14285714285714285
       }
     },
-    "agency:id:board-of-standards-and-appeals": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:board-of-standards-and-appeals",
-        "id": "id:board-of-standards-and-appeals",
-        "canonical_id": "board-of-standards-and-appeals",
-        "canonical_name": "Board of Standards and Appeals",
-        "display_name": "Board of Standards and Appeals"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20261116024",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "Board of Standards and Appeals Public Hearing Notice",
-              "when": "2026-12-14T10:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20261116024",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:board-of-standards-and-appeals",
-              "root_kind": "agency",
-              "href": "#notice/20261116024",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20261116024",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-12-14T10:00:00.000",
-                "input_value": "Board of Standards and Appeals"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20261009013",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "Board of Standards and Appeals Public Hearing Notice",
-              "when": "2026-11-09T10:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20261009013",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:board-of-standards-and-appeals",
-              "root_kind": "agency",
-              "href": "#notice/20261009013",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20261009013",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-11-09T10:00:00.000",
-                "input_value": "Board of Standards and Appeals"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260921008",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "Board of Standards and Appeals Public Hearing Notice",
-              "when": "2026-10-19T10:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260921008",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:board-of-standards-and-appeals",
-              "root_kind": "agency",
-              "href": "#notice/20260921008",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260921008",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-10-19T10:00:00.000",
-                "input_value": "Board of Standards and Appeals"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 3
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260921008",
-          "to": "agency:id:board-of-standards-and-appeals",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260921008",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-10-19T10:00:00.000",
-            "input_value": "Board of Standards and Appeals"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20261009013",
-          "to": "agency:id:board-of-standards-and-appeals",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20261009013",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-11-09T10:00:00.000",
-            "input_value": "Board of Standards and Appeals"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20261116024",
-          "to": "agency:id:board-of-standards-and-appeals",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20261116024",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-12-14T10:00:00.000",
-            "input_value": "Board of Standards and Appeals"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 0,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 3,
-        "link_count": 3,
-        "join_key_link_count": 0,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.14285714285714285
-      }
-    },
     "agency:id:borough-president-bronx": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -325554,6 +325328,279 @@
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
+        "cross_spine_shadow_count": 0,
+        "coverage_rate": 0.14285714285714285
+      }
+    },
+    "agency:id:edc-economic-development-corporation-for-nyc": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:edc-economic-development-corporation-for-nyc",
+        "id": "id:edc-economic-development-corporation-for-nyc",
+        "canonical_id": "edc-economic-development-corporation-for-nyc",
+        "canonical_name": "EDC - Economic Development Corporation for NYC",
+        "display_name": "EDC - Economic Development Corporation for NYC"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "project:2025Q0403",
+              "domain": "land",
+              "object_kind": "project",
+              "label": "Willets Point Non-ULURP Modification",
+              "when": "2026-09-18T00:00:00.000",
+              "amount": null,
+              "public_status": "Filed",
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": "2025Q0403",
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:edc-economic-development-corporation-for-nyc",
+              "root_kind": "agency",
+              "href": "#land?project=2025Q0403",
+              "provenance": {
+                "source_system": "soda",
+                "source_record_id": "soda:2025Q0403",
+                "source_fields": [
+                  "primary_applicant"
+                ],
+                "basis": "land_primary_applicant",
+                "observed_at": "2026-09-18T00:00:00.000",
+                "input_value": "EDC - Economic Development Corporation for NYC"
+              },
+              "link_type": "applicant_agency",
+              "confidence": "tentative",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "project:2020M0487",
+              "domain": "land",
+              "object_kind": "project",
+              "label": "Alexandria Center P2 - Phase 2 New Open Space Cert",
+              "when": "2020-09-11T00:00:00.000",
+              "amount": null,
+              "public_status": "Filed",
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": "2020M0487",
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": "M210012LDM; F210013LDM",
+              "bbls": [
+                "1009620098"
+              ],
+              "root_ref": "agency:id:edc-economic-development-corporation-for-nyc",
+              "root_kind": "agency",
+              "href": "#land?project=2020M0487",
+              "provenance": {
+                "source_system": "soda",
+                "source_record_id": "soda:2020M0487",
+                "source_fields": [
+                  "primary_applicant"
+                ],
+                "basis": "land_primary_applicant",
+                "observed_at": "2020-09-11T00:00:00.000",
+                "input_value": "EDC - Economic Development Corporation for NYC"
+              },
+              "link_type": "applicant_agency",
+              "confidence": "tentative",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "project:2024Q0135",
+              "domain": "land",
+              "object_kind": "project",
+              "label": "Willets Point Phase II Mapping Actions",
+              "when": null,
+              "amount": null,
+              "public_status": "Completed",
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": "2024Q0135",
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": "240058MMQ",
+              "bbls": null,
+              "root_ref": "agency:id:edc-economic-development-corporation-for-nyc",
+              "root_kind": "agency",
+              "href": "#land?project=2024Q0135",
+              "provenance": {
+                "source_system": "Zoning Application Portal projects (Open Data)",
+                "source_record_id": "Zoning Application Portal projects (Open Data):2024Q0135",
+                "source_fields": [
+                  "primary_applicant"
+                ],
+                "basis": "land_primary_applicant",
+                "input_value": "EDC - Economic Development Corporation for NYC"
+              },
+              "link_type": "applicant_agency",
+              "confidence": "tentative",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 3
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "applicant_agency",
+          "from": "project:2020M0487",
+          "to": "agency:id:edc-economic-development-corporation-for-nyc",
+          "domain": "land",
+          "confidence": "tentative",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "soda",
+            "source_record_id": "soda:2020M0487",
+            "source_fields": [
+              "primary_applicant"
+            ],
+            "basis": "land_primary_applicant",
+            "observed_at": "2020-09-11T00:00:00.000",
+            "input_value": "EDC - Economic Development Corporation for NYC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "sited_on_parcel",
+          "from": "project:2020M0487",
+          "to": "parcel:1009620098",
+          "domain": "land",
+          "confidence": "strong",
+          "method": "zap_bbl_project_id_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "soda",
+            "source_record_id": "soda:2020M0487:1009620098",
+            "source_fields": [
+              "bbl",
+              "project_id"
+            ],
+            "basis": "land_project_bbl",
+            "observed_at": "2020-09-11T00:00:00.000",
+            "input_value": "1009620098",
+            "join_key": "bbl",
+            "join_value": "1009620098",
+            "match": "exact",
+            "tier": "deterministic_exact_key"
+          },
+          "layer": "cross_domain_object_link_v2",
+          "tier": "deterministic_exact_key",
+          "tier_version": "cross_spine_edge_policy_v2"
+        },
+        {
+          "type": "applicant_agency",
+          "from": "project:2024Q0135",
+          "to": "agency:id:edc-economic-development-corporation-for-nyc",
+          "domain": "land",
+          "confidence": "tentative",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "Zoning Application Portal projects (Open Data)",
+            "source_record_id": "Zoning Application Portal projects (Open Data):2024Q0135",
+            "source_fields": [
+              "primary_applicant"
+            ],
+            "basis": "land_primary_applicant",
+            "input_value": "EDC - Economic Development Corporation for NYC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "applicant_agency",
+          "from": "project:2025Q0403",
+          "to": "agency:id:edc-economic-development-corporation-for-nyc",
+          "domain": "land",
+          "confidence": "tentative",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "soda",
+            "source_record_id": "soda:2025Q0403",
+            "source_fields": [
+              "primary_applicant"
+            ],
+            "basis": "land_primary_applicant",
+            "observed_at": "2026-09-18T00:00:00.000",
+            "input_value": "EDC - Economic Development Corporation for NYC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "shadow_edges": [],
+      "edge_routing": {
+        "deterministic": 1,
+        "public_inferred": 0,
+        "evidence_only": 0,
+        "no_edge": 0
+      },
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 3,
+        "link_count": 4,
+        "join_key_link_count": 1,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
       }
@@ -349744,13 +349791,6 @@
         "confidence": "strong"
       }
     ],
-    "notice:20260921008": [
-      {
-        "entity_ref": "agency:id:board-of-standards-and-appeals",
-        "relation": "hosts_meeting",
-        "confidence": "strong"
-      }
-    ],
     "notice:20260921011": [
       {
         "entity_ref": "agency:id:sanitation",
@@ -349780,6 +349820,13 @@
     "notice:20260922017": [
       {
         "entity_ref": "agency:id:board-of-education-retirement-system",
+        "relation": "hosts_meeting",
+        "confidence": "strong"
+      }
+    ],
+    "notice:20260922018": [
+      {
+        "entity_ref": "agency:id:community-boards",
         "relation": "hosts_meeting",
         "confidence": "strong"
       }
@@ -350062,13 +350109,6 @@
       {
         "entity_ref": "agency:id:sanitation",
         "relation": "issued_rule",
-        "confidence": "strong"
-      }
-    ],
-    "notice:20261009013": [
-      {
-        "entity_ref": "agency:id:board-of-standards-and-appeals",
-        "relation": "hosts_meeting",
         "confidence": "strong"
       }
     ],
@@ -350533,13 +350573,6 @@
         "confidence": "strong"
       }
     ],
-    "notice:20261116024": [
-      {
-        "entity_ref": "agency:id:board-of-standards-and-appeals",
-        "relation": "hosts_meeting",
-        "confidence": "strong"
-      }
-    ],
     "notice:20261117013": [
       {
         "entity_ref": "agency:id:transportation",
@@ -350582,6 +350615,13 @@
         "confidence": "tentative"
       }
     ],
+    "project:2020M0487": [
+      {
+        "entity_ref": "agency:id:edc-economic-development-corporation-for-nyc",
+        "relation": "applicant_agency",
+        "confidence": "tentative"
+      }
+    ],
     "project:2022M0258": [
       {
         "entity_ref": "agency:id:housing-preservation-and-development",
@@ -350617,6 +350657,13 @@
         "confidence": "tentative"
       }
     ],
+    "project:2024Q0135": [
+      {
+        "entity_ref": "agency:id:edc-economic-development-corporation-for-nyc",
+        "relation": "applicant_agency",
+        "confidence": "tentative"
+      }
+    ],
     "project:2024X0217": [
       {
         "entity_ref": "agency:id:housing-preservation-and-development",
@@ -350634,6 +350681,13 @@
     "project:2025Q0314": [
       {
         "entity_ref": "agency:id:parks-and-recreation",
+        "relation": "applicant_agency",
+        "confidence": "tentative"
+      }
+    ],
+    "project:2025Q0403": [
+      {
+        "entity_ref": "agency:id:edc-economic-development-corporation-for-nyc",
         "relation": "applicant_agency",
         "confidence": "tentative"
       }
@@ -350948,12 +351002,12 @@
       "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
       "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",
       "procurement_spine": "site/data/procurement_spine_sources.json",
-      "procurement_spine_observed_on": "2026-11-24"
+      "procurement_spine_observed_on": "2026-11-25"
     }
   },
   "procurement_spine": {
     "schema_version": 1,
-    "observed_on": "2026-11-24",
+    "observed_on": "2026-11-25",
     "coverage": {
       "passport_contracts": {
         "source_system": "passport-public-contracts",
@@ -350999,7 +351053,7 @@
         "coverage_status": "measured",
         "population_backed": true,
         "source_url": "https://www.checkbooknyc.com/api",
-        "pulled_at": "2026-11-24T18:19:02.851Z",
+        "pulled_at": "2026-11-25T10:20:15.926Z",
         "population": {
           "api_transaction_rows": 40989,
           "normalized_unique_contracts": 30004,
@@ -351096,7 +351150,7 @@
     },
     "row_counts": {
       "passport_contracts": 12795,
-      "checkbook_contracts": 10674,
+      "checkbook_contracts": 10646,
       "checkbook_spending": 31,
       "passport_contracts_materialization": 2,
       "checkbook_nycha_contracts": 1
@@ -351159,7 +351213,7 @@
       },
       "checkbook_contracts": {
         "population_rows": 30004,
-        "committed_slice_rows": 10674,
+        "committed_slice_rows": 10646,
         "selected_rows": 500,
         "cap": 500,
         "strategy": "population-measured Checkbook slice capped for entity intelligence; one row per exact prime_contract_id; Contracts_NYCHA rows reserve slots in the shared Checkbook budget"
@@ -352720,14 +352774,6 @@
       "coverage_rate": 0.14285714285714285
     },
     {
-      "ref": "agency:id:board-of-standards-and-appeals",
-      "kind": "agency",
-      "display_name": "Board of Standards and Appeals",
-      "domains_matched": 1,
-      "total_linked_objects": 3,
-      "coverage_rate": 0.14285714285714285
-    },
-    {
       "ref": "agency:id:borough-president-bronx",
       "kind": "agency",
       "display_name": "Borough President - Bronx",
@@ -352747,6 +352793,14 @@
       "ref": "agency:id:city-university",
       "kind": "agency",
       "display_name": "City University",
+      "domains_matched": 1,
+      "total_linked_objects": 3,
+      "coverage_rate": 0.14285714285714285
+    },
+    {
+      "ref": "agency:id:edc-economic-development-corporation-for-nyc",
+      "kind": "agency",
+      "display_name": "EDC - Economic Development Corporation for NYC",
       "domains_matched": 1,
       "total_linked_objects": 3,
       "coverage_rate": 0.14285714285714285

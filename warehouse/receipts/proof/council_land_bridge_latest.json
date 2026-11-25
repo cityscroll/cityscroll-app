@@ -37,13 +37,19 @@
       "compatibility_relation": "decides_land_project",
       "council_depth": {
         "actions": [
-          "Committee"
+          "Hearing Held by Committee",
+          "Laid Over by Subcommittee"
         ],
         "documents": [
           {
             "name": "Agenda",
             "scope": "event",
             "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Meeting_Minutes.pdf"
           },
           {
             "name": "Legistar matter detail",
@@ -63,7 +69,7 @@
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79800",
           "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260190 ZSX)."
         },
-        "outcome": "Committee",
+        "outcome": "Laid Over by Subcommittee",
         "votes": null
       },
       "from": "legistar-event:22797:matter:79800",
@@ -97,13 +103,19 @@
       "compatibility_relation": "decides_land_project",
       "council_depth": {
         "actions": [
-          "Committee"
+          "Hearing Held by Committee",
+          "Laid Over by Subcommittee"
         ],
         "documents": [
           {
             "name": "Agenda",
             "scope": "event",
             "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Meeting_Minutes.pdf"
           },
           {
             "name": "Legistar matter detail",
@@ -123,7 +135,7 @@
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79802",
           "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260193 HAX)."
         },
-        "outcome": "Committee",
+        "outcome": "Laid Over by Subcommittee",
         "votes": null
       },
       "from": "legistar-event:22797:matter:79802",
@@ -157,13 +169,19 @@
       "compatibility_relation": "decides_land_project",
       "council_depth": {
         "actions": [
-          "Committee"
+          "Hearing Held by Committee",
+          "Laid Over by Subcommittee"
         ],
         "documents": [
           {
             "name": "Agenda",
             "scope": "event",
             "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Committee_Agenda.pdf"
+          },
+          {
+            "name": "Minutes",
+            "scope": "event",
+            "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Meeting_Minutes.pdf"
           },
           {
             "name": "Legistar matter detail",
@@ -183,7 +201,7 @@
           "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79803",
           "title": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (N 260336 ZAX)."
         },
-        "outcome": "Committee",
+        "outcome": "Laid Over by Subcommittee",
         "votes": null
       },
       "from": "legistar-event:22797:matter:79803",
@@ -4563,11 +4581,11 @@
   "schema": "cityscroll.council_land_bridge_measurement.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 290,
+      "absent_count": 291,
       "present_count": 14,
-      "record_count": 304
+      "record_count": 305
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-11-23T10:00:50.997Z",
+    "meeting_outcomes_snapshot_generated_at": "2026-11-24T23:45:13.719Z",
     "zap_projects_warehouse_lookup_materialized_at": "2026-11-24T18:54:47.256Z"
   }
 }

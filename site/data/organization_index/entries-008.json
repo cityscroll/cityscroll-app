@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":8,"first_ordinal":13114,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":8,"first_ordinal":13114,"entries":[
 {"s":"ATTACHMATE","n":[["Attachmate Corporation",1]],"x":{"ocp":{"r":1,"a":112220.51,"l":"2016-09-07","i":["20160830020"]}}},
 {"s":"ATTAINABLE FERTILITY FOUNDATION","n":[["ATTAINABLE FERTILITY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["991919547"],"z":["10006"]}}},
 {"s":"ATTAINMENT","n":[["ATTAINMENT CO INC",3]],"x":{"cbr":{"r":2,"a":657245.06,"l":"2026-05-21","i":["MA104020269676705","MA104020269670755"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-05-21","i":["MA104020269676705"],"m":["Non-M/WBE"]}}},
@@ -290,7 +290,7 @@
 {"s":"AUTISM INNOVATION COMMUNITY FOUNDATION","n":[["AUTISM INNOVATION COMMUNITY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["922269792"],"z":["10029"]}}},
 {"s":"AUTISM JOKES","n":[["AUTISM JOKES",1]],"x":{"irs":{"r":1,"i":["993694775"],"z":["10023"]}}},
 {"s":"AUTISM LEARN PLAY","n":[["AUTISM LEARN & PLAY INC",1]],"x":{"irs":{"r":1,"i":["934540890"],"z":["11201"]}}},
-{"s":"AUTISM LEVEL UP","n":[["AUTISM LEVEL UP LLC",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-11-24","i":["CT104020263054062"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2025-11-24","i":["CT104020263054062"],"m":["Non-M/WBE"]}}},
+{"s":"AUTISM LEVEL UP","n":[["AUTISM LEVEL UP LLC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-11-24","i":["CT104020263054062"],"m":["Non-M/WBE"]}}},
 {"s":"AUTISM MOMS IN RELIEF","n":[["Autism Moms in Relief LLC",1]],"x":{"sbs":{"r":1,"i":["337880"],"z":["12207"],"p":["MBE","WBE"]}}},
 {"s":"AUTISM NATIONAL COMMITTEE","n":[["AUTISM NATIONAL COMMITTEE INC",1]],"x":{"irs":{"r":1,"i":["043138358"],"z":["13088"]}}},
 {"s":"AUTISM PROJECT FLOS","n":[["AUTISM PROJECT FLOS",1]],"x":{"irs":{"r":1,"i":["364711432"],"z":["10583"]}}},
@@ -412,7 +412,7 @@
 {"s":"AVANTGARDE COMMUNICATION","n":[["Avantgarde Communication",1]],"x":{"sbs":{"r":1,"i":["100062"],"z":["10472"],"p":["MBE","WBE"]}}},
 {"s":"AVANTI AUTOMOTIVE LI","n":[["Avanti Automotive LI Inc.",1]],"x":{"sbs":{"r":1,"i":["334101"],"z":["11701"],"p":["WBE"]}}},
 {"s":"AVANTI CONTROL SYSTEMS","n":[["Avanti Control Systems, Inc.",1]],"x":{"dol":{"r":1,"i":["25-65CKS-CR"],"z":["12117"]}}},
-{"s":"AVANTI MECHANICAL","n":[["Avanti Mechanical LLC",11]],"x":{"ocp":{"r":1,"a":300000,"l":"2026-06-09","i":["20260603031"]},"cbr":{"r":3,"a":1082860,"l":"2026-08-19","i":["CT186620278802029","CT126020268808189","CT181620268804896"],"m":["Black American"]},"ppt":{"r":1,"a":300000,"l":"2026-06-02","i":["CT1-816-20268804896"]},"cbv":{"r":3,"l":"2026-08-19","i":["CT186620278802029","CT126020268808189","CT181620268804896"],"m":["Black American"]},"dbe":{"r":1,"i":["Avanti Mechanical LLC"]},"sbs":{"r":1,"i":["364709"],"z":["11967"],"p":["MBE"]},"dol":{"r":1,"i":["25-6HAQH-CR"],"z":["11967"]}}},
+{"s":"AVANTI MECHANICAL","n":[["Avanti Mechanical LLC",10]],"x":{"ocp":{"r":1,"a":300000,"l":"2026-06-09","i":["20260603031"]},"cbr":{"r":3,"a":1082860,"l":"2026-08-19","i":["CT186620278802029","CT126020268808189","CT181620268804896"],"m":["Black American"]},"ppt":{"r":1,"a":300000,"l":"2026-06-02","i":["CT1-816-20268804896"]},"cbv":{"r":2,"l":"2026-08-19","i":["CT186620278802029","CT181620268804896"],"m":["Black American"]},"dbe":{"r":1,"i":["Avanti Mechanical LLC"]},"sbs":{"r":1,"i":["364709"],"z":["11967"],"p":["MBE"]},"dol":{"r":1,"i":["25-6HAQH-CR"],"z":["11967"]}}},
 {"s":"AVANTI MUSIC","n":[["AVANTI MUSIC INC",1]],"x":{"irs":{"r":1,"i":["413828650"],"z":["14214"]}}},
 {"s":"AVANTI PAINTING GROUP","n":[["Avanti Painting Group",1]],"x":{"dol":{"r":1,"i":["24-648K4-CR"],"z":["07746"]}}},
 {"s":"AVANTI SOCIAL IMPACT","n":[["AVANTI SOCIAL IMPACT CORP",1]],"x":{"irs":{"r":1,"i":["392894947"],"z":["11206"]}}},
@@ -1720,5 +1720,6 @@
 {"s":"BARBADOS CANCER ASSOCIATION USA INC-BACA","n":[["BARBADOS CANCER ASSOCIATION USA INC-BACA",1]],"x":{"irs":{"r":1,"i":["202104050"],"z":["11202"]}}},
 {"s":"BARBADOS DIASPORA COLLABORATIVE USA - BDC USA -","n":[["BARBADOS DIASPORA COLLABORATIVE USA - BDC USA - INC",1]],"x":{"irs":{"r":1,"i":["461694268"],"z":["10607"]}}},
 {"s":"BARBADOS NURSES ASSOCIATION OF AMERICA","n":[["BARBADOS NURSES ASSOCIATION OF AMERICA INC",1]],"x":{"irs":{"r":1,"i":["136616424"],"z":["11203"]}}},
-{"s":"BARBADOS SUPPORT GROUP","n":[["BARBADOS SUPPORT GROUP INC",1]],"x":{"irs":{"r":1,"i":["873033049"],"z":["11236"]}}}
+{"s":"BARBADOS SUPPORT GROUP","n":[["BARBADOS SUPPORT GROUP INC",1]],"x":{"irs":{"r":1,"i":["873033049"],"z":["11236"]}}},
+{"s":"BARBARA A JANOWITZ","n":[["BARBARA A JANOWITZ",1]],"x":{"dbe":{"r":1,"i":["BARBARA A JANOWITZ"]}}}
 ]}

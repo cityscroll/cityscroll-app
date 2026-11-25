@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":61,"first_ordinal":102948,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":61,"first_ordinal":102948,"entries":[
 {"s":"NEW YORK COVENANT CHURCH-NEW ROCHELLE NY","n":[["NEW YORK COVENANT CHURCH-NEW ROCHELLE NY",1]],"x":{"irs":{"r":1,"i":["134024768"],"z":["10801"]}}},
 {"s":"NEW YORK COVENANT COMMUNITY DEVELOPMENT","n":[["NEW YORK COVENANT COMMUNITY DEVELOPMENT CORPORATION",1]],"x":{"irs":{"r":1,"i":["743245728"],"z":["10801"]}}},
 {"s":"NEW YORK CRANE EQUIPMENT","n":[["NEW YORK CRANE & EQUIPMENT CORP",1],["NEW YORK CRANE&EQUIPMENT CORP",1]],"x":{"cbr":{"r":1,"a":97000,"l":"2024-09-12","i":["CT182620251400151"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["NEW YORK CRANE & EQUIPMENT CORP"]}}},

@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":80,"first_ordinal":135243,"entries":[
-{"s":"ST ROSALIA S ROMAN CATHOLIC CHURCH","n":[["ST. ROSALIA'S ROMAN CATHOLIC CHURCH",1]],"x":{"dbe":{"r":1,"i":["ST. ROSALIA'S ROMAN CATHOLIC CHURCH"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":80,"first_ordinal":135244,"entries":[
 {"s":"ST ROSALIAS ROMAN CATHOLIC CHURCH","n":[["ST ROSALIAS ROMAN CATHOLIC CHURCH",1]],"x":{"irs":{"r":1,"i":["002022084"],"z":["11219"]}}},
 {"s":"ST ROSE ART DEPARTMENT FOUNDERS SCHOLARSHIP","n":[["ST ROSE ART DEPARTMENT FOUNDERS SCHOLARSHIP INC",1]],"x":{"irs":{"r":1,"i":["993193737"],"z":["12020"]}}},
 {"s":"ST ROSE CHURCH","n":[["ST ROSE CHURCH",1]],"x":{"irs":{"r":1,"i":["160754670"],"z":["14485"]}}},
@@ -1569,5 +1568,6 @@
 {"s":"STRAWBERRY LAKE PRODUCTIONS","n":[["STRAWBERRY LAKE PRODUCTIONS INC",1]],"x":{"irs":{"r":1,"i":["113113539"],"z":["11530"]}}},
 {"s":"STRAWBERRY PATCH DAYCARE CENTER","n":[["STRAWBERRY PATCH DAYCARE CENTER INC",3]],"x":{"cbr":{"r":1,"a":2367090,"l":"2026-09-04","i":["CT104020279758025"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-04","i":["CT104020279758025"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["STRAWBERRY PATCH DAYCARE CENTER INC"]}}},
 {"s":"STRAWBERRY WISDOM","n":[["STRAWBERRY WISDOM INC",1]],"x":{"irs":{"r":1,"i":["392999099"],"z":["12534"]}}},
-{"s":"STRAWTOWN ART GARDEN STUDIO","n":[["STRAWTOWN ART & GARDEN STUDIO",1]],"x":{"irs":{"r":1,"i":["453205679"],"z":["10923"]}}}
+{"s":"STRAWTOWN ART GARDEN STUDIO","n":[["STRAWTOWN ART & GARDEN STUDIO",1]],"x":{"irs":{"r":1,"i":["453205679"],"z":["10923"]}}},
+{"s":"STRAY CAT NETWORK","n":[["STRAY CAT NETWORK INC",1]],"x":{"irs":{"r":1,"i":["853755645"],"z":["12571"]}}}
 ]}

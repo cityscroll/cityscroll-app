@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":51,"first_ordinal":86105,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":51,"first_ordinal":86105,"entries":[
 {"s":"LIFE TECHNOLOGIES","n":[["LIFE TECHNOLOGIES CORPORATION",13],["Life Technologies Corporation",13],["LIFE TECHNOLOGIES CORP",2]],"x":{"ocp":{"r":15,"a":21528800.43,"l":"2025-09-05","c":15,"i":["20250828008","20250124003","20240928102","20240508102","20230515106"]},"cbr":{"r":5,"a":6226320.31,"l":"2025-08-27","i":["CT185720268801557","CT181620251414626","CT181620258804311","CT181620251405736","CT181620258801386"],"m":["Non-M/WBE"]},"ppt":{"r":7,"a":10328590.01,"l":"2025-08-27","c":7,"i":["CT1-857-20268801557","CT1-816-20258804311","CT1-816-20258801386","MA1-857-20248806595","CT1-816-20238807776"]},"dbe":{"r":1,"i":["LIFE TECHNOLOGIES CORPORATION"]}}},
 {"s":"LIFE THROUGH DANCE","n":[["LIFE THROUGH DANCE INC",1]],"x":{"irs":{"r":1,"i":["133537704"],"z":["10025"]}}},
 {"s":"LIFE THRU HOOPS CARES","n":[["LIFE THRU HOOPS CARES INC",1]],"x":{"irs":{"r":1,"i":["934617572"],"z":["10502"]}}},

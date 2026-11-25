@@ -50873,7 +50873,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 3,
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -51379,7 +51379,7 @@
         },
         "meetings": {
           "status": "matched",
-          "count": 15,
+          "count": 16,
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
@@ -52832,7 +52832,7 @@
       "href": "/agencies/district-attorney-new-york-county/",
       "entity_ref": "agency:id:district-attorney-new-york-county",
       "relation_state": "published",
-      "detail": "3 linked record categories",
+      "detail": "2 linked record categories",
       "institution": "agency",
       "institution_label": "",
       "institution_context": "",
@@ -52840,8 +52840,8 @@
       "search_text": "Manhattan District Attorney's Office Manhattan District Attorney's Office District Attorney - New York County DISTRICT ATTORNEY-MANHATTAN New York County District Attorney's Office CDA DAM DANYC MDA MDAO NYCDAO",
       "categories": {
         "contracts": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {

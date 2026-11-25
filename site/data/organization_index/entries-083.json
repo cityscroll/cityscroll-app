@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":83,"first_ordinal":140200,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":83,"first_ordinal":140200,"entries":[
 {"s":"TELESECTOR RESOURCES GROUP","n":[["Telesector Resources Group, Inc.",2],["Telesector Resources Group, Inc",1]],"x":{"ocp":{"r":3,"a":372549489,"l":"2011-06-01","i":["20110526018","20070313004","20070108022"]}}},
 {"s":"TELESECTOR RESOURCES GROUP INC D/B/A VERIZON SERVICES GROUP","n":[["Telesector Resources Group Inc. D/B/A Verizon Services Group",1]],"x":{"ocp":{"r":1,"a":3600000,"l":"2007-11-26","i":["20071121017"]}}},
 {"s":"TELESECTOR RESOURCES GROUP INC D/B/A/ VERIZON","n":[["Telesector Resources Group, Inc. d/b/a/ Verizon",1]],"x":{"ocp":{"r":1,"a":500000000,"l":"2007-01-29","i":["20070123027"]}}},

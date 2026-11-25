@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":50,"first_ordinal":84435,"entries":[
-{"s":"LAWLER MUTUSKY AND SKELLY ENGINEERS","n":[["Lawler, Mutusky  and  Skelly Engineers, LLP",1]],"x":{"ocp":{"r":1,"a":1671128.22,"l":"2005-09-16","i":["20050907024"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":50,"first_ordinal":84436,"entries":[
 {"s":"LAWLESS MANGIONE ARCHITECTS ENGINEERS","n":[["LAWLESS & MANGIONE ARCHITECTS & ENGINEERS LLP",3],["Lawless & Mangione Architects & Engineers LLP",1]],"x":{"ocp":{"r":1,"a":59500,"l":"2025-06-17","i":["20250611024"]},"cbr":{"r":1,"a":59500,"l":"2025-06-10","i":["CT107220258806779"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":59500,"l":"2025-06-10","i":["CT1-072-20258806779"]},"dbe":{"r":1,"i":["LAWLESS & MANGIONE ARCHITECTS & ENGINEERS LLP"]}}},
 {"s":"LAWLOR MEDIA GROUP","n":[["Lawlor Media Group Inc.",1]],"x":{"sbs":{"r":1,"i":["328358"],"z":["10122"],"p":["WBE"]}}},
 {"s":"LAWMAN HEATING COOLING","n":[["LAWMAN HEATING & COOLING, INC.",1]],"d":[["Lawman Heating & Cooling, Inc.",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["26-637NQ-CR"],"z":["13685"]}}},

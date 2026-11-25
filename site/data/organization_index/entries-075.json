@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":75,"first_ordinal":126654,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":75,"first_ordinal":126654,"entries":[
 {"s":"SARATOGA MOUNTAIN BIKE ASSOCIATION","n":[["SARATOGA MOUNTAIN BIKE ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["300093937"],"z":["12866"]}}},
 {"s":"SARATOGA NATIONAL CEMETERY HONOR GUARD ASSOCIATION","n":[["SARATOGA NATIONAL CEMETERY HONOR GUARD ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["141812123"],"z":["12871"]}}},
 {"s":"SARATOGA P L A N","n":[["SARATOGA P L A N INC",1]],"x":{"irs":{"r":1,"i":["141706013"],"z":["12866"]}}},
@@ -1660,7 +1660,7 @@
 {"s":"SEKWANG KOREAN PRESBYTERIAN CHURCH","n":[["SEKWANG KOREAN PRESBYTERIAN CHURCH",1]],"x":{"irs":{"r":1,"i":["113604150"],"z":["10570"]}}},
 {"s":"SEL S SWIFT SERVICE","n":[["SEL'S SWIFT SERVICE INCORPORATED",1]],"x":{"dbe":{"r":1,"i":["SEL'S SWIFT SERVICE INCORPORATED"]}}},
 {"s":"SEL TALKZWITHDIANNE","n":[["SEL TALKZWITHDIANNE LLC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2024-09-17","i":["CT104020253015456"],"m":["Non-M/WBE"]}}},
-{"s":"SEL-DM","n":[["SEL-DM LLC",62],["Sel-DM LLC",1]],"x":{"cbr":{"r":40,"a":1000000,"l":"2026-11-13","c":40,"i":["CT104020273046688","CT104020273042001","CT104020273041182","CT104020273041581","CT104020273031088"],"m":["Non-M/WBE","Hispanic American"]},"cbv":{"r":22,"l":"2026-11-13","c":22,"i":["CT104020273046688","CT104020273042001","CT104020273041182","CT104020273041581","CT104020273031088"],"m":["Hispanic American","Non-M/WBE"]},"sbs":{"r":1,"i":["396894"],"z":["10956"],"p":["MBE"]}}},
+{"s":"SEL-DM","n":[["SEL-DM LLC",61],["Sel-DM LLC",1]],"x":{"cbr":{"r":40,"a":1000000,"l":"2026-11-13","c":40,"i":["CT104020273046688","CT104020273042001","CT104020273041182","CT104020273041581","CT104020273031088"],"m":["Non-M/WBE","Hispanic American"]},"cbv":{"r":21,"l":"2026-11-13","c":21,"i":["CT104020273046688","CT104020273042001","CT104020273041182","CT104020273041581","CT104020273031088"],"m":["Hispanic American","Non-M/WBE"]},"sbs":{"r":1,"i":["396894"],"z":["10956"],"p":["MBE"]}}},
 {"s":"SELAH CITY CHURCH","n":[["SELAH CITY CHURCH INC",1]],"x":{"irs":{"r":1,"i":["844956852"],"z":["11756"]}}},
 {"s":"SELAH MINISTRIES","n":[["SELAH MINISTRIES",1],["SELAH MINISTRIES INC",1]],"x":{"irs":{"r":2,"i":["113625412","200826716"],"z":["10801","11693"]}}},
 {"s":"SELANDER FAMILY FOUNDATION","n":[["SELANDER FAMILY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["271444344"],"z":["12578"]}}},
@@ -1682,7 +1682,7 @@
 {"s":"SELECTA HVAC","d":[["Selecta HVAC",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-65FVN-CR"],"z":["11374"]}}},
 {"s":"SELECTA PTAC","d":[["Selecta PTAC",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["341864"],"z":["11374"],"p":["MBE","WBE"]}}},
 {"s":"SELECTA SOLUTIONS","n":[["SELECTA SOLUTIONS LLC",3],["Selecta Solutions LLC",2]],"x":{"cbr":{"r":2,"a":35160,"l":"2026-09-15","i":["CT105620271404006","CT105620251405164"],"m":["Hispanic American"]},"cbv":{"r":1,"l":"2026-09-15","i":["CT105620271404006"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["341864"],"z":["11374"],"p":["MBE","WBE"]},"dol":{"r":1,"i":["25-65FVN-CR"],"z":["11374"]}}},
-{"s":"SELECTIVE INSURANCE COMPANY OF AMERICA","n":[["SELECTIVE INSURANCE COMPANY OF AMERICA",41]],"x":{"cbr":{"r":28,"a":5794345.69,"l":"2026-10-27","c":28,"i":["CT100220271405626","CT100220271403842","CT100220271400151","CT100220261416606","CT100220261414986"],"m":["Non-M/WBE"]},"cbv":{"r":12,"l":"2026-10-27","c":12,"i":["CT100220271405626","CT100220271403842","CT100220271400151","CT100220261416606","CT100220261414986"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["SELECTIVE INSURANCE COMPANY OF AMERICA"]}}},
+{"s":"SELECTIVE INSURANCE COMPANY OF AMERICA","n":[["SELECTIVE INSURANCE COMPANY OF AMERICA",40]],"x":{"cbr":{"r":28,"a":5794345.69,"l":"2026-10-27","c":28,"i":["CT100220271405626","CT100220271403842","CT100220271400151","CT100220261416606","CT100220261414986"],"m":["Non-M/WBE"]},"cbv":{"r":11,"l":"2026-10-27","c":11,"i":["CT100220271405626","CT100220271403842","CT100220271400151","CT100220261416606","CT100220261414986"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["SELECTIVE INSURANCE COMPANY OF AMERICA"]}}},
 {"s":"SELECTRIC ELECTRICAL CONTRACTING","n":[["SELECTRIC ELECTRICAL CONTRACTING CO., INC.",1],["Selectric Electrical Contracting Co. Inc.",1]],"x":{"dol":{"r":1,"i":["26-64BIX-CR"],"z":["10461"]},"sca":{"r":1,"i":["SELECTRIC ELECTRICAL CONTRACTING CO., INC."],"z":["11373"]}}},
 {"s":"SELEEN T SALEH","n":[["Seleen T Saleh LLC",1]],"x":{"sbs":{"r":1,"i":["345379"],"z":["11213"],"p":["WBE"]}}},
 {"s":"SELENA S GOURMET","n":[["Selena's Gourmet LLC",1]],"x":{"sbs":{"r":1,"i":["363986"],"z":["11101"],"p":["MBE","WBE"]}}},

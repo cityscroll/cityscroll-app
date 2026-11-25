@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":27,"first_ordinal":45317,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":27,"first_ordinal":45317,"entries":[
 {"s":"EAST NEW YORK DIAGNOSTIC TREATMENT CENTER","n":[["EAST NEW YORK DIAGNOSTIC & TREATMENT CENTER",1]],"x":{"irs":{"r":1,"i":["311564451"],"z":["11207"]}}},
 {"s":"EAST NEW YORK ENRICHMENT COALITION","n":[["EAST NEW YORK ENRICHMENT COALITION",1]],"x":{"irs":{"r":1,"i":["261975789"],"z":["11207"]}}},
 {"s":"EAST NEW YORK FAMILY DAY CARE PROCESSING CENTER","n":[["EAST NEW YORK FAMILY DAY CARE PROCESSING CENTER, INC.",2],["East New York  Family Day Care Processing Center, Inc.",1]],"x":{"ocp":{"r":3,"a":5704938,"l":"2006-07-03","i":["20060626002","20060622015","20060404020"]}}},
@@ -942,7 +942,7 @@
 {"s":"EDUCATIONAL RECORDS BUREAU","n":[["EDUCATIONAL RECORDS BUREAU INC",1]],"x":{"irs":{"r":1,"i":["131782470"],"z":["10016"]}}},
 {"s":"EDUCATIONAL RELIEF ASSOCIATION","n":[["EDUCATIONAL RELIEF ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["237346569"],"z":["11211"]}}},
 {"s":"EDUCATIONAL SERVICES OF BROOKLYN","n":[["EDUCATIONAL SERVICES OF BROOKLYN INC",1]],"x":{"irs":{"r":1,"i":["920311100"],"z":["11223"]}}},
-{"s":"EDUCATIONAL SOLUTIONS","n":[["Educational Solutions Company Inc",7]],"x":{"cbr":{"r":4,"a":100000,"l":"2026-11-12","i":["CT104020273045679","CT104020263099555","CT104020263053790","CT104020253049416"],"m":["Non-M/WBE"]},"cbv":{"r":3,"l":"2026-11-12","i":["CT104020273045679","CT104020263099555","CT104020263053790"],"m":["Non-M/WBE"]}}},
+{"s":"EDUCATIONAL SOLUTIONS","n":[["Educational Solutions Company Inc",6]],"x":{"cbr":{"r":4,"a":100000,"l":"2026-11-12","i":["CT104020273045679","CT104020263099555","CT104020263053790","CT104020253049416"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-12","i":["CT104020273045679","CT104020263099555"],"m":["Non-M/WBE"]}}},
 {"s":"EDUCATIONAL SUPPORT FOUNDATION","n":[["EDUCATIONAL SUPPORT FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["136159760"],"z":["11516"]}}},
 {"s":"EDUCATIONAL SUPPORT PERSONNEL ASSOCIATION OF OXFORD ACADEMY","n":[["EDUCATIONAL SUPPORT PERSONNEL ASSOCIATION OF OXFORD ACADEMY",1]],"x":{"irs":{"r":1,"i":["161387977"],"z":["13830"]}}},
 {"s":"EDUCATIONAL SUPPORT SERVICE PERSONNEL DEAF HARD OF HEARING","n":[["EDUCATIONAL SUPPORT SERVICE PERSONNEL DEAF & HARD OF HEARING",1]],"x":{"irs":{"r":1,"i":["161572574"],"z":["14534"]}}},

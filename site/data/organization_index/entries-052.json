@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":52,"first_ordinal":87767,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":52,"first_ordinal":87767,"entries":[
 {"s":"LOCKPORT NEW BEGINNINGS","n":[["LOCKPORT NEW BEGINNINGS",1]],"x":{"irs":{"r":1,"i":["161454332"],"z":["14095"]}}},
 {"s":"LOCKPORT NEW YORK ROTARY FOUNDATION","n":[["LOCKPORT NEW YORK ROTARY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["452556261"],"z":["14221"]}}},
 {"s":"LOCKPORT PUBLIC ARTS COUNCIL","n":[["LOCKPORT PUBLIC ARTS COUNCIL INC",1]],"x":{"irs":{"r":1,"i":["113824673"],"z":["14094"]}}},
@@ -811,7 +811,7 @@
 {"s":"LOTTE E FEINBERG FOUNDATION","n":[["LOTTE E FEINBERG FOUNDATION",1]],"x":{"irs":{"r":1,"i":["271383710"],"z":["10023"]}}},
 {"s":"LOTTER LOTTER","n":[["Lotter & Lotter, Inc.",1]],"x":{"dol":{"r":1,"i":["25-65GAY-CR"],"z":["14770"]}}},
 {"s":"LOTTY ZUCKER FOUNDATION","n":[["LOTTY ZUCKER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["133340061"],"z":["10024"]}}},
-{"s":"LOTUS CONNECT","n":[["LOTUS CONNECT LLC",34],["Lotus Connect LLC",2]],"d":[["Lotus Connect LLC",1]],"x":{"cbr":{"r":23,"a":575000,"l":"2026-11-02","c":23,"i":["CT104020273040806","CT104020273022153","CT104020273005148","CT104020263149886","CT104020263138141"],"m":["Hispanic American"]},"cbv":{"r":10,"l":"2026-11-02","c":10,"i":["CT104020273040806","CT104020273022153","CT104020273005148","CT104020263149886","CT104020263138141"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["LOTUS CONNECT LLC"]},"sbs":{"r":1,"i":["324056"],"z":["07030"],"p":["MBE"]},"dol":{"r":2,"v":["dba","name"],"i":["25-64AHD-CR"],"z":["07030"]}}},
+{"s":"LOTUS CONNECT","n":[["LOTUS CONNECT LLC",33],["Lotus Connect LLC",2]],"d":[["Lotus Connect LLC",1]],"x":{"cbr":{"r":23,"a":575000,"l":"2026-11-02","c":23,"i":["CT104020273040806","CT104020273022153","CT104020273005148","CT104020263149886","CT104020263138141"],"m":["Hispanic American"]},"cbv":{"r":9,"l":"2026-11-02","c":9,"i":["CT104020273040806","CT104020273022153","CT104020273005148","CT104020263149886","CT104020263138141"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["LOTUS CONNECT LLC"]},"sbs":{"r":1,"i":["324056"],"z":["07030"],"p":["MBE"]},"dol":{"r":2,"v":["dba","name"],"i":["25-64AHD-CR"],"z":["07030"]}}},
 {"s":"LOTUS CREATIONS ACADEMY OF PERFORMING ARTS","n":[["LOTUS CREATIONS ACADEMY OF PERFORMING ARTS INC",1]],"x":{"irs":{"r":1,"i":["472590061"],"z":["11213"]}}},
 {"s":"LOTUS FINE ARTS PRODUCTIONS","n":[["LOTUS FINE ARTS PRODUCTIONS INC",5]],"x":{"cbr":{"r":3,"a":152000,"l":"2024-12-26","i":["MA104020259576350","CT184620258801714","CT184620258801490"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["LOTUS FINE ARTS PRODUCTIONS INC"]},"irs":{"r":1,"i":["133530544"],"z":["10025"]}}},
 {"s":"LOTUS FLOWER GIVING SOCIETY","n":[["LOTUS FLOWER GIVING SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["833427226"],"z":["14052"]}}},

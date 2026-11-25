@@ -1,6 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":46,"first_ordinal":77398,"entries":[
-{"s":"JLENS","n":[["JLENS",1]],"x":{"irs":{"r":1,"i":["873297460"],"z":["10158"]}}},
-{"s":"JLEW FOREVER FOUNDATION","n":[["JLEW FOREVER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["872598695"],"z":["11530"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":46,"first_ordinal":77400,"entries":[
 {"s":"JLG CHARITABLE FOUNDATION","n":[["JLG CHARITABLE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["356818239"],"z":["11230"]}}},
 {"s":"JLGMOPCO24","n":[["JLGMOPCO24 CORP.",1]],"x":{"dol":{"r":1,"i":["25-6H9BA-CR"],"z":["10604"]}}},
 {"s":"JLGS FOUNDATION","n":[["JLGS FOUNDATION CORP",1]],"x":{"irs":{"r":1,"i":["854013047"],"z":["10920"]}}},
@@ -163,7 +161,7 @@
 {"s":"JOANNE D CORZINE FOUNDATION","n":[["JOANNE D CORZINE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["306034293"],"z":["11977"]}}},
 {"s":"JOANNE FEIERMAN","n":[["JOANNE FEIERMAN",2]],"x":{"ocp":{"r":1,"a":64493.37,"l":"2021-06-21","i":["20210615102"]},"ppt":{"r":1,"a":64493.37,"l":"2021-06-14","i":["CT1-856-20218801795"]}}},
 {"s":"JOANNE FEIERMAN DBA SEMINARS IN COMMUNICATION","n":[["JOANNE FEIERMAN DBA SEMINARS IN COMMUNICATION",1]],"x":{"ocp":{"r":1,"a":160550,"l":"2006-09-07","i":["20060831009"]}}},
-{"s":"JOANNE FRANKLIN","n":[["JOANNE FRANKLIN INC",62],["JOANNE FRANKLIN  INC",1],["Joanne Franklin, Inc.",1]],"x":{"ocp":{"r":1,"a":38205.85,"l":"2018-11-08","i":["20181031006"]},"cbr":{"r":43,"a":437315.56,"l":"2026-11-09","c":43,"i":["CT184620278803742","CT184620278803354","CT105620271402552","CT184620278801757","CT184620278801723"],"m":["Women (Non-Minority)"]},"cbv":{"r":18,"l":"2026-11-09","c":18,"i":["CT184620278803742","CT184620278803354","CT105620271402552","CT184620278801757","CT184620278801723"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["JOANNE FRANKLIN  INC"]},"sbs":{"r":1,"i":["4588"],"z":["10017"],"p":["WBE"]}}},
+{"s":"JOANNE FRANKLIN","n":[["JOANNE FRANKLIN INC",61],["JOANNE FRANKLIN  INC",1],["Joanne Franklin, Inc.",1]],"x":{"ocp":{"r":1,"a":38205.85,"l":"2018-11-08","i":["20181031006"]},"cbr":{"r":43,"a":437315.56,"l":"2026-11-09","c":43,"i":["CT184620278803742","CT184620278803354","CT105620271402552","CT184620278801757","CT184620278801723"],"m":["Women (Non-Minority)"]},"cbv":{"r":17,"l":"2026-11-09","c":17,"i":["CT184620278803742","CT184620278803354","CT105620271402552","CT184620278801757","CT184620278801723"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["JOANNE FRANKLIN  INC"]},"sbs":{"r":1,"i":["4588"],"z":["10017"],"p":["WBE"]}}},
 {"s":"JOANNE KRUPP FOUNDATION","n":[["JOANNE KRUPP FOUNDATION",1]],"x":{"irs":{"r":1,"i":["883466720"],"z":["10025"]}}},
 {"s":"JOANNE LUDTKA FOUNDATION","n":[["JOANNE LUDTKA FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["871481954"],"z":["14086"]}}},
 {"s":"JOANS HOUSE OF CARING","n":[["JOANS HOUSE OF CARING INC",1]],"x":{"irs":{"r":1,"i":["364904882"],"z":["10973"]}}},
@@ -1745,5 +1743,7 @@
 {"s":"K G P","n":[["K. G. P. Inc.",1]],"x":{"dol":{"r":1,"i":["26-9YIZJ-CR"],"z":["11715"]}}},
 {"s":"K G UPRIGHT CONSULTING","n":[["K&G Upright Consulting, Inc",1]],"x":{"sbs":{"r":1,"i":["340336"],"z":["10451"],"p":["MBE","WBE"]}}},
 {"s":"K GRAEFE AND SONS","n":[["K.GRAEFE AND SONS CORP",1]],"x":{"dol":{"r":1,"i":["25-6HPJS-CR"],"z":["10960"]}}},
-{"s":"K GUERRERO","n":[["K Guerrero LLC",3]],"x":{"cbr":{"r":2,"a":18900,"l":"2025-09-03","i":["CT181620261403288","CT181620251410008"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["368418"],"z":["10031"],"p":["MBE","WBE"]}}}
+{"s":"K GUERRERO","n":[["K Guerrero LLC",3]],"x":{"cbr":{"r":2,"a":18900,"l":"2025-09-03","i":["CT181620261403288","CT181620251410008"],"m":["Hispanic American"]},"sbs":{"r":1,"i":["368418"],"z":["10031"],"p":["MBE","WBE"]}}},
+{"s":"K HAL MACHZIKEI TORAH","n":[["K HAL MACHZIKEI TORAH",1]],"x":{"irs":{"r":1,"i":["208367041"],"z":["11691"]}}},
+{"s":"K HUGHES EXPERT TREE SERVICE","n":[["K HUGHES EXPERT TREE SERVICE LLC",1]],"x":{"dol":{"r":1,"i":["24-63SSC-CR"],"z":["12443"]}}}
 ]}

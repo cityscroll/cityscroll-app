@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":19,"first_ordinal":31680,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":19,"first_ordinal":31680,"entries":[
 {"s":"CLOUDFIERY","n":[["CloudFiery Inc.",1]],"x":{"sbs":{"r":1,"i":["394963"],"z":["11507"],"p":["MBE","WBE"]}}},
 {"s":"CLOUDFIRST TECHNOLOGY SOLUTIONS","n":[["CloudFirst Technology Solutions, Inc.",1]],"x":{"sbs":{"r":1,"i":["369661"],"z":["12550"],"p":["MBE"]}}},
 {"s":"CLOUDS OF BLESSINGS MINISTRY","n":[["CLOUDS OF BLESSINGS MINISTRY INC",1]],"x":{"irs":{"r":1,"i":["822419942"],"z":["11236"]}}},
@@ -831,7 +831,7 @@
 {"s":"COLORSTACK","n":[["COLORSTACK",1]],"x":{"irs":{"r":1,"i":["851248712"],"z":["11520"]}}},
 {"s":"COLORTECH","n":[["COLORTECH INCORPORATED",1]],"x":{"ocp":{"r":1,"a":1809500,"l":"2007-05-31","i":["20070525001"]}}},
 {"s":"COLOSSEUM DREAMS","n":[["COLOSSEUM DREAMS INC",1]],"x":{"irs":{"r":1,"i":["921422962"],"z":["11233"]}}},
-{"s":"COLOSSUS ENTERPRISE","n":[["COLOSSUS ENTERPRISE LLC",6]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-11-03","i":["CT104020273036799","CT104020263125830","CT104020263056675"],"m":["Non-M/WBE"]},"cbv":{"r":3,"l":"2026-11-03","i":["CT104020273036799","CT104020263125830","CT104020263056675"],"m":["Non-M/WBE"]}}},
+{"s":"COLOSSUS ENTERPRISE","n":[["COLOSSUS ENTERPRISE LLC",5]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-11-03","i":["CT104020273036799","CT104020263125830","CT104020263056675"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-03","i":["CT104020273036799","CT104020263125830"],"m":["Non-M/WBE"]}}},
 {"s":"COLT 45 STRONG","n":[["COLT 45 STRONG INC",1]],"x":{"irs":{"r":1,"i":["931806106"],"z":["14706"]}}},
 {"s":"COLT COEUR THEATER","n":[["COLT COEUR THEATER COMPANY INC",1]],"x":{"irs":{"r":1,"i":["383826647"],"z":["11201"]}}},
 {"s":"COLT SERVICES","n":[["Colt Services, LLC",1]],"x":{"dol":{"r":1,"i":["26-675E8-CR"],"z":["77507"]}}},

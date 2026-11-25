@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":33,"first_ordinal":55415,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":33,"first_ordinal":55415,"entries":[
 {"s":"FRIENDS OF CAMP LITTLE NOTCH","n":[["FRIENDS OF CAMP LITTLE NOTCH INC",1]],"x":{"irs":{"r":1,"i":["270210079"],"z":["12866"]}}},
 {"s":"FRIENDS OF CAMP TURNER","n":[["FRIENDS OF CAMP TURNER INC",1]],"x":{"irs":{"r":1,"i":["161563904"],"z":["14151"]}}},
 {"s":"FRIENDS OF CAMP YOUNG JUDAEA SPROUT LAKE","n":[["FRIENDS OF CAMP YOUNG JUDAEA SPROUT LAKE INC",1]],"x":{"irs":{"r":1,"i":["371595626"],"z":["12585"]}}},

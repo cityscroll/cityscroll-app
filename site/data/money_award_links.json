@@ -3,8 +3,8 @@
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
   "rule_version": "pin-stem-agency-v1",
-  "generated_at": "2026-11-24T19:10:18.701Z",
-  "as_of": "2026-11-24",
+  "generated_at": "2026-11-25T10:45:09.869Z",
+  "as_of": "2026-11-25",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -37,12 +37,12 @@
     "usable": true,
     "unusable_reason": null,
     "snapshot_age_days": 0,
-    "fetched_at": "2026-11-24T18:39:41.484Z",
-    "checked_at": "2026-11-24T18:39:41.484Z",
+    "fetched_at": "2026-11-25T10:20:28.343Z",
+    "checked_at": "2026-11-25T10:20:28.343Z",
     "fallback_reason": null,
     "fallback_text": null,
     "max_fallback_age_days": 30,
-    "contracts_read": 1703,
+    "contracts_read": 1705,
     "contracts_with_rfq_number": 844
   },
   "reasons": {
@@ -30815,7 +30815,7 @@
           "contract_number": "2331264",
           "rfq_number": "466034",
           "vendor_name": "EMPIRE CONTROL ABATEMENT INC",
-          "award_amount": 37512214
+          "award_amount": 37516214
         }
       ],
       "linked_award": {
@@ -30839,7 +30839,7 @@
           "contract_number": "2331264",
           "rfq_number": "466034",
           "vendor_name": "EMPIRE CONTROL ABATEMENT INC",
-          "award_amount": 37512214
+          "award_amount": 37516214
         }
       ],
       "other_awards_label": "other awards on the same contract number",

@@ -6,1287 +6,6 @@
     {
       "object_type": "meeting",
       "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-      "source_keys": [
-        {
-          "source_system": "community_board",
-          "key_type": "publisher_event_id",
-          "value": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/"
-        }
-      ],
-      "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-      "title": "OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair",
-      "event_date": "2026-09-15T18:30:00-04:00",
-      "event_end": "2026-09-15T21:30:00-04:00",
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-09-15T18:30:00-04:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-        "observed_at": "2026-09-30T12:59:02.901Z",
-        "raw_date": "2026-09-15",
-        "raw_time": "18:30:00",
-        "status": "resolved"
-      },
-      "meeting_family": "community_board_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": {
-        "name": "CB 2 Conference Room (and via Video Conference)",
-        "address": "3 Washington Square Village #1A, New York, NY 10012",
-        "mode": "hybrid",
-        "components": {
-          "street_address": "3 Washington Square Village #1A",
-          "address_locality": "New York",
-          "address_region": "NY",
-          "postal_code": "10012",
-          "address_borough": null
-        }
-      },
-      "participation": {
-        "links": [
-          {
-            "label": "Join online",
-            "url": "https://www.zoomgov.com/webinar/register/WN_ppELm_oWRCetBahVpSeu9g"
-          },
-          {
-            "label": "Meeting information",
-            "url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/"
-          }
-        ],
-        "remote_join_url": "https://www.zoomgov.com/webinar/register/WN_ppELm_oWRCetBahVpSeu9g",
-        "emails": [],
-        "phones": [
-          "2129792272"
-        ],
-        "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/"
-      },
-      "committee": null,
-      "agency": null,
-      "board_name": "Manhattan Community Board 2",
-      "description": "Tuesday, September 15th @ 6:30 PM – In person at 3 Washington Square Village, Conference Room (near the corner of Bleecker and LaGuardia – Map ) – Option to Access via Zoom Videoconference Seating is limited in the Conference Room. Registration is required to ensure there is adequate space. Applications to NYC DOT for Dining Out NYC Roadway and Sidewalk Cafes: Public Session Applications will be heard in the order presented below. *Carrot Love Kenmore NYC LLC dba Carrot Express, 100 Kenmare Stre",
-      "search_text": "OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair Tuesday, September 15th @ 6:30 PM – In person at 3 Washington Square Village, Conference Room (near the corner of Bleecker and LaGuardia – Map ) – Option to Access via Zoom Videoconference Seating is limited in the Conference Room. Registration is required to ensure there is adequate space. Applications to NYC DOT for Dining Out NYC Roadway and Sidewalk Cafes: Public Session Applications will be heard in the order presented below. *Carrot Love Kenmore NYC LLC dba Carrot Express, 100 Kenmare Stre 3 Washington Square Village #1A, New York, NY 10012 CB 2 Conference Room (and via Video Conference) OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair Tuesday, September 15th @ 6:30 PM – In person at 3 Washington Square Village, Conference Room (near the corner of Bleecker and LaGuardia – Map ) – Option to Access via Zoom Videoconference Seating is limited in the Conference Room. Registration is required to ensure there is adequate space. Applications to NYC DOT for Dining Out NYC Roadway and Sidewalk Cafes: Public Session Applications will be heard in the order presented below. *Carrot Love Kenmore NYC LLC dba Carrot Express, 100 Kenmare Stre upcoming_meetings Community Board Meetings Manhattan Community Board 2 CB 2 Conference Room (and via Video Conference) 3 Washington Square Village #1A, New York, NY 10012 Manhattan M02 *Carrot Love Kenmore NYC LLC dba Carrot Express, 100 Kenmare Street, 10012 *La Meridiana, Ltd dba Numero 28 Pizzeria, 26-28 Carmine Street, 10014 *Sange Rest. Inc. dba Tio Pepe, 168 West 4th Street, 10014 *Thin Cookies Bleecker Corp. dba Thin Cookies, 166 Bleecker Street, 10012 *Cleo Restaurant LLC dba Cleo, 621 Hudson Street, 10014 *Blackfoot Consulting LLC dba The Little Owl, 90 Bedford Street, 10014 *TEC NY LL LLC dba Toby’s Estate, 409 Broome Street, 10013 *Taco 94 U, LLC dba Santo Taco, 94 University Place, 10003 *Grey Heron Holdings LLC dba Grey Heron Cafe, 2 Bleecker Street, 10012",
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "community_boards": [
-          "manhattan-cb-02"
-        ],
-        "community_districts": [
-          "M02"
-        ],
-        "neighborhoods": [],
-        "addresses": []
-      },
-      "meeting_documents": [
-        {
-          "object_type": "meeting_document",
-          "schema": "cityscroll.meeting_document.v1",
-          "role": "materials",
-          "document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Carrot-Love-Kenmore-NYC-LLC-dba-Carrot-Express-100-Kenmare-Street-20260713010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "publisher_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Carrot-Love-Kenmore-NYC-LLC-dba-Carrot-Express-100-Kenmare-Street-20260713010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "source_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Carrot-Love-Kenmore-NYC-LLC-dba-Carrot-Express-100-Kenmare-Street-20260713010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Carrot-Love-Kenmore-NYC-LLC-dba-Carrot-Express-100-Kenmare-Street-20260713010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "board_id": "manhattan-cb-02",
-          "body_id": "manhattan-cb-02",
-          "title": "*Carrot Love Kenmore NYC LLC dba Carrot Express, 100 Kenmare Street, 10012",
-          "meeting_date": "2026-09-15",
-          "publication_date": null,
-          "date": "2026-09-15",
-          "format": "pdf",
-          "adapter": "html_pdf_v1",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 81520,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "8310cb51cfa2ce975db28a80abb10279e0d0c95e4cd7b13e7753444b052b045f"
-          },
-          "source_status": "available",
-          "meeting_key": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Carrot-Love-Kenmore-NYC-LLC-dba-Carrot-Express-100-Kenmare-Street-20260713010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Carrot-Love-Kenmore-NYC-LLC-dba-Carrot-Express-100-Kenmare-Street-20260713010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "join": null,
-          "attachment_status": "attached",
-          "attachment_reason": null,
-          "attachment_method": "exact_meeting_key"
-        },
-        {
-          "object_type": "meeting_document",
-          "schema": "cityscroll.meeting_document.v1",
-          "role": "materials",
-          "document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/La-Meridiana-LTD-dba-Numero-28-Pizzeria-26-28-Carmine-Street-20260515010003-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "publisher_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/La-Meridiana-LTD-dba-Numero-28-Pizzeria-26-28-Carmine-Street-20260515010003-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "source_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/La-Meridiana-LTD-dba-Numero-28-Pizzeria-26-28-Carmine-Street-20260515010003-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/La-Meridiana-LTD-dba-Numero-28-Pizzeria-26-28-Carmine-Street-20260515010003-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "board_id": "manhattan-cb-02",
-          "body_id": "manhattan-cb-02",
-          "title": "*La Meridiana, Ltd dba Numero 28 Pizzeria, 26-28 Carmine Street, 10014",
-          "meeting_date": "2026-09-15",
-          "publication_date": null,
-          "date": "2026-09-15",
-          "format": "pdf",
-          "adapter": "html_pdf_v1",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 81520,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "8310cb51cfa2ce975db28a80abb10279e0d0c95e4cd7b13e7753444b052b045f"
-          },
-          "source_status": "available",
-          "meeting_key": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/La-Meridiana-LTD-dba-Numero-28-Pizzeria-26-28-Carmine-Street-20260515010003-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/La-Meridiana-LTD-dba-Numero-28-Pizzeria-26-28-Carmine-Street-20260515010003-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "join": null,
-          "attachment_status": "attached",
-          "attachment_reason": null,
-          "attachment_method": "exact_meeting_key"
-        },
-        {
-          "object_type": "meeting_document",
-          "schema": "cityscroll.meeting_document.v1",
-          "role": "materials",
-          "document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Sange-Rest-Inc-dba-Tio-Pepe-168-West-4-Street-20260123010002-Enclosed-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "publisher_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Sange-Rest-Inc-dba-Tio-Pepe-168-West-4-Street-20260123010002-Enclosed-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "source_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Sange-Rest-Inc-dba-Tio-Pepe-168-West-4-Street-20260123010002-Enclosed-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Sange-Rest-Inc-dba-Tio-Pepe-168-West-4-Street-20260123010002-Enclosed-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "board_id": "manhattan-cb-02",
-          "body_id": "manhattan-cb-02",
-          "title": "*Sange Rest. Inc. dba Tio Pepe, 168 West 4th Street, 10014",
-          "meeting_date": "2026-09-15",
-          "publication_date": null,
-          "date": "2026-09-15",
-          "format": "pdf",
-          "adapter": "html_pdf_v1",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 81520,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "8310cb51cfa2ce975db28a80abb10279e0d0c95e4cd7b13e7753444b052b045f"
-          },
-          "source_status": "available",
-          "meeting_key": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Sange-Rest-Inc-dba-Tio-Pepe-168-West-4-Street-20260123010002-Enclosed-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Sange-Rest-Inc-dba-Tio-Pepe-168-West-4-Street-20260123010002-Enclosed-SWC-due-2026-09-21_FLAT_Redacted-1.pdf",
-          "join": null,
-          "attachment_status": "attached",
-          "attachment_reason": null,
-          "attachment_method": "exact_meeting_key"
-        },
-        {
-          "object_type": "meeting_document",
-          "schema": "cityscroll.meeting_document.v1",
-          "role": "materials",
-          "document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Thin-Cookies-Bleecker-Corp-dba-Thin-Cookies-166-Bleecker-Street-20260515010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "publisher_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Thin-Cookies-Bleecker-Corp-dba-Thin-Cookies-166-Bleecker-Street-20260515010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "source_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Thin-Cookies-Bleecker-Corp-dba-Thin-Cookies-166-Bleecker-Street-20260515010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Thin-Cookies-Bleecker-Corp-dba-Thin-Cookies-166-Bleecker-Street-20260515010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "board_id": "manhattan-cb-02",
-          "body_id": "manhattan-cb-02",
-          "title": "*Thin Cookies Bleecker Corp. dba Thin Cookies, 166 Bleecker Street, 10012",
-          "meeting_date": "2026-09-15",
-          "publication_date": null,
-          "date": "2026-09-15",
-          "format": "pdf",
-          "adapter": "html_pdf_v1",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 81520,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "8310cb51cfa2ce975db28a80abb10279e0d0c95e4cd7b13e7753444b052b045f"
-          },
-          "source_status": "available",
-          "meeting_key": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Thin-Cookies-Bleecker-Corp-dba-Thin-Cookies-166-Bleecker-Street-20260515010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Thin-Cookies-Bleecker-Corp-dba-Thin-Cookies-166-Bleecker-Street-20260515010001-SWC-due-2026-09-21_FLAT_Redacted.pdf",
-          "join": null,
-          "attachment_status": "attached",
-          "attachment_reason": null,
-          "attachment_method": "exact_meeting_key"
-        },
-        {
-          "object_type": "meeting_document",
-          "schema": "cityscroll.meeting_document.v1",
-          "role": "materials",
-          "document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-CLEO-RESTAURANT-LLC-621-Hudson-St_FLAT_Redacted.pdf",
-          "publisher_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-CLEO-RESTAURANT-LLC-621-Hudson-St_FLAT_Redacted.pdf",
-          "source_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-CLEO-RESTAURANT-LLC-621-Hudson-St_FLAT_Redacted.pdf",
-          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-CLEO-RESTAURANT-LLC-621-Hudson-St_FLAT_Redacted.pdf",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "board_id": "manhattan-cb-02",
-          "body_id": "manhattan-cb-02",
-          "title": "*Cleo Restaurant LLC dba Cleo, 621 Hudson Street, 10014",
-          "meeting_date": "2026-09-15",
-          "publication_date": null,
-          "date": "2026-09-15",
-          "format": "pdf",
-          "adapter": "html_pdf_v1",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 81520,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "8310cb51cfa2ce975db28a80abb10279e0d0c95e4cd7b13e7753444b052b045f"
-          },
-          "source_status": "available",
-          "meeting_key": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-CLEO-RESTAURANT-LLC-621-Hudson-St_FLAT_Redacted.pdf",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-CLEO-RESTAURANT-LLC-621-Hudson-St_FLAT_Redacted.pdf",
-          "join": null,
-          "attachment_status": "attached",
-          "attachment_reason": null,
-          "attachment_method": "exact_meeting_key"
-        },
-        {
-          "object_type": "meeting_document",
-          "schema": "cityscroll.meeting_document.v1",
-          "role": "materials",
-          "document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-Blackfoot-Consulting-90-Bedford-St_FLAT_Redacted.pdf",
-          "publisher_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-Blackfoot-Consulting-90-Bedford-St_FLAT_Redacted.pdf",
-          "source_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-Blackfoot-Consulting-90-Bedford-St_FLAT_Redacted.pdf",
-          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-Blackfoot-Consulting-90-Bedford-St_FLAT_Redacted.pdf",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "board_id": "manhattan-cb-02",
-          "body_id": "manhattan-cb-02",
-          "title": "*Blackfoot Consulting LLC dba The Little Owl, 90 Bedford Street, 10014",
-          "meeting_date": "2026-09-15",
-          "publication_date": null,
-          "date": "2026-09-15",
-          "format": "pdf",
-          "adapter": "html_pdf_v1",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 81520,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "8310cb51cfa2ce975db28a80abb10279e0d0c95e4cd7b13e7753444b052b045f"
-          },
-          "source_status": "available",
-          "meeting_key": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-Blackfoot-Consulting-90-Bedford-St_FLAT_Redacted.pdf",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/SWC-Blackfoot-Consulting-90-Bedford-St_FLAT_Redacted.pdf",
-          "join": null,
-          "attachment_status": "attached",
-          "attachment_reason": null,
-          "attachment_method": "exact_meeting_key"
-        },
-        {
-          "object_type": "meeting_document",
-          "schema": "cityscroll.meeting_document.v1",
-          "role": "materials",
-          "document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/TEC-NY-LL-LLC-dba-Tobys-Estate-SWC-409-Broome-Street_FLAT_Redacted.pdf",
-          "publisher_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/TEC-NY-LL-LLC-dba-Tobys-Estate-SWC-409-Broome-Street_FLAT_Redacted.pdf",
-          "source_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/TEC-NY-LL-LLC-dba-Tobys-Estate-SWC-409-Broome-Street_FLAT_Redacted.pdf",
-          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/TEC-NY-LL-LLC-dba-Tobys-Estate-SWC-409-Broome-Street_FLAT_Redacted.pdf",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "board_id": "manhattan-cb-02",
-          "body_id": "manhattan-cb-02",
-          "title": "*TEC NY LL LLC dba Toby’s Estate, 409 Broome Street, 10013",
-          "meeting_date": "2026-09-15",
-          "publication_date": null,
-          "date": "2026-09-15",
-          "format": "pdf",
-          "adapter": "html_pdf_v1",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 81520,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "8310cb51cfa2ce975db28a80abb10279e0d0c95e4cd7b13e7753444b052b045f"
-          },
-          "source_status": "available",
-          "meeting_key": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/TEC-NY-LL-LLC-dba-Tobys-Estate-SWC-409-Broome-Street_FLAT_Redacted.pdf",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/TEC-NY-LL-LLC-dba-Tobys-Estate-SWC-409-Broome-Street_FLAT_Redacted.pdf",
-          "join": null,
-          "attachment_status": "attached",
-          "attachment_reason": null,
-          "attachment_method": "exact_meeting_key"
-        },
-        {
-          "object_type": "meeting_document",
-          "schema": "cityscroll.meeting_document.v1",
-          "role": "materials",
-          "document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Taco-94-U-LLC-dba-Santo-Taco-Enclosed-SWC-94-University-Place_FLAT_Redacted.pdf",
-          "publisher_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Taco-94-U-LLC-dba-Santo-Taco-Enclosed-SWC-94-University-Place_FLAT_Redacted.pdf",
-          "source_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Taco-94-U-LLC-dba-Santo-Taco-Enclosed-SWC-94-University-Place_FLAT_Redacted.pdf",
-          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Taco-94-U-LLC-dba-Santo-Taco-Enclosed-SWC-94-University-Place_FLAT_Redacted.pdf",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "board_id": "manhattan-cb-02",
-          "body_id": "manhattan-cb-02",
-          "title": "*Taco 94 U, LLC dba Santo Taco, 94 University Place, 10003",
-          "meeting_date": "2026-09-15",
-          "publication_date": null,
-          "date": "2026-09-15",
-          "format": "pdf",
-          "adapter": "html_pdf_v1",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 81520,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "8310cb51cfa2ce975db28a80abb10279e0d0c95e4cd7b13e7753444b052b045f"
-          },
-          "source_status": "available",
-          "meeting_key": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Taco-94-U-LLC-dba-Santo-Taco-Enclosed-SWC-94-University-Place_FLAT_Redacted.pdf",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Taco-94-U-LLC-dba-Santo-Taco-Enclosed-SWC-94-University-Place_FLAT_Redacted.pdf",
-          "join": null,
-          "attachment_status": "attached",
-          "attachment_reason": null,
-          "attachment_method": "exact_meeting_key"
-        },
-        {
-          "object_type": "meeting_document",
-          "schema": "cityscroll.meeting_document.v1",
-          "role": "materials",
-          "document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Grey-Heron-Holdings-LLC-dba-Grey-Heron-Cafe-SWC-2-Bleecker-Street_FLAT_Redacted.pdf",
-          "publisher_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Grey-Heron-Holdings-LLC-dba-Grey-Heron-Cafe-SWC-2-Bleecker-Street_FLAT_Redacted.pdf",
-          "source_document_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Grey-Heron-Holdings-LLC-dba-Grey-Heron-Cafe-SWC-2-Bleecker-Street_FLAT_Redacted.pdf",
-          "document_url": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Grey-Heron-Holdings-LLC-dba-Grey-Heron-Cafe-SWC-2-Bleecker-Street_FLAT_Redacted.pdf",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "board_id": "manhattan-cb-02",
-          "body_id": "manhattan-cb-02",
-          "title": "*Grey Heron Holdings LLC dba Grey Heron Cafe, 2 Bleecker Street, 10012",
-          "meeting_date": "2026-09-15",
-          "publication_date": null,
-          "date": "2026-09-15",
-          "format": "pdf",
-          "adapter": "html_pdf_v1",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 81520,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "8310cb51cfa2ce975db28a80abb10279e0d0c95e4cd7b13e7753444b052b045f"
-          },
-          "source_status": "available",
-          "meeting_key": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "meeting_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "publisher_identifier": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Grey-Heron-Holdings-LLC-dba-Grey-Heron-Cafe-SWC-2-Bleecker-Street_FLAT_Redacted.pdf",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/wp-content/uploads/sites/9/2026/09/Grey-Heron-Holdings-LLC-dba-Grey-Heron-Cafe-SWC-2-Bleecker-Street_FLAT_Redacted.pdf",
-          "join": null,
-          "attachment_status": "attached",
-          "attachment_reason": null,
-          "attachment_method": "exact_meeting_key"
-        }
-      ],
-      "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-      "source_system": "community_board",
-      "meeting_origin": "community_board_source_observed",
-      "source_receipt": {
-        "schema": "cityscroll.community_board_source_receipt.v1",
-        "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-        "observed_at": "2026-09-30T12:59:02.901Z",
-        "status": "ok",
-        "fetch_status": "200",
-        "content_type": "text/html; charset=UTF-8",
-        "content_length": 231725,
-        "parser": "html_pdf_v1",
-        "reason": null,
-        "content_sha256": "59c1b53c10d4220bdc9ff49a797fca2ce3364346bfd4fec415d0f583fbdf9993"
-      },
-      "join_status": "unknown",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": "community-board:manhattan-cb-02"
-      },
-      "compatibility": {
-        "legacy_notice_href": null,
-        "legacy_fragment_href": null,
-        "publisher_href": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/"
-      },
-      "request_id": null,
-      "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-      "board_id": "manhattan-cb-02",
-      "record_kind": "event",
-      "record_id": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-      "record_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-      "date": "2026-09-15",
-      "start_at": "2026-09-15T18:30:00-04:00",
-      "end_at": "2026-09-15T21:30:00-04:00",
-      "category": "upcoming_meetings",
-      "format": "html",
-      "publisher_identifiers": [
-        "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/"
-      ],
-      "source_entry_evidence": null,
-      "source_role": "upcoming_meetings",
-      "observed_receipt": {
-        "schema": "cityscroll.community_board_source_receipt.v1",
-        "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-        "observed_at": "2026-09-30T12:59:02.901Z",
-        "status": "ok",
-        "fetch_status": "200",
-        "content_type": "text/html; charset=UTF-8",
-        "content_length": 231725,
-        "parser": "html_pdf_v1",
-        "reason": null,
-        "content_sha256": "59c1b53c10d4220bdc9ff49a797fca2ce3364346bfd4fec415d0f583fbdf9993"
-      },
-      "short_title": "OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair",
-      "start_date": "2026-11-24T18:27:14.027Z",
-      "detail_retention": {
-        "schema": "cityscroll.community_board_retained_meeting_detail.v1",
-        "basis": "previously_admitted",
-        "omitted_from_upcoming": true,
-        "cancellation_inferred": false,
-        "linked_from": null,
-        "as_of_day": "2026-11-24"
-      },
-      "collection_visibility": "suppressed",
-      "timing_status": "past",
-      "type_of_notice_description": "upcoming_meetings",
-      "section_name": "Community Board Meetings",
-      "meeting_join": {
-        "schema": "cityscroll.community_board_source_join.v1",
-        "status": "unknown",
-        "official": false,
-        "reason": "no_city_record_notice",
-        "board_id": "manhattan-cb-02",
-        "meeting_date": "2026-09-15",
-        "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-        "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-        "join": {
-          "matched": false,
-          "method": "exact_board_date_publisher_identifier",
-          "reason": "no_city_record_notice"
-        },
-        "provenance": {
-          "schema": "cityscroll.community_board_meeting_provenance.v1",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "source_index_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-          "observed_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 231725,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "59c1b53c10d4220bdc9ff49a797fca2ce3364346bfd4fec415d0f583fbdf9993"
-          },
-          "adapter": "html_pdf_v1"
-        }
-      },
-      "source_provenance": {
-        "schema": "cityscroll.community_board_meeting_provenance.v1",
-        "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-        "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-        "source_index_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-        "observed_receipt": {
-          "schema": "cityscroll.community_board_source_receipt.v1",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-          "observed_at": "2026-09-30T12:59:02.901Z",
-          "status": "ok",
-          "fetch_status": "200",
-          "content_type": "text/html; charset=UTF-8",
-          "content_length": 231725,
-          "parser": "html_pdf_v1",
-          "reason": null,
-          "content_sha256": "59c1b53c10d4220bdc9ff49a797fca2ce3364346bfd4fec415d0f583fbdf9993"
-        },
-        "adapter": "html_pdf_v1"
-      },
-      "entity_refs_all": [
-        "community-board:manhattan-cb-02",
-        "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/"
-      ],
-      "institution_edges": [
-        {
-          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
-          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
-          "edge_type": "hosts_meeting",
-          "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
-          "from": "community-board:manhattan-cb-02",
-          "to": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "target_kind": "meeting",
-          "target_id": "meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "target_name": "OUTDOOR DINING WORKING GROUP – Valerie De La Rosa, Chair; Stella FitzGerald, Vice Chair",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Foutdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29%2F",
-          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Foutdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29%2F",
-          "board_href": "/community-boards/manhattan-cb-02/",
-          "institution_refs": {
-            "board_ref": "community-board:manhattan-cb-02"
-          },
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-          "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 231725,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "59c1b53c10d4220bdc9ff49a797fca2ce3364346bfd4fec415d0f583fbdf9993"
-          },
-          "source_entry_evidence": null,
-          "provenance": {
-            "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-            "source_record_id": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-            "observed_receipt": {
-              "schema": "cityscroll.community_board_source_receipt.v1",
-              "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-              "observed_at": "2026-09-30T12:59:02.901Z",
-              "status": "ok",
-              "fetch_status": "200",
-              "content_type": "text/html; charset=UTF-8",
-              "content_length": 231725,
-              "parser": "html_pdf_v1",
-              "reason": null,
-              "content_sha256": "59c1b53c10d4220bdc9ff49a797fca2ce3364346bfd4fec415d0f583fbdf9993"
-            },
-            "format": "html"
-          },
-          "join": {
-            "matched": true,
-            "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-02",
-            "event_date": "2026-09-15",
-            "publisher_identifier": "HTTPS://CBMANHATTAN.CITYOFNEWYORK.US/CB2/EVENT/OUTDOOR-DINING-WORKING-GROUP-VALERIE-DE-LA-ROSA-CHAIR-STELLA-FITZGERALD-VICE-CHAIR-29/",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
-          },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ],
-          "publication_basis": null
-        }
-      ],
-      "source_record": {
-        "source_system": "community_board",
-        "identifier": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-        "url": "https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/",
-        "receipt": {
-          "schema": "cityscroll.community_board_source_receipt.v1",
-          "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/calendar/",
-          "observed_at": "2026-09-30T12:59:02.901Z",
-          "status": "ok",
-          "fetch_status": "200",
-          "content_type": "text/html; charset=UTF-8",
-          "content_length": 231725,
-          "parser": "html_pdf_v1",
-          "reason": null,
-          "content_sha256": "59c1b53c10d4220bdc9ff49a797fca2ce3364346bfd4fec415d0f583fbdf9993"
-        },
-        "board_id": "manhattan-cb-02",
-        "role": "upcoming_meetings"
-      },
-      "minutes_freshness": {
-        "status": "not_published",
-        "latest_date": null,
-        "checked_at": "2026-11-24T18:27:14.027Z"
-      },
-      "location_memberships": [
-        {
-          "assertion_id": "location_assertion:meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/outdoor-dining-working-group-valerie-de-la-rosa-chair-stella-fitzgerald-vice-chair-29/::venue::location.address::1",
-          "role": "venue",
-          "bbl": "1005330001",
-          "memberships": {
-            "borough": "1",
-            "community_district": "M02",
-            "council_district": "2",
-            "nta2020": "MN0202",
-            "police_precinct": "6"
-          },
-          "point": {
-            "lat": 40.7280752,
-            "lon": -73.9971966
-          },
-          "confidence": 1,
-          "confidence_tier": "strong",
-          "provenance": {
-            "source_method": "admitted_venue_membership",
-            "parcel_bbl": "1005330001"
-          }
-        }
-      ]
-    },
-    {
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-      "source_keys": [
-        {
-          "source_system": "community_board",
-          "key_type": "publisher_event_id",
-          "value": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/"
-        }
-      ],
-      "publisher_identifier": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-      "title": "Parks, Plazas & Open Space Committee",
-      "event_date": "2026-09-15T18:00:00-04:00",
-      "event_end": "2026-09-15T21:00:00-04:00",
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": "2026-09-15T18:00:00-04:00",
-        "timezone": "America/New_York",
-        "precision": "exact_time",
-        "basis": "publisher_field",
-        "source_url": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-        "observed_at": "2026-09-30T12:59:02.901Z",
-        "raw_date": "2026-09-15",
-        "raw_time": "18:00:00",
-        "status": "resolved"
-      },
-      "meeting_family": "community_board_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": null,
-      "participation": {
-        "links": [
-          {
-            "label": "Join online",
-            "url": "https://live.mcb1.nyc/"
-          },
-          {
-            "label": "Join online",
-            "url": "https://www.google.com/calendar/event?action=TEMPLATE&dates=20260915T180000/20260915T210000&text=Parks%2C%20Plazas%20%26%23038%3B%20Open%20Space%20Committee&details=%3Cp+style%3D%22text-align%3A+left%3B%22%3E%3Cstrong%3EWe+have+returned+back+to+in-person+meetings%3B+the+public+is+encouraged+to+join+remotely%3C%2Fstrong%3E%3Cstrong%3E%C2%A0due+to+acute+capacity+constraints.%3C%2Fstrong%3E%3C%2Fp%3E+%3Cp+style%3D%22text-align%3A+left%3B%22%3E%3Cspan+style%3D%22color%3A+%23000000%3B%22%3E%3Cstrong%"
-          },
-          {
-            "label": "Join online",
-            "url": "https://outlook.office.com/owa/?path=/calendar/action/compose&rrv=addevent&startdt=2026-09-15T18%3A00%3A00-04%3A00&enddt=2026-09-15T21%3A00%3A00-04%3A00&location&subject=Parks%2C%20Plazas%20%26%20Open%20Space%20Committee&body=%3Cp%20style%3D%22text-align%3A%20left%3B%22%3EWe%20have%20returned%20back%20to%20in-person%20meetings%3B%20the%20public%20is%20encouraged%20to%20join%20remotely%C2%A0due%20to%20acute%20capacity%20constraints.%3C%2Fp%3E%3Cp%20style%3D%22text-align%3A%20left%3B%22%3EIn%20Per"
-          },
-          {
-            "label": "Join online",
-            "url": "https://outlook.live.com/owa/?path=/calendar/action/compose&rrv=addevent&startdt=2026-09-15T18%3A00%3A00-04%3A00&enddt=2026-09-15T21%3A00%3A00-04%3A00&location&subject=Parks%2C%20Plazas%20%26%20Open%20Space%20Committee&body=%3Cp%20style%3D%22text-align%3A%20left%3B%22%3EWe%20have%20returned%20back%20to%20in-person%20meetings%3B%20the%20public%20is%20encouraged%20to%20join%20remotely%C2%A0due%20to%20acute%20capacity%20constraints.%3C%2Fp%3E%3Cp%20style%3D%22text-align%3A%20left%3B%22%3EIn%20Perso"
-          }
-        ],
-        "remote_join_url": "https://live.mcb1.nyc/",
-        "emails": [],
-        "phones": [],
-        "source_url": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/"
-      },
-      "committee": null,
-      "agency": null,
-      "board_name": "Manhattan Community Board 1",
-      "description": "We have returned back to in-person meetings; the public is encouraged to join remotely due to acute capacity constraints. In Person Location Community Board Office – Conference Room 1 Centre Street, 2202A-North New York, NY 10007 Join Remote Meeting Committee Meeting Agenda Seaport Entertainment Group, public space and programming update – George Giaquinto, SEG Gotham Park – Update by Juliet Spiel, Chief of Staff of Gotham Park and Team Capsouto Park Fountain repair update – Terese Flores, NYC P",
-      "search_text": "Parks, Plazas & Open Space Committee We have returned back to in-person meetings; the public is encouraged to join remotely due to acute capacity constraints. In Person Location Community Board Office – Conference Room 1 Centre Street, 2202A-North New York, NY 10007 Join Remote Meeting Committee Meeting Agenda Seaport Entertainment Group, public space and programming update – George Giaquinto, SEG Gotham Park – Update by Juliet Spiel, Chief of Staff of Gotham Park and Team Capsouto Park Fountain repair update – Terese Flores, NYC P Parks, Plazas & Open Space Committee We have returned back to in-person meetings; the public is encouraged to join remotely due to acute capacity constraints. In Person Location Community Board Office – Conference Room 1 Centre Street, 2202A-North New York, NY 10007 Join Remote Meeting Committee Meeting Agenda Seaport Entertainment Group, public space and programming update – George Giaquinto, SEG Gotham Park – Update by Juliet Spiel, Chief of Staff of Gotham Park and Team Capsouto Park Fountain repair update – Terese Flores, NYC P upcoming_meetings Community Board Meetings Manhattan Community Board 1 Manhattan M01",
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "community_boards": [
-          "manhattan-cb-01"
-        ],
-        "community_districts": [
-          "M01"
-        ],
-        "neighborhoods": [],
-        "addresses": []
-      },
-      "meeting_documents": [],
-      "source_url": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-      "source_system": "community_board",
-      "meeting_origin": "community_board_source_observed",
-      "source_receipt": {
-        "schema": "cityscroll.community_board_source_receipt.v1",
-        "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-        "observed_at": "2026-09-30T12:59:02.901Z",
-        "status": "ok",
-        "fetch_status": "200",
-        "content_type": "text/html; charset=UTF-8",
-        "content_length": 333514,
-        "parser": "html_pdf_v1",
-        "reason": null,
-        "content_sha256": "5d5848b1bbbb1d573785fff29fdf1212acccdd1f19c928946f0e8df3a6026d32"
-      },
-      "join_status": "unknown",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": "community-board:manhattan-cb-01"
-      },
-      "compatibility": {
-        "legacy_notice_href": null,
-        "legacy_fragment_href": null,
-        "publisher_href": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/"
-      },
-      "request_id": null,
-      "source_record_id": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-      "board_id": "manhattan-cb-01",
-      "record_kind": "event",
-      "record_id": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-      "record_url": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-      "date": "2026-09-15",
-      "start_at": "2026-09-15T18:00:00-04:00",
-      "end_at": "2026-09-15T21:00:00-04:00",
-      "category": "upcoming_meetings",
-      "format": "html",
-      "publisher_identifiers": [
-        "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/"
-      ],
-      "source_entry_evidence": null,
-      "source_role": "upcoming_meetings",
-      "observed_receipt": {
-        "schema": "cityscroll.community_board_source_receipt.v1",
-        "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-        "observed_at": "2026-09-30T12:59:02.901Z",
-        "status": "ok",
-        "fetch_status": "200",
-        "content_type": "text/html; charset=UTF-8",
-        "content_length": 333514,
-        "parser": "html_pdf_v1",
-        "reason": null,
-        "content_sha256": "5d5848b1bbbb1d573785fff29fdf1212acccdd1f19c928946f0e8df3a6026d32"
-      },
-      "short_title": "Parks, Plazas & Open Space Committee",
-      "start_date": "2026-11-24T18:27:14.027Z",
-      "detail_retention": {
-        "schema": "cityscroll.community_board_retained_meeting_detail.v1",
-        "basis": "previously_admitted",
-        "omitted_from_upcoming": true,
-        "cancellation_inferred": false,
-        "linked_from": null,
-        "as_of_day": "2026-11-24"
-      },
-      "collection_visibility": "suppressed",
-      "timing_status": "past",
-      "type_of_notice_description": "upcoming_meetings",
-      "section_name": "Community Board Meetings",
-      "meeting_join": {
-        "schema": "cityscroll.community_board_source_join.v1",
-        "status": "unknown",
-        "official": false,
-        "reason": "no_city_record_notice",
-        "board_id": "manhattan-cb-01",
-        "meeting_date": "2026-09-15",
-        "source_url": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-        "source_record_id": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-        "join": {
-          "matched": false,
-          "method": "exact_board_date_publisher_identifier",
-          "reason": "no_city_record_notice"
-        },
-        "provenance": {
-          "schema": "cityscroll.community_board_meeting_provenance.v1",
-          "source_url": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-          "source_record_id": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-          "source_index_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-          "observed_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 333514,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "5d5848b1bbbb1d573785fff29fdf1212acccdd1f19c928946f0e8df3a6026d32"
-          },
-          "adapter": "html_pdf_v1"
-        }
-      },
-      "source_provenance": {
-        "schema": "cityscroll.community_board_meeting_provenance.v1",
-        "source_url": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-        "source_record_id": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-        "source_index_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-        "observed_receipt": {
-          "schema": "cityscroll.community_board_source_receipt.v1",
-          "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-          "observed_at": "2026-09-30T12:59:02.901Z",
-          "status": "ok",
-          "fetch_status": "200",
-          "content_type": "text/html; charset=UTF-8",
-          "content_length": 333514,
-          "parser": "html_pdf_v1",
-          "reason": null,
-          "content_sha256": "5d5848b1bbbb1d573785fff29fdf1212acccdd1f19c928946f0e8df3a6026d32"
-        },
-        "adapter": "html_pdf_v1"
-      },
-      "entity_refs_all": [
-        "community-board:manhattan-cb-01",
-        "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/"
-      ],
-      "institution_edges": [
-        {
-          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
-          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
-          "edge_type": "hosts_meeting",
-          "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
-          "from": "community-board:manhattan-cb-01",
-          "to": "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-          "target_kind": "meeting",
-          "target_id": "meeting:community_board:https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-          "target_name": "Parks, Plazas & Open Space Committee",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fmanhattancb1.cityofnewyork.us%2Fevent%2Fwaterfront-parks-cultural-committee-13%2F",
-          "href": "/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fmanhattancb1.cityofnewyork.us%2Fevent%2Fwaterfront-parks-cultural-committee-13%2F",
-          "board_href": "/community-boards/manhattan-cb-01/",
-          "institution_refs": {
-            "board_ref": "community-board:manhattan-cb-01"
-          },
-          "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-          "source_record_id": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-            "observed_at": "2026-09-30T12:59:02.901Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 333514,
-            "parser": "html_pdf_v1",
-            "reason": null,
-            "content_sha256": "5d5848b1bbbb1d573785fff29fdf1212acccdd1f19c928946f0e8df3a6026d32"
-          },
-          "source_entry_evidence": null,
-          "provenance": {
-            "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-            "source_record_id": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-            "observed_receipt": {
-              "schema": "cityscroll.community_board_source_receipt.v1",
-              "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-              "observed_at": "2026-09-30T12:59:02.901Z",
-              "status": "ok",
-              "fetch_status": "200",
-              "content_type": "text/html; charset=UTF-8",
-              "content_length": 333514,
-              "parser": "html_pdf_v1",
-              "reason": null,
-              "content_sha256": "5d5848b1bbbb1d573785fff29fdf1212acccdd1f19c928946f0e8df3a6026d32"
-            },
-            "format": "html"
-          },
-          "join": {
-            "matched": true,
-            "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-01",
-            "event_date": "2026-09-15",
-            "publisher_identifier": "HTTPS://MANHATTANCB1.CITYOFNEWYORK.US/EVENT/WATERFRONT-PARKS-CULTURAL-COMMITTEE-13/",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
-          },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ],
-          "publication_basis": null
-        }
-      ],
-      "source_record": {
-        "source_system": "community_board",
-        "identifier": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-        "url": "https://manhattancb1.cityofnewyork.us/event/waterfront-parks-cultural-committee-13/",
-        "receipt": {
-          "schema": "cityscroll.community_board_source_receipt.v1",
-          "source_url": "https://manhattancb1.cityofnewyork.us/meetings/calendar/",
-          "observed_at": "2026-09-30T12:59:02.901Z",
-          "status": "ok",
-          "fetch_status": "200",
-          "content_type": "text/html; charset=UTF-8",
-          "content_length": 333514,
-          "parser": "html_pdf_v1",
-          "reason": null,
-          "content_sha256": "5d5848b1bbbb1d573785fff29fdf1212acccdd1f19c928946f0e8df3a6026d32"
-        },
-        "board_id": "manhattan-cb-01",
-        "role": "upcoming_meetings"
-      },
-      "minutes_freshness": {
-        "status": "not_published",
-        "latest_date": null,
-        "checked_at": "2026-11-24T18:27:14.027Z"
-      }
-    },
-    {
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
-      "meeting_id": "meeting:community_board:rec1uA1X3lFd2SBdO",
-      "source_keys": [
-        {
-          "source_system": "community_board",
-          "key_type": "publisher_event_id",
-          "value": "rec1uA1X3lFd2SBdO"
-        }
-      ],
-      "publisher_identifier": "rec1uA1X3lFd2SBdO",
-      "title": "Full Board",
-      "event_date": "2026-09-15",
-      "event_end": null,
-      "schedule": {
-        "schema": "cityscroll.meeting_schedule.v1",
-        "starts_at": null,
-        "timezone": "America/New_York",
-        "precision": "date_only",
-        "basis": "publisher_field",
-        "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/rec1uA1X3lFd2SBdO",
-        "observed_at": "2026-11-13T14:16:52.895Z",
-        "raw_date": "2026-09-15",
-        "raw_time": null,
-        "status": "date_only"
-      },
-      "meeting_family": "community_board_meeting_v0",
-      "activity": null,
-      "attendance_mode": null,
-      "speaking_rights": "unknown",
-      "observer_access": null,
-      "access_steps": [],
-      "venue": {
-        "name": "via Video Conference, 2017 First Avenue, New York, NY 10029",
-        "address": "via Video Conference, 2017 First Avenue, New York, NY 10029",
-        "mode": "not-stated",
-        "components": null,
-        "attendance_conflict": true
-      },
-      "participation": {
-        "links": [
-          {
-            "label": "Register to attend",
-            "url": "https://www.zoomgov.com/webinar/register/WN_jo7ZXcJiRkK81C8jp2wpjw"
-          }
-        ],
-        "remote_join_url": "https://www.zoomgov.com/webinar/register/WN_jo7ZXcJiRkK81C8jp2wpjw",
-        "emails": [],
-        "phones": [],
-        "source_url": null
-      },
-      "committee": null,
-      "agency": null,
-      "board_name": "Manhattan Community Board 11",
-      "description": null,
-      "search_text": "Full Board via Video Conference, 2017 First Avenue, New York, NY 10029 via Video Conference, 2017 First Avenue, New York, NY 10029 Full Board Board meeting Community Board Meetings Manhattan Community Board 11 via Video Conference, 2017 First Avenue, New York, NY 10029 Manhattan M11",
-      "affected_area": {
-        "scope": "local",
-        "boroughs": [
-          "Manhattan"
-        ],
-        "community_boards": [
-          "manhattan-cb-11"
-        ],
-        "community_districts": [
-          "M11"
-        ],
-        "neighborhoods": [],
-        "addresses": []
-      },
-      "meeting_documents": [],
-      "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/rec1uA1X3lFd2SBdO",
-      "source_system": "community_board",
-      "meeting_origin": "community_board_source_observed",
-      "source_receipt": {
-        "schema": "cityscroll.community_board_source_receipt.v1",
-        "source_url": "https://www.cb11m.org/calendar/",
-        "observed_at": "2026-11-13T14:16:52.895Z",
-        "status": "ok",
-        "fetch_status": "200",
-        "content_type": "text/html; charset=UTF-8",
-        "content_length": 131453,
-        "parser": "airtable_v1",
-        "reason": null,
-        "content_sha256": "bf83a20b2c67678ad7c1d7f091a8124dfd15dfd74a085b2fe4b314d32e90cfa9"
-      },
-      "join_status": "unknown",
-      "institution_refs": {
-        "agency_ref": null,
-        "board_ref": "community-board:manhattan-cb-11"
-      },
-      "compatibility": {
-        "legacy_notice_href": null,
-        "legacy_fragment_href": null,
-        "publisher_href": "https://airtable.com/shrEZxc5vi8McZNFb/rec1uA1X3lFd2SBdO"
-      },
-      "request_id": null,
-      "source_record_id": "rec1uA1X3lFd2SBdO",
-      "board_id": "manhattan-cb-11",
-      "record_kind": "event",
-      "record_id": "rec1uA1X3lFd2SBdO",
-      "record_url": "https://airtable.com/shrEZxc5vi8McZNFb/rec1uA1X3lFd2SBdO",
-      "date": "2026-09-15",
-      "start_at": null,
-      "end_at": null,
-      "category": null,
-      "format": "airtable",
-      "publisher_identifiers": [
-        "rec1uA1X3lFd2SBdO"
-      ],
-      "source_entry_evidence": null,
-      "source_role": "upcoming_meetings",
-      "observed_receipt": {
-        "schema": "cityscroll.community_board_source_receipt.v1",
-        "source_url": "https://www.cb11m.org/calendar/",
-        "observed_at": "2026-11-13T14:16:52.895Z",
-        "status": "ok",
-        "fetch_status": "200",
-        "content_type": "text/html; charset=UTF-8",
-        "content_length": 131453,
-        "parser": "airtable_v1",
-        "reason": null,
-        "content_sha256": "bf83a20b2c67678ad7c1d7f091a8124dfd15dfd74a085b2fe4b314d32e90cfa9"
-      },
-      "short_title": "Full Board",
-      "start_date": "2026-11-24T18:27:14.027Z",
-      "detail_retention": {
-        "schema": "cityscroll.community_board_retained_meeting_detail.v1",
-        "basis": "previously_admitted",
-        "omitted_from_upcoming": true,
-        "cancellation_inferred": false,
-        "linked_from": null,
-        "as_of_day": "2026-11-24"
-      },
-      "collection_visibility": "suppressed",
-      "timing_status": "past",
-      "type_of_notice_description": "Board meeting",
-      "section_name": "Community Board Meetings",
-      "meeting_join": {
-        "schema": "cityscroll.community_board_source_join.v1",
-        "status": "unknown",
-        "official": false,
-        "reason": "no_city_record_notice",
-        "board_id": "manhattan-cb-11",
-        "meeting_date": "2026-09-15",
-        "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/rec1uA1X3lFd2SBdO",
-        "source_record_id": "rec1uA1X3lFd2SBdO",
-        "join": {
-          "matched": false,
-          "method": "exact_board_date_publisher_identifier",
-          "reason": "no_city_record_notice"
-        },
-        "provenance": {
-          "schema": "cityscroll.community_board_meeting_provenance.v1",
-          "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/rec1uA1X3lFd2SBdO",
-          "source_record_id": "rec1uA1X3lFd2SBdO",
-          "source_index_url": "https://www.cb11m.org/calendar/",
-          "observed_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://www.cb11m.org/calendar/",
-            "observed_at": "2026-11-13T14:16:52.895Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 131453,
-            "parser": "airtable_v1",
-            "reason": null,
-            "content_sha256": "bf83a20b2c67678ad7c1d7f091a8124dfd15dfd74a085b2fe4b314d32e90cfa9"
-          },
-          "adapter": "airtable_v1"
-        }
-      },
-      "source_provenance": {
-        "schema": "cityscroll.community_board_meeting_provenance.v1",
-        "source_url": "https://airtable.com/shrEZxc5vi8McZNFb/rec1uA1X3lFd2SBdO",
-        "source_record_id": "rec1uA1X3lFd2SBdO",
-        "source_index_url": "https://www.cb11m.org/calendar/",
-        "observed_receipt": {
-          "schema": "cityscroll.community_board_source_receipt.v1",
-          "source_url": "https://www.cb11m.org/calendar/",
-          "observed_at": "2026-11-13T14:16:52.895Z",
-          "status": "ok",
-          "fetch_status": "200",
-          "content_type": "text/html; charset=UTF-8",
-          "content_length": 131453,
-          "parser": "airtable_v1",
-          "reason": null,
-          "content_sha256": "bf83a20b2c67678ad7c1d7f091a8124dfd15dfd74a085b2fe4b314d32e90cfa9"
-        },
-        "adapter": "airtable_v1"
-      },
-      "entity_refs_all": [
-        "community-board:manhattan-cb-11",
-        "meeting:community_board:rec1uA1X3lFd2SBdO"
-      ],
-      "institution_edges": [
-        {
-          "schema": "cityscroll.community_board_hosts_meeting_edge.v1",
-          "contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
-          "edge_type": "hosts_meeting",
-          "relation": "hosts_meeting",
-          "status": "promoted",
-          "promoted": true,
-          "reason": null,
-          "from": "community-board:manhattan-cb-11",
-          "to": "meeting:community_board:rec1uA1X3lFd2SBdO",
-          "target_kind": "meeting",
-          "target_id": "meeting:community_board:rec1uA1X3lFd2SBdO",
-          "target_name": "Full Board",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Arec1uA1X3lFd2SBdO",
-          "href": "/meetings/meeting%3Acommunity_board%3Arec1uA1X3lFd2SBdO",
-          "board_href": "/community-boards/manhattan-cb-11/",
-          "institution_refs": {
-            "board_ref": "community-board:manhattan-cb-11"
-          },
-          "source_url": "https://www.cb11m.org/calendar/",
-          "source_record_id": "rec1uA1X3lFd2SBdO",
-          "source_receipt": {
-            "schema": "cityscroll.community_board_source_receipt.v1",
-            "source_url": "https://www.cb11m.org/calendar/",
-            "observed_at": "2026-11-13T14:16:52.895Z",
-            "status": "ok",
-            "fetch_status": "200",
-            "content_type": "text/html; charset=UTF-8",
-            "content_length": 131453,
-            "parser": "airtable_v1",
-            "reason": null,
-            "content_sha256": "bf83a20b2c67678ad7c1d7f091a8124dfd15dfd74a085b2fe4b314d32e90cfa9"
-          },
-          "source_entry_evidence": null,
-          "provenance": {
-            "source_url": "https://www.cb11m.org/calendar/",
-            "source_record_id": "rec1uA1X3lFd2SBdO",
-            "observed_receipt": {
-              "schema": "cityscroll.community_board_source_receipt.v1",
-              "source_url": "https://www.cb11m.org/calendar/",
-              "observed_at": "2026-11-13T14:16:52.895Z",
-              "status": "ok",
-              "fetch_status": "200",
-              "content_type": "text/html; charset=UTF-8",
-              "content_length": 131453,
-              "parser": "airtable_v1",
-              "reason": null,
-              "content_sha256": "bf83a20b2c67678ad7c1d7f091a8124dfd15dfd74a085b2fe4b314d32e90cfa9"
-            },
-            "format": "airtable"
-          },
-          "join": {
-            "matched": true,
-            "method": "exact_board_date_publisher_identifier",
-            "board_id": "manhattan-cb-11",
-            "event_date": "2026-09-15",
-            "publisher_identifier": "REC1UA1X3LFD2SBDO",
-            "evidence": [
-              "exact_board_identity",
-              "exact_date",
-              "publisher_identifier"
-            ]
-          },
-          "evidence": [
-            "exact_board_identity",
-            "exact_publisher_identifier",
-            "exact_meeting_date",
-            "retained_source_url",
-            "observed_receipt",
-            "verified_source_join"
-          ],
-          "publication_basis": null
-        }
-      ],
-      "source_record": {
-        "source_system": "community_board",
-        "identifier": "rec1uA1X3lFd2SBdO",
-        "url": "https://airtable.com/shrEZxc5vi8McZNFb/rec1uA1X3lFd2SBdO",
-        "receipt": {
-          "schema": "cityscroll.community_board_source_receipt.v1",
-          "source_url": "https://www.cb11m.org/calendar/",
-          "observed_at": "2026-11-13T14:16:52.895Z",
-          "status": "ok",
-          "fetch_status": "200",
-          "content_type": "text/html; charset=UTF-8",
-          "content_length": 131453,
-          "parser": "airtable_v1",
-          "reason": null,
-          "content_sha256": "bf83a20b2c67678ad7c1d7f091a8124dfd15dfd74a085b2fe4b314d32e90cfa9"
-        },
-        "board_id": "manhattan-cb-11",
-        "role": "upcoming_meetings"
-      },
-      "minutes_freshness": {
-        "status": "not_published",
-        "latest_date": null,
-        "checked_at": "2026-11-24T18:27:14.027Z"
-      }
-    },
-    {
-      "object_type": "meeting",
-      "schema": "cityscroll.meeting_object.v1",
       "meeting_id": "meeting:community_board:1iq086dtevpopcoirspbvhqcip_R20260615T223000@google.com::2026-09-14",
       "source_keys": [
         {
@@ -47528,7 +46247,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701031",
-        "observed_at": "2026-11-14T13:54:10.820Z",
+        "observed_at": "2026-11-25T10:20:20.773Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -47552,7 +46271,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701031",
-          "observed_at": "2026-11-14T13:54:10.820Z",
+          "observed_at": "2026-11-25T10:20:20.773Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -47630,7 +46349,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701033",
-        "observed_at": "2026-11-14T13:54:10.820Z",
+        "observed_at": "2026-11-25T10:20:20.773Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -47654,7 +46373,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701033",
-          "observed_at": "2026-11-14T13:54:10.820Z",
+          "observed_at": "2026-11-25T10:20:20.773Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -47732,7 +46451,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701034",
-        "observed_at": "2026-11-14T13:54:10.820Z",
+        "observed_at": "2026-11-25T10:20:20.773Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -47756,7 +46475,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701034",
-          "observed_at": "2026-11-14T13:54:10.820Z",
+          "observed_at": "2026-11-25T10:20:20.773Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -47834,7 +46553,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701035",
-        "observed_at": "2026-11-14T13:54:10.820Z",
+        "observed_at": "2026-11-25T10:20:20.773Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -47858,7 +46577,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701035",
-          "observed_at": "2026-11-14T13:54:10.820Z",
+          "observed_at": "2026-11-25T10:20:20.773Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -47936,7 +46655,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819012",
-        "observed_at": "2026-11-14T13:54:10.820Z",
+        "observed_at": "2026-11-25T10:20:20.773Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -47960,7 +46679,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819012",
-          "observed_at": "2026-11-14T13:54:10.820Z",
+          "observed_at": "2026-11-25T10:20:20.773Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -48038,7 +46757,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819013",
-        "observed_at": "2026-11-14T13:54:10.820Z",
+        "observed_at": "2026-11-25T10:20:20.773Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -48062,7 +46781,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819013",
-          "observed_at": "2026-11-14T13:54:10.820Z",
+          "observed_at": "2026-11-25T10:20:20.773Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -48140,7 +46859,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819014",
-        "observed_at": "2026-11-14T13:54:10.820Z",
+        "observed_at": "2026-11-25T10:20:20.773Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -48164,7 +46883,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819014",
-          "observed_at": "2026-11-14T13:54:10.820Z",
+          "observed_at": "2026-11-25T10:20:20.773Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -48242,7 +46961,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819015",
-        "observed_at": "2026-11-14T13:54:10.820Z",
+        "observed_at": "2026-11-25T10:20:20.773Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -48266,7 +46985,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260819015",
-          "observed_at": "2026-11-14T13:54:10.820Z",
+          "observed_at": "2026-11-25T10:20:20.773Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -48344,7 +47063,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261028015",
-        "observed_at": "2026-11-14T13:54:10.820Z",
+        "observed_at": "2026-11-25T10:20:20.773Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -48368,7 +47087,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261028015",
-          "observed_at": "2026-11-14T13:54:10.820Z",
+          "observed_at": "2026-11-25T10:20:20.773Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
@@ -48459,7 +47178,7 @@
       "source_receipt": {
         "schema": "cityscroll.meeting_source_receipt.v1",
         "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261119007",
-        "observed_at": "2026-11-14T13:54:10.820Z",
+        "observed_at": "2026-11-25T10:20:20.773Z",
         "status": "ok",
         "fetch_status": "snapshot",
         "reason": null
@@ -48483,7 +47202,7 @@
         "receipt": {
           "schema": "cityscroll.meeting_source_receipt.v1",
           "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20261119007",
-          "observed_at": "2026-11-14T13:54:10.820Z",
+          "observed_at": "2026-11-25T10:20:20.773Z",
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null

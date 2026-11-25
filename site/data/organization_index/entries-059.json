@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":59,"first_ordinal":99887,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":59,"first_ordinal":99887,"entries":[
 {"s":"NASSAU COUNTY DETECTIVES CHARITABLE FOUNDATION","n":[["NASSAU COUNTY DETECTIVES CHARITABLE FOUNDATION OF NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["900799676"],"z":["11803"]}}},
 {"s":"NASSAU COUNTY FEIS COMMITTE","n":[["NASSAU COUNTY FEIS COMMITTE CORP",1]],"x":{"irs":{"r":1,"i":["272148229"],"z":["11743"]}}},
 {"s":"NASSAU COUNTY FIRE FIGHTERS BURN CENTER FOUNDATION","n":[["NASSAU COUNTY FIRE FIGHTERS BURN CENTER FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["113081830"],"z":["11530"]}}},

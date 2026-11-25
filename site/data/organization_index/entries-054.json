@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":54,"first_ordinal":91264,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":54,"first_ordinal":91264,"entries":[
 {"s":"MARBELITE EQUIPMENT","n":[["Marbelite Equipment Corp.",1],["Marbelite Equipment Corporation",1]],"x":{"ocp":{"r":1,"a":100000,"l":"2019-10-21","i":["20191009054"]},"sbs":{"r":1,"i":["100479"],"z":["08736"],"p":["WBE"]}}},
 {"s":"MARBER FOUNDATION","n":[["MARBER FOUNDATION",1]],"x":{"irs":{"r":1,"i":["884325933"],"z":["14208"]}}},
 {"s":"MARBLE FAIRBANKS ARCHITECTS","n":[["Marble Fairbanks Architects",3],["MARBLE FAIRBANKS ARCHITECTS",1]],"d":[["Marble Fairbanks Architects",1]],"x":{"ocp":{"r":1,"a":4000000,"l":"2007-07-23","i":["20070717027"]},"dbe":{"r":1,"i":["MARBLE FAIRBANKS ARCHITECTS"]},"sbs":{"r":1,"i":["103856"],"z":["10011"],"p":["WBE"]},"dol":{"r":2,"v":["dba","name"],"i":["25-67EEL-CR"],"z":["10011"]}}},

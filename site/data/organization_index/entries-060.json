@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"99590e269c84da52","shard":60,"first_ordinal":101336,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":60,"first_ordinal":101336,"entries":[
 {"s":"NETIYOIS","n":[["NETIYOIS INC",1]],"x":{"irs":{"r":1,"i":["994191773"],"z":["10977"]}}},
 {"s":"NETLIFE","n":[["NETLIFE",1]],"x":{"irs":{"r":1,"i":["800168424"],"z":["14450"]}}},
 {"s":"NETLOCITY VA","n":[["Netlocity Va Inc.",1]],"x":{"ocp":{"r":1,"a":306936,"l":"2014-11-06","i":["20141028039"]}}},
