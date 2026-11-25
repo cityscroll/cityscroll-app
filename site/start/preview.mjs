@@ -115,7 +115,7 @@ if (form) {
       email.value = "";
       status.textContent = "Thanks. Your feedback was sent to CityScroll.";
     } catch {
-      status.textContent = "We couldn’t confirm delivery. Your message is still here. Try again or use the email link.";
+      status.textContent = "We couldn’t confirm delivery. Your message is still here. Try again or use the feedback options on About.";
     } finally {
       topic.disabled = message.disabled = email.disabled = send.disabled = false;
     }
