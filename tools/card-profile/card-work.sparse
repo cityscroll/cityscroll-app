@@ -1195,7 +1195,6 @@
 /worker/src/source_health.mjs
 /worker/src/source_vault.mjs
 /worker/src/staffing_exams.mjs
-/worker/src/start_preview.mjs
 /worker/src/stats.mjs
 /worker/src/subscribe.mjs
 /worker/src/subsidy_lifecycle.mjs

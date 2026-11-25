@@ -1,4 +1,5 @@
 import { guideLocaleRedirect } from "./guide_navigation.mjs";
+import { startPreviewRequest, startPreviewResponse, usesStartPreview } from "./start/response.mjs";
 import { BROWSE_FACETS, BROWSE_OBJECTS, buildBrowseView, renderBrowseView } from "./browse_view.mjs";
 import { BROWSE_CONCEPTS } from "./browse_concept_view.mjs";
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
@@ -1639,15 +1640,21 @@ export default {
     const consultation = safeConsultations(url.pathname);
     if (consultation) return handleConsultation(request, env, consultation);
     const browse = browseRoute(url.pathname);
+    const browseDocument = ["landing", "facet", "concept", "object"].includes(browse.kind);
+    const preview = browseDocument && url.hostname === "cityscroll.org"
+      && request.method === "GET" && usesStartPreview(request);
+    const browseRequest = preview ? startPreviewRequest(request) : request;
+    const render = async (result) => preview ? startPreviewResponse(await result) : result;
     if (browse.kind === "landing") {
       // A record search that was posted back to Browse as traversal metadata is
       // canonically a Search request.
       const recordSearch = legacyBrowseRecordSearchTarget(url.href);
       if (recordSearch) return Response.redirect(new URL(recordSearch, url.origin), 302);
+      return render(env.ASSETS.fetch(browseRequest));
     }
-    if (browse.kind === "facet") return handleBrowse(request, env, browse.facet);
-    if (browse.kind === "concept") return handleBrowseConcept(request, env, browse.concept);
-    if (browse.kind === "object") return handleBrowseObject(request, env, browse.object);
+    if (browse.kind === "facet") return render(handleBrowse(browseRequest, env, browse.facet));
+    if (browse.kind === "concept") return render(handleBrowseConcept(browseRequest, env, browse.concept));
+    if (browse.kind === "object") return render(handleBrowseObject(browseRequest, env, browse.object));
     if (browse.kind === "unknown") {
       if (browse.facet === "land") return Response.redirect(new URL("/browse/zoning/", request.url), 302);
       return unavailableBrowseResponse(browse.facet);

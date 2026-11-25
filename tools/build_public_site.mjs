@@ -85,7 +85,7 @@ function publishStartPreviewBoot(siteDir) {
       }
     }
   };
-  for (const route of ["browse", "search", "now", "guide"]) visit(join(siteDir, route));
+  for (const route of ["search", "now", "guide"]) visit(join(siteDir, route));
 }
 
 const args = parseArgs(process.argv.slice(2));

@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import worker from "../src/worker.mjs";
-import { startPreviewRequest, startPreviewResponse, usesStartPreview } from "../src/start_preview.mjs";
+import { startPreviewRequest, startPreviewResponse, usesStartPreview } from "../../site/start/response.mjs";
+import pagesEdge from "../../site/pages_edge.mjs";
 
 const ctx = { waitUntil() {}, passThroughOnException() {} };
 
@@ -88,4 +89,31 @@ test("Worker preview handling is bounded to dynamic documents and the root redir
   } finally {
     globalThis.fetch = priorFetch;
   }
+});
+
+test("the Pages edge preserves the canonical Browse page and adds navigation only on opt-in", async t => {
+  const priorRewriter = globalThis.HTMLRewriter;
+  globalThis.HTMLRewriter = HeadRewriter;
+  t.after(() => { globalThis.HTMLRewriter = priorRewriter; });
+
+  const requests = [];
+  const document = "<html><head></head><body>Browse civic records</body></html>";
+  const env = { ASSETS: { fetch(request) {
+    requests.push(request);
+    return new Response(document, {
+      headers: { "Content-Type": "text/html", "Cache-Control": "public, max-age=0", ETag: "public" },
+    });
+  } } };
+  const url = "https://cityscroll.org/browse/";
+  const regular = await pagesEdge.fetch(new Request(url, { headers: { "If-None-Match": "public" } }), env);
+  const preview = await pagesEdge.fetch(new Request(url, {
+    headers: { Cookie: "cityscroll_start_preview=1", "If-None-Match": "public" },
+  }), env);
+  assert.equal(requests[0].headers.get("if-none-match"), "public");
+  assert.equal(requests[1].headers.get("if-none-match"), null);
+  assert.equal(await regular.text(), document);
+  assert.equal(preview.headers.get("cache-control"), "private, no-store");
+  const html = await preview.text();
+  assert.match(html, /src="\/start\/preview\.mjs"/);
+  assert.match(html, /Browse civic records/);
 });

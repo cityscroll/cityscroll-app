@@ -82,7 +82,7 @@ import { handleMcp } from "./mcp.mjs";
 import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
 import { handleOrganizationSearch } from "./organization_search_route.mjs";
 import { handleMirror } from "./mirror.mjs";
-import { startPreviewRequest, startPreviewResponse, usesStartPreview } from "./start_preview.mjs";
+import { startPreviewRequest, startPreviewResponse, usesStartPreview } from "../../site/start/response.mjs";
 import { handleHearings, handleMeetingICS, refreshHearings } from "./hearings.mjs";
 import { handleLandUpcomingHearings, refreshLandUpcomingHearings } from "./land_upcoming_hearings.mjs";
 import { handleZapProjectsLookup, refreshZapProjectsLookup } from "./zap_projects_lookup.mjs";

@@ -48,7 +48,7 @@ test("public site build publishes capability modules reached by client code", as
   });
 });
 
-test("Pages preview destinations boot the opt-in module without replacing their documents", async () => {
+test("Static Pages destinations boot the opt-in module without replacing their documents", async () => {
   await withTempDir("start-preview-build", async (temporary) => {
     const source = join(temporary, "source");
     const destination = join(temporary, "public");
@@ -64,8 +64,6 @@ test("Pages preview destinations boot the opt-in module without replacing their 
     const result = buildPublicFixture(source, destination);
     assert.equal(result.status, 0, result.stderr);
     for (const [route, marker] of [
-      ["browse/index.html", "browse-normal-rendering"],
-      ["browse/contracts/index.html", "browse-subpage-rendering"],
       ["search/index.html", "search-normal-rendering"],
       ["now/index.html", "now-normal-rendering"],
       ["guide/reference/index.html", "guide-normal-rendering"],
@@ -74,6 +72,10 @@ test("Pages preview destinations boot the opt-in module without replacing their 
       assert.ok(document.includes(START_PREVIEW_BOOT), `${route} boots the preview module`);
       assert.ok(document.includes(`<main>${marker}</main>`), `${route} retains normal rendering`);
       assert.ok(!document.includes('/start/preview.css'), `${route} does not load preview CSS before opt-in`);
+    }
+    for (const route of ["browse/index.html", "browse/contracts/index.html"]) {
+      const document = readFileSync(join(destination, route), "utf8");
+      assert.ok(!document.includes(START_PREVIEW_BOOT), `${route} is handled by the Pages edge`);
     }
     assert.ok(!readFileSync(join(destination, "index.html"), "utf8").includes(START_PREVIEW_BOOT));
   });
