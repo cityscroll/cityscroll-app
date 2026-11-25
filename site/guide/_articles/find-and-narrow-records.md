@@ -56,5 +56,5 @@ For a current application, return to [Exams](/browse/exams/) and check an open w
 
 Remove a filter or shorten the keyword in the same controls, then search again.
 A loaded list with no matches describes the records searched, not everything the city has done.
-If a source is **Unavailable** or **could not be reached**, its answer is unknown. Reload or open the record's official
+If a source **could not be reached**, its answer is unknown. Reload or open the record's official
 source before concluding it has no records.

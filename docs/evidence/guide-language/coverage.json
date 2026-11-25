@@ -47,7 +47,7 @@
       "article": "find-and-narrow-records",
       "locale": "en",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 39,
       "intentional_source_segments": 1
     },
@@ -143,7 +143,7 @@
       "article": "sources-and-coverage",
       "locale": "en",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },
@@ -215,7 +215,7 @@
       "article": "find-and-narrow-records",
       "locale": "es",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 38,
       "intentional_source_segments": 1
     },
@@ -311,7 +311,7 @@
       "article": "sources-and-coverage",
       "locale": "es",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },
@@ -383,7 +383,7 @@
       "article": "find-and-narrow-records",
       "locale": "zh-Hans",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 38,
       "intentional_source_segments": 1
     },
@@ -479,7 +479,7 @@
       "article": "sources-and-coverage",
       "locale": "zh-Hans",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },
@@ -551,7 +551,7 @@
       "article": "find-and-narrow-records",
       "locale": "ru",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 39,
       "intentional_source_segments": 1
     },
@@ -647,7 +647,7 @@
       "article": "sources-and-coverage",
       "locale": "ru",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },
@@ -719,7 +719,7 @@
       "article": "find-and-narrow-records",
       "locale": "bn",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 39,
       "intentional_source_segments": 1
     },
@@ -815,7 +815,7 @@
       "article": "sources-and-coverage",
       "locale": "bn",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },
@@ -887,7 +887,7 @@
       "article": "find-and-narrow-records",
       "locale": "ht",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 39,
       "intentional_source_segments": 1
     },
@@ -983,7 +983,7 @@
       "article": "sources-and-coverage",
       "locale": "ht",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },
@@ -1055,7 +1055,7 @@
       "article": "find-and-narrow-records",
       "locale": "ko",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 39,
       "intentional_source_segments": 1
     },
@@ -1151,7 +1151,7 @@
       "article": "sources-and-coverage",
       "locale": "ko",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },
@@ -1223,7 +1223,7 @@
       "article": "find-and-narrow-records",
       "locale": "fr",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 39,
       "intentional_source_segments": 1
     },
@@ -1319,7 +1319,7 @@
       "article": "sources-and-coverage",
       "locale": "fr",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },
@@ -1391,7 +1391,7 @@
       "article": "find-and-narrow-records",
       "locale": "pl",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 39,
       "intentional_source_segments": 1
     },
@@ -1487,7 +1487,7 @@
       "article": "sources-and-coverage",
       "locale": "pl",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },
@@ -1559,7 +1559,7 @@
       "article": "find-and-narrow-records",
       "locale": "ar",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 38,
       "intentional_source_segments": 1
     },
@@ -1655,7 +1655,7 @@
       "article": "sources-and-coverage",
       "locale": "ar",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },
@@ -1727,7 +1727,7 @@
       "article": "find-and-narrow-records",
       "locale": "ur",
       "status": "complete",
-      "source_sha256": "e97a6d694edbd7d8a167d2601bbe58656f67a764a4dbb23569e27feac8028cb9",
+      "source_sha256": "c52530e4343ad5b3c1a6a78ac09c60f12068ad5fb2c79192fa89dd389ab9fb22",
       "required_segments": 39,
       "intentional_source_segments": 1
     },
@@ -1823,7 +1823,7 @@
       "article": "sources-and-coverage",
       "locale": "ur",
       "status": "complete",
-      "source_sha256": "e388370dec4ddb8031aa2b2222732e9b3b771af56a01f2c1daed185f39591177",
+      "source_sha256": "682f805279cc46bf5348a14422682eb5ebf3c8bc3c89223e4a84e2e6ddc646ec",
       "required_segments": 123,
       "intentional_source_segments": 2
     },

@@ -75,8 +75,8 @@ publisher's text, and the publisher's own words stay on the page next to it.
 | Check date | When CityScroll last read the source | In the source line, for example “Read November 24, 2026” |
 | Latest available record | The newest record the publisher has released so far | The most recent publication date in a list |
 
-A recent check date with an old publication date usually means the publisher has released nothing
-newer, not that CityScroll is behind. For more on dates, see
+A recent check date beside an old publication date means CityScroll has read the source lately and
+the publisher's newest release is that old one. For more on dates, see
 [What dates and blanks mean](/guide/understand/dates-and-missing-information/).
 
 ## How often the sources change {#how-often}
