@@ -1,3 +1,5 @@
+import { providerDailyQuota, readProviderDailyQuota } from "./lib/provider_quota.mjs";
+import { deliveryHoldForSend } from "./lib/recipient_suppression.mjs";
 import { OPS_NOTIFICATION_POLICY } from "./lib/ops_notification_policy.mjs";
 import { projectEmergencyAlertHistory } from "./lib/emergency_outbox.mjs";
 // GET /admin/subs?key=… — operator signup-lifecycle roster from the worker's OWN SUBS
@@ -401,6 +403,40 @@ export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) 
     // surface carries a repair item.
     repair_queue: repairQueue,
   }, 200);
+}
+
+// An authenticated POST is a fixed, desk-only drill. It reads the production
+// hold decision for a reserved identity and never invokes an email transport.
+export async function handleAdminMailQuota(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (!["GET", "POST"].includes(req.method)) return privateJson({ error: "method" }, 405);
+  const drill = req.method === "POST";
+  const now = new Date();
+  let quota;
+  let hold;
+  if (drill) {
+    hold = await deliveryHoldForSend(env, "delivery-check@example.invalid");
+    quota = providerDailyQuota({ emails: { daily: {
+      used: 80, limit: 100, resets_at: new Date(Date.UTC(now.getUTCFullYear(),
+        now.getUTCMonth(), now.getUTCDate() + 1)).toISOString(),
+    } } });
+  } else {
+    try { quota = await readProviderDailyQuota(env); }
+    catch { quota = { status: "unavailable" }; }
+  }
+  let alert = null;
+  if (["warning", "exhausted", "unavailable"].includes(quota.status)) {
+    const guard = drill ? "provider-mail-quota-drill" : "provider-mail-quota";
+    const finding = quota.status === "unavailable" ? "Resend daily usage could not be read"
+      : `${drill ? "Test notification. " : ""}Resend daily email quota reached ${quota.used} of ${quota.limit}`;
+    const result = await emitOpsAlertOnce(env, { guard, stage: quota.status, now,
+      fingerprint: `${guard}:${quota.status}:${quota.resets_at || now.toISOString().slice(0, 10)}`,
+      findings: [finding] });
+    alert = { signature: result.signature, destination: result.reason };
+  }
+  return privateJson({ quota, drill, alert, ...(drill ? { hold_sources: hold?.holds || [] } : {}) },
+    quota.status === "unavailable" ? 503 : 200);
 }
 
 export async function handleAdminMailWatchdog(req, env, { now = new Date() } = {}) {

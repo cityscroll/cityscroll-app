@@ -93,3 +93,19 @@ ceiling also raises an ops alert (`enrollment-accepted-volume`,
 
 The default budgets are starting points; tune them per environment from the
 observed baseline.
+
+## Provider daily quota and verification
+
+The hourly reliability watchdog reads Resend account usage, including inbound and
+outbound email. At 80% it records a warning in Desk. At 100% it records an
+exhausted quota. An unavailable provider reading records a separate finding and
+fails the watchdog. These routine alerts follow the existing Desk notification
+policy. Welcome-volume containment continues to use its own local counter.
+
+Authenticated GET requests to `/admin/reliability/mail-quota` return the live
+daily count, limit, and reset time. An authenticated POST runs a fixed 80-of-100
+drill, labels its Desk finding as a test, and omits it from the repair queue.
+It also returns the sender's actual hold decision for the reserved address
+`delivery-check@example.invalid`. The drill never sends mail, changes budgets,
+or arms enrollment containment. A required D1 lookup that fails in production
+stops delivery and can be retried.

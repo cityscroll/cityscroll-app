@@ -19,13 +19,8 @@ import { recipientHash } from "./recipient_suppression.mjs";
 const SELECT_ONE = `SELECT recipient_hash, reason, provenance, held_at, lifted_at
   FROM operator_recipient_holds WHERE recipient_hash = ?`;
 
-/**
- * The active operator hold for one address, or null. A missing binding or a read
- * failure degrades to null — the combined boundary (deliveryHoldForRecipient)
- * still fails closed on the provider fact and on its own welcome-claim write, so
- * an unknown hold answer never sends mail it would otherwise have withheld.
- */
-export async function operatorQuarantineForRecipient(db, email) {
+/** Read the operator fact. Required send reads propagate storage outages. */
+export async function operatorQuarantineForRecipient(db, email, required = false) {
   if (!db?.prepare || !email) return null;
   try {
     const row = await db.prepare(SELECT_ONE).bind(await recipientHash(email)).first();
@@ -39,6 +34,7 @@ export async function operatorQuarantineForRecipient(db, email) {
       first_seen_at: row.held_at || null,
     };
   } catch {
+    if (required) throw new Error("Delivery hold lookup unavailable");
     return null;
   }
 }

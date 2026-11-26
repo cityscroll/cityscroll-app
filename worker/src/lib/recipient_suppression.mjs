@@ -51,7 +51,7 @@ export function normalizeSuppressionEntry(raw) {
  * tolerate an unknown answer (the welcome claim) fails closed on its own D1
  * write and never reaches the provider.
  */
-export async function suppressionForRecipient(db, email) {
+export async function suppressionForRecipient(db, email, required = false) {
   if (!db?.prepare || !email) return null;
   try {
     const row = await db.prepare(SELECT_ONE).bind(await recipientHash(email)).first();
@@ -63,8 +63,17 @@ export async function suppressionForRecipient(db, email) {
       first_seen_at: row.first_seen_at,
     };
   } catch {
+    if (required) throw new Error("Delivery hold lookup unavailable");
     return null;
   }
+}
+
+// Production delivery requires a positive read of both authorities. An outage is
+// retryable and must never persist a recipient as permanently suppressed.
+export async function deliveryHoldForSend(env, email) {
+  const required = env.WRANGLER_ENV === "production";
+  if (required && !env.DB?.prepare) throw new Error("Delivery hold lookup unavailable");
+  return deliveryHoldForRecipient(env.DB, email, required);
 }
 
 async function readAuthorityState(db) {
@@ -89,10 +98,10 @@ async function readAuthorityState(db) {
  * both facts hold, the operator quarantine is the primary reason because it is
  * the incident-bound fact that must persist across provider authority changes.
  */
-export async function deliveryHoldForRecipient(db, email) {
+export async function deliveryHoldForRecipient(db, email, required = false) {
   const [provider, quarantine] = await Promise.all([
-    suppressionForRecipient(db, email),
-    operatorQuarantineForRecipient(db, email),
+    suppressionForRecipient(db, email, required),
+    operatorQuarantineForRecipient(db, email, required),
   ]);
   if (!provider && !quarantine) return null;
   const holds = [];

@@ -62,7 +62,7 @@ import {
   rowAfterDeliveryNotBefore,
 } from "./lib/subscriptions.mjs";
 import { historicalDistrictOwedSections } from "./lib/district_owed_recovery.mjs";
-import { deliveryHoldForRecipient } from "./lib/recipient_suppression.mjs";
+import { deliveryHoldForSend } from "./lib/recipient_suppression.mjs";
 import {
   digestDayLogKey,
   buildDayLog,
@@ -657,7 +657,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
           preview = { subject, html, listUnsubscribe: listUnsub || null };
         }
         // Known-suppressed recipients get no digest attempt; the row stays visible below.
-        const suppression = send ? await deliveryHoldForRecipient(env.DB, w.email) : null;
+        const suppression = send ? await deliveryHoldForSend(env, w.email) : null;
         if (send && suppression) {
           suppressed = suppression;
         } else if (send) {
@@ -1196,7 +1196,7 @@ export async function processOneSub(env, s, ctx) {
     // Known-suppressed recipients get no digest attempt. Owed rows stay owed
     // (no reservation, no delivery marker) so they remain visible for
     // reconciliation if the suppression is ever lifted.
-    const recipientSuppression = send ? await deliveryHoldForRecipient(env.DB, s.email) : null;
+    const recipientSuppression = send ? await deliveryHoldForSend(env, s.email) : null;
     if (recipientSuppression) {
       return {
         sub: s.key,
@@ -1478,7 +1478,7 @@ export async function processAccountRollup(env, subs, ctx) {
 
     // Known-suppressed recipients get no rollup attempt. No occasion is reserved
     // and owed rows stay owed, so nothing is marked delivered that was not sent.
-    const recipientSuppression = send ? await deliveryHoldForRecipient(env.DB, email) : null;
+    const recipientSuppression = send ? await deliveryHoldForSend(env, email) : null;
     if (recipientSuppression) {
       return {
         sub: accountId,
@@ -1915,7 +1915,7 @@ export async function processAwardSub(env, s, ctx) {
       const payload = emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
       if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubUrl}>` };
       // Known-suppressed recipients get no digest attempt.
-      const suppression = send ? await deliveryHoldForRecipient(env.DB, s.email) : null;
+      const suppression = send ? await deliveryHoldForSend(env, s.email) : null;
       if (send && suppression) {
         suppressed = suppression;
       } else if (send) {

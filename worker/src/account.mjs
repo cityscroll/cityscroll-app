@@ -18,7 +18,7 @@
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { verifySignupTurnstile } from "./lib/signup_turnstile.mjs";
 import { sendTransactionalEmail } from "./lib/transactional_mail.mjs";
-import { deliveryHoldForRecipient } from "./lib/recipient_suppression.mjs";
+import { deliveryHoldForSend } from "./lib/recipient_suppression.mjs";
 import {
   enrollmentContainmentGate,
   observeAcceptedEnrollment,
@@ -161,7 +161,7 @@ async function handleLogin(req, env, cors) {
   // exactly as it refuses subscriber mail. The response stays the generic 202 so a
   // held address never leaks its state, and no challenge is created, so nothing
   // reaches the provider.
-  const hold = await deliveryHoldForRecipient(env.DB, email);
+  const hold = await deliveryHoldForSend(env, email);
   if (hold) {
     await recordSignupDecision(env, {
       route: LOGIN_ROUTE, actor, challenge: "verified", rateDecision: "held",

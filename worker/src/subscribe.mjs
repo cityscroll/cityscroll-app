@@ -35,7 +35,7 @@ import { overActorLimit } from "./lib/meter.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { prefsLink } from "./prefs.mjs";
 import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
-import { deliveryHoldForRecipient } from "./lib/recipient_suppression.mjs";
+import { deliveryHoldForSend } from "./lib/recipient_suppression.mjs";
 import { verifySignupTurnstile } from "./lib/signup_turnstile.mjs";
 import { sendTransactionalEmail } from "./lib/transactional_mail.mjs";
 import { enrollmentContainmentGate, observeAcceptedEnrollment } from "./lib/enrollment_instrumentation.mjs";
@@ -239,7 +239,7 @@ export async function enrollAndWelcome(env, candidate, { source = "following" } 
  * the caller's existing error contract is preserved.
  */
 async function deliverWelcomeOnce(env, email, template) {
-  const hold = await deliveryHoldForRecipient(env.DB, email);
+  const hold = await deliveryHoldForSend(env, email);
   if (hold) {
     await markWelcomeSuppressed(env.DB, { email, reason: hold.reason, provenance: hold.provenance });
     return { status: "suppressed", holds: hold.holds };
