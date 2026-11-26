@@ -1,4 +1,5 @@
 import { handleAdminMailQuota } from "../src/admin.mjs";
+import { deliverWelcomeOnce } from "../src/subscribe.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { providerDailyQuota } from "../src/lib/provider_quota.mjs";
@@ -43,11 +44,34 @@ test("the authenticated drill writes a labeled Desk alert without enqueuing repa
   const res = await handleAdminMailQuota(request, env);
   assert.equal(res.status, 200);
   const body = await res.json();
-  assert.equal(body.hold_sources, undefined);
+  assert.equal(body.welcome, undefined);
   assert.equal(body.alert.destination, "desk-only");
   const alert = JSON.parse(store.get("ops:alert:history:v1")).items[0];
   assert.equal(alert.signature, body.alert.signature);
   assert.equal(alert.queue, null);
   assert.equal(alert.guard, "provider-mail-quota-drill");
   assert.equal(alert.notification.email, false);
+});
+
+test("welcome preview distinguishes each hold, both lifts, and never claims a send", async () => {
+  let operatorActive = true;
+  let providerActive = false;
+  const env = { WRANGLER_ENV: "production", DB: {
+    prepare(sql) {
+      assert.match(sql, /^SELECT/);
+      assert.match(sql, /FROM (operator_recipient_holds|recipient_suppressions) WHERE/);
+      const active = sql.includes("operator_recipient_holds") ? operatorActive : providerActive;
+      return { bind() { return { async first() {
+        return active ? { reason: "test", provenance: "test", lifted_at: null } : null;
+      } }; } };
+    },
+  } };
+  const check = () => deliverWelcomeOnce(env, "synthetic-recipient", null, { previewOnly: true });
+  assert.deepEqual(await check(), { status: "suppressed", holds: ["operator-quarantine"] });
+  providerActive = true;
+  assert.deepEqual((await check()).holds, ["operator-quarantine", "provider-suppression"]);
+  operatorActive = false;
+  assert.deepEqual((await check()).holds, ["provider-suppression"]);
+  providerActive = false;
+  assert.deepEqual(await check(), { status: "eligible", holds: [] });
 });
