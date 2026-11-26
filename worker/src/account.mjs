@@ -18,6 +18,12 @@
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { verifySignupTurnstile } from "./lib/signup_turnstile.mjs";
 import { sendTransactionalEmail } from "./lib/transactional_mail.mjs";
+import { deliveryHoldForRecipient } from "./lib/recipient_suppression.mjs";
+import {
+  enrollmentContainmentGate,
+  observeAcceptedEnrollment,
+  recordSignupDecision,
+} from "./lib/enrollment_instrumentation.mjs";
 import {
   readSessionCookies,
   sessionCookieHeader,
@@ -143,6 +149,27 @@ async function handleLogin(req, env, cors) {
   const rate = await db.loginRateAllowed({ emailHash, ip, now });
   if (!rate.allowed) return json({ ok: false, reason: "rate-limited" }, 429, cors);
 
+  // Per-route temporary containment, shared with the subscriber signup routes. A
+  // contained route still answers the generic 202 so no state leaks, and no
+  // challenge is created, so nothing reaches the provider.
+  const LOGIN_ROUTE = "account-login";
+  const actor = ip || email;
+  const gate = await enrollmentContainmentGate(env, { route: LOGIN_ROUTE, actor, challenge: "verified" });
+  if (gate.contained) return generic202(cors);
+
+  // Either the provider suppression or the operator hold refuses the sign-in mail
+  // exactly as it refuses subscriber mail. The response stays the generic 202 so a
+  // held address never leaks its state, and no challenge is created, so nothing
+  // reaches the provider.
+  const hold = await deliveryHoldForRecipient(env.DB, email);
+  if (hold) {
+    await recordSignupDecision(env, {
+      route: LOGIN_ROUTE, actor, challenge: "verified", rateDecision: "held",
+      accepted: false, welcomeOutcome: "held", now: new Date(),
+    });
+    return generic202(cors);
+  }
+
   const intentSecret = newIntentSecret();
   const challengeToken = await db.createChallenge(email, intentSecret, now);
   const confirmUrl = `${CONFIRM_URL}#token=${encodeURIComponent(challengeToken)}`;
@@ -151,6 +178,9 @@ async function handleLogin(req, env, cors) {
   try {
     await sendLoginMail(env, email, confirmUrl, idempotencyKey);
     await db.markDelivered(challengeToken);
+    await observeAcceptedEnrollment(env, {
+      route: LOGIN_ROUTE, actor, challenge: "verified", welcomeOutcome: "sent",
+    });
   } catch (err) {
     // Provider/config failure fails closed. The raw token only ever lived in
     // request memory; the unmarked challenge simply expires and a fresh request

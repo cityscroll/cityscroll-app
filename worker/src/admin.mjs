@@ -37,6 +37,7 @@ import {
 import {
   digestWatchdogSnapshot,
   emitMailExceptionAlerts,
+  emitRecipientSuppressionFreshnessAlert,
   emitOpsAlertOnce,
   EVIDENCE_REQUIRED_GUARDS,
   opsAlertEvidenceFindings,
@@ -409,7 +410,10 @@ export async function handleAdminMailWatchdog(req, env, { now = new Date() } = {
   let snapshot = await mailWatchdogSnapshot(env, { now });
   if (!snapshot.ok) await emitMailExceptionAlerts(env, snapshot, { now });
   snapshot = await mailWatchdogSnapshot(env, { now });
-  return json(snapshot, snapshot.ok ? 200 : 503);
+  // The provider-suppression freshness watchdog shares this operator surface: a
+  // never-run or stale reconciliation is raised through the ops alert routing.
+  const suppressionFreshness = await emitRecipientSuppressionFreshnessAlert(env, { now });
+  return json({ ...snapshot, recipient_suppression_freshness: suppressionFreshness.freshness }, snapshot.ok ? 200 : 503);
 }
 
 // Extracts the operator key exactly the way the shared gates do: ?key= query param or an
@@ -2286,6 +2290,24 @@ export async function handleAdminRecipientSuppressionsReconcile(req, env, {
   }
   if (receipt.status === "resend-not-configured") return json({ error: "resend-not-configured" }, 503);
   if (receipt.status === "db-unavailable") return json({ error: "no-store" }, 503);
+
+  // A reconciliation that failed to apply (provider error, db write/read failure,
+  // or a rejected authority) is an operational finding — route it through the ops
+  // alert path. An ok receipt raises nothing. Counts only; no recipient named.
+  if (receipt.status !== "ok") {
+    try {
+      await emitOpsAlertOnce(env, {
+        guard: "recipient-suppression-freshness",
+        stage: `reconcile-${receipt.status}`,
+        fingerprint: `recipient-suppression-reconcile:${receipt.status}:${receipt.authority || "none"}`,
+        subject: "CityScroll provider suppression reconciliation failed",
+        findings: [`provider suppression reconciliation returned status ${receipt.status} for authority ${receipt.authority || "none"} in mode ${receipt.mode}`],
+        first_seen: now.toISOString(),
+        last_seen: now.toISOString(),
+        now,
+      });
+    } catch { /* alerting is best-effort; the receipt below is authoritative */ }
+  }
 
   const status = receipt.status === "ok" ? 200
     : receipt.status === "provider-error" || receipt.status === "db-apply-failed" || receipt.status === "db-read-failed"

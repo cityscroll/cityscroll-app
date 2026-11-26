@@ -35,9 +35,10 @@ import { overActorLimit } from "./lib/meter.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { prefsLink } from "./prefs.mjs";
 import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
-import { suppressionForRecipient } from "./lib/recipient_suppression.mjs";
+import { deliveryHoldForRecipient } from "./lib/recipient_suppression.mjs";
 import { verifySignupTurnstile } from "./lib/signup_turnstile.mjs";
 import { sendTransactionalEmail } from "./lib/transactional_mail.mjs";
+import { enrollmentContainmentGate, observeAcceptedEnrollment } from "./lib/enrollment_instrumentation.mjs";
 import {
   claimWelcomeDelivery,
   completeWelcomeDelivery,
@@ -92,6 +93,15 @@ export async function handleSubscribe(req, env, { verifyTurnstile = verifySignup
   const ip = req.headers.get("CF-Connecting-IP") || "";
   if (await overLimit(env, ip, email)) return reply(req, { ok: false, reason: "rate-limited" }, 429, cors);
 
+  // Temporary per-route containment sits after the verified challenge and the
+  // per-actor rate limit. It catches distributed synthetic traffic — many actors,
+  // one route — that no single-actor limit would stop, and self-expires. It is a
+  // bounded, retryable refusal, never an address or network ban.
+  const SIGNUP_ROUTE = "subscribe";
+  const actor = ip || email;
+  const gate = await enrollmentContainmentGate(env, { route: SIGNUP_ROUTE, actor, challenge: "verified" });
+  if (gate.contained) return reply(req, { ok: false, reason: "contained" }, 429, cors);
+
   const lang = typeof body.lang === "string" ? body.lang : "en";
   if (!topicless) {
     const prepared = prepareWatchFilter(lens, body.filter);
@@ -107,6 +117,9 @@ export async function handleSubscribe(req, env, { verifyTurnstile = verifySignup
     const sub = buildSubscription({ email, lens: prepared.lens, filter, channel: "email", freq: body.freq, lang });
     try {
       const enrolled = await enrollAndWelcome(env, sub, { source: "following" });
+      await observeAcceptedEnrollment(env, {
+        route: SIGNUP_ROUTE, actor, challenge: "verified", welcomeOutcome: enrolled.welcome?.status,
+      });
       return reply(req, { ok: true, key: enrolled.key }, 200, cors);
     } catch (error) {
       const reason = error?.code === "save-failed" ? "save-failed" : "send-failed";
@@ -117,6 +130,9 @@ export async function handleSubscribe(req, env, { verifyTurnstile = verifySignup
   const sub = buildTopiclessIntent({ email, source: TOPICLESS_SOURCE, lang });
   try {
     const enrolled = await enrollAndWelcome(env, sub, { source: TOPICLESS_SOURCE });
+    await observeAcceptedEnrollment(env, {
+      route: SIGNUP_ROUTE, actor, challenge: "verified", welcomeOutcome: enrolled.welcome?.status,
+    });
     return reply(req, {
       ok: true,
       no_topic: true,
@@ -223,10 +239,10 @@ export async function enrollAndWelcome(env, candidate, { source = "following" } 
  * the caller's existing error contract is preserved.
  */
 async function deliverWelcomeOnce(env, email, template) {
-  const suppression = await suppressionForRecipient(env.DB, email);
-  if (suppression) {
-    await markWelcomeSuppressed(env.DB, { email, reason: suppression.reason });
-    return { status: "suppressed" };
+  const hold = await deliveryHoldForRecipient(env.DB, email);
+  if (hold) {
+    await markWelcomeSuppressed(env.DB, { email, reason: hold.reason, provenance: hold.provenance });
+    return { status: "suppressed", holds: hold.holds };
   }
   if (!env.DB?.prepare) {
     // No ledger binding (local/unconfigured deploy): legacy direct send.
@@ -302,6 +318,7 @@ function reply(req, obj, status, cors) {
     "unsupported-scope": ["Check the saved scope", "That Administrative Code provision cannot be followed exactly. Return to the provision page and try again."],
     "channel-unsupported": ["Email only", "CityScroll currently sends watches by email."],
     "rate-limited": ["Try again tomorrow", "Too many signup requests were made for this address or network."],
+    "contained": ["Try again shortly", "Signups are briefly paused after an unusual volume of requests. Please try again a little later."],
     "bot-check": ["Security check needed", "Enable JavaScript and submit the form again so we can verify this signup."],
     "bot-check-unavailable": ["Security check unavailable", "We couldn't complete the signup security check. Please try again shortly."],
     "send-failed": obj.subscribed

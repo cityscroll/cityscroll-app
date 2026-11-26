@@ -1,4 +1,5 @@
 import { opsNotificationDecision } from "./lib/ops_notification_policy.mjs";
+import { evaluateSuppressionFreshness, suppressionReconcileMaxAgeMs } from "./lib/recipient_suppression.mjs";
 import { digestDayLogKey, sentWatchKeysFromDayLog } from "./lib/digest_ops.mjs";
 import { claimEmergencyDelivery, completeEmergencyDelivery, emergencyDeliveryProjection } from "./lib/emergency_outbox.mjs";
 import {
@@ -1174,6 +1175,37 @@ async function appendMailFindingsHistory(env, records, now = new Date()) {
     items,
   });
   return items;
+}
+
+/**
+ * Freshness watchdog for the provider-suppression reconciliation. A reconciliation
+ * that has never run, or whose last successful run is older than the declared
+ * maximum, is an operational finding routed through the same ops alert path (desk
+ * by default — not an emergency). A fresh authority raises nothing. The receipt and
+ * the alert name only counts and timestamps, never a recipient.
+ */
+export async function emitRecipientSuppressionFreshnessAlert(env, { now = new Date() } = {}) {
+  const freshness = await evaluateSuppressionFreshness(env?.DB, {
+    now,
+    maxAgeMs: suppressionReconcileMaxAgeMs(env),
+  });
+  if (freshness.fresh) return { freshness, alert: null };
+  const finding = freshness.status === "never-reconciled"
+    ? "provider suppression list has never been reconciled against the mail provider"
+    : freshness.status === "stale"
+      ? `provider suppression reconciliation is stale: last successful run ${freshness.applied_at} is older than the declared maximum of ${freshness.max_age_ms}ms`
+      : `provider suppression freshness is unknown: ${freshness.reason}`;
+  const alert = await emitOpsAlertOnce(env, {
+    guard: "recipient-suppression-freshness",
+    stage: freshness.status,
+    fingerprint: `recipient-suppression-freshness:${freshness.status}`,
+    subject: "CityScroll provider suppression reconciliation is not fresh",
+    findings: [finding],
+    first_seen: now.toISOString(),
+    last_seen: now.toISOString(),
+    now,
+  });
+  return { freshness, alert };
 }
 
 export async function emitMailExceptionAlerts(env, snapshot, { now = new Date() } = {}) {

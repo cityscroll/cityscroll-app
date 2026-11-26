@@ -8,8 +8,15 @@
 // Receipts carry counts only — never addresses — so they are safe for shared logs.
 
 import { isValidEmail, normalizeEmail } from "./subscriptions.mjs";
+import { operatorQuarantineForRecipient } from "./operator_quarantine.mjs";
 
 export const SUPPRESSION_PROVENANCE_PROVIDER = "provider-suppression-list";
+
+// Declared maximum age for a successful provider-suppression reconciliation
+// before the authority is treated as stale. The reconcile is an operator-run
+// command, so this bounds how long the last run may stand before the freshness
+// check alerts. Override with the SUPPRESSION_RECONCILE_MAX_AGE_MS env var.
+export const SUPPRESSION_RECONCILE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 
 const SELECT_ONE = `SELECT recipient_hash, reason, provenance, suppressed_at, first_seen_at,
   lifted_at, reconciliation_id FROM recipient_suppressions WHERE recipient_hash = ?`;
@@ -66,6 +73,82 @@ async function readAuthorityState(db) {
   } catch {
     return null;
   }
+}
+
+/**
+ * The combined delivery hold for one recipient: the provider suppression fact and
+ * the operator incident-quarantine fact read together. Returns null only when
+ * NEITHER holds; a non-null result means delivery must be refused. The two facts
+ * are independent — each stored and reconciled on its own authority — so a
+ * provider refresh or lift never clears a quarantine, and a quarantine never
+ * touches the provider row.
+ *
+ * The returned shape is a superset of the legacy provider-only
+ * suppressionForRecipient result (reason, provenance, suppressed_at,
+ * first_seen_at), so existing send-boundary skip receipts keep their shape. When
+ * both facts hold, the operator quarantine is the primary reason because it is
+ * the incident-bound fact that must persist across provider authority changes.
+ */
+export async function deliveryHoldForRecipient(db, email) {
+  const [provider, quarantine] = await Promise.all([
+    suppressionForRecipient(db, email),
+    operatorQuarantineForRecipient(db, email),
+  ]);
+  if (!provider && !quarantine) return null;
+  const holds = [];
+  if (quarantine) holds.push("operator-quarantine");
+  if (provider) holds.push("provider-suppression");
+  const primary = quarantine || provider;
+  return {
+    held: true,
+    holds,
+    reason: primary.reason,
+    provenance: primary.provenance,
+    suppressed_at: provider?.suppressed_at ?? null,
+    first_seen_at: primary.first_seen_at,
+    quarantine: quarantine || null,
+    provider: provider || null,
+  };
+}
+
+/** The effective declared maximum reconciliation age, with an env override. */
+export function suppressionReconcileMaxAgeMs(env) {
+  const override = Number(env?.SUPPRESSION_RECONCILE_MAX_AGE_MS);
+  return Number.isFinite(override) && override > 0 ? override : SUPPRESSION_RECONCILE_MAX_AGE_MS;
+}
+
+/**
+ * Freshness of the last successful provider-suppression reconciliation. A run
+ * whose authority cursor is missing (never reconciled) or older than maxAgeMs is
+ * NOT fresh; the caller alerts on that through the ops alert routing. This is a
+ * read-only evaluation — it writes nothing and names no recipient.
+ */
+export async function evaluateSuppressionFreshness(db, {
+  now = new Date(),
+  maxAgeMs = SUPPRESSION_RECONCILE_MAX_AGE_MS,
+} = {}) {
+  const at = now.toISOString();
+  const base = {
+    schema: "cityscroll.recipient-suppression-freshness.v1",
+    max_age_ms: maxAgeMs,
+    at,
+  };
+  if (!db?.prepare) return { ...base, status: "unknown", fresh: false, reason: "db-unavailable" };
+  const state = await readAuthorityState(db);
+  if (!state?.applied_at || !Number.isFinite(Date.parse(state.applied_at))) {
+    return { ...base, status: "never-reconciled", fresh: false, reason: "no-successful-reconciliation" };
+  }
+  const ageMs = now.getTime() - Date.parse(state.applied_at);
+  const fresh = ageMs >= 0 && ageMs <= maxAgeMs;
+  return {
+    ...base,
+    status: fresh ? "fresh" : "stale",
+    fresh,
+    age_ms: ageMs,
+    applied_at: state.applied_at,
+    last_authority: state.last_authority || null,
+    last_reconciliation_id: state.last_reconciliation_id || null,
+  };
 }
 
 async function digestHex(value) {
