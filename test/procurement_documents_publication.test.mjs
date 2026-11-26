@@ -165,3 +165,34 @@ test("A6: every published section-text page is free of PUA mojibake, replacement
   assert.ok(doi);
   assert.match(doi.payload.pages.at(-1).text, /• Any employee of a contractor/);
 });
+
+test("A7: parser hardening flags scanned attachments, preserves statute/compound hyphens, strips running headers, and builds clean jumps", () => {
+  const publication = readProcurementDocumentPublication(PUBLIC_DATA);
+  const [{ sectionText }] = publication.shards;
+  const byId = new Map(sectionText.sections.map((item) => [item.entry.id, item.payload]));
+
+  // #1: Scanned image pages 65-66 (Attachment A & B) are explicitly flagged ocr_required
+  const gs = byId.get("general-specifications");
+  const ocrPages = gs.pages.filter((pg) => pg.ocr_required).map((pg) => pg.pdf_page);
+  assert.deepEqual(ocrPages, [65, 66]);
+
+  // #2: Real hyphens in legal statutes and compound words are preserved (never swallowed)
+  const allText = sectionText.sections.flatMap((s) => s.payload.pages.map((pg) => pg.text)).join("\n");
+  assert.match(allText, /Section 6-129/);
+  assert.doesNotMatch(allText, /Section 6129|minorityowned|NONRESPONSIVE|30day|antiretaliation/);
+
+  // #3: Clean jump chips (no bogus .pdf root bookmark on cover; real titles on agreement/gen specs/mwbe)
+  assert.equal(byId.get("cover").jumps.length, 0);
+  assert.ok(byId.get("agreement").jumps.some((j) => j.label === "ARTICLE 1 — THE CONTRACT"));
+  assert.ok(byId.get("general-specifications").jumps.some((j) => /Article 2 — CONTRACTOR/i.test(j.label)));
+  assert.ok(byId.get("mwbe-notice").jumps.every((j) => !/^Section 6 — 129/.test(j.label)));
+
+  // #4: Tabular sections preserve column layout
+  assert.equal(byId.get("schedule-a-reference").layout_mode, "tabular");
+  assert.equal(byId.get("schedule-a-insurance").layout_mode, "tabular");
+
+  // #6: Repeated running headers are hoisted and stripped from body pages
+  assert.ok(byId.get("mwbe-notice").running_headers.includes("PIN # 84627B0012"));
+  assert.ok(byId.get("prevailing-wage-schedule").running_headers.includes("OFFICE OF THE COMPTROLLER, CITY OF NEW YORK"));
+  assert.doesNotMatch(byId.get("mwbe-notice").pages[0].text, /^PIN # 84627B0012/m);
+});
