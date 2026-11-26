@@ -28,6 +28,41 @@ INDEX_SCHEMA = "cityscroll.procurement_document_section_text_index.v1"
 SHARD_SCHEMA = "cityscroll.procurement_document_section_text.v1"
 MAX_CHARS_PER_PAGE = 50_000
 
+# Map legacy Word Symbol / Wingdings Private-Use-Area glyphs and non-standard
+# punctuation to clean standard Unicode so browsers never render tofu boxes.
+PUA_GLYPH_MAP = str.maketrans({
+    "\uf0b7": "•",
+    "\uf0a7": "•",
+    "\uf06c": "•",
+    "\uf075": "•",
+    "\uf0b0": "•",
+    "\uf0d8": "▸",
+    "\uf0de": "▸",
+    "\uf0e0": "▸",
+    "\uf0fc": "✓",
+    "\uf050": "✓",
+    "\uf0a8": "☐",
+    "\uf06f": "☐",
+    "\uf0fe": "☒",
+    "\uf0fd": "☒",
+    "\u2010": "-",
+    "\u2011": "-",
+    "\u2212": "-",
+    "\u00a0": " ",
+    "\u2007": " ",
+    "\u2009": " ",
+    "\u202f": " ",
+    "\u25aa": "•",
+})
+
+STRIP_CONTROL_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\u00ad\ufeff\u200b-\u200d]")
+UNMAPPED_PUA_RE = re.compile(r"[\ue000-\uf8ff\ufffd]")
+DOT_LEADER_RE = re.compile(r"(?:\s*\.){5,}\s*")
+LIST_OR_HEADING_START_RE = re.compile(
+    r"^(?:[•▪▸✓☐☒\-]|(?:\(?[0-9]{1,3}|[A-Za-z]|[ivxlcdmIVXLCDM]{1,5})[.)]\s|"
+    r"(?:ARTICLE|SECTION|PART|SCHEDULE|APPENDIX|ITEM|NOTE|PIN\s*#)\b)"
+)
+
 SECTION_SCOPE_BY_ID = {
     "cover": "bid_specific",
     "schedule-a-reference": "bid_specific",
@@ -49,12 +84,60 @@ def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def clean_page_text(text: str, *, collapse_inline_spaces: bool = False) -> str:
+def normalize_pdf_glyphs(text: str) -> str:
     text = text.replace("\r\n", "\n").replace("\r", "\n")
+    text = text.translate(PUA_GLYPH_MAP)
+    text = STRIP_CONTROL_RE.sub("", text)
+    text = UNMAPPED_PUA_RE.sub("", text)
+    text = re.sub(r"([☒☐])(?=[A-Za-z0-9_])", r"\1 ", text)
+    text = DOT_LEADER_RE.sub(" — ", text)
+    text = re.sub(r"\(\s*\n+\s*([■□☒☐])\)", r"(\1)", text)
+    text = re.sub(r"(?m)^([•▸])\s*\n+(?=\S)", r"\1 ", text)
     text = re.sub(r"[ \t]+\n", "\n", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
+def reflow_prose_page(text: str) -> str:
+    """Unwrap soft mid-sentence PDF column wraps while keeping headings, lists, and tables intact."""
+    blocks = text.split("\n\n")
+    out_blocks: list[str] = []
+    for block in blocks:
+        lines = [line.strip() for line in block.splitlines() if line.strip()]
+        if len(lines) <= 1:
+            if lines:
+                out_blocks.append(lines[0])
+            continue
+        merged: list[str] = [lines[0]]
+        for nxt in lines[1:]:
+            prev = merged[-1]
+            prev_is_heading = prev.isupper() and len(prev) <= 85
+            nxt_is_heading = nxt.isupper() and len(nxt) <= 85
+            can_join = (
+                len(prev) >= 38
+                and not prev.endswith(":")
+                and not prev_is_heading
+                and not nxt_is_heading
+                and not LIST_OR_HEADING_START_RE.match(nxt)
+            )
+            if can_join:
+                if prev.endswith("-") and not prev.endswith(" -"):
+                    merged[-1] = prev + nxt
+                else:
+                    merged[-1] = f"{prev} {nxt}"
+            else:
+                merged.append(nxt)
+        out_blocks.append("\n".join(merged))
+    return "\n\n".join(out_blocks)
+
+
+def clean_page_text(text: str, *, collapse_inline_spaces: bool = False, reflow: bool = False) -> str:
+    text = normalize_pdf_glyphs(text)
     if collapse_inline_spaces:
         text = re.sub(r"[^\S\n]+", " ", text)
+    if reflow:
+        text = reflow_prose_page(text)
+    text = re.sub(r"[ \t]{2,}", " ", text)
     text = text.strip()
     if len(text) > MAX_CHARS_PER_PAGE:
         text = text[:MAX_CHARS_PER_PAGE].rstrip() + "…"
@@ -266,6 +349,19 @@ def build_section_text_publication(
         sec_pages = all_pages[p0 - 1 : p1]
         scope_cls = scope_class_for(sec)
         jumps = build_section_jumps(sec, sec_pages, bookmarks, anticipated_trades)
+        use_reflow = scope_cls != "reference_schedule" and sec_id != "prevailing-wage-schedule"
+        rendered_pages = []
+        for pg in sec_pages:
+            txt = reflow_prose_page(pg["text"]) if use_reflow else pg["text"]
+            rendered_pages.append(
+                {
+                    "pdf_page": pg["pdf_page"],
+                    "text": txt,
+                    "chars": len(txt),
+                    "sha256": sha256_bytes(txt.encode("utf-8")),
+                    "ocr_required": len(txt) == 0,
+                }
+            )
 
         shard_obj = {
             "schema": SHARD_SCHEMA,
@@ -286,16 +382,7 @@ def build_section_text_publication(
                 "anchor": str(sec.get("anchor") or ""),
             },
             "jumps": jumps,
-            "pages": [
-                {
-                    "pdf_page": pg["pdf_page"],
-                    "text": pg["text"],
-                    "chars": pg["chars"],
-                    "sha256": sha256_bytes(pg["text"].encode("utf-8")),
-                    "ocr_required": pg["chars"] == 0,
-                }
-                for pg in sec_pages
-            ],
+            "pages": rendered_pages,
         }
         shard_bytes = (json.dumps(shard_obj, ensure_ascii=False, separators=(",", ":")) + "\n").encode("utf-8")
         rel_path = f"procurement_documents/rfx-{rfp_id}/sections/{sec_id}.json"

@@ -149,3 +149,19 @@ test("A5: publishProcurementDocuments copies all 13 section shards and rejects a
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("A6: every published section-text page is free of PUA mojibake, replacement chars, and dot-leader/bullet noise", () => {
+  const publication = readProcurementDocumentPublication(PUBLIC_DATA);
+  const [{ sectionText }] = publication.shards;
+  for (const item of sectionText.sections) {
+    for (const pg of item.payload.pages) {
+      assert.doesNotMatch(pg.text, /[\uE000-\uF8FF\uFFFD]/, `${item.entry.id} p.${pg.pdf_page} has PUA/replacement char`);
+      assert.doesNotMatch(pg.text, /â€|Ã[\x80-\xbf]|Â[\xa0-\xbf]/, `${item.entry.id} p.${pg.pdf_page} has UTF-8/Latin-1 mojibake`);
+      assert.doesNotMatch(pg.text, /\.{6,}/, `${item.entry.id} p.${pg.pdf_page} has raw dot-leader run`);
+      assert.doesNotMatch(pg.text, /^•\n\n/m, `${item.entry.id} p.${pg.pdf_page} has orphan bullet`);
+    }
+  }
+  const doi = sectionText.sections.find((item) => item.entry.id === "notices-whistleblower-doi");
+  assert.ok(doi);
+  assert.match(doi.payload.pages.at(-1).text, /• Any employee of a contractor/);
+});
