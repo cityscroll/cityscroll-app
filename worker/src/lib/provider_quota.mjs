@@ -16,7 +16,9 @@ export async function readProviderDailyQuota(env) {
   const res = await fetch("https://api.resend.com/usage", {
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}` },
     signal: AbortSignal.timeout(8000),
-    redirect: "error",
+    // Workers returns redirects to the caller in manual mode. The status
+    // check below refuses them before credentials can reach another origin.
+    redirect: "manual",
   });
   if (!res.ok) throw new Error(`Provider usage HTTP ${res.status}`);
   return providerDailyQuota(await res.json());

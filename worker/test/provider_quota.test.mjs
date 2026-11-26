@@ -2,7 +2,7 @@ import { handleAdminMailQuota } from "../src/admin.mjs";
 import { deliverWelcomeOnce } from "../src/subscribe.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { providerDailyQuota } from "../src/lib/provider_quota.mjs";
+import { providerDailyQuota, readProviderDailyQuota } from "../src/lib/provider_quota.mjs";
 import { deliveryHoldForSend } from "../src/lib/recipient_suppression.mjs";
 
 test("provider quota includes every email charged to the day", () => {
@@ -74,4 +74,16 @@ test("welcome preview distinguishes each hold, both lifts, and never claims a se
   assert.deepEqual((await check()).holds, ["provider-suppression"]);
   providerActive = false;
   assert.deepEqual(await check(), { status: "hold-clear", holds: [] });
+});
+
+test("quota transport refuses redirects before following them with the provider credential", async (t) => {
+  let calls = 0;
+  t.mock.method(globalThis, "fetch", async (url, init) => {
+    calls++;
+    assert.equal(url, "https://api.resend.com/usage");
+    assert.equal(init.redirect, "manual");
+    return new Response(null, { status: 302, headers: { location: "https://redirect.invalid/" } });
+  });
+  await assert.rejects(readProviderDailyQuota({ RESEND_API_KEY: "test" }), /HTTP 302/);
+  assert.equal(calls, 1);
 });
