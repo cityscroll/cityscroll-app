@@ -1,0 +1,63 @@
+[
+  {
+    "document_id": "126232242",
+    "sha256": "49fa58072a4eb772a4c517c93842e4ed2cae097a4cc22db03bf82f9c439694dc",
+    "page_count": 8,
+    "pages": [
+      {
+        "page_number": 1,
+        "text": "Part 1: M/WBE Participation Goals\nThe M/WBE Participation Goals are found in the M/WBE Requirements tab of your response\nto a Solicitation (RFx) in PASSPort."
+      }
+    ],
+    "locators": [
+      ["mwbe-requirements-tab", 1, "The M/WBE Participation Goals are found in the M/WBE Requirements tab"]
+    ]
+  },
+  {
+    "document_id": "255189851",
+    "sha256": "47a49964eb7a5a65dbe4c62e3e9f461388fdd991446a14fcdb45b398c0ee2e31",
+    "page_count": 92,
+    "pages": [
+      {
+        "page_number": 6,
+        "text": "proposers must complete the Schedule B –\nM/WBE Utilization Plan and submit it with their proposal."
+      },
+      {
+        "page_number": 8,
+        "text": "Proposals from New York State or City certified M/WBEs shall receive a point preference of 5% of the total technical\npoints earned in the evaluation of the proposal."
+      }
+    ],
+    "locators": [
+      ["mwbe-utilization-plan", 6, "proposers must complete the Schedule B"],
+      ["mwbe-technical-point-preference", 8, "point preference of 5% of the total technical points earned"]
+    ]
+  },
+  {
+    "document_id": "257675655",
+    "sha256": "ae3eade5358946dfcc8f6222dde8a60f37950071c364dedbe6e8f9c350304da4",
+    "page_count": 91,
+    "pages": [
+      {
+        "page_number": 40,
+        "text": "M/WBE PARTICIPATION GOALS\n\n• The M/WBE goal for this project is 30%."
+      }
+    ],
+    "locators": [
+      ["mwbe-participation-goal", 40, "The M/WBE goal for this project is 30%."]
+    ]
+  },
+  {
+    "document_id": "258285320",
+    "sha256": "cea2d55be63aa85be8873cca259640ebaeeeb8626d1227cadc1fdefb8376a730",
+    "page_count": 8,
+    "pages": [
+      {
+        "page_number": 1,
+        "text": "Addendum #2\nNovember 19, 2026\n\nExcept as otherwise stated below and any previous and subsequent\nAddenda, the above-mentioned Solicitation remains unchanged."
+      }
+    ],
+    "locators": [
+      ["mwbe-addendum-2-review", 1, "any previous and subsequent Addenda"]
+    ]
+  }
+]

@@ -18,17 +18,16 @@ const SHARD_PATH = path.join(PUBLIC_DATA, "procurement_documents/rfx-37728.json"
 const SECTION_DIR_PATH = path.join(PUBLIC_DATA, "procurement_documents/rfx-37728");
 
 function copyCommittedPublication(destination) {
-  mkdirSync(path.join(destination, "procurement_documents"), { recursive: true });
+  mkdirSync(destination, { recursive: true });
   cpSync(MANIFEST_PATH, path.join(destination, "procurement_documents.json"));
-  cpSync(SHARD_PATH, path.join(destination, "procurement_documents/rfx-37728.json"));
-  cpSync(SECTION_DIR_PATH, path.join(destination, "procurement_documents/rfx-37728"), { recursive: true });
+  cpSync(path.join(PUBLIC_DATA, "procurement_documents"), path.join(destination, "procurement_documents"), { recursive: true });
 }
 
 test("A1: the served manifest and shard declare matching contract bytes and rows", () => {
   const publication = readProcurementDocumentPublication(PUBLIC_DATA);
   assert.equal(publication.manifest.schema, "cityscroll.procurement_document_read_model.v1");
   assert.equal(publication.manifest.representation, "sharded");
-  assert.equal(publication.shards.length, 1);
+  assert.equal(publication.shards.length, 2);
   const [{ entry, bytes, shard }] = publication.shards;
   assert.equal(entry.rfp_id, "37728");
   assert.equal(entry.bytes, bytes.length);
@@ -61,7 +60,7 @@ test("A2: publication copies validated bytes and leaves the shared read model un
 
   try {
     const result = publishProcurementDocuments({ generatedDir, siteDataDir });
-    assert.equal(result.row_count, 2);
+    assert.equal(result.row_count, 6);
     assert.ok(readFileSync(path.join(siteDataDir, "procurement_documents.json")).equals(readFileSync(MANIFEST_PATH)));
     assert.ok(readFileSync(path.join(siteDataDir, "procurement_documents/rfx-37728.json")).equals(readFileSync(SHARD_PATH)));
     assert.ok(readFileSync(sharedPath).equals(sharedBytes));
@@ -216,7 +215,36 @@ test("A8: published rfx-37728 shard flags image-only attachments, includes full 
   for (const row of [opening, contract]) {
     for (const item of [...(row.events || []), ...(row.facts || []), ...(row.abstentions || [])]) {
       if (!item.excerpt) continue;
-      assert.doesNotMatch(item.excerpt, /Novem ber|Comm ercial|Work ers|Disabi lity|Bid Sec urity|Prop erty/);
+      assert.doesNotMatch(item.excerpt, /Novem ber|Comm ercial|Work ers|Disabi lity|Compensat ion|Bid Sec urity|Prop erty/);
+    }
+  }
+});
+
+test("Meridian Road resolves from its City Record notice to the reviewed PDF excerpts", () => {
+  const { manifest, shards } = readProcurementDocumentPublication(PUBLIC_DATA);
+  const subject = manifest.subjects["notice:20261019013"];
+  assert.equal(subject.rfp_id, "38439");
+  const { shard } = shards.find(({ entry }) => entry.rfp_id === subject.rfp_id);
+  assert.equal(shard.subject.epin, "84127P0002");
+  assert.equal(shard.subject.displayed_id, "038087");
+  assert.deepEqual(shard.rows.map((row) => row.document_id), ["126232242", "255189851", "257675655", "258285320"]);
+  assert.deepEqual(shard.rows.map((row) => row.page_count), [8, 92, 91, 8]);
+  assert.deepEqual(shard.rows[1].ocr_required_pages, [17, 18]);
+  assert.ok(shard.rows[2].ocr_required_pages.length > 0);
+
+  const fixtures = JSON.parse(readFileSync(path.join(ROOT, "test/fixtures/navigator_rfx_document_facts/meridian-pages.json"), "utf8"));
+  for (const [index, fixture] of fixtures.entries()) {
+    const row = shard.rows[index];
+    assert.equal(row.sha256, fixture.sha256);
+    assert.equal(row.facts.length, fixture.locators.length);
+    for (const [id, page, anchor] of fixture.locators) {
+      const fact = row.facts.find((item) => item.id === id);
+      assert.equal(fact.pdf_page, page, id);
+      assert.ok(fact.excerpt.includes(anchor), id);
+      assert.equal(fact.excerpt_sha256, createHash("sha256").update(fact.excerpt).digest("hex"), id);
+      assert.ok(row.sections.some(({ pdf_pages: [first, last] }) => first <= page && page <= last), id);
+      assert.ok(!row.ocr_required_pages.includes(page), id);
+      assert.doesNotMatch(fact.excerpt, /Comm ercial|Work ers|Disabi lity|Compensat ion/i, id);
     }
   }
 });

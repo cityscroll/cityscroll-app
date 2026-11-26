@@ -9,11 +9,56 @@
 import { EVIDENCE_ROLES, STANDING_LABELS } from "../../site/procurement_contract_substance_contract.mjs";
 import { sha256Hex } from "./document_processing.mjs";
 
-export const NAVIGATOR_DOCUMENT_FACTS_VERSION = "navigator_rfx_document_facts.v1";
+export const NAVIGATOR_DOCUMENT_FACTS_VERSION = "navigator_rfx_document_facts.v2";
 export const NAVIGATOR_DOCUMENT_FACTS_ONTOLOGY_VERSION = "procurement_document_facts.v1";
 
 const CONTRACT_TEMPLATE = "parks_supply_service_contract.v7-3-25";
 const OPENING_TEMPLATE = "parks_bid_opening_notice.v1";
+
+// These readings are scoped to the reviewed PDF revisions. In particular, the
+// Addendum 2 review covers its attachments as well as the page 1 amendment notice.
+const MERIDIAN_READINGS = new Map([
+  ["49fa58072a4eb772a4c517c93842e4ed2cae097a4cc22db03bf82f9c439694dc", {
+    template: "meridian_schedule_b.v1",
+    sections: [
+      ["schedule-b-part-1", "Schedule B, Part 1: M/WBE Participation Goals", ["participation_plan"], [1, 1], "Part 1: M/WBE Participation Goals"],
+    ],
+    rules: [
+      ["mwbe-requirements-tab", "participation_plan", "Where to verify M/WBE goals", "informational", "M/WBE Requirements tab of the PASSPort RFx response", "Schedule B, Part 1", null, 1, "schedule_b_part_1", "The M/WBE Participation Goals are found in the M/WBE Requirements tab of your response to a Solicitation (RFx) in PASSPort."],
+    ],
+  }],
+  ["47a49964eb7a5a65dbe4c62e3e9f461388fdd991446a14fcdb45b398c0ee2e31", {
+    template: "meridian_rfp.v1",
+    sections: [
+      ["rfp-scope-and-mwbe", "Section II: Scope of Services and M/WBE Requirement", ["participation_plan"], [5, 7], "SECTION II: SCOPE OF SERVICES AND M/WBE REQUIREMENT"],
+      ["rfp-evaluation", "Section III: Proposal Evaluation and Contract Award Procedures", ["eligibility_evidence"], [8, 8], "SECTION III: PROPOSAL EVALUATION AND CONTRACT AWARD PROCEDURES"],
+    ],
+    rules: [
+      ["mwbe-utilization-plan", "participation_plan", "Schedule B submission requirement", "required", "Complete the Schedule B M/WBE Utilization Plan and submit it with the proposal", "RFP section II.C and the included Schedule B", "Solicitation is subject to M/WBE participation requirements under Administrative Code § 6-129", 6, "rfp_section_ii_c", "proposers must complete the Schedule B – M/WBE Utilization Plan and submit it with their proposal."],
+      ["mwbe-technical-point-preference", "eligibility_evidence", "M/WBE evaluation preference", "conditional", "5% of the total technical points earned", "RFP section III.A, Evaluation Procedures", "Proposer is a New York State or New York City certified M/WBE", 8, "rfp_section_iii_a", "Proposals from New York State or City certified M/WBEs shall receive a point preference of 5% of the total technical points earned in the evaluation of the proposal."],
+    ],
+  }],
+  ["ae3eade5358946dfcc8f6222dde8a60f37950071c364dedbe6e8f9c350304da4", {
+    template: "meridian_addendum_1.v1",
+    amendment: true,
+    sections: [
+      ["addendum-1-mwbe-goals", "Pre-proposal presentation: M/WBE Participation Goals", ["participation_plan"], [40, 40], "M/WBE PARTICIPATION GOALS"],
+    ],
+    rules: [
+      ["mwbe-participation-goal", "participation_plan", "Project M/WBE participation goal", "required", "30%", "Addendum 1 pre-proposal presentation", null, 40, "addendum_1_pre_proposal_presentation", "The M/WBE goal for this project is 30%."],
+    ],
+  }],
+  ["cea2d55be63aa85be8873cca259640ebaeeeb8626d1227cadc1fdefb8376a730", {
+    template: "meridian_addendum_2.v1",
+    amendment: true,
+    sections: [
+      ["addendum-2-notice", "Addendum 2, November 19, 2026", ["solicitation_instructions"], [1, 1], "Addendum #2"],
+    ],
+    rules: [
+      ["mwbe-addendum-2-review", "solicitation_instructions", "Addendum 2 review", "informational", "Addendum 2 leaves the Schedule B submission requirement, technical-point preference, participation goal, and PASSPort tab reference unchanged", "Reviewed the November 19, 2026 addendum, notice to proposers, and agency responses to questions", null, 1, "addendum_2_amendment_review", "Except as otherwise stated below and any previous and subsequent Addenda, the above-mentioned Solicitation remains unchanged."],
+    ],
+  }],
+]);
 
 const CONTRACT_ROLES = Object.freeze([
   "bid_form",
@@ -206,10 +251,10 @@ function eventFromRule(rule, index) {
   return Object.freeze({ ...base, pdf_page: rule.pdf_page, ...citation(matched) });
 }
 
-function factFromRule(rule, index) {
+function factFromRule(rule, index, { exactExcerpt = false } = {}) {
   const [id, role, subject, applicability, value, basis, condition, pdfPage, ruleName, excerpt, extras = {}] = rule;
   const text = index.get(pdfPage)?.normalized_text || "";
-  const matched = findVerbatimExcerpt(text, excerpt);
+  const matched = exactExcerpt ? (text.includes(excerpt) ? excerpt : null) : findVerbatimExcerpt(text, excerpt);
   if (!matched) return null;
   const fact = { id, role, subject };
   if (extras.article) fact.article = extras.article;
@@ -310,9 +355,37 @@ function openingProjection(index) {
   };
 }
 
+function meridianProjection(reading, index, pageCount) {
+  const sections = reading.sections.map(([id, label, roles, pdfPages, anchor]) => Object.freeze({
+    id,
+    label,
+    roles: Object.freeze(roles),
+    standing: "solicitation",
+    pdf_pages: Object.freeze(pdfPages),
+    anchor,
+  }));
+  const unsectionedPages = Array.from({ length: pageCount }, (_, index) => index + 1)
+    .filter((page) => !sections.some(({ pdf_pages: [first, last] }) => first <= page && page <= last));
+  return {
+    recognized_template: reading.template,
+    roles: Object.freeze([...new Set(sections.flatMap((section) => section.roles))]),
+    standing: "solicitation",
+    evidence_role: reading.amendment ? EVIDENCE_ROLES.AMENDMENT : EVIDENCE_ROLES.SOLICITATION_SCOPE,
+    standing_label: reading.amendment ? STANDING_LABELS.AMENDED : STANDING_LABELS.ADVERTISED,
+    container: true,
+    unsectioned_pages: Object.freeze(unsectionedPages),
+    sections: Object.freeze(sections),
+    events: Object.freeze([]),
+    facts: Object.freeze(reading.rules.map((rule) => factFromRule(rule, index, { exactExcerpt: true })).filter(Boolean)),
+    abstentions: Object.freeze([]),
+  };
+}
+
 /** Read one extracted document without OCR, models, or publisher requests. */
-export function readNavigatorDocumentFacts({ document = {}, pages = [], pageCount = document.page_count ?? null } = {}) {
+export function readNavigatorDocumentFacts({ document = {}, pages = [], pageCount = document.page_count ?? null, sha256 = document.sha256 } = {}) {
   const index = pageIndex(pages);
+  const meridian = MERIDIAN_READINGS.get(sha256);
+  if (meridian) return Object.freeze(meridianProjection(meridian, index, pageCount));
   const recognizedTemplate = recognizeTemplate({ document, pages, pageCount });
   const projection = recognizedTemplate === CONTRACT_TEMPLATE
     ? contractProjection(index)
@@ -393,6 +466,7 @@ export function projectNavigatorDocumentFacts({
     document,
     pages: extraction.pages,
     pageCount: extraction.page_count,
+    sha256: extraction.extraction_key.sha256,
   });
   const cacheHit = Boolean(cached);
   if (cacheHit) state.fact_cache_hits += 1;
