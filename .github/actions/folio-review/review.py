@@ -5,6 +5,7 @@ import re
 import subprocess
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+from urllib.request import Request, urlopen
 
 FOLIO = "ARCHITECTURE.md"
 LINK = re.compile(r"\[[^\]\n]*\]\(([^()\s]+)\)")
@@ -14,8 +15,13 @@ CODE = re.compile(r"`([\w.][\w./-]*)`")
 def git(*args):
     # Sparse checkouts can lazily fetch an older folio blob. Use the read-only
     # workflow credential for that fetch without persisting it in the checkout.
+    server = os.environ.get("GITHUB_SERVER_URL", "https://github.com").rstrip("/")
+    helper = (
+        '!f() { if [ "$1" = get ] && [ -n "$GH_TOKEN" ]; then '
+        'printf "username=x-access-token\\npassword=%s\\n" "$GH_TOKEN"; fi; }; f'
+    )
     return subprocess.check_output(
-        ["git", "-c", "credential.helper=!gh auth git-credential", *args]
+        ["git", "-c", "credential.helper=", "-c", f"credential.{server}.helper={helper}", *args]
     ).decode("utf-8", "surrogateescape")
 
 
@@ -61,11 +67,13 @@ def inventory(revision, repository, previous_paths=()):
 def merged_review(repository, revision):
     # Several PRs can contain a commit. Only its merged PR on this branch
     # carries the disposition for this exact change.
-    payload = subprocess.check_output(
-        ["gh", "api", f"repos/{repository}/commits/{revision}/pulls"],
-        text=True,
-    )
-    for pr in json.loads(payload):
+    api = os.environ.get("GITHUB_API_URL", "https://api.github.com").rstrip("/")
+    request = Request(f"{api}/repos/{repository}/commits/{revision}/pulls",
+                      headers={"Accept": "application/vnd.github+json"})
+    request.add_unredirected_header("Authorization", f"Bearer {os.environ['GH_TOKEN']}")
+    with urlopen(request) as response:
+        pulls = json.load(response)
+    for pr in pulls:
         if (pr["merged_at"] and pr["merge_commit_sha"] == revision
                 and pr["base"]["ref"] == "main"):
             return pr.get("body") or ""
