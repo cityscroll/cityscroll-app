@@ -20,8 +20,8 @@
    ],
    "page_count": 1,
    "path": "procurement_documents/rfx-37728/sections/cover.json",
-   "bytes": 1092,
-   "sha256": "43ccf1fa15097b0f18cd6b1ec17ffe949698e6769a7ef53f0fa866ed7e942ebc"
+   "bytes": 1090,
+   "sha256": "e99b9c5013d600a5ad37edc301c033209158e4b041214fd16173878b01b1c9d0"
   },
   {
    "id": "schedule-a-reference",
@@ -34,8 +34,8 @@
    ],
    "page_count": 3,
    "path": "procurement_documents/rfx-37728/sections/schedule-a-reference.json",
-   "bytes": 4836,
-   "sha256": "13756a4f77c16d75c58edb494396726fe692522169ff4840e8532dd53b030e64"
+   "bytes": 4803,
+   "sha256": "91c3ed28dcf9e4a98f2422579a3199773ac01cabeff3d393dc0a849e494c814c"
   },
   {
    "id": "schedule-a-insurance",
@@ -48,8 +48,8 @@
    ],
    "page_count": 6,
    "path": "procurement_documents/rfx-37728/sections/schedule-a-insurance.json",
-   "bytes": 6729,
-   "sha256": "8ee8ff28b865ef044c1c853aaf00d828fa23963ce92c21876462844397d6ea69"
+   "bytes": 6409,
+   "sha256": "6310a0680282f7ea07a85324bc983cb3a82de180e99880ceb61b02dd94201acc"
   },
   {
    "id": "insurance-certificates",
@@ -62,8 +62,8 @@
    ],
    "page_count": 2,
    "path": "procurement_documents/rfx-37728/sections/insurance-certificates.json",
-   "bytes": 2527,
-   "sha256": "30a7b28183609b671009ae65cbe5e14035c8ff0151473b61e7d86b746f0db659"
+   "bytes": 2460,
+   "sha256": "a9faa72deefe88981e0f10d09e41cc2d2ebe7a61215ccb312a5e38c77abdc73e"
   },
   {
    "id": "notice-vendex-fee",
@@ -76,8 +76,8 @@
    ],
    "page_count": 1,
    "path": "procurement_documents/rfx-37728/sections/notice-vendex-fee.json",
-   "bytes": 1512,
-   "sha256": "efd9ec0222668cafa429bece356a35005cc70bb3177f5a35f767d2a9b292fd0d"
+   "bytes": 1504,
+   "sha256": "e9f69611480bf432fa96e0d81497ab472034226b04a73edf61b513c85034b002"
   },
   {
    "id": "notice-subcontractor-reporting",
@@ -90,8 +90,8 @@
    ],
    "page_count": 1,
    "path": "procurement_documents/rfx-37728/sections/notice-subcontractor-reporting.json",
-   "bytes": 2854,
-   "sha256": "0a5a2b0e17f86ed47bd2176647f24fa7335c0b8f4398fd8ffc22d7742fe9b688"
+   "bytes": 2832,
+   "sha256": "96fe7f4c8c46537148c97c567357e84206d593da084a76942c68b71c96517f30"
   },
   {
    "id": "mwbe-notice",
@@ -104,8 +104,8 @@
    ],
    "page_count": 10,
    "path": "procurement_documents/rfx-37728/sections/mwbe-notice.json",
-   "bytes": 32576,
-   "sha256": "9adf371d7349bf798ee5fdfa2e34cab4038c2b4ff931aede0ee4c12ed1982b7b"
+   "bytes": 32277,
+   "sha256": "8746284a78644bb308c4a25b4ea521012fb220ba0f28bba41c76f82784c1070d"
   },
   {
    "id": "notices-whistleblower-doi",
@@ -118,8 +118,8 @@
    ],
    "page_count": 4,
    "path": "procurement_documents/rfx-37728/sections/notices-whistleblower-doi.json",
-   "bytes": 7598,
-   "sha256": "bd955233bdd444e2b8bf38621090da6b001f2cb9afdb2674ecfb458807f92ff4"
+   "bytes": 7527,
+   "sha256": "05b45e92d6c300380301a0efe684b25b276f97cbe8f26b96bd6db95f9205de76"
   },
   {
    "id": "essta-rider",
@@ -132,8 +132,8 @@
    ],
    "page_count": 6,
    "path": "procurement_documents/rfx-37728/sections/essta-rider.json",
-   "bytes": 17585,
-   "sha256": "32bc8e09010fb13bbac0e527883bba71e4b9be777a95110bd0eee08f91300ff6"
+   "bytes": 17399,
+   "sha256": "190328a33ca6b8be7c3fad5a6d9ff6fbfcd20dfeeb4e28896bb60f7410720ca8"
   },
   {
    "id": "bid-book",
@@ -146,8 +146,8 @@
    ],
    "page_count": 17,
    "path": "procurement_documents/rfx-37728/sections/bid-book.json",
-   "bytes": 45612,
-   "sha256": "adbf4515af24973ad8ec35b2a3184786f082bcc664252fb6325727b93e3f8e5b"
+   "bytes": 45166,
+   "sha256": "a61d13363152cd1b154526bbf4c1aa2b171f759b1b698f3b9bfec0a8f4e7049d"
   },
   {
    "id": "general-specifications",
@@ -160,8 +160,8 @@
    ],
    "page_count": 15,
    "path": "procurement_documents/rfx-37728/sections/general-specifications.json",
-   "bytes": 37143,
-   "sha256": "6c56b94bffb9d9a31eb5c96c3bcf5e95669244ea3ab9fc659fe8aa5301bd27e7"
+   "bytes": 36833,
+   "sha256": "41558d62c8ec9dcd97bc907dc173ea184fe2e0a3186d5238bc4503972f7c243f"
   },
   {
    "id": "agreement",
@@ -174,8 +174,8 @@
    ],
    "page_count": 75,
    "path": "procurement_documents/rfx-37728/sections/agreement.json",
-   "bytes": 223474,
-   "sha256": "8da63492c635576a81132ad2879d87d9e232234c2463c23522f44a1923e4223b"
+   "bytes": 221344,
+   "sha256": "9ed7521fb9262fafc8fea86f4914a76e22cdbb9e66e277ca8509249b64017eaf"
   },
   {
    "id": "prevailing-wage-schedule",
@@ -188,8 +188,8 @@
    ],
    "page_count": 96,
    "path": "procurement_documents/rfx-37728/sections/prevailing-wage-schedule.json",
-   "bytes": 180907,
-   "sha256": "e444f9110a44f922e05ec5825ebcfda64222e9de6172155825c73ab3d4696340"
+   "bytes": 171498,
+   "sha256": "90ce66ee0ba39b9146113a411d4584403dfcbd584bf6bbea6d801a072b07cc01"
   }
  ]
 }
