@@ -12,7 +12,11 @@ CODE = re.compile(r"`([\w.][\w./-]*)`")
 
 
 def git(*args):
-    return subprocess.check_output(["git", *args]).decode("utf-8", "surrogateescape")
+    # Sparse checkouts can lazily fetch an older folio blob. Use the read-only
+    # workflow credential for that fetch without persisting it in the checkout.
+    return subprocess.check_output(
+        ["git", "-c", "credential.helper=!gh auth git-credential", *args]
+    ).decode("utf-8", "surrogateescape")
 
 
 def local_link(url, repository):
@@ -54,19 +58,40 @@ def inventory(revision, repository, previous_paths=()):
     return sections, evidence, broken
 
 
+def merged_review(repository, revision):
+    # Several PRs can contain a commit. Only its merged PR on this branch
+    # carries the disposition for this exact change.
+    payload = subprocess.check_output(
+        ["gh", "api", f"repos/{repository}/commits/{revision}/pulls"],
+        text=True,
+    )
+    for pr in json.loads(payload):
+        if (pr["merged_at"] and pr["merge_commit_sha"] == revision
+                and pr["base"]["ref"] == "main"):
+            return pr.get("body") or ""
+    return ""
+
+
 def review(event, repository):
     pr = event.get("pull_request")
     # Actions checks out the proposed merge. Its first parent is the exact
     # base, including any changes made since the contributor branched.
     head = "HEAD"
-    base = "HEAD^1"
-    old_sections, evidence, _ = inventory(base, repository) if pr else ({}, {}, set())
+    push = event.get("before")
+    base = "HEAD^1" if pr else push
+    if push and not push.strip("0"):
+        base = None
+    elif push and subprocess.run(["git", "cat-file", "-e", f"{push}^{{commit}}"],
+                                 capture_output=True).returncode:
+        # A multi-commit push can put the previous tip outside the shallow clone.
+        git("fetch", "--quiet", "--filter=blob:none", "--depth=1", "origin", push)
+    old_sections, evidence, _ = inventory(base, repository) if base else ({}, {}, set())
     sections, _, broken = inventory(head, repository, evidence)
     if broken:
         for path in sorted(broken):
             print(f"Missing folio evidence: {path!r}")
         return 1
-    if not pr:
+    if not base:
         return 0
     changed = git("diff", "--name-only", "--no-renames", "-z", base, head).split("\0")
     affected = {}
@@ -78,10 +103,17 @@ def review(event, repository):
         return 0
     for title, paths in sorted(affected.items()):
         print(f"Review {title!r} for {', '.join(map(repr, paths))}")
-    body = re.sub(r"<!--.*?-->", "", pr.get("body") or "", flags=re.S)
+    body = (pr.get("body") or "") if pr else ""
+    if push and push == git("rev-parse", "HEAD^1").strip():
+        body = merged_review(repository, git("rev-parse", head).strip())
+    body = re.sub(r"<!--.*?-->", "", body, flags=re.S)
     if re.search(r"^Folio review:[ \t]+\S[^\n]*", body, re.I | re.M):
         print("The PR description records why the current decision still holds.")
         return 0
+    if not pr:
+        print("The merged change touched evidence for these passages without a recorded "
+              "folio review. Reconcile the affected decisions against main.")
+        return 1
     print("Update each affected decision that changed in ARCHITECTURE.md. "
           "For passages that still hold, add a line to the PR description beginning "
           "with 'Folio review:' explaining why. Editing the description reruns this check.")

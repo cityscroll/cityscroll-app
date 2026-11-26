@@ -31,11 +31,11 @@ class FolioReviewTest(unittest.TestCase):
         self.git("add", ".")
         self.git("commit", "-qm", "test")
 
-    def check(self, body="", expected=0):
+    def check(self, body="", expected=0, payload=None, env=None):
         event = self.root / ".git" / "event.json"
-        event.write_text(json.dumps({"pull_request": {"body": body}}))
+        event.write_text(json.dumps(payload or {"pull_request": {"body": body}}))
         result = subprocess.run([sys.executable, SCRIPT], cwd=self.root, capture_output=True,
-                                text=True, env={**os.environ, "GITHUB_EVENT_PATH": str(event),
+                                text=True, env={**os.environ, **(env or {}), "GITHUB_EVENT_PATH": str(event),
                                                "GITHUB_REPOSITORY": "example/project"})
         self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
         return result.stdout
@@ -55,6 +55,22 @@ class FolioReviewTest(unittest.TestCase):
         self.git("add", ".")
         self.git("commit", "--amend", "--no-edit", "-q")
         self.check()
+
+    def test_main_push_requires_disposition_from_exact_merged_pr(self):
+        before = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=self.root, text=True).strip()
+        (self.root / "routes.js").write_text("v2")
+        self.commit()
+        head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=self.root, text=True).strip()
+        gh = self.root / ".git" / "gh"
+        gh.write_text('#!/bin/sh\nprintf "%s" "$REVIEW_PRS"\n')
+        gh.chmod(0o755)
+        pr = {"merged_at": "today", "merge_commit_sha": head, "base": {"ref": "main"},
+              "body": "Folio review: Route names and ownership stay the same."}
+        env = {"PATH": str(gh.parent) + os.pathsep + os.environ["PATH"]}
+        for revision, expected in ((before, 1), (head, 0)):
+            pr["merge_commit_sha"] = revision
+            self.check(payload={"before": before}, expected=expected,
+                       env={**env, "REVIEW_PRS": json.dumps([pr])})
 
     def test_missing_markdown_or_inline_evidence_cannot_be_acknowledged_away(self):
         for name in ("storage.json", "routes.js"):

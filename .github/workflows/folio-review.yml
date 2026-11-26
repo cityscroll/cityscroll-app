@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  pull-requests: read
 jobs:
   review:
     name: Review folio evidence
@@ -16,4 +17,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 2
+          sparse-checkout: .github/actions/folio-review
       - uses: ./.github/actions/folio-review
+        env:
+          GH_TOKEN: ${{ github.token }}
