@@ -419,3 +419,28 @@ test("A4: extracts Schedule A term/damage/subcontracting/LD facts and distinguis
   assert.equal(checkedFacts.get("insurance-unlabelled-p10")?.applicability, "unknown");
   assert.equal(checkedFacts.get("insurance-other-template-p10"), undefined);
 });
+
+test("Meridian Road locators retain their distinct facts and PDF pages", () => {
+  const documents = JSON.parse(readFileSync(path.join(FIXTURE_DIR, "meridian-pages.json"), "utf8"));
+  const splitWords = /Comm ercial|Work ers|Disabi lity|Compensat ion/i;
+  for (const document of documents) {
+    const { projection } = projectNavigatorDocumentFacts({
+      document,
+      extraction: extractionFor(document, { sha256: document.sha256 }),
+      state: createNavigatorObservationState(),
+    });
+    assert.deepEqual(projection.facts.map(({ id }) => id), document.locators.map(([id]) => id));
+    for (const [id, page, anchor] of document.locators) {
+      const fact = projection.facts.find((item) => item.id === id);
+      assert.equal(fact.pdf_page, page, id);
+      assert.ok(fact.excerpt.includes(anchor), id);
+      assert.doesNotMatch(fact.excerpt, splitWords, id);
+    }
+    const changedSource = projectNavigatorDocumentFacts({
+      document,
+      extraction: extractionFor(document),
+      state: createNavigatorObservationState(),
+    });
+    assert.equal(changedSource.projection.facts.length, 0);
+  }
+});

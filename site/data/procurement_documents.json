@@ -1,7 +1,7 @@
 {
  "schema": "cityscroll.procurement_document_read_model.v1",
  "version": 1,
- "generated_at": "2026-11-05T04:24:15Z",
+ "generated_at": "2026-11-26T13:05:06.201Z",
  "representation": "sharded",
  "shard_schema": "cityscroll.procurement_document_read_model_shard.v1",
  "ontology_version": "procurement-documents.v1",
@@ -12,6 +12,13 @@
    "sha256": "9f369c554e663ac29d736dc9ec9638163745e9994bde1812e8998e94d8b15d55",
    "row_count": 2,
    "rfp_id": "37728"
+  },
+  {
+   "path": "procurement_documents/rfx-38439.json",
+   "bytes": 11685,
+   "sha256": "5be240c5ea4041d4519722e6e98a4c5f663dfb8098dc1adf40d7005d61a1c51d",
+   "row_count": 4,
+   "rfp_id": "38439"
   }
  ],
  "subjects": {
@@ -26,13 +33,23 @@
     "single_feed_row_for_epin",
     "navigator_round_observed"
    ]
+  },
+  "notice:20261019013": {
+   "rfp_id": "38439",
+   "binding": "corroborated",
+   "basis": [
+    "pin_equals_epin",
+    "title_exact",
+    "release_date_equal",
+    "navigator_round_observed"
+   ]
   }
  },
  "coverage": {
-  "documents": 2,
-  "pages": 238,
+  "documents": 6,
+  "pages": 437,
   "contract_book_pages_sectioned": 237,
-  "facts": 34,
+  "facts": 39,
   "events": 2,
   "abstentions": 4
  },
