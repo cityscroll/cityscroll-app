@@ -273,6 +273,58 @@ test("(v) --check passes the committed artifact and detects a one-row change", (
   });
 });
 
+for (const scenario of ["unchanged", "failed response", "short pull"]) {
+  test(`SBS refresh preserves retained payloads after ${scenario}`, () => {
+    withTempDirSync("sbs-refresh", (tmp) => {
+      for (const path of [
+        "tools/build_sbs_certified_business_directory.mjs",
+        "warehouse/lib/sbs_certified_business_directory.mjs",
+        "entity_resolution/normalizers/vendor_stem.mjs",
+      ]) {
+        mkdirSync(dirname(join(tmp, path)), { recursive: true });
+        cpSync(join(ROOT, path), join(tmp, path));
+      }
+      mkdirSync(join(tmp, "warehouse/receipts/proof"), { recursive: true });
+      const site = join(tmp, "site");
+      cpSync(DIRROOT, site, { recursive: true });
+
+      const publisher = {
+        rowsUpdatedAt: Date.parse(dir.manifest.rows_updated_at) / 1000,
+        count: dir.manifest.publisher_row_count,
+      };
+      const setup = `
+        const scenario = ${JSON.stringify(scenario)};
+        const publisher = ${JSON.stringify(publisher)};
+        globalThis.fetch = async (url) => {
+          if (url.includes("api/views")) {
+            return Response.json({ rowsUpdatedAt: publisher.rowsUpdatedAt + (scenario === "short pull" ? 1 : 0) }, {
+              status: scenario === "failed response" ? 503 : 200,
+            });
+          }
+          return Response.json(url.includes("$select") ? [{ count: String(publisher.count) }] : []);
+        };
+      `;
+      const result = spawnSync(process.execPath, [
+        "--import", `data:text/javascript,${encodeURIComponent(setup)}`,
+        join(tmp, "tools/build_sbs_certified_business_directory.mjs"), "--from-soda",
+      ], { encoding: "utf8" });
+
+      const retained = JSON.parse(readFileSync(join(site, MANIFEST_PATH), "utf8"));
+      if (scenario === "unchanged") {
+        assert.equal(result.status, 0, result.stderr);
+        assert.ok(Date.parse(retained.collected_at) > Date.parse(dir.manifest.collected_at));
+        assert.deepEqual({ ...retained, collected_at: dir.manifest.collected_at }, dir.manifest);
+      } else {
+        assert.equal(result.status, 1, result.stdout);
+        assert.deepEqual(retained, dir.manifest);
+      }
+      for (const path of [...retained.shards, retained.names, retained.facets].map((entry) => entry.path)) {
+        assert.equal(readFileSync(join(site, path), "utf8"), read(path), path);
+      }
+    });
+  });
+}
+
 test("(v) the pull refuses a short or duplicated source instead of publishing it", async () => {
   const page = (n, start) => Array.from({ length: n }, (_, i) => ({ account_number: String(start + i) }));
   const mk = (rows, count) => async (url) => {

@@ -80,6 +80,38 @@ test("keyword search boundary tracks the committed sharded output tree", () => {
   ]) assert.ok(family.source_paths.includes(producer), producer);
 });
 
+test("the organization-index boundary hashes the SBS shards declared by the retained manifest", async () => {
+  const { runGeneratedFamilies } = await import("../tools/derived_json_build_boundary.mjs");
+  const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
+  const family = manifest.generated_families.find(({ id }) => id === "organization-index");
+  const dir = mkdtempSync(path.join(os.tmpdir(), "derived-json-sbs-shards-"));
+  const sbsManifest = "site/data/sbs_certified_businesses.json";
+  const shard = "data/sbs_certified_businesses/rows-002.json";
+  const extra = "site/data/sbs_certified_businesses/rows-000.json";
+  const write = (file, text) => {
+    mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
+    writeFileSync(path.join(dir, file), text);
+  };
+  try {
+    for (const source of family.source_paths) write(source, "{}");
+    write(sbsManifest, JSON.stringify({ shards: [{ path: shard }] }));
+    write(`site/${shard}`, '{"rows":[]}');
+    write(extra, '{"rows":[]}');
+    write("generator.mjs", "");
+    write("out.json", "{}");
+    const run = () => runGeneratedFamilies(dir, [{ ...family, generator: "generator.mjs", output_paths: ["out.json"] }])[0];
+    const { source_hashes: hashes } = run();
+    assert.match(hashes[sbsManifest], /^[a-f0-9]{64}$/);
+    assert.match(hashes[`site/${shard}`], /^[a-f0-9]{64}$/);
+    assert.equal(hashes[extra], undefined);
+
+    rmSync(path.join(dir, "site", shard));
+    assert.throws(run, /rows-002\.json/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("required PR CI catches a stale keyword read model before Worker deployment", () => {
   const workflow = readFileSync(path.join(ROOT, ".github/workflows/ci.yml"), "utf8");
   assert.match(workflow, /name: Committed keyword search read-model freshness[\s\S]*?node tools\/build_keyword_search_index\.mjs --check/);

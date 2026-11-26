@@ -2,7 +2,7 @@
 
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import { spawnSync } from "node:child_process";
 import { performance } from "node:perf_hooks";
 import { pathToFileURL } from "node:url";
@@ -45,6 +45,27 @@ function assertFile(sourceDir, path, label) {
   } catch (error) {
     throw new Error(`${label} missing: ${path} (${error.message})`);
   }
+}
+
+function familySourcePaths(sourceDir, family) {
+  const sources = [...family.source_paths];
+  for (const { path, shard_root: root } of family.source_shard_manifests ?? []) {
+    const manifest = readJson(absolute(sourceDir, path));
+    if (!Array.isArray(manifest.shards) || !manifest.shards.length) {
+      throw new Error(`source manifest has no shards: ${path}`);
+    }
+    sources.push(path);
+    const shardRoot = absolute(sourceDir, root);
+    for (const shard of manifest.shards) {
+      if (typeof shard?.path !== "string") throw new Error(`source manifest is missing a shard path: ${path}`);
+      const localPath = relative(shardRoot, resolve(shardRoot, shard.path));
+      if (!localPath || localPath === ".." || localPath.startsWith(`..${sep}`) || isAbsolute(shard.path)) {
+        throw new Error(`source manifest shard must be relative to ${root}: ${shard.path}`);
+      }
+      sources.push(join(root, localPath));
+    }
+  }
+  return sources;
 }
 
 function assertSourceSnapshot(sourceDir, manifest) {
@@ -147,7 +168,7 @@ export function runGeneratedFamilies(sourceDir, families, { fileHashFn = fileHas
   const results = [];
   for (const family of families) {
     const familyStartedAt = performance.now();
-    const sourceHashes = Object.fromEntries(family.source_paths.map((path) => [path, fileHashFn(sourceDir, path)]));
+    const sourceHashes = Object.fromEntries(familySourcePaths(sourceDir, family).map((path) => [path, fileHashFn(sourceDir, path)]));
     const action = decideFamilyRebuildAction(family, sourceDir);
     if (action === "skip") {
       console.log(`skip ${family.id}: skip_when_check_current and receipt-only probe already current`);
@@ -190,7 +211,7 @@ function validateManifest(sourceDir, manifest) {
       throw new Error(`skip_when_check_current must be boolean for ${family.id}`);
     }
     assertFile(sourceDir, family.generator, `generator for ${family.id}`);
-    for (const path of family.source_paths) assertFile(sourceDir, path, `source for ${family.id}`);
+    for (const path of familySourcePaths(sourceDir, family)) assertFile(sourceDir, path, `source for ${family.id}`);
   }
 }
 
