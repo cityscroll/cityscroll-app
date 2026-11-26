@@ -8,7 +8,7 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 
 - [`README.md`](README.md) owns the product overview and public entry points.
 - [Data use and privacy](docs/collection-and-publication-boundary.md)
-- [`ARCHITECTURE.md`](ARCHITECTURE.md) is the living architecture folio. When a boundary or design decision changes, revise its current behavior, reason, and implementation or verification link in the same change. A folio edit is sufficient to record the decision. [`docs/architecture.md`](docs/architecture.md) owns detailed invariants. [`docs/adr/`](docs/adr/) preserves historical evidence and existing references.
+- Update the [architecture folio](ARCHITECTURE.md) in place with each changed decision, its reason and a check. [Detailed invariants](docs/architecture.md) and [historical decisions](docs/adr/) provide supporting evidence.
 - [`site/data/source_contracts.json`](site/data/source_contracts.json) is the source-contract
   registry. [`docs/data-sources.md`](docs/data-sources.md) is its generated human-readable view.
 - [`docs/module-map.md`](docs/module-map.md) routes browser modules and page ownership. Use imports,
