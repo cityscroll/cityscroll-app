@@ -1171,7 +1171,16 @@ export async function runBudgetedNoticeFreshness(env, {
   const work = async () => {
     const ingest = ingestFn || (await import("./ingest.mjs")).ingestNotices;
     const prewarm = prewarmFn || (await import("./notice.mjs")).prewarmNotices;
-    const ingestOptions = { fetchFn: countingFetch, signal: controller.signal };
+    // A gateway can recover between two reads. Both attempts consume the same
+    // subrequest allowance and share the original abort deadline.
+    const fetchNoticePage = async (url, init) => {
+      const response = await countingFetch(url, init);
+      if (![502, 503, 504, 524].includes(response.status) || budget.subrequests >= maxSubrequests) return response;
+      await response.body?.cancel();
+      controller.signal.throwIfAborted();
+      return countingFetch(url, init);
+    };
+    const ingestOptions = { fetchFn: fetchNoticePage, signal: controller.signal };
     const ingestWork = async () => {
       const result = await ingest(env, ingestOptions);
       controller.signal.throwIfAborted();

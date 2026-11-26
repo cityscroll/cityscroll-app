@@ -1730,7 +1730,8 @@ async function sqliteRecoveryFixture() {
   const { readFileSync } = await import('node:fs');
   const sqlite = new DatabaseSync(':memory:');
   for (const file of ['0014_digest_shadow.sql', '0015_digest_shadow_hold.sql',
-    '0034_digest_shadow_rebuild.sql', '0035_digest_shadow_rebuild_base.sql']) {
+    '0034_digest_shadow_rebuild.sql', '0035_digest_shadow_rebuild_base.sql',
+    '0040_digest_rebuild_notice_freshness.sql']) {
     sqlite.exec(readFileSync(new URL(`../migrations/${file}`, import.meta.url), 'utf8'));
   }
   const metrics = { maxBytes: 0, limit: 160_000 };
@@ -2283,4 +2284,48 @@ test("recoverStalledDigestShadowRuns marks recovered when STARTED clears and esc
   assert.match(failureCalls[0].error, /recovery attempts exhausted/);
   assert.equal(failureCalls[0].options.invocationId, "shadow:old-monday");
   assert.equal(JSON.parse(ALERT_STATE.values.get(startedRecoveryReceiptKey("2026-10-12"))).status, "exhausted");
+});
+
+test('a full repair of terminal notice degradation requires fresh ingestion and fences concurrent revisions', async () => {
+  for (const outcome of ['recovered', 'still-down', 'changed']) {
+    const f = await sqliteRecoveryFixture();
+    try {
+      const priorDay = '2026-09-01';
+      const summary = { run_day: priorDay, status: 'DEGRADED_UPSTREAM', result_revision: 'old', freshness: { degraded: true } };
+      f.sqlite.prepare('INSERT INTO digest_shadow_runs VALUES (?, ?, ?, 0, 0, ?)').run(
+        priorDay, priorDay + 'T10:00:00Z', summary.status, JSON.stringify(summary));
+      let checks = 0;
+      const create = () => createDigestShadowRebuild(f.env, {
+        runDay: priorDay, now: NOW, checkNoticeFreshness: async () => {
+          checks++;
+          return outcome === 'still-down' ? { ok: false, degraded: true, reason: 'SODA 503' }
+            : { ok: true, degraded: false, result: { fetched: 8, upserted: 8 } };
+        },
+      });
+      if (outcome === 'still-down') {
+        await assert.rejects(create, /SODA 503/);
+      } else {
+        const repair = await create();
+        // Run the repair against a small, durable terminal manifest.
+        f.sqlite.prepare("UPDATE digest_shadow_rebuild_runs SET status = 'running', total_count = 1 WHERE run_id = ?").run(repair.run_id);
+        f.sqlite.prepare("INSERT INTO digest_shadow_rebuild_items (run_id, digest_id, job_json, status) VALUES (?, 'one', '{}', 'queued')").run(repair.run_id);
+        if (outcome === 'changed') {
+          f.sqlite.prepare("UPDATE digest_shadow_runs SET summary_json = json_set(summary_json, '$.result_revision','new') WHERE run_day = ?").run(priorDay);
+        }
+        const out = await handleDigestShadowRebuildQueueMessage(f.env, { type: 'digest', run_id: repair.run_id, digest_id: 'one' },
+          { now: NOW, runTargetFn: async () => ({ previewId: 'one', skipped: 'no-new' }) });
+        const stored = JSON.parse(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?').get(priorDay).summary_json);
+        if (outcome === 'recovered') {
+          assert.equal(out.receipt.status, 'READY');
+          assert.equal(out.receipt.day, priorDay);
+          assert.equal(stored.freshness.upserted, 8);
+          assert.equal(out.receipt.result_revision, stored.result_revision);
+        } else {
+          assert.equal(out.status, 'failed');
+          assert.equal(stored.result_revision, 'new');
+        }
+      }
+      assert.equal(checks, 1);
+    } finally { f.sqlite.close(); }
+  }
 });

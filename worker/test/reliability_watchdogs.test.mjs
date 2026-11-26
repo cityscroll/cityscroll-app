@@ -681,3 +681,18 @@ test("residual inbound receipt keeps destination and time without subject or bod
   });
   assert.equal(ALERT_STATE.store.size, 1);
 });
+
+test("overnight watchdog checks the last scheduled rehearsal until the next 10 UTC", async () => {
+  const ALERT_STATE = kv();
+  await recordDigestShadowReceipt({ ALERT_STATE }, { ok: true }, new Date("2026-10-31T10:00:00Z"));
+  const check = (at) => digestWatchdogSnapshot({ ALERT_STATE }, { now: new Date(at) });
+  const early = await check("2026-11-01T09:59:59Z");
+  assert.equal(early.ok, true);
+  assert.equal(early.shadow_day, "2026-10-31");
+  assert.equal(early.day, "2026-11-01");
+  await recordDigestShadowReceipt({ ALERT_STATE }, { ok: false }, new Date("2026-10-31T10:00:00Z"));
+  assert.equal((await check("2026-11-01T01:00:00Z")).ok, false);
+  const due = await check("2026-11-01T10:00:00Z");
+  assert.equal(due.shadow_day, "2026-11-01");
+  assert.ok(due.findings.includes("shadow READY receipt missing"));
+});

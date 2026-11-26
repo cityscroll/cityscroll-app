@@ -607,7 +607,8 @@ export async function mailWatchdogSnapshot(env, { now = new Date() } = {}) {
 
 export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHour = 14 } = {}) {
   const today = day(now);
-  const shadow = await readCurrentDigestShadowReceipt(env, today);
+  const shadowDay = now.getUTCHours() < 10 ? priorUtcDay(now) : today;
+  const shadow = await readCurrentDigestShadowReceipt(env, shadowDay);
   const delivery = await readJson(env?.ALERT_STATE, `${DIGEST_DELIVERY_LEDGER_PREFIX}${today}`);
   const dlq = Number(await env?.ALERT_STATE?.get?.(`digest:dlq:${today}`)) || 0;
   const mail = await mailWatchdogSnapshot(env, { now });
@@ -631,6 +632,7 @@ export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHo
     ok: findings.length === 0,
     day: today,
     findings,
+    shadow_day: shadowDay,
     shadow,
     delivery,
     dlq,
