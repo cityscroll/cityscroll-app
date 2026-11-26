@@ -229,6 +229,63 @@ test("required hosted parsing failures fail the scheduled refresh", () => {
   assert.throws(() => assertFirstClassRefreshSucceeded(receipt), /required hosted first-class refresh failed/);
 });
 
+test("the hosted rail skips artifacts that declare hosted_refresh_required false; the default rail still runs them", () => {
+  const required = { ...artifact("required", "site/data/required.json"), hosted_refresh_required: true };
+  const refused = {
+    ...artifact("refused", "site/data/refused.json", "refused-source"),
+    acquisition_command: ["node", "tools/acquire-refused.mjs"],
+    owning_builder: "tools/build-refused.mjs",
+    builder_command: ["node", "tools/build-refused.mjs"],
+    dependent_materializers: ["tools/materialize-refused.mjs"],
+    hosted_refresh_required: false,
+  };
+  const calls = [];
+  const hosted = runRefreshCommands({ first_class_artifacts: [required, refused] }, {
+    root: "/fixture",
+    now: "2026-11-25T12:00:00.000Z",
+    all: true,
+    rail: "hosted",
+    stdio: "pipe",
+    spawn(command, args) { calls.push(args[0]); return { status: 0 }; },
+  });
+  // Only the hosted-required artifact's acquisition, builder, and dependent
+  // materializer run; the refused-source acquisition is never attempted.
+  assert.deepEqual(calls, [
+    "/fixture/tools/acquire.mjs",
+    "/fixture/tools/build.mjs",
+    "/fixture/tools/materialize.mjs",
+  ]);
+  assert.equal(hosted.status, "succeeded");
+  const skipped = hosted.commands.find((row) => row.artifact_paths.includes("site/data/refused.json"));
+  assert.equal(skipped.kind, "acquisition");
+  assert.equal(skipped.status, "skipped");
+  assert.match(skipped.reason, /hosted_refresh_required: false/);
+  assert.match(skipped.reason, /warehouse-backed refresh rail/);
+
+  // The warehouse-backed refresh rail runs the same tool without a rail, so
+  // the refused-egress artifact is still acquired and built there.
+  const warehouse = runRefreshCommands({ first_class_artifacts: [refused] }, {
+    root: "/fixture",
+    now: "2026-11-25T12:00:00.000Z",
+    all: true,
+    stdio: "pipe",
+    spawn() { return { status: 0 }; },
+  });
+  assert.equal(warehouse.status, "succeeded");
+  assert.equal(warehouse.commands.find((row) => row.kind === "acquisition")?.status, "succeeded");
+  assert.equal(warehouse.commands.find((row) => row.kind === "owning-builder")?.status, "succeeded");
+
+  // A rail the tool does not know is a configuration error, never a silent run.
+  assert.throws(() => runRefreshCommands({ first_class_artifacts: [refused] }, {
+    root: "/fixture",
+    now: "2026-11-25T12:00:00.000Z",
+    all: true,
+    rail: "express",
+    stdio: "pipe",
+    spawn() { return { status: 0 }; },
+  }), /unknown first-class refresh rail/);
+});
+
 test("fresh, genuinely empty, degraded LKG, stale, and unavailable remain distinct", async () => {
   await withTempDir("first-class", async (root) => {
     const definitions = [
@@ -474,6 +531,41 @@ test("open-notice document listings go stale past 36 hours on the artifact's own
     assert.equal(fallback.surfaces[0].source_vintage, "2026-11-24T00:00:00.000Z");
     assert.equal(fallback.surfaces[0].freshness_state, "degraded");
   });
+});
+
+test("open-notice document listings are skipped on the hosted rail and refreshed by the warehouse-backed rail", () => {
+  const registry = canonical();
+  const listings = registry.first_class_artifacts.find((row) => row.id === "open-notice-document-listings");
+  assert.equal(listings.hosted_refresh_required, false);
+  const hosted = runRefreshCommands({ first_class_artifacts: [listings] }, {
+    root: "/fixture",
+    now: "2026-11-25T12:00:00.000Z",
+    all: true,
+    rail: "hosted",
+    stdio: "pipe",
+    spawn() { throw new Error("the hosted rail must not attempt the listings acquisition"); },
+  });
+  assert.equal(hosted.status, "succeeded");
+  const skipped = hosted.commands.find((row) => row.artifact_paths.includes("site/data/open_notice_document_listings.json"));
+  assert.equal(skipped.status, "skipped");
+  assert.match(skipped.reason, /warehouse-backed refresh rail/);
+  assert.equal(hosted.commands.find((row) => row.kind === "owning-builder"), undefined);
+
+  // The open-solicitation population keeps its hosted acquisition: its PASSPort
+  // commodity read degrades through its own coverage record instead of
+  // switching rails, so it must not declare itself off the hosted rail.
+  const population = registry.first_class_artifacts.find((row) => row.id === "contracts-open-population");
+  assert.notEqual(population.hosted_refresh_required, false);
+
+  // Every hosted acquisition surface passes the hosted rail, and the
+  // warehouse-backed rail keeps the full default selection.
+  const workflow = readFileSync(new URL("../.github/workflows/first-class-refresh.yml", import.meta.url), "utf8");
+  assert.match(workflow, /first_class_refresh\.mjs "\$mode" --rail hosted/);
+  const build = readFileSync(new URL("../tools/build_cloudflare_pages.mjs", import.meta.url), "utf8");
+  assert.match(build, /"--run-due",\s*\n\s*"--rail", "hosted",/);
+  const warehouseRail = readFileSync(new URL("../ops/first-class-refresh/run-warehouse-refresh.sh", import.meta.url), "utf8");
+  assert.match(warehouseRail, /node tools\/first_class_refresh\.mjs --run-due/);
+  assert.doesNotMatch(warehouseRail, /--rail/);
 });
 
 test("sharded shared meeting index still counts population through rows", async () => {

@@ -137,8 +137,13 @@ if (refreshResidentSnapshots) {
   // Run every other due acquisition and owning builder in registry order. A
   // failed publisher is recorded and isolated here; the hard-age guard below
   // decides whether its last-known-good artifact is still safe to deploy.
+  // The build host is GitHub-hosted egress, so it uses the hosted rail:
+  // artifacts whose publisher refuses that egress (hosted_refresh_required
+  // false in the registry) are skipped rather than measured through a refused
+  // read, and the hard-age guard below keeps judging their committed vintage.
   runNode(sourceDir, "first_class_refresh.mjs", [
     "--run-due",
+    "--rail", "hosted",
     "--receipt-out", firstClassRefreshReceiptPath,
   ]);
 }

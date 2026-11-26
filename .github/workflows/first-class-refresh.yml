@@ -13,6 +13,15 @@ name: First-class dataset refresh
 # machine that holds it — see ops/first-class-refresh/README.md. Their
 # acquisition is still attempted so the receipt records the gap honestly, and a
 # failed acquisition leaves the last verified artifact in place.
+#
+# Datasets whose publisher refuses the hosted runners' egress cannot be
+# refreshed here either, and attempting them is worse than skipping: the
+# open-notice document listings measure would rewrite the served artifact as
+# an unverified observation from a refused read. Those artifacts declare
+# `hosted_refresh_required: false` in the registry, so `--rail hosted` below
+# skips their acquisition and the warehouse-backed rail refreshes them from
+# egress the publisher accepts. The registry field is the switch — no dataset
+# is skipped by name here.
 on:
   schedule:
     # Early morning UTC, after the City's overnight open-data publishing window.
@@ -114,7 +123,7 @@ jobs:
           export COMMITTEE_RETRIEVED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           mode="--run-due"
           if [ "${{ inputs.run_all }}" = "true" ]; then mode="--run-all"; fi
-          node tools/first_class_refresh.mjs "$mode"
+          node tools/first_class_refresh.mjs "$mode" --rail hosted
 
       - name: Rebuild the committed read models the refreshed datasets feed
         # --run-due stops after each dataset's owning builder. The keyword search
