@@ -231,3 +231,24 @@ test("the retry budget bounds how long one unwell source can stall a run", async
   );
   assert.equal(calls, 2);
 });
+
+test("notice freshness retries transient gateway responses once within the original budget", async () => {
+  const { runBudgetedNoticeFreshness } = await import("../src/digest_shadow.mjs");
+  for (const [statuses, limit, expected] of [[[503, 200], 2, true], [[503, 503], 2, false],
+    [[503], 1, false], [[403], 2, false]]) {
+    let requests = 0;
+    const out = await runBudgetedNoticeFreshness({}, {
+      maxSubrequests: limit,
+      fetchImpl: async () => new Response(null, { status: statuses[requests++] }),
+      ingestFn: async (_env, { fetchFn }) => {
+        const response = await fetchFn("https://example.invalid/notices");
+        if (!response.ok) throw new Error("SODA " + response.status);
+        return { fetched: 0, upserted: 0 };
+      },
+      prewarmFn: async () => ({}),
+    });
+    assert.equal(out.ok, expected);
+    assert.equal(requests, statuses.length);
+    assert.equal(out.subrequests, requests);
+  }
+});

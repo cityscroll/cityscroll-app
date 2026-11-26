@@ -1120,6 +1120,7 @@ export function applyFreshnessDegradation(summary, freshness) {
     freshness: {
       degraded: true,
       reason: String(freshness.reason || "notice freshness degraded"),
+      attempts: freshness.attempts ?? 1,
     },
   };
 }
@@ -1146,6 +1147,7 @@ export async function runBudgetedNoticeFreshness(env, {
     elapsed_ms: 0,
   };
   const controller = new AbortController();
+  let pageAttempts = 1;
   const countingFetch = (...args) => {
     budget.subrequests += 1;
     if (budget.subrequests > maxSubrequests) {
@@ -1171,7 +1173,18 @@ export async function runBudgetedNoticeFreshness(env, {
   const work = async () => {
     const ingest = ingestFn || (await import("./ingest.mjs")).ingestNotices;
     const prewarm = prewarmFn || (await import("./notice.mjs")).prewarmNotices;
-    const ingestOptions = { fetchFn: countingFetch, signal: controller.signal };
+    // A gateway can recover between two reads. Both attempts consume the same
+    // subrequest allowance and share the original abort deadline.
+    const fetchNoticePage = async (url, init) => {
+      pageAttempts = 1;
+      const response = await countingFetch(url, init);
+      if (![502, 503, 504, 524].includes(response.status) || budget.subrequests >= maxSubrequests) return response;
+      await response.body?.cancel();
+      controller.signal.throwIfAborted();
+      pageAttempts = 2;
+      return countingFetch(url, init);
+    };
+    const ingestOptions = { fetchFn: fetchNoticePage, signal: controller.signal };
     const ingestWork = async () => {
       const result = await ingest(env, ingestOptions);
       controller.signal.throwIfAborted();
@@ -1198,6 +1211,7 @@ export async function runBudgetedNoticeFreshness(env, {
       degraded: true,
       reason: String(error?.message || error),
       code: error?.code || null,
+      attempts: pageAttempts,
       ...budget,
     };
   } finally {
