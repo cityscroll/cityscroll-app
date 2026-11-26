@@ -481,17 +481,60 @@ export function rematerializationIsNotAcquisition(artifact = {}) {
   return JSON.stringify(artifact.acquisition_command || []) === JSON.stringify(artifact.builder_command || []);
 }
 
+export const FIRST_CLASS_REFRESH_RAILS = Object.freeze(["all", "hosted"]);
+
+/**
+ * Artifacts the named rail does not attempt. A publisher that refuses the
+ * hosted runners' egress leaves an acquisition that can never complete there,
+ * so the artifact declares `hosted_refresh_required: false`: the hosted rail
+ * (this repository's scheduled workflow and the production build's refresh
+ * pass, both on GitHub-hosted runners) skips it, and the warehouse-backed
+ * rail on the organisation's own host — which runs the same `--run-due`
+ * selection without a rail — refreshes it from egress the publisher accepts.
+ * The registry field is the whole switch; no dataset is skipped by name.
+ */
+export function railSkippedArtifacts(artifacts, rail) {
+  if (rail !== "hosted") return [];
+  return (artifacts || []).filter((artifact) => artifact?.hosted_refresh_required === false);
+}
+
 export function runRefreshCommands(registry, options = {}) {
   const root = options.root || ROOT;
   const now = validInstant(options.now || new Date().toISOString());
+  const rail = options.rail || "all";
+  if (!FIRST_CLASS_REFRESH_RAILS.includes(rail)) {
+    throw new Error(`unknown first-class refresh rail: ${rail}`);
+  }
   const selected = orderFirstClassArtifacts(
     selectedArtifactsForRun(registry, root, now, options.all === true),
   );
+  const skippedForRail = railSkippedArtifacts(selected, rail);
+  const skippedIds = new Set(skippedForRail.map((artifact) => artifact.id));
+  const runnable = selected.filter((artifact) => !skippedIds.has(artifact.id));
   const commands = [];
+  // One skipped acquisition row per unique command, so the receipt, the run
+  // summary, and the retained run history keep naming every artifact this rail
+  // did not attempt and which rail owns it.
+  const seenRailSkip = new Set();
+  for (const artifact of skippedForRail) {
+    const key = commandKey(artifact.acquisition_command);
+    if (seenRailSkip.has(key)) continue;
+    seenRailSkip.add(key);
+    const declared = skippedForRail.filter((candidate) => commandKey(candidate.acquisition_command) === key);
+    commands.push({
+      kind: "acquisition",
+      command: artifact.acquisition_command,
+      source_contract_ids: [...new Set(declared.map((candidate) => candidate.source_contract_id))].sort(),
+      artifact_paths: declared.map((candidate) => candidate.public_artifact_path).sort(),
+      status: "skipped",
+      exit_code: null,
+      reason: "not hosted-required (hosted_refresh_required: false); the warehouse-backed refresh rail owns this acquisition",
+    });
+  }
   const seen = new Set();
   const acquisitionFailed = new Set();
   for (const kind of ["acquisition_command", "builder_command"]) {
-    for (const artifact of selected) {
+    for (const artifact of runnable) {
       const command = artifact[kind];
       const key = commandKey(command);
       if (seen.has(key)) continue;
@@ -530,7 +573,7 @@ export function runRefreshCommands(registry, options = {}) {
     }
   }
   const materializerConsumers = new Map();
-  for (const artifact of selected) {
+  for (const artifact of runnable) {
     for (const materializer of artifact.dependent_materializers || []) {
       if (!materializerConsumers.has(materializer)) materializerConsumers.set(materializer, []);
       materializerConsumers.get(materializer).push(artifact);
@@ -634,6 +677,11 @@ function main(argv = process.argv.slice(2)) {
       // determinism-lint: allow clock scheduled acquisition receipts record the production run instant outside check-only mode
       now: option(argv, "--now", new Date().toISOString()),
       all: argv.includes("--run-all"),
+      // The default rail runs every due artifact, which is what the
+      // warehouse-backed refresh rail relies on. A caller on GitHub-hosted
+      // runners passes `--rail hosted` so it never attempts an acquisition a
+      // publisher refuses there.
+      rail: option(argv, "--rail", "all"),
     });
     const output = resolve(root, option(argv, "--receipt-out", relative(root, RECEIPT_PATH)));
     writeJson(output, refreshReceipt);

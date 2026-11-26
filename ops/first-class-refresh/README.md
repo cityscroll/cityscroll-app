@@ -15,29 +15,47 @@ script against a local remote.
 `site/data/open_notice_document_listings.json` lists the public documents on
 open City Record solicitations whose PIN, title and dates strictly bind one
 PASSPort round with an observed Navigator page. It is an ordinary first-class
-artifact (`open-notice-document-listings` in the registry), so it rides the
-hosted rail above with no job of its own: the daily `First-class dataset
-refresh` schedule (06:40 UTC, after the City's overnight publishing window,
-plus `workflow_dispatch`) runs `tools/measure_open_notice_document_listings.mjs`
-as both acquisition and owning builder, and the refresh pull request lands the
-result. The artifact is served at `/data/open_notice_document_listings.json`;
-the product application's document-listing slice reads it, and nothing in this
-site does.
+artifact (`open-notice-document-listings` in the registry), and its
+acquisition — `tools/measure_open_notice_document_listings.mjs`, both
+acquisition and owning builder — reads PASSPort Public's RFx dump and the
+Navigator round pages live. Since late November 2026 that publisher returns
+HTTP 403 to GitHub-hosted runner egress while returning 200 to this
+organisation's own hosts, so a hosted runner can no longer complete a
+measured refresh: the only artifact it could write from a refused read is an
+unverified observation, and publishing that would replace the verified
+listing with a fresh-stamped gap.
 
-Staleness is the registry's per-dataset rule, not a separate gate: the
-artifact's own `observed_at` (falling back to the open list's publisher day)
-must stay within `hard_maximum_age_hours: 36`, with the warning at 24 hours.
-A stale artifact blocks the production build's existing first-class freshness
-check; a failed acquisition skips the builder, keeps the last verified
-artifact in place, and records the gap in the refresh and run receipts.
+The registry therefore declares `hosted_refresh_required: false` for this
+artifact, and that field is the rail switch: the hosted `First-class dataset
+refresh` workflow (06:40 UTC, after the City's overnight publishing window,
+plus `workflow_dispatch`) passes `--rail hosted`, so it skips the listings
+acquisition and records the skip in the refresh and run receipts; the
+warehouse-backed rail below — the same `tools/first_class_refresh.mjs
+--run-due` with no rail, on the machine that holds the warehouse — runs the
+measure from egress the publisher accepts and lands the artifact through its
+own dated-branch pull request. The production build's refresh pass also uses
+the hosted rail, so a deploy never rewrites the artifact from a refused read;
+it deploys the committed artifact and the `--check-production` gate judges
+that artifact's age. The artifact is served at
+`/data/open_notice_document_listings.json`; the product application's
+document-listing slice reads it, and nothing in this site does.
+
+Staleness is the registry's per-dataset rule, not a separate gate, and moving
+rails changes none of it: the artifact's own `observed_at` (falling back to
+the open list's publisher day) must stay within `hard_maximum_age_hours: 36`,
+with the warning at 24 hours. A stale artifact blocks the production build's
+existing first-class freshness check; a failed acquisition on the warehouse
+rail skips the builder, keeps the last verified artifact in place, and
+records the gap in the refresh and run receipts.
 
 Reused engine parts: the registry contract and `--run-due` selection
-(`tools/first_class_refresh.mjs`), the pinned poppler install on the refresh
-runner (`tools/install_pinned_poppler_utils.sh`, which provides `pdfinfo` for
-page counts), the refresh pull-request script and retained run history, and
-the deploy-time `--check-production` freshness gate. The measure tool's
-request pacing and byte cap are unchanged, and its per-request summary stays
-out of the served tree under `.artifacts/` via `--summary-out`.
+(`tools/first_class_refresh.mjs`), `pdfinfo` for page counts (pinned
+poppler on the hosted runner via `tools/install_pinned_poppler_utils.sh`;
+provided by the host on the warehouse-rail machine), the refresh
+pull-request script and retained run history, and the deploy-time
+`--check-production` freshness gate. The measure tool's request pacing and
+byte cap are unchanged, and its per-request summary stays out of the served
+tree under `.artifacts/` via `--summary-out`.
 
 ## Why the refresh pull request needs its own token
 
@@ -71,6 +89,14 @@ checksum and row count. The catalog is deliberately not in the repository, and
 the builder refuses to fall back to fixture or seed rows, so on a runner without
 a catalog the acquisition fails and the last verified artifact is kept. The
 scheduled workflow records that failure in its run summary rather than hiding it.
+
+Publisher-refused datasets ride the same machine through the registry switch
+instead of a per-dataset condition: an artifact that declares
+`hosted_refresh_required: false` is skipped outright by the hosted workflow's
+`--rail hosted` run — the receipt records the skip — because its acquisition
+can only complete from egress the publisher accepts (see "Open-notice document
+listings" below). Artifacts with no such declaration are still attempted on
+the hosted rail, and a failure there keeps the last verified artifact.
 
 These datasets refresh on the machine that holds the warehouse:
 

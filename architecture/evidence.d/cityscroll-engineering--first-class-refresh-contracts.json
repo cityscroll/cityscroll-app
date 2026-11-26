@@ -2,8 +2,8 @@
   "schema": "cityscroll.architecture-evidence-entry.v1",
   "id": "cityscroll-engineering/first-class-refresh-contracts",
   "status": "implemented",
-  "fingerprint": "first-class-refresh-contracts.v2-retained-run-history",
-  "updated_at": "2026-09-30T00:00:00.000Z",
+  "fingerprint": "first-class-refresh-contracts.v3-registry-rail-selection",
+  "updated_at": "2026-11-25T00:00:00.000Z",
   "projections": [
     {
       "id": "source-contract-refresh-inventory",
