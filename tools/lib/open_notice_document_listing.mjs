@@ -64,7 +64,86 @@ const REASON_TEXT = Object.freeze({
   rfx_empty: "The PASSPort round list was empty, so this count was not measured.",
 });
 
-const JOIN_RULE = "Strict binding: the PIN equals one EPIN, that EPIN has one round after identical rows are collapsed, the title matches after whitespace is collapsed, the release calendar day matches, the due wall-clock time matches, and the public Navigator page shows that round with a displayed id equal to the round's bpm id. Prefix joins are not a file-list binding. Size is bytes and page count is pages, both only when an observation supplied them. A file over the document byte cap is listed and not read.";
+const JOIN_RULE = "Strict binding: the PIN equals one EPIN, that EPIN has one round after identical rows are collapsed, the title matches verbatim or corroborates after stripping City Record framing prefixes (Bid Extension/Correction/Addendum/Rebid) and the matched EPIN prefix with strict containment or shared-token overlap, the release calendar day matches, the due wall-clock time matches, and the public Navigator page shows that round with a displayed id equal to the round's bpm id. Prefix joins are not a file-list binding. Size is bytes and page count is pages, both only when an observation supplied them. A file over the document byte cap is listed and not read.";
+
+const TITLE_FRAMING_PREFIX = /^(?:bid\s+extension|correction|addendum(?:\s+\d+)?|rebid|amended)\s*[:\-–—]\s*/i;
+const TITLE_STOPWORDS = new Set([
+  "a", "an", "and", "at", "by", "for", "from", "in", "of", "on", "or", "the", "to", "with",
+]);
+
+function escapeRegex(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Strip City Record editorial framing prefixes and the matched EPIN prefix,
+ * then canonicalize punctuation/case for deterministic title corroboration.
+ */
+export function normalizeTitleForCorroboration(value, epin = null) {
+  let text = cleanText(value);
+  if (!text) return null;
+  let prev;
+  do {
+    prev = text;
+    text = text.replace(TITLE_FRAMING_PREFIX, "").trim();
+    if (epin) {
+      const epinPrefix = new RegExp(`^${escapeRegex(String(epin).trim())}(?:[\\s:\\-–—]+|$)`, "i");
+      text = text.replace(epinPrefix, "").trim();
+    }
+  } while (text && text !== prev);
+  text = text
+    .replace(/&/g, " and ")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+  return text || null;
+}
+
+function significantTitleTokens(normalized) {
+  return normalized
+    .split(" ")
+    .filter((token) => token && !TITLE_STOPWORDS.has(token));
+}
+
+/**
+ * Return `"exact"`, `"normalized"`, or `null` for a single-round EPIN pair.
+ * Only used alongside exact PIN==EPIN, single round, release day, and due time.
+ */
+export function matchCorroboratedTitle(noticeTitle, roundTitle, epin = null) {
+  const exactNotice = exactTitle(noticeTitle);
+  const exactRound = exactTitle(roundTitle);
+  if (!exactNotice || !exactRound) return null;
+  if (exactNotice === exactRound) return "exact";
+
+  const normNotice = normalizeTitleForCorroboration(exactNotice, epin);
+  const normRound = normalizeTitleForCorroboration(exactRound, epin);
+  if (!normNotice || !normRound) return null;
+  if (normNotice === normRound) return "normalized";
+
+  const shorter = normNotice.length <= normRound.length ? normNotice : normRound;
+  const longer = normNotice.length <= normRound.length ? normRound : normNotice;
+  const shorterWords = shorter.split(" ").filter(Boolean);
+  // Strict phrase containment (e.g. agency project code "bepa gi cons 7" inside full title).
+  if (shorter.length >= 10 && shorterWords.length >= 2) {
+    const boundary = new RegExp(`(?:^| )${escapeRegex(shorter)}(?: |$)`);
+    if (boundary.test(longer)) return "normalized";
+  }
+
+  // Strict significant-token overlap (handles address/borough abbreviations like "S 9 St BK" vs "South 9th Street Brooklyn").
+  const tokensA = new Set(significantTitleTokens(normNotice));
+  const tokensB = new Set(significantTitleTokens(normRound));
+  const minSize = Math.min(tokensA.size, tokensB.size);
+  if (minSize >= 3) {
+    let shared = 0;
+    for (const token of tokensA) {
+      if (tokensB.has(token)) shared += 1;
+    }
+    if (shared >= 3 && (shared / minSize) >= 0.5) return "normalized";
+  }
+
+  return null;
+}
 
 function cleanText(value) {
   return String(value ?? "")
@@ -306,7 +385,8 @@ function bindNotice(notice, rows, pages, observations, asOf) {
   const basis = ["pin_equals_epin", "single_feed_row_for_epin"];
   const rfpId = String(row.rfp_id || "");
   const shared = { rfp_id: rfpId || null, epin: join.epin };
-  if (exactTitle(notice?.short_title) == null || exactTitle(notice?.short_title) !== exactTitle(row.procurement_name)) {
+  const titleMatch = matchCorroboratedTitle(notice?.short_title, row.procurement_name, join.epin);
+  if (!titleMatch) {
     return missing(notice, asOf, "title_mismatch", { ...shared, basis, basis_failed: ["title_exact"] });
   }
   basis.push("title_exact");

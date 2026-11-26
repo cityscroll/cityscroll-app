@@ -12,6 +12,8 @@ import {
   REASON_CODES,
   buildOpenNoticeDocumentListings,
   listNavigatorDocuments,
+  matchCorroboratedTitle,
+  normalizeTitleForCorroboration,
   parsePublisherClock,
 } from "../tools/lib/open_notice_document_listing.mjs";
 
@@ -319,4 +321,69 @@ test("whitespace in a title still matches, and a listing over the byte bound is 
     navigatorByRfpId: { 38224: page({ files }) },
     asOf: AS_OF,
   }), (error) => error.code === "listing_oversize");
+});
+
+test("strict normalized title corroboration strips framing and matched EPIN prefixes while rejecting unrelated titles", () => {
+  assert.equal(normalizeTitleForCorroboration("Bid Extension: 85625B0011-CSB General Construction RC Man. & Bronx", "85625B0011"), "csb general construction rc man and bronx");
+  assert.equal(matchCorroboratedTitle("IT Consulting Services", "IT Consulting Services", "85827Y1399"), "exact");
+
+  // City Record framing prefix + PASSPort EPIN prefix
+  assert.equal(matchCorroboratedTitle(
+    "Bid Extension: Leveraging Ground-Scanning Technology",
+    "85827Y1399-Leveraging Ground-Scanning Technology",
+    "85827Y1399",
+  ), "normalized");
+
+  // Case + EPIN prefix on single-word commodity
+  assert.equal(matchCorroboratedTitle("Antifreeze", "85727B0026-ANTIFREEZE", "85727B0026"), "normalized");
+
+  // Agency project code containment (DEP BEPA/BEDC pattern)
+  assert.equal(matchCorroboratedTitle(
+    "82627B0009-BEPA: GI-CONS-4: Installation of green infrastructure at various NYC Parks",
+    "82627B0009-BEPA: GI-CONS-4",
+    "82627B0009",
+  ), "normalized");
+
+  // Address/borough abbreviation token overlap
+  assert.equal(matchCorroboratedTitle(
+    "Electrical System Replacement - 156 South 9th Street, Brooklyn",
+    "80626B0039-Electrical System Replacement - 156 S 9 St BK",
+    "80626B0039",
+  ), "normalized");
+
+  // Negative controls: unrelated titles, generic 1-word containment, and zero-overlap code-only titles must stay rejected.
+  assert.equal(matchCorroboratedTitle("A different title", "IT Consulting Services", "85827Y1399"), null);
+  assert.equal(matchCorroboratedTitle("Services", "IT Consulting Services", "85827Y1399"), null);
+  assert.equal(matchCorroboratedTitle("Supply of Computers", "Supply of Furniture", "85827Y1399"), null);
+  assert.equal(matchCorroboratedTitle(
+    "Correction: Construction Management Services for the Rehabilitation of the Wallkill Blow-off Chamber",
+    "82627P0005-BEDC-CAT-523-CM",
+    "82627P0005",
+  ), null);
+
+  // End-to-end binding still requires single round, exact release day, exact due time, and Navigator displayed_id match.
+  const html = page({ files: [{ id: "100", name: "Scope of Work", type: "RFx Document" }] });
+  const artifact = buildOpenNoticeDocumentListings({
+    notices: [
+      notice({
+        request_id: "20260901018",
+        short_title: "Bid Extension: IT Consulting Services",
+      }),
+      notice({
+        request_id: "20260901019",
+        pin: "82627P0005",
+        short_title: "Correction: Construction Management Services for Wallkill",
+      }),
+    ],
+    rfxRows: [
+      round({ procurement_name: "85827Y1399-IT Consulting Services" }),
+      round({ rfp_id: "40000", bpm_id: "400000", epin: "82627P0005", procurement_name: "82627P0005-BEDC-CAT-523-CM" }),
+    ],
+    navigatorByRfpId: { 38224: html, 40000: html },
+    asOf: AS_OF,
+  });
+  const bound = recordFor(artifact, "20260901018");
+  assert.equal(bound.state, "available");
+  assert.deepEqual(bound.data.basis, [...BASIS]);
+  assert.equal(recordFor(artifact, "20260901019").data.reason_code, "title_mismatch");
 });
