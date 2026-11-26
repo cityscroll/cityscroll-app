@@ -30,8 +30,8 @@
    "standing": "solicitation",
    "extraction_key": {
     "sha256": "402a4d65afc67952754129063ecdecc70259645fb1ad50e0d1ce888ef053e8ab",
-    "extractor": "seqra_document_page_extract.py@7b7dd10418ee8d5fa2a06e08dd1ed2b79163dbc7",
-    "pdf_library": "pypdf (version recorded at run)",
+    "extractor": "seqra_document_page_extract.py.v2",
+    "pdf_library": "pdftotext 26.11.0",
     "ontology_version": "procurement-documents.v1",
     "rules_version": "navigator_rfx_document_facts.v1"
    },
@@ -43,8 +43,8 @@
      "local": "2026-11-09T14:00:00",
      "timezone": "America/New_York",
      "pdf_page": 1,
-     "excerpt": "Bids are due by Novem ber 9th, 2026 @ 2:00PM .",
-     "excerpt_sha256": "9871029d96cf87c65ec160594f286f732e9011cfac7fd37bd9b56a5c43c77f2f"
+     "excerpt": "Bids are due by November 9th, 2026 @ 2:00PM.",
+     "excerpt_sha256": "3dfc59be80028be5ee51203b7d4270a5a53d2aac149ceba451174ac8840023d7"
     },
     {
      "id": "bid-opening",
@@ -53,8 +53,8 @@
      "timezone": "America/New_York",
      "mode": "remote (Microsoft Teams); in-person prohibited",
      "pdf_page": 1,
-     "excerpt": "The Bid Opening will be conducted via Microsoft Teams at 3:00PM on November 9t h, 2026 . In-person",
-     "excerpt_sha256": "920dd84f120d28982c8c1c89f56cf72424a8891fecc33376f15e6f5b619e0fbd"
+     "excerpt": "The Bid Opening will be conducted via Microsoft Teams at 3:00PM on November 9th, 2026. In-person",
+     "excerpt_sha256": "94c1cbd88f2c8555bff1dba3e16b750c963074ec86f5d7dff20b1e5df228461a"
     }
    ],
    "facts": [
@@ -81,8 +81,8 @@
      "condition": "no question deadline is stated",
      "pdf_page": 1,
      "rule": "opening_text",
-     "excerpt": "All questions must be submitted in the “ Discussion with Buyer ” forum in PASSPort .",
-     "excerpt_sha256": "bd8d2c71546efac65676fc6c91f20ca7912651979bbbd15235764be593c1a607"
+     "excerpt": "All questions must be submitted in the “Discussion with Buyer” forum in PASSPort.",
+     "excerpt_sha256": "a85fdb159cab1cfd44b08fa08513e6b3dbb5771530c7d903cad53276e637ddff"
     }
    ],
    "abstentions": []
@@ -98,7 +98,10 @@
    "access_mode": "anonymous-direct-http",
    "page_count": 237,
    "pages_with_text": 237,
-   "ocr_required_pages": [],
+   "ocr_required_pages": [
+    65,
+    66
+   ],
    "roles": [
     "bid_form",
     "bond_insurance",
@@ -112,8 +115,8 @@
    "standing": "solicitation",
    "extraction_key": {
     "sha256": "f39a054a1aa94d64c30d08fd5772b80d16909b973428a5b534c6e2e3556cb28a",
-    "extractor": "seqra_document_page_extract.py@7b7dd10418ee8d5fa2a06e08dd1ed2b79163dbc7",
-    "pdf_library": "pypdf (version recorded at run)",
+    "extractor": "seqra_document_page_extract.py.v2",
+    "pdf_library": "pdftotext 26.11.0",
     "ontology_version": "procurement-documents.v1",
     "rules_version": "navigator_rfx_document_facts.v1"
    },
@@ -306,8 +309,8 @@
      "condition": null,
      "pdf_page": 2,
      "rule": "schedule_a_checkbox",
-     "excerpt": "Bid Bond ☒N/A or ☐__% of Total Bid Price",
-     "excerpt_sha256": "84acce12f7f26593f50393955dc59d70e044771a166695c08993fbffe960bde3"
+     "excerpt": "Bid Bond ☒ N/A or ☐___% of Total Bid Price",
+     "excerpt_sha256": "9620c48dd9820a6d31d5c214c478836b735933055a5952b5dfc3b59e221332d1"
     },
     {
      "id": "bid-security",
@@ -319,8 +322,8 @@
      "condition": null,
      "pdf_page": 2,
      "rule": "schedule_a_checkbox",
-     "excerpt": "Bid Bond ☒N/A or ☐__% of Total Bid Price ☒ N/A or ☐___% of Total Bid Price",
-     "excerpt_sha256": "2f5e8c87767cd436181495bef8f4290978ffd9ec412851a56b6fc128889bb3dc"
+     "excerpt": "Bid Security ☒N/A or ☐__% of Total Bid Price",
+     "excerpt_sha256": "c546bc22a5eb00b3735f9e9e5ea3555259006832f735c279bb62ac4a963a782b"
     },
     {
      "id": "performance-bond",
@@ -349,6 +352,48 @@
      "excerpt_sha256": "fb10894f70d9cb8204a3fef4f2738dfd8d384ebea3745f7d05e183f493c3a739"
     },
     {
+     "id": "period-of-performance",
+     "role": "scope_specification",
+     "subject": "Period of performance (term of contract)",
+     "article": "Article 6 of Agreement",
+     "applicability": "required",
+     "value": "5 Years from the Order to Work Date",
+     "basis": "stated contract term",
+     "condition": null,
+     "pdf_page": 2,
+     "rule": "schedule_a_text",
+     "excerpt": "Period of Performance (Term 5 Years from the Order to Work Date of Contract)",
+     "excerpt_sha256": "796254186d81ed4bccf1f5f91d84e5603b49996264287d2ed16bbff53a39bf1d"
+    },
+    {
+     "id": "damage-claims",
+     "role": "scope_specification",
+     "subject": "Damage claims repair window",
+     "article": "Article 16 of Detailed Specifications",
+     "applicability": "required",
+     "value": "All damages shall be repaired within 2 weeks",
+     "basis": "stated requirement",
+     "condition": "Agency may withhold payment on outstanding invoices until damage rectifications are met",
+     "pdf_page": 2,
+     "rule": "schedule_a_text",
+     "excerpt": "All damages shall be repaired within 2 weeks. Agency reserves the right to withhold payment on all outstanding invoices until all damage rectifications are met.",
+     "excerpt_sha256": "6fdcaf20492f39b79d48e46f884249264e0eb13c99d896bcc225eb319fa52958"
+    },
+    {
+     "id": "subcontracting",
+     "role": "scope_specification",
+     "subject": "Subcontracting",
+     "article": "Article 6 of Detailed Specifications",
+     "applicability": "conditional",
+     "value": "No Subcontracting unless approved by the ACCO",
+     "basis": "stated restriction",
+     "condition": "requires prior ACCO approval",
+     "pdf_page": 3,
+     "rule": "schedule_a_text",
+     "excerpt": "No Subcontracting unless approved by the ACCO",
+     "excerpt_sha256": "8d9831b4f7efde29775fff4efd3e63fef5016b8ccc6263fa921dcf7260f52e94"
+    },
+    {
      "id": "retained-percentage",
      "role": "bond_insurance",
      "subject": "Retained percentage",
@@ -371,8 +416,8 @@
      "condition": null,
      "pdf_page": 3,
      "rule": "schedule_a_checkbox",
-     "excerpt": "Security ☒N/A ☒ ___% of Total Contract Amount",
-     "excerpt_sha256": "bfeb2028634e49ba4f4a94991983ffae83d0614ac2f2980115ef08ed92360fbc"
+     "excerpt": "Maintenance and Guaranty ☒N/A ☒ ___% of Total Contract Amount Security",
+     "excerpt_sha256": "82ed2c279a6a216d466b86e1356c06ed16209b007172cab87a838ff767e25ac6"
     },
     {
      "id": "guaranty-period",
@@ -401,6 +446,25 @@
      "excerpt_sha256": "1ef079ad80ec15643dbde054f939271738c0257204f506bfeb5a5c8049e6346c"
     },
     {
+     "id": "liquidated-damages",
+     "role": "pricing_schedule",
+     "subject": "Liquidated damages",
+     "article": "Article 8 of Agreement; Article 7 & Article 8 of Detailed Specifications",
+     "applicability": "conditional",
+     "value": [
+      "$100/day after 2 business days to complete incomplete or unsatisfactory work",
+      "$100/day per incident for failure to respond to a work order within 2 business days",
+      "$75/hr for failure to respond to an emergency work order within 4 hours",
+      "$100/day for failure to respond to a routine repair request within 2 business days"
+     ],
+     "basis": "stated liquidated-damages schedule",
+     "condition": "assessed on non-response or incomplete/unsatisfactory work",
+     "pdf_page": 3,
+     "rule": "schedule_a_text",
+     "excerpt": "$100 per day/incident for failure to respond to a work order within two business days. $75 Per Hour for failure to respond to an emergency work order within 4 hours $100 per day if Contractor fails to respond to a routine (non-emergency) repair service request within two business days.",
+     "excerpt_sha256": "9fb77b0d3272cba0144baa9322d9adb6559979c0f7dd0d27bf3253ec279238c7"
+    },
+    {
      "id": "labor-law",
      "role": "labor_compliance",
      "subject": "Labor law and living wage requirements",
@@ -415,8 +479,8 @@
       "Electrician",
       "Plumber"
      ],
-     "excerpt": "☐N/A ☒NY LABOR LAW 220 ☐NY Labor Law 230 ☐Living Wage",
-     "excerpt_sha256": "54257a36e5d1de8e18933d026fbe6a61402f8cfb088f634ce69f543adbb23126"
+     "excerpt": "☐N/A -Electrician ☒NY LABOR LAW 220 -Plumber ☐NY Labor Law 230 ☐Living Wage",
+     "excerpt_sha256": "0ec57d497314d1681b2071a71aafd169a4058c1bdb5da2f548180fb84b6faa38"
     },
     {
      "id": "insurance-commercial-general-liability",
@@ -432,8 +496,8 @@
      "condition": null,
      "pdf_page": 5,
      "rule": "schedule_a_insurance_checkbox",
-     "excerpt": "☒Comm ercial General Liability",
-     "excerpt_sha256": "0cb126079fe339a699ef4837bf02f97b95acef901fe538fe89c1e647f7cbfc98"
+     "excerpt": "☒Commercial General Liability",
+     "excerpt_sha256": "511023b5edfeecf19a16053bd1862620fb1577f1a6b7a6763489ec35b234bdca"
     },
     {
      "id": "insurance-workers-compensation",
@@ -448,8 +512,8 @@
      "condition": null,
      "pdf_page": 6,
      "rule": "schedule_a_insurance_checkbox",
-     "excerpt": "☒Work ers’ Compensat ion",
-     "excerpt_sha256": "50bb24f5b694aa71329ea013a67d5bb40a09db7e141ac069acea04421e82e675"
+     "excerpt": "☒Workers’ Compensation",
+     "excerpt_sha256": "6a1376928461564f971726ad0bb924d4a0dfaac7cd02042125996867db662c94"
     },
     {
      "id": "insurance-disability-benefits",
@@ -464,8 +528,8 @@
      "condition": null,
      "pdf_page": 6,
      "rule": "schedule_a_insurance_checkbox",
-     "excerpt": "☒Disabi lity Benefits Insurance",
-     "excerpt_sha256": "907aa2ddb6849edfd7c026a5b4d7dfde55ea8dc940acfb7518b298e85057b822"
+     "excerpt": "☒Disability Benefits Insurance",
+     "excerpt_sha256": "ccb8d0515c1590425416a4f546bf8f947f31438a8c1db7f8a7d7df1946864710"
     },
     {
      "id": "insurance-employers-liability",
@@ -524,8 +588,8 @@
      "condition": null,
      "pdf_page": 6,
      "rule": "schedule_a_insurance_checkbox",
-     "excerpt": "☒ Comme rcial Auto Liability",
-     "excerpt_sha256": "d523c86134c872ca3094219b404818513afbb0145d3e7aff15b5f09b1627fe3a"
+     "excerpt": "☒ Commercial Auto Liability",
+     "excerpt_sha256": "d7f234987e352935e72f1b733fc36fb974e0414254af186aeb380cabb04a7091"
     },
     {
      "id": "insurance-contractors-pollution-liability",
@@ -552,8 +616,8 @@
      "condition": null,
      "pdf_page": 8,
      "rule": "schedule_a_insurance_checkbox",
-     "excerpt": "☐ Marine Protect ion and Indemnity",
-     "excerpt_sha256": "3f86bd1ca1ffc5218783297e177195188318d493079cc78b26b190e45db1f8a1"
+     "excerpt": "☐ Marine Protection and Indemnity",
+     "excerpt_sha256": "feaf75d1eb702642828324a865a83e4f95abe46d71fd3d98fc4d8d31c2e629a5"
     },
     {
      "id": "insurance-hull-machinery",
@@ -566,8 +630,8 @@
      "condition": null,
      "pdf_page": 8,
      "rule": "schedule_a_insurance_checkbox",
-     "excerpt": "☐ Hull and Machine ry Insurance",
-     "excerpt_sha256": "8ffb066e71e908258e7ce36d60c0ac5f2de09d49061f3c8e9e2e3a22b81c31db"
+     "excerpt": "☐ Hull and Machinery Insurance",
+     "excerpt_sha256": "9a49ef056c7aa086bc1751d56333f4250b7d3d5b87e3dabcf2b8e947caf431e2"
     },
     {
      "id": "insurance-marine-pollution-liability",
@@ -608,21 +672,22 @@
      "condition": null,
      "pdf_page": 9,
      "rule": "schedule_a_insurance_checkbox",
-     "excerpt": "☐ Personal Prop erty Insurance",
-     "excerpt_sha256": "aed33e491e98bbb5fd754a176068851053a1a3f7360479822a9d1b251db0a793"
+     "excerpt": "☐ Personal Property Insurance",
+     "excerpt_sha256": "a30686620cfa492ec7666f5564076f87559a9f246ff9bba99bc46f6ef9364d94"
     },
     {
-     "id": "insurance-unlabelled-p10",
+     "id": "insurance-other-template-p10",
      "role": "bond_insurance",
-     "subject": "Checkbox without a recoverable label",
-     "applicability": "unknown",
+     "subject": "Other insurance (blank template slots)",
+     "article": "Art. 15(II)(F)",
+     "applicability": "not_applicable",
      "value": null,
-     "basis": "2 box(es) whose label is not in the text layer",
-     "condition": "inspect the PDF page",
+     "basis": "2 unchecked [OTHER] template slots with blank agency instructions",
+     "condition": null,
      "pdf_page": 10,
      "rule": "schedule_a_insurance_checkbox",
-     "excerpt": null,
-     "excerpt_sha256": null
+     "excerpt": "(a) check the box and fill in the type of insurance in left-hand column",
+     "excerpt_sha256": "0a9942946339eb603ac4c28185b97d4e8b78b9b074429518ed1f9d3517d53a48"
     },
     {
      "id": "experience-three-years",
@@ -712,8 +777,8 @@
      "pdf_page": 36,
      "reason": "table-of-contents heading; keyword is not a requirement",
      "creates_task": false,
-     "excerpt": "Bid Sec urity",
-     "excerpt_sha256": "a22b70b77e3d27c6fc9b824bea5a968a3e69175e875b475bb0a73a50c184989c"
+     "excerpt": "Bid Security",
+     "excerpt_sha256": "531b07f42942657e3f3a865f2c5a8d6c08319300f281e93682b584e40e44e5de"
     },
     {
      "id": "performance-bond-toc",

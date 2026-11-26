@@ -1,42 +1,296 @@
-"""SEQRA-04: per-page PDF text extraction for CEQR Access review documents.
+"""SEQRA-04: per-page PDF text extraction for CEQR Access & procurement documents.
 
 Sibling to warehouse/lib/attachment_text_extract.py, not a fork of it: that
 module flattens a PDF to one text blob for the T1 attachment-search tier and
-explicitly puts OCR out of scope. SEQRA-04 needs page-level text (card
-acceptance A2 -- "every parsed page resolves to immutable stored source
-bytes") because a technical-topic citation has to point at one page, not "the
-document." This module keeps the same pypdf-when-available / honest-skip
-convention rather than introducing a second PDF dependency choice.
+explicitly puts OCR out of scope. This module emits page-level text so every
+technical or procurement citation points to an exact 1-based page number.
 
-Real OCR (an image-only/scanned page with no text layer) is not wired in this
-card: no OCR engine (tesseract or otherwise) exists anywhere in this
-repository's dependency set yet. A page whose text layer is empty is reported
-`ocr_required: true, ocr_attempted: false` -- a later card can wire an engine
-without changing this module's page contract.
+Extraction order:
+1. Prefer `pdftotext -layout` (poppler) when installed — ~9x faster than pure
+   Python, eliminates mid-word kerning splits ("Comm ercial", "Novem ber"),
+   and preserves table columns and real statute/compound hyphens ("6-129").
+2. Fall back to `pypdf` when `pdftotext` is unavailable; return an honest
+   `status: "skipped", reason: "pdf_lib_unavailable"` when neither is present.
+3. Inspect embedded `/XObject` `/Image` entries via `pypdf` when it is
+   installed, otherwise via `pdfimages` or the uncompressed object
+   dictionaries. Image-only attachment pages that carry only a short text
+   header (e.g. "Attachment A" plus a large raster image) are flagged
+   `ocr_required: true`.
 """
 
 from __future__ import annotations
 
-import io
 import importlib.metadata
+import io
 import json
 import re
+import shutil
+import subprocess
 from typing import Any
 
 MAX_CHARS_PER_PAGE = 50_000
 
+PUA_GLYPH_MAP = str.maketrans({
+    "\uf0b7": "•",
+    "\uf0a7": "•",
+    "\uf06c": "•",
+    "\uf075": "•",
+    "\uf0b0": "•",
+    "\uf0d8": "▸",
+    "\uf0fc": "✓",
+    "\uf0a8": "☐",
+    "\uf0fe": "☒",
+    "\u2010": "-",
+    "\u2011": "-",
+    "\u2212": "-",
+    "\u00a0": " ",
+    "\u2007": " ",
+    "\u2009": " ",
+    "\u202f": " ",
+})
+
+STRIP_CONTROL_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\u00ad\ufeff\u200b-\u200d]")
+
 
 def _clean(text: str, max_chars: int = MAX_CHARS_PER_PAGE) -> str:
     text = text.replace("\r\n", "\n").replace("\r", "\n")
-    text = re.sub(r"[ \t]+\n", "\n", text)
-    text = re.sub(r"\n{3,}", "\n\n", text)
-    text = re.sub(r"[^\S\n]+", " ", text).strip()
+    text = text.translate(PUA_GLYPH_MAP)
+    text = STRIP_CONTROL_RE.sub("", text)
+    lines = [re.sub(r"[^\S\n]+", " ", line).strip() for line in text.split("\n")]
+    text = "\n".join(lines)
+    text = re.sub(r"\n{3,}", "\n\n", text).strip()
     if len(text) <= max_chars:
         return text
     return text[:max_chars].rstrip() + "…"
 
 
+def _detect_pdftotext_library() -> str | None:
+    if not shutil.which("pdftotext"):
+        return None
+    try:
+        proc = subprocess.run(
+            ["pdftotext", "-v"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=5,
+        )
+        banner = (proc.stderr or proc.stdout or b"").decode("utf-8", errors="replace")
+        match = re.search(r"version\s+([0-9][0-9.\-a-zA-Z]*)", banner)
+        if match:
+            return f"pdftotext {match.group(1)}"
+    except Exception:  # noqa: BLE001
+        pass
+    return "pdftotext"
+
+
+def detect_pdf_library() -> str:
+    """Return the exact library identifier used by extract_pdf_pages."""
+    pft = _detect_pdftotext_library()
+    if pft:
+        return pft
+    try:
+        import pypdf  # noqa: F401
+    except ImportError:
+        return "unavailable"
+    try:
+        return f"pypdf {importlib.metadata.version('pypdf')}"
+    except importlib.metadata.PackageNotFoundError:
+        return "pypdf unknown"
+
+
+_OBJECT_RE = re.compile(rb"(\d+)\s+\d+\s+obj\b(.*?)endobj", re.S)
+_WIDTH_RE = re.compile(rb"/Width\s+(\d+)")
+_HEIGHT_RE = re.compile(rb"/Height\s+(\d+)")
+_IMAGE_SUBTYPE_RE = re.compile(rb"/Subtype\s*/Image\b")
+_PAGES_TYPE_RE = re.compile(rb"/Type\s*/Pages\b")
+_PAGE_TYPE_RE = re.compile(rb"/Type\s*/Page\b")
+_KIDS_RE = re.compile(rb"/Kids\s*\[([^\]]*)\]")
+_REF_RE = re.compile(rb"(\d+)\s+\d+\s+R")
+_XOBJECT_RE = re.compile(rb"/XObject\s*<<([^>]*)>>")
+
+
+def _inspect_image_pages_from_dictionaries(data: bytes) -> dict[int, int]:
+    """Count large image XObjects from uncompressed dictionaries.
+
+    `pdfimages` omits an image whose stream length does not match the declared
+    sample bytes. The page dictionary still names the XObject, which is enough
+    to know the page is an image attachment rather than body text.
+    """
+    objects = {int(match.group(1)): match.group(2) for match in _OBJECT_RE.finditer(data)}
+    image_ids = set()
+    for obj_id, body in objects.items():
+        if not _IMAGE_SUBTYPE_RE.search(body):
+            continue
+        width = _WIDTH_RE.search(body)
+        height = _HEIGHT_RE.search(body)
+        if width and height and int(width.group(1)) >= 50 and int(height.group(1)) >= 50:
+            image_ids.add(obj_id)
+    if not image_ids:
+        return {}
+
+    kids: list[int] = []
+    for body in objects.values():
+        if not _PAGES_TYPE_RE.search(body):
+            continue
+        listed = _KIDS_RE.search(body)
+        if listed:
+            kids = [int(ref) for ref in _REF_RE.findall(listed.group(1))]
+            break
+    if not kids:
+        kids = [
+            obj_id for obj_id, body in sorted(objects.items())
+            if _PAGE_TYPE_RE.search(body) and not _PAGES_TYPE_RE.search(body)
+        ]
+
+    counts: dict[int, int] = {}
+    for index, page_id in enumerate(kids, 1):
+        body = objects.get(page_id, b"")
+        referenced = []
+        for block in _XOBJECT_RE.findall(body):
+            referenced.extend(int(ref) for ref in _REF_RE.findall(block))
+        count = sum(1 for ref in referenced if ref in image_ids)
+        if count:
+            counts[index] = count
+    return counts
+
+
+def _inspect_image_pages(data: bytes) -> dict[int, int]:
+    """Count significant raster XObject images (>=50x50px) per 1-based page."""
+    try:
+        import logging
+        from pypdf import PdfReader  # type: ignore
+        logging.getLogger("pypdf").setLevel(logging.ERROR)
+    except ImportError:
+        counts = _inspect_image_pages_via_pdfimages(data)
+        return counts or _inspect_image_pages_from_dictionaries(data)
+    try:
+        reader = PdfReader(io.BytesIO(data))
+    except Exception:  # noqa: BLE001
+        return {}
+    counts: dict[int, int] = {}
+    for pno, page in enumerate(reader.pages, 1):
+        img_count = 0
+        try:
+            res = page.get("/Resources")
+            xobjs = res.get_object().get("/XObject") if res else None
+            if xobjs:
+                for obj in xobjs.get_object().values():
+                    resolved = obj.get_object()
+                    if resolved.get("/Subtype") == "/Image":
+                        w = int(resolved.get("/Width", 0) or 0)
+                        h = int(resolved.get("/Height", 0) or 0)
+                        if w >= 50 and h >= 50:
+                            img_count += 1
+        except Exception:  # noqa: BLE001
+            img_count = 0
+        if img_count > 0:
+            counts[pno] = img_count
+    return counts
+
+
+def _inspect_image_pages_via_pdfimages(data: bytes) -> dict[int, int]:
+    if not shutil.which("pdfimages"):
+        return {}
+    import tempfile
+    import os
+    tmp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tf:
+            tf.write(data)
+            tmp_path = tf.name
+        proc = subprocess.run(
+            ["pdfimages", "-list", tmp_path],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=15,
+        )
+        if proc.returncode != 0:
+            return {}
+        counts: dict[int, int] = {}
+        for line in proc.stdout.decode("utf-8", errors="replace").splitlines()[2:]:
+            parts = line.split()
+            if len(parts) >= 5 and parts[0].isdigit() and parts[2] == "image":
+                pno = int(parts[0])
+                w = int(parts[3]) if parts[3].isdigit() else 0
+                h = int(parts[4]) if parts[4].isdigit() else 0
+                if w >= 50 and h >= 50:
+                    counts[pno] = counts.get(pno, 0) + 1
+        return counts
+    except Exception:  # noqa: BLE001
+        return {}
+    finally:
+        if tmp_path and os.path.exists(tmp_path):
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+
+
+def _extract_via_pdftotext(data: bytes) -> tuple[str, list[str]] | None:
+    pdf_library = _detect_pdftotext_library()
+    if not pdf_library:
+        return None
+    try:
+        proc = subprocess.run(
+            ["pdftotext", "-layout", "-", "-"],
+            input=data,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=30,
+        )
+    except Exception:  # noqa: BLE001
+        return None
+    if proc.returncode != 0:
+        return None
+    raw = proc.stdout.decode("utf-8", errors="replace")
+    parts = raw.split("\x0c")
+    if parts and parts[-1].strip() == "":
+        parts = parts[:-1]
+    if not parts:
+        return None
+    return pdf_library, parts
+
+
+def _build_page_entry(page_number: int, text: str, image_count: int) -> dict[str, Any]:
+    has_text = bool(text)
+    image_only_header = image_count > 0 and len(text) < 100
+    ocr_required = (not has_text) or image_only_header
+    reason = None
+    if not has_text:
+        reason = "empty_text_layer"
+    elif image_only_header:
+        reason = "image_attachment_with_header_only"
+    return {
+        "page_number": page_number,
+        "status": "ok" if has_text else "extract_failed",
+        "reason": reason,
+        "text": text,
+        "ocr_required": ocr_required,
+        "ocr_attempted": False,
+    }
+
+
 def extract_pdf_pages(data: bytes) -> dict[str, Any]:
+    images_by_page = _inspect_image_pages(data)
+
+    pft = _extract_via_pdftotext(data)
+    if pft is not None:
+        pdf_library, raw_pages = pft
+        pages = [
+            _build_page_entry(idx, _clean(raw_text), images_by_page.get(idx, 0))
+            for idx, raw_text in enumerate(raw_pages, 1)
+        ]
+        return {
+            "status": "ok",
+            "reason": None,
+            "pages": pages,
+            "method": "pdf_text_layer_per_page",
+            "pdf_library": pdf_library,
+        }
+
     try:
         from pypdf import PdfReader  # type: ignore
     except ImportError:
@@ -68,15 +322,7 @@ def extract_pdf_pages(data: bytes) -> dict[str, Any]:
             })
             continue
         text = _clean(raw_text)
-        has_text_layer = bool(text)
-        pages.append({
-            "page_number": page_number,
-            "status": "ok" if has_text_layer else "extract_failed",
-            "reason": None if has_text_layer else "empty_text_layer",
-            "text": text,
-            "ocr_required": not has_text_layer,
-            "ocr_attempted": False,
-        })
+        pages.append(_build_page_entry(page_number, text, images_by_page.get(page_number, 0)))
 
     if not pages:
         return {"status": "extract_failed", "reason": "pdf_no_pages", "pages": [], "pdf_library": pdf_library}
@@ -87,9 +333,13 @@ if __name__ == "__main__":
     import argparse
     import sys
 
-    parser = argparse.ArgumentParser(description="Extract per-page plain text from one CEQR Access PDF")
+    parser = argparse.ArgumentParser(description="Extract per-page plain text from one PDF")
+    parser.add_argument("--version", action="store_true", help="Print the active PDF extraction library identifier")
     parser.add_argument("path", nargs="?", help="Path to a PDF file; reads stdin when omitted")
     args = parser.parse_args()
+    if args.version:
+        print(detect_pdf_library())
+        sys.exit(0)
     if args.path:
         with open(args.path, "rb") as handle:
             payload = handle.read()

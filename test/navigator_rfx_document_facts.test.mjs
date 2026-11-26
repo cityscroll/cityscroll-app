@@ -355,3 +355,67 @@ test("the observation pipeline attaches the deterministic reading to generated r
     rmSync(projectRoot, { recursive: true, force: true });
   }
 });
+
+test("A4: extracts Schedule A term/damage/subcontracting/LD facts and distinguishes blank p.10 [OTHER] template from checked boxes", () => {
+  const contract = documentById("253286611");
+  const enrichedPages = contract.pages.map((page) => {
+    if (page.page_number === 2) {
+      return {
+        ...page,
+        text: `${page.text}\n`
+          + "Article 6 of Agreement Period of Performance (Term 5 Years from the Order to Work Date of Contract)\n"
+          + "Article 16 of Detailed Specifications Damage Claims All damages shall be repaired within 2 weeks. Agency reserves the right to withhold payment on all outstanding invoices until all damage rectifications are met.",
+      };
+    }
+    if (page.page_number === 3) {
+      return {
+        ...page,
+        text: `${page.text}\n`
+          + "Article 6 of Detailed Specifications Subcontracting No Subcontracting unless approved by the ACCO\n"
+          + "$100 per day/incident for failure to respond to a work order within two business days. $75 Per Hour for failure to respond to an emergency work order within 4 hours $100 per day if Contractor fails to respond to a routine (non-emergency) repair service request within two business days.",
+      };
+    }
+    if (page.page_number === 10) {
+      return {
+        ...page,
+        text: "[OTHER] Art. 15(II)(F) [If other type(s) of insurance need to be required\n☐\nunder the Contract, (a) check the box and fill in the type of insurance in left-hand column, and (b) specify limits.]\n[OTHER] Art. 15(II)(F) [See directly above.] ☐",
+      };
+    }
+    return page;
+  });
+
+  const projection = readNavigatorDocumentFacts({
+    document: contract,
+    pages: enrichedPages,
+    pageCount: contract.page_count,
+  });
+  const facts = new Map(projection.facts.map((fact) => [fact.id, fact]));
+
+  assert.equal(facts.get("period-of-performance")?.applicability, "required");
+  assert.equal(facts.get("period-of-performance")?.value, "5 Years from the Order to Work Date");
+  assert.equal(facts.get("damage-claims")?.applicability, "required");
+  assert.match(facts.get("damage-claims")?.value, /within 2 weeks/);
+  assert.equal(facts.get("subcontracting")?.applicability, "conditional");
+  assert.match(facts.get("subcontracting")?.value, /No Subcontracting unless approved by the ACCO/);
+  assert.equal(facts.get("liquidated-damages")?.applicability, "conditional");
+  assert.equal(facts.get("liquidated-damages")?.value.length, 4);
+
+  assert.equal(facts.get("insurance-unlabelled-p10"), undefined);
+  assert.equal(facts.get("insurance-other-template-p10")?.applicability, "not_applicable");
+  assert.equal(facts.get("insurance-other-template-p10")?.article, "Art. 15(II)(F)");
+
+  // If an agency actually checks a box on page 10, preserve conservative unknown classification.
+  const checkedP10Pages = enrichedPages.map((page) => (
+    page.page_number === 10
+      ? { ...page, text: page.text.replace("☐", "☒") }
+      : page
+  ));
+  const checkedProjection = readNavigatorDocumentFacts({
+    document: contract,
+    pages: checkedP10Pages,
+    pageCount: contract.page_count,
+  });
+  const checkedFacts = new Map(checkedProjection.facts.map((fact) => [fact.id, fact]));
+  assert.equal(checkedFacts.get("insurance-unlabelled-p10")?.applicability, "unknown");
+  assert.equal(checkedFacts.get("insurance-other-template-p10"), undefined);
+});
