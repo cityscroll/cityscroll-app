@@ -1,5 +1,5 @@
 import { providerDailyQuota, readProviderDailyQuota } from "./lib/provider_quota.mjs";
-import { deliveryHoldForSend } from "./lib/recipient_suppression.mjs";
+import { deliverWelcomeOnce } from "./subscribe.mjs";
 import { OPS_NOTIFICATION_POLICY } from "./lib/ops_notification_policy.mjs";
 import { projectEmergencyAlertHistory } from "./lib/emergency_outbox.mjs";
 // GET /admin/subs?key=… — operator signup-lifecycle roster from the worker's OWN SUBS
@@ -415,14 +415,14 @@ export async function handleAdminMailQuota(req, env) {
   const drill = req.method === "POST";
   const now = new Date();
   let quota;
-  let hold;
+  let welcome;
   if (drill) {
     let body;
     try { body = await req.json(); } catch { return privateJson({ error: "invalid-drill" }, 400); }
     if (body?.recipient !== undefined) {
       if (typeof body.recipient !== "string" || !body.recipient.endsWith(".invalid")
           || !isValidEmail(body.recipient)) return privateJson({ error: "reserved-recipient-required" }, 400);
-      hold = await deliveryHoldForSend(env, body.recipient);
+      welcome = await deliverWelcomeOnce(env, body.recipient, null, { previewOnly: true });
     }
     quota = providerDailyQuota({ emails: { daily: {
       used: 80, limit: 100, resets_at: new Date(Date.UTC(now.getUTCFullYear(),
@@ -434,6 +434,7 @@ export async function handleAdminMailQuota(req, env) {
   }
   let alert = null;
   if (["warning", "exhausted", "unavailable"].includes(quota.status)) {
+    if (!env.ALERT_STATE?.put) return privateJson({ error: "alert-store-unavailable", quota }, 503);
     const guard = drill ? "provider-mail-quota-drill" : "provider-mail-quota";
     const finding = quota.status === "unavailable" ? "Resend daily usage could not be read"
       : `${drill ? "Test notification. " : ""}Resend daily email quota reached ${quota.used} of ${quota.limit}`;
@@ -442,7 +443,7 @@ export async function handleAdminMailQuota(req, env) {
       findings: [finding] });
     alert = { signature: result.signature, destination: result.reason };
   }
-  return privateJson({ quota, drill, alert, ...(drill && hold !== undefined ? { hold_sources: hold?.holds || [] } : {}) },
+  return privateJson({ quota, drill, alert, ...(welcome ? { welcome } : {}) },
     quota.status === "unavailable" ? 503 : 200);
 }
 

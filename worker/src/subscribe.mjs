@@ -238,12 +238,13 @@ export async function enrollAndWelcome(env, candidate, { source = "following" } 
  * idempotency key inside the bounded retry window, then throws send-failed so
  * the caller's existing error contract is preserved.
  */
-async function deliverWelcomeOnce(env, email, template) {
+export async function deliverWelcomeOnce(env, email, template, { previewOnly = false } = {}) {
   const hold = await deliveryHoldForSend(env, email);
   if (hold) {
-    await markWelcomeSuppressed(env.DB, { email, reason: hold.reason, provenance: hold.provenance });
+    if (!previewOnly) await markWelcomeSuppressed(env.DB, { email, reason: hold.reason, provenance: hold.provenance });
     return { status: "suppressed", holds: hold.holds };
   }
+  if (previewOnly) return { status: "eligible", holds: [] };
   if (!env.DB?.prepare) {
     // No ledger binding (local/unconfigured deploy): legacy direct send.
     await sendWelcome(env, email, template);
