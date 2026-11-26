@@ -2678,11 +2678,16 @@ export async function fetchSodaRowsWithRetry(url, {
   nowFn = () => Date.now(),
   budgetMs = SODA_RETRY_BUDGET_MS,
   delaysMs = SODA_RETRY_DELAYS_MS,
+  candidatePage = null,
+  hedgeDelayMs = 5000,
 } = {}) {
   const attempts = delaysMs.length + 1;
   const startedAt = nowFn();
   const controller = new AbortController();
   let made = 0;
+  let firstReadPending = true;
+  let candidateTimer;
+  let candidateRead;
   let timer;
   const timeout = new Promise((_, reject) => {
     timer = setTimeout(() => {
@@ -2696,25 +2701,55 @@ export async function fetchSodaRowsWithRetry(url, {
   try {
     // The deadline covers headers, body consumption and retry waits. A budget checked only
     // between attempts cannot interrupt the stalled read that needs it most.
-    return await Promise.race([read(), timeout]);
+    const ordered = read();
+    if (!candidatePage) return await Promise.race([ordered, timeout]);
+    // Keep the ordinary read alive for its entire deadline. Only a slow first
+    // request can start a second query, charged to the same request allowance.
+    const candidate = new Promise((resolve) => {
+      candidateTimer = setTimeout(() => {
+        if (!firstReadPending || made !== 1 || made >= attempts || controller.signal.aborted) return;
+        made++;
+        candidateRead = readCompletePage().catch(() => null);
+        candidateRead.then((rows) => { if (rows) resolve(rows); });
+      }, hedgeDelayMs);
+    });
+    const originalOrCandidate = ordered.catch(async (error) => {
+      const rows = await candidateRead;
+      if (rows) return rows;
+      throw error;
+    });
+    return await Promise.race([originalOrCandidate, candidate, timeout]);
   } finally {
     clearTimeout(timer);
+    clearTimeout(candidateTimer);
+    if (candidatePage) controller.abort();
+  }
+
+  async function readCompletePage() {
+    const response = await fetchFn(candidatePage.url, { signal: controller.signal });
+    if (!response.ok) {
+      await response.body?.cancel();
+      return null;
+    }
+    return newestFromCompletePage(await response.json(), candidatePage.size, candidatePage.limit);
   }
 
   async function read() {
     let lastError = null;
-    for (let attempt = 0; attempt < attempts; attempt++) {
+    for (let attempt = 0; made < attempts; attempt++) {
       controller.signal.throwIfAborted();
-      made = attempt + 1;
+      made++;
       let response;
       try {
         response = await fetchFn(url, { signal: controller.signal });
       } catch (error) {
+        firstReadPending = false;
         lastError = markUpstreamFailure(error, { source: "soda", httpStatus: null, attempts: made });
         if (!(await pauseWithinBudget(attempt))) throw lastError;
         continue;
       }
       if (response.ok) return await response.json();
+      firstReadPending = false;
       const transient = RETRYABLE_SODA_STATUSES.has(response.status);
       // Release the body before retrying rather than consuming another connection slot.
       await response.body?.cancel();
@@ -2728,7 +2763,7 @@ export async function fetchSodaRowsWithRetry(url, {
   }
 
   async function pauseWithinBudget(attempt) {
-    if (controller.signal.aborted) return false;
+    if (controller.signal.aborted || made >= attempts) return false;
     const delay = delaysMs[attempt];
     if (delay == null || nowFn() - startedAt + delay >= budgetMs) return false;
     await waitFn(delay);
@@ -2748,7 +2783,7 @@ function newestFromCompletePage(rows, pageSize, limit) {
   return sorted.slice(0, limit);
 }
 
-export async function runWatch(w, { fetchRows = fetchSodaRowsWithRetry, nowFn = Date.now } = {}) {
+export async function runWatch(w, options = {}) {
   const params = new URLSearchParams();
   params.set("$select", "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,street_address_1,section_name,type_of_notice_description,address_to_request,selection_method_description,additional_description_1");
   params.set("$limit", String(w.limit || 25));
@@ -2767,19 +2802,13 @@ export async function runWatch(w, { fetchRows = fetchSodaRowsWithRetry, nowFn = 
   const limit = Number(params.get("$limit"));
   const pageSize = 128;
   if (w.type !== "search" || !w.q || !Number.isInteger(limit) || limit < 1 || limit >= pageSize) {
-    return fetchRows(orderedUrl);
+    return fetchSodaRowsWithRetry(orderedUrl, options);
   }
-  const deadline = nowFn() + SODA_RETRY_BUDGET_MS;
   params.delete("$order");
   params.set("$limit", String(pageSize));
-  try {
-    const rows = await fetchRows(`${SODA}?${params}`, { budgetMs: SODA_RETRY_BUDGET_MS / 2, delaysMs: [] });
-    const newest = newestFromCompletePage(rows, pageSize, limit);
-    if (newest) return newest;
-  } catch {
-    // The original ordered query can still succeed if the alternate read fails.
-  }
-  return fetchRows(orderedUrl, { budgetMs: Math.max(1, deadline - nowFn()) });
+  return fetchSodaRowsWithRetry(orderedUrl, {
+    ...options, candidatePage: { url: `${SODA}?${params}`, size: pageSize, limit },
+  });
 }
 
 // ---- actionable digest (phone / email / links per item) ------------------

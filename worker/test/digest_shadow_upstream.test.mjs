@@ -253,33 +253,47 @@ test("notice freshness retries transient gateway responses once within the origi
   }
 });
 
-test("source-wide search uses only a complete unambiguous candidate set and shares its deadline", async () => {
+test("a slow ordered search stays live and only a complete, unambiguous page can win", async () => {
   const { runWatch } = await import("../src/alerts.mjs");
   const dates = ["2026-01-01", "2026-01-03", "2026-01-02"].map((d) => ({ start_date: d + "T00:00:00.000" }));
   const ordered = [dates[1], dates[2]];
-  for (const mode of ["complete", "overflow", "tie", "undated", "timeout"]) {
-    const urls = [];
-    let elapsed = 0;
+  for (const mode of ["complete", "overflow", "tie", "undated", "upstream-error"]) {
+    let requests = 0;
+    let signal;
     const rows = await runWatch({ type: "search", q: "example", limit: 2 }, {
-      nowFn: () => elapsed,
-      fetchRows: async (url, options) => {
+      budgetMs: 1000, hedgeDelayMs: 1,
+      fetchFn: async (url, options) => {
+        requests++;
+        signal = options.signal;
         const query = new URL(url).searchParams;
-        urls.push(query);
         assert.equal(query.get("$q"), "example");
         if (query.has("$order")) {
-          assert.equal(options.budgetMs, 55000);
-          assert.equal(query.get("$limit"), "2");
-          return ordered;
+          if (mode === "complete") return new Promise(() => {});
+          await new Promise((resolve) => setTimeout(resolve, 40));
+          return Response.json(ordered);
         }
-        elapsed += 5000;
-        if (mode === "timeout") throw new Error("deadline");
-        if (mode === "undated") return [{}];
-        if (mode === "tie") return [dates[1], dates[2], dates[2]];
-        if (mode === "overflow") return Array(Number(query.get("$limit"))).fill(dates[0]);
-        return dates;
+        if (mode === "upstream-error") return new Response(null, { status: 503 });
+        if (mode === "undated") return Response.json([{}]);
+        if (mode === "tie") return Response.json([dates[1], dates[2], dates[2]]);
+        if (mode === "overflow") return Response.json(Array(Number(query.get("$limit"))).fill(dates[0]));
+        return Response.json(dates);
       },
     });
     assert.deepEqual(rows, ordered);
-    assert.equal(urls.length, mode === "complete" ? 1 : 2);
+    assert.equal(requests, 2);
+    assert.equal(signal.aborted, true);
   }
+});
+
+test("rate-limited searches back off and share the three-request allowance", async () => {
+  const { runWatch } = await import("../src/alerts.mjs");
+  const waits = [];
+  let attempts = 0;
+  await assert.rejects(runWatch({ type: "search", q: "example", limit: 2 }, {
+    hedgeDelayMs: 1,
+    fetchFn: async () => { attempts++; return new Response(null, { status: 429 }); },
+    waitFn: async (ms) => { waits.push(ms); await new Promise((r) => setTimeout(r, 4)); },
+  }), (error) => error.upstream_attempts === 3);
+  assert.equal(attempts, 3);
+  assert.deepEqual(waits, [250, 1000]);
 });
