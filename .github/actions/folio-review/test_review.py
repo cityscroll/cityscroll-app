@@ -1,10 +1,15 @@
+import io
 import json
 import os
 import subprocess
 import sys
 import tempfile
 import unittest
+from functools import partial
 from pathlib import Path
+from unittest.mock import patch
+
+import review
 
 SCRIPT = Path(__file__).with_name("review.py").resolve()
 
@@ -31,11 +36,11 @@ class FolioReviewTest(unittest.TestCase):
         self.git("add", ".")
         self.git("commit", "-qm", "test")
 
-    def check(self, body="", expected=0, payload=None, env=None):
+    def check(self, body="", expected=0):
         event = self.root / ".git" / "event.json"
-        event.write_text(json.dumps(payload or {"pull_request": {"body": body}}))
+        event.write_text(json.dumps({"pull_request": {"body": body}}))
         result = subprocess.run([sys.executable, SCRIPT], cwd=self.root, capture_output=True,
-                                text=True, env={**os.environ, **(env or {}), "GITHUB_EVENT_PATH": str(event),
+                                text=True, env={**os.environ, "GITHUB_EVENT_PATH": str(event),
                                                "GITHUB_REPOSITORY": "example/project"})
         self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
         return result.stdout
@@ -61,16 +66,46 @@ class FolioReviewTest(unittest.TestCase):
         (self.root / "routes.js").write_text("v2")
         self.commit()
         head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=self.root, text=True).strip()
-        gh = self.root / ".git" / "gh"
-        gh.write_text('#!/bin/sh\nprintf "%s" "$REVIEW_PRS"\n')
-        gh.chmod(0o755)
         pr = {"merged_at": "today", "merge_commit_sha": head, "base": {"ref": "main"},
               "body": "Folio review: Route names and ownership stay the same."}
-        env = {"PATH": str(gh.parent) + os.pathsep + os.environ["PATH"]}
-        for revision, expected in ((before, 1), (head, 0)):
-            pr["merge_commit_sha"] = revision
-            self.check(payload={"before": before}, expected=expected,
-                       env={**env, "REVIEW_PRS": json.dumps([pr])})
+        env = {"GH_TOKEN": "test-token", "GITHUB_API_URL": "https://github.example/api/v3"}
+        with patch.dict(os.environ, env), \
+                patch("subprocess.run", wraps=partial(subprocess.run, cwd=self.root)) as run, \
+                patch.object(review, "urlopen") as urlopen:
+            for revision, expected in ((before, 1), (head, 0)):
+                pr["merge_commit_sha"] = revision
+                urlopen.return_value = io.BytesIO(json.dumps([pr]).encode())
+                with patch("sys.stdout", new_callable=io.StringIO) as output:
+                    self.assertEqual(review.review({"before": before}, "example/project"), expected)
+                    self.assertNotIn("test-token", output.getvalue())
+                request = urlopen.call_args.args[0]
+                self.assertEqual(request.full_url,
+                                 f"https://github.example/api/v3/repos/example/project/commits/{head}/pulls")
+                self.assertEqual(request.get_header("Authorization"), "Bearer test-token")
+            for call in run.call_args_list:
+                self.assertEqual(call.args[0][0], "git")
+                self.assertNotIn("test-token", str(call.args))
+
+    def test_git_supplies_workflow_credentials_to_git_without_persisting_them(self):
+        self.git("config", "credential.helper", "store --file=.git/test-credentials")
+        credential = b"protocol=https\nhost=github.com\n\n"
+
+        def use_credential(command):
+            self.assertNotIn("test-token", str(command))
+            result = subprocess.run(command, input=credential, cwd=self.root,
+                                    capture_output=True, check=True)
+            self.assertEqual(result.stderr, b"")
+            return result.stdout
+
+        env = {"GH_TOKEN": "test-token", "GITHUB_SERVER_URL": "https://github.com",
+               "GIT_TERMINAL_PROMPT": "0", "GIT_TRACE": "0"}
+        with patch.dict(os.environ, env), patch("subprocess.check_output", side_effect=use_credential):
+            filled = review.git("credential", "fill")
+            self.assertIn("username=x-access-token", filled.splitlines())
+            self.assertIn("password=test-token", filled.splitlines())
+            credential = filled.encode() + b"\n"
+            self.assertEqual(review.git("credential", "approve"), "")
+        self.assertFalse((self.root / ".git" / "test-credentials").exists())
 
     def test_new_migration_can_precede_any_folio_reference(self):
         path = self.root / "worker" / "migrations" / "0001.sql"
