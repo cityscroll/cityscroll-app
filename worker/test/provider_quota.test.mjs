@@ -73,5 +73,5 @@ test("welcome preview distinguishes each hold, both lifts, and never claims a se
   operatorActive = false;
   assert.deepEqual((await check()).holds, ["provider-suppression"]);
   providerActive = false;
-  assert.deepEqual(await check(), { status: "eligible", holds: [] });
+  assert.deepEqual(await check(), { status: "hold-clear", holds: [] });
 });

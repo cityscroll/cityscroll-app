@@ -1,3 +1,4 @@
+import { fixtureRecipient } from "./helpers/mail_recipient.mjs";
 // Recipient-level delivery trust: provider suppression reconciliation (dry-run/apply,
 // idempotent, all-or-nothing) and the one-welcome-per-recipient D1 claim ledger.
 //
@@ -376,13 +377,13 @@ test("a suppressed recipient's queued digest is skipped at the send boundary", a
 
 test("an operator hold alone refuses delivery with no provider row present", async () => {
   const { sqlite, DB } = d1();
-  seedOperatorHold(sqlite, await recipientHash("held@example.com"));
+  seedOperatorHold(sqlite, await recipientHash(fixtureRecipient("held")));
 
   // No provider suppression exists for this recipient.
-  assert.equal(await suppressionForRecipient(DB, "held@example.com"), null);
-  const quarantine = await operatorQuarantineForRecipient(DB, "Held@Example.com");
+  assert.equal(await suppressionForRecipient(DB, fixtureRecipient("held")), null);
+  const quarantine = await operatorQuarantineForRecipient(DB, fixtureRecipient("Held"));
   assert.equal(quarantine?.reason, "presumptive-spam-quarantine");
-  const hold = await deliveryHoldForRecipient(DB, "held@example.com");
+  const hold = await deliveryHoldForRecipient(DB, fixtureRecipient("held"));
   assert.ok(hold?.held);
   assert.deepEqual(hold.holds, ["operator-quarantine"]);
   assert.equal(hold.provider, null);
@@ -390,7 +391,7 @@ test("an operator hold alone refuses delivery with no provider row present", asy
   const environment = env(DB);
   const provider = stubProvider(ok200);
   try {
-    const response = await signup(environment, "held@example.com");
+    const response = await signup(environment, fixtureRecipient("held"));
     assert.equal(response.status, 200, "the recipient is still enrolled");
     assert.equal(provider.calls.length, 0, "an operator-held recipient is never sent a welcome");
     const row = sqlite.prepare("SELECT * FROM ops_welcome_deliveries").get();
@@ -401,7 +402,7 @@ test("an operator hold alone refuses delivery with no provider row present", asy
 
 test("the operator hold survives a provider refresh then a provider lift (no send either way)", async () => {
   const { sqlite, DB } = d1();
-  const email = "both@example.com";
+  const email = fixtureRecipient("both");
   seedOperatorHold(sqlite, await recipientHash(email));
   const environment = env(DB);
   const provider = stubProvider(ok200);
@@ -429,7 +430,7 @@ test("the operator hold survives a provider refresh then a provider lift (no sen
 
 test("the operator hold holds through a provider lift then a provider refresh", async () => {
   const { sqlite, DB } = d1();
-  const email = "order2@example.com";
+  const email = fixtureRecipient("order2");
   seedOperatorHold(sqlite, await recipientHash(email));
   const environment = env(DB);
   const provider = stubProvider(ok200);
@@ -454,7 +455,7 @@ test("the operator hold holds through a provider lift then a provider refresh", 
 
 test("a lifted operator hold stops holding, but an active provider suppression still refuses", async () => {
   const { sqlite, DB } = d1();
-  const email = "lifted-op@example.com";
+  const email = fixtureRecipient("lifted-op");
   seedOperatorHold(sqlite, await recipientHash(email), { lifted: "2026-11-15T00:00:00Z" });
   await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email, reason: "bounce" }] }]),
     { authority: "2026-11-20T00:00:00Z", mode: "apply" });
@@ -474,7 +475,7 @@ test("a lifted operator hold stops holding, but an active provider suppression s
 
 test("a provider reconciliation never reads or writes the operator hold table", async () => {
   const { sqlite, DB } = d1();
-  const email = "untouched@example.com";
+  const email = fixtureRecipient("untouched");
   seedOperatorHold(sqlite, await recipientHash(email), { provenance: "incident-manifest-a", heldAt: "2026-03-01T00:00:00Z" });
   // A full reconcile that adds, updates, and lifts provider rows.
   await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email, reason: "complaint" }] }]),
@@ -498,7 +499,7 @@ test("freshness is not fresh until a reconciliation applies, then stales past th
   assert.equal(never.status, "never-reconciled");
   assert.equal(never.fresh, false);
 
-  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email: "x@example.com", reason: "bounce" }] }]),
+  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email: fixtureRecipient("x"), reason: "bounce" }] }]),
     { authority: "2026-11-18T00:00:00Z", mode: "apply", now: new Date("2026-11-18T00:00:00Z") });
 
   const fresh = await evaluateSuppressionFreshness(DB, {
@@ -523,7 +524,7 @@ test("the freshness watchdog raises an ops alert when the authority is not fresh
   assert.ok(neverAlert.alert, "a never-reconciled authority routes an alert");
   assert.equal(neverAlert.alert.signature !== undefined, true);
 
-  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email: "x@example.com", reason: "bounce" }] }]),
+  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email: fixtureRecipient("x"), reason: "bounce" }] }]),
     { authority: "2026-11-25T00:00:00Z", mode: "apply", now: new Date("2026-11-25T00:00:00Z") });
   const freshResult = await emitRecipientSuppressionFreshnessAlert(environment, { now: new Date("2026-11-25T06:00:00Z") });
   assert.equal(freshResult.freshness.fresh, true);

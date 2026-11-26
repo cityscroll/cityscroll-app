@@ -244,7 +244,7 @@ export async function deliverWelcomeOnce(env, email, template, { previewOnly = f
     if (!previewOnly) await markWelcomeSuppressed(env.DB, { email, reason: hold.reason, provenance: hold.provenance });
     return { status: "suppressed", holds: hold.holds };
   }
-  if (previewOnly) return { status: "eligible", holds: [] };
+  if (previewOnly) return { status: "hold-clear", holds: [] };
   if (!env.DB?.prepare) {
     // No ledger binding (local/unconfigured deploy): legacy direct send.
     await sendWelcome(env, email, template);

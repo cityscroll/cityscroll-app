@@ -1,3 +1,4 @@
+import { fixtureRecipient } from "./helpers/mail_recipient.mjs";
 // Enrollment abuse instrumentation (Item 2): bounded pseudonymous signup-decision
 // receipts, per-route accepted-volume ceiling, transactional-mail budget, and
 // per-route temporary containment, verified across every enrollment pathway —
@@ -73,7 +74,7 @@ function env(DB, overrides = {}) {
   return {
     TOKEN_SECRET: SECRET,
     RESEND_API_KEY: "resend-key",
-    ALERTS_FROM: "CityScroll <alerts@cityscroll.org>",
+    ALERTS_FROM: fixtureRecipient("sender"),
     SUBS: new KV(),
     ALERT_STATE: new KV(),
     CONFIRM_BASE: "https://api.cityscroll.org",
@@ -127,7 +128,7 @@ test("a signup-decision receipt stores a rotating pseudonymous key, never the ra
   const { sqlite, DB } = d1();
   const environment = env(DB);
   const ip = "203.0.113.42";
-  const address = "reader@example.com";
+  const address = fixtureRecipient("reader");
   await recordSignupDecision(environment, {
     route: "subscribe", actor: ip, challenge: "verified", rateDecision: "allowed",
     accepted: true, welcomeOutcome: "sent", now: new Date("2026-11-20T15:30:00Z"),
@@ -177,7 +178,7 @@ test("distributed signups past the route ceiling arm temporary containment that 
     // Three DISTINCT actors (distinct IPs and addresses): no per-actor rate limit
     // trips, yet their combined volume crosses the route ceiling.
     for (let i = 0; i < 3; i += 1) {
-      const res = await signupAs(environment, `person${i}@example.com`, `198.51.100.${10 + i}`);
+      const res = await signupAs(environment, fixtureRecipient(`person${i}`), `198.51.100.${10 + i}`);
       assert.equal(res.status, 200);
     }
     assert.equal(net.calls.resend.length, 3, "all three legitimate signups before the ceiling succeed");
@@ -190,7 +191,7 @@ test("distributed signups past the route ceiling arm temporary containment that 
       "an ops alert was routed for the volume ceiling");
 
     // A fourth distinct actor is now contained — refused, no welcome.
-    const fourth = await signupAs(environment, "person4@example.com", "198.51.100.14");
+    const fourth = await signupAs(environment, fixtureRecipient("person4"), "198.51.100.14");
     assert.equal(fourth.status, 429);
     assert.equal((await fourth.json()).reason, "contained");
     assert.equal(net.calls.resend.length, 3, "the contained signup sends no mail");
@@ -209,7 +210,7 @@ test("containment expires on its own and does not ban an actor permanently", asy
 
   const net = stubNetwork();
   try {
-    const res = await signupAs(environment, "after-expiry@example.com", "198.51.100.50");
+    const res = await signupAs(environment, fixtureRecipient("after-expiry"), "198.51.100.50");
     assert.equal(res.status, 200, "signups resume once containment expires");
     assert.equal(net.calls.resend.length, 1);
   } finally { net.restore(); }
@@ -220,17 +221,17 @@ test("the transactional-mail budget arms global containment across every route",
   const environment = env(DB, { TRANSACTIONAL_MAIL_BUDGET: "2", ENROLLMENT_ACCEPTED_BUDGET: "1000" });
   const net = stubNetwork();
   try {
-    await signupAs(environment, "mb1@example.com", "198.51.100.71");
-    await signupAs(environment, "mb2@example.com", "198.51.100.72");
+    await signupAs(environment, fixtureRecipient("mb1"), "198.51.100.71");
+    await signupAs(environment, fixtureRecipient("mb2"), "198.51.100.72");
     assert.equal(net.calls.resend.length, 2);
     const all = sqlite.prepare("SELECT * FROM enrollment_containment WHERE route = ?").get(CONTAINMENT_ALL_ROUTES);
     assert.ok(all, "the mail budget arms the all-routes containment");
     assert.equal(all.reason, "transactional-mail-budget-exhausted");
 
     // Both the single-watch route and the pack route are now contained.
-    const subscribe = await signupAs(environment, "mb3@example.com", "198.51.100.73");
+    const subscribe = await signupAs(environment, fixtureRecipient("mb3"), "198.51.100.73");
     assert.equal(subscribe.status, 429);
-    const pack = await handlePack(packRequest("mb4@example.com", "198.51.100.74", [
+    const pack = await handlePack(packRequest(fixtureRecipient("mb4"), "198.51.100.74", [
       { label: "Housing money", lens: "money", filter: {} },
     ]), environment);
     assert.equal(pack.status, 429);
@@ -246,7 +247,7 @@ test("subscribe-pack: a legitimate pack welcomes once; a held recipient's pack i
   const environment = env(DB);
   const net = stubNetwork();
   try {
-    const good = await handlePack(packRequest("packgood@example.com", "198.51.100.81", [
+    const good = await handlePack(packRequest(fixtureRecipient("packgood"), "198.51.100.81", [
       { label: "Money", lens: "money", filter: {} },
       { label: "Land", lens: "land", filter: {} },
     ]), environment);
@@ -254,8 +255,8 @@ test("subscribe-pack: a legitimate pack welcomes once; a held recipient's pack i
     assert.equal(net.calls.resend.length, 1, "one welcome for the pack recipient");
 
     // An operator-held recipient: the pack enrolls the children but sends no mail.
-    seedHold(sqlite, await recipientHash("packheld@example.com"));
-    const held = await handlePack(packRequest("packheld@example.com", "198.51.100.82", [
+    seedHold(sqlite, await recipientHash(fixtureRecipient("packheld")));
+    const held = await handlePack(packRequest(fixtureRecipient("packheld"), "198.51.100.82", [
       { label: "Money", lens: "money", filter: {} },
     ]), environment);
     assert.equal(held.status, 200, "the held recipient is still enrolled");
@@ -278,18 +279,18 @@ test("account sign-in: legitimate login sends mail; a quarantined or suppressed 
 
   const net = stubNetwork();
   try {
-    const good = await login("signin@example.com");
+    const good = await login(fixtureRecipient("signin"));
     assert.equal(good.status, 202);
     assert.equal(net.calls.resend.length, 1, "a legitimate sign-in sends the login mail");
 
-    seedHold(sqlite, await recipientHash("quarantined@example.com"));
-    const held = await login("quarantined@example.com");
+    seedHold(sqlite, await recipientHash(fixtureRecipient("quarantined")));
+    const held = await login(fixtureRecipient("quarantined"));
     assert.equal(held.status, 202, "the response stays generic so the hold never leaks");
     assert.equal(net.calls.resend.length, 1, "no sign-in mail to an operator-held recipient");
 
-    await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email: "bounced@example.com", reason: "bounce" }] }]),
+    await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email: fixtureRecipient("bounced"), reason: "bounce" }] }]),
       { authority: "2026-11-20T00:00:00Z", mode: "apply" });
-    const suppressed = await login("bounced@example.com");
+    const suppressed = await login(fixtureRecipient("bounced"));
     assert.equal(suppressed.status, 202);
     assert.equal(net.calls.resend.length, 1, "no sign-in mail to a provider-suppressed recipient");
   } finally { net.restore(); }
@@ -299,13 +300,13 @@ test("the delivery-hold contract a product-intake consumer reads refuses suppres
   const { sqlite, DB } = d1();
   // This task does not modify the product intake; it exposes one boundary the
   // consumer calls. Prove that boundary refuses on either independent fact.
-  seedHold(sqlite, await recipientHash("q@example.com"));
-  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email: "s@example.com", reason: "complaint" }] }]),
+  seedHold(sqlite, await recipientHash(fixtureRecipient("q")));
+  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email: fixtureRecipient("s"), reason: "complaint" }] }]),
     { authority: "2026-11-20T00:00:00Z", mode: "apply" });
 
-  assert.equal((await deliveryHoldForRecipient(DB, "q@example.com"))?.holds.includes("operator-quarantine"), true);
-  assert.equal((await deliveryHoldForRecipient(DB, "s@example.com"))?.holds.includes("provider-suppression"), true);
-  assert.equal(await deliveryHoldForRecipient(DB, "clear@example.com"), null, "a clear recipient is not held");
+  assert.equal((await deliveryHoldForRecipient(DB, fixtureRecipient("q")))?.holds.includes("operator-quarantine"), true);
+  assert.equal((await deliveryHoldForRecipient(DB, fixtureRecipient("s")))?.holds.includes("provider-suppression"), true);
+  assert.equal(await deliveryHoldForRecipient(DB, fixtureRecipient("clear")), null, "a clear recipient is not held");
 });
 
 // ---- helpers ----------------------------------------------------------------

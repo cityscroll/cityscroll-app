@@ -1040,6 +1040,15 @@
       "description": "Mail-leg receipt health. Inbound subscriptions and their canary retired on 2026-09-08; residual mail is receipt-only and old canary state cannot fail health. GET returns 503 for rejected emergency operations sends without retrying the dead mail rail. Routine reliability findings are Desk-only, while subscriber and product outbound delivery is unchanged. The Gmail forward leg remains unprobed."
     },
     {
+      "path": "/admin/reliability/mail-quota",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "GET reads the provider daily quota and records a Desk warning or outage. POST runs a labeled quota drill and optionally checks a reserved recipient at the welcome boundary without sending mail."
+    },
+    {
       "path": "/admin/digest-send-test",
       "methods": [
         "POST"

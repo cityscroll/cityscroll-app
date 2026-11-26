@@ -66,7 +66,7 @@ export const REPAIR_RESULT_OUTCOMES = Object.freeze(["repaired", "failed", "judg
 
 // Alerts about the repair loop itself never re-enter the repair loop, or a
 // failed fix would queue a repair for its own failure notice.
-export const REPAIR_QUEUE_EXCLUDED_GUARDS = Object.freeze(["ops-repair-judgment", "provider-mail-quota-drill"]);
+export const REPAIR_QUEUE_EXCLUDED_GUARDS = Object.freeze(["ops-repair-judgment", "provider-mail-quota-drill", "provider-mail-quota"]);
 
 // The launchd agent in ops/launchd/com.cityscroll.external-schedules.plist.template
 // runs the cycle on this interval, so this is the queue's real pickup cadence
