@@ -2678,11 +2678,16 @@ export async function fetchSodaRowsWithRetry(url, {
   nowFn = () => Date.now(),
   budgetMs = SODA_RETRY_BUDGET_MS,
   delaysMs = SODA_RETRY_DELAYS_MS,
+  candidatePage = null,
+  hedgeDelayMs = 5000,
 } = {}) {
   const attempts = delaysMs.length + 1;
   const startedAt = nowFn();
   const controller = new AbortController();
   let made = 0;
+  let firstReadPending = true;
+  let candidateTimer;
+  let candidateRead;
   let timer;
   const timeout = new Promise((_, reject) => {
     timer = setTimeout(() => {
@@ -2696,25 +2701,55 @@ export async function fetchSodaRowsWithRetry(url, {
   try {
     // The deadline covers headers, body consumption and retry waits. A budget checked only
     // between attempts cannot interrupt the stalled read that needs it most.
-    return await Promise.race([read(), timeout]);
+    const ordered = read();
+    if (!candidatePage) return await Promise.race([ordered, timeout]);
+    // Keep the ordinary read alive for its entire deadline. Only a slow first
+    // request can start a second query, charged to the same request allowance.
+    const candidate = new Promise((resolve) => {
+      candidateTimer = setTimeout(() => {
+        if (!firstReadPending || made !== 1 || made >= attempts || controller.signal.aborted) return;
+        made++;
+        candidateRead = readCompletePage().catch(() => null);
+        candidateRead.then((rows) => { if (rows) resolve(rows); });
+      }, hedgeDelayMs);
+    });
+    const originalOrCandidate = ordered.catch(async (error) => {
+      const rows = await candidateRead;
+      if (rows) return rows;
+      throw error;
+    });
+    return await Promise.race([originalOrCandidate, candidate, timeout]);
   } finally {
     clearTimeout(timer);
+    clearTimeout(candidateTimer);
+    if (candidatePage) controller.abort();
+  }
+
+  async function readCompletePage() {
+    const response = await fetchFn(candidatePage.url, { signal: controller.signal });
+    if (!response.ok) {
+      await response.body?.cancel();
+      return null;
+    }
+    return newestFromCompletePage(await response.json(), candidatePage.size, candidatePage.limit);
   }
 
   async function read() {
     let lastError = null;
-    for (let attempt = 0; attempt < attempts; attempt++) {
+    for (let attempt = 0; made < attempts; attempt++) {
       controller.signal.throwIfAborted();
-      made = attempt + 1;
+      made++;
       let response;
       try {
         response = await fetchFn(url, { signal: controller.signal });
       } catch (error) {
+        firstReadPending = false;
         lastError = markUpstreamFailure(error, { source: "soda", httpStatus: null, attempts: made });
         if (!(await pauseWithinBudget(attempt))) throw lastError;
         continue;
       }
       if (response.ok) return await response.json();
+      firstReadPending = false;
       const transient = RETRYABLE_SODA_STATUSES.has(response.status);
       // Release the body before retrying rather than consuming another connection slot.
       await response.body?.cancel();
@@ -2728,7 +2763,7 @@ export async function fetchSodaRowsWithRetry(url, {
   }
 
   async function pauseWithinBudget(attempt) {
-    if (controller.signal.aborted) return false;
+    if (controller.signal.aborted || made >= attempts) return false;
     const delay = delaysMs[attempt];
     if (delay == null || nowFn() - startedAt + delay >= budgetMs) return false;
     await waitFn(delay);
@@ -2736,7 +2771,19 @@ export async function fetchSodaRowsWithRetry(url, {
   }
 }
 
-async function runWatch(w) {
+// When the entire search fits on one unsorted publisher page, the newest
+// records can be selected locally. Ask the publisher to resolve any date tie.
+function newestFromCompletePage(rows, pageSize, limit) {
+  if (!Array.isArray(rows) || rows.length >= pageSize ||
+      rows.some((row) => !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}$/.test(row?.start_date))) return null;
+  const sorted = [...rows].sort((a, b) => b.start_date.localeCompare(a.start_date));
+  for (let i = 0; i < Math.min(limit, sorted.length - 1); i++) {
+    if (sorted[i].start_date === sorted[i + 1].start_date) return null;
+  }
+  return sorted.slice(0, limit);
+}
+
+export async function runWatch(w, options = {}) {
   const params = new URLSearchParams();
   params.set("$select", "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,street_address_1,section_name,type_of_notice_description,address_to_request,selection_method_description,additional_description_1");
   params.set("$limit", String(w.limit || 25));
@@ -2751,7 +2798,17 @@ async function runWatch(w) {
     if (w.q) params.set("$q", w.q);
   }
 
-  return fetchSodaRowsWithRetry(`${SODA}?${params.toString()}`);
+  const orderedUrl = `${SODA}?${params}`;
+  const limit = Number(params.get("$limit"));
+  const pageSize = 128;
+  if (w.type !== "search" || !w.q || !Number.isInteger(limit) || limit < 1 || limit >= pageSize) {
+    return fetchSodaRowsWithRetry(orderedUrl, options);
+  }
+  params.delete("$order");
+  params.set("$limit", String(pageSize));
+  return fetchSodaRowsWithRetry(orderedUrl, {
+    ...options, candidatePage: { url: `${SODA}?${params}`, size: pageSize, limit },
+  });
 }
 
 // ---- actionable digest (phone / email / links per item) ------------------
