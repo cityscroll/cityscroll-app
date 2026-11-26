@@ -360,7 +360,7 @@ function proposalFor(item) {
       : item.target === WATERMARK_DIRECTORY_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
         ? "Review the compact watermark against current observed canary fingerprints, then advance it with --write-watermark or restore the prior topology."
         : "Resolve the implementation/model state mismatch.",
-    unknown_surface: "Extend the facts observer to cover this known canary, or record an ADR explaining the unobserved architecture-affecting surface.",
+    unknown_surface: "Extend the facts observer to cover this known canary, or explain the coverage gap in the architecture folio.",
   }[item.type] ?? "Decide how the architecture record should change.";
   return {
     type: item.type,
@@ -368,10 +368,10 @@ function proposalFor(item) {
     files: documentInvariant
       ? [ARCHITECTURE_NARRATIVE_RELATIVE, CANONICAL_ARCHITECTURE_RELATIVE, RESIDENT_READ_POLICY_RELATIVE]
       : item.type === "unknown_surface"
-      ? ["architecture/observer-canaries.json", "tools/build_architecture_facts.mjs", "ARCHITECTURE.md", "docs/adr/"]
+      ? ["architecture/observer-canaries.json", "tools/build_architecture_facts.mjs", ARCHITECTURE_NARRATIVE_RELATIVE]
       : item.target === WATERMARK_DIRECTORY_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
-        ? [WATERMARK_DIRECTORY_RELATIVE, "ARCHITECTURE.md", "docs/adr/"]
-        : ["architecture/workspace.dsl", "ARCHITECTURE.md", "docs/adr/"],
+        ? [WATERMARK_DIRECTORY_RELATIVE, ARCHITECTURE_NARRATIVE_RELATIVE]
+        : ["architecture/workspace.dsl", ARCHITECTURE_NARRATIVE_RELATIVE],
     action,
     rationale: null,
     rationale_status: "rationale required",
