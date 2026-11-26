@@ -2287,7 +2287,7 @@ test("recoverStalledDigestShadowRuns marks recovered when STARTED clears and esc
 });
 
 test('a full repair of terminal notice degradation requires fresh ingestion and fences concurrent revisions', async () => {
-  for (const outcome of ['recovered', 'still-down', 'changed']) {
+  for (const outcome of ['recovered', 'still-down', 'incomplete-ingest', 'changed']) {
     const f = await sqliteRecoveryFixture();
     try {
       const priorDay = '2026-09-01';
@@ -2295,25 +2295,32 @@ test('a full repair of terminal notice degradation requires fresh ingestion and 
       f.sqlite.prepare('INSERT INTO digest_shadow_runs VALUES (?, ?, ?, 0, 0, ?)').run(
         priorDay, priorDay + 'T10:00:00Z', summary.status, JSON.stringify(summary));
       let checks = 0;
-      const create = () => createDigestShadowRebuild(f.env, {
-        runDay: priorDay, now: NOW, checkNoticeFreshness: async () => {
+      const repair = await createDigestShadowRebuild(f.env, { runDay: priorDay, now: NOW });
+      assert.equal(repair.status, 'queued');
+      f.env.ALERT_STATE.list = async () => ({ keys: [], list_complete: true });
+      const expanded = await handleDigestShadowRebuildQueueMessage(f.env, { type: 'expand', run_id: repair.run_id }, {
+        now: NOW, checkNoticeFreshness: async (_env, options) => {
           checks++;
+          assert.equal(options.runId, repair.run_id);
+          assert.equal(typeof options.acquisitionFn, 'function');
           return outcome === 'still-down' ? { ok: false, degraded: true, reason: 'SODA 503' }
-            : { ok: true, degraded: false, result: { fetched: 8, upserted: 8 } };
+            : { ok: true, degraded: false, result: { fetched: 8, upserted: outcome === 'incomplete-ingest' ? 0 : 8 } };
         },
       });
-      if (outcome === 'still-down') {
-        await assert.rejects(create, /SODA 503/);
+      if (outcome === 'still-down' || outcome === 'incomplete-ingest') {
+        assert.equal(expanded.status, 'failed');
+        assert.match(expanded.error, /SODA 503|did not materialize/);
+        assert.equal(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?').get(priorDay).summary_json, JSON.stringify(summary));
       } else {
-        const repair = await create();
-        // Run the repair against a small, durable terminal manifest.
-        f.sqlite.prepare("UPDATE digest_shadow_rebuild_runs SET status = 'running', total_count = 1 WHERE run_id = ?").run(repair.run_id);
-        f.sqlite.prepare("INSERT INTO digest_shadow_rebuild_items (run_id, digest_id, job_json, status) VALUES (?, 'one', '{}', 'queued')").run(repair.run_id);
         if (outcome === 'changed') {
           f.sqlite.prepare("UPDATE digest_shadow_runs SET summary_json = json_set(summary_json, '$.result_revision','new') WHERE run_day = ?").run(priorDay);
         }
-        const out = await handleDigestShadowRebuildQueueMessage(f.env, { type: 'digest', run_id: repair.run_id, digest_id: 'one' },
-          { now: NOW, runTargetFn: async () => ({ previewId: 'one', skipped: 'no-new' }) });
+        let out;
+        const targets = f.sqlite.prepare('SELECT digest_id FROM digest_shadow_rebuild_items WHERE run_id = ?').all(repair.run_id);
+        for (const { digest_id } of targets) {
+          out = await handleDigestShadowRebuildQueueMessage(f.env, { type: 'digest', run_id: repair.run_id, digest_id },
+            { now: NOW, runTargetFn: async () => ({ previewId: digest_id, skipped: 'no-new' }) });
+        }
         const stored = JSON.parse(f.sqlite.prepare('SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?').get(priorDay).summary_json);
         if (outcome === 'recovered') {
           assert.equal(out.receipt.status, 'READY');

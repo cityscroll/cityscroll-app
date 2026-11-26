@@ -15,6 +15,7 @@ import {
   processOneSub,
   listDigestSubscriptions,
 } from "./alerts.mjs";
+import { withWorkerAcquisitionReceipt } from "./lib/worker_acquisition_runtime.mjs";
 import cfg from "../alerts.config.json" with { type: "json" };
 import { buildDigestJobs, isWatchActive } from "./lib/rollup.mjs";
 import { digestIdForJob, recordDigestShadowHoldState } from "./digest_shadow_hold.mjs";
@@ -576,7 +577,6 @@ export async function createDigestShadowRebuild(env, {
   affectedDigestIds = null,
   now = new Date(),
   runDay = null,
-  checkNoticeFreshness = runBudgetedNoticeFreshness,
 } = {}) {
   if (!env?.DB?.prepare || !env?.DIGEST_SHADOW_QUEUE?.send) throw new Error("digest shadow rebuild queue unavailable");
   const requested = normalizeDigestShadowRebuildScope(affectedDigestIds);
@@ -590,22 +590,11 @@ export async function createDigestShadowRebuild(env, {
     "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ?",
   ).bind(targetDay).first();
   const baseSummaryJson = baseRow?.summary_json || null;
-  const base = JSON.parse(baseSummaryJson || "null");
-  let noticeFreshness = null;
-  if (requested == null && base?.status === DIGEST_SHADOW_DEGRADED_UPSTREAM && base.freshness?.degraded) {
-    const check = await checkNoticeFreshness(env);
-    if (!check.ok || check.degraded || !Number.isInteger(check.result?.fetched)
-        || !Number.isInteger(check.result?.upserted)) {
-      throw new Error(check.reason || "Notice ingestion did not confirm freshness");
-    }
-    noticeFreshness = json({ degraded: false, observed_at: new Date().toISOString(),
-      fetched: check.result.fetched, upserted: check.result.upserted });
-  }
   await env.DB.prepare(`INSERT INTO ${DIGEST_SHADOW_REBUILD_RUN_TABLE}
     (run_id, run_day, requested_digest_ids_json, base_summary_json, status, total_count, completed_count,
-     failed_count, receipt_json, error, created_at, updated_at, notice_freshness_json)
-    VALUES (?, ?, ?, ?, 'queued', 0, 0, 0, NULL, NULL, ?, ?, ?)`)
-    .bind(runId, targetDay, json(requested), baseSummaryJson, evaluationAt, at, noticeFreshness).run();
+     failed_count, receipt_json, error, created_at, updated_at)
+    VALUES (?, ?, ?, ?, 'queued', 0, 0, 0, NULL, NULL, ?, ?)`)
+    .bind(runId, targetDay, json(requested), baseSummaryJson, evaluationAt, at).run();
   try {
     await env.DIGEST_SHADOW_QUEUE.send({ type: "expand", run_id: runId });
   } catch (error) {
@@ -822,7 +811,7 @@ export async function recoverStalledDigestShadowRuns(env, {
   return { ok: true, disabled: false, actions };
 }
 
-async function expandRun(env, runId, now) {
+async function expandRun(env, runId, now, checkNoticeFreshness) {
   const run = await readRun(env.DB, runId);
   if (!run || run.status === "complete" || run.status === "failed") return run;
   if (run.status === "running") return finalizeProgress(env, run, now);
@@ -831,6 +820,21 @@ async function expandRun(env, runId, now) {
       SET status = 'expanding', updated_at = ? WHERE run_id = ? AND status IN ('queued', 'expanding')`)
       .bind(iso(now), runId).run();
     if (!(Number(claim?.meta?.changes) > 0)) return readRun(env.DB, runId);
+    if (run.requested_digest_ids == null && run.base_summary?.status === DIGEST_SHADOW_DEGRADED_UPSTREAM
+        && run.base_summary.freshness?.degraded && !run.notice_freshness_json) {
+      const check = await checkNoticeFreshness(env, { acquisitionFn: withWorkerAcquisitionReceipt, runId });
+      const { fetched, upserted } = check.result || {};
+      const verified = check.ok && !check.degraded && Number.isInteger(fetched) && fetched >= 0 && upserted === fetched;
+      // The first completed check owns the decision, including on queue redelivery.
+      await env.DB.prepare(`UPDATE ${DIGEST_SHADOW_REBUILD_RUN_TABLE}
+        SET notice_freshness_json = ?, status = ?, error = ?, updated_at = ?
+        WHERE run_id = ? AND status = 'expanding' AND notice_freshness_json IS NULL`)
+        .bind(verified ? json({ degraded: false, observed_at: new Date().toISOString(), fetched, upserted }) : null,
+          verified ? "expanding" : "failed", verified ? null : check.reason || "Notice ingestion did not materialize all fetched rows",
+          iso(now), runId).run();
+      const checkpoint = await readRun(env.DB, runId);
+      if (checkpoint.status !== "expanding") return checkpoint;
+    }
     const subscriptions = await listDigestSubscriptions(env);
     const wanted = new Set(run.requested_digest_ids || []);
     const jobs = [];
@@ -944,10 +948,11 @@ async function finalizeProgress(env, run, now) {
 export async function handleDigestShadowRebuildQueueMessage(env, message, {
   now = new Date(),
   runTargetFn = runTarget,
+  checkNoticeFreshness = runBudgetedNoticeFreshness,
 } = {}) {
   const body = message?.body || message || {};
   if (!body.run_id) throw new Error("digest shadow rebuild message missing run_id");
-  if (body.type === "expand") return expandRun(env, body.run_id, now);
+  if (body.type === "expand") return expandRun(env, body.run_id, now, checkNoticeFreshness);
   if (body.type === "digest") return processItem(env, body.run_id, body.digest_id, now, runTargetFn);
   throw new Error("unknown digest shadow rebuild message");
 }

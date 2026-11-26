@@ -262,7 +262,8 @@ export async function handleAdminDigestWatchdog(req, env, { now = new Date() } =
   if (!snapshot.ok && !mailWatchdogHasMailFindings(snapshot.findings)) {
     await emitOpsAlertOnce(env, {
       guard: "digest-dead-mans-switch",
-      fingerprint: `${snapshot.day}:${snapshot.findings.join("|")}`,
+      fingerprint: snapshot.findings.map((finding) =>
+        `${finding.startsWith("shadow ") ? snapshot.shadow_day : snapshot.day}:${finding}`).join("|"),
       subject: "Digest dead-man switch failed",
       text: snapshot.findings.join("; "),
     });
