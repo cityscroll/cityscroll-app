@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.city_record_meeting_notice_materialization.v1",
-  "generated_at": "2026-11-25T10:20:20.773Z",
-  "as_of": "2026-11-25",
+  "generated_at": "2026-11-26T17:42:38.070Z",
+  "as_of": "2026-11-26",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",
@@ -19,27 +19,6 @@
   },
   "row_count": 25,
   "rows": [
-    {
-      "request_id": "20261021032",
-      "start_date": "2026-11-04T00:00:00.000",
-      "event_date": "2026-11-25T11:00:00.000",
-      "agency_name": "Transportation",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Public Hearings and Meetings",
-      "short_title": "NOVEMBER 25, 2026 PUBLIC HEARING",
-      "street_address_1": "55 Water Street",
-      "street_address_2": "9th Floor",
-      "city": "New York",
-      "state": "NY",
-      "zip_code": "10041",
-      "additional_description_1": "Title: NOVEMBER 25, 2026 PUBLIC HEARING Public Hearings and Meetings Section Transportation (DOT) Agency Name 55 Water Street New York, NY 10041 Event Location 11/25/2026 11:00 AM Event Date and Time Current Status 11/4/2026 - 11/25/2026 Publication Date Public Hearings Notice Type Attachments 1 NOTICE OF PUBLIC HEARING NOVEMBER 25, 2026",
-      "source_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261021032&requestStatus=Current&documentId=44795"
-      ],
-      "document_links": [
-        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261021032&requestStatus=Current&documentId=44795"
-      ]
-    },
     {
       "request_id": "20261118005",
       "start_date": "2026-11-23T00:00:00.000",
@@ -294,6 +273,23 @@
       "state": "NY",
       "zip_code": "10007",
       "additional_description_1": "<p>PUBLIC NOTICE IS HEREBY GIVEN that the Franchise and Concession Review Committee, will hold a public meeting, on Wednesday, December 9, 2026, at 2:30 P.M., at 255 Greenwich Street, 8th Floor, New York, NY 10007</p><p>For further information on accessibility or to make a request for accommodations, such as sign language interpretation services, please contact the Mayor\u001as Office of Contract Services (MOCS) via e-mail at DisabilityAffairs@mocs.nyc.gov or via phone at (212) 298-0734. Any person requiring reasonable accommodation for the public hearing should contact MOCS at least five (5) business days in advance of the hearing to ensure availability.</p>"
+    },
+    {
+      "request_id": "20261118037",
+      "start_date": "2026-11-25T00:00:00.000",
+      "event_date": "2026-12-09T18:00:00.000",
+      "agency_name": "Civic Engagement Commission",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "NYC Civic Engagement Commission Public Meeting",
+      "street_address_1": "Address Not Listed In The Dropdown",
+      "additional_description_1": "<p>Pursuant to Section 104 of the Public Officers Law, notice is hereby given of an open meeting of the Commissioners of the Civic Engagement Commission. Join the meeting to learn about programs and upcoming initiatives. </p><p> </p><p>The information for the meeting is as follows: </p><p>Date: Wednesday, December 9, 2026 <br>Time: 6 PM \u001a 8 PM </p><p>Location: 280 Broadway, New York, NY 10007 \u001a Enter at 53A Chambers Street </p><p> </p><p>Register To Participate in the Conversation </p><p>The Commission will provide time for discussion related to civic trust, its mission, and activities. You may bring prepared comments to share during the meeting or submit written comments.  Please keep comments brief during the meeting (no more than three minutes). To allow for comments in an orderly fashion, please sign up in advance by emailing your name, and affiliation if appropriate, to info@civicengagement.nyc.gov or by texting or calling 917-587-9103?by 5 PM, Tuesday, December 8th. Participants who will be dialing in via phone are strongly encouraged to register in advance.  You may submit written comments during the meeting or via email to info@civicengagement.nyc.gov.  </p><p> </p><p>Reasonable Accommodations </p><p>You must contact the Commission if you need reasonable accommodation for a disability or language assistance. To request a sign language interpreter or to request free interpretation for Spanish and other languages, please contact the Commission no later than 5 PM, Wednesday, December 2nd by calling or texting 917-587-9103 or by e-mailing info@civicengagement.nyc.gov. Closed captioning is available. </p><p>Para solicitar interpretación gratuita en español u otros idiomas, comuníquese con la Comisión a más tardar a las 5:00 p. m. del miércoles 2 de diciembre de 2026, llamando o enviando un mensaje de texto al 917-587-9103 o escribiendo a info@civicengagement.nyc.gov </p>",
+      "source_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261118037&requestStatus=Archived&documentId=44942"
+      ],
+      "document_links": [
+        "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20261118037&requestStatus=Archived&documentId=44942"
+      ]
     },
     {
       "request_id": "20261112003",

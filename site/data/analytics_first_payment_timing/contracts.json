@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.analytics_first_payment_timing_contracts.v1",
-  "snapshot_date": "2026-11-24T18:19:09.989Z",
-  "contracts_snapshot_date": "2026-11-24",
-  "row_count": 10578,
+  "snapshot_date": "2026-11-26T17:21:17.137Z",
+  "contracts_snapshot_date": "2026-11-26",
+  "row_count": 10587,
   "rows": [
     {
       "prime_contract_id": "CT106820260000121",
@@ -4761,6 +4761,15 @@
       "agency": "City University Construction Fund",
       "start_date": "2025-10-10",
       "registration_date": "2026-11-04",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CT104320271407306",
+      "agency": "City University Construction Fund",
+      "start_date": "2026-04-30",
+      "registration_date": "2026-11-23",
       "first_payment_date": null,
       "days_to_first_payment": null,
       "state": "no_payment_in_payment_years"
@@ -58352,6 +58361,15 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CT185820278803923",
+      "agency": "Department of Information Technology and Telecommunications",
+      "start_date": "2026-03-21",
+      "registration_date": "2026-11-24",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CTA185820267201441",
       "agency": "Department of Information Technology and Telecommunications",
       "start_date": "2025-07-01",
@@ -70511,6 +70529,15 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CT182720278803256",
+      "agency": "Department of Sanitation",
+      "start_date": "2025-07-01",
+      "registration_date": "2026-11-23",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CT182720278803537",
       "agency": "Department of Sanitation",
       "start_date": "2025-07-01",
@@ -74615,6 +74642,15 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CT106920278801301",
+      "agency": "Department of Social Services",
+      "start_date": "2026-04-01",
+      "registration_date": "2026-11-24",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CT106920278801401",
       "agency": "Department of Social Services",
       "start_date": "2026-01-01",
@@ -74718,6 +74754,15 @@
       "agency": "Department of Social Services",
       "start_date": "2026-04-01",
       "registration_date": "2026-10-06",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CT106920278802482",
+      "agency": "Department of Social Services",
+      "start_date": "2026-05-11",
+      "registration_date": "2026-11-23",
       "first_payment_date": null,
       "days_to_first_payment": null,
       "state": "no_payment_in_payment_years"
@@ -86198,6 +86243,15 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CTA181920277202132",
+      "agency": "Health and Hospitals Corporation",
+      "start_date": "2026-04-20",
+      "registration_date": "2026-11-23",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CTA181920277202282",
       "agency": "Health and Hospitals Corporation",
       "start_date": "2026-05-21",
@@ -90770,6 +90824,24 @@
       "state": "no_payment_in_payment_years"
     },
     {
+      "prime_contract_id": "CT102520278803060",
+      "agency": "Law Department",
+      "start_date": "2025-11-01",
+      "registration_date": "2026-11-24",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CT102520278803123",
+      "agency": "Law Department",
+      "start_date": "2026-02-13",
+      "registration_date": "2026-11-23",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
       "prime_contract_id": "CT102520278803134",
       "agency": "Law Department",
       "start_date": "2025-11-01",
@@ -95103,6 +95175,15 @@
       "agency": "Police Department",
       "start_date": "2025-07-01",
       "registration_date": "2026-10-16",
+      "first_payment_date": null,
+      "days_to_first_payment": null,
+      "state": "no_payment_in_payment_years"
+    },
+    {
+      "prime_contract_id": "CT105620278803385",
+      "agency": "Police Department",
+      "start_date": "2025-07-01",
+      "registration_date": "2026-11-23",
       "first_payment_date": null,
       "days_to_first_payment": null,
       "state": "no_payment_in_payment_years"

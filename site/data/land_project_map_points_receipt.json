@@ -26,11 +26,11 @@
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-11-24T18:33:07.704Z",
+        "generated_at": "2026-11-26T17:36:43.847Z",
         "schema_version": 1,
         "delivery_tier": "inline-at-build"
       },
-      "sha256": "5600f6e185e80f5080a35ba2c8b3b7e3e107385c4bf719e4b286b25430ca4e3e"
+      "sha256": "c90bffa5bb9e7335f3646dd6b23ee31f451e490f6bf68b954e1bdb7f26df8ca1"
     },
     "zap_bbl": {
       "path": "site/data/zap_bbl_warehouse_lookup.json",

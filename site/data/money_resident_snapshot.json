@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-11-25T10:21:01.041Z",
+  "generated_at": "2026-11-26T17:43:05.139Z",
   "source_vintages": {
-    "default_open": "2026-11-25T10:21:01.041Z",
+    "default_open": "2026-11-26T17:43:05.139Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-11-04T04:22:02.123Z"
   },
@@ -74,6 +74,17 @@
       "pin": "8572700023",
       "due_date": "2026-12-07T10:30:00.000",
       "selection_method_description": "Other"
+    },
+    {
+      "request_id": "20261102014",
+      "start_date": "2026-11-10T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Bid 2700018 - Air Conditioners (Window & In-Wall)",
+      "pin": "85727B0033",
+      "due_date": "2026-12-11T12:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20261023014",
@@ -153,6 +164,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20261027010",
+      "start_date": "2026-11-02T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction Related Services",
+      "short_title": "Correction: Construction Management Services for the Rehabilitation of the Wallkill Blow-off Chamber",
+      "pin": "82627P0005",
+      "due_date": "2026-12-10T16:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
+    },
+    {
       "request_id": "20261020018",
       "start_date": "2026-10-28T00:00:00.000",
       "agency_name": "Housing Authority",
@@ -205,17 +227,6 @@
       "pin": "82627B0022",
       "due_date": "2026-12-09T10:00:00.000",
       "selection_method_description": "Competitive Sealed Bids/Pre-Qualified List"
-    },
-    {
-      "request_id": "20261013013",
-      "start_date": "2026-10-21T00:00:00.000",
-      "agency_name": "NYC Health + Hospitals",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Correction: 22202201- NYC H+H - Gotham/ East New York - ADA Restroom, Office Storage and Lounge Renovation",
-      "pin": "22202201- ENY- ADA-",
-      "due_date": "2026-12-03T11:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20261014020",
@@ -278,9 +289,9 @@
       "agency_name": "Housing Authority",
       "type_of_notice_description": "Solicitation",
       "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: SMD_PS_RFP 528414_ FERAL CAT TRAP, NEUTER & RELEASE SERVICES",
+      "short_title": "Bid Extension: Bid Extension #2: SMD_PS_RFP 528414_ FERAL CAT TRAP, NEUTER & RELEASE SERVICES",
       "pin": "523414",
-      "due_date": "2026-11-25T14:00:00.000",
+      "due_date": "2026-12-04T14:00:00.000",
       "selection_method_description": "Request for Proposals"
     },
     {
@@ -317,6 +328,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20260929029",
+      "start_date": "2026-10-07T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: 82627B0004-BEDC OB-144A: Total Residual Chlorine (TRC) Optimization at the Oakwood Beach Wastewater Resource Recovery Facility (WRRF)",
+      "pin": "82627B0004",
+      "due_date": "2026-12-08T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20260930019",
       "start_date": "2026-10-07T00:00:00.000",
       "agency_name": "Teachers' Retirement System",
@@ -350,6 +372,17 @@
       "selection_method_description": "Competitive Sealed Proposals"
     },
     {
+      "request_id": "20260922020",
+      "start_date": "2026-09-30T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "Bid Extension: 82626B0065-BEDC - CSO-GC-SFS-OH-CP3 Construction of CSO Facilities for Gowanus Canal",
+      "pin": "82626B0065",
+      "due_date": "2026-12-10T10:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids/Pre-Qualified List"
+    },
+    {
       "request_id": "20260917021",
       "start_date": "2026-09-24T00:00:00.000",
       "agency_name": "NYC Health + Hospitals",
@@ -381,39 +414,6 @@
       "pin": "85625P0004",
       "due_date": "2026-12-09T14:00:00.000",
       "selection_method_description": "Competitive Sealed Proposals"
-    },
-    {
-      "request_id": "20260820037",
-      "start_date": "2026-08-27T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: 85625B0011-CSB General Construction RC Man. & Bronx",
-      "pin": "85625B0011",
-      "due_date": "2026-12-09T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260821028",
-      "start_date": "2026-08-26T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: CSB 161 ST Elevator Modernization Rebid",
-      "pin": "85626B0010",
-      "due_date": "2026-12-03T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20260814014",
-      "start_date": "2026-08-18T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: 85625B0009-CSB 151-20 Jamaica Roof Rep & WP",
-      "pin": "85625B0009",
-      "due_date": "2026-12-02T10:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
     },
     {
       "request_id": "20260727023",

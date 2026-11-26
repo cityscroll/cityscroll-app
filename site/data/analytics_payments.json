@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_payments.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "payment",
-  "generated_at": "2026-11-24T18:19:09.989Z",
-  "snapshot_date": "2026-11-24T18:19:09.989Z",
+  "generated_at": "2026-11-26T17:21:17.137Z",
+  "snapshot_date": "2026-11-26T17:21:17.137Z",
   "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
   "dimensions": [
     "agency",
@@ -21,18 +21,18 @@
     "fiscal_years": [
       2026
     ],
-    "publisher_record_count": 1786125,
-    "source_net_check_amount": 52410191322.8,
+    "publisher_record_count": 1786195,
+    "source_net_check_amount": 52411090646.41,
     "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
     "input": "payments.csv"
   },
   "population": {
-    "source_rows": 1786125,
-    "grouped_rows": 28603,
-    "transaction_count": 1786125,
-    "unique_transaction_count": 1636249,
-    "actual_payment_amount": 52410191322.8,
-    "duplicate_transaction_rows": 149876,
+    "source_rows": 1786195,
+    "grouped_rows": 28607,
+    "transaction_count": 1786195,
+    "unique_transaction_count": 1636315,
+    "actual_payment_amount": 52411090646.41,
+    "duplicate_transaction_rows": 149880,
     "reversal_rows": 1711
   },
   "rows": [
@@ -40718,6 +40718,16 @@
     },
     {
       "agency": "Department for the Aging",
+      "payee_name": "FELIX TIRCIO",
+      "fiscal_year": 2026,
+      "transaction_count": 12,
+      "unique_transaction_count": 12,
+      "actual_payment_amount": 4950,
+      "contract_count": 1,
+      "contract_id": "CT112520258804663"
+    },
+    {
+      "agency": "Department for the Aging",
       "payee_name": "FENIMORE SENIOR CENTER INC",
       "fiscal_year": 2026,
       "transaction_count": 8,
@@ -49668,6 +49678,16 @@
     },
     {
       "agency": "Department of Citywide Administrative Services",
+      "payee_name": "JACOB FEINBERG KATZ & MICHAELI CONSULTING GROUP LLC",
+      "fiscal_year": 2026,
+      "transaction_count": 6,
+      "unique_transaction_count": 6,
+      "actual_payment_amount": 55332.42,
+      "contract_count": 1,
+      "contract_id": "CT185620175000315"
+    },
+    {
+      "agency": "Department of Citywide Administrative Services",
       "payee_name": "JAMAICA HARDWARE & PAINTS INC.",
       "fiscal_year": 2026,
       "transaction_count": 32,
@@ -49735,6 +49755,16 @@
       "actual_payment_amount": 102377.98,
       "contract_count": 2,
       "contract_id": null
+    },
+    {
+      "agency": "Department of Citywide Administrative Services",
+      "payee_name": "JLC ENVIROMENTAL CONSULTANTS INC",
+      "fiscal_year": 2026,
+      "transaction_count": 4,
+      "unique_transaction_count": 4,
+      "actual_payment_amount": 7128,
+      "contract_count": 1,
+      "contract_id": "CT185620175000315"
     },
     {
       "agency": "Department of Citywide Administrative Services",
@@ -50100,10 +50130,10 @@
       "agency": "Department of Citywide Administrative Services",
       "payee_name": "LORING CONSULTING ENGINEERS INC",
       "fiscal_year": 2026,
-      "transaction_count": 29,
-      "unique_transaction_count": 29,
-      "actual_payment_amount": 1060068.37,
-      "contract_count": 4,
+      "transaction_count": 30,
+      "unique_transaction_count": 30,
+      "actual_payment_amount": 1077369.92,
+      "contract_count": 5,
       "contract_id": null
     },
     {
@@ -51088,6 +51118,16 @@
     },
     {
       "agency": "Department of Citywide Administrative Services",
+      "payee_name": "OUTSOURCE CONSULTANTS INC",
+      "fiscal_year": 2026,
+      "transaction_count": 1,
+      "unique_transaction_count": 1,
+      "actual_payment_amount": 1000,
+      "contract_count": 1,
+      "contract_id": "CT185620175000315"
+    },
+    {
+      "agency": "Department of Citywide Administrative Services",
       "payee_name": "OZ DOOR SERVICE CORP",
       "fiscal_year": 2026,
       "transaction_count": 11,
@@ -51670,11 +51710,11 @@
       "agency": "Department of Citywide Administrative Services",
       "payee_name": "RONNETTE RILEY ARCHITECT",
       "fiscal_year": 2026,
-      "transaction_count": 16,
-      "unique_transaction_count": 16,
-      "actual_payment_amount": 611934.4,
-      "contract_count": 1,
-      "contract_id": "CT185620228801952"
+      "transaction_count": 18,
+      "unique_transaction_count": 18,
+      "actual_payment_amount": 614624.56,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Citywide Administrative Services",
@@ -166410,11 +166450,11 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "ALPHA ENVIRONMENTAL SERVICES INC",
       "fiscal_year": 2026,
-      "transaction_count": 3,
-      "unique_transaction_count": 3,
-      "actual_payment_amount": 23202.7,
-      "contract_count": 1,
-      "contract_id": "CT182620268803205"
+      "transaction_count": 35,
+      "unique_transaction_count": 35,
+      "actual_payment_amount": 641502.7,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Environmental Protection",
@@ -167690,9 +167730,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "Boomi Environmental LLC",
       "fiscal_year": 2026,
-      "transaction_count": 309,
-      "unique_transaction_count": 309,
-      "actual_payment_amount": 4396445.89,
+      "transaction_count": 311,
+      "unique_transaction_count": 311,
+      "actual_payment_amount": 4410990.23,
       "contract_count": 12,
       "contract_id": null
     },
@@ -169260,9 +169300,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "DACK CONSULTING SOLUTIONS INC",
       "fiscal_year": 2026,
-      "transaction_count": 42,
-      "unique_transaction_count": 42,
-      "actual_payment_amount": 384320.28,
+      "transaction_count": 48,
+      "unique_transaction_count": 48,
+      "actual_payment_amount": 536031.86,
       "contract_count": 2,
       "contract_id": null
     },
@@ -173000,9 +173040,9 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "KYLE LUI PHOTOGRAPHY LLC",
       "fiscal_year": 2026,
-      "transaction_count": 42,
-      "unique_transaction_count": 42,
-      "actual_payment_amount": 42014.04,
+      "transaction_count": 44,
+      "unique_transaction_count": 44,
+      "actual_payment_amount": 46884.96,
       "contract_count": 6,
       "contract_id": null
     },
@@ -178320,11 +178360,11 @@
       "agency": "Department of Environmental Protection",
       "payee_name": "T R JOY & ASSOCIATES INC",
       "fiscal_year": 2026,
-      "transaction_count": 11,
-      "unique_transaction_count": 11,
-      "actual_payment_amount": 359795.26,
-      "contract_count": 1,
-      "contract_id": "CT182620238805667"
+      "transaction_count": 13,
+      "unique_transaction_count": 13,
+      "actual_payment_amount": 381289.9,
+      "contract_count": 2,
+      "contract_id": null
     },
     {
       "agency": "Department of Environmental Protection",
