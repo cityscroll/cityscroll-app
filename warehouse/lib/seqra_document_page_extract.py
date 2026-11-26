@@ -11,9 +11,11 @@ Extraction order:
    and preserves table columns and real statute/compound hyphens ("6-129").
 2. Fall back to `pypdf` when `pdftotext` is unavailable; return an honest
    `status: "skipped", reason: "pdf_lib_unavailable"` when neither is present.
-3. Inspect embedded `/XObject` `/Image` entries via `pypdf` (when available)
-   so image-only attachment pages that carry only a short text header (e.g.
-   "Attachment A" + full-page raster image) are flagged `ocr_required: true`.
+3. Inspect embedded `/XObject` `/Image` entries via `pypdf` when it is
+   installed, otherwise via `pdfimages` or the uncompressed object
+   dictionaries. Image-only attachment pages that carry only a short text
+   header (e.g. "Attachment A" plus a large raster image) are flagged
+   `ocr_required: true`.
 """
 
 from __future__ import annotations
@@ -97,6 +99,62 @@ def detect_pdf_library() -> str:
         return "pypdf unknown"
 
 
+_OBJECT_RE = re.compile(rb"(\d+)\s+\d+\s+obj\b(.*?)endobj", re.S)
+_WIDTH_RE = re.compile(rb"/Width\s+(\d+)")
+_HEIGHT_RE = re.compile(rb"/Height\s+(\d+)")
+_IMAGE_SUBTYPE_RE = re.compile(rb"/Subtype\s*/Image\b")
+_PAGES_TYPE_RE = re.compile(rb"/Type\s*/Pages\b")
+_PAGE_TYPE_RE = re.compile(rb"/Type\s*/Page\b")
+_KIDS_RE = re.compile(rb"/Kids\s*\[([^\]]*)\]")
+_REF_RE = re.compile(rb"(\d+)\s+\d+\s+R")
+_XOBJECT_RE = re.compile(rb"/XObject\s*<<([^>]*)>>")
+
+
+def _inspect_image_pages_from_dictionaries(data: bytes) -> dict[int, int]:
+    """Count large image XObjects from uncompressed dictionaries.
+
+    `pdfimages` omits an image whose stream length does not match the declared
+    sample bytes. The page dictionary still names the XObject, which is enough
+    to know the page is an image attachment rather than body text.
+    """
+    objects = {int(match.group(1)): match.group(2) for match in _OBJECT_RE.finditer(data)}
+    image_ids = set()
+    for obj_id, body in objects.items():
+        if not _IMAGE_SUBTYPE_RE.search(body):
+            continue
+        width = _WIDTH_RE.search(body)
+        height = _HEIGHT_RE.search(body)
+        if width and height and int(width.group(1)) >= 50 and int(height.group(1)) >= 50:
+            image_ids.add(obj_id)
+    if not image_ids:
+        return {}
+
+    kids: list[int] = []
+    for body in objects.values():
+        if not _PAGES_TYPE_RE.search(body):
+            continue
+        listed = _KIDS_RE.search(body)
+        if listed:
+            kids = [int(ref) for ref in _REF_RE.findall(listed.group(1))]
+            break
+    if not kids:
+        kids = [
+            obj_id for obj_id, body in sorted(objects.items())
+            if _PAGE_TYPE_RE.search(body) and not _PAGES_TYPE_RE.search(body)
+        ]
+
+    counts: dict[int, int] = {}
+    for index, page_id in enumerate(kids, 1):
+        body = objects.get(page_id, b"")
+        referenced = []
+        for block in _XOBJECT_RE.findall(body):
+            referenced.extend(int(ref) for ref in _REF_RE.findall(block))
+        count = sum(1 for ref in referenced if ref in image_ids)
+        if count:
+            counts[index] = count
+    return counts
+
+
 def _inspect_image_pages(data: bytes) -> dict[int, int]:
     """Count significant raster XObject images (>=50x50px) per 1-based page."""
     try:
@@ -104,7 +162,8 @@ def _inspect_image_pages(data: bytes) -> dict[int, int]:
         from pypdf import PdfReader  # type: ignore
         logging.getLogger("pypdf").setLevel(logging.ERROR)
     except ImportError:
-        return _inspect_image_pages_via_pdfimages(data)
+        counts = _inspect_image_pages_via_pdfimages(data)
+        return counts or _inspect_image_pages_from_dictionaries(data)
     try:
         reader = PdfReader(io.BytesIO(data))
     except Exception:  # noqa: BLE001
