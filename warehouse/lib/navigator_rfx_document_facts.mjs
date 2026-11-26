@@ -56,7 +56,7 @@ const OPENING_EVENTS = Object.freeze([
     local: "2026-11-09T14:00:00",
     timezone: "America/New_York",
     pdf_page: 1,
-    excerpt: "Bids are due by Novem ber 9th, 2026 @ 2:00PM .",
+    excerpt: "Bids are due by November 9th, 2026 @ 2:00PM.",
   },
   {
     id: "bid-opening",
@@ -65,35 +65,39 @@ const OPENING_EVENTS = Object.freeze([
     timezone: "America/New_York",
     mode: "remote (Microsoft Teams); in-person prohibited",
     pdf_page: 1,
-    excerpt: "The Bid Opening will be conducted via Microsoft Teams at 3:00PM on November 9t h, 2026 . In-person",
+    excerpt: "The Bid Opening will be conducted via Microsoft Teams at 3:00PM on November 9th, 2026. In-person",
   },
 ]);
 
 const FACT_RULES = Object.freeze([
   ["opening-logon-test", "event_notice", "Teams logon test window", "informational", "2:45 PM on the opening day", "stated courtesy window", "not a deadline", 1, "opening_text", "open the Microsoft TEAMS portal at 2:45PM"],
-  ["questions-channel", "event_notice", "Where to ask questions", "informational", "PASSPort “Discussion with Buyer” forum", "stated instruction", "no question deadline is stated", 1, "opening_text", "All questions must be submitted in the “ Discussion with Buyer ” forum in PASSPort ."],
-  ["bid-bond", "bond_insurance", "Bid bond", "not_applicable", null, "N/A box marked", null, 2, "schedule_a_checkbox", "Bid Bond ☒N/A or ☐__% of Total Bid Price"],
-  ["bid-security", "bond_insurance", "Bid security", "not_applicable", null, "N/A box marked", null, 2, "schedule_a_checkbox", "Bid Bond ☒N/A or ☐__% of Total Bid Price ☒ N/A or ☐___% of Total Bid Price"],
+  ["questions-channel", "event_notice", "Where to ask questions", "informational", "PASSPort “Discussion with Buyer” forum", "stated instruction", "no question deadline is stated", 1, "opening_text", "All questions must be submitted in the “Discussion with Buyer” forum in PASSPort."],
+  ["bid-bond", "bond_insurance", "Bid bond", "not_applicable", null, "N/A box marked", null, 2, "schedule_a_checkbox", ["Bid Bond ☒ N/A or ☐___% of Total Bid Price", "Bid Bond ☒N/A or ☐__% of Total Bid Price"]],
+  ["bid-security", "bond_insurance", "Bid security", "not_applicable", null, "N/A box marked", null, 2, "schedule_a_checkbox", ["Bid Security ☒N/A or ☐__% of Total Bid Price", "Bid Bond ☒N/A or ☐__% of Total Bid Price ☒ N/A or ☐___% of Total Bid Price"]],
   ["performance-bond", "bond_insurance", "Performance bond", "not_applicable", null, "N/A box marked", null, 2, "schedule_a_checkbox", "Performance Bond ☒N/A or ☐"],
   ["payment-bond", "bond_insurance", "Payment bond", "not_applicable", null, "N/A box marked", null, 2, "schedule_a_checkbox", "Payment Bond ☒N/A or ☐"],
+  ["period-of-performance", "scope_specification", "Period of performance (term of contract)", "required", "5 Years from the Order to Work Date", "stated contract term", null, 2, "schedule_a_text", ["Period of Performance (Term 5 Years from the Order to Work Date of Contract)", "5 Years from the Order to Work Date"], { article: "Article 6 of Agreement" }],
+  ["damage-claims", "scope_specification", "Damage claims repair window", "required", "All damages shall be repaired within 2 weeks", "stated requirement", "Agency may withhold payment on outstanding invoices until damage rectifications are met", 2, "schedule_a_text", "All damages shall be repaired within 2 weeks. Agency reserves the right to withhold payment on all outstanding invoices until all damage rectifications are met.", { article: "Article 16 of Detailed Specifications" }],
+  ["subcontracting", "scope_specification", "Subcontracting", "conditional", "No Subcontracting unless approved by the ACCO", "stated restriction", "requires prior ACCO approval", 3, "schedule_a_text", "No Subcontracting unless approved by the ACCO", { article: "Article 6 of Detailed Specifications" }],
   ["retained-percentage", "bond_insurance", "Retained percentage", "not_applicable", null, "N/A box marked", null, 3, "schedule_a_checkbox", "Retained Percentage ☒N/A ☐___%"],
-  ["maintenance-guaranty-security", "bond_insurance", "Maintenance and guaranty security", "conflicting", null, "both N/A and an alternative are marked", null, 3, "schedule_a_checkbox", "Security ☒N/A ☒ ___% of Total Contract Amount"],
+  ["maintenance-guaranty-security", "bond_insurance", "Maintenance and guaranty security", "conflicting", null, "both N/A and an alternative are marked", null, 3, "schedule_a_checkbox", ["Maintenance and Guaranty ☒N/A ☒ ___% of Total Contract Amount Security", "Security ☒N/A ☒ ___% of Total Contract Amount"]],
   ["guaranty-period", "bond_insurance", "Guaranty period", "required", "1 Year(s)", "N/A unmarked; value entered", null, 3, "schedule_a_checkbox", "Guaranty Period ☐N/A or 1 Year(s)"],
   ["partial-payment", "pricing_schedule", "Partial payment", "informational", "Will Be Allowed", "contract term marked", null, 3, "schedule_a_checkbox", "Partial Payment ☒ Will Be Allowed ☐ Will Not Be Allowed"],
-  ["labor-law", "labor_compliance", "Labor law and living wage requirements", "required", "New York Labor Law § 220 (prevailing wage)", "one option marked", null, 4, "schedule_a_checkbox", "☐N/A ☒NY LABOR LAW 220 ☐NY Labor Law 230 ☐Living Wage", { anticipated_trades: ["Field Engineer", "Electrician", "Plumber"] }],
-  ["insurance-commercial-general-liability", "bond_insurance", "Commercial General Liability", "required", ["$ 1,000,000.00 per occurrence", "$ 2,000,000.00 aggregate"], "marked box means required (page 5 legend)", null, 5, "schedule_a_insurance_checkbox", "☒Comm ercial General Liability", { article: "Art. 15(II)(A)" }],
-  ["insurance-workers-compensation", "bond_insurance", "Workers’ Compensation", "required", ["Statutory"], "marked box means required (page 5 legend)", null, 6, "schedule_a_insurance_checkbox", "☒Work ers’ Compensat ion", { article: "Art. 15(I)" }],
-  ["insurance-disability-benefits", "bond_insurance", "Disability Benefits Insurance", "required", ["Statutory"], "marked box means required (page 5 legend)", null, 6, "schedule_a_insurance_checkbox", "☒Disabi lity Benefits Insurance", { article: "Art. 15(I)" }],
+  ["liquidated-damages", "pricing_schedule", "Liquidated damages", "conditional", ["$100/day after 2 business days to complete incomplete or unsatisfactory work", "$100/day per incident for failure to respond to a work order within 2 business days", "$75/hr for failure to respond to an emergency work order within 4 hours", "$100/day for failure to respond to a routine repair request within 2 business days"], "stated liquidated-damages schedule", "assessed on non-response or incomplete/unsatisfactory work", 3, "schedule_a_text", ["$100 per day/incident for failure to respond to a work order within two business days. $75 Per Hour for failure to respond to an emergency work order within 4 hours $100 per day if Contractor fails to respond to a routine (non-emergency) repair service request within two business days.", "$100 per day/incident for failure to respond to a work order within two business days."], { article: "Article 8 of Agreement; Article 7 & Article 8 of Detailed Specifications" }],
+  ["labor-law", "labor_compliance", "Labor law and living wage requirements", "required", "New York Labor Law § 220 (prevailing wage)", "one option marked", null, 4, "schedule_a_checkbox", ["☐N/A -Electrician ☒NY LABOR LAW 220 -Plumber ☐NY Labor Law 230 ☐Living Wage", "☐N/A ☒NY LABOR LAW 220 ☐NY Labor Law 230 ☐Living Wage"], { anticipated_trades: ["Field Engineer", "Electrician", "Plumber"] }],
+  ["insurance-commercial-general-liability", "bond_insurance", "Commercial General Liability", "required", ["$ 1,000,000.00 per occurrence", "$ 2,000,000.00 aggregate"], "marked box means required (page 5 legend)", null, 5, "schedule_a_insurance_checkbox", "☒Commercial General Liability", { article: "Art. 15(II)(A)" }],
+  ["insurance-workers-compensation", "bond_insurance", "Workers’ Compensation", "required", ["Statutory"], "marked box means required (page 5 legend)", null, 6, "schedule_a_insurance_checkbox", "☒Workers’ Compensation", { article: "Art. 15(I)" }],
+  ["insurance-disability-benefits", "bond_insurance", "Disability Benefits Insurance", "required", ["Statutory"], "marked box means required (page 5 legend)", null, 6, "schedule_a_insurance_checkbox", "☒Disability Benefits Insurance", { article: "Art. 15(I)" }],
   ["insurance-employers-liability", "bond_insurance", "Employers’ Liability", "required", ["Statutory"], "marked box means required (page 5 legend)", null, 6, "schedule_a_insurance_checkbox", "☒Employers’ Liability", { article: "Art. 15(I)" }],
   ["insurance-jones-act", "bond_insurance", "Jones Act", "not_applicable", null, "box unmarked", null, 6, "schedule_a_insurance_checkbox", "☐Jones Act", { article: "Art. 15(II)(F)" }],
   ["insurance-longshore-harbor-workers", "bond_insurance", "U.S. Longshoremen’s and Harbor", "not_applicable", null, "box unmarked", null, 6, "schedule_a_insurance_checkbox", "☐U.S. Longshoremen’s and Harbor", { article: "Art. 15(II)(F)" }],
-  ["insurance-commercial-auto-liability", "bond_insurance", "Commercial Auto Liability", "required", ["$1,000,000.00 per accident combined single limit"], "marked box means required (page 5 legend)", null, 6, "schedule_a_insurance_checkbox", "☒ Comme rcial Auto Liability", { article: "Art. 15(II)(B)" }],
+  ["insurance-commercial-auto-liability", "bond_insurance", "Commercial Auto Liability", "required", ["$1,000,000.00 per accident combined single limit"], "marked box means required (page 5 legend)", null, 6, "schedule_a_insurance_checkbox", "☒ Commercial Auto Liability", { article: "Art. 15(II)(B)" }],
   ["insurance-contractors-pollution-liability", "bond_insurance", "Contractors Pollution Liability", "not_applicable", null, "box unmarked", null, 7, "schedule_a_insurance_checkbox", "☐Contractors Pollution Liability", { article: "Art. 15(II)(F)" }],
-  ["insurance-marine-protection-indemnity", "bond_insurance", "Marine Protection and Indemnity", "not_applicable", null, "box unmarked", null, 8, "schedule_a_insurance_checkbox", "☐ Marine Protect ion and Indemnity", { article: "Art. 15(II)(F)" }],
-  ["insurance-hull-machinery", "bond_insurance", "Hull and Machinery Insurance", "not_applicable", null, "box unmarked", null, 8, "schedule_a_insurance_checkbox", "☐ Hull and Machine ry Insurance", { article: "Art. 15(II)(F)" }],
+  ["insurance-marine-protection-indemnity", "bond_insurance", "Marine Protection and Indemnity", "not_applicable", null, "box unmarked", null, 8, "schedule_a_insurance_checkbox", "☐ Marine Protection and Indemnity", { article: "Art. 15(II)(F)" }],
+  ["insurance-hull-machinery", "bond_insurance", "Hull and Machinery Insurance", "not_applicable", null, "box unmarked", null, 8, "schedule_a_insurance_checkbox", "☐ Hull and Machinery Insurance", { article: "Art. 15(II)(F)" }],
   ["insurance-marine-pollution-liability", "bond_insurance", "Marine Pollution Liability", "not_applicable", null, "box unmarked", null, 8, "schedule_a_insurance_checkbox", "☐ Marine Pollution Liability", { article: "Art. 15(II)(F)" }],
   ["insurance-professional-liability", "bond_insurance", "Professional Liability Insurance", "not_applicable", null, "box unmarked", null, 8, "schedule_a_insurance_checkbox", "☐ Professional Liability Insurance", { article: "Art. 15(II)(C)" }],
-  ["insurance-personal-property", "bond_insurance", "Personal Property Insurance", "not_applicable", null, "box unmarked", null, 9, "schedule_a_insurance_checkbox", "☐ Personal Prop erty Insurance", { article: "Art. 15(II)(F)" }],
+  ["insurance-personal-property", "bond_insurance", "Personal Property Insurance", "not_applicable", null, "box unmarked", null, 9, "schedule_a_insurance_checkbox", "☐ Personal Property Insurance", { article: "Art. 15(II)(F)" }],
   ["experience-three-years", "eligibility_evidence", "Contractor experience", "required", "At least 3 years testing, maintaining and repairing the named systems", "stated requirement", "joint venture: at least one member meets it", 2, "schedule_a_text", "at least 3 years of experience"],
   ["client-references", "eligibility_evidence", "Client references", "required", "Names and contacts of at least two client organizations", "stated requirement", "before award, not with the bid", 2, "schedule_a_text", "Prior to award, the Contractor must submit the names and contact information of at least two (2) client organizations"],
   ["mwbe-waiver-deadline", "participation_plan", "M/WBE goal waiver request", "conditional", "7 calendar days before bids are due", "stated rule", "only if participation goals are set on Schedule B, which this book does not contain", 19, "participation_notice_text", "no later than seven (7) calendar days prior to the date and time the bids"],
@@ -104,7 +108,7 @@ const FACT_RULES = Object.freeze([
 const TOC_ABSTENTIONS = Object.freeze([
   ["pre-bid-conference", "Pre-Bid Conference (Optional)"],
   ["site-visit", "Site Visit"],
-  ["bid-security-toc", "Bid Sec urity"],
+  ["bid-security-toc", "Bid Security"],
   ["performance-bond-toc", "Performance Bond"],
 ]);
 
@@ -157,9 +161,41 @@ function recognizeTemplate({ document = {}, pages = [], pageCount = null } = {})
   return null;
 }
 
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Match an excerpt against normalized page text, tolerating mid-word kerning
+ * spaces emitted by pure-Python extractors (e.g. "Comm ercial", "Novem ber")
+ * while always returning the verbatim matched substring from the page text.
+ */
+function findVerbatimExcerpt(text, matcher) {
+  if (!text || !matcher) return null;
+  if (Array.isArray(matcher)) {
+    for (const candidate of matcher) {
+      const hit = findVerbatimExcerpt(text, candidate);
+      if (hit) return hit;
+    }
+    return null;
+  }
+  if (matcher instanceof RegExp) {
+    const match = text.match(matcher);
+    return match ? match[0] : null;
+  }
+  const needle = String(matcher);
+  if (text.includes(needle)) return needle;
+  const compact = needle.replace(/\s+/g, "");
+  if (!compact) return null;
+  const pattern = [...compact].map(escapeRegex).join("\\s*");
+  const match = text.match(new RegExp(pattern));
+  return match ? match[0] : null;
+}
+
 function eventFromRule(rule, index) {
   const text = index.get(rule.pdf_page)?.normalized_text || "";
-  if (!text.includes(rule.excerpt)) return null;
+  const matched = findVerbatimExcerpt(text, rule.excerpt);
+  if (!matched) return null;
   const base = {
     id: rule.id,
     type: rule.type,
@@ -167,24 +203,45 @@ function eventFromRule(rule, index) {
     timezone: rule.timezone,
   };
   if (rule.mode) base.mode = rule.mode;
-  return Object.freeze({ ...base, pdf_page: rule.pdf_page, ...citation(rule.excerpt) });
+  return Object.freeze({ ...base, pdf_page: rule.pdf_page, ...citation(matched) });
 }
 
 function factFromRule(rule, index) {
   const [id, role, subject, applicability, value, basis, condition, pdfPage, ruleName, excerpt, extras = {}] = rule;
   const text = index.get(pdfPage)?.normalized_text || "";
-  if (!text.includes(excerpt)) return null;
+  const matched = findVerbatimExcerpt(text, excerpt);
+  if (!matched) return null;
   const fact = { id, role, subject };
   if (extras.article) fact.article = extras.article;
   Object.assign(fact, { applicability, value, basis, condition, pdf_page: pdfPage, rule: ruleName });
   if (extras.anticipated_trades) fact.anticipated_trades = Object.freeze([...extras.anticipated_trades]);
-  return Object.freeze({ ...fact, ...citation(excerpt) });
+  return Object.freeze({ ...fact, ...citation(matched) });
 }
 
-function unknownInsuranceFact(index) {
+function otherInsuranceFact(index) {
   const text = index.get(10)?.normalized_text || "";
-  const count = (text.match(/\[OTH ER\]/g) || []).length;
+  const count = (text.match(/\[OTH\s*ER\]/g) || []).length;
   if (count !== 2) return null;
+  const hasCheckedBox = text.includes("☒");
+  const templatePrompt = findVerbatimExcerpt(
+    text,
+    "(a) check the box and fill in the type of insurance in left-hand column",
+  );
+  if (!hasCheckedBox && templatePrompt) {
+    return Object.freeze({
+      id: "insurance-other-template-p10",
+      role: "bond_insurance",
+      subject: "Other insurance (blank template slots)",
+      article: "Art. 15(II)(F)",
+      applicability: "not_applicable",
+      value: null,
+      basis: "2 unchecked [OTHER] template slots with blank agency instructions",
+      condition: null,
+      pdf_page: 10,
+      rule: "schedule_a_insurance_checkbox",
+      ...citation(templatePrompt),
+    });
+  }
   return Object.freeze({
     id: "insurance-unlabelled-p10",
     role: "bond_insurance",
@@ -201,21 +258,26 @@ function unknownInsuranceFact(index) {
 
 function contractProjection(index) {
   const facts = FACT_RULES.slice(2).map((rule) => factFromRule(rule, index)).filter(Boolean);
-  const unknownInsurance = unknownInsuranceFact(index);
-  facts.splice(22, 0, ...(unknownInsurance ? [unknownInsurance] : []));
+  const otherInsurance = otherInsuranceFact(index);
+  if (otherInsurance) {
+    const personalPropIdx = facts.findIndex((fact) => fact.id === "insurance-personal-property");
+    const insertAt = personalPropIdx >= 0 ? personalPropIdx + 1 : facts.length;
+    facts.splice(insertAt, 0, otherInsurance);
+  }
 
   const tocText = index.get(36)?.normalized_text || "";
-  const abstentions = TOC_ABSTENTIONS.flatMap(([id, excerpt]) => (
-    tocText.includes(excerpt)
+  const abstentions = TOC_ABSTENTIONS.flatMap(([id, excerpt]) => {
+    const matched = findVerbatimExcerpt(tocText, excerpt);
+    return matched
       ? [Object.freeze({
         id,
         pdf_page: 36,
         reason: "table-of-contents heading; keyword is not a requirement",
         creates_task: false,
-        ...citation(excerpt),
+        ...citation(matched),
       })]
-      : []
-  ));
+      : [];
+  });
 
   return {
     recognized_template: CONTRACT_TEMPLATE,

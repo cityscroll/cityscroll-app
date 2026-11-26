@@ -46,9 +46,9 @@ export function detectPdfLibraryVersionViaPython() {
   try {
     return execFileSync(
       pdfPageExtractorPython(),
-      ["-c", "import importlib.metadata; print('pypdf ' + importlib.metadata.version('pypdf'))"],
+      [PAGE_EXTRACT_SCRIPT, "--version"],
       { encoding: "utf8" },
-    ).trim() || "pypdf unknown";
+    ).trim() || "unavailable";
   } catch {
     return "unavailable";
   }

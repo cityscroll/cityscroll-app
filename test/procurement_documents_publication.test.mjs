@@ -196,3 +196,27 @@ test("A7: parser hardening flags scanned attachments, preserves statute/compound
   assert.ok(byId.get("prevailing-wage-schedule").running_headers.includes("OFFICE OF THE COMPTROLLER, CITY OF NEW YORK"));
   assert.doesNotMatch(byId.get("mwbe-notice").pages[0].text, /^PIN # 84627B0012/m);
 });
+
+test("A8: published rfx-37728 shard flags image-only attachments, includes full Schedule A facts, and has kerning-clean excerpts", () => {
+  const publication = readProcurementDocumentPublication(PUBLIC_DATA);
+  const [{ shard }] = publication.shards;
+  const opening = shard.rows.find((row) => row.document_id === "253289498");
+  const contract = shard.rows.find((row) => row.document_id === "253286611");
+  assert.ok(opening && contract);
+
+  assert.deepEqual(contract.ocr_required_pages, [65, 66]);
+  const facts = new Map(contract.facts.map((fact) => [fact.id, fact]));
+  assert.equal(facts.get("period-of-performance")?.value, "5 Years from the Order to Work Date");
+  assert.equal(facts.get("damage-claims")?.applicability, "required");
+  assert.equal(facts.get("subcontracting")?.applicability, "conditional");
+  assert.equal(facts.get("liquidated-damages")?.applicability, "conditional");
+  assert.equal(facts.get("insurance-other-template-p10")?.applicability, "not_applicable");
+  assert.equal(facts.get("insurance-unlabelled-p10"), undefined);
+
+  for (const row of [opening, contract]) {
+    for (const item of [...(row.events || []), ...(row.facts || []), ...(row.abstentions || [])]) {
+      if (!item.excerpt) continue;
+      assert.doesNotMatch(item.excerpt, /Novem ber|Comm ercial|Work ers|Disabi lity|Bid Sec urity|Prop erty/);
+    }
+  }
+});
