@@ -252,3 +252,34 @@ test("notice freshness retries transient gateway responses once within the origi
     assert.equal(out.subrequests, requests);
   }
 });
+
+test("source-wide search uses only a complete unambiguous candidate set and shares its deadline", async () => {
+  const { runWatch } = await import("../src/alerts.mjs");
+  const dates = ["2026-01-01", "2026-01-03", "2026-01-02"].map((d) => ({ start_date: d + "T00:00:00.000" }));
+  const ordered = [dates[1], dates[2]];
+  for (const mode of ["complete", "overflow", "tie", "undated", "timeout"]) {
+    const urls = [];
+    let elapsed = 0;
+    const rows = await runWatch({ type: "search", q: "example", limit: 2 }, {
+      nowFn: () => elapsed,
+      fetchRows: async (url, options) => {
+        const query = new URL(url).searchParams;
+        urls.push(query);
+        assert.equal(query.get("$q"), "example");
+        if (query.has("$order")) {
+          assert.equal(options.budgetMs, 55000);
+          assert.equal(query.get("$limit"), "2");
+          return ordered;
+        }
+        elapsed += 5000;
+        if (mode === "timeout") throw new Error("deadline");
+        if (mode === "undated") return [{}];
+        if (mode === "tie") return [dates[1], dates[2], dates[2]];
+        if (mode === "overflow") return Array(Number(query.get("$limit"))).fill(dates[0]);
+        return dates;
+      },
+    });
+    assert.deepEqual(rows, ordered);
+    assert.equal(urls.length, mode === "complete" ? 1 : 2);
+  }
+});

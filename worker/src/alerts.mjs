@@ -2736,7 +2736,19 @@ export async function fetchSodaRowsWithRetry(url, {
   }
 }
 
-async function runWatch(w) {
+// When the entire search fits on one unsorted publisher page, the newest
+// records can be selected locally. Ask the publisher to resolve any date tie.
+function newestFromCompletePage(rows, pageSize, limit) {
+  if (!Array.isArray(rows) || rows.length >= pageSize ||
+      rows.some((row) => !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}$/.test(row?.start_date))) return null;
+  const sorted = [...rows].sort((a, b) => b.start_date.localeCompare(a.start_date));
+  for (let i = 0; i < Math.min(limit, sorted.length - 1); i++) {
+    if (sorted[i].start_date === sorted[i + 1].start_date) return null;
+  }
+  return sorted.slice(0, limit);
+}
+
+export async function runWatch(w, { fetchRows = fetchSodaRowsWithRetry, nowFn = Date.now } = {}) {
   const params = new URLSearchParams();
   params.set("$select", "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,street_address_1,section_name,type_of_notice_description,address_to_request,selection_method_description,additional_description_1");
   params.set("$limit", String(w.limit || 25));
@@ -2751,7 +2763,23 @@ async function runWatch(w) {
     if (w.q) params.set("$q", w.q);
   }
 
-  return fetchSodaRowsWithRetry(`${SODA}?${params.toString()}`);
+  const orderedUrl = `${SODA}?${params}`;
+  const limit = Number(params.get("$limit"));
+  const pageSize = 128;
+  if (w.type !== "search" || !w.q || !Number.isInteger(limit) || limit < 1 || limit >= pageSize) {
+    return fetchRows(orderedUrl);
+  }
+  const deadline = nowFn() + SODA_RETRY_BUDGET_MS;
+  params.delete("$order");
+  params.set("$limit", String(pageSize));
+  try {
+    const rows = await fetchRows(`${SODA}?${params}`, { budgetMs: SODA_RETRY_BUDGET_MS / 2, delaysMs: [] });
+    const newest = newestFromCompletePage(rows, pageSize, limit);
+    if (newest) return newest;
+  } catch {
+    // The original ordered query can still succeed if the alternate read fails.
+  }
+  return fetchRows(orderedUrl, { budgetMs: Math.max(1, deadline - nowFn()) });
 }
 
 // ---- actionable digest (phone / email / links per item) ------------------
