@@ -12,7 +12,7 @@ LINK = re.compile(r"\[[^\]\n]*\]\(([^()\s]+)\)")
 CODE = re.compile(r"`([\w.][\w./-]*)`")
 
 
-def git(*args):
+def git(*args, stderr=None):
     # Sparse checkouts can lazily fetch an older folio blob. Use the read-only
     # workflow credential for that fetch without persisting it in the checkout.
     server = os.environ.get("GITHUB_SERVER_URL", "https://github.com").rstrip("/")
@@ -21,8 +21,18 @@ def git(*args):
         'printf "username=x-access-token\\npassword=%s\\n" "$GH_TOKEN"; fi; }; f'
     )
     return subprocess.check_output(
-        ["git", "-c", "credential.helper=", "-c", f"credential.{server}.helper={helper}", *args]
+        ["git", "-c", "credential.helper=", "-c", f"credential.{server}.helper={helper}", *args],
+        env={**os.environ, "GIT_TERMINAL_PROMPT": "0"},
+        stderr=stderr,
     ).decode("utf-8", "surrogateescape")
+
+
+def has_commit(revision):
+    try:
+        git("cat-file", "-e", f"{revision}^{{commit}}", stderr=subprocess.DEVNULL)
+    except subprocess.CalledProcessError:
+        return False
+    return True
 
 
 def local_link(url, repository):
@@ -89,10 +99,13 @@ def review(event, repository):
     base = "HEAD^1" if pr else push
     if push and not push.strip("0"):
         base = None
-    elif push and subprocess.run(["git", "cat-file", "-e", f"{push}^{{commit}}"],
-                                 capture_output=True).returncode:
+    elif push and not has_commit(push):
         # A multi-commit push can put the previous tip outside the shallow clone.
-        git("fetch", "--quiet", "--filter=blob:none", "--depth=1", "origin", push)
+        try:
+            git("fetch", "--quiet", "--filter=blob:none", "--depth=1", "origin", push)
+        except subprocess.CalledProcessError:
+            print(f"Unreachable folio comparison commit {push}. Reviewing current HEAD only.")
+            base = None
     old_sections, evidence, _ = inventory(base, repository) if base else ({}, {}, set())
     sections, _, broken = inventory(head, repository, evidence)
     if broken:

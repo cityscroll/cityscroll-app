@@ -37,8 +37,11 @@ class FolioReviewTest(unittest.TestCase):
         self.git("commit", "-qm", "test")
 
     def check(self, body="", expected=0):
+        return self.check_event({"pull_request": {"body": body}}, expected)
+
+    def check_event(self, payload, expected=0):
         event = self.root / ".git" / "event.json"
-        event.write_text(json.dumps({"pull_request": {"body": body}}))
+        event.write_text(json.dumps(payload))
         result = subprocess.run([sys.executable, SCRIPT], cwd=self.root, capture_output=True,
                                 text=True, env={**os.environ, "GITHUB_EVENT_PATH": str(event),
                                                "GITHUB_REPOSITORY": "example/project"})
@@ -86,19 +89,38 @@ class FolioReviewTest(unittest.TestCase):
                 self.assertEqual(call.args[0][0], "git")
                 self.assertNotIn("test-token", str(call.args))
 
+    def test_main_push_reviews_current_head_when_previous_commit_is_unreachable(self):
+        self.git("remote", "add", "origin", str(self.root))
+        before = "a" * 40
+        (self.root / "routes.js").write_text("v2")
+        self.commit()
+        self.assertIn(f"Unreachable folio comparison commit {before}",
+                      self.check_event({"before": before}))
+
+        (self.root / "storage.json").unlink()
+        self.commit()
+        self.assertIn("Missing folio evidence: 'storage.json'",
+                      self.check_event({"before": before}, expected=1))
+
+    def test_git_disables_terminal_prompts(self):
+        with patch.dict(os.environ, {"GIT_TERMINAL_PROMPT": "1"}), \
+                patch("subprocess.check_output", return_value=b"") as check_output:
+            review.git("status")
+        self.assertEqual(check_output.call_args.kwargs["env"]["GIT_TERMINAL_PROMPT"], "0")
+
     def test_git_supplies_workflow_credentials_to_git_without_persisting_them(self):
         self.git("config", "credential.helper", "store --file=.git/test-credentials")
         credential = b"protocol=https\nhost=github.com\n\n"
 
-        def use_credential(command):
+        def use_credential(command, **kwargs):
             self.assertNotIn("test-token", str(command))
             result = subprocess.run(command, input=credential, cwd=self.root,
-                                    capture_output=True, check=True)
+                                    capture_output=True, check=True, **kwargs)
             self.assertEqual(result.stderr, b"")
             return result.stdout
 
         env = {"GH_TOKEN": "test-token", "GITHUB_SERVER_URL": "https://github.com",
-               "GIT_TERMINAL_PROMPT": "0", "GIT_TRACE": "0"}
+               "GIT_TRACE": "0"}
         with patch.dict(os.environ, env), patch("subprocess.check_output", side_effect=use_credential):
             filled = review.git("credential", "fill")
             self.assertIn("username=x-access-token", filled.splitlines())
