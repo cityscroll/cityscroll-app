@@ -11,6 +11,7 @@ import { projectEmergencyAlertHistory } from "./lib/emergency_outbox.mjs";
 // GET /admin/digest-rollup?key=…&email=… — dry-run account rollup for one email (no Resend send).
 
 import {
+  isValidEmail,
   redactEmail,
   isTopiclessIntent,
   isTestSubscriber,
@@ -416,7 +417,13 @@ export async function handleAdminMailQuota(req, env) {
   let quota;
   let hold;
   if (drill) {
-    hold = await deliveryHoldForSend(env, "delivery-check@example.invalid");
+    let body;
+    try { body = await req.json(); } catch { return privateJson({ error: "invalid-drill" }, 400); }
+    if (body?.recipient !== undefined) {
+      if (typeof body.recipient !== "string" || !body.recipient.endsWith(".invalid")
+          || !isValidEmail(body.recipient)) return privateJson({ error: "reserved-recipient-required" }, 400);
+      hold = await deliveryHoldForSend(env, body.recipient);
+    }
     quota = providerDailyQuota({ emails: { daily: {
       used: 80, limit: 100, resets_at: new Date(Date.UTC(now.getUTCFullYear(),
         now.getUTCMonth(), now.getUTCDate() + 1)).toISOString(),
@@ -435,7 +442,7 @@ export async function handleAdminMailQuota(req, env) {
       findings: [finding] });
     alert = { signature: result.signature, destination: result.reason };
   }
-  return privateJson({ quota, drill, alert, ...(drill ? { hold_sources: hold?.holds || [] } : {}) },
+  return privateJson({ quota, drill, alert, ...(drill && hold !== undefined ? { hold_sources: hold?.holds || [] } : {}) },
     quota.status === "unavailable" ? 503 : 200);
 }
 

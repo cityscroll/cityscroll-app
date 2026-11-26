@@ -105,7 +105,7 @@ policy. Welcome-volume containment continues to use its own local counter.
 Authenticated GET requests to `/admin/reliability/mail-quota` return the live
 daily count, limit, and reset time. An authenticated POST runs a fixed 80-of-100
 drill, labels its Desk finding as a test, and omits it from the repair queue.
-It also returns the sender's actual hold decision for the reserved address
-`delivery-check@example.invalid`. The drill never sends mail, changes budgets,
+Supply an empty JSON object for a quota-only drill. An optional `recipient`
+on the reserved `.invalid` domain also exercises the sender’s live hold lookup. The drill never sends mail, changes budgets,
 or arms enrollment containment. A required D1 lookup that fails in production
 stops delivery and can be retried.

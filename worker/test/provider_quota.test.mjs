@@ -23,8 +23,8 @@ test("a failed production hold read prevents dispatch and remains retryable", as
       return null;
     } }; } }; },
   } };
-  await assert.rejects(deliveryHoldForSend(env, "probe@example.invalid"), /hold lookup unavailable/);
-  await assert.rejects(deliveryHoldForSend({ WRANGLER_ENV: "production" }, "probe@example.invalid"), /hold lookup unavailable/);
+  await assert.rejects(deliveryHoldForSend(env, "synthetic-recipient"), /hold lookup unavailable/);
+  await assert.rejects(deliveryHoldForSend({ WRANGLER_ENV: "production" }, "synthetic-recipient"), /hold lookup unavailable/);
 });
 
 
@@ -39,11 +39,11 @@ test("the authenticated drill writes a labeled Desk alert without enqueuing repa
   const denied = await handleAdminMailQuota(new Request(url, { method: "POST" }), env);
   assert.equal(denied.status, 401);
   assert.equal(store.size, 0);
-  const request = new Request(url, { method: "POST", headers: { authorization: "Bearer test" } });
+  const request = new Request(url, { method: "POST", headers: { authorization: "Bearer test" }, body: "{}" });
   const res = await handleAdminMailQuota(request, env);
   assert.equal(res.status, 200);
   const body = await res.json();
-  assert.deepEqual(body.hold_sources, ["operator-quarantine"]);
+  assert.equal(body.hold_sources, undefined);
   assert.equal(body.alert.destination, "desk-only");
   const alert = JSON.parse(store.get("ops:alert:history:v1")).items[0];
   assert.equal(alert.signature, body.alert.signature);
