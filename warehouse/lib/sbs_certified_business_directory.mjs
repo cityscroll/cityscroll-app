@@ -215,14 +215,26 @@ export function sha256Hex(bytes) {
 
 const sleepMs = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const SBS_COUNT_URL = `${SBS_RESOURCE_URL}?$select=${encodeURIComponent("count(*)")}`;
+
+function publisherClock(meta, count) {
+  const value = count?.[0]?.count;
+  const publisherCount = Number(value);
+  if (!Number.isFinite(meta?.rowsUpdatedAt) || value == null || value === ""
+      || !Number.isSafeInteger(publisherCount) || publisherCount < 0) {
+    throw new Error("SBS publisher clock or row count is missing or invalid");
+  }
+  return { rowsUpdatedAt: new Date(meta.rowsUpdatedAt * 1000).toISOString(), publisherCount };
+}
+
 /** Two cheap requests: publisher rowsUpdatedAt and count(*). Lets a refresh skip the full pull when nothing moved. */
 export async function readPublisherClock({ fetchImpl = fetch } = {}) {
-  const meta = await (await fetchImpl(SBS_VIEWS_URL)).json();
-  const count = await (await fetchImpl(`${SBS_RESOURCE_URL}?$select=${encodeURIComponent("count(*)")}`)).json();
-  return {
-    rowsUpdatedAt: Number.isFinite(meta?.rowsUpdatedAt) ? new Date(meta.rowsUpdatedAt * 1000).toISOString() : null,
-    publisherCount: Number(count?.[0]?.count),
-  };
+  async function get(url) {
+    const response = await fetchImpl(url);
+    if (!response.ok) throw new Error(`SBS publisher clock HTTP ${response.status} for ${url}`);
+    return response.json();
+  }
+  return publisherClock(await get(SBS_VIEWS_URL), await get(SBS_COUNT_URL));
 }
 
 /**
@@ -243,8 +255,7 @@ export async function pullAll({
   }
   const meta = await get(SBS_VIEWS_URL);
   await sleep(delayMs);
-  const count = await get(`${SBS_RESOURCE_URL}?$select=${encodeURIComponent("count(*)")}`);
-  const publisherCount = Number(count?.[0]?.count);
+  const { rowsUpdatedAt, publisherCount } = publisherClock(meta, await get(SBS_COUNT_URL));
   for (let page = 0; page < maxPages; page += 1) {
     await sleep(delayMs);
     const url = `${SBS_RESOURCE_URL}?$order=account_number&$limit=${pageSize}&$offset=${page * pageSize}`;
@@ -254,10 +265,9 @@ export async function pullAll({
     if (batch.length < pageSize) break;
   }
   const distinct = new Set(rows.map((r) => r.account_number)).size;
-  if (!Number.isFinite(publisherCount) || rows.length !== publisherCount || distinct !== rows.length) {
+  if (rows.length !== publisherCount || distinct !== rows.length) {
     throw new Error(`SBS pull incomplete or not unique: rows=${rows.length} distinct=${distinct} publisher=${publisherCount}`);
   }
-  const rowsUpdatedAt = Number.isFinite(meta?.rowsUpdatedAt) ? new Date(meta.rowsUpdatedAt * 1000).toISOString() : null;
   return { rows, requests, publisherCount, rowsUpdatedAt };
 }
 

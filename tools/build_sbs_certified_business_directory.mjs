@@ -6,7 +6,7 @@
  *   node tools/build_sbs_certified_business_directory.mjs --fixture --out DIR   # build the committed fixture set
  *   node tools/build_sbs_certified_business_directory.mjs --check [--site-dir DIR]   # read-only: integrity + serve gate
  */
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,7 +16,7 @@ import {
 } from "../warehouse/lib/sbs_certified_business_directory.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const RECEIPT = join(ROOT, "warehouse/receipts/proof/sbs_certified_business_list_latest.json");
+const RECEIPT = "warehouse/receipts/proof/sbs_certified_business_list_latest.json";
 const FIXTURES = join(ROOT, "test/fixtures/sbs_certified_businesses");
 const FIXTURE_LIMITS = Object.freeze({ max_rows: 50, max_bytes: 1024 * 1024, max_index_bytes: 512 * 1024 });
 
@@ -34,24 +34,45 @@ function parseArgs(argv) {
   return out;
 }
 
-function writeSet(files, root) {
+function writeFilesAtomically(files, root) {
   // determinism-lint: allow write non-check materialization output
-  for (const [rel, text] of files) {
+  mkdirSync(root, { recursive: true });
+  const staging = mkdtempSync(join(root, ".sbs-publication-"));
+  try {
+    for (const [rel, text] of files) {
+      const stagedPath = join(staging, rel);
+      // determinism-lint: allow write non-check materialization output
+      mkdirSync(dirname(stagedPath), { recursive: true });
+      // determinism-lint: allow write non-check materialization output
+      writeFileSync(stagedPath, text);
+      // determinism-lint: allow write non-check materialization output
+      mkdirSync(dirname(join(root, rel)), { recursive: true });
+    }
+    // A complete directory lists the payloads first and the manifest last.
+    for (const rel of files.keys()) {
+      // determinism-lint: allow write non-check materialization output
+      renameSync(join(staging, rel), join(root, rel));
+    }
+  } finally {
     // determinism-lint: allow write non-check materialization output
-    mkdirSync(dirname(join(root, rel)), { recursive: true });
-    // determinism-lint: allow write non-check materialization output
-    writeFileSync(join(root, rel), text);
+    rmSync(staging, { recursive: true, force: true });
   }
-  const keep = new Set([...files.keys()].map((p) => join(root, p)));
+}
+
+function publishDirectory(files, root) {
+  writeFilesAtomically(files, root);
   const dir = join(root, DIR);
-  if (existsSync(dir)) {
-    for (const f of readdirSync(dir)) {
-      if (/^rows-\d{3}\.json$/.test(f) && !keep.has(join(dir, f))) {
-        // determinism-lint: allow write non-check stale-shard cleanup
-        rmSync(join(dir, f));
-      }
+  for (const file of readdirSync(dir)) {
+    if (/^rows-\d{3}\.json$/.test(file) && !files.has(`${DIR}/${file}`)) {
+      // determinism-lint: allow write non-check stale-shard cleanup
+      rmSync(join(dir, file));
     }
   }
+}
+
+function writeReceipt(manifest, requests) {
+  const receipt = acquisitionReceipt(manifest, requests);
+  writeFilesAtomically(new Map([[RECEIPT, `${JSON.stringify(receipt, null, 2)}\n`]]), ROOT);
 }
 
 async function fromSoda(site) {
@@ -64,9 +85,8 @@ async function fromSoda(site) {
   if (existing && existing.rows_updated_at === clock.rowsUpdatedAt && existing.publisher_row_count === clock.publisherCount) {
     // Publisher did not move: keep every shard byte-for-byte and restamp only the manifest observation time.
     const manifest = { ...existing, collected_at: collectedAt };
-    writeSet(new Map([[MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`]]), site);
-    // determinism-lint: allow write acquisition receipt outside --check
-    writeFileSync(RECEIPT, `${JSON.stringify(acquisitionReceipt(manifest, 2), null, 2)}\n`);
+    writeFilesAtomically(new Map([[MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`]]), site);
+    writeReceipt(manifest, 2);
     console.log(`unchanged at publisher (${clock.rowsUpdatedAt}); manifest collected_at restamped`);
     return;
   }
@@ -85,9 +105,8 @@ async function fromSoda(site) {
     console.error(`refused, last-good retained: ${findings.join("; ")}`);
     process.exit(1);
   }
-  writeSet(built.files, site);
-  // determinism-lint: allow write acquisition receipt outside --check
-  writeFileSync(RECEIPT, `${JSON.stringify(acquisitionReceipt(built.manifest, pull.requests.length), null, 2)}\n`);
+  publishDirectory(built.files, site);
+  writeReceipt(built.manifest, pull.requests.length);
   console.log(`wrote ${built.manifest.row_count} rows in ${built.manifest.shards.length} shards`);
 }
 
@@ -111,7 +130,7 @@ function fixture(outDir) {
     rows_updated_at: fm.rows_updated_at,
     publisher_row_count: fm.publisher_row_count,
   }, FIXTURE_LIMITS);
-  writeSet(built.files, resolve(outDir));
+  publishDirectory(built.files, resolve(outDir));
   console.log(`fixture: ${rows.length} rows, ${built.manifest.shards.length} shards`);
 }
 

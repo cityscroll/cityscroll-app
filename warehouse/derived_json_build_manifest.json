@@ -413,7 +413,6 @@
         "site/data/analytics_registered_contracts.json",
         "site/data/procurement_spine_sources.json",
         "site/data/doing_business_warehouse_lookup.json",
-        "site/data/sbs_certified_businesses.json",
         "site/data/irs_eo_bmf_ny/manifest.json",
         "site/data/nys_dol_contractor_registry/manifest.json",
         "site/data/nyc_sca_prequalified_firms/manifest.json",
@@ -423,6 +422,12 @@
         "entity_resolution/registers/shard_records.mjs",
         "entity_resolution/registers/irs_eo_bmf.mjs",
         "entity_resolution/normalizers/vendor_stem.mjs"
+      ],
+      "source_shard_manifests": [
+        {
+          "path": "site/data/sbs_certified_businesses.json",
+          "shard_root": "site"
+        }
       ],
       "output_paths": [
         "site/data/organization_index.json",
