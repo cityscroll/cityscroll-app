@@ -137,3 +137,10 @@ jobs:
               curl --fail-with-body --retry 2 "https://api.cityscroll.org/admin/reliability/digest" "${auth[@]}"
               ;;
           esac
+      - name: Check provider daily email quota
+        if: always()
+        env:
+          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          curl --silent --show-error --fail --output /dev/null --retry 2 "https://api.cityscroll.org/admin/reliability/mail-quota" \
+            -H "authorization: Bearer $CITYSCROLL_ADMIN_KEY"

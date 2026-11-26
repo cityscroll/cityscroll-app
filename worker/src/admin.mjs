@@ -1,3 +1,5 @@
+import { providerDailyQuota, readProviderDailyQuota } from "./lib/provider_quota.mjs";
+import { deliverWelcomeOnce } from "./subscribe.mjs";
 import { OPS_NOTIFICATION_POLICY } from "./lib/ops_notification_policy.mjs";
 import { projectEmergencyAlertHistory } from "./lib/emergency_outbox.mjs";
 // GET /admin/subs?key=… — operator signup-lifecycle roster from the worker's OWN SUBS
@@ -9,6 +11,7 @@ import { projectEmergencyAlertHistory } from "./lib/emergency_outbox.mjs";
 // GET /admin/digest-rollup?key=…&email=… — dry-run account rollup for one email (no Resend send).
 
 import {
+  isValidEmail,
   redactEmail,
   isTopiclessIntent,
   isTestSubscriber,
@@ -37,6 +40,7 @@ import {
 import {
   digestWatchdogSnapshot,
   emitMailExceptionAlerts,
+  emitRecipientSuppressionFreshnessAlert,
   emitOpsAlertOnce,
   EVIDENCE_REQUIRED_GUARDS,
   opsAlertEvidenceFindings,
@@ -402,6 +406,47 @@ export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) 
   }, 200);
 }
 
+// An authenticated POST is a fixed, desk-only drill. It reads the production
+// hold decision for a reserved identity and never invokes an email transport.
+export async function handleAdminMailQuota(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (!["GET", "POST"].includes(req.method)) return privateJson({ error: "method" }, 405);
+  const drill = req.method === "POST";
+  const now = new Date();
+  let quota;
+  let welcome;
+  if (drill) {
+    let body;
+    try { body = await req.json(); } catch { return privateJson({ error: "invalid-drill" }, 400); }
+    if (body?.recipient !== undefined) {
+      if (typeof body.recipient !== "string" || !body.recipient.endsWith(".invalid")
+          || !isValidEmail(body.recipient)) return privateJson({ error: "reserved-recipient-required" }, 400);
+      welcome = await deliverWelcomeOnce(env, body.recipient, null, { previewOnly: true });
+    }
+    quota = providerDailyQuota({ emails: { daily: {
+      used: 80, limit: 100, resets_at: new Date(Date.UTC(now.getUTCFullYear(),
+        now.getUTCMonth(), now.getUTCDate() + 1)).toISOString(),
+    } } });
+  } else {
+    try { quota = await readProviderDailyQuota(env); }
+    catch { quota = { status: "unavailable" }; }
+  }
+  let alert = null;
+  if (["warning", "exhausted", "unavailable"].includes(quota.status)) {
+    if (!env.ALERT_STATE?.put) return privateJson({ error: "alert-store-unavailable", quota }, 503);
+    const guard = drill ? "provider-mail-quota-drill" : "provider-mail-quota";
+    const finding = quota.status === "unavailable" ? "Resend daily usage could not be read"
+      : `${drill ? "Test notification. " : ""}Resend daily email quota reached ${quota.used} of ${quota.limit}`;
+    const result = await emitOpsAlertOnce(env, { guard, stage: quota.status, now,
+      fingerprint: `${guard}:${quota.status}:${quota.resets_at || now.toISOString().slice(0, 10)}`,
+      findings: [finding] });
+    alert = { signature: result.signature, destination: result.reason };
+  }
+  return privateJson({ quota, drill, alert, ...(welcome ? { welcome } : {}) },
+    quota.status === "unavailable" ? 503 : 200);
+}
+
 export async function handleAdminMailWatchdog(req, env, { now = new Date() } = {}) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
@@ -409,7 +454,10 @@ export async function handleAdminMailWatchdog(req, env, { now = new Date() } = {
   let snapshot = await mailWatchdogSnapshot(env, { now });
   if (!snapshot.ok) await emitMailExceptionAlerts(env, snapshot, { now });
   snapshot = await mailWatchdogSnapshot(env, { now });
-  return json(snapshot, snapshot.ok ? 200 : 503);
+  // The provider-suppression freshness watchdog shares this operator surface: a
+  // never-run or stale reconciliation is raised through the ops alert routing.
+  const suppressionFreshness = await emitRecipientSuppressionFreshnessAlert(env, { now });
+  return json({ ...snapshot, recipient_suppression_freshness: suppressionFreshness.freshness }, snapshot.ok ? 200 : 503);
 }
 
 // Extracts the operator key exactly the way the shared gates do: ?key= query param or an
@@ -2286,6 +2334,24 @@ export async function handleAdminRecipientSuppressionsReconcile(req, env, {
   }
   if (receipt.status === "resend-not-configured") return json({ error: "resend-not-configured" }, 503);
   if (receipt.status === "db-unavailable") return json({ error: "no-store" }, 503);
+
+  // A reconciliation that failed to apply (provider error, db write/read failure,
+  // or a rejected authority) is an operational finding — route it through the ops
+  // alert path. An ok receipt raises nothing. Counts only; no recipient named.
+  if (receipt.status !== "ok") {
+    try {
+      await emitOpsAlertOnce(env, {
+        guard: "recipient-suppression-freshness",
+        stage: `reconcile-${receipt.status}`,
+        fingerprint: `recipient-suppression-reconcile:${receipt.status}:${receipt.authority || "none"}`,
+        subject: "CityScroll provider suppression reconciliation failed",
+        findings: [`provider suppression reconciliation returned status ${receipt.status} for authority ${receipt.authority || "none"} in mode ${receipt.mode}`],
+        first_seen: now.toISOString(),
+        last_seen: now.toISOString(),
+        now,
+      });
+    } catch { /* alerting is best-effort; the receipt below is authoritative */ }
+  }
 
   const status = receipt.status === "ok" ? 200
     : receipt.status === "provider-error" || receipt.status === "db-apply-failed" || receipt.status === "db-read-failed"

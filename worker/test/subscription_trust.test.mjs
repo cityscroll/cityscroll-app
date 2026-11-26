@@ -1,3 +1,4 @@
+import { fixtureRecipient } from "./helpers/mail_recipient.mjs";
 // Recipient-level delivery trust: provider suppression reconciliation (dry-run/apply,
 // idempotent, all-or-nothing) and the one-welcome-per-recipient D1 claim ledger.
 //
@@ -18,10 +19,14 @@ import {
   recipientHash,
   reconcileRecipientSuppressions,
   suppressionForRecipient,
+  deliveryHoldForRecipient,
+  evaluateSuppressionFreshness,
   fetchProviderSuppressionPages,
   providerSuppressionAuthority,
   runProviderSuppressionReconcile,
 } from "../src/lib/recipient_suppression.mjs";
+import { operatorQuarantineForRecipient } from "../src/lib/operator_quarantine.mjs";
+import { emitRecipientSuppressionFreshnessAlert } from "../src/reliability_watchdogs.mjs";
 import {
   claimWelcomeDelivery,
   completeWelcomeDelivery,
@@ -29,10 +34,23 @@ import {
   welcomeIdempotencyKey,
 } from "../src/lib/welcome_outbox.mjs";
 
-const MIGRATION = readFileSync(
-  new URL("../migrations/0036_recipient_delivery_trust.sql", import.meta.url), "utf8");
+const MIGRATION = [
+  "../migrations/0036_recipient_delivery_trust.sql",
+  "../migrations/0038_operator_recipient_holds.sql",
+  "../migrations/0039_enrollment_instrumentation.sql",
+].map((path) => readFileSync(new URL(path, import.meta.url), "utf8")).join("\n");
 const SECRET = "subscription-trust-tests-token-secret-32b";
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+// Seed an operator hold exactly as the production operator applied it: the
+// operator_recipient_holds table, reason fixed to presumptive-spam-quarantine,
+// with original date and provenance. The worker only reads this table.
+function seedOperatorHold(sqlite, hash, { heldAt = "2026-03-01T00:00:00Z", provenance = "incident-manifest-a", lifted = null } = {}) {
+  sqlite.prepare(`INSERT INTO operator_recipient_holds
+    (recipient_hash, reason, provenance, held_at, lifted_at)
+    VALUES (?, 'presumptive-spam-quarantine', ?, ?, ?)`)
+    .run(hash, provenance, heldAt, lifted);
+}
 
 // ---- in-memory D1 over the real migration ------------------------------------------------
 
@@ -353,6 +371,164 @@ test("a suppressed recipient's queued digest is skipped at the send boundary", a
     assert.equal(result.suppression?.reason, "bounce");
     assert.equal(provider.calls.length, 0, "the queued delivery is never attempted");
   } finally { provider.restore(); }
+});
+
+// ---- G1b: operator quarantine as an independent delivery-hold fact ----------
+
+test("an operator hold alone refuses delivery with no provider row present", async () => {
+  const { sqlite, DB } = d1();
+  seedOperatorHold(sqlite, await recipientHash(fixtureRecipient("held")));
+
+  // No provider suppression exists for this recipient.
+  assert.equal(await suppressionForRecipient(DB, fixtureRecipient("held")), null);
+  const quarantine = await operatorQuarantineForRecipient(DB, fixtureRecipient("Held"));
+  assert.equal(quarantine?.reason, "presumptive-spam-quarantine");
+  const hold = await deliveryHoldForRecipient(DB, fixtureRecipient("held"));
+  assert.ok(hold?.held);
+  assert.deepEqual(hold.holds, ["operator-quarantine"]);
+  assert.equal(hold.provider, null);
+
+  const environment = env(DB);
+  const provider = stubProvider(ok200);
+  try {
+    const response = await signup(environment, fixtureRecipient("held"));
+    assert.equal(response.status, 200, "the recipient is still enrolled");
+    assert.equal(provider.calls.length, 0, "an operator-held recipient is never sent a welcome");
+    const row = sqlite.prepare("SELECT * FROM ops_welcome_deliveries").get();
+    assert.equal(row.state, "suppressed");
+    assert.equal(row.error_reason, "presumptive-spam-quarantine");
+  } finally { provider.restore(); }
+});
+
+test("the operator hold survives a provider refresh then a provider lift (no send either way)", async () => {
+  const { sqlite, DB } = d1();
+  const email = fixtureRecipient("both");
+  seedOperatorHold(sqlite, await recipientHash(email));
+  const environment = env(DB);
+  const provider = stubProvider(ok200);
+  try {
+    // Refresh: the provider snapshot also suppresses the recipient. Both facts hold.
+    await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email, reason: "complaint" }] }]),
+      { authority: "2026-11-20T00:00:00Z", mode: "apply" });
+    let hold = await deliveryHoldForRecipient(DB, email);
+    assert.deepEqual(hold.holds, ["operator-quarantine", "provider-suppression"]);
+    assert.equal(hold.reason, "presumptive-spam-quarantine", "the operator fact is the primary reason when both hold");
+    assert.equal((await signup(environment, email)).status, 200);
+    assert.equal(provider.calls.length, 0, "no send while both hold");
+
+    // Lift: a later provider snapshot drops the recipient. The provider fact lifts,
+    // but the operator hold is untouched and still refuses delivery.
+    await reconcileRecipientSuppressions(DB, pageSource([{ entries: [] }]),
+      { authority: "2026-11-21T00:00:00Z", mode: "apply" });
+    assert.equal(await suppressionForRecipient(DB, email), null, "provider fact lifted");
+    hold = await deliveryHoldForRecipient(DB, email);
+    assert.deepEqual(hold.holds, ["operator-quarantine"], "the operator hold persists the provider lift");
+    assert.equal((await signup(environment, email)).status, 200);
+    assert.equal(provider.calls.length, 0, "the operator hold alone still prevents the welcome after the provider lift");
+  } finally { provider.restore(); }
+});
+
+test("the operator hold holds through a provider lift then a provider refresh", async () => {
+  const { sqlite, DB } = d1();
+  const email = fixtureRecipient("order2");
+  seedOperatorHold(sqlite, await recipientHash(email));
+  const environment = env(DB);
+  const provider = stubProvider(ok200);
+  try {
+    // Lift order first: a provider reconcile that does not include the recipient.
+    await reconcileRecipientSuppressions(DB, pageSource([{ entries: [] }]),
+      { authority: "2026-11-20T00:00:00Z", mode: "apply" });
+    let hold = await deliveryHoldForRecipient(DB, email);
+    assert.deepEqual(hold.holds, ["operator-quarantine"], "the operator fact alone holds before any provider row");
+    assert.equal((await signup(environment, email)).status, 200);
+    assert.equal(provider.calls.length, 0);
+
+    // Then a refresh re-adds a provider suppression. Both hold; still no send.
+    await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email, reason: "bounce" }] }]),
+      { authority: "2026-11-21T00:00:00Z", mode: "apply" });
+    hold = await deliveryHoldForRecipient(DB, email);
+    assert.deepEqual(hold.holds, ["operator-quarantine", "provider-suppression"]);
+    assert.equal((await signup(environment, email)).status, 200);
+    assert.equal(provider.calls.length, 0, "no unsolicited mail across the lift-then-refresh order");
+  } finally { provider.restore(); }
+});
+
+test("a lifted operator hold stops holding, but an active provider suppression still refuses", async () => {
+  const { sqlite, DB } = d1();
+  const email = fixtureRecipient("lifted-op");
+  seedOperatorHold(sqlite, await recipientHash(email), { lifted: "2026-11-15T00:00:00Z" });
+  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email, reason: "bounce" }] }]),
+    { authority: "2026-11-20T00:00:00Z", mode: "apply" });
+
+  assert.equal(await operatorQuarantineForRecipient(DB, email), null, "a lifted operator hold no longer holds");
+  const hold = await deliveryHoldForRecipient(DB, email);
+  assert.deepEqual(hold.holds, ["provider-suppression"], "the provider fact holds on its own");
+  assert.equal(hold.reason, "bounce");
+
+  const environment = env(DB);
+  const provider = stubProvider(ok200);
+  try {
+    assert.equal((await signup(environment, email)).status, 200);
+    assert.equal(provider.calls.length, 0, "the provider suppression independently prevents the welcome");
+  } finally { provider.restore(); }
+});
+
+test("a provider reconciliation never reads or writes the operator hold table", async () => {
+  const { sqlite, DB } = d1();
+  const email = fixtureRecipient("untouched");
+  seedOperatorHold(sqlite, await recipientHash(email), { provenance: "incident-manifest-a", heldAt: "2026-03-01T00:00:00Z" });
+  // A full reconcile that adds, updates, and lifts provider rows.
+  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email, reason: "complaint" }] }]),
+    { authority: "2026-11-20T00:00:00Z", mode: "apply" });
+  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [] }]),
+    { authority: "2026-11-21T00:00:00Z", mode: "apply" });
+
+  const row = sqlite.prepare("SELECT * FROM operator_recipient_holds WHERE recipient_hash = ?")
+    .get(await recipientHash(email));
+  assert.equal(row.reason, "presumptive-spam-quarantine");
+  assert.equal(row.provenance, "incident-manifest-a", "the operator provenance is preserved verbatim");
+  assert.equal(row.held_at, "2026-03-01T00:00:00Z", "the operator date is untouched by provider reconciliation");
+  assert.equal(row.lifted_at, null, "the provider lift never lifted the operator hold");
+});
+
+// ---- G1c: provider-suppression reconciliation freshness ----------------------
+
+test("freshness is not fresh until a reconciliation applies, then stales past the maximum", async () => {
+  const { DB } = d1();
+  const never = await evaluateSuppressionFreshness(DB, { now: new Date("2026-11-25T00:00:00Z") });
+  assert.equal(never.status, "never-reconciled");
+  assert.equal(never.fresh, false);
+
+  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email: fixtureRecipient("x"), reason: "bounce" }] }]),
+    { authority: "2026-11-18T00:00:00Z", mode: "apply", now: new Date("2026-11-18T00:00:00Z") });
+
+  const fresh = await evaluateSuppressionFreshness(DB, {
+    now: new Date("2026-11-19T00:00:00Z"), maxAgeMs: 7 * DAY_MS,
+  });
+  assert.equal(fresh.status, "fresh");
+  assert.equal(fresh.fresh, true);
+
+  const stale = await evaluateSuppressionFreshness(DB, {
+    now: new Date("2026-11-27T00:00:00Z"), maxAgeMs: 7 * DAY_MS,
+  });
+  assert.equal(stale.status, "stale");
+  assert.equal(stale.fresh, false);
+});
+
+test("the freshness watchdog raises an ops alert when the authority is not fresh, and nothing when it is", async () => {
+  const { DB } = d1();
+  const environment = env(DB);
+
+  const neverAlert = await emitRecipientSuppressionFreshnessAlert(environment, { now: new Date("2026-11-25T00:00:00Z") });
+  assert.equal(neverAlert.freshness.fresh, false);
+  assert.ok(neverAlert.alert, "a never-reconciled authority routes an alert");
+  assert.equal(neverAlert.alert.signature !== undefined, true);
+
+  await reconcileRecipientSuppressions(DB, pageSource([{ entries: [{ email: fixtureRecipient("x"), reason: "bounce" }] }]),
+    { authority: "2026-11-25T00:00:00Z", mode: "apply", now: new Date("2026-11-25T00:00:00Z") });
+  const freshResult = await emitRecipientSuppressionFreshnessAlert(environment, { now: new Date("2026-11-25T06:00:00Z") });
+  assert.equal(freshResult.freshness.fresh, true);
+  assert.equal(freshResult.alert, null, "a fresh authority raises no alert");
 });
 
 // ---- G2: one welcome per recipient -------------------------------------------

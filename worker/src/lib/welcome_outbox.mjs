@@ -140,15 +140,16 @@ export async function completeWelcomeDelivery(db, { email, claimToken, state, no
  * Record that a known-suppressed recipient's welcome was never attempted.
  * Idempotent: an existing row of any state is authoritative and untouched.
  */
-export async function markWelcomeSuppressed(db, { email, reason = null, now = new Date() } = {}) {
+export async function markWelcomeSuppressed(db, { email, reason = null, provenance = null, now = new Date() } = {}) {
   if (!db?.prepare) return false;
   const hash = await recipientHash(email);
   try {
     const result = await db.prepare(`INSERT INTO ops_welcome_deliveries
         (recipient_hash, idempotency_key, state, attempt_count, resolved_at, error_reason, provenance)
-      VALUES (?, ?, 'suppressed', 0, ?, ?, 'provider-suppression')
+      VALUES (?, ?, 'suppressed', 0, ?, ?, ?)
       ON CONFLICT(recipient_hash) DO NOTHING`)
-      .bind(hash, `welcome:${hash}`, now.toISOString(), String(reason || "suppressed").slice(0, 200))
+      .bind(hash, `welcome:${hash}`, now.toISOString(), String(reason || "suppressed").slice(0, 200),
+        String(provenance || "provider-suppression").slice(0, 120))
       .run();
     return changes(result) >= 0;
   } catch {

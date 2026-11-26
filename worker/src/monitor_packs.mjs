@@ -5,6 +5,7 @@ import { LENSES, prepareWatchFilter, resolveLens } from "./lib/filter.mjs";
 import { buildSubscription, isValidEmail, subscriptionKey } from "./lib/subscriptions.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { verifySignupTurnstile } from "./lib/signup_turnstile.mjs";
+import { enrollmentContainmentGate, observeAcceptedEnrollment } from "./lib/enrollment_instrumentation.mjs";
 
 const MAX_CHILDREN = 20;
 
@@ -52,6 +53,13 @@ export async function handleMonitorPackSubscribe(req, env, { verifyTurnstile = v
   const proof = await verifyTurnstile(req, env, body);
   if (!proof.ok) return json({ ok: false, reason: proof.reason }, proof.status, cors);
 
+  // Per-route temporary containment: same bounded, self-expiring refusal the
+  // single-watch signup uses, applied to the pack route.
+  const PACK_ROUTE = "subscribe-pack";
+  const actor = (req.headers.get("CF-Connecting-IP") || "") || email;
+  const gate = await enrollmentContainmentGate(env, { route: PACK_ROUTE, actor, challenge: "verified" });
+  if (gate.contained) return json({ ok: false, reason: "contained" }, 429, cors);
+
   const receiptKey = await packReceiptKey({ email, packId, children: validated });
   let receipt = await readReceipt(env.SUBS, receiptKey);
   if (!receipt) {
@@ -75,6 +83,7 @@ export async function handleMonitorPackSubscribe(req, env, { verifyTurnstile = v
   }
 
   let createdThisRequest = 0;
+  let welcomeOutcome = null;
   const enroll = env.enrollAndWelcome || (await import("./subscribe.mjs")).enrollAndWelcome;
   for (const child of receipt.children) {
     if (child.status === "created" || child.status === "duplicate") continue;
@@ -86,7 +95,10 @@ export async function handleMonitorPackSubscribe(req, env, { verifyTurnstile = v
       if (existing) {
         child.status = "duplicate";
       } else {
-        await enroll(env, buildSubscription(spec), { source: `pack:${packId}` });
+        const enrolled = await enroll(env, buildSubscription(spec), { source: `pack:${packId}` });
+        // The pack recipient gets at most one welcome; record whether it sent.
+        if (enrolled?.welcome?.status === "sent") welcomeOutcome = "sent";
+        else if (!welcomeOutcome) welcomeOutcome = enrolled?.welcome?.status || null;
         child.status = "created";
         createdThisRequest += 1;
       }
@@ -101,6 +113,7 @@ export async function handleMonitorPackSubscribe(req, env, { verifyTurnstile = v
     }
     await env.SUBS.put(receiptKey, JSON.stringify(receipt));
   }
+  await observeAcceptedEnrollment(env, { route: PACK_ROUTE, actor, challenge: "verified", welcomeOutcome });
   return json({ ok: true, receipt: publicReceipt(receipt), created: createdThisRequest, missing_children: missing(receipt) }, 200, cors);
 }
 

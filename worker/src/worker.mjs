@@ -50,6 +50,7 @@ import {
   handleAdminSchedulerHeartbeat,
   handleAdminOpsHealth,
   handleAdminMailWatchdog,
+  handleAdminMailQuota,
   handleAdminRecipientSuppressionsReconcile,
 } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
@@ -643,6 +644,7 @@ const worker = {
     if (pathname === "/admin/reliability/digest") return handleAdminDigestWatchdog(request, env);
     if (pathname === "/admin/reliability/scheduler") return handleAdminSchedulerHeartbeat(request, env);
     if (pathname === "/admin/reliability/ops-health") return handleAdminOpsHealth(request, env);
+    if (pathname === "/admin/reliability/mail-quota") return handleAdminMailQuota(request, env);
     if (pathname === "/admin/reliability/mail") return handleAdminMailWatchdog(request, env);
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
