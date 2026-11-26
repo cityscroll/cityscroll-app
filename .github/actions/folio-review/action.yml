@@ -1,0 +1,7 @@
+name: Review architecture folio
+description: Check the folio's evidence and identify affected passages in a pull request.
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: python3 "$GITHUB_ACTION_PATH/review.py"
