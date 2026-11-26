@@ -99,8 +99,17 @@ def review(event, repository):
         for title in evidence.get(path, ()):
             if sections.get(title) == old_sections[title]:
                 affected.setdefault(title, []).append(path)
-    if not affected:
+    # New persistence boundaries can arrive before any passage cites the file.
+    # Both repositories keep SQL migrations in a migrations directory and use
+    # the same C4 model path.
+    boundaries = sorted(path for path in changed
+                        if path == "architecture/workspace.dsl"
+                        or ("migrations" in Path(path).parts[:-1] and path.endswith(".sql")))
+    if not affected and (not boundaries or FOLIO in changed):
         return 0
+    if boundaries and FOLIO not in changed:
+        print("Review the folio for a new or changed system boundary: "
+              + ", ".join(map(repr, boundaries)))
     for title, paths in sorted(affected.items()):
         print(f"Review {title!r} for {', '.join(map(repr, paths))}")
     body = (pr.get("body") or "") if pr else ""

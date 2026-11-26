@@ -72,6 +72,14 @@ class FolioReviewTest(unittest.TestCase):
             self.check(payload={"before": before}, expected=expected,
                        env={**env, "REVIEW_PRS": json.dumps([pr])})
 
+    def test_new_migration_can_precede_any_folio_reference(self):
+        path = self.root / "worker" / "migrations" / "0001.sql"
+        path.parent.mkdir(parents=True)
+        path.write_text("create table example(id integer);")
+        self.commit()
+        self.assertIn("system boundary", self.check(expected=1))
+        self.check("Folio review: This adds an index to the existing store.")
+
     def test_missing_markdown_or_inline_evidence_cannot_be_acknowledged_away(self):
         for name in ("storage.json", "routes.js"):
             (self.root / name).unlink()
