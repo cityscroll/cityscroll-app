@@ -1577,7 +1577,7 @@
   },
   "membership": {
     "schema": "cityscroll.parcel-membership-manifest.v1",
-    "generated_at": "2026-11-25T19:37:07.689Z",
+    "generated_at": "2026-11-26T19:17:42.368Z",
     "inputs": {
       "points_sha256": "14fe925d8943a13100fe70cc98479a2bad3d96652af2380729e155ded43ab3c0",
       "point_coordinate_vintage": "pluto_25v4"
@@ -1666,11 +1666,11 @@
     },
     "resolved_parcels": 857161,
     "build": {
-      "started_at": "2026-11-25T19:37:03.148Z",
-      "completed_at": "2026-11-25T19:37:07.689Z",
-      "duration_ms": 4541,
-      "index_ms": 1272,
-      "resolve_ms": 1634
+      "started_at": "2026-11-26T19:17:38.673Z",
+      "completed_at": "2026-11-26T19:17:42.368Z",
+      "duration_ms": 3695,
+      "index_ms": 851,
+      "resolve_ms": 1406
     }
   }
 }
