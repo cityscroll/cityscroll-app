@@ -1,0 +1,92 @@
+movement,contract_id,browse_source_membership,previous_graph,previous_analytics,candidate_graph,candidate_normalized,candidate_analytics,previous_start,previous_registration,previous_award_day,candidate_start,candidate_registration,candidate_award_day,candidate_row_passes_previous_window,candidate_row_passes_new_window,previous_row_passes_new_window,reason
+added,CT104020273036631,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273039223,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273039237,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273040238,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273042740,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273044581,checkbook_contracts,False,False,True,True,True,,,,2026-11-24,2026-11-24,2026-11-24,True,True,,newly observed in Checkbook within both windows
+added,CT104020273044589,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273045382,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273047143,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273047226,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273047230,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273047240,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273047342,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273047412,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273048428,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273049641,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273049716,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273049741,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273049835,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273050439,checkbook_contracts,False,False,True,True,True,,,,2026-11-24,2026-11-24,2026-11-24,True,True,,newly observed in Checkbook within both windows
+added,CT104020273050493,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273050898,checkbook_contracts,False,False,True,True,True,,,,2026-11-24,2026-11-24,2026-11-24,True,True,,newly observed in Checkbook within both windows
+added,CT104020273051084,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273051684,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273051801,checkbook_contracts,False,False,True,True,True,,,,2026-11-24,2026-11-24,2026-11-24,True,True,,newly observed in Checkbook within both windows
+added,CT104020273052265,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273052637,checkbook_contracts,False,False,True,True,True,,,,2026-11-24,2026-11-24,2026-11-24,True,True,,newly observed in Checkbook within both windows
+added,CT104020273052660,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273052725,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273053429,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273053450,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273053454,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273053514,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273053516,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273053585,checkbook_contracts,False,False,True,True,True,,,,2026-11-23,2026-11-23,2026-11-23,True,True,,newly observed in Checkbook within both windows
+added,CT104020273053859,checkbook_contracts,False,False,True,True,True,,,,2026-11-24,2026-11-24,2026-11-24,True,True,,newly observed in Checkbook within both windows
+added,CT104020273053874,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273053967,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054017,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054050,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054072,checkbook_contracts,False,False,True,True,True,,,,2026-11-24,2026-11-24,2026-11-24,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054260,checkbook_contracts,False,False,True,True,True,,,,2026-11-24,2026-11-24,2026-11-24,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054270,checkbook_contracts,False,False,True,True,True,,,,2026-11-24,2026-11-24,2026-11-24,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054416,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054559,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054584,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054625,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054685,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054871,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273054881,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273055038,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020273055351,checkbook_contracts,False,False,True,True,True,,,,2026-11-25,2026-11-25,2026-11-25,True,True,,newly observed in Checkbook within both windows
+added,CT104020279761250,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-23,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279761613,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-24,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279761790,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279761806,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-23,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279761836,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-24,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279761910,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-23,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279761925,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279761956,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279761971,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-24,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279762000,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-24,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279762075,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279762092,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-24,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279762182,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279762345,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279762421,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279762422,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279762511,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279762541,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+added,CT104020279762555,checkbook_contracts,False,False,True,True,True,,,,2026-07-01,2026-11-25,2026-07-01,True,True,,newly observed in Checkbook within both windows
+removed,CT104020263044519,checkbook_contracts,True,True,False,True,True,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,True,False,False,lower-bound expiry
+removed,CT104020263046690,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263046996,checkbook_contracts,True,True,False,True,True,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,True,False,False,lower-bound expiry
+removed,CT104020263054141,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263054744,checkbook_contracts,True,True,False,True,True,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,True,False,False,lower-bound expiry
+removed,CT104020263054973,checkbook_contracts,True,True,False,True,True,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,True,False,False,lower-bound expiry
+removed,CT104020263056733,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263056769,checkbook_contracts,True,True,False,True,True,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,True,False,False,lower-bound expiry
+removed,CT104020263057070,checkbook_contracts,True,True,False,True,True,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,True,False,False,lower-bound expiry
+removed,CT104020263057443,checkbook_contracts,True,True,False,True,True,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,True,False,False,lower-bound expiry
+removed,CT104020263057575,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263057598,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263057622,checkbook_contracts,True,True,False,True,True,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,2025-11-25,True,False,False,lower-bound expiry
+removed,CT104020263057876,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263057929,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263057960,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263058113,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263058114,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263058258,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry
+removed,CT104020263058347,checkbook_contracts,True,True,False,True,True,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,2025-11-26,True,False,False,lower-bound expiry

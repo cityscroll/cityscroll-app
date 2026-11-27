@@ -2,7 +2,7 @@
 
 This is a backstage evidence deliverable for the School Construction Authority (SCA), the Port Authority of New York and New Jersey (PA), and the Department of Education (DOE) missing-record control. It does not add a source adapter, change a production read model, or create a public coverage promise.
 
-The machine-checkable evidence is [institution_source_census.v1.json](../../warehouse/fixtures/authority-native-procurement/institution_source_census.v1.json). Run `node tools/check_institution_source_census.mjs` from the repository root to verify its frozen local snapshot fingerprints, fixture stages, and DOE counts.
+The machine-checkable evidence is [institution_source_census.v1.json](../../warehouse/fixtures/authority-native-procurement/institution_source_census.v1.json). Run `node tools/check_institution_source_census.mjs --check` from the repository root to verify its frozen snapshot fingerprints, fixture stages, and DOE counts.
 
 Overlap is exact-only: frozen solicitation, bid, request, and PIN identifiers were compared with the committed served artifacts; the City Record control uses an exact `request_id`/PIN query. Names, titles, amounts, and fuzzy identifier similarity do not count as overlap. The JSON also records successful-fetch SHA-256 receipts for the two Port Authority model endpoints, both linked PDFs, and the City Record control query. SCA's server-rendered report is mutable and did not expose a byte-stable export, so its fixture is frozen at field level and carries that limitation rather than an invented response hash.
 
@@ -12,7 +12,7 @@ PA has two demonstrated public, identifier-bearing corpora: the official AEM opp
 
 SCA exposes official RFP and advertised-bid views, but the observed public surfaces are mutable and do not provide a stable public historical/result corpus. City Record remains the measurable official overlap/control source for SCA. The native SCA opportunity fixture and City Record intent-to-award control fixture are retained without claiming that the latter identifies a winning vendor.
 
-The DOE census finds no distinct missing public corpus in the current CityScroll snapshot. All 618 DOE canonical rows are already represented by City Record, PASSPort, and/or Checkbook source families: 434 City Record + PASSPort, 2 PASSPort-only, 2 in all three, and 180 Checkbook-only. No DOE production card is proposed.
+The reviewed November 27 snapshot serves 4,679 DOE canonical rows through City Record, PASSPort, and Checkbook. The census found zero records demonstrating a distinct missing DOE corpus.
 
 ## Source register
 
@@ -45,19 +45,21 @@ The PA official [solicitation and advertisement tables](https://www.panynj.gov/p
 
 ## DOE missing-record census
 
-The census is measured against the committed `procurement_browse_rows.json` snapshot generated 2026-08-18. The DOE agency predicate is `/department of education|^education$|education admin|^doe$/i`. It yields 618 canonical rows with source counts of City Record 436, PASSPort 438, and Checkbook 182. These counts are source memberships, not additive records. The post-rebase snapshot contains 13,786 browse rows; its refreshed fingerprints are recorded in the machine-checkable fixture.
+The census counts served canonical rows in the committed `procurement_browse_rows.json` snapshot whose `agency_name` matches `/department of education|^education$|education admin|^doe$/i`. The snapshot generated at 2026-11-27T13:09:25.421Z contains 4,679 DOE rows. City Record appears on 431 rows, PASSPort on 438, and Checkbook on 4,241. Source memberships can overlap.
 
 | Existing source combination | Rows | Interpretation |
 | --- | ---: | --- |
-| City Record + PASSPort | 434 | Existing cross-source coverage |
-| PASSPort only | 2 | Already served by PASSPort |
-| City Record + PASSPort + Checkbook | 2 | Existing three-source coverage |
-| Checkbook only | 180 | Already served by Checkbook |
+| City Record + PASSPort | 431 | Existing cross-source coverage |
+| PASSPort only | 7 | Already served by PASSPort |
+| City Record + PASSPort + Checkbook | 0 | Existing three-source coverage |
+| Checkbook only | 4,241 | Already served by Checkbook |
 | Demonstrated missing rows | 0 | No DOE production card |
 
 The checker fails if source artifact fingerprints or these combinations drift. A fingerprint refresh rewrites the mechanical snapshot only when the served DOE canonical row count still equals the reviewed `doe_canonical_rows`. A different count is refused until a person updates the count fields.
 
-`doe_missing_record_census.re_review` records that review. It has `reviewed_at` (a calendar date), `reviewer`, `reason`, and `previous_doe_canonical_rows`. The 2026-11-25 review accepted the move from 4,642 to 4,628 canonical rows. The fourteen rows that left were Checkbook-only Department of Education contracts of $25,000, each starting 2025-11-24 and ending 2026-06-30. They fell outside the 365-day publication window when the snapshot date moved from 2026-11-24 to 2026-11-25. City Record membership stayed 431 and PASSPort membership stayed 438. No source combination was added. Demonstrated missing rows stayed 0, and no production card is proposed.
+`doe_missing_record_census.re_review` records delegated approval of 4,679 DOE rows as a verified routine refresh under the site owner's standing direction. The prior review recorded 4,628 rows on November 25, 2026.
+
+The Checkbook registered expense contract collections for FY2025–FY2027 completed at 2026-11-25T10:20:15.926Z and 2026-11-27T13:09:25.421Z. The review found 71 newly observed Checkbook-only contracts with start dates eligible in both 365-day windows. Eight contracts starting November 25, 2025 and twelve starting November 26, 2025 expired when the lower cutoff advanced to November 27, 2025. The [91-contract evidence CSV](authority-native-procurement/doe-census-2026-11-27/contracts.csv) records the contract IDs, start and registration dates, and admission result for each change.
 
 ## Boundary
 

@@ -25,24 +25,25 @@ test('institution source census is internally consistent and fail-closed', () =>
 
 test('refresh accepts the re-reviewed DOE count and refuses a different one', () => {
   const section = census.doe_missing_record_census;
-  assert.equal(section.doe_canonical_rows, 4628);
+  assert.equal(section.doe_canonical_rows, 4679);
   assert.equal(section.demonstrated_missing_rows, 0);
   assert.equal(section.production_card_proposed, false);
-  assert.equal(section.re_review.reviewed_at, '2026-11-25');
-  assert.equal(section.re_review.reviewer, 'site owner');
-  assert.equal(section.re_review.previous_doe_canonical_rows, 4642);
-  assert.match(section.re_review.reason, /365-day rolling-window expiry of 14 checkbook-only FY26 DOE contracts/);
+  assert.equal(section.re_review.reviewed_at, '2026-11-27');
+  assert.equal(section.re_review.reviewer, 'delegated reviewer');
+  assert.equal(section.re_review.authority, 'standing site-owner direction');
+  assert.equal(section.re_review.previous_doe_canonical_rows, 4628);
+  assert.match(section.re_review.reason, /71 newly observed Checkbook-only contracts dated inside both windows and 20 expirations/);
 
   const accepted = refreshExistingSnapshot({ write: false });
-  assert.equal(accepted.recordedCount, 4628);
-  assert.equal(accepted.measuredCount, 4628);
+  assert.equal(accepted.recordedCount, 4679);
+  assert.equal(accepted.measuredCount, 4679);
 
   assert.throws(
-    () => refreshExistingSnapshot({ recordedDoeCanonicalRows: 4642 }),
-    /DOE canonical row count changed \(4642 -> 4628\)/,
+    () => refreshExistingSnapshot({ recordedDoeCanonicalRows: 4628 }),
+    /DOE canonical row count changed \(4628 -> 4679\)/,
   );
   assert.throws(
     () => refreshExistingSnapshot({ measuredDoeCanonicalRows: section.doe_canonical_rows + 1 }),
-    /DOE canonical row count changed \(4628 -> 4629\)/,
+    /DOE canonical row count changed \(4679 -> 4680\)/,
   );
 });
