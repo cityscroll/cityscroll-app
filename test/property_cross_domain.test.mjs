@@ -6,7 +6,8 @@
  *   node tools/build_property_cross_domain.mjs --check
  */
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, statSync, symlinkSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, it } from "node:test";
@@ -27,6 +28,7 @@ import {
   EXACT_KEY_EDGE_TIER,
 } from "../entity_resolution/cross_domain/index.mjs";
 import { formatSubjectRef } from "../worker/src/lib/subject_registry.mjs";
+import { withTempDirSync } from "../tools/lib/with_temp_dir.mjs";
 
 import {
   CIVIC_PROPERTY_DATASET_ID,
@@ -45,6 +47,82 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const corpus = JSON.parse(
   readFileSync(join(ROOT, "worker/test/fixtures/property-cross-domain/corpus.json"), "utf8"),
 );
+
+describe("property observations refresh publication", () => {
+  const builder = "tools/build_property_cross_domain.mjs";
+  const snapshot = "site/data/property_domain_observations.json";
+  const before = "2026-10-21T12:00:00.000Z";
+  const after = "2026-10-22T12:00:00.000Z";
+
+  for (const scenario of ["metadata unavailable", "rows unavailable", "empty rows", "complete refresh"]) {
+    it(scenario, () => withTempDirSync("property-refresh", (root) => {
+      for (const dir of ["tools", "site/data", "worker/src"]) {
+        mkdirSync(join(root, dir), { recursive: true });
+      }
+      copyFileSync(join(ROOT, builder), join(root, builder));
+      for (const dependency of [
+        "entity_resolution", "tools/lib", "site/historical_project_context.mjs",
+        "site/dcas_vehicle_auctions.mjs", "worker/src/property.mjs",
+      ]) {
+        symlinkSync(join(ROOT, dependency), join(root, dependency));
+      }
+
+      const path = join(root, snapshot);
+      const retained = JSON.stringify({
+        generated_at: before,
+        source_generated_at: before,
+        provider_clock: { dataset_id: CIVIC_PROPERTY_DATASET_ID, ok: true },
+        property_rows: [{ request_id: "20261021001" }],
+      });
+      writeFileSync(path, retained);
+      const inode = statSync(path).ino;
+      const mockFetch = `
+        const scenario = ${JSON.stringify(scenario)};
+        globalThis.fetch = async (input) => {
+          const url = new URL(input);
+          const refused = () => new Response(null, { status: 503 });
+          if (url.pathname === "/api/views/dg92-zbpx.json") {
+            return scenario === "metadata unavailable" ? refused() : Response.json({
+              id: "dg92-zbpx", rowsUpdatedAt: ${Date.parse(after) / 1000},
+            });
+          }
+          if (url.pathname === "/resource/dg92-zbpx.json") {
+            if (scenario === "rows unavailable") return refused();
+            return Response.json(scenario === "empty rows" ? [] : [{
+              request_id: "20261022001",
+              start_date: "2026-10-22T00:00:00.000",
+              agency_name: "Parks",
+              section_name: "Property Disposition",
+              short_title: "Property in Manhattan, Block 644, Lot 1",
+            }]);
+          }
+          return refused();
+        };
+      `;
+      const result = spawnSync(process.execPath, [
+        "--import", `data:text/javascript,${encodeURIComponent(mockFetch)}`,
+        join(root, builder), "--from-live",
+      ], {
+        cwd: root,
+        env: { ...process.env, PROPERTY_LOCATIONS_PATH: "", PROPERTY_LOCATIONS_URL: "" },
+        encoding: "utf8",
+      });
+
+      if (scenario === "complete refresh") {
+        assert.equal(result.status, 0, result.stderr);
+        const current = JSON.parse(readFileSync(path, "utf8"));
+        assert.equal(current.generated_at, after);
+        assert.equal(current.source_generated_at, after);
+        assert.equal(current.property_count, 1);
+        assert.notEqual(statSync(path).ino, inode, "the snapshot must be replaced atomically");
+      } else {
+        assert.equal(readFileSync(path, "utf8"), retained, result.stderr);
+        assert.equal(result.status, 1, result.stdout);
+        assert.equal(existsSync(join(root, "site/data/property_cross_domain_lookup.json")), false);
+      }
+    }));
+  }
+});
 
 describe("property observation + owner extract", () => {
   it("normalizes BBL and shapes parcel subject_ref", () => {
