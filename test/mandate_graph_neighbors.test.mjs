@@ -322,9 +322,14 @@ test("EPA page keeps one connected-record grid and distinct mandate section acti
   const html = renderAgencyConstellationDeferredFragment(view);
   assert.equal((html.match(/<section class="agency-connections"/g) || []).length, 1);
   assert.doesNotMatch(html, /aria-label="Explore this agency"|Browse agency /);
-  for (const edgeType of ["issued_rule", "published_by_agency", "statute_duty", "certified_to_agency"]) {
-    assert.equal((html.match(new RegExp(`class="agency-connection-card" data-edge-type="${edgeType}"`, "g")) || []).length, 1);
-  }
+  // A connection can disappear when its last notice leaves the rolling corpus.
+  const matchedTypes = new Set(view.edge_summary
+    .filter((record) => record.state === "matched" && (record.canonical_href || record.href))
+    .map((record) => record.edge_type));
+  assert.ok(matchedTypes.has("statute_duty"));
+  const renderedTypes = [...html.matchAll(/class="agency-connection-card" data-edge-type="([^"]+)"/g)]
+    .map((match) => match[1]);
+  assert.deepEqual(renderedTypes.sort(), [...matchedTypes].sort());
   assert.match(html, /Share this view/);
   assert.match(html, /Watch expected mandate events|Watch report mandates|Watch rulemaking mandates|Follow Rules activity/);
   if (html.includes('id="mandates-conformance"')) {

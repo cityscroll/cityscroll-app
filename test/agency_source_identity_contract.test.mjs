@@ -248,13 +248,27 @@ test("property, person-leader, staffing, agency, and board key shapes stay compa
   assert.equal(built.key_shapes.agency.canonical_id_keys.includes("agency:sanitation"), true);
   assert.equal(built.key_shapes.agency.name_keys.includes("agency:Sanitation"), true);
   assert.equal(built.key_shapes.property_site.pattern, PROPERTY_SITE_KEY_PATTERN);
-  for (const ref of shapes.property_disposition_keys.positive.filter((value) => value.startsWith("disposition:"))) {
-    assert.equal(built.key_shapes.property_site.disposition_subject_refs.includes(ref), true);
+  for (const refs of [
+    built.key_shapes.property_site.disposition_subject_refs,
+    built.key_shapes.property_site.notice_subject_refs,
+  ]) {
+    assert.ok(refs.length > 0);
+    assert.ok(refs.every(isPropertyDispositionKey));
   }
-  assert.equal(
-    built.key_shapes.property_site.notice_subject_refs.includes("notice:20211118008"),
-    true,
-  );
+  // The address index can revise the BBL attached to a notice. Keep the
+  // byte-compatibility specimens independent of the current property inputs.
+  const dispositionRefs = shapes.property_disposition_keys.positive.filter((ref) => ref.startsWith("disposition:"));
+  const noticeRefs = shapes.property_disposition_keys.positive.filter((ref) => ref.startsWith("notice:"));
+  const propertyShapes = buildAgencySourceIdentityContract({
+    propertyObservations: {
+      property_rows: dispositionRefs.map((ref) => ({ disposition_subject_ref: ref })),
+    },
+    propertyCrossDomain: {
+      agency_objects: noticeRefs.map((ref) => ({ subject_ref: ref })),
+    },
+  }).key_shapes.property_site;
+  assert.deepEqual(propertyShapes.disposition_subject_refs, [...dispositionRefs].sort());
+  assert.deepEqual(propertyShapes.notice_subject_refs, [...noticeRefs].sort());
   assert.equal(built.key_shapes.person_leader.pattern, PERSON_LEADER_KEY_PATTERN);
   assert.equal(
     built.key_shapes.person_leader.keys.includes("person-leader:sanitation:name:gregory%20anderson"),
