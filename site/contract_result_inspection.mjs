@@ -20,6 +20,7 @@ import {
   renderObjectCardCopy,
 } from "./affordance_grammar.mjs";
 import { noticeDisplayTitle } from "./display_title.mjs";
+import { readerLabel } from "./reader_surface_labels.mjs";
 
 export const CONTRACT_RESULT_INSPECTION_SCHEMA = "cityscroll.contract_result_inspection.v1";
 export const CONTRACT_RESULT_INSPECTION_VERSION = 1;
@@ -250,6 +251,9 @@ function contractResultFormatAmount(amount) {
 export function renderContractResultInspectionOverviewHTML(facts, options = {}) {
   if (!facts) return "";
   const esc = contractResultEscapeFor(options);
+  const sourceLabel = facts.source_system === "shared_procurement_read_model"
+    ? "CityScroll procurement records"
+    : readerLabel(facts.source_system);
   const rows = [
     contractResultDefinitionRow("Agency", facts.agency, esc),
     contractResultDefinitionRow("Vendor", facts.vendor, esc),
@@ -268,7 +272,7 @@ export function renderContractResultInspectionOverviewHTML(facts, options = {}) 
       : (facts.source_observation_ref && !facts.request_id
         ? contractResultDefinitionRow("Source observation", facts.source_observation_ref, esc)
         : ""),
-    contractResultDefinitionRow("Source", facts.source_system, esc),
+    contractResultDefinitionRow("Source", sourceLabel, esc),
   ].filter(Boolean).join("");
   const summary = facts.summary
     ? `<p class="contract-result-inspection-summary">${esc(facts.summary)}</p>`
