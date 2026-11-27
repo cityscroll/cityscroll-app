@@ -28,6 +28,10 @@ const cofo = JSON.parse(readFileSync(
   new URL("../site/data/dob_cofo_lookup.json", import.meta.url),
   "utf8",
 ));
+const ll48Lookup = JSON.parse(readFileSync(
+  new URL("../site/data/property_ll48_lookup.json", import.meta.url),
+  "utf8",
+));
 
 test("parcel refs and scopes accept only exact ten-digit BBLs", () => {
   assert.equal(parcelRef("1020260015"), "bbl:1020260015");
@@ -151,23 +155,28 @@ test("CofO evidence is an exact-BBL graph slice with row provenance", () => {
 });
 
 test("LL48 suitability is an exact-BBL evidence group with measured coverage", () => {
-  const view = buildObservedParcelBiography({
-    bbl: "1000730008",
-    crossDomain,
-    taxLien,
-  });
-  assert.equal(view.sections.ll48.status, "observed");
-  assert.equal(view.sections.ll48.items[0].source, "NYC Open Data · LL48 suitability");
-  assert.equal(view.sections.ll48.items[0].method, "exact_bbl_v1");
-  assert.equal(view.sections.ll48.coverage.eligible, 319);
-  assert.equal(view.sections.ll48.coverage.linked, 22);
-  // The rate is the measurement, not an independent pin: it is linked over
-  // eligible, rounded as the builder rounds it.
-  assert.equal(
-    view.sections.ll48.coverage.rate,
-    Number((view.sections.ll48.coverage.linked / view.sections.ll48.coverage.eligible).toFixed(4)),
+  const eligible = Object.entries(crossDomain.by_bbl);
+  const linked = eligible.filter(([, parcel]) => parcel.ll48?.items?.length > 0);
+  const publisherBbls = new Set(ll48Lookup.rows.map((row) => row.bbl));
+  assert.ok(linked.length > 0);
+  assert.deepEqual(
+    linked.map(([bbl]) => bbl),
+    eligible.map(([bbl]) => bbl).filter((bbl) => publisherBbls.has(bbl)),
   );
-  assert.match(view.sections.ll48.note || "", /^$/);
+  for (const [bbl, parcel] of linked) {
+    const { sections: { ll48 } } = buildObservedParcelBiography({ bbl, crossDomain, taxLien });
+    assert.equal(ll48.status, "observed");
+    assert.equal(ll48.items.length, parcel.ll48.items.length);
+    for (const item of ll48.items) {
+      assert.equal(item.subject_ref, `bbl:${bbl}`);
+      assert.equal(item.source, "NYC Open Data · LL48 suitability");
+      assert.equal(item.method, "exact_bbl_v1");
+    }
+    assert.equal(ll48.coverage.eligible, eligible.length);
+    assert.equal(ll48.coverage.linked, linked.length);
+    assert.equal(ll48.coverage.rate, Number((linked.length / eligible.length).toFixed(4)));
+    assert.match(ll48.note || "", /^$/);
+  }
 });
 
 test("unmatched ZAP section is an explicit corpus gap, not a citywide claim", () => {

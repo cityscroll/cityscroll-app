@@ -30,11 +30,57 @@ const committedReceipt = JSON.parse(
   ),
 );
 
-test("committed observations yield the exact-BBL 219-day cohort seed", () => {
+test("committed cohort and receipt match the current exact-BBL observations", () => {
   const rebuilt = buildPropertyDispositionCohort(observations, crossDomain);
   assert.deepEqual(rebuilt, committed);
-  assert.equal(rebuilt.cohort.n, 1);
-  assert.deepEqual(rebuilt.cohort.pairs[0], {
+  assert.deepEqual(propertyDispositionCohortReceipt(rebuilt), committedReceipt);
+  const { n, pairs } = rebuilt.cohort;
+  assert.equal(n, pairs.length);
+  assert.equal(new Set(pairs.map((pair) => pair.pair_id)).size, n);
+  assert.equal(rebuilt.cohort.join_method, "exact_normalized_bbl");
+  assert.equal(rebuilt.cohort.text_match_used, false);
+  assert.equal(rebuilt.eligibility.observed_pairs, n);
+  assert.equal(rebuilt.eligibility.minimum_sample, PROPERTY_DISPOSITION_COHORT_MINIMUM_SAMPLE);
+  const eligible = n >= PROPERTY_DISPOSITION_COHORT_MINIMUM_SAMPLE;
+  assert.equal(rebuilt.eligibility.status, eligible ? "eligible" : "insufficient_sample");
+  assert.equal(rebuilt.eligibility.duration_summary_eligible, eligible);
+  assert.equal(rebuilt.eligibility.forecast_eligible, eligible);
+  if (!eligible) {
+    assert.match(rebuilt.eligibility.label, new RegExp(`^n=${n} .*insufficient for a duration model$`));
+    assert.equal(rebuilt.duration_summary, null);
+    assert.equal(rebuilt.forecast, null);
+  }
+});
+
+// Retain the original published pair as a fixed specimen for interval and
+// provenance checks, regardless of which notices the current snapshot holds.
+const seedBbl = "1019540055";
+const seedRows = [
+  {
+    request_id: "20161004104",
+    start_date: "2016-10-12",
+    disposition_stage: "hearing",
+    property_location: { bbls: [seedBbl] },
+  },
+  {
+    request_id: "20170512101",
+    start_date: "2017-05-19",
+    disposition_stage: "auction_or_rfp",
+    property_location: { bbls: [seedBbl] },
+  },
+];
+const seedCohort = buildPropertyDispositionCohort({ property_rows: seedRows }, {
+  by_bbl: {
+    [seedBbl]: {
+      bbl: seedBbl,
+      property_notices: seedRows.map(({ request_id }) => ({ request_id })),
+    },
+  },
+});
+
+test("the original exact-BBL cohort seed spans 219 days", () => {
+  assert.equal(seedCohort.cohort.n, 1);
+  assert.deepEqual(seedCohort.cohort.pairs[0], {
     pair_id: "property-disposition:1019540055:20161004104:20170512101",
     bbl: "1019540055",
     hearing: {
@@ -61,15 +107,14 @@ test("committed observations yield the exact-BBL 219-day cohort seed", () => {
 });
 
 test("n=1 is explicitly ineligible for summaries and forecasts", () => {
-  assert.equal(committed.eligibility.minimum_sample, PROPERTY_DISPOSITION_COHORT_MINIMUM_SAMPLE);
-  assert.equal(committed.eligibility.observed_pairs, 1);
-  assert.equal(committed.eligibility.status, "insufficient_sample");
-  assert.match(committed.eligibility.label, /^n=1 .*insufficient for a duration model$/);
-  assert.equal(committed.eligibility.duration_summary_eligible, false);
-  assert.equal(committed.eligibility.forecast_eligible, false);
-  assert.equal(committed.duration_summary, null);
-  assert.equal(committed.forecast, null);
-  assert.deepEqual(propertyDispositionCohortReceipt(committed), committedReceipt);
+  assert.equal(seedCohort.eligibility.minimum_sample, PROPERTY_DISPOSITION_COHORT_MINIMUM_SAMPLE);
+  assert.equal(seedCohort.eligibility.observed_pairs, 1);
+  assert.equal(seedCohort.eligibility.status, "insufficient_sample");
+  assert.match(seedCohort.eligibility.label, /^n=1 .*insufficient for a duration model$/);
+  assert.equal(seedCohort.eligibility.duration_summary_eligible, false);
+  assert.equal(seedCohort.eligibility.forecast_eligible, false);
+  assert.equal(seedCohort.duration_summary, null);
+  assert.equal(seedCohort.forecast, null);
 });
 
 test("same address or title cannot create a pair without one corroborated exact BBL", () => {
