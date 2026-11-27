@@ -1,4 +1,17 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":33,"first_ordinal":55415,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":33,"first_ordinal":55403,"entries":[
+{"s":"FRIENDS OF BUCKS ROCK","n":[["FRIENDS OF BUCKS ROCK INC",1]],"x":{"irs":{"r":1,"i":["134192202"],"z":["10003"]}}},
+{"s":"FRIENDS OF BUFFALO CHESTERTON ACADEMY","n":[["FRIENDS OF BUFFALO CHESTERTON ACADEMY INC",1]],"x":{"irs":{"r":1,"i":["464186000"],"z":["14026"]}}},
+{"s":"FRIENDS OF BUFFALO CREEK","n":[["FRIENDS OF BUFFALO CREEK INC",1]],"x":{"irs":{"r":1,"i":["861380042"],"z":["14214"]}}},
+{"s":"FRIENDS OF BUSHWICK INLET PARK","n":[["FRIENDS OF BUSHWICK INLET PARK INC",1]],"x":{"irs":{"r":1,"i":["921127006"],"z":["11222"]}}},
+{"s":"FRIENDS OF BUTTONHOOK FOREST","n":[["FRIENDS OF BUTTONHOOK FOREST INC",1]],"x":{"irs":{"r":1,"i":["882830417"],"z":["10514"]}}},
+{"s":"FRIENDS OF CABRERA","n":[["FRIENDS OF CABRERA INC",1]],"x":{"irs":{"r":1,"i":["270257340"],"z":["14850"]}}},
+{"s":"FRIENDS OF CAIRO FOSSIL FOREST","n":[["FRIENDS OF CAIRO FOSSIL FOREST INC",1]],"x":{"irs":{"r":1,"i":["872441891"],"z":["12473"]}}},
+{"s":"FRIENDS OF CALEB SMITH PRESERVE","n":[["FRIENDS OF CALEB SMITH PRESERVE",1]],"x":{"irs":{"r":1,"i":["113559605"],"z":["11787"]}}},
+{"s":"FRIENDS OF CAMDEN CENTRAL SCHOOL FOUNDATION","n":[["FRIENDS OF CAMDEN CENTRAL SCHOOL FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["200892857"],"z":["13308"]}}},
+{"s":"FRIENDS OF CAMP GAN ISRAEL MONTREAL","n":[["FRIENDS OF CAMP GAN ISRAEL MONTREAL INC",1]],"x":{"irs":{"r":1,"i":["392127367"],"z":["11213"]}}},
+{"s":"FRIENDS OF CAMP GORTON","n":[["FRIENDS OF CAMP GORTON LTD",1]],"x":{"irs":{"r":1,"i":["474875798"],"z":["14830"]}}},
+{"s":"FRIENDS OF CAMP HOLLIS","n":[["FRIENDS OF CAMP HOLLIS INC",1]],"x":{"irs":{"r":1,"i":["161537178"],"z":["13126"]}}},
+{"s":"FRIENDS OF CAMP KENAN","n":[["FRIENDS OF CAMP KENAN",1]],"x":{"irs":{"r":1,"i":["161508397"],"z":["14095"]}}},
 {"s":"FRIENDS OF CAMP LITTLE NOTCH","n":[["FRIENDS OF CAMP LITTLE NOTCH INC",1]],"x":{"irs":{"r":1,"i":["270210079"],"z":["12866"]}}},
 {"s":"FRIENDS OF CAMP TURNER","n":[["FRIENDS OF CAMP TURNER INC",1]],"x":{"irs":{"r":1,"i":["161563904"],"z":["14151"]}}},
 {"s":"FRIENDS OF CAMP YOUNG JUDAEA SPROUT LAKE","n":[["FRIENDS OF CAMP YOUNG JUDAEA SPROUT LAKE INC",1]],"x":{"irs":{"r":1,"i":["371595626"],"z":["12585"]}}},
@@ -981,7 +994,7 @@
 {"s":"FRIENDS OF THE HEERMANCE MEMORIAL LIBRARY","n":[["FRIENDS OF THE HEERMANCE MEMORIAL LIBRARY INC",1]],"x":{"irs":{"r":1,"i":["571185733"],"z":["12051"]}}},
 {"s":"FRIENDS OF THE HERITAGE HOME FOR WOMEN","n":[["FRIENDS OF THE HERITAGE HOME FOR WOMEN",1]],"x":{"irs":{"r":1,"i":["824337839"],"z":["12309"]}}},
 {"s":"FRIENDS OF THE HEWLETT-WOODMERE LIBRARY","n":[["FRIENDS OF THE HEWLETT-WOODMERE LIBRARY INC",1]],"x":{"irs":{"r":1,"i":["113098108"],"z":["11557"]}}},
-{"s":"FRIENDS OF THE HIGH LINE","n":[["FRIENDS OF THE HIGH LINE INC",8],["FRIENDS OF THE HIGH LINE  INC",1]],"x":{"ocp":{"r":1,"a":45000000,"l":"2023-11-22","i":["20231116103"]},"cbr":{"r":4,"a":52194947,"l":"2026-11-18","i":["MMA184620278803487","CTA184620278801692","CT112520258807376","CTA184620258801231"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":45000000,"l":"2023-11-15","i":["MMA1-846-20248803695"]},"cbv":{"r":1,"l":"2026-08-12","i":["CTA184620278801692"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["FRIENDS OF THE HIGH LINE  INC"]},"irs":{"r":1,"i":["311734086"],"z":["10014"]}}},
+{"s":"FRIENDS OF THE HIGH LINE","n":[["FRIENDS OF THE HIGH LINE INC",10],["FRIENDS OF THE HIGH LINE  INC",1]],"x":{"ocp":{"r":1,"a":45000000,"l":"2023-11-22","i":["20231116103"]},"cbr":{"r":5,"a":57444752,"l":"2026-11-24","i":["CTA184620278803834","MMA184620278803487","CTA184620278801692","CT112520258807376","CTA184620258801231"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":45000000,"l":"2023-11-15","i":["MMA1-846-20248803695"]},"cbv":{"r":2,"l":"2026-11-24","i":["CTA184620278803834","CTA184620278801692"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["FRIENDS OF THE HIGH LINE  INC"]},"irs":{"r":1,"i":["311734086"],"z":["10014"]}}},
 {"s":"FRIENDS OF THE HIGHLAND PUBLIC LIBRARY","n":[["FRIENDS OF THE HIGHLAND PUBLIC LIBRARY INC",1]],"x":{"irs":{"r":1,"i":["273172314"],"z":["12528"]}}},
 {"s":"FRIENDS OF THE HILLS","n":[["FRIENDS OF THE HILLS",1]],"x":{"irs":{"r":1,"i":["141847187"],"z":["11429"]}}},
 {"s":"FRIENDS OF THE HILLSIDE PUBLIC LIBRARY OF NEW HYDE PARK","n":[["FRIENDS OF THE HILLSIDE PUBLIC LIBRARY OF NEW HYDE PARK",1]],"x":{"irs":{"r":1,"i":["201811695"],"z":["11040"]}}},
@@ -1775,12 +1788,5 @@
 {"s":"FULTON YOUTH HOCKEY ASSOCIATION","n":[["FULTON YOUTH HOCKEY ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["900214133"],"z":["13069"]}}},
 {"s":"FULTON YOUTH SOCCER LEAGUE","n":[["FULTON YOUTH SOCCER LEAGUE",1]],"x":{"irs":{"r":1,"i":["223047379"],"z":["13069"]}}},
 {"s":"FULTON-MONTGOMERY MASONIC CHARITIES","n":[["FULTON-MONTGOMERY MASONIC CHARITIES INC",1]],"x":{"irs":{"r":1,"i":["923063147"],"z":["12066"]}}},
-{"s":"FULTONVILLE REFORMED CHURCH","n":[["FULTONVILLE REFORMED CHURCH",1]],"x":{"irs":{"r":1,"i":["141593418"],"z":["12474"]}}},
-{"s":"FUN AND FUNCTION","n":[["FUN AND FUNCTION LLC",38],["FUN AND FUNCTION",1],["Fun and Function",1]],"x":{"cbr":{"r":30,"a":750000,"l":"2026-04-16","c":30,"i":["CT104020263160955","CT104020263159314","CT104020263162079","CT104020263118594","CT104020263117270"],"m":["Women (Non-Minority)"]},"cbv":{"r":8,"l":"2026-04-16","c":8,"i":["CT104020263160955","CT104020263159314","CT104020263162079","CT104020263118594","CT104020263117270"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["FUN AND FUNCTION"]},"sbs":{"r":1,"i":["103175"],"z":["19072"],"p":["WBE"]}}},
-{"s":"FUN BRICKS","n":[["FUN BRICKS LLC",3]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-09-16","i":["CT104020273015858"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-16","i":["CT104020273015858"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["FUN BRICKS LLC"]}}},
-{"s":"FUN CARE","n":[["FUN CARE INC",1]],"x":{"irs":{"r":1,"i":["333670729"],"z":["11219"]}}},
-{"s":"FUN CITY ENTERTAINMENT PEACEMAKERS","n":[["FUN CITY ENTERTAINMENT PEACEMAKERS INC",1]],"x":{"irs":{"r":1,"i":["883616284"],"z":["10035"]}}},
-{"s":"FUN EXPRESS","n":[["FUN EXPRESS LLC",19]],"x":{"cbr":{"r":13,"a":55493.14,"l":"2026-09-25","c":13,"i":["CT184620278803017","CT184620268807320","CT184620268807321","CT184620268807009","CT184620268806664"],"m":["Non-M/WBE"]},"cbv":{"r":6,"l":"2026-09-25","c":6,"i":["CT184620278803017","CT184620268807320","CT184620268807321","CT184620268807009","CT184620268806664"],"m":["Non-M/WBE"]}}},
-{"s":"FUN FACTORY SENSORY GYM","n":[["FUN FACTORY SENSORY GYM LLC",5]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-09-16","i":["CT104020273015380","CT104020263112894","CT104020253128369"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-09-16","i":["CT104020273015380","CT104020263112894"],"m":["Non-M/WBE"]}}},
-{"s":"FUN FOR CURE","n":[["FUN FOR CURE INC",1]],"x":{"irs":{"r":1,"i":["800365133"],"z":["10708"]}}}
+{"s":"FULTONVILLE REFORMED CHURCH","n":[["FULTONVILLE REFORMED CHURCH",1]],"x":{"irs":{"r":1,"i":["141593418"],"z":["12474"]}}}
 ]}

@@ -1,4 +1,12 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":17,"first_ordinal":28371,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":17,"first_ordinal":28364,"entries":[
+{"s":"CHEMISTRY CREATIVE","n":[["Chemistry Creative Inc.",1]],"x":{"sbs":{"r":1,"i":["102454"],"z":["11206"],"p":["MBE"]}}},
+{"s":"CHEMISTRY SHORTS","n":[["CHEMISTRY SHORTS INC",1]],"x":{"irs":{"r":1,"i":["991803212"],"z":["14604"]}}},
+{"s":"CHEMISTS CLUB","n":[["CHEMISTS CLUB",1]],"x":{"irs":{"r":1,"i":["131623933"],"z":["10036"]}}},
+{"s":"CHEMLU DEVELOPMENTAL DISABILITIES CENTER","n":[["CHEMLU DEVELOPMENTAL DISABILITIES CENTER INC",1]],"x":{"irs":{"r":1,"i":["352198039"],"z":["10950"]}}},
+{"s":"CHEMO COMFORT","n":[["CHEMO COMFORT INC",1]],"x":{"irs":{"r":1,"i":["651169320"],"z":["10014"]}}},
+{"s":"CHEMOTHERAPY FOUNDATION","n":[["CHEMOTHERAPY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["132622978"],"z":["10075"]}}},
+{"s":"CHEMOTHERAPY RESEARCH INSTITUTE","n":[["CHEMOTHERAPY RESEARCH INSTITUTE LIMITED INC",1]],"x":{"irs":{"r":1,"i":["852764637"],"z":["10028"]}}},
+{"s":"CHEMREADY","d":[["ChemREADY",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-9YRQQ-CR"],"z":["44087"]}}},
 {"s":"CHEMTALL","n":[["CHEMTALL INC.",22],["CHEMTALL INCORPORATED",21],["Chemtall Inc.",21]],"x":{"ocp":{"r":41,"a":319091882.53,"l":"2026-08-21","c":41,"i":["20260817003","20250909014","20250828025","20250826015","20250624011"]},"cbr":{"r":6,"a":147260452.5,"l":"2026-08-14","c":6,"i":["CT182620278801515","MA185720268802272","MA185720268802081","MA185720268801620","CT182620268800772"],"m":["Non-M/WBE"]},"ppt":{"r":14,"a":189325262.5,"l":"2025-09-08","c":14,"i":["MA1-857-20268802272","MA1-857-20268802081","MA1-857-20268801620","CT1-826-20268800772","MA1-857-20268800771"]},"cbv":{"r":2,"l":"2025-09-08","i":["MA185720268802272","MA185720268802081"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["CHEMTALL INCORPORATED"]}}},
 {"s":"CHEMTECH CONSULTING GROUP","n":[["CHEMTECH CONSULTING GROUP INC",3],["Chemtech Consulting Group, Inc",1]],"x":{"ocp":{"r":1,"a":94584,"l":"2024-09-26","i":["20240919126"]},"cbr":{"r":1,"a":94584,"l":"2024-09-19","i":["CT182620258803014"],"m":["Women (Non-Minority)"]},"ppt":{"r":1,"a":94584,"l":"2024-09-19","i":["CT1-826-20258803014"]},"sbs":{"r":1,"i":["2476"],"z":["07092"],"p":["WBE"]}}},
 {"s":"CHEMTRADE CHEMICALS US","n":[["CHEMTRADE CHEMICALS US LLC",8]],"x":{"ocp":{"r":6,"a":53213188.4,"l":"2024-12-31","c":6,"i":["20241224003","20220110102","20211222120","20170908036","20160606024"]},"cbr":{"r":1,"a":12083117.4,"l":"2024-12-19","i":["MA185720258803484"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":12083117.4,"l":"2024-12-19","i":["MA1-857-20258803484"]}}},
@@ -1730,12 +1738,5 @@
 {"s":"CHURCH OF GOD MISSION INTERNATIONAL SOLUTION CHAPEL","n":[["CHURCH OF GOD MISSION INTERNATIONAL SOLUTION CHAPEL",1]],"x":{"irs":{"r":1,"i":["274210930"],"z":["11435"]}}},
 {"s":"CHURCH OF GOD MISSIONARY","n":[["CHURCH OF GOD MISSIONARY",1],["CHURCH OF GOD MISSIONARY INC",1]],"x":{"irs":{"r":2,"i":["134049509","221923730"],"z":["10302","11208"]}}},
 {"s":"CHURCH OF GOD NETWORK","n":[["CHURCH OF GOD NETWORK INC",1]],"x":{"irs":{"r":1,"i":["832352293"],"z":["12208"]}}},
-{"s":"CHURCH OF GOD OF CLARKSON AVE","n":[["CHURCH OF GOD OF CLARKSON AVE",1]],"x":{"irs":{"r":1,"i":["113164888"],"z":["11212"]}}},
-{"s":"CHURCH OF GOD OF COLLEGE AVE","n":[["CHURCH OF GOD OF COLLEGE AVE",1]],"x":{"irs":{"r":1,"i":["134102409"],"z":["10456"]}}},
-{"s":"CHURCH OF GOD OF CROTONA AVENUE","n":[["CHURCH OF GOD OF CROTONA AVENUE INC",1]],"x":{"irs":{"r":1,"i":["900340160"],"z":["10469"]}}},
-{"s":"CHURCH OF GOD OF FORT INDEPENDENCE","n":[["CHURCH OF GOD OF FORT INDEPENDENCE INC",1]],"x":{"irs":{"r":1,"i":["133714761"],"z":["10463"]}}},
-{"s":"CHURCH OF GOD OF FOURTH AVENUE","n":[["CHURCH OF GOD OF FOURTH AVENUE",1]],"x":{"irs":{"r":1,"i":["113441055"],"z":["11232"]}}},
-{"s":"CHURCH OF GOD OF HEMPSTEAD","n":[["CHURCH OF GOD OF HEMPSTEAD",1]],"x":{"irs":{"r":1,"i":["112573565"],"z":["11550"]}}},
-{"s":"CHURCH OF GOD OF JAMAICA","n":[["CHURCH OF GOD OF JAMAICA",1]],"x":{"irs":{"r":1,"i":["113476001"],"z":["11435"]}}},
-{"s":"CHURCH OF GOD OF JESUS-CHRISTS DOCTRINE","n":[["CHURCH OF GOD OF JESUS-CHRISTS DOCTRINE INC",1]],"x":{"irs":{"r":1,"i":["113406219"],"z":["11501"]}}}
+{"s":"CHURCH OF GOD OF CLARKSON AVE","n":[["CHURCH OF GOD OF CLARKSON AVE",1]],"x":{"irs":{"r":1,"i":["113164888"],"z":["11212"]}}}
 ]}

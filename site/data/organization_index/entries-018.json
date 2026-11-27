@@ -1,4 +1,11 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":18,"first_ordinal":30110,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":18,"first_ordinal":30104,"entries":[
+{"s":"CHURCH OF GOD OF COLLEGE AVE","n":[["CHURCH OF GOD OF COLLEGE AVE",1]],"x":{"irs":{"r":1,"i":["134102409"],"z":["10456"]}}},
+{"s":"CHURCH OF GOD OF CROTONA AVENUE","n":[["CHURCH OF GOD OF CROTONA AVENUE INC",1]],"x":{"irs":{"r":1,"i":["900340160"],"z":["10469"]}}},
+{"s":"CHURCH OF GOD OF FORT INDEPENDENCE","n":[["CHURCH OF GOD OF FORT INDEPENDENCE INC",1]],"x":{"irs":{"r":1,"i":["133714761"],"z":["10463"]}}},
+{"s":"CHURCH OF GOD OF FOURTH AVENUE","n":[["CHURCH OF GOD OF FOURTH AVENUE",1]],"x":{"irs":{"r":1,"i":["113441055"],"z":["11232"]}}},
+{"s":"CHURCH OF GOD OF HEMPSTEAD","n":[["CHURCH OF GOD OF HEMPSTEAD",1]],"x":{"irs":{"r":1,"i":["112573565"],"z":["11550"]}}},
+{"s":"CHURCH OF GOD OF JAMAICA","n":[["CHURCH OF GOD OF JAMAICA",1]],"x":{"irs":{"r":1,"i":["113476001"],"z":["11435"]}}},
+{"s":"CHURCH OF GOD OF JESUS-CHRISTS DOCTRINE","n":[["CHURCH OF GOD OF JESUS-CHRISTS DOCTRINE INC",1]],"x":{"irs":{"r":1,"i":["113406219"],"z":["11501"]}}},
 {"s":"CHURCH OF GOD OF KINGSBRIDGE RD","n":[["CHURCH OF GOD OF KINGSBRIDGE RD INC",1]],"x":{"irs":{"r":1,"i":["020786822"],"z":["10463"]}}},
 {"s":"CHURCH OF GOD OF MORNING STAR","n":[["CHURCH OF GOD OF MORNING STAR",1]],"x":{"irs":{"r":1,"i":["113321437"],"z":["11210"]}}},
 {"s":"CHURCH OF GOD OF NEW SEASONS","n":[["CHURCH OF GOD OF NEW SEASONS",1]],"x":{"irs":{"r":1,"i":["453019009"],"z":["11203"]}}},
@@ -667,7 +674,7 @@
 {"s":"CITY LINK CONSTRUCTION","n":[["City Link Construction Inc.",1]],"x":{"sca":{"r":1,"i":["CITY LINK CONSTRUCTION INC."],"z":["11420"]}}},
 {"s":"CITY LIVING NY","n":[["City Living NY Inc",2],["CITY LIVING NY",1],["CITY LIVING NY  INC",1],["City Living NY, Inc.",1]],"x":{"ocp":{"r":2,"a":184431,"l":"2021-02-25","i":["20210219121","20200501010"]},"ppt":{"r":1,"a":84431,"l":"2021-02-18","i":["CT1-068-20218800085"]},"dbe":{"r":1,"i":["CITY LIVING NY  INC"]},"irs":{"r":1,"i":["474998799"],"z":["10018"]}}},
 {"s":"CITY LORE","n":[["CITY LORE INC",2]],"x":{"dbe":{"r":1,"i":["CITY LORE INC"]},"irs":{"r":1,"i":["112740189"],"z":["10003"]}}},
-{"s":"CITY LUMBER","n":[["City Lumber Inc.",2],["City Lumber, Inc.",1],["City Lumber, Incorporated",1]],"x":{"ocp":{"r":2,"a":300000,"l":"2019-09-17","i":["20190910004","20181009007"]},"sbs":{"r":1,"i":["11456"],"z":["11385"],"p":["WBE"]},"sca":{"r":1,"i":["CITY LUMBER, INC."],"z":["11385"]}}},
+{"s":"CITY LUMBER","n":[["City Lumber Inc.",2],["CITY LUMBER INC",1],["City Lumber, Inc.",1],["City Lumber, Incorporated",1]],"x":{"ocp":{"r":2,"a":300000,"l":"2019-09-17","i":["20190910004","20181009007"]},"cbr":{"r":1,"a":100000,"l":"2026-11-23","i":["CT107220271406541"],"m":["Women (Non-Minority)"]},"sbs":{"r":1,"i":["11456"],"z":["11385"],"p":["WBE"]},"sca":{"r":1,"i":["CITY LUMBER, INC."],"z":["11385"]}}},
 {"s":"CITY LYFE","n":[["City Lyfe Inc.",1]],"x":{"sbs":{"r":1,"i":["379723"],"z":["11201"],"p":["MBE","WBE"]}}},
 {"s":"CITY LYRIC OPERA","n":[["CITY LYRIC OPERA INC",1]],"x":{"irs":{"r":1,"i":["814811804"],"z":["11211"]}}},
 {"s":"CITY MAID SERVICE","n":[["City Maid Service Inc.",1]],"x":{"dol":{"r":1,"i":["25-65YF6-CR"],"z":["11003"]}}},
@@ -1077,7 +1084,7 @@
 {"s":"CLARK CENTER NYC","n":[["CLARK CENTER NYC INC",1]],"x":{"irs":{"r":1,"i":["813188943"],"z":["10025"]}}},
 {"s":"CLARK COMPANIES","d":[["Clark Companies",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-63ZZD-CR"],"z":["13753"]}}},
 {"s":"CLARK CONSTRUCTION SONS","n":[["Clark Construction & Sons, Inc.",1]],"x":{"dol":{"r":1,"i":["25-6HGXV-CR"],"z":["13809"]}}},
-{"s":"CLARK EQUIPMENT","n":[["Clark Equipment Company",3],["Clark  Equipment Company",1]],"x":{"ocp":{"r":4,"a":31801972.22,"l":"2015-10-07","i":["20150930011","20150612017","20150313036","20131003006"]}}},
+{"s":"CLARK EQUIPMENT","n":[["Clark Equipment Company",3],["CLARK EQUIPMENT COMPANY",2],["Clark  Equipment Company",1]],"x":{"ocp":{"r":4,"a":31801972.22,"l":"2015-10-07","i":["20150930011","20150612017","20150313036","20131003006"]},"cbr":{"r":1,"a":408457,"l":"2026-11-23","i":["CT185620278803772"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-23","i":["CT185620278803772"],"m":["Non-M/WBE"]}}},
 {"s":"CLARK EQUIPMENT CO DBA DOOSAN INFRACORE CONSTRUCTION EQUIPMENT","n":[["Clark Equipment Co. dba Doosan Infracore Construction Equipment",1]],"x":{"ocp":{"r":1,"a":16472359,"l":"2012-06-28","i":["20120621020"]}}},
 {"s":"CLARK EQUIPMENT COMPANY DBA BOBCAT","n":[["Clark Equipment Company DBA Bobcat Co.",1]],"x":{"ocp":{"r":1,"a":50889,"l":"2004-04-13","i":["20040406004"]}}},
 {"s":"CLARK EQUIPMENT DBA BOBCAT","n":[["Clark Equipment DBA Bobcat Company",1]],"x":{"ocp":{"r":1,"a":27648,"l":"2004-04-14","i":["20040407002"]}}},
@@ -1558,15 +1565,5 @@
 {"s":"CLOTHING TOOL FUND OF THE ELECTRICAL INDUSTRY TR","n":[["CLOTHING & TOOL FUND OF THE ELECTRICAL INDUSTRY TR",1]],"x":{"irs":{"r":1,"i":["113105790"],"z":["11365"]}}},
 {"s":"CLOUD AND THINGS","d":[["Cloud and Things",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["3897"],"z":["12180"],"p":["MBE"]}}},
 {"s":"CLOUD CONTINEO","n":[["Cloud Contineo Inc.",1]],"x":{"sbs":{"r":1,"i":["379323"],"z":["11209"],"p":["MBE","WBE"]}}},
-{"s":"CLOUD COPILOT","d":[["Cloud Copilot",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["100615"],"z":["34275"],"p":["MBE","WBE"]}}},
-{"s":"CLOUD DANCERS FOUNDATION","n":[["CLOUD DANCERS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["841728591"],"z":["10065"]}}},
-{"s":"CLOUD FOREST FUND","n":[["CLOUD FOREST FUND",1]],"x":{"irs":{"r":1,"i":["920769384"],"z":["11040"]}}},
-{"s":"CLOUD INSTITUTE FOR SUSTAINABILITY EDUCATION","n":[["CLOUD INSTITUTE FOR SUSTAINABILITY EDUCATION",1]],"x":{"irs":{"r":1,"i":["383645810"],"z":["12502"]}}},
-{"s":"CLOUD MOUNTAIN FOUNDATION","n":[["CLOUD MOUNTAIN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["043493352"],"z":["10001"]}}},
-{"s":"CLOUD NINE ENRICHMENT","n":[["CLOUD NINE ENRICHMENT",1]],"x":{"irs":{"r":1,"i":["921466580"],"z":["13077"]}}},
-{"s":"CLOUD PRINTING","n":[["Cloud Printing Corp",1]],"x":{"sbs":{"r":1,"i":["316874"],"z":["10018"],"p":["MBE"]}}},
-{"s":"CLOUD SHIFTERS","n":[["Cloud Shifters LLC",1]],"x":{"dol":{"r":1,"i":["26-9YCL3-CR"],"z":["02421"]}}},
-{"s":"CLOUD-AGE IT","d":[["Cloud-Age iT",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["103784"],"z":["08902"],"p":["WBE"]}}},
-{"s":"CLOUD-AGE IT LIMITED LIABILITY","n":[["Cloud-Age IT Limited Liability Company",1]],"x":{"sbs":{"r":1,"i":["103784"],"z":["08902"],"p":["WBE"]}}},
-{"s":"CLOUDENYC","n":[["CLOUDENYC INC",1]],"x":{"irs":{"r":1,"i":["850992793"],"z":["11102"]}}}
+{"s":"CLOUD COPILOT","d":[["Cloud Copilot",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["100615"],"z":["34275"],"p":["MBE","WBE"]}}}
 ]}

@@ -1,4 +1,19 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":31,"first_ordinal":52026,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":31,"first_ordinal":52012,"entries":[
+{"s":"FILM NEWS NOW FOUNDATION","n":[["FILM NEWS NOW FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["237097555"],"z":["10003"]}}},
+{"s":"FILM OTSEGO","n":[["FILM OTSEGO INC",1]],"x":{"irs":{"r":1,"i":["884012023"],"z":["13820"]}}},
+{"s":"FILM ROCKLAND","n":[["FILM ROCKLAND LTD",1]],"x":{"irs":{"r":1,"i":["843699881"],"z":["10965"]}}},
+{"s":"FILM SOCIETY OF NEWBURGH","n":[["FILM SOCIETY OF NEWBURGH",1]],"x":{"irs":{"r":1,"i":["414314769"],"z":["12550"]}}},
+{"s":"FILMAMERICA","n":[["FILMAMERICA INC",1]],"x":{"irs":{"r":1,"i":["132912248"],"z":["12037"]}}},
+{"s":"FILMS FOR HUMANITY","n":[["FILMS FOR HUMANITY INC",1]],"x":{"irs":{"r":1,"i":["133826960"],"z":["12430"]}}},
+{"s":"FILMSABOTAJ","n":[["Filmsabotaj LLC",1]],"x":{"sbs":{"r":1,"i":["101176"],"z":["07013"],"p":["MBE"]}}},
+{"s":"FILOMEN M DAGOSTINO GREENBERG MUSIC SCHOOL","n":[["FILOMEN M DAGOSTINO GREENBERG MUSIC SCHOOL INC",1]],"x":{"irs":{"r":1,"i":["832582279"],"z":["10023"]}}},
+{"s":"FILOMENA GARDENS HOUSING DEVELOPMENT FUND","n":[["FILOMENA GARDENS HOUSING DEVELOPMENT FUND COMPANY INC",1]],"x":{"irs":{"r":1,"i":["133975116"],"z":["10466"]}}},
+{"s":"FILOMENA M DAGOSTINO FOUNDATION","n":[["FILOMENA M DAGOSTINO FOUNDATION CORP",1]],"x":{"irs":{"r":1,"i":["133548660"],"z":["10022"]}}},
+{"s":"FILOMENO FAMILY AWARDS FOUNDATION","n":[["FILOMENO FAMILY AWARDS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["462910749"],"z":["11201"]}}},
+{"s":"FILTER ROOM SOLUTIONS","n":[["FILTER ROOM SOLUTIONS INC.",1]],"x":{"dol":{"r":1,"i":["25-65K43-CR"],"z":["11501"]}}},
+{"s":"FILTERBUY","n":[["FILTERBUY INC.",1]],"x":{"dbe":{"r":1,"i":["FILTERBUY INC."]}}},
+{"s":"FILTREC","n":[["FILTREC CORPORATION",1]],"x":{"dol":{"r":1,"i":["26-639EU-CR"],"z":["13021"]}}},
+{"s":"FIMF","n":[["FIMF INC",1]],"x":{"irs":{"r":1,"i":["134072661"],"z":["10022"]}}},
 {"s":"FIN FEATHER FUR CONSERVATION SOCIETY","n":[["FIN FEATHER & FUR CONSERVATION SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["160747782"],"z":["14174"]}}},
 {"s":"FIN LIT KIDS","d":[["FIN LIT KIDS",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["377530"],"z":["07030"],"p":["MBE","WBE"]}}},
 {"s":"FIN POINT SPORTSMEN CLUB","n":[["FIN & POINT SPORTSMEN CLUB INC",1]],"x":{"irs":{"r":1,"i":["760757757"],"z":["14009"]}}},
@@ -1683,16 +1698,5 @@
 {"s":"FOREST HILLS ASIAN ASSOCIATION","n":[["FOREST HILLS ASIAN ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["473952614"],"z":["11375"]}}},
 {"s":"FOREST HILLS CHAMBER OF COMMERCE OF QUEENS","n":[["FOREST HILLS CHAMBER OF COMMERCE OF QUEENS INC",3]],"x":{"cbr":{"r":2,"a":7000,"l":"2026-06-24","i":["CT101320261417609","CT101320251418442"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["113200313"],"z":["11375"]}}},
 {"s":"FOREST HILLS COMMUNITY CHURCH","n":[["FOREST HILLS COMMUNITY CHURCH",1]],"x":{"irs":{"r":1,"i":["830461439"],"z":["11375"]}}},
-{"s":"FOREST HILLS COMMUNITY PROJECTS ASSOCIATION","n":[["FOREST HILLS COMMUNITY PROJECTS ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["311742615"],"z":["11375"]}}},
-{"s":"FOREST HILLS GARDENS TAXPAYERS ASSOCIATION","n":[["FOREST HILLS GARDENS TAXPAYERS ASSOCIATION INCORPORATED",1]],"x":{"irs":{"r":1,"i":["113818816"],"z":["11375"]}}},
-{"s":"FOREST HILLS JEWISH CENTER","n":[["FOREST HILLS JEWISH CENTER",2]],"x":{"dbe":{"r":1,"i":["FOREST HILLS JEWISH CENTER"]},"irs":{"r":1,"i":["111631821"],"z":["11375"]}}},
-{"s":"FOREST HILLS MHA HOUSING DEVELOPMENT FUND","n":[["FOREST HILLS MHA HOUSING DEVELOPMENT FUND CORPORATION",1]],"x":{"irs":{"r":1,"i":["823003388"],"z":["11375"]}}},
-{"s":"FOREST HILLS ROBOTICS LEAGUE","n":[["FOREST HILLS ROBOTICS LEAGUE INC",1]],"x":{"irs":{"r":1,"i":["273014951"],"z":["11375"]}}},
-{"s":"FOREST HILLS VOL AMBUL","n":[["FOREST HILLS VOL AMBUL. CORP.",4]],"x":{"ocp":{"r":1,"a":6700,"l":"2021-02-26","i":["20210222106"]},"cbr":{"r":2,"a":3000,"l":"2026-06-24","i":["CT101320261417610","CT101320251418443"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":6700,"l":"2021-02-19","i":["CT1-057-20218801227"]}}},
-{"s":"FOREST HILLS VOLUNTEER AMBULANCE CORPS","n":[["FOREST HILLS VOLUNTEER AMBULANCE CORPS INC",1]],"x":{"irs":{"r":1,"i":["237169662"],"z":["11375"]}}},
-{"s":"FOREST HILLS YOUTH ATHLETIC ASSOCIATION","n":[["FOREST HILLS YOUTH ATHLETIC ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["264164715"],"z":["11375"]}}},
-{"s":"FOREST HOUSE","n":[["FOREST HOUSE LLC",1]],"x":{"dbe":{"r":1,"i":["FOREST HOUSE LLC"]}}},
-{"s":"FOREST HOUSE OF MANHATTAN","n":[["FOREST HOUSE OF MANHATTAN",1]],"x":{"irs":{"r":1,"i":["813286640"],"z":["10027"]}}},
-{"s":"FOREST HUGHES ASSOCIATES","n":[["Forest Hughes & Associates LLC",1]],"x":{"sbs":{"r":1,"i":["103072"],"z":["10004"],"p":["WBE"]}}},
-{"s":"FOREST LAKE CAMP ALUMNI SCHOLARSHIP FUND","n":[["FOREST LAKE CAMP ALUMNI & SCHOLARSHIP FUND INC",1]],"x":{"irs":{"r":1,"i":["820764124"],"z":["12817"]}}}
+{"s":"FOREST HILLS COMMUNITY PROJECTS ASSOCIATION","n":[["FOREST HILLS COMMUNITY PROJECTS ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["311742615"],"z":["11375"]}}}
 ]}

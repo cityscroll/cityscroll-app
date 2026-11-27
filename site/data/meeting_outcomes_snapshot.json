@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-11-24T23:45:13.719Z",
+  "generated_at": "2026-11-27T10:00:45.897Z",
   "delivery_tier": "inline-at-build",
   "record_count": 305,
   "present_count": 14,
@@ -28,6 +28,10 @@
     },
     "20261112003": {
       "request_id": "20261112003",
+      "snapshot_state": "absent"
+    },
+    "20261118037": {
+      "request_id": "20261118037",
       "snapshot_state": "absent"
     },
     "20261106001": {
@@ -58,12 +62,12 @@
       "request_id": "20261027031",
       "snapshot_state": "absent"
     },
-    "20261112015": {
-      "request_id": "20261112015",
-      "snapshot_state": "absent"
-    },
     "20261110024": {
       "request_id": "20261110024",
+      "snapshot_state": "absent"
+    },
+    "20261112015": {
+      "request_id": "20261112015",
       "snapshot_state": "absent"
     },
     "20261102015": {
@@ -78,12 +82,12 @@
       "request_id": "20261020014",
       "snapshot_state": "absent"
     },
-    "20261027004": {
-      "request_id": "20261027004",
-      "snapshot_state": "absent"
-    },
     "20261109025": {
       "request_id": "20261109025",
+      "snapshot_state": "absent"
+    },
+    "20261027004": {
+      "request_id": "20261027004",
       "snapshot_state": "absent"
     },
     "20261118007": {
@@ -315,16 +319,16 @@
       "request_id": "20261013022",
       "snapshot_state": "absent"
     },
-    "20261014038": {
-      "request_id": "20261014038",
-      "snapshot_state": "absent"
-    },
     "20261027024": {
       "request_id": "20261027024",
       "snapshot_state": "absent"
     },
     "20261019007": {
       "request_id": "20261019007",
+      "snapshot_state": "absent"
+    },
+    "20261014038": {
+      "request_id": "20261014038",
       "snapshot_state": "absent"
     },
     "20261007005": {
@@ -447,12 +451,12 @@
       "request_id": "20261021009",
       "snapshot_state": "absent"
     },
-    "20260924007": {
-      "request_id": "20260924007",
-      "snapshot_state": "absent"
-    },
     "20260929023": {
       "request_id": "20260929023",
+      "snapshot_state": "absent"
+    },
+    "20260924007": {
+      "request_id": "20260924007",
       "snapshot_state": "absent"
     },
     "20260915032": {
@@ -483,16 +487,16 @@
       "request_id": "20261021004",
       "snapshot_state": "absent"
     },
-    "20261006022": {
-      "request_id": "20261006022",
+    "20260929021": {
+      "request_id": "20260929021",
       "snapshot_state": "absent"
     },
     "20261014031": {
       "request_id": "20261014031",
       "snapshot_state": "absent"
     },
-    "20260929021": {
-      "request_id": "20260929021",
+    "20261006022": {
+      "request_id": "20261006022",
       "snapshot_state": "absent"
     },
     "20261015027": {
@@ -523,12 +527,12 @@
       "request_id": "20260909022",
       "snapshot_state": "absent"
     },
-    "20260923002": {
-      "request_id": "20260923002",
-      "snapshot_state": "absent"
-    },
     "20260918021": {
       "request_id": "20260918021",
+      "snapshot_state": "absent"
+    },
+    "20260923002": {
+      "request_id": "20260923002",
       "snapshot_state": "absent"
     },
     "20261007002": {
@@ -537,6 +541,10 @@
     },
     "20260922032": {
       "request_id": "20260922032",
+      "snapshot_state": "absent"
+    },
+    "20261013004": {
+      "request_id": "20261013004",
       "snapshot_state": "absent"
     },
     "20261006004": {
@@ -1394,10 +1402,6 @@
           "votes": null
         }
       ]
-    },
-    "20261013004": {
-      "request_id": "20261013004",
-      "snapshot_state": "absent"
     },
     "20260921022": {
       "request_id": "20260921022",
@@ -2974,12 +2978,12 @@
       "request_id": "20260909002",
       "snapshot_state": "absent"
     },
-    "20260826006": {
-      "request_id": "20260826006",
-      "snapshot_state": "absent"
-    },
     "20260817025": {
       "request_id": "20260817025",
+      "snapshot_state": "absent"
+    },
+    "20260826006": {
+      "request_id": "20260826006",
       "snapshot_state": "absent"
     },
     "20260911022": {
@@ -2990,8 +2994,8 @@
       "request_id": "20260814012",
       "snapshot_state": "absent"
     },
-    "20260819033": {
-      "request_id": "20260819033",
+    "20260817001": {
+      "request_id": "20260817001",
       "snapshot_state": "absent"
     },
     "20260909019": {
@@ -3224,12 +3228,12 @@
         }
       ]
     },
-    "20260817001": {
-      "request_id": "20260817001",
-      "snapshot_state": "absent"
-    },
     "20260902022": {
       "request_id": "20260902022",
+      "snapshot_state": "absent"
+    },
+    "20260819033": {
+      "request_id": "20260819033",
       "snapshot_state": "absent"
     },
     "20260911033": {
@@ -3313,12 +3317,12 @@
       "request_id": "20260827003",
       "snapshot_state": "absent"
     },
-    "20260818004": {
-      "request_id": "20260818004",
-      "snapshot_state": "absent"
-    },
     "20260910007": {
       "request_id": "20260910007",
+      "snapshot_state": "absent"
+    },
+    "20260818004": {
+      "request_id": "20260818004",
       "snapshot_state": "absent"
     },
     "20260910024": {
@@ -3361,12 +3365,12 @@
       "request_id": "20260819025",
       "snapshot_state": "absent"
     },
-    "20260817015": {
-      "request_id": "20260817015",
-      "snapshot_state": "absent"
-    },
     "20260803009": {
       "request_id": "20260803009",
+      "snapshot_state": "absent"
+    },
+    "20260817015": {
+      "request_id": "20260817015",
       "snapshot_state": "absent"
     },
     "20260901022": {
@@ -4820,18 +4824,6 @@
       "request_id": "20260709020",
       "snapshot_state": "absent"
     },
-    "20260810050": {
-      "request_id": "20260810050",
-      "snapshot_state": "absent"
-    },
-    "20260714002": {
-      "request_id": "20260714002",
-      "snapshot_state": "absent"
-    },
-    "20260811001": {
-      "request_id": "20260811001",
-      "snapshot_state": "absent"
-    },
     "20260818027": {
       "request_id": "20260818027",
       "snapshot_state": "absent"
@@ -4846,6 +4838,18 @@
     },
     "20260723022": {
       "request_id": "20260723022",
+      "snapshot_state": "absent"
+    },
+    "20260811001": {
+      "request_id": "20260811001",
+      "snapshot_state": "absent"
+    },
+    "20260714002": {
+      "request_id": "20260714002",
+      "snapshot_state": "absent"
+    },
+    "20260810050": {
+      "request_id": "20260810050",
       "snapshot_state": "absent"
     },
     "20260824048": {
@@ -6387,6 +6391,10 @@
         }
       ]
     },
+    "20260623060": {
+      "request_id": "20260623060",
+      "snapshot_state": "absent"
+    },
     "20260707021": {
       "request_id": "20260707021",
       "snapshot_state": "present",
@@ -6543,10 +6551,6 @@
           "votes": null
         }
       ]
-    },
-    "20260623060": {
-      "request_id": "20260623060",
-      "snapshot_state": "absent"
     },
     "20260630005": {
       "request_id": "20260630005",
@@ -7691,14 +7695,6 @@
       "request_id": "20260612028",
       "snapshot_state": "absent"
     },
-    "20260605058": {
-      "request_id": "20260605058",
-      "snapshot_state": "absent"
-    },
-    "20260602003": {
-      "request_id": "20260602003",
-      "snapshot_state": "absent"
-    },
     "20260625040": {
       "request_id": "20260625040",
       "snapshot_state": "present",
@@ -7855,6 +7851,14 @@
           "votes": null
         }
       ]
+    },
+    "20260605058": {
+      "request_id": "20260605058",
+      "snapshot_state": "absent"
+    },
+    "20260602003": {
+      "request_id": "20260602003",
+      "snapshot_state": "absent"
     },
     "20260618050": {
       "request_id": "20260618050",
@@ -8172,12 +8176,12 @@
       "request_id": "20260609065",
       "snapshot_state": "absent"
     },
-    "20260610012": {
-      "request_id": "20260610012",
-      "snapshot_state": "absent"
-    },
     "20260522008": {
       "request_id": "20260522008",
+      "snapshot_state": "absent"
+    },
+    "20260610012": {
+      "request_id": "20260610012",
       "snapshot_state": "absent"
     },
     "20260506007": {
@@ -8568,16 +8572,16 @@
       "request_id": "20260518031",
       "snapshot_state": "absent"
     },
-    "20260515001": {
-      "request_id": "20260515001",
-      "snapshot_state": "absent"
-    },
     "20260512013": {
       "request_id": "20260512013",
       "snapshot_state": "absent"
     },
     "20260521019": {
       "request_id": "20260521019",
+      "snapshot_state": "absent"
+    },
+    "20260515001": {
+      "request_id": "20260515001",
       "snapshot_state": "absent"
     },
     "20260512014": {
@@ -8602,10 +8606,6 @@
     },
     "20260504022": {
       "request_id": "20260504022",
-      "snapshot_state": "absent"
-    },
-    "20260507001": {
-      "request_id": "20260507001",
       "snapshot_state": "absent"
     }
   }

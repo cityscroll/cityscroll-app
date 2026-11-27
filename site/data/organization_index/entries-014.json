@@ -1,4 +1,9 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":14,"first_ordinal":23324,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":14,"first_ordinal":23320,"entries":[
+{"s":"C2 TECHNOLOGIES","n":[["C2 Technologies Inc",7],["C2 Technologies, Inc.",2],["C2 TECHNOLOGIES INC.",1]],"x":{"ocp":{"r":5,"a":2090116.37,"l":"2025-04-28","i":["20250422008","20240117106","20220519107","20201123106","20171016009"]},"cbr":{"r":1,"a":385000,"l":"2025-04-21","i":["MMA101720258805975"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":1294938.08,"l":"2025-04-21","i":["MMA1-017-20258805975","CT1-057-20248804625","MMA1-017-20228805573"]},"dbe":{"r":1,"i":["C2 TECHNOLOGIES INC."]}}},
+{"s":"C21","n":[["C21",1]],"x":{"irs":{"r":1,"i":["990447984"],"z":["11238"]}}},
+{"s":"C3 BROOKLYN","n":[["C3 BROOKLYN INC",1]],"x":{"irs":{"r":1,"i":["473544666"],"z":["10019"]}}},
+{"s":"C3AI","n":[["C3ai Inc",3]],"x":{"ocp":{"r":1,"a":2,"l":"2025-03-10","i":["20250304005"]},"cbr":{"r":1,"a":2,"l":"2025-03-03","i":["CT183620258805425"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":2,"l":"2025-03-03","i":["CT1-836-20258805425"]}}},
+{"s":"C4 CHORAL COMPOSER CONDUCTOR COLLECTIVE","n":[["C4 CHORAL COMPOSER CONDUCTOR COLLECTIVE",1]],"x":{"irs":{"r":1,"i":["262810798"],"z":["10036"]}}},
 {"s":"C4 FOUNDATION","n":[["C4 FOUNDATION",1]],"x":{"irs":{"r":1,"i":["465705074"],"z":["14227"]}}},
 {"s":"C4 NETWORK","n":[["C4 NETWORK",1]],"x":{"irs":{"r":1,"i":["850513908"],"z":["11207"]}}},
 {"s":"C40 CITIES CLIMATE LEADERSHIP GROUP","n":[["C40 CITIES CLIMATE LEADERSHIP GROUP INC",1]],"x":{"irs":{"r":1,"i":["900634376"],"z":["10017"]}}},
@@ -89,7 +94,7 @@
 {"s":"CADOGAN MANAGEMENT","n":[["CADOGAN MANAGEMENT LLC",1]],"x":{"dbe":{"r":1,"i":["CADOGAN MANAGEMENT LLC"]}}},
 {"s":"CADYVILLE FIRE DEPARTMENT","n":[["CADYVILLE FIRE DEPARTMENT INC",1]],"x":{"irs":{"r":1,"i":["202588616"],"z":["12918"]}}},
 {"s":"CADYVILLE PROTESTANT CEMETERY ASSOCIATION","n":[["CADYVILLE PROTESTANT CEMETERY ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["141576472"],"z":["12901"]}}},
-{"s":"CAEAR COALITION","n":[["CAEAR COALITION INC",2]],"x":{"cbr":{"r":2,"a":26000,"l":"2025-10-16","i":["CT181620261404562","CT181620251410096"],"m":["Non-M/WBE"]}}},
+{"s":"CAEAR COALITION","n":[["CAEAR COALITION INC",4]],"x":{"cbr":{"r":3,"a":35000,"l":"2026-11-23","i":["CT181620271406316","CT181620261404562","CT181620251410096"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-23","i":["CT181620271406316"],"m":["Non-M/WBE"]}}},
 {"s":"CAERUS WADSWORTH 184","n":[["CAERUS WADSWORTH 184 LLC",1]],"x":{"dbe":{"r":1,"i":["CAERUS WADSWORTH 184 LLC"]}}},
 {"s":"CAESAR R CABINESS MINISTRIES","n":[["CAESAR R CABINESS MINISTRIES INC",1]],"x":{"irs":{"r":1,"i":["853974718"],"z":["11426"]}}},
 {"s":"CAESARS ENTERPRISE SERVICES","n":[["CAESARS ENTERPRISE SERVICES LLC",1]],"x":{"dbe":{"r":1,"i":["CAESARS ENTERPRISE SERVICES LLC"]}}},
@@ -755,7 +760,7 @@
 {"s":"CANARA PRICE","n":[["CANARA PRICE LLC",3]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-03-05","i":["CT104020263113822","CT104020253114764"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-03-05","i":["CT104020263113822"],"m":["Non-M/WBE"]}}},
 {"s":"CANARSIE CHILDREN FIRST ACADEMY","n":[["CANARSIE CHILDREN FIRST ACADEMY",8]],"x":{"cbr":{"r":3,"a":6335286,"l":"2026-09-02","i":["CT104020279756901","CT104020279756840","CT104020279756780"],"m":["Non-M/WBE"]},"cbv":{"r":3,"l":"2026-09-02","i":["CT104020279756901","CT104020279756840","CT104020279756780"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["CANARSIE CHILDREN FIRST ACADEMY"]},"irs":{"r":1,"i":["464036464"],"z":["11207"]}}},
 {"s":"CANARSIE CHURCH OF CHRIST","n":[["CANARSIE CHURCH OF CHRIST",1]],"x":{"irs":{"r":1,"i":["113522419"],"z":["11236"]}}},
-{"s":"CANARSIE COMMUNITY DEVELOPMENT","n":[["CANARSIE COMMUNITY DEVELOPMENT INC",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2024-10-15","i":["CT126020258802742"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["475395985"],"z":["11234"]}}},
+{"s":"CANARSIE COMMUNITY DEVELOPMENT","n":[["CANARSIE COMMUNITY DEVELOPMENT INC",3]],"x":{"cbr":{"r":2,"a":118750,"l":"2026-11-24","i":["CT126020278803494","CT126020258802742"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["475395985"],"z":["11234"]}}},
 {"s":"CANARSIE COMMUNITY REFORMED","n":[["CANARSIE COMMUNITY REFORMED",1]],"x":{"irs":{"r":1,"i":["112513731"],"z":["11236"]}}},
 {"s":"CANARSIE COURIER PUBLICATIONS","n":[["Canarsie Courier Publications Inc.",1]],"x":{"sbs":{"r":1,"i":["101672"],"z":["11236"],"p":["WBE"]}}},
 {"s":"CANARSIE CULTURE COMMERCE AND COMMUNITY","n":[["CANARSIE CULTURE COMMERCE AND COMMUNITY INC",1]],"x":{"irs":{"r":1,"i":["993164732"],"z":["11236"]}}},
@@ -1714,13 +1719,5 @@
 {"s":"CAROUSEL CITIES YOUTH BALLET","n":[["CAROUSEL CITIES YOUTH BALLET",1]],"x":{"irs":{"r":1,"i":["161440310"],"z":["12701"]}}},
 {"s":"CAROUSEL COMMONS","n":[["CAROUSEL COMMONS INC",1]],"x":{"irs":{"r":1,"i":["424495423"],"z":["13601"]}}},
 {"s":"CAROUSEL SOCIETY OF THE NIAGARA FRONTIER","n":[["CAROUSEL SOCIETY OF THE NIAGARA FRONTIER",1]],"x":{"irs":{"r":1,"i":["112552886"],"z":["14120"]}}},
-{"s":"CAROUSEL WORKS","n":[["Carousel Works, Inc.",1]],"x":{"ocp":{"r":1,"a":688720,"l":"2008-08-05","i":["20080801025"]}}},
-{"s":"CARP CONSTRUCTION","n":[["Carp Construction Corp.",4]],"x":{"ocp":{"r":4,"a":67811108.07,"l":"2011-09-26","i":["20110920013","20070416019","20070125032","20050817020"]}}},
-{"s":"CARPATHO RUSSIAN AMERICAN CENTER","n":[["CARPATHO RUSSIAN AMERICAN CENTER INC",1]],"x":{"irs":{"r":1,"i":["131700669"],"z":["10704"]}}},
-{"s":"CARPATHO-RUSSIAN ORTHODOX GREEK CATHOLIC CHURCH OF ST MARY","n":[["CARPATHO-RUSSIAN ORTHODOX GREEK CATHOLIC CHURCH OF ST MARY",1]],"x":{"irs":{"r":1,"i":["136135097"],"z":["10701"]}}},
-{"s":"CARPATIAN CONGREGATION OF WHITE LAKE","n":[["CARPATIAN CONGREGATION OF WHITE LAKE",1]],"x":{"irs":{"r":1,"i":["753058389"],"z":["11229"]}}},
-{"s":"CARPE DIEM ENTERPRISES","n":[["Carpe Diem Enterprises Inc.",1]],"x":{"sbs":{"r":1,"i":["11313"],"z":["11746"],"p":["WBE"]}}},
-{"s":"CARPE DIEM THEATER","n":[["CARPE DIEM THEATER INC",1]],"x":{"irs":{"r":1,"i":["991086029"],"z":["12020"]}}},
-{"s":"CARPENTER CONTRACTOR ALLIANCE OF METROPOLITAN NEW YORK","n":[["CARPENTER CONTRACTOR ALLIANCE OF METROPOLITAN NEW YORK INC",1]],"x":{"irs":{"r":1,"i":["562410898"],"z":["10016"]}}},
-{"s":"CARPENTER FAMILY CARITAS FOUNDATION","n":[["CARPENTER FAMILY CARITAS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["261588334"],"z":["14618"]}}}
+{"s":"CAROUSEL WORKS","n":[["Carousel Works, Inc.",1]],"x":{"ocp":{"r":1,"a":688720,"l":"2008-08-05","i":["20080801025"]}}}
 ]}

@@ -1,4 +1,7 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":11,"first_ordinal":18314,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":11,"first_ordinal":18311,"entries":[
+{"s":"BLACK JOE HODGE OUTDOORS CLUB","n":[["BLACK JOE HODGE OUTDOORS CLUB INC",1]],"x":{"irs":{"r":1,"i":["922343106"],"z":["14226"]}}},
+{"s":"BLACK KETTLE SPORTSMEN","n":[["BLACK KETTLE SPORTSMEN INC",1]],"x":{"irs":{"r":1,"i":["232464555"],"z":["13865"]}}},
+{"s":"BLACK LAKE ASSOCIATION","n":[["BLACK LAKE ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["161246384"],"z":["13646"]}}},
 {"s":"BLACK LAKE FISH GAME ASSOCIATION","n":[["BLACK LAKE FISH & GAME ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["821943656"],"z":["13646"]}}},
 {"s":"BLACK LAND ACCESS COMMUNITY LAND TRUST","n":[["BLACK LAND ACCESS COMMUNITY LAND TRUST INC",1]],"x":{"irs":{"r":1,"i":["994884190"],"z":["11213"]}}},
 {"s":"BLACK LATINO AND ASIAN COALITION IN C","n":[["BLACK LATINO AND ASIAN COALITION IN C",1]],"x":{"irs":{"r":1,"i":["393950122"],"z":["10027"]}}},
@@ -1117,6 +1120,7 @@
 {"s":"BOOK IT FORWARD","n":[["BOOK IT FORWARD INC",1]],"x":{"irs":{"r":1,"i":["412435710"],"z":["10803"]}}},
 {"s":"BOOK LOVERS CLUB","n":[["BOOK LOVERS CLUB INC",1]],"x":{"irs":{"r":1,"i":["923726760"],"z":["11432"]}}},
 {"s":"BOOK OF INTANGIBLES","n":[["BOOK OF INTANGIBLES INC",1]],"x":{"irs":{"r":1,"i":["825158641"],"z":["12435"]}}},
+{"s":"BOOK SMART EARLY LEARNING CHILD CARE","n":[["BOOK SMART EARLY LEARNING CHILD CARE CORP",2]],"x":{"cbr":{"r":1,"a":1034520,"l":"2026-11-25","i":["CT104020279762345"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-11-25","i":["CT104020279762345"],"m":["Non-M/WBE"]}}},
 {"s":"BOOK VAN-GO","n":[["BOOK VAN-GO INC",1]],"x":{"irs":{"r":1,"i":["933644685"],"z":["13090"]}}},
 {"s":"BOOK-AID","n":[["BOOK-AID",1]],"x":{"irs":{"r":1,"i":["134152990"],"z":["10514"]}}},
 {"s":"BOOK-SITTING","n":[["Book-Sitting LLC",1]],"x":{"sbs":{"r":1,"i":["255120"],"z":["10467"],"p":["MBE","WBE"]}}},
@@ -1698,10 +1702,5 @@
 {"s":"BRAVE WILL FOUNDATION","n":[["BRAVE WILL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["264495032"],"z":["12019"]}}},
 {"s":"BRAVE WORLD MEDIA","n":[["Brave World Media, LLC",1]],"x":{"sbs":{"r":1,"i":["331171"],"z":["14873"],"p":["MBE","WBE"]}}},
 {"s":"BRAVEHEART ANIMAL SANCTUARY","n":[["BRAVEHEART ANIMAL SANCTUARY INC",1]],"x":{"irs":{"r":1,"i":["851155505"],"z":["11933"]}}},
-{"s":"BRAVEHEARTS MOVE NEW YORK","n":[["BRAVEHEARTS MOVE NEW YORK",1]],"x":{"irs":{"r":1,"i":["813593742"],"z":["12553"]}}},
-{"s":"BRAVEN SOLUTIONS","n":[["BRAVEN SOLUTIONS LLC",4],["Braven Solutions LLC",1]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-08-21","i":["CT104020273005592","CT104020253165773","CT104020253050252"],"m":["Black American"]},"cbv":{"r":1,"l":"2026-08-21","i":["CT104020273005592"],"m":["Black American"]},"sbs":{"r":1,"i":["371892"],"z":["10011"],"p":["MBE"]}}},
-{"s":"BRAVER ANGELS","n":[["BRAVER ANGELS INC",1]],"x":{"irs":{"r":1,"i":["133400377"],"z":["10017"]}}},
-{"s":"BRAVER CHARITABLE FOUNDATION","n":[["BRAVER CHARITABLE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["810945657"],"z":["11218"]}}},
-{"s":"BRAVERHOOD","n":[["BRAVERHOOD LTD",1]],"x":{"irs":{"r":1,"i":["204157876"],"z":["11219"]}}},
-{"s":"BRAVES FOOTBALL ALUMNI CLUB","n":[["BRAVES FOOTBALL ALUMNI CLUB INC",1]],"x":{"irs":{"r":1,"i":["842450812"],"z":["12078"]}}}
+{"s":"BRAVEHEARTS MOVE NEW YORK","n":[["BRAVEHEARTS MOVE NEW YORK",1]],"x":{"irs":{"r":1,"i":["813593742"],"z":["12553"]}}}
 ]}

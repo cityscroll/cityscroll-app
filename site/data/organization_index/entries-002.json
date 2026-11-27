@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":2,"first_ordinal":3431,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":2,"first_ordinal":3431,"entries":[
 {"s":"ACTION CARTING ENVIRONMENTAL SERVICES","n":[["ACTION CARTING ENVIRONMENTAL SERVICES INC",5],["Action Carting Environmental Services, Inc.",3],["ACTION CARTING ENVIRONMENTAL SERVICES, INC",2],["ACTION CARTING ENVIRONMENTAL SERVICES  INC.",1],["Action Carting Environmental Services Inc.",1]],"x":{"ocp":{"r":5,"a":74608901,"l":"2024-01-30","i":["20240126114","20160718003","20150806023","20141125011","20120817013"]},"cbr":{"r":3,"a":26276.04,"l":"2026-06-12","i":["CT107120270000783","CT184620268801115","CT184620258803328"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":1,"i":["82724P0001007"]},"cbv":{"r":1,"l":"2026-06-12","i":["CT107120270000783"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["ACTION CARTING ENVIRONMENTAL SERVICES  INC."]},"dol":{"r":1,"i":["25-64KB8-CR"],"z":["07666"]}}},
 {"s":"ACTION CENTER FOR EDUCATION COMMUNITY DEVELOPMENT","n":[["ACTION CENTER FOR EDUCATION & COMMUNITY DEVELOPMENT INC",1]],"x":{"irs":{"r":1,"i":["753014243"],"z":["11693"]}}},
 {"s":"ACTION CHUTES","n":[["Action Chutes, Inc.",1]],"x":{"dol":{"r":1,"i":["25-65BFP-CR"],"z":["12563"]}}},
@@ -135,7 +135,7 @@
 {"s":"AD HOC COMMITTEE IN DEFENSE OF LIFE","n":[["AD HOC COMMITTEE IN DEFENSE OF LIFE INC",1]],"x":{"irs":{"r":1,"i":["132760135"],"z":["10016"]}}},
 {"s":"AD HOC MUSIC","n":[["AD HOC MUSIC",1]],"x":{"irs":{"r":1,"i":["461181828"],"z":["14450"]}}},
 {"s":"AD LLOYD COACHING","d":[["AD Lloyd Coaching",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["11514"],"z":["08807"],"p":["MBE","WBE"]}}},
-{"s":"AD MEYERS UNIFORMS","n":[["AD MEYERS UNIFORMS",4],["Ad Meyers Uniforms",1]],"x":{"ocp":{"r":1,"a":41537.75,"l":"2005-10-13","i":["20051005003"]},"cbr":{"r":3,"a":31556.46,"l":"2025-11-20","i":["CT184620268803870","CT178120260000901","CT184620258801587"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2025-11-20","i":["CT184620268803870"],"m":["Non-M/WBE"]}}},
+{"s":"AD MEYERS UNIFORMS","n":[["AD MEYERS UNIFORMS",3],["Ad Meyers Uniforms",1]],"x":{"ocp":{"r":1,"a":41537.75,"l":"2005-10-13","i":["20051005003"]},"cbr":{"r":3,"a":31556.46,"l":"2025-11-20","i":["CT184620268803870","CT178120260000901","CT184620258801587"],"m":["Non-M/WBE"]}}},
 {"s":"AD OLAM","n":[["AD OLAM INC",1]],"x":{"irs":{"r":1,"i":["994947346"],"z":["11219"]}}},
 {"s":"AD ORIENTEM LODGE NO 1194","n":[["AD ORIENTEM LODGE NO 1194",1]],"x":{"irs":{"r":1,"i":["920711167"],"z":["12043"]}}},
 {"s":"AD REINHARDT FOUNDATION","n":[["AD REINHARDT FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["800434773"],"z":["10001"]}}},
@@ -1198,7 +1198,7 @@
 {"s":"AFRO-AMERICAN HISTORICAL AND GENEALOGICAL SOCIETY","n":[["AFRO-AMERICAN HISTORICAL AND GENEALOGICAL SOCIETY",1]],"x":{"irs":{"r":1,"i":["133634970"],"z":["10116"]}}},
 {"s":"AFRO-AMERICAN PARENTS DAY CARE CENTER","n":[["Afro-American Parents Day Care Center",2],["AFRO-AMERICAN PARENTS DAY CARE CENTER, INC.",1]],"x":{"ocp":{"r":3,"a":9046114,"l":"2014-08-06","i":["20140730004","20140110004","20060606005"]}}},
 {"s":"AFRO-AMERICAN PARENTS DCC","n":[["AFRO-AMERICAN PARENTS DCC, INC.",1]],"x":{"ocp":{"r":1,"a":5206830,"l":"2003-10-03","i":["20030925021"]}}},
-{"s":"AFRO-AMERICAN PARENTS EDUCATIONAL CENTER","n":[["Afro-American Parents Educational Center, Inc.",3]],"x":{"ocp":{"r":3,"a":6883169.94,"l":"2016-09-28","i":["20160921007","20160816001","20150929007"]}}},
+{"s":"AFRO-AMERICAN PARENTS EDUCATIONAL CENTER","n":[["AFRO-AMERICAN PARENTS EDUCATIONAL CENTER INC",4],["Afro-American Parents Educational Center, Inc.",3]],"x":{"ocp":{"r":3,"a":6883169.94,"l":"2016-09-28","i":["20160921007","20160816001","20150929007"]},"cbr":{"r":2,"a":4180818,"l":"2026-11-25","i":["CT104020279762421","CT104020279762422"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-25","i":["CT104020279762421","CT104020279762422"],"m":["Non-M/WBE"]}}},
 {"s":"AFRO-AMERICAN PARENTS EDUCATIONAL CENTERS","n":[["AFRO-AMERICAN PARENTS EDUCATIONAL CENTERS INC.",1]],"x":{"dbe":{"r":1,"i":["AFRO-AMERICAN PARENTS EDUCATIONAL CENTERS INC."]}}},
 {"s":"AFRO-LATIN JAZZ ALLIANCE","n":[["AFRO-LATIN JAZZ ALLIANCE OF NEW YORK INC",7]],"x":{"cbr":{"r":4,"a":100000,"l":"2026-02-11","i":["CT104020263101055","CT104020263069342","CT104020253163613","CT104020253049333"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-02-11","i":["CT104020263101055","CT104020263069342"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["453665976"],"z":["10029"]}}},
 {"s":"AFROBEATRADIO","n":[["AFROBEATRADIO INC",1]],"x":{"irs":{"r":1,"i":["920591344"],"z":["11202"]}}},
@@ -1677,7 +1677,5 @@
 {"s":"AIKIDO OF PARK SLOPE","n":[["AIKIDO OF PARK SLOPE INC",1]],"x":{"irs":{"r":1,"i":["454943949"],"z":["11215"]}}},
 {"s":"AILEEN AVERY HDFC","n":[["AILEEN AVERY HDFC",1]],"x":{"irs":{"r":1,"i":["133835943"],"z":["10031"]}}},
 {"s":"AILEEN AVERY HOUSING DEVELOPMENT FUND","n":[["AILEEN AVERY HOUSING DEVELOPMENT FUND CORPORATION",1]],"x":{"dbe":{"r":1,"i":["AILEEN AVERY HOUSING DEVELOPMENT FUND CORPORATION"]}}},
-{"s":"AILEEN OCONNELL MEMORIAL SCHOLARSHIP","n":[["AILEEN OCONNELL MEMORIAL SCHOLARSHIP INC",1]],"x":{"irs":{"r":1,"i":["883873611"],"z":["11545"]}}},
-{"s":"AIM","n":[["AIM & Co., LLC",1]],"x":{"sbs":{"r":1,"i":["379659"],"z":["06810"],"p":["MBE","WBE"]}}},
-{"s":"AIM AUTISM","n":[["AIM AUTISM INC",1]],"x":{"irs":{"r":1,"i":["871532145"],"z":["10954"]}}}
+{"s":"AILEEN OCONNELL MEMORIAL SCHOLARSHIP","n":[["AILEEN OCONNELL MEMORIAL SCHOLARSHIP INC",1]],"x":{"irs":{"r":1,"i":["883873611"],"z":["11545"]}}}
 ]}

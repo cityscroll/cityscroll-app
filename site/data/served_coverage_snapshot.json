@@ -53,7 +53,7 @@
   ],
   "evidence_vintage": {
     "oldest": "2026-05-26T00:00:00.000Z",
-    "newest": "2026-11-25T10:44:57.602Z"
+    "newest": "2026-11-27T17:40:35.263Z"
   },
   "domains": [
     {
@@ -69,15 +69,15 @@
           "source_id": null,
           "source_name": null,
           "state": "measured",
-          "value": 20690,
-          "evidence_vintage": "2026-11-25T10:20:15.926Z",
+          "value": 20773,
+          "evidence_vintage": "2026-11-27T17:02:14.869Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
           "sources": [
             {
               "source_id": "checkbook-contracts",
               "source_name": "Checkbook NYC registered contracts",
-              "served_records": 9594,
+              "served_records": 9676,
               "state": "measured"
             },
             {
@@ -139,8 +139,8 @@
           "source_id": "checkbook-contracts",
           "source_name": "Checkbook NYC registered contracts",
           "state": "measured",
-          "value": 30004,
-          "evidence_vintage": "2026-11-25T00:00:00.000Z",
+          "value": 30154,
+          "evidence_vintage": "2026-11-27T00:00:00.000Z",
           "vintage_field": "snapshot_date",
           "vintage_basis": "single"
         },
@@ -153,8 +153,8 @@
           "source_id": "checkbook-spending",
           "source_name": "Checkbook NYC spending transactions",
           "state": "measured",
-          "value": 28603,
-          "evidence_vintage": "2026-11-24T18:19:09.989Z",
+          "value": 28607,
+          "evidence_vintage": "2026-11-27T17:02:21.361Z",
           "vintage_field": "snapshot_date",
           "vintage_basis": "single"
         },
@@ -203,7 +203,7 @@
           "source_name": "NYC OATH trial calendar",
           "state": "measured",
           "value": 142,
-          "evidence_vintage": "2026-11-24T18:40:46.344Z",
+          "evidence_vintage": "2026-11-27T17:22:47.665Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },
@@ -216,8 +216,8 @@
           "source_id": "non-council-board-minutes",
           "source_name": "Community board and borough president minutes",
           "state": "measured",
-          "value": 856,
-          "evidence_vintage": "2026-11-24T18:27:14.027Z",
+          "value": 868,
+          "evidence_vintage": "2026-11-27T17:10:41.889Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },
@@ -231,7 +231,7 @@
           "source_name": "NYC Council Legistar API",
           "state": "measured",
           "value": 14,
-          "evidence_vintage": "2026-11-24T23:45:13.719Z",
+          "evidence_vintage": "2026-11-27T10:00:45.897Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single",
           "records_considered": 305
@@ -252,7 +252,7 @@
           "source_name": "NYC Council Members (1999 to Present)",
           "state": "measured",
           "value": 215,
-          "evidence_vintage": "2026-11-24T18:40:47.168Z",
+          "evidence_vintage": "2026-11-27T17:22:48.530Z",
           "vintage_field": "retrieved_at",
           "vintage_basis": "single"
         },
@@ -266,7 +266,7 @@
           "source_name": "NYC Council Members (1999 to Present)",
           "state": "measured",
           "value": 1375,
-          "evidence_vintage": "2026-11-24T18:40:47.168Z",
+          "evidence_vintage": "2026-11-27T17:22:48.530Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },
@@ -280,7 +280,7 @@
           "source_name": "NYC Council Legistar API",
           "state": "measured",
           "value": 1193,
-          "evidence_vintage": "2026-11-24T18:16:32.000Z",
+          "evidence_vintage": "2026-11-27T16:59:51.000Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         },
@@ -314,7 +314,7 @@
           "source_name": "Zoning Application Portal — projects",
           "state": "measured",
           "value": 237,
-          "evidence_vintage": "2026-11-24T18:54:47.256Z",
+          "evidence_vintage": "2026-11-27T17:31:13.176Z",
           "vintage_field": "materialized_at",
           "vintage_basis": "single"
         },
@@ -327,8 +327,8 @@
           "source_id": "zap-api-outcomes",
           "source_name": "Zoning Application Portal — project outcomes (Planning Labs API)",
           "state": "measured",
-          "value": 148,
-          "evidence_vintage": "2026-11-24T18:39:21.638Z",
+          "value": 149,
+          "evidence_vintage": "2026-11-27T17:22:25.623Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         }
@@ -348,7 +348,7 @@
           "source_name": "City Record Online",
           "state": "measured",
           "value": 133,
-          "evidence_vintage": "2026-11-24T13:42:07.000Z",
+          "evidence_vintage": "2026-11-27T13:46:05.000Z",
           "vintage_field": "source_generated_at",
           "vintage_basis": "single"
         }
@@ -367,8 +367,8 @@
           "source_id": "city-record",
           "source_name": "City Record Online",
           "state": "measured",
-          "value": 88,
-          "evidence_vintage": "2026-11-25T10:44:57.602Z",
+          "value": 85,
+          "evidence_vintage": "2026-11-27T17:40:35.263Z",
           "vintage_field": "retrieved_at",
           "vintage_basis": "single"
         }
@@ -388,7 +388,7 @@
           "source_name": "City Record Online",
           "state": "measured",
           "value": 80,
-          "evidence_vintage": "2026-11-24T18:54:15.517Z",
+          "evidence_vintage": "2026-11-27T17:30:59.606Z",
           "vintage_field": "generated_at",
           "vintage_basis": "single"
         }
@@ -408,7 +408,7 @@
           "source_name": "Annual Examination Schedule",
           "state": "measured",
           "value": 227,
-          "evidence_vintage": "2026-11-25T00:00:00.000Z",
+          "evidence_vintage": "2026-11-27T00:00:00.000Z",
           "vintage_field": "sources_retrieved_as_of",
           "vintage_basis": "single"
         }

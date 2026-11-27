@@ -53,28 +53,28 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-11-25T16:58:40.353Z",
+    "generated_at": "2026-11-27T17:02:14.869Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "74da264dc0a3bb24de4aad0374685fdbeee9d2e65eed8dd54d3838bad14d197c",
-        "row_count": 20690
+        "sha256": "359c6de3a1a81dcb4d0c40ac9f707c9ddafdba2734227c93a8b180ada12dab04",
+        "row_count": 20773
       },
       "spine_sources": {
         "path": "site/data/procurement_spine_sources.json",
-        "sha256": "38d55e9f04c08c4014af6b4785ca502c0c577cb7b8e039ad6c80832ee052ca6d",
+        "sha256": "66a633e5dc9ef48fcbdcd1bb8cf60601c4155e14070380ef4cd91dad89d45b15",
         "passport_contract_rows": 12795
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "901ad14a149a98753a662b90eafaa45ad742ce2f065bbe9bdeeb3bccb48fa6a8",
-        "object_count": 20690
+        "sha256": "e85ab9ddf757358fdd8756e528a0aef779381c5c3988e3c590b86c6636a0fb33",
+        "object_count": 20773
       }
     },
     "served_source_counts": {
       "city_record": 12685,
       "passport_public_contracts": 12771,
-      "checkbook_contracts": 9594
+      "checkbook_contracts": 9676
     },
     "interpretation": "Counts are the committed CityScroll snapshot, not a claim that any source is a complete citywide inventory."
   },
@@ -475,23 +475,23 @@
       "passport_public_contracts": 12782,
       "checkbook_contracts": 9807
     },
-    "doe_canonical_rows": 4628,
+    "doe_canonical_rows": 4679,
     "doe_rows_by_source": {
       "city_record": 431,
       "passport_public_contracts": 438,
-      "checkbook_contracts": 4190
+      "checkbook_contracts": 4241
     },
     "doe_source_combinations": {
       "city_record+passport_public_contracts": 431,
       "passport_public_contracts": 7,
-      "checkbook_contracts": 4190
+      "checkbook_contracts": 4241
     },
     "already_served_rows": {
-      "checkbook_only": 4190,
+      "checkbook_only": 4241,
       "passport_only": 7,
       "city_record_and_passport": 431,
       "all_three": 0,
-      "total": 4628
+      "total": 4679
     },
     "demonstrated_missing_rows": 0,
     "production_card_proposed": false,
@@ -505,7 +505,7 @@
     },
     "served_measurement": {
       "artifact": "site/data/procurement_browse_rows.json",
-      "generated_at": "2026-11-25T10:20:15.926Z"
+      "generated_at": "2026-11-27T17:02:14.869Z"
     }
   },
   "production_cards": [],

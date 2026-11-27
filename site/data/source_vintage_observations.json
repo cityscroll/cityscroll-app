@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-11-25T10:20:15.926Z",
+  "generated_at": "2026-11-27T17:31:13.382Z",
   "contract_count": 76,
   "observations": [
     {
@@ -329,7 +329,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-11-25T10:20:15.926Z",
+        "retrieved_at": "2026-11-27T17:02:14.869Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
@@ -2168,10 +2168,10 @@
       "publisher_last_update_basis": "warehouse_source_summary",
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-11-12T12:39:57.269Z",
+        "retrieved_at": "2026-11-27T17:31:13.382Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "sbs-certified-business-list:2026-11-12T12:39:57.269Z"
+        "run_id": "sbs-certified-business-list:2026-11-27T17:31:13.382Z"
       },
       "expected_cadence": "Every 2 weeks (Open Data metadata, Automation: No; rowsUpdatedAt 2026-11-10T14:39:18Z at recon)",
       "expected_lag_tolerance_days": 45,
