@@ -11,7 +11,7 @@
  *   node tools/build_property_cross_domain.mjs --check
  */
 
-import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, renameSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -627,6 +627,37 @@ function pickDemoBbls(corpus, byBbl) {
   return demos;
 }
 
+function publishPropertyObservations(doc) {
+  const directory = dirname(PROPERTY_OBS_PATH);
+  mkdirSync(directory, { recursive: true });
+  const staging = mkdtempSync(join(directory, ".property-observations-"));
+  try {
+    const stagedPath = join(staging, "observations.json");
+    writeFileSync(stagedPath, `${JSON.stringify(doc, null, 2)}\n`);
+    renameSync(stagedPath, PROPERTY_OBS_PATH);
+  } finally {
+    rmSync(staging, { recursive: true, force: true });
+  }
+  console.log(
+    "wrote property domain observations",
+    PROPERTY_OBS_PATH,
+    "rows",
+    doc.property_count,
+    "bbls",
+    doc.bbl_count,
+    "source_generated_at",
+    doc.source_generated_at,
+    "acquired_at",
+    doc.acquired_at,
+    "provider_clock_dataset",
+    doc.provider_clock?.dataset_id,
+    "provider_clock_field",
+    doc.provider_clock?.field,
+    "content_evidence_newest_start_date",
+    doc.content_evidence_newest_start_date,
+  );
+}
+
 async function main() {
   const check = process.argv.includes("--check");
   const fromLive = process.argv.includes("--from-live");
@@ -688,12 +719,6 @@ async function main() {
           ? "offline_feed_missing_provider_clock"
           : "offline_feed_missing_source_generated_at",
       };
-      if (!sourceGeneratedAt) {
-        console.warn(
-          "offline PROPERTY_LOCATIONS_PATH feed has no source_generated_at; "
-          + "vintage stays UNKNOWN (will not stamp with live SODA clocks).",
-        );
-      }
     } else {
       console.log(
         "acquiring Property Disposition from City Record",
@@ -708,39 +733,19 @@ async function main() {
       sourceGeneratedAt = acquired.source_generated_at;
       providerClock = acquired.provider_clock;
     }
-    propertyObsDoc = propertyDomainObservationsFromFeed(feed, {
+    if (typeof sourceGeneratedAt !== "string" || !Number.isFinite(Date.parse(sourceGeneratedAt))) {
+      throw new Error(`Property observations refresh refused: invalid publisher vintage (${providerClock?.reason || "unknown"}); existing snapshot left untouched`);
+    }
+    const candidate = propertyDomainObservationsFromFeed(feed, {
       source: sourceLabel,
       source_generated_at: sourceGeneratedAt,
       acquired_at: acquiredAt,
       provider_clock: providerClock,
     });
-    if (!propertyObsDoc.source_generated_at) {
-      console.warn(
-        "warning: property source_generated_at is UNKNOWN "
-        + `(provider clock reason=${providerClock?.reason || "unknown"}). `
-        + "Freshness will fail closed rather than inventing build time as vintage.",
-      );
+    if (candidate.bbl_count === 0) {
+      throw new Error("Property observations refresh refused: no usable parcel observations; existing snapshot left untouched");
     }
-    mkdirSync(dirname(PROPERTY_OBS_PATH), { recursive: true });
-    writeFileSync(PROPERTY_OBS_PATH, `${JSON.stringify(propertyObsDoc, null, 2)}\n`);
-    console.log(
-      "wrote property domain observations",
-      PROPERTY_OBS_PATH,
-      "rows",
-      propertyObsDoc.property_count,
-      "bbls",
-      propertyObsDoc.bbl_count,
-      "source_generated_at",
-      propertyObsDoc.source_generated_at,
-      "acquired_at",
-      propertyObsDoc.acquired_at,
-      "provider_clock_dataset",
-      propertyObsDoc.provider_clock?.dataset_id,
-      "provider_clock_field",
-      propertyObsDoc.provider_clock?.field,
-      "content_evidence_newest_start_date",
-      propertyObsDoc.content_evidence_newest_start_date,
-    );
+    propertyObsDoc = candidate;
   }
 
   if (!propertyObsDoc?.property_rows?.length) {
@@ -808,6 +813,7 @@ async function main() {
   mkdirSync(dirname(OUT_SITE), { recursive: true });
   mkdirSync(dirname(OUT_WORKER), { recursive: true });
   const text = `${JSON.stringify(out, null, 2)}\n`;
+  if (fromLive) publishPropertyObservations(propertyObsDoc);
   writeFileSync(OUT_SITE, text);
   writeFileSync(OUT_WORKER, text);
   console.log(
