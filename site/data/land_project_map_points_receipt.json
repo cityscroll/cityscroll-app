@@ -16,11 +16,11 @@
       "vintage": {
         "schema": "cityscroll.land_project_catalog.v1",
         "project_count": 243,
-        "warehouse_materialized_at": "2026-11-24T18:54:47.256Z",
-        "defaults_generated_at": "2026-11-24T18:33:07.704Z",
-        "content_id": "fnv1a32:3894782e:243"
+        "warehouse_materialized_at": "2026-11-27T13:53:11.444Z",
+        "defaults_generated_at": "2026-11-27T13:27:11.849Z",
+        "content_id": "fnv1a32:e3d729f1:243"
       },
-      "sha256": "96db028db40f231e2875e7842ba4bdb0a29f43016bf644d22b0fd6feaa5889a3"
+      "sha256": "7bf00f1e2b8137f272339a091eede086948769dd4abd8644113defe8c8a82a11"
     },
     "land_default": {
       "path": "site/data/land_default_ulurp.json",

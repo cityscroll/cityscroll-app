@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "observed_at": "2026-11-24",
+  "observed_at": "2026-11-27",
   "artifact": "site/data/property_disposition_cohort.json",
   "join_method": "exact_normalized_bbl",
   "text_match_used": false,
-  "n": 1,
+  "n": 3,
   "minimum_sample": 20,
   "status": "insufficient_sample",
-  "label": "n=1 — insufficient for a duration model",
+  "label": "n=3 — insufficient for a duration model",
   "duration_summary_eligible": false,
   "forecast_eligible": false,
   "pairs": [
@@ -18,6 +18,22 @@
       "auction_or_rfp_request_id": "20170512101",
       "auction_or_rfp_date": "2017-05-19",
       "interval_days": 219
+    },
+    {
+      "bbl": "5018010170",
+      "hearing_request_id": "20180326101",
+      "hearing_date": "2018-04-03",
+      "auction_or_rfp_request_id": "20220425010",
+      "auction_or_rfp_date": "2022-05-02",
+      "interval_days": 1490
+    },
+    {
+      "bbl": "5018010170",
+      "hearing_request_id": "20180326101",
+      "hearing_date": "2018-04-03",
+      "auction_or_rfp_request_id": "20220504006",
+      "auction_or_rfp_date": "2022-05-09",
+      "interval_days": 1497
     }
   ]
 }
