@@ -461,6 +461,18 @@ test("A2: missing notice identities never fabricate joins or successful empty de
   assert.equal(contractResultUsesSharedDetail(ANALYTICAL), true);
 });
 
+test("contract inspection shows a reader label for the shared procurement source", () => {
+  const facts = projectContractResultInspection({
+    ...SOURCE_NATIVE,
+    source_system: "shared_procurement_read_model",
+  });
+  assert.equal(facts.source_system, "shared_procurement_read_model");
+
+  const html = renderContractResultInspectionDetailHTML(facts);
+  assert.match(html, /<dt>Source<\/dt><dd>CityScroll procurement records<\/dd>/);
+  assert.doesNotMatch(html, /shared_procurement_read_model/);
+});
+
 /* ---------- A4: journey variants ---------- */
 
 test("A4: CSS keeps the title link until ready, then reveals inspect", () => {
