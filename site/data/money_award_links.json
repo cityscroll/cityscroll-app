@@ -3,8 +3,8 @@
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
   "rule_version": "pin-stem-agency-v1",
-  "generated_at": "2026-11-25T10:45:09.869Z",
-  "as_of": "2026-11-25",
+  "generated_at": "2026-11-27T14:02:50.630Z",
+  "as_of": "2026-11-27",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -37,13 +37,13 @@
     "usable": true,
     "unusable_reason": null,
     "snapshot_age_days": 0,
-    "fetched_at": "2026-11-25T10:20:28.343Z",
-    "checked_at": "2026-11-25T10:20:28.343Z",
+    "fetched_at": "2026-11-27T13:33:10.404Z",
+    "checked_at": "2026-11-27T13:33:10.404Z",
     "fallback_reason": null,
     "fallback_text": null,
     "max_fallback_age_days": 30,
-    "contracts_read": 1705,
-    "contracts_with_rfq_number": 844
+    "contracts_read": 1710,
+    "contracts_with_rfq_number": 848
   },
   "reasons": {
     "linked_pin_stem": {
@@ -131,29 +131,29 @@
   "population": {
     "state": "complete",
     "reasons": [],
-    "solicitation_source_count": 3802,
-    "solicitations_published": 3802,
-    "award_source_count": 12459,
-    "award_rows_read": 12459,
+    "solicitation_source_count": 3804,
+    "solicitations_published": 3804,
+    "award_source_count": 12481,
+    "award_rows_read": 12481,
     "award_publishing_agencies": 53,
     "nycha_feed_state": "live"
   },
   "coverage": {
     "totals": {
-      "solicitations": 3802,
-      "stem_shaped": 1720,
-      "linked": 1303,
-      "linked_pin_stem": 1013,
+      "solicitations": 3804,
+      "stem_shaped": 1721,
+      "linked": 1305,
+      "linked_pin_stem": 1015,
       "linked_pin_exact": 18,
       "linked_nycha_rfq": 272,
       "rfq_numbered": 447,
-      "no_award_yet": 750,
-      "cannot_link": 1749,
+      "no_award_yet": 749,
+      "cannot_link": 1750,
       "multi_award": 214,
       "by_reason": {
-        "linked_pin_stem": 1013,
+        "linked_pin_stem": 1015,
         "linked_pin_exact": 18,
-        "no_award_published_yet": 694,
+        "no_award_published_yet": 693,
         "award_before_notice": 12,
         "award_other_agency": 0,
         "award_pin_tail_unrecognised": 1,
@@ -165,16 +165,16 @@
         "nycha_award_before_notice": 0,
         "nycha_pin_has_no_rfq_number": 20,
         "nycha_award_list_unavailable": 0,
-        "agency_awards_not_in_city_record": 865
+        "agency_awards_not_in_city_record": 866
       },
       "linked_pct_of_all": 34.3,
-      "linked_pct_of_stem_shaped": 58.9,
+      "linked_pct_of_stem_shaped": 59,
       "median_lag_days": 192,
       "at_least_median_lag_old": {
         "min_age_days": 192,
-        "stem_shaped": 1533,
-        "linked": 1001,
-        "linked_pct_of_stem_shaped": 65.3
+        "stem_shaped": 1537,
+        "linked": 1002,
+        "linked_pct_of_stem_shaped": 65.2
       }
     },
     "median_lag_days": 192,
@@ -294,20 +294,20 @@
         }
       },
       "2026": {
-        "solicitations": 806,
-        "stem_shaped": 338,
-        "linked": 100,
-        "linked_pin_stem": 72,
+        "solicitations": 808,
+        "stem_shaped": 339,
+        "linked": 102,
+        "linked_pin_stem": 74,
         "linked_pin_exact": 0,
         "linked_nycha_rfq": 28,
         "rfq_numbered": 84,
-        "no_award_yet": 320,
-        "cannot_link": 386,
+        "no_award_yet": 319,
+        "cannot_link": 387,
         "multi_award": 12,
         "by_reason": {
-          "linked_pin_stem": 72,
+          "linked_pin_stem": 74,
           "linked_pin_exact": 0,
-          "no_award_published_yet": 264,
+          "no_award_published_yet": 263,
           "award_before_notice": 2,
           "award_other_agency": 0,
           "award_pin_tail_unrecognised": 0,
@@ -319,16 +319,16 @@
           "nycha_award_before_notice": 0,
           "nycha_pin_has_no_rfq_number": 4,
           "nycha_award_list_unavailable": 0,
-          "agency_awards_not_in_city_record": 208
+          "agency_awards_not_in_city_record": 209
         },
-        "linked_pct_of_all": 12.4,
-        "linked_pct_of_stem_shaped": 21.3,
-        "median_lag_days": 115,
+        "linked_pct_of_all": 12.6,
+        "linked_pct_of_stem_shaped": 21.8,
+        "median_lag_days": 116,
         "at_least_median_lag_old": {
           "min_age_days": 192,
-          "stem_shaped": 151,
-          "linked": 60,
-          "linked_pct_of_stem_shaped": 39.7
+          "stem_shaped": 155,
+          "linked": 61,
+          "linked_pct_of_stem_shaped": 39.4
         }
       }
     },
@@ -378,18 +378,18 @@
         "agency_id": "citywide-administrative-services",
         "solicitations": 526,
         "stem_shaped": 438,
-        "linked": 323,
-        "linked_pin_stem": 323,
+        "linked": 324,
+        "linked_pin_stem": 324,
         "linked_pin_exact": 0,
         "linked_nycha_rfq": 0,
         "rfq_numbered": 0,
-        "no_award_yet": 113,
+        "no_award_yet": 112,
         "cannot_link": 90,
         "multi_award": 78,
         "by_reason": {
-          "linked_pin_stem": 323,
+          "linked_pin_stem": 324,
           "linked_pin_exact": 0,
-          "no_award_published_yet": 113,
+          "no_award_published_yet": 112,
           "award_before_notice": 1,
           "award_other_agency": 0,
           "award_pin_tail_unrecognised": 1,
@@ -403,8 +403,8 @@
           "nycha_award_list_unavailable": 0,
           "agency_awards_not_in_city_record": 0
         },
-        "linked_pct_of_all": 61.4,
-        "linked_pct_of_stem_shaped": 73.7,
+        "linked_pct_of_all": 61.6,
+        "linked_pct_of_stem_shaped": 74,
         "median_lag_days": 111,
         "at_least_median_lag_old": {
           "min_age_days": 192,
@@ -448,9 +448,9 @@
         "median_lag_days": 250,
         "at_least_median_lag_old": {
           "min_age_days": 192,
-          "stem_shaped": 315,
+          "stem_shaped": 317,
           "linked": 181,
-          "linked_pct_of_stem_shaped": 57.5
+          "linked_pct_of_stem_shaped": 57.1
         }
       },
       {
@@ -498,18 +498,18 @@
         "agency_id": "design-and-construction",
         "solicitations": 289,
         "stem_shaped": 250,
-        "linked": 154,
-        "linked_pin_stem": 154,
+        "linked": 155,
+        "linked_pin_stem": 155,
         "linked_pin_exact": 0,
         "linked_nycha_rfq": 0,
         "rfq_numbered": 0,
-        "no_award_yet": 96,
+        "no_award_yet": 95,
         "cannot_link": 39,
         "multi_award": 13,
         "by_reason": {
-          "linked_pin_stem": 154,
+          "linked_pin_stem": 155,
           "linked_pin_exact": 0,
-          "no_award_published_yet": 96,
+          "no_award_published_yet": 95,
           "award_before_notice": 0,
           "award_other_agency": 0,
           "award_pin_tail_unrecognised": 0,
@@ -523,14 +523,14 @@
           "nycha_award_list_unavailable": 0,
           "agency_awards_not_in_city_record": 0
         },
-        "linked_pct_of_all": 53.3,
-        "linked_pct_of_stem_shaped": 61.6,
+        "linked_pct_of_all": 53.6,
+        "linked_pct_of_stem_shaped": 62,
         "median_lag_days": 181,
         "at_least_median_lag_old": {
           "min_age_days": 192,
           "stem_shaped": 228,
-          "linked": 154,
-          "linked_pct_of_stem_shaped": 67.5
+          "linked": 155,
+          "linked_pct_of_stem_shaped": 68
         }
       },
       {
@@ -576,7 +576,7 @@
       {
         "agency_name": "NYC Health + Hospitals",
         "agency_id": "nyc-health-hospitals",
-        "solicitations": 235,
+        "solicitations": 236,
         "stem_shaped": 0,
         "linked": 0,
         "linked_pin_stem": 0,
@@ -584,7 +584,7 @@
         "linked_nycha_rfq": 0,
         "rfq_numbered": 0,
         "no_award_yet": 0,
-        "cannot_link": 235,
+        "cannot_link": 236,
         "multi_award": 0,
         "by_reason": {
           "linked_pin_stem": 0,
@@ -601,7 +601,7 @@
           "nycha_award_before_notice": 0,
           "nycha_pin_has_no_rfq_number": 0,
           "nycha_award_list_unavailable": 0,
-          "agency_awards_not_in_city_record": 235
+          "agency_awards_not_in_city_record": 236
         },
         "linked_pct_of_all": 0,
         "linked_pct_of_stem_shaped": null,
@@ -728,9 +728,9 @@
         "median_lag_days": 266,
         "at_least_median_lag_old": {
           "min_age_days": 192,
-          "stem_shaped": 86,
+          "stem_shaped": 88,
           "linked": 47,
-          "linked_pct_of_stem_shaped": 54.7
+          "linked_pct_of_stem_shaped": 53.4
         }
       },
       {
@@ -2294,6 +2294,46 @@
         }
       },
       {
+        "agency_name": "Management and Budget",
+        "agency_id": "management-and-budget",
+        "solicitations": 3,
+        "stem_shaped": 3,
+        "linked": 0,
+        "linked_pin_stem": 0,
+        "linked_pin_exact": 0,
+        "linked_nycha_rfq": 0,
+        "rfq_numbered": 0,
+        "no_award_yet": 3,
+        "cannot_link": 0,
+        "multi_award": 0,
+        "by_reason": {
+          "linked_pin_stem": 0,
+          "linked_pin_exact": 0,
+          "no_award_published_yet": 3,
+          "award_before_notice": 0,
+          "award_other_agency": 0,
+          "award_pin_tail_unrecognised": 0,
+          "pin_shape_not_joinable": 0,
+          "no_pin": 0,
+          "linked_nycha_rfq": 0,
+          "nycha_rfq_not_on_list_yet": 0,
+          "nycha_rfq_not_on_list": 0,
+          "nycha_award_before_notice": 0,
+          "nycha_pin_has_no_rfq_number": 0,
+          "nycha_award_list_unavailable": 0,
+          "agency_awards_not_in_city_record": 0
+        },
+        "linked_pct_of_all": 0,
+        "linked_pct_of_stem_shaped": 0,
+        "median_lag_days": null,
+        "at_least_median_lag_old": {
+          "min_age_days": 192,
+          "stem_shaped": 2,
+          "linked": 0,
+          "linked_pct_of_stem_shaped": 0
+        }
+      },
+      {
         "agency_name": "Taxi and Limousine Commission",
         "agency_id": "taxi-and-limousine-commission",
         "solicitations": 3,
@@ -2451,46 +2491,6 @@
           "stem_shaped": 0,
           "linked": 0,
           "linked_pct_of_stem_shaped": null
-        }
-      },
-      {
-        "agency_name": "Management and Budget",
-        "agency_id": "management-and-budget",
-        "solicitations": 2,
-        "stem_shaped": 2,
-        "linked": 0,
-        "linked_pin_stem": 0,
-        "linked_pin_exact": 0,
-        "linked_nycha_rfq": 0,
-        "rfq_numbered": 0,
-        "no_award_yet": 2,
-        "cannot_link": 0,
-        "multi_award": 0,
-        "by_reason": {
-          "linked_pin_stem": 0,
-          "linked_pin_exact": 0,
-          "no_award_published_yet": 2,
-          "award_before_notice": 0,
-          "award_other_agency": 0,
-          "award_pin_tail_unrecognised": 0,
-          "pin_shape_not_joinable": 0,
-          "no_pin": 0,
-          "linked_nycha_rfq": 0,
-          "nycha_rfq_not_on_list_yet": 0,
-          "nycha_rfq_not_on_list": 0,
-          "nycha_award_before_notice": 0,
-          "nycha_pin_has_no_rfq_number": 0,
-          "nycha_award_list_unavailable": 0,
-          "agency_awards_not_in_city_record": 0
-        },
-        "linked_pct_of_all": 0,
-        "linked_pct_of_stem_shaped": 0,
-        "median_lag_days": null,
-        "at_least_median_lag_old": {
-          "min_age_days": 192,
-          "stem_shaped": 2,
-          "linked": 0,
-          "linked_pct_of_stem_shaped": 0
         }
       },
       {
@@ -2924,10 +2924,10 @@
       },
       "all_solicitations": {
         "totals": {
-          "solicitations": 3802,
-          "linked_without_nycha_list": 1031,
-          "linked_with_nycha_list": 1303,
-          "pct_without_nycha_list": 27.1,
+          "solicitations": 3804,
+          "linked_without_nycha_list": 1033,
+          "linked_with_nycha_list": 1305,
+          "pct_without_nycha_list": 27.2,
           "pct_with_nycha_list": 34.3
         },
         "by_cohort_year": {
@@ -2953,17 +2953,17 @@
             "pct_with_nycha_list": 34.6
           },
           "2026": {
-            "solicitations": 806,
-            "linked_without_nycha_list": 72,
-            "linked_with_nycha_list": 100,
-            "pct_without_nycha_list": 8.9,
-            "pct_with_nycha_list": 12.4
+            "solicitations": 808,
+            "linked_without_nycha_list": 74,
+            "linked_with_nycha_list": 102,
+            "pct_without_nycha_list": 9.2,
+            "pct_with_nycha_list": 12.6
           }
         }
       }
     }
   },
-  "count": 3802,
+  "count": 3804,
   "solicitations": [
     {
       "request_id": "20221021102",
@@ -11920,7 +11920,7 @@
       "link_state": "linked",
       "reason": "linked_pin_stem",
       "link_basis": "pin_stem",
-      "award_count": 15,
+      "award_count": 16,
       "first_award_lag_days": 393,
       "awards": [
         {
@@ -12087,6 +12087,17 @@
           "rfq_number": null,
           "vendor_name": "8RES LLC",
           "award_amount": 1495077
+        },
+        {
+          "source": "city_record_award_notices",
+          "request_id": "20261120010",
+          "award_date": "2026-11-27",
+          "date_kind": "notice_date",
+          "contract_pin": "26023P0007004R001",
+          "contract_number": null,
+          "rfq_number": null,
+          "vendor_name": "BDO USA LLP",
+          "award_amount": 1275000
         }
       ],
       "linked_award": {
@@ -12254,6 +12265,17 @@
           "rfq_number": null,
           "vendor_name": "8RES LLC",
           "award_amount": 1495077
+        },
+        {
+          "source": "city_record_award_notices",
+          "request_id": "20261120010",
+          "award_date": "2026-11-27",
+          "date_kind": "notice_date",
+          "contract_pin": "26023P0007004R001",
+          "contract_number": null,
+          "rfq_number": null,
+          "vendor_name": "BDO USA LLP",
+          "award_amount": 1275000
         }
       ],
       "other_awards_label": "other awards on the same contract number",
@@ -32945,7 +32967,7 @@
           "contract_number": "2335175",
           "rfq_number": "464034",
           "vendor_name": "JRCRUZ CORP",
-          "award_amount": 10492383.04
+          "award_amount": 10934184.3
         }
       ],
       "linked_award": {
@@ -32957,7 +32979,7 @@
         "contract_number": "2335175",
         "rfq_number": "464034",
         "vendor_name": "JRCRUZ CORP",
-        "award_amount": 10492383.04
+        "award_amount": 10934184.3
       },
       "other_awards": [],
       "other_awards_label": null,
@@ -95376,7 +95398,7 @@
       "link_state": "linked",
       "reason": "linked_nycha_rfq",
       "link_basis": "nycha_rfq_number",
-      "award_count": 2,
+      "award_count": 3,
       "first_award_lag_days": 430,
       "awards": [
         {
@@ -95399,6 +95421,17 @@
           "contract_number": "2616720",
           "rfq_number": "514504",
           "vendor_name": "DACK CONSULTING SOLUTIONS INC",
+          "award_amount": 1500000
+        },
+        {
+          "source": "nycha_awarded_contracts",
+          "request_id": null,
+          "award_date": "2026-11-25",
+          "date_kind": "contract_start",
+          "contract_pin": null,
+          "contract_number": "2616892",
+          "rfq_number": "514504",
+          "vendor_name": "DOMINION ENVIRONMENTAL GROUP",
           "award_amount": 1500000
         }
       ],
@@ -95423,6 +95456,17 @@
           "contract_number": "2616720",
           "rfq_number": "514504",
           "vendor_name": "DACK CONSULTING SOLUTIONS INC",
+          "award_amount": 1500000
+        },
+        {
+          "source": "nycha_awarded_contracts",
+          "request_id": null,
+          "award_date": "2026-11-25",
+          "date_kind": "contract_start",
+          "contract_pin": null,
+          "contract_number": "2616892",
+          "rfq_number": "514504",
+          "vendor_name": "DOMINION ENVIRONMENTAL GROUP",
           "award_amount": 1500000
         }
       ],
@@ -103007,7 +103051,7 @@
       "link_state": "linked",
       "reason": "linked_pin_stem",
       "link_basis": "pin_stem",
-      "award_count": 63,
+      "award_count": 64,
       "first_award_lag_days": 272,
       "awards": [
         {
@@ -103564,7 +103608,7 @@
         }
       ],
       "other_awards_label": "other awards on the same contract number",
-      "other_awards_omitted": 38
+      "other_awards_omitted": 39
     },
     {
       "request_id": "20250924016",
@@ -115634,13 +115678,35 @@
       "stem_solicitation_count": 1,
       "rfq_numbers": [],
       "rfq_solicitation_count": null,
-      "link_state": "no_award_yet",
-      "reason": "no_award_published_yet",
-      "link_basis": null,
-      "award_count": 0,
-      "first_award_lag_days": null,
-      "awards": [],
-      "linked_award": null,
+      "link_state": "linked",
+      "reason": "linked_pin_stem",
+      "link_basis": "pin_stem",
+      "award_count": 1,
+      "first_award_lag_days": 273,
+      "awards": [
+        {
+          "source": "city_record_award_notices",
+          "request_id": "20261120007",
+          "award_date": "2026-11-27",
+          "date_kind": "notice_date",
+          "contract_pin": "85026B0060001",
+          "contract_number": null,
+          "rfq_number": null,
+          "vendor_name": "J. Pizzirusso Landscaping Corp",
+          "award_amount": 19599408
+        }
+      ],
+      "linked_award": {
+        "source": "city_record_award_notices",
+        "request_id": "20261120007",
+        "award_date": "2026-11-27",
+        "date_kind": "notice_date",
+        "contract_pin": "85026B0060001",
+        "contract_number": null,
+        "rfq_number": null,
+        "vendor_name": "J. Pizzirusso Landscaping Corp",
+        "award_amount": 19599408
+      },
       "other_awards": [],
       "other_awards_label": null,
       "other_awards_omitted": 0
@@ -116415,7 +116481,7 @@
       "link_state": "linked",
       "reason": "linked_pin_stem",
       "link_basis": "pin_stem",
-      "award_count": 4,
+      "award_count": 5,
       "first_award_lag_days": 192,
       "awards": [
         {
@@ -116455,6 +116521,17 @@
           "source": "city_record_award_notices",
           "request_id": "20261014039",
           "award_date": "2026-10-21",
+          "date_kind": "notice_date",
+          "contract_pin": "85726B0035003",
+          "contract_number": null,
+          "rfq_number": null,
+          "vendor_name": "Nationwide Auto Painting Inc",
+          "award_amount": 11007325
+        },
+        {
+          "source": "city_record_award_notices",
+          "request_id": "20261118013",
+          "award_date": "2026-11-25",
           "date_kind": "notice_date",
           "contract_pin": "85726B0035003",
           "contract_number": null,
@@ -116501,6 +116578,17 @@
           "source": "city_record_award_notices",
           "request_id": "20261014039",
           "award_date": "2026-10-21",
+          "date_kind": "notice_date",
+          "contract_pin": "85726B0035003",
+          "contract_number": null,
+          "rfq_number": null,
+          "vendor_name": "Nationwide Auto Painting Inc",
+          "award_amount": 11007325
+        },
+        {
+          "source": "city_record_award_notices",
+          "request_id": "20261118013",
+          "award_date": "2026-11-25",
           "date_kind": "notice_date",
           "contract_pin": "85726B0035003",
           "contract_number": null,
@@ -122603,7 +122691,7 @@
       "agency_id": "citywide-administrative-services",
       "cohort_year": 2026,
       "solicitation_date": "2026-05-20",
-      "response_due_date": "2026-11-18",
+      "response_due_date": "2027-01-20",
       "pin_shape": "stem",
       "stem_solicitation_count": 1,
       "rfq_numbers": [],
@@ -125485,13 +125573,35 @@
       "stem_solicitation_count": 1,
       "rfq_numbers": [],
       "rfq_solicitation_count": null,
-      "link_state": "no_award_yet",
-      "reason": "no_award_published_yet",
-      "link_basis": null,
-      "award_count": 0,
-      "first_award_lag_days": null,
-      "awards": [],
-      "linked_award": null,
+      "link_state": "linked",
+      "reason": "linked_pin_stem",
+      "link_basis": "pin_stem",
+      "award_count": 1,
+      "first_award_lag_days": 149,
+      "awards": [
+        {
+          "source": "city_record_award_notices",
+          "request_id": "20261118022",
+          "award_date": "2026-11-27",
+          "date_kind": "notice_date",
+          "contract_pin": "85726B0061001",
+          "contract_number": null,
+          "rfq_number": null,
+          "vendor_name": "Best at Pest Exterminating Corp",
+          "award_amount": 17083000
+        }
+      ],
+      "linked_award": {
+        "source": "city_record_award_notices",
+        "request_id": "20261118022",
+        "award_date": "2026-11-27",
+        "date_kind": "notice_date",
+        "contract_pin": "85726B0061001",
+        "contract_number": null,
+        "rfq_number": null,
+        "vendor_name": "Best at Pest Exterminating Corp",
+        "award_amount": 17083000
+      },
       "other_awards": [],
       "other_awards_label": null,
       "other_awards_omitted": 0
@@ -128125,7 +128235,7 @@
       "agency_id": "citywide-administrative-services",
       "cohort_year": 2026,
       "solicitation_date": "2026-08-18",
-      "response_due_date": "2026-12-02",
+      "response_due_date": "2027-01-13",
       "pin_shape": "stem",
       "stem_solicitation_count": 1,
       "rfq_numbers": [],
@@ -128381,7 +128491,7 @@
       "agency_id": "citywide-administrative-services",
       "cohort_year": 2026,
       "solicitation_date": "2026-08-26",
-      "response_due_date": "2026-12-03",
+      "response_due_date": "2027-01-14",
       "pin_shape": "stem",
       "stem_solicitation_count": 1,
       "rfq_numbers": [],
@@ -128427,7 +128537,7 @@
       "agency_id": "citywide-administrative-services",
       "cohort_year": 2026,
       "solicitation_date": "2026-08-27",
-      "response_due_date": "2026-12-09",
+      "response_due_date": "2027-01-21",
       "pin_shape": "stem",
       "stem_solicitation_count": 1,
       "rfq_numbers": [],
@@ -130585,7 +130695,7 @@
       "agency_id": "environmental-protection",
       "cohort_year": 2026,
       "solicitation_date": "2026-09-30",
-      "response_due_date": "2026-11-17",
+      "response_due_date": "2026-12-10",
       "pin_shape": "stem",
       "stem_solicitation_count": 1,
       "rfq_numbers": [],
@@ -130955,7 +131065,7 @@
       "agency_id": "environmental-protection",
       "cohort_year": 2026,
       "solicitation_date": "2026-10-07",
-      "response_due_date": "2026-11-18",
+      "response_due_date": "2026-12-08",
       "pin_shape": "stem",
       "stem_solicitation_count": 1,
       "rfq_numbers": [],
@@ -131141,7 +131251,7 @@
       "agency_id": "housing-authority",
       "cohort_year": 2026,
       "solicitation_date": "2026-10-13",
-      "response_due_date": "2026-11-25",
+      "response_due_date": "2026-12-04",
       "pin_shape": "rfq",
       "stem_solicitation_count": null,
       "rfq_numbers": [
@@ -131584,7 +131694,7 @@
       "agency_id": "nyc-health-hospitals",
       "cohort_year": 2026,
       "solicitation_date": "2026-10-21",
-      "response_due_date": "2026-12-03",
+      "response_due_date": "2026-12-17",
       "pin_shape": "other",
       "stem_solicitation_count": null,
       "rfq_numbers": [],
@@ -133092,6 +133202,52 @@
       "cohort_year": 2026,
       "solicitation_date": "2026-11-24",
       "response_due_date": "2026-12-28",
+      "pin_shape": "other",
+      "stem_solicitation_count": null,
+      "rfq_numbers": [],
+      "rfq_solicitation_count": null,
+      "link_state": "cannot_link",
+      "reason": "agency_awards_not_in_city_record",
+      "link_basis": null,
+      "award_count": 0,
+      "first_award_lag_days": null,
+      "awards": [],
+      "linked_award": null,
+      "other_awards": [],
+      "other_awards_label": null,
+      "other_awards_omitted": 0
+    },
+    {
+      "request_id": "20261104023",
+      "pin": "00227P0001",
+      "agency_name": "Management and Budget",
+      "agency_id": "management-and-budget",
+      "cohort_year": 2026,
+      "solicitation_date": "2026-11-25",
+      "response_due_date": "2027-01-20",
+      "pin_shape": "stem",
+      "stem_solicitation_count": 1,
+      "rfq_numbers": [],
+      "rfq_solicitation_count": null,
+      "link_state": "no_award_yet",
+      "reason": "no_award_published_yet",
+      "link_basis": null,
+      "award_count": 0,
+      "first_award_lag_days": null,
+      "awards": [],
+      "linked_award": null,
+      "other_awards": [],
+      "other_awards_label": null,
+      "other_awards_omitted": 0
+    },
+    {
+      "request_id": "20261119004",
+      "pin": "13202511",
+      "agency_name": "NYC Health + Hospitals",
+      "agency_id": "nyc-health-hospitals",
+      "cohort_year": 2026,
+      "solicitation_date": "2026-11-27",
+      "response_due_date": "2027-01-13",
       "pin_shape": "other",
       "stem_solicitation_count": null,
       "rfq_numbers": [],

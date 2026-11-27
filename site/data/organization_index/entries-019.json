@@ -1,4 +1,14 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":19,"first_ordinal":31680,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":19,"first_ordinal":31671,"entries":[
+{"s":"CLOUD DANCERS FOUNDATION","n":[["CLOUD DANCERS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["841728591"],"z":["10065"]}}},
+{"s":"CLOUD FOREST FUND","n":[["CLOUD FOREST FUND",1]],"x":{"irs":{"r":1,"i":["920769384"],"z":["11040"]}}},
+{"s":"CLOUD INSTITUTE FOR SUSTAINABILITY EDUCATION","n":[["CLOUD INSTITUTE FOR SUSTAINABILITY EDUCATION",1]],"x":{"irs":{"r":1,"i":["383645810"],"z":["12502"]}}},
+{"s":"CLOUD MOUNTAIN FOUNDATION","n":[["CLOUD MOUNTAIN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["043493352"],"z":["10001"]}}},
+{"s":"CLOUD NINE ENRICHMENT","n":[["CLOUD NINE ENRICHMENT",1]],"x":{"irs":{"r":1,"i":["921466580"],"z":["13077"]}}},
+{"s":"CLOUD PRINTING","n":[["Cloud Printing Corp",1]],"x":{"sbs":{"r":1,"i":["316874"],"z":["10018"],"p":["MBE"]}}},
+{"s":"CLOUD SHIFTERS","n":[["Cloud Shifters LLC",1]],"x":{"dol":{"r":1,"i":["26-9YCL3-CR"],"z":["02421"]}}},
+{"s":"CLOUD-AGE IT","d":[["Cloud-Age iT",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["103784"],"z":["08902"],"p":["WBE"]}}},
+{"s":"CLOUD-AGE IT LIMITED LIABILITY","n":[["Cloud-Age IT Limited Liability Company",1]],"x":{"sbs":{"r":1,"i":["103784"],"z":["08902"],"p":["WBE"]}}},
+{"s":"CLOUDENYC","n":[["CLOUDENYC INC",1]],"x":{"irs":{"r":1,"i":["850992793"],"z":["11102"]}}},
 {"s":"CLOUDFIERY","n":[["CloudFiery Inc.",1]],"x":{"sbs":{"r":1,"i":["394963"],"z":["11507"],"p":["MBE","WBE"]}}},
 {"s":"CLOUDFIRST TECHNOLOGY SOLUTIONS","n":[["CloudFirst Technology Solutions, Inc.",1]],"x":{"sbs":{"r":1,"i":["369661"],"z":["12550"],"p":["MBE"]}}},
 {"s":"CLOUDS OF BLESSINGS MINISTRY","n":[["CLOUDS OF BLESSINGS MINISTRY INC",1]],"x":{"irs":{"r":1,"i":["822419942"],"z":["11236"]}}},
@@ -614,7 +624,7 @@
 {"s":"COLLABORATIVE DIVORCE ASSOCIATION OF THE CAPITAL DISTRICT","n":[["COLLABORATIVE DIVORCE ASSOCIATION OF THE CAPITAL DISTRICT INC",1]],"x":{"irs":{"r":1,"i":["611555153"],"z":["12203"]}}},
 {"s":"COLLABORATIVE ENGINEERING OFFICE","n":[["COLLABORATIVE ENGINEERING OFFICE PLLC",1]],"x":{"sbs":{"r":1,"i":["379099"],"z":["11201"],"p":["MBE"]}}},
 {"s":"COLLABORATIVE FOCUS ON RISK","n":[["COLLABORATIVE FOCUS ON RISK INC",1]],"x":{"irs":{"r":1,"i":["462571461"],"z":["10021"]}}},
-{"s":"COLLABORATIVE FOR BETTER URBAN HEALTH","n":[["Collaborative For Better Urban Health LLC",5],["COLLABORATIVE FOR BETTER URBAN HEALTH LLC",1],["Collaborative For Better Urban Health",1]],"x":{"cbr":{"r":4,"a":100000,"l":"2026-02-04","i":["CT104020263093931","CT104020263049704","CT104020253053784","CT104020253036996"],"m":["Black American"]},"cbv":{"r":1,"l":"2026-02-04","i":["CT104020263093931"],"m":["Black American"]},"dbe":{"r":1,"i":["COLLABORATIVE FOR BETTER URBAN HEALTH LLC"]},"sbs":{"r":1,"i":["359456"],"z":["10001"],"p":["MBE"]}}},
+{"s":"COLLABORATIVE FOR BETTER URBAN HEALTH","n":[["Collaborative For Better Urban Health LLC",7],["COLLABORATIVE FOR BETTER URBAN HEALTH LLC",1],["Collaborative For Better Urban Health",1]],"x":{"cbr":{"r":5,"a":125000,"l":"2026-11-25","i":["CT104020273054559","CT104020263093931","CT104020263049704","CT104020253053784","CT104020253036996"],"m":["Black American"]},"cbv":{"r":2,"l":"2026-11-25","i":["CT104020273054559","CT104020263093931"],"m":["Black American"]},"dbe":{"r":1,"i":["COLLABORATIVE FOR BETTER URBAN HEALTH LLC"]},"sbs":{"r":1,"i":["359456"],"z":["10001"],"p":["MBE"]}}},
 {"s":"COLLABORATIVE FOR PALLIATIVE CARE","n":[["COLLABORATIVE FOR PALLIATIVE CARE INC",1]],"x":{"irs":{"r":1,"i":["454731635"],"z":["10605"]}}},
 {"s":"COLLABORATIVE LAW ASSOCIATION OF THE ROCHESTER AREA","n":[["COLLABORATIVE LAW ASSOCIATION OF THE ROCHESTER AREA INC",1]],"x":{"irs":{"r":1,"i":["760749559"],"z":["14580"]}}},
 {"s":"COLLABORATIVE OPPORTUNITIES FOR RAISING EMPOWERMENT","n":[["COLLABORATIVE OPPORTUNITIES FOR RAISING EMPOWERMENT",1]],"x":{"irs":{"r":1,"i":["760736509"],"z":["10002"]}}},
@@ -1607,13 +1617,5 @@
 {"s":"COMMUNITY INQUIRY PROJECT","n":[["COMMUNITY INQUIRY PROJECT",1]],"x":{"irs":{"r":1,"i":["413892149"],"z":["10040"]}}},
 {"s":"COMMUNITY INSPIRATION COLLECTIVE","n":[["COMMUNITY INSPIRATION COLLECTIVE",1]],"x":{"irs":{"r":1,"i":["934295655"],"z":["14203"]}}},
 {"s":"COMMUNITY INTEGRATED SERVICES","n":[["COMMUNITY INTEGRATED SERVICES INC",1]],"x":{"irs":{"r":1,"i":["510239152"],"z":["14510"]}}},
-{"s":"COMMUNITY INTERGENERATION ACTION NETWORK","n":[["COMMUNITY INTERGENERATION ACTION NETWORK INC",1]],"x":{"irs":{"r":1,"i":["872269262"],"z":["11691"]}}},
-{"s":"COMMUNITY KINSHIP LIFE CK LIFE","n":[["COMMUNITY KINSHIP LIFE CK LIFE",1]],"x":{"irs":{"r":1,"i":["262138192"],"z":["10460"]}}},
-{"s":"COMMUNITY KITCHEN","n":[["COMMUNITY KITCHEN INC",1]],"x":{"irs":{"r":1,"i":["372062874"],"z":["10528"]}}},
-{"s":"COMMUNITY KOLLEL FOUNDATION","n":[["COMMUNITY KOLLEL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["990765557"],"z":["11691"]}}},
-{"s":"COMMUNITY KOLLEL-BAAL HA BATIM OF WILLOW BROOK","n":[["COMMUNITY KOLLEL-BAAL HA BATIM OF WILLOW BROOK INC",1]],"x":{"irs":{"r":1,"i":["133915552"],"z":["10314"]}}},
-{"s":"COMMUNITY LANTERN","n":[["Community Lantern Corporation",4],["Community Lantern Corp.",1]],"x":{"ocp":{"r":5,"a":8258227,"l":"2009-12-24","i":["20091217008","20090115010","20080908025","20080630028","20080627012"]}}},
-{"s":"COMMUNITY LAW OFFICE","n":[["COMMUNITY LAW OFFICE INC",1]],"x":{"irs":{"r":1,"i":["452707905"],"z":["10028"]}}},
-{"s":"COMMUNITY LEADERSHIP DEVELOPMENT PROGRAM OF NIAGARA COUNTY","n":[["COMMUNITY LEADERSHIP DEVELOPMENT PROGRAM OF NIAGARA COUNTY INC",1]],"x":{"irs":{"r":1,"i":["161244398"],"z":["14304"]}}},
-{"s":"COMMUNITY LEADERSHIP SERVICES","n":[["COMMUNITY LEADERSHIP SERVICES INC",1]],"x":{"irs":{"r":1,"i":["460617150"],"z":["11691"]}}}
+{"s":"COMMUNITY INTERGENERATION ACTION NETWORK","n":[["COMMUNITY INTERGENERATION ACTION NETWORK INC",1]],"x":{"irs":{"r":1,"i":["872269262"],"z":["11691"]}}}
 ]}

@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-24T18:39:21.638Z",
+  "generated_at": "2026-11-27T13:32:59.450Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,24 +9,24 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-11-24",
+    "today": "2026-11-27",
     "projects_listed": 234,
     "projects_fetched": 234,
     "projects_failed": 0,
     "unavailable_project_ids": [],
-    "hearings_extracted": 390,
-    "disposition_hearings_extracted": 78,
+    "hearings_extracted": 391,
+    "disposition_hearings_extracted": 79,
     "milestone_hearings_extracted": 312,
-    "disposition_upcoming_count": 4,
+    "disposition_upcoming_count": 5,
     "milestone_upcoming_count": 144,
     "incremental_milestone_count": 144,
     "accepted_milestone_classes": {
       "cpc_pre_hearing_review_session": 77,
       "cpc_public_hearing": 67
     },
-    "published_meeting_dates_evaluated": 825,
-    "hearing_shaped_candidates_reviewed": 799,
-    "upcoming_count": 148,
+    "published_meeting_dates_evaluated": 823,
+    "hearing_shaped_candidates_reviewed": 797,
+    "upcoming_count": 149,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -1001,7 +1001,7 @@
       "source": "zap-api-milestones",
       "project_id": "2026M0275",
       "project_name": "415 Madison Avenue Special Permits Renewal",
-      "public_status": "Filed",
+      "public_status": "In Public Review",
       "portal_url": "https://zap.planning.nyc.gov/projects/2026M0275",
       "borough": "Manhattan",
       "community_district": "M05",
@@ -5839,6 +5839,55 @@
         },
         "derived": []
       }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-dispositions",
+      "project_id": "2023K0400",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2023K0400",
+      "borough": "Brooklyn",
+      "disposition_id": "d9af6323-69b0-f111-aaad-001dd80d9e2a",
+      "disposition_name": "2023K0400_ZM_BK CB13",
+      "representing": "Community Board",
+      "phase_id": "community_board",
+      "hearing_date": "2026-12-17",
+      "hearing_at": "2026-12-17",
+      "hearing_location_raw": "2601 Ocean Parkway, South Brooklyn Health, 2nd floor auditorium",
+      "venue_address": "2601 Ocean Parkway, South Brooklyn Health, 2nd floor auditorium",
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [
+        "in_person"
+      ],
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=2601%20Ocean%20Parkway%2C%20South%20Brooklyn%20Health%2C%202nd%20floor%20auditorium%2C%20New%20York%2C%20NY",
+      "parse_status": "partial",
+      "provenance": {
+        "field": "dcp-publichearinglocation",
+        "source": "zap-api-dispositions",
+        "derived": [
+          {
+            "field": "venue_address",
+            "method": "address_shaped_raw",
+            "excerpt": "2601 Ocean Parkway, South Brooklyn Health, 2nd floor auditorium"
+          }
+        ],
+        "hearing_at": {
+          "field": "dcp-dateofpublichearing",
+          "source": "zap-api-dispositions",
+          "value": "2026-12-17"
+        },
+        "representing": {
+          "field": "dcp-representing",
+          "source": "zap-api-dispositions",
+          "value": "Community Board"
+        }
+      },
+      "project_name": "Pemmil West 25th Street Rezoning",
+      "public_status": "In Public Review",
+      "community_district": "K13",
+      "cc_district": "47",
+      "latitude": null,
+      "longitude": null
     },
     {
       "schema_version": 1,

@@ -1,4 +1,15 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":32,"first_ordinal":53722,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":32,"first_ordinal":53712,"entries":[
+{"s":"FOREST HILLS GARDENS TAXPAYERS ASSOCIATION","n":[["FOREST HILLS GARDENS TAXPAYERS ASSOCIATION INCORPORATED",1]],"x":{"irs":{"r":1,"i":["113818816"],"z":["11375"]}}},
+{"s":"FOREST HILLS JEWISH CENTER","n":[["FOREST HILLS JEWISH CENTER",2]],"x":{"dbe":{"r":1,"i":["FOREST HILLS JEWISH CENTER"]},"irs":{"r":1,"i":["111631821"],"z":["11375"]}}},
+{"s":"FOREST HILLS MHA HOUSING DEVELOPMENT FUND","n":[["FOREST HILLS MHA HOUSING DEVELOPMENT FUND CORPORATION",1]],"x":{"irs":{"r":1,"i":["823003388"],"z":["11375"]}}},
+{"s":"FOREST HILLS ROBOTICS LEAGUE","n":[["FOREST HILLS ROBOTICS LEAGUE INC",1]],"x":{"irs":{"r":1,"i":["273014951"],"z":["11375"]}}},
+{"s":"FOREST HILLS VOL AMBUL","n":[["FOREST HILLS VOL AMBUL. CORP.",4]],"x":{"ocp":{"r":1,"a":6700,"l":"2021-02-26","i":["20210222106"]},"cbr":{"r":2,"a":3000,"l":"2026-06-24","i":["CT101320261417610","CT101320251418443"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":6700,"l":"2021-02-19","i":["CT1-057-20218801227"]}}},
+{"s":"FOREST HILLS VOLUNTEER AMBULANCE CORPS","n":[["FOREST HILLS VOLUNTEER AMBULANCE CORPS INC",1]],"x":{"irs":{"r":1,"i":["237169662"],"z":["11375"]}}},
+{"s":"FOREST HILLS YOUTH ATHLETIC ASSOCIATION","n":[["FOREST HILLS YOUTH ATHLETIC ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["264164715"],"z":["11375"]}}},
+{"s":"FOREST HOUSE","n":[["FOREST HOUSE LLC",1]],"x":{"dbe":{"r":1,"i":["FOREST HOUSE LLC"]}}},
+{"s":"FOREST HOUSE OF MANHATTAN","n":[["FOREST HOUSE OF MANHATTAN",1]],"x":{"irs":{"r":1,"i":["813286640"],"z":["10027"]}}},
+{"s":"FOREST HUGHES ASSOCIATES","n":[["Forest Hughes & Associates LLC",1]],"x":{"sbs":{"r":1,"i":["103072"],"z":["10004"],"p":["WBE"]}}},
+{"s":"FOREST LAKE CAMP ALUMNI SCHOLARSHIP FUND","n":[["FOREST LAKE CAMP ALUMNI & SCHOLARSHIP FUND INC",1]],"x":{"irs":{"r":1,"i":["820764124"],"z":["12817"]}}},
 {"s":"FOREST LAKE PARK CLUB","n":[["FOREST LAKE PARK CLUB INC",1]],"x":{"irs":{"r":1,"i":["141262818"],"z":["12203"]}}},
 {"s":"FOREST LAWN HERITAGE FOUNDATION","n":[["FOREST LAWN HERITAGE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["161405484"],"z":["14209"]}}},
 {"s":"FOREST LAWN MEMORIAL PARK","n":[["FOREST LAWN MEMORIAL PARK INC",1]],"x":{"irs":{"r":1,"i":["160436325"],"z":["14901"]}}},
@@ -1678,18 +1689,5 @@
 {"s":"FRIENDS OF BROTHERS IN YOGA","n":[["FRIENDS OF BROTHERS IN YOGA INC",1]],"x":{"irs":{"r":1,"i":["423359778"],"z":["10018"]}}},
 {"s":"FRIENDS OF BROWER PARK","n":[["FRIENDS OF BROWER PARK INC",1]],"x":{"irs":{"r":1,"i":["611697542"],"z":["11213"]}}},
 {"s":"FRIENDS OF BRUNEL PARK- EMILE BRUNEL STUDIO AND SCULPTURE PARK","n":[["FRIENDS OF BRUNEL PARK- EMILE BRUNEL STUDIO AND SCULPTURE PARK",1]],"x":{"irs":{"r":1,"i":["833702809"],"z":["12412"]}}},
-{"s":"FRIENDS OF BSA PACK 6 TROOP6","n":[["FRIENDS OF BSA PACK 6 TROOP6 CORP",1]],"x":{"irs":{"r":1,"i":["333616318"],"z":["10308"]}}},
-{"s":"FRIENDS OF BUCKS ROCK","n":[["FRIENDS OF BUCKS ROCK INC",1]],"x":{"irs":{"r":1,"i":["134192202"],"z":["10003"]}}},
-{"s":"FRIENDS OF BUFFALO CHESTERTON ACADEMY","n":[["FRIENDS OF BUFFALO CHESTERTON ACADEMY INC",1]],"x":{"irs":{"r":1,"i":["464186000"],"z":["14026"]}}},
-{"s":"FRIENDS OF BUFFALO CREEK","n":[["FRIENDS OF BUFFALO CREEK INC",1]],"x":{"irs":{"r":1,"i":["861380042"],"z":["14214"]}}},
-{"s":"FRIENDS OF BUSHWICK INLET PARK","n":[["FRIENDS OF BUSHWICK INLET PARK INC",1]],"x":{"irs":{"r":1,"i":["921127006"],"z":["11222"]}}},
-{"s":"FRIENDS OF BUTTONHOOK FOREST","n":[["FRIENDS OF BUTTONHOOK FOREST INC",1]],"x":{"irs":{"r":1,"i":["882830417"],"z":["10514"]}}},
-{"s":"FRIENDS OF CABRERA","n":[["FRIENDS OF CABRERA INC",1]],"x":{"irs":{"r":1,"i":["270257340"],"z":["14850"]}}},
-{"s":"FRIENDS OF CAIRO FOSSIL FOREST","n":[["FRIENDS OF CAIRO FOSSIL FOREST INC",1]],"x":{"irs":{"r":1,"i":["872441891"],"z":["12473"]}}},
-{"s":"FRIENDS OF CALEB SMITH PRESERVE","n":[["FRIENDS OF CALEB SMITH PRESERVE",1]],"x":{"irs":{"r":1,"i":["113559605"],"z":["11787"]}}},
-{"s":"FRIENDS OF CAMDEN CENTRAL SCHOOL FOUNDATION","n":[["FRIENDS OF CAMDEN CENTRAL SCHOOL FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["200892857"],"z":["13308"]}}},
-{"s":"FRIENDS OF CAMP GAN ISRAEL MONTREAL","n":[["FRIENDS OF CAMP GAN ISRAEL MONTREAL INC",1]],"x":{"irs":{"r":1,"i":["392127367"],"z":["11213"]}}},
-{"s":"FRIENDS OF CAMP GORTON","n":[["FRIENDS OF CAMP GORTON LTD",1]],"x":{"irs":{"r":1,"i":["474875798"],"z":["14830"]}}},
-{"s":"FRIENDS OF CAMP HOLLIS","n":[["FRIENDS OF CAMP HOLLIS INC",1]],"x":{"irs":{"r":1,"i":["161537178"],"z":["13126"]}}},
-{"s":"FRIENDS OF CAMP KENAN","n":[["FRIENDS OF CAMP KENAN",1]],"x":{"irs":{"r":1,"i":["161508397"],"z":["14095"]}}}
+{"s":"FRIENDS OF BSA PACK 6 TROOP6","n":[["FRIENDS OF BSA PACK 6 TROOP6 CORP",1]],"x":{"irs":{"r":1,"i":["333616318"],"z":["10308"]}}}
 ]}

@@ -1,4 +1,11 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":16,"first_ordinal":26623,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":16,"first_ordinal":26617,"entries":[
+{"s":"CENTRAL BAPTIST CHURCH OF CORNING NEW YORK","n":[["CENTRAL BAPTIST CHURCH OF CORNING NEW YORK",1]],"x":{"irs":{"r":1,"i":["222224526"],"z":["14830"]}}},
+{"s":"CENTRAL BMANA","n":[["CENTRAL BMANA INC",1]],"x":{"irs":{"r":1,"i":["392827992"],"z":["11590"]}}},
+{"s":"CENTRAL BRIDGE CIVIC ASSOCIATION","n":[["CENTRAL BRIDGE CIVIC ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["222528823"],"z":["12035"]}}},
+{"s":"CENTRAL BRONX GHANAIAN SEVENTH DAY ADVENTIST CHURCH","n":[["CENTRAL BRONX GHANAIAN SEVENTH DAY ADVENTIST CHURCH",1]],"x":{"irs":{"r":1,"i":["823898864"],"z":["10456"]}}},
+{"s":"CENTRAL BRONX HOUSING ASSOCIATES","n":[["CENTRAL BRONX HOUSING ASSOCIATES LP",1]],"x":{"dbe":{"r":1,"i":["CENTRAL BRONX HOUSING ASSOCIATES LP"]}}},
+{"s":"CENTRAL BROOKLYN COMMUNITY SERVICES","n":[["CENTRAL BROOKLYN COMMUNITY SERVICES CORP",2]],"x":{"dbe":{"r":1,"i":["CENTRAL BROOKLYN COMMUNITY SERVICES CORP"]},"irs":{"r":1,"i":["550817833"],"z":["11221"]}}},
+{"s":"CENTRAL BROOKLYN ECONOMIC DEVELOPMENT","n":[["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORP",2],["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORPORATION",1],["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORPORATION INC",1]],"x":{"ocp":{"r":1,"a":823854,"l":"2024-04-22","i":["20240416110"]},"cbr":{"r":1,"a":29375,"l":"2024-08-05","i":["CT126020248803713"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["CENTRAL BROOKLYN ECONOMIC DEVELOPMENT CORPORATION"]},"irs":{"r":1,"i":["112981085"],"z":["11212"]}}},
 {"s":"CENTRAL BROOKLYN JAZZ CONSORTIUM","n":[["CENTRAL BROOKLYN JAZZ CONSORTIUM",1]],"x":{"irs":{"r":1,"i":["113549224"],"z":["11202"]}}},
 {"s":"CENTRAL BROOKLYN LIONS FOUNDATION","n":[["CENTRAL BROOKLYN LIONS FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["800504790"],"z":["11221"]}}},
 {"s":"CENTRAL BROOKLYN SPORTS CLUB","n":[["CENTRAL BROOKLYN SPORTS CLUB INC",1]],"x":{"irs":{"r":1,"i":["832605595"],"z":["12207"]}}},
@@ -1621,7 +1628,7 @@
 {"s":"CHAZY VOLUNTEER FIRE DEPARTMENT","n":[["CHAZY VOLUNTEER FIRE DEPARTMENT",1]],"x":{"irs":{"r":1,"i":["222445092"],"z":["12921"]}}},
 {"s":"CHAZY YOUTH HOCKEY","n":[["CHAZY YOUTH HOCKEY INC",1]],"x":{"irs":{"r":1,"i":["161515897"],"z":["12921"]}}},
 {"s":"CHC CONSTRUCTION GROUP","n":[["CHC CONSTRUCTION GROUP INC.",1]],"x":{"dol":{"r":1,"i":["25-64ZJE-CR"],"z":["13214"]}}},
-{"s":"CHDFS","n":[["CHDFS INC",6],["CHDFS Inc.",3],["CHDFS",1],["CHDFS, Inc.",1]],"x":{"ocp":{"r":5,"a":42063112.38,"l":"2025-09-11","i":["20250905010","20231205102","20220927107","20210219107","20201009104"]},"cbr":{"r":1,"a":4144335,"l":"2025-09-04","i":["CT106820268800958"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":26808841.88,"l":"2025-09-04","i":["CT1-068-20268800958","CT1-068-20248803851","CT1-068-20238803337"]},"dbe":{"r":1,"i":["CHDFS INC"]},"irs":{"r":1,"i":["460506221"],"z":["10018"]}}},
+{"s":"CHDFS","n":[["CHDFS INC",7],["CHDFS Inc.",3],["CHDFS",1],["CHDFS, Inc.",1]],"x":{"ocp":{"r":5,"a":42063112.38,"l":"2025-09-11","i":["20250905010","20231205102","20220927107","20210219107","20201009104"]},"cbr":{"r":2,"a":24890409.3,"l":"2026-11-24","i":["CT106820278803614","CT106820268800958"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":26808841.88,"l":"2025-09-04","i":["CT1-068-20268800958","CT1-068-20248803851","CT1-068-20238803337"]},"dbe":{"r":1,"i":["CHDFS INC"]},"irs":{"r":1,"i":["460506221"],"z":["10018"]}}},
 {"s":"CHE KUANG YU","n":[["CHE KUANG YU",1]],"x":{"dbe":{"r":1,"i":["CHE KUANG YU"]}}},
 {"s":"CHE SHARIF WOODS","n":[["CHE SHARIF WOODS",2]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-12-23","i":["CT104020263067784"],"m":["Black American"]},"cbv":{"r":1,"l":"2025-12-23","i":["CT104020263067784"],"m":["Black American"]}}},
 {"s":"CHEAP CESSPOOL DRAIN CLEANING","d":[["Cheap Cesspool & Drain Cleaning",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-69PLD-CR"],"z":["11788"]}}},
@@ -1738,13 +1745,5 @@
 {"s":"CHEMENERGY","n":[["Chemenergy, LLC",1]],"d":[["Chemenergy",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["26-69S1L-CR"],"z":["12205"]}}},
 {"s":"CHEMICAL CONTAINERS","n":[["Chemical Containers, Inc.",1]],"x":{"dol":{"r":1,"i":["26-66RU5-CR"],"z":["33859"]}}},
 {"s":"CHEMICAL ENGINE AND HOST NO 2","n":[["CHEMICAL ENGINE AND HOST NO 2 INC",1]],"x":{"irs":{"r":1,"i":["460473636"],"z":["11582"]}}},
-{"s":"CHEMIN NEUF COMMUNITY","n":[["CHEMIN NEUF COMMUNITY CORPORATION",1]],"x":{"irs":{"r":1,"i":["881219374"],"z":["10025"]}}},
-{"s":"CHEMISTRY CREATIVE","n":[["Chemistry Creative Inc.",1]],"x":{"sbs":{"r":1,"i":["102454"],"z":["11206"],"p":["MBE"]}}},
-{"s":"CHEMISTRY SHORTS","n":[["CHEMISTRY SHORTS INC",1]],"x":{"irs":{"r":1,"i":["991803212"],"z":["14604"]}}},
-{"s":"CHEMISTS CLUB","n":[["CHEMISTS CLUB",1]],"x":{"irs":{"r":1,"i":["131623933"],"z":["10036"]}}},
-{"s":"CHEMLU DEVELOPMENTAL DISABILITIES CENTER","n":[["CHEMLU DEVELOPMENTAL DISABILITIES CENTER INC",1]],"x":{"irs":{"r":1,"i":["352198039"],"z":["10950"]}}},
-{"s":"CHEMO COMFORT","n":[["CHEMO COMFORT INC",1]],"x":{"irs":{"r":1,"i":["651169320"],"z":["10014"]}}},
-{"s":"CHEMOTHERAPY FOUNDATION","n":[["CHEMOTHERAPY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["132622978"],"z":["10075"]}}},
-{"s":"CHEMOTHERAPY RESEARCH INSTITUTE","n":[["CHEMOTHERAPY RESEARCH INSTITUTE LIMITED INC",1]],"x":{"irs":{"r":1,"i":["852764637"],"z":["10028"]}}},
-{"s":"CHEMREADY","d":[["ChemREADY",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-9YRQQ-CR"],"z":["44087"]}}}
+{"s":"CHEMIN NEUF COMMUNITY","n":[["CHEMIN NEUF COMMUNITY CORPORATION",1]],"x":{"irs":{"r":1,"i":["881219374"],"z":["10025"]}}}
 ]}

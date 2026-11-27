@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-25T10:21:01.041Z",
+  "generated_at": "2026-11-27T13:33:24.957Z",
   "metadata": {
-    "source_vintage": "2026-11-25T10:21:01.041Z",
-    "fetched_at": "2026-11-25T10:21:01.041Z",
+    "source_vintage": "2026-11-27T13:33:24.957Z",
+    "fetched_at": "2026-11-27T13:33:24.957Z",
     "stale": false,
     "fallback_reason": null
   },

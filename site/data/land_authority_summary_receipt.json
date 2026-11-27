@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.land_authority_summary_receipt.v1",
   "join_version": "ldp06_authority_summary_v1",
-  "generated_at": "2026-11-24T18:33:07.704Z",
+  "generated_at": "2026-11-27T13:27:11.849Z",
   "counts": {
     "universe": 40,
     "resolved": 17,
@@ -418,17 +418,17 @@
       "path": "site/data/land_default_ulurp.json",
       "count": 40,
       "vintage": {
-        "generated_at": "2026-11-24T18:33:07.704Z"
+        "generated_at": "2026-11-27T13:27:11.849Z"
       },
-      "sha256": "5600f6e185e80f5080a35ba2c8b3b7e3e107385c4bf719e4b286b25430ca4e3e"
+      "sha256": "c4e2d799322ef99bc701f5feeee46a22783a70954b8fa0b87e0b9356455ec7ca"
     },
     "land_outcomes_seed": {
       "path": "site/data/land_outcomes_seed.json",
       "count": 28,
       "vintage": {
-        "generated_at": "2026-11-24T18:33:07.704Z"
+        "generated_at": "2026-11-27T13:27:11.849Z"
       },
-      "sha256": "61bf4380013eb0286b8bda24a2743d6af3bc391e433fa051fa5cba151c4dc1f3"
+      "sha256": "482f55b168dbb5160b83af7509c67edd21e902967a3f9790f92d575a269a9ac6"
     },
     "geography": {
       "path": "site/data/community_board_geography_lookup.json",
@@ -439,11 +439,11 @@
     },
     "upcoming_hearings": {
       "path": "site/data/land_upcoming_hearings.json",
-      "count": 148,
+      "count": 149,
       "vintage": {
-        "generated_at": "2026-11-24T18:39:21.638Z"
+        "generated_at": "2026-11-27T13:32:59.450Z"
       },
-      "sha256": "cd2915588417b29dca02fb4b19a218dd6e6ef9c29467efb44808971b099aa23e"
+      "sha256": "ea0410b4c8bc1425ae10f3d4b7a111b6dd5e1fc94fed722418a6692ae8d52694"
     },
     "join_keys": [
       "project_id"
@@ -453,6 +453,6 @@
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
     "payload_bytes": 86518,
-    "payload_sha256": "0139f7d488eba9c9d2b668c7b9dfb4779a4e209f52e2e5fdf4166d7c65ef54dd"
+    "payload_sha256": "aa88f39d517227d5a53887bd0316395e622bf2908ef58ec423ab805372d39ef9"
   }
 }
