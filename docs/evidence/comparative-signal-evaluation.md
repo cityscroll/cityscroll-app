@@ -8,7 +8,7 @@ Inputs: committed CityScroll materializations and a frozen inspection ledger; no
 
 **Recommendation: revise; do not expand the metric set yet.** Continue the two bounded pilots, put registered-amount change behind the same frozen receipt and admission boundary, and repeat this evaluation after a larger inspection sample and denominator-bearing handoff window exist.
 
-This is a recommendation for the captain, not an admission decision. No additional metric family is enabled by this evaluation. Expansion still requires a recorded human decision and a new bounded card.
+Expansion requires a separately scoped proposal and a recorded decision by the site owner.
 
 ## Results
 
