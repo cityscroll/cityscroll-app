@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.nycha_awarded_contracts_snapshot.v1",
   "schema_version": 1,
-  "as_of": "2026-11-25",
-  "generated_at": "2026-11-25T10:20:28.343Z",
+  "as_of": "2026-11-27",
+  "generated_at": "2026-11-27T13:33:10.404Z",
   "source": {
     "id": "nycha_awarded_contracts",
     "name": "NYCHA Awarded Contracts",
@@ -16,8 +16,8 @@
   },
   "feed": {
     "state": "live",
-    "fetched_at": "2026-11-25T10:20:28.343Z",
-    "checked_at": "2026-11-25T10:20:28.343Z",
+    "fetched_at": "2026-11-27T13:33:10.404Z",
+    "checked_at": "2026-11-27T13:33:10.404Z",
     "fallback_reason": null,
     "fallback_text": null,
     "shape_problems": [],
@@ -25,39 +25,39 @@
       {
         "year": 2023,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2023",
-        "fetched_at": "2026-11-25T10:20:28.343Z",
-        "bytes": 513978,
-        "sha256": "50943c07ba14ffaf366845dba9f8e2169c5e7070ce1ec0aae8696bc8801fd99a",
+        "fetched_at": "2026-11-27T13:33:10.404Z",
+        "bytes": 513984,
+        "sha256": "16568dba24999d2516853a84d8554c634d1a78d5efcb463d4ac8ab7fe48d076e",
         "row_count": 657
       },
       {
         "year": 2024,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2024",
-        "fetched_at": "2026-11-25T10:20:28.343Z",
-        "bytes": 319852,
-        "sha256": "bb4c4d43d1d812ffae961cdd72519ea53a3e1fa4d419ed98d43d5556776a2352",
+        "fetched_at": "2026-11-27T13:33:10.404Z",
+        "bytes": 319856,
+        "sha256": "95b6968081327e5ba924bf202e7fca666ab6ea7944899b1c8d6c49dfa5a8254d",
         "row_count": 400
       },
       {
         "year": 2025,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2025",
-        "fetched_at": "2026-11-25T10:20:28.343Z",
-        "bytes": 274548,
-        "sha256": "d94ddc98f4d2c5ce506d09d06ce22436521888847645d883608b04b4d21937bd",
+        "fetched_at": "2026-11-27T13:33:10.404Z",
+        "bytes": 274558,
+        "sha256": "b1a2f731f48802f97dfe913825112a594eb885e7d0c18d96c36433946e7a9014",
         "row_count": 353
       },
       {
         "year": 2026,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2026",
-        "fetched_at": "2026-11-25T10:20:28.343Z",
-        "bytes": 227917,
-        "sha256": "a432dc5dbc87096ff34ede07b9b9a2262d375baafcb9ad2cc3a2f6fcd2cd9937",
-        "row_count": 294
+        "fetched_at": "2026-11-27T13:33:10.404Z",
+        "bytes": 231649,
+        "sha256": "47f43b77f939c62d324e71eb92d26ace1c0525e6fc76bfa40b9e996a4d6852ec",
+        "row_count": 299
       },
       {
         "year": 2027,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2027",
-        "fetched_at": "2026-11-25T10:20:28.343Z",
+        "fetched_at": "2026-11-27T13:33:10.404Z",
         "bytes": 888,
         "sha256": "3b38eba728cd2fd719fb6d26c54a39fad25990275705955f570e5c6ba5fe5025",
         "row_count": 1
@@ -67,8 +67,8 @@
   "window": {
     "contract_years_from": 2023
   },
-  "count": 1705,
-  "rfq_numbered_count": 844,
+  "count": 1710,
+  "rfq_numbered_count": 848,
   "rows": [
     {
       "contract_number": "2219909",
@@ -6954,7 +6954,7 @@
       "start_date": "2023-11-28",
       "contract_year": 2023,
       "procurement_method": "SEALED BID",
-      "contract_status": "Active"
+      "contract_status": "Expired"
     },
     {
       "contract_number": "2320786",
@@ -9370,11 +9370,11 @@
       "rfq_number_printed": "464034,3",
       "rfq_number": "464034",
       "vendor_name": "JRCRUZ CORP",
-      "total_amount": 10492383.04,
+      "total_amount": 10934184.3,
       "start_date": "2024-05-01",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
-      "contract_status": "Expired"
+      "contract_status": "Active"
     },
     {
       "contract_number": "2335177",
@@ -10914,7 +10914,7 @@
       "start_date": "2024-10-30",
       "contract_year": 2024,
       "procurement_method": "NON-COMP: EXIGENCY",
-      "contract_status": "Expired"
+      "contract_status": "Active"
     },
     {
       "contract_number": "2423186",
@@ -14188,7 +14188,7 @@
       "rfq_number_printed": "N/A",
       "rfq_number": null,
       "vendor_name": "CROWN HEIGHTS JEWISH COMMUNITY COUNCIL INC",
-      "total_amount": 605875,
+      "total_amount": 643375,
       "start_date": "2025-08-01",
       "contract_year": 2025,
       "procurement_method": "NON-COMP -  Sole Source",
@@ -18804,6 +18804,17 @@
       "contract_status": "Active"
     },
     {
+      "contract_number": "2623625",
+      "rfq_number_printed": "N/A",
+      "rfq_number": null,
+      "vendor_name": "AECOM USA, INC",
+      "total_amount": 100000000,
+      "start_date": "2026-11-23",
+      "contract_year": 2026,
+      "procurement_method": "NON-COMP – Single Source",
+      "contract_status": "Active"
+    },
+    {
       "contract_number": "2619913",
       "rfq_number_printed": "N/A",
       "rfq_number": null,
@@ -18812,6 +18823,50 @@
       "start_date": "2026-11-24",
       "contract_year": 2026,
       "procurement_method": "GOV_TO_GOV",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2503615",
+      "rfq_number_printed": "502107,7",
+      "rfq_number": "502107",
+      "vendor_name": "ESSEX GENERAL CONSTRUCTION INC",
+      "total_amount": 5000000,
+      "start_date": "2026-11-25",
+      "contract_year": 2026,
+      "procurement_method": "SEALED BID",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2616892",
+      "rfq_number_printed": "514504",
+      "rfq_number": "514504",
+      "vendor_name": "DOMINION ENVIRONMENTAL GROUP",
+      "total_amount": 1500000,
+      "start_date": "2026-11-25",
+      "contract_year": 2026,
+      "procurement_method": "COMPETETIVE RFP",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2607430",
+      "rfq_number_printed": "515669",
+      "rfq_number": "515669",
+      "vendor_name": "POLO CONSTRUCTION CORP",
+      "total_amount": 599614.41,
+      "start_date": "2026-11-30",
+      "contract_year": 2026,
+      "procurement_method": "SEALED BID",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2614256",
+      "rfq_number_printed": "515718",
+      "rfq_number": "515718",
+      "vendor_name": "SIMCO ENTERPRISES CORP",
+      "total_amount": 1519427.94,
+      "start_date": "2026-11-30",
+      "contract_year": 2026,
+      "procurement_method": "SEALED BID",
       "contract_status": "Active"
     },
     {

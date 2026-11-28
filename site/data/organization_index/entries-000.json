@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"71d809d531571f8e","shard":0,"first_ordinal":0,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":0,"first_ordinal":0,"entries":[
 {"s":"(THE) LAKE GROVE SCHOOL","n":[["(THE) LAKE GROVE SCHOOL",1]],"x":{"ocp":{"r":1,"a":468602,"l":"2005-12-28","i":["20051220021"]}}},
 {"s":"000 ARCHITECTURE","n":[["000 Architecture PLLC",1]],"x":{"sbs":{"r":1,"i":["377031"],"z":["10009"],"p":["MBE"]}}},
 {"s":"031449398","d":[["031449398",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["24-64EU6-CR"],"z":["13830"]}}},
@@ -244,7 +244,7 @@
 {"s":"12 WASHINGTON PLACE","n":[["12 WASHINGTON PLACE INC",1]],"x":{"irs":{"r":1,"i":["395093641"],"z":["14719"]}}},
 {"s":"12-16 ARDEN ASSOCIATES","n":[["12-16 ARDEN ASSOCIATES LLC",1]],"x":{"dbe":{"r":1,"i":["12-16 ARDEN ASSOCIATES LLC"]}}},
 {"s":"120 AND BEYOND COMMUNITY CENTER","n":[["120 AND BEYOND COMMUNITY CENTER INC",1]],"x":{"irs":{"r":1,"i":["332156285"],"z":["11024"]}}},
-{"s":"120 MARCUS MEETS MALCOLM","n":[["120 MARCUS MEETS MALCOLM INC",2]],"x":{"cbr":{"r":1,"a":10000,"l":"2026-08-17","i":["CT126020278802311"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["852786614"],"z":["10027"]}}},
+{"s":"120 MARCUS MEETS MALCOLM","n":[["120 MARCUS MEETS MALCOLM INC",3]],"x":{"cbr":{"r":2,"a":66250,"l":"2026-11-24","i":["CT126020278803715","CT126020278802311"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["852786614"],"z":["10027"]}}},
 {"s":"120 PRECINCT COMMUNITY COUNCIL","n":[["120 PRECINCT COMMUNITY COUNCIL INC",1]],"x":{"irs":{"r":1,"i":["133691890"],"z":["10301"]}}},
 {"s":"1200 DEAN STREET BLOCK ASSOCIATION","n":[["1200 DEAN STREET BLOCK ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["112653368"],"z":["11216"]}}},
 {"s":"1203-5 FINDLEY REALTY","n":[["1203-5 FINDLEY REALTY INC",1]],"x":{"dbe":{"r":1,"i":["1203-5 FINDLEY REALTY INC"]}}},
@@ -271,7 +271,7 @@
 {"s":"125 EAST 149TH STREET","n":[["125 EAST 149th STREET LLC",1]],"x":{"cbr":{"r":1,"a":11888195.6,"l":"2026-02-27","i":["CT182720261410606"],"m":["Individuals and Others"]}}},
 {"s":"125 WEST END OFFICE ASSOCIATION","n":[["125 WEST END OFFICE ASSOCIATION LLC",1]],"x":{"dbe":{"r":1,"i":["125 WEST END OFFICE ASSOCIATION LLC"]}}},
 {"s":"1257 HYLAN BLVD AUTO","n":[["1257 HYLAN BLVD AUTO LLC",1]],"x":{"cbr":{"r":1,"a":23423.5,"l":"2025-08-06","i":["CT101420261400798"],"m":["Non-M/WBE"]}}},
-{"s":"125TH STREET DISTRICT MANAGEMENT ASSOCIATION","n":[["125TH STREET DISTRICT MANAGEMENT ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["133740434"],"z":["10027"]}}},
+{"s":"125TH STREET DISTRICT MANAGEMENT ASSOCIATION","n":[["125TH STREET DISTRICT MANAGEMENT ASSOCIATION INC",2]],"x":{"cbr":{"r":1,"a":199669,"l":"2026-11-25","i":["CT182720278803835"],"m":["Non-M/WBE"]},"irs":{"r":1,"i":["133740434"],"z":["10027"]}}},
 {"s":"126TH STREET EQUITIES","n":[["126TH STREET EQUITIES LLC",1]],"x":{"dbe":{"r":1,"i":["126TH STREET EQUITIES LLC"]}}},
 {"s":"1270 PACIFIC HOUSING DEVELOPMENT FUND","n":[["1270 PACIFIC HOUSING DEVELOPMENT FUND CORPORATION",1]],"x":{"irs":{"r":1,"i":["842764564"],"z":["10017"]}}},
 {"s":"128 44TH REALTY HOLDING","n":[["128 44TH REALTY HOLDING LLC",1]],"x":{"dbe":{"r":1,"i":["128 44TH REALTY HOLDING LLC"]}}},
@@ -1000,7 +1000,7 @@
 {"s":"3A PROPERTIES SOLUTIONS","n":[["3A Properties Solutions, Inc.",1]],"x":{"sbs":{"r":1,"i":["407099"],"z":["11213"],"p":["MBE"]}}},
 {"s":"3AS RENOVATION","n":[["3As Renovation LLC",5]],"x":{"ocp":{"r":1,"a":100000,"l":"2026-08-28","i":["20260824025"]},"cbr":{"r":1,"a":100000,"l":"2026-08-19","i":["CT106920278801726"],"m":["Black American"]},"cbv":{"r":1,"l":"2026-08-19","i":["CT106920278801726"],"m":["Black American"]},"sbs":{"r":1,"i":["389768"],"z":["11738"],"p":["MBE"]},"dol":{"r":1,"i":["25-65H5F-CR"],"z":["11738"]}}},
 {"s":"3C SOLUTIONS","n":[["3C Solutions Inc.",1],["3c Solutions Inc,",1]],"x":{"ocp":{"r":1,"a":60000,"l":"2020-03-23","i":["20200316037"]},"sbs":{"r":1,"i":["10056"],"z":["11557"],"p":["MBE","WBE"]}}},
-{"s":"3CS SOLUTIONS","n":[["3CS SOLUTIONS LLC",4]],"x":{"cbr":{"r":2,"a":50000,"l":"2026-11-19","i":["CT104020273040062","CT104020263132200"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-11-19","i":["CT104020273040062","CT104020263132200"],"m":["Non-M/WBE"]}}},
+{"s":"3CS SOLUTIONS","n":[["3CS SOLUTIONS LLC",6]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-11-25","i":["CT104020273047342","CT104020273040062","CT104020263132200"],"m":["Non-M/WBE"]},"cbv":{"r":3,"l":"2026-11-25","i":["CT104020273047342","CT104020273040062","CT104020263132200"],"m":["Non-M/WBE"]}}},
 {"s":"3D LEADERSHIP GROUP","n":[["3D LEADERSHIP GROUP LLC",3]],"x":{"ocp":{"r":1,"a":125000,"l":"2023-04-19","i":["20230413104"]},"cbr":{"r":1,"a":143000,"l":"2025-08-25","i":["CT182620268801499"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":125000,"l":"2023-04-12","i":["CT1-826-20238806891"]}}},
 {"s":"3D S SUBSISTENCE","n":[["3D's Subsistence LLC",1]],"x":{"sbs":{"r":1,"i":["379926"],"z":["10458"],"p":["MBE","WBE"]}}},
 {"s":"3D SPECTRUM ENTERPRISE","n":[["3D Spectrum Enterprise LLC",1]],"x":{"sbs":{"r":1,"i":["10057"],"z":["11413"],"p":["MBE"]}}},
@@ -1783,7 +1783,5 @@
 {"s":"A AND A LINE AND WIRE","n":[["A  and  A Line  and  Wire Corp.",1]],"x":{"ocp":{"r":1,"a":10939.5,"l":"2008-07-03","i":["20080626002"]}}},
 {"s":"A AND A MOVING AND TRUCKING","n":[["A  and  A Moving and Trucking, Inc.",2]],"x":{"ocp":{"r":2,"a":3498000,"l":"2018-06-21","i":["20180615002","20180607022"]}}},
 {"s":"A AND B INSPECTION SERVICES","n":[["A and B Inspection Services Corp.",1]],"x":{"sbs":{"r":1,"i":["10110"],"z":["11692"],"p":["MBE"]}}},
-{"s":"A AND G ACKERMAN FAMILY FUND","n":[["A AND G ACKERMAN FAMILY FUND",1]],"x":{"irs":{"r":1,"i":["204904885"],"z":["11797"]}}},
-{"s":"A AND G EARLY CHILD CARE COMMUNITY NETWORK","n":[["A and G Early Child Care Community Network, Inc.",2]],"x":{"ocp":{"r":2,"a":3612500,"l":"2016-12-06","i":["20161129009","20151208006"]}}},
-{"s":"A AND J CONSTRUCTION","n":[["A  and  J CONSTRUCTION OF NY, INC.",1]],"x":{"ocp":{"r":1,"a":244875,"l":"2012-07-06","i":["20120629039"]}}}
+{"s":"A AND G ACKERMAN FAMILY FUND","n":[["A AND G ACKERMAN FAMILY FUND",1]],"x":{"irs":{"r":1,"i":["204904885"],"z":["11797"]}}}
 ]}

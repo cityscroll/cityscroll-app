@@ -8,14 +8,14 @@ Inputs: committed CityScroll materializations and a frozen inspection ledger; no
 
 **Recommendation: revise; do not expand the metric set yet.** Continue the two bounded pilots, put registered-amount change behind the same frozen receipt and admission boundary, and repeat this evaluation after a larger inspection sample and denominator-bearing handoff window exist.
 
-This is a recommendation for the captain, not an admission decision. No additional metric family is enabled by this evaluation. Expansion still requires a recorded human decision and a new bounded card.
+Expansion requires a separately scoped proposal and a recorded decision by the site owner.
 
 ## Results
 
 | Dimension | Numerator / denominator | Result | Reading |
 | --- | ---: | ---: | --- |
 | Precision | 3 / 3 | 100.00% | Every frozen inspection supports the exact output, but three cases are too few to justify expansion. |
-| Yield | 3 / 9594 | 0.03% | This is an output-per-eligible-input rate, not a signal count. Award rank is 1/1 within its committed allowlist; amount change is 2/9593 positive amount pairs. |
+| Yield | 3 / 9676 | 0.03% | This is an output-per-eligible-input rate, not a signal count. Award rank is 1/1 within its committed allowlist; amount change is 2/9675 positive amount pairs. |
 | Diversity | 2 families, 2 sources, 2 object types, 3 agencies | dominant family 66.67% | The sample is not all large contracts, but it remains procurement-only and tiny. |
 | Redundancy | 0 / 3 duplicates | 0.00% | No civic event produces cosmetic duplicate outputs in the frozen cases. |
 | Stability | 2 / 2 pilots | 100.00% | Reversing committed source-row order does not change semantic outputs or their canonical order. |
@@ -24,12 +24,12 @@ This is a recommendation for the captain, not an admission decision. No addition
 
 ## Bounded admission
 
-- `within_contract_registered_amount_change`: 100 detected, 2 shown, 98 admitted but not shown. A detected change is shown only where the frozen receipt carries an inspection verdict for it. Widening the shown set means extending the frozen inspection sample, which is a human decision this evaluation records rather than takes.
+- `within_contract_registered_amount_change`: 109 detected, 2 shown, 107 admitted but not shown. A detected change is shown only where the frozen receipt carries an inspection verdict for it. Widening the shown set means extending the frozen inspection sample, which is a human decision this evaluation records rather than takes.
 
 ## Pilot-specific findings
 
 - **Award rank:** the shipped private signal reproduces its $53.0M amount, fourth-place rank, 264-row HPD peer set, source, and historical window. Its yield denominator is intentionally the one-subject pilot allowlist; the 9141 eligible peer rows are context, not that many shown candidates.
-- **Registered-amount change:** the existing lifecycle detector finds 100 exact-contract changes among 9593 committed Checkbook observations with positive original and current amounts. This pilot now sits behind a bounded admission: only the 2 subjects the frozen receipt inspected are shown, and every frozen inspection reproduces the source values and arithmetic. The remaining 98 are admitted and counted, awaiting an extended inspection sample. Carrying the family through the comparative receipt/story-signal boundary as well remains the main revision before broader evaluation.
+- **Registered-amount change:** the existing lifecycle detector finds 109 exact-contract changes among 9675 committed Checkbook observations with positive original and current amounts. This pilot now sits behind a bounded admission: only the 2 subjects the frozen receipt inspected are shown, and every frozen inspection reproduces the source values and arithmetic. The remaining 107 are admitted and counted, awaiting an extended inspection sample. Carrying the family through the comparative receipt/story-signal boundary as well remains the main revision before broader evaluation.
 - **MNAR negative control:** “No successor solicitation exists” remains unpublished because the observation contract is not closed-world. The harness fails if it publishes, if `held_mnar` changes, or if backstage reasons leak.
 - **Usefulness:** CityScroll already emits aggregate, non-identifying `investigation_share:add_signal` when an admitted signal is added to Investigation. This card adds one event, `comparative_signal_shown:visible`, as its aggregate opportunity denominator. With 0/0 committed opportunities, the usefulness rate remains unknown.
 

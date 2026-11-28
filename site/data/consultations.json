@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.consultation_materialization.v1",
-  "observed_at": "2026-11-24T18:32:45.327Z",
+  "observed_at": "2026-11-27T13:26:52.008Z",
   "source_policy": "fixed-organizer-seeds-only",
   "consultations": [
     {

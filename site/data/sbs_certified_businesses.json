@@ -11,7 +11,7 @@
     "account_url_template": "https://data.cityofnewyork.us/resource/ci93-uc8s.json?account_number={account_number}"
   },
   "rows_updated_at": "2026-11-10T14:39:18.000Z",
-  "collected_at": "2026-11-12T12:39:57.269Z",
+  "collected_at": "2026-11-27T13:53:11.670Z",
   "publisher_row_count": 11772,
   "row_count": 11772,
   "distinct_accounts": 11772,

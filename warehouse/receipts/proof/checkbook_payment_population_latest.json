@@ -21,7 +21,7 @@
   "source": {
     "publisher": "Office of the New York City Comptroller",
     "acquisition_mode": "live-publisher",
-    "pulled_at": "2026-11-24T18:19:09.989Z",
+    "pulled_at": "2026-11-27T13:09:34.006Z",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
     "type_of_data": "Spending",
@@ -33,14 +33,14 @@
     "page_size": 20000,
     "pages": 90,
     "count_drift_policy": "fail without publishing",
-    "page_manifest_sha256": "5d8a0c7470db3ca0b32ebf51ff968d39316224248eefb9648d10e232962920dd"
+    "page_manifest_sha256": "daa4c7669271b6be8aa6eca77deaa0102f72514a5d983dcf630e875162bfac44"
   },
   "population": {
-    "publisher_record_count": 1786125,
-    "source_xml_rows": 1786125,
-    "normalized_rows": 1786125,
-    "unique_transaction_ids": 1636249,
-    "duplicate_transaction_rows": 149876,
+    "publisher_record_count": 1786195,
+    "source_xml_rows": 1786195,
+    "normalized_rows": 1786195,
+    "unique_transaction_ids": 1636315,
+    "duplicate_transaction_rows": 149880,
     "reversal_rows": 1711,
     "null_amount_rows": 0,
     "agency_grouping": [
@@ -66,8 +66,8 @@
       },
       {
         "agency": "Department of Citywide Administrative Services",
-        "transaction_count": 19318,
-        "net_check_amount": 1714907952.3
+        "transaction_count": 19332,
+        "net_check_amount": 1714991404.43
       },
       {
         "agency": "Department of Health and Mental Hygiene",
@@ -91,8 +91,8 @@
       },
       {
         "agency": "Department of Environmental Protection",
-        "transaction_count": 57531,
-        "net_check_amount": 1031208796.01
+        "transaction_count": 57575,
+        "net_check_amount": 1032019717.49
       },
       {
         "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -126,8 +126,8 @@
       },
       {
         "agency": "Department for the Aging",
-        "transaction_count": 7394,
-        "net_check_amount": 513914853.8
+        "transaction_count": 7406,
+        "net_check_amount": 513919803.8
       },
       {
         "agency": "Fire Department",
@@ -703,11 +703,11 @@
     "by_fiscal_year": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1786125,
-        "source_xml_rows": 1786125,
-        "normalized_rows": 1786125,
-        "source_net_check_amount": 52410191322.8,
-        "normalized_net_check_amount": 52410191322.8,
+        "source_record_count": 1786195,
+        "source_xml_rows": 1786195,
+        "normalized_rows": 1786195,
+        "source_net_check_amount": 52411090646.41,
+        "normalized_net_check_amount": 52411090646.41,
         "reversal_rows": 1711,
         "agency_grouping": [
           {
@@ -732,8 +732,8 @@
           },
           {
             "agency": "Department of Citywide Administrative Services",
-            "transaction_count": 19318,
-            "net_check_amount": 1714907952.3
+            "transaction_count": 19332,
+            "net_check_amount": 1714991404.43
           },
           {
             "agency": "Department of Health and Mental Hygiene",
@@ -757,8 +757,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 57531,
-            "net_check_amount": 1031208796.01
+            "transaction_count": 57575,
+            "net_check_amount": 1032019717.49
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -792,8 +792,8 @@
           },
           {
             "agency": "Department for the Aging",
-            "transaction_count": 7394,
-            "net_check_amount": 513914853.8
+            "transaction_count": 7406,
+            "net_check_amount": 513919803.8
           },
           {
             "agency": "Fire Department",
@@ -1375,11 +1375,11 @@
     "partitions": [
       {
         "fiscal_year": 2026,
-        "source_record_count": 1786125,
-        "source_xml_rows": 1786125,
-        "normalized_rows": 1786125,
-        "source_net_check_amount": 52410191322.8,
-        "normalized_net_check_amount": 52410191322.8,
+        "source_record_count": 1786195,
+        "source_xml_rows": 1786195,
+        "normalized_rows": 1786195,
+        "source_net_check_amount": 52411090646.41,
+        "normalized_net_check_amount": 52411090646.41,
         "reversal_rows": 1711,
         "agency_grouping": [
           {
@@ -1404,8 +1404,8 @@
           },
           {
             "agency": "Department of Citywide Administrative Services",
-            "transaction_count": 19318,
-            "net_check_amount": 1714907952.3
+            "transaction_count": 19332,
+            "net_check_amount": 1714991404.43
           },
           {
             "agency": "Department of Health and Mental Hygiene",
@@ -1429,8 +1429,8 @@
           },
           {
             "agency": "Department of Environmental Protection",
-            "transaction_count": 57531,
-            "net_check_amount": 1031208796.01
+            "transaction_count": 57575,
+            "net_check_amount": 1032019717.49
           },
           {
             "agency": "OFFICE OF CRIMINAL JUSTICE",
@@ -1464,8 +1464,8 @@
           },
           {
             "agency": "Department for the Aging",
-            "transaction_count": 7394,
-            "net_check_amount": 513914853.8
+            "transaction_count": 7406,
+            "net_check_amount": 513919803.8
           },
           {
             "agency": "Fire Department",
@@ -2042,17 +2042,17 @@
         "reconciled": true
       }
     ],
-    "source_xml_rows": 1786125,
-    "normalized_rows": 1786125,
-    "source_net_check_amount": 52410191322.8,
-    "normalized_net_check_amount": 52410191322.8,
+    "source_xml_rows": 1786195,
+    "normalized_rows": 1786195,
+    "source_net_check_amount": 52411090646.41,
+    "normalized_net_check_amount": 52411090646.41,
     "reconciled": true
   },
   "conversion": {
     "csv": {
       "path": "warehouse/raw/checkbook-payment-population/payments.csv",
-      "row_count": 1786125,
-      "sha256": "27ff3f50f1502748caeae7ce7d52d833d9fc8d92ccfc3a3fc63988264702b59a"
+      "row_count": 1786195,
+      "sha256": "8e121e9271a37a11d8a7ca48fc6b87cb6c3253fb329910a35733b9b5d65191b7"
     },
     "receipt": "warehouse/receipts/proof/checkbook_payment_population_conversion_latest.json",
     "next_step": "warehouse/scripts/convert_checkbook_payment_population.py --csv <payments.csv> --parquet <payments.parquet> --source-receipt warehouse/receipts/proof/checkbook_payment_population_latest.json",
@@ -2081,7 +2081,7 @@
     ]
   },
   "checksums": {
-    "normalized_csv_sha256": "27ff3f50f1502748caeae7ce7d52d833d9fc8d92ccfc3a3fc63988264702b59a"
+    "normalized_csv_sha256": "8e121e9271a37a11d8a7ca48fc6b87cb6c3253fb329910a35733b9b5d65191b7"
   },
   "coverage_statement": "This receipt covers only the declared fiscal-year contract-spending partitions. It must not be used to infer payment coverage for other fiscal years or spending categories."
 }
