@@ -3812,6 +3812,8 @@
     fb_cat_bug: "Bogue",
     fb_cat_feature: "Idée de fonctionnalité",
     fb_cat_general: "Général",
+    fb_cat_inquiry: "Question de recherche",
+    fb_cat_beta: "Testeur bêta",
     about_label_message: "Votre message",
     about_pasttask_optional_badge: "Facultatif",
     about_pasttask_summary: "Décrivez une tentative passée",

@@ -140,6 +140,8 @@
     <button type="button" class="chip active" data-cat="bug" aria-pressed="true" data-i18n="fb_cat_bug">Bug</button>
     <button type="button" class="chip" data-cat="feature" aria-pressed="false" data-i18n="fb_cat_feature">Feature idea</button>
     <button type="button" class="chip" data-cat="general" aria-pressed="false" data-i18n="fb_cat_general">General</button>
+    <button type="button" class="chip" data-cat="inquiry" aria-pressed="false" data-i18n="fb_cat_inquiry">Research question</button>
+    <button type="button" class="chip" data-cat="beta" aria-pressed="false" data-i18n="fb_cat_beta">Beta tester</button>
   </div>
 
   <label for="fbmessage" data-i18n="about_label_message">Your message</label>
@@ -192,6 +194,11 @@ async function workerFetch(path, opts){
   catch(e){ return fetch(API_FALLBACK+path, opts); }
 }
 const $ = s => document.querySelector(s);
+const INTENT_CATEGORIES = new Set(["bug", "feature", "general", "inquiry", "beta"]);
+const TOPIC_LABELS = {
+  "civil-service-exams": "Civil service exams",
+  "community-boards": "Community boards",
+};
 
 // category chips (single-select)
 document.querySelectorAll("#fbchips .chip").forEach(c=>c.addEventListener("click",()=>{
@@ -204,7 +211,9 @@ document.querySelectorAll("#fbchips .chip").forEach(c=>c.addEventListener("click
 async function sendFeedback(){
   const msg=$("#fbmsg");
   const category=$("#fbcategory").value;
-  const message=$("#fbmessage").value.trim();
+  let message=$("#fbmessage").value.trim();
+  const topicLabel = TOPIC_LABELS[new URLSearchParams(location.search).get("topic")] || "";
+  if (topicLabel) message = `[${topicLabel}] ${message}`;
   const email=$("#fbemail").value.trim();
   const errorKey = feedbackValidationError(message, email);
   if(errorKey){ msg.innerHTML=t(errorKey); return; }
@@ -231,6 +240,10 @@ async function sendFeedback(){
 }
 $("#fbsend").addEventListener("click", sendFeedback);
 initSubpageLangSwitcher();
+const intent = new URLSearchParams(location.search).get("intent");
+if (INTENT_CATEGORIES.has(intent)) {
+  document.querySelector(`#fbchips .chip[data-cat="${intent}"]`)?.click();
+}
 </script>
 <!-- Cloudflare Web Analytics — cookieless, aggregate. Manual JS beacon (the static origin is served
      through the Cloudflare Pages production site. Token is a public site id, safe to commit. -->

@@ -3716,6 +3716,8 @@
     fb_cat_bug: "خلل",
     fb_cat_feature: "فكرة ميزة",
     fb_cat_general: "عام",
+    fb_cat_inquiry: "سؤال عن البحث",
+    fb_cat_beta: "مختبر تجريبي",
     about_label_message: "رسالتك",
     about_pasttask_optional_badge: "اختياري",
     about_pasttask_summary: "صِف محاولة سابقة",

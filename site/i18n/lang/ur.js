@@ -3716,6 +3716,8 @@
     fb_cat_bug: "خرابی",
     fb_cat_feature: "فیچر کا خیال",
     fb_cat_general: "عمومی",
+    fb_cat_inquiry: "تحقیقی سوال",
+    fb_cat_beta: "بیٹا ٹیسٹر",
     about_label_message: "آپ کا پیغام",
     about_pasttask_optional_badge: "اختیاری",
     about_pasttask_summary: "پچھلی کوشش بیان کریں",
