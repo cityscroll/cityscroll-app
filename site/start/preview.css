@@ -20,7 +20,7 @@
 .start-cards .start-card { display: flex; flex-direction: column; align-items: flex-start; }
 .start-cards .start-card > p:not(.start-eyebrow) { flex: 1; }
 .start-primary { background: var(--color-brand); color: var(--color-surface); }
-.start-button { display: inline-block; border: 0; padding: .55rem .85rem; min-height: 44px; border-radius: .35rem; cursor: pointer; background: var(--color-brand); color: var(--color-surface); font: inherit; font-weight: 700; }
+.start-button { display: inline-block; border: 0; padding: .55rem .85rem; min-height: 44px; border-radius: .35rem; cursor: pointer; background: var(--color-brand); color: var(--color-surface); font: inherit; font-weight: 700; text-decoration: none; }
 .start-primary .start-button { background: var(--color-surface); color: var(--color-brand); }
 .start-records, .start-beta { border-top: 1px solid var(--start-edge); margin-top: 1.45rem; padding-top: 1rem; }
 
