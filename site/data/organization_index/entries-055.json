@@ -1,7 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":55,"first_ordinal":92980,"entries":[
-{"s":"MCCC FOUNDATION","n":[["MCCC FOUNDATION LTD",1]],"x":{"irs":{"r":1,"i":["843662400"],"z":["14626"]}}},
-{"s":"MCCG","d":[["MCCG",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["3712"],"z":["10005"],"p":["MBE"]}}},
-{"s":"MCCGUSA","n":[["MCCGUSA Ltd.",1]],"x":{"sbs":{"r":1,"i":["3712"],"z":["10005"],"p":["MBE"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":55,"first_ordinal":92983,"entries":[
 {"s":"MCCLAIN","n":[["MCCLAIN & CO., INC.",1]],"x":{"dol":{"r":1,"i":["24-64NLC-CR"],"z":["22701"]}}},
 {"s":"MCCLAIN ASSOCIATES","n":[["MCCLAIN ASSOCIATES, INC.",1]],"d":[["McClain Associates, Inc",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["26-64EIS-CR"],"z":["14624"]}}},
 {"s":"MCCLAIN ROBERTS FOUNDATION","n":[["MCCLAIN ROBERTS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["884265008"],"z":["10185"]}}},
@@ -1682,5 +1679,8 @@
 {"s":"MEYERS INGRAHAM MEMORIAL","n":[["MEYERS INGRAHAM MEMORIAL CORP",1]],"x":{"irs":{"r":1,"i":["260864957"],"z":["14519"]}}},
 {"s":"MEZO CONCEPTS","n":[["Mezo Concepts Inc.",1]],"x":{"sbs":{"r":1,"i":["367043"],"z":["11432"],"p":["MBE","WBE"]}}},
 {"s":"MEZRITCH FOUNDATION","n":[["MEZRITCH FOUNDATION",1]],"x":{"irs":{"r":1,"i":["832182164"],"z":["10977"]}}},
-{"s":"MEZZACAPPA CONCRETE","d":[["Mezzacappa Concrete",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-64H8G-CR"],"z":["10303"]}}}
+{"s":"MEZZACAPPA CONCRETE","d":[["Mezzacappa Concrete",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-64H8G-CR"],"z":["10303"]}}},
+{"s":"MEZZACAPPA CONCRETE CONTRACTING","n":[["Mezzacappa Concrete Contracting, Inc.",1]],"x":{"dol":{"r":1,"i":["25-64H8G-CR"],"z":["10303"]}}},
+{"s":"MEZZAPALOOZA FOUNDATION","n":[["MEZZAPALOOZA FOUNDATION LTD",1]],"x":{"irs":{"r":1,"i":["471442237"],"z":["10510"]}}},
+{"s":"MEZZO ALLIES","n":[["MEZZO ALLIES",1]],"x":{"irs":{"r":1,"i":["932489634"],"z":["14131"]}}}
 ]}

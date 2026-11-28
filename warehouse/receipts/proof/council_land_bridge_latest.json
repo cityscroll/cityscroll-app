@@ -4581,11 +4581,11 @@
   "schema": "cityscroll.council_land_bridge_measurement.v1",
   "source_vintage": {
     "meeting_outcomes_snapshot_counts": {
-      "absent_count": 291,
+      "absent_count": 294,
       "present_count": 14,
-      "record_count": 305
+      "record_count": 308
     },
-    "meeting_outcomes_snapshot_generated_at": "2026-11-24T23:45:13.719Z",
-    "zap_projects_warehouse_lookup_materialized_at": "2026-11-24T18:54:47.256Z"
+    "meeting_outcomes_snapshot_generated_at": "2026-11-28T12:18:46.270Z",
+    "zap_projects_warehouse_lookup_materialized_at": "2026-11-28T16:21:32.266Z"
   }
 }

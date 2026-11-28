@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":12,"first_ordinal":20015,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":12,"first_ordinal":20015,"entries":[
 {"s":"BRAVEN SOLUTIONS","n":[["BRAVEN SOLUTIONS LLC",4],["Braven Solutions LLC",1]],"x":{"cbr":{"r":3,"a":75000,"l":"2026-08-21","i":["CT104020273005592","CT104020253165773","CT104020253050252"],"m":["Black American"]},"cbv":{"r":1,"l":"2026-08-21","i":["CT104020273005592"],"m":["Black American"]},"sbs":{"r":1,"i":["371892"],"z":["10011"],"p":["MBE"]}}},
 {"s":"BRAVER ANGELS","n":[["BRAVER ANGELS INC",1]],"x":{"irs":{"r":1,"i":["133400377"],"z":["10017"]}}},
 {"s":"BRAVER CHARITABLE FOUNDATION","n":[["BRAVER CHARITABLE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["810945657"],"z":["11218"]}}},

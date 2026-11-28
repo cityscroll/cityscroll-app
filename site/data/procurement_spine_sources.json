@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "title": "Population-backed procurement spine observations for entity intelligence",
-  "observed_on": "2026-11-27",
-  "generated_at": "2026-11-27T13:09:25.421Z",
+  "observed_on": "2026-11-28",
+  "generated_at": "2026-11-28T15:52:28.007Z",
   "receipts": {
     "passport_join": "site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json",
     "source_coverage": "entity_resolution/source_coverage.json",
@@ -54,16 +54,16 @@
       "coverage_status": "measured",
       "population_backed": true,
       "source_url": "https://www.checkbooknyc.com/api",
-      "pulled_at": "2026-11-27T13:09:25.421Z",
+      "pulled_at": "2026-11-28T15:52:28.007Z",
       "population": {
-        "api_transaction_rows": 41197,
+        "api_transaction_rows": 41196,
         "normalized_unique_contracts": 30154,
         "fiscal_years": [
           2025,
           2026,
           2027
         ],
-        "sha256": "f7152758ea290902a7b73ce71975bd4cd19722466142b99696f7cecc50a8eb40"
+        "sha256": "96f451dd867b7c75e9ba8e74cae86deec0ec01dcb0b4dbbeae20264abfbaf13c"
       },
       "overlap": {
         "checkbook_contracts": 30154,
@@ -95,7 +95,7 @@
         "status": "measured",
         "denominator": "normalized unique Checkbook contracts in the collected fiscal-year population",
         "rows": 30154,
-        "source_population": 41197
+        "source_population": 41196
       },
       "modern_awards": {
         "joined": 5131,
@@ -259021,7 +259021,7 @@
         ],
         "slice_counts": {
           "prime": 1,
-          "subvendor": 2,
+          "subvendor": 1,
           "other": 0
         },
         "subvendor_count": 1,
@@ -486501,7 +486501,7 @@
           "subvendor": 3,
           "other": 0
         },
-        "subvendor_count": 2,
+        "subvendor_count": 3,
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
@@ -836325,61 +836325,6 @@
         "selection_bucket": "passport_and_city_record"
       },
       {
-        "prime_contract_id": "CT105620261405896",
-        "contract_id": "CT105620261405896",
-        "prime_vendor": "W&E BAUM BRONZE TABLET CORP",
-        "agency": "Police Department",
-        "pin": null,
-        "award_method": "SM PURCH GOODS SERVICES 100K",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-21",
-        "start_date": "2025-11-27",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-27"
-          ],
-          "registration_date_observations": [
-            "2025-11-21"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Goods",
-        "purpose": "POLICE DISTINGUISHED SERVICE MEDALS-NYPD_PERSONNEL BUREAU",
-        "document_code": "CT1",
-        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 50250,
-        "original": 50250,
-        "spent": 50250,
-        "start": "2025-11-27",
-        "end": "2026-06-30",
-        "registered": "2025-11-21",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
         "prime_contract_id": "CT105720268803768",
         "contract_id": "CT105720268803768",
         "prime_vendor": "K SYSTEMS SOLUTIONS LLC",
@@ -837093,61 +837038,6 @@
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "exact"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT184620261405671",
-        "contract_id": "CT184620261405671",
-        "prime_vendor": "NICK ROBERTIS MARINE",
-        "agency": "Department of Parks and Recreation",
-        "pin": null,
-        "award_method": "SM PURCH GOODS SERVICES 100K",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Not Required",
-        "registration_date": "2025-11-20",
-        "start_date": "2025-11-27",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-27"
-          ],
-          "registration_date_observations": [
-            "2025-11-20"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Goods",
-        "purpose": "Replacement Boat Yard Trailer for The World's Fair Marina",
-        "document_code": "CT1",
-        "contract_type": "SUPPLIES/MATERIALS/EQUIPMENT",
-        "contract_version": "1",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 73375,
-        "original": 73375,
-        "spent": 73375,
-        "start": "2025-11-27",
-        "end": "2026-02-19",
-        "registered": "2025-11-20",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 0,
-          "other": 0
-        },
-        "subvendor_count": 0,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "unusable"
         },
         "selection_bucket": "new_unique"
       },
@@ -840511,62 +840401,6 @@
         "exact_key_status": {
           "contract_id": "exact",
           "pin": "unusable"
-        },
-        "selection_bucket": "new_unique"
-      },
-      {
-        "prime_contract_id": "CT185020268803090",
-        "contract_id": "CT185020268803090",
-        "prime_vendor": "JLJ IV ENTERPRISES INC",
-        "agency": "Department of Design and Construction",
-        "pin": "85026B0004001",
-        "award_method": "PQVL COMPETITVE BID LIST",
-        "mwbe_category": "Non-M/WBE",
-        "duration": null,
-        "includes_subvendors": "Yes",
-        "registration_date": "2025-10-28",
-        "start_date": "2025-11-27",
-        "date_ownership": {
-          "owner": "prime_vendor_slice",
-          "start_date_observations": [
-            "2025-11-27"
-          ],
-          "registration_date_observations": [
-            "2025-10-28"
-          ],
-          "conflicting_start_date_observations": false,
-          "conflicting_registration_date_observations": false
-        },
-        "industry": "Construction Services",
-        "purpose": "Citywide Emergency Reconstruction of Sewers",
-        "document_code": "CT1",
-        "contract_type": "REQUIREMENTS-CONSTRUCTION",
-        "contract_version": "2",
-        "parent_contract_id": null,
-        "status": "registered",
-        "current": 25000000,
-        "original": 25000000,
-        "spent": 23684940.41,
-        "start": "2025-11-27",
-        "end": "2026-11-26",
-        "registered": "2025-10-28",
-        "received": null,
-        "source_fiscal_years": [
-          "2026"
-        ],
-        "vendor_record_types": [
-          "Prime Vendor",
-          "Sub Vendor"
-        ],
-        "slice_counts": {
-          "prime": 1,
-          "subvendor": 12,
-          "other": 0
-        },
-        "subvendor_count": 10,
-        "exact_key_status": {
-          "contract_id": "exact",
-          "pin": "exact"
         },
         "selection_bucket": "new_unique"
       },
@@ -846386,12 +846220,12 @@
     "checkbook_contracts": {
       "graph_cap": null,
       "graph_source": "rows.checkbook_contracts",
-      "graph_rows": 10728,
+      "graph_rows": 10725,
       "selected_buckets": {
         "passport_and_city_record": 1658,
         "passport_only": 84,
         "city_record_only": 1052,
-        "new_unique": 7934
+        "new_unique": 7931
       },
       "strategy": "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap",
       "receipt": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"

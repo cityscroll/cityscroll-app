@@ -16,7 +16,7 @@
     "mandate_meeting": {
       "totals": {
         "public_inferred": 1,
-        "evidence_only": 50
+        "evidence_only": 49
       },
       "denominators": {
         "eligible_left_rows": 19,
@@ -24,12 +24,12 @@
         "pre_route_pairs": 2280
       },
       "by_tier": {
-        "evidence_only": 50,
+        "evidence_only": 49,
         "public_inferred": 1
       },
       "by_reason": {
         "held_out_precision_gate_passed": 1,
-        "matter_body_subject": 50,
+        "matter_body_subject": 49,
         "temporal": 33
       },
       "by_agency": {
@@ -566,10 +566,10 @@
             "pre_route_pairs": 120
           },
           "public_inferred": 1,
-          "evidence_only": 13,
+          "evidence_only": 12,
           "reason_counts": {
             "held_out_precision_gate_passed": 1,
-            "matter_body_subject": 13
+            "matter_body_subject": 12
           }
         },
         "youth-and-community-development": {
@@ -584,7 +584,7 @@
         }
       },
       "by_source_system": {
-        "city_record": 51
+        "city_record": 50
       }
     },
     "mandate_land_use": {

@@ -53,28 +53,28 @@
     "rejected"
   ],
   "existing_snapshot": {
-    "generated_at": "2026-11-27T19:29:27.253Z",
+    "generated_at": "2026-11-28T15:52:28.007Z",
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "bc41a1d1fc13b9baaff3675313457a8a431ac69722099c4b6fd497c7453a316a",
-        "row_count": 20773
+        "sha256": "7656692392a8511af3989c0d514f6423090303348a4eadca88c61669f0e18e37",
+        "row_count": 20770
       },
       "spine_sources": {
         "path": "site/data/procurement_spine_sources.json",
-        "sha256": "34bb875f4ad2de94168840f92c4d1c6fd6a06153d08d5a3b844f06cc75444d0f",
+        "sha256": "970dad20ff10ed1d1b770ab01f5ab4b3bceb224223303edfbc219d83298d4982",
         "passport_contract_rows": 12795
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "731a19da61129d4b67922a55f36887c01aa7093fe5ba5a9b71d65d3229aead26",
-        "object_count": 20773
+        "sha256": "4e97640fdda772076346e27107fa806bad083583426d4445ccb6ae4747f3bf3b",
+        "object_count": 20770
       }
     },
     "served_source_counts": {
       "city_record": 12685,
       "passport_public_contracts": 12771,
-      "checkbook_contracts": 9594
+      "checkbook_contracts": 9673
     },
     "interpretation": "Counts are the committed CityScroll snapshot, not a claim that any source is a complete citywide inventory."
   },
@@ -508,7 +508,7 @@
     },
     "served_measurement": {
       "artifact": "site/data/procurement_browse_rows.json",
-      "generated_at": "2026-11-27T13:09:25.421Z"
+      "generated_at": "2026-11-28T15:52:28.007Z"
     }
   },
   "production_cards": [],

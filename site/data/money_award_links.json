@@ -3,8 +3,8 @@
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
   "rule_version": "pin-stem-agency-v1",
-  "generated_at": "2026-11-27T14:02:50.630Z",
-  "as_of": "2026-11-27",
+  "generated_at": "2026-11-28T16:30:38.968Z",
+  "as_of": "2026-11-28",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -37,13 +37,13 @@
     "usable": true,
     "unusable_reason": null,
     "snapshot_age_days": 0,
-    "fetched_at": "2026-11-27T13:33:10.404Z",
-    "checked_at": "2026-11-27T13:33:10.404Z",
+    "fetched_at": "2026-11-28T16:12:23.818Z",
+    "checked_at": "2026-11-28T16:12:23.818Z",
     "fallback_reason": null,
     "fallback_text": null,
     "max_fallback_age_days": 30,
-    "contracts_read": 1710,
-    "contracts_with_rfq_number": 848
+    "contracts_read": 1711,
+    "contracts_with_rfq_number": 849
   },
   "reasons": {
     "linked_pin_stem": {
@@ -172,9 +172,9 @@
       "median_lag_days": 192,
       "at_least_median_lag_old": {
         "min_age_days": 192,
-        "stem_shaped": 1537,
+        "stem_shaped": 1539,
         "linked": 1002,
-        "linked_pct_of_stem_shaped": 65.2
+        "linked_pct_of_stem_shaped": 65.1
       }
     },
     "median_lag_days": 192,
@@ -326,9 +326,9 @@
         "median_lag_days": 116,
         "at_least_median_lag_old": {
           "min_age_days": 192,
-          "stem_shaped": 155,
+          "stem_shaped": 157,
           "linked": 61,
-          "linked_pct_of_stem_shaped": 39.4
+          "linked_pct_of_stem_shaped": 38.9
         }
       }
     },
@@ -408,9 +408,9 @@
         "median_lag_days": 111,
         "at_least_median_lag_old": {
           "min_age_days": 192,
-          "stem_shaped": 388,
+          "stem_shaped": 389,
           "linked": 317,
-          "linked_pct_of_stem_shaped": 81.7
+          "linked_pct_of_stem_shaped": 81.5
         }
       },
       {
@@ -528,9 +528,9 @@
         "median_lag_days": 181,
         "at_least_median_lag_old": {
           "min_age_days": 192,
-          "stem_shaped": 228,
+          "stem_shaped": 229,
           "linked": 155,
-          "linked_pct_of_stem_shaped": 68
+          "linked_pct_of_stem_shaped": 67.7
         }
       },
       {
@@ -41941,7 +41941,7 @@
           "contract_number": "2426862",
           "rfq_number": "469034",
           "vendor_name": "SLSCO, LP",
-          "award_amount": 33174924
+          "award_amount": 33527724
         }
       ],
       "linked_award": {
@@ -41953,7 +41953,7 @@
         "contract_number": "2426862",
         "rfq_number": "469034",
         "vendor_name": "SLSCO, LP",
-        "award_amount": 33174924
+        "award_amount": 33527724
       },
       "other_awards": [],
       "other_awards_label": null,
@@ -132016,7 +132016,7 @@
       "agency_id": "citywide-administrative-services",
       "cohort_year": 2026,
       "solicitation_date": "2026-10-28",
-      "response_due_date": "2026-12-03",
+      "response_due_date": "2027-01-06",
       "pin_shape": "stem",
       "stem_solicitation_count": 1,
       "rfq_numbers": [],

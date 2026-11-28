@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.analytics_first_payment_timing.v1",
-  "generated_at": "2026-11-27T13:09:34.006Z",
-  "snapshot_date": "2026-11-27T13:09:34.006Z",
-  "contracts_snapshot_date": "2026-11-27",
+  "generated_at": "2026-11-28T15:52:37.415Z",
+  "snapshot_date": "2026-11-28T15:52:37.415Z",
+  "contracts_snapshot_date": "2026-11-28",
   "population_definition": "Registered Checkbook expense contracts whose start date falls inside the retained payment years (2025-07-01 to 2026-06-30), one row per exact prime contract id.",
   "first_payment_definition": "The earliest issue date of a positive check amount recorded against the exact contract id. Reversals and zero amounts are not payments.",
   "measured_from": "The contract start date published by Checkbook, not the date work began.",

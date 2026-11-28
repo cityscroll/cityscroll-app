@@ -1,8 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":48,"first_ordinal":80986,"entries":[
-{"s":"KIDS ARE ANGELS","n":[["KIDS ARE ANGELS INC",1]],"x":{"irs":{"r":1,"i":["394559508"],"z":["11218"]}}},
-{"s":"KIDS ARE FANTASTIC","n":[["KIDS ARE FANTASTIC",1]],"x":{"irs":{"r":1,"i":["991526177"],"z":["12543"]}}},
-{"s":"KIDS AT PROMISE","n":[["KIDS AT PROMISE INC",1]],"x":{"irs":{"r":1,"i":["161577421"],"z":["14048"]}}},
-{"s":"KIDS BASE THE LITTLE SCHOOL","n":[["KIDS BASE & THE LITTLE SCHOOL",1]],"x":{"irs":{"r":1,"i":["133908589"],"z":["10583"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":48,"first_ordinal":80990,"entries":[
 {"s":"KIDS BEATING CRISIS","n":[["KIDS BEATING CRISIS INC",1]],"x":{"irs":{"r":1,"i":["335034681"],"z":["10701"]}}},
 {"s":"KIDS BOROUGH MEDIA","n":[["KIDS BOROUGH MEDIA LLC",1]],"x":{"cbr":{"r":1,"a":25000,"l":"2025-04-10","i":["CT104020253143991"],"m":["Non-M/WBE"]}}},
 {"s":"KIDS CARE CENTER","n":[["KIDS CARE CENTER INC",1]],"x":{"irs":{"r":1,"i":["061583954"],"z":["11211"]}}},
@@ -1717,5 +1713,9 @@
 {"s":"KRISTI L MULLIN","n":[["Kristi L Mullin",1]],"x":{"dol":{"r":1,"i":["26-69ZE1-CR"],"z":["13037"]}}},
 {"s":"KRISTIE DONNELLY FOUNDATION","n":[["KRISTIE DONNELLY FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["412849239"],"z":["11755"]}}},
 {"s":"KRISTIN MISNER-GUTIERREZ","n":[["Kristin Misner-Gutierrez",1]],"x":{"sbs":{"r":1,"i":["363656"],"z":["98103"],"p":["WBE"]}}},
-{"s":"KRISTINA AND GUY WILDENSTEIN FOUNDATION","n":[["KRISTINA AND GUY WILDENSTEIN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["134060977"],"z":["10017"]}}}
+{"s":"KRISTINA AND GUY WILDENSTEIN FOUNDATION","n":[["KRISTINA AND GUY WILDENSTEIN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["134060977"],"z":["10017"]}}},
+{"s":"KRISTINA SNYDER","n":[["Kristina Snyder & Co., Inc.",1]],"x":{"sbs":{"r":1,"i":["101857"],"z":["10001"],"p":["WBE"]}}},
+{"s":"KRISTINAS HOUSE OF HOPE","n":[["KRISTINAS HOUSE OF HOPE INC",1]],"x":{"irs":{"r":1,"i":["832600501"],"z":["13126"]}}},
+{"s":"KRISTINE FALLON ASSOCIATES","d":[["Kristine Fallon Associates, Inc.",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["13806"],"z":["60661"],"p":["MBE"]}}},
+{"s":"KRISTINS FUND","n":[["KRISTINS FUND INC",1]],"x":{"irs":{"r":1,"i":["831700409"],"z":["13413"]}}}
 ]}

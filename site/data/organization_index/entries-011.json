@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":11,"first_ordinal":18311,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":11,"first_ordinal":18311,"entries":[
 {"s":"BLACK JOE HODGE OUTDOORS CLUB","n":[["BLACK JOE HODGE OUTDOORS CLUB INC",1]],"x":{"irs":{"r":1,"i":["922343106"],"z":["14226"]}}},
 {"s":"BLACK KETTLE SPORTSMEN","n":[["BLACK KETTLE SPORTSMEN INC",1]],"x":{"irs":{"r":1,"i":["232464555"],"z":["13865"]}}},
 {"s":"BLACK LAKE ASSOCIATION","n":[["BLACK LAKE ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["161246384"],"z":["13646"]}}},

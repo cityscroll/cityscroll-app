@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":13,"first_ordinal":21597,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":13,"first_ordinal":21597,"entries":[
 {"s":"BROOKLYN SOCCERWORKS","n":[["BROOKLYN SOCCERWORKS INC",1]],"x":{"irs":{"r":1,"i":["994060320"],"z":["11215"]}}},
 {"s":"BROOKLYN SOCIETY FOR ETHICAL CULTURE","n":[["BROOKLYN SOCIETY FOR ETHICAL CULTURE",1]],"x":{"irs":{"r":1,"i":["111631749"],"z":["11215"]}}},
 {"s":"BROOKLYN SOLARWORKS","n":[["BROOKLYN SOLARWORKS, LLC",1]],"x":{"dol":{"r":1,"i":["26-69FVU-CR"],"z":["11215"]}}},

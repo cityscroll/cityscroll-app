@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":8,"first_ordinal":13113,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":8,"first_ordinal":13113,"entries":[
 {"s":"ATTA ELEVATORS NEW YORK","n":[["Atta Elevators New York Inc.",1]],"x":{"dol":{"r":1,"i":["26-69E94-CR"],"z":["11249"]}}},
 {"s":"ATTACHMATE","n":[["Attachmate Corporation",1]],"x":{"ocp":{"r":1,"a":112220.51,"l":"2016-09-07","i":["20160830020"]}}},
 {"s":"ATTAINABLE FERTILITY FOUNDATION","n":[["ATTAINABLE FERTILITY FOUNDATION",1]],"x":{"irs":{"r":1,"i":["991919547"],"z":["10006"]}}},

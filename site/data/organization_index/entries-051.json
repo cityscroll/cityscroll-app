@@ -1,6 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":51,"first_ordinal":86087,"entries":[
-{"s":"LIFE RESTORATION CHURCH","n":[["LIFE RESTORATION CHURCH",1]],"x":{"irs":{"r":1,"i":["223638365"],"z":["12551"]}}},
-{"s":"LIFE S WORC","n":[["LIFE'S WORC INC",1]],"x":{"dbe":{"r":1,"i":["LIFE'S WORC INC"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":51,"first_ordinal":86089,"entries":[
 {"s":"LIFE SAFETY ENGINEERED SYSTEMS","n":[["Life Safety Engineered Systems Inc",2]],"x":{"ocp":{"r":1,"a":397347.1,"l":"2022-01-11","i":["20220105104"]},"ppt":{"r":1,"a":132449.04,"l":"2022-01-04","i":["CT1-846-20228803357"]}}},
 {"s":"LIFE SAFETY INTEGRATED SYSTEMS","n":[["Life Safety Integrated Systems, Inc.",1]],"x":{"dol":{"r":1,"i":["25-64T5G-CR"],"z":["14212"]}}},
 {"s":"LIFE SAFETY SERVICES","n":[["Life Safety Services, LLC",1]],"x":{"dol":{"r":1,"i":["25-647V7-CR"],"z":["40203"]}}},
@@ -1655,5 +1653,6 @@
 {"s":"LOCATION ONE","n":[["LOCATION ONE INC",1]],"x":{"irs":{"r":1,"i":["133951504"],"z":["10011"]}}},
 {"s":"LOCFUL EDUTAINMENT ARTS FOUNDATION","n":[["LOCFUL EDUTAINMENT ARTS FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["365064715"],"z":["11212"]}}},
 {"s":"LOCHLAND SCHOOL","n":[["LOCHLAND SCHOOL INC",1]],"x":{"irs":{"r":1,"i":["160780944"],"z":["14456"]}}},
-{"s":"LOCI ARCHITECTURE","n":[["Loci Architecture PLLC",2],["LOCI ARCHITECTURE PLLC",1]],"x":{"dbe":{"r":1,"i":["LOCI ARCHITECTURE PLLC"]},"dol":{"r":1,"i":["25-67RE5-CR"],"z":["10012"]},"sca":{"r":1,"i":["LOCI ARCHITECTURE PLLC"],"z":["10012"]}}}
+{"s":"LOCI ARCHITECTURE","n":[["Loci Architecture PLLC",2],["LOCI ARCHITECTURE PLLC",1]],"x":{"dbe":{"r":1,"i":["LOCI ARCHITECTURE PLLC"]},"dol":{"r":1,"i":["25-67RE5-CR"],"z":["10012"]},"sca":{"r":1,"i":["LOCI ARCHITECTURE PLLC"],"z":["10012"]}}},
+{"s":"LOCK BERLIN CEMETERY ASSN","n":[["LOCK BERLIN CEMETERY ASSN INC",1]],"x":{"irs":{"r":1,"i":["150542435"],"z":["14489"]}}}
 ]}

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":64,"first_ordinal":107935,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":64,"first_ordinal":107935,"entries":[
 {"s":"ODYSSEUS WORLD FEDERATION OF CEPHALONIAN ITHACIAN SOCIETIES","n":[["ODYSSEUS WORLD FEDERATION OF CEPHALONIAN & ITHACIAN SOCIETIES",1]],"x":{"irs":{"r":1,"i":["475165703"],"z":["11944"]}}},
 {"s":"ODYSSEY AUTOMOTIVE SPECIALTY","n":[["Odyssey Automotive Specialty Inc.",1]],"x":{"ocp":{"r":1,"a":123450,"l":"2008-10-03","i":["20080926010"]}}},
 {"s":"ODYSSEY DAY CARE","n":[["ODYSSEY DAY CARE LLC",3],["Odyssey Day Care, LLC",1]],"x":{"cbr":{"r":1,"a":1469930,"l":"2026-09-02","i":["CT104020279757943"],"m":["Black American"]},"cbv":{"r":1,"l":"2026-09-02","i":["CT104020279757943"],"m":["Black American"]},"dbe":{"r":1,"i":["ODYSSEY DAY CARE LLC"]},"sbs":{"r":1,"i":["14956"],"z":["10462"],"p":["MBE","WBE"]}}},

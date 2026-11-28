@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":70,"first_ordinal":118065,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":70,"first_ordinal":118065,"entries":[
 {"s":"QUALITY BUS SALES SERVICE IN","n":[["Quality Bus Sales & Service In",1]],"x":{"ocp":{"r":1,"a":3276782.85,"l":"2004-03-03","i":["20040225024"]}}},
 {"s":"QUALITY COMPLIANCE MANAGEMENT CONSULTING","n":[["Quality Compliance & Management Consulting, Inc",1]],"x":{"sbs":{"r":1,"i":["15417"],"z":["20707"],"p":["MBE","WBE"]}}},
 {"s":"QUALITY CONSTRUCTION DEVELOPMENT","n":[["Quality Construction & Development Corp",1],["Quality Construction & Development Corp.",1]],"x":{"sbs":{"r":1,"i":["241818"],"z":["10305"],"p":["MBE"]},"dol":{"r":1,"i":["26-9YV93-CR"],"z":["10305"]}}},

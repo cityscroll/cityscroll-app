@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.community_board_graph_census.v1",
   "version": 1,
-  "observed_on": "2026-11-24",
+  "observed_on": "2026-11-28",
   "policy": {
     "source_registry": "site/data/non_council_outcome_sources/source_registry.json",
     "source_inventory": "site/data/non_council_outcome_sources/board_source_inventory.json",
@@ -142,16 +142,16 @@
     }
   },
   "meeting_measurements": {
-    "record_count": 856,
+    "record_count": 869,
     "boards_with_records": 31,
-    "records_explicitly_identifying_committee": 402,
+    "records_explicitly_identifying_committee": 413,
     "records_with_structured_committee_field": 54,
     "records_whose_title_exactly_matches_known_local_committee": 0,
-    "full_board_records": 131,
+    "full_board_records": 132,
     "explicit_public_hearing_records": 24,
     "joint_committee_records": 12,
-    "records_without_typed_institution_host": 856,
-    "committee_records_with_unresolved_host_body": 402,
+    "records_without_typed_institution_host": 869,
+    "committee_records_with_unresolved_host_body": 413,
     "known_local_committee_registry": {
       "path": "not present in Card 1; reviewed board-local registry is a later card deliverable",
       "known_committee_count": 0,
@@ -967,7 +967,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 21
+          "current_record_count": 22
         },
         "minutes": {
           "url": null,
@@ -1021,7 +1021,7 @@
         "upcoming_meetings": {
           "status": "already modeled",
           "basis": "indexed_meeting_records",
-          "evidence_count": 21,
+          "evidence_count": 22,
           "note": null
         },
         "minutes": {
@@ -1050,14 +1050,14 @@
         }
       },
       "meeting_measurements": {
-        "record_count": 21,
+        "record_count": 22,
         "records_explicitly_identifying_committee": 3,
         "records_with_structured_committee_field": 0,
         "records_whose_title_exactly_matches_known_local_committee": 0,
         "full_board_records": 3,
         "explicit_public_hearing_records": 0,
         "joint_committee_records": 0,
-        "records_without_typed_institution_host": 21,
+        "records_without_typed_institution_host": 22,
         "committee_records_with_unresolved_host_body": 3,
         "explicit_committee_title_samples": [
           "EXECUTIVE COMMITTEE"
@@ -1316,7 +1316,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 559
+          "current_record_count": 561
         }
       },
       "dimensions": {
@@ -1365,7 +1365,7 @@
         "minutes": {
           "status": "already modeled",
           "basis": "indexed_minutes_documents",
-          "evidence_count": 559,
+          "evidence_count": 561,
           "note": null
         },
         "agendas": {
@@ -1540,7 +1540,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 110
+          "current_record_count": 111
         }
       },
       "dimensions": {
@@ -1589,7 +1589,7 @@
         "minutes": {
           "status": "already modeled",
           "basis": "indexed_minutes_documents",
-          "evidence_count": 110,
+          "evidence_count": 111,
           "note": null
         },
         "agendas": {
@@ -1876,7 +1876,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 160
+          "current_record_count": 161
         }
       },
       "dimensions": {
@@ -1925,7 +1925,7 @@
         "minutes": {
           "status": "already modeled",
           "basis": "indexed_minutes_documents",
-          "evidence_count": 160,
+          "evidence_count": 161,
           "note": null
         },
         "agendas": {
@@ -2452,7 +2452,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 710
+          "current_record_count": 712
         }
       },
       "dimensions": {
@@ -2501,13 +2501,13 @@
         "minutes": {
           "status": "already modeled",
           "basis": "indexed_minutes_documents",
-          "evidence_count": 710,
+          "evidence_count": 712,
           "note": null
         },
         "agendas": {
           "status": "already present in source but discarded",
           "basis": "indexed_document_url_or_identifier_agenda_signal",
-          "evidence_count": 704,
+          "evidence_count": 706,
           "note": "Agenda-looking publisher documents are retained as source records, not as typed agenda objects."
         },
         "recommendations_resolutions": {
@@ -3013,7 +3013,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 15
+          "current_record_count": 18
         },
         "minutes": {
           "url": "https://cb14brooklyn.com/board-meeting-minutes/",
@@ -3037,7 +3037,7 @@
         "committee_identity_in_calendar_or_source_data": {
           "status": "already present in source but discarded",
           "basis": "meeting_title_explicit_committee_signal",
-          "evidence_count": 9,
+          "evidence_count": 12,
           "note": "The publisher title names a committee, but the current materialized row has no typed committee identity."
         },
         "board_roster": {
@@ -3067,7 +3067,7 @@
         "upcoming_meetings": {
           "status": "already modeled",
           "basis": "indexed_meeting_records",
-          "evidence_count": 15,
+          "evidence_count": 18,
           "note": null
         },
         "minutes": {
@@ -3096,15 +3096,15 @@
         }
       },
       "meeting_measurements": {
-        "record_count": 15,
-        "records_explicitly_identifying_committee": 9,
+        "record_count": 18,
+        "records_explicitly_identifying_committee": 12,
         "records_with_structured_committee_field": 0,
         "records_whose_title_exactly_matches_known_local_committee": 0,
         "full_board_records": 4,
         "explicit_public_hearing_records": 1,
         "joint_committee_records": 0,
-        "records_without_typed_institution_host": 15,
-        "committee_records_with_unresolved_host_body": 9,
+        "records_without_typed_institution_host": 18,
+        "committee_records_with_unresolved_host_body": 12,
         "explicit_committee_title_samples": [
           "Community Environment, Cultural Affairs and Economic Development Committee Meeting",
           "Community Safety Committee Meeting",
@@ -3731,7 +3731,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 19
+          "current_record_count": 20
         }
       },
       "dimensions": {
@@ -3780,7 +3780,7 @@
         "minutes": {
           "status": "already modeled",
           "basis": "indexed_minutes_documents",
-          "evidence_count": 19,
+          "evidence_count": 20,
           "note": null
         },
         "agendas": {
@@ -3832,7 +3832,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 23
+          "current_record_count": 30
         },
         "minutes": {
           "url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
@@ -3843,7 +3843,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 274
+          "current_record_count": 275
         }
       },
       "dimensions": {
@@ -3856,7 +3856,7 @@
         "committee_identity_in_calendar_or_source_data": {
           "status": "already present in source but discarded",
           "basis": "meeting_title_explicit_committee_signal",
-          "evidence_count": 18,
+          "evidence_count": 24,
           "note": "The publisher title names a committee, but the current materialized row has no typed committee identity."
         },
         "board_roster": {
@@ -3886,13 +3886,13 @@
         "upcoming_meetings": {
           "status": "already modeled",
           "basis": "indexed_meeting_records",
-          "evidence_count": 23,
+          "evidence_count": 30,
           "note": null
         },
         "minutes": {
           "status": "already modeled",
           "basis": "indexed_minutes_documents",
-          "evidence_count": 274,
+          "evidence_count": 275,
           "note": null
         },
         "agendas": {
@@ -3915,15 +3915,15 @@
         }
       },
       "meeting_measurements": {
-        "record_count": 23,
-        "records_explicitly_identifying_committee": 18,
+        "record_count": 30,
+        "records_explicitly_identifying_committee": 24,
         "records_with_structured_committee_field": 0,
         "records_whose_title_exactly_matches_known_local_committee": 0,
-        "full_board_records": 3,
+        "full_board_records": 4,
         "explicit_public_hearing_records": 1,
         "joint_committee_records": 0,
-        "records_without_typed_institution_host": 23,
-        "committee_records_with_unresolved_host_body": 18,
+        "records_without_typed_institution_host": 30,
+        "committee_records_with_unresolved_host_body": 24,
         "explicit_committee_title_samples": [
           "Executive Committee",
           "Health, Seniors, & Human Services / Youth, Education, & Human Rights Committee",
@@ -4195,7 +4195,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 91
+          "current_record_count": 92
         },
         "minutes": {
           "url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
@@ -4219,7 +4219,7 @@
         "committee_identity_in_calendar_or_source_data": {
           "status": "already present in source but discarded",
           "basis": "meeting_title_explicit_committee_signal",
-          "evidence_count": 88,
+          "evidence_count": 89,
           "note": "The publisher title names a committee, but the current materialized row has no typed committee identity."
         },
         "board_roster": {
@@ -4249,7 +4249,7 @@
         "upcoming_meetings": {
           "status": "already modeled",
           "basis": "indexed_meeting_records",
-          "evidence_count": 91,
+          "evidence_count": 92,
           "note": null
         },
         "minutes": {
@@ -4278,15 +4278,15 @@
         }
       },
       "meeting_measurements": {
-        "record_count": 91,
-        "records_explicitly_identifying_committee": 88,
+        "record_count": 92,
+        "records_explicitly_identifying_committee": 89,
         "records_with_structured_committee_field": 54,
         "records_whose_title_exactly_matches_known_local_committee": 0,
         "full_board_records": 3,
         "explicit_public_hearing_records": 0,
         "joint_committee_records": 0,
-        "records_without_typed_institution_host": 91,
-        "committee_records_with_unresolved_host_body": 88,
+        "records_without_typed_institution_host": 92,
+        "committee_records_with_unresolved_host_body": 89,
         "explicit_committee_title_samples": [
           "Budget & Governmental Affairs Committee Meeting",
           "Business Affairs & Licensing Committee Meeting",
@@ -4317,7 +4317,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 59
+          "current_record_count": 60
         },
         "minutes": {
           "url": "https://www.mcb7.org/minutes",
@@ -4341,7 +4341,7 @@
         "committee_identity_in_calendar_or_source_data": {
           "status": "already present in source but discarded",
           "basis": "meeting_title_explicit_committee_signal",
-          "evidence_count": 36,
+          "evidence_count": 37,
           "note": "The publisher title names a committee, but the current materialized row has no typed committee identity."
         },
         "board_roster": {
@@ -4371,7 +4371,7 @@
         "upcoming_meetings": {
           "status": "already modeled",
           "basis": "indexed_meeting_records",
-          "evidence_count": 59,
+          "evidence_count": 60,
           "note": null
         },
         "minutes": {
@@ -4400,15 +4400,15 @@
         }
       },
       "meeting_measurements": {
-        "record_count": 59,
-        "records_explicitly_identifying_committee": 36,
+        "record_count": 60,
+        "records_explicitly_identifying_committee": 37,
         "records_with_structured_committee_field": 0,
         "records_whose_title_exactly_matches_known_local_committee": 0,
         "full_board_records": 5,
         "explicit_public_hearing_records": 0,
         "joint_committee_records": 0,
-        "records_without_typed_institution_host": 59,
-        "committee_records_with_unresolved_host_body": 36,
+        "records_without_typed_institution_host": 60,
+        "committee_records_with_unresolved_host_body": 37,
         "explicit_committee_title_samples": [
           "Budget & Strategy Committee",
           "Business & Consumer Issues Committee",
@@ -5135,7 +5135,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 179
+          "current_record_count": 180
         }
       },
       "dimensions": {
@@ -5184,13 +5184,13 @@
         "minutes": {
           "status": "already modeled",
           "basis": "indexed_minutes_documents",
-          "evidence_count": 179,
+          "evidence_count": 180,
           "note": null
         },
         "agendas": {
           "status": "already present in source but discarded",
           "basis": "indexed_document_url_or_identifier_agenda_signal",
-          "evidence_count": 52,
+          "evidence_count": 53,
           "note": "Agenda-looking publisher documents are retained as source records, not as typed agenda objects."
         },
         "recommendations_resolutions": {
@@ -6060,7 +6060,7 @@
           "inventory_status": "verified",
           "collection_state": "indexed",
           "collection_state_reason": null,
-          "current_record_count": 153
+          "current_record_count": 154
         }
       },
       "dimensions": {
@@ -6109,13 +6109,13 @@
         "minutes": {
           "status": "already modeled",
           "basis": "indexed_minutes_documents",
-          "evidence_count": 153,
+          "evidence_count": 154,
           "note": null
         },
         "agendas": {
           "status": "already present in source but discarded",
           "basis": "indexed_document_url_or_identifier_agenda_signal",
-          "evidence_count": 76,
+          "evidence_count": 77,
           "note": "Agenda-looking publisher documents are retained as source records, not as typed agenda objects."
         },
         "recommendations_resolutions": {

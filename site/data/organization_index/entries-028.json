@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":28,"first_ordinal":46974,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":28,"first_ordinal":46974,"entries":[
 {"s":"ELEVATE RENEWABLES F7","n":[["ELEVATE RENEWABLES F7  LLC",1]],"x":{"dbe":{"r":1,"i":["ELEVATE RENEWABLES F7  LLC"]}}},
 {"s":"ELEVATE SOCCER","n":[["ELEVATE SOCCER INC",1]],"x":{"irs":{"r":1,"i":["934768699"],"z":["14006"]}}},
 {"s":"ELEVATE THEATRE","n":[["Elevate Theatre Company LLC",1]],"x":{"sbs":{"r":1,"i":["357919"],"z":["10031"],"p":["MBE","WBE"]}}},

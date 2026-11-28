@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":44,"first_ordinal":73986,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":44,"first_ordinal":73986,"entries":[
 {"s":"INTRICATE CONSTRUCTION","n":[["INTRICATE CONSTRUCTION, INC.",1],["Intricate Construction, Inc.",1]],"x":{"dol":{"r":1,"i":["24-63H5O-CR"],"z":["10532"]},"sca":{"r":1,"i":["INTRICATE CONSTRUCTION, INC."],"z":["10532"]}}},
 {"s":"INTRICATE TECH SOLUTIONS","n":[["Intricate Tech. Solutions, LTD.",1],["Intricate Tech. Solutions, Ltd.",1]],"x":{"dol":{"r":1,"i":["24-64NP4-CR"],"z":["11704"]},"sca":{"r":1,"i":["INTRICATE TECH. SOLUTIONS, LTD."],"z":["11704"]}}},
 {"s":"INTRINSIC CONNECTIONS CONSULTING","n":[["Intrinsic Connections Consulting LLC",1]],"x":{"sbs":{"r":1,"i":["372693"],"z":["10459"],"p":["MBE","WBE"]}}},

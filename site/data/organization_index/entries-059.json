@@ -1,6 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":59,"first_ordinal":99865,"entries":[
-{"s":"NASSAU CENTER RESIDENTIAL DEVELOPMENT","n":[["NASSAU CENTER RESIDENTIAL DEVELOPMENT CORP",1]],"x":{"irs":{"r":1,"i":["112524108"],"z":["11797"]}}},
-{"s":"NASSAU CEREBRAL PALSY GUARDIANSHIP","n":[["NASSAU CEREBRAL PALSY GUARDIANSHIP CORP",1]],"x":{"irs":{"r":1,"i":["113134256"],"z":["11575"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":59,"first_ordinal":99867,"entries":[
 {"s":"NASSAU CHAPTER NEW YORK STATE ASSOC OF SCHOOL BUSINESS OFFICIALS","n":[["NASSAU CHAPTER NEW YORK STATE ASSOC OF SCHOOL BUSINESS OFFICIALS",1]],"x":{"irs":{"r":1,"i":["113309720"],"z":["11050"]}}},
 {"s":"NASSAU CHAPTER OF THE KNIGHTS OF COLUMBUS","n":[["NASSAU CHAPTER OF THE KNIGHTS OF COLUMBUS INC",1]],"x":{"irs":{"r":1,"i":["461550883"],"z":["11566"]}}},
 {"s":"NASSAU CHARITIES","n":[["NASSAU CHARITIES INC",1]],"x":{"irs":{"r":1,"i":["261311189"],"z":["11050"]}}},

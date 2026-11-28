@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":79,"first_ordinal":133498,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":79,"first_ordinal":133498,"entries":[
 {"s":"SPARTAN CONSTRUCTION","d":[["Spartan Construction",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-69O5X-CR"],"z":["14612"]}}},
 {"s":"SPARTAN DEMOLITION","n":[["Spartan Demolition Company LLC",3]],"x":{"sbs":{"r":1,"i":["1689"],"z":["11411"],"p":["MBE"]},"dol":{"r":1,"i":["25-64QA4-CR"],"z":["11411"]},"sca":{"r":1,"i":["SPARTAN DEMOLITION COMPANY LLC"],"z":["11411"]}}},
 {"s":"SPARTAN INDUSTRIES","n":[["SPARTAN INDUSTRIES CORP.",1]],"d":[["Spartan Industries Corp",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["26-64NU6-CR"],"z":["11735"]}}},

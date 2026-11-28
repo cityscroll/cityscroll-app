@@ -1,6 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":54,"first_ordinal":91238,"entries":[
-{"s":"MARANATHA HUMAN SERVICES","n":[["MARANATHA HUMAN SERVICES INC",1]],"x":{"irs":{"r":1,"i":["141755068"],"z":["12603"]}}},
-{"s":"MARANATHA MISSIONARY OUTREACH","n":[["MARANATHA MISSIONARY OUTREACH",1]],"x":{"irs":{"r":1,"i":["561741010"],"z":["14127"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":54,"first_ordinal":91240,"entries":[
 {"s":"MARANATHA ROMANIAN BAPTIST CHURCH","n":[["MARANATHA ROMANIAN BAPTIST CHURCH",1]],"x":{"irs":{"r":1,"i":["113409749"],"z":["11385"]}}},
 {"s":"MARANATHA TEMPLE","n":[["MARANATHA TEMPLE",1]],"x":{"irs":{"r":1,"i":["113162069"],"z":["11420"]}}},
 {"s":"MARANDO CONSTRUCTION","d":[["Marando Construction",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["26-69FVT-CR"],"z":["12203"]}}},
@@ -1740,5 +1738,8 @@
 {"s":"MCCARTY HOUSING DEVELOPMENT FUND","n":[["MCCARTY HOUSING DEVELOPMENT FUND COMPANY INC",1]],"x":{"irs":{"r":1,"i":["562353412"],"z":["12202"]}}},
 {"s":"MCCARTY PAINTERS","n":[["McCarty Painters, LLC",1]],"x":{"dol":{"r":1,"i":["26-66J1B-CR"],"z":["12866"]}}},
 {"s":"MCCASHION BROTHERS HOLDING","n":[["McCashion Brothers Holding Company, LLC",1]],"x":{"dol":{"r":1,"i":["25-67BRI-CR"],"z":["12205"]}}},
-{"s":"MCCAVANAUGH POND CLUB","n":[["MCCAVANAUGH POND CLUB INC",1]],"x":{"irs":{"r":1,"i":["156020786"],"z":["14424"]}}}
+{"s":"MCCAVANAUGH POND CLUB","n":[["MCCAVANAUGH POND CLUB INC",1]],"x":{"irs":{"r":1,"i":["156020786"],"z":["14424"]}}},
+{"s":"MCCC FOUNDATION","n":[["MCCC FOUNDATION LTD",1]],"x":{"irs":{"r":1,"i":["843662400"],"z":["14626"]}}},
+{"s":"MCCG","d":[["MCCG",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["3712"],"z":["10005"],"p":["MBE"]}}},
+{"s":"MCCGUSA","n":[["MCCGUSA Ltd.",1]],"x":{"sbs":{"r":1,"i":["3712"],"z":["10005"],"p":["MBE"]}}}
 ]}

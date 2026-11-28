@@ -2,12 +2,12 @@
   "schema": "cityscroll.analytics_registered_contracts_population_receipt.v1",
   "status": "complete",
   "projection_contract": "cityscroll.analytical_projection.v1",
-  "snapshot_date": "2026-11-27",
-  "generated_at": "2026-11-27T13:09:25.421Z",
+  "snapshot_date": "2026-11-28",
+  "generated_at": "2026-11-28T15:52:28.007Z",
   "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
   "source": {
     "source_tag": "checkbook-contracts",
-    "observed_at": "2026-11-27T13:09:25.421Z",
+    "observed_at": "2026-11-28T15:52:28.007Z",
     "observation_basis": "acquisition receipt pulled_at",
     "normalized_unique_contracts": 30154,
     "source_fiscal_years": [
@@ -19,23 +19,23 @@
   },
   "source_receipt": {
     "schema": "cityscroll.checkbook_contracts_population_receipt.v1",
-    "pulled_at": "2026-11-27T13:09:25.421Z",
+    "pulled_at": "2026-11-28T15:52:28.007Z",
     "checksums": {
-      "page_manifest_sha256": "d3bb2389fc1efc82fbd695b7faefa5b6f2192a8b269eac73101ef0e4994fc372",
-      "normalized_contracts_sha256": "f7152758ea290902a7b73ce71975bd4cd19722466142b99696f7cecc50a8eb40",
-      "committed_graph_slice_sha256": "b402520b41f47723a621f902cadfa9701b71e9e2ca45810675fd5ac67f374761"
+      "page_manifest_sha256": "13f1cfeadb6801d86d5caa32b9873579a44f70e64ba5225866ac800c56380cf2",
+      "normalized_contracts_sha256": "96f451dd867b7c75e9ba8e74cae86deec0ec01dcb0b4dbbeae20264abfbaf13c",
+      "committed_graph_slice_sha256": "5406f039717196903dcada46151cee3e4b5afc79d2dd428e3e92d3609bd3b686"
     },
     "population": {
-      "api_transaction_rows": 41197,
+      "api_transaction_rows": 41196,
       "by_fiscal_year": {
         "2025": 19766,
         "2026": 15274,
-        "2027": 6157
+        "2027": 6156
       },
       "normalized_unique_contracts": 30154,
-      "duplicate_slices_collapsed": 11043,
+      "duplicate_slices_collapsed": 11042,
       "prime_slices": 30154,
-      "subvendor_slices": 11043,
+      "subvendor_slices": 11042,
       "other_slices": 0,
       "blocked": {
         "missing_contract_id_slices": 0,
@@ -65,7 +65,7 @@
     "normalized_unique_contracts": 30154,
     "distinct_prime_contract_ids": 30154,
     "duplicate_contract_ids": 0,
-    "duplicate_slices_collapsed": 11043,
+    "duplicate_slices_collapsed": 11042,
     "blocked": {
       "missing_contract_id_slices": 0,
       "ambiguous_pin_contracts": 0,
@@ -419,6 +419,6 @@
     "site_artifact": "site/data/analytics_registered_contracts.json",
     "request_time_database_queries": false,
     "reproducible_input": "warehouse/raw/checkbook-contracts/normalized.json",
-    "index_sha256": "ff2547400ee9e3e08bff182e8a3849d70a3c352ae0f7cb54569ded01d8238526"
+    "index_sha256": "43c705c8b494eb72c47b0c37907221f567994540d4947fe6ba89af7dad920477"
   }
 }

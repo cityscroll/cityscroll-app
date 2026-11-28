@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":94,"first_ordinal":158442,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":94,"first_ordinal":158442,"entries":[
 {"s":"WORLD OF WOMEN S I","n":[["WORLD OF WOMEN S I INC",1]],"x":{"irs":{"r":1,"i":["134150099"],"z":["10312"]}}},
 {"s":"WORLD OF WONDERS","n":[["WORLD OF WONDERS INC",5]],"x":{"cbr":{"r":2,"a":2601388,"l":"2026-09-18","i":["CT104020279757892","CT104020279758960"],"m":["Non-M/WBE"]},"cbv":{"r":2,"l":"2026-09-18","i":["CT104020279757892","CT104020279758960"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["WORLD OF WONDERS INC"]}}},
 {"s":"WORLD OF WONDERS PRESCHOOL","n":[["WORLD OF WONDERS PRESCHOOL",1]],"x":{"irs":{"r":1,"i":["161462801"],"z":["14004"]}}},

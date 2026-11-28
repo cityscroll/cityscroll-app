@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":33,"first_ordinal":55403,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":33,"first_ordinal":55403,"entries":[
 {"s":"FRIENDS OF BUCKS ROCK","n":[["FRIENDS OF BUCKS ROCK INC",1]],"x":{"irs":{"r":1,"i":["134192202"],"z":["10003"]}}},
 {"s":"FRIENDS OF BUFFALO CHESTERTON ACADEMY","n":[["FRIENDS OF BUFFALO CHESTERTON ACADEMY INC",1]],"x":{"irs":{"r":1,"i":["464186000"],"z":["14026"]}}},
 {"s":"FRIENDS OF BUFFALO CREEK","n":[["FRIENDS OF BUFFALO CREEK INC",1]],"x":{"irs":{"r":1,"i":["861380042"],"z":["14214"]}}},

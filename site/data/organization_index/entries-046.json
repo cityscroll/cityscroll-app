@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":46,"first_ordinal":77381,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":46,"first_ordinal":77381,"entries":[
 {"s":"JKOLLEL","n":[["JKOLLEL INC",1]],"x":{"irs":{"r":1,"i":["453143230"],"z":["11230"]}}},
 {"s":"JKR CONTROLS","n":[["JKR Controls",1]],"d":[["JKR Controls",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["24-64BX6-CR"],"z":["14519"]}}},
 {"s":"JKW FOUNDATION TR UA 092597","n":[["JKW FOUNDATION TR UA 092597",1]],"x":{"irs":{"r":1,"i":["137127165"],"z":["10025"]}}},
@@ -26,7 +26,7 @@
 {"s":"JLHKIDS","n":[["JLHKIDS INC",1]],"x":{"irs":{"r":1,"i":["393118701"],"z":["12180"]}}},
 {"s":"JLIC","n":[["JLIC INC",1]],"x":{"irs":{"r":1,"i":["851093875"],"z":["10006"]}}},
 {"s":"JLJ III ENTERPRISES","n":[["JLJ III ENTERPRISES, INC",1]],"x":{"ocp":{"r":1,"a":2499857.78,"l":"2003-03-14","i":["20030306018"]}}},
-{"s":"JLJ IV ENTERPRISES","n":[["JLJ IV ENTERPRISES INC",14],["JLJ IV Enterprises Inc",14],["JLJ IV Enterprises Inc.",14],["JLJ IV Enterprises, Inc.",9],["JLJ IV  Enterprises, Inc",2],["JLJ IV  ENTERPRISES INC",1]],"x":{"ocp":{"r":39,"a":275276373.92,"l":"2026-05-04","c":39,"i":["20260428009","20250602005","20241113017","20231103102","20230309102"]},"cbr":{"r":5,"a":132748279,"l":"2026-11-24","i":["CT185020278803375","CT185020268806617","CT185020268803090","CT185020258807747","CT185020258803548"],"m":["Non-M/WBE"]},"ppt":{"r":5,"a":151051246.99,"l":"2026-04-27","i":["CT1-850-20268806617","CT1-850-20258807747","CT1-850-20258803548","CT1-850-20248803509","CT1-850-20238806245"]},"cbv":{"r":3,"l":"2026-11-24","i":["CT185020278803375","CT185020268806617","CT185020268803090"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["JLJ IV ENTERPRISES INC"]},"dol":{"r":1,"i":["26-64J4N-CR"],"z":["11429"]}}},
+{"s":"JLJ IV ENTERPRISES","n":[["JLJ IV Enterprises Inc",14],["JLJ IV Enterprises Inc.",14],["JLJ IV ENTERPRISES INC",13],["JLJ IV Enterprises, Inc.",9],["JLJ IV  Enterprises, Inc",2],["JLJ IV  ENTERPRISES INC",1]],"x":{"ocp":{"r":39,"a":275276373.92,"l":"2026-05-04","c":39,"i":["20260428009","20250602005","20241113017","20231103102","20230309102"]},"cbr":{"r":5,"a":132748279,"l":"2026-11-24","i":["CT185020278803375","CT185020268806617","CT185020268803090","CT185020258807747","CT185020258803548"],"m":["Non-M/WBE"]},"ppt":{"r":5,"a":151051246.99,"l":"2026-04-27","i":["CT1-850-20268806617","CT1-850-20258807747","CT1-850-20258803548","CT1-850-20248803509","CT1-850-20238806245"]},"cbv":{"r":2,"l":"2026-11-24","i":["CT185020278803375","CT185020268806617"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["JLJ IV ENTERPRISES INC"]},"dol":{"r":1,"i":["26-64J4N-CR"],"z":["11429"]}}},
 {"s":"JLJ TRIPI SOLUTIONS","n":[["JLJ Tripi Solutions Inc",1]],"x":{"dol":{"r":1,"i":["25-6HNBO-CR"],"z":["14086"]}}},
 {"s":"JLJ V ENTERPRISES","n":[["Jlj V Enterprises Inc",2],["Jlj V Enterprises, Inc.",1]],"x":{"ocp":{"r":3,"a":11085908.2,"l":"2016-09-20","i":["20160913019","20160211003","20150911010"]}}},
 {"s":"JLJIV ENTERPRISES","n":[["JLJIV ENTERPRISES, INC.",1]],"x":{"ocp":{"r":1,"a":15619593.44,"l":"2004-03-05","i":["20040301001"]}}},
@@ -1746,5 +1746,6 @@
 {"s":"K C MASONRY","n":[["K.C. MASONRY, INC.",1]],"x":{"dol":{"r":1,"i":["24-64GSY-CR"],"z":["13021"]}}},
 {"s":"K C STRATEGIES","n":[["K&C STRATEGIES LLC",2],["K&C Strategies, LLC",1]],"x":{"cbr":{"r":1,"a":160000,"l":"2025-06-16","i":["CT106920251418125"],"m":["Hispanic American"]},"dbe":{"r":1,"i":["K&C STRATEGIES LLC"]},"sbs":{"r":1,"i":["369505"],"z":["10025"],"p":["MBE","WBE"]}}},
 {"s":"K CORBETTE REALTY GROUP","n":[["K Corbette Realty Group LLC",1]],"x":{"sbs":{"r":1,"i":["510"],"z":["10005"],"p":["MBE","WBE"]}}},
-{"s":"K D INDUSTRIES","n":[["K & D Industries of NY, LLC",1],["K&D Industries of NY, LLC",1]],"x":{"sbs":{"r":1,"i":["13627"],"z":["10566"],"p":["MBE"]},"dol":{"r":1,"i":["24-64FPO-CR"],"z":["10566"]}}}
+{"s":"K D INDUSTRIES","n":[["K & D Industries of NY, LLC",1],["K&D Industries of NY, LLC",1]],"x":{"sbs":{"r":1,"i":["13627"],"z":["10566"],"p":["MBE"]},"dol":{"r":1,"i":["24-64FPO-CR"],"z":["10566"]}}},
+{"s":"K D KANOPY","n":[["K D KANOPY",26]],"x":{"cbr":{"r":17,"a":140426,"l":"2026-10-16","c":17,"i":["CT184620278803436","CT184620278803124","CT184620278802595","CT184620268807211","CT184620268806845"],"m":["Non-M/WBE"]},"cbv":{"r":9,"l":"2026-10-16","c":9,"i":["CT184620278803436","CT184620278803124","CT184620278802595","CT184620268807211","CT184620268806845"],"m":["Non-M/WBE"]}}}
 ]}

@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_payments.v1",
   "projection_contract": "cityscroll.analytical_projection.v1",
   "fact": "payment",
-  "generated_at": "2026-11-27T13:09:34.006Z",
-  "snapshot_date": "2026-11-27T13:09:34.006Z",
+  "generated_at": "2026-11-28T15:52:37.415Z",
+  "snapshot_date": "2026-11-28T15:52:37.415Z",
   "population_definition": "AP-08 independent Checkbook Spending contract-payment population; grouped by agency, payee, and payment fiscal year.",
   "dimensions": [
     "agency",

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":42,"first_ordinal":70892,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":42,"first_ordinal":70892,"entries":[
 {"s":"IGLESIA BIBLICA EMANUEL","n":[["IGLESIA BIBLICA EMANUEL INC",1]],"x":{"irs":{"r":1,"i":["473790637"],"z":["11501"]}}},
 {"s":"IGLESIA BIBLICA EVANGELICA","n":[["IGLESIA BIBLICA EVANGELICA INC",1]],"x":{"irs":{"r":1,"i":["133439777"],"z":["10460"]}}},
 {"s":"IGLESIA BIBLICA RESTAURACION","n":[["IGLESIA BIBLICA RESTAURACION INC",1]],"x":{"irs":{"r":1,"i":["113447053"],"z":["11104"]}}},

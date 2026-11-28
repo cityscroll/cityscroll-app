@@ -27,7 +27,7 @@
     "source_contracts": "71661e9cea9c68ff7974bbbbfac23e5e75631abfd7095454e436e4707c59f72d",
     "award_receipts": "e9a9f5affa7e29ad33dcdcbd8826811b10ba783e8d92515d2ea82ea2a8a29d51",
     "story_signals": "66ec53cb3a3aa068bab03f30a26658be8113f34bcfd8ce0ed1d9fde6dd2765f9",
-    "procurement": "f1a8bffcb322aa4a2827c81ad526dc241e891833cd2d365e8388f901d9f301b1",
+    "procurement": "95af8e5aac2390ea495bed7a8d2a7b54a820a2e818cb05b75c699461216dcb12",
     "negative_control": "977d6ba5b8c45ea784a965b21b8fa7a9b142de401e14451d88873cbc6da5b8de",
     "frozen_cases": "43481b789cdbbdb7925bc67fd5513120772fed9ec3fa301d1daf1fdd34bbc9fc"
   },
@@ -70,7 +70,7 @@
       "definition": "Outputs supported for inspection / eligible inputs actually evaluated by each shipped pilot",
       "aggregate": {
         "numerator": 3,
-        "denominator": 9676,
+        "denominator": 9673,
         "rate": 0.00031
       },
       "families": {
@@ -84,9 +84,9 @@
         "within_contract_registered_amount_change": {
           "denominator_basis": "unique committed Checkbook observations with two positive registered amounts",
           "numerator": 2,
-          "denominator": 9675,
+          "denominator": 9672,
           "rate": 0.000207,
-          "source_observation_context": 9676,
+          "source_observation_context": 9673,
           "detected_changes": 109,
           "admitted_unshown": 107
         }

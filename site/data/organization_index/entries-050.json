@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":50,"first_ordinal":84419,"entries":[
-{"s":"LAW ENFORCEMENT SYSTEMS","n":[["Law Enforcement Systems, LLC",8],["LAW ENFORCEMENT SYSTEMS LLC",1]],"x":{"ocp":{"r":5,"a":3443089.38,"l":"2023-06-27","i":["20230621106","20220701130","20220620108","20190528002","20141010008"]},"ppt":{"r":3,"a":929027.33,"l":"2023-11-02","i":["CT1-836-20238800089","CT1-836-20228806894"]},"dbe":{"r":1,"i":["LAW ENFORCEMENT SYSTEMS LLC"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":50,"first_ordinal":84420,"entries":[
 {"s":"LAW FIRM OF DAYREL SEWELL","n":[["Law Firm of Dayrel Sewell PLLC",6],["LAW FIRM OF DAYREL SEWELL PLLC",1],["Law Firm of Dayrel Sewell, PLLC",1]],"x":{"ocp":{"r":2,"a":405000,"l":"2024-07-10","i":["20240703116","20230616143"]},"cbr":{"r":2,"a":830000,"l":"2024-07-25","i":["CT102520258800783","CT180620258800366"],"m":["Black American"]},"ppt":{"r":2,"a":405000,"l":"2024-07-02","i":["CT1-806-20258800366","CT1-806-20248800869"]},"dbe":{"r":1,"i":["LAW FIRM OF DAYREL SEWELL PLLC"]},"sbs":{"r":1,"i":["100483"],"z":["11218"],"p":["MBE"]}}},
 {"s":"LAW LIBRARY ASSOCIATION OF GREATER NEW YORK","n":[["LAW LIBRARY ASSOCIATION OF GREATER NEW YORK",1]],"x":{"irs":{"r":1,"i":["133229511"],"z":["10185"]}}},
 {"s":"LAW LIGHTING","n":[["LAW Lighting, Inc.",1]],"x":{"sbs":{"r":1,"i":["13897"],"z":["10803"],"p":["WBE"]}}},
@@ -1666,5 +1665,7 @@
 {"s":"LIFE POINT CHURCH OF BREWSTER NY","n":[["LIFE POINT CHURCH OF BREWSTER NY",1]],"x":{"irs":{"r":1,"i":["271980817"],"z":["10509"]}}},
 {"s":"LIFE PROGRESSIVE SERVICES GROUP","n":[["LIFE PROGRESSIVE SERVICES GROUP INC",1]],"x":{"irs":{"r":1,"i":["300606197"],"z":["10467"]}}},
 {"s":"LIFE PROJECT 4 YOUTH","n":[["LIFE PROJECT 4 YOUTH",1]],"x":{"irs":{"r":1,"i":["454308350"],"z":["10022"]}}},
-{"s":"LIFE QUEST COMMUNITY CHURCH","n":[["LIFE QUEST COMMUNITY CHURCH",1]],"x":{"irs":{"r":1,"i":["261847730"],"z":["14468"]}}}
+{"s":"LIFE QUEST COMMUNITY CHURCH","n":[["LIFE QUEST COMMUNITY CHURCH",1]],"x":{"irs":{"r":1,"i":["261847730"],"z":["14468"]}}},
+{"s":"LIFE RESTORATION CHURCH","n":[["LIFE RESTORATION CHURCH",1]],"x":{"irs":{"r":1,"i":["223638365"],"z":["12551"]}}},
+{"s":"LIFE S WORC","n":[["LIFE'S WORC INC",1]],"x":{"dbe":{"r":1,"i":["LIFE'S WORC INC"]}}}
 ]}

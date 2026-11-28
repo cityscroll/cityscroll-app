@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":16,"first_ordinal":26617,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":16,"first_ordinal":26617,"entries":[
 {"s":"CENTRAL BAPTIST CHURCH OF CORNING NEW YORK","n":[["CENTRAL BAPTIST CHURCH OF CORNING NEW YORK",1]],"x":{"irs":{"r":1,"i":["222224526"],"z":["14830"]}}},
 {"s":"CENTRAL BMANA","n":[["CENTRAL BMANA INC",1]],"x":{"irs":{"r":1,"i":["392827992"],"z":["11590"]}}},
 {"s":"CENTRAL BRIDGE CIVIC ASSOCIATION","n":[["CENTRAL BRIDGE CIVIC ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["222528823"],"z":["12035"]}}},

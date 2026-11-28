@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":73,"first_ordinal":123200,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":73,"first_ordinal":123200,"entries":[
 {"s":"ROCK HILL ERUV ASSOCIATION","n":[["ROCK HILL ERUV ASSOCIATION INC",1]],"x":{"irs":{"r":1,"i":["334137860"],"z":["12775"]}}},
 {"s":"ROCK HILL FIRE DEPARTMENT","n":[["ROCK HILL FIRE DEPARTMENT INC",1]],"x":{"irs":{"r":1,"i":["452393882"],"z":["12775"]}}},
 {"s":"ROCK HILL SUPPLY","n":[["Rock Hill Supply, Inc.",1]],"x":{"sbs":{"r":1,"i":["15708"],"z":["10550"],"p":["WBE"]}}},

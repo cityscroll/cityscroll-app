@@ -1,13 +1,17 @@
 {
   "schema": "cityscroll.meeting_outcomes_snapshot.v1",
-  "generated_at": "2026-11-27T10:00:45.897Z",
+  "generated_at": "2026-11-28T12:18:46.270Z",
   "delivery_tier": "inline-at-build",
-  "record_count": 305,
+  "record_count": 308,
   "present_count": 14,
-  "absent_count": 291,
+  "absent_count": 294,
   "by_notice": {
     "20261112013": {
       "request_id": "20261112013",
+      "snapshot_state": "absent"
+    },
+    "20261119034": {
+      "request_id": "20261119034",
       "snapshot_state": "absent"
     },
     "20261116024": {
@@ -44,6 +48,10 @@
     },
     "20261106003": {
       "request_id": "20261106003",
+      "snapshot_state": "absent"
+    },
+    "20261119006": {
+      "request_id": "20261119006",
       "snapshot_state": "absent"
     },
     "20261104022": {
@@ -100,6 +108,10 @@
     },
     "20261109032": {
       "request_id": "20261109032",
+      "snapshot_state": "absent"
+    },
+    "20261124009": {
+      "request_id": "20261124009",
       "snapshot_state": "absent"
     },
     "20261118005": {

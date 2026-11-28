@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":3,"first_ordinal":5110,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":3,"first_ordinal":5110,"entries":[
 {"s":"AIM","n":[["AIM & Co., LLC",1]],"x":{"sbs":{"r":1,"i":["379659"],"z":["06810"],"p":["MBE","WBE"]}}},
 {"s":"AIM AUTISM","n":[["AIM AUTISM INC",1]],"x":{"irs":{"r":1,"i":["871532145"],"z":["10954"]}}},
 {"s":"AIM B YISROEL","n":[["AIM B YISROEL INC",1]],"x":{"irs":{"r":1,"i":["134149817"],"z":["10977"]}}},

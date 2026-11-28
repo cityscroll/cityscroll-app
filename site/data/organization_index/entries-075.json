@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":75,"first_ordinal":126623,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":75,"first_ordinal":126623,"entries":[
 {"s":"SARATOGA CHILDRENS THEATRE","n":[["SARATOGA CHILDRENS THEATRE INC",1]],"x":{"irs":{"r":1,"i":["800191421"],"z":["12866"]}}},
 {"s":"SARATOGA CITY BALLET","n":[["SARATOGA CITY BALLET INC",1]],"x":{"irs":{"r":1,"i":["141773892"],"z":["12866"]}}},
 {"s":"SARATOGA CONVENTION AND TOURISM BUREAU","n":[["SARATOGA CONVENTION AND TOURISM BUREAU INC",1]],"x":{"irs":{"r":1,"i":["141666181"],"z":["12866"]}}},

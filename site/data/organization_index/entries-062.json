@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":62,"first_ordinal":104463,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":62,"first_ordinal":104463,"entries":[
 {"s":"NEWSOURCE","n":[["NewSource LLC",1]],"x":{"dol":{"r":1,"i":["25-64C6U-CR"],"z":["14094"]}}},
 {"s":"NEWSOUTH CAPITAL MANAGEMENT","n":[["NEWSOUTH CAPITAL MANAGEMENT INC",1]],"x":{"dbe":{"r":1,"i":["NEWSOUTH CAPITAL MANAGEMENT INC"]}}},
 {"s":"NEWSPAPER GUILD OF NY BENEFITS FUND","n":[["NEWSPAPER GUILD OF NY BENEFITS FUND",1]],"x":{"irs":{"r":1,"i":["133094045"],"z":["10604"]}}},
@@ -394,7 +394,7 @@
 {"s":"NICK LUSSIER S EXCAVATING","n":[["Nick Lussier's Excavating LLC",1]],"x":{"dol":{"r":1,"i":["25-649XK-CR"],"z":["12065"]}}},
 {"s":"NICK MOUSTAKAS BLACKTOP SEALCOATING","n":[["Nick Moustakas Blacktop Sealcoating, Inc.",1]],"x":{"dol":{"r":1,"i":["26-66SVV-CR"],"z":["12590"]}}},
 {"s":"NICK PERRONE TRUCKING AND EXCAVATING","n":[["Nick Perrone Trucking and Excavating, LLC",1]],"x":{"dol":{"r":1,"i":["26-69REA-CR"],"z":["12845"]}}},
-{"s":"NICK ROBERTIS MARINE","n":[["NICK ROBERTIS MARINE",9]],"x":{"cbr":{"r":5,"a":319499,"l":"2026-09-14","i":["CT182620271401786","CT182620261412077","CT182620261409406","CT184620261405671","CT184620258806021"],"m":["Non-M/WBE"]},"cbv":{"r":4,"l":"2026-09-14","i":["CT182620271401786","CT182620261412077","CT182620261409406","CT184620261405671"],"m":["Non-M/WBE"]}}},
+{"s":"NICK ROBERTIS MARINE","n":[["NICK ROBERTIS MARINE",8]],"x":{"cbr":{"r":5,"a":319499,"l":"2026-09-14","i":["CT182620271401786","CT182620261412077","CT182620261409406","CT184620261405671","CT184620258806021"],"m":["Non-M/WBE"]},"cbv":{"r":3,"l":"2026-09-14","i":["CT182620271401786","CT182620261412077","CT182620261409406"],"m":["Non-M/WBE"]}}},
 {"s":"NICK S ELECTRIC SERVICE","n":[["Nick's Electric Service of NY LLC",1]],"x":{"dol":{"r":1,"i":["25-65YX8-CR"],"z":["10801"]}}},
 {"s":"NICK S LIVE LOBSTERS","n":[["Nick's Live Lobsters Inc.",1]],"x":{"sbs":{"r":1,"i":["328598"],"z":["11234"],"p":["WBE"]}}},
 {"s":"NICK S LOBSTER HOUSE","d":[["Nick's Lobster House",1]],"x":{"sbs":{"r":1,"v":["dba"],"i":["328598"],"z":["11234"],"p":["WBE"]}}},
