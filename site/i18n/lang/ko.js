@@ -3705,6 +3705,8 @@
     fb_cat_bug: "오류",
     fb_cat_feature: "기능 제안",
     fb_cat_general: "일반",
+    fb_cat_inquiry: "연구 질문",
+    fb_cat_beta: "베타 테스터",
     about_label_message: "메시지",
     about_pasttask_optional_badge: "선택 사항",
     about_pasttask_summary: "지난 시도 설명하기",

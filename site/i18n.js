@@ -4393,6 +4393,8 @@ const STRINGS = {
     fb_cat_bug: "Bug",
     fb_cat_feature: "Feature idea",
     fb_cat_general: "General",
+    fb_cat_inquiry: "Research question",
+    fb_cat_beta: "Beta tester",
     about_label_message: "Your message",
     about_pasttask_optional_badge: "Optional",
     about_pasttask_summary: "Describe a past attempt",

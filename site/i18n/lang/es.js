@@ -3702,6 +3702,8 @@
     fb_cat_bug: "Error",
     fb_cat_feature: "Idea de función",
     fb_cat_general: "General",
+    fb_cat_inquiry: "Pregunta de investigación",
+    fb_cat_beta: "Persona de prueba beta",
     about_label_message: "Su mensaje",
     about_pasttask_optional_badge: "Opcional",
     about_pasttask_summary: "Describe un intento anterior",

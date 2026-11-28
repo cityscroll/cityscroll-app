@@ -3703,6 +3703,8 @@
     fb_cat_bug: "ত্রুটি",
     fb_cat_feature: "বৈশিষ্ট্যের ধারণা",
     fb_cat_general: "সাধারণ",
+    fb_cat_inquiry: "গবেষণার প্রশ্ন",
+    fb_cat_beta: "বেটা পরীক্ষক",
     about_label_message: "আপনার বার্তা",
     about_pasttask_optional_badge: "ঐচ্ছিক",
     about_pasttask_summary: "একটি অতীত প্রচেষ্টা বর্ণনা করুন",

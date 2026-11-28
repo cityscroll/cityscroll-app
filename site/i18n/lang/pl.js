@@ -3742,6 +3742,8 @@
     fb_cat_bug: "Błąd",
     fb_cat_feature: "Pomysł na funkcję",
     fb_cat_general: "Ogólne",
+    fb_cat_inquiry: "Pytanie o badanie",
+    fb_cat_beta: "Tester wersji beta",
     about_label_message: "Twoja wiadomość",
     about_pasttask_optional_badge: "Opcjonalnie",
     about_pasttask_summary: "Opisz poprzednią próbę",

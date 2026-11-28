@@ -4,63 +4,58 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>CityScroll · Homepage preview</title>
+  <title>CityScroll</title>
   <link rel="stylesheet" href="/brand.css">
   <link rel="stylesheet" href="/start/preview.css">
   <script type="module" src="/start/preview.mjs"></script>
 </head>
 <body class="start-page" data-start-page>
+  <nav id="cityscroll-start-nav" aria-label="CityScroll">
+    <a href="/start/" aria-current="page">Homepage</a>
+    <a href="/wincitywork/">WinCityWork</a>
+    <a href="/browse/">CityScroll Data Hub</a>
+    <a href="/about.html">About</a>
+    <a href="/about.html?intent=general#fbmessage">Contact</a>
+  </nav>
   <main class="start-main" id="content">
     <header class="start-hero">
-      <p class="start-eyebrow">CityScroll homepage preview</p>
-      <h1>Find your next step with New York City</h1>
-      <p>Find a City opportunity or explore the official records behind what’s happening.</p>
-      <label class="start-toggle"><input type="checkbox" role="switch" id="start-toggle"> Use preview navigation</label>
-      <p class="start-help" id="start-toggle-help" role="status">Preview navigation turns on when you first open this page.</p>
+      <h1>Follow what New York City is doing</h1>
+      <p>CityScroll is made by technologists. Our mission is to help people follow what New York City government is doing. We do that with one shared data hub.</p>
+      <p>Pick a path below.</p>
     </header>
 
     <div class="start-cards">
       <section class="start-card start-primary" aria-labelledby="start-procurement">
+        <p class="start-eyebrow">Live</p>
         <h2 id="start-procurement">Procurement</h2>
-        <p>Find City opportunities and see how they fit your work.</p>
-        <a class="start-button" href="/wincitywork/">Open WinCityWork</a>
+        <p>WinCityWork is ready to use. This review opens its Demo. The Demo uses sample data. It is not a public record.</p>
+        <a class="start-button" href="/wincitywork/">Open the WinCityWork Demo</a>
       </section>
       <section class="start-card" aria-labelledby="start-exams">
         <p class="start-eyebrow">Research</p>
         <h2 id="start-exams">Civil service exams</h2>
-        <p>What gets in the way of finding or preparing for an exam?</p>
-        <a href="#feedback" data-start-topic="Civil service exams" aria-label="Give feedback on civil service exams">Give feedback</a>
+        <p>This card is research, not a finished tool. We are learning what gets in the way of finding or preparing for an exam.</p>
+        <a href="/about.html?intent=inquiry&amp;topic=civil-service-exams#fbmessage">Ask a research question</a>
       </section>
       <section class="start-card" aria-labelledby="start-boards">
         <p class="start-eyebrow">Research</p>
         <h2 id="start-boards">Community boards</h2>
-        <p>What makes it hard to route or follow up on a resident request?</p>
-        <a href="#feedback" data-start-topic="Community boards" aria-label="Give feedback on community boards">Give feedback</a>
+        <p>This card is research, not a finished tool. A district manager routes a resident request and follows up on it.</p>
+        <a href="/about.html?intent=inquiry&amp;topic=community-boards#fbmessage">Ask a research question</a>
       </section>
     </div>
 
     <section class="start-records" aria-labelledby="start-records-title">
-      <h2 id="start-records-title"><a href="/browse/">Browse NYC public records</a></h2>
-      <p>Find contracts, hearings, land-use decisions, and the records behind them.</p>
+      <h2 id="start-records-title"><a href="/browse/">CityScroll Data Hub</a></h2>
+      <p>The hub links public records from many city sources. Its coverage is wider than the City Record alone. Open a record. Follow what it connects to. Then see what you can do next.</p>
+      <p><a href="/guide/reference/sources-and-coverage/">See where these records come from</a></p>
     </section>
 
-    <section class="start-feedback" id="feedback" aria-labelledby="start-feedback-title">
-      <h2 id="start-feedback-title">Give CityScroll feedback</h2>
-      <form id="start-feedback">
-        <label for="start-topic">Topic</label>
-        <select id="start-topic"><option>Homepage preview</option><option>Civil service exams</option><option>Community boards</option></select>
-        <label for="start-message" id="start-prompt">What were you trying to do, and where did you get stuck?</label>
-        <textarea id="start-message" maxlength="1960" required aria-describedby="start-feedback-privacy"></textarea>
-        <label for="start-email">Email, if you’d like a reply (optional)</label>
-        <input id="start-email" type="email" autocomplete="email">
-        <p id="start-feedback-privacy" class="start-help">Leave out names, addresses, and case details. We use your email to reply. To prevent spam, submissions also save your IP address and browser information.</p>
-        <button type="submit" class="start-button" disabled>Send feedback</button>
-        <p role="status" id="start-feedback-status"></p>
-      </form>
-      <p><a href="/about#fbmessage">Other ways to send feedback</a></p>
+    <section class="start-beta" aria-labelledby="start-beta-title">
+      <h2 id="start-beta-title">Help shape WinCityWork</h2>
+      <p>Join as a beta tester. This is separate from general feedback and from a research question.</p>
+      <a href="/about.html?intent=beta#fbmessage">Join as a beta tester</a>
     </section>
-
-    <footer class="start-footer"><a href="/search/">Search NYC records</a><a href="/guide/reference/sources-and-coverage/">Sources and coverage</a><a href="/about">About</a></footer>
   </main>
 </body>
 </html>

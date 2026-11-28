@@ -3699,6 +3699,8 @@
     fb_cat_bug: "错误",
     fb_cat_feature: "功能建议",
     fb_cat_general: "一般",
+    fb_cat_inquiry: "研究问题",
+    fb_cat_beta: "试用参与者",
     about_label_message: "您的留言",
     about_pasttask_optional_badge: "可选",
     about_pasttask_summary: "描述一次过往尝试",

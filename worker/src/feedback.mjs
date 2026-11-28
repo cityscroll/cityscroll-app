@@ -1,4 +1,4 @@
-// POST /feedback — public feedback intake (bug / feature idea / general).
+// POST /feedback — public feedback intake (bug / feature idea / general / research question / beta tester).
 // Rate-limited (per-IP + per-address daily caps in KV), strict field validation, and FAIL
 // CLOSED (503) until RESEND_API_KEY + FEEDBACK are set. Turnstile is not required on this
 // path: rate limits + validation are the spam controls (same posture as /subscribe).
@@ -87,6 +87,8 @@ async function notifyFeedback(env, r) {
     bug: "Bug",
     feature: "Feature idea",
     general: "General",
+    inquiry: "Research question",
+    beta: "Beta tester",
     information_wrong: "Information is wrong",
     connection_wrong: "Connection is wrong",
     same_thing: "These are the same thing",

@@ -3731,6 +3731,8 @@
     fb_cat_bug: "Ошибка",
     fb_cat_feature: "Идея функции",
     fb_cat_general: "Общее",
+    fb_cat_inquiry: "Вопрос об исследовании",
+    fb_cat_beta: "Участник бета-теста",
     about_label_message: "Ваше сообщение",
     about_pasttask_optional_badge: "Необязательно",
     about_pasttask_summary: "Опишите последнюю попытку",

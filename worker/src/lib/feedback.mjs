@@ -12,7 +12,7 @@ import {
   reportTargetIdentity,
 } from "../../../site/report_target.mjs";
 
-export const FEEDBACK_CATEGORIES = ["bug", "feature", "general"];
+export const FEEDBACK_CATEGORIES = ["bug", "feature", "general", "inquiry", "beta"];
 export const REPORT_CATEGORIES = [
   "information_wrong", "connection_wrong", "same_thing", "different_things",
   "something_missing", "interpretation_wrong", "other",

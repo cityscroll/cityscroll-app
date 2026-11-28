@@ -3701,6 +3701,8 @@
     fb_cat_bug: "Erè",
     fb_cat_feature: "Lide fonksyon",
     fb_cat_general: "Jeneral",
+    fb_cat_inquiry: "Kesyon rechèch",
+    fb_cat_beta: "Moun k ap teste beta",
     about_label_message: "Mesaj ou",
     about_pasttask_optional_badge: "Opsyonèl",
     about_pasttask_summary: "Dekri yon ansyen tantativ",
