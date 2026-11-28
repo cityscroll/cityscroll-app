@@ -198,6 +198,22 @@ async function readSearchUsageLineage(env, now) {
 }
 
 /**
+ * Dated aggregates already stored, without the receipt scan the private desk uses
+ * to reconcile them. The publication monitor reads this view so a heavy desk
+ * cannot make a stored series look unread. Reconciliation stays null here: this
+ * read does not rescan receipts.
+ */
+export async function readStoredSearchUsageLineage(env, now = new Date()) {
+  const measuredSince = await resolveSearchMeasurementStart(env);
+  const series = await readSearchUsageDailySeries(env, { now, measuredSince });
+  return {
+    measured_since: measuredSince,
+    series,
+    reconciliation: null,
+  };
+}
+
+/**
  * The durable page-view fallback is shaped by the same collector-surface list the intake
  * validator uses, so the KV breakdown and the Analytics Engine breakdown answer for the same
  * set of pages. A surface written under an older spelling is kept beside them rather than

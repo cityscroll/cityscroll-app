@@ -13,8 +13,10 @@ import {
   buildDigestShadowFailureSummary,
   buildDigestShadowStartedSummary,
   finalizeDigestShadowRun,
+  markDigestShadowRebuildQueued,
   persistDigestShadowFailure,
   persistDigestShadowStarted,
+  recordDigestShadowQueuedFreshness,
   runBudgetedNoticeFreshness,
   recordDigestShadowProgress,
   runDigestShadow,
@@ -97,7 +99,10 @@ function shadowDb() {
   `);
   const statement = (sql, args = []) => ({
     bind: (...next) => statement(sql, next),
-    run: async () => sqlite.prepare(sql).run(...args),
+    run: async () => {
+      const out = sqlite.prepare(sql).run(...args);
+      return { success: true, meta: { changes: Number(out.changes) }, changes: Number(out.changes) };
+    },
     first: async () => sqlite.prepare(sql).get(...args) || null,
     all: async () => ({ results: sqlite.prepare(sql).all(...args) }),
   });
@@ -431,7 +436,6 @@ test("scheduled retry reuses event identity and does not re-enqueue after rebuil
   const ALERT_STATE = kv();
   const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
   const calls = { freshness: 0, enqueue: 0, stamp: 0 };
-  const { markDigestShadowRebuildQueued } = await import("../src/digest_shadow.mjs");
   const worker = scheduledWorker({
     overrides: {
       async persistDigestShadowStarted(_env, options) {
@@ -633,14 +637,15 @@ test("watchdog selects the receipt owned by the current D1 summary", async () =>
   assert.equal(snapshot.shadow.owner, "shadow:current");
 });
 
-test("0 10 cron writes STARTED before freshness, then hands off to checkpointed rebuild", async () => {
+test("0 10 cron hands the day to the rebuild queue before advisory freshness", async () => {
   const DB = shadowDb();
   const ALERT_STATE = kv();
   const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
   const order = [];
   // 2026-10-05 / Monday-stall shape: advisory freshness can burn budget, but the
   // isolate must not forceInline the Monday-expanded account_builds corpus.
-  // STARTED lands first; freshness may degrade; then enqueue the queue rebuild.
+  // STARTED lands first, the checkpointed rebuild is queued, then freshness may
+  // degrade without taking the handoff back.
   const freshnessDegraded = {
     ok: false,
     degraded: true,
@@ -651,7 +656,6 @@ test("0 10 cron writes STARTED before freshness, then hands off to checkpointed 
     subrequests: 149,
     elapsed_ms: 900_046,
   };
-  const { markDigestShadowRebuildQueued } = await import("../src/digest_shadow.mjs");
   const worker = scheduledWorker({
     overrides: {
       async persistDigestShadowStarted(_env, options) {
@@ -660,8 +664,10 @@ test("0 10 cron writes STARTED before freshness, then hands off to checkpointed 
       },
       async runBudgetedNoticeFreshness() {
         order.push("freshness");
-        assert.ok(DB.runs.has(DAY), "STARTED row must exist before freshness");
-        assert.equal(JSON.parse(DB.runs.get(DAY).summary_json).status, DIGEST_SHADOW_STARTED);
+        const summary = JSON.parse(DB.runs.get(DAY).summary_json);
+        assert.equal(summary.status, DIGEST_SHADOW_STARTED);
+        assert.equal(summary.phase, "rebuild_queued");
+        assert.equal(summary.rebuild_run_id, "digest-shadow-rebuild:test");
         return freshnessDegraded;
       },
       async createDigestShadowRebuild(_env, options) {
@@ -673,12 +679,16 @@ test("0 10 cron writes STARTED before freshness, then hands off to checkpointed 
         order.push("stamp");
         return markDigestShadowRebuildQueued(env, options);
       },
+      async recordDigestShadowQueuedFreshness(_env, options) {
+        order.push("freshness-stamp");
+        return recordDigestShadowQueuedFreshness(env, options);
+      },
       refreshPublicSearchUsageSnapshot: async () => ({}),
     },
   });
 
   await worker.run("0 10 * * *", env);
-  assert.deepEqual(order, ["started", "freshness", "enqueue", "stamp"]);
+  assert.deepEqual(order, ["started", "enqueue", "stamp", "freshness", "freshness-stamp"]);
   const summary = JSON.parse(DB.runs.get(DAY).summary_json);
   assert.equal(summary.status, DIGEST_SHADOW_STARTED);
   assert.equal(summary.phase, "rebuild_queued");
@@ -697,12 +707,14 @@ test("0 10 cron still finalizes FAILED when rebuild enqueue throws after STARTED
   const DB = shadowDb();
   const ALERT_STATE = kv();
   const env = { DB, ALERT_STATE };
+  let freshnessCalls = 0;
   const worker = scheduledWorker({
     overrides: {
       async persistDigestShadowStarted(_env, options) {
         return persistDigestShadowStarted(env, { ...options, now: NOW });
       },
       async runBudgetedNoticeFreshness() {
+        freshnessCalls += 1;
         return { ok: true, degraded: false, result: {}, prewarm: {} };
       },
       createDigestShadowRebuild() { throw new Error("rebuild queue unavailable"); },
@@ -714,6 +726,7 @@ test("0 10 cron still finalizes FAILED when rebuild enqueue throws after STARTED
   });
 
   await worker.run("0 10 * * *", env);
+  assert.equal(freshnessCalls, 0);
   assert.ok(DB.runs.has(DAY));
   assert.equal(JSON.parse(ALERT_STATE.store.get(`${DIGEST_SHADOW_LEDGER_PREFIX}${DAY}`)).status, "FAILED");
   assert.notEqual(
@@ -723,6 +736,90 @@ test("0 10 cron still finalizes FAILED when rebuild enqueue throws after STARTED
     }).source_status,
     "MISSING_RUN",
   );
+});
+
+test("0 10 cron keeps the queued rebuild when freshness throws after handoff", async () => {
+  const DB = shadowDb();
+  const ALERT_STATE = kv();
+  const env = { DB, ALERT_STATE, DIGEST_SHADOW_QUEUE: { async send() {} } };
+  let failureCalls = 0;
+  const worker = scheduledWorker({
+    overrides: {
+      async persistDigestShadowStarted(_env, options) {
+        return persistDigestShadowStarted(env, { ...options, now: NOW });
+      },
+      async createDigestShadowRebuild() {
+        return { run_id: "digest-shadow-rebuild:after-stamp", status: "queued", run_day: DAY };
+      },
+      async markDigestShadowRebuildQueued(_env, options) {
+        return markDigestShadowRebuildQueued(env, options);
+      },
+      async runBudgetedNoticeFreshness() {
+        throw new Error("freshness killed");
+      },
+      async recordDigestShadowQueuedFreshness(_env, options) {
+        return recordDigestShadowQueuedFreshness(env, options);
+      },
+      async persistDigestShadowFailure() {
+        failureCalls += 1;
+        return { write_accepted: true, status: "FAILED" };
+      },
+      refreshPublicSearchUsageSnapshot: async () => ({}),
+    },
+  });
+
+  await worker.run("0 10 * * *", env);
+  const summary = JSON.parse(DB.runs.get(DAY).summary_json);
+  assert.equal(failureCalls, 0);
+  assert.equal(summary.status, DIGEST_SHADOW_STARTED);
+  assert.equal(summary.phase, "rebuild_queued");
+  assert.equal(summary.rebuild_run_id, "digest-shadow-rebuild:after-stamp");
+  assert.equal(summary.freshness?.degraded, true);
+  assert.equal(
+    buildDigestShadowHoldState({ summary, now: `${DAY}T13:00:00.000Z` }).delivery_policy,
+    "ALL_DIGESTS_ELIGIBLE",
+  );
+});
+
+test("queued freshness keeps rebuild progress and refuses a different rebuild", async () => {
+  const DB = shadowDb();
+  const ALERT_STATE = kv();
+  const env = { DB, ALERT_STATE };
+  await persistDigestShadowStarted(env, { now: NOW, invocationId: "shadow:owner" });
+  const stamped = await markDigestShadowRebuildQueued(env, {
+    day: DAY,
+    rebuildRunId: "digest-shadow-rebuild:owner",
+    invocationId: "shadow:owner",
+    now: NOW,
+  });
+  assert.equal(stamped.write_accepted, true);
+  const advanced = JSON.parse(DB.runs.get(DAY).summary_json);
+  advanced.phase = "account_builds";
+  advanced.evaluated_count = 12;
+  await DB.prepare("UPDATE digest_shadow_runs SET summary_json = ? WHERE run_day = ?")
+    .bind(JSON.stringify(advanced), DAY).run();
+  const attached = await recordDigestShadowQueuedFreshness(env, {
+    day: DAY,
+    rebuildRunId: "digest-shadow-rebuild:owner",
+    invocationId: "shadow:owner",
+    freshness: { degraded: true, reason: "late freshness" },
+  });
+  assert.equal(attached.write_accepted, true);
+  const summary = JSON.parse(DB.runs.get(DAY).summary_json);
+  assert.equal(summary.phase, "account_builds");
+  assert.equal(summary.evaluated_count, 12);
+  assert.equal(summary.status, DIGEST_SHADOW_STARTED);
+  assert.equal(summary.freshness.degraded, true);
+  assert.equal(summary.rebuild_run_id, "digest-shadow-rebuild:owner");
+  const foreign = await recordDigestShadowQueuedFreshness(env, {
+    day: DAY,
+    rebuildRunId: "digest-shadow-rebuild:other",
+    invocationId: "shadow:owner",
+    freshness: { degraded: true, reason: "other" },
+  });
+  assert.equal(foreign.write_accepted, false);
+  assert.equal(foreign.reason, "rebuild-mismatch");
+  assert.equal(JSON.parse(DB.runs.get(DAY).summary_json).phase, "account_builds");
 });
 
 test("progress survives interruption and cannot overwrite finalized evidence", async () => {

@@ -267,6 +267,9 @@ export function evaluateStatsPublication({ now, observation = {}, budgets = STAT
   if (missing.length && !promisedMissing) {
     notes.push(`${missing.length} earlier day(s) are absent from the series and are reported as gaps, not as zeroes.`);
   }
+  if (lineage.reconciliation == null) {
+    notes.push("Receipt reconciliation was not part of this observation.");
+  }
 
   return {
     schema: STATS_PUBLICATION_MONITOR_SCHEMA,

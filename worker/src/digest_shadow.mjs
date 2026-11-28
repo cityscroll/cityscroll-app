@@ -1168,7 +1168,8 @@ export async function runBudgetedNoticeFreshness(env, {
       controller.abort(error);
       reject(error);
     }, budgetMs);
-    timer.unref?.();
+    // The timer must stay scheduled. Dropping it lets a hung read hold the
+    // isolate until the platform kills it, which never returns this budget.
   });
   const work = async () => {
     const ingest = ingestFn || (await import("./ingest.mjs")).ingestNotices;
@@ -1232,8 +1233,9 @@ export async function recordDigestShadowProgress(db, day, progress, now = new Da
 }
 
 /**
- * After STARTED + budgeted freshness, stamp the in-flight row with the checkpointed
- * rebuild run id so operators see queue handoff instead of a silent inline stall.
+ * After STARTED, stamp the in-flight row with the checkpointed rebuild run id so
+ * operators see queue handoff instead of a silent inline stall. Advisory freshness
+ * may still be running; it is attached later and must not block this stamp.
  * Keeps status STARTED until the rebuild finalizes the day.
  */
 export async function markDigestShadowRebuildQueued(env, {
@@ -1288,6 +1290,56 @@ export async function markDigestShadowRebuildQueued(env, {
     WHERE run_day = ? AND status = 'STARTED'
     AND json_extract(summary_json, '$.invocation_id') = ?`)
     .bind(JSON.stringify(next), day, invocationId).run();
+  return {
+    write_accepted: Number(write?.meta?.changes) > 0,
+    summary: next,
+  };
+}
+
+/**
+ * Record advisory freshness on a row that is already handed to the rebuild queue.
+ *
+ * The compare-and-set refuses when the row changes between the read and the
+ * write, or when the row is no longer STARTED. Phase and rebuild progress
+ * already on the row are kept. Status stays STARTED so the queue can still finalize.
+ */
+export async function recordDigestShadowQueuedFreshness(env, {
+  day,
+  rebuildRunId,
+  invocationId,
+  freshness,
+} = {}) {
+  if (!env?.DB?.prepare || !day || !rebuildRunId || !freshness?.degraded) {
+    return { write_accepted: false, reason: "not-degraded" };
+  }
+  const row = await env.DB.prepare(
+    "SELECT summary_json FROM digest_shadow_runs WHERE run_day = ? AND status = 'STARTED'",
+  ).bind(day).first();
+  if (!row?.summary_json) return { write_accepted: false, reason: "started-row-absent" };
+  let summary;
+  try {
+    summary = JSON.parse(row.summary_json);
+  } catch {
+    return { write_accepted: false, reason: "started-row-unreadable" };
+  }
+  if (summary.rebuild_run_id !== rebuildRunId) {
+    return { write_accepted: false, reason: "rebuild-mismatch" };
+  }
+  if (summary.invocation_id && invocationId && summary.invocation_id !== invocationId) {
+    return { write_accepted: false, reason: "invocation-mismatch" };
+  }
+  const degraded = applyFreshnessDegradation(summary, freshness);
+  const next = {
+    ...degraded,
+    status: DIGEST_SHADOW_STARTED,
+    phase: summary.phase || "rebuild_queued",
+    rebuild_run_id: summary.rebuild_run_id,
+    rebuild_complete: summary.rebuild_complete === true,
+  };
+  const write = await env.DB.prepare(`UPDATE digest_shadow_runs SET summary_json = ?
+    WHERE run_day = ? AND status = 'STARTED'
+    AND summary_json = ?`)
+    .bind(JSON.stringify(next), day, row.summary_json).run();
   return {
     write_accepted: Number(write?.meta?.changes) > 0,
     summary: next,

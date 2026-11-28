@@ -21,6 +21,11 @@ last closed UTC day. Days before measurement began are not measured, not missing
 open a repair item. The existing grace period, dated gaps, and receipt-retention arithmetic
 apply to days inside that set, and actual failures continue through the repair classification.
 A verification alone cannot prove that the promised dated aggregate exists.
+The dated series is read from `GET /admin/stats?view=search-usage-lineage`. That
+view returns the stored daily aggregates and does not assemble the rest of the
+private desk. A non-success response, or a request that does not finish, is an
+unreadable check naming the HTTP status or the request failure. It is not a
+missed publication.
 
 The `legal-source-watch` job re-checks the retained NYC procurement-law source sections that the legal register (`ontology/procurement_legal_register.v1.json`) cites. Once a day it runs `tools/check_procurement_legal_sources.mjs`, which reads each section through a bounded, allowlisted fetch (`raw.githubusercontent.com` only, one identity-encoding HEAD per aggregate as an ETag gate so the content length is in the same byte space as the stored offset, then a capped Range window around that offset; a range the mirror refuses is followed by one capped full read of the same aggregate) and compares its hash against the register's `authority.source_sha256`. The comparison is pure: it never writes the register and never advances a clock. A section whose text differs opens `Procurement legal source changed: <source file>`, naming the register entries that cite it and any reviewed quote that no longer occurs; a section that could not be read opens `Procurement legal sources could not be checked` and is never reported as all-clear. A clean run closes both. The same findings ride the repair rail as the declared judgment classes `legal-source-changed` and `legal-source-unreachable`: the remedy is always a human re-reading the source and proposing a reviewed register change, never an automated edit. These are automated text-difference signals, not legal advice, and nothing they surface has been reviewed by a legal practitioner.
 

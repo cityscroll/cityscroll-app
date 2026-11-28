@@ -114,6 +114,7 @@ import {
   markDigestShadowRebuildQueued,
   persistDigestShadowFailure,
   persistDigestShadowStarted,
+  recordDigestShadowQueuedFreshness,
   runBudgetedNoticeFreshness,
 } from "./digest_shadow.mjs";
 import {
@@ -769,11 +770,13 @@ const worker = {
       });
         return;
       }
-      // 06:00 ET rehearsal: delivery-free. Order: STARTED → budgeted advisory freshness →
-      // enqueue the checkpointed DIGEST_SHADOW_QUEUE rebuild (one digest per invocation).
-      // Mondays expand weekly subscriptions; forceInline account_builds in one isolate was the
-      // STARTED_NOT_FINISHED stall. Queue handoff is the path that completed 2026-10-12.
-      // A killed isolate after STARTED still reads as STARTED_NOT_FINISHED, never MISSING_RUN.
+      // 06:00 ET rehearsal: delivery-free. Order: STARTED → enqueue the checkpointed
+      // DIGEST_SHADOW_QUEUE rebuild → budgeted advisory freshness. Freshness used to
+      // run before the handoff, so a platform kill during notice ingest left the day
+      // STARTED with no rebuild. Mondays expand weekly subscriptions; forceInline
+      // account_builds in one isolate was the earlier stall. Queue handoff is the
+      // path that completes the rehearsal. A killed isolate after STARTED still reads
+      // as STARTED_NOT_FINISHED, never MISSING_RUN.
       if (event.cron === "0 10 * * *") {
       try {
       const shadowNow = new Date(event.scheduledTime ?? Date.now());
@@ -814,52 +817,22 @@ const worker = {
         return;
       }
 
-      let freshness = { ok: true, degraded: false };
-      try {
-        freshness = await runBudgetedNoticeFreshness(env, {
-          acquisitionFn: withWorkerAcquisitionReceipt,
-          runId,
-          ingestFn: ingestNotices,
-          prewarmFn: (probeEnv, requestIds, options = {}) => prewarmNotices(probeEnv, requestIds, {
-            ...options,
-            skipEdgeCacheWrite: event.costProbe === true,
-          }),
-        });
-        if (freshness.degraded) {
-          console.error("digest shadow freshness degraded (rebuild continues):", JSON.stringify({
-            reason: freshness.reason,
-            code: freshness.code || null,
-            elapsed_ms: freshness.elapsed_ms,
-            subrequests: freshness.subrequests,
-            budget_ms: freshness.budget_ms,
-            subrequest_budget: freshness.subrequest_budget,
-          }));
-        } else {
-          console.log("digest shadow ingest:", JSON.stringify(freshness.result));
-          console.log("digest shadow notice prewarm:", JSON.stringify(freshness.prewarm));
-        }
-      } catch (error) {
-        freshness = {
-          ok: false,
-          degraded: true,
-          reason: String(error?.message || error),
-        };
-        console.error("digest shadow freshness failed (rebuild continues):", freshness.reason);
-      }
-
+      let handedOff = false;
+      let queuedRunId = null;
       try {
         const queued = await createDigestShadowRebuild(env, {
           now: shadowNow,
           runDay: shadowDay,
         });
+        queuedRunId = queued.run_id;
         const stamped = await markDigestShadowRebuildQueued(env, {
           day: shadowDay,
           rebuildRunId: queued.run_id,
           invocationId: shadowInvocationId,
           now: shadowNow,
-          freshness,
         });
-        if (stamped?.write_accepted === false) {
+        handedOff = stamped?.write_accepted !== false;
+        if (!handedOff) {
           console.error("digest shadow rebuild queue stamp rejected:", JSON.stringify({
             run_day: shadowDay,
             rebuild_run_id: queued.run_id,
@@ -871,7 +844,6 @@ const worker = {
             run_day: shadowDay,
             rebuild_run_id: queued.run_id,
             status: queued.status,
-            freshness_degraded: Boolean(freshness.degraded),
           }));
         }
       } catch (error) {
@@ -891,6 +863,60 @@ const worker = {
           }));
         } catch (persistError) {
           console.error("digest shadow failure receipt failed:", String(persistError?.message || persistError));
+        }
+      }
+
+      if (handedOff) {
+        let freshness = { ok: true, degraded: false };
+        try {
+          freshness = await runBudgetedNoticeFreshness(env, {
+            acquisitionFn: withWorkerAcquisitionReceipt,
+            runId,
+            ingestFn: ingestNotices,
+            prewarmFn: (probeEnv, requestIds, options = {}) => prewarmNotices(probeEnv, requestIds, {
+              ...options,
+              skipEdgeCacheWrite: event.costProbe === true,
+            }),
+          });
+          if (freshness.degraded) {
+            console.error("digest shadow freshness degraded (rebuild continues):", JSON.stringify({
+              reason: freshness.reason,
+              code: freshness.code || null,
+              elapsed_ms: freshness.elapsed_ms,
+              subrequests: freshness.subrequests,
+              budget_ms: freshness.budget_ms,
+              subrequest_budget: freshness.subrequest_budget,
+            }));
+          } else if (event.costProbe !== true) {
+            console.log("digest shadow ingest:", JSON.stringify(freshness.result));
+            console.log("digest shadow notice prewarm:", JSON.stringify(freshness.prewarm));
+          }
+        } catch (error) {
+          freshness = {
+            ok: false,
+            degraded: true,
+            reason: String(error?.message || error),
+          };
+          console.error("digest shadow freshness failed (rebuild continues):", freshness.reason);
+        }
+        if (freshness.degraded && queuedRunId) {
+          try {
+            const attached = await recordDigestShadowQueuedFreshness(env, {
+              day: shadowDay,
+              rebuildRunId: queuedRunId,
+              invocationId: shadowInvocationId,
+              freshness,
+            });
+            if (attached?.write_accepted === false && event.costProbe !== true) {
+              console.log("digest shadow freshness stamp skipped:", JSON.stringify({
+                run_day: shadowDay,
+                rebuild_run_id: queuedRunId,
+                reason: attached?.reason || null,
+              }));
+            }
+          } catch (error) {
+            console.error("digest shadow freshness stamp failed:", String(error?.message || error));
+          }
         }
       }
       } finally {
