@@ -5,6 +5,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { handleAdminStats } from "../src/admin.mjs";
 import {
   SEARCH_USAGE_DAILY_KEY_PREFIX,
   SEARCH_USAGE_DAILY_SCHEMA,
@@ -385,4 +386,39 @@ test("a day below the scan floor is left absent, never zero-created by a late re
   // The oldest day the scan covers in full is still published, including as a measured zero.
   assert.ok(published.days.some((row) => row.day === "2026-10-05" && row.action === "created"));
   assert.ok(JSON.parse(kv.store.get(searchUsageDayKey("2026-10-05"))).metrics.searches_run === 1);
+});
+
+test("the search-usage lineage view reads stored days without the private desk", async () => {
+  const measuredSince = "2026-09-09T00:00:00.000Z";
+  const kv = fakeKV({
+    [`${SEARCH_USAGE_DAILY_KEY_PREFIX}2026-09-09`]: JSON.stringify(buildSearchUsageDailyAggregate({
+      day: "2026-09-09",
+      counts: { searches_run: 4, searches_returning_records: 3 },
+      measuredSince,
+    })),
+  });
+  const env = {
+    ADMIN_KEY: "specimen-key",
+    ALERT_STATE: kv,
+    SEARCH_ACTIVITY_MEASURED_SINCE: measuredSince,
+  };
+  const response = await handleAdminStats(
+    new Request("https://api.cityscroll.org/admin/stats?view=search-usage-lineage", {
+      headers: { Authorization: "Bearer specimen-key" },
+    }),
+    env,
+    { now: "2026-09-10T11:47:00.000Z" },
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.search_usage_lineage.series.available, true);
+  assert.equal(body.search_usage_lineage.series.newest_day, "2026-09-09");
+  assert.equal(body.search_usage_lineage.reconciliation, null);
+  assert.equal(body.search_usage_lineage.measured_since, measuredSince);
+  assert.equal(Object.hasOwn(body, "subscriptions"), false);
+  const denied = await handleAdminStats(
+    new Request("https://api.cityscroll.org/admin/stats?view=search-usage-lineage"),
+    env,
+  );
+  assert.equal(denied.status, 401);
 });

@@ -356,7 +356,10 @@ function sanitize(value) {
 async function runStatsDailySnapshot(job, context) {
   const fetchImpl = context.fetchImpl || globalThis.fetch;
   const publicUrl = process.env.CITYSCROLL_STATS_URL || "https://api.cityscroll.org/stats";
-  const adminUrl = process.env.CITYSCROLL_ADMIN_STATS_URL || "https://api.cityscroll.org/admin/stats";
+  // Stored daily aggregates only. The full private desk also lists subscriptions
+  // and scans receipts, and that read can fail while the dated series is stored.
+  const adminUrl = process.env.CITYSCROLL_ADMIN_STATS_URL
+    || "https://api.cityscroll.org/admin/stats?view=search-usage-lineage";
   const observedAt = context.now.toISOString();
 
   const key = adminKey();
@@ -384,18 +387,29 @@ async function runStatsDailySnapshot(job, context) {
     observation.published = null;
   }
   try {
-    const response = await fetchImpl(adminUrl, { headers: { Authorization: `Bearer ${key}` } });
-    const body = response.ok ? await response.json() : null;
-    const lineage = body?.search_usage_lineage || null;
-    observation.lineage = lineage?.series
-      ? {
-          ...lineage.series,
-          measured_since: lineage.measured_since ?? lineage.series.measured_since ?? null,
-          reconciliation: lineage.reconciliation || null,
-        }
-      : null;
-  } catch {
-    observation.lineage = null;
+    const response = await fetchImpl(adminUrl, {
+      headers: { Authorization: `Bearer ${key}` },
+      signal: AbortSignal.timeout(20_000),
+    });
+    if (!response.ok) {
+      observation.lineage = { available: false, unavailable_reason: `http-${response.status}` };
+    } else {
+      const body = await response.json();
+      const lineage = body?.search_usage_lineage || null;
+      observation.lineage = lineage?.series
+        ? {
+            ...lineage.series,
+            measured_since: lineage.measured_since ?? lineage.series.measured_since ?? null,
+            reconciliation: lineage.reconciliation || null,
+          }
+        : { available: false, unavailable_reason: "series-missing" };
+    }
+  } catch (error) {
+    const timedOut = error?.name === "TimeoutError" || error?.name === "AbortError";
+    observation.lineage = {
+      available: false,
+      unavailable_reason: timedOut ? "request-timeout" : "request-failed",
+    };
   }
 
   const finding = evaluateStatsPublication({ now: observedAt, observation });

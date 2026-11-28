@@ -376,6 +376,93 @@ test("the runner carries measured_since so a stored first day is healthy", async
   });
 });
 
+test("a stored series read without receipt reconciliation says so", () => {
+  const published = { refresh: { state: "fresh", verified_at: "2026-09-06T09:00:00.000Z" } };
+  const lineage = {
+    available: true,
+    newest_day: "2026-09-05",
+    missing_days: [],
+    unrecoverable_days: [],
+    reconciliation: null,
+  };
+  const finding = evaluateStatsPublication({ now: NOW, observation: { lineage, published } });
+  assert.match(finding.notes.join(" "), /Receipt reconciliation was not part of this observation/);
+  const withRows = evaluateStatsPublication({
+    now: NOW,
+    observation: { lineage: { ...lineage, reconciliation: { rows: [] } }, published },
+  });
+  assert.equal(withRows.notes.some((note) => note.includes("Receipt reconciliation")), false);
+});
+
+test("an unreadable admin response names the HTTP status instead of a missing observation", async () => {
+  await withTempDir("stats-publication-http", async (stateDir) => {
+    const inheritedKey = process.env.CITYSCROLL_ADMIN_KEY;
+    const inheritedUrl = process.env.CITYSCROLL_ADMIN_STATS_URL;
+    process.env.CITYSCROLL_ADMIN_KEY = "specimen-key";
+    delete process.env.CITYSCROLL_ADMIN_STATS_URL;
+    const urls = [];
+    try {
+      const output = await runScheduledJob({
+        id: STATS_PUBLICATION_JOB_ID,
+        schedule: ["47 11 * * *"],
+        runner: "stats-daily-snapshot",
+        issue_title: STATS_PUBLICATION_ISSUE_TITLE,
+      }, {
+        stateDir,
+        now: new Date(NOW),
+        runKey: "2026-09-06T16-00",
+        fetchImpl: async (url) => {
+          urls.push(String(url));
+          if (String(url).includes("/admin/stats")) return { ok: false, status: 503 };
+          return { ok: true, json: async () => ({ search_usage: { refresh: { state: "fresh", verified_at: NOW } } }) };
+        },
+      });
+      assert.equal(output.result.failing_stage, "observation-unavailable");
+      assert.match(output.result.body, /http-503/);
+      assert.doesNotMatch(output.result.body, /no observation/);
+      assert.ok(urls.some((url) => url.includes("view=search-usage-lineage")));
+    } finally {
+      if (inheritedKey === undefined) delete process.env.CITYSCROLL_ADMIN_KEY;
+      else process.env.CITYSCROLL_ADMIN_KEY = inheritedKey;
+      if (inheritedUrl === undefined) delete process.env.CITYSCROLL_ADMIN_STATS_URL;
+      else process.env.CITYSCROLL_ADMIN_STATS_URL = inheritedUrl;
+    }
+  });
+});
+
+test("an admin request that does not finish is a timeout, not a missing observation", async () => {
+  await withTempDir("stats-publication-timeout", async (stateDir) => {
+    const inheritedKey = process.env.CITYSCROLL_ADMIN_KEY;
+    process.env.CITYSCROLL_ADMIN_KEY = "specimen-key";
+    try {
+      const output = await runScheduledJob({
+        id: STATS_PUBLICATION_JOB_ID,
+        schedule: ["47 11 * * *"],
+        runner: "stats-daily-snapshot",
+        issue_title: STATS_PUBLICATION_ISSUE_TITLE,
+      }, {
+        stateDir,
+        now: new Date(NOW),
+        runKey: "2026-09-06T16-10",
+        fetchImpl: async (url) => {
+          if (String(url).includes("/admin/stats")) {
+            const error = new Error("The operation was aborted due to timeout");
+            error.name = "TimeoutError";
+            throw error;
+          }
+          return { ok: true, json: async () => ({ search_usage: { refresh: { state: "fresh", verified_at: NOW } } }) };
+        },
+      });
+      assert.equal(output.result.failing_stage, "observation-unavailable");
+      assert.match(output.result.body, /request-timeout/);
+      assert.doesNotMatch(output.result.body, /no observation/);
+    } finally {
+      if (inheritedKey === undefined) delete process.env.CITYSCROLL_ADMIN_KEY;
+      else process.env.CITYSCROLL_ADMIN_KEY = inheritedKey;
+    }
+  });
+});
+
 test("a missing admin credential is a configuration fault, not a publication failure", async () => {
   await withTempDir("stats-publication-nokey", async (stateDir) => {
   const inherited = process.env.CITYSCROLL_ADMIN_KEY;

@@ -128,7 +128,7 @@ import {
   readDigestShadowRebuildStatus,
   readStartedRecoveryReceipt,
 } from "./digest_shadow_rebuild.mjs";
-import { handlePrivateStats } from "./stats.mjs";
+import { handlePrivateStats, readStoredSearchUsageLineage } from "./stats.mjs";
 import { readOwedBacklog, scanSubscriberMetadata, scheduledTimes } from "./owed_backlog.mjs";
 import {
   cancelOwedItems,
@@ -1838,6 +1838,14 @@ export async function handleAdminStats(req, env, options = {}) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
   if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  // The publication monitor needs the stored daily series, not subscriptions,
+  // analytics, or a receipt scan. Those make the full desk fail while the
+  // aggregates are already stored. The default desk is unchanged.
+  if (new URL(req.url).searchParams.get("view") === "search-usage-lineage") {
+    const now = options.now == null ? new Date() : new Date(options.now);
+    const lineage = await readStoredSearchUsageLineage(env, now);
+    return json({ search_usage_lineage: lineage }, 200);
+  }
   const response = await handlePrivateStats(req, env, options);
   const stats = await response.json();
   if (new URL(req.url).searchParams.get("view") === "html") {
